@@ -53,12 +53,7 @@ const router = new Router({
           component: () =>
             import('@v/message/Message.vue')
         },
-        {
-          path: '/Sidebarqq',
-          name: 'Sidebarqq',
-          component: () =>
-            import('@v/layout/sidebar/Sidebarqq.vue')
-        },
+
 
       ]
     },

@@ -18,6 +18,10 @@ $logo_contener-height:70px;
 $logo_contener-width: 252px;
 
 
+/* 一级目录无子相的 */
+$nochild-margin-left:20px;
+
+
 /* 一级目录 */
 // 侧边栏1级字体默认颜色
 $fontColor1:rgba(0, 0, 0, 0.40);
@@ -28,6 +32,8 @@ $Icon-margin-right: 8px;
 $__icon-arrow-right: 40px;
 $avatarleft-height:15px;
 $avatarleft-margin-right: 20px;
+
+
 
 /* 二级展开 */
 // 项目展开时触发的所有项目颜色

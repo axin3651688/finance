@@ -14,11 +14,11 @@
         unique-opened
       >
         <div class="username" v-if="user.company.id === 121">
-          <img :src="user.avatar" alt>
+          <img :src="user.user.avatar" alt>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
-        <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>>
+        <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
         <!-- 模拟链接 -->
         <!-- <el-submenu index="123">
             <span slot="title">各种chart图表</span>
