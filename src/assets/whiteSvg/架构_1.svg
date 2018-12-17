@@ -1,0 +1,686 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1255 792.462">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        opacity: 0.4;
+      }
+
+      .cls-2 {
+        fill: #0f6dd9;
+      }
+
+      .cls-3, .cls-8 {
+        fill: #fff;
+        font-family: MicrosoftYaHei-Bold, Microsoft YaHei;
+        font-weight: 700;
+      }
+
+      .cls-3 {
+        font-size: 16px;
+      }
+
+      .cls-4 {
+        fill: #1787db;
+      }
+
+      .cls-5 {
+        fill: #1b9cfe;
+      }
+
+      .cls-6 {
+        fill: #01c68a;
+      }
+
+      .cls-7 {
+        fill: #01c6c0;
+      }
+
+      .cls-8 {
+        font-size: 14px;
+      }
+
+      .cls-10, .cls-9 {
+        stroke: none;
+      }
+
+      .cls-10 {
+        fill: #1b76fe;
+      }
+
+      .cls-11 {
+        filter: url(#矩形_25-11);
+      }
+
+      .cls-12 {
+        filter: url(#矩形_25-10);
+      }
+
+      .cls-13 {
+        filter: url(#矩形_25-9);
+      }
+
+      .cls-14 {
+        filter: url(#矩形_25-8);
+      }
+
+      .cls-15 {
+        filter: url(#矩形_25-7);
+      }
+
+      .cls-16 {
+        filter: url(#矩形_25-6);
+      }
+
+      .cls-17 {
+        filter: url(#矩形_25-5);
+      }
+
+      .cls-18 {
+        filter: url(#矩形_25-4);
+      }
+
+      .cls-19 {
+        filter: url(#矩形_25-3);
+      }
+
+      .cls-20 {
+        filter: url(#矩形_25-2);
+      }
+
+      .cls-21 {
+        filter: url(#矩形_25);
+      }
+
+      .cls-22 {
+        filter: url(#审计风控部-3);
+      }
+
+      .cls-23 {
+        filter: url(#路径_131);
+      }
+
+      .cls-24 {
+        filter: url(#审计风控部-2);
+      }
+
+      .cls-25 {
+        filter: url(#路径_130);
+      }
+
+      .cls-26 {
+        filter: url(#审计风控部);
+      }
+
+      .cls-27 {
+        filter: url(#矩形_23-9);
+      }
+
+      .cls-28 {
+        filter: url(#分管领导);
+      }
+
+      .cls-29 {
+        filter: url(#矩形_23-8);
+      }
+
+      .cls-30 {
+        filter: url(#总经理办公会);
+      }
+
+      .cls-31 {
+        filter: url(#矩形_23-7);
+      }
+
+      .cls-32 {
+        filter: url(#审计与风控委员会);
+      }
+
+      .cls-33 {
+        filter: url(#矩形_23-6);
+      }
+
+      .cls-34 {
+        filter: url(#薪酬与考核委员会);
+      }
+
+      .cls-35 {
+        filter: url(#矩形_23-5);
+      }
+
+      .cls-36 {
+        filter: url(#战略与投资委员会);
+      }
+
+      .cls-37 {
+        filter: url(#矩形_23-4);
+      }
+
+      .cls-38 {
+        filter: url(#董事会);
+      }
+
+      .cls-39 {
+        filter: url(#矩形_23-3);
+      }
+
+      .cls-40 {
+        filter: url(#监事会);
+      }
+
+      .cls-41 {
+        filter: url(#矩形_23-2);
+      }
+
+      .cls-42 {
+        filter: url(#党委会);
+      }
+
+      .cls-43 {
+        filter: url(#矩形_23);
+      }
+    </style>
+    <filter id="矩形_23" x="355.475" y="0" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="党委会" x="411.777" y="9.569" width="90" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-2"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-2" x="841.315" y="0" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-3"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="监事会" x="897.617" y="9.569" width="90" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-4"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-3" x="598.395" y="0" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-5"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-5"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="董事会" x="654.697" y="9.569" width="90" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-6"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-6"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-4" x="49.827" y="40.051" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-7"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-7"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="战略与投资委员会" x="61.627" y="49.62" width="170" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-8"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-8"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-5" x="49.827" y="113.257" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-9"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-9"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="薪酬与考核委员会" x="61.627" y="122.827" width="170" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-10"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-10"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-6" x="49.827" y="184.043" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-11"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-11"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="审计与风控委员会" x="61.627" y="193.612" width="170" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-12"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-12"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-7" x="598.395" y="232.414" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-13"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-13"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="总经理办公会" x="627.996" y="241.983" width="138" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-14"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-14"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-8" x="598.395" y="331.514" width="208.006" height="74.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-15"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-15"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="分管领导" x="645.796" y="341.083" width="106" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-16"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-16"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_23-9" x="1017.531" y="284.604" width="208.006" height="74.501" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-17"/>
+      <feFlood flood-color="#091443" flood-opacity="0.298"/>
+      <feComposite operator="in" in2="blur-17"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="审计风控部" x="1056.033" y="294.173" width="122" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-18"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-18"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="路径_130" x="1016.994" y="686.848" width="238.006" height="104.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur-19"/>
+      <feFlood flood-color="#063e00" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-19"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="审计风控部-2" x="1070.496" y="710.417" width="122" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-20"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-20"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="路径_131" x="425.562" y="687.96" width="238.006" height="104.502" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur-21"/>
+      <feFlood flood-color="#063e00" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur-21"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="审计风控部-3" x="479.063" y="711.529" width="122" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="8" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="7" result="blur-22"/>
+      <feFlood flood-color="#ccd2ec" flood-opacity="0.384"/>
+      <feComposite operator="in" in2="blur-22"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25" x="0" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-23"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-23"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-2" x="89" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-24"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-24"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-3" x="204.283" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-25"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-25"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-4" x="306.424" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-26"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-26"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-5" x="408.565" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-27"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-27"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-6" x="510.707" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-28"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-28"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-7" x="612.848" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-29"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-29"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-8" x="714.989" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-30"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-30"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-9" x="817.13" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-31"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-31"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-10" x="919.271" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-32"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-32"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="矩形_25-11" x="1039.951" y="434.731" width="74.501" height="219.131" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-33"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-33"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="架构_1" transform="translate(14.801 12)">
+    <g id="直线" transform="translate(20.124 45.058)">
+      <g id="联合_1" data-name="联合 1" class="cls-1">
+        <path class="cls-9" d="M517.906,602.173v64ZM1095.266,278V659.174ZM0,601.832H1035.609Zm1035.608-27.659v27Zm-1035.078-2v29Zm1034.122-207-.2,27ZM.531,365.413v24.761Zm670.732-.533h0V344.74h0v0h0v20.14h0v.293Zm-.446-135.707v33Zm.027,32.639h340.731Zm269.377-52.125h0v.486Zm-504.135,0h0V91.441H240.995v69.674h0v0h0V91.441h0v0H436.087v0h238.6v0h-238.6V209.687h0v.486ZM206.772,17.8h34.8Z"/>
+        <path class="cls-10" d="M 517.9058837890625 666.1727905273438 L 517.9058837890625 602.1729125976563 L 517.9058837890625 666.1727905273438 M 1095.265869140625 659.173583984375 L 1095.265869140625 278.0001220703125 L 1095.265869140625 659.173583984375 M 1035.609375 601.8318481445313 L 0.0009618164040148258 601.8318481445313 L 1035.609375 601.8318481445313 M 1035.609375 601.1730346679688 L 1035.609375 574.1730346679688 L 1035.609375 601.1730346679688 M 0.530961811542511 601.1730346679688 L 0.530961811542511 572.1732177734375 L 0.530961811542511 601.1730346679688 M 1034.450073242188 392.1731872558594 L 1034.652587890625 365.1731872558594 L 1034.450073242188 392.1731872558594 M 0.530961811542511 390.1734619140625 L 0.530961811542511 365.4126586914063 L 0.530961811542511 390.1734619140625 M 671.2632446289063 365.1731872558594 L 671.2632446289063 364.8798522949219 L 1034.652587890625 364.8798522949219 L 671.2632446289063 364.8798522949219 L 671.2632446289063 344.7395935058594 L 1094.903076171875 344.7395935058594 L 671.2632446289063 344.7395935058594 L 671.2632446289063 328.17333984375 L 671.2632446289063 344.7395935058594 L 671.2632446289063 364.8798522949219 L 671.2632446289063 365.1731872558594 M 671.2632446289063 364.8798522949219 L 0.530961811542511 364.8798522949219 L 671.2632446289063 364.8798522949219 M 671.2632446289063 344.7395935058594 L 670.5756225585938 344.7395935058594 L 671.2632446289063 344.7395935058594 M 670.817626953125 262.173583984375 L 670.817626953125 229.1733245849609 L 670.817626953125 262.173583984375 M 1011.575744628906 261.8126525878906 L 670.8446655273438 261.8126525878906 L 1011.575744628906 261.8126525878906 M 940.221923828125 210.1734619140625 L 940.221923828125 209.6874694824219 L 940.221923828125 -4.736328264698386e-06 L 940.221923828125 209.6874694824219 L 940.221923828125 210.1734619140625 M 436.0869750976563 210.1734619140625 L 436.0869750976563 209.6874694824219 L 584.5752563476563 209.6874694824219 L 436.0869750976563 209.6874694824219 L 436.0869750976563 91.44092559814453 L 674.6849365234375 91.44092559814453 L 674.6849365234375 -4.736328264698386e-06 L 674.6849365234375 91.44092559814453 L 436.0869750976563 91.44092559814453 L 436.0869750976563 -4.736328264698386e-06 L 436.0869750976563 91.44092559814453 L 436.0869750976563 209.6874694824219 L 436.0869750976563 210.1734619140625 M 940.221923828125 209.6874694824219 L 755.5752563476563 209.6874694824219 L 940.221923828125 209.6874694824219 M 436.0869750976563 209.6874694824219 L 435.6432189941406 209.6874694824219 L 436.0869750976563 209.6874694824219 M 674.6849365234375 190.1735992431641 L 674.6849365234375 91.44092559814453 L 674.6849365234375 190.1735992431641 M 240.9948272705078 161.1729278564453 L 240.9948272705078 161.1153259277344 L 240.9948272705078 161.1729278564453 M 241.5761566162109 161.1153259277344 L 240.9948272705078 161.1153259277344 L 241.5761566162109 161.1153259277344 M 240.9948272705078 161.1153259277344 L 206.7722930908203 161.1153259277344 L 240.9948272705078 161.1153259277344 M 240.9948272705078 161.1153259277344 L 240.9948272705078 91.44092559814453 L 240.9948272705078 161.1153259277344 M 436.0869750976563 91.44092559814453 L 240.9948272705078 91.44092559814453 L 436.0869750976563 91.44092559814453 M 240.9948272705078 91.44092559814453 L 203.9184265136719 91.44092559814453 L 240.9948272705078 91.44092559814453 M 240.9948272705078 91.44092559814453 L 240.9948272705078 18.17279434204102 L 240.9948272705078 91.44092559814453 M 241.5761566162109 17.80106163024902 L 206.7722930908203 17.80106163024902 L 241.5761566162109 17.80106163024902 M 518.9058837890625 666.1727905273438 L 516.9058837890625 666.1727905273438 L 516.9058837890625 602.8318481445313 L 0.0009618164040148258 602.8318481445313 L 0.0009618164040148258 601.1730346679688 L -0.469038188457489 601.1730346679688 L -0.469038188457489 572.1732177734375 L 1.530961871147156 572.1732177734375 L 1.530961871147156 600.8318481445313 L 1034.609375 600.8318481445313 L 1034.609375 574.1730346679688 L 1036.609375 574.1730346679688 L 1036.609375 601.1730346679688 L 1035.609375 601.1730346679688 L 1035.609375 602.8318481445313 L 518.9058837890625 602.8318481445313 L 518.9058837890625 666.1727905273438 Z M 1096.265869140625 659.173583984375 L 1094.265869140625 659.173583984375 L 1094.265869140625 345.7395935058594 L 672.2632446289063 345.7395935058594 L 672.2632446289063 363.8798522949219 L 1034.652587890625 363.8798522949219 L 1034.652587890625 365.1731872558594 L 1035.652587890625 365.1806640625 L 1035.450073242188 392.1806640625 L 1033.450073242188 392.1657409667969 L 1033.647216796875 365.8798522949219 L 671.2632446289063 365.8798522949219 L 1.530961871147156 365.8798522949219 L 1.530961871147156 390.1734619140625 L -0.469038188457489 390.1734619140625 L -0.469038188457489 365.4126586914063 L 0.530961811542511 365.4126586914063 L 0.530961811542511 363.8798522949219 L 670.2632446289063 363.8798522949219 L 670.2632446289063 344.7395935058594 L 670.2632446289063 328.17333984375 L 672.2632446289063 328.17333984375 L 672.2632446289063 343.7395935058594 L 1094.265869140625 343.7395935058594 L 1094.265869140625 278.0001220703125 L 1096.265869140625 278.0001220703125 L 1096.265869140625 659.173583984375 Z M 1011.575744628906 262.8126525878906 L 670.8446655273438 262.8126525878906 L 670.8446655273438 262.173583984375 L 669.817626953125 262.173583984375 L 669.817626953125 229.1733245849609 L 671.817626953125 229.1733245849609 L 671.817626953125 260.8126525878906 L 1011.575744628906 260.8126525878906 L 1011.575744628906 262.8126525878906 Z M 940.221923828125 210.6874694824219 L 755.5752563476563 210.6874694824219 L 755.5752563476563 208.6874694824219 L 939.221923828125 208.6874694824219 L 939.221923828125 -4.736328264698386e-06 L 941.221923828125 -4.736328264698386e-06 L 941.221923828125 209.6874694824219 L 941.221923828125 210.1734619140625 L 940.221923828125 210.1734619140625 L 940.221923828125 210.6874694824219 Z M 584.5752563476563 210.6874694824219 L 436.0869750976563 210.6874694824219 L 435.6432189941406 210.6874694824219 L 435.0869750976563 210.6874694824219 L 435.0869750976563 210.1734619140625 L 435.0869750976563 209.6874694824219 L 435.0869750976563 92.44092559814453 L 241.9948272705078 92.44092559814453 L 241.9948272705078 161.1153259277344 L 241.9948272705078 161.1729278564453 L 241.5761566162109 161.1729278564453 L 241.5761566162109 162.1153259277344 L 240.9948272705078 162.1153259277344 L 206.7722930908203 162.1153259277344 L 206.7722930908203 160.1153259277344 L 239.9948272705078 160.1153259277344 L 239.9948272705078 92.44092559814453 L 203.9184265136719 92.44092559814453 L 203.9184265136719 90.44092559814453 L 239.9948272705078 90.44092559814453 L 239.9948272705078 18.80106163024902 L 206.7722930908203 18.80106163024902 L 206.7722930908203 16.80106163024902 L 241.5761566162109 16.80106163024902 L 241.5761566162109 18.17279434204102 L 241.9948272705078 18.17279434204102 L 241.9948272705078 90.44092559814453 L 435.0869750976563 90.44092559814453 L 435.0869750976563 -4.736328264698386e-06 L 437.0869750976563 -4.736328264698386e-06 L 437.0869750976563 90.44092559814453 L 673.6849365234375 90.44092559814453 L 673.6849365234375 -4.736328264698386e-06 L 675.6849365234375 -4.736328264698386e-06 L 675.6849365234375 91.44092559814453 L 675.6849365234375 92.44092559814453 L 675.6849365234375 190.1735992431641 L 673.6849365234375 190.1735992431641 L 673.6849365234375 92.44092559814453 L 437.0869750976563 92.44092559814453 L 437.0869750976563 208.6874694824219 L 584.5752563476563 208.6874694824219 L 584.5752563476563 210.6874694824219 Z"/>
+      </g>
+    </g>
+    <g id="组_41" data-name="组 41" transform="translate(20.026)">
+      <g id="组_25" data-name="组 25" transform="translate(335.648)">
+        <g class="cls-43" transform="matrix(1, 0, 0, 1, -370.47, -12)">
+          <rect id="矩形_23-10" data-name="矩形 23" class="cls-2" width="178.006" height="44.502" rx="10" transform="translate(370.47 12)"/>
+        </g>
+        <g class="cls-42" transform="matrix(1, 0, 0, 1, -370.47, -12)">
+          <text id="党委会-2" data-name="党委会" class="cls-3" transform="translate(432.78 39.57)"><tspan x="0" y="0">党委会</tspan></text>
+        </g>
+      </g>
+      <g id="组_27" data-name="组 27" transform="translate(821.488)">
+        <g class="cls-41" transform="matrix(1, 0, 0, 1, -856.31, -12)">
+          <rect id="矩形_23-11" data-name="矩形 23" class="cls-2" width="178.006" height="44.502" rx="10" transform="translate(856.31 12)"/>
+        </g>
+        <g class="cls-40" transform="matrix(1, 0, 0, 1, -856.31, -12)">
+          <text id="监事会-2" data-name="监事会" class="cls-3" transform="translate(918.62 39.57)"><tspan x="0" y="0">监事会</tspan></text>
+        </g>
+      </g>
+      <g id="组_26" data-name="组 26" transform="translate(578.568)">
+        <g class="cls-39" transform="matrix(1, 0, 0, 1, -613.39, -12)">
+          <rect id="矩形_23-12" data-name="矩形 23" class="cls-2" width="178.006" height="44.502" rx="10" transform="translate(613.39 12)"/>
+        </g>
+        <g class="cls-38" transform="matrix(1, 0, 0, 1, -613.39, -12)">
+          <text id="董事会-2" data-name="董事会" class="cls-3" transform="translate(675.7 39.57)"><tspan x="0" y="0">董事会</tspan></text>
+        </g>
+      </g>
+      <g id="组_28" data-name="组 28" transform="translate(30 40.051)">
+        <g class="cls-37" transform="matrix(1, 0, 0, 1, -64.83, -52.05)">
+          <rect id="矩形_23-13" data-name="矩形 23" class="cls-4" width="178.006" height="44.502" rx="10" transform="translate(64.83 52.05)"/>
+        </g>
+        <g class="cls-36" transform="matrix(1, 0, 0, 1, -64.83, -52.05)">
+          <text id="战略与投资委员会-2" data-name="战略与投资委员会" class="cls-3" transform="translate(82.63 79.62)"><tspan x="0" y="0">战略与投资委员会</tspan></text>
+        </g>
+      </g>
+      <g id="组_28-2" data-name="组 28" transform="translate(30 113.257)">
+        <g class="cls-35" transform="matrix(1, 0, 0, 1, -64.83, -125.26)">
+          <rect id="矩形_23-14" data-name="矩形 23" class="cls-4" width="178.006" height="44.502" rx="10" transform="translate(64.83 125.26)"/>
+        </g>
+        <g class="cls-34" transform="matrix(1, 0, 0, 1, -64.83, -125.26)">
+          <text id="薪酬与考核委员会-2" data-name="薪酬与考核委员会" class="cls-3" transform="translate(82.63 152.83)"><tspan x="0" y="0">薪酬与考核委员会</tspan></text>
+        </g>
+      </g>
+      <g id="组_28-3" data-name="组 28" transform="translate(30 184.043)">
+        <g class="cls-33" transform="matrix(1, 0, 0, 1, -64.83, -196.04)">
+          <rect id="矩形_23-15" data-name="矩形 23" class="cls-4" width="178.006" height="44.502" rx="10" transform="translate(64.83 196.04)"/>
+        </g>
+        <g class="cls-32" transform="matrix(1, 0, 0, 1, -64.83, -196.04)">
+          <text id="审计与风控委员会-2" data-name="审计与风控委员会" class="cls-3" transform="translate(82.63 223.61)"><tspan x="0" y="0">审计与风控委员会</tspan></text>
+        </g>
+      </g>
+      <g id="组_28-4" data-name="组 28" transform="translate(578.568 232.414)">
+        <g class="cls-31" transform="matrix(1, 0, 0, 1, -613.39, -244.41)">
+          <rect id="矩形_23-16" data-name="矩形 23" class="cls-5" width="178.006" height="44.502" rx="10" transform="translate(613.39 244.41)"/>
+        </g>
+        <g class="cls-30" transform="matrix(1, 0, 0, 1, -613.39, -244.41)">
+          <text id="总经理办公会-2" data-name="总经理办公会" class="cls-3" transform="translate(649 271.98)"><tspan x="0" y="0">总经理办公会</tspan></text>
+        </g>
+      </g>
+      <g id="组_29" data-name="组 29" transform="translate(578.568 331.514)">
+        <g class="cls-29" transform="matrix(1, 0, 0, 1, -613.39, -343.51)">
+          <rect id="矩形_23-17" data-name="矩形 23" class="cls-5" width="178.006" height="44.502" rx="10" transform="translate(613.39 343.51)"/>
+        </g>
+        <g class="cls-28" transform="matrix(1, 0, 0, 1, -613.39, -343.51)">
+          <text id="分管领导-2" data-name="分管领导" class="cls-3" transform="translate(666.8 371.08)"><tspan x="0" y="0">分管领导</tspan></text>
+        </g>
+      </g>
+      <g id="组_28-5" data-name="组 28" transform="translate(997.704 284.604)">
+        <g class="cls-27" transform="matrix(1, 0, 0, 1, -1032.53, -296.6)">
+          <rect id="矩形_23-18" data-name="矩形 23" class="cls-5" width="178.006" height="44.502" rx="10" transform="translate(1032.53 296.6)"/>
+        </g>
+        <g class="cls-26" transform="matrix(1, 0, 0, 1, -1032.53, -296.6)">
+          <text id="审计风控部-4" data-name="审计风控部" class="cls-3" transform="translate(1077.03 324.17)"><tspan x="0" y="0">审计风控部</tspan></text>
+        </g>
+      </g>
+      <g id="组_30" data-name="组 30" transform="translate(1012.168 700.848)">
+        <g class="cls-25" transform="matrix(1, 0, 0, 1, -1046.99, -712.85)">
+          <path id="路径_130-2" data-name="路径 130" class="cls-6" d="M11.125,0H166.881a11.125,11.125,0,0,1,11.125,11.125V33.376A11.125,11.125,0,0,1,166.881,44.5H11.125A11.125,11.125,0,0,1,0,33.376V11.125A11.125,11.125,0,0,1,11.125,0Z" transform="translate(1046.99 712.85)"/>
+        </g>
+        <g class="cls-24" transform="matrix(1, 0, 0, 1, -1046.99, -712.85)">
+          <text id="审计风控部-5" data-name="审计风控部" class="cls-3" transform="translate(1091.5 740.42)"><tspan x="0" y="0">审计风控部</tspan></text>
+        </g>
+      </g>
+      <g id="审计风控部-6" data-name="审计风控部" transform="translate(420.735 701.96)">
+        <g class="cls-23" transform="matrix(1, 0, 0, 1, -455.56, -713.96)">
+          <path id="路径_131-2" data-name="路径 131" class="cls-6" d="M11.125,0H166.881a11.125,11.125,0,0,1,11.125,11.125V33.376A11.125,11.125,0,0,1,166.881,44.5H11.125A11.125,11.125,0,0,1,0,33.376V11.125A11.125,11.125,0,0,1,11.125,0Z" transform="translate(455.56 713.96)"/>
+        </g>
+        <g class="cls-22" transform="matrix(1, 0, 0, 1, -455.56, -713.96)">
+          <text id="审计风控部-7" data-name="审计风控部" class="cls-3" transform="translate(500.06 741.53)"><tspan x="0" y="0">审计风控部</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g id="_1" data-name="1" transform="translate(0.199 433.731)">
+      <g id="矩形">
+        <g class="cls-21" transform="matrix(1, 0, 0, 1, -15, -445.73)">
+          <rect id="矩形_25-12" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(15 445.73)"/>
+        </g>
+      </g>
+      <text id="办_公_风_险_管_理_员" data-name="办
+公
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 43)"><tspan x="-7" y="0">办</tspan><tspan x="-7" y="19">公</tspan><tspan x="-7" y="38">风</tspan><tspan x="-7" y="57">险</tspan><tspan x="-7" y="76">管</tspan><tspan x="-7" y="95">理</tspan><tspan x="-7" y="114">员</tspan></text>
+    </g>
+    <g id="_1-2" data-name="1" transform="translate(89.199 433.731)">
+      <g id="矩形-2" data-name="矩形">
+        <g class="cls-20" transform="matrix(1, 0, 0, 1, -104, -445.73)">
+          <rect id="矩形_25-13" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(104 445.73)"/>
+        </g>
+      </g>
+      <text id="投_资_发_展_风_险_管_理_员" data-name="投
+资
+发
+展
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 25)"><tspan x="-7" y="0">投</tspan><tspan x="-7" y="19">资</tspan><tspan x="-7" y="38">发</tspan><tspan x="-7" y="57">展</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-3" data-name="1" transform="translate(204.482 433.731)">
+      <g id="矩形-3" data-name="矩形">
+        <g class="cls-19" transform="matrix(1, 0, 0, 1, -219.28, -445.73)">
+          <rect id="矩形_25-14" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(219.28 445.73)"/>
+        </g>
+      </g>
+      <text id="营_运_安_全_风_险_管_理_员" data-name="营
+运
+安
+全
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">营</tspan><tspan x="-7" y="19">运</tspan><tspan x="-7" y="38">安</tspan><tspan x="-7" y="57">全</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-4" data-name="1" transform="translate(306.623 433.731)">
+      <g id="矩形-4" data-name="矩形">
+        <g class="cls-18" transform="matrix(1, 0, 0, 1, -321.42, -445.73)">
+          <rect id="矩形_25-15" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(321.42 445.73)"/>
+        </g>
+      </g>
+      <text id="工_程_技_术_风_险_管_理_员" data-name="工
+程
+技
+术
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">工</tspan><tspan x="-7" y="19">程</tspan><tspan x="-7" y="38">技</tspan><tspan x="-7" y="57">术</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-5" data-name="1" transform="translate(408.764 433.731)">
+      <g id="矩形-5" data-name="矩形">
+        <g class="cls-17" transform="matrix(1, 0, 0, 1, -423.56, -445.73)">
+          <rect id="矩形_25-16" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(423.56 445.73)"/>
+        </g>
+      </g>
+      <text id="企_管_法_务_风_险_管_理_员" data-name="企
+管
+法
+务
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">企</tspan><tspan x="-7" y="19">管</tspan><tspan x="-7" y="38">法</tspan><tspan x="-7" y="57">务</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-6" data-name="1" transform="translate(510.906 433.731)">
+      <g id="矩形-6" data-name="矩形">
+        <g class="cls-16" transform="matrix(1, 0, 0, 1, -525.71, -445.73)">
+          <rect id="矩形_25-17" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(525.71 445.73)"/>
+        </g>
+      </g>
+      <text id="财_务_管_理_风_险_管_理_员" data-name="财
+务
+管
+理
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">财</tspan><tspan x="-7" y="19">务</tspan><tspan x="-7" y="38">管</tspan><tspan x="-7" y="57">理</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-7" data-name="1" transform="translate(613.047 433.731)">
+      <g id="矩形-7" data-name="矩形">
+        <g class="cls-15" transform="matrix(1, 0, 0, 1, -627.85, -445.73)">
+          <rect id="矩形_25-18" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(627.85 445.73)"/>
+        </g>
+      </g>
+      <text id="审_计_风_控_风_险_管_理_员" data-name="审
+计
+风
+控
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">审</tspan><tspan x="-7" y="19">计</tspan><tspan x="-7" y="38">风</tspan><tspan x="-7" y="57">控</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-8" data-name="1" transform="translate(715.188 433.731)">
+      <g id="矩形-8" data-name="矩形">
+        <g class="cls-14" transform="matrix(1, 0, 0, 1, -729.99, -445.73)">
+          <rect id="矩形_25-19" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(729.99 445.73)"/>
+        </g>
+      </g>
+      <text id="人_力_资_源_风_险_管_理_员" data-name="人
+力
+资
+源
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">人</tspan><tspan x="-7" y="19">力</tspan><tspan x="-7" y="38">资</tspan><tspan x="-7" y="57">源</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-9" data-name="1" transform="translate(817.329 433.731)">
+      <g id="矩形-9" data-name="矩形">
+        <g class="cls-13" transform="matrix(1, 0, 0, 1, -832.13, -445.73)">
+          <rect id="矩形_25-20" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(832.13 445.73)"/>
+        </g>
+      </g>
+      <text id="党_群_工_作_风_险_管_理_员" data-name="党
+群
+工
+作
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">党</tspan><tspan x="-7" y="19">群</tspan><tspan x="-7" y="38">工</tspan><tspan x="-7" y="57">作</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+    <g id="_1-10" data-name="1" transform="translate(919.471 433.731)">
+      <g id="矩形-10" data-name="矩形">
+        <g class="cls-12" transform="matrix(1, 0, 0, 1, -934.27, -445.73)">
+          <rect id="矩形_25-21" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(934.27 445.73)"/>
+        </g>
+      </g>
+      <text id="监_督_室_风_险_管_理_员" data-name="监
+督
+室
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 34)"><tspan x="-7" y="0">监</tspan><tspan x="-7" y="19">督</tspan><tspan x="-7" y="38">室</tspan><tspan x="-7" y="57">风</tspan><tspan x="-7" y="76">险</tspan><tspan x="-7" y="95">管</tspan><tspan x="-7" y="114">理</tspan><tspan x="-7" y="133">员</tspan></text>
+    </g>
+    <g id="_1-11" data-name="1" transform="translate(1040.15 433.731)">
+      <g id="矩形-11" data-name="矩形">
+        <g class="cls-11" transform="matrix(1, 0, 0, 1, -1054.95, -445.73)">
+          <rect id="矩形_25-22" data-name="矩形 25" class="cls-7" width="44.502" height="189.131" rx="10" transform="translate(1054.95 445.73)"/>
+        </g>
+      </g>
+      <text id="信_息_中_心_风_险_管_理_员" data-name="信
+息
+中
+心
+风
+险
+管
+理
+员" class="cls-8" transform="translate(22 24)"><tspan x="-7" y="0">信</tspan><tspan x="-7" y="19">息</tspan><tspan x="-7" y="38">中</tspan><tspan x="-7" y="57">心</tspan><tspan x="-7" y="76">风</tspan><tspan x="-7" y="95">险</tspan><tspan x="-7" y="114">管</tspan><tspan x="-7" y="133">理</tspan><tspan x="-7" y="152">员</tspan></text>
+    </g>
+  </g>
+</svg>

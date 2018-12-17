@@ -1,0 +1,89 @@
+{
+    "id":"zycpmlljsb",
+    "text":"主要产品毛利率计算表（月报）",
+    "config":{
+		"sql":"select ddi.scode as "itemscode", ddi.sname as "items", dfp.fact_a as "A", dfp.fact_b as "B",dfp.fact_c as "C",dfp.fact_d as "D", dfp.fact_e as "E", dfp.fact_f as "F",dfp.fact_g as "G", dfp.fact_h as "H", dfp.fact_i as "I" from DW_FactProGroProfit dfp right join dw_dimproductitem ddi on ddi.scode = dfp.dim_productitem and dfp.dim_period = '201603' and dfp.dim_company = '1' order by ddi.scode"
+		"cube":{
+            "cubeId":2
+          },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company"],
+
+        "random":{"min":100,"max":100000},
+        "type":1,
+        "columns":[
+            {
+              "id": "nid",
+              "type": "string",
+              "hidden": true,
+              "text": "编码"
+            },
+            {
+              "id": "tempa",
+              "type": "decimal",
+              "text": "本期",
+              "children":[
+                  {
+                    "id":"A",
+                    "text":"户数（户）",
+                    "type": "number"
+                  },
+                  {
+                    "id":"B",
+                    "text":"占比（%）",
+                    "type": "number"
+                  },
+                  {
+                    "id":"C",
+                    "text":"金额（万元）",
+                    "type": "number"
+                  }
+              ]
+			
+            },
+            {
+           "id": "text",
+           "type": "string",
+           "width":250,
+           "text": "项目"
+         },
+            {
+              "id": "tempa2",
+              "type": "decimal",
+              "text": "上年同期",
+              "children":[
+                  {
+                    "id":"D",
+                    "text":"户数（户）",
+                    "type": "number"
+                  },
+                  {
+                    "id":"E",
+                    "text":"占比（%）",
+                    "type": "number"
+                  },
+                  {
+                    "id":"F",
+                    "text":"金额（万元）",
+                    "type": "number"
+                  }
+              ]
+			
+            }
+          ],
+         "rows":[
+		 ]
+          
+     },
+  "layout":{
+      "xtype":"tab"
+   },
+  "items":[
+     {
+      "xtype": "bi-table",
+      "id":"zycpmlljsb",
+       "height":300,
+      "text":"二级企业"
+    }
+	 ]
+  }

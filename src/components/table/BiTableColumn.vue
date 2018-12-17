@@ -1,0 +1,147 @@
+<template>
+  <el-table-column
+    v-if="col.type === 'index' "
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width"
+    type="index"
+  />
+
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
+  <el-table-column
+    v-else-if="col.type === 'number' "
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width"
+    maxWidth="180"
+  >
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
+  <el-table-column
+    v-else-if="col.type === 'string'"
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width"
+    maxWidth="180"
+  >
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
+  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text">
+    <template slot-scope="scope">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        :content="getCellValues(data.datas,col.id,scope.row,data.config.rows)"
+        placement="right"
+      >
+        <span v-if="data.datas">{{ getCellValues(data.datas,col.id,scope.row,data.config.rows)}}</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  date类型的数据-->
+  <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text">
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="right">
+        <span v-if="data.datas">--</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text">
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="top-start">
+        <span v-if="data.datas">--</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
+</template>
+<script>
+//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
+export default {
+  name: "BiTableColumn",
+  props: ["col", "data"],
+  computed: {
+    isFolder() {
+      return this.col.children && this.col.children.length;
+    }
+  },
+  methods: {
+    upData(item) {
+      //  debugger;
+      this.$set(this, "data", null);
+      this.$set(this, "data", item);
+      this.$set(this.data, "datas", item.datas);
+    },
+    /**
+     * 获取单元格数据
+     */
+    getCellValues(datas, colId, row, rows) {
+      debugger;
+      let rowId = row.id || row.nid;
+      if (isNaN(rowId)) {
+        return "";
+      }
+      if (colId.indexOf("_") != -1) {
+        rowId = row.id_; //并列行的
+      }
+      let value = Math.getCellValue(datas, colId, rowId, rows);
+      if (!value) {
+        value = 0;
+      }
+      return value.toLocaleString();
+    }
+  },
+  created() {
+    debugger;
+  }
+};
+</script>
+<style lang="scss">
+.el-table thead {
+  th {
+    .cell {
+      max-width: 160px;
+      _width: 100%;
+      height: 100%;
+      float: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      // background-color: #000;
+    }
+  }
+}
+tbody {
+  .el-table__row {
+    td {
+      .cell {
+        max-width: 160px;
+        _width: 100%;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+</style>
+<style>
+.el-tooltip__popper.is-dark {
+  background: #fff;
+  color: #000;
+}
+.el-tooltip__popper .popper__arrow {
+  display: none;
+}
+</style>

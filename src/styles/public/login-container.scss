@@ -1,0 +1,95 @@
+/* reset element-ui css */
+.login-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: url(~@a/loginpic.jpg) no-repeat center;
+    background-size: cover;
+
+    .login-border {
+        border-radius: 5px;
+        height: 539px;
+        width: 674px;
+        position: relative;
+        background-color: #FFF;
+        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+
+        // todo
+        margin: 200px auto;
+
+        .bannerimg {
+            width: 284px;
+            height: 85px;
+            display: inline-block;
+            background: url(~@a/logo1.png) no-repeat center;
+            box-shadow: 0px 0px NaNpx NaNpx rgba(232, 232, 232, 1);
+            position: absolute;
+            left: 195px;
+            top: -42px;
+        }
+
+        .login-form {
+            position: absolute;
+            top: 61px;
+            left: 99px;
+            width: 476px;
+
+            .title {
+                text-align: center;
+                font-size: 22px;
+                margin-bottom: 31px;
+                color: rgba(51, 51, 51, 1);
+            }
+
+            p {
+                font-size: 18px;
+                color: rgba(112, 125, 149, 1);
+                margin-bottom: 10px;
+            }
+
+            .el-input {
+                display: inline-block;
+                height: 52px;
+                width: 476px;
+                background-color: #F5F6F8;
+                font-size: 18px;
+
+                input {
+                    background: transparent;
+                    border: 0px;
+                    -webkit-appearance: none;
+                    border-radius: 0px;
+                    padding: 12px 5px 12px 15px;
+                    color: #000;
+                    height: 52px;
+
+                }
+            }
+
+            .el-form-item {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                color: #000;
+
+                .show-pwd {
+                    position: absolute;
+                    right: 10px;
+                    top: 7px;
+                    font-size: 20px;
+                    color: #889aa4;
+                    cursor: pointer;
+                    user-select: none;
+                }
+
+                .login_button {
+                    height: 68px;
+                    font-size: 18px;
+                    width: 100%
+                }
+            }
+        }
+    }
+
+}
