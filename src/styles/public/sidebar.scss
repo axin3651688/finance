@@ -22,12 +22,9 @@
       width: $sideWidth;
 
       img {
-
         height: $logo_contener-height;
         width: $logo_contener-width;
       }
-
-
     }
 
     /*   保留防止后端需要渲染图标 */
@@ -37,9 +34,37 @@
       height: calc(100% - $min_sideWidth);
       // overflow: auto;
 
+      .avatarleft {
+        height: $avatarleft-height;
+        width: $avatarleft-height;
+        display: inline-block;
+        margin-right: $avatarleft-margin-right
+      }
+
+      //  一级没有孩子的
+      .el-menu-item {
+        // 各二级item的字体
+        background-color: $menuBg;
+        color: $fontColor2;
+        font-weight: $font-weight2;
+        padding-left: 20px !important;
+        border-radius: 8px 0px 0px 8px;
+
+        // 当鼠标移到上面时颜色1
+        &:hover {
+          background-color: $menuHover;
+          color: $fontHove;
+        }
+
+        // 当子菜单栏激活时背景
+        &.is-active {
+          background-color: $menuActive !important;
+          color: $fontActive;
+        }
+      }
+
       .el-submenu {
         padding-left: $el-submenu-padding-left;
-
 
         .el-submenu__title {
           // 一级菜单打开时显示颜色
@@ -47,35 +72,10 @@
           font-weight: $font-weight1;
           border-radius: 8px 0px 0px 8px;
 
-          .avatarleft {
-            height: $avatarleft-height;
-            width: $avatarleft-height;
-            display: inline-block;
-            margin-right: $avatarleft-margin-right
-          }
-
-          // 图标大小
-          // i {
-          //   font-size: $Icon-font-size;
-          //   margin-right: $Icon-margin-right;
-          // }
-
           &:hover {
             // 一级菜单hove样式
             background-color: $menuHover;
             color: $fontHove;
-
-            //  todo
-            img {
-
-              fill: #c5141d;
-              color: #c5141d;
-              // background-color: $fontHove;
-
-
-              // background-color: $fontHove;
-              // filter: drop-shadow(rgb(238, 9, 9) 0px 0px);
-            }
 
             i {
               color: $fontHove;
