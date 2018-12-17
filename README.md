@@ -16,10 +16,9 @@
    - vue.config.js
    - node_modules
 
-# 公约
-+ 组件大头风`（components,views下的东东）`，文件夹必须小写
-+ 
-## Project setup
+# [Vue.js 组件编码规范](https://github.com/sqrthree/vuejs-component-style-guide/blob/zh-hans/README-CN.md)
+
+## Project setup   
 ```
 npm install
 ```
