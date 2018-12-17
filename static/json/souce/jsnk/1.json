@@ -1,0 +1,152 @@
+ {
+     "id": 12,
+     "text": "1指标分析",
+     "rows": [{
+
+             "id": "201601",
+             "text": "201601"
+         }],
+     "columns": [{
+             "id": "id",
+             "type": "string",
+             "hidden": true,
+             "text": "编码"
+         },
+         {
+             "id": "row",
+             "type": "number",
+             "text": "行次"
+         },
+         {
+             "id": "text",
+             "type": "string",
+             "text": "项目"
+         },
+         {
+             "id": "A",
+             "type": "decimal",
+             "text": "本期数"
+         },
+         {
+             "id": "B",
+             "type": "decimal",
+             "text": "累计数"
+         }
+     ],
+     "datas": {},
+     "config": {
+         "cube": {
+             "subject": "0002",
+              "dims":{
+                 "itemperiod":"1416001,1403100",
+                  "period":0
+              },
+            "dimName":"period",
+            "cubeId": 2
+         },
+         "mainDim": "period",
+         "type": 1
+
+     },
+     "layout": {
+         "xtype": "column"
+     },
+     "items": [
+     {
+             "xtype": "bi-table",
+             "id": "1416001",
+             "text": "营业收入",
+             "weight": 6,
+             "config": {
+                 "cube": {
+                     "subject": "0002",
+                      "dims":{
+                         "itemperiod":"1416001,1403100",
+                          "period":0
+                      },
+                    "dimName":"period",
+                    "cubeId": 2
+                   },
+                 "mainDim": "period",
+                 "type": 1,
+                "rows": [
+                {
+                     "id": "201601",
+                     "text": "2016年1月"
+                 }, 
+                 {
+
+                     "id": "201602",
+                     "text": "2016年2月"
+                 },
+                 {
+
+                     "id": "201603",
+                     "text": "2016年3月"
+                 },
+                 {
+
+                     "id": "201604",
+                     "text": "2016年4月"
+                 },
+                 {
+                     "id": "201605",
+                     "text": "2016年5月"
+                 },
+                 {
+                     "id": "201606",
+                     "text": "2016年6月"
+                 }
+                 ],
+               "columns": [
+               {
+                     "id": "id",
+                     "type": "string",
+                     "hidden": true,
+                     "text": "编码"
+                 },
+                 {
+                     "id": "row",
+                     "type": "number",
+                     "text": "行次"
+                 },
+                 {
+                     "id": "text",
+                     "type": "string",
+                     "text": "项目"
+                 },
+                 {
+                     "id": "A",
+                     "type": "decimal",
+                     "text": "本期数"
+                 },
+                 {
+                     "id": "B",
+                     "type": "decimal",
+                     "text": "累计数"
+                 }
+             ]
+
+            },
+             "options": {
+                 "type": "column",
+                 "getData": {
+                     "type": 4,
+                     "columns": [{
+                         "id": "A"
+                     }, {
+                         "id": "B"
+                     }],
+                     "row": {
+                         "ids": {
+                             "items": ["1416001"]
+                         }
+                     },
+                     "reverse": true,
+                     "scope": true
+                 }
+             }
+         }
+        
+     ]
+ }
