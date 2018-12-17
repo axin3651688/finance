@@ -6,8 +6,8 @@ import router from './router'
 import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-// import '@/styles/black/index.scss' // global css
-import '@/styles/green/index.scss' // global css
+import '@/styles/black/index.scss' // global css
+// import '@/styles/green/index.scss' // global css
 // import '@a/icons/iconfont.css' // icon
 
 // 挂载全局组件echart
