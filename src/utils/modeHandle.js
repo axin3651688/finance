@@ -14,31 +14,31 @@ export default function modeHandle(e) {
         //
         return;
     }
-    debugger
-    console.log(store);
+    // debugger
+    // console.log(store);
 
-    var obj = JSON.stringify(fxfx)
-    localStorage.setItem("module", obj);
-    store.dispatch("GetSideMid", {
-        module_api: api
-    });
-    // findDesignSource(e.sourceId, e.url)
-    //     .then(response => {
-    //         let bean = response.data;
-    //         if (bean.data && bean.data.source) {
-    //             bean = bean.data.source || 0;
-    //         } else {
-    //             bean = JSON.stringify(bean);
-    //         }
-    //         //  debugger;
-    //         localStorage.setItem("module", bean);
-    //         store.dispatch("GetSideMid", {
-    //             module_api: response.config.url
-    //         });
+    // var obj = JSON.stringify(fxfx)
+    // localStorage.setItem("module", obj);
+    // store.dispatch("GetSideMid", {
+    //     module_api: api
+    // });
+    findDesignSource(e.sourceId, e.url)
+        .then(response => {
+            let bean = response.data;
+            if (bean.data && bean.data.source) {
+                bean = bean.data.source || 0;
+            } else {
+                bean = JSON.stringify(bean);
+            }
+            //  debugger;
+            localStorage.setItem("module", bean);
+            store.dispatch("GetSideMid", {
+                module_api: response.config.url
+            });
 
-    //     })
-    //     .catch(response => {
-    //         debugger
-    //         console.error("数据请求失败");
-    //     });
+        })
+        .catch(response => {
+            debugger
+            console.error("数据请求失败");
+        });
 }
