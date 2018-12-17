@@ -1,0 +1,133 @@
+{
+    "id":"0005",
+    "text":"sqlddd",
+    "config":{
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company"],
+        "cube":{
+            "cubeId":2
+          },
+        "sql":"select(case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 50000000 then '2' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '3' when f.fact_b >= 100000000 and f.fact_b < 1000000000 then '4' when f.fact_b >= 1000000000 then '5' end) as nid, (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 50000000 then '500万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 1000000000 then '1亿~10亿' when f.fact_b >= 1000000000 then '>10亿' end) as text, count(*) as A, to_char(count(*)/(select count(*) from dw_dimcompany c,dw_factfinancepoint f where c.scode = f.dim_company and f.subject = '0001' AND f.dim_period = '201606' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and f.dim_itempoint= '1100100' and f.fact_b >= 0)*100,'fm9999990.00') as B, to_char(sum(f.fact_b)/10000,'fm9999990.00') as C from dw_factfinancepoint f left join dw_dimcompany c on c.scode = f.dim_company left join dw_dimitempoint d on d.scode = f.dim_itempoint where f.subject = '0001' AND f.dim_period = '201606' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and f.dim_itempoint= '1100100' and f.fact_b >= 0 group by (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 50000000 then '2' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '3' when f.fact_b >= 100000000 and f.fact_b < 1000000000 then '4' when f.fact_b >= 1000000000 then '5' end), (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 50000000 then '500万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 1000000000 then '1亿~10亿' when f.fact_b >= 1000000000 then '>10亿' end) order by nid",
+        "type":1,
+        "columns":[
+            {
+              "id": "nid",
+              "type": "string",
+              "hidden": true,
+              "text": "编码"
+            },
+            {
+              "id": "tempa",
+              "text": "本期",
+              "children":[
+                  {
+                    "id":"A",
+                    "text":"户数",
+                    "type": "number"
+                  },
+                  {
+                    "id":"B",
+                    "text":"占比（%）",
+                    "type": "decimal"
+                  },
+                  {
+                    "id":"C",
+                    "text":"金额（万元）",
+                    "type": "decimal"
+                  }
+              ]
+            },
+            {
+              "id": "text",
+              "type": "string",
+              "width":250,
+              "text": "项目"
+            },
+            {
+                "id": "stemp",
+                "type": "decimal",
+                "text": "上年同期",
+                "children":[
+                    {
+                      "id":"E",
+                      "text":"户数",
+                      "type": "number"
+                    },
+                    {
+                      "id":"F",
+                      "text":"占比（%）",
+                      "type": "number"
+                    },
+                    {
+                      "id":"C",
+                      "text":"金额（万元）",
+                      "type": "number"
+                    }
+                ]
+            }
+          ],
+         "rows":[
+    {
+        "id": "1",
+        "text": "<500万",
+        "A": "2",
+        "B": "14.29",
+        "C": "439.55"
+    },
+    {
+      "id": "2",
+        "text": "500万～5000万",
+        "A": "8",
+        "B": "57.14",
+        "C": "16419.24",
+    },
+    {
+      "id": "3",
+        "text": "5000万～1亿",
+        "A": "3",
+        "B": "21.43",
+        "C": "23961.96"
+
+    },
+    {
+      "id": "4",
+        "text": "1亿～10亿",
+        "A": "1",
+        "B": "7.14",
+        "C": "69858.37",
+    },
+    {
+      "id": "5",
+        "text": "＞10亿",
+        "A": "0",
+        "B": "0",
+        "C": "0",
+    },
+    {
+       "id": "6",
+        "text": "总计",
+        "A": "14",
+        "B": "100",
+        "C": "0"
+    }
+]
+          
+     },
+  "layout":{
+      "xtype":"tab"
+   },
+  "items":[
+     {
+      "xtype": "bi-table",
+      "id":"lrb1",
+      "text":"二级企业"
+    },
+      {
+      "xtype": "bi-table",
+      "id":"lrb2",
+      "text":"3级企业"
+    }
+  ]
+  }
+  
+  
