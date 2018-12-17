@@ -33,15 +33,6 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
-      <!-- <el-date-picker
-        class="year_month"
-        v-model="value4"
-        type="month"
-        :editable="false"
-        placeholder="请选择年、月"
-        format="yyyy 年 ▾ ― MM 月 ▾"
-      ></el-date-picker>-->
       <el-dropdown trigger="click">
         <el-button type="text" class="underline">
           {{month+"月"}}
@@ -92,11 +83,35 @@
         </el-dropdown>
       </span>
     </div>
-    <el-dialog width="30%" :visible.sync="isShow" v-if="isShow" :modal-append-to-body="false">
-      <infoshow></infoshow>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="isShow = false">关闭</el-button>
-      </span>
+    <el-dialog
+      custom-class="info-dialog"
+      :visible.sync="isShow"
+      v-if="isShow"
+      :modal-append-to-body="false"
+    >
+      <div class="img-box">
+        <img src="../../../assets/infoshow.png">
+      </div>
+      <el-row class="row-bg">
+        <div class="user">
+          <img :src="user.user.avatar" class="avatar">
+        </div>
+        <div class="user-item">
+          <div class="item">
+            <i>姓名:</i>
+            <span>{{user.user.trueName}}</span>
+          </div>
+          <div class="item">
+            <i>邮箱:</i>
+            <span>{{user.user.email}}</span>
+          </div>
+          <div class="item">
+            <i>电话:</i>
+            <span>{{user.user.phone}}</span>
+          </div>
+        </div>
+      </el-row>
+      <el-button @click="isShow = false" class="btn-primary">关闭</el-button>
     </el-dialog>
   </header>
 </template>
@@ -105,58 +120,51 @@
 import Hamburger from "@v/layout/sidebar/Hamburger";
 import { mapGetters, mapActions } from "vuex";
 import CompanyTree from "@v/common/CompanyTree";
-import Infoshow from "./UserInfo";
 import { getClientParams } from "utils/index";
 export default {
   name: "Headnav",
   data() {
     return {
-      value4: "",
       companyId: "",
       companyName_cache: "",
       isShow: false,
       dialogVisible: false,
       isCollapse: true,
-      inputCompany: "",
-      chooseYear: "",
-      chooseMoth: "",
-      yearCount:4,
-      monthCount:12,//[4,12,16]
+      yearCount: 4,
+      monthCount: 12, //[4,12,16]
       years: [],
       months: []
     };
   },
   components: {
     Hamburger,
-    CompanyTree,
-    Infoshow
+    CompanyTree
   },
-  created(){
-      let bean = getClientParams();
-      if(bean.yearCount && bean.yearCount > 0 ){
-         this.$set(this, "yearCount",bean.yearCount);
-      }
-      this.years = [];
-      let year = new Date().getFullYear();
-      for(let i= year;i> year-this.yearCount;i--){
-          this.years.push(i+"年");
-      }
-      if(bean.monthCount && bean.monthCount > 0 ){
-         this.$set(this, "monthCount",bean.monthCount);
-      }
-      this.months = [];
-      for(let i=1;i<=this.monthCount;i++){
-        if(this.monthCount == 4){
-             this.months.push(i+"季度");
-        }else if(this.monthCount >= 12){
-             if(i < 13){
-                    this.months.push(i+"月"); 
-             } else if(i<17){
-                this.months.push((this.monthCount+1-i)+"季度"); 
-             }
+  created() {
+    let bean = getClientParams();
+    if (bean.yearCount && bean.yearCount > 0) {
+      this.$set(this, "yearCount", bean.yearCount);
+    }
+    this.years = [];
+    let year = new Date().getFullYear();
+    for (let i = year; i > year - this.yearCount; i--) {
+      this.years.push(i + "年");
+    }
+    if (bean.monthCount && bean.monthCount > 0) {
+      this.$set(this, "monthCount", bean.monthCount);
+    }
+    this.months = [];
+    for (let i = 1; i <= this.monthCount; i++) {
+      if (this.monthCount == 4) {
+        this.months.push(i + "季度");
+      } else if (this.monthCount >= 12) {
+        if (i < 13) {
+          this.months.push(i + "月");
+        } else if (i < 17) {
+          this.months.push(this.monthCount + 1 - i + "季度");
         }
-      
       }
+    }
   },
   computed: {
     ...mapGetters([
@@ -169,13 +177,7 @@ export default {
       "companyName"
     ])
   },
-  mounted() {
-    // console.log(this.user);
-    // let api = "/json/source/jsnk/zczefdtjb.json";
-    // this.axios.get(api).then(response => {
-    //   console.log(response.data);
-    // });
-  },
+
   methods: {
     ...mapActions([
       "ToggleSideBar",
@@ -194,9 +196,6 @@ export default {
           this.logout();
           break;
       }
-    },
-    showInfoList() {
-      this.$router.push("/infoshow");
     },
     getname(e) {
       //   console.log(e);
@@ -228,17 +227,10 @@ export default {
   }
 };
 </script>
-<style lang='scss'>
-// .head-nav {
-//   .year_month {
-//     position: relative;
-//     .el-input__inner {
-//       border: 0px;
-//       font-size: 16px;
-//     }
-//     .el-input__prefix {
-//       color: #000;
-//     }
-//   }
+<style lang='scss' scoped>
+// .infoshow {
+//   width: 100%;
+//   height: 100%;
+//   box-sizing: border-box;
 // }
 </style>

@@ -45,7 +45,7 @@ export default {
   },
   created() {
     let authorization = localStorage.getItem("authorization");
-    debugger;
+    // debugger;
     this.initSocket(authorization);
   },
   methods: {

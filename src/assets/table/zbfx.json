@@ -126,7 +126,7 @@
      ],
      "datas": {},
      "config": {
-         "_cube": {
+         "cube": {
              "subject": "0002",
              "cubeId": 2
          },

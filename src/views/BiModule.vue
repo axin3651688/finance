@@ -238,7 +238,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      debugger;
+      // debugger;
       this.setScopeDatas(source, 1);
       // this.datas = [];
       if (this.config) {
@@ -315,6 +315,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;

@@ -46,7 +46,11 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    debugger;
+    // this.item[0];
+    console.log(this.item.datas[0]);
+  },
   mounted() {
     // this.options.series[0].data = this.item.datas
   },
