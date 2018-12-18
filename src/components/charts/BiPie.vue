@@ -1,5 +1,5 @@
 <template>
-  <chart :options="options" auto-resize/>
+  <chart :options="options" @click="item1()" auto-resize/>
 </template>
 
 <script type="text/ecmascript-6">
@@ -10,9 +10,12 @@ export default {
   },
   data() {
     return {
+      companyName: "",
+      nameData: [],
+      dataSource: [],
       options: {
         title: {
-          text: this.item.text,
+          text: this.companyName,
           x: "center"
         },
         tooltip: {
@@ -26,6 +29,7 @@ export default {
           orient: "vertical",
           left: "left",
           data: []
+          // data: this.nameData
         },
         series: [
           {
@@ -33,7 +37,9 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: this.item.datas,
+            data: this.getdDataSource(this.item),
+            // data: this.item.datas,
+
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -48,13 +54,46 @@ export default {
   },
   created() {
     debugger;
-    // this.item[0];
-    console.log(this.item.datas[0]);
+
+    // console.log(this.getdDataSource(this.item));
+
+    // var obj = JSON.stringify(this.dataSource);
+    // console.log(obj);
   },
   mounted() {
     // this.options.series[0].data = this.item.datas
   },
-  methods: {},
+  methods: {
+    item1() {
+      this.$router.push("/list");
+    },
+    getdDataSource(item) {
+      debugger;
+      let title = this.item.options.getData.columns;
+      this.nameData = title.map(function(name) {
+        return name.id;
+      });
+      let dataObj = item.datas[0];
+      this.companyName = dataObj.text;
+      delete dataObj.id;
+      delete dataObj.text;
+      delete dataObj.leaf;
+      let dataArry = [];
+      for (let i in dataObj) {
+        dataArry.push(dataObj[i]);
+      }
+      let dataSource = [];
+      console.log(dataArry);
+
+      for (let index = 0; index < dataArry.length; index++) {
+        dataSource.push({
+          value: dataArry[index],
+          name: this.nameData[index]
+        });
+      }
+      return dataSource;
+    }
+  },
   watch: {
     item: {
       handler(newname, oldname) {

@@ -1,9 +1,9 @@
 <template>
-        <div class="risk">
-            <bi-pie v-if="item.datas.length" :item="item" id="ids" @click.native="item1()"></bi-pie>
-            <bi-pie v-if="item.datas.length" :item="item"></bi-pie>
-            <router-view/>
-        </div>
+  <div class="risk">
+    <bi-pie v-if="item.datas.length" :item="item" id="ids"></bi-pie>
+    <bi-pie v-if="item.datas.length" :item="item"></bi-pie>
+    <router-view/>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
