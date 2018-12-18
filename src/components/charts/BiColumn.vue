@@ -1,9 +1,10 @@
 <template>
   <chart :options="options" auto-resize/>
 </template>
-
 <script>
+import ChartEventMixins from '../mixins/ChartEventMixins'
 export default {
+  mixins: [ChartEventMixins],
   props: {
     item: {}
   },
@@ -105,10 +106,16 @@ export default {
     };
   },
   created() {
-    // console.log(this.item);
-    // debugger;
     this.upData();
   },
+  // mounted(){
+  //    let me = this;
+  //   if(me.item.mixins.methods.itemClick){
+  //     this.$children[0].chart.on('click',function(params){
+  //        me.item.mixins.methods.itemClick(me,params);
+  //     });
+  //   }
+  // },
 
   watch: {
     item: {
