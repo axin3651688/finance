@@ -1,7 +1,7 @@
 import {
     findDesignSource
 } from "~api/interface";
-// import lrb from '@a/table/lrb.json'
+import fxfx from '@a/table/fxfx.json'
 import store from '@/store'
 export default function modeHandle(e) {
     if (!e.sourceId && !e.url) {
@@ -14,7 +14,10 @@ export default function modeHandle(e) {
         //
         return;
     }
-    // var obj = JSON.stringify(lrb)
+    // debugger
+    // console.log(store);
+
+    // var obj = JSON.stringify(fxfx)
     // localStorage.setItem("module", obj);
     // store.dispatch("GetSideMid", {
     //     module_api: api

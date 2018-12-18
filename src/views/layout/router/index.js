@@ -27,12 +27,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Risk_analysis.vue')
         },
-        {
-          path: '/profit',
-          name: 'profit',
-          component: () =>
-            import('@v/intelligenceReport/Profit.vue')
-        },
+
         // 列表
         {
           path: '/list',
@@ -159,13 +154,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Profit.vue')
         },
-        // 报告查看
-        {
-          path: '/Report_view',
-          name: 'Report_view',
-          component: () =>
-            import('@v/intelligenceReport/Report_view.vue')
-        },
+
 
         {
           path: '/Column',

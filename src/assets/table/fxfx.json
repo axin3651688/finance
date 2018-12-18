@@ -1,0 +1,124 @@
+ {
+     "id": 1,
+     "text": "风险分析",
+     "rows": [{
+
+             "id": "0",
+             "text": "待定"
+         }, {
+
+             "id": "1",
+             "text": "一般风险"
+         },
+         {
+
+             "id": "2",
+             "text": "中风险"
+         }, {
+
+             "id": "3",
+             "text": "高风险"
+         }, {
+
+             "id": "4",
+             "text": "财务"
+         }, {
+
+             "id": "5",
+             "text": "战略"
+         }, {
+
+             "id": "6",
+             "text": "法律"
+         }, {
+
+             "id": "7",
+             "text": "市场"
+         }, {
+
+             "id": "8",
+             "text": "运营"
+         }, {
+
+             "id": "9",
+             "text": "待定"
+         }
+
+     ],
+
+     "datas": {},
+     "config": {
+         "sql": "select c.sname as text,c.scode as id,c.cisleaf as leaf,n.dd_risk,n.l_risk,n.m_risk,n.h_risk from dw_dimcompany c left join(select scompany, sum(decode(nrange,'0', counts,0)) dd_risk, sum(decode(nrange,'1', counts,0)) l_risk, sum(decode(nrange,'2', counts,0)) m_risk, sum(decode(nrange,'3', counts,0)) h_risk from ( select scompany,nrange , count(nrange) as counts from Sys_RiskRange where scompany in('1') and speriod in( '201603') group by scompany ,nrange) nwt group by scompany ) n on c.scode = n.scompany where c.scode in ('1')",
+         "mainDim": "itemperiod",
+         "random": {
+             "min": 100,
+             "max": 100000
+         },
+         "needDims": [
+             "year",
+             "month",
+             "company"
+         ],
+         "type": 1
+
+     },
+     "layout": {
+         "xtype": "column"
+     },
+     "items": [{
+             "xtype": "chart",
+             "id": "1416001",
+             "text": "营业收入",
+             "weight": 12,
+             "options": {
+                 "type": "pie",
+                 "drill": {
+
+                 },
+                 "getData": {
+                     "type": 4,
+                     "columns": [{
+                         "id": "待定"
+                     }, {
+                         "id": "高风险"
+                     }, {
+                         "id": "一般风险"
+                     }, {
+                         "id": "中风险"
+                     }],
+                     "row": {
+                         "ids": {
+                             "items": ["1416001"]
+                         }
+                     },
+                     "scope": true
+                 }
+             }
+         },
+         {
+             "xtype": "chart",
+             "id": "1403100",
+             "text": "利润总额",
+             "weight": 12,
+             "options": {
+                 "type": "pie",
+                 "getData": {
+                     "type": 4,
+                     "columns": [{
+                         "id": "A"
+                     }, {
+                         "id": "B"
+                     }],
+                     "row": {
+                         "ids": {
+                             "items": ["1403100"]
+                         }
+                     },
+
+                     "scope": true
+                 }
+             }
+         }
+
+     ]
+ }

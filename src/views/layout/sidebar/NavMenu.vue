@@ -36,10 +36,13 @@ export default {
   props: ["navMenus"], // 传入子组件的数据
   methods: {
     shownavMenu(e) {
-      debugger;
-      console.log(e);
-      modeHandle(e);
-      // this.$router.push({ path: "/module" });
+      //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
+      if (e.level === 2) {
+        this.$router.push({ path: e.url });
+      } else {
+        this.$router.push({ path: "/module" });
+        modeHandle(e);
+      }
     }
   }
 };

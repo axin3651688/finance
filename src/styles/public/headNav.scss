@@ -112,8 +112,6 @@
                         height: 24px;
                         border-radius: 50%;
                         vertical-align: middle;
-                        // // todo
-                        // margin-left: 20px;
 
                     }
 
@@ -196,24 +194,107 @@
             padding: 0 10px;
         }
 
-        // 个人信息头部
-        .el-dialog__header {
-            padding-top: 0px;
-            padding-bottom: 0px;
-        }
+        .el-dialog__wrapper {
 
-        .el-dialog__body {
-            padding-top: 0px;
-            padding-left: 0px;
-            padding-bottom: 0px;
-            height: 435px;
+            // 个人信息头部
+            .el-dialog__header {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
 
             .el-tree {
                 height: 430px;
-
                 overflow: auto;
             }
+
+            // 个人信息弹窗
+            .info-dialog {
+                border-radius: 12px;
+                width: 640px;
+
+                .el-dialog__body {
+                    // position: relative;
+                    display: flex;
+                    padding-top: 0px;
+                    padding-left: 0px;
+                    padding-bottom: 0px;
+                    height: 420px;
+                    border-radius: 12px 0 0 12px;
+
+
+
+                    .row-bg {
+                        position: relative;
+                        flex: 1;
+                        margin-right: 30px;
+                        padding-left: 30px;
+                    }
+
+                    .user {
+                        margin-top: 30px;
+
+                        & img {
+                            width: 150px;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    .img-box {
+                        width: 280px;
+                        height: 420px;
+                        overflow: hidden;
+                        float: left;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .btn-primary {
+                        position: absolute;
+                        right: 40px;
+                        bottom: 30px;
+                        padding: 0;
+                        width: 120px;
+                        height: 40px;
+                        line-height: 40px;
+                        color: #fff;
+                        border: none;
+                        background: $menuHover;
+
+                        border-radius: 12px;
+                        transition: all .3s;
+
+                        &:hover {
+                            box-shadow: 3px 3px 6px rgba(41, 75, 185, 0.3);
+                        }
+                    }
+
+                    .user-item {
+                        padding-top: 30px;
+                        // display: inline-block;
+                        font-size: 16px;
+
+                        .item {
+                            display: flex;
+                            margin-bottom: 20px;
+                        }
+
+                        i {
+                            font-weight: bold;
+                        }
+
+                        span {
+                            margin-left: 30px;
+                        }
+                    }
+                }
+            }
+
+
         }
+
     }
 
 }

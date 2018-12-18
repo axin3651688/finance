@@ -43,17 +43,17 @@ export default {
       };
     }
   },
-  created(){
+  created() {
     let authorization = localStorage.getItem("authorization");
-    debugger;
+    // debugger;
     this.initSocket(authorization);
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
     initSocket(authorization) {
-       let url = "ws://192.168.1.118:7006/socket.io/" ;
-      if(null != authorization){
-         url = url +"?Authorization=" +authorization;
+      let url = "ws://192.168.1.118:7006/socket.io/";
+      if (null != authorization) {
+        url = url + "?Authorization=" + authorization;
       }
       // debugger;
       webSocket({ url: url });
