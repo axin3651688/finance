@@ -47,10 +47,13 @@ import { mapGetters, mapActions } from "vuex";
 import { findSideBar } from "~api/interface.js";
 import avatajson from "@a/icons/awata.json";
 import NavMenu from "./NavMenu.vue";
+
 export default {
   name: "Leftmenu",
   created() {
     // debugger;
+    console.log(this.$refs.submenu);
+
     findSideBar(this.userId).then(response => {
       // console.log(response.data);
       let data = response.data.data;
@@ -73,6 +76,7 @@ export default {
   components: {
     NavMenu
   },
+
   data() {
     return {
       openeds: [],

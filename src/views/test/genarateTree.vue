@@ -37,7 +37,7 @@ export default {
     this.licenseId = this.firstcompany.licenseId;
     // console.log(this.firstcompany);
     this.dataCompany[0].id = this.id;
-    debugger;
+    // debugger;
     this.dataCompany[0].label = this.firstcompany.text;
     let parent = [];
     this.getIndex(this.id, parent);
