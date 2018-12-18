@@ -2,9 +2,6 @@
   <bi-table v-if="flag && item.xtype == 'bi-table'" :item.sync="item" ref="child"></bi-table>
   <bi-text v-else-if="flag && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
-  <div v-else>
-      {{item}}
-  </div>
 </template>
 
 <script>
