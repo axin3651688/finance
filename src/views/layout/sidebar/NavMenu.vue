@@ -30,16 +30,28 @@
 </template>
  
 <script>
+import { mapGetters, mapActions } from "vuex";
 import modeHandle from "utils/modeHandle";
 export default {
   name: "NavMenu", //使用递归组件必须要有
   props: ["navMenus"], // 传入子组件的数据
+  computed: {
+    ...mapGetters(["device"])
+  },
   methods: {
+    ...mapActions(["ToggleSideBar"]),
     shownavMenu(e) {
       //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
       if (e.level === 2) {
+        // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
+        if (this.device === "mobile") {
+          this.ToggleSideBar({ opend: false });
+        }
         this.$router.push({ path: e.url });
       } else {
+        if (this.device === "mobile") {
+          this.ToggleSideBar({ opend: false });
+        }
         this.$router.push({ path: "/module" });
         modeHandle(e);
       }
