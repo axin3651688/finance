@@ -248,3 +248,31 @@ BiText
 ~~~
 
 
+## 尚未实现功能
+
++ 表体合并单元格
+~~~
+
+~~~
+
++ 事件对象
+~~~
+listeners:[
+  {
+    "type":"click",//事件类型
+    "way":"addTab",//调用的公共方法
+    "handler":($vue,params)=>{//自定义的回调
+        console.info(params);
+            debugger; 
+    }
+  }
+]
+~~~
++ 饼状图
+~~~
+
+~~~
++ 多柱多线图
+~~~
+
+~~~

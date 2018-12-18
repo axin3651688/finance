@@ -37,8 +37,8 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" @tab-click="handleTabClick" v-model="activeTabName">
-<!--start-->
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName">
+<!--start @tab-click="handleTabClick"  -->
       <el-tab-pane 
         v-for="(item,index) in items"
         v-bind:key="item.id"

@@ -50,9 +50,9 @@ export default {
     // });
   },
   mounted() {
-    let authorization = localStorage.getItem("authorization");
-    debugger;
-     this.initSocket(authorization);
+   // let authorization = localStorage.getItem("authorization");
+    //debugger;
+    // this.initSocket(authorization);
   },
 
   data() {

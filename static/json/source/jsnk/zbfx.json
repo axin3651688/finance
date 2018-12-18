@@ -151,37 +151,14 @@
             "id": "1416001",
             "text": "营业收入",
             "weight": 6,
-            "mixins":{
-                "methods":{
-                    "itemClick":($vue,params)=>{
-                        let tab = $vue.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
-                        let module = tab.$parent.$parent;
-                        console.info(tab);
-                        console.info(module);
-                        console.info(module.items);
-                        let arrs = module.items.filter(item=>item.text === $vue.item.text);
-                        debugger;
-                        if(arrs.length > 0){
-                            module.items.forEach((item, index) =>{
-                                if(item.text === $vue.item.text ){
-                                   module.activeTabName = item.text;
-                                }
-                           });
-                           return ;
-                        }
-                          module.items.push({
-                            text: $vue.item.text,
-                            id: $vue.item.id,
-                            closable:true,
-                            xtype:'html',
-                            tabIndex:$vue.item.text
-                          });
-                          module.activeTabName = $vue.item.text;
-
-                     }
-                }
-               
-            },
+            "listeners":[{
+                    "type":"click",
+                    "way":"addTab",
+                    "handler":($vue,params)=>{
+                         console.info(params);
+                           debugger; 
+                    }
+            }],
             "options": {
                 "type": "column",
                 "getData": {
@@ -578,7 +555,7 @@
                               "dim":"itemperiod",
                               "val":"1403100"
                            },
-                         "type": "line",
+                         "type": "bar",
                          "smooth": false
                     },{
                          "id": "A",
@@ -587,7 +564,7 @@
                               "dim":"itemperiod",
                               "val":"1400111"
                            },
-                         "type": "line",
+                         "type": "bar",
                          "smooth": false
                     }]
                     
