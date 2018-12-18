@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="getDatas(item)"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?rows : item.datas"
     border
     :stripe="true"
     style="width: 100%;"
@@ -50,8 +50,8 @@ export default {
     //this.getTableDataParams();
   },
   mounted() {
-    debugger;
-    document.getElementsByClassName("el-tabs__item")[0].click();
+   // debugger;
+    //document.getElementsByClassName("el-tabs__item")[0].click();
   },
 
   methods: {
@@ -64,27 +64,27 @@ export default {
     },
 
     upData(item) {
-      this.$set(this.item, "datas", item.datas);
-      // debugger;
-      this.$set(this, "item", item);
-      console.info(this.$refs.child);
-      if (this.$refs.child) {
-        this.$refs.child.forEach(children => {
-          if (children.upData) {
-            children.upData(item);
-          }
-        });
-      }
-      console.info("================");
-      console.info(this.$refs.tchild);
-      if (this.$refs.tchild) {
-        this.$refs.tchild.forEach(children => {
-          if (children.upData) {
-            children.upData(item);
-          }
-        });
-      }
-    },
+            this.$set(this.item,"datas",item.datas);
+            this.$set(this,"item",item);
+            let refs = this.$refs;
+            if(refs){
+                if(refs.child){
+                   refs.child.forEach(children=>{
+                   if(children.upData){
+                      children.upData(item);
+                   }
+                   
+              })
+            }
+             if(refs.tchild){
+                 refs.tchild.forEach(children=>{
+                  if(children.upData){
+                      children.upData(item);
+                   }
+              })
+            }
+            }
+      },
 
     cellStyle(row, column, rowIndex, columnIndex) {
       let css = "padding: 4px 0;";

@@ -23,7 +23,6 @@ export default {
   },
   methods:{
       upData(item){
-         debugger;
           this.$set(this,"data",item);
           this.$set(this.data,"datas",item.datas);
       },

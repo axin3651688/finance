@@ -1,4 +1,5 @@
 <template>
+ <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-if="col.type === 'index' "
     :prop="col.id"
@@ -95,9 +96,11 @@ export default {
       }
       let value = Math.getCellValue(datas, colId, rowId, rows);
       if (!value) {
-        value = 0;
+        return "--";
       }
-      return value.toLocaleString();
+      value = (value- 0 /10000).toLocaleString();
+      debugger;
+      return value;
     }
   },
   created() {

@@ -37,22 +37,45 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'">
-      <el-tab-pane
+    <el-tabs v-if="layout.xtype === 'tab'" @tab-click="handleTabClick" v-model="activeTabName">
+<!--start-->
+      <el-tab-pane 
         v-for="(item,index) in items"
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
-        :name="item.id"
+        :name="item.tabIndex || index"
+        :closable="item.closable||false"
       >
-        <bi-item
+      <el-row  v-if="item.layout && item.layout === 'column'" :gutter="24"> <!--说明是有item.items孩子的-->
+          <el-col
+            v-for="(item1,index1) in item.children"
+            v-bind:key="item1.id"
+            v-bind:index="index1"
+            :lg="item1.weight"
+            :sm="item1.weight*2"
+            :xs="item1.weight*4"
+          >
+            <bi-item
+              :item.sync="item1"
+              :config.sync="config"
+              :datas.sync="datas"
+              v-on:getDatas="generateApiModelDatas"
+              ref="mychild"
+            ></bi-item>
+          </el-col>
+      </el-row>
+      <bi-item v-else
           :item.sync="item"
           :config.sync="config"
           :datas.sync="datas"
           v-on:getDatas="generateApiModelDatas"
-          ref="mychild"
-        ></bi-item>
+          ref="mychild"/>
+
+          
       </el-tab-pane>
+<!--end-->
+
     </el-tabs>
     <el-collapse v-if="layout.xtype === 'accordion'" v-model="activeName" accordion>
       <el-collapse-item
@@ -109,6 +132,7 @@ export default {
       config: {
         random: {}
       },
+      activeTabName:"0",
       api: null,
       layout: {
         xtype: "form"
@@ -123,6 +147,7 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
+    debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -387,6 +412,12 @@ export default {
         .catch(res => {
           console.info(res);
         });
+    },
+    handleTabClick(tab,event){
+      console.log(tab, event);
+    },
+    getActiveTabName(item){
+      return item.id;
     }
   }
 };

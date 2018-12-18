@@ -35,6 +35,7 @@ export default {
     // debugger;
   },
   mounted() {
+    // debugger;
     this.loadItems(this.item);
   },
   watch: {
@@ -50,7 +51,7 @@ export default {
   methods: {
     loadItems() {
       let config = this.item.config;
-      debugger;
+     // debugger;
       if (config) {
         config.rows = config.rows || this.config.rows;
         config.columns = config.columns || this.config.columns;
