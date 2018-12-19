@@ -37,8 +37,8 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" @tab-click="handleTabClick" v-model="activeTabName">
-<!--start-->
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName">
+<!--start @tab-click="handleTabClick"  -->
       <el-tab-pane 
         v-for="(item,index) in items"
         v-bind:key="item.id"
@@ -309,7 +309,8 @@ export default {
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
       }
-
+      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
+      //目标：在datas.comparePeriod= 调用period.js的一个方法
       return datas;
     },
     /**

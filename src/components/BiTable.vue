@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?rows : item.datas"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
     style="width: 100%;"
