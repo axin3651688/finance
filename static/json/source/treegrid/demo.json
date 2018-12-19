@@ -1,6 +1,6 @@
 {
     "id":"0005",
-    "text":"zhbgTable",
+    "text":"智慧报告",
     "config":{
         "cube":{
           "subject":"0007",
@@ -10,7 +10,8 @@
         "mainDim":"itemperiod",
         "needDims":["year","month","company"],
         "random":{"min":100,"max":100000},
-        "type":1
+        "type":1,
+        "sql":"SELECT c.cisleaf AS leaf, c.scode AS company, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, ( SELECT SUM(to_number(sscore, '99999')) FROM rpt_company_report WHERE scompany = cr.scompany AND syear = substr(cr.speriod, 1, 4) AND nlocked = 1 AND smonth BETWEEN '01' AND substr(cr.speriod, 5, 2) ) / to_number(substr(cr.speriod, 5, 2)) AS avgscore, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where spcode = '1' and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = '201606' ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime"
           
      },
     "columns": [
@@ -48,7 +49,7 @@
           }
     ],
     
-    "data":[
+    "rows":[
         {
             "leaf":true,"company":"138","companyReportId":68746,
             "report":3,"score":112,"locked":1,"index1":1,"title":"连云港苏垦农友种苗公司",
@@ -279,5 +280,24 @@
             "index1":0,"title":"云台农场（合并）","topicSource":"45364-45858",
             "period":"201602","reportName":"财务分析月报-合并"
         }
-    ]
+    ],
+    "layout": {
+        "xtype": "form"
+    },
+    "items": [{
+        "xtype": "tree-grid",
+        "id": "zhbg",
+        "text": "智慧报告",
+        "listeners":[
+            {
+              "type":"click",//事件类型
+              "way":"addTab",//调用的公共方法
+              "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
+              "handler":($vue,params)=>{//自定义的回调
+                  console.info(params);
+                  debugger; 
+              }
+            }
+          ]
+    }]
 }
