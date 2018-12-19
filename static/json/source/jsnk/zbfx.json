@@ -155,7 +155,7 @@
                     "type":"click",
                     "way":"addTab",
                     "handler":($vue,params)=>{
-                         console.info(params);
+                          console.info(params);
                            debugger; 
                     }
             }],
