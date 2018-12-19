@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// 此图包含1个期间,3个维度,3个维度可以任意配置柱图或线图
 export default {
   data() {
     return {
