@@ -52,7 +52,7 @@ export default {
         if (this.device === "mobile") {
           this.ToggleSideBar({ opend: false });
         }
-        this.$router.push({ path: "/module" });
+        this.$router.push({ path: "/module?debug=1" });
         modeHandle(e);
       }
     }
