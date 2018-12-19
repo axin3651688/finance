@@ -186,6 +186,7 @@ export default {
      */
     setScopeDatas(bean, type) {
       if (type == 1 && !bean.id) {
+        //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
       }
@@ -203,6 +204,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
+      this.debug = 1 ; //临时的动作
       if (this.module_api) {
         this.api = this.module_api;
       }

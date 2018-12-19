@@ -96,6 +96,8 @@ BiText
     columns:[]//列项目,必选项目
     mainDim：""//主维度，决定rows行项目里配制的是什么维度
     needDims:["year","month","company"]//所依赖可变化的维度：只有当config依赖的属性变了，数据才会变，视图才会跟着变！ 
+    periodCount:2,
+    compareType:"0&-1" //-1&0
 }
 ~~~
 
@@ -261,9 +263,10 @@ listeners:[
   {
     "type":"click",//事件类型
     "way":"addTab",//调用的公共方法
+    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
-            debugger; 
+        debugger; 
     }
   }
 ]

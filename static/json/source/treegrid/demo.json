@@ -287,6 +287,17 @@
     "items": [{
         "xtype": "tree-grid",
         "id": "zhbg",
-        "text": "智慧报告"
+        "text": "智慧报告",
+        "listeners":[
+            {
+              "type":"click",//事件类型
+              "way":"addTab",//调用的公共方法
+              "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
+              "handler":($vue,params)=>{//自定义的回调
+                  console.info(params);
+                  debugger; 
+              }
+            }
+          ]
     }]
 }

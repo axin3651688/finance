@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     upData(item) {
-      //  debugger;
+       debugger;
       this.$set(this, "data", null);
       this.$set(this, "data", item);
       this.$set(this.data, "datas", item.datas);

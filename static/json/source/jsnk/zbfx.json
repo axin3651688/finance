@@ -154,10 +154,8 @@
             "listeners":[{
                     "type":"click",
                     "way":"addTab",
-                    "handler":($vue,params)=>{
-                         console.info(params);
-                           debugger; 
-                    }
+                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json"
+                   
             }],
             "options": {
                 "type": "column",
@@ -183,6 +181,15 @@
             "id": "1403100",
             "text": "利润总额",
             "weight": 6,
+            "listeners":[{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+                "handler":($vue,params)=>{
+                      console.info(params);
+                       debugger; 
+                }
+        }],
             "options": {
                 "type": "column",
                 "getData": {
@@ -571,7 +578,7 @@
                 }
             }
         }
-    ]
-    }
+         ]
+      }
     ]
 }

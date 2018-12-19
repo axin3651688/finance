@@ -409,18 +409,16 @@ import {report} from '@/api/cube.js'
         dist(){
             let  item = {
                 cubeId:4,
-                sql:`SELECT NID,A.DIM_ITEM as xm,B.SNAME AS sk, FACT_BALANCE AS balance, FACT_A AS oneyear, FACT_B AS twoyear, FACT_C AS threeyear, FACT_D AS fouryear,
-                    ISNATURE AS skxz, ISINSIDE AS kstype, ISNORMAL AS sfzc, SCONTENTA AS fzcfl, SCONTENTB AS zwrk,
-                    FACT_A_1 AS khsje, FACT_B_1 AS dnkhsje, FACT_C_1 AS yqzk, FACT_D_1 AS szxssje FROM 
-                    (SELECT A.NID,A.DIM_CUSUPPLIER,A.DIM_COMPANY,A.DIM_ITEM,A.FACT_BALANCE,A.FACT_A,A.FACT_B,A.FACT_C,A.FACT_D,ISNATURE,ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,
-                    B.FACT_A AS FACT_A_1,B.FACT_B AS FACT_B_1,B.FACT_C AS FACT_C_1,B.FACT_D AS FACT_D_1 
-                    FROM DW_FACTAGEANALYSIS A
-                    LEFT JOIN DW_FACTAGEANALYSIS_FILL B ON A.DIM_COMPANY=B.DIM_COMPANY AND A.DIM_PERIOD=B.DIM_PERIOD AND A.DIM_ITEM=B.DIM_ITEM
-                    AND A.DIM_CUSUPPLIER=B.DIM_CUSUPPLIER 
-                    WHERE A.DIM_COMPANY='1001010101' AND A.DIM_PERIOD='201812' and A.DIM_ITEM='1003') A  
-                    INNER JOIN
-                    (SELECT  SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE='1001') B
-                    ON A.DIM_CUSUPPLIER=B.SCODE`
+                sql:`SELECT NID,DIM_CUSUPPLIER as sk,FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR,
+                      ISNATURE AS SKXZ, ISINSIDE AS SFNB, ISNORMAL AS SFZC, SCONTENTA AS FZCFL, SCONTENTB AS ZWRK,
+                      FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM 
+                      (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE,ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,
+                      FACT_E,FACT_F,FACT_G,FACT_H
+                      FROM DW_FACTAGEANALYSIS A
+                      WHERE A.DIM_COMPANY='1001010101' AND A.DIM_PERIOD='201812' AND A.DIM_ITEM='1003') A 
+                      INNER JOIN
+                      (SELECT  SCODE FROM DW_DIMCUSTOMER WHERE SCOMCODE='1001') B
+                      ON A.DIM_CUSUPPLIER=B.SCODE`
             }
             report(item).then((res)=>{
                  this.settings.data = res.data.data

@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData">
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border>
     <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -102,10 +102,10 @@ export default {
     // 格式化数据源
     formatData() {
       let tmp;
-      if (!Array.isArray(this.item.config.data)) {
-        tmp = [this.item.config.data];
+      if (!Array.isArray(this.item.rows)) {
+        tmp = [this.item.rows];
       } else {
-        tmp = this.item.config.data;
+        tmp = this.item.rows;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -152,6 +152,8 @@ export default {
   },
   created(){
     console.log(this.item)
+    this.item.rows = this.item.config.rows
+    // console.log(this.item.rows)
     console.log(this.item.config.columns)
     // this.col = this.item.config.columns
     // console.log(col)

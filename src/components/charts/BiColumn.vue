@@ -2,9 +2,9 @@
   <chart :options="options" auto-resize/>
 </template>
 <script>
-import ChartEventMixins from '../mixins/ChartEventMixins'
+import EventMixins from '../mixins/EventMixins'
 export default {
-  mixins: [ChartEventMixins],
+  mixins: [EventMixins],
   props: {
     item: {}
   },

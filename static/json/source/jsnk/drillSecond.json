@@ -1,0 +1,25 @@
+{
+    "xtype": "chart",
+    "id": "1403100000",
+    "text": "营业收入",
+    "weight": 6,
+    "closable":true,
+    "options": {
+        "type": "column",
+        "getData": {
+            "type": 4,
+            "columns": [{
+                "id": "A"
+            }, {
+                "id": "B"
+            }],
+            "row": {
+                "ids": {
+                    "items": ["1403100"]
+                }
+            },
+            "reverse": true,
+            "scope": true
+        }
+    }
+}
