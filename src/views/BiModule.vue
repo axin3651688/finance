@@ -203,6 +203,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
+      this.debug = 1 ; //临时的动作
       if (this.module_api) {
         this.api = this.module_api;
       }

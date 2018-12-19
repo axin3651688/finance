@@ -12,6 +12,7 @@
         }
   }]
  */
+import {findDesignSource } from "~api/interface";
 export default {
     mounted() {
         let me = this;
@@ -41,7 +42,7 @@ export default {
        commonHandler(listener,params){
         let me = this;
           if(listener.way && me[listener.way]){
-            me[listener.way](params);
+            me[listener.way](params,listener);
           }
           if(listener.handler){
             listener.handler(me,params);
@@ -79,12 +80,11 @@ export default {
          /**
           * 增加到tab的动作  openDilog  openWindow
           */
-         addTab(params){
+         addTab(params,listener){
           let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
           let module = tab.$parent.$parent;
           let bb = this.item,text = bb.text;
           let arrs = module.items.filter(bean=>bean.text == text);
-          debugger;
           if(arrs.length > 0){
               module.items.forEach((item, index) =>{
                   if(item.tabIndex && item.tabIndex === text ){
@@ -93,12 +93,27 @@ export default {
               });
               return ;
           }
+          debugger;
+          if(listener.sourceApi){
+             //配制加载url的情况
+             findDesignSource(listener.sourceApi).then(res => {
+              let resData = res.data;
+              resData.id =  bb.id;
+              resData.text =  text;
+              resData.tabIndex =  text;
+              resData.closable =  true;
+              module.items.push(resData);
+              module.activeTabName = resData.text;
+          });
+          return ;
+        }
+          //
           module.items.push({
           text: text,
           id: bb.id,
           closable:true,
           xtype:'bi-text',
-          tabIndex:text
+          tabIndex:text,
           });
           module.activeTabName = text;
          }
