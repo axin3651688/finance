@@ -11,7 +11,6 @@
 import { HotTable } from '@handsontable/vue';
 import Handsontable from 'handsontable-pro';
 import {report} from '@/api/cube.js'
-
   var flagrenderer
   export default {
     data(){
@@ -112,6 +111,7 @@ import {report} from '@/api/cube.js'
       HotTable
     },
     created(){
+      console.log(me)
       // 获取索引和数据
       // var array = [
       //   {a:1,b:2},
@@ -379,12 +379,12 @@ import {report} from '@/api/cube.js'
 
         // 控制填报
         // if(this.show==false){
-          let arr = this.settings.columns.slice(1,1)
-          console.log(arr)
-          arr.forEach(item=>{
+          // let arr = this.settings.columns.slice(1,1)
+          // console.log(arr)
+          // arr.forEach(item=>{
 
-            item['editor'] = false
-          })
+          //   item['editor'] = false
+          // })
           // console.log(arr)
           // console.log(this.settings.columns)
         // }
@@ -402,8 +402,9 @@ import {report} from '@/api/cube.js'
 
         swapHotData() {
           console.log(this.$refs)
-        let a = this.$refs.hotTableComponent.hotInstance.getDataAtCol(1);
-        
+      //   let a = this.$refs.hotTableComponent.hotInstance.getDataAtCol(1);
+      //  let b = this.$refs.hotTableComponent.hotInstance.alter('insert_col',2)
+      //  console.log(b)
       },    
         dist(){
             let  item = {
@@ -472,6 +473,8 @@ import {report} from '@/api/cube.js'
 
         // 插入了删除
         flags(instance, td, row, col, prop, value, cellProperties){
+          // console.log(this.$refs.hotTableComponent.hotInstance)
+          let arr = this.$refs.hotTableComponent.hotInstance
           let list = this.settings.data
           // var list = [
           //     {a:1,b:2},
@@ -491,11 +494,14 @@ import {report} from '@/api/cube.js'
             el.className='flag'
             el.innerHTML = '删除'
             td.appendChild(el)
-            
-            el.onclick = function(){
-              // tr.remove()
-              // list.remove(list.index)
-            }
+            // console.log(this.$refs.hotTableComponent)
+            Handsontable.dom.addEvent(el, 'click', function (event) {
+            arr.alter("remove_row", row);//删除当前行
+                    });
+            // el.onclick = function(){
+            //   // tr.remove()
+            //   // list.remove(list.inde)x
+            // }
           }
         },
         //row, prop, oldValue, newValue 
@@ -549,7 +555,7 @@ import {report} from '@/api/cube.js'
         cursor: none;
     }   */
     .handsontable .ht_clone_left {
-      z-index: -1;
+      z-index: -10;
     }
     thead tr:last-child th {
     border-bottom-width: 0;

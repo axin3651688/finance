@@ -1,6 +1,6 @@
 <template>
-  <el-table :data="formatData" :row-style="showRow" v-bind="$attrs" class="content">
-    <el-table-column v-if="columns.length===0" width="120">
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData">
+    <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
@@ -11,7 +11,7 @@
       </template>
     </el-table-column>
     <el-table-column
-      v-for="(column, index) in columns"
+      v-for="(column, index) in item.config.columns"
       v-else
       :key="column.value"
       :label="column.text"
@@ -64,6 +64,7 @@ import treeToArray from "../treegrid/eval";
 export default {
   data() {
     return {
+      // col:[],
       options: [],
       dialogVisible: false,
       selectedOptions: [],
@@ -73,7 +74,7 @@ export default {
   name: "TreeGrid",
   props: {
     /* eslint-disable */
-    // item:{
+    item:{
       data: {
         type: [Array, Object],
         required: true
@@ -88,12 +89,12 @@ export default {
         type: Boolean,
         default: false
       },
-    // item: Number
-      list:{
-        type:[Array,Function],
-        default: () => []
-      },
-    // }
+
+      // list:{
+      //   type:[Array,Function],
+      //   default: () => []
+      // },
+    }
   },
   mounted() {
   },
@@ -101,10 +102,10 @@ export default {
     // 格式化数据源
     formatData() {
       let tmp;
-      if (!Array.isArray(this.data)) {
-        tmp = [this.data];
+      if (!Array.isArray(this.item.config.data)) {
+        tmp = [this.item.config.data];
       } else {
-        tmp = this.data;
+        tmp = this.item.config.data;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -116,7 +117,7 @@ export default {
   methods: {
     add() {
       // if(!this.isEmpty(this.item.list)){
-          this.options = this.item.list
+          // this.options = this.item.list
       // }
     
     },
@@ -150,8 +151,11 @@ export default {
     }
   },
   created(){
-    
-    this.options = this.list
+    console.log(this.item)
+    console.log(this.item.config.columns)
+    // this.col = this.item.config.columns
+    // console.log(col)
+    // this.options = this.list
     // console.log("1111")
     // console.log(this.item)
     // console.log(this.isEmpty(this.a))

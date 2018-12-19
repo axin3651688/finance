@@ -59,9 +59,9 @@ export function findSideBar(userId, code) {
 export function findThirdPartData(params) {
   // debugger
   if (!params.cubeId) {
-    // params.cubeId = JSON.parse(localStorage.database).license.id;
+    params.cubeId = JSON.parse(localStorage.database).license.id;
     // 取vuex里面的use里面的id
-    params.cubeId = this.user.user.license.id
+    // params.cubeId = this.user.user.license.id
   }
   return request({
     method: "post",
