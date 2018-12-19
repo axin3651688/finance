@@ -1,6 +1,6 @@
 {
     "id":"0005",
-    "text":"zhbgTable",
+    "text":"智慧报告",
     "config":{
         "cube":{
           "subject":"0007",
@@ -10,7 +10,8 @@
         "mainDim":"itemperiod",
         "needDims":["year","month","company"],
         "random":{"min":100,"max":100000},
-        "type":1
+        "type":1,
+        "sql":"select dim_itemperiod as id,fact_a as a,fact_b as b,fact_c as c,fact_d as d from DW_FactFinancePeriod where  subject = '0002'  and dim_period = '201605' and dim_company = '1' and dim_itemperiod in ('1416001','141600101','141600102','1426401','142640101','142640102','1426405','1436601','1436602','1436603','143660302','1436701','1416101','1416111','141611101','1416112','1416113','1402100','1416301','1426711','142671101','1403100','1426801','1400100','1400111','1400112','1400120','1400121','1400122')"
           
      },
     "columns": [
@@ -279,5 +280,13 @@
             "index1":0,"title":"云台农场（合并）","topicSource":"45364-45858",
             "period":"201602","reportName":"财务分析月报-合并"
         }
-    ]
+    ],
+    "layout": {
+        "xtype": "form"
+    },
+    "items": [{
+        "xtype": "tree-grid",
+        "id": "zhbg",
+        "text": "智慧报告"
+    }]
 }

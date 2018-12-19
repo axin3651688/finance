@@ -2,12 +2,14 @@
   <bi-table v-if="flag && item.xtype == 'bi-table'" :item.sync="item" ref="child"></bi-table>
   <bi-text v-else-if="flag && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
+  <tree-grid v-else-if="flag && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
 </template>
 
 <script>
 import BiTable from "./BiTable";
 import BiChart from "./BiChart";
 import BiText from "./BiText";
+import TreeGrid from "./text/Treegrid.vue"
 
 export default {
   name:"BiItem",
@@ -15,7 +17,8 @@ export default {
   components: {
     BiTable,
     BiChart,
-    BiText
+    BiText,
+    TreeGrid
   },
   data() {
     return {
