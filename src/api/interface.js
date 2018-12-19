@@ -22,8 +22,11 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-    url: '/auth/logout',
-    method: 'get'
+    url: '/api/auth/logout',
+    method: 'get',
+    // params: {
+    //   Authorization: localStorage.authorization,
+    // }
   })
 }
 

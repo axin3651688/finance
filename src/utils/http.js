@@ -31,7 +31,7 @@ axios.interceptors.request.use(config => {
     // }
     // 加载动画
     startLodading();
-
+    // debugger
     if (localStorage.authorization) {
         // 设置统一请求头 todo 暂时屏蔽
         config.headers.Authorization = localStorage.authorization;
