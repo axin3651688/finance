@@ -312,6 +312,11 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
+      let periodCount = config.periodCount,compareType = config.compareType,year = datas.year,month = datas.month,period = datas.period;
+      if(year&&month&&period&&periodCount){
+        let comparePeriod = getPeriodByFomualr(year,month,compareType,period);
+        datas.comparePeriod = comparePeriod;
+      }
       return datas;
     },
     /**
