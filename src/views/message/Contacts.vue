@@ -63,7 +63,7 @@ export default {
   .Contacts.vue-module {
     overflow: hidden;
     background: #ffffff;
-    height: calc(100% - 40px);
+    height: 100%;
     box-shadow: 0 20px 30px $colorShadowGreen;
     /deep/ li {
       list-style: none;
