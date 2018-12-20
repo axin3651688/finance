@@ -6,10 +6,6 @@ import router from './router'
 import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-//
-
-// import '@a/icons/iconfont.css' // icon
-
 import '../../../node_modules/handsontable/dist/handsontable.full.css'
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'

@@ -7,6 +7,7 @@
     height="item.height || 480"
     :cell-style="cellStyle"
     :header-cell-style="{background:'#F0F8FF'}"
+    @cell-click="onCellClick"
   >
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
@@ -86,13 +87,28 @@ export default {
             }
       },
 
-    cellStyle(row, column, rowIndex, columnIndex) {
+    cellStyle(row) {
       let css = "padding: 4px 0;";
-      if (row.column.label === "项目") {
-        return css + "font-weight:bold";
+      if (row.column.property.indexOf("text") != -1) {
+        let record = row.row;
+        let drill = "";
+        if(record._drill || record.drill){
+          drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+        }
+        let level = record._level|| record.level||1;
+        let textIndent = (level> 1 ?"text-indent: "+(level-1)*20+"px":"");
+        return css + "font-weight:bold;"+textIndent+drill;
       } else {
         return css;
       }
+    },
+
+    onCellClick(row, column, cell, event){
+        if(row._drill || row.drill){
+            if(column.cellIndex === 0 ){
+               debugger;
+            }
+        }
     },
 
     async getList() {
