@@ -28,7 +28,7 @@ export default {
         if (!this.isEmpty(localStorage.company_cache)) {
           // debugger;
           this.GetSideMid({
-            company: localStorage.company,
+            company: localStorage.company_cache,
             companyName: localStorage.companyName_cache
           });
         }

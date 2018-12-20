@@ -1,9 +1,9 @@
 
 <template>
-  <tree-table :data="data" :columns="columns" :item="item" border/>
+  <tree-table :data="data" :columns="columns" :list="list" border/>
 </template>
 <script>
-import treeTable from "@c/treegrid/TreeIndex";
+import treeTable from "@c/text/Treegrid";
 export default {
   components: {
     treeTable
@@ -12,17 +12,21 @@ export default {
     return {
       columns: [],
       data: [],
-      item: 0
+      list:[],
     };
   },
   mounted() {
-    this.axios.get("/api/Report_view").then(res => {
-      console.log(res);
-      this.data = res.data.data;
-      this.columns = res.data.columns;
-      this.item = this.columns.length - 1;
-      // console.log(this.index)
-    });
+    // this.axios.get("/api/Report_view").then(res => {
+    //   console.log(res);
+    //   this.data = res.data.data;
+    //   this.columns = res.data.columns;
+    // });
+    //  this.axios.get("/api/operating").then(res => {
+    //     console.log(res);
+    //     this.list = res.data.operating;
+    //     console.log(this.list);
+    //   });
+    
   },
   methods: {}
 };

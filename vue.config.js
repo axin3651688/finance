@@ -11,7 +11,7 @@ const company1 = require("./static/mock/company.1.json") // 风险分析
 const Configtest1 = require("./static/profit/test1.json") // 利润表
 const Configtest2 = require("./static/profit/test2.json") // 利润表
 const list = require("./static/profit/list.json") // 风险分析列表
-const Report_view = require("./static/profit/Report_view.json")
+// const Report_view = require("./static/profit/Report_view.json")
 const operating = require("./static/profit/operating.json") // 操作按钮
 
 function resolve(dir) {
@@ -27,8 +27,8 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
-         target: 'http://192.168.1.118:8081',//gjx
-       // target: 'https://192.168.1.138:8001/',
+        // target: 'http://192.168.1.118:8081',
+        target: 'https://192.168.1.149:8001/',
 
         ws: true,
         changOrigin: true,
@@ -169,9 +169,9 @@ module.exports = {
                 app.get('/api/list', (req, res) => {
                     res.json(list)
                 }),
-                app.get('/api/Report_view', (req, res) => {
-                    res.json(Report_view)
-                }),
+                // app.get('/api/Report_view', (req, res) => {
+                //     res.json(Report_view)
+                // }),
                 app.get('/api/operating', (req, res) => {
                     res.json(operating)
                 })
