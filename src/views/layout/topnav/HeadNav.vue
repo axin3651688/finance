@@ -121,6 +121,7 @@ import Hamburger from "@v/layout/sidebar/Hamburger";
 import { mapGetters, mapActions } from "vuex";
 import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
+import { logout } from "~api/interface.js";
 export default {
   name: "Headnav",
   data() {
@@ -206,11 +207,15 @@ export default {
       this.dialogVisible = true;
     },
     logout() {
-      // 清除token
-      localStorage.removeItem("authorization");
-      localStorage.removeItem("database");
-      this.$store.dispatch("clearCurrentState");
-      this.$router.push("/login");
+      // todo备以后用,先不删
+      // localStorage.removeItem("database");
+      // this.$store.dispatch("clearCurrentState");
+      logout().then(res => {
+        // console.log(res.data.msg);
+        // 清除token
+        localStorage.removeItem("authorization");
+        this.$router.push("/login");
+      });
     },
     // 公司点击确定事件
     handleQoose() {

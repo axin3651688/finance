@@ -37,7 +37,7 @@ const router = new Router({
         },
         // 报告查看
         {
-          path: '/module/Report_view',
+          path: '/Report_view',
           name: 'Report_view',
           component: () =>
             import('@v/intelligenceReport/Report_view.vue')

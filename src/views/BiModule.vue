@@ -147,7 +147,7 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    debugger;
+   // debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -186,6 +186,7 @@ export default {
      */
     setScopeDatas(bean, type) {
       if (type == 1 && !bean.id) {
+        //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
       }
@@ -347,7 +348,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
+        //debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
