@@ -98,6 +98,9 @@ export default {
              //配制加载url的情况
              findDesignSource(listener.sourceApi).then(res => {
               let resData = res.data;
+              if(!resData.id){
+                resData = eval("(" + resData + ")");
+              }
               resData.id =  bb.id;
               resData.text =  text;
               resData.tabIndex =  text;
