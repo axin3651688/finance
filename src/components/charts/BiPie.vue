@@ -26,7 +26,8 @@ export default {
         },
         legend: {
           orient: "vertical",
-          left: "left",
+          left: "5%",
+          top:"10%",
           // data: []
           data: this.nameData
         },

@@ -14,6 +14,7 @@
         "sql":"SELECT c.cisleaf AS leaf, c.scode AS company, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, ( SELECT SUM(to_number(sscore, '99999')) FROM rpt_company_report WHERE scompany = cr.scompany AND syear = substr(cr.speriod, 1, 4) AND nlocked = 1 AND smonth BETWEEN '01' AND substr(cr.speriod, 5, 2) ) / to_number(substr(cr.speriod, 5, 2)) AS avgscore, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where spcode = '1' and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = '201606' ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime"
           
      },
+     "xtype": "tree-grid",
     "columns": [
         {
             "text": "单位编码",
@@ -282,22 +283,61 @@
         }
     ],
     "layout": {
-        "xtype": "form"
+        "xtype": "from"
     },
     "items": [{
-        "xtype": "tree-grid",
         "id": "zhbg",
-        "text": "智慧报告",
-        "listeners":[
+        "text": "智慧报告-查看",
+        "xtype": "tree-grid",
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company"],
+        "random":{"min":100,"max":100000},
+        "type":1,
+        "sql":"select a.suser, a.struename, b.srolename, b.sroledesc, c.permissionid, c.scode as id, d.sname as text, d.spcode from sys_user a left join sys_role b on a.roleid = b.roleid left join sys_menupermission c on c.roleid = a.roleid left join sys_menus d on d.scode = c.scode where a.suser = 'dingwei' and a.company = '1' and d.spcode='report';",
+        "columns": [
             {
-              "type":"click",//事件类型
-              "way":"addTab",//调用的公共方法
-              "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
-              "handler":($vue,params)=>{//自定义的回调
-                  console.info(params);
-                  debugger; 
-              }
+                "id":"1",
+                "text":"生成"
+            },
+            {
+                "id":"2",
+                "text":"查看"
+            },
+            {
+                "id":"3",
+                "text":"审阅"
+            },
+            {
+                "id":"4",
+                "text":"退回"
+            },
+            {
+                "id":"5",
+                "text":"催报"
+            },
+            {
+                "id":"6",
+                "text":"申请退回"
+            },
+            {
+                "id":"7",
+                "text":"导出",
+                "children":[
+                    {
+                        "id":"71",
+                        "text":"完整"
+                    },
+                    {
+                        "id":"72",
+                        "text":"简要"
+                    }
+                ]
+            },
+            {
+                "id":"8",
+                "text":"评价"
             }
-          ]
+        ]
+      
     }]
 }

@@ -266,7 +266,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      // debugger;
+      debugger;
       this.setScopeDatas(source, 1);
       // this.datas = [];
       if (this.config) {
