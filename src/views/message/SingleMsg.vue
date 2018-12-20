@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="middle">
-      <el-scrollbar style="height: 100%">
+      <el-scrollbar style="height: 100%" ref="chatWindow">
         <div class="message-box" v-for="item in singleMsgList" :key="item.id">
           <div class="message-top">
             <div class="avatar-box">
@@ -76,9 +76,12 @@ import emotionSprites from '@a/green/emotion_sprites.json';
 
 export default {
   name: 'SingleMsg',
+  props: ['chatWithUserId'],
   components: {},
   data() {
     return {
+      receiverName: '', // 聊天对象名称
+      receiverAvatar: '', // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       singleMsgList: [], // 单聊消息队列
       sendText: '', // 发要发送的文本类容
@@ -102,21 +105,21 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
-      console.log('要发送的内容是：', this.sendText);
+      // console.log('要发送的内容是：', this.sendText);
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
-        debugger;
         let sendData = {
           code: 1100, // 1100:单聊 1101:群聊
           data: {
-            content: this.sendText,
-            receiverId: 1, //
+            content: this.sendText.trim(),
+            receiverId: this.chatWithUserId, //
             senderId: this.loginUserId, // 225:卢诚
             type: 1
           },
           device: '868938033321615'
         };
+        this.addMsgToWindow(this.sendText);
         this.sendText = '';
-        sendMsg(sendData)
+        sendMsg(sendData);
       } else {
         this.sendText = '';
         this.$message({
@@ -128,12 +131,36 @@ export default {
 
     },
 
+    // 把发送的内容显示到聊天窗口
+    addMsgToWindow(sendText) {
+      let data = {
+        avatar: "http://192.168.2.214:8000/group2/M00/00/01/wKgC21vak8mAWsvYAAahrk5cOek851.jpg",
+        content: sendText,
+        name: "龚佳新2",
+        sendTime: new Date().getTime()
+      };
+      this.singleMsgList.push(data);
+      this.$nextTick(() => {
+        this.chatWindowScrollToBottom();
+      });
+    },
+
+    // 把聊天窗口滚动到最底部
+    chatWindowScrollToBottom() {
+      // debugger;
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
+      console.log('找滚动窗口：', chatWindow);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    },
+
     // 获取单聊信息返回res后的处理
     findSingleMsgThen(res) {
       console.log('获取单聊信息then：', res);
       res = res.data;
       if (res.code === 200 && res.data) {
-        this.singleMsgList = res.data.data
+        this.singleMsgList = res.data.data;
+        this.receiverName = singleMsgList[0].name;
+        this.receiverAvatar = singleMsgList[0].avatar
       } else {
         this.$message({
           type: 'error',
@@ -191,8 +218,8 @@ export default {
 }
 </script>
 <!--<style lang="scss">-->
-  <!--/*这里不使用 scoped 是v-html生成表情能够应用到样式*/-->
-  <!--@import "@s/green/emotion_sprites.scss";-->
+<!--/*这里不使用 scoped 是v-html生成表情能够应用到样式*/-->
+<!--@import "@s/green/emotion_sprites.scss";-->
 <!--</style>-->
 
 <style lang="scss" scoped>

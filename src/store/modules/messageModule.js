@@ -10,6 +10,11 @@ const messageModule = {
     // 测试用
     actionsTest({commit, state}, msg) {
       commit('actionsTest', msg)
+    },
+
+    // 测试用
+    ActionSetChatWithUserId({commit, state}, receiverId) {
+      commit('mutationSetChatWithUserId', receiverId)
     }
   },
 
@@ -22,8 +27,8 @@ const messageModule = {
     },
 
     // 设置当前的聊天对象的id
-    mutationSetChatWithUserId(state, chatWithUserId) {
-      state.chatWithUserId = chatWithUserId
+    mutationSetChatWithUserId(state, receiverId) {
+      state.chatWithUserId = receiverId
     },
 
     // 设置消息左边栏的数据
