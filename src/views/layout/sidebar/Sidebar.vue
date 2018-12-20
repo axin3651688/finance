@@ -100,13 +100,13 @@ export default {
   watch: {
     openPid(newid) {
       // debugger;
-      console.log(newid);
+      // console.log(newid);
       this.handleOpen(this.openPid, [newid + ""]);
       this.openeds = [newid + ""];
     },
     activeId(newid) {
       // debugger;
-      console.log(newid);
+      // console.log(newid);
       this.active = newid + "";
     }
   },
@@ -141,8 +141,8 @@ export default {
     },
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
-        console.log(response.data);
-        console.log(code);
+        // console.log(response.data);
+        // console.log(code);
 
         for (let index = 0; index < this.leftMenus.length; index++) {
           // 匹配哪个children值加进去
@@ -150,14 +150,14 @@ export default {
             this.$set(this.leftMenus[index], "children", response.data.data);
           }
         }
-        console.log(this.leftMenus);
+        // console.log(this.leftMenus);
       });
     },
     fetchData2(userId, code) {
       findSideBar(userId, code[1]).then(response => {
         let data = response.data.data;
-        console.log(data);
-        console.log(code);
+        // console.log(data);
+        // console.log(code);
         debugger;
         for (let index = 0; index < this.leftMenus.length; index++) {
           // 匹配哪个children值加进去
@@ -178,7 +178,7 @@ export default {
             break;
           }
         }
-        console.log(this.leftMenus);
+        // console.log(this.leftMenus);
       });
     }
   }

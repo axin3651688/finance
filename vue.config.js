@@ -53,13 +53,14 @@ let proxyObj = { // 配置跨域
     }
 };
 module.exports = {
-    baseUrl: debug ? '/' : '/production-sub-path/',
+    // baseUrl: debug ? '/' : '/production-sub-path/',
+    baseUrl: debug ? '/' : 'http://192.168.1.138:8000',
     outputDir: 'dist', // 构建输出目录
     assetsDir: 'assets', // 静态资源目录 (js, css, img, fonts)
     lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
     runtimeCompiler: true, // 运行时版本是否需要编译
     transpileDependencies: [/\/node_modules\/resize-detector\//], // 默认babel-loader忽略mode_modules，这里可增加例外的依赖包名
-    productionSourceMap: true, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
+    productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
     // css相关配置
     css: {
         // 是否使用css分离插件 ExtractTextPlugin
@@ -71,7 +72,7 @@ module.exports = {
         // 启用 CSS modules for all css / pre-processor files.
         modules: false
     },
-    // cache: false, 
+
     // mode: 'production',
     pages: {
         index: {
@@ -130,7 +131,7 @@ module.exports = {
         // index: 'white.html', //白色启动页面
         open: false,
         host: '0.0.0.0',
-        port: 8089,
+        port: 8080,
         https: false,
         hotOnly: false,
         // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理

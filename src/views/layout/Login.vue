@@ -50,7 +50,7 @@ export default {
     // });
   },
   mounted() {
-   // let authorization = localStorage.getItem("authorization");
+    // let authorization = localStorage.getItem("authorization");
     //debugger;
     // this.initSocket(authorization);
   },
@@ -125,7 +125,10 @@ export default {
                 // debugger;
                 //this.initSocket(token);
                 // 页面跳转
-                router.push("/module");
+                //  判断加载哪个公司的布局页以加载不同样式
+                data.company.id === 121
+                  ? router.push("/tjsp/module")
+                  : router.push("/jsnk/module");
               } else {
                 alert(res.data.msg);
                 this.loginUser.usename = "";
@@ -139,9 +142,9 @@ export default {
       });
     },
     initSocket(authorization) {
-       let url = "ws://192.168.1.118:7006/socket.io/" ;
-      if(null != authorization){
-         url = url +"?Authorization=" +authorization;
+      let url = "ws://192.168.1.118:7006/socket.io/";
+      if (null != authorization) {
+        url = url + "?Authorization=" + authorization;
       }
       // debugger;
       webSocket({ url: url });
@@ -149,3 +152,6 @@ export default {
   }
 };
 </script>
+<style lang='scss'>
+@import '~@s/public/login-container.scss'
+</style>
