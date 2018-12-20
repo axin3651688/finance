@@ -78,7 +78,7 @@ export default {
   computed: {
     ...mapGetters(['user']),
     ...mapState({
-      items: state => state.message.items
+      chatWithUserId: state => state.messageModule.chatWithUserId
     })
   },
 
@@ -92,9 +92,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('message', ['actionsTest']),
-    // ...mapM
-
+    // ...mapActions('messageModule', ['actionsTest']),
+    ...mapMutations('messageModule', ['mutationSetChatWithUserId']),
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
@@ -141,14 +140,14 @@ export default {
 
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
-
+      this.mutationSetChatWithUserId(receiverId);
       console.log('即将和用户', receiverId, '聊天')
     }
   },
   mounted() {
     this.getdata();
-    this.actionsTest('1231234234');
-    console.log('测试message vuex：', this.items);
+    // this.actionsTest('1231234234');
+    console.log('测试message vuex：', this.chatWithUserId);
   }
 }
 </script>

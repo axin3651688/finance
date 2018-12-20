@@ -372,7 +372,6 @@ export default {
       width: 100%;
       padding: 18px 40px 20px;
       background: #ffffff;
-      z-index: 9;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
 
       .chat-tool {
