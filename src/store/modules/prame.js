@@ -4,7 +4,7 @@ const prame = {
       year: new Date().getFullYear(),
       module_api: 0,
       month: new Date().getMonth(),
-      companyName: "马军农垦",
+      companyName: "登录有问题哦,重新登录吧",
       company: '1',
       openPid: 0,
       activeId: [],

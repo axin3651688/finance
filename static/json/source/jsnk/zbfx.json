@@ -154,7 +154,7 @@
             "listeners":[{
                     "type":"click",
                     "way":"addTab",
-                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json"
+                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
                    
             }],
             "options": {
@@ -180,6 +180,7 @@
             "xtype": "chart",
             "id": "1403100",
             "text": "利润总额",
+            "show":[{"id":"company","datas":[1]}],
             "weight": 6,
             "listeners":[{
                 "type":"click",
@@ -189,7 +190,7 @@
                       console.info(params);
                        debugger; 
                 }
-        }],
+             }],
             "options": {
                 "type": "column",
                 "getData": {
@@ -214,6 +215,15 @@
             "id": "1400111",
             "text": "归属于母公司净利润",
             "weight": 6,
+            "listeners":[{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/treegrid/demo.json",
+                "handler":($vue,params)=>{
+                      console.info(params);
+                       debugger; 
+                }
+             }],
             "options": {
                 "type": "column",
                 "getData": {
