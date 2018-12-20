@@ -213,6 +213,8 @@ export default {
           li.have-sub {
             img.avatar-img {
               width: 46px;
+              height: 46px;
+              border-radius: 50%;
               float: left;
             }
 
