@@ -104,6 +104,7 @@ export default {
     },
 
     onCellClick(row, column, cell, event){
+      debugger
         if(row._drill || row.drill){
             if(column.cellIndex === 0 ){
                debugger;

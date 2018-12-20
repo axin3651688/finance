@@ -81,6 +81,7 @@ export default {
           * 增加到tab的动作  openDilog  openWindow
           */
          addTab(params,listener){
+           debugger
           let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
           let module = tab.$parent.$parent;
           let bb = this.item,text = bb.text;

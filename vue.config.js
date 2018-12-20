@@ -27,8 +27,9 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
-        target: 'http://192.168.1.118:8081',
+        // target: 'http://192.168.1.118:8081',
        // target: 'https://192.168.1.149:8001/',
+        target: 'http://192.168.2.34:8081',
         ws: true,
         changOrigin: true,
         pathRewrite: {
