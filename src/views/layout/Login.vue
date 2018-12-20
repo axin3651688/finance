@@ -152,3 +152,6 @@ export default {
   }
 };
 </script>
+<style lang='scss'>
+@import '~@s/public/login-container.scss'
+</style>
