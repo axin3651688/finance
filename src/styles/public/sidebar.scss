@@ -32,7 +32,7 @@
     .el-menu {
       border: none;
       background-color: $menuBg;
-      height: calc(100% - $min_sideWidth);
+      height: calc(100% - #{$min_sideWidth});
       // overflow: auto;
 
 

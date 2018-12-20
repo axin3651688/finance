@@ -5,11 +5,10 @@ Vue.use(Router)
 const router = new Router({
   // mode: 'history',
   // base: process.env.BASE_URL,
-  routes: [
-    // {
-    //   path: '/',
-    //   redirect: '/tjsp/module',
-    // },
+  routes: [{
+      path: '/',
+      redirect: '/tjsp/module',
+    },
     {
       path: '/',
       name: '我的工作台',
