@@ -27,9 +27,10 @@
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
-    :width="col.width"
+    :width="col.width" 
     maxWidth="180"
   >
+   <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
     <template slot-scope="scope">
       <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
@@ -37,7 +38,7 @@
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
-  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text">
+  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text" >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -66,6 +67,7 @@
   </el-table-column>
 </template>
 <script>
+import EventMixins from '../mixins/EventMixins'
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
@@ -73,11 +75,15 @@ export default {
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
+    },
+    getLevel(level){
+     // console.info(level);
+      return level+1;
     }
   },
   methods: {
     upData(item) {
-       debugger;
+    //   debugger;
       this.$set(this, "data", null);
       this.$set(this, "data", item);
       this.$set(this.data, "datas", item.datas);
@@ -86,7 +92,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, colId, row, rows) {
-      debugger;
+    //  debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";
@@ -99,12 +105,12 @@ export default {
         return "--";
       }
       value = (value- 0 /10000).toLocaleString();
-      debugger;
+      //debugger;
       return value;
     }
   },
   created() {
-    debugger;
+    //debugger;
   }
 };
 </script>
@@ -146,5 +152,11 @@ tbody {
 }
 .el-tooltip__popper .popper__arrow {
   display: none;
+}
+.item2{
+  text-indent: 20px;
+}
+.item3{
+  text-indent: 40px;
 }
 </style>

@@ -7,7 +7,6 @@
     </el-table-column>
    <bi-table-column v-else    :col="col"  :key="col.text" :data="data" ref="tcol"/>
 </template>
-
 <script>
 import BiTableColumn from "./BiTableColumn"
 export default {

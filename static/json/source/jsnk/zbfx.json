@@ -180,6 +180,7 @@
             "xtype": "chart",
             "id": "1403100",
             "text": "利润总额",
+            "show":[{"id":"company","datas":[1]}],
             "weight": 6,
             "listeners":[{
                 "type":"click",
@@ -189,7 +190,7 @@
                       console.info(params);
                        debugger; 
                 }
-        }],
+             }],
             "options": {
                 "type": "column",
                 "getData": {
