@@ -122,7 +122,8 @@
                   //  判断加载哪个公司的布局页以加载不同样式
                   data.company.id === 121 ?
                     router.push("/tjsp/module") :
-                    router.push("/message");
+                   // router.push("/message");
+                     router.push("/jsnk/module") 
                 } else {
 
                   this.loginUser.usename = "";

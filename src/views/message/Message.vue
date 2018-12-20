@@ -308,8 +308,8 @@ export default {
             .right-border {
               position: absolute;
               top: 0;
-              right: 0;
-              bottom: -1px;
+              left: 0;
+              bottom: 0;
               width: 6px;
             }
           }
