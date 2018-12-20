@@ -10,7 +10,7 @@ import {
     isArray
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
-import {processSingleMessage} from './cmd1500Handle'
+import {processSingleMessage} from 'utils/message'
 /**
  * 消息核心处理
  * author:gjx

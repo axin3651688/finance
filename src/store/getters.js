@@ -32,6 +32,6 @@ const getters = {
   action: state => state.prame.command.action,
   action2: state => state.prame.command.action2,
   action3: state => state.prame.command.action3,
-
+  newServerMsg: state => state.messageModule.newServerMsg
 }
 export default getters

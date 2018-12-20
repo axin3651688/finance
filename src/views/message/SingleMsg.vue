@@ -89,6 +89,9 @@ export default {
     ...mapGetters(['user']),
     loginUserId() {
       return this.user.user.id;
+    },
+    singleMsgListReverse() {
+      return singleMsgList.reverse()
     }
   },
   methods: {

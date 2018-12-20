@@ -55,20 +55,6 @@
               <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
               <div class="right-border"></div>
             </li>
-            <!--<li :class="{'active': activeItem === item.miniType}"-->
-            <!--v-for="item in messageList"-->
-            <!--:key="item.miniType"-->
-            <!--@click="activeThisItem(item.miniType)">-->
-            <!--<div class="top">-->
-            <!--<img :src="item.avatar" alt="">-->
-            <!--<span class="count mt" v-if="item.count">{{item.count}}</span>-->
-            <!--<span class="publish-time mt">26秒前</span>-->
-            <!--</div>-->
-            <!--<h3 class="title">{{item.name}}</h3>-->
-            <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
-            <!--<p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>-->
-            <!--<div class="right-border"></div>-->
-            <!--</li>-->
           </ul>
         </el-scrollbar>
       </div>
@@ -92,7 +78,7 @@
 </template>
 <script>
 import {MY_SESSION} from '~api/message.js';
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import SingleMsg from './SingleMsg' // 单聊消息
 import Contacts from './Contacts' // 通讯录
 import Todo from './Todo' // 代办事项
@@ -120,10 +106,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'newServerMsg'])
+  },
+  watch: {
+    newServerMsg(data) {
+      this.alertServerMsg(data)
+    }
   },
   methods: {
-    ...mapMutations('messageModule', ['mutationSetMySessionList']),
+    // ...mapMutations('messageModule', ['mutationSetMySessionList']),
+    // ...mapActions(['']),
+
+    // 弹出系统推送的消息
+    alertServerMsg(data) {
+      console.log('收到服务器推送消息：', data)
+    },
 
     // 页面挂载后 请求消息列表数据成功后的处理
     getSessionThen(res) {
@@ -311,8 +308,8 @@ export default {
             .right-border {
               position: absolute;
               top: 0;
-              right: 0;
-              bottom: -1px;
+              left: 0;
+              bottom: 0;
               width: 6px;
             }
           }

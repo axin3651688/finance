@@ -45,14 +45,6 @@
     created() {
       //每次打开获取一下原来的用户名
       this.loginUser.usename = localStorage.getItem("usename");
-      // this.axios.get("/cnbi/chartData.1.json").then(res => {
-      //   console.log(res.data);
-      // });
-    },
-    mounted() {
-      // let authorization = localStorage.getItem("authorization");
-      //debugger;
-      // this.initSocket(authorization);
     },
 
     data() {
@@ -150,16 +142,6 @@
           }
         });
       },
-      initSocket(authorization) {
-        let url = "ws://192.168.1.118:7006/socket.io/";
-        if (null != authorization) {
-          url = url + "?Authorization=" + authorization;
-        }
-        // debugger;
-        webSocket({
-          url: url
-        });
-      }
     }
   };
 </script>

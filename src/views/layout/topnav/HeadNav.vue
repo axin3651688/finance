@@ -218,7 +218,11 @@ export default {
         // 清除token
         localStorage.removeItem("authorization");
         this.$router.push("/login");
-      });
+      }) .catch(res => {
+          console.error("退出请求失败");
+          localStorage.removeItem("authorization");
+          this.$router.push("/login");
+        });
     },
     // 公司点击确定事件
     handleQoose() {
