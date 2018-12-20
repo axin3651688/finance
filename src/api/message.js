@@ -2,8 +2,7 @@
 import request from 'utils/http'
 
 // 获取消息左边栏数据
-export function getSession(userId) {
-  // console.log("getSession");
+export function MY_SESSION(userId) {
   // debugger
   return request({
     url: '/api/api/my_session',
