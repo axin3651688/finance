@@ -1,5 +1,6 @@
 const state = {
-  chatWithUserId: null,
+  chatWithUserId: null, // Number: 和哪个用户聊天
+  mySessionList: null,  // [{},{}] 消息左边栏
 };
 
 const getters = {};
@@ -23,6 +24,12 @@ const mutations = {
   // 设置当前的聊天对象的id
   mutationSetChatWithUserId(state, chatWithUserId) {
     state.chatWithUserId = chatWithUserId
+  },
+
+  // 设置消息左边栏的数据
+  mutationSetMySessionList(state, mySessionList) {
+    debugger;
+    state.mySessionList = mySessionList
   }
 
 };

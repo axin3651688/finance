@@ -91,8 +91,8 @@
   </div>
 </template>
 <script>
-import {getSession} from '~api/message.js';
-import {mapGetters} from 'vuex'
+import {MY_SESSION} from '~api/message.js';
+import {mapGetters, mapMutations} from 'vuex'
 import SingleMsg from './SingleMsg' // 单聊消息
 import Contacts from './Contacts' // 通讯录
 import Todo from './Todo' // 代办事项
@@ -123,12 +123,16 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
+    ...mapMutations('messageModule', ['mutationSetMySessionList']),
+
     // 页面挂载后 请求消息列表数据成功后的处理
     getSessionThen(res) {
       res = res.data;
       if (res.code === 200 && res.data) {
         this.messageList = res.data;
-        console.log('message左边栏====', this.messageList, '===message左边栏')
+        console.log('message左边栏====', this.messageList, '===message左边栏');
+        let mySessionList = res.data;
+        this.mutationSetMySessionList(mySessionList)
       } else {
         this.$message({
           type: 'error',
@@ -150,8 +154,8 @@ export default {
       let messagecContainer = this.$refs.messagecContainer;
       let resizeHeight = windowHeiht - NAV_HEADER_HEIGHT;
       messagecContainer.style.height = resizeHeight + 'px';
-      console.log('message视图高度：', resizeHeight);
-      console.log('message视图dom：', messagecContainer)
+      // console.log('message视图高度：', resizeHeight);
+      // console.log('message视图dom：', messagecContainer)
     }
   },
   mounted() {
@@ -159,7 +163,7 @@ export default {
     console.log('用户信息：', this.user);
     // let userId = this.user.user.id;
     // console.log('用户id：', userId);
-    getSession(this.user.user.id).then(res => {
+    MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
     }).catch(err => {
       console.log('请求message：', err)
@@ -209,6 +213,8 @@ export default {
           li.have-sub {
             img.avatar-img {
               width: 46px;
+              height: 46px;
+              border-radius: 50%;
               float: left;
             }
 
@@ -291,8 +297,7 @@ export default {
 
             p {
               margin-top: 8px;
-              width: 204px;
-              /*height: 32px;*/
+              min-width: 240px;
               overflow: hidden;
               font-size: 12px;
               font-family: $fontFamilyMain;

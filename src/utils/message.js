@@ -21,3 +21,10 @@ export function PARSE_EMOTIONS(content) {
   }
   return content
 }
+
+
+// 处理服务端socked端推送的消息
+export function processSingleMessage(data) {
+  console.log('开始处理接收到服务端推送的单聊消息:', data);
+  debugger;
+}
