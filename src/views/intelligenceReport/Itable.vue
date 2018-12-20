@@ -111,7 +111,6 @@ import {report} from '@/api/cube.js'
       HotTable
     },
     created(){
-      console.log(me)
       // 获取索引和数据
       // var array = [
       //   {a:1,b:2},
@@ -391,7 +390,6 @@ import {report} from '@/api/cube.js'
 
         // let as = this.$refs.hotTableComponent.hotInstance.getDataAtCol(1);
         // console.log(as)
-    
     },
 
     mounted(){
@@ -401,7 +399,6 @@ import {report} from '@/api/cube.js'
     methods:{
 
         swapHotData() {
-          console.log(this.$refs)
       //   let a = this.$refs.hotTableComponent.hotInstance.getDataAtCol(1);
       //  let b = this.$refs.hotTableComponent.hotInstance.alter('insert_col',2)
       //  console.log(b)
@@ -422,6 +419,7 @@ import {report} from '@/api/cube.js'
             }
             report(item).then((res)=>{
                  this.settings.data = res.data.data
+                 console.log(this.settings.data)
                   this.settings.minRows = this.settings.data.length+5
                   
                 // this.colHeaders = res.data.data.columns
@@ -458,31 +456,20 @@ import {report} from '@/api/cube.js'
               let text = value;
             let datas = this.dataDict.filter(item=>item.id === value);
             if(datas.length == 0){
-                console.error("db user has init wrong dim datas  from "+prop+"["+value+"]");
+                // console.error("db user has init wrong dim datas  from "+prop+"["+value+"]");
                 // text = this.getDropDownSource(prop.split("_")[1])[0];
                   td.innerHTML='';
                   return ;
             }else{
                 text = datas.length > 0 ? datas[0].text : value;
-            }
-            
+            }   
             td.innerHTML = text;
         },
 
         // 插入了删除
         flags(instance, td, row, col, prop, value, cellProperties){
-          // console.log(this.$refs.hotTableComponent.hotInstance)
           let arr = this.$refs.hotTableComponent.hotInstance
           let list = this.settings.data
-          // var list = [
-          //     {a:1,b:2},
-          //     {a:2,b:4},
-          //     {a:4,b:6}
-          //   ]
-          // let array = {}
-          //   for(let [index,data] of list.entries()){
-          //     console.log("index:",index,"data:",data)
-          //   }
           var code = value;
           while (td.firstChild) {
             td.removeChild(td.firstChild);
@@ -495,11 +482,7 @@ import {report} from '@/api/cube.js'
             // console.log(this.$refs.hotTableComponent)
             Handsontable.dom.addEvent(el, 'click', function (event) {
             arr.alter("remove_row", row);//删除当前行
-                    });
-            // el.onclick = function(){
-            //   // tr.remove()
-            //   // list.remove(list.inde)x
-            // }
+            });
           }
         },
         //row, prop, oldValue, newValue 
@@ -552,13 +535,10 @@ import {report} from '@/api/cube.js'
        text-decoration: none;
         cursor: none;
     }   */
-    .handsontable .ht_clone_left {
-      z-index: -10;
-    }
     thead tr:last-child th {
     border-bottom-width: 0;
     border-right: 1px solid #ccc;
-}
+    }
     button{
         margin: 20px 20px;
     }
