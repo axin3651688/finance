@@ -1,618 +1,740 @@
 <template>
-    <div class="GroupMsg vue-module">
-        <div class="top">
-            <div class="left">
-                <div class="img-box">
-                    <img src="" alt="">
-                </div>
-                <div class="content">
-                    <h3 class="title">
-                        软件技术群
-                        <el-dropdown trigger="click" @command="handleCommand">
+  <div class="GroupMsg vue-module">
+    <div class="top">
+      <div class="left">
+        <div class="img-box">
+          <img src="" alt="">
+        </div>
+        <div class="content">
+          <h3 class="title">
+            <span>{{groupInfo.text}}</span>
+            <el-dropdown trigger="click" @command="handleCommand">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="groupSetting"
-                                                  style="padding-top: 15px;padding-bottom: 12px;">
-                                    <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
-                                        <div style="width: 18px;height: 18px;margin-right: 10px">
-                                            <img src="../../assets/green/group_set_icon.svg"
-                                                 alt="群主设置"
-                                                 style="width: 100%;height: 100%;">
-                                        </div>
-                                        <span style="font-weight: bold;font-size: 16px;color: #1890FF   ">群主设置</span>
-                                    </h3>
-                                    <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
-                                </el-dropdown-item>
-                                <el-dropdown-item command="groupQuit" style="padding-top: 15px;padding-bottom: 12px;">
-                                    <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
-                                        <div style="width: 18px;height: 18px;margin-right: 10px">
-                                            <img src="../../assets/green/group_set_tuichu.svg"
-                                                 alt="退出群组"
-                                                 style="width: 100%;height: 100%;">
-                                        </div>
-                                        <span style="font-weight: bold;font-size: 16px;color: #1890FF   ">退出群组</span>
-                                    </h3>
-                                    <p style="font-size:14px; line-height: 20px;margin-top: 8px;">退出群主将不再接收消息</p>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </h3>
-                    <p class="text">30人</p>
-                </div>
-            </div>
-            <div class="right">
-                <div class="group-member" @click="handleShowGroupMembers">
-                    <div class="icon icon__group-person"></div>
-                    <span>成员</span>
-                </div>
-                <div class="btn-group">
-                    <div class="btn active">消息</div>
-                    <div class="btn">文件</div>
-                </div>
-            </div>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="groupSetting"
+                                  style="padding-top: 15px;padding-bottom: 12px;">
+                  <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
+                    <div style="width: 18px;height: 18px;margin-right: 10px">
+                      <img src="../../assets/green/group_set_icon.svg"
+                           alt="群主设置"
+                           style="width: 100%;height: 100%;">
+                    </div>
+                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">群主设置</span>
+                  </h3>
+                  <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
+                </el-dropdown-item>
+                <el-dropdown-item command="groupQuit" style="padding-top: 15px;padding-bottom: 12px;">
+                  <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
+                    <div style="width: 18px;height: 18px;margin-right: 10px">
+                      <img src="../../assets/green/group_set_tuichu.svg"
+                           alt="退出群组"
+                           style="width: 100%;height: 100%;">
+                    </div>
+                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">退出群组</span>
+                  </h3>
+                  <p style="font-size:14px; line-height: 20px;margin-top: 8px;">退出群主将不再接收消息</p>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </h3>
+          <p class="text">{{groupMembers.length}}人</p>
         </div>
-        <div class="middle">
-            <el-scrollbar style="height: 100%">
-                <!--<div class="message-box" v-for="item in singleMsgList" :key="item.id">-->
-                <!--<div class="message-top">-->
-                <!--<div class="avatar-box">-->
-                <!--<img :src="item.avatar" alt="">-->
-                <!--</div>-->
-                <!--<h3 class="user-name">{{item.name}}</h3>-->
-                <!--<div class="send-time">-->
-                <!--&lt;!&ndash;<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>&ndash;&gt;-->
-                <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-                <!--<div class="status"></div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="message-content">-->
-                <!--<p>{{item.content}}</p>-->
-                <!--</div>-->
-                <!--</div>-->
+      </div>
+      <div class="right">
+        <div class="group-member" @click="handleShowGroupMembers">
+          <div class="icon icon__group-person"></div>
+          <span>成员</span>
+        </div>
+        <div class="btn-group">
+          <div class="btn active">消息</div>
+          <div class="btn">文件</div>
+        </div>
+      </div>
+    </div>
+    <div class="middle">
+      <el-scrollbar style="height: 100%">
+        <!--<div class="message-box" v-for="item in singleMsgList" :key="item.id">-->
+        <!--<div class="message-top">-->
+        <!--<div class="avatar-box">-->
+        <!--<img :src="item.avatar" alt="">-->
+        <!--</div>-->
+        <!--<h3 class="user-name">{{item.name}}</h3>-->
+        <!--<div class="send-time">-->
+        <!--&lt;!&ndash;<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>&ndash;&gt;-->
+        <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
+        <!--<div class="status"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="message-content">-->
+        <!--<p>{{item.content}}</p>-->
+        <!--</div>-->
+        <!--</div>-->
 
-                <div class="message-box" v-for="item in 8" :key="item">
-                    <div class="message-top">
-                        <div class="avatar-box">
-                            <img src="" alt="">
-                        </div>
-                        <h3 class="user-name">名字</h3>
-                        <div class="send-time">
-                            <span class="time">2018-10-15&nbsp;&nbsp;15:00</span>
-                            <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-                            <div class="status"></div>
-                        </div>
-                    </div>
-                    <div class="message-content">
-                        <!--<p>{{item.content}}</p>-->
-                        <p>发送的内容</p>
-                    </div>
-                </div>
-            </el-scrollbar>
-        </div>
-        <div class="bottom">
-            <div class="chat-tool">
-                <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
-                <span class="tool-icon file-icon" @click="selectFile">
-                            <form action="">
-                                <input type="file" name="file" ref="selectFile">
-                            </form>
-                        </span>
-                <span class="tool-icon link-icon"></span>
-                <transition name="el-zoom-in-bottom">
-                    <div v-show="showFacePop" class="face-pop">
-                        <ul>
-                            <li v-for="face in 50">
-                                <img class="face-img" src="../../assets/green/emoji.svg" alt=""
-                                     @click="addFaceToInput('[/biaoqing]')">
-                            </li>
-                        </ul>
-                    </div>
-                </transition>
+        <div class="message-box" v-for="item in groupMsgList" :key="item.id">
+          <div class="message-top">
+            <div class="avatar-box">
+              <img :src="item.avatar" :alt="item.name">
             </div>
-            <textarea class="chat-textarea" placeholder="请输入文字，按enter建发送信息"
-                      v-model="sendText"
-                      @keyup.enter="handleSendMessage"
-            ></textarea>
+            <h3 class="user-name">{{item.name}}</h3>
+            <div class="send-time">
+              <span class="time">2018-10-15&nbsp;&nbsp;15:00</span>
+              <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
+              <div class="status"></div>
+            </div>
+          </div>
+          <div class="message-content">
+            <p>{{item.content}}</p>
+          </div>
         </div>
+      </el-scrollbar>
 
-        <!--群设置弹窗-->
-        <el-dialog
-                :visible.sync="showGroupSettingDialog"
-                width="35%"
-                :show-close="false">
-            <div class="dialog-content">
-                <h3 class="title">群头像设置</h3>
-                <figure>
-                    <div>
-                        <div class="img-box">
-                            <img src="" alt="">
-                        </div>
-                    </div>
-                    <a class="upload-file" href="javascript:;">
-                        <span>选择照片</span>
-                        <input type="file" placeholder="选择照片">
-                    </a>
-                </figure>
+      <!--底部阴影-->
+      <div class="inset-shadow"></div>
+    </div>
+    <div class="bottom">
+      <div class="chat-tool">
+        <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
+        <span class="tool-icon file-icon" @click="selectFile">
+              <form action="">
+                  <input type="file" name="file" ref="selectFile">
+              </form>
+          </span>
+        <span class="tool-icon link-icon"></span>
+        <transition name="el-zoom-in-bottom">
+          <div v-show="showFacePop" class="face-pop">
+            <ul>
+              <li v-for="face in EMOTION_SPRITES" :key="face.value">
+                <div :class="['face-img', face.className]"
+                     @click="addFaceToInput(face.value)"
+                     :title="face.value"
+                ></div>
+              </li>
+            </ul>
+          </div>
+        </transition>
+      </div>
+      <textarea class="chat-textarea"
+                placeholder="请输入文字，按enter建发送信息"
+                v-model="sendText"
+                ref="textarea"
+                @keyup.enter="handleSendMessage"
+      ></textarea>
+    </div>
+
+    <!--群设置弹窗-->
+    <el-dialog
+      :visible.sync="showGroupSettingDialog"
+      width="35%"
+      :show-close="false">
+      <div class="dialog-content">
+        <h3 class="title">群头像设置</h3>
+        <figure>
+          <div>
+            <div class="img-box">
+              <img :src="groupInfo.avatar" :alt="groupInfo.text">
             </div>
-            <div class="dialog-content">
-                <h3 class="title">群名称设置</h3>
-                <el-input
-                        placeholder="群名称"
-                        v-model="groupName"
-                        clearable>
-                </el-input>
-            </div>
-            <span slot="footer" class="dialog-footer">
+          </div>
+          <a class="upload-file" href="javascript:;">
+            <span>选择照片</span>
+            <input type="file" placeholder="选择照片">
+          </a>
+        </figure>
+      </div>
+      <div class="dialog-content">
+        <h3 class="title">群名称设置</h3>
+        <el-input
+          placeholder="群名称"
+          v-model="groupInfo.text"
+          clearable>
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
                 <el-button type="primary" size="small" @click="showGroupSettingDialog = false">保 存</el-button>
                 <el-button size="small" @click="showGroupSettingDialog = false">取 消</el-button>
               </span>
-        </el-dialog>
+    </el-dialog>
 
-        <!--退出群弹窗-->
-        <el-dialog
-                title="退出群组"
-                :visible.sync="showGroupQuitDialog"
-                width="30%"
-                :show-close="false"
-                center>
-            <div class="dialog-content" style="font-size: 16px;line-height: 30px;">
-                <p>是否退出群组</p>
-                <p>“软件开发交流群”?</p>
-            </div>
-            <span slot="footer" class="dialog-footer">
+    <!--退出群弹窗-->
+    <el-dialog
+      title="退出群组"
+      :visible.sync="showGroupQuitDialog"
+      width="30%"
+      :show-close="false"
+      center>
+      <div class="dialog-content" style="font-size: 16px;line-height: 30px;">
+        <p>是否退出群组</p>
+        <p>“软件开发交流群”?</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
                 <el-button size="small" @click="showGroupQuitDialog = false">确 认</el-button>
                 <el-button type="primary" size="small" @click="showGroupQuitDialog = false">取 消</el-button>
               </span>
-        </el-dialog>
+    </el-dialog>
 
-        <!--群成员侧边栏组件-->
-        <group-members v-if="showGroupMembers" @closeGroupMembers="handleCloseGroupMembers"></group-members>
-    </div>
+    <!--群成员侧边栏组件-->
+    <group-members v-if="showGroupMembers" @closeGroupMembers="handleCloseGroupMembers"></group-members>
+  </div>
 </template>
 
 <script>
-    import GroupMembers from './GroupMembers'
+import GroupMembers from './GroupMembers'
+import emotionSprites from '@a/green/emotion_sprites.json';
+import {
+  findGroupMsg,
+  GROUP_INFO,
+  sendMsg,
+  QUIT_GROUP,
+  EDIT_GROUP,
+  DISSOLU_GROUP
+} from '~api/message.js';
 
-    export default {
-        name: "GroupMsg",
-        components: {
-            GroupMembers
-        },
-        data() {
-            return {
-                showGroupMembers: false,            // 是否显示群成员组件
-                groupName: '群名称',                 // 群设置》群名称
-                showGroupQuitDialog: false,         // 退出群弹出
-                showGroupSettingDialog: false,      // 群组设置弹窗
-                showFacePop: false,                 // 弹窗聊天表情
-                sendText: '',                       // 聊天发送的内容
-            }
-        },
-        methods: {
-            // 群组设置 与 退出群组
-            handleCommand(command) {
-                switch (command) {
-                    case 'groupSetting': {
-                        this.showGroupSettingDialog = true;
-                        break
-                    }
-                    case 'groupQuit': {
-                        this.showGroupQuitDialog = true;
-                        break
-                    }
-                }
-            },
-
-            // 选择上传文件，这里是上传群组头像
-            selectFile() {
-            },
-
-            // 显示群成员组件
-            handleShowGroupMembers() {
-                this.showGroupMembers = true;
-            },
-
-            handleCloseGroupMembers() {
-                this.showGroupMembers = false;
-            }
-        }
+export default {
+  name: 'GroupMsg',
+  components: {
+    GroupMembers
+  },
+  data() {
+    return {
+      EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
+      groupInfo: {},
+      groupMembers: [],
+      groupMsgList: [],
+      showGroupMembers: false, // 是否显示群成员组件
+      groupName: '群名称', // 群设置》群名称
+      showGroupQuitDialog: false, // 退出群弹出
+      showGroupSettingDialog: false, // 群组设置弹窗
+      showFacePop: false, // 弹窗聊天表情
+      sendText: '' // 聊天发送的内容
     }
+  },
+  methods: {
+
+    // 点击表情，把表情添加到输入框, 同时 focus 输入框
+    addFaceToInput(face) {
+      this.sendText += face;
+      this.$refs.textarea.focus();
+    },
+
+    // 发送聊天内容,发送完一条消息后要清空输入框
+    handleSendMessage() {
+      console.log('要发送的内容是：', this.sendText);
+      let sendData = {
+        code: 1101, // 1100:单聊 1101:群聊
+        data: {
+          content: this.sendText,
+          // receiverId: 538, // 538 程雪怡
+          senderId: 539, // 539 姜海斌
+          type: 1
+        },
+        // data: {
+        //     content: this.sendText,
+        //     receiverId: 244,
+        //     senderId: 397,
+        //     type: 1
+        // },
+        device: '868938033321615'
+      };
+      this.sendText = '';
+      sendMsg(sendData)
+    },
+
+    // 群组设置 与 退出群组 弹窗控制
+    handleCommand(command) {
+      switch (command) {
+      case 'groupSetting': {
+        this.showGroupSettingDialog = true;
+        break
+      }
+      case 'groupQuit': {
+        this.showGroupQuitDialog = true;
+        break
+      }
+      }
+    },
+
+    // 选择上传文件，这里是上传群组头像
+    selectFile() {
+    },
+
+    // 显示群成员组件
+    handleShowGroupMembers() {
+      this.showGroupMembers = true;
+    },
+
+    // 关闭群成员组件
+    handleCloseGroupMembers() {
+      this.showGroupMembers = false;
+    },
+
+    // 群id查询群信息
+    getInfo() {
+      GROUP_INFO(4).then(res => {
+        console.log('群id查询群信息:', res.data.data);
+        if (res.data.code === 200) {
+          this.groupInfo = res.data.data.info;
+          this.groupMembers = res.data.data.users
+        }
+      }).catch(err => {
+        console.log('请求message：', err)
+      })
+    },
+
+    // 获取群消息
+    getGroupMsgList() {
+      findGroupMsg().then(res => {
+        console.log('群消息列表：', res.data.data);
+        if (res.data.code === 200) {
+          this.groupMsgList = res.data.data.data
+        }
+      }).catch(err => {
+        console.log('群消息', err)
+      })
+    },
+
+    // 设置群资料,修改图片需要先上传头像
+    clickEditGroup() {
+      let params = {
+        avatar: 'avatar', // 上传头像的地址
+        id: 4, // 群id
+        note: '群描述',
+        text: '群名称',
+        type: 0, // 1可以被搜索到
+        userId: 225
+      };
+      EDIT_GROUP(params).then(res => {
+        console.log('设置群资料', res.data.data);
+        if (res.data.code === 200) {
+
+        }
+      }).catch(err => {
+        console.log('设置群资料', err)
+      })
+    },
+
+    // 退出群组
+    clickQuitGroup() {
+      let params = {
+        userId: 225,
+        groupId: 0
+      };
+      QUIT_GROUP(params).then(res => {
+        console.log('退出群组', res.data.data);
+        if (res.data.code === 200) {
+
+        }
+      }).catch(err => {
+        console.log('退出群组', err)
+      })
+    },
+
+    // 解散群聊
+    clickDissoluGroup() {
+      let params = {
+        senderId: 225,
+        groupId: 0
+      };
+      DISSOLU_GROUP(params).then(res => {
+        console.log('解散群聊', res.data.data);
+        if (res.data.code === 200) {
+
+        }
+      }).catch(err => {
+        console.log('解散群聊', err)
+      })
+    }
+  },
+  mounted() {
+    this.getInfo();
+    this.getGroupMsgList();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', e => {
+      let elem = e.target || e.srcElement;
+      while (elem) { // 循环判断至跟节点，防止点击的是div子元素
+        if (elem.id && elem.id === 'face-icon') {
+          return
+        }// 如果还有别的div不想点击，就加else if判断
+        elem = elem.parentNode
+      }
+      this.showFacePop = false
+    })
+  }
+}
 </script>
 
+<style lang="scss">
+  /*这里不使用 scoped 使v-html生成表情能够应用到样式*/
+  @import "@s/green/emotion_sprites.scss";
+</style>
 <style lang="scss" scoped>
-    @import "@s/green/variables.scss";
+  @import "@s/green/variables.scss";
 
-    $iconGroupPersonUrl: '../../assets/green/group_person.svg';
+  $iconGroupPersonUrl: '../../assets/green/group_person.svg';
 
-    .GroupMsg {
+  .GroupMsg {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 40px 0 40px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+
+      .left {
         display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        overflow: hidden;
-        height: 100%;
+        align-items: center;
 
-        .top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 60px 40px 0 40px;
-            box-sizing: border-box;
-            margin-bottom: 20px;
+        .img-box {
+          width: 80px;
+          height: 80px;
+          margin-right: 30px;
+          overflow: hidden;
+          border-radius: 50%;
+          background: $colorTheme;
 
-            .left {
-                display: flex;
-                align-items: center;
-
-                .img-box {
-                    width: 80px;
-                    height: 80px;
-                    margin-right: 30px;
-                    overflow: hidden;
-                    border-radius: 50%;
-                    background: $colorTheme;
-
-                    img {
-                        width: 100%;
-                        height: 100%;
-                    }
-                }
-
-                .content {
-                    .title {
-                        font-size: 18px;
-                        color: $colorText1;
-
-                        /deep/ .el-dropdown {
-                            cursor: pointer;
-                        }
-                    }
-
-                    .text {
-                        margin-top: 8px;
-                        font-size: 16px;
-                        color: $colorText2
-                    }
-                }
-            }
-
-            .right {
-                display: flex;
-                align-items: center;
-
-                .group-member {
-                    display: flex;
-                    align-items: center;
-                    margin-right: 30px;
-                    color: $colorTheme;
-                    font-size: 16px;
-                    cursor: pointer;
-
-                    .icon {
-                        width: 18px;
-                        height: 18px;
-                        margin-right: 8px;
-                    }
-
-                    .icon__group-person {
-                        background: url($iconGroupPersonUrl);
-                    }
-                }
-            }
-        }
-
-        .middle {
-            flex: 1;
-            /*padding-right: 24px;*/
-            padding-left: 40px;
-            overflow: hidden;
-
-            /deep/ .el-scrollbar__thumb {
-                background: $colorTheme;
-            }
-
-            /deep/ .el-scrollbar__wrap {
-                overflow-x: hidden;
-            }
-
-            /*background: #cccccc;*/
-            .message-box {
-                padding: 10px 20px;
-                margin: 10px 40px 20px 0;
-                background: #ffffff;
-                box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
-                border-radius: 12px;
-
-                .message-top {
-                    overflow: hidden;
-                    margin-bottom: 20px;
-
-                    .avatar-box {
-                        width: 40px;
-                        height: 40px;
-                        margin-right: 20px;
-                        border-radius: 50%;
-                        overflow: hidden;
-                        float: left;
-                        background: #cccccc;
-
-                        img {
-                            width: 100%;
-                        }
-                    }
-
-                    .user-name {
-                        font-size: 14px;
-                        font-weight: 400;
-                        line-height: 20px;
-                        color: $colorText1;
-                    }
-
-                    .send-time {
-                        position: relative;
-                        margin-top: 3px;
-                        font-size: 14px;
-                        font-weight: 400;
-                        line-height: 20px;
-                        color: $colorText4;
-                        font-family: $fontFamilyMain;
-
-                        .status {
-                            position: absolute;
-                            left: 215px;
-                            top: 0;
-                            width: 10px;
-                            height: 10px;
-                            border-radius: 50%;
-                            background: #EF3C3C;
-                        }
-                    }
-                }
-
-                .message-content {
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 20px;
-                    color: rgba(0, 0, 0, 0.80);
-                }
-            }
-        }
-
-        .bottom {
-            position: relative;
-            box-sizing: border-box;
-            height: 240px;
+          img {
             width: 100%;
-            padding: 18px 40px 20px;
-            background: #ffffff;
-            z-index: 9;
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
-
-            .chat-tool {
-                position: relative;
-                margin-bottom: 18px;
-
-                .tool-icon {
-                    display: inline-block;
-                    width: 24px;
-                    height: 24px;
-                    /*border-radius: 50%;*/
-                    cursor: pointer;
-                    background: #ccc;
-                    margin-right: 30px;
-                    background-size: 24px 24px;
-
-                    form {
-                        width: 0;
-                        height: 0;
-                        display: none;
-                    }
-                }
-
-                .face-icon {
-                    background: url("../../assets/green/emoji.svg") no-repeat;
-                }
-
-                .file-icon {
-                    background: url("../../assets/green/file.svg") no-repeat;
-                }
-
-                .link-icon {
-                    background: url("../../assets/green/url.svg") no-repeat;
-                }
-
-                .face-pop {
-                    $facePopHeight: 87px;
-                    $colorFaceBorder: #eee;
-                    position: absolute;
-                    width: 378px;
-                    height: $facePopHeight;
-                    border: 1px solid $colorFaceBorder;
-                    border-bottom: none;
-                    background: #ffffff;
-                    top: -$facePopHeight - 18px;
-                    left: 0;
-
-                    ul {
-                        overflow: hidden;
-                        height: 100%;
-                        margin-right: -1px;
-
-                        li {
-                            float: left;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            padding: 2px;
-                            border: 1px solid $colorFaceBorder;
-                            margin-top: -1px;
-                            margin-left: -1px;
-
-                            .face-img {
-                                width: 24px;
-                                height: 24px;
-                                cursor: pointer;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .chat-textarea {
-                min-height: 100px;
-                padding: 10px 20px;
-                color: rgba(0, 0, 0, 0.40);
-                background: rgba(0, 0, 0, 0.06);
-                border-radius: 12px;
-                width: 100%;
-                border: none;
-                outline: 0;
-                resize: none;
-                text-align: left;
-                font-family: $fontFamilyMain;
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 20px;
-            }
+            height: 100%;
+          }
         }
 
-        .comment {
-            height: 200px;
-            width: 100%;
-            background-color: pink;
-            position: relative;
-            bottom: 0;
-            opacity: 1;
-            padding: 40px 30px 0 40px;
-            box-sizing: border-box;
-        }
+        .content {
+          .title {
+            font-size: 18px;
+            color: $colorText1;
 
-        .edit {
-            background-color: #fff;
-            width: 100%;
-            padding: 10px 0 20px 20px;
-            box-sizing: border-box !important;
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .btn-group {
-            display: inline-block;
-            $btnHeight: 24px;
-            border-radius: $btnHeight / 2;
-            overflow: hidden;
-
-            .btn {
-                display: inline-block;
-                line-height: $btnHeight;
-                padding: 0 20px;
-                font-size: 14px;
-                color: rgba(0, 0, 0, 0.20);
-                background: rgba(0, 0, 0, .1);
-                cursor: pointer;
+            /deep/ .el-dropdown {
+              cursor: pointer;
             }
+          }
 
-            .btn.active {
-                background: $colorTheme;
-                color: #ffffff;
-            }
+          .text {
+            margin-top: 8px;
+            font-size: 16px;
+            color: $colorText2
+          }
         }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+
+        .group-member {
+          display: flex;
+          align-items: center;
+          margin-right: 30px;
+          color: $colorTheme;
+          font-size: 16px;
+          cursor: pointer;
+
+          .icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+          }
+
+          .icon__group-person {
+            background: url($iconGroupPersonUrl);
+          }
+        }
+      }
     }
 
-    /deep/ .el-dialog {
-        min-width: 370px;
+    .middle {
+      position: relative;
+      flex: 1;
+      /*padding-right: 24px;*/
+      padding-left: 40px;
+      overflow: hidden;
+
+      .inset-shadow {
+        $shadowHeight: 20px;
+        width: 100%;
+        height: $shadowHeight;
+        position: absolute;
+        background: #eee;
+        bottom: -$shadowHeight;
+        left: 0;
+        right: 0;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
+      }
+
+      /deep/ .el-scrollbar__thumb {
+        background: $colorTheme;
+      }
+
+      /deep/ .el-scrollbar__wrap {
+        overflow-x: hidden;
+      }
+
+      /*background: #cccccc;*/
+      .message-box {
+        padding: 10px 20px;
+        margin: 10px 40px 20px 0;
+        background: #ffffff;
+        box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
         border-radius: 12px;
 
-        .el-dialog__header {
-            text-align: left;
-            font-size: 16px;
-            font-weight: bold;
+        .message-top {
+          overflow: hidden;
+          margin-bottom: 20px;
 
-            .el-dialog__title {
-                color: $colorTheme;
+          .avatar-box {
+            width: 40px;
+            height: 40px;
+            margin-right: 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            float: left;
+            background: #cccccc;
+
+            img {
+              width: 100%;
             }
-        }
+          }
 
-        .dialog-content {
-            margin-bottom: 20px;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-
-            .title {
-                font-size: 16px;
-                font-weight: bold;
-                color: $colorTheme;
-                margin-bottom: 10px;
-            }
-
-            /deep/ .el-input__inner {
-                background: $colorBgPageGray;
-                border: none;
-            }
-
-            figure {
-                display: flex;
-                align-items: center;
-
-                .img-box {
-                    overflow: hidden;
-                    width: 60px;
-                    height: 60px;
-                    margin-right: 30px;
-                    border-radius: 50%;
-                    background: #cccccc;
-                    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-
-                    img {
-                        width: 60px;
-                        height: 60px;
-                    }
-                }
-            }
-        }
-
-        .dialog-footer {
-            .el-button {
-                border: none;
-                color: #ffffff;
-                background: $colorBgBtnGray;
-            }
-
-            .el-button.el-button--primary {
-                background: $colorTheme;
-            }
-
-            .el-button + .el-button {
-                margin-left: 30px;
-            }
-        }
-
-    }
-
-    .upload-file {
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        font-weight: 400;
-
-        span {
+          .user-name {
             font-size: 14px;
+            font-weight: 400;
             line-height: 20px;
-            color: $colorTheme;
-            cursor: pointer;
+            color: $colorText1;
+          }
+
+          .send-time {
+            position: relative;
+            margin-top: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: $colorText4;
+            font-family: $fontFamilyMain;
+
+            .status {
+              position: absolute;
+              left: 215px;
+              top: 0;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: #EF3C3C;
+            }
+          }
         }
 
-        input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            opacity: 0;
-            filter: alpha(opacity=0);
+        .message-content {
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
+          color: rgba(0, 0, 0, 0.80);
         }
+      }
     }
+
+    .bottom {
+      position: relative;
+      box-sizing: border-box;
+      /*height: 240px;*/
+      width: 100%;
+      padding: 18px 40px 20px;
+      background: #ffffff;
+
+      .chat-tool {
+        position: relative;
+        margin-bottom: 18px;
+
+        .tool-icon {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          /*border-radius: 50%;*/
+          cursor: pointer;
+          background: #ccc;
+          margin-right: 30px;
+          background-size: 24px 24px;
+
+          form {
+            width: 0;
+            height: 0;
+            display: none;
+          }
+        }
+
+        .face-icon {
+          background: url("../../assets/green/emoji.svg") no-repeat;
+        }
+
+        .file-icon {
+          background: url("../../assets/green/file.svg") no-repeat;
+        }
+
+        .link-icon {
+          background: url("../../assets/green/url.svg") no-repeat;
+        }
+      }
+
+      .chat-textarea {
+        min-height: 100px;
+        padding: 10px 20px;
+        color: rgba(0, 0, 0, 0.40);
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        width: 100%;
+        border: none;
+        outline: 0;
+        resize: none;
+        text-align: left;
+        font-family: $fontFamilyMain;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+      }
+    }
+
+    .comment {
+      height: 200px;
+      width: 100%;
+      background-color: pink;
+      position: relative;
+      bottom: 0;
+      opacity: 1;
+      padding: 40px 30px 0 40px;
+      box-sizing: border-box;
+    }
+
+    .edit {
+      background-color: #fff;
+      width: 100%;
+      padding: 10px 0 20px 20px;
+      box-sizing: border-box !important;
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .btn-group {
+      display: inline-block;
+      $btnHeight: 24px;
+      border-radius: $btnHeight / 2;
+      overflow: hidden;
+
+      .btn {
+        display: inline-block;
+        line-height: $btnHeight;
+        padding: 0 20px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.20);
+        background: rgba(0, 0, 0, .1);
+        cursor: pointer;
+      }
+
+      .btn.active {
+        background: $colorTheme;
+        color: #ffffff;
+      }
+    }
+  }
+
+  /deep/ .el-dialog {
+    min-width: 370px;
+    border-radius: 12px;
+
+    .el-dialog__header {
+      text-align: left;
+      font-size: 16px;
+      font-weight: bold;
+
+      .el-dialog__title {
+        color: $colorTheme;
+      }
+    }
+
+    .dialog-content {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+        color: $colorTheme;
+        margin-bottom: 10px;
+      }
+
+      /deep/ .el-input__inner {
+        background: $colorBgPageGray;
+        border: none;
+      }
+
+      figure {
+        display: flex;
+        align-items: center;
+
+        .img-box {
+          overflow: hidden;
+          width: 60px;
+          height: 60px;
+          margin-right: 30px;
+          border-radius: 50%;
+          background: #cccccc;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .dialog-footer {
+      .el-button {
+        border: none;
+        color: #ffffff;
+        background: $colorBgBtnGray;
+      }
+
+      .el-button.el-button--primary {
+        background: $colorTheme;
+      }
+
+      .el-button + .el-button {
+        margin-left: 30px;
+      }
+    }
+
+  }
+
+  .upload-file {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    font-weight: 400;
+
+    span {
+      font-size: 14px;
+      line-height: 20px;
+      color: $colorTheme;
+      cursor: pointer;
+    }
+
+    input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      opacity: 0;
+      filter: alpha(opacity=0);
+    }
+  }
 
 </style>
