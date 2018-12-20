@@ -5,17 +5,18 @@ Vue.use(Router)
 const router = new Router({
   // mode: 'history',
   // base: process.env.BASE_URL,
-  routes: [{
-      path: '/',
-      redirect: '/module',
-    },
+  routes: [
+    // {
+    //   path: '/',
+    //   redirect: '/tjsp/module',
+    // },
     {
       path: '/',
       name: '我的工作台',
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
-          path: '/module',
+          path: '/jsnk/module',
           name: 'module',
           component: () =>
             import('@v/BiModule'),
@@ -27,6 +28,48 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Risk_analysis.vue')
         },
+
+        // 列表
+        {
+          path: '/list',
+          name: 'list',
+          component: () =>
+            import('@v/intelligenceReport/List.vue')
+        },
+        // 报告查看
+        {
+          path: '/Report_view',
+          name: 'Report_view',
+          component: () =>
+            import('@v/intelligenceReport/Report_view.vue')
+        },
+        {
+          path: '/message',
+          name: 'message',
+          component: () =>
+            import('@v/message/Message.vue')
+        },
+
+
+      ]
+    }, {
+      path: '/',
+      name: '我的工作台',
+      component: () =>
+        import('@v/layout/TjspPage'),
+      children: [{
+          path: '/tjsp/module',
+          name: 'module',
+          component: () =>
+            import('@v/BiModule'),
+        },
+        // 风险分析
+        // {
+        //   path: '/Risk',
+        //   name: 'Risk',
+        //   component: () =>
+        //     import('@v/intelligenceReport/Risk_analysis.vue')
+        // },
 
         // 列表
         {

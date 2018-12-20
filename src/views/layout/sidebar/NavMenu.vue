@@ -36,7 +36,7 @@ export default {
   name: "NavMenu", //使用递归组件必须要有
   props: ["navMenus"], // 传入子组件的数据
   computed: {
-    ...mapGetters(["device"])
+    ...mapGetters(["device", "user"])
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
@@ -52,7 +52,10 @@ export default {
         if (this.device === "mobile") {
           this.ToggleSideBar({ opend: false });
         }
-        this.$router.push({ path: "/module" ,name:"",params:{}});
+        this.user.company.id === 121
+          ? this.$router.push("/tjsp/module")
+          : this.$router.push("/jsnk/module");
+        // this.$router.push({ path: "/module", name: "", params: {} });
         modeHandle(e);
       }
     }
