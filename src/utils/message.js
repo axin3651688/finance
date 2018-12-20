@@ -1,3 +1,4 @@
+import store from '@/store'
 import emotionSprites from '@a/green/emotion_sprites.json'; // 聊天表情数据
 
 const EMOTION_SPRITES = emotionSprites.data; // 聊天表情数据
@@ -25,6 +26,8 @@ export function PARSE_EMOTIONS(content) {
 
 // 处理服务端socked端推送的消息
 export function processSingleMessage(data) {
-  console.log('开始处理接收到服务端推送的单聊消息:', data);
   debugger;
+  store.dispatch("GetSideMid", {
+    newServerMsg: data
+  });
 }
