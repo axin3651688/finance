@@ -10,12 +10,11 @@ export default {
   },
   data() {
     return {
-      companyName: "",
       nameData: [],
       dataSource: [],
       options: {
         title: {
-          text: this.companyName,
+          text: this.item.text,
           x: "center"
         },
         tooltip: {
@@ -28,8 +27,8 @@ export default {
         legend: {
           orient: "vertical",
           left: "left",
-          data: []
-          // data: this.nameData
+          // data: []
+          data: this.nameData
         },
         series: [
           {
@@ -55,7 +54,7 @@ export default {
   created() {
     debugger;
 
-    // console.log(this.getdDataSource(this.item));
+    console.log(this.item);
 
     // var obj = JSON.stringify(this.dataSource);
     // console.log(obj);
@@ -74,7 +73,7 @@ export default {
         return name.id;
       });
       let dataObj = item.datas[0];
-      this.companyName = dataObj.text;
+
       delete dataObj.id;
       delete dataObj.text;
       delete dataObj.leaf;

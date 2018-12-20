@@ -228,15 +228,21 @@ export default {
   },
   created() {
     // 内置集成公共属性,减少代码
-    this.options.title = {
-      text: this.options.title.text,
+    let t=this.options.title
+    if (t) {
+      if (!t.hasOwnProperty('x')) {
+          this.options.title = {
+      text: t.text,
       top: 10,
       left: "4%",
       textStyle: {
         fontSize: 16
-      },
-      subtext: this.options.title.subtext
+      }
+      }
+      subtext: t.subtext
     };
+    }
+   
     if (!this.manualUpdate) {
       this.$watch(
         "options",
