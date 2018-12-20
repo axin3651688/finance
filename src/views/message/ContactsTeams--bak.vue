@@ -16,8 +16,7 @@
               </div>
             </template>
             <ul class="sub-item">
-              <li :class="{active: activeUser === user.id}"
-                  v-for="user in comp.children"
+              <li v-for="user in comp.children"
                   @click="getUserInfo(user.id)"
                   :key="user.id">
                 <figure>
@@ -82,26 +81,87 @@ import {
   CONTACT_INFO
 } from '~api/message.js'
 
+// 获取公司列表
+function getCompanyList(companyId) {
+  ALL_COMPANY_CONTACT_LIST(companyId).then(res => {
+    console.log('我公司列表：', res.data);
+    if (res.data.code === 200) {
+      return res.data.data
+    }
+  })
+}
+
+// 通讯录我的团队类,单例
+class ContactsTeams {
+  constructor(loginUserId) {
+    if (!ContactsTeams.instance) {
+      this.loginUserId = loginUserId;
+      this.companyList = this.setCompanyList();
+      ContactsTeams.instance = this
+    }
+    return ContactsTeams.instance
+  }
+
+  // 设置公司列表
+  setCompanyList() {
+    let companyList = getCompanyList(this.loginUserId);
+    let newCompanyList = [];
+    companyList.forEach(company => {
+      let newCompany = new Company(company);
+      newCompanyList.push(newCompany)
+    })
+  }
+}
+
+// 公司类
+class Company {
+  constructor(companyData) {
+    this._init(companyData)
+  }
+
+  _init(companyData) {
+    let keys = Object.keys(companyData);
+    keys.forEach(key => {
+      this['key'] = companyData['key'];
+    });
+  }
+
+  // 获取公司的员工列表
+  getCompanyMembers() {
+    //
+  }
+}
+
+// 用户类
+class User {
+  constructor(userData) {
+    this._init(userData)
+  }
+
+  _init(userData) {
+    let keys = Object.keys(userData);
+    keys.forEach(key => {
+      this['key'] = userData['key']
+    })
+  }
+}
+
 export default {
   name: 'ContactsTeams',
   data() {
     return {
-      activeUser: this.loginUserId, // 当前选中的用户id
+      contactsTeamsInstance: null, // 我的团队类实例
       compList: null, // [] 接收一个数组
-      rightUserInfo: null, // 接收一个对象
-      requestedUser: {} // 已经请求过详细信息用户的用户信息
+      rightUserInfo: null // 接收一个对象
     }
   },
   computed: {
-    ...mapGetters(['user']), // vuex中保存的登陆用户数据
-    loginUserId() { // 当前登录用户的Id
-      return this.user.user.id
-    }
+    ...mapGetters(['user'])
   },
   methods: {
-    // 获取公司列表
-    getCompanyList() {
-      ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
+    getdata() {
+      // 获取公司列表
+      ALL_COMPANY_CONTACT_LIST(225).then(res => {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
           this.compList = res.data.data;
@@ -109,49 +169,37 @@ export default {
       })
     },
 
-    // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
-    checkUserInfo(userId) {
-      if (this.requestedUser.hasOwnProperty(userId)) {
-        console.log(`已经请求过用户的信息了:${userId}`);
-        return this.requestedUser[userId];
-      } else return null
-    },
-
-    // 查看个人资料,如果这个用户已经请求过一次了就不在发送请求
     getUserInfo(userId) {
-      this.activeUser = userId;
-      let userInfo = this.checkUserInfo(userId);
-      if (userInfo) {
-        this.rightUserInfo = userInfo;
-      } else {
-        CONTACT_INFO(this.loginUserId, userId).then(res => {
-          console.log('查询个人资料', res.data.data);
-          if (res.data.code === 200) {
-            let userInfo = res.data.data;
-            this.rightUserInfo = userInfo;
-            this.requestedUser[userId] = userInfo;
-          }
-        }).catch(err => {
-          console.log('查询个人资料', err)
-        })
-      }
+      // 查看个人资料
+      CONTACT_INFO(225, userId).then(res => {
+        console.log('查询个人资料', res.data.data);
+        if (res.data.code === 200) {
+          this.rightUserInfo = res.data.data
+        }
+      }).catch(err => {
+        console.log('查询个人资料', err)
+      })
     },
 
     // 获取公司列表
     getCompanyList() {
-      ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
+      ALL_COMPANY_CONTACT_LIST(225).then(res => {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
           this.compList = res.data.data;
         }
       })
+    },
+    initContactsTeams(userId) {
+      this.contactsTeamsInstance = new ContactsTeams(userId);
+      console.log('我的团队类实例：', this.contactsTeamsInstance)
     }
   },
   mounted() {
     console.log('当前登录用户:', this.user);
-    console.log('当前登录用户Id:', this.loginUserId);
-    this.getCompanyList();
-    this.getUserInfo(this.loginUserId);
+    this.getdata();
+    this.getUserInfo(225);
+    this.initContactsTeams(225 || this.user.user.id) // 初始化实例，传递当前登录用户的ID，225卢诚
   }
 }
 
@@ -212,9 +260,8 @@ export default {
           li {
             position: relative;
             height: 60px;
-            padding: 0 30px 0 25px;
+            padding: 0 30px;
             cursor: pointer;
-            border-left: 5px solid transparent;
             transition: all .3s;
 
             &:hover {
@@ -231,7 +278,7 @@ export default {
           }
 
           li.active {
-            border-left-color: $colorTheme;
+            border-left: 5px solid $colorTheme;
           }
 
           figure {
@@ -304,23 +351,18 @@ export default {
 
       .text {
         font-weight: 400;
-        line-height: 40px;
-        width: 200px;
+        line-height: 20px;
 
         .text-title {
+          height: 40px;
           font-size: 30px;
           color: $colorText1;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
         }
 
         .text-info {
+          height: 24px;
           font-size: 18px;
           color: $colorText3;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
         }
       }
     }
