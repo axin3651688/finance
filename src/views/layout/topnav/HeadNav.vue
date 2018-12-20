@@ -201,7 +201,7 @@ export default {
       }
     },
     getname(e) {
-        // console.log(e);
+        console.log(e);
         this.companyLeaf = e.leaf;
       this.companyId = e.id;
       this.companyName_cache = e.text;
