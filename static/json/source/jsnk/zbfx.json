@@ -154,7 +154,7 @@
             "listeners":[{
                     "type":"click",
                     "way":"addTab",
-                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json"
                    
             }],
             "options": {

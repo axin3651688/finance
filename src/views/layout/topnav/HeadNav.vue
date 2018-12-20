@@ -223,7 +223,7 @@ export default {
     // 公司点击确定事件
     handleQoose() {
       //   点击确定,把子组件选择的id,neme存到Vuex中
-      this.GetSideMid({ company: this.companyId },{ companyLeaf: this.companyLeaf },{ companyName: this.companyName_cache });
+      this.GetSideMid({ company: this.companyId , companyLeaf: this.companyLeaf, companyName: this.companyName_cache });
       this.dialogVisible = false;
     },
     sayhidden() {
