@@ -4,6 +4,7 @@ import getters from './getters'
 import sideopen from './modules/sideopen'
 import user from './modules/user'
 import prame from './modules/prame'
+import message from './modules/message'
 
 
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
   modules: {
     sideopen,
     user,
-    prame
+    prame,
+    message
   },
   getters
 })

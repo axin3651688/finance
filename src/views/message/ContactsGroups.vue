@@ -1,267 +1,408 @@
 <template>
   <div class="ContactsGroups">
     <div class="panel-left">
-      <ul class="sub-item">
-        <li v-for="i in 8" :key="i">
-          <figure>
-            <div class="img-box">
-              <img src>
-            </div>
-            <div class="info">
-              <h3>公司软件群（15人）</h3>
-            </div>
-          </figure>
-          <i class="arrow el-icon-arrow-right"></i>
-        </li>
-      </ul>
+      <el-scrollbar>
+        <ul class="sub-item">
+          <li :class="{active: activeGroupID === group.groupId}"
+              v-for="group in GroupListData"
+              :key="group.groupId"
+              @click="getInfo(group.groupId)">
+            <figure>
+              <div class="img-box">
+                <img :src="group.avatar"/>
+              </div>
+              <div class="info">
+                <h3>{{group.text}}（{{group.count}}人）</h3>
+              </div>
+            </figure>
+            <i class="arrow el-icon-arrow-right"></i>
+          </li>
+        </ul>
+      </el-scrollbar>
     </div>
     <div class="panel-right">
       <div class="panel-right-top">
-        <div class="avatar-box">
-          <img src alt class="avatar-img">
-        </div>
-        <div class="text">
-          <h3 class="text-title">公司软件群</h3>
-          <p class="text-info">15人</p>
-        </div>
-        <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
-      </div>
-      <div class="panel-right-content">
-        <section>
-          <h4 class="title">群组成员</h4>
-          <div class="content">
-            <ul>
-              <li v-for="i in 8" :key="i">
-                <figure>
-                  <div class="img-box">
-                    <img src alt>
-                  </div>
-                  <span class="info">名字</span>
-                </figure>
-              </li>
-            </ul>
-          </div>
-        </section>
-        <section>
-          <h4 class="title">最新公告</h4>
-          <div class="content">
-            <p class="pure-text">今天下班前必须把任务完成</p>
-          </div>
-        </section>
-        <section>
-          <h4 class="title">群二维码</h4>
-          <div class="content">
-            <div class="qr-code">
-              <img src alt>
+        <div class="top-wrap">
+          <div>
+            <div class="img-box">
+              <img :src="rightInfo.avatar" alt="" class="avatar-img">
             </div>
           </div>
-        </section>
+          <div class="text">
+            <h3 class="text-title">{{rightInfo.text}}</h3>
+            <p class="text-info">{{rightUsers.length}}人</p>
+          </div>
+          <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
+        </div>
+      </div>
+      <div class="panel-right-content">
+        <div class="content-wrap">
+          <el-scrollbar>
+            <section>
+              <h4 class="title">群组成员</h4>
+              <div class="content">
+                <ul>
+                  <li v-for="user in rightUsers" :key="user.id">
+                    <figure>
+                      <div>
+                        <div class="img-box">
+                          <img :src="user.avatar">
+                        </div>
+                      </div>
+                      <span class="info">{{user.trueName}}</span>
+                    </figure>
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <section>
+              <h4 class="title">最新公告</h4>
+              <div class="content">
+                <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
+              </div>
+            </section>
+            <section>
+              <h4 class="title">群二维码</h4>
+              <div class="content">
+                <div class="qr-code">
+                  <img src="" alt="">
+                </div>
+              </div>
+            </section>
+          </el-scrollbar>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  mapGetters
+} from 'vuex'
+import {
+  MY_GROUP_LIST,
+  FIND_GROUP_NOTICE,
+  SCAN_URL,
+  GROUP_INFO
+} from '~api/message.js'
+
 export default {
-  name: "ContactsGroups"
-};
+  name: 'ContactsGroups',
+  computed: {
+    ...mapGetters(['user'])
+  },
+  data() {
+    return {
+      activeGroupID: null, // 当前选中的群组id
+      requestedGroups: {}, // 已经请求过的群组信息
+      GroupListData: [],
+      rightUsers: [],
+      rightInfo: {},
+      rightNotice: {}
+    }
+  },
+  methods: {
+    getData() {
+      // let userId = this.user.user.id;
+      // alert(params.type)
+      MY_GROUP_LIST(225).then(res => {
+        console.log('我的群组：', res.data);
+        if (res.data.code === 200) {
+          this.GroupListData = res.data.data;
+        }
+      })
+    },
+
+    // 检查这个群组的信息是不是已将请求过一次了,如果请求过了则直接返回该群组的信息
+    checkGroupInfo(groupId) {
+      if (this.requestedGroups.hasOwnProperty(groupId)) {
+        console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId]);
+        return this.requestedGroups[groupId];
+      } else return null
+    },
+
+    // 群id查询群信息，获取群资料
+    getInfo(groupId) {
+      this.activeGroupID = groupId;
+      let groupInfo = this.checkGroupInfo(groupId);
+      if (groupInfo) {
+        this.rightUsers = groupInfo.users;
+        this.rightInfo = groupInfo.info;
+        this.rightNotice = groupInfo.rightNotice;
+      } else {
+        GROUP_INFO(groupId).then(res => {
+          console.log('群id查询群信息res:', res);
+          if (res.data.code === 200) {
+            let groupInfo = res.data.data;
+            this.rightUsers = groupInfo['users'];
+            this.rightInfo = groupInfo['info'];
+            this.requestedGroups[groupId] = groupInfo;
+          }
+        }).catch(err => {
+          console.log('请求message：', err)
+        });
+
+        // 获取群公告   公告图片的字段: rightNotice.url
+        FIND_GROUP_NOTICE(groupId, 225).then(res => {
+          console.log('群id获取群公告:', res.data.data);
+          if (res.data.code === 200) {
+            if (res.data.data.noticeList.length > 0) {
+              this.rightNotice = res.data.data.noticeList[0];
+              this.requestedGroups[groupId]['rightNotice'] = this.rightNotice;
+            }
+          }
+        }).catch(err => {
+          console.log('请求message：', err)
+        });
+
+        let params = {
+          platform: 'windows',
+          type: 'group',
+          targetId: 4
+        };
+        // 获取二维码地址
+        SCAN_URL(params).then(res => {
+          console.log('获取二维码的生成地址:', res);
+          if (res.data.code === 200) {
+            // TODO 把地址生成二维码?
+            let url = res.data.data.url;
+          }
+        }).catch(err => {
+          console.log('请求message：', err)
+        })
+      }
+    }
+  },
+  mounted() {
+    this.getData();
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
-@import "@s/green/variables.scss";
+  @import "@s/green/variables.scss";
 
-.ContactsGroups {
-  display: flex;
-  height: 100%;
-
-  li {
-    list-style: none;
-  }
-}
-
-.panel-left {
-  flex: 0.5;
-  height: 100%;
-  border-right: 1px solid $colorBorder2;
-
-  ul.sub-item {
-    li {
-      position: relative;
-      height: 60px;
-      padding: 0 30px;
-      border-right: 6px solid transparent;
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &:hover {
-        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-        border-right-color: $colorTheme;
-      }
-
-      .arrow {
-        position: absolute;
-        right: 24px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
-
-    figure {
-      display: flex;
-      align-items: center;
-      height: 100%;
-      border-bottom: 1px solid $colorBorder2;
-
-      .img-box {
-        width: 40px;
-        height: 40px;
-        overflow: hidden;
-        margin-right: 20px;
-        border-radius: 8px;
-        background: $colorTheme;
-      }
-
-      .info {
-        font-family: $fontFamilyMain;
-        font-weight: 400;
-        line-height: 20px;
-
-        h3 {
-          height: 19px;
-          font-size: 14px;
-          font-weight: bold;
-          line-height: 20px;
-          color: $colorText2;
-        }
-
-        p {
-          height: 16px;
-          font-size: 12px;
-          color: $colorText5;
-        }
-      }
-    }
-  }
-}
-
-.panel-right {
-  flex: 0.5;
-  padding: 60px 30px 0 30px;
-
-  .panel-right-top {
-    position: relative;
+  .ContactsGroups {
     display: flex;
-    align-items: center;
-    margin-bottom: 58px;
-
-    .avatar-box {
-      margin-right: 40px;
-      width: 100px;
-      height: 100px;
-      overflow: hidden;
-      border-radius: 14px;
-      background: $colorTheme;
-    }
-
-    .text {
-      font-weight: 400;
-      line-height: 20px;
-
-      .text-title {
-        height: 40px;
-        font-size: 30px;
-        color: $colorText1;
-      }
-
-      .text-info {
-        height: 24px;
-        font-size: 18px;
-        color: $colorText3;
-      }
-    }
-
-    .my-btn {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      background: $colorTheme;
-    }
+    height: 100%;
   }
 
-  .panel-right-content {
-    font-weight: 400;
+  .panel-left {
+    flex: .5;
+    height: 100%;
+    border-right: 1px solid $colorBorder2;
 
-    section {
-      margin-bottom: 40px;
-    }
+    ul.sub-item {
+      li {
+        position: relative;
+        height: 60px;
+        padding: 0 30px 0 25px;
+        border-left: 5px solid transparent;
+        cursor: pointer;
+        transition: all .3s;
 
-    .title {
-      margin-bottom: 10px;
-      height: 24px;
-      font-size: 18px;
-      line-height: 20px;
-      color: $colorText3;
-    }
+        &:hover {
+          box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+          border-right-color: $colorTheme;
+        }
 
-    .content {
-      ul {
+        .arrow {
+          position: absolute;
+          right: 24px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+
+      li.active {
+        border-left-color: $colorTheme;
+      }
+
+      figure {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        height: 100%;
+        border-bottom: 1px solid $colorBorder2;
 
-        li {
-          margin-right: 40px;
-          margin-bottom: 30px;
+        .img-box {
+          width: 40px;
+          height: 40px;
+          overflow: hidden;
+          margin-right: 20px;
+          border-radius: 8px;
+          background: $colorTheme;
 
-          figure {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
 
-            .img-box {
-              overflow: hidden;
-              margin-bottom: 10px;
-              width: 60px;
-              height: 60px;
-              border-radius: 50%;
-              background: $colorTheme;
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+        .info {
+          font-family: $fontFamilyMain;
+          font-weight: 400;
+          line-height: 20px;
 
-              img {
-                width: 100%;
-                height: 100%;
-              }
-            }
+          h3 {
+            height: 19px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 20px;
+            color: $colorText2;
+          }
 
-            .info {
-              height: 21px;
-              font-size: 16px;
-              font-weight: 400;
-              line-height: 20px;
-              color: $colorText1;
-            }
+          p {
+            height: 16px;
+            font-size: 12px;
+            color: $colorText5;
           }
         }
       }
+    }
+  }
 
-      .pure-text {
-        height: 21px;
-        font-size: 16px;
-        line-height: 20px;
-        color: $colorText1;
+  .panel-right {
+    flex: .5;
+    display: flex;
+    flex-direction: column;
+
+    .panel-right-top {
+      padding: 50px 40px;
+
+      .top-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
       }
 
-      .qr-code {
+      .img-box {
+        margin-right: 40px;
         width: 100px;
         height: 100px;
-        background: #cccccc;
         overflow: hidden;
+        border-radius: 14px;
+        background: $colorTheme;
 
         img {
           width: 100%;
           height: 100%;
         }
       }
+
+      .text {
+        font-weight: 400;
+        line-height: 20px;
+
+        .text-title {
+          line-height: 40px;
+          font-size: 30px;
+          color: $colorText1;
+        }
+
+        .text-info {
+          height: 24px;
+          font-size: 18px;
+          color: $colorText3;
+        }
+      }
+
+      .my-btn {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border: none;
+        background: $colorTheme;
+      }
     }
+
+    .panel-right-content {
+      position: relative;
+      flex: 1;
+      font-weight: 400;
+      padding-left: 40px;
+
+      .content-wrap {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+      }
+
+      section {
+        margin-bottom: 40px;
+      }
+
+      .title {
+        margin-bottom: 10px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 20px;
+        color: $colorText3;
+      }
+
+      .content {
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+
+          li {
+            margin-right: 40px;
+            margin-bottom: 30px;
+
+            figure {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+
+              .img-box {
+                overflow: hidden;
+                margin-bottom: 10px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: $colorTheme;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+
+              .info {
+                height: 21px;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 20px;
+                color: $colorText1;
+              }
+            }
+          }
+        }
+
+        .pure-text {
+          height: 21px;
+          font-size: 16px;
+          line-height: 20px;
+          color: $colorText1;
+        }
+
+        .qr-code {
+          width: 100px;
+          height: 100px;
+          background: #cccccc;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
   }
-}
+
 </style>
