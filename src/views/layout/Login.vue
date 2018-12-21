@@ -43,6 +43,11 @@
   export default {
     name: "Login",
     created() {
+     let $title = document.getElementsByTagName("title")[0];
+     let title = $title.getAttribute("origin");
+     if(title){
+       document.title = title;
+     }
       //每次打开获取一下原来的用户名
       this.loginUser.usename = localStorage.getItem("usename");
     },
@@ -117,7 +122,8 @@
                   //  判断加载哪个公司的布局页以加载不同样式
                   data.company.id === 121 ?
                     router.push("/tjsp/module") :
-                    router.push("/message");
+                   // router.push("/message");
+                     router.push("/jsnk/module") 
                 } else {
 
                   this.loginUser.usename = "";
