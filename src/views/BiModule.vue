@@ -148,7 +148,7 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-   // debugger;
+    // debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -427,9 +427,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.el-row {
-  margin-bottom: 20px;
-}
 .el-col {
   border-radius: 4px;
 }
