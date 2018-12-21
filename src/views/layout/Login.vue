@@ -43,6 +43,11 @@
   export default {
     name: "Login",
     created() {
+     let $title = document.getElementsByTagName("title")[0];
+     let title = $title.getAttribute("origin");
+     if(title){
+       document.title = title;
+     }
       //每次打开获取一下原来的用户名
       this.loginUser.usename = localStorage.getItem("usename");
     },

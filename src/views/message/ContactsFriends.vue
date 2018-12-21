@@ -92,8 +92,7 @@ export default {
     }
   },
   methods: {
-    // ...mapActions('messageModule', ['actionsTest']),
-    ...mapMutations('messageModule', ['mutationSetChatWithUserId']),
+    ...mapActions(['ActionSetChatWithUserId']),
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
@@ -140,7 +139,7 @@ export default {
 
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
-      this.mutationSetChatWithUserId(receiverId);
+      this.ActionSetChatWithUserId(receiverId);
       console.log('即将和用户', receiverId, '聊天')
     }
   },

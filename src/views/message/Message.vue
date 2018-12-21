@@ -63,7 +63,7 @@
         <new-friends v-if="activeItem === 11016"></new-friends>
         <group-helper v-if="activeItem === 11017"></group-helper>
         <Todo v-if="activeItem === 2"></Todo>
-        <single-msg v-if="activeItem === 4"></single-msg>
+        <single-msg v-if="activeItem === 4" :chatWithUserId="chatWithUserId"></single-msg>
         <group-msg v-if="activeItem === 5"></group-msg>
 
         <!--右边区域左内阴影效果-->
@@ -106,11 +106,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'newServerMsg'])
+    ...mapGetters(['user', 'newServerMsg', 'chatWithUserId'])
   },
   watch: {
     newServerMsg(data) {
       this.alertServerMsg(data)
+    },
+    chatWithUserId(chatWithUserId) {
+      this.activeItem = 4;
     }
   },
   methods: {
