@@ -224,12 +224,11 @@
      return val;
 
  }
-
  /**
   * 获取配制模型的数据
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-     //  debugger;
+      debugger;
      if (config.type === 1) {
          return getValue(config.value, datas, rows, cols);
      }
@@ -248,7 +247,48 @@
      if (config.type == 5) {
         // debugger;
         return singleSeriesDataParser4(config, datas, configRows, cols);
+     }
+//   饼状图的数据处理
+    if (config.type == 88) {
+        debugger;
+        return singleSeriesDataParser8(config, datas, configRows, cols);
     }
+
+ }
+ /**
+ * 根据config对象获取pie图数据
+ */
+const singleSeriesDataParser8 = (config, datas, rows, cols) => {
+    debugger
+    let tpye = config.type;
+     let value = [],record = {},series = [],xAxis = {},legends = [],ii= 0;
+     //{series:[{},{}],xAxis:{}}
+     config.columns.forEach(item => {
+         let data = getSeriesDataPie(item, datas, rows);
+         if(Object.keys(item).length > 0){
+             let ss = {};
+            Cnbi.apply(ss,item);
+            ss.data = data;
+            delete ss.id;
+            if(ii == 0){
+                series = ss ;
+            }else{
+                legends.push(getColumnName(item,cols));
+                delete ss.group;
+                delete ss.text;
+                series.push(ss);
+            }
+         }else{
+            value.push(data);
+         }
+         ii++;
+     });
+     if(ii > 0){
+         let bb = {series:series,xAxis:xAxis,legend:legends};
+        // alert(JSON.stringify(bb))
+         return bb;
+     }
+     return value;
  }
  /**
   * 获取配制的行项目数据
@@ -397,31 +437,56 @@ const getReverserDatas=(config, datas, rows, cols)=>{
  */
  const singleSeriesDataParser4 = (config, datas, rows, cols) => {
     let tpye = config.type;
+    let sign = config.sign;
      if (config.reverse) { //如果有配制的行列反向的话
          return getReverserDatas(config, datas, rows, cols);
      }
      let value = [],record = {},series = [],xAxis = {},legends = [],ii= 0;
      //{series:[{},{}],xAxis:{}}
-     config.columns.forEach(item => {
-         let data = getSeriesData(item, datas, rows);
-         if(Object.keys(item).length > 1){
-             let ss = {};
-            Cnbi.apply(ss,item);
-            ss.data = data;
-            delete ss.id;
-            if(ii == 0){
-                xAxis = ss ;
+     if(sign&&sign==="pie"){
+        config.columns.forEach(item => {
+            let data = getSeriesDataPie(item, datas, rows);
+            if(Object.keys(item).length > 0){
+                let ss = {};
+               Cnbi.apply(ss,item);
+               ss.data = data;
+               delete ss.id;
+               if(ii == 0){
+                   series.push(ss);
+               }else{
+                   legends.push(getColumnName(item,cols));
+                   delete ss.group;
+                   delete ss.text;
+                   series.push(ss);
+               }
             }else{
-                legends.push(getColumnName(item,cols));
-                delete ss.group;
-                delete ss.text;
-                series.push(ss);
+               value.push(data);
             }
-         }else{
-            value.push(data);
-         }
-         ii++;
-     });
+            ii++;
+        });
+     }else {
+        config.columns.forEach(item => {
+            let data = getSeriesData(item, datas, rows);
+            if(Object.keys(item).length > 1){
+                let ss = {};
+               Cnbi.apply(ss,item);
+               ss.data = data;
+               delete ss.id;
+               if(ii == 0){
+                   xAxis = ss ;
+               }else{
+                   legends.push(getColumnName(item,cols));
+                   delete ss.group;
+                   delete ss.text;
+                   series.push(ss);
+               }
+            }else{
+               value.push(data);
+            }
+            ii++;
+        });
+     }
+     
      if(ii > 0){
          let bb = {series:series,xAxis:xAxis,legend:legends};
         // alert(JSON.stringify(bb))
@@ -429,11 +494,27 @@ const getReverserDatas=(config, datas, rows, cols)=>{
      }
      return value;
  }
+/**
+ * 获取饼状图的数据
+ * @param {*} column 
+ * @param {*} datas 
+ * @param {*} rows 
+ */
+const getSeriesDataPie = (column, datas, rows) => {
+    debugger
+    let category = [],valProperty ="id";
+    rows.forEach(row => {
+        let val = getData(column, row, datas, rows,valProperty);
+        category.push({value:val,name:row.sname? row.sname:""});
+    });
+    return category;
+}
 
  /**
   * 获取指定系列数据
   */
  const getSeriesData = (column, datas, rows) => {
+     debugger
      let category = [],valProperty ="id";
      rows.forEach(row => {
          let val = getData(column, row, datas, rows,valProperty);

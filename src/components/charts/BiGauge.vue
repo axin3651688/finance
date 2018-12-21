@@ -3,7 +3,9 @@
 </template>
 
 <script>
+import EventMixins from '../mixins/EventMixins'
 export default {
+  mixins: [EventMixins],
   props: {
     item: {
       type: Object,
