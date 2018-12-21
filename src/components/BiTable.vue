@@ -18,8 +18,10 @@
 <script>
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
+import EventMixins from './mixins/EventMixins'
 export default {
   name: "BiTable",
+  mixins: [EventMixins],
   components: {
     BiTableColumn,
     BiTableColumnTree
@@ -106,7 +108,7 @@ export default {
     onCellClick(row, column, cell, event){
       debugger;
         if(row._drill || row.drill){
-            if(column.cellIndex === 0 ){
+            if(cell.cellIndex === 0 ){
                debugger;
             }
         }

@@ -125,6 +125,18 @@ export default {
           });
           module.activeTabName = text;
          }
+    },
+    /**
+     * 表格的单元格事件
+     */
+    onCellClick(row, column, cell, event){
+      console.info(row);
+      debugger;
+        if(row._drill || row.drill){
+            if(cell.cellIndex === 0 ){
+               debugger;
+            }
+        }
     }
 
     
