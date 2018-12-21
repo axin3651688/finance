@@ -326,7 +326,7 @@ export default {
   }
 
   .icon__close {
-    background-image: url('../../assets/green/close.svg');
+    background-image: url($iconCloseX);
   }
 
   /deep/ .el-tabs {

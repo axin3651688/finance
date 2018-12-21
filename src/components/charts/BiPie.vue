@@ -27,7 +27,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "5%",
-          top:"10%",
+          top: "10%",
           // data: []
           data: this.nameData
         },
@@ -63,6 +63,7 @@ export default {
   mounted() {
     // this.options.series[0].data = this.item.datas
   },
+
   methods: {
     item1() {
       this.$router.push("/list");
@@ -92,16 +93,12 @@ export default {
         });
       }
       return dataSource;
-    }
-  },
-  watch: {
-    item: {
-      handler(newname, oldname) {
-        console.log(newname);
-        this.item = newname;
-        // debugger
-      },
-      deep: true
+    },
+
+    upData(item) {
+      debugger;
+      let data = this.getdDataSource(item);
+      this.options.series[0].data = data;
     }
   }
 };
