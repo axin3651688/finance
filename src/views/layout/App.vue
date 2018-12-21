@@ -47,7 +47,7 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.2:7006/socket.io/";
       // let url = "ws://192.168.1.139:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
