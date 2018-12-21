@@ -112,8 +112,28 @@
 		"B": 0,
 		"C": 0,
 		"level": 2,
-		"drill":1,
-		"_drill":1,
+		"drill":{
+			"type":"cellclick",
+			"way":"addTab",
+			"sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+			 "location":"before",
+			 "handler":($vue,params)=>{
+				console.info(params);
+				 debugger; 
+		    }
+		   
+	    },
+		"_drill":{
+			"type":"cellclick",
+			"way":"addTab",
+			"sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+			"location":"before",
+			"handler":($vue,params)=>{
+				console.info(params);
+				 debugger; 
+		    }
+		   
+	    },
 		"level_": 2,
 		"A_": 0,
 		"B_": 0,

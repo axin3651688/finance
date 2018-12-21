@@ -152,11 +152,14 @@
             "text": "营业收入",
             "weight": 6,
             "listeners":[{
-                    "type":"click",
-                    "way":"addTab",
-                    "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json"
-                   
-            }],
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":33,
+                "handler":($vue,params)=>{
+                      console.info(params);
+                       debugger; 
+                }
+             }],
             "options": {
                 "type": "column",
                 "getData": {

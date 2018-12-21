@@ -27,6 +27,9 @@ export default {
             type: "none" // 默认为直线，可选为：'line' | 'shadow'
           }
         },
+        legend: {
+          data:['最高气温','最低气温']
+        },
         //  位置
         grid: {
           top: 60,
@@ -108,15 +111,6 @@ export default {
   created() {
     this.upData();
   },
-  // mounted(){
-  //    let me = this;
-  //   if(me.item.mixins.methods.itemClick){
-  //     this.$children[0].chart.on('click',function(params){
-  //        me.item.mixins.methods.itemClick(me,params);
-  //     });
-  //   }
-  // },
-
   watch: {
     item: {
       handler: function() {
@@ -125,6 +119,7 @@ export default {
     }
   },
   methods: {
+
     upData(item) {
       if (item) {
         this.item = item;

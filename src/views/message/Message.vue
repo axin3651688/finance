@@ -41,42 +41,42 @@
               </template>
             </template>
 
-            <li :class="[ {'active': activeItem === 2}]" @click="activeThisItem(2)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">99+</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">代办事项
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>
-              <div class="right-border"></div>
-            </li>
-            <li :class="[ {'active': activeItem === 4}]" @click="activeThisItem(4)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">1</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">张某
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试...</p>
-              <div class="right-border"></div>
-            </li>
-            <li :class="[ {'active': activeItem === 5}]" @click="activeThisItem(5)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">10</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">软件技术群
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试...</p>
-              <div class="right-border"></div>
-            </li>
+            <!--<li :class="[ {'active': activeItem === 2}]" @click="activeThisItem(2)">-->
+              <!--<div class="top">-->
+                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
+                <!--<span class="count mt">99+</span>-->
+                <!--<span class="publish-time mt">26秒前</span>-->
+              <!--</div>-->
+              <!--<h3 class="title">代办事项-->
+                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
+              <!--</h3>-->
+              <!--<p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>-->
+              <!--<div class="right-border"></div>-->
+            <!--</li>-->
+            <!--<li :class="[ {'active': activeItem === 4}]" @click="activeThisItem(4)">-->
+              <!--<div class="top">-->
+                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
+                <!--<span class="count mt">1</span>-->
+                <!--<span class="publish-time mt">26秒前</span>-->
+              <!--</div>-->
+              <!--<h3 class="title">张某-->
+                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
+              <!--</h3>-->
+              <!--<p>今天风险信息系统经过了第一轮测试...</p>-->
+              <!--<div class="right-border"></div>-->
+            <!--</li>-->
+            <!--<li :class="[ {'active': activeItem === 5}]" @click="activeThisItem(5)">-->
+              <!--<div class="top">-->
+                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
+                <!--<span class="count mt">10</span>-->
+                <!--<span class="publish-time mt">26秒前</span>-->
+              <!--</div>-->
+              <!--<h3 class="title">软件技术群-->
+                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
+              <!--</h3>-->
+              <!--<p>今天风险信息系统经过了第一轮测试...</p>-->
+              <!--<div class="right-border"></div>-->
+            <!--</li>-->
 
           </ul>
         </el-scrollbar>
@@ -87,7 +87,11 @@
           <new-friends v-if="leftBarInstance.activeItem.miniType === 11016" v-once></new-friends>
           <group-helper v-if="leftBarInstance.activeItem.miniType === 11017" v-once></group-helper>
           <Todo v-if="activeItem === 2" v-once></Todo>
-          <single-msg v-if="leftBarInstance.activeItem.miniType === 4" :chatWithUserId="chatWithUserId" v-once></single-msg>
+          <single-msg
+            v-if="leftBarInstance.activeItem.miniType === 1100"
+            :chatWithUserId="leftBarInstance.activeItem.senderId"
+            v-once
+          ></single-msg>
           <group-msg v-if="leftBarInstance.activeItem.miniType === 5" v-once></group-msg>
         </template>
 
@@ -152,6 +156,7 @@ class LeftBar {
   }
 
   setItemActive(itemObj) {
+    debugger;
     this.activeItem = itemObj;
     itemObj.setActive()
   }
