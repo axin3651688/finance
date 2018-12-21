@@ -28,7 +28,8 @@
             </div>
           </div>
           <div class="message-content">
-            <span v-html="parseEmotions(item.content)"></span>
+            <!--<span v-html="parseEmotions(item.content)"></span>-->
+            <span v-html="parseChatContent(item.content, item.type)"></span>
           </div>
         </div>
       </el-scrollbar>
@@ -71,7 +72,7 @@ import {
   FIND_SINGLE_MSG,
   sendMsg
 } from '~api/message.js';
-import {PARSE_EMOTIONS} from 'utils/message';
+import {PARSE_CHAT_CONTENT} from 'utils/message';
 import emotionSprites from '@a/green/emotion_sprites.json';
 
 export default {
@@ -134,9 +135,9 @@ export default {
     // 把发送的内容显示到聊天窗口
     addMsgToWindow(sendText) {
       let data = {
-        avatar: "http://192.168.2.214:8000/group2/M00/00/01/wKgC21vak8mAWsvYAAahrk5cOek851.jpg",
+        avatar: this.receiverAvatar,
         content: sendText,
-        name: "龚佳新2",
+        name: this.receiverName,
         sendTime: new Date().getTime()
       };
       this.singleMsgList.push(data);
@@ -170,9 +171,12 @@ export default {
       }
     },
 
-    // 解析聊天符号，替换成表情图
-    parseEmotions(content) {
-      return PARSE_EMOTIONS(content)
+    // 解析聊天内容，把聊天中的 语音、文件、表情符号替换
+    // content:聊天内容  type:内容的类型
+    // 1:文本有表情的也是；2:图片; 3:文件; 4:音频; 5:视频;）
+    parseChatContent(content, type){
+      // debugger;
+      return PARSE_CHAT_CONTENT(content, type)
     },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
