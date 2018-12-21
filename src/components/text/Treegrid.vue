@@ -161,6 +161,8 @@ export default {
   created(){
     console.log(this.item)
     this.item.rows = this.item.config.rows
+
+    
     // this.item.options = this.item.options
     // this.item.options = this.item.options
     // console.log(this.item.rows)
