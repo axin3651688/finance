@@ -106,11 +106,16 @@ export default {
     },
 
     onCellClick(row, column, cell, event){
-      debugger;
-        if(row._drill || row.drill){
-            if(cell.cellIndex === 0 ){
-               debugger;
+       let listener = row._drill || row.drill;
+        if(listener){
+            let cv = column.property+"",len = cv.length;
+            let id = row.id,text = row[cv];
+            if(cv.substring(len-1,len) === "_"){
+                id = row.id_;//两列的情况
             }
+            this.commonHandler(listener,{row:row,column: column, cell:cell, event:event},{id:id,text:text});
+        }else{
+            console.info("没有设置事件");
         }
     },
 
