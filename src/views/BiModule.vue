@@ -162,6 +162,7 @@ export default {
   },
   watch: {
     module_api(newid) {
+      this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
       this.loadModuleAfter(localStorage.module);
     },
@@ -227,6 +228,7 @@ export default {
      * 加载加载模块资源
      */
     loadRemoteSource(api) {
+      this.activeTabName = "0";
       debugger;
       if (!api) {
         api = localStorage.module_api_cache;
