@@ -143,8 +143,6 @@ export default {
     CompanyTree
   },
   created() {
-    console.log(localStorage.treeInfo_cache);
-
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
