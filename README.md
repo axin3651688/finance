@@ -264,6 +264,7 @@ listeners:[
     "type":"click",//事件类型
     "way":"addTab",//调用的公共方法
     "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
+    "location":"before",//默认往后面,下边加，before就是往前面=tab，上边加=form
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
         debugger; 

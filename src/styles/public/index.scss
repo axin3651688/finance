@@ -69,3 +69,10 @@ a:hover {
     height: 0;
   }
 }
+
+// 表格高度样式重写,固定高度不让滚动条掉在最下面 
+.el-table {
+  height: calc(100vh - 64px);
+  width: 100%;
+  overflow: auto
+}
