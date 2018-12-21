@@ -4,12 +4,43 @@
       <div class="left">
         <el-scrollbar style="height: 100%">
           <ul>
-            <li :class="['addressbook', {'active': activeItem === 101010}]" @click="activeThisItem(101010)">
-              <img class="avatar-img" src="@/assets/green/contact_icon.svg" alt="">
-              <h3>通讯录（60人）</h3>
-              <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
-              <div class="right-border"></div>
-            </li>
+            <!--<li :class="['addressbook', {'active': activeItem === 101010}]" @click="activeThisItem(101010)">-->
+              <!--<img class="avatar-img" src="@/assets/green/contact_icon.svg" alt="">-->
+              <!--<h3>通讯录（60人）</h3>-->
+              <!--<img class="list-menu" src="@/assets/green/contact_list.svg" alt="">-->
+              <!--<div class="right-border"></div>-->
+            <!--</li>-->
+            <template v-if="leftBarInstance">
+              <template v-for="item in leftBarInstance.leftBarList">
+                <li v-if="!leftBarInstance.content"
+                    :class="['have-sub', {active: leftBarInstance.activeItem === item}]"
+                    :key="item.miniType"
+                    @click="leftBarInstance.setItemActive(item)"
+                >
+                  <img class="avatar-img" :src="item.avatar" :alt="item.name">
+                  <h3>{{item.name}}</h3>
+                  <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
+                  <div class="right-border"></div>
+                </li>
+                <li v-else
+                    :class="['have-sub', {active: leftBarInstance.activeItem === item}]"
+                    :key="item.miniType"
+                    @click="leftBarInstance.setItemActive(item)"
+                >
+                  <div class="top">
+                    <img src="@/assets/green/sys_icon.svg" alt="">
+                    <span class="count mt">10</span>
+                    <span class="publish-time mt">26秒前</span>
+                  </div>
+                  <h3 class="title">软件技术群
+                    <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
+                  </h3>
+                  <p>今天风险信息系统经过了第一轮测试...</p>
+                  <div class="right-border"></div>
+                </li>
+              </template>
+            </template>
+
             <li :class="[ {'active': activeItem === 2}]" @click="activeThisItem(2)">
               <div class="top">
                 <img src="@/assets/green/sys_icon.svg" alt="">
@@ -46,25 +77,19 @@
               <p>今天风险信息系统经过了第一轮测试...</p>
               <div class="right-border"></div>
             </li>
-            <li :class="['have-sub', {'active': activeItem === item.miniType}]"
-                v-for="item in messageList"
-                :key="item.miniType"
-                @click="activeThisItem(item.miniType)">
-              <img class="avatar-img" :src="item.avatar" :alt="item.name">
-              <h3>{{item.name}} {{item.miniType}}</h3>
-              <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
-              <div class="right-border"></div>
-            </li>
+
           </ul>
         </el-scrollbar>
       </div>
       <div class="right">
-        <contacts v-if="activeItem === 101010"></contacts>
-        <new-friends v-if="activeItem === 11016"></new-friends>
-        <group-helper v-if="activeItem === 11017"></group-helper>
-        <Todo v-if="activeItem === 2"></Todo>
-        <single-msg v-if="activeItem === 4" :chatWithUserId="chatWithUserId"></single-msg>
-        <group-msg v-if="activeItem === 5"></group-msg>
+        <template v-if="leftBarInstance">
+          <contacts v-if="leftBarInstance.activeItem.miniType === 101010" v-once></contacts>
+          <new-friends v-if="leftBarInstance.activeItem.miniType === 11016" v-once></new-friends>
+          <group-helper v-if="leftBarInstance.activeItem.miniType === 11017" v-once></group-helper>
+          <Todo v-if="activeItem === 2" v-once></Todo>
+          <single-msg v-if="leftBarInstance.activeItem.miniType === 4" :chatWithUserId="chatWithUserId" v-once></single-msg>
+          <group-msg v-if="leftBarInstance.activeItem.miniType === 5" v-once></group-msg>
+        </template>
 
         <!--右边区域左内阴影效果-->
         <div class="inset-shadow"></div>
@@ -87,10 +112,99 @@ import GroupHelper from './GroupHelper' // 群助手
 import GroupMsg from './GroupMsg' // 群助手
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
+// 暂时定义一个通讯录类容
+var contact = {
+  avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
+  content: null,
+  count: 60,
+  id: null,
+  miniType: 101010,
+  name: "通讯录",
+  otherAvatar: null,
+  otherName: null,
+  platform: null,
+  receiverId: null,
+  sendTime: null,
+  senderId: null,
+  state: 0,
+  type: null,
+};
+
+// 消息左边栏
+class LeftBar {
+  constructor(resList) {
+    if (!LeftBar.instance) {
+      this.activeItem = new LeftBarItem(contact);
+      this._init(resList);
+      LeftBar.instance = this;
+    }
+    return LeftBar.instance
+  }
+
+  _init(resList) {
+    let itemList = [];
+    resList.forEach(i => {
+      let leftBarItem = new LeftBarItem(i);
+      itemList.push(leftBarItem)
+    });
+    itemList.push(new LeftBarItem(contact));
+    this.leftBarList = itemList;
+  }
+
+  setItemActive(itemObj) {
+    this.activeItem = itemObj;
+    itemObj.setActive()
+  }
+
+  addLeftBarItem(itemData) {
+    let result = this.checkExists(itemData);
+    if (result) {
+      result.addCount()
+    } else {
+      let leftBarItem = new LeftBarItem(itemData);
+      this.leftBarList.unshift(leftBarItem)
+    }
+  }
+
+  checkExists(itemData) {
+    for (let i of this.leftBarList) {
+      return i.id === itemData.id ? i : false
+    }
+  }
+}
+
+// 消息边栏中的一项
+class LeftBarItem {
+  constructor(obj) {
+    this.isActive = false;
+    this._init(obj)
+  }
+
+  _init(obj) {
+    let keys = Object.keys(obj);
+    keys.forEach(key => {
+      this[key] = obj[key]
+    })
+  }
+
+  setActive() {
+    if (!this.isActive) this.isActive = true;
+    this.clearCount()
+  }
+
+  addCount() {
+    this.count++
+  }
+
+  clearCount() {
+    this.count = 0
+  }
+
+}
+
 export default {
   name: 'Message',
   components: {
-    // GroupMembers,
     SingleMsg, // 单聊消息
     Contacts, // 通讯录
     Todo, // 代办事项
@@ -100,6 +214,7 @@ export default {
   },
   data() {
     return {
+      leftBarInstance: null, // 左边栏实例
       showGroupMembers: false,
       activeItem: 4, // 当前激活显示的选项
       messageList: [] // 左边的消息列表，请求 ‘/api/api/my_session’ 返回回来的 data
@@ -113,12 +228,17 @@ export default {
       this.alertServerMsg(data)
     },
     chatWithUserId(chatWithUserId) {
+      // TODO: 这里有bug 联系点击同一个人不会出发改变
       this.activeItem = 4;
     }
   },
   methods: {
-    // ...mapMutations('messageModule', ['mutationSetMySessionList']),
     // ...mapActions(['']),
+
+    // 初始化消息左边栏
+    initLeftBar(resList) {
+      this.leftBarInstance = new LeftBar(resList)
+    },
 
     // 弹出系统推送的消息
     alertServerMsg(data) {
@@ -132,7 +252,7 @@ export default {
         this.messageList = res.data;
         console.log('message左边栏====', this.messageList, '===message左边栏');
         let mySessionList = res.data;
-        this.mutationSetMySessionList(mySessionList)
+        this.initLeftBar(res.data);
       } else {
         this.$message({
           type: 'error',
@@ -161,8 +281,6 @@ export default {
   mounted() {
     // 页面挂载后 请求消息列表数据
     console.log('用户信息：', this.user);
-    // let userId = this.user.user.id;
-    // console.log('用户id：', userId);
     MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
     }).catch(err => {
