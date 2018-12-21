@@ -34,6 +34,10 @@
     <template slot-scope="scope">
       <el-tooltip class="item" effect="dark" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
+        <!-- <span v-if="scope.row.balance!=0">
+            <el-button type="text">{{ scope.row[col.id] }}</el-button>
+        </span>
+        <span v-else>{{ scope.row[col.id] }}</span> -->
       </el-tooltip>
     </template>
   </el-table-column>
@@ -82,6 +86,9 @@ export default {
     }
   },
   methods: {
+    gg(a,b,c,d){
+      debugger
+    },
     upData(item) {
     //   debugger;
       this.$set(this, "data", null);
@@ -92,7 +99,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, colId, row, rows) {
-    //  debugger;
+     debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";

@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border>
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
     <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -37,7 +37,8 @@
         <el-button type="text" v-if="column.text === '操作'" @click="add">
           <!-- ... -->
           <img src="@/assets/green/list_menu.svg" alt>
-          <el-cascader :options="options" v-model="selectedOptions" @change="handleChange"></el-cascader>
+          <!-- <el-cascader :options="options"></el-cascader> -->
+          <el-cascader  v-model="selectedOptions" @change="handleChange"></el-cascader>
 
           <el-dialog
             title="提示"
@@ -60,12 +61,15 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
+import ElCascader from "./ElCascader.vue";
 // data  columns list
 export default {
+  // components:{
+  //   ElCascader
+  // },
   data() {
     return {
-      // col:[],
-      options: [],
+      // options: [],
       dialogVisible: false,
       selectedOptions: [],
       // a:[{c:111},{b:222}]
@@ -90,13 +94,14 @@ export default {
         default: false
       },
 
-      // list:{
-      //   type:[Array,Function],
-      //   default: () => []
-      // },
+      options:{
+        type:[Array,Function],
+        default: () => []
+      },
     }
   },
   mounted() {
+    this.item.options = this.item.items[0].columns
   },
   computed: {
     // 格式化数据源
@@ -116,8 +121,10 @@ export default {
   },
   methods: {
     add() {
-      // if(!this.isEmpty(this.item.list)){
-          // this.options = this.item.list
+      // if(!this.isEmpty(this.item.options)){
+        // this.dialogVisible = true
+          this.item.options = this.item.items[0].columns
+          console.log( this.item.options)
       // }
     
     },
@@ -153,6 +160,7 @@ export default {
   created(){
     console.log(this.item)
     this.item.rows = this.item.config.rows
+    // this.item.options = this.item.options
     // console.log(this.item.rows)
     console.log(this.item.config.columns)
     // this.col = this.item.config.columns
@@ -217,6 +225,9 @@ export default {
     width: 100%;
     height: 100%;
   }
+  .el-table__body .el-table__row td{
+    padding:4px 0;
+  }
 }
 </style>
  
@@ -225,7 +236,7 @@ export default {
   padding-top: 85px;
 }
 .ms-tree-space {
-  position: relative;
+  /* position: relative; */
   top: 1px;
   display: inline-block;
   font-style: normal;
@@ -257,8 +268,10 @@ table td {
 }
 img {
   width: 20px;
-  position: absolute;
+  /* position: absolute;
   right: 50%;
-  top: 5px;
+  top: 5px; */
+  -moz-transform:rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
 }
 </style>

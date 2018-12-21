@@ -15,10 +15,10 @@
 import HeadNav from "./topnav/HeadNav";
 import leftMenu from "./sidebar/Sidebar";
 import ResizeMixin from "./mixin/ResizeHandler";
-import "@/styles/black/index.scss"; // global css
+import "@/styles/green/index.scss"; // global css
 import { mapActions } from "vuex";
 export default {
-  name: "Lay",
+  name: "TjspPage",
   data() {
     return {};
   },
@@ -43,7 +43,6 @@ export default {
       };
     }
   },
-
   methods: {
     ...mapActions(["ToggleSideBar"])
   }
@@ -55,11 +54,5 @@ export default {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  // background-color: #f0f2f5;
-
-  // &.mobile.openSidebar {
-  //   position: fixed;
-  //   top: 0;
-  // }
 }
 </style>
