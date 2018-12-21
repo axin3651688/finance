@@ -24,12 +24,13 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
-        // debugger;
+        debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
                 break;
             case 1003:
+                // 登录已失效，请重新登录
                 console.log('socketCoreProcess: 1003');
                 break;
             case 1006:
@@ -55,10 +56,11 @@ export default function socketCoreProcess(websocket, datas) {
 
             default:
         }
-    }
+    };
 
     let allowNotification = window.Notification;
     let showNotification=function(data){
+      debugger;
         // notificationTypeList 需要消息提示的 code 列表
         let notificationTypeList = [1100,1101,11017,11016,11018,1500,11021,1005, 1004];
         if (notificationTypeList.indexOf(data.code) < 0) return; // 如果消息不在列表中，则 return

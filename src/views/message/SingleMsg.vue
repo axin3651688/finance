@@ -15,23 +15,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <div class="message-box" v-for="item in singleMsgList" :key="item.id">
-          <div class="message-top">
-            <div class="avatar-box">
-              <img :src="item.avatar" alt="">
-            </div>
-            <h3 class="user-name">{{item.name}}</h3>
-            <div class="send-time">
-              <!--<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>-->
-              <span class="time" v-text="formatTime(item.sendTime)"></span>
-              <div class="status"></div>
-            </div>
-          </div>
-          <div class="message-content">
-            <!--<span v-html="parseEmotions(item.content)"></span>-->
-            <span v-html="parseChatContent(item.content, item.type)"></span>
-          </div>
-        </div>
+        <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
     <div class="bottom">
@@ -68,6 +52,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import MessageItem from './MessageItem'
 import {
   FIND_SINGLE_MSG,
   sendMsg
@@ -78,7 +63,7 @@ import emotionSprites from '@a/green/emotion_sprites.json';
 export default {
   name: 'SingleMsg',
   props: ['chatWithUserId'],
-  components: {},
+  components: {MessageItem},
   data() {
     return {
       receiverName: '', // 聊天对象名称
@@ -106,7 +91,6 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
-      // console.log('要发送的内容是：', this.sendText);
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
         let sendData = {
           code: 1100, // 1100:单聊 1101:群聊
@@ -118,6 +102,8 @@ export default {
           },
           device: '868938033321615'
         };
+        console.log('要发送的内容是：', sendData);
+        debugger;
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
         sendMsg(sendData);

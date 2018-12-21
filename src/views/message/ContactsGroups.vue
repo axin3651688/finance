@@ -32,7 +32,13 @@
             <h3 class="text-title">{{rightInfo.text}}</h3>
             <p class="text-info">{{rightUsers.length}}人</p>
           </div>
-          <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
+          <el-button
+            type="primary"
+            size="medium"
+            class="my-btn"
+            @click="chatWithGroup(rightInfo.groupId)"
+          >发送信息
+          </el-button>
         </div>
       </div>
       <div class="panel-right-content">
@@ -171,6 +177,13 @@ export default {
         }).catch(err => {
           console.log('请求message：', err)
         })
+      }
+    },
+
+    // 开始群聊天
+    chatWithGroup(groupId) {
+      if (groupId) {
+        this.$emit('chatWithGroup', groupId)
       }
     }
   },

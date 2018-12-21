@@ -7,19 +7,23 @@
           <i class="splide-line"></i>
         </template>
         <contacts-teams v-if="which_to_show === 'ContactsTeams'"></contacts-teams>
-        <!--<component :is="which_to_show" keep-alive></component>-->
       </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
           我的好友
           <i class="splide-line"></i>
         </template>
-        <contacts-friends v-if="which_to_show === 'ContactsFriends'"></contacts-friends>
-        <!--<component :is="which_to_show" keep-alive></component>-->
+        <contacts-friends
+          v-if="which_to_show === 'ContactsFriends'"
+          @chatWithSingle="handleChatWithSingle"
+        ></contacts-friends>
       </el-tab-pane>
       <el-tab-pane label="我的群聊" name="ContactsGroups">
-        <contacts-groups v-if="which_to_show === 'ContactsGroups'"></contacts-groups>
-        <!--<component :is="which_to_show" keep-alive></component>-->
+        <contacts-groups
+          v-if="which_to_show === 'ContactsGroups'"
+          @chatWithGroup="handleChatWithGroup"
+        >
+        </contacts-groups>
       </el-tab-pane>
 
       <!--阴影-->
@@ -52,6 +56,17 @@ export default {
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
       this.which_to_show = tab.name
+    },
+
+    // 开始群聊天
+    handleChatWithGroup(groupId){
+      this.$emit('chatWithGroup', groupId)
+    },
+
+    // 开始单聊
+    handleChatWithSingle(receiverId) {
+      this.$emit('chatWithSingle', receiverId);
+
     }
   }
 }

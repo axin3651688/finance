@@ -5,6 +5,7 @@
  import modeHandle from "utils/modeHandle";
  export default function cmd1500Handle(websocket, data) {
      let command = data.data
+     debugger;
      console.log(command);
      let cmd = {};
      Object.keys(command).forEach(keys => {

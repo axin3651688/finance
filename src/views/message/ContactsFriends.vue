@@ -139,8 +139,7 @@ export default {
 
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
-      this.ActionSetChatWithUserId(receiverId);
-      console.log('即将和用户', receiverId, '聊天')
+      this.$emit('chatWithSingle', receiverId);
     }
   },
   mounted() {

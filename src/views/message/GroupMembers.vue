@@ -136,7 +136,7 @@ export default {
 
     // 群id查询群信息
     getMembers() {
-      GROUP_INFO(4).then(res => {
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群信息', res.data.data);
         if (res.data.code === 200) {
           this.groupMembers = res.data.data.users
@@ -180,7 +180,7 @@ export default {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 210;
   }
 
   .right-bar {

@@ -55,39 +55,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%">
-        <!--<div class="message-box" v-for="item in singleMsgList" :key="item.id">-->
-        <!--<div class="message-top">-->
-        <!--<div class="avatar-box">-->
-        <!--<img :src="item.avatar" alt="">-->
-        <!--</div>-->
-        <!--<h3 class="user-name">{{item.name}}</h3>-->
-        <!--<div class="send-time">-->
-        <!--&lt;!&ndash;<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>&ndash;&gt;-->
-        <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-        <!--<div class="status"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message-content">-->
-        <!--<p>{{item.content}}</p>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <div class="message-box" v-for="item in groupMsgList" :key="item.id">
-          <div class="message-top">
-            <div class="avatar-box">
-              <img :src="item.avatar" :alt="item.name">
-            </div>
-            <h3 class="user-name">{{item.name}}</h3>
-            <div class="send-time">
-              <span class="time">2018-10-15&nbsp;&nbsp;15:00</span>
-              <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-              <div class="status"></div>
-            </div>
-          </div>
-          <div class="message-content">
-            <p>{{item.content}}</p>
-          </div>
-        </div>
+        <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
 
       <!--底部阴影-->
@@ -115,11 +83,12 @@
           </div>
         </transition>
       </div>
-      <textarea class="chat-textarea"
-                placeholder="请输入文字，按enter建发送信息"
-                v-model="sendText"
-                ref="textarea"
-                @keyup.enter="handleSendMessage"
+      <textarea
+        class="chat-textarea"
+        placeholder="请输入文字，按enter建发送信息"
+        v-model="sendText"
+        ref="textarea"
+        @keyup.enter="handleSendMessage"
       ></textarea>
     </div>
 
@@ -180,6 +149,7 @@
 
 <script>
 import GroupMembers from './GroupMembers'
+import MessageItem from './MessageItem'
 import emotionSprites from '@a/green/emotion_sprites.json';
 import {
   findGroupMsg,
@@ -192,8 +162,10 @@ import {
 
 export default {
   name: 'GroupMsg',
+  props: ['groupId'],
   components: {
-    GroupMembers
+    GroupMembers,
+    MessageItem
   },
   data() {
     return {
@@ -209,6 +181,7 @@ export default {
       sendText: '' // 聊天发送的内容
     }
   },
+  computed: {},
   methods: {
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
@@ -228,12 +201,6 @@ export default {
           senderId: 539, // 539 姜海斌
           type: 1
         },
-        // data: {
-        //     content: this.sendText,
-        //     receiverId: 244,
-        //     senderId: 397,
-        //     type: 1
-        // },
         device: '868938033321615'
       };
       this.sendText = '';
@@ -270,7 +237,8 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      GROUP_INFO(4).then(res => {
+      if (!this.groupId) return;
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;

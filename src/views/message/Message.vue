@@ -4,15 +4,9 @@
       <div class="left">
         <el-scrollbar style="height: 100%">
           <ul>
-            <!--<li :class="['addressbook', {'active': activeItem === 101010}]" @click="activeThisItem(101010)">-->
-              <!--<img class="avatar-img" src="@/assets/green/contact_icon.svg" alt="">-->
-              <!--<h3>通讯录（60人）</h3>-->
-              <!--<img class="list-menu" src="@/assets/green/contact_list.svg" alt="">-->
-              <!--<div class="right-border"></div>-->
-            <!--</li>-->
             <template v-if="leftBarInstance">
               <template v-for="item in leftBarInstance.leftBarList">
-                <li v-if="!leftBarInstance.content"
+                <li v-if="!item.content"
                     :class="['have-sub', {active: leftBarInstance.activeItem === item}]"
                     :key="item.miniType"
                     @click="leftBarInstance.setItemActive(item)"
@@ -23,76 +17,44 @@
                   <div class="right-border"></div>
                 </li>
                 <li v-else
-                    :class="['have-sub', {active: leftBarInstance.activeItem === item}]"
+                    :class="[{active: leftBarInstance.activeItem === item}]"
                     :key="item.miniType"
                     @click="leftBarInstance.setItemActive(item)"
                 >
                   <div class="top">
-                    <img src="@/assets/green/sys_icon.svg" alt="">
-                    <span class="count mt">10</span>
-                    <span class="publish-time mt">26秒前</span>
+                    <img :src="item.avatar" alt="">
+                    <span class="count mt" v-if="item.count">{{item.count}}</span>
+                    <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
                   </div>
-                  <h3 class="title">软件技术群
+                  <h3 class="title">{{item.name}}
                     <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
                   </h3>
-                  <p>今天风险信息系统经过了第一轮测试...</p>
+                  <p>{{item.content}}</p>
                   <div class="right-border"></div>
                 </li>
               </template>
             </template>
-
-            <!--<li :class="[ {'active': activeItem === 2}]" @click="activeThisItem(2)">-->
-              <!--<div class="top">-->
-                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
-                <!--<span class="count mt">99+</span>-->
-                <!--<span class="publish-time mt">26秒前</span>-->
-              <!--</div>-->
-              <!--<h3 class="title">代办事项-->
-                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
-              <!--</h3>-->
-              <!--<p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>-->
-              <!--<div class="right-border"></div>-->
-            <!--</li>-->
-            <!--<li :class="[ {'active': activeItem === 4}]" @click="activeThisItem(4)">-->
-              <!--<div class="top">-->
-                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
-                <!--<span class="count mt">1</span>-->
-                <!--<span class="publish-time mt">26秒前</span>-->
-              <!--</div>-->
-              <!--<h3 class="title">张某-->
-                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
-              <!--</h3>-->
-              <!--<p>今天风险信息系统经过了第一轮测试...</p>-->
-              <!--<div class="right-border"></div>-->
-            <!--</li>-->
-            <!--<li :class="[ {'active': activeItem === 5}]" @click="activeThisItem(5)">-->
-              <!--<div class="top">-->
-                <!--<img src="@/assets/green/sys_icon.svg" alt="">-->
-                <!--<span class="count mt">10</span>-->
-                <!--<span class="publish-time mt">26秒前</span>-->
-              <!--</div>-->
-              <!--<h3 class="title">软件技术群-->
-                <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
-              <!--</h3>-->
-              <!--<p>今天风险信息系统经过了第一轮测试...</p>-->
-              <!--<div class="right-border"></div>-->
-            <!--</li>-->
-
           </ul>
         </el-scrollbar>
       </div>
       <div class="right">
         <template v-if="leftBarInstance">
-          <contacts v-if="leftBarInstance.activeItem.miniType === 101010" v-once></contacts>
-          <new-friends v-if="leftBarInstance.activeItem.miniType === 11016" v-once></new-friends>
-          <group-helper v-if="leftBarInstance.activeItem.miniType === 11017" v-once></group-helper>
-          <Todo v-if="activeItem === 2" v-once></Todo>
+          <contacts
+            v-if="leftBarInstance.activeMiniType === 101010"
+            @chatWithGroup="handleChatWithGroup"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts>
+          <new-friends v-if="leftBarInstance.activeMiniType === 11016"></new-friends>
+          <group-helper v-if="leftBarInstance.activeMiniType === 11017"></group-helper>
+          <Todo v-if="activeItem === 2"></Todo>
           <single-msg
-            v-if="leftBarInstance.activeItem.miniType === 1100"
+            v-if="leftBarInstance.activeMiniType === 1100"
             :chatWithUserId="leftBarInstance.activeItem.senderId"
-            v-once
           ></single-msg>
-          <group-msg v-if="leftBarInstance.activeItem.miniType === 5" v-once></group-msg>
+          <group-msg
+            v-if="leftBarInstance.activeMiniType === 1101"
+            :groupId="groupId"
+          ></group-msg>
         </template>
 
         <!--右边区域左内阴影效果-->
@@ -138,6 +100,7 @@ var contact = {
 class LeftBar {
   constructor(resList) {
     if (!LeftBar.instance) {
+      this.activeMiniType = 101010; // 默认通讯录
       this.activeItem = new LeftBarItem(contact);
       this._init(resList);
       LeftBar.instance = this;
@@ -156,9 +119,14 @@ class LeftBar {
   }
 
   setItemActive(itemObj) {
-    debugger;
     this.activeItem = itemObj;
-    itemObj.setActive()
+    itemObj.setActive();
+    this.setActiveMiniType(itemObj.miniType)
+  }
+
+  setActiveMiniType(miniType) {
+    // debugger;
+    this.activeMiniType = miniType
   }
 
   addLeftBarItem(itemData) {
@@ -219,6 +187,8 @@ export default {
   },
   data() {
     return {
+      receiverId: null, // 单聊对象 id
+      groupId: null, // 群聊 群id
       leftBarInstance: null, // 左边栏实例
       showGroupMembers: false,
       activeItem: 4, // 当前激活显示的选项
@@ -235,6 +205,24 @@ export default {
     chatWithUserId(chatWithUserId) {
       // TODO: 这里有bug 联系点击同一个人不会出发改变
       this.activeItem = 4;
+    }
+  },
+  filters: {
+    trim(val) { // 去掉头尾空格
+      debugger;
+      return val.trim()
+    },
+    // 格式化时间戳
+    formatTime(time) {
+      let date = new Date(time);
+      let Y = date.getFullYear();
+      let M = date.getMonth();
+      let D = date.getDay();
+      let H = date.getHours();
+      let m = date.getMinutes();
+      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
+      // console.log(newTime)
+      return newTime
     }
   },
   methods: {
@@ -281,6 +269,19 @@ export default {
       messagecContainer.style.height = resizeHeight + 'px';
       // console.log('message视图高度：', resizeHeight);
       // console.log('message视图dom：', messagecContainer)
+    },
+
+    // 开始群聊天
+    handleChatWithGroup(groupId){
+      console.log('开始群聊天：', groupId);
+      this.groupId = groupId;
+      this.leftBarInstance.activeMiniType = 1101
+    },
+
+    // 开始单聊
+    handleChatWithSingle(receiverId) {
+      console.log('即将和用户', receiverId, '聊天');
+      this.leftBarInstance.activeMiniType = 1100
     }
   },
   mounted() {
@@ -296,7 +297,7 @@ export default {
     this.messageResize();
     window.addEventListener('resize', this.messageResize)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // 在页面销毁的时候一定要取消事件监听，不然严重影响性能
     window.removeEventListener('resize', this.messageResize)
   }
@@ -369,6 +370,8 @@ export default {
 
               img {
                 width: 46px;
+                height: 46px;
+                border-radius: 50%;
                 float: left;
               }
 
@@ -389,7 +392,7 @@ export default {
 
               .publish-time {
                 float: right;
-                width: 50px;
+                /*width: 50px;*/
                 height: 16px;
                 font-size: 12px;
                 font-family: $fontFamilyMain;
