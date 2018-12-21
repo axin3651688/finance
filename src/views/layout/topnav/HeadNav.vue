@@ -46,6 +46,17 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
+      <!-- 日  日历 -->
+    <el-date-picker
+      v-model="value"
+      @change="logTimeChange"
+      type="date"
+      placeholder="选择日期"
+      format="yyyy 年 MM 月 dd 日"
+      value-format="yyyy-MM-dd">
+    </el-date-picker>
+
       <!-- 消息提醒 -->
       <el-badge :value="12">
         <i class="el-icon-bell iconclass"></i>
@@ -135,7 +146,11 @@ export default {
       yearCount: 4,
       monthCount: 12, //[4,12,16]
       years: [],
-      months: []
+      months: [],
+      value:"2018-12-21",
+      y:[],
+      m:[],
+      d:[]
      
     };
   },
@@ -169,6 +184,9 @@ export default {
       }
     }
   },
+  mounted(){
+
+  },
   computed: {
     ...mapGetters([
       "user",
@@ -182,6 +200,15 @@ export default {
   },
 
   methods: {
+    logTimeChange(val){
+      this.y=val.slice(0,4)
+      this.m=val.slice(5,7)
+      this.day = val.slice(8,10)
+      // console.log(this.y)
+      // console.log(this.m)
+      // console.log(this.day)
+      // console.log(val)
+    },
     ...mapActions([
       "ToggleSideBar",
       "ReWrightName",
@@ -242,4 +269,10 @@ export default {
 //   height: 100%;
 //   box-sizing: border-box;
 // }
+.head-nav{
+  .el-input__inner {
+    border:none;
+    outline: none;
+  }
+}
 </style>
