@@ -20,7 +20,7 @@ const getters = {
   // 顶部期间月状态
   month: state => state.prame.command.month,
   // 顶部期间日状态
-  date: state => state.prame.command.month,
+  date: state => state.prame.command.date,
   // 顶部选中公司id
   company: state => state.prame.command.company,
   // 顶部选中公司名字

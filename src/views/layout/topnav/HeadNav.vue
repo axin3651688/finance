@@ -143,6 +143,8 @@ export default {
     CompanyTree
   },
   created() {
+    console.log(localStorage.treeInfo_cache);
+
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
@@ -241,10 +243,3 @@ export default {
   }
 };
 </script>
-<style lang='scss' scoped>
-// .infoshow {
-//   width: 100%;
-//   height: 100%;
-//   box-sizing: border-box;
-// }
-</style>

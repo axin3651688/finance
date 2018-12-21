@@ -24,7 +24,12 @@ const prame = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
-          localStorage.setItem([keys] + '_cache', data[keys]);
+          console.log(typeof data[keys])
+          if (typeof data[keys] == 'object') {
+            localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
+          } else {
+            localStorage.setItem([keys] + '_cache', data[keys]);
+          }
         }
       });
     },
