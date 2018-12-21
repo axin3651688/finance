@@ -16,7 +16,6 @@ import {findDesignSource } from "~api/interface";
 export default {
     mounted() {
         let me = this;
-        debugger;
         let xtype = me.item.xtype;
         if(me.item.listeners){
           me.item.listeners.forEach(listener => {
@@ -27,6 +26,8 @@ export default {
   
               }else if(xtype === "text" || xtype === "bi-text"){
   
+              }else if(xtype === "form" || xtype === "tree-grid"){
+                this.tableEventHandler(listener)
               }
             }else{
               console.error("没有为事件对象配制type属性，"+me.item.text);
@@ -57,7 +58,6 @@ export default {
          chartEventHandler(listener){
              let me = this;
              this.$children[0].chart.on(listener.type,function(params){
-                debugger;
                 me.commonHandler(listener,params);
                 
           });
@@ -67,9 +67,13 @@ export default {
          /**
           * 表格事件处理
           */
-         tableEventHandler(){
-
-         },
+         tableEventHandler(listener){
+          // let me = this;
+          // this.$children[0].chart.on(listener.type,function(params){
+          //    debugger;
+          //    me.commonHandler(listener,params);
+          // })
+        },
 
          /**
           * 文字事件处理
@@ -81,6 +85,7 @@ export default {
           * 增加到tab的动作  openDilog  openWindow
           */
          addTab(params,listener){
+           debugger;
           let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
           let module = tab.$parent.$parent;
           let bb = this.item,text = bb.text;

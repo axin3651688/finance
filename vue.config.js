@@ -20,6 +20,7 @@ function resolve(dir) {
 let proxyObj = { // 配置跨域
     '/api': {
         target: 'http://192.168.1.118:8005',
+        // target: 'http://192.168.1.139:8005',
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -27,8 +28,13 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
+<<<<<<< HEAD
         //  target: 'http://192.168.1.118:8081',//gjx
         target: 'http://192.168.2.12:8081',//szc
+=======
+        target: 'http://192.168.1.118:8081',
+        //target: 'https://192.168.1.149:8001/',
+>>>>>>> c42d3b3a1383796f080fa7235aeb966391e9808e
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -53,13 +59,14 @@ let proxyObj = { // 配置跨域
     }
 };
 module.exports = {
-    baseUrl: debug ? '/' : '/production-sub-path/',
+    // baseUrl: debug ? '/' : '/production-sub-path/',
+    baseUrl: debug ? '/' : './',
     outputDir: 'dist', // 构建输出目录
     assetsDir: 'assets', // 静态资源目录 (js, css, img, fonts)
     lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
     runtimeCompiler: true, // 运行时版本是否需要编译
     transpileDependencies: [/\/node_modules\/resize-detector\//], // 默认babel-loader忽略mode_modules，这里可增加例外的依赖包名
-    productionSourceMap: true, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
+    productionSourceMap: false, // 是否在构建生产包时生成 sourceMap 文件，false将提高构建速度
     // css相关配置
     css: {
         // 是否使用css分离插件 ExtractTextPlugin
@@ -71,7 +78,7 @@ module.exports = {
         // 启用 CSS modules for all css / pre-processor files.
         modules: false
     },
-    // cache: false, 
+
     // mode: 'production',
     pages: {
         index: {

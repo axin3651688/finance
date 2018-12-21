@@ -279,3 +279,39 @@ listeners:[
 ~~~
 
 ~~~
+
+
+~~~
+
+    {
+     columns:[{
+        id:"主键",
+        text:"名称",
+        unit:"%/万元",
+        B:120//累计数
+        sntq:120//上年同数，
+        dimName://0001=>itempoint/0002=>itemperiod/1016=>indicator
+      }],
+    gauge:[
+        {
+            A:100,  //inds
+            B:90,  //inds
+            C:75,  //inds
+            D:60,  //inds
+            E:50， //inds
+            value:75, //1016
+            valueText:"中等", //1016主题的维度Grade对应的名称
+            id:"主键",//1016主题的维度indicator对应的编码
+            text:"名称",//1016主题的维度indicator对应的名称
+            dimName://1016=>indicator,
+            unit:"%",
+        }
+    ],
+    lines:[
+        {id:11000, text:"xxxx",datas:[{id:"201601",value:525},{id:"201602",value:525}......]},
+        {id:11020, text:"xxx",datas:[]},
+        {id:11003,text:"xxx",datas:[]}
+    ]
+    }
+
+~~~

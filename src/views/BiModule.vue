@@ -38,8 +38,8 @@
       <h2>{{layout.xtype}}</h2>
     </div>
     <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName">
-<!--start @tab-click="handleTabClick"  -->
-      <el-tab-pane 
+      <!--start @tab-click="handleTabClick"  -->
+      <el-tab-pane
         v-for="(item,index) in items"
         v-bind:key="item.id"
         v-bind:index="index"
@@ -47,7 +47,8 @@
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-      <el-row  v-if="item.layout && item.layout === 'column'" :gutter="24"> <!--说明是有item.items孩子的-->
+        <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
+          <!--说明是有item.items孩子的-->
           <el-col
             v-for="(item1,index1) in item.children"
             v-bind:key="item1.id"
@@ -64,18 +65,17 @@
               ref="mychild"
             ></bi-item>
           </el-col>
-      </el-row>
-      <bi-item v-else
+        </el-row>
+        <bi-item
+          v-else
           :item.sync="item"
           :config.sync="config"
           :datas.sync="datas"
           v-on:getDatas="generateApiModelDatas"
-          ref="mychild"/>
-
-          
+          ref="mychild"
+        />
       </el-tab-pane>
-<!--end-->
-
+      <!--end-->
     </el-tabs>
     <el-collapse v-if="layout.xtype === 'accordion'" v-model="activeName" accordion>
       <el-collapse-item
@@ -116,6 +116,7 @@ import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { getPeriodByFomualr } from "../utils/period";
+
 export default {
   name: "BiModule",
   components: {
@@ -133,7 +134,7 @@ export default {
       config: {
         random: {}
       },
-      activeTabName:"0",
+      activeTabName: "0",
       api: null,
       layout: {
         xtype: "form"
@@ -205,7 +206,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
-      this.debug = 1 ; //临时的动作
+      this.debug = 1; //临时的动作
       if (this.module_api) {
         this.api = this.module_api;
       }
@@ -426,10 +427,10 @@ export default {
           console.info(res);
         });
     },
-    handleTabClick(tab,event){
+    handleTabClick(tab, event) {
       console.log(tab, event);
     },
-    getActiveTabName(item){
+    getActiveTabName(item) {
       return item.id;
     }
   }
