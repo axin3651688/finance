@@ -110,11 +110,12 @@ export default {
     ...mapActions(['ActionSetMessageStore']),
     getData() {
       // let userId = this.user.user.id;
-      // alert(params.type)
-      MY_GROUP_LIST(225).then(res => {
+      MY_GROUP_LIST(this.user.user.id).then(res => {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
           this.GroupListData = res.data.data;
+          // 默认请求第一个群组的信息
+          this.getInfo(this.GroupListData[0].groupId)
         }
       })
     },
@@ -140,6 +141,9 @@ export default {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
             let groupInfo = res.data.data;
+            this.ActionSetMessageStore({
+              groupInfo: groupInfo,
+            });
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId] = groupInfo;
@@ -149,7 +153,7 @@ export default {
         });
 
         // 获取群公告   公告图片的字段: rightNotice.url
-        FIND_GROUP_NOTICE(groupId, 225).then(res => {
+        FIND_GROUP_NOTICE(groupId, this.user.user.id).then(res => {
           console.log('群id获取群公告:', res.data.data);
           if (res.data.code === 200) {
             if (res.data.data.noticeList.length > 0) {
@@ -184,7 +188,6 @@ export default {
       if (groupId) {
         this.ActionSetMessageStore({
           miniType: 1101, // 1101 群聊,
-          groupId: groupId
         });
         this.$emit('chatWithGroup', groupId)
       }

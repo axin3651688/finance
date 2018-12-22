@@ -93,7 +93,7 @@ export default {
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
-      requestMyfriends(372).then(res => {
+      requestMyfriends(this.user.user.id).then(res => {
         console.log('获取我的好友列表-->>', res.data);
 
         if (res.data.code === 200) {

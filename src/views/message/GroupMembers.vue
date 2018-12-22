@@ -1,5 +1,5 @@
 <template>
-  <div class="GroupMembers vue-module">
+  <div class="GroupMembers">
     <div id="right-bar" class="right-bar">
       <div class="top">
         <div class="bar-header">
@@ -65,7 +65,8 @@
     <el-dialog class="add-member-dialog"
                :visible.sync="showAddMember"
                width="800px"
-               :show-close="false"
+               :show-close="true"
+               :modal-append-to-body="false"
     >
       <div class="dialog-content">
         <el-tabs v-model="activePanelName" type="card" @tab-click="handleClickTab">
@@ -400,8 +401,14 @@ export default {
       }
     }
 
-    .el-dialog__header, .el-dialog__footer {
+    .el-dialog__footer {
       display: none;
+    }
+
+    .el-dialog__header{
+      position: absolute;
+      right: 0;
+      z-index: 999;
     }
 
     .el-dialog__body {

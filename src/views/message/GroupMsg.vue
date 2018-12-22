@@ -142,13 +142,27 @@
               </span>
     </el-dialog>
 
+    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
+    <!--<el-dialog class="add-member-dialog"-->
+               <!--:visible.sync="showGroupMembers"-->
+               <!--width="300px"-->
+               <!--:show-close="true"-->
+               <!--:modal-append-to-body="false"-->
+               <!--id="group-members"-->
+    <!--&gt;-->
+      <!--sdfasdfsadf-->
+    <!--</el-dialog>-->
+
     <!--群成员侧边栏组件-->
-    <group-members v-if="showGroupMembers" @closeGroupMembers="handleCloseGroupMembers"></group-members>
+    <group-members
+      v-if="showGroupMembers"
+      @closeGroupMembers="handleCloseGroupMembers"
+    ></group-members>
   </div>
 </template>
 
 <script>
-import GroupMembers from './GroupMembers'
+import {mapGetters, mapActions} from 'vuex'
 import MessageItem from './MessageItem'
 import emotionSprites from '@a/green/emotion_sprites.json';
 import {
@@ -162,9 +176,8 @@ import {
 
 export default {
   name: 'GroupMsg',
-  props: ['groupId'],
   components: {
-    GroupMembers,
+    GroupMembers: () => import('./GroupMembers'),
     MessageItem
   },
   data() {
@@ -181,7 +194,15 @@ export default {
       sendText: '' // 聊天发送的内容
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id;
+    },
+    groupId() {
+      return this.messageStore.groupInfo.info.groupId
+    }
+  },
   methods: {
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
@@ -300,16 +321,17 @@ export default {
     // 解散群聊
     clickDissoluGroup() {
       let params = {
-        senderId: 225,
-        groupId: 0
+        senderId: this.loginUserId,
+        groupId: this.groupId
       };
       DISSOLU_GROUP(params).then(res => {
-        console.log('解散群聊', res.data.data);
+        console.log('解散群聊：', res.data.data);
+        debugger;
         if (res.data.code === 200) {
 
         }
       }).catch(err => {
-        console.log('解散群聊', err)
+        console.log('解散群聊异常：', err)
       })
     }
   },
@@ -610,7 +632,7 @@ export default {
   }
 
   /deep/ .el-dialog {
-    min-width: 370px;
+    min-width: 300px;
     border-radius: 12px;
 
     .el-dialog__header {
@@ -703,6 +725,15 @@ export default {
       opacity: 0;
       filter: alpha(opacity=0);
     }
+  }
+
+  #group-members>.el-dialog {
+    margin: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    position: fixed !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
   }
 
 </style>

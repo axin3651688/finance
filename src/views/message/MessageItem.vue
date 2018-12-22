@@ -12,15 +12,27 @@
       </div>
     </div>
     <div class="message-content">
-      <div v-if="data.type === 1">{{data.content}}</div>
-      <!--文件-->
-      <div v-else>
+      <div v-if="data.type === 1" v-html="parseEmotions(data.content)">
+        <!--{{data.content | parseEmotions}}-->
+      </div>
+      <!--2图片-->
+      <div v-else-if="data.type === 2">
+        <a :href="data.file.hdUrl" target="_blank">
+          <div class="img-wrap">
+            <div class="img-box">
+              <img :src="data.file.thumbUrl" :alt="data.content">
+            </div>
+          </div>
+        </a>
+      </div>
+      <!--3文件-->
+      <div v-else-if="data.type === 3">
         <a :href="data.file.hdUrl" target="_blank">
           <div class="file-wrap">
+            <!--{{data.file}}-->
             <div class="left">
               <div class="title">
                 <span class="text">{{data.file.text}}</span>
-                <span class="category">.{{data.file.category}}</span>
               </div>
               <div class="size">{{data.file.size}}</div>
             </div>
@@ -31,37 +43,57 @@
           </div>
         </a>
       </div>
+      <!--4语音-->
+      <div v-else-if="data.type === 4">
+        <!--{{data.file}}-->
+        <audio :src="data.file.thumbUrl" controls="controls">
+          您的浏览器不支持该音频播放。
+        </audio>
+      </div>
+      <!--5语音-->
+      <div v-else-if="data.type === 5">
+        <!--{{data.file}}-->
+        <video :src="data.file.thumbUrl" controls="controls">
+          您的浏览器不支持 video 标签。
+        </video>
+      </div>
+      <div v-else>{{data.content}}</div>
 
-      <!--<div v-else-if="data.type === 2">{{data.content}} //图片</div>-->
-      <!--<div v-else-if="data.type === 3">{{data.content}} //文件</div>-->
-      <!--<div v-else-if="data.type === 4">{{data.content}} //语音</div>-->
-      <!--<div v-else-if="data.type === 5">{{data.content}} //视频</div>-->
+
       <!--<div v-else>{{data.content}} //其他</div>-->
     </div>
   </div>
 </template>
 
 <script>
+import {PARSE_EMOTIONS, FORMAT_TIME} from 'utils/message';
+import emotionSprites from '@a/green/emotion_sprites.json';
+
 export default {
   name: "MessageItem",
   props: ['data'],
+  data() {
+    return {
+      EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
+    }
+  },
   filters: {
-    // 格式化时间戳
-    formatTime(time) {
-      let date = new Date(time);
-      let Y = date.getFullYear();
-      let M = date.getMonth();
-      let D = date.getDay();
-      let H = date.getHours();
-      let m = date.getMinutes();
-      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
-      // console.log(newTime)
-      return newTime
+    formatTime(time) { // 格式化时间戳
+      return FORMAT_TIME(time)
+    }
+  },
+  methods: {
+    parseEmotions(content) {
+      return PARSE_EMOTIONS(content)
     }
   }
 }
 </script>
 
+<style lang="scss">
+  /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
+  @import "@s/green/emotion_sprites.scss";
+</style>
 <style lang="scss" scoped>
   @import "@/styles/green/index.scss";
 
@@ -145,7 +177,7 @@ export default {
 
           .text {
             display: inline-block;
-            max-width: 150px;
+            max-width: 180px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -176,5 +208,25 @@ export default {
         }
       }
     }
+
+    .img-wrap {
+      .img-box {
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+    }
+
+  }
+
+  /deep/ .face-img {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
   }
 </style>

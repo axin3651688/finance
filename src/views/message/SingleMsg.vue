@@ -20,7 +20,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
+        <message-item v-for="item in singleMsgListReverse" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
     <div class="bottom">
@@ -84,8 +84,11 @@ export default {
     loginUserId() {
       return this.user.user.id;
     },
+    receiverId() {
+      return this.messageStore.receiverData.user.id
+    },
     singleMsgListReverse() {
-      return singleMsgList.reverse()
+      if (this.singleMsgList.length) return this.singleMsgList.reverse()
     }
   },
   methods: {
@@ -101,7 +104,7 @@ export default {
           code: 1100, // 1100:单聊 1101:群聊
           data: {
             content: this.sendText.trim(),
-            receiverId: this.chatWithUserId, //
+            receiverId: this.receiverId, //
             senderId: this.loginUserId, // 225:卢诚
             type: 1
           },
@@ -131,7 +134,7 @@ export default {
         name: this.receiverName,
         sendTime: new Date().getTime()
       };
-      this.singleMsgList.push(data);
+      this.singleMsgListReverse.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
       });
@@ -145,31 +148,10 @@ export default {
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
-    // 解析聊天内容，把聊天中的 语音、文件、表情符号替换
-    // content:聊天内容  type:内容的类型
-    // 1:文本有表情的也是；2:图片; 3:文件; 4:音频; 5:视频;）
-    parseChatContent(content, type) {
-      // debugger;
-      return PARSE_CHAT_CONTENT(content, type)
-    },
-
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
     addFaceToInput(face) {
       this.sendText += face;
       this.$refs.textarea.focus();
-    },
-
-    // 格式化时间戳
-    formatTime(time) {
-      let date = new Date(time);
-      let Y = date.getFullYear();
-      let M = date.getMonth();
-      let D = date.getDay();
-      let H = date.getHours();
-      let m = date.getMinutes();
-      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
-      // console.log(newTime)
-      return newTime
     },
 
     // 获取单聊信息返回res后的处理
@@ -192,7 +174,7 @@ export default {
   mounted() {
     // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverId).then(
+    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id).then(
       this.findSingleMsgThen
     ).catch(err => {
       console.log('获取单聊信息catch：', err)

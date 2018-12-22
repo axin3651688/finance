@@ -14,50 +14,25 @@
               <div>
                 <div class="img-box"><img :src="item.avatar" alt=""></div>
               </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
+              <h3 class="title">{{item.state}}{{item.name}}申请加你为好友</h3>
+              <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
                 <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
+                {{item.content}}
               </div>
             </div>
             <div class="item-right">
-              <div class="btns">
-                <el-button type="primary" size="small" class="my-btn my-btn-primary">同意</el-button>
+              <span v-if="item.state === 4">已同意</span>
+              <span v-else-if="item.state === 3">已拒绝</span>
+              <div class="btns" v-else>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-primary"
+                  @click="saveFriend()"
+                >同意</el-button>
                 <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
               </div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
-              </div>
-            </div>
-            <div class="item-right">
-              <span>已同意</span>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
-              </div>
-            </div>
-            <div class="item-right">
-              <span>等待审核</span>
             </div>
           </div>
         </section>
@@ -67,12 +42,13 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import {
   NEW_FRIEND_LIST,
   SAVE_FRIEND,
   REFUSE_GROUP
 } from '~api/message.js';
-
+import {FORMAT_TIME} from 'utils/message.js'
 export default {
   name: 'NewFriends',
   data() {
@@ -80,30 +56,37 @@ export default {
       messageList: [] // 好友申请消息列表
     }
   },
-  mounted() {
-    this.getList()
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {return this.user.user.id}
+  },
+  filters: {
+    formatTime(time) {
+      return FORMAT_TIME(time)
+    }
   },
   methods: {
     getList() {
-      NEW_FRIEND_LIST(225).then(res => {
-        console.log('好友申请消息', res.data.data)
-        if (res.data.code == 200) {
+      NEW_FRIEND_LIST(this.loginUserId).then(res => {
+        console.log('好友申请消息', res.data.data);
+        if (res.data.code === 200) {
           this.messageList = res.data.data
         }
       }).catch(err => {
         console.log('请求message：', err)
       })
     },
+
     saveFriend(item, state) {
       // 点同意，先保存，再修改状态，点拒绝直接改状态
       let params = {
         friendId: item.id,
-        userId: 225
-      }
+        userId: this.loginUserId
+      };
 
       SAVE_FRIEND(params).then(res => {
-        console.log('保存', res.data.data)
-        if (res.data.code == 200) {
+        console.log('保存', res.data.data);
+        if (res.data.code === 200) {
           this.updateState(item, state)
         }
       }).catch(err => {
@@ -114,18 +97,21 @@ export default {
       let params = {
         code: item.code,
         state: 3 // 3拒绝，4同意
-      }
+      };
       REFUSE_GROUP(params)
         .then(res => {
-          console.log('修改状态', res.data.data)
-          if (res.data.code == 200) {
-            console.log('修改成功')
+          console.log('修改好友请求状态', res.data.data);
+          if (res.data.code === 200) {
+            console.log('修改好友请求成功')
           }
         }).catch(err => {
-        console.log('请求message：', err)
+        console.log('修改好友请求err：', err)
       })
     }
 
+  },
+  mounted() {
+    this.getList()
   }
 }
 </script>

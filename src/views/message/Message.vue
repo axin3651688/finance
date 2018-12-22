@@ -47,14 +47,8 @@
           <new-friends v-if="messageStore.miniType === 11016"></new-friends>
           <group-helper v-if="messageStore.miniType === 11017"></group-helper>
           <Todo v-if="messageStore.miniType === 2"></Todo>
-          <single-msg
-            v-if="messageStore.miniType === 1100"
-            :chatWithUserId="leftBarInstance.activeItem.senderId"
-          ></single-msg>
-          <group-msg
-            v-if="messageStore.miniType === 1101"
-            :groupId="groupId"
-          ></group-msg>
+          <single-msg v-if="messageStore.miniType === 1100"></single-msg>
+          <group-msg v-if="messageStore.miniType === 1101"></group-msg>
         </template>
 
         <!--右边区域左内阴影效果-->
