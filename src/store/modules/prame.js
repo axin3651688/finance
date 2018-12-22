@@ -7,7 +7,13 @@ const prame = {
       date: new Date().getDate(),
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
-      treeInfo: {},
+      treeInfo: {
+        id: "1001",
+        leaf: true,
+        pid: "1001",
+        industryId: 1,
+        text: "天津食品"
+      },
       openPid: 0,
       activeId: [],
       //下面待实现
