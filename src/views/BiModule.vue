@@ -115,7 +115,9 @@ import BiItem from "@c/BiItem";
 import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
-import { getPeriodByFomualr } from "../utils/period";
+import { generatePeriod } from "../utils/period";
+import { rowsOfChildrenContent } from "../utils/math";
+
 
 export default {
   name: "BiModule",
@@ -149,7 +151,7 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    // debugger;
+    //
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -230,7 +232,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-      debugger;
+    
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -270,7 +272,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      debugger;
+    
       this.setScopeDatas(source, 1);
       // this.datas = [];
       if (this.config) {
@@ -302,7 +304,7 @@ export default {
       let datas = {};
       needDims.forEach(element => {
         let val = params[element];
-        //  debugger;
+        // 
         if (!val && element === "company") {
           val = params[element + "Id"];
         }
@@ -319,9 +321,13 @@ export default {
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
       debugger
-      let periodCount = config.periodCount,compareType = config.compareType,year = datas.year,month = datas.month,period = datas.period;
-      if(year&&month&&period&&periodCount){
-        let comparePeriod = getPeriodByFomualr(year,month,compareType,period);
+      let periodCount = config.periodCount;
+      let compareType = config.compareType;
+      let year = datas.year,month = datas.month;
+      if(year&&month&&periodCount&&compareType){
+        year = {id:year,text:"年"};
+        month = {id:month,text:"月"};
+        let comparePeriod = generatePeriod(periodCount,compareType,year,month);
         datas.comparePeriod = comparePeriod;
       }
       return datas;
@@ -355,12 +361,16 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
+      
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
 
         Cnbi.paramsHandler(config, params);
+        // 根据是否配置rows来改变rows的内容
+        if(config.group&&config.rows&&params.comparePeriod){
+          rowsOfChildrenContent(config, params);
+        }   
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -406,6 +416,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      debugger
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
@@ -422,7 +433,7 @@ export default {
       debugger
       findThirdPartData(params)
         .then(res => {
-          debugger;
+        
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
