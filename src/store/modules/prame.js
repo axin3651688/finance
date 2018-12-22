@@ -4,9 +4,10 @@ const prame = {
       year: new Date().getFullYear(),
       module_api: 0,
       month: new Date().getMonth(),
+      date: new Date().getDate(),
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
-      companyLeaf: false,
+      treeInfo: {},
       openPid: 0,
       activeId: [],
       //下面待实现
@@ -14,7 +15,6 @@ const prame = {
       action2: 0,
       action3: 0,
       defaultOpen: 0,
-
     }
   },
 
@@ -24,7 +24,12 @@ const prame = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
-          localStorage.setItem([keys] + '_cache', data[keys]);
+          console.log(typeof data[keys])
+          if (typeof data[keys] == 'object') {
+            localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
+          } else {
+            localStorage.setItem([keys] + '_cache', data[keys]);
+          }
         }
       });
     },

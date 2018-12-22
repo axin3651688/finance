@@ -32,7 +32,8 @@ export default {
           // debugger;
           this.GetSideMid({
             company: localStorage.company_cache,
-            companyName: localStorage.companyName_cache
+            companyName: localStorage.companyName_cache,
+            treeInfo: JSON.parse(localStorage.treeInfo_cache)
           });
         }
         if (!this.isEmpty(localStorage.year_cache)) {
@@ -47,7 +48,7 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.2:7006/socket.io/";
       // let url = "ws://192.168.1.139:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
