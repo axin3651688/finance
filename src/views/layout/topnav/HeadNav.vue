@@ -52,6 +52,7 @@
       v-model="value"
       @change="logTimeChange"
       type="date"
+      class="day"
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
       value-format="yyyy-MM-dd">
@@ -147,10 +148,10 @@ export default {
       monthCount: 12, //[4,12,16]
       years: [],
       months: [],
-      value:"2018-12-21",
+      value:"",
       y:[],
       m:[],
-      d:[]
+      day:[]
      
     };
   },
@@ -159,6 +160,8 @@ export default {
     CompanyTree
   },
   created() {
+    this.value = this.year+this.month+this.date
+    console.log(this.value)
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
@@ -195,18 +198,19 @@ export default {
       "year",
       "month",
       "company",
-      "companyName"
+      "companyName",
+      "date"
     ])
   },
 
   methods: {
+    // 日期
     logTimeChange(val){
       this.y=val.slice(0,4)
       this.m=val.slice(5,7)
       this.day = val.slice(8,10)
-      // console.log(this.y)
-      // console.log(this.m)
-      // console.log(this.day)
+      this.GetSideMid({year : this.y, month : this.m, date : this.day})
+      console.log(this.day)
       // console.log(val)
     },
     ...mapActions([
@@ -228,7 +232,7 @@ export default {
       }
     },
     getname(e) {
-        console.log(e);
+        console.log("a:",e);
         this.companyLeaf = e.leaf;
       this.companyId = e.id;
       this.companyName_cache = e.text;
@@ -270,9 +274,8 @@ export default {
 //   box-sizing: border-box;
 // }
 .head-nav{
-  .el-input__inner {
-    border:none;
-    outline: none;
+  .day{
+    // display: none;
   }
 }
 </style>

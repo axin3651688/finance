@@ -60,18 +60,13 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
-import ElCascader from "./ElCascader.vue";
 // data  columns list
 export default {
-  // components:{
-  //   ElCascader
-  // },
   data() {
     return {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
-      // a:[{c:111},{b:222}]
     };
   },
   name: "TreeGrid",
@@ -101,6 +96,7 @@ export default {
   },
   mounted() {
     // this.item.options = this.item.items[0].columns
+   
   },
   computed: {
     // 格式化数据源
@@ -119,6 +115,93 @@ export default {
     }
   },
   methods: {
+
+    array(datas){
+    let data=datas
+    // console.log("w",data)
+    let arr = []
+    let index=0
+     let flag = false;
+     //找到父亲
+     let root;
+     let rootItem;
+     for(let i = 0; i < data.length-1;i++){
+       let it = data[i];
+       if(root&&it.scode==root){
+          root = it.pid;
+          rootItem = it;
+       }else if (root) {
+         continue;
+       }else {
+         for(let j = 0;j < data.length-1;j++){
+          let tt = data[j];
+          if(it.scode==tt.pid){
+            root = it.pid;
+            rootItem = it;
+          }else {
+            root = it.pid;
+            rootItem =it;
+            flag = true;
+            break;
+          }
+        }
+       }
+       if(flag){
+         break;
+       }
+    
+    }
+    // console.log(root,rootItem);
+
+    if(root){
+      debugger
+      this.tranformData(data,rootItem);
+    }
+    this.item.rows = rootItem;
+
+    // for(let i = 0; i < data.length-1;i++){
+    //  flag=true
+    //   for(let j = i+1; j < data.length;j++){
+    //     if (data[i].scode == data[j].pid) {
+    //       debugger
+    //       if (flag) {
+    //           arr[index]=data[i]
+    //              arr[index].children=[data[j]]
+    //          index++
+    //          flag=false
+    //             debugger
+            
+    //       }else{
+    //         //  arr[index-1].children.push(data[j])
+    //       }
+    //     }
+
+    //   } 
+    
+    // }
+    
+    // this.item.rows = arr;
+    // console.log("11",arr);
+    },
+    tranformData(data,rootItem) {
+      debugger
+      let me = this;
+      let children = [];
+      rootItem.children = children;
+      for(let i = 0;i < data.length;i ++){
+        let it = data[i];
+        if(rootItem.scode==it.pid){
+          rootItem.children.push(it);
+        }
+      }
+      if(rootItem.children&&rootItem.children.length>0){
+          for(let i = 0;i <rootItem.children.length;i ++){
+            let tt = rootItem.children[i];
+            me.tranformData(data,tt);
+          }
+      }
+      // console.log(rootItem);
+    },
     add() {
       // debugger
       // if(!this.isEmpty(this.item.options)){
@@ -159,21 +242,13 @@ export default {
     }
   },
   created(){
-    console.log(this.item)
+    debugger
+    console.log("a",this.item)
     this.item.rows = this.item.config.rows
+  //  this.item.rows = this.item.datas
 
-    
-    // this.item.options = this.item.options
-    // this.item.options = this.item.options
-    // console.log(this.item.rows)
-    // console.log(this.item.config.columns)
-    // this.list =  this.item.items[0].columns
-    // this.col = this.item.config.columns
-    // console.log(col)
-    // this.options = this.list
-    // console.log("1111")
-    // console.log(this.item)
-    // console.log(this.isEmpty(this.a))
+    this.array(this.item.datas)
+
   }
 };
 </script>

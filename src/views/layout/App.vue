@@ -41,13 +41,16 @@ export default {
         if (!this.isEmpty(localStorage.month_cache)) {
           this.GetSideMid({ month: localStorage.month_cache });
         }
+        if (!this.isEmpty(localStorage.date_cache)) {
+          this.GetSideMid({ date: localStorage.date_cache });
+        }
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
         }
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.2:7006/socket.io/";
       // let url = "ws://192.168.1.139:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;

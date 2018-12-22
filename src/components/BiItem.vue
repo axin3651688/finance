@@ -3,7 +3,6 @@
   <bi-text v-else-if="flag && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
   <tree-grid v-else-if="flag && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
-  <!-- <el-cascader v-else-if="flag && item.xtype == 'el-cascader'" :item.sync="item" ref="child"></el-cascader> -->
 </template>
 
 <script>
@@ -11,7 +10,6 @@ import BiTable from "./BiTable";
 import BiChart from "./BiChart";
 import BiText from "./BiText";
 import TreeGrid from "./text/Treegrid.vue"
-// import ElCascader from "./text/ElCascader.vue";
 
 export default {
   name:"BiItem",
@@ -21,7 +19,6 @@ export default {
     BiChart,
     BiText,
     TreeGrid,
-    // ElCascader
   },
   data() {
     return {
@@ -36,7 +33,7 @@ export default {
     };
   },
   created() {
-    // debugger;
+    debugger;
     console.info(this.item);
     // debugger;
   },
@@ -59,7 +56,7 @@ export default {
       let config = this.item.config;
      debugger;
       if (config) {
-        config.rows = this.item.rows ||config.rows || this.config.rows;
+        config.rows = this.item.rows ||config.rows || this.config.rows || this.datas;
         config.columns = this.item.columns ||config.columns || this.config.columns ||this.item.items[0].columns;
         config.type = config.type || 2;
         this.item.config = config;
