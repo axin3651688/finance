@@ -248,9 +248,8 @@
         // debugger;
         return singleSeriesDataParser4(config, datas, configRows, cols);
      }
-//   饼状图的数据处理
+//   饼状图的数据处理 暂时废弃
     if (config.type == 88) {
-        debugger;
         return singleSeriesDataParser8(config, datas, configRows, cols);
     }
 
@@ -259,7 +258,6 @@
  * 根据config对象获取pie图数据
  */
 const singleSeriesDataParser8 = (config, datas, rows, cols) => {
-    debugger
     let tpye = config.type;
      let value = [],record = {},series = [],xAxis = {},legends = [],ii= 0;
      //{series:[{},{}],xAxis:{}}
@@ -501,7 +499,6 @@ const getReverserDatas=(config, datas, rows, cols)=>{
  * @param {*} rows 
  */
 const getSeriesDataPie = (column, datas, rows) => {
-    debugger
     let category = [],valProperty ="id";
     rows.forEach(row => {
         let val = getData(column, row, datas, rows,valProperty);
@@ -514,7 +511,6 @@ const getSeriesDataPie = (column, datas, rows) => {
   * 获取指定系列数据
   */
  const getSeriesData = (column, datas, rows) => {
-     debugger
      let category = [],valProperty ="id";
      rows.forEach(row => {
          let val = getData(column, row, datas, rows,valProperty);
@@ -576,6 +572,30 @@ const getSeriesDataPie = (column, datas, rows) => {
          dataset: dataset
      };
  }
+ /**
+  * 
+  * @param {*} config 
+  * @param {*} params 
+  */
+ const compare = (property) => {
+    return function(a,b){
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+    }
+}
+ /**
+  * 重新改变配的子集的rows内容
+  */
+ const rowsOfChildrenContent = (config,params) => {
+    if(config.rows&&config.rows.length > 0){
+        params.comparePeriod.sort(compare("id"));
+        params.comparePeriod.forEach(function(it,indx){
+            it.idAfter = it.id;
+        });
+        config.rows = params.comparePeriod;
+    }
+ }
 
  //添加export抛出模块
  export {
@@ -583,5 +603,6 @@ const getSeriesDataPie = (column, datas, rows) => {
      getCellValue,
      fomularParser,
      getValue,
-     getConfigModelDatas
+     getConfigModelDatas,
+     rowsOfChildrenContent
  }
