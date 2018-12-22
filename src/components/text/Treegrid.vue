@@ -37,8 +37,7 @@
         <el-button type="text" v-if="column.text === '操作'" @click="add">
           <!-- ... -->
           <img src="@/assets/green/list_menu.svg" alt>
-          <!-- <el-cascader :options="options"></el-cascader> -->
-          <el-cascader  v-model="selectedOptions" @change="handleChange"></el-cascader>
+          <el-cascader :options="item.items[0].columns"  v-model="selectedOptions" @change="handleChange"></el-cascader>
 
           <el-dialog
             title="提示"
@@ -69,7 +68,7 @@ export default {
   // },
   data() {
     return {
-      // options: [],
+      list: [],
       dialogVisible: false,
       selectedOptions: [],
       // a:[{c:111},{b:222}]
@@ -101,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    this.item.options = this.item.items[0].columns
+    // this.item.options = this.item.items[0].columns
   },
   computed: {
     // 格式化数据源
@@ -121,6 +120,7 @@ export default {
   },
   methods: {
     add() {
+      // debugger
       // if(!this.isEmpty(this.item.options)){
         // this.dialogVisible = true
           this.item.options = this.item.items[0].columns
@@ -129,6 +129,7 @@ export default {
     
     },
     handleChange(value, done) {
+      console.log(value)
       this.$confirm("<div>111</div>")
         .then(_ => {
           done();
@@ -160,9 +161,13 @@ export default {
   created(){
     console.log(this.item)
     this.item.rows = this.item.config.rows
+
+    
+    // this.item.options = this.item.options
     // this.item.options = this.item.options
     // console.log(this.item.rows)
-    console.log(this.item.config.columns)
+    // console.log(this.item.config.columns)
+    // this.list =  this.item.items[0].columns
     // this.col = this.item.config.columns
     // console.log(col)
     // this.options = this.list
@@ -236,7 +241,7 @@ export default {
   padding-top: 85px;
 }
 .ms-tree-space {
-  /* position: relative; */
+  position: relative;
   top: 1px;
   display: inline-block;
   font-style: normal;
@@ -268,9 +273,9 @@ table td {
 }
 img {
   width: 20px;
-  /* position: absolute;
+  position: absolute;
   right: 50%;
-  top: 5px; */
+  top: 5px;
   -moz-transform:rotate(-90deg);
   -webkit-transform:rotate(-90deg);
 }

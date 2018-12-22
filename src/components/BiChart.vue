@@ -10,6 +10,7 @@
   <BiMSCloumnLine v-else-if="item.options.type === 'mscloumnline'" :item="item" class="bgwight"></BiMSCloumnLine>
   <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
   <bi-area v-else-if="item.options.type === 'area'" :item="item" class="bgwight"></bi-area>
+  <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
 </template>
 <script>
 import BiColumn from "@c/charts/BiColumn";
@@ -23,6 +24,7 @@ import BiBar from "@c/charts/BiBar";
 import BiMSCloumnLine from "@c/charts/BiMSCloumnLine";
 import BiArea from "@c/charts/BiArea";
 import BiFunnel from "@c/charts/BiFunnel";
+import BiSPie from "@c/charts/BiSPie";
 import { getCellValue, getConfigModelDatas } from "../utils/math";
 export default {
   name:"BiChart",
@@ -37,7 +39,8 @@ export default {
     BiBar,
     BiMSCloumnLine,
     BiArea,
-    BiFunnel
+    BiFunnel,
+    BiSPie
   },
   props: ["item"],
   data() {
@@ -59,7 +62,6 @@ export default {
       if (config.type === 5) {
         debugger;
       }
-
       let tempData = getConfigModelDatas(
         config,
         this.item.datas,

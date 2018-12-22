@@ -70,6 +70,7 @@ const router = new Router({
         //     import('@v/intelligenceReport/Risk_analysis.vue')
         // },
 
+        
         // 列表
         {
           path: '/list',
