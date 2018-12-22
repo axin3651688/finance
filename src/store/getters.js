@@ -23,8 +23,8 @@ const getters = {
   company: state => state.prame.command.company,
   // 顶部选中公司名字
   companyName: state => state.prame.command.companyName,
-  //顶部公司点击判断是否其下还有子公司,默认false,有公司,true为没有
-  companyLeaf: state => state.prame.command.companyLeaf,
+  //顶部公司点击信息大全
+  treeInfo: state => state.prame.command.treeInfo,
   // 侧边栏展开父级id
   openPid: state => state.prame.command.openPid,
   // 侧边栏展开子级id
@@ -33,5 +33,7 @@ const getters = {
   action2: state => state.prame.command.action2,
   action3: state => state.prame.command.action3,
 
+  newServerMsg: state => state.messageModule.newServerMsg, // 服务器推送的消息
+  chatWithUserId: state => state.messageModule.chatWithUserId // 和谁聊天，单聊
 }
 export default getters

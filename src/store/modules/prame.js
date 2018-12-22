@@ -6,7 +6,13 @@ const prame = {
       month: new Date().getMonth(),
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
-      companyLeaf: false,
+      treeInfo: {
+        id:"1001",
+        leaf:true,               
+        pid:"1001",
+        industryId: 1,
+        text:"天津食品"
+      },
       openPid: 0,
       activeId: [],
       //下面待实现
@@ -14,7 +20,6 @@ const prame = {
       action2: 0,
       action3: 0,
       defaultOpen: 0,
-
     }
   },
 

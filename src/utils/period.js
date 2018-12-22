@@ -36,7 +36,7 @@ function getMonthName (months){
          * fomular=-1&0  201505 -->
          * fomular=0&-1
          */
-function  getPeriodByFomualr(year,month,fomular,period){
+export function  getPeriodByFomualr(year,month,fomular,period){
     if(period && period.length == 6 ){
         year = period.substring(0,4);
         month = period.substring(4,6);

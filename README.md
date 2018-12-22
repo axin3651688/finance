@@ -264,6 +264,7 @@ listeners:[
     "type":"click",//事件类型
     "way":"addTab",//调用的公共方法
     "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
+    "location":"before",//默认往后面,下边加，before就是往前面=tab，上边加=form
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
         debugger; 
@@ -277,5 +278,41 @@ listeners:[
 ~~~
 + 多柱多线图
 ~~~
+
+~~~
+
+
+~~~
+
+    {
+     columns:[{
+        id:"主键",
+        text:"名称",
+        unit:"%/万元",
+        B:120//累计数
+        sntq:120//上年同数，
+        dimName://0001=>itempoint/0002=>itemperiod/1016=>indicator
+      }],
+    gauge:[
+        {
+            A:100,  //inds
+            B:90,  //inds
+            C:75,  //inds
+            D:60,  //inds
+            E:50， //inds
+            value:75, //1016
+            valueText:"中等", //1016主题的维度Grade对应的名称
+            id:"主键",//1016主题的维度indicator对应的编码
+            text:"名称",//1016主题的维度indicator对应的名称
+            dimName://1016=>indicator,
+            unit:"%",
+        }
+    ],
+    lines:[
+        {id:11000, text:"xxxx",datas:[{id:"201601",value:525},{id:"201602",value:525}......]},
+        {id:11020, text:"xxx",datas:[]},
+        {id:11003,text:"xxx",datas:[]}
+    ]
+    }
 
 ~~~

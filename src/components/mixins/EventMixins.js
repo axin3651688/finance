@@ -16,7 +16,6 @@ import {findDesignSource } from "~api/interface";
 export default {
     mounted() {
         let me = this;
-        debugger;
         let xtype = me.item.xtype;
         if(me.item.listeners){
           me.item.listeners.forEach(listener => {
@@ -41,10 +40,10 @@ export default {
        /**
         * 事件通用处理
         */
-       commonHandler(listener,params){
+       commonHandler(listener,params,bb){
         let me = this;
           if(listener.way && me[listener.way]){
-            me[listener.way](params,listener);
+            me[listener.way](params,listener,bb);
           }
           if(listener.handler){
             listener.handler(me,params);
@@ -84,12 +83,16 @@ export default {
          },
          /**
           * 增加到tab的动作  openDilog  openWindow
+          * unshift()方法是向数组的开头添加一个或多个元素
           */
-         addTab(params,listener){
-           debugger
+         addTab(params,listener,bb){
+           debugger;
           let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
           let module = tab.$parent.$parent;
-          let bb = this.item,text = bb.text;
+          if(!bb){
+            bb = this.item;
+          }
+          let text = bb.text;
           let arrs = module.items.filter(bean=>bean.text == text);
           if(arrs.length > 0){
               module.items.forEach((item, index) =>{
@@ -99,11 +102,18 @@ export default {
               });
               return ;
           }
+          let action = "push";
+          if(listener.location && listener.location == "before"){
+            action = "unshift";
+          }
           debugger;
           if(listener.sourceApi){
              //配制加载url的情况
              findDesignSource(listener.sourceApi).then(res => {
               let resData = res.data;
+              if(resData.data && resData.data.source){
+                resData = resData.data.source;
+              }
               if(!resData.id){
                 resData = eval("(" + resData + ")");
               }
@@ -111,13 +121,13 @@ export default {
               resData.text =  text;
               resData.tabIndex =  text;
               resData.closable =  true;
-              module.items.push(resData);
+              module.items[action](resData);
               module.activeTabName = resData.text;
           });
           return ;
         }
           //
-          module.items.push({
+          module.items[action]({
           text: text,
           id: bb.id,
           closable:true,
@@ -126,6 +136,18 @@ export default {
           });
           module.activeTabName = text;
          }
+    },
+    /**
+     * 表格的单元格事件
+     */
+    onCellClick(row, column, cell, event){
+      console.info(row);
+      debugger;
+        if(row._drill || row.drill){
+            if(cell.cellIndex === 0 ){
+               debugger;
+            }
+        }
     }
 
     

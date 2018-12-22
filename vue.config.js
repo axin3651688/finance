@@ -19,7 +19,8 @@ function resolve(dir) {
 }
 let proxyObj = { // 配置跨域
     '/api': {
-        target: 'http://192.168.1.118:8005',
+        target: 'http://192.168.2.2:8005',
+        // target: 'http://192.168.1.139:8005',
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -56,7 +57,7 @@ let proxyObj = { // 配置跨域
 };
 module.exports = {
     // baseUrl: debug ? '/' : '/production-sub-path/',
-    baseUrl: debug ? '/' : 'http://192.168.1.138:8000',
+    baseUrl: debug ? '/' : './',
     outputDir: 'dist', // 构建输出目录
     assetsDir: 'assets', // 静态资源目录 (js, css, img, fonts)
     lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
@@ -133,7 +134,7 @@ module.exports = {
         // index: 'white.html', //白色启动页面
         open: false,
         host: '0.0.0.0',
-        port: 8080,
+        port: 8089,
         https: false,
         hotOnly: false,
         // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理

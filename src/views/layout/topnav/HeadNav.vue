@@ -128,7 +128,7 @@ export default {
     return {
       companyId: "",
       companyName_cache: "",
-       companyLeaf:false,
+      treeInfo: {},
       isShow: false,
       dialogVisible: false,
       isCollapse: true,
@@ -136,7 +136,6 @@ export default {
       monthCount: 12, //[4,12,16]
       years: [],
       months: []
-     
     };
   },
   components: {
@@ -201,8 +200,8 @@ export default {
       }
     },
     getname(e) {
-        console.log(e);
-        this.companyLeaf = e.leaf;
+      console.log(e);
+      this.treeInfo = e;
       this.companyId = e.id;
       this.companyName_cache = e.text;
     },
@@ -213,17 +212,27 @@ export default {
       // todo备以后用,先不删
       // localStorage.removeItem("database");
       // this.$store.dispatch("clearCurrentState");
-      logout().then(res => {
-        // console.log(res.data.msg);
-        // 清除token
-        localStorage.removeItem("authorization");
-        this.$router.push("/login");
-      });
+      logout()
+        .then(res => {
+          // console.log(res.data.msg);
+          // 清除token
+          localStorage.removeItem("authorization");
+          this.$router.push("/login");
+        })
+        .catch(res => {
+          console.error("退出请求失败");
+          localStorage.removeItem("authorization");
+          this.$router.push("/login");
+        });
     },
     // 公司点击确定事件
     handleQoose() {
       //   点击确定,把子组件选择的id,neme存到Vuex中
-      this.GetSideMid({ company: this.companyId , companyLeaf: this.companyLeaf, companyName: this.companyName_cache });
+      this.GetSideMid({
+        company: this.companyId,
+        treeInfo: this.treeInfo,
+        companyName: this.companyName_cache
+      });
       this.dialogVisible = false;
     },
     sayhidden() {

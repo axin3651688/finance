@@ -99,7 +99,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, colId, row, rows) {
-     debugger;
+    //  debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";

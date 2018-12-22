@@ -47,6 +47,9 @@
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
+        <!-- sjz 按钮 -->
+        <el-button type="success" v-if="layout.ctype==='button'">刷新</el-button>
+        <el-button type="success" v-if="layout.ctype==='button'">导出</el-button>
         <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
@@ -115,6 +118,7 @@ import BiItem from "@c/BiItem";
 import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
+import { getPeriodByFomualr } from "../utils/period";
 
 export default {
   name: "BiModule",
@@ -148,7 +152,7 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-   debugger;
+    // debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -162,6 +166,7 @@ export default {
   },
   watch: {
     module_api(newid) {
+      this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
       this.loadModuleAfter(localStorage.module);
     },
@@ -227,6 +232,7 @@ export default {
      * 加载加载模块资源
      */
     loadRemoteSource(api) {
+      this.activeTabName = "0";
       debugger;
       if (!api) {
         api = localStorage.module_api_cache;
@@ -315,12 +321,19 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
+      debugger
+      let periodCount = config.periodCount,compareType = config.compareType,year = datas.year,month = datas.month,period = datas.period;
+      if(year&&month&&period&&periodCount){
+        let comparePeriod = getPeriodByFomualr(year,month,compareType,period);
+        datas.comparePeriod = comparePeriod;
+      }
       return datas;
     },
     /**
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
+      debugger
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
@@ -345,7 +358,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        //debugger;
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
@@ -409,6 +422,7 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
+      debugger
       findThirdPartData(params)
         .then(res => {
           debugger;
@@ -428,9 +442,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.el-row {
-  margin-bottom: 20px;
-}
 .el-col {
   border-radius: 4px;
 }

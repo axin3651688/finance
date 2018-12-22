@@ -1,5 +1,5 @@
 <template>
-  <chart :options="options" @click="item1()" auto-resize/>
+  <chart :options="options" auto-resize/>
 </template>
 
 <script type="text/ecmascript-6">
@@ -10,11 +10,12 @@ export default {
   },
   data() {
     return {
+      companyName: "",
       nameData: [],
       dataSource: [],
       options: {
         title: {
-          text: this.item.text,
+          text: this.companyName,
           x: "center"
         },
         tooltip: {
@@ -26,10 +27,9 @@ export default {
         },
         legend: {
           orient: "vertical",
-          left: "5%",
-          top: "10%",
-          // data: []
-          data: this.nameData
+          left: "left",
+          data: []
+          // data: this.nameData
         },
         series: [
           {
@@ -37,7 +37,7 @@ export default {
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: this.getdDataSource(this.item),
+            data: this.item.options.datas.series[0].data,
             // data: this.item.datas,
 
             itemStyle: {
@@ -56,6 +56,7 @@ export default {
     debugger;
 
     console.log(this.item);
+    this.upData(this.item);
 
     // var obj = JSON.stringify(this.dataSource);
     // console.log(obj);
@@ -63,42 +64,23 @@ export default {
   mounted() {
     // this.options.series[0].data = this.item.datas
   },
-
   methods: {
-    item1() {
-      this.$router.push("/list");
-    },
-    getdDataSource(item) {
-      debugger;
-      let title = this.item.options.getData.columns;
-      this.nameData = title.map(function(name) {
-        return name.id;
-      });
-      let dataObj = item.datas[0];
-
-      delete dataObj.id;
-      delete dataObj.text;
-      delete dataObj.leaf;
-      let dataArry = [];
-      for (let i in dataObj) {
-        dataArry.push(dataObj[i]);
-      }
-      let dataSource = [];
-      console.log(dataArry);
-
-      for (let index = 0; index < dataArry.length; index++) {
-        dataSource.push({
-          value: dataArry[index],
-          name: this.nameData[index]
-        });
-      }
-      return dataSource;
-    },
-
     upData(item) {
-      debugger;
-      let data = this.getdDataSource(item);
-      this.options.series[0].data = data;
+        // if (item) {
+        //     this.item = item;
+        // }
+        // let datas = this.item.options.datas;
+        // this.options.series[0].data = datas.series.data;
+    }
+  },
+  watch: {
+    item: {
+      handler(newname, oldname) {
+        console.log(newname);
+        this.item = newname;
+        // debugger
+      },
+      deep: true
     }
   }
 };

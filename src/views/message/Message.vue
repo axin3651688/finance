@@ -55,20 +55,6 @@
               <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
               <div class="right-border"></div>
             </li>
-            <!--<li :class="{'active': activeItem === item.miniType}"-->
-            <!--v-for="item in messageList"-->
-            <!--:key="item.miniType"-->
-            <!--@click="activeThisItem(item.miniType)">-->
-            <!--<div class="top">-->
-            <!--<img :src="item.avatar" alt="">-->
-            <!--<span class="count mt" v-if="item.count">{{item.count}}</span>-->
-            <!--<span class="publish-time mt">26秒前</span>-->
-            <!--</div>-->
-            <!--<h3 class="title">{{item.name}}</h3>-->
-            <!--<img class="list-menu" src="@/assets/green/list_menu.svg" alt="">-->
-            <!--<p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>-->
-            <!--<div class="right-border"></div>-->
-            <!--</li>-->
           </ul>
         </el-scrollbar>
       </div>
@@ -77,7 +63,7 @@
         <new-friends v-if="activeItem === 11016"></new-friends>
         <group-helper v-if="activeItem === 11017"></group-helper>
         <Todo v-if="activeItem === 2"></Todo>
-        <single-msg v-if="activeItem === 4"></single-msg>
+        <single-msg v-if="activeItem === 4" :chatWithUserId="chatWithUserId"></single-msg>
         <group-msg v-if="activeItem === 5"></group-msg>
 
         <!--右边区域左内阴影效果-->
@@ -91,8 +77,8 @@
   </div>
 </template>
 <script>
-import {getSession} from '~api/message.js';
-import {mapGetters} from 'vuex'
+import {MY_SESSION} from '~api/message.js';
+import {mapGetters, mapActions} from 'vuex'
 import SingleMsg from './SingleMsg' // 单聊消息
 import Contacts from './Contacts' // 通讯录
 import Todo from './Todo' // 代办事项
@@ -120,15 +106,33 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'newServerMsg', 'chatWithUserId'])
+  },
+  watch: {
+    newServerMsg(data) {
+      this.alertServerMsg(data)
+    },
+    chatWithUserId(chatWithUserId) {
+      this.activeItem = 4;
+    }
   },
   methods: {
+    // ...mapMutations('messageModule', ['mutationSetMySessionList']),
+    // ...mapActions(['']),
+
+    // 弹出系统推送的消息
+    alertServerMsg(data) {
+      console.log('收到服务器推送消息：', data)
+    },
+
     // 页面挂载后 请求消息列表数据成功后的处理
     getSessionThen(res) {
       res = res.data;
       if (res.code === 200 && res.data) {
         this.messageList = res.data;
-        console.log('message左边栏====', this.messageList, '===message左边栏')
+        console.log('message左边栏====', this.messageList, '===message左边栏');
+        let mySessionList = res.data;
+        this.mutationSetMySessionList(mySessionList)
       } else {
         this.$message({
           type: 'error',
@@ -150,8 +154,8 @@ export default {
       let messagecContainer = this.$refs.messagecContainer;
       let resizeHeight = windowHeiht - NAV_HEADER_HEIGHT;
       messagecContainer.style.height = resizeHeight + 'px';
-      console.log('message视图高度：', resizeHeight);
-      console.log('message视图dom：', messagecContainer)
+      // console.log('message视图高度：', resizeHeight);
+      // console.log('message视图dom：', messagecContainer)
     }
   },
   mounted() {
@@ -159,7 +163,7 @@ export default {
     console.log('用户信息：', this.user);
     // let userId = this.user.user.id;
     // console.log('用户id：', userId);
-    getSession(this.user.user.id).then(res => {
+    MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
     }).catch(err => {
       console.log('请求message：', err)
@@ -209,6 +213,8 @@ export default {
           li.have-sub {
             img.avatar-img {
               width: 46px;
+              height: 46px;
+              border-radius: 50%;
               float: left;
             }
 
@@ -291,8 +297,7 @@ export default {
 
             p {
               margin-top: 8px;
-              width: 204px;
-              /*height: 32px;*/
+              min-width: 240px;
               overflow: hidden;
               font-size: 12px;
               font-family: $fontFamilyMain;
@@ -306,8 +311,8 @@ export default {
             .right-border {
               position: absolute;
               top: 0;
-              right: 0;
-              bottom: -1px;
+              left: 0;
+              bottom: 0;
               width: 6px;
             }
           }
