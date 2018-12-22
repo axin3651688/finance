@@ -4,14 +4,15 @@ const prame = {
       year: new Date().getFullYear(),
       module_api: 0,
       month: new Date().getMonth(),
+      date: new Date().getDate(),
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
       treeInfo: {
-        id:"1001",
-        leaf:true,               
-        pid:"1001",
+        id: "1001",
+        leaf: true,
+        pid: "1001",
         industryId: 1,
-        text:"天津食品"
+        text: "天津食品"
       },
       openPid: 0,
       activeId: [],
@@ -29,7 +30,12 @@ const prame = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
-          localStorage.setItem([keys] + '_cache', data[keys]);
+          console.log(typeof data[keys])
+          if (typeof data[keys] == 'object') {
+            localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
+          } else {
+            localStorage.setItem([keys] + '_cache', data[keys]);
+          }
         }
       });
     },

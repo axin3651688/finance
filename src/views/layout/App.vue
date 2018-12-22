@@ -32,7 +32,8 @@ export default {
           // debugger;
           this.GetSideMid({
             company: localStorage.company_cache,
-            companyName: localStorage.companyName_cache
+            companyName: localStorage.companyName_cache,
+            treeInfo: JSON.parse(localStorage.treeInfo_cache)
           });
         }
         if (!this.isEmpty(localStorage.year_cache)) {

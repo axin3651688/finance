@@ -79,15 +79,9 @@ export default {
       clickNodeId: "",
       dataPath: ["/module?jsnk-zbfx", "/Risk", "/center"],
       chartData: [
-        { p: "/BiArea", n: " 面积图", id: "1" },
-        { p: "/BiBar", n: " 柱图(横)", id: "2" },
-        { p: "/BiMSCloumnLine", n: " 柱线混合图", id: "3" },
-        { p: "/BiPieLuntai", n: " 轮胎图", id: "4" },
         { p: "/BiFunnel", n: " 漏斗图", id: "5" },
         { p: "/BiRadar", n: " 雷达图", id: "6" },
-        { p: "/BiRosepie", n: " 玫瑰饼图", id: "7" },
-        { p: "/BiTreemap", n: " 矩形树图", id: "8" },
-        { p: "/BiRosepie", n: " 玫瑰饼图", id: "9" }
+        { p: "/BiTreemap", n: " 矩形树图", id: "8" }
       ]
     };
   },
