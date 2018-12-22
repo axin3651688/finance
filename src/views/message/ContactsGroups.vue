@@ -83,9 +83,7 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   MY_GROUP_LIST,
   FIND_GROUP_NOTICE,
@@ -109,6 +107,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
     getData() {
       // let userId = this.user.user.id;
       // alert(params.type)
@@ -183,6 +182,10 @@ export default {
     // 开始群聊天
     chatWithGroup(groupId) {
       if (groupId) {
+        this.ActionSetMessageStore({
+          miniType: 1101, // 1101 群聊,
+          groupId: groupId
+        });
         this.$emit('chatWithGroup', groupId)
       }
     }

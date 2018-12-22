@@ -2,9 +2,14 @@
   <div class="SingleMsg vue-module">
     <div class="top">
       <div class="title">
-        <div class="img"></div>
+        <div class="img-box">
+          <img :src="messageStore.receiverData.user.avatar" alt="">
+        </div>
         <div class="titleleft">
-          <h3>张某<span>（客服总监）</span></h3>
+          <h3>
+            {{messageStore.receiverData.user.trueName}}
+            <span v-if="messageStore.receiverData.user.username">（{{messageStore.receiverData.user.username}}）</span>
+          </h3>
           <p>安徽经邦软件有限公司</p>
         </div>
         <div class="titleright">
@@ -75,7 +80,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id;
     },
@@ -140,27 +145,10 @@ export default {
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
-    // 获取单聊信息返回res后的处理
-    findSingleMsgThen(res) {
-      console.log('获取单聊信息then：', res);
-      res = res.data;
-      if (res.code === 200 && res.data) {
-        this.singleMsgList = res.data.data;
-        this.receiverName = singleMsgList[0].name;
-        this.receiverAvatar = singleMsgList[0].avatar
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg,
-          showClose: true
-        })
-      }
-    },
-
     // 解析聊天内容，把聊天中的 语音、文件、表情符号替换
     // content:聊天内容  type:内容的类型
     // 1:文本有表情的也是；2:图片; 3:文件; 4:音频; 5:视频;）
-    parseChatContent(content, type){
+    parseChatContent(content, type) {
       // debugger;
       return PARSE_CHAT_CONTENT(content, type)
     },
@@ -182,12 +170,29 @@ export default {
       let newTime = `${Y}-${M}-${D} ${H}:${m}`;
       // console.log(newTime)
       return newTime
-    }
+    },
+
+    // 获取单聊信息返回res后的处理
+    findSingleMsgThen(res) {
+      console.log('获取单聊信息then：', res);
+      res = res.data;
+      if (res.code === 200 && res.data) {
+        this.singleMsgList = res.data.data;
+        this.receiverName = singleMsgList[0].name;
+        this.receiverAvatar = singleMsgList[0].avatar
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true
+        })
+      }
+    },
   },
   mounted() {
     // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, 1).then(
+    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverId).then(
       this.findSingleMsgThen
     ).catch(err => {
       console.log('获取单聊信息catch：', err)
@@ -225,13 +230,17 @@ export default {
       position: relative;
       overflow: hidden;
 
-      .img {
+      .img-box {
         width: 80px;
         height: 80px;
+        overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
-        // margin-top:60px;
         float: left;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .titleleft {

@@ -1,23 +1,23 @@
 <template>
-  <div class="Message vue-module">
-    <div class="container" ref="messagecContainer">
+  <div class="Message">
+    <div class="container">
       <div class="left">
         <el-scrollbar style="height: 100%">
           <ul>
             <template v-if="leftBarInstance">
               <template v-for="item in leftBarInstance.leftBarList">
                 <li v-if="!item.content"
-                    :class="['have-sub', {active: leftBarInstance.activeItem === item}]"
+                    :class="['have-sub', {active: item.miniType === messageStore.miniType}]"
                     :key="item.miniType"
                     @click="leftBarInstance.setItemActive(item)"
                 >
                   <img class="avatar-img" :src="item.avatar" :alt="item.name">
-                  <h3>{{item.name}}</h3>
+                  <h3>{{item.name}} {{item.miniType}}</h3>
                   <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
                   <div class="right-border"></div>
                 </li>
                 <li v-else
-                    :class="[{active: leftBarInstance.activeItem === item}]"
+                    :class="[{active: item.miniType === messageStore.miniType}]"
                     :key="item.miniType"
                     @click="leftBarInstance.setItemActive(item)"
                 >
@@ -40,19 +40,19 @@
       <div class="right">
         <template v-if="leftBarInstance">
           <contacts
-            v-if="leftBarInstance.activeMiniType === 101010"
+            v-if="messageStore.miniType === 101010"
             @chatWithGroup="handleChatWithGroup"
             @chatWithSingle="handleChatWithSingle"
           ></contacts>
-          <new-friends v-if="leftBarInstance.activeMiniType === 11016"></new-friends>
-          <group-helper v-if="leftBarInstance.activeMiniType === 11017"></group-helper>
-          <Todo v-if="activeItem === 2"></Todo>
+          <new-friends v-if="messageStore.miniType === 11016"></new-friends>
+          <group-helper v-if="messageStore.miniType === 11017"></group-helper>
+          <Todo v-if="messageStore.miniType === 2"></Todo>
           <single-msg
-            v-if="leftBarInstance.activeMiniType === 1100"
+            v-if="messageStore.miniType === 1100"
             :chatWithUserId="leftBarInstance.activeItem.senderId"
           ></single-msg>
           <group-msg
-            v-if="leftBarInstance.activeMiniType === 1101"
+            v-if="messageStore.miniType === 1101"
             :groupId="groupId"
           ></group-msg>
         </template>
@@ -64,22 +64,17 @@
       <!--container区域上边贴导航栏内阴影效果-->
       <div class="inset-shadow"></div>
     </div>
-
   </div>
 </template>
+
 <script>
 import {MY_SESSION} from '~api/message.js';
 import {mapGetters, mapActions} from 'vuex'
-import SingleMsg from './SingleMsg' // 单聊消息
-import Contacts from './Contacts' // 通讯录
-import Todo from './Todo' // 代办事项
-import NewFriends from './NewFriends' // 新朋友
-import GroupHelper from './GroupHelper' // 群助手
-import GroupMsg from './GroupMsg' // 群助手
+
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
 // 暂时定义一个通讯录类容
-var contact = {
+const contact = {
   avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
   content: null,
   count: 60,
@@ -98,9 +93,9 @@ var contact = {
 
 // 消息左边栏
 class LeftBar {
-  constructor(resList) {
+  constructor(resList, ActionSetMessageStore) {
     if (!LeftBar.instance) {
-      this.activeMiniType = 101010; // 默认通讯录
+      this.ActionSetMessageStore = ActionSetMessageStore;
       this.activeItem = new LeftBarItem(contact);
       this._init(resList);
       LeftBar.instance = this;
@@ -121,12 +116,13 @@ class LeftBar {
   setItemActive(itemObj) {
     this.activeItem = itemObj;
     itemObj.setActive();
-    this.setActiveMiniType(itemObj.miniType)
+    this.setMessageStore({miniType: itemObj.miniType})
   }
 
-  setActiveMiniType(miniType) {
-    // debugger;
-    this.activeMiniType = miniType
+  // 修改 vuex 中的变量 messageStore
+  // 传参obj示例 {miniType: 1001} key值 miniType必须在vuex中定义
+  setMessageStore(obj) {
+    this.ActionSetMessageStore(obj)
   }
 
   addLeftBarItem(itemData) {
@@ -178,12 +174,12 @@ class LeftBarItem {
 export default {
   name: 'Message',
   components: {
-    SingleMsg, // 单聊消息
-    Contacts, // 通讯录
-    Todo, // 代办事项
-    NewFriends, // 新朋友
-    GroupHelper, // 群助手
-    GroupMsg // 群助手
+    SingleMsg: () => import('./SingleMsg'), // 单聊消息
+    Contacts: () => import('./Contacts'), // 通讯录
+    Todo: () => import('./Todo'), // 代办事项
+    NewFriends: () => import('./NewFriends'), // 新朋友
+    GroupHelper: () => import('./GroupHelper'), // 群助手
+    GroupMsg: () => import('./GroupMsg') // 群助手
   },
   data() {
     return {
@@ -196,16 +192,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'newServerMsg', 'chatWithUserId'])
-  },
-  watch: {
-    newServerMsg(data) {
-      this.alertServerMsg(data)
-    },
-    chatWithUserId(chatWithUserId) {
-      // TODO: 这里有bug 联系点击同一个人不会出发改变
-      this.activeItem = 4;
-    }
+    ...mapGetters(['user', 'newServerMsg', 'messageStore'])
   },
   filters: {
     trim(val) { // 去掉头尾空格
@@ -226,16 +213,17 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(['']),
+    ...mapActions(['ActionSetMessageStore']),
 
-    // 初始化消息左边栏
-    initLeftBar(resList) {
-      this.leftBarInstance = new LeftBar(resList)
-    },
 
     // 弹出系统推送的消息
     alertServerMsg(data) {
       console.log('收到服务器推送消息：', data)
+    },
+
+    // 初始化消息左边栏
+    initLeftBar(resList) {
+      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore)
     },
 
     // 页面挂载后 请求消息列表数据成功后的处理
@@ -245,7 +233,7 @@ export default {
         this.messageList = res.data;
         console.log('message左边栏====', this.messageList, '===message左边栏');
         let mySessionList = res.data;
-        this.initLeftBar(res.data);
+        this.initLeftBar(res.data); // 初始化消息左边栏
       } else {
         this.$message({
           type: 'error',
@@ -267,12 +255,12 @@ export default {
       let messagecContainer = this.$refs.messagecContainer;
       let resizeHeight = windowHeiht - NAV_HEADER_HEIGHT;
       messagecContainer.style.height = resizeHeight + 'px';
-      // console.log('message视图高度：', resizeHeight);
-      // console.log('message视图dom：', messagecContainer)
+      console.log('message视图高度：', resizeHeight);
+      console.log('message视图dom：', messagecContainer)
     },
 
     // 开始群聊天
-    handleChatWithGroup(groupId){
+    handleChatWithGroup(groupId) {
       console.log('开始群聊天：', groupId);
       this.groupId = groupId;
       this.leftBarInstance.activeMiniType = 1101
@@ -281,7 +269,6 @@ export default {
     // 开始单聊
     handleChatWithSingle(receiverId) {
       console.log('即将和用户', receiverId, '聊天');
-      this.leftBarInstance.activeMiniType = 1100
     }
   },
   mounted() {
@@ -292,14 +279,6 @@ export default {
     }).catch(err => {
       console.log('请求message：', err)
     });
-
-    // 在页面挂在的之后默动态设置窗口高度
-    this.messageResize();
-    window.addEventListener('resize', this.messageResize)
-  },
-  beforeDestroy() {
-    // 在页面销毁的时候一定要取消事件监听，不然严重影响性能
-    window.removeEventListener('resize', this.messageResize)
   }
 }
 </script>
@@ -317,6 +296,8 @@ export default {
 
   .Message {
     font-family: $fontFamilyMain;
+    position: relative;
+    height: 100vh !important;
 
     .container {
       position: relative;
