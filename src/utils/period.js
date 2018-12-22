@@ -4,11 +4,13 @@ let config = {
     comparePeriodCount:2,
 }
 
-let periodText =   {m:"月", q:"季度",h:"半年" ,nd:"年度"};
+let periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
 let halfPeriod =  [{id:"H1",text:"上半年"},{id:"H2",text:"下半年"}];
 let chineseTextArr = ["一","二","三","四","五","六","七","八","九","十"];
 function getMonthName (months){
-     var periodText = periodText;
+    //  因为这样获取不到，所以注释掉了，直接赋值。
+    //  var periodText = periodText;
+        var periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
          if(months.length == 6){
              months = months.substring(4,6);
          }
@@ -148,11 +150,11 @@ function getPeriodBean(period,_formualr){
   * year = {id:2017,text:"年"}
   * month = {id:"01","月"}
   */
- function generatePeriod(count,fomular,year,month,reverse){
+export function generatePeriod(count,fomular,year,month,reverse){
     if(!fomular)fomular = config.comparePeriod;
     if(!count)count = config.comparePeriodCount;
     var p=year.id+""+month.id;
-    var periodName =  year.text+month.text;//Cnbi.getPeriodName(p);
+    var periodName =  year.id+year.text+month.id+month.text;//Cnbi.getPeriodName(p);
     var arr=[{text:periodName,id:p}],fomularArr = fomular.split("&");
     var yearF = fomularArr[0],monthF =fomularArr[1]; 
     var tMonth = month.id,tYear = year.id;
@@ -161,7 +163,7 @@ function getPeriodBean(period,_formualr){
         if(tMonth == "00"){
           _formualr = config.tb;
         }
-        var temp = this.getPeriodBean(arr[i].id,_formualr);
+        var temp = getPeriodBean(arr[i].id,_formualr);
         arr.push(temp);
     }
     var reverse = reverse || config.reverse;
