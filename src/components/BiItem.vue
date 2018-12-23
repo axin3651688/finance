@@ -10,17 +10,17 @@
 import BiTable from "./BiTable";
 import BiChart from "./BiChart";
 import BiText from "./BiText";
-import TreeGrid from "./text/Treegrid.vue"
+import TreeGrid from "./text/Treegrid.vue";
 // import ElCascader from "./text/ElCascader.vue";
 
 export default {
-  name:"BiItem",
+  name: "BiItem",
   props: ["item", "config", "datas"],
   components: {
     BiTable,
     BiChart,
     BiText,
-    TreeGrid,
+    TreeGrid
     // ElCascader
   },
   data() {
@@ -36,12 +36,11 @@ export default {
     };
   },
   created() {
-    // debugger;
     console.info(this.item);
     // debugger;
   },
   mounted() {
-    // debugger;
+    debugger;
     this.loadItems(this.item);
   },
   watch: {
@@ -57,10 +56,14 @@ export default {
   methods: {
     loadItems() {
       let config = this.item.config;
-     debugger;
+      debugger;
       if (config) {
-        config.rows = this.item.rows ||config.rows || this.config.rows;
-        config.columns = this.item.columns ||config.columns || this.config.columns ||this.item.items[0].columns;
+        config.rows = this.item.rows || config.rows || this.config.rows;
+        config.columns =
+          this.item.columns ||
+          config.columns ||
+          this.config.columns ||
+          this.item.items[0].columns;
         config.type = config.type || 2;
         this.item.config = config;
         this.hasConfig = true;

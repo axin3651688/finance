@@ -185,7 +185,8 @@ export default {
       "ToggleSideBar",
       "ReWrightName",
       "updataCountAsync",
-      "GetSideMid"
+      "GetSideMid",
+      "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
       //    console.log(cmdItem)
@@ -230,9 +231,9 @@ export default {
       //   点击确定,把子组件选择的id,neme存到Vuex中
       this.GetSideMid({
         company: this.companyId,
-        treeInfo: this.treeInfo,
         companyName: this.companyName_cache
       });
+      this.GettRreeInfo(this.treeInfo);
       this.dialogVisible = false;
     },
     sayhidden() {
