@@ -35,9 +35,8 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { findSideBar } from "~api/interface.js";
-import avatajson from "@a/icons/awata.json";
 import NavMenu from "./NavMenu.vue";
 
 export default {
@@ -77,17 +76,10 @@ export default {
       leftMenus: [],
       nodes: [],
       clickNodeId: "",
-      dataPath: ["/module?jsnk-zbfx", "/Risk", "/center"],
       chartData: [
-        { p: "/BiArea", n: " 面积图", id: "1" },
-        { p: "/BiBar", n: " 柱图(横)", id: "2" },
-        { p: "/BiMSCloumnLine", n: " 柱线混合图", id: "3" },
-        { p: "/BiPieLuntai", n: " 轮胎图", id: "4" },
         { p: "/BiFunnel", n: " 漏斗图", id: "5" },
         { p: "/BiRadar", n: " 雷达图", id: "6" },
-        { p: "/BiRosepie", n: " 玫瑰饼图", id: "7" },
-        { p: "/BiTreemap", n: " 矩形树图", id: "8" },
-        { p: "/BiRosepie", n: " 玫瑰饼图", id: "9" }
+        { p: "/BiTreemap", n: " 矩形树图", id: "8" }
       ]
     };
   },
@@ -111,7 +103,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetSideMid"]),
     handleOpen(key, code) {
       let userId = this.userId;
       var clickNodeId = "";
@@ -122,7 +113,7 @@ export default {
       }
 
       var flag = false;
-      // 只要侧边栏被点开请求过一次,那么下次就不再发送请求11
+      // 只要侧边栏被点开请求过一次,那么下次就不再发送请求
       // 如果在数组中,找到相同的clickNodeId,那么标记改为真
       for (let index = 0; index < this.nodes.length; index++) {
         if (this.nodes[index] === clickNodeId) {

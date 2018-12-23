@@ -26,7 +26,7 @@ const getters = {
   // 顶部选中公司名字
   companyName: state => state.prame.command.companyName,
   //顶部公司点击信息大全
-  treeInfo: state => state.prame.command.treeInfo,
+  treeInfo: state => state.prame.treeInfo,
   // 侧边栏展开父级id
   openPid: state => state.prame.command.openPid,
   // 侧边栏展开子级id

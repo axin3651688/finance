@@ -96,8 +96,12 @@
           background-color: $subMenuBg;
           color: $fontColor2;
           font-weight: $font-weight2;
-          padding-left: $font-padding-left;
+          padding-left: $font-padding-left !important;
           border-radius: 8px 0px 0px 8px;
+          width: 120%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
 
           // 当鼠标移到上面时颜色1
           &:hover {

@@ -62,15 +62,7 @@ const router = new Router({
           component: () =>
             import('@v/BiModule'),
         },
-        // 风险分析
-        // {
-        //   path: '/Risk',
-        //   name: 'Risk',
-        //   component: () =>
-        //     import('@v/intelligenceReport/Risk_analysis.vue')
-        // },
 
-        
         // 列表
         {
           path: '/list',
@@ -110,52 +102,26 @@ const router = new Router({
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
-          path: '/BiBar',
-          name: 'BiBar',
-          component: () =>
-            import('@c/charts/BiBar'),
-        }, {
           path: '/BiFunnel',
           name: 'BiFunnel',
           component: () =>
             import('@c/charts/BiFunnel'),
         }, {
-          path: '/BiMSCloumnLine',
-          name: 'BiMSCloumnLine',
-          component: () =>
-            import('@c/charts/BiMSCloumnLine'),
-        }, {
           path: '/BiRadar',
           name: 'BiRadar',
           component: () =>
             import('@c/charts/BiRadar'),
-        }, {
-          path: '/BiArea',
-          name: 'BiArea',
-          component: () =>
-            import('@c/charts/BiArea'),
-        }, {
-          path: '/BiRosepie',
-          name: 'BiRosepie',
-          component: () =>
-            import('@c/charts/BiRosepie'),
         },
         {
           path: '/BiPie',
           name: 'BiPie',
           component: () =>
             import('@c/charts/BiPie'),
-        },
-        {
-          path: '/BiPieLuntai',
-          name: 'BiPieLuntai',
-          component: () =>
-            import('@c/charts/BiPieLuntai'),
         }, {
-          path: '/Tree',
-          name: 'Tree',
+          path: '/BiTreemap',
+          name: 'BiTreemap',
           component: () =>
-            import('@c/charts/DemoTree'),
+            import('@c/charts/BiTreemap'),
         }
       ]
     },
@@ -183,11 +149,6 @@ const router = new Router({
             import('@v/test/father'),
         },
         {
-          path: '/testChart',
-          name: 'testChart',
-          component: () =>
-            import('@v/test/testChart'),
-        }, {
           path: '/genarateTree',
           name: 'genarateTree',
           component: () =>

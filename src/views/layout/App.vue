@@ -14,7 +14,7 @@ export default {
     this.initSocket(authorization);
   },
   methods: {
-    ...mapActions(["GetSideMid"]),
+    ...mapActions(["GetSideMid", "GettRreeInfo"]),
     readLocalStorage() {
       // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
       if (localStorage.authorization) {
@@ -32,15 +32,18 @@ export default {
           // debugger;
           this.GetSideMid({
             company: localStorage.company_cache,
-            companyName: localStorage.companyName_cache,
-            treeInfo: JSON.parse(localStorage.treeInfo_cache)
+            companyName: localStorage.companyName_cache
           });
+          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
         if (!this.isEmpty(localStorage.year_cache)) {
           this.GetSideMid({ year: localStorage.year_cache });
         }
         if (!this.isEmpty(localStorage.month_cache)) {
           this.GetSideMid({ month: localStorage.month_cache });
+        }
+        if (!this.isEmpty(localStorage.date_cache)) {
+          this.GetSideMid({ date: localStorage.date_cache });
         }
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
