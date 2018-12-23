@@ -11,6 +11,7 @@
   <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
   <bi-area v-else-if="item.options.type === 'area'" :item="item" class="bgwight"></bi-area>
   <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
+  <BiAdvanceChart v-else-if="item.options.type === 'singleseries'" :item="item" class="bgwight"></BiAdvanceChart>
 </template>
 <script>
 import BiColumn from "@c/charts/BiColumn";
@@ -25,6 +26,7 @@ import BiMSCloumnLine from "@c/charts/BiMSCloumnLine";
 import BiArea from "@c/charts/BiArea";
 import BiFunnel from "@c/charts/BiFunnel";
 import BiSPie from "@c/charts/BiSPie";
+import BiAdvanceChart from "@c/charts/BiAdvanceChart";
 import { getCellValue, getConfigModelDatas } from "../utils/math";
 export default {
   name:"BiChart",
@@ -40,7 +42,8 @@ export default {
     BiMSCloumnLine,
     BiArea,
     BiFunnel,
-    BiSPie
+    BiSPie,
+    BiAdvanceChart
   },
   props: ["item"],
   data() {

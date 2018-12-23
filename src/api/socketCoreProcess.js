@@ -91,7 +91,7 @@ export default function socketCoreProcess(websocket, datas) {
 
     let permission = allowNotification.permission;
     if (permission == "denied") {
-        debugger;
+       // debugger;
         var notification = new window.Notification("这是一个通知撒:", {
             dir: "auto",
             lang: "hi",

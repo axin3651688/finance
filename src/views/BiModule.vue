@@ -131,9 +131,7 @@ export default {
       dataUrl: "",
       datas: {},
       flag: false,
-      config: {
-        random: {}
-      },
+      config: {},
       activeTabName: "0",
       api: null,
       layout: {
@@ -230,7 +228,6 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-      debugger;
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -246,8 +243,10 @@ export default {
         });
         return;
       }
+      api = "cnbi/json/source/jsnk/pie.json";
+    //  debugger;
       findDesignSource(api).then(res => {
-        debugger
+       // debugger
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -270,12 +269,13 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      debugger;
       this.setScopeDatas(source, 1);
-      // this.datas = [];
-      if (this.config) {
-        this.correctWrongConfig();
+      this.correctWrongConfig();
+      if (this.config &&  this.config.columns.length > 0 ) {
         this.generateApiModelDatas(this, null, "company");
+      }else{
+        //解决当父亲没有配制config的情况 
+        this.flag = true;
       }
       // else {
       //   this.datas = this.datas;
@@ -316,9 +316,9 @@ export default {
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
       }
-      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
+      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      debugger
+      //debugger
       let periodCount = config.periodCount,compareType = config.compareType,year = datas.year,month = datas.month,period = datas.period;
       if(year&&month&&period&&periodCount){
         let comparePeriod = getPeriodByFomualr(year,month,compareType,period);
@@ -330,7 +330,6 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
-      debugger
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
@@ -355,11 +354,9 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
-
         Cnbi.paramsHandler(config, params);
         config.type = config.type || 1;
         if (config.sql) {
@@ -419,10 +416,10 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      debugger
+      //debugger
       findThirdPartData(params)
         .then(res => {
-          debugger;
+        //  debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {

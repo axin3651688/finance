@@ -249,6 +249,8 @@ BiText
 }
 ~~~
 
+## 图形组件Echarts
+[官方属性文档](http://echarts.baidu.com/echarts2/doc/doc.html)
 
 ## 尚未实现功能
 

@@ -228,13 +228,13 @@
   * 获取配制模型的数据
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-      debugger;
+     // debugger;
      if (config.type === 1) {
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
      if (config.type === 2) {
-       // debuggerdebugger
+         // debugger;
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
      if (config.type === 3) {
@@ -250,7 +250,7 @@
      }
 //   饼状图的数据处理
     if (config.type == 88) {
-        debugger;
+       // debugger;
         return singleSeriesDataParser8(config, datas, configRows, cols);
     }
 
@@ -501,11 +501,12 @@ const getReverserDatas=(config, datas, rows, cols)=>{
  * @param {*} rows 
  */
 const getSeriesDataPie = (column, datas, rows) => {
-    debugger
+   // debugger
     let category = [],valProperty ="id";
     rows.forEach(row => {
         let val = getData(column, row, datas, rows,valProperty);
-        category.push({value:val,name:row.sname? row.sname:""});
+        let text = row.text || row.sname ; 
+        category.push({value:val,name:text? text:row.id});
     });
     return category;
 }
@@ -514,7 +515,7 @@ const getSeriesDataPie = (column, datas, rows) => {
   * 获取指定系列数据
   */
  const getSeriesData = (column, datas, rows) => {
-     debugger
+   //  debugger
      let category = [],valProperty ="id";
      rows.forEach(row => {
          let val = getData(column, row, datas, rows,valProperty);
@@ -538,8 +539,9 @@ const getSeriesDataPie = (column, datas, rows) => {
         return 0 ; 
      }
      if (column[valProperty].length == 1) {
-         let cell = column[valProperty] + "$" + row[valProperty];
-         val = getValue(cell, datas, rows);
+        // let cell = column[valProperty] + "$" + row[valProperty];
+         //val = getValue(cell, datas, rows);
+         val = getCellValue(datas, column[valProperty], row[valProperty], rows);
      } else {
          let cn = column[valProperty];
          val = row[cn+"After"] || row[cn];
