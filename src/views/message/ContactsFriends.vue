@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions, mapMutations} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   requestMyfriends,
   CONTACT_INFO

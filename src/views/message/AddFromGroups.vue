@@ -10,8 +10,8 @@
             <template slot="title">
               <div class="item-wrap" @click="group.getMemberList()">
                 <h3 class="item-title">
-                  <span>{{group.name}}</span>
-                  <span>（{{group.memberCount}}人）</span>
+                  <span>{{group.text}}</span>
+                  <span>（{{group.userCount}}人）</span>
                 </h3>
                 <p class="item-info">
                   {{group.info}}
@@ -25,11 +25,11 @@
               >
                 <figure>
                   <div class="img-box">
-                    <img src=""/>
+                    <img :src="member.avatar"/>
                   </div>
                   <div class="info">
-                    <h3>{{member.name}}</h3>
-                    <p>{{member.info}}</p>
+                    <h3>{{member.trueName}}</h3>
+                    <p>{{member.position}}</p>
                   </div>
                 </figure>
                 <i class="list-icon list-icon__checked" v-if="member.isChecked"></i>
@@ -48,10 +48,10 @@
         <ul v-if="addFromGroupsInstance.addList.length">
           <li v-for="member in addFromGroupsInstance.addList" :key="member.id">
             <div class="img-box">
-              <img src="" alt="">
+              <img :src="member.avatar" alt="">
               <div class="close-cover" @click="addFromGroupsInstance.changeMemberState(member)"></div>
             </div>
-            <p class="info">{{member.name}}</p>
+            <p class="info">{{member.trueName}}</p>
           </li>
         </ul>
       </div>
@@ -61,6 +61,9 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
+import {ALL_COMPANY_CONTACT_LIST} from '~api/message.js'
+
 // 从团队列表添加成员到群组的类,单例模式
 class AddFromGroups {
   constructor(groupList) {
@@ -91,6 +94,7 @@ class AddFromGroups {
 class Group {
   constructor(groupData) {
     this._init(groupData);
+    this.memberList = [];
     this.ajaxMethod = new AjaxMethod()
   }
 
@@ -102,9 +106,10 @@ class Group {
   }
 
   getMemberList() {
+    debugger;
     // 这里做一个判断，如果拿到了成员列表，就不再发请求了
     if (!this.memberList.length) {
-      let memberList = this.ajaxMethod.getMemberList(this.id);
+      let memberList = this.ajaxMethod.getMemberList(this.children);
       this.setMemberList(memberList)
     }
   }
@@ -152,20 +157,9 @@ class AjaxMethod {
     return AjaxMethod.instance
   }
 
-  getMemberList(groupId) {
+  getMemberList(children) {
     console.log('AjaxMethod 调用了');
-    switch (groupId) {
-      case 1:
-        return [
-          {name: '名字1', id: 1, info: '简单介绍1', groupId: 1},
-          {name: '名字2', id: 2, info: '简单介绍2', groupId: 1}
-        ];
-      case 2:
-        return [
-          {name: '名字3', id: 3, info: '简单介绍1', groupId: 2},
-          {name: '名字4', id: 4, info: '简单介绍2', groupId: 2}
-        ]
-    }
+    return children
   }
 }
 
@@ -173,6 +167,7 @@ export default {
   name: 'AddFromFriends',
   data() {
     return {
+      companyList: [], // 我的公司列表
       addFromGroupsInstance: null, // 从团队列表添加好友到群组的类实例，单例模式
       groupList: [
         {
@@ -192,8 +187,14 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id;
+    }
+  },
   filters: {
-    getLength (data) { // 得到一个对象或数组的长度
+    getLength(data) { // 得到一个对象或数组的长度
       let length = 0;
       if (data instanceof Array) {
         length = data.length
@@ -204,20 +205,31 @@ export default {
     }
   },
   methods: {
+    // 获取公司列表
+    getCompanyList() {
+      ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
+        console.log('我公司列表：', res.data);
+        if (res.data.code === 200) {
+          this.companyList = res.data.data;
+          this.getAddFromGroupsInstance(this.companyList)
+        }
+      })
+    },
+
     getAddFromGroupsInstance(groupList) {
       let newGroupList = [];
       groupList.forEach(group => {
         let newGroup = new Group(group);
         newGroupList.push(newGroup)
       });
-      return new AddFromGroups(newGroupList)
+      this.addFromGroupsInstance =  new AddFromGroups(newGroupList);
+      console.log('从团队中添加好友实例：', this.addFromGroupsInstance);
     }
   },
   mounted() {
-    console.log('====================');
-    this.addFromGroupsInstance = this.getAddFromGroupsInstance(this.groupList);
-    console.log('从团队中添加好友实例：', this.addFromGroupsInstance);
-    console.log('111=================');
+    // this.addFromGroupsInstance = this.getAddFromGroupsInstance(this.groupList);
+    // console.log('从团队中添加好友实例：', this.addFromGroupsInstance);
+    this.getCompanyList()
   }
 }
 </script>
@@ -249,6 +261,7 @@ export default {
 
         .item-wrap {
           height: 100%;
+          width: 100%;
           box-sizing: border-box;
           padding: 15px 30px;
 
@@ -392,7 +405,6 @@ export default {
         background: #e5e5e5;
 
         img, .close-cover {
-          opacity: 0;
           position: absolute;
           top: 0;
           left: 0;
@@ -401,6 +413,7 @@ export default {
         }
 
         .close-cover {
+          opacity: 0;
           background: rgba(255, 255, 255, .2) url('../../assets/green/group_person_unselected.svg') no-repeat;
           background-size: $itemSize $itemSize;
           transition: all .3s;
