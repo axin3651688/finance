@@ -3,7 +3,6 @@
   <bi-text v-else-if="flag && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
   <tree-grid v-else-if="flag && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
-  <!-- <el-cascader v-else-if="flag && item.xtype == 'el-cascader'" :item.sync="item" ref="child"></el-cascader> -->
 </template>
 
 <script>

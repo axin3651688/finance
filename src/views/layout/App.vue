@@ -42,6 +42,9 @@ export default {
         if (!this.isEmpty(localStorage.month_cache)) {
           this.GetSideMid({ month: localStorage.month_cache });
         }
+        if (!this.isEmpty(localStorage.date_cache)) {
+          this.GetSideMid({ date: localStorage.date_cache });
+        }
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
         }
