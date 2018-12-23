@@ -436,7 +436,7 @@ export default {
       debugger
       findThirdPartData(params)
         .then(res => {
-        
+          debugger 
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {

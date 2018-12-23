@@ -122,35 +122,35 @@ export default {
 };
 </script>
 <style lang="scss">
-.el-table thead {
-  th {
-    .cell {
-      max-width: 160px;
-      _width: 100%;
-      height: 100%;
-      float: left;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      // background-color: #000;
-    }
-  }
-}
-tbody {
-  .el-table__row {
-    td {
-      .cell {
-        max-width: 160px;
-        _width: 100%;
-        height: 100%;
-        float: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-  }
-}
+// .el-table thead {
+//   th {
+//     .cell {
+//       max-width: 160px;
+//       _width: 100%;
+//       height: 100%;
+//       float: left;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//       white-space: nowrap;
+//       // background-color: #000;
+//     }
+//   }
+// }
+// tbody {
+//   .el-table__row {
+//     td {
+//       .cell {
+//         max-width: 160px;
+//         _width: 100%;
+//         height: 100%;
+//         float: left;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         white-space: nowrap;
+//       }
+//     }
+//   }
+// }
 </style>
 <style>
 .el-tooltip__popper.is-dark {
