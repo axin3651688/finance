@@ -140,7 +140,7 @@ export default {
     return {
       companyId: "",
       companyName_cache: "",
-      companyLeaf: false,
+      treeInfo: {},
       isShow: false,
       dialogVisible: false,
       isCollapse: true,
@@ -231,7 +231,7 @@ export default {
     },
     getname(e) {
       console.log("a:", e);
-      this.companyLeaf = e.leaf;
+      this.treeInfo = e;
       this.companyId = e.id;
       this.companyName_cache = e.text;
     },
