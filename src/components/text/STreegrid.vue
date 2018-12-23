@@ -1,6 +1,6 @@
 <template>
   <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
-    <el-table-column v-if="item.config.columns.length===0" width="120">
+    <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
@@ -10,10 +10,10 @@
         <!-- {{ scope.$index }} -->
       </template>
     </el-table-column>
-    <el-table-column
-      v-for="(column, index) in item.config.columns"
-      v-else
-      :key="column.value"
+    <el-table-column   
+      v-for="(column, index) in item.config.columns" v-else
+      :prop="column.id"
+      :key="column.id"
       :label="column.text"
       :width="column.width"
     >
@@ -32,7 +32,7 @@
           <i v-if="!scope.row._expanded" class="el-icon-plus"/>
           <i v-else class="el-icon-minus"/>
         </span>
-        <span v-if=" column.text != '操作'">{{ scope.row[column.value] }}</span>
+        <span v-else-if="column.text != '操作'">{{ scope.row[column.id] }}</span>
 
         <el-button type="text" v-if="column.text === '操作'" @click="add">
           <!-- ... -->
@@ -107,6 +107,7 @@ export default {
       } else {
         tmp = this.item.rows;
       }
+      // return this.item.rows = this.item.datas;
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
@@ -117,87 +118,57 @@ export default {
   methods: {
 
     array(datas){
-    let data=datas
-    // console.log("w",data)
-    let arr = []
-    let index=0
-     let flag = false;
-     //找到父亲
-     let root;
-     let rootItem;
-     for(let i = 0; i < data.length-1;i++){
-       let it = data[i];
-       if(root&&it.scode==root){
-          root = it.pid;
-          rootItem = it;
-       }else if (root) {
-         continue;
-       }else {
-         for(let j = 0;j < data.length-1;j++){
-          let tt = data[j];
-          if(it.scode==tt.pid){
-            root = it.pid;
-            rootItem = it;
-          }else {
-            root = it.pid;
-            rootItem =it;
-            flag = true;
-            break;
+      let data=datas
+      // console.log("w",data)
+      let arr = []
+      let index=0
+      let flag = false;
+      //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
+      let root,rootItem,demoItem;
+      if(data&&data.length>0){
+        demoItem = data[0];
+        if(demoItem.pid){
+          for(let i = 1;i < data.length-1;i ++){
+            let eveItem = data[i];
+            //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
+            if(eveItem.gsbm==demoItem.pid){
+              demoItem = eveItem;
+            }
           }
-        }
-       }
-       if(flag){
-         break;
-       }
-    
-    }
-    // console.log(root,rootItem);
-
-    if(root){
-      debugger
-      this.tranformData(data,rootItem);
-    }
-    this.item.rows = rootItem;
-
-    // for(let i = 0; i < data.length-1;i++){
-    //  flag=true
-    //   for(let j = i+1; j < data.length;j++){
-    //     if (data[i].scode == data[j].pid) {
-    //       debugger
-    //       if (flag) {
-    //           arr[index]=data[i]
-    //              arr[index].children=[data[j]]
-    //          index++
-    //          flag=false
-    //             debugger
-            
-    //       }else{
-    //         //  arr[index-1].children.push(data[j])
-    //       }
-    //     }
-
-    //   } 
-    
-    // }
-    
-    // this.item.rows = arr;
-    // console.log("11",arr);
+          rootItem = demoItem;
+        }else {
+          rootItem = demoItem;
+        } 
+        
+      }
+      
+      if(rootItem){
+        this.tranformData(data,rootItem);
+        console.log("根节点"+rootItem);
+      }
+      this.item.rows = rootItem;
     },
     tranformData(data,rootItem) {
-      debugger
       let me = this;
       let children = [];
+      let dataArr = [];
       rootItem.children = children;
       for(let i = 0;i < data.length;i ++){
         let it = data[i];
-        if(rootItem.scode==it.pid){
+        if(it.gsbm===rootItem.gsbm){
+          continue;
+        }
+        //满足条件的就塞进去，不满足的塞到另一个新数组中
+        if(rootItem.gsbm==it.pid){
           rootItem.children.push(it);
+        }else {
+          dataArr.push(it);
         }
       }
       if(rootItem.children&&rootItem.children.length>0){
           for(let i = 0;i <rootItem.children.length;i ++){
             let tt = rootItem.children[i];
-            me.tranformData(data,tt);
+            me.tranformData(dataArr,tt);
           }
       }
       // console.log(rootItem);
@@ -211,8 +182,8 @@ export default {
       // }
     
     },
-    handleChange(value, done) {
-      console.log(value)
+    handleChange(id, done) {
+      console.log(id)
       this.$confirm("<div>111</div>")
         .then(_ => {
           done();
@@ -244,7 +215,7 @@ export default {
   created(){
     debugger
     console.log("a",this.item)
-    this.item.rows = this.item.config.rows
+    // this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas
 
     this.array(this.item.datas)

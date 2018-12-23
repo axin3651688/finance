@@ -2,9 +2,14 @@
   <div class="SingleMsg vue-module">
     <div class="top">
       <div class="title">
-        <div class="img"></div>
+        <div class="img-box">
+          <img :src="messageStore.receiverData.user.avatar" alt="">
+        </div>
         <div class="titleleft">
-          <h3>张某<span>（客服总监）</span></h3>
+          <h3>
+            {{messageStore.receiverData.user.trueName}}
+            <span v-if="messageStore.receiverData.user.username">（{{messageStore.receiverData.user.username}}）</span>
+          </h3>
           <p>安徽经邦软件有限公司</p>
         </div>
         <div class="titleright">
@@ -15,23 +20,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <div class="message-box" v-for="item in singleMsgList" :key="item.id">
-          <div class="message-top">
-            <div class="avatar-box">
-              <img :src="item.avatar" alt="">
-            </div>
-            <h3 class="user-name">{{item.name}}</h3>
-            <div class="send-time">
-              <!--<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>-->
-              <span class="time" v-text="formatTime(item.sendTime)"></span>
-              <div class="status"></div>
-            </div>
-          </div>
-          <div class="message-content">
-            <!--<span v-html="parseEmotions(item.content)"></span>-->
-            <span v-html="parseChatContent(item.content, item.type)"></span>
-          </div>
-        </div>
+        <message-item v-for="item in singleMsgListReverse" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
     <div class="bottom">
@@ -68,6 +57,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import MessageItem from './MessageItem'
 import {
   FIND_SINGLE_MSG,
   sendMsg
@@ -78,7 +68,7 @@ import emotionSprites from '@a/green/emotion_sprites.json';
 export default {
   name: 'SingleMsg',
   props: ['chatWithUserId'],
-  components: {},
+  components: {MessageItem},
   data() {
     return {
       receiverName: '', // 聊天对象名称
@@ -90,12 +80,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id;
     },
+    receiverId() {
+      return this.messageStore.receiverData.user.id
+    },
     singleMsgListReverse() {
-      return singleMsgList.reverse()
+      if (this.singleMsgList.length) return this.singleMsgList.reverse()
     }
   },
   methods: {
@@ -106,18 +99,19 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
-      // console.log('要发送的内容是：', this.sendText);
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
         let sendData = {
           code: 1100, // 1100:单聊 1101:群聊
           data: {
             content: this.sendText.trim(),
-            receiverId: this.chatWithUserId, //
+            receiverId: this.receiverId, //
             senderId: this.loginUserId, // 225:卢诚
             type: 1
           },
           device: '868938033321615'
         };
+        console.log('要发送的内容是：', sendData);
+        debugger;
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
         sendMsg(sendData);
@@ -140,7 +134,7 @@ export default {
         name: this.receiverName,
         sendTime: new Date().getTime()
       };
-      this.singleMsgList.push(data);
+      this.singleMsgListReverse.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
       });
@@ -152,6 +146,12 @@ export default {
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
       console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
+    },
+
+    // 点击表情，把表情添加到输入框, 同时 focus 输入框
+    addFaceToInput(face) {
+      this.sendText += face;
+      this.$refs.textarea.focus();
     },
 
     // 获取单聊信息返回res后的处理
@@ -170,38 +170,11 @@ export default {
         })
       }
     },
-
-    // 解析聊天内容，把聊天中的 语音、文件、表情符号替换
-    // content:聊天内容  type:内容的类型
-    // 1:文本有表情的也是；2:图片; 3:文件; 4:音频; 5:视频;）
-    parseChatContent(content, type){
-      // debugger;
-      return PARSE_CHAT_CONTENT(content, type)
-    },
-
-    // 点击表情，把表情添加到输入框, 同时 focus 输入框
-    addFaceToInput(face) {
-      this.sendText += face;
-      this.$refs.textarea.focus();
-    },
-
-    // 格式化时间戳
-    formatTime(time) {
-      let date = new Date(time);
-      let Y = date.getFullYear();
-      let M = date.getMonth();
-      let D = date.getDay();
-      let H = date.getHours();
-      let m = date.getMinutes();
-      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
-      // console.log(newTime)
-      return newTime
-    }
   },
   mounted() {
     // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, 1).then(
+    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id).then(
       this.findSingleMsgThen
     ).catch(err => {
       console.log('获取单聊信息catch：', err)
@@ -239,13 +212,17 @@ export default {
       position: relative;
       overflow: hidden;
 
-      .img {
+      .img-box {
         width: 80px;
         height: 80px;
+        overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
-        // margin-top:60px;
         float: left;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .titleleft {

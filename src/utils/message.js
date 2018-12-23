@@ -3,9 +3,22 @@ import emotionSprites from '@a/green/emotion_sprites.json'; // 聊天表情数�
 
 const EMOTION_SPRITES = emotionSprites.data; // 聊天表情数据
 
+// 格式化时间戳
+export function FORMAT_TIME(time) {
+  let date = new Date(time);
+  let Y = date.getFullYear();
+  let M = date.getMonth();
+  let D = date.getDay();
+  let H = date.getHours();
+  let m = date.getMinutes();
+  let newTime = `${Y}-${M}-${D} ${H}:${m}`;
+  // console.log(newTime)
+  return newTime
+}
 
 // 解析聊天符号，替换成表情图
 export function PARSE_EMOTIONS(content) {
+  // debugger;
   if (!content) return;
   let pattern1 = /\[[\S\s]+?\]/g; // 正则匹配聊天表情
   let matchContent = content.match(pattern1);
@@ -74,8 +87,8 @@ export function PARSE_CHAT_CONTENT(content, type) {
 }
 
 // 处理服务端socked端推送的消息
-export function processSingleMessage(data) {
-  debugger;
+export function processServerMessage(data) {
+  console.log('需要处理的服务器消息：', data);
   store.dispatch("GetSideMid", {
     newServerMsg: data
   });

@@ -18,7 +18,7 @@ import ResizeMixin from "./mixin/ResizeHandler";
 import "@/styles/black/index.scss"; // global css
 import { mapActions } from "vuex";
 export default {
-  name: "Lay",
+  name: "BorderPage",
   data() {
     return {};
   },

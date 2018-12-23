@@ -1,5 +1,5 @@
 <template>
-  <div class="GroupMembers vue-module">
+  <div class="GroupMembers">
     <div id="right-bar" class="right-bar">
       <div class="top">
         <div class="bar-header">
@@ -20,20 +20,20 @@
       </div>
       <el-scrollbar>
         <ul class="member-list">
-          <li class="list-item" v-for="i in 35" :key="i">
+          <li class="list-item" v-for="item in messageStore.groupInfo.users" :key="item.id">
             <figure>
               <div>
                 <div class="img-box">
-                  <img src="" alt="">
+                  <img :src="item.avatar" alt="">
                 </div>
               </div>
-              <h4 class="text">成员名</h4>
+              <h4 class="text">{{item.trueName}}</h4>
             </figure>
             <el-dropdown trigger="click" @command="handleCommand">
                           <span class="el-dropdown-link">
                           </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="`removeMember_${i}`"
+                <el-dropdown-item :command="item"
                                   style="color: #189271"
                 >移除
                 </el-dropdown-item>
@@ -50,13 +50,14 @@
       :visible.sync="showRemoveMember"
       width="30%"
       :show-close="false"
+      :modal-append-to-body="false"
       center>
       <div class="dialog-content" style="font-size: 16px;line-height: 30px;">
         <p>是否移除成员</p>
-        <p>“{{removeMemberName}}”?</p>
+        <p>“{{removeMember.trueName}}”?</p>
       </div>
       <span slot="footer" class="dialog-footer">
-                <el-button size="small" @click="showRemoveMember = false">确 认</el-button>
+                <el-button size="small" @click="clickDelGroupUser(removeMember)">确 认</el-button>
                 <el-button type="primary" size="small" @click="showRemoveMember = false">取 消</el-button>
               </span>
     </el-dialog>
@@ -65,7 +66,8 @@
     <el-dialog class="add-member-dialog"
                :visible.sync="showAddMember"
                width="800px"
-               :show-close="false"
+               :show-close="true"
+               :modal-append-to-body="false"
     >
       <div class="dialog-content">
         <el-tabs v-model="activePanelName" type="card" @tab-click="handleClickTab">
@@ -89,6 +91,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import AddFromFriends from './AddFromFriends' // 从我的好友中添加群成员
 import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
 import {
@@ -103,24 +106,22 @@ export default {
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
       showRemoveMember: false, // 是否显示移除群成员弹窗
-      removeMemberName: '' // 需要移除的群组成员id
+      removeMember: '' // 需要移除的群组成员
     }
   },
   components: {
     AddFromGroups,
     AddFromFriends
   },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    senderId() {return this.user.user.id},
+    groupId() {return this.messageStore.groupInfo.info.groupId},
+  },
   methods: {
     // 关闭侧边群组成员栏
     handleCloseGroupMembers() {
       this.$emit('closeGroupMembers')
-    },
-
-    // 移除群成员
-    handleCommand(command) {
-      this.removeMemberName = command;
-      this.showRemoveMember = true;
-      console.log('需要移除的对象：', command)
     },
 
     // 添加群成员
@@ -136,7 +137,7 @@ export default {
 
     // 群id查询群信息
     getMembers() {
-      GROUP_INFO(4).then(res => {
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群信息', res.data.data);
         if (res.data.code === 200) {
           this.groupMembers = res.data.data.users
@@ -147,14 +148,24 @@ export default {
     },
 
     // 移除群成员
-    clickDelGroupUser(item) {
+    handleCommand(user) {
+      // debugger;
+      this.removeMember = user;
+      this.showRemoveMember = true;
+      console.log('需要移除的对象：', user)
+    },
+
+    // 移除群成员
+    clickDelGroupUser(removeMember) {
+      // debugger;
+      this.showRemoveMember = false;
       let params = {
-        groupId: 4,
-        remark: '1', //  '1,2,3' 传递多个id组成的字符串为批量操作
-        senderId: 225
+        groupId: this.groupId,
+        remark: removeMember.id.toString(), //  '1,2,3' 传递多个id组成的字符串为批量操作
+        senderId: this.senderId
       };
       DEL_GROUP_USER(params).then(res => {
-        console.log('移除群成员', res.data.data);
+        console.log('移除群成员', res);
         if (res.data.code === 200) {
 
         }
@@ -164,8 +175,6 @@ export default {
     }
   },
   mounted() {
-    // debugger;
-    this.getMembers()
   }
 }
 </script>
@@ -180,7 +189,7 @@ export default {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 210;
   }
 
   .right-bar {
@@ -400,8 +409,14 @@ export default {
       }
     }
 
-    .el-dialog__header, .el-dialog__footer {
+    .el-dialog__footer {
       display: none;
+    }
+
+    .el-dialog__header{
+      position: absolute;
+      right: 0;
+      z-index: 999;
     }
 
     .el-dialog__body {

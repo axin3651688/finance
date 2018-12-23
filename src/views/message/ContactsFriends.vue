@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions, mapMutations} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   requestMyfriends,
   CONTACT_INFO
@@ -76,10 +76,7 @@ export default {
   name: 'ContactsFriends',
 
   computed: {
-    ...mapGetters(['user']),
-    ...mapState({
-      chatWithUserId: state => state.messageModule.chatWithUserId
-    })
+    ...mapGetters(['user', 'messageStore']),
   },
 
   data() {
@@ -92,11 +89,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ActionSetChatWithUserId']),
+    ...mapActions(['ActionSetMessageStore']),
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
-      requestMyfriends(372).then(res => {
+      requestMyfriends(this.user.user.id).then(res => {
         console.log('获取我的好友列表-->>', res.data);
 
         if (res.data.code === 200) {
@@ -139,14 +136,16 @@ export default {
 
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
-      this.ActionSetChatWithUserId(receiverId);
-      console.log('即将和用户', receiverId, '聊天')
+      this.ActionSetMessageStore({
+        // receiverId: receiverId, // 1100 单聊
+        miniType: 1100, // 1100 单聊
+        receiverData: this.rightUserInfoData
+      });
+      this.$emit('chatWithSingle', receiverId);
     }
   },
   mounted() {
     this.getdata();
-    // this.actionsTest('1231234234');
-    console.log('测试message vuex：', this.chatWithUserId);
   }
 }
 </script>

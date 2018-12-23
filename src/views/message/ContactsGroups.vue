@@ -21,65 +21,71 @@
       </el-scrollbar>
     </div>
     <div class="panel-right">
-      <div class="panel-right-top">
-        <div class="top-wrap">
-          <div>
-            <div class="img-box">
-              <img :src="rightInfo.avatar" alt="" class="avatar-img">
+      <template v-if="rightInfo">
+        <div class="panel-right-top">
+          <div class="top-wrap">
+            <div>
+              <div class="img-box">
+                <img :src="rightInfo.avatar" alt="" class="avatar-img">
+              </div>
             </div>
+            <div class="text">
+              <h3 class="text-title">{{rightInfo.text}}</h3>
+              <p class="text-info">{{rightUsers.length}}人</p>
+            </div>
+            <el-button
+              type="primary"
+              size="medium"
+              class="my-btn"
+              @click="chatWithGroup(rightInfo.groupId)"
+            >发送信息
+            </el-button>
           </div>
-          <div class="text">
-            <h3 class="text-title">{{rightInfo.text}}</h3>
-            <p class="text-info">{{rightUsers.length}}人</p>
-          </div>
-          <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
         </div>
-      </div>
-      <div class="panel-right-content">
-        <div class="content-wrap">
-          <el-scrollbar>
-            <section>
-              <h4 class="title">群组成员</h4>
-              <div class="content">
-                <ul>
-                  <li v-for="user in rightUsers" :key="user.id">
-                    <figure>
-                      <div>
-                        <div class="img-box">
-                          <img :src="user.avatar">
+        <div class="panel-right-content">
+          <div class="content-wrap">
+            <el-scrollbar>
+              <section>
+                <h4 class="title">群组成员</h4>
+                <div class="content">
+                  <ul>
+                    <li v-for="user in rightUsers" :key="user.id">
+                      <figure>
+                        <div>
+                          <div class="img-box">
+                            <img :src="user.avatar">
+                          </div>
                         </div>
-                      </div>
-                      <span class="info">{{user.trueName}}</span>
-                    </figure>
-                  </li>
-                </ul>
-              </div>
-            </section>
-            <section>
-              <h4 class="title">最新公告</h4>
-              <div class="content">
-                <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
-              </div>
-            </section>
-            <section>
-              <h4 class="title">群二维码</h4>
-              <div class="content">
-                <div class="qr-code">
-                  <img src="" alt="">
+                        <span class="info">{{user.trueName}}</span>
+                      </figure>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-            </section>
-          </el-scrollbar>
+              </section>
+              <section>
+                <h4 class="title">最新公告</h4>
+                <div class="content">
+                  <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
+                </div>
+              </section>
+              <section>
+                <h4 class="title">群二维码</h4>
+                <div class="content">
+                  <div class="qr-code">
+                    <img src="" alt="">
+                  </div>
+                </div>
+              </section>
+            </el-scrollbar>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   MY_GROUP_LIST,
   FIND_GROUP_NOTICE,
@@ -98,18 +104,20 @@ export default {
       requestedGroups: {}, // 已经请求过的群组信息
       GroupListData: [],
       rightUsers: [],
-      rightInfo: {},
+      rightInfo: null, // {},
       rightNotice: {}
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
     getData() {
       // let userId = this.user.user.id;
-      // alert(params.type)
-      MY_GROUP_LIST(225).then(res => {
+      MY_GROUP_LIST(this.user.user.id).then(res => {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
           this.GroupListData = res.data.data;
+          // 默认请求第一个群组的信息
+          this.getInfo(this.GroupListData[0].groupId)
         }
       })
     },
@@ -135,6 +143,9 @@ export default {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
             let groupInfo = res.data.data;
+            this.ActionSetMessageStore({
+              groupInfo: groupInfo,
+            });
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId] = groupInfo;
@@ -144,7 +155,7 @@ export default {
         });
 
         // 获取群公告   公告图片的字段: rightNotice.url
-        FIND_GROUP_NOTICE(groupId, 225).then(res => {
+        FIND_GROUP_NOTICE(groupId, this.user.user.id).then(res => {
           console.log('群id获取群公告:', res.data.data);
           if (res.data.code === 200) {
             if (res.data.data.noticeList.length > 0) {
@@ -171,6 +182,16 @@ export default {
         }).catch(err => {
           console.log('请求message：', err)
         })
+      }
+    },
+
+    // 开始群聊天
+    chatWithGroup(groupId) {
+      if (groupId) {
+        this.ActionSetMessageStore({
+          miniType: 1101, // 1101 群聊,
+        });
+        this.$emit('chatWithGroup', groupId)
       }
     }
   },

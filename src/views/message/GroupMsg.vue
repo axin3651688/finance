@@ -55,39 +55,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%">
-        <!--<div class="message-box" v-for="item in singleMsgList" :key="item.id">-->
-        <!--<div class="message-top">-->
-        <!--<div class="avatar-box">-->
-        <!--<img :src="item.avatar" alt="">-->
-        <!--</div>-->
-        <!--<h3 class="user-name">{{item.name}}</h3>-->
-        <!--<div class="send-time">-->
-        <!--&lt;!&ndash;<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>&ndash;&gt;-->
-        <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-        <!--<div class="status"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message-content">-->
-        <!--<p>{{item.content}}</p>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <div class="message-box" v-for="item in groupMsgList" :key="item.id">
-          <div class="message-top">
-            <div class="avatar-box">
-              <img :src="item.avatar" :alt="item.name">
-            </div>
-            <h3 class="user-name">{{item.name}}</h3>
-            <div class="send-time">
-              <span class="time">2018-10-15&nbsp;&nbsp;15:00</span>
-              <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-              <div class="status"></div>
-            </div>
-          </div>
-          <div class="message-content">
-            <p>{{item.content}}</p>
-          </div>
-        </div>
+        <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
 
       <!--底部阴影-->
@@ -115,11 +83,12 @@
           </div>
         </transition>
       </div>
-      <textarea class="chat-textarea"
-                placeholder="请输入文字，按enter建发送信息"
-                v-model="sendText"
-                ref="textarea"
-                @keyup.enter="handleSendMessage"
+      <textarea
+        class="chat-textarea"
+        placeholder="请输入文字，按enter建发送信息"
+        v-model="sendText"
+        ref="textarea"
+        @keyup.enter="handleSendMessage"
       ></textarea>
     </div>
 
@@ -173,13 +142,28 @@
               </span>
     </el-dialog>
 
+    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
+    <!--<el-dialog class="add-member-dialog"-->
+               <!--:visible.sync="showGroupMembers"-->
+               <!--width="300px"-->
+               <!--:show-close="true"-->
+               <!--:modal-append-to-body="false"-->
+               <!--id="group-members"-->
+    <!--&gt;-->
+      <!--sdfasdfsadf-->
+    <!--</el-dialog>-->
+
     <!--群成员侧边栏组件-->
-    <group-members v-if="showGroupMembers" @closeGroupMembers="handleCloseGroupMembers"></group-members>
+    <group-members
+      v-if="showGroupMembers"
+      @closeGroupMembers="handleCloseGroupMembers"
+    ></group-members>
   </div>
 </template>
 
 <script>
-import GroupMembers from './GroupMembers'
+import {mapGetters, mapActions} from 'vuex'
+import MessageItem from './MessageItem'
 import emotionSprites from '@a/green/emotion_sprites.json';
 import {
   findGroupMsg,
@@ -193,7 +177,8 @@ import {
 export default {
   name: 'GroupMsg',
   components: {
-    GroupMembers
+    GroupMembers: () => import('./GroupMembers'),
+    MessageItem
   },
   data() {
     return {
@@ -207,6 +192,15 @@ export default {
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
       sendText: '' // 聊天发送的内容
+    }
+  },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id;
+    },
+    groupId() {
+      return this.messageStore.groupInfo.info.groupId
     }
   },
   methods: {
@@ -225,18 +219,13 @@ export default {
         data: {
           content: this.sendText,
           // receiverId: 538, // 538 程雪怡
-          senderId: 539, // 539 姜海斌
+          senderId: this.loginUserId, // 539 姜海斌
           type: 1
         },
-        // data: {
-        //     content: this.sendText,
-        //     receiverId: 244,
-        //     senderId: 397,
-        //     type: 1
-        // },
         device: '868938033321615'
       };
       this.sendText = '';
+      debugger;
       sendMsg(sendData)
     },
 
@@ -270,7 +259,8 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      GROUP_INFO(4).then(res => {
+      if (!this.groupId) return;
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
@@ -332,16 +322,17 @@ export default {
     // 解散群聊
     clickDissoluGroup() {
       let params = {
-        senderId: 225,
-        groupId: 0
+        senderId: this.loginUserId,
+        groupId: this.groupId
       };
       DISSOLU_GROUP(params).then(res => {
-        console.log('解散群聊', res.data.data);
+        console.log('解散群聊：', res.data.data);
+        debugger;
         if (res.data.code === 200) {
 
         }
       }).catch(err => {
-        console.log('解散群聊', err)
+        console.log('解散群聊异常：', err)
       })
     }
   },
@@ -642,7 +633,7 @@ export default {
   }
 
   /deep/ .el-dialog {
-    min-width: 370px;
+    min-width: 300px;
     border-radius: 12px;
 
     .el-dialog__header {
@@ -735,6 +726,15 @@ export default {
       opacity: 0;
       filter: alpha(opacity=0);
     }
+  }
+
+  #group-members>.el-dialog {
+    margin: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    position: fixed !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
   }
 
 </style>

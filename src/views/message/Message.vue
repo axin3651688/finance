@@ -1,70 +1,55 @@
 <template>
-  <div class="Message vue-module">
-    <div class="container" ref="messagecContainer">
+  <div class="Message">
+    <div class="container">
       <div class="left">
         <el-scrollbar style="height: 100%">
           <ul>
-            <li :class="['addressbook', {'active': activeItem === 101010}]" @click="activeThisItem(101010)">
-              <img class="avatar-img" src="@/assets/green/contact_icon.svg" alt="">
-              <h3>通讯录（60人）</h3>
-              <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
-              <div class="right-border"></div>
-            </li>
-            <li :class="[ {'active': activeItem === 2}]" @click="activeThisItem(2)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">99+</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">代办事项
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试,今天风险信息系统经过了第一轮测试,显示的值...</p>
-              <div class="right-border"></div>
-            </li>
-            <li :class="[ {'active': activeItem === 4}]" @click="activeThisItem(4)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">1</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">张某
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试...</p>
-              <div class="right-border"></div>
-            </li>
-            <li :class="[ {'active': activeItem === 5}]" @click="activeThisItem(5)">
-              <div class="top">
-                <img src="@/assets/green/sys_icon.svg" alt="">
-                <span class="count mt">10</span>
-                <span class="publish-time mt">26秒前</span>
-              </div>
-              <h3 class="title">软件技术群
-                <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-              </h3>
-              <p>今天风险信息系统经过了第一轮测试...</p>
-              <div class="right-border"></div>
-            </li>
-            <li :class="['have-sub', {'active': activeItem === item.miniType}]"
-                v-for="item in messageList"
-                :key="item.miniType"
-                @click="activeThisItem(item.miniType)">
-              <img class="avatar-img" :src="item.avatar" :alt="item.name">
-              <h3>{{item.name}} {{item.miniType}}</h3>
-              <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
-              <div class="right-border"></div>
-            </li>
+            <template v-if="leftBarInstance">
+              <template v-for="item in leftBarInstance.leftBarList">
+                <li v-if="!item.content"
+                    :class="['have-sub', {active: item.miniType === messageStore.miniType}]"
+                    :key="item.miniType"
+                    @click="leftBarInstance.setItemActive(item)"
+                >
+                  <img class="avatar-img" :src="item.avatar" :alt="item.name">
+                  <h3>{{item.name}} {{item.miniType}}</h3>
+                  <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
+                  <div class="right-border"></div>
+                </li>
+                <li v-else
+                    :class="[{active: item.miniType === messageStore.miniType}]"
+                    :key="item.miniType"
+                    @click="leftBarInstance.setItemActive(item)"
+                >
+                  <div class="top">
+                    <img :src="item.avatar" alt="">
+                    <span class="count mt" v-if="item.count">{{item.count}}</span>
+                    <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
+                  </div>
+                  <h3 class="title">{{item.name}}
+                    <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
+                  </h3>
+                  <p>{{item.content}}</p>
+                  <div class="right-border"></div>
+                </li>
+              </template>
+            </template>
           </ul>
         </el-scrollbar>
       </div>
       <div class="right">
-        <contacts v-if="activeItem === 101010"></contacts>
-        <new-friends v-if="activeItem === 11016"></new-friends>
-        <group-helper v-if="activeItem === 11017"></group-helper>
-        <Todo v-if="activeItem === 2"></Todo>
-        <single-msg v-if="activeItem === 4" :chatWithUserId="chatWithUserId"></single-msg>
-        <group-msg v-if="activeItem === 5"></group-msg>
+        <template v-if="leftBarInstance">
+          <contacts
+            v-if="messageStore.miniType === 101010"
+            @chatWithGroup="handleChatWithGroup"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts>
+          <new-friends v-if="messageStore.miniType === 11016"></new-friends>
+          <group-helper v-if="messageStore.miniType === 11017"></group-helper>
+          <Todo v-if="messageStore.miniType === 2"></Todo>
+          <single-msg v-if="messageStore.miniType === 1100"></single-msg>
+          <group-msg v-if="messageStore.miniType === 1101"></group-msg>
+        </template>
 
         <!--右边区域左内阴影效果-->
         <div class="inset-shadow"></div>
@@ -73,56 +58,166 @@
       <!--container区域上边贴导航栏内阴影效果-->
       <div class="inset-shadow"></div>
     </div>
-
   </div>
 </template>
+
 <script>
 import {MY_SESSION} from '~api/message.js';
 import {mapGetters, mapActions} from 'vuex'
-import SingleMsg from './SingleMsg' // 单聊消息
-import Contacts from './Contacts' // 通讯录
-import Todo from './Todo' // 代办事项
-import NewFriends from './NewFriends' // 新朋友
-import GroupHelper from './GroupHelper' // 群助手
-import GroupMsg from './GroupMsg' // 群助手
+
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
+
+// 暂时定义一个通讯录类容
+const contact = {
+  avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
+  content: null,
+  count: 60,
+  id: null,
+  miniType: 101010,
+  name: "通讯录",
+  otherAvatar: null,
+  otherName: null,
+  platform: null,
+  receiverId: null,
+  sendTime: null,
+  senderId: null,
+  state: 0,
+  type: null,
+};
+
+// 消息左边栏
+class LeftBar {
+  constructor(resList, ActionSetMessageStore) {
+    if (!LeftBar.instance) {
+      this.ActionSetMessageStore = ActionSetMessageStore;
+      this.activeItem = new LeftBarItem(contact);
+      this._init(resList);
+      LeftBar.instance = this;
+    }
+    return LeftBar.instance
+  }
+
+  _init(resList) {
+    let itemList = [];
+    resList.forEach(i => {
+      let leftBarItem = new LeftBarItem(i);
+      itemList.push(leftBarItem)
+    });
+    itemList.push(new LeftBarItem(contact));
+    this.leftBarList = itemList;
+  }
+
+  setItemActive(itemObj) {
+    this.activeItem = itemObj;
+    itemObj.setActive();
+    this.setMessageStore({miniType: itemObj.miniType})
+  }
+
+  // 修改 vuex 中的变量 messageStore
+  // 传参obj示例 {miniType: 1001} key值 miniType必须在vuex中定义
+  setMessageStore(obj) {
+    this.ActionSetMessageStore(obj)
+  }
+
+  addLeftBarItem(itemData) {
+    let result = this.checkExists(itemData);
+    if (result) {
+      result.addCount()
+    } else {
+      let leftBarItem = new LeftBarItem(itemData);
+      this.leftBarList.unshift(leftBarItem)
+    }
+  }
+
+  checkExists(itemData) {
+    for (let i of this.leftBarList) {
+      return i.id === itemData.id ? i : false
+    }
+  }
+}
+
+// 消息边栏中的一项
+class LeftBarItem {
+  constructor(obj) {
+    this.isActive = false;
+    this._init(obj)
+  }
+
+  _init(obj) {
+    let keys = Object.keys(obj);
+    keys.forEach(key => {
+      this[key] = obj[key]
+    })
+  }
+
+  setActive() {
+    if (!this.isActive) this.isActive = true;
+    this.clearCount()
+  }
+
+  addCount() {
+    this.count++
+  }
+
+  clearCount() {
+    this.count = 0
+  }
+
+}
 
 export default {
   name: 'Message',
   components: {
-    // GroupMembers,
-    SingleMsg, // 单聊消息
-    Contacts, // 通讯录
-    Todo, // 代办事项
-    NewFriends, // 新朋友
-    GroupHelper, // 群助手
-    GroupMsg // 群助手
+    SingleMsg: () => import('./SingleMsg'), // 单聊消息
+    Contacts: () => import('./Contacts'), // 通讯录
+    Todo: () => import('./Todo'), // 代办事项
+    NewFriends: () => import('./NewFriends'), // 新朋友
+    GroupHelper: () => import('./GroupHelper'), // 群助手
+    GroupMsg: () => import('./GroupMsg') // 群助手
   },
   data() {
     return {
+      receiverId: null, // 单聊对象 id
+      groupId: null, // 群聊 群id
+      leftBarInstance: null, // 左边栏实例
       showGroupMembers: false,
       activeItem: 4, // 当前激活显示的选项
       messageList: [] // 左边的消息列表，请求 ‘/api/api/my_session’ 返回回来的 data
     }
   },
   computed: {
-    ...mapGetters(['user', 'newServerMsg', 'chatWithUserId'])
+    ...mapGetters(['user', 'newServerMsg', 'messageStore'])
   },
-  watch: {
-    newServerMsg(data) {
-      this.alertServerMsg(data)
+  filters: {
+    trim(val) { // 去掉头尾空格
+      debugger;
+      return val.trim()
     },
-    chatWithUserId(chatWithUserId) {
-      this.activeItem = 4;
+    // 格式化时间戳
+    formatTime(time) {
+      let date = new Date(time);
+      let Y = date.getFullYear();
+      let M = date.getMonth();
+      let D = date.getDay();
+      let H = date.getHours();
+      let m = date.getMinutes();
+      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
+      // console.log(newTime)
+      return newTime
     }
   },
   methods: {
-    // ...mapMutations('messageModule', ['mutationSetMySessionList']),
-    // ...mapActions(['']),
+    ...mapActions(['ActionSetMessageStore']),
+
 
     // 弹出系统推送的消息
     alertServerMsg(data) {
       console.log('收到服务器推送消息：', data)
+    },
+
+    // 初始化消息左边栏
+    initLeftBar(resList) {
+      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore)
     },
 
     // 页面挂载后 请求消息列表数据成功后的处理
@@ -132,7 +227,7 @@ export default {
         this.messageList = res.data;
         console.log('message左边栏====', this.messageList, '===message左边栏');
         let mySessionList = res.data;
-        this.mutationSetMySessionList(mySessionList)
+        this.initLeftBar(res.data); // 初始化消息左边栏
       } else {
         this.$message({
           type: 'error',
@@ -154,28 +249,30 @@ export default {
       let messagecContainer = this.$refs.messagecContainer;
       let resizeHeight = windowHeiht - NAV_HEADER_HEIGHT;
       messagecContainer.style.height = resizeHeight + 'px';
-      // console.log('message视图高度：', resizeHeight);
-      // console.log('message视图dom：', messagecContainer)
+      console.log('message视图高度：', resizeHeight);
+      console.log('message视图dom：', messagecContainer)
+    },
+
+    // 开始群聊天
+    handleChatWithGroup(groupId) {
+      console.log('开始群聊天：', groupId);
+      this.groupId = groupId;
+      this.leftBarInstance.activeMiniType = 1101
+    },
+
+    // 开始单聊
+    handleChatWithSingle(receiverId) {
+      console.log('即将和用户', receiverId, '聊天');
     }
   },
   mounted() {
     // 页面挂载后 请求消息列表数据
     console.log('用户信息：', this.user);
-    // let userId = this.user.user.id;
-    // console.log('用户id：', userId);
     MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
     }).catch(err => {
       console.log('请求message：', err)
     });
-
-    // 在页面挂在的之后默动态设置窗口高度
-    this.messageResize();
-    window.addEventListener('resize', this.messageResize)
-  },
-  beforeDestroy () {
-    // 在页面销毁的时候一定要取消事件监听，不然严重影响性能
-    window.removeEventListener('resize', this.messageResize)
   }
 }
 </script>
@@ -193,6 +290,8 @@ export default {
 
   .Message {
     font-family: $fontFamilyMain;
+    position: relative;
+    height: 100vh !important;
 
     .container {
       position: relative;
@@ -246,6 +345,8 @@ export default {
 
               img {
                 width: 46px;
+                height: 46px;
+                border-radius: 50%;
                 float: left;
               }
 
@@ -266,7 +367,7 @@ export default {
 
               .publish-time {
                 float: right;
-                width: 50px;
+                /*width: 50px;*/
                 height: 16px;
                 font-size: 12px;
                 font-family: $fontFamilyMain;
