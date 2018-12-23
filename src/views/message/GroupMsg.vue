@@ -219,12 +219,13 @@ export default {
         data: {
           content: this.sendText,
           // receiverId: 538, // 538 程雪怡
-          senderId: 539, // 539 姜海斌
+          senderId: this.loginUserId, // 539 姜海斌
           type: 1
         },
         device: '868938033321615'
       };
       this.sendText = '';
+      debugger;
       sendMsg(sendData)
     },
 

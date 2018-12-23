@@ -2,14 +2,18 @@
   <div class="NewFriends vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未读 <span class="count">(10)</span></div>
-        <div class="btn">已读</div>
+        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+          未审核 <span class="count">({{messageListFilter.unChecked.count}})</span>
+        </div>
+        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+          已审核 <span class="count">({{messageListFilter.checked.count}})</span>
+        </div>
       </div>
     </div>
     <div class="bottom">
       <el-scrollbar>
         <section>
-          <div class="list-item" v-for="item in messageList" :key="item.id">
+          <div class="list-item" v-for="item in showMessageList" :key="item.id">
             <div class="item-left">
               <div>
                 <div class="img-box"><img :src="item.avatar" alt=""></div>
@@ -29,9 +33,16 @@
                   type="primary"
                   size="small"
                   class="my-btn my-btn-primary"
-                  @click="saveFriend()"
-                >同意</el-button>
-                <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
+                  @click="saveFriend(item, 4)"
+                >同意
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-default"
+                  @click="saveFriend(item, 3)"
+                >拒绝
+                </el-button>
               </div>
             </div>
           </div>
@@ -49,16 +60,49 @@ import {
   REFUSE_GROUP
 } from '~api/message.js';
 import {FORMAT_TIME} from 'utils/message.js'
+
 export default {
   name: 'NewFriends',
   data() {
     return {
-      messageList: [] // 好友申请消息列表
+      activeBtn: 'unChecked', // 1已审核 2未审核
+      messageList: [], // 好友申请消息列表
+      // showMessageList: [] // 好友申请消息列表筛选过的
     }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
-    loginUserId() {return this.user.user.id}
+    loginUserId() {
+      return this.user.user.id
+    },
+    messageListFilter() {
+      let obj = {
+        checked: {
+          count: 0,
+          data: []
+        },
+        unChecked: {
+          count: 0,
+          data: []
+        },
+      };
+      this.messageList.forEach(item => {
+        if (item.state === 0) {
+          obj.unChecked.count++;
+          obj.unChecked.data.push(item)
+        } else {
+          obj.checked.count++;
+          obj.checked.data.push(item)
+        }
+      });
+      console.log('messageListFilter:', obj);
+      return obj
+    },
+    showMessageList() {
+      return this.activeBtn === 'checked' ?
+        this.messageListFilter.checked.data :
+        this.messageListFilter.unChecked.data
+    }
   },
   filters: {
     formatTime(time) {
@@ -66,6 +110,11 @@ export default {
     }
   },
   methods: {
+    // 筛选不同状态的信息
+    // changeState(checkState) {
+    //   this.
+    // },
+
     getList() {
       NEW_FRIEND_LIST(this.loginUserId).then(res => {
         console.log('好友申请消息', res.data.data);
@@ -79,6 +128,7 @@ export default {
 
     saveFriend(item, state) {
       // 点同意，先保存，再修改状态，点拒绝直接改状态
+      debugger;
       let params = {
         friendId: item.id,
         userId: this.loginUserId
@@ -90,10 +140,12 @@ export default {
           this.updateState(item, state)
         }
       }).catch(err => {
+        // TODO: 处理好友申请有异常
         console.log('请求message：', err)
       })
     },
     updateState(item, state) {
+      debugger;
       let params = {
         code: item.code,
         state: 3 // 3拒绝，4同意
@@ -123,13 +175,16 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+
     .top {
       padding: 40px 40px 32px;
     }
+
     .bottom {
       position: relative;
       flex: 1;
       padding-right: 40px;
+
       /deep/ .el-scrollbar {
         height: 100%;
         position: absolute;
@@ -138,6 +193,7 @@ export default {
         left: 0;
         right: 0;
       }
+
       section {
         padding: 0 40px;
       }

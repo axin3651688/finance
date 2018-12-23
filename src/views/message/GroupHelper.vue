@@ -2,8 +2,8 @@
   <div class="GroupHelper vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未读 <span class="count">(10)</span></div>
-        <div class="btn">已读</div>
+        <div class="btn active">未审核 <span class="count">(10)</span></div>
+        <div class="btn">已审核</div>
       </div>
     </div>
     <div class="bottom">
@@ -28,37 +28,6 @@
               </div>
             </div>
           </div>
-          <div class="list-item">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">李某申请加入：公司群</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <span>理由：</span>
-                李某申请添加你为好友
-              </div>
-            </div>
-            <div class="item-right">
-              <span>已同意</span>
-            </div>
-          </div>
-          <div class="list-item" v-for="i in 9" :key="i">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">赵某退出：公司群</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <!--<span>理由：</span>-->
-              </div>
-            </div>
-            <div class="item-right">
-              <span></span>
-            </div>
-          </div>
         </section>
       </el-scrollbar>
     </div>
@@ -66,6 +35,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import {HELP_GROUP_MSG, JOIN_GROUP, REFUSE_GROUP} from '~api/message.js';
 
 export default {
@@ -75,12 +45,23 @@ export default {
       messageList: [] // 好友申请消息列表
     }
   },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {return this.user.user.id},
+    // checkNumgers() {
+    //   let checked = 0;
+    //   let unChecked = 0;
+    //   this.messageList.forEach(item => {
+    //
+    //   })
+    // }
+  },
   mounted() {
     this.getList()
   },
   methods: {
     getList() {
-      HELP_GROUP_MSG(225).then(res => {
+      HELP_GROUP_MSG(this.loginUserId).then(res => {
         console.log('群助手>申请消息', res.data.data);
         if (res.data.code === 200) {
           this.messageList = res.data.data
@@ -92,7 +73,7 @@ export default {
     clickAgree(item, state) {
       let params = {
         groupId: item.groupId,
-        userId: 225
+        userId: this.loginUserId
       };
       JOIN_GROUP(params).then(res => {
         console.log('处理申请消息', res.data.data);
