@@ -4,6 +4,7 @@
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
   <tree-grid v-else-if="flag && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
   <s-tree-grid v-else-if="flag && item.xtype == 'stree-grid'" :item.sync="item" ref="child"></s-tree-grid>
+  <bi-flhz v-else-if="flag && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>
 </template>
 
 <script>
@@ -12,6 +13,7 @@ import BiChart from "./BiChart";
 import BiText from "./BiText";
 import TreeGrid from "./text/Treegrid.vue";
 import STreeGrid from "./text/STreegrid.vue";
+import BiFlhz from "./BiFlhz";
 // import ElCascader from "./text/ElCascader.vue";
 
 export default {
@@ -22,7 +24,8 @@ export default {
     BiChart,
     BiText,
     TreeGrid,
-    STreeGrid
+    STreeGrid,
+    BiFlhz
     // ElCascader
   },
   data() {
