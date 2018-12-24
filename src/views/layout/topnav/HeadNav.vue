@@ -48,9 +48,10 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- v-if="showDims.day" -->
+      <!--  -->
       <!-- 日  日历 -->
       <el-date-picker
+        v-if="showDims.day"
         v-model="value"
         @change="logTimeChange"
         type="date"
