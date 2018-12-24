@@ -17,6 +17,7 @@
   </el-table>
 </template>
 <script>
+//   :span-method="rowSpanAndColSpanHandler"
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
 import EventMixins from "./mixins/EventMixins";

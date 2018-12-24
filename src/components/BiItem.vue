@@ -42,10 +42,8 @@ export default {
   },
   created() {
     console.info(this.item);
-    // debugger;
   },
   mounted() {
-    // debugger;
     this.loadItems(this.item);
   },
   watch: {

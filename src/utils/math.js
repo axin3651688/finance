@@ -374,7 +374,7 @@ const singleSeriesDataParser8 = (config, datas, rows, cols) => {
      return rows;
  }
 /**
- * 获取单系列数据，注意：有prop的则返回数据对象：[{prop:xxx}]
+ * 获取单系列数据，注意：有prop的则返回数据对象：[{prop:xxx}]==>[{}]
  * 否则则返回：[xxx,xxx]
  */
  const singleSeriesDataParse = (config, datas, rows, cols) => {
@@ -597,7 +597,7 @@ const getSeriesDataPie = (column, datas, rows) => {
         params.comparePeriod.forEach(function(it,indx){
             it.idAfter = it.id;
         });
-        config.rows = params.comparePeriod;
+        config.rows = params.comparePeriod;//[{id:201505,text:"2015年05月"}]
     }
  }
 
