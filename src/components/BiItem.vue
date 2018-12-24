@@ -45,13 +45,13 @@ export default {
     // debugger;
   },
   mounted() {
-    debugger;
+    // debugger;
     this.loadItems(this.item);
   },
   watch: {
     item(newItem) {
       //  debugger;
-     // console.info("-----");
+      // console.info("-----");
       //console.info(newItem);
       this.$set(this, "item", newItem);
     },
@@ -61,7 +61,7 @@ export default {
   methods: {
     loadItems() {
       let config = this.item.config;
-    // debugger;
+      // debugger;
       if (config) {
         config.rows = this.item.rows || config.rows || this.config.rows;
         config.columns =

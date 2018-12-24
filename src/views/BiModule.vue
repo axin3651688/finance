@@ -201,7 +201,7 @@ export default {
         document.title = bean.text;
       }
       //showDims控制顶部导航栏的显示及隐藏
-      debugger;
+      // debugger;
       // console.log(bean.showDims);
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
@@ -261,7 +261,7 @@ export default {
       //  api = "cnbi/json/source/jsnk/pie.json";
       //  debugger;
       findDesignSource(api).then(res => {
-        debugger;
+        // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -432,7 +432,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger;
+      // debugger;
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);

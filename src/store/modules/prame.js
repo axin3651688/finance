@@ -33,7 +33,7 @@ const prame = {
 
   mutations: {
     GET_SIDE_MID: (state, data) => {
-      debugger
+      // debugger
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
@@ -46,7 +46,7 @@ const prame = {
       localStorage.setItem('treeInfo', JSON.stringify(treeInfo));
     },
     SHOW_DIMS: (state, data) => {
-      debugger
+      // debugger
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.showDims[keys] = data[keys]

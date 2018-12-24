@@ -38,7 +38,12 @@
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
-  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text">
+  <el-table-column
+    v-else-if="col.type === 'decimal'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align||'right'"
+  >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -104,8 +109,7 @@ export default {
       if (!value) {
         return "--";
       }
-      value = (value - 0 / 10000).toLocaleString();
-      //debugger;
+      value = ((value - 0) / 10000).toLocaleString();
       return value;
     }
   },
