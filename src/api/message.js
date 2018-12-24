@@ -240,8 +240,7 @@ export function DISSOLU_GROUP(data) {
 }
 // 移除团队成员
 export function DEL_GROUP_USER(data) {
-  console.log('api DEL_GROUP_USER');
-  // debugger
+  debugger;
   return request({
     url: '/api/api/del_group_user',
     method: 'post',

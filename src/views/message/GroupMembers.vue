@@ -40,24 +40,6 @@
       </el-scrollbar>
     </div>
 
-    <!--移除群成员弹窗-->
-    <el-dialog
-      title="移除成员"
-      :visible.sync="showRemoveMember"
-      width="30%"
-      :show-close="false"
-      :modal-append-to-body="false"
-      center>
-      <div class="dialog-content" style="font-size: 16px;line-height: 30px;">
-        <p>是否移除成员</p>
-        <p>“{{removeMember.trueName}}”?</p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-                <el-button size="small" @click="clickDelGroupUser(removeMember)">确 认</el-button>
-                <el-button type="primary" size="small" @click="showRemoveMember = false">取 消</el-button>
-              </span>
-    </el-dialog>
-
     <!--添加群成员弹窗-->
     <el-dialog class="add-member-dialog"
                :visible.sync="showAddMember"
@@ -101,8 +83,6 @@ export default {
     return {
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
-      showRemoveMember: false, // 是否显示移除群成员弹窗
-      removeMember: '' // 需要移除的群组成员
     }
   },
   components: {
@@ -150,33 +130,50 @@ export default {
       })
     },
 
-    // todo：4移除群成员
+    // todo：4移除群成员(ok)
     handleCommand(user) {
       // debugger;
-      this.removeMember = user;
-      this.showRemoveMember = true;
-      console.log('需要移除的对象：', user)
+      let msg = `确定移除群成员 "${user.trueName}" ?`;
+      this.$confirm(msg, '提示', {
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.delGroupUser(user)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消移除该群成员'
+        })
+      })
     },
 
     // 移除群成员
-    clickDelGroupUser(removeMember) {
+    delGroupUser(removeMember) {
       // debugger;
-      this.showRemoveMember = false;
       let params = {
         groupId: this.groupId,
         remark: removeMember.id.toString(), //  '1,2,3' 传递多个id组成的字符串为批量操作
         senderId: this.senderId
       };
       DEL_GROUP_USER(params).then(res => {
-        console.log('移除群成员', res);
+        console.log('移除群成员res:', res);
         if (res.data.code === 200) {
-
+          // debugger;
+          this.$message({
+            type: 'success',
+            message: res.data
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
         }
       }).catch(err => {
-        console.log('移除群成员', err)
+        console.log('移除群成员err:', err)
       })
     }
-    // todo: 5添加群成员
   },
   mounted() {
   }

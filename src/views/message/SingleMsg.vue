@@ -111,7 +111,6 @@ export default {
           device: '868938033321615'
         };
         console.log('要发送的内容是：', sendData);
-        debugger;
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
         sendMsg(sendData);

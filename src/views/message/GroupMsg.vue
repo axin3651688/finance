@@ -221,14 +221,13 @@ export default {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
           content: this.sendText,
-          // receiverId: 538, // 538 程雪怡
           senderId: this.loginUserId, // 539 姜海斌
           type: 1
         },
         device: '868938033321615'
       };
       this.sendText = '';
-      debugger;
+      // debugger;
       sendMsg(sendData)
     },
 
