@@ -171,7 +171,7 @@ export function NEW_FRIEND_LIST(data) {
 // 处理好友申请时调用，保存好友添加好友
 export function SAVE_FRIEND(data) {
   console.log('api SAVE_FRIEND');
-  debugger
+  debugger;
   return request({
     url: '/api/api/save_friend',
     method: 'post',

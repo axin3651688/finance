@@ -7,12 +7,7 @@
           <div class="icon icon__close" @click="handleCloseGroupMembers"></div>
         </div>
 
-        <!--<div class="addbar">-->
-        <!--<input type="text" placeholder="添加成员">-->
-        <!--<div class="icon icon__add">+</div>-->
-        <!--</div>-->
-
-        <div class="addbar" @click="showAddMember = true">
+        <div class="addbar" @click="showAddMember = true" v-if="senderId === groupOwnerId">
           <span class="text">添加成员</span>
           <div class="icon icon__add">+</div>
         </div>
@@ -29,12 +24,13 @@
               </div>
               <h4 class="text">{{item.trueName}}</h4>
             </figure>
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown trigger="click" @command="handleCommand" v-if="senderId === groupOwnerId">
                           <span class="el-dropdown-link">
                           </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="item"
-                                  style="color: #189271"
+                <el-dropdown-item
+                  :command="item"
+                  style="color: #189271"
                 >移除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -115,8 +111,15 @@ export default {
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
-    senderId() {return this.user.user.id},
-    groupId() {return this.messageStore.groupInfo.info.groupId},
+    senderId() {
+      return this.user.user.id
+    },
+    groupId() {
+      return this.messageStore.groupInfo.info.groupId
+    },
+    groupOwnerId() {
+      return this.messageStore.groupInfo.info.ownerId
+    }
   },
   methods: {
     // 关闭侧边群组成员栏
@@ -147,7 +150,7 @@ export default {
       })
     },
 
-    // 移除群成员
+    // todo：4移除群成员
     handleCommand(user) {
       // debugger;
       this.removeMember = user;
@@ -173,6 +176,7 @@ export default {
         console.log('移除群成员', err)
       })
     }
+    // todo: 5添加群成员
   },
   mounted() {
   }
@@ -413,7 +417,7 @@ export default {
       display: none;
     }
 
-    .el-dialog__header{
+    .el-dialog__header {
       position: absolute;
       right: 0;
       z-index: 999;

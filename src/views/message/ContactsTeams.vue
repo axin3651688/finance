@@ -22,7 +22,7 @@
                   :key="user.id">
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar"/>
+                    <img :src="user.avatar" :onerror="avatar_male"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -86,6 +86,7 @@ export default {
   name: 'ContactsTeams',
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: this.loginUserId, // 当前选中的用户id
       compList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象

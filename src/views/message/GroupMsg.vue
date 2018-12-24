@@ -8,7 +8,7 @@
         <div class="content">
           <h3 class="title">
             <span>{{groupInfo.text}}</span>
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown trigger="click" @command="handleCommand" v-if="loginUserId === groupOwnerId">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="group-member" @click="handleShowGroupMembers">
+        <div class="group-member" @click="showGroupMembers = true">
           <div class="icon icon__group-person"></div>
           <span>成员</span>
         </div>
@@ -144,19 +144,19 @@
 
     <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
     <!--<el-dialog class="add-member-dialog"-->
-               <!--:visible.sync="showGroupMembers"-->
-               <!--width="300px"-->
-               <!--:show-close="true"-->
-               <!--:modal-append-to-body="false"-->
-               <!--id="group-members"-->
+    <!--:visible.sync="showGroupMembers"-->
+    <!--width="300px"-->
+    <!--:show-close="true"-->
+    <!--:modal-append-to-body="false"-->
+    <!--id="group-members"-->
     <!--&gt;-->
-      <!--sdfasdfsadf-->
+    <!--sdfasdfsadf-->
     <!--</el-dialog>-->
 
     <!--群成员侧边栏组件-->
     <group-members
       v-if="showGroupMembers"
-      @closeGroupMembers="handleCloseGroupMembers"
+      @closeGroupMembers="showGroupMembers = false"
     ></group-members>
   </div>
 </template>
@@ -201,6 +201,9 @@ export default {
     },
     groupId() {
       return this.messageStore.groupInfo.info.groupId
+    },
+    groupOwnerId() {
+      return this.messageStore.groupInfo.info.ownerId
     }
   },
   methods: {
@@ -229,32 +232,58 @@ export default {
       sendMsg(sendData)
     },
 
+
+    // 验证当前登录用户是不是群管理员，如果是群管理员则解散群组
+    isGroupOwner() {
+      return this.loginUserId === this.groupOwnerId
+    },
+
     // 群组设置 与 退出群组 弹窗控制
     handleCommand(command) {
       switch (command) {
-      case 'groupSetting': {
-        this.showGroupSettingDialog = true;
-        break
-      }
-      case 'groupQuit': {
-        this.showGroupQuitDialog = true;
-        break
-      }
+        case 'groupSetting': {
+          this.showGroupSettingDialog = true;
+          break
+        }
+        case 'groupQuit': {
+          if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
+            // debugger;
+            let msg = `您是该群 ${this.messageStore.groupInfo.info.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            this.$confirm(msg, '警告', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.dissoluGroup() // 是群管理员则解散群组
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消退出'
+              });
+            });
+          } else {
+            // debugger;
+            let msg = `是否退出群组：${this.messageStore.groupInfo.info.text}`;
+            this.$confirm(msg, '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.quitGroup() // 不是群管理员则退出群
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消退出'
+              });
+            });
+          }
+          break
+        }
       }
     },
 
     // 选择上传文件，这里是上传群组头像
     selectFile() {
-    },
-
-    // 显示群成员组件
-    handleShowGroupMembers() {
-      this.showGroupMembers = true;
-    },
-
-    // 关闭群成员组件
-    handleCloseGroupMembers() {
-      this.showGroupMembers = false;
     },
 
     // 群id查询群信息
@@ -283,7 +312,7 @@ export default {
       })
     },
 
-    // 设置群资料,修改图片需要先上传头像
+    // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let params = {
         avatar: 'avatar', // 上传头像的地址
@@ -303,33 +332,53 @@ export default {
       })
     },
 
-    // 退出群组
-    clickQuitGroup() {
+    // TODO：2退出群组(ok)
+    quitGroup() {
+      // debugger;
       let params = {
-        userId: 225,
-        groupId: 0
+        userId: this.loginUserId,
+        groupId: this.groupId
       };
       QUIT_GROUP(params).then(res => {
-        console.log('退出群组', res.data.data);
+        console.log('退出群组res:', res);
         if (res.data.code === 200) {
-
+          this.$message({
+            type: 'success',
+            message: res.data.msg,
+            showClose: true
+          })
+        } else {
+          this.$alert(res.data.msg, '退出群组失败', {
+            confirmButtonText: '确定'
+          })
         }
       }).catch(err => {
         console.log('退出群组', err)
       })
     },
 
-    // 解散群聊
-    clickDissoluGroup() {
+    // todo：解散群聊(ok)
+    dissoluGroup() {
+      // debugger;
       let params = {
         senderId: this.loginUserId,
         groupId: this.groupId
       };
       DISSOLU_GROUP(params).then(res => {
         console.log('解散群聊：', res.data.data);
-        debugger;
+        // debugger;
         if (res.data.code === 200) {
-
+          this.$message({
+            type: 'success',
+            message: res.data.msg,
+            showClose: true
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg,
+            showClose: true
+          })
         }
       }).catch(err => {
         console.log('解散群聊异常：', err)
@@ -728,7 +777,7 @@ export default {
     }
   }
 
-  #group-members>.el-dialog {
+  #group-members > .el-dialog {
     margin: 0 !important;
     right: 0 !important;
     left: auto !important;

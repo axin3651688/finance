@@ -9,7 +9,7 @@
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar"/>
+                <img :src="group.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3>{{group.text}}（{{group.count}}人）</h3>
@@ -26,7 +26,7 @@
           <div class="top-wrap">
             <div>
               <div class="img-box">
-                <img :src="rightInfo.avatar" alt="" class="avatar-img">
+                <img :src="rightInfo.avatar" alt="" class="avatar-img" :onerror="avatar_male">
               </div>
             </div>
             <div class="text">
@@ -53,7 +53,7 @@
                       <figure>
                         <div>
                           <div class="img-box">
-                            <img :src="user.avatar">
+                            <img :src="user.avatar" :onerror="avatar_male">
                           </div>
                         </div>
                         <span class="info">{{user.trueName}}</span>
@@ -100,6 +100,7 @@ export default {
   },
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
       GroupListData: [],

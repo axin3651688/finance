@@ -10,7 +10,7 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar"/>
+                <img :src="friend.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -81,6 +81,7 @@ export default {
 
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       activeFriend: null, // 当前选中的好友
@@ -90,6 +91,7 @@ export default {
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
+
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
