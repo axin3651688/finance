@@ -56,7 +56,7 @@
             </li>
           </ul>
         </div>
-        <el-button type="primary" size="medium" class="my-btn">添 加</el-button>
+        <el-button type="primary" size="medium" class="my-btn" @click="commitAddMembers">添 加</el-button>
       </div>
     </template>
   </div>
@@ -192,6 +192,11 @@ export default {
     }
   },
   methods: {
+    // 提交添加的群成员
+    commitAddMembers() {
+
+    },
+
     // 获取公司列表
     getCompanyList() {
       ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
@@ -203,7 +208,7 @@ export default {
       })
     },
 
-    getAddFromGroupsInstance(groupList) {
+    getAddFromGroupsInstance(groupList) { // 获取当前窗口实例
       let newGroupList = [];
       groupList.forEach(group => {
         let newGroup = new Group(group);

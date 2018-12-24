@@ -1,9 +1,12 @@
 <template>
   <div class="ContactsTeams">
     <div class="panel-left">
-      <el-scrollbar v-if="compList">
+      <el-scrollbar v-if="companyList">
         <el-collapse accordion>
-          <el-collapse-item v-for="comp in compList" :key="comp.id">
+          <el-collapse-item
+            v-for="comp in companyList"
+            :key="comp.id"
+          >
             <template slot="title">
               <div class="item-wrap">
                 <h3 class="item-title">
@@ -19,7 +22,8 @@
               <li :class="{active: activeUser === user.id}"
                   v-for="user in comp.children"
                   @click="getUserInfo(user.id)"
-                  :key="user.id">
+                  :key="user.id"
+              >
                 <figure>
                   <div class="img-box">
                     <img :src="user.avatar" :onerror="avatar_male"/>
@@ -41,7 +45,7 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" alt="" class="avatar-img">
+              <img :src="rightUserInfo.user.avatar" :onerror="avatar_male">
             </div>
           </div>
           <div class="text">
@@ -60,12 +64,12 @@
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
             <li>
-              <div class="icon icon-gender"></div>
+              <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
             <li>
-              <div class="icon icon-slogen"></div>
-              <p class="info">slogen</p>
+              <div class="icon icon-text"></div>
+              <p class="info">{{rightUserInfo.user.sign}}</p>
             </li>
           </ul>
         </div>
@@ -76,7 +80,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   ALL_COMPANY_CONTACT_LIST,
   CONTACT_INFO
@@ -88,24 +92,28 @@ export default {
     return {
       avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: this.loginUserId, // 当前选中的用户id
-      compList: null, // [] 接收一个数组
+      companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象
       requestedUser: {} // 已经请求过详细信息用户的用户信息
     }
   },
   computed: {
-    ...mapGetters(['user']), // vuex中保存的登陆用户数据
+    ...mapGetters(['user', 'messageStore']), // vuex中保存的登陆用户数据
     loginUserId() { // 当前登录用户的Id
       return this.user.user.id
     }
   },
   methods: {
-    // 获取公司列表
+    ...mapActions(['ActionSetMessageStore']),
+
+    // 获取公司列表, 并把公司列表存vuex
     getCompanyList() {
+      debugger;
       ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
-          this.compList = res.data.data;
+          this.companyList = res.data.data;
+          this.ActionSetMessageStore({companyList: this.companyList})
         }
       })
     },
@@ -136,22 +144,15 @@ export default {
           console.log('查询个人资料', err)
         })
       }
-    },
-
-    // 获取公司列表
-    getCompanyList() {
-      ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
-        console.log('我公司列表：', res.data);
-        if (res.data.code === 200) {
-          this.compList = res.data.data;
-        }
-      })
     }
+
   },
   mounted() {
     console.log('当前登录用户:', this.user);
-    console.log('当前登录用户Id:', this.loginUserId);
-    this.getCompanyList();
+    this.messageStore.companyList ?
+      this.companyList = this.messageStore.companyList :
+      this.getCompanyList();
+
     this.getUserInfo(this.loginUserId);
   }
 }
@@ -167,8 +168,9 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
     height: 100%;
+    min-width: 300px;
+    max-width: 400px;
     border-right: 1px solid $colorBorder2;
 
     /deep/ .el-collapse {
@@ -280,7 +282,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     padding: 60px 30px 0 30px;
 
     .panel-right-top {
@@ -337,8 +339,16 @@ export default {
         font-weight: 400;
         line-height: 36px;
 
+        .info {
+          min-width: 300px;
+          max-width: 400px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
         .icon {
           position: absolute;
+          overflow: hidden;
           top: 0;
           left: 0;
           width: 36px;
@@ -346,6 +356,14 @@ export default {
           border-radius: 12px;
           background: $colorTheme;
           margin-right: 20px;
+          background-repeat: no-repeat;
+          background-size: 36px 36px;
+        }
+        .icon-gender__male {
+          background-image: url($iconGenderMale);
+        }
+        .icon-text {
+          background-image: url($iconTest);
         }
       }
     }

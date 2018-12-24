@@ -161,7 +161,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -235,7 +236,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     padding: 60px 30px 0 30px;
 
     .panel-right-top {

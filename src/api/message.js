@@ -72,10 +72,7 @@ export function requestMyfriends(data) {
 
 // 查看个人资料
 export function CONTACT_INFO(userId, targetId) {
-  // userId: 当前登录的用户ID
-  // targetId: 需要查看的用户ID
   // debugger
-  console.log('api CONTACT_INFO');
   return request({
     url: '/api/api/contact_info',
     method: 'get',

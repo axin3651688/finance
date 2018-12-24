@@ -2,8 +2,8 @@
   <div class="GroupMsg vue-module">
     <div class="top">
       <div class="left">
-        <div class="img-box">
-          <img src="" alt="">
+        <div class="img-box img-box__group" @click="showGroupMembers = true">
+          <img :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
         </div>
         <div class="content">
           <h3 class="title">
@@ -182,6 +182,7 @@ export default {
   },
   data() {
     return {
+      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
@@ -287,6 +288,7 @@ export default {
 
     // 群id查询群信息
     getInfo() {
+      debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
@@ -443,6 +445,9 @@ export default {
             width: 100%;
             height: 100%;
           }
+        }
+        .img-box__group {
+          cursor: pointer;
         }
 
         .content {

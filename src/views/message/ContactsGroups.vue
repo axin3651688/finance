@@ -4,7 +4,7 @@
       <el-scrollbar>
         <ul class="sub-item">
           <li :class="{active: activeGroupID === group.groupId}"
-              v-for="group in GroupListData"
+              v-for="group in groupList"
               :key="group.groupId"
               @click="getInfo(group.groupId)">
             <figure>
@@ -103,7 +103,7 @@ export default {
       avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
-      GroupListData: [],
+      groupList: null, // [{},{}] 我的群组列表
       rightUsers: [],
       rightInfo: null, // {},
       rightNotice: {}
@@ -112,13 +112,13 @@ export default {
   methods: {
     ...mapActions(['ActionSetMessageStore']),
     getData() {
-      // let userId = this.user.user.id;
+      // debugger;
       MY_GROUP_LIST(this.user.user.id).then(res => {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
-          this.GroupListData = res.data.data;
+          this.groupList = res.data.data;
           // 默认请求第一个群组的信息
-          this.getInfo(this.GroupListData[0].groupId)
+          this.getInfo(this.groupList[0].groupId)
         }
       })
     },
@@ -197,7 +197,7 @@ export default {
     }
   },
   mounted() {
-    this.getData();
+    this.getData()
   }
 }
 
@@ -212,7 +212,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -286,7 +287,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     display: flex;
     flex-direction: column;
 

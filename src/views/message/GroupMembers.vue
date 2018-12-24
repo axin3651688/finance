@@ -15,7 +15,7 @@
       </div>
       <el-scrollbar>
         <ul class="member-list">
-          <li class="list-item" v-for="item in messageStore.groupInfo.users" :key="item.id">
+          <li class="list-item" v-for="item in groupMembers" :key="item.id">
             <figure>
               <div>
                 <div class="img-box">
@@ -81,6 +81,7 @@ export default {
   name: 'GroupMembers',
   data() {
     return {
+      groupMembers: null, // [{},{}]群成员列表
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
     }
@@ -120,6 +121,7 @@ export default {
 
     // 群id查询群信息
     getMembers() {
+      debugger;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群信息', res.data.data);
         if (res.data.code === 200) {
@@ -160,6 +162,8 @@ export default {
         console.log('移除群成员res:', res);
         if (res.data.code === 200) {
           // debugger;
+          // 更新本地显示
+          this.update
           this.$message({
             type: 'success',
             message: res.data
@@ -176,6 +180,10 @@ export default {
     }
   },
   mounted() {
+    // 如果vuex中没有，则请求群信息
+    this.messageStore.groupInfo ?
+      this.groupMembers = this.messageStore.groupInfo.users :
+      this.groupMembers = this.getMembers()
   }
 }
 </script>
