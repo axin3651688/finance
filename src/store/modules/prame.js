@@ -22,6 +22,13 @@ const prame = {
       industryId: 1,
       text: "天津食品"
     },
+    // 默认是公司,分开的年,月显示,day不显示,如果需要展现day,
+    showDims: {
+      company: true,
+      year: true,
+      month: true,
+      day: false
+    }
   },
 
   mutations: {
@@ -37,7 +44,16 @@ const prame = {
     GET_TRREEINFO: (state, treeInfo) => {
       state.treeInfo = treeInfo
       localStorage.setItem('treeInfo', JSON.stringify(treeInfo));
-    }
+    },
+    SHOW_DIMS: (state, data) => {
+      debugger
+      Object.keys(data).forEach(keys => {
+        if (data[keys] !== null || undefined) {
+          state.showDims[keys] = data[keys]
+          localStorage.setItem([keys] + '_top', data[keys]);
+        }
+      });
+    },
   },
 
   actions: {
@@ -50,6 +66,11 @@ const prame = {
       commit
     }, data) => {
       commit('GET_TRREEINFO', data)
+    },
+    ShowDims: ({
+      commit
+    }, data) => {
+      commit('SHOW_DIMS', data)
     }
   }
 }
