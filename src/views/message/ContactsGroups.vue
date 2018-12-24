@@ -68,11 +68,12 @@
                   <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
                 </div>
               </section>
-              <section>
+              <section v-if="qrUrl">
                 <h4 class="title">群二维码</h4>
                 <div class="content">
+                  {{this.qrUrl}}
                   <div class="qr-code">
-                    <img src="" alt="">
+                    <qriously :value="qrUrl" />
                   </div>
                 </div>
               </section>
@@ -96,10 +97,14 @@ import {
 export default {
   name: 'ContactsGroups',
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
+    }
   },
   data() {
     return {
+      qrUrl: null, // 群二维码地址
       avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
@@ -140,6 +145,7 @@ export default {
         this.rightInfo = groupInfo.info;
         this.rightNotice = groupInfo.rightNotice;
       } else {
+        let targetId =null;
         GROUP_INFO(groupId).then(res => {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
@@ -149,6 +155,7 @@ export default {
             });
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
+            targetId = groupInfo['info'].groupId;
             this.requestedGroups[groupId] = groupInfo;
           }
         }).catch(err => {
@@ -168,22 +175,29 @@ export default {
           console.log('请求message：', err)
         });
 
+        debugger;
         let params = {
-          platform: 'windows',
+          platform: 'pc',
           type: 'group',
-          targetId: 4
+          targetId: targetId
         };
         // 获取二维码地址
+        debugger;
         SCAN_URL(params).then(res => {
           console.log('获取二维码的生成地址:', res);
           if (res.data.code === 200) {
             // TODO 把地址生成二维码?
-            let url = res.data.data.url;
+            this.qrUrl = this.qrUrlFormat(res.data.data.url)
           }
         }).catch(err => {
           console.log('请求message：', err)
         })
       }
+    },
+
+    // 替换url后的 userId
+    qrUrlFormat(qrUrl) {
+      return qrUrl.replace(/{userId}/, this.loginUserId)
     },
 
     // 开始群聊天
@@ -415,8 +429,9 @@ export default {
         .qr-code {
           width: 100px;
           height: 100px;
-          background: #cccccc;
+          /*background: #cccccc;*/
           overflow: hidden;
+          margin-left: -5px;
 
           img {
             width: 100%;

@@ -74,7 +74,13 @@
           </ul>
         </div>
       </template>
-      <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        class="my-btn"
+        @click="chatWithSingle(activeUser)"
+        v-if="activeUser !== loginUserId"
+      >发送信息</el-button>
     </div>
   </div>
 </template>
@@ -106,9 +112,18 @@ export default {
   methods: {
     ...mapActions(['ActionSetMessageStore']),
 
+    // 和某某单聊, 要切换到单聊窗口
+    chatWithSingle(receiverId) {
+      this.ActionSetMessageStore({
+        miniType: 1100, // 1100 单聊
+        receiverData: this.rightUserInfo
+      });
+      this.$emit('chatWithSingle', receiverId);
+    },
+
     // 获取公司列表, 并把公司列表存vuex
     getCompanyList() {
-      debugger;
+      // debugger;
       ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
@@ -153,7 +168,8 @@ export default {
       this.companyList = this.messageStore.companyList :
       this.getCompanyList();
 
-    this.getUserInfo(this.loginUserId);
+    console.log('companyList:', this.companyList);
+    this.getUserInfo(this.companyList[0].children[0].id);
   }
 }
 

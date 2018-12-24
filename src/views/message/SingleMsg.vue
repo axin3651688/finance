@@ -3,7 +3,7 @@
     <div class="top">
       <div class="title">
         <div class="img-box">
-          <img :src="messageStore.receiverData.user.avatar" alt="">
+          <img :src="messageStore.receiverData.user.avatar" :onerror="defaultImg">
         </div>
         <div class="titleleft">
           <h3>
@@ -71,6 +71,7 @@ export default {
   components: {MessageItem},
   data() {
     return {
+      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
       receiverName: '', // 聊天对象名称
       receiverAvatar: '', // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -153,29 +154,26 @@ export default {
       this.$refs.textarea.focus();
     },
 
-    // 获取单聊信息返回res后的处理
-    findSingleMsgThen(res) {
-      console.log('获取单聊信息then：', res);
-      res = res.data;
-      if (res.code === 200 && res.data) {
-        this.singleMsgList = res.data.data;
-        this.receiverName = singleMsgList[0].name;
-        this.receiverAvatar = singleMsgList[0].avatar
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg,
-          showClose: true
-        })
-      }
-    },
   },
   mounted() {
     // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id).then(
-      this.findSingleMsgThen
-    ).catch(err => {
+    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id)
+      .then(res => {
+        console.log('获取单聊信息then：', res);
+        res = res.data;
+        if (res.code === 200 && res.data) {
+          this.singleMsgList = res.data.data;
+          this.receiverName = singleMsgList[0].name;
+          this.receiverAvatar = singleMsgList[0].avatar
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg,
+            showClose: true
+          })
+        }
+      }).catch(err => {
       console.log('获取单聊信息catch：', err)
     });
 

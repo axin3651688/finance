@@ -44,11 +44,11 @@
               <p class="info">{{rightUserInfoData.user.email}}</p>
             </li>
             <li>
-              <div class="icon icon-gender"></div>
+              <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfoData.sex.text}}</p>
             </li>
             <li>
-              <div class="icon icon-slogen"></div>
+              <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfoData.user.sign}}</p>
             </li>
           </ul>
@@ -139,7 +139,6 @@ export default {
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
       this.ActionSetMessageStore({
-        // receiverId: receiverId, // 1100 单聊
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfoData
       });
@@ -297,6 +296,14 @@ export default {
           border-radius: 12px;
           background: $colorTheme;
           margin-right: 20px;
+          background-repeat: no-repeat;
+          background-size: 36px 36px;
+        }
+        .icon-gender__male {
+          background-image: url($iconGenderMale);
+        }
+        .icon-text {
+          background-image: url($iconTest);
         }
       }
     }

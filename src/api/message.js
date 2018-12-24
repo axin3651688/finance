@@ -246,7 +246,6 @@ export function DEL_GROUP_USER(data) {
 }
 // 查询群聊公告
 export function FIND_GROUP_NOTICE(groupId, userId) {
-  console.log('api FIND_GROUP_NOTICE');
   // debugger
   return request({
     url: '/api/api/find_group_notice',
@@ -259,19 +258,15 @@ export function FIND_GROUP_NOTICE(groupId, userId) {
 }
 // 获取二维码的生成地址
 export function SCAN_URL(data) {
-  console.log('api SCAN_URL');
   // debugger
   return request({
     url: '/api/auth/cnbi_scan',
     method: 'get',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 我的公司列表,不查人员
 export function MY_COMPANY_LIST(userId) {
-  console.log('api MY_COMPANY_LIST');
   // debugger
   return request({
     url: '/api/api/my_company_list',
