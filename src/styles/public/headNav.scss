@@ -67,7 +67,10 @@
             //  放大镜
             .iconclass {
                 margin-right: 10px;
-                padding-left: 20px;
+                padding-left: 15px;
+
+                // border-bottom: 2px solid rgb(214, 38, 38);
+
             }
 
             // 下滑线
@@ -76,12 +79,17 @@
                 padding-bottom: 5px;
                 border-bottom: 2px solid #F0F2F5;
                 margin-right: 10px;
+                margin-left: 0px;
                 color: $font-clolor
             }
 
-            .choosecompany {
-                padding-right: 10px;
-                border-right: 1px solid #999999
+            .el-button--text {
+                color: #000
+            }
+
+            .shuxian {
+                height: 20px;
+                border-left: 1px solid #999999
             }
 
             // 消息提醒

@@ -31,6 +31,8 @@ const getters = {
   openPid: state => state.prame.command.openPid,
   // 侧边栏展开子级id
   activeId: state => state.prame.command.activeId,
+  // 控制顶部导航栏的显示及隐藏
+  showDims: state => state.prame.showDims,
   action: state => state.prame.command.action,
   action2: state => state.prame.command.action2,
   action3: state => state.prame.command.action3,
