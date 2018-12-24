@@ -336,7 +336,7 @@ export default {
       //  debugger
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
-        let reverse = config.reverse || false;
+        let reverse = vars.reverse || false;
         let year = datas.year, month = datas.month; 
         year = { id: year, text: "年" }; month = { id: month, text: "月" };
         let periodArr = generatePeriod(
@@ -347,14 +347,14 @@ export default {
           reverse
         );
         let index = 0;
-        if(!reverse){
-          index = periodArr.length - 1;
+        if(reverse){
+          index = periodArr.length - 2;
         }
+        datas.comparePeriod = periodArr[index].id;
         if(vars.varName){
          item.config[vars.varName] = periodArr;
         }
        //datas.period = periodArr.map(p=>p.id).join(",");
-        datas.comparePeriod = periodArr[index].id;
       }
       return datas;
     },
