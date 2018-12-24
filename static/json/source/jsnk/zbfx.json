@@ -144,7 +144,9 @@
     },
     "items": [{
         "id":"firstTab",
-        "layout":"column",
+        "layout":{
+            "xtype": "column"
+        },
         "text": "指标分析",
         "children":[{
             "xtype": "chart",
@@ -188,7 +190,7 @@
             "listeners":[{
                 "type":"click",
                 "way":"addTab",
-                "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+                "sourceApi":"/cnbi/json/source/chart/pie.json",
                 "handler":($vue,params)=>{
                       console.info(params);
                        debugger; 
