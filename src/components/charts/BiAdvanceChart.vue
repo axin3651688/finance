@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      chartOptions: this.getDataSource(this.item),
+      chartOptions: this.getDataSource(this.item)
     };
   },
   created() {
@@ -35,7 +35,7 @@ export default {
          var second = new Function('return '+ str +';')();
      */
     evalVaiables(chartOptions){
-      let judgeLen = 5; 
+      let judgeLen = 5,prefix =  "this."; 
         for (var a in chartOptions) {
           let val = chartOptions[a]; 
           let type = typeof (val);
@@ -44,7 +44,7 @@ export default {
           }else if(type == "string"){
              if(val.length > judgeLen){
                let start =  val.substring(0,judgeLen);
-               if(start === "this."){
+               if(start === prefix){
                     chartOptions[a] = eval(val);
                }
              }
