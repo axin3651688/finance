@@ -118,7 +118,6 @@ import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent } from "../utils/math";
 
-
 export default {
   name: "BiModule",
   components: {
@@ -136,6 +135,7 @@ export default {
       config: {},
       activeTabName: "0",
       api: null,
+
       layout: {
         xtype: "form"
       },
@@ -183,7 +183,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["GetSideMid"]),
+    ...mapActions(["GetSideMid", "ShowDims"]),
     /**
      * 动态设置参数至本组件
      */
@@ -199,6 +199,18 @@ export default {
       if (type == 1) {
         //设置页面标题
         document.title = bean.text;
+      }
+      //showDims控制顶部导航栏的显示及隐藏
+      debugger;
+      // console.log(bean.showDims);
+      if (bean.hasOwnProperty("showDims")) {
+        bean.showDims.forEach(ele => {
+          if (ele == "day") {
+            this.ShowDims({ year: false, month: false, day: true });
+          }
+        });
+      } else {
+        this.ShowDims({ year: true, month: true, day: false });
       }
       return this;
     },
@@ -222,6 +234,7 @@ export default {
         this.loadModuleAfter(cache);
         return;
       }
+      debugger;
       this.loadRemoteSource(this.api);
     },
 
@@ -245,10 +258,10 @@ export default {
         });
         return;
       }
-    //  api = "cnbi/json/source/jsnk/pie.json";
-    //  debugger;
+      //  api = "cnbi/json/source/jsnk/pie.json";
+      //  debugger;
       findDesignSource(api).then(res => {
-       // debugger
+        debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -273,10 +286,10 @@ export default {
     loadModuleAfter(source) {
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
-      if (this.config &&  this.config.columns.length > 0 ) {
+      if (this.config && this.config.columns.length > 0) {
         this.generateApiModelDatas(this, null, "company");
-      }else{
-        //解决当父亲没有配制config的情况 
+      } else {
+        //解决当父亲没有配制config的情况
         this.flag = true;
       }
       // else {
@@ -304,7 +317,7 @@ export default {
       let datas = {};
       needDims.forEach(element => {
         let val = params[element];
-        // 
+        //
         if (!val && element === "company") {
           val = params[element + "Id"];
         }
@@ -320,14 +333,20 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-    //  debugger
+      //  debugger
       let periodCount = config.periodCount;
       let compareType = config.compareType;
-      let year = datas.year,month = datas.month;
-      if(year&&month&&periodCount&&compareType){
-        year = {id:year,text:"年"};
-        month = {id:month,text:"月"};
-        let comparePeriod = generatePeriod(periodCount,compareType,year,month);
+      let year = datas.year,
+        month = datas.month;
+      if (year && month && periodCount && compareType) {
+        year = { id: year, text: "年" };
+        month = { id: month, text: "月" };
+        let comparePeriod = generatePeriod(
+          periodCount,
+          compareType,
+          year,
+          month
+        );
         datas.comparePeriod = comparePeriod;
       }
       return datas;
@@ -365,9 +384,9 @@ export default {
         let config = item.config;
         Cnbi.paramsHandler(config, params);
         // 根据是否配置rows来改变rows的内容
-        if(config.group&&config.rows&&params.comparePeriod){
+        if (config.group && config.rows && params.comparePeriod) {
           rowsOfChildrenContent(config, params);
-        }   
+        }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -413,7 +432,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger
+      debugger;
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
@@ -430,7 +449,7 @@ export default {
       //debugger
       findThirdPartData(params)
         .then(res => {
-        //  debugger;
+          //  debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
