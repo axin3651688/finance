@@ -5,11 +5,11 @@
     :stripe="true"
     style="width: 100%;"
     height="item.height || 480"
-    :span-method="rowSpanAndColSpanHandler"
     :cell-style="cellStyle"
     :header-cell-style="{background:'#F0F8FF'}"
     @cell-click="onCellClick"
   >
+    <!-- :span-method="rowSpanAndColSpanHandler" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
@@ -19,7 +19,7 @@
 <script>
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
-import EventMixins from './mixins/EventMixins'
+import EventMixins from "./mixins/EventMixins";
 export default {
   name: "BiTable",
   mixins: [EventMixins],
@@ -34,9 +34,9 @@ export default {
       text: "",
       rows: [],
       columns: [],
-      groupConfig:{
-        idProperty:"group",
-        textProperty:"groupName"
+      groupConfig: {
+        idProperty: "group",
+        textProperty: "groupName"
       },
       //   datas:{},
       dataUrl: "",
@@ -58,7 +58,7 @@ export default {
     //this.getTableDataParams();
   },
   mounted() {
-   // debugger;
+    // debugger;
     //document.getElementsByClassName("el-tabs__item")[0].click();
   },
 
@@ -72,63 +72,70 @@ export default {
     },
 
     upData(item) {
-            this.$set(this.item,"datas",item.datas);
-            this.$set(this,"item",item);
-            let refs = this.$refs;
-            if(refs){
-                if(refs.child){
-                   refs.child.forEach(children=>{
-                   if(children.upData){
-                      children.upData(item);
-                   }
-                   
-              })
+      this.$set(this.item, "datas", item.datas);
+      this.$set(this, "item", item);
+      let refs = this.$refs;
+      if (refs) {
+        if (refs.child) {
+          refs.child.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
             }
-             if(refs.tchild){
-                 refs.tchild.forEach(children=>{
-                  if(children.upData){
-                      children.upData(item);
-                   }
-              })
+          });
+        }
+        if (refs.tchild) {
+          refs.tchild.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
             }
-            }
-      },
+          });
+        }
+      }
+    },
 
     cellStyle(row) {
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
         let drill = "";
-        if(record._drill || record.drill){
+        if (record._drill || record.drill) {
           drill = "text-decoration: none;color: #428bca;cursor: pointer;";
         }
-        let level = record._level|| record.level||1;
-        let textIndent = (level> 1 ?"text-indent: "+(level-1)*20+"px":"");
-        return css + "font-weight:bold;"+textIndent+drill;
+        let level = record._level || record.level || 1;
+        let textIndent =
+          level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
+        return css + "font-weight:bold;" + textIndent + drill;
       } else {
         return css;
       }
     },
 
-    onCellClick(row, column, cell, event){
-       let listener = row._drill || row.drill;
-        if(listener){
-            let cv = column.property+"",len = cv.length;
-            let id = row.id,text = row[cv];
-            if(cv.substring(len-1,len) === "_"){
-                id = row.id_;//两列的情况
-            }
-            this.commonHandler(listener,{row:row,column: column, cell:cell, event:event},{id:id,text:text});
-        }else{
-            console.info("没有设置事件");
+    onCellClick(row, column, cell, event) {
+      let listener = row._drill || row.drill;
+      if (listener) {
+        let cv = column.property + "",
+          len = cv.length;
+        let id = row.id,
+          text = row[cv];
+        if (cv.substring(len - 1, len) === "_") {
+          id = row.id_; //两列的情况
         }
+        this.commonHandler(
+          listener,
+          { row: row, column: column, cell: cell, event: event },
+          { id: id, text: text }
+        );
+      } else {
+        console.info("没有设置事件");
+      }
     },
-    getCellRowSpan(datas,row,config){
-       return datas.filter(record=>record[config.id] === row[config.id]).length;
+    getCellRowSpan(datas, row, config) {
+      return datas.filter(record => record[config.id] === row[config.id])
+        .length;
     },
     /**
-     * 计算每一个单元格的rowspan和colspan 
-     * 
+     * 计算每一个单元格的rowspan和colspan
+     *
      * datas = [
      *    {id:23,text:"行项目一",A:25,B:545,group:1,groupName:"xx公司",rowspan:3},
      *    {id:24,text:"行项目二",A:25,B:545,group:1,groupName:"xx公司"},
@@ -138,23 +145,24 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
-   rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex){
-      let config =  this.groupConfig;
-      let cells = {rowspan:0,colspan:0};
+    rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
+      let config = this.groupConfig;
+      let cells = { rowspan: 0, colspan: 0 };
       //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
-      if(column.rowspan){
-         let datas = [];//getTableDatas();
-         let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
-         cells.rowspan = rowspan;
+      if (column.rowspan) {
+        let datas = []; //getTableDatas();
+        let rowspan =
+          row.rowspan || this.getCellRowSpan(datas, row, config) || 0;
+        cells.rowspan = rowspan;
       }
       //哪一行合并多少列，通过数据传过来
-      if(row.colspan){
-          cells.colspan = row.colspan;
+      if (row.colspan) {
+        cells.colspan = row.colspan;
       }
-      // Todo colspan from where...? 
+      // Todo colspan from where...?
       return cells;
-   },
-  async getList() {
+    },
+    async getList() {
       let { data } = await this.axios.get("/api/cube/find_dim2/company/0/1/");
       console.log(data);
       this.list = data;
