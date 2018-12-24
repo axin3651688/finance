@@ -37,7 +37,8 @@
             }],
             "columns":[{
                 "id": "text",
-                "text": "名称"
+                "text": "名称",
+                "rowspan":1
             },{
                 "id": "B",
                 "text": "数值"
@@ -164,7 +165,7 @@
             "chartOptions":{
                 "dd":"this.item.text",
                 "title": {
-                  "text": "this.item.text",
+                  "text": "xxx",
                   "x": "center"
                 },
                 "tooltip": {

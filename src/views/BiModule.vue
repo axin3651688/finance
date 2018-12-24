@@ -37,7 +37,7 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
@@ -334,20 +334,27 @@ export default {
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
       //  debugger
-      let periodCount = config.periodCount;
-      let compareType = config.compareType;
-      let year = datas.year,
-        month = datas.month;
-      if (year && month && periodCount && compareType) {
-        year = { id: year, text: "年" };
-        month = { id: month, text: "月" };
-        let comparePeriod = generatePeriod(
-          periodCount,
-          compareType,
+      let vars = config.generateVar;
+      if (vars && vars.periodCount && vars.compareType) {
+        let reverse = config.reverse || false;
+        let year = datas.year, month = datas.month; 
+        year = { id: year, text: "年" }; month = { id: month, text: "月" };
+        let periodArr = generatePeriod(
+          vars.periodCount,
+          vars.compareType,
           year,
-          month
+          month,
+          reverse
         );
-        datas.comparePeriod = comparePeriod;
+        let index = 0;
+        if(!reverse){
+          index = periodArr.length - 1;
+        }
+        if(vars.varName){
+         item.config[vars.varName] = periodArr;
+        }
+       //datas.period = periodArr.map(p=>p.id).join(",");
+        datas.comparePeriod = periodArr[index].id;
       }
       return datas;
     },
@@ -384,9 +391,9 @@ export default {
         let config = item.config;
         Cnbi.paramsHandler(config, params);
         // 根据是否配置rows来改变rows的内容
-        if (config.group && config.rows && params.comparePeriod) {
-          rowsOfChildrenContent(config, params);
-        }
+        // if (config.group && config.rows && params.comparePeriod) {
+        //   rowsOfChildrenContent(config, params);
+        // }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -461,6 +468,23 @@ export default {
     },
     getActiveTabName(item) {
       return item.id;
+    },
+    removeTab(targetName){
+      debugger;
+      let tabs = this.items;
+      let activeTabName = this.activeTabName;
+      if (this.activeTabName === targetName) {
+         tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeTabName = nextTab.name;
+              }
+            }
+          });
+      }
+       this.activeTabName = activeName;
+       this.items = tabs.filter(tab => tab.name !== targetName);
     }
   }
 };

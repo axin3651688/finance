@@ -45,7 +45,7 @@ export default {
     // debugger;
   },
   mounted() {
-    debugger;
+   // debugger;
     this.loadItems(this.item);
   },
   watch: {

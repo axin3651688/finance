@@ -5,7 +5,7 @@
     :stripe="true"
     style="width: 100%;"
     height="item.height || 480"
-    :span-method="rowSpanAndColSpanHandler"
+ 
     :cell-style="cellStyle"
     :header-cell-style="{background:'#F0F8FF'}"
     @cell-click="onCellClick"
@@ -17,6 +17,7 @@
   </el-table>
 </template>
 <script>
+//   :span-method="rowSpanAndColSpanHandler"
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
 import EventMixins from './mixins/EventMixins'
