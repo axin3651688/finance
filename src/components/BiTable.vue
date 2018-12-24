@@ -6,7 +6,7 @@
     style="width: 100%;"
     height="item.height || 480"
     :cell-style="cellStyle"
-    :header-cell-style="{background:'#F0F8FF'}"
+    :header-cell-style="rowClass"
     @cell-click="onCellClick"
   >
     <!-- :span-method="rowSpanAndColSpanHandler" -->
@@ -92,7 +92,10 @@ export default {
         }
       }
     },
-
+    rowClass({ row, rowIndex }) {
+      // 头部颜色和居中配置,马军2018.12.24
+      return "background:#F0F8FF;text-align: center";
+    },
     cellStyle(row) {
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
@@ -104,7 +107,7 @@ export default {
         let level = record._level || record.level || 1;
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
-        return css + "font-weight:bold;" + textIndent + drill;
+        return css + "font-weight:bold;text-align: left" + textIndent + drill;
       } else {
         return css;
       }
@@ -260,7 +263,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style >
 .el-table td,
 .el-table th {
   padding: 5px 0;
