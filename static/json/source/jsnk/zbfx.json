@@ -144,8 +144,10 @@
         "xtype": "tab"
     },
     "items": [{
-        "id": "firstTab",
-        "layout": "column",
+        "id":"firstTab",
+        "layout":{
+            "xtype": "column"
+        },
         "text": "指标分析",
         "children": [{
                 "xtype": "chart",

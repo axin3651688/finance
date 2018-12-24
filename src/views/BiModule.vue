@@ -47,7 +47,7 @@
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-        <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
+        <el-row v-if="item.layout && item.layout.xtype === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
             v-for="(item1,index1) in item.children"
