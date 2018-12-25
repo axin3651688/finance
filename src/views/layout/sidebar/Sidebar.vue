@@ -20,7 +20,7 @@
         </div>
         <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
         <!-- 模拟链接 -->
-        <!-- <el-submenu index="123">
+        <el-submenu index="123">
           <span slot="title">各种chart图表</span>
           <el-menu-item v-for="item of chartData" :index="item.id" :key="item.id">
             <template slot="title">
@@ -29,7 +29,7 @@
               </router-link>
             </template>
           </el-menu-item>
-        </el-submenu>-->
+        </el-submenu>
       </el-menu>
     </el-scrollbar>
   </div>

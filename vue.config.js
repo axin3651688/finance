@@ -14,6 +14,7 @@ const list = require("./static/profit/list.json") // 风险分析列表
 // const Report_view = require("./static/profit/Report_view.json")
 const operating = require("./static/profit/operating.json") // 操作按钮
 
+const cross = require("./static/profit/cross.json") // 秋收
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
@@ -29,8 +30,8 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
-         target: 'http://192.168.1.118:8081', //gjx
-       // target: 'http://192.168.1.138:8000', //gjx
+        //  target: 'http://192.168.1.118:8081', //gjx
+        target: 'http://192.168.1.149:8000', 
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -177,6 +178,9 @@ module.exports = {
                 // }),
                 app.get('/api/operating', (req, res) => {
                     res.json(operating)
+                }),
+                app.get('/api/cross', (req, res) => {
+                    res.json(cross)
                 })
         },
         // vue-cli 解决Invalid Host header,
