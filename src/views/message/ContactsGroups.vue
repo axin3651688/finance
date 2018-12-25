@@ -144,8 +144,8 @@ export default {
         this.rightUsers = groupInfo.users;
         this.rightInfo = groupInfo.info;
         this.rightNotice = groupInfo.rightNotice;
+        this.qrUrl = groupInfo.qrUrl;
       } else {
-        let targetId =null;
         GROUP_INFO(groupId).then(res => {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
@@ -153,9 +153,9 @@ export default {
             this.ActionSetMessageStore({
               groupInfo: groupInfo,
             });
+            debugger;
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
-            targetId = groupInfo['info'].groupId;
             this.requestedGroups[groupId] = groupInfo;
           }
         }).catch(err => {
@@ -179,18 +179,17 @@ export default {
         let params = {
           platform: 'pc',
           type: 'group',
-          targetId: targetId
+          targetId: groupId
         };
         // 获取二维码地址
-        debugger;
         SCAN_URL(params).then(res => {
+          debugger;
           console.log('获取二维码的生成地址:', res);
           if (res.data.code === 200) {
-            // TODO 把地址生成二维码?
             this.qrUrl = this.qrUrlFormat(res.data.data.url)
           }
         }).catch(err => {
-          console.log('请求message：', err)
+          console.log('获取二维码的生成地址err：', err)
         })
       }
     },
