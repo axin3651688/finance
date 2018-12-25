@@ -45,12 +45,14 @@
           </div>
         </transition>
       </div>
-      <textarea class="chat-textarea"
-                placeholder="请输入文字，按enter建发送信息"
-                v-model="sendText"
-                ref="textarea"
-                @keyup.enter="handleSendMessage"
-      ></textarea>
+      <div style="position: relative">
+        <textarea class="chat-textarea"
+                  placeholder="请输入文字，按enter建发送信息"
+                  v-model="sendText"
+                  ref="textarea"
+                  @keyup.enter="handleSendMessage"
+        ></textarea>
+      </div>
     </div>
   </div>
 </template>
@@ -66,8 +68,7 @@ import emotionSprites from '@a/green/emotion_sprites.json';
 
 export default {
   name: 'SingleMsg',
-  props: ['chatWithUserId'],
-  // components: {MessageItem},
+  components: {MessageItem},
   data() {
     return {
       defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',

@@ -153,7 +153,6 @@ export default {
             this.ActionSetMessageStore({
               groupInfo: groupInfo,
             });
-            debugger;
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId] = groupInfo;
@@ -175,7 +174,6 @@ export default {
           console.log('请求message：', err)
         });
 
-        debugger;
         let params = {
           platform: 'pc',
           type: 'group',
@@ -183,10 +181,11 @@ export default {
         };
         // 获取二维码地址
         SCAN_URL(params).then(res => {
-          debugger;
           console.log('获取二维码的生成地址:', res);
           if (res.data.code === 200) {
-            this.qrUrl = this.qrUrlFormat(res.data.data.url)
+            let qrUrl = this.qrUrlFormat(res.data.data.url);
+            this.qrUrl = qrUrl;
+            this.requestedGroups[groupId]['qrUrl'] = qrUrl;
           }
         }).catch(err => {
           console.log('获取二维码的生成地址err：', err)

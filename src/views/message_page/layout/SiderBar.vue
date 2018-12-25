@@ -99,7 +99,7 @@ export default {
           align-items: center;
           justify-content: center;
           background: $colorBgSiderBar;
-          transition: all .3s;
+          transition: all .2s;
           img {
             width: 30px;
             height: 30px;

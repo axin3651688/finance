@@ -91,7 +91,7 @@ class LeftBar {
   constructor(resList, ActionSetMessageStore) {
     if (!LeftBar.instance) {
       this.ActionSetMessageStore = ActionSetMessageStore;
-      this.activeItem = new LeftBarItem(contact);
+      // this.activeItem = new LeftBarItem(contact);
       this._init(resList);
       LeftBar.instance = this;
     }
@@ -104,7 +104,6 @@ class LeftBar {
       let leftBarItem = new LeftBarItem(i);
       itemList.push(leftBarItem)
     });
-    itemList.push(new LeftBarItem(contact));
     this.leftBarList = itemList;
   }
 
@@ -255,19 +254,8 @@ export default {
       messagecContainer.style.height = resizeHeight + 'px';
       console.log('message视图高度：', resizeHeight);
       console.log('message视图dom：', messagecContainer)
-    },
-
-    // 开始群聊天
-    handleChatWithGroup(groupId) {
-      console.log('开始群聊天：', groupId);
-      this.groupId = groupId;
-      this.leftBarInstance.activeMiniType = 1101
-    },
-
-    // 开始单聊
-    handleChatWithSingle(receiverId) {
-      console.log('即将和用户', receiverId, '聊天');
     }
+
   },
   mounted() {
     // 页面挂载后 请求消息列表数据
@@ -295,7 +283,7 @@ export default {
       overflow: hidden;
 
       .left {
-        width: 300px;
+        width: $sizeNavBarWidth;
         height: 100%;
         background: rgba(255, 255, 255, 1);
 
@@ -392,7 +380,6 @@ export default {
 
             p {
               margin-top: 8px;
-              min-width: 240px;
               overflow: hidden;
               font-size: 12px;
               font-family: $fontFamilyMain;
