@@ -3,10 +3,11 @@
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    style="width: 100%;"
-    height="item.height || 480"
+    :width="item.width||6000"
+    :height="item.height || 480"
     :cell-style="cellStyle"
     @cell-click="onCellClick"
+    :span-method="rowSpanAndColSpanHandler"
   >
     <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
@@ -30,6 +31,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      spanArr:[],
       id: 0,
       text: "",
       rows: [],
@@ -60,6 +62,8 @@ export default {
   mounted() {
     // debugger;
     //document.getElementsByClassName("el-tabs__item")[0].click();
+    //debugger;
+   // this.getTableDataParams();
   },
 
   methods: {
@@ -101,7 +105,6 @@ export default {
      * 单元格级别样式设置
      */
     cellStyle(row) {
-      debugger;
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -113,7 +116,7 @@ export default {
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
         css =  css + "font-weight:bold;" + textIndent + drill;
-        console.info(record.text+"==>css==>"+css);
+       // console.info(record.text+"==>css==>"+css);
         return css
       } else {
         return css;
@@ -157,8 +160,36 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
- 
+     getSpanArr(data) {　
+          for (var i = 0; i < data.length; i++) {
+            console.log(data[i].rowspan)
+            if (i === 0) {
+              this.spanArr.push(1);
+              this.pos = 0
+            } else {
+              // 判断当前元素与上一个元素是否相同
+            if (data[i].group === data[i - 1].group) {
+                this.spanArr[this.pos] += 1;
+                this.spanArr.push(0);
+              } 
+              else {
+                this.spanArr.push(1);
+                this.pos = i;
+              }
+            }
+          }
+     },
     rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
+      if (columnIndex === 0) {
+            const _row = this.spanArr[rowIndex];
+            const _col = _row > 0 ? 1 : 0;
+            console.log("行",_row);
+            console.log("列",_col);
+            return {
+                  rowspan: _row,
+                  colspan: _col
+            }
+          }
  // let config =  this.groupConfig;
       // let cells = {rowspan:0,colspan:0};
       // debugger
@@ -180,117 +211,118 @@ export default {
       if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
           return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
        }
-      let config = this.groupConfig;
-      let cells = { rowspan: 0, colspan: 0 };
-      //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
-      if (column.rowspan) {
-        let datas = []; //getTableDatas();
-        let rowspan =
-          row.rowspan || this.getCellRowSpan(datas, row, config) || 0;
-        cells.rowspan = rowspan;
-      }
-      //哪一行合并多少列，通过数据传过来
-      if (row.colspan) {
-        cells.colspan = row.colspan;
-      }
-      // Todo colspan from where...?
-      return cells;
+      console.log("item",this.item)
+      // let config = this.groupConfig;
+      // let cells = { rowspan: 0, colspan: 0 };
+      // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
+      // if (column.rowspan) {
+      //   let datas = []; //getTableDatas();
+      //   let rowspan =
+      //     row.rowspan || this.getCellRowSpan(datas, row, config) || 0;
+      //   cells.rowspan = rowspan;
+      // }
+      // //哪一行合并多少列，通过数据传过来
+      // if (row.colspan) {
+      //   cells.colspan = row.colspan;
+      // }
+      // // Todo colspan from where...?
+      // return cells;
     },
-    async getList() {
-      let { data } = await this.axios.get("/api/cube/find_dim2/company/0/1/");
-      console.log(data);
-      this.list = data;
-      return data;
-    },
+    // async getList() {
+    //   let { data } = await this.axios.get("/api/cube/find_dim2/company/0/1/");
+    //   console.log(data);
+    //   this.list = data;
+    //   return data;
+    // },
 
-    getTableDataParams(rows) {
-      //   var ddd =  this.getList();
-      //   console.info(ddd);
-      // sql:"select * from dw_dimcompany"
-      // if(rows && rows.length > 0){
+  //   getTableDataParams(rows) {
+  //     //   var ddd =  this.getList();
+  //     //   console.info(ddd);
+  //     // sql:"select * from dw_dimcompany"
+  //     // if(rows && rows.length > 0){
 
-      //  }
-      //  return ;
+  //     //  }
+  //     //  return ;
 
-      //debugger;
-      // this.axios.get("/api/cube/find_dim2/company/0/1/").then(res =>{
-      // debugger;
-      // });
-      //    debugger;
-      // 1111122	应收账款
-      //1111123	预付款项
-      // 1111221	其他应收款
-      debugger;
-      let url = "/get/cube/find/";
-      var params = {
-        cubeId: this.cubeId.id,
-        subject: "0001",
-        fact: "A,B,C,D",
-        //periodCount:2,
-        dims: {
-          period: "201505,201605",
-          // company:"1,1500",
-          itempoint: "1111122,1111123,1111221"
-        },
-        dimName: "itempoint", //行项目的Id
-        // sort:"B",
-        //    unionDimName:"company", //行项目列名为：factId$unionDimId
-        // groupBy:"id",
-        //   showDims:"company",  //company_1
-        //"helpDims":"111",
-        order: "desc" //direction
-      };
-      params = {
-        cubeId: this.cubeId.id,
-        subjects: [
-          {
-            id: "1016",
-            fact: "val_B",
-            dims: {
-              indicator: "236,19",
-              fact: "B"
-            },
-            //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
-  dimName: "indicator"
-          },
-          {
-            id: "0001",
-            fact: "B",
-            dims: {
-              itempoint: "1111122,1111123,1111221"
-            },
-            dimName: "itempoint"
-          },
-          {
-            id: "0002",
-            fact: "B",
-            dims: {
-              itemperiod: "1416001,1403100"
-            },
-            dimName: "itemperiod"
-          }
-        ],
-        dims: {
-          period: "201505,201605",
-          company: "1"
-        },
-        periodCount: 2
-      };
-      params.subjects = JSON.stringify(params.subjects);
-      this.axios({
-        method: "post",
-        url: url,
-        params: params
-      })
-        .then(res => {
-          debugger;
-          console.info(res);
-        })
-        .catch(res => {
-          debugger;
-          console.info(res);
-        });
-    }
+  //     //debugger;
+  //     // this.axios.get("/api/cube/find_dim2/company/0/1/").then(res =>{
+  //     // debugger;
+  //     // });
+  //     //    debugger;
+  //     // 1111122	应收账款
+  //     //1111123	预付款项
+  //     // 1111221	其他应收款
+  //     debugger;
+  //     let url = "/get/cube/find/";
+  //     var params = {
+  //       cubeId: this.cubeId.id,
+  //       subject: "0001",
+  //       fact: "A,B,C,D",
+  //       //periodCount:2,
+  //       dims: {
+  //         period: "201505,201605",
+  //         // company:"1,1500",
+  //         itempoint: "1111122,1111123,1111221"
+  //       },
+  //       dimName: "itempoint", //行项目的Id
+  //       // sort:"B",
+  //       //    unionDimName:"company", //行项目列名为：factId$unionDimId
+  //       // groupBy:"id",
+  //       //   showDims:"company",  //company_1
+  //       //"helpDims":"111",
+  //       order: "desc" //direction
+  //     };
+  //     params = {
+  //       cubeId: this.cubeId.id,
+  //       subjects: [
+  //         {
+  //           id: "1016",
+  //           fact: "val_B",
+  //           dims: {
+  //             indicator: "236,19",
+  //             fact: "B"
+  //           },
+  //           //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
+  // dimName: "indicator"
+  //         },
+  //         {
+  //           id: "0001",
+  //           fact: "B",
+  //           dims: {
+  //             itempoint: "1111122,1111123,1111221"
+  //           },
+  //           dimName: "itempoint"
+  //         },
+  //         {
+  //           id: "0002",
+  //           fact: "B",
+  //           dims: {
+  //             itemperiod: "1416001,1403100"
+  //           },
+  //           dimName: "itemperiod"
+  //         }
+  //       ],
+  //       dims: {
+  //         period: "201505,201605",
+  //         company: "1"
+  //       },
+  //       periodCount: 2
+  //     };
+  //     params.subjects = JSON.stringify(params.subjects);
+  //     this.axios({
+  //       method: "post",
+  //       url: url,
+  //       params: params
+  //     })
+  //       .then(res => {
+  //         debugger;
+  //         console.info(res);
+  //       })
+  //       .catch(res => {
+  //         debugger;
+  //         console.info(res);
+  //       });
+  //   }
   }
 };
 </script>
