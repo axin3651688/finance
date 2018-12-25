@@ -13,6 +13,7 @@
     v-else-if="col.type === 'number' "
     :prop="col.id"
     :label="col.text"
+    :align="col.align|| 'left'"
     :width="col.width||100"
   >
     <template slot-scope="scope">
@@ -26,6 +27,7 @@
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
+    :align="col.align|| 'left'"
     :width="col.width||150"
   >
     <!-- :align="col.align||'center'" -->
@@ -37,7 +39,7 @@
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
-  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text">
+  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text"  :align="col.align|| 'center'">
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -50,14 +52,14 @@
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  date类型的数据-->
-  <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text">
+  <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span v-if="data.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
-  <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text">
+  <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
         <span v-if="data.datas">--</span>
@@ -113,8 +115,11 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-table__body{
+  width: 8000px;
+}
 .el-table__header{
-  table-layout:auto;
+  // table-layout:auto;
  
 }
 .el-table__header-wrapper{
@@ -126,7 +131,7 @@ export default {
       // max-width: 100%;
       // height: 100%;
 
-      overflow: visible;
+      // overflow: hidden;
       // text-overflow: ellipsis;
       white-space: nowrap;
       // background-color: #000;
@@ -139,7 +144,7 @@ tbody {
       .cell {
         // max-width: 100%;
         // height: 100%;
-        overflow: visible;
+        // overflow: hidden;
         // text-overflow: ellipsis;
         white-space: nowrap;
       }
@@ -148,10 +153,10 @@ tbody {
 }
 // 合并表头align=right不起效,
 // 加下面样式 马军 2018/12/24 .el-table td,
-.el-table td,
-.el-table th {
-  text-align: right;
-}
+// .el-table td,
+ .el-table th {
+   text-align: center;
+ }
 </style>
 <style>
 /* .el-tooltip__popper.is-dark {

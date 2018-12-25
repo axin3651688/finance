@@ -44,29 +44,27 @@ export default {
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
-    tomodule(e){
-       if (this.device === "mobile") {
-          this.ToggleSideBar({ opend: false });
-        }
-        this.user.company.id === 121
-          ? this.$router.push("/tjsp/module")
-          : this.$router.push("/jsnk/module");
-        // this.$router.push({ path: "/module", name: "", params: {} });
-        modeHandle(e);
+    toModule(e) {
+      if (this.device === "mobile") {
+        this.ToggleSideBar({ opend: false });
+      }
+      this.user.company.id === 121
+        ? this.$router.push("/tjsp/module")
+        : this.$router.push("/jsnk/module");
+      // this.$router.push({ path: "/module", name: "", params: {} });
+      modeHandle(e);
     },
     shownavMenu(e) {
+      // debugger;
       //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
       if (e.level === 2) {
-        console.log(e)
+        console.log(e);
         // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
-        if (this.device === "mobile") {
-          this.ToggleSideBar({ opend: false });
-        }
-        else if(e.url=="/cnbi/json/source/tjsp/dash.json"){
-           this.tomodule(e)
-        }
+        if (e.url == "/cnbi/json/source/tjsp/dash.json") {
+          this.toModule(e);
+        } else this.$router.push({ path: e.url });
       } else {
-          this.tomodule(e)
+        this.toModule(e);
       }
     }
   }
