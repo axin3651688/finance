@@ -46,7 +46,15 @@ export default {
         period: { id: 201608, text: "2016年8月" },
         unit: { id: 10000, text: "万元" },
         items: [] //根据行配制生成的
-      }
+      },
+      datas : [
+        {id:23,text:"行项目一",A:25,B:545,group:1,groupName:"xx公司",rowspan:3},
+        {id:24,text:"行项目二",A:25,B:545,group:1,groupName:"xx公司"},
+        {id:25,text:"行项目三",A:25,B:545,group:1,groupName:"xx公司"},
+        {id:26,text:"行项目四",A:25,B:545,group:2,groupName:"bb公司"},
+        {id:27,text:"行项目五",A:25,B:545,group:2,groupName:"bb公司"},
+        {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
+     ]
     };
   },
 
@@ -139,20 +147,27 @@ export default {
      * ]
      */
    rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex){
-      let config =  this.groupConfig;
-      let cells = {rowspan:0,colspan:0};
-      //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
-      if(column.rowspan){
-         let datas = [];//getTableDatas();
-         let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
-         cells.rowspan = rowspan;
-      }
-      //哪一行合并多少列，通过数据传过来
-      if(row.colspan){
-          cells.colspan = row.colspan;
-      }
-      // Todo colspan from where...? 
-      return cells;
+      // let config =  this.groupConfig;
+      // let cells = {rowspan:0,colspan:0};
+      // debugger
+      // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
+      // if(column.rowspan){
+      //    let datas = [];//getTableDatas();
+         
+      //    let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
+      //    cells.rowspan = rowspan;
+      // }
+      // //哪一行合并多少列，通过数据传过来
+      // if(row.colspan){
+      //     cells.colspan = row.colspan;
+      // }
+      // // Todo colspan from where...? 
+      // return cells;
+
+      //具体方法请参照elementUi-Table的配法
+      if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
+          return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
+       }
    },
   async getList() {
       let { data } = await this.axios.get("/api/cube/find_dim2/company/0/1/");
