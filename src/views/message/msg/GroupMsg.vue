@@ -412,8 +412,6 @@ export default {
 <style lang="scss" scoped>
   @import "../styles/variables.scss";
 
-  $iconGroupPersonUrl: '../assets/icon/group_person.svg';
-
   .GroupMsg {
     display: flex;
     justify-content: space-between;
@@ -487,7 +485,7 @@ export default {
           }
 
           .icon__group-person {
-            background: url($iconGroupPersonUrl);
+            background: url('../assets/icon/group_person.svg');
           }
         }
       }

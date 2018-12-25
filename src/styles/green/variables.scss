@@ -66,10 +66,9 @@ $font-clolor:#555;
 
 // 姜海斌抽离出来的变量 start ===============================================>>
 // 所有颜色相关的 ***********************
-$colorTheme: #1890ff;       // 页面整体的主题色
-$colorBgPageGray: #EBECEC;  // 页面灰色背景
-$colorBgBtnGray: #A5ACAA;   // 灰色按钮
-$colorBgSiderBar: #001529;     // 消息左边固定边栏背景色
+$colorTheme: #1890ff; // 页面整体的主题色
+$colorBgPageGray: #EBECEC; // 页面灰色背景
+$colorBgBtnGray: #A5ACAA; // 灰色按钮
 $colorShadowGreen: rgba(8, 69, 81, 0.1); // 绿色阴影
 
 $colorText1: #000000; // 主要文字颜色，1级黑
@@ -91,10 +90,4 @@ $iconLinkUrl: '../../assets/green/url.svg';         // 链接
 $iconCloseX: '../../assets/green/close.svg';        // 关闭X
 $iconGenderMale: '../../assets/green/gender.svg';   // 性别男
 $iconTest: '../../assets/green/text.svg';           // 文本消息
-
-// 所有尺寸（height width）相关 *************
-$sizeSiderBarWidth: 80px; // 消息左边固定边栏宽度
-$sizeTopBarHeight: 76px; // 消息顶部栏高度
-$sizeNavBarWidth: 240px; // 右边窗口左边导航栏宽度
-
 // 姜海斌抽离出来的变量 end <<=================================================

@@ -17,7 +17,7 @@
                                   style="padding-top: 15px;padding-bottom: 12px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
-                      <img src="../assets/icon/group_set_icon.svg"
+                      <img src="../../assets/green/group_set_icon.svg"
                            alt="群主设置"
                            style="width: 100%;height: 100%;">
                     </div>
@@ -28,7 +28,7 @@
                 <el-dropdown-item command="groupQuit" style="padding-top: 15px;padding-bottom: 12px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
-                      <img src="../assets/icon/group_set_tuichu.svg"
+                      <img src="../../assets/green/group_set_tuichu.svg"
                            alt="退出群组"
                            style="width: 100%;height: 100%;">
                     </div>

@@ -186,7 +186,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../styles/variables.scss";
 
   .vue-module {
     display: flex;

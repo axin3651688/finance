@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
-@mixin flex($direction:row,$display:flex,$flexWrap:nowrap) {
-  display: $display;
+@mixin flex($direction:row,$inline:block) {
+  display: if($inline==block,flex,inline-flex);
   flex-direction: $direction;
-  flex-wrap: $flexWrap;
+  flex-wrap: nowrap;
 }
