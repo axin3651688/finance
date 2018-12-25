@@ -1,6 +1,7 @@
 <template>
+<div>
   <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize)"
     border
     :stripe="true"
     style="width: 100%;"
@@ -14,6 +15,24 @@
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
     </el-tag>
   </el-table>
+        <!-- sjz 分页功能 -->
+        <!-- <div class="paginationClass"> -->
+            <!-- page-sizes:每页展示条选择组件 -->
+            <!-- page-size:每页展示条 -->
+            <!-- current-change:currentPage改变时会触发 -->
+            <!-- size-change:pagesize改变时触发 -->
+            <el-pagination
+              v-if="item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[1, 2, 5, 10]"
+              :page-size="pagesize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="item.datas.length">
+            </el-pagination>
+        <!-- </div> -->
+</div>   
 </template>
 <script>
 import BiTableColumn from "./table/BiTableColumn";
@@ -29,6 +48,8 @@ export default {
   props: ["item"],
   data() {
     return {
+      currentPage:1,
+      pagesize:1,
       id: 0,
       text: "",
       rows: [],
@@ -58,7 +79,16 @@ export default {
   },
 
   methods: {
+    //pagesize改变时触发 ---- 分页功能
+    handleSizeChange: function (size) {
+        this.pagesize = size;
+    },
+    //currentPage改变时会触发 --- 分页功能
+    handleCurrentChange: function(currentPage){
+        this.currentPage = currentPage;
+    },
     getDatas(item) {
+      debugger
       let rows = item.config.rows;
       if (rows && rows.length > 0) {
         return rows;
@@ -67,6 +97,7 @@ export default {
     },
 
     upData(item) {
+      debugger
             this.$set(this.item,"datas",item.datas);
             this.$set(this,"item",item);
             let refs = this.$refs;
@@ -90,6 +121,7 @@ export default {
       },
 
     cellStyle(row) {
+      // debugger
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;

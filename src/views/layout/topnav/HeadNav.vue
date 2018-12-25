@@ -48,15 +48,15 @@
       </el-dropdown>
 
       <!-- 日  日历 -->
-    <el-date-picker
-      v-model="value"
-      @change="logTimeChange"
-      type="date"
-      class="day"
-      placeholder="选择日期"
-      format="yyyy 年 MM 月 dd 日"
-      value-format="yyyy-MM-dd">
-    </el-date-picker>
+      <el-date-picker
+        v-model="value"
+        @change="logTimeChange"
+        type="date"
+        class="day"
+        placeholder="选择日期"
+        format="yyyy 年 MM 月 dd 日"
+        value-format="yyyy-MM-dd"
+      ></el-date-picker>
 
       <!-- 消息提醒 -->
       <el-badge :value="12">
@@ -140,7 +140,7 @@ export default {
     return {
       companyId: "",
       companyName_cache: "",
-       companyLeaf:false,
+      treeInfo: {},
       isShow: false,
       dialogVisible: false,
       isCollapse: true,
@@ -148,11 +148,10 @@ export default {
       monthCount: 12, //[4,12,16]
       years: [],
       months: [],
-      value:"",
-      y:[],
-      m:[],
-      day:[]
-     
+      value: "",
+      y: [],
+      m: [],
+      day: []
     };
   },
   components: {
@@ -160,8 +159,8 @@ export default {
     CompanyTree
   },
   created() {
-    this.value = this.year+this.month+this.date
-    console.log(this.value)
+    this.value = this.year + this.month + this.date;
+    console.log(this.value);
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
@@ -187,9 +186,7 @@ export default {
       }
     }
   },
-  mounted(){
-
-  },
+  mounted() {},
   computed: {
     ...mapGetters([
       "user",
@@ -205,19 +202,20 @@ export default {
 
   methods: {
     // 日期
-    logTimeChange(val){
-      this.y=val.slice(0,4)
-      this.m=val.slice(5,7)
-      this.day = val.slice(8,10)
-      this.GetSideMid({year : this.y, month : this.m, date : this.day})
-      console.log(this.day)
+    logTimeChange(val) {
+      this.y = val.slice(0, 4);
+      this.m = val.slice(5, 7);
+      this.day = val.slice(8, 10);
+      this.GetSideMid({ year: this.y, month: this.m, date: this.day });
+      console.log(this.day);
       // console.log(val)
     },
     ...mapActions([
       "ToggleSideBar",
       "ReWrightName",
       "updataCountAsync",
-      "GetSideMid"
+      "GetSideMid",
+      "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
       //    console.log(cmdItem)
@@ -232,8 +230,8 @@ export default {
       }
     },
     getname(e) {
-        console.log("a:",e);
-        this.companyLeaf = e.leaf;
+      console.log("a:", e);
+      this.treeInfo = e;
       this.companyId = e.id;
       this.companyName_cache = e.text;
     },
@@ -244,12 +242,14 @@ export default {
       // todo备以后用,先不删
       // localStorage.removeItem("database");
       // this.$store.dispatch("clearCurrentState");
-      logout().then(res => {
-        // console.log(res.data.msg);
-        // 清除token
-        localStorage.removeItem("authorization");
-        this.$router.push("/login");
-      }) .catch(res => {
+      logout()
+        .then(res => {
+          // console.log(res.data.msg);
+          // 清除token
+          localStorage.removeItem("authorization");
+          this.$router.push("/login");
+        })
+        .catch(res => {
           console.error("退出请求失败");
           localStorage.removeItem("authorization");
           this.$router.push("/login");
@@ -258,7 +258,11 @@ export default {
     // 公司点击确定事件
     handleQoose() {
       //   点击确定,把子组件选择的id,neme存到Vuex中
-      this.GetSideMid({ company: this.companyId , companyLeaf: this.companyLeaf, companyName: this.companyName_cache });
+      this.GetSideMid({
+        company: this.companyId,
+        companyName: this.companyName_cache
+      });
+      this.GettRreeInfo(this.treeInfo);
       this.dialogVisible = false;
     },
     sayhidden() {

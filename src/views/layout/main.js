@@ -7,7 +7,7 @@ import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 // import '@/styles/black/index.scss' // global css
-import '@/styles/green/index.scss' // global css
+// import '@/styles/green/index.scss' // global css
 // import '@a/icons/iconfont.css' // icon
 
 import '../../../node_modules/handsontable/dist/handsontable.full.css'

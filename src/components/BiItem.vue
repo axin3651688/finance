@@ -3,22 +3,30 @@
   <bi-text v-else-if="flag && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <bi-chart v-else-if="flag && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
   <tree-grid v-else-if="flag && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
+  <s-tree-grid v-else-if="flag && item.xtype == 'stree-grid'" :item.sync="item" ref="child"></s-tree-grid>
+  <bi-flhz v-else-if="flag && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>
 </template>
 
 <script>
 import BiTable from "./BiTable";
 import BiChart from "./BiChart";
 import BiText from "./BiText";
-import TreeGrid from "./text/Treegrid.vue"
+import TreeGrid from "./text/Treegrid.vue";
+import STreeGrid from "./text/STreegrid.vue";
+import BiFlhz from "./BiFlhz";
+// import ElCascader from "./text/ElCascader.vue";
 
 export default {
-  name:"BiItem",
+  name: "BiItem",
   props: ["item", "config", "datas"],
   components: {
     BiTable,
     BiChart,
     BiText,
     TreeGrid,
+    STreeGrid,
+    BiFlhz
+    // ElCascader
   },
   data() {
     return {
@@ -33,12 +41,12 @@ export default {
     };
   },
   created() {
-    debugger;
+    debugger
     console.info(this.item);
     // debugger;
   },
   mounted() {
-    // debugger;
+    debugger;
     this.loadItems(this.item);
   },
   watch: {
@@ -55,10 +63,14 @@ export default {
     loadItems() {
       // debugger
       let config = this.item.config;
-    //  debugger;
+      debugger;
       if (config) {
-        config.rows = this.item.rows ||config.rows || this.config.rows || this.datas;
-        config.columns = this.item.columns ||config.columns || this.config.columns ||this.item.items[0].columns;
+        config.rows = this.item.rows || config.rows || this.config.rows;
+        config.columns =
+          this.item.columns ||
+          config.columns ||
+          this.config.columns ||
+          this.item.items[0].columns;
         config.type = config.type || 2;
         this.item.config = config;
         this.hasConfig = true;

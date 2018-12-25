@@ -48,8 +48,15 @@
         :closable="item.closable||false"
       >
         <!-- sjz 按钮 -->
-        <el-button type="success" v-if="layout.ctype==='button'">刷新</el-button>
-        <el-button type="success" v-if="layout.ctype==='button'">导出</el-button>
+        <el-button-group>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部展开<i class="el-icon-arrow-down"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部收起<i class="el-icon-arrow-up"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">刷新<i class="el-icon-refresh"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">导出<i class="el-icon-download"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">安全比例</el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">预警比例</el-button>
+        </el-button-group>
+        
         <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
