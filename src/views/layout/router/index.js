@@ -83,6 +83,18 @@ const router = new Router({
           component: () =>
             import('@v/message/Message.vue')
         },
+        {
+          path: '/cross',
+          name: 'cross',
+          component: () =>
+            import('@v/intelligenceReport/Cross_table.vue')
+        },
+        {
+          path: '/a',
+          name: 'a',
+          component: () =>
+            import('@v/intelligenceReport/a.vue')
+        },
 
 
       ]

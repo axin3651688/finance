@@ -1,5 +1,6 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
+  <div>
+    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
     <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -56,6 +57,7 @@
     </el-table-column>
     <slot/>
   </el-table>
+  </div>
 </template>
  
 <script>

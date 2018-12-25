@@ -69,7 +69,8 @@ export default {
       if (rows && rows.length > 0) {
         return rows;
       }
-      return item.datas;
+
+ return item.datas;
     },
 
     upData(item) {
@@ -149,7 +150,29 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
+ 
     rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
+ // let config =  this.groupConfig;
+      // let cells = {rowspan:0,colspan:0};
+      // debugger
+      // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
+      // if(column.rowspan){
+      //    let datas = [];//getTableDatas();
+         
+      //    let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
+      //    cells.rowspan = rowspan;
+      // }
+      // //哪一行合并多少列，通过数据传过来
+      // if(row.colspan){
+      //     cells.colspan = row.colspan;
+      // }
+      // // Todo colspan from where...? 
+      // return cells;
+
+      //具体方法请参照elementUi-Table的配法
+      if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
+          return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
+       }
       let config = this.groupConfig;
       let cells = { rowspan: 0, colspan: 0 };
       //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
@@ -221,7 +244,7 @@ export default {
               fact: "B"
             },
             //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
-            dimName: "indicator"
+  dimName: "indicator"
           },
           {
             id: "0001",
