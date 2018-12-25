@@ -99,7 +99,8 @@ BiText
     "generateVar":{//生成变量rows
        "periodCount":12,
         "compareType":"0&-1",
-        "varName":"rows"
+        "varName":"rows",
+         "reverse":true
     },
     compareType:"0&-1" //-1&0
 }
@@ -219,6 +220,10 @@ BiText
         {
             id: "1",
             text:"",//名字
+            "showFun":function($store){//是否显示
+                //所有的数据都在store里，自己加自己的判断吧
+                return trye;//默认显示
+            },
             xtype: "bi-text",
             weight: "6"//当layout=column时需要
             renderFunction:"functionName"//字面量函数

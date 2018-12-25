@@ -2,7 +2,7 @@
     "id": "nkfxfx",
     "text": "风险分析",
     "layout": {
-        "xtype": "column"
+        "xtype": "form"
     },
     "config":{},
     "items": [{
@@ -10,6 +10,9 @@
         "id": "1416001",
         "text": "风险级别占比情况",
         "weight": 12,
+        "showFun":function($store){
+            return false;
+        },
         "config": {
             "sql": "select r.nrange as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by nrange order by nrange",
             "mainDim": "itemperiod",
@@ -50,8 +53,8 @@
             "way":"addTab",
             "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
             "handler":($vue,params)=>{
-                  console.info(params);
-                   debugger; 
+                console.info(params);
+                debugger; 
             }
          }],
         "options": {
@@ -102,8 +105,7 @@
             "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
             }
           }
-    },
-        {
+      }, {
             "xtype": "chart",
             "id": "1403100",
             "text": "风险类别占比情况",
@@ -145,6 +147,7 @@
                 "type": 1
 
             },
+            
             "options": {
                 "type": "singleseries",
                 "subType":"pie",

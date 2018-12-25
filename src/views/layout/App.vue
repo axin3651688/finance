@@ -8,6 +8,12 @@ import { mapActions } from "vuex";
 import webSocket from "../../utils/webSocket";
 export default {
   name: "app",
+  data(){
+
+    return {
+        caches:["module","company","year","month","data"]
+    }
+  },
   created() {
     this.readLocalStorage();
     let authorization = localStorage.getItem("authorization");

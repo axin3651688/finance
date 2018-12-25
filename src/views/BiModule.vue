@@ -184,6 +184,20 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
+   /**
+    * 设置item是否隐藏或显示
+    */
+    showSet(items){
+        items.forEach(item=>{
+           let funName = item.showFun;
+           if(typeof (funName) == "function"){
+                item.show = item.showFun(this.$store);
+           }else{
+              item.show = true;
+           }
+        });
+
+    },
     /**
      * 动态设置参数至本组件
      */
@@ -192,6 +206,7 @@ export default {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
+          this.showSet(bean.items);
       }
       for (let key in bean) {
         this.$set(this, key, bean[key]);
@@ -243,6 +258,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
+         api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -258,7 +274,6 @@ export default {
         });
         return;
       }
-      //  api = "cnbi/json/source/jsnk/pie.json";
       //  debugger;
       findDesignSource(api).then(res => {
         // debugger;
