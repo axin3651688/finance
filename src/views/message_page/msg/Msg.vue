@@ -1,5 +1,5 @@
 <template>
-  <div class="MessageMsg">
+  <div class="Message">
     <div class="container">
       <div class="left">
         <el-scrollbar style="height: 100%">
@@ -39,11 +39,11 @@
       </div>
       <div class="right">
         <template v-if="leftBarInstance">
-          <contacts
-            v-if="messageStore.miniType === 101010"
-            @chatWithGroup="handleChatWithGroup"
-            @chatWithSingle="handleChatWithSingle"
-          ></contacts>
+          <!--<contacts-->
+            <!--v-if="messageStore.miniType === 101010"-->
+            <!--@chatWithGroup="handleChatWithGroup"-->
+            <!--@chatWithSingle="handleChatWithSingle"-->
+          <!--&gt;</contacts>-->
           <new-friends v-if="messageStore.miniType === 11016"></new-friends>
           <group-helper v-if="messageStore.miniType === 11017"></group-helper>
           <Todo v-if="messageStore.miniType === 2"></Todo>
@@ -281,15 +281,6 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "../styles/variables.scss";
-
-  #app {
-    .containerMain {
-      padding-left: 0;
-      padding-right: 0;
-      width: 100%;
-      height: calc(100% - 64px);
-    }
-  }
 
   .Message {
     font-family: $fontFamilyMain;

@@ -21,8 +21,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../../styles/variables.scss";
-  @import "../../styles/layout.scss";
+  @import "../styles/variables.scss";
+  @import "../styles/layout.scss";
 
   .TopBar {
     @include flex();

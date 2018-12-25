@@ -10,25 +10,25 @@
         <router-link tag="li" to="/message_page/home" class="nav-item">
           <div class="nav-item_inner nav-item_text">首页</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../../assets/new_icon/home_page.svg" alt="">
+            <img src="../assets/new_icon/home_page.svg" alt="">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_text">消息</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../../assets/new_icon/message.svg" alt="">
+            <img src="../assets/new_icon/message.svg" alt="">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
           <div class="nav-item_inner nav-item_text">通讯录</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../../assets/new_icon/person.svg" alt="">
+            <img src="../assets/new_icon/person.svg" alt="">
           </div>
         </router-link>
         <li class="nav-item nav-item_quit">
           <div class="nav-item_inner nav-item_text">退出</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../../assets/new_icon/quit.png" alt="">
+            <img src="../assets/new_icon/quit.png" alt="">
           </div>
         </li>
       </ul>
@@ -43,8 +43,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../../styles/variables.scss";
-  @import "../../styles/element.scss";
+  @import "../styles/variables.scss";
+  @import "../styles/element.scss";
 
   .SiderBar {
     @include flex($direction: column);

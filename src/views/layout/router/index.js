@@ -229,7 +229,7 @@ const router = new Router({
     {
       path: '/message_page',
       name: 'MessagePage',
-      component: () => import('@v/message_page/layout/MessagePage.vue'),
+      component: () => import('@v/message_page/MessagePage.vue'),
       children: [
         {
           path: '/message_page/home', // 消息-首页

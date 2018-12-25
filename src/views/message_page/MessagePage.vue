@@ -18,15 +18,15 @@
 export default {
   name: "MessagePage",
   components: {
-    TopBar: () => import('./public/TopBar'),
-    SiderBar: () => import('./public/SiderBar')
+    TopBar: () => import('./layout/TopBar'),
+    SiderBar: () => import('./layout/SiderBar')
   }
 };
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
-  @import "../styles/layout.scss";
+  @import "./styles/variables.scss";
+  @import "./styles/layout.scss";
 
   .MessagePage {
     @include flex();
