@@ -47,7 +47,7 @@
           {id:36,text:"行项目三",A:25,B:545,groupName:"xx公司"},
           {id:37,text:"行项目三",A:25,B:545,groupName:"xx公司"},
           {id:38,text:"行项目三",A:25,B:545,groupName:"xx公司"},
-          {id:39,text:"行项目三",A:25,B:545,groupName:"xx公司"},
+          {id:38,text:"行项目三",A:25,B:545,groupName:"xx公司"},
         ],
         // groupConfig:{
         //     idProperty:"group",
@@ -66,10 +66,6 @@
         // this.rows = res.data.config.rows
         // console.log(this.rows)
       })
-      this.rows.forEach((item,index)=>{
-        item.index = index
-      })
-      // this.getCellRowSpan(this.rows)
     },
     mounted(){
       this.getSpanArr(this.rows);
@@ -119,42 +115,34 @@
                 this.spanArr.push(1);
                 this.pos = i;
               }
-              if( data[i].rowspan === data[i - 1].rowspan){
-                this.arr[this.pos] += 1;
-                this.arr.push(0);
-              }
-              else {
-                this.arr.push(1);
-                this.pos = i;
-              }
             }
         }
     },
 
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
-          return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
-      }
-        //   if (columnIndex === this.unionCloumns[0]) {
-        //     const _row = this.spanArr[rowIndex];
-        //     const _col = _row > 0 ? 1 : 0;
-        //     // console.log("行",_row);
-        //     // console.log("列",_col);
-        //     return {
-        //           rowspan: _row,
-        //           colspan: _col
-        //     }
-        //   }
-        //  if (columnIndex === this.unionCloumns[1]) {
-        //     const _row = this.arr[rowIndex];
-        //     const _col = _row > 0 ? 1 : 0;
-        //     // console.log("行",_row);
-        //     // console.log("列",_col);
-        //     return {
-        //           rowspan: _row,
-        //           colspan: _col
-        //     }
-        //   }
+      // if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
+      //     return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
+      // }
+          if (columnIndex === this.unionCloumns[0]) {
+            const _row = this.spanArr[rowIndex];
+            const _col = _row > 0 ? 1 : 0;
+            console.log("行",_row);
+            console.log("列",_col);
+            return {
+                  rowspan: _row,
+                  colspan: _col
+            }
+          }
+         if (columnIndex === 1) {
+            const _row = this.arr[rowIndex];
+            const _col = _row > 0 ? 1 : 0;
+            // console.log("行",_row);
+            // console.log("列",_col);
+            return {
+                  rowspan: 1,
+                  colspan: 1
+            }
+          }
         }
     }
   }

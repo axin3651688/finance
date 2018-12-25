@@ -267,7 +267,7 @@ BiText
 
 + 表体合并单元格
 ~~~
-在item配置参数 有4个 row, column, rowIndex, columnIndex
+在item配置参数 colAndRowSanHandler函数  有4个 row, column, rowIndex, columnIndex
 ~~~
 
 + 事件对象
@@ -329,3 +329,6 @@ listeners:[
     }
 
 ~~~
+## 顶部需要日期的配置
+默认 年,月分开显示, 当需要有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
+此时,分开的年月将被隐藏,取而代之的为带日的日期选择器

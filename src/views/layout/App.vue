@@ -8,11 +8,10 @@ import { mapActions } from "vuex";
 import webSocket from "../../utils/webSocket";
 export default {
   name: "app",
-  data(){
-
+  data() {
     return {
-        caches:["module","company","year","month","data"]
-    }
+      caches: ["module", "company", "year", "month", "data"]
+    };
   },
   created() {
     debugger;
@@ -44,7 +43,7 @@ export default {
           });
         }
         if (!this.isEmpty(localStorage.year_cache)) {
-          debugger;
+          // debugger;
           this.GetSideMid({ year: localStorage.year_cache });
         }
         if (!this.isEmpty(localStorage.month_cache)) {
@@ -63,7 +62,7 @@ export default {
     },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
-      let url = "ws://192.168.1.139:7006/socket.io/";
+      let url = "ws://192.168.1.118:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
