@@ -113,14 +113,21 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-table__header{
+  table-layout:auto;
+ 
+}
+.el-table__header-wrapper{
+  // overflow-x: scroll;
+}
 .el-table thead {
   th {
     .cell {
       // max-width: 100%;
       // height: 100%;
 
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      // text-overflow: ellipsis;
       white-space: nowrap;
       // background-color: #000;
     }
@@ -132,8 +139,8 @@ tbody {
       .cell {
         // max-width: 100%;
         // height: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: visible;
+        // text-overflow: ellipsis;
         white-space: nowrap;
       }
     }
