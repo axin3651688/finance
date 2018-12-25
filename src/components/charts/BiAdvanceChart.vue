@@ -38,7 +38,7 @@ export default {
   },
   created() {
     debugger;
-    console.log(this);
+    console.log(this.item);
     // var obj = JSON.stringify(this.dataSource);
     // console.log(obj);
   },
@@ -47,9 +47,6 @@ export default {
   },
 
   methods: {
-    item1() {
-      this.$router.push("/list");
-    },
     /** 
      *  动态替换配制中的变量 
      *  var third = eval('('+ str +')');
@@ -77,12 +74,11 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      if (item.chartOptions) {
-        debugger;
-        this.evalVaiables(item.chartOptions);
-        return item.chartOptions;
-      }
-      return this.getDefautlChartConfigByType();
+      let options = item.chartOptions;
+      let defaultOptions = this.getDefautlChartConfigByType();
+      Cnbi.apply(options || {}, defaultOptions);
+      this.evalVaiables(options);
+      return options;
     },
     upData(item) {
       let chartType = item.options.getData.type;
@@ -91,11 +87,14 @@ export default {
         /**
          * 就是一个值数据的图形  dataRange   value
          */
-      } else if (chartType === 2) {
+      } else if (chartType === 2 || chartType === 4) {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-        this.chartOptions.series[0].data = item.options.datas;
+        debugger;
+        let datas = item.options.datas;
+        this.chartOptions.xAxis.data = datas[0];
+        this.chartOptions.series[0].data = datas[1];
       } else if (chartType === 3) {
         /**
          * 多系列数据图形 说白了就是series.length > 1

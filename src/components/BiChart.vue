@@ -38,7 +38,7 @@ export default {
     };
   },
   created() {
-    debugger;
+    // debugger;
     this.upData();
   },
   methods: {
