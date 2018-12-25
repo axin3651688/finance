@@ -10,7 +10,7 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar"/>
+                <img :src="friend.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -44,11 +44,11 @@
               <p class="info">{{rightUserInfoData.user.email}}</p>
             </li>
             <li>
-              <div class="icon icon-gender"></div>
+              <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfoData.sex.text}}</p>
             </li>
             <li>
-              <div class="icon icon-slogen"></div>
+              <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfoData.user.sign}}</p>
             </li>
           </ul>
@@ -81,6 +81,7 @@ export default {
 
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       activeFriend: null, // 当前选中的好友
@@ -90,6 +91,7 @@ export default {
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
+
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
@@ -137,7 +139,6 @@ export default {
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
       this.ActionSetMessageStore({
-        // receiverId: receiverId, // 1100 单聊
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfoData
       });
@@ -159,7 +160,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -233,7 +235,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     padding: 60px 30px 0 30px;
 
     .panel-right-top {
@@ -294,6 +296,14 @@ export default {
           border-radius: 12px;
           background: $colorTheme;
           margin-right: 20px;
+          background-repeat: no-repeat;
+          background-size: 36px 36px;
+        }
+        .icon-gender__male {
+          background-image: url($iconGenderMale);
+        }
+        .icon-text {
+          background-image: url($iconTest);
         }
       }
     }

@@ -7,14 +7,13 @@
     :width="col.width"
     type="index"
   />
-
+  <!-- :align="col.align||'center'" -->
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
   <el-table-column
     v-else-if="col.type === 'number' "
     :prop="col.id"
     :label="col.text"
-    :width="col.width"
-    maxWidth="180"
+    :width="col.width||100"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
@@ -27,9 +26,9 @@
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
-    :width="col.width"
-    maxWidth="180"
+    :width="col.width||150"
   >
+    <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
@@ -104,8 +103,7 @@ export default {
       if (!value) {
         return "--";
       }
-      value = (value - 0 / 10000).toLocaleString();
-      //debugger;
+      value = ((value - 0) / 10000).toLocaleString();
       return value;
     }
   },
@@ -115,35 +113,38 @@ export default {
 };
 </script>
 <style lang="scss">
-// .el-table thead {
-//   th {
-//     .cell {
-//       max-width: 160px;
-//       _width: 100%;
-//       height: 100%;
-//       float: left;
-//       overflow: hidden;
-//       text-overflow: ellipsis;
-//       white-space: nowrap;
-//       // background-color: #000;
-//     }
-//   }
-// }
-// tbody {
-//   .el-table__row {
-//     td {
-//       .cell {
-//         max-width: 160px;
-//         _width: 100%;
-//         height: 100%;
-//         float: left;
-//         overflow: hidden;
-//         text-overflow: ellipsis;
-//         white-space: nowrap;
-//       }
-//     }
-//   }
-// }
+.el-table thead {
+  th {
+    .cell {
+      // max-width: 100%;
+      // height: 100%;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      // background-color: #000;
+    }
+  }
+}
+tbody {
+  .el-table__row {
+    td {
+      .cell {
+        // max-width: 100%;
+        // height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+// 合并表头align=right不起效,
+// 加下面样式 马军 2018/12/24 .el-table td,
+.el-table td,
+.el-table th {
+  text-align: right;
+}
 </style>
 <style>
 /* .el-tooltip__popper.is-dark {

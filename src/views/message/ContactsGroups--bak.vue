@@ -144,7 +144,6 @@ export default {
         this.rightUsers = groupInfo.users;
         this.rightInfo = groupInfo.info;
         this.rightNotice = groupInfo.rightNotice;
-        this.qrUrl = groupInfo.qrUrl;
       } else {
         GROUP_INFO(groupId).then(res => {
           console.log('群id查询群信息res:', res);
@@ -179,7 +178,7 @@ export default {
         let params = {
           platform: 'pc',
           type: 'group',
-          targetId: groupId
+          targetId: targetId
         };
         // 获取二维码地址
         SCAN_URL(params).then(res => {
@@ -189,7 +188,7 @@ export default {
             this.qrUrl = this.qrUrlFormat(res.data.data.url)
           }
         }).catch(err => {
-          console.log('获取二维码的生成地址err：', err)
+          console.log('获取二维码的生成地址erre：', err)
         })
       }
     },

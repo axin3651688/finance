@@ -13,6 +13,7 @@ import '../../../node_modules/handsontable/dist/handsontable.full.css'
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'
 Vue.component('chart', VueECharts);
+import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
 
 // import chinaMap from "./assets/china.json";
 // VueECharts.registerMap("china", chinaMap);
@@ -20,6 +21,7 @@ Vue.component('chart', VueECharts);
 Vue.use(ZkTable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+Vue.use(VueQriously)
 
 
 // 设置一个全局判断是否为空的函数,后面用  !this.isEmpty(value)  即可调用
