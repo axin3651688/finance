@@ -39,7 +39,7 @@
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
-  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text"  :align="col.align|| 'center'">
+  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150">
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -69,9 +69,13 @@
 </template>
 <script>
 import EventMixins from "../mixins/EventMixins";
+import PromptMessage from "./PromptMessage.vue"
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
+  components:{
+    PromptMessage
+  },
   props: ["col", "data"],
   computed: {
     isFolder() {
@@ -116,7 +120,7 @@ export default {
 </script>
 <style lang="scss">
 .el-table__body{
-  width: 8000px;
+  // width: 6000px !important;
 }
 .el-table__header{
   // table-layout:auto;
