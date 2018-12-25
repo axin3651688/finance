@@ -4,7 +4,7 @@
 
 <script>
 import echarts from "echarts";
-import { debounce } from "@/utils";
+import autoResize from "../mixins/AutoResize.js";
 export default {
   props: {
     item: {
@@ -33,28 +33,12 @@ export default {
       diskData: []
     };
   },
+  mixins: [autoResize],
   created() {
     this.axios.get("/echart/data/asset/data/disk.tree.json").then(response => {
       this.diskData = response.data;
       this.initChart();
     });
-  },
-  mounted() {
-    // 自适应屏幕大小
-    this.__resizeHandler = debounce(() => {
-      if (this.chart) {
-        this.chart.resize();
-      }
-    }, 100);
-    window.addEventListener("resize", this.__resizeHandler);
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return;
-    }
-    window.removeEventListener("resize", this.__resizeHandler);
-    this.chart.dispose();
-    this.chart = null;
   },
 
   methods: {
@@ -148,17 +132,6 @@ export default {
           }
         ]
       });
-    }
-  },
-  watch: {
-    item: {
-      handler: function() {
-        // debugger;
-        this.initChart();
-      }
-
-      //   immediate: true
-      //   deep: true
     }
   }
 };

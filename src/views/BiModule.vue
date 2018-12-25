@@ -213,7 +213,7 @@ export default {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
-          this.showSet(bean.items);
+        this.showSet(bean.items);
       }
       for (let key in bean) {
         this.$set(this, key, bean[key]);
@@ -265,7 +265,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-         api = "cnbi/json/source/jsnk/pie.json";
+     // api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -359,8 +359,10 @@ export default {
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
-        let year = datas.year, month = datas.month; 
-        year = { id: year, text: "年" }; month = { id: month, text: "月" };
+        let year = datas.year,
+          month = datas.month;
+        year = { id: year, text: "年" };
+        month = { id: month, text: "月" };
         let periodArr = generatePeriod(
           vars.periodCount,
           vars.compareType,
@@ -369,14 +371,14 @@ export default {
           reverse
         );
         let index = 0;
-        if(reverse){
+        if (reverse) {
           index = periodArr.length - 2;
         }
         datas.comparePeriod = periodArr[index].id;
-        if(vars.varName){
-         item.config[vars.varName] = periodArr;
+        if (vars.varName) {
+          item.config[vars.varName] = periodArr;
         }
-       //datas.period = periodArr.map(p=>p.id).join(",");
+        //datas.period = periodArr.map(p=>p.id).join(",");
       }
       return datas;
     },
@@ -408,6 +410,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
@@ -462,7 +465,8 @@ export default {
      */
     queryDataAfter(item, datas, $childVue) {
       //在此加了查询数据之后的拦截处理
-      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function"){
+      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
+        debugger;
         datas = item.queryDataAfter(datas);
       }
       // debugger;
@@ -495,22 +499,22 @@ export default {
     getActiveTabName(item) {
       return item.id;
     },
-    removeTab(targetName){
+    removeTab(targetName) {
       debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
-         tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-              let nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeTabName = nextTab.name;
-              }
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeTabName = nextTab.name;
             }
-          });
+          }
+        });
       }
-       this.activeTabName = activeName;
-       this.items = tabs.filter(tab => tab.name !== targetName);
+      this.activeTabName = activeName;
+      this.items = tabs.filter(tab => tab.name !== targetName);
     }
   }
 };

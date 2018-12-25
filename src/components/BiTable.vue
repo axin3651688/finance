@@ -6,10 +6,9 @@
     style="width: 100%;"
     height="item.height || 480"
     :cell-style="cellStyle"
-    :header-cell-style="rowClass"
     @cell-click="onCellClick"
   >
-    <!-- :span-method="rowSpanAndColSpanHandler" -->
+    <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
@@ -69,7 +68,8 @@ export default {
       if (rows && rows.length > 0) {
         return rows;
       }
-      return item.datas;
+
+ return item.datas;
     },
 
     upData(item) {
@@ -93,11 +93,15 @@ export default {
         }
       }
     },
-    rowClass({ row, rowIndex }) {
-      // 头部颜色和居中配置,马军2018.12.24
-      return "background:#F0F8FF;text-align: center";
-    },
+    // rowClass({ row, rowIndex }) {
+    //   // 头部颜色和居中配置,马军2018.12.24
+    //   return "background:#F0F8FF;text-align: center";
+    // },
+    /**
+     * 单元格级别样式设置
+     */
     cellStyle(row) {
+      debugger;
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -108,12 +112,16 @@ export default {
         let level = record._level || record.level || 1;
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
-        return css + "font-weight:bold;text-align: left" + textIndent + drill;
+        css =  css + "font-weight:bold;" + textIndent + drill;
+        console.info(record.text+"==>css==>"+css);
+        return css
       } else {
         return css;
       }
     },
-
+     /**
+      * 单元格单击事件
+      */
     onCellClick(row, column, cell, event) {
       let listener = row._drill || row.drill;
       if (listener) {
@@ -149,7 +157,29 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
+ 
     rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
+ // let config =  this.groupConfig;
+      // let cells = {rowspan:0,colspan:0};
+      // debugger
+      // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
+      // if(column.rowspan){
+      //    let datas = [];//getTableDatas();
+         
+      //    let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
+      //    cells.rowspan = rowspan;
+      // }
+      // //哪一行合并多少列，通过数据传过来
+      // if(row.colspan){
+      //     cells.colspan = row.colspan;
+      // }
+      // // Todo colspan from where...? 
+      // return cells;
+
+      //具体方法请参照elementUi-Table的配法
+      if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
+          return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
+       }
       let config = this.groupConfig;
       let cells = { rowspan: 0, colspan: 0 };
       //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
@@ -221,7 +251,7 @@ export default {
               fact: "B"
             },
             //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
-            dimName: "indicator"
+  dimName: "indicator"
           },
           {
             id: "0001",

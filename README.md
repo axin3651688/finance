@@ -267,7 +267,7 @@ BiText
 
 + 表体合并单元格
 ~~~
-
+在item配置参数 有4个 row, column, rowIndex, columnIndex
 ~~~
 
 + 事件对象
