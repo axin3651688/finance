@@ -159,6 +159,7 @@ export default {
     }
   },
   mounted() {
+    // todo: 5添加群成员 from friends
     this.getFriendList()
   }
 }

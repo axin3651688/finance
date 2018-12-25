@@ -2,7 +2,7 @@
     "id": "nkfxfx",
     "text": "风险分析1",
     "layout": {
-        "xtype": "column"
+        "xtype": "form"
     },
     "config": {},
     "items": [{
@@ -10,6 +10,9 @@
             "id": "1416001",
             "text": "风险级别占比情况",
             "weight": 12,
+            "showFun": function ($store) {
+                return false;
+            },
             "config": {
                 "sql": "select r.nrange as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by nrange order by nrange",
                 "mainDim": "itemperiod",
@@ -55,53 +58,77 @@
                 }
             }],
             "options": {
-                "type": "advancechart",
+                "type": "singleseries",
                 "getData": {
                     "type": 2,
                     "subType": "pie",
                     "columns": [{
                         "id": "text",
-                        "prop": "name"
+                        "text": "名称"
                     }, {
                         "id": "B",
-                        "prop": "value"
+                        "text": "数值"
                     }],
-                    "scope": true
-                }
-            },
-            "chartOptions": {
-                "dd": "this.item.text",
-                "title": {
-                    "text": "this.item.text",
-                    "x": "center"
+                    "type": 1
+
                 },
-                "tooltip": {
-                    "trigger": "item",
-                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
-                },
-                "series": [{
-                    "name": "风险级别",
-                    "type": "pie",
-                    "radius": "55%",
-                    "center": ["50%", "60%"],
-                    "data": "this.item.options.datas",
-                    "itemStyle": {
-                        "emphasis": {
-                            "shadowBlur": 10,
-                            "shadowOffsetX": 0,
-                            "shadowColor": "rgba(0, 0, 0, 0.5)"
-                        }
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
+                    "handler": ($vue, params) => {
+                        console.info(params);
+                        debugger;
                     }
                 }],
-                "legend": {
-                    "orient": "vertical",
-                    "left": "5%",
-                    "top": "10%",
-                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                "options": {
+                    "type": "advancechart",
+                    "getData": {
+                        "type": 2,
+                        "subType": "pie",
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "B",
+                            "prop": "value"
+                        }],
+                        "scope": true
+                    }
+                },
+                "chartOptions": {
+                    "dd": "this.item.text",
+                    "title": {
+                        "text": "this.item.text",
+                        "x": "center"
+                    },
+                    "tooltip": {
+                        "trigger": "item",
+                        "formatter": "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    "series": [{
+                        "name": "风险级别",
+                        "type": "pie",
+                        "radius": "55%",
+                        "center": ["50%", "60%"],
+                        "data": "this.item.options.datas",
+                        "itemStyle": {
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
+                    }],
+                    "legend": {
+                        "orient": "vertical",
+                        "left": "5%",
+                        "top": "10%",
+                        "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                    }
                 }
             }
-        },
-        {
+        }, {
             "xtype": "chart",
             "id": "1403100",
             "text": "风险类别占比情况",
@@ -143,6 +170,7 @@
                 "type": 1
 
             },
+
             "options": {
                 "type": "advancechart",
                 "subType": "pie",

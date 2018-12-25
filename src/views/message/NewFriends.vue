@@ -16,7 +16,7 @@
           <div class="list-item" v-for="item in showMessageList" :key="item.id">
             <div class="item-left">
               <div>
-                <div class="img-box"><img :src="item.avatar" alt=""></div>
+                <div class="img-box"><img :src="item.avatar" :onerror="avatar_male"></div>
               </div>
               <h3 class="title">{{item.state}}{{item.name}}申请加你为好友</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>
@@ -40,7 +40,7 @@
                   type="primary"
                   size="small"
                   class="my-btn my-btn-default"
-                  @click="saveFriend(item, 3)"
+                  @click="updateState(item, 3)"
                 >拒绝
                 </el-button>
               </div>
@@ -65,6 +65,7 @@ export default {
   name: 'NewFriends',
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [], // 好友申请消息列表
       // showMessageList: [] // 好友申请消息列表筛选过的
@@ -110,11 +111,7 @@ export default {
     }
   },
   methods: {
-    // 筛选不同状态的信息
-    // changeState(checkState) {
-    //   this.
-    // },
-
+    // 获取好友申请列表
     getList() {
       NEW_FRIEND_LIST(this.loginUserId).then(res => {
         console.log('好友申请消息', res.data.data);
@@ -122,13 +119,14 @@ export default {
           this.messageList = res.data.data
         }
       }).catch(err => {
-        console.log('请求message：', err)
+        console.log('请求取好友申请列表err：', err)
       })
     },
 
+    // todo: 1新朋友接口调用（ok）
     saveFriend(item, state) {
       // 点同意，先保存，再修改状态，点拒绝直接改状态
-      debugger;
+      // debugger;
       let params = {
         friendId: item.id,
         userId: this.loginUserId
@@ -138,9 +136,14 @@ export default {
         console.log('保存', res.data.data);
         if (res.data.code === 200) {
           this.updateState(item, state)
+        } else {
+          this.$message({
+            type: 'warning',
+            message: res.data.msg,
+            showClose: true,
+          })
         }
       }).catch(err => {
-        // TODO: 处理好友申请有异常
         console.log('请求message：', err)
       })
     },
@@ -148,17 +151,31 @@ export default {
       debugger;
       let params = {
         code: item.code,
-        state: 3 // 3拒绝，4同意
+        state: state // 3拒绝，4同意
       };
       REFUSE_GROUP(params)
         .then(res => {
-          console.log('修改好友请求状态', res.data.data);
+          console.log('修改好友请求状态res:', res.data);
           if (res.data.code === 200) {
-            console.log('修改好友请求成功')
+            console.log('修改好友请求成功');
+            this.updateMessageList(item, state); // 更新本地页面显示
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.data.msg,
+              showClose: true,
+            })
           }
         }).catch(err => {
         console.log('修改好友请求err：', err)
       })
+    },
+
+    // 等待服务器返回好友修改状态后，本地显示处理
+    updateMessageList(item, state) {
+      debugger;
+      let index = this.messageList.indexOf(item);
+      this.messageList[index].state = state
     }
 
   },

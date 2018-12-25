@@ -1,14 +1,14 @@
 <template>
-  <message></message>
+  <div>
+    <router-view class="MessagePage"></router-view>
+  </div>
 </template>
 
 <script>
-import Message from "../message/Message";
 
 export default {
   name: "MessagePage",
   components: {
-    Message
   }
 };
 </script>

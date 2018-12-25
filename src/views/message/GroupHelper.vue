@@ -2,7 +2,7 @@
   <div class="GroupHelper vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未审核 <span class="count">(10)</span></div>
+        <div class="btn active">未审核 <span class="count">({{messageList.length}})</span></div>
         <div class="btn">已审核</div>
       </div>
     </div>

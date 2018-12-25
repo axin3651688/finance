@@ -6,7 +6,10 @@
           我的团队
           <i class="splide-line"></i>
         </template>
-        <contacts-teams v-if="which_to_show === 'ContactsTeams'"></contacts-teams>
+        <contacts-teams
+          v-if="which_to_show === 'ContactsTeams'"
+          @chatWithSingle="handleChatWithSingle"
+        ></contacts-teams>
       </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
@@ -66,7 +69,6 @@ export default {
     // 开始单聊
     handleChatWithSingle(receiverId) {
       this.$emit('chatWithSingle', receiverId);
-
     }
   }
 }
