@@ -96,7 +96,11 @@ BiText
     columns:[]//列项目,必选项目
     mainDim：""//主维度，决定rows行项目里配制的是什么维度
     needDims:["year","month","company"]//所依赖可变化的维度：只有当config依赖的属性变了，数据才会变，视图才会跟着变！ 
-    periodCount:2,
+    "generateVar":{//生成变量rows
+       "periodCount":12,
+        "compareType":"0&-1",
+        "varName":"rows"
+    },
     compareType:"0&-1" //-1&0
 }
 ~~~

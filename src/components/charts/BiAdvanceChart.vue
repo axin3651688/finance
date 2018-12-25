@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      chartOptions: this.getDataSource(this.item),
+      chartOptions: this.getDataSource(this.item)
     };
   },
   created() {
@@ -35,7 +35,7 @@ export default {
          var second = new Function('return '+ str +';')();
      */
     evalVaiables(chartOptions){
-      let judgeLen = 5; 
+      let judgeLen = 5,prefix =  "this."; 
         for (var a in chartOptions) {
           let val = chartOptions[a]; 
           let type = typeof (val);
@@ -44,7 +44,7 @@ export default {
           }else if(type == "string"){
              if(val.length > judgeLen){
                let start =  val.substring(0,judgeLen);
-               if(start === "this."){
+               if(start === prefix){
                     chartOptions[a] = eval(val);
                }
              }
@@ -55,6 +55,7 @@ export default {
     },
     getDataSource(item) {
        if(this.item.chartOptions){
+         debugger;
          this.evalVaiables(this.item.chartOptions);
          return this.item.chartOptions;
        }
@@ -63,6 +64,7 @@ export default {
     upData(item) {
      
       let chartType = this.item.options.getData.type;
+
       if(chartType === 1){
         /**
          * 就是一个值数据的图形  dataRange   value
@@ -76,7 +78,10 @@ export default {
            /**
             * 多系列数据图形 说白了就是series.length > 1
             */
-           this.chartOptions.series = this.item.options.datas.series;
+           let datas = this.item.options.datas;
+           this.chartOptions.series = datas.series;
+           this.chartOptions.xAxis = datas.xAxis;
+           this.chartOptions.legend.data = datas.legend;
       }
       
     },

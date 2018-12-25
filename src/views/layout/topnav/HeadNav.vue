@@ -6,7 +6,7 @@
       class="hamburger-container"
     />
     <div class="topcontent">
-      <span @click="showDilog" class="choosecompany">
+      <span @click="showDilog">
         <i class="el-icon-search iconclass"></i>
         <el-button type="text" class="underline">{{companyName}}</el-button>
       </span>
@@ -19,11 +19,13 @@
         </span>
       </el-dialog>
 
-      <i class="el-icon-date iconclass"></i>
-      <el-dropdown trigger="click">
-        <el-button type="text" class="underline">
-          {{year+"年"}}
-          <i class="el-icon-arrow-down el-icon--right"></i>
+      <el-dropdown trigger="click" v-if="showDims.year">
+        <el-button type="text">
+          <i class="el-icon-date iconclass shuxian"></i>
+          <span class="underline">
+            {{year+"年"}}
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
@@ -33,7 +35,7 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" v-if="showDims.month">
         <el-button type="text" class="underline">
           {{month+"月"}}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -46,9 +48,10 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
+      <!--  -->
       <!-- 日  日历 -->
       <el-date-picker
+        v-if="showDims.day"
         v-model="value"
         @change="logTimeChange"
         type="date"
@@ -196,6 +199,7 @@ export default {
       "month",
       "company",
       "companyName",
+      "showDims",
       "date"
     ])
   },

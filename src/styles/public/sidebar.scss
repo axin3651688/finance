@@ -93,12 +93,13 @@
         // 当点击展开时的背景
         .el-menu-item {
           // 各二级item的字体
+          box-sizing: border-box;
           background-color: $subMenuBg;
           color: $fontColor2;
           font-weight: $font-weight2;
           padding-left: $font-padding-left !important;
           border-radius: 8px 0px 0px 8px;
-          width: 120%;
+          padding-right: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
