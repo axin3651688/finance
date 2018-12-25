@@ -9,9 +9,10 @@ import webSocket from "../../utils/webSocket";
 export default {
   name: "app",
   created() {
+    debugger;
     this.readLocalStorage();
     let authorization = localStorage.getItem("authorization");
-    // debugger;
+
     this.initSocket(authorization);
   },
   methods: {
@@ -35,9 +36,10 @@ export default {
             company: localStorage.company_cache,
             companyName: localStorage.companyName_cache
           });
-          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
+         
         }
         if (!this.isEmpty(localStorage.year_cache)) {
+          debugger;
           this.GetSideMid({ year: localStorage.year_cache });
         }
         if (!this.isEmpty(localStorage.month_cache)) {
@@ -48,7 +50,10 @@ export default {
         }
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
+        }if (!this.isEmpty(localStorage.treeInfo)) {
+           this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
+        
       }
     },
     initSocket(authorization) {
