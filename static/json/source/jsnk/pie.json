@@ -4,6 +4,7 @@
     "layout": {
         "xtype": "form"
     },
+
     "config": {},
     "items": [{
             "xtype": "chart",
