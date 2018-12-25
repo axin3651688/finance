@@ -29,7 +29,7 @@ export default function modeHandle(e) {
     //     module_api: api
     // });
     // console.log();
-
+    e.url = "cnbi/json/source/jsnk/gauge.json";
     console.log(e.sourceId, e.url)
     findDesignSource(e.sourceId, e.url)
         .then(response => {

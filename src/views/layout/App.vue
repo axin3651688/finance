@@ -36,7 +36,6 @@ export default {
             company: localStorage.company_cache,
             companyName: localStorage.companyName_cache
           });
-         
         }
         if (!this.isEmpty(localStorage.year_cache)) {
           debugger;
@@ -50,16 +49,16 @@ export default {
         }
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
-        }if (!this.isEmpty(localStorage.treeInfo)) {
-           this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
-        
+        if (!this.isEmpty(localStorage.treeInfo)) {
+          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
+        }
       }
     },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
-      // let url = "ws://192.168.1.139:7006/socket.io/";
-      let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.1.139:7006/socket.io/";
+      // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }

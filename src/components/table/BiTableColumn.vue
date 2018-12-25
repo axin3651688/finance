@@ -119,8 +119,8 @@ export default {
       // max-width: 100%;
       // height: 100%;
 
-      overflow: hidden;
-      text-overflow: ellipsis;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
       white-space: nowrap;
       // background-color: #000;
     }
@@ -132,8 +132,8 @@ tbody {
       .cell {
         // max-width: 100%;
         // height: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
         white-space: nowrap;
       }
     }

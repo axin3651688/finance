@@ -258,7 +258,7 @@ export default {
         });
         return;
       }
-      //  api = "cnbi/json/source/jsnk/pie.json";
+
       //  debugger;
       findDesignSource(api).then(res => {
         // debugger;
@@ -337,8 +337,10 @@ export default {
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
-        let year = datas.year, month = datas.month; 
-        year = { id: year, text: "年" }; month = { id: month, text: "月" };
+        let year = datas.year,
+          month = datas.month;
+        year = { id: year, text: "年" };
+        month = { id: month, text: "月" };
         let periodArr = generatePeriod(
           vars.periodCount,
           vars.compareType,
@@ -347,14 +349,14 @@ export default {
           reverse
         );
         let index = 0;
-        if(reverse){
+        if (reverse) {
           index = periodArr.length - 2;
         }
         datas.comparePeriod = periodArr[index].id;
-        if(vars.varName){
-         item.config[vars.varName] = periodArr;
+        if (vars.varName) {
+          item.config[vars.varName] = periodArr;
         }
-       //datas.period = periodArr.map(p=>p.id).join(",");
+        //datas.period = periodArr.map(p=>p.id).join(",");
       }
       return datas;
     },
@@ -469,22 +471,22 @@ export default {
     getActiveTabName(item) {
       return item.id;
     },
-    removeTab(targetName){
+    removeTab(targetName) {
       debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
-         tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-              let nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeTabName = nextTab.name;
-              }
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeTabName = nextTab.name;
             }
-          });
+          }
+        });
       }
-       this.activeTabName = activeName;
-       this.items = tabs.filter(tab => tab.name !== targetName);
+      this.activeTabName = activeName;
+      this.items = tabs.filter(tab => tab.name !== targetName);
     }
   }
 };

@@ -55,7 +55,7 @@ export default {
       modeHandle(e);
     },
     shownavMenu(e) {
-      debugger;
+      // debugger;
       //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
       if (e.level === 2) {
         // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩

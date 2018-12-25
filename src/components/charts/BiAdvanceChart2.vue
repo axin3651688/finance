@@ -1,41 +1,24 @@
 <template>
-  <charts :options="chartOptions" auto-resize/>
-  <!-- <chart :options="map" auto-resize/> -->
+  <div :class="className" :id="id" :style="{height:height,width:width}"/>
   <!-- @click="item1()" -->
 </template>
 <script type="text/ecmascript-6">
-import ECharts from "./ECharts.vue";
 import EventMixins from "../mixins/EventMixins";
 import pie from "./data/pie.js";
 import gauge from "./data/gauge.js";
-import radar from "./data/radar.js";
-import line from "./data/line.js";
-import sunburst from "./data/sunburst.js";
-import themeRiver from "./data/themeRiver.js";
-import map from "./map/map";
-import chinaMap from "./map/china.json";
-import scatter from "./data/scatter.js";
-import sankey from "./data/sankey.js";
-ECharts.registerMap("china", chinaMap);
-
+import autoResize from "../mixins/AutoResize.js";
 export default {
   name: "BiAdvanceChart",
-  mixins: [EventMixins],
+  mixins: [EventMixins,autoResize],
   props: {
     item: {}
   },
-  components: {
-    charts: ECharts
-  },
   data() {
     return {
-      // map
       chartOptions: this.getDataSource(this.item)
     };
   },
   created() {
-    debugger;
-    console.log(this);
     // var obj = JSON.stringify(this.dataSource);
     // console.log(obj);
   },
@@ -109,28 +92,24 @@ export default {
         console.error("没有正确的配置chart类型");
         return;
       }
-      console.log(chartSubType);
-      // debugger;
+      console.log(typeof chartSubType);
+      debugger;
       switch (chartSubType) {
         case "pie":
-          debugger;
-          return pie();
+          return pie(this.item);
           break;
         case "gauge":
-          return gauge();
+          console.log(chartSubType);
+          debugger;
+          return gauge(this.item);
           break;
-        case "line":
-          return line();
-          break;
-        case "radar":
-          return radar();
+        case "pie":
+          return pie(this.item);
           break;
 
         default:
           break;
       }
-
-      //this.$children[0].chart
       // return pie(this.item);
       // return eval(chartSubType + "()");
     }
