@@ -224,6 +224,8 @@ BiText
                 //所有的数据都在store里，自己加自己的判断吧
                 return trye;//默认显示
             },
+            queryDataAfter:function(){}//数据的后置处理
+            queryDataBefore:function(){}//数据的前置处理
             xtype: "bi-text",
             weight: "6"//当layout=column时需要
             renderFunction:"functionName"//字面量函数

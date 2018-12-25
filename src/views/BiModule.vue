@@ -189,12 +189,19 @@ export default {
     */
     showSet(items){
         items.forEach(item=>{
-           let funName = item.showFun;
-           if(typeof (funName) == "function"){
-                item.show = item.showFun(this.$store);
+           debugger;
+           let children = item.children;
+           if(children && children.length > 0){
+              this.showSet(children);
            }else{
-              item.show = true;
+              let funName = item.showFun;
+              if(typeof (funName) == "function"){
+                    item.show = item.showFun(this.$store);
+              }else{
+                  item.show = true;
+              }
            }
+          
         });
 
     },
@@ -274,7 +281,7 @@ export default {
         });
         return;
       }
-      //  debugger;
+       debugger;
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -405,10 +412,10 @@ export default {
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
-        // 根据是否配置rows来改变rows的内容
-        // if (config.group && config.rows && params.comparePeriod) {
-        //   rowsOfChildrenContent(config, params);
-        // }
+        //在此加了查询数据之前的拦截处理
+        if(item.queryDataBefore && typeof(item.queryDataBefore) == "function"){
+          params = item.queryDataBefore(params);
+        }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -454,6 +461,10 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      //在此加了查询数据之后的拦截处理
+      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function"){
+        datas = item.queryDataAfter(datas);
+      }
       // debugger;
       item.datas = datas;
       if (!$childVue) {
