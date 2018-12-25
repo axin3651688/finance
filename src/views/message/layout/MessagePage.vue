@@ -15,20 +15,17 @@
 </template>
 
 <script>
-import btn from './core/btn'
-
 export default {
   name: "MessagePage",
   components: {
     TopBar: () => import('./public/TopBar'),
-    SiderBar: () => import('./public/SiderBar'),
-    Message: () => import('../Message.vue')
+    SiderBar: () => import('./public/SiderBar')
   }
 };
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../styles/variables.scss";
   @import "../styles/layout.scss";
 
   .MessagePage {

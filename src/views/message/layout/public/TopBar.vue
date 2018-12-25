@@ -1,10 +1,15 @@
 <template>
   <div class="TopBar">
     <div class="topbar-left">
-      TopBar
+      topbar-left
     </div>
     <div class="topbar-right">
-      right
+      <h3 class="page-title">首页</h3>
+      <div class="btn-group">
+        <span class="btn btn-mini">-</span>
+        <span class="btn btn-max"><></span>
+        <span class="btn btn-close">X</span>
+      </div>
     </div>
   </div>
 </template>
@@ -16,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../../styles/variables.scss";
   @import "../../styles/layout.scss";
 
   .TopBar {
@@ -46,6 +51,26 @@ export default {
         top: 0;
         bottom: 0;
         box-shadow: 5px 0 20px 0 rgba(0,0,0,.2);
+      }
+      .page-title {
+        height: 100%;
+        padding: 0 50px;
+        font-size: 18px;
+        color: $colorText3;
+        line-height: $sizeTopBarHeight;
+        display: inline-block;
+      }
+      .btn-group {
+        @include flex();
+        justify-content: space-between;
+        float: right;
+        .btn {
+          width: 40px;
+          height: 40px;
+          text-align: center;
+          line-height: 40px;
+          cursor: pointer;
+        }
       }
     }
   }

@@ -20,9 +20,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../styles/element.scss";
 .btn{
-  @include btn;
+  @include myBtn();
 }
 </style>

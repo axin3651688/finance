@@ -9,19 +9,27 @@
       <ul>
         <router-link tag="li" to="/message_page/home" class="nav-item">
           <div class="nav-item_inner nav-item_text">首页</div>
-          <div class="nav-item_inner nav-item_icon">@</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="../../assets/new_icon/home_page.svg" alt="">
+          </div>
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_text">消息</div>
-          <div class="nav-item_inner nav-item_icon">￥</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="../../assets/new_icon/message.svg" alt="">
+          </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
           <div class="nav-item_inner nav-item_text">通讯录</div>
-          <div class="nav-item_inner nav-item_icon">$</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="../../assets/new_icon/person.svg" alt="">
+          </div>
         </router-link>
         <li class="nav-item nav-item_quit">
           <div class="nav-item_inner nav-item_text">退出</div>
-          <div class="nav-item_inner nav-item_icon">#</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="../../assets/new_icon/quit.png" alt="">
+          </div>
         </li>
       </ul>
     </div>
@@ -35,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../../styles/variables.scss";
   @import "../../styles/element.scss";
 
   .SiderBar {
@@ -68,7 +76,7 @@ export default {
       }
 
       .nav-item {
-        $navItemHeight: 76px;
+        $navItemHeight: 80px;
         position: relative;
         height: $navItemHeight;
         width: 100%;
@@ -87,8 +95,15 @@ export default {
           left: 0;
           height: 100%;
           width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           background: $colorBgSiderBar;
           transition: all .3s;
+          img {
+            width: 30px;
+            height: 30px;
+          }
         }
 
         &:hover {
@@ -96,7 +111,9 @@ export default {
             background: $colorTheme;
             color: transparent;
             width: 5px;
+            img {display: none;}
           }
+
         }
       }
 

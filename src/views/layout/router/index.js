@@ -234,17 +234,17 @@ const router = new Router({
         {
           path: '/message_page/home', // 消息-首页
           name: 'Home',
-          component: () => import('@v/message/home/Index.vue'),
+          component: () => import('@v/message/home/Home.vue'),
         },
         {
           path: '/message_page/contact', // 消息-通讯录
           name: 'Contact',
-          component: () => import('@v/message/contact/Index.vue'),
+          component: () => import('@v/message/contact/Contact.vue'),
         },
         {
           path: '/message_page/msg', // 消息-聊天页面
           name: 'Msg',
-          component: () => import('@v/message/msg/Index.vue'),
+          component: () => import('@v/message/msg/Msg.vue'),
         }
       ]
     },

@@ -182,7 +182,7 @@ export default {
   },
   data() {
     return {
-      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
+      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
@@ -407,12 +407,12 @@ export default {
 
 <style lang="scss">
   /*这里不使用 scoped 使v-html生成表情能够应用到样式*/
-  @import "@s/green/emotion_sprites.scss";
+  @import "../styles/emotion_sprites.scss";
 </style>
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../styles/variables.scss";
 
-  $iconGroupPersonUrl: '../../assets/green/group_person.svg';
+  $iconGroupPersonUrl: '../assets/icon/group_person.svg';
 
   .GroupMsg {
     display: flex;
@@ -613,15 +613,15 @@ export default {
         }
 
         .face-icon {
-          background: url("../../assets/green/emoji.svg") no-repeat;
+          background: url("../assets/icon/emoji.svg") no-repeat;
         }
 
         .file-icon {
-          background: url("../../assets/green/file.svg") no-repeat;
+          background: url("../assets/icon/file.svg") no-repeat;
         }
 
         .link-icon {
-          background: url("../../assets/green/url.svg") no-repeat;
+          background: url("../assets/icon/url.svg") no-repeat;
         }
       }
 

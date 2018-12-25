@@ -1,7 +1,8 @@
-@import "@s/green/variables.scss";
+@charset "UTF-8";
+@import "./variables.scss";
 @import "./layout.scss";
 
-@mixin btn($height:30px,$fontSize:14px,$color:#fff,$bgcolor:$colorTheme,$radius:8px,$padding:0 10px) {
+@mixin myBtn($height:30px,$fontSize:14px,$color:#fff,$bgcolor:$colorTheme,$radius:8px,$padding:0 10px) {
   height: $height;
   line-height: $height;
   padding: $padding;
@@ -12,10 +13,6 @@
   color: $color;
   text-align: center;
   display: inline-block;
-}
-
-@mixin list($direction:column) {
-  @include flex($direction);
 }
 
 @mixin imgBox($width:50px,$height:50px,$borderRadius:0) {
