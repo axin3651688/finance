@@ -6,10 +6,9 @@
     style="width: 100%;"
     height="item.height || 480"
     :cell-style="cellStyle"
-    :header-cell-style="rowClass"
     @cell-click="onCellClick"
   >
-    <!-- :span-method="rowSpanAndColSpanHandler" -->
+    <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
@@ -94,11 +93,15 @@ export default {
         }
       }
     },
-    rowClass({ row, rowIndex }) {
-      // 头部颜色和居中配置,马军2018.12.24
-      return "background:#F0F8FF;text-align: center";
-    },
+    // rowClass({ row, rowIndex }) {
+    //   // 头部颜色和居中配置,马军2018.12.24
+    //   return "background:#F0F8FF;text-align: center";
+    // },
+    /**
+     * 单元格级别样式设置
+     */
     cellStyle(row) {
+      debugger;
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -109,12 +112,16 @@ export default {
         let level = record._level || record.level || 1;
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
-        return css + "font-weight:bold;text-align: left" + textIndent + drill;
+        css =  css + "font-weight:bold;" + textIndent + drill;
+        console.info(record.text+"==>css==>"+css);
+        return css
       } else {
         return css;
       }
     },
-
+     /**
+      * 单元格单击事件
+      */
     onCellClick(row, column, cell, event) {
       let listener = row._drill || row.drill;
       if (listener) {

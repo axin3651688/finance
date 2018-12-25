@@ -7,12 +7,28 @@
 
     "config": {},
     "items": [{
-            "xtype": "chart",
-            "id": "1416001",
-            "text": "风险级别占比情况",
-            "weight": 12,
-            "showFun": function ($store) {
-                return false;
+        "xtype": "chart",
+        "id": "1416001",
+        "text": "风险级别占比情况",
+        "weight": 12,
+        "showFun":function($store){
+            return true;
+        },
+        "queryDataAfter":function(datas){
+            debugger;
+            return datas;
+
+        },
+        "queryDataBefore":function(params){
+            debugger;
+            return params;
+        },
+        "config": {
+            "sql": "select r.nrange as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by nrange order by nrange",
+            "mainDim": "itemperiod",
+            "random": {
+                "min": 100,
+                "max": 100000
             },
             "config": {
                 "sql": "select r.nrange as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by nrange order by nrange",

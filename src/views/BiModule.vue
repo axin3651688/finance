@@ -184,18 +184,26 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
-    /**
-     * 设置item是否隐藏或显示
-     */
-    showSet(items) {
-      items.forEach(item => {
-        let funName = item.showFun;
-        if (typeof funName == "function") {
-          item.show = item.showFun(this.$store);
-        } else {
-          item.show = true;
-        }
-      });
+   /**
+    * 设置item是否隐藏或显示
+    */
+    showSet(items){
+        items.forEach(item=>{
+           debugger;
+           let children = item.children;
+           if(children && children.length > 0){
+              this.showSet(children);
+           }else{
+              let funName = item.showFun;
+              if(typeof (funName) == "function"){
+                    item.show = item.showFun(this.$store);
+              }else{
+                  item.show = true;
+              }
+           }
+          
+        });
+
     },
     /**
      * 动态设置参数至本组件
@@ -257,7 +265,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-      api = "cnbi/json/source/jsnk/pie.json";
+     // api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -273,7 +281,7 @@ export default {
         });
         return;
       }
-      //  debugger;
+       debugger;
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -402,14 +410,15 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
-        // 根据是否配置rows来改变rows的内容
-        // if (config.group && config.rows && params.comparePeriod) {
-        //   rowsOfChildrenContent(config, params);
-        // }
+        //在此加了查询数据之前的拦截处理
+        if(item.queryDataBefore && typeof(item.queryDataBefore) == "function"){
+          params = item.queryDataBefore(params);
+        }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -455,6 +464,11 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      //在此加了查询数据之后的拦截处理
+      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
+        debugger;
+        datas = item.queryDataAfter(datas);
+      }
       // debugger;
       item.datas = datas;
       if (!$childVue) {
