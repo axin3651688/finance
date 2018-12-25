@@ -6,6 +6,8 @@
 <script type="text/ecmascript-6">
 import ECharts from "./ECharts.vue";
 import EventMixins from "../mixins/EventMixins";
+import bar from "./data/bar.js";
+import funnel from "./data/funnel.js";
 import pie from "./data/pie.js";
 import gauge from "./data/gauge.js";
 import radar from "./data/radar.js";
@@ -16,6 +18,7 @@ import map from "./map/map";
 import chinaMap from "./map/china.json";
 import scatter from "./data/scatter.js";
 import sankey from "./data/sankey.js";
+
 ECharts.registerMap("china", chinaMap);
 
 export default {
@@ -74,11 +77,11 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      // if (item.chartOptions) {
-      //   debugger;
-      //   this.evalVaiables(item.chartOptions);
-      //   return item.chartOptions;
-      // }
+      if (item.chartOptions) {
+        debugger;
+        this.evalVaiables(item.chartOptions);
+        return item.chartOptions;
+      }
       return this.getDefautlChartConfigByType();
     },
     upData(item) {
@@ -111,9 +114,15 @@ export default {
       }
       console.log(chartSubType);
       // debugger;
+
       switch (chartSubType) {
+        case "bar":
+          return bar();
+          break;
+        case "funnel":
+          return funnel();
+          break;
         case "pie":
-          debugger;
           return pie();
           break;
         case "gauge":
@@ -125,7 +134,15 @@ export default {
         case "radar":
           return radar();
           break;
-
+        case "sankey":
+          return sankey();
+          break;
+        case "sunburst":
+          return sunburst();
+          break;
+        case "themeRiver":
+          return themeRiver();
+          break;
         default:
           break;
       }

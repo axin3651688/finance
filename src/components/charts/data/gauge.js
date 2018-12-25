@@ -1,56 +1,59 @@
-export default function scatter() {
-    let data1 = []
-    let symbolCount = 6
-    for (let i = 0; i < 16; i++) {
-        data1.push([
-            Math.random() * 5,
-            Math.random() * 4,
-            Math.random() * 12,
-            Math.round(Math.random() * (symbolCount - 1))
-        ])
-    }
+export default function pie() {
     return {
-        legend: {
-            top: 20,
-            data: ['scatter']
+        title: {
+            text: '仪表图'
         },
         tooltip: {
-            formatter: '{c}'
+            formatter: "{b} : {c}%"
         },
-        grid: {
-            top: '26%',
-            bottom: '26%'
-        },
-        xAxis: {
-            type: 'value',
-            splitLine: {
-                show: false
+        toolbox: {
+            feature: {
+                saveAsImage: {}
             }
         },
-        yAxis: {
-            type: 'value',
-            splitLine: {
-                show: false
-            }
-        },
-        visualMap: [{
-            realtime: false,
-            left: 'right',
-            selectedMode: 'multiple',
-            dimension: 2,
-            selected: [],
-            min: 0,
-            max: 18,
-            precision: 0,
-            splitNumber: 0,
-            calculable: true
-        }],
         series: [{
-            name: 'scatter',
-            type: 'scatter',
-            symbolSize: 30,
-            data: data1
-        }]
-    }
+            type: "gauge",
+            radius: "65%",
+            // 刻度间隔
+            splitNumber: 5,
+            axisLine: {
+                // 坐标轴线
+                lineStyle: {
+                    // 属性lineStyle控制线条样式
+                    width: 10,
+                    // 外圈线的颜色
+                    color: [
+                        [0.25, "#F04864"],
+                        [0.5, "#FACC14"],
+                        [0.75, "#13C2C2"],
+                        [1, "#2FC25B"]
+                    ]
+                }
+            },
+            splitLine: {
+                // 是否显示刻度线
+                show: false
+            },
+            axisTick: {
+                // 坐标轴小标记
 
+                length: 1 // 属性length控制线长
+            },
+            // 是否显示标签
+            axisLabel: {
+                show: false
+            },
+            pointer: {
+                length: "70%",
+                width: 9
+            },
+            detail: {
+                formatter: "{value}%"
+            },
+            data: [{
+                value: 80,
+                name: "完成率-测试"
+            }]
+        }]
+    };
 }

@@ -1,7 +1,7 @@
-export default function pie(item) {
+export default function pie() {
     return {
         title: {
-            text: item.text,
+            text: "测试",
             x: "center"
         },
         tooltip: {
@@ -15,7 +15,7 @@ export default function pie(item) {
             data: ["中国", "美国"]
         },
         series: [{
-            name: item.text,
+            name: "测试",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
