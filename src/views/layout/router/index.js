@@ -225,19 +225,32 @@ const router = new Router({
         import('@v/common/404'),
     },
 
-    // 消息独立页面
+    // start---> 姜海斌 消息独立页面
     {
       path: '/message_page',
       name: 'MessagePage',
       component: () => import('@v/message/layout/MessagePage.vue'),
       children: [
         {
-          path: '/message_page/index',
-          name: 'Index',
-          component: () => import('@v/message/Index.vue'),
+          path: '/message_page/home', // 消息-首页
+          name: 'Home',
+          component: () => import('@v/message/home/Index.vue'),
+        },
+        {
+          path: '/message_page/contact', // 消息-通讯录
+          name: 'Contact',
+          component: () => import('@v/message/contact/Index.vue'),
+        },
+        {
+          path: '/message_page/msg', // 消息-聊天页面
+          name: 'Msg',
+          component: () => import('@v/message/msg/Index.vue'),
         }
       ]
     },
+    // end---> 姜海斌 消息独立页面
+
+
   ]
 })
 
