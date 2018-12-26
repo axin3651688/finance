@@ -1,20 +1,42 @@
 <template>
 <div>
+  <!--zb 下属企业合并行 -->
   <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+     v-if="item.id=='xsqydkdbqk' || item.id=='xsqydydkqk'"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
     height="item.height || rowClass"
     :cell-style="cellStyle"
-    @cell-click="onCellClick"
-    :span-method="rowSpanAndColSpanHandler"
+    @cell-click="onCellClick" 
+    :span-method="rowSpanAndColSpanHandler" 
+    
   >
+
     <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
     </el-tag>
   </el-table>
+  <el-table
+     v-else
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+    border
+    :stripe="true"
+    height="item.height || rowClass"
+    :cell-style="cellStyle"
+    @cell-click="onCellClick" 
+    
+  >
+
+    <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
+    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
+      <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
+      <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
+    </el-tag>
+  </el-table>
+
         <!-- sjz 分页功能 -->
         <!-- <div class="paginationClass"> -->
             <!-- page-sizes:每页展示条选择组件 -->
@@ -54,6 +76,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
+      spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
         idProperty: "group",
@@ -72,14 +95,14 @@ export default {
   },
 
   created() {
-    debugger;
     console.log(this.item);
     //this.$set(this.item,"datas",null);
     //debugger;
     //this.getTableDataParams();
   },
   mounted() {
-    // debugger;
+     //zb 下属企业合并行
+     if(this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")this.getSpanArr(this.item.datas);
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
    // this.getTableDataParams();
@@ -95,7 +118,6 @@ export default {
         this.currentPage = currentPage;
     },
     getDatas(item) {
-      debugger
       let rows = item.config.rows;
       if (rows && rows.length > 0) {
         return rows;
@@ -196,7 +218,7 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
-     getSpanArr(data) {　
+     getSpanArr(data) {　//合并行
           for (var i = 0; i < data.length; i++) {
             console.log(data[i].rowspan)
             if (i === 0) {
@@ -204,7 +226,7 @@ export default {
               this.pos = 0
             } else {
               // 判断当前元素与上一个元素是否相同
-            if (data[i].group === data[i - 1].group) {
+            if (data[i].dim_company === data[i - 1].dim_company) {
                 this.spanArr[this.pos] += 1;
                 this.spanArr.push(0);
               } 
@@ -215,8 +237,8 @@ export default {
             }
           }
      },
-    rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
-      if (columnIndex === 0) {
+    rowSpanAndColSpanHandler({row, column, rowIndex, columnIndex}) {//合并行
+      if (columnIndex === 0 ||columnIndex === 1) {
             const _row = this.spanArr[rowIndex];
             const _col = _row > 0 ? 1 : 0;
             console.log("行",_row);
