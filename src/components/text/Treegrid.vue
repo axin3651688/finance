@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe height="item.height || rowClass">
-    <el-table-column v-if="item.config.columns.length===0" width="120">
+  <div v-if="item.show">
+    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe>
+    <el-table-column v-if="item.config.columns.length === 0" width="120" ref="tchild">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
@@ -17,6 +17,7 @@
       :key="column.value"
       :label="column.text"
       :width="column.width"
+      ref="tchild"
     >
       <template slot-scope="scope">
         <span
@@ -69,6 +70,7 @@ export default {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
+      formatData:[]
     };
   },
   name: "TreeGrid",
@@ -96,11 +98,11 @@ export default {
       },
     }
   },
-  mounted() {
+//  mounted() {
     // this.item.options = this.item.items[0].columns
    
-  },
-  computed: {
+ // },
+  __computed: {
     // 格式化数据源
     formatData() {
       debugger
@@ -114,33 +116,41 @@ export default {
       const args = this.evalArgs
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
         : [tmp, this.expandAll];
-      return func.apply(null, args);
+      let datas =  func.apply(null, args);
+      console.info(datas);
+      return datas;
     }
   },
   methods: {
-     rowClass({ row, rowIndex }) {
-      return "height:100%-64px";
-    },
+     /**
+      * 格式化数据源
+      */
+     convertData(){
+       //alert(this.item.show)
+        let tmp;
+        if (!Array.isArray(this.item.rows)) {
+          tmp = [this.item.rows];
+        } else {
+          tmp = this.item.rows;
+        }
+        const func = this.evalFunc || treeToArray;
+        const args = this.evalArgs
+          ? Array.concat([tmp, this.expandAll], this.evalArgs)
+          : [tmp, this.expandAll];
+        let formatData =  func.apply(null, args);
+        this.$set(this, "formatData", formatData); 
+     },
+
+    //  rowClass({ row, rowIndex }) {
+      //  height="item.height || rowClass"
+    //   return "height:100%-64px";
+    // },
     upData(item) {
-      this.$set(this.item, "datas", item.datas);
-      this.$set(this, "item", item);
-      let refs = this.$refs;
-      if (refs) {
-        if (refs.child) {
-          refs.child.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-        if (refs.tchild) {
-          refs.tchild.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-      }
+       this.$set(this, "formatData", ""); 
+      this.$set(this, "formatData", null); 
+      this.item = item;
+      debugger;
+      this.convertData();
     },
     array(datas){
     debugger
@@ -281,8 +291,8 @@ export default {
     console.log("a",this.item)
     this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas
-
     this.array(this.item.datas)
+     this.convertData();
 
   }
 };

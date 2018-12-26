@@ -20,19 +20,19 @@
 	"columns": [{
 			"id": "id",
 			"type": "string",
-			"hidden": true,
+		
 			"text": "编码"
+		},
+		{
+			"id": "row",
+			"type": "index",
+			"text": "行次"
 		},
 		{
 			"id": "level",
 			"type": "number",
-			"hidden": true,
+		
 			"text": "级别"
-		},
-		{
-			"id": "row",
-			"type": "number",
-			"text": "行次"
 		},
 		{
 			"id": "text",

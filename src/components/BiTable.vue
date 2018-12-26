@@ -1,17 +1,17 @@
 <template>
 <div>
   <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    height="item.height || rowClass"
+    :height="item.height || rowClass"
     :cell-style="cellStyle"
     @cell-click="onCellClick"
     :span-method="rowSpanAndColSpanHandler"
   >
     <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
     </el-tag>
   </el-table>
@@ -19,10 +19,9 @@
         <!-- <div class="paginationClass"> -->
             <!-- page-sizes:每页展示条选择组件 -->
             <!-- page-size:每页展示条 -->
-            <!-- current-change:currentPage改变时会触发 -->
+            <!-- current-change:currentPage改变时会触发  || item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'-->
             <!-- size-change:pagesize改变时触发 -->
-            <el-pagination
-              v-if="item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'"
+            <el-pagination v-if="item.pagination "
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
@@ -74,6 +73,7 @@ export default {
   created() {
     debugger;
     console.log(this.item);
+    this.upData()
     //this.$set(this.item,"datas",null);
     //debugger;
     //this.getTableDataParams();
@@ -105,9 +105,11 @@ export default {
     },
 
     upData(item) {
+      debugger
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
+      console.log(refs)
       if (refs) {
         if (refs.child) {
           refs.child.forEach(children => {
