@@ -38,18 +38,21 @@ export default {
     };
   },
   created() {
-    // debugger;
+    debugger;
+    console.log(this.item.options.type);
+
     this.upData();
   },
   methods: {
     upData(from) {
+      debugger;
       let config = this.item.options.getData;
       if (!config || !config.type) {
         console.error(this.item.text + "没有配制正确！");
         return;
       }
-      if (config.type === 5) {
-        //debugger;
+      if (config.type === 2) {
+        debugger;
       }
       let tempData = getConfigModelDatas(
         config,
@@ -88,5 +91,8 @@ export default {
 .bgwight {
   margin-top: 24px;
   background: #fff;
+  //圆角 阴影
+  border-radius: 20px;
+  box-shadow:3px 0px 10px rgba(0,0,0,0.1);
 }
 </style>

@@ -55,7 +55,17 @@ export default {
       modeHandle(e);
     },
     shownavMenu(e) {
-      // debugger;
+      //天津食品的管理驾驶舱的跳转，现在是跳转不了的,id=336。
+      if(e.id=="336"){
+        if (this.device === "mobile") {
+          this.ToggleSideBar({ opend: false });
+        }
+        this.user.company.id === 121
+          ? this.$router.push("/tjsp/module")
+          : this.$router.push("/jsnk/module");
+        // this.$router.push({ path: "/module", name: "", params: {} });
+        modeHandle(e);
+      } else 
       //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
       if (e.level === 2) {
         console.log(e);

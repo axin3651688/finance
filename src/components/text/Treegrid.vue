@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
+    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe height="item.height || rowClass">
     <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -103,6 +103,7 @@ export default {
   computed: {
     // 格式化数据源
     formatData() {
+      debugger
       let tmp;
       if (!Array.isArray(this.item.rows)) {
         tmp = [this.item.rows];
@@ -117,8 +118,32 @@ export default {
     }
   },
   methods: {
-
+     rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
+    upData(item) {
+      this.$set(this.item, "datas", item.datas);
+      this.$set(this, "item", item);
+      let refs = this.$refs;
+      if (refs) {
+        if (refs.child) {
+          refs.child.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
+            }
+          });
+        }
+        if (refs.tchild) {
+          refs.tchild.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
+            }
+          });
+        }
+      }
+    },
     array(datas){
+    debugger
     let data=datas
     // console.log("w",data)
     let arr = []
@@ -159,6 +184,7 @@ export default {
       debugger
       this.tranformData(data,rootItem);
     }
+
     this.item.rows = rootItem;
 
     // for(let i = 0; i < data.length-1;i++){
@@ -185,21 +211,28 @@ export default {
     // this.item.rows = arr;
     // console.log("11",arr);
     },
+    // 孙子成写的------递归循环法
     tranformData(data,rootItem) {
-      debugger
+      // debugger
       let me = this;
       let children = [];
+      let itemArr = [];
       rootItem.children = children;
       for(let i = 0;i < data.length;i ++){
         let it = data[i];
+        if(rootItem.scode==it.scode){
+          continue;
+        }
         if(rootItem.scode==it.pid){
           rootItem.children.push(it);
+        }else {
+          itemArr.push(it);
         }
       }
       if(rootItem.children&&rootItem.children.length>0){
           for(let i = 0;i <rootItem.children.length;i ++){
             let tt = rootItem.children[i];
-            me.tranformData(data,tt);
+            me.tranformData(itemArr,tt);
           }
       }
       // console.log(rootItem);
