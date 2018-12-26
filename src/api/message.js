@@ -1,6 +1,17 @@
 // message 页面获取消息列表
 import request from 'utils/http'
 
+//上传文件
+export function UPLOAD_FILE(data) {
+  // debugger;
+  return request({
+    url: '/file/api/upload_file',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 获取消息左边栏数据
 export function MY_SESSION(userId) {
   // debugger

@@ -6,8 +6,8 @@
       </div>
       <div class="right">
         <div>
-          <img src="@/assets/login/zuixiaohua.svg" alt="" class="img1">
-          <img src="@/assets/login/close.svg" alt="" class="img2">
+          <img src="@/assets/login/zuixiaohua.svg" alt="" class="img1" @click="web_minWindows()">
+          <img src="@/assets/login/close.svg" alt="" class="img2" @click="web_closeWindows()">
         </div>
         <h3>登陆</h3>
         <p class="copy">安徽经邦数据展示客户端</p>
@@ -91,6 +91,33 @@ export default {
   },
   methods: {
     ...mapActions(["GetSideMid"]),
+
+    web_minWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_minWindows', '')
+      }
+
+    },
+    web_maxWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_maxWindows', '')
+      }
+    },
+    web_closeWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_closeWindows', '')
+      }
+    },
+
     showPwd() {
       if (this.pwdType === "password") {
         this.pwdType = "";
@@ -130,6 +157,17 @@ export default {
                 data.company.id === 121 ?
                   this.$router.push("/message_page/home") :
                   this.$router.push("/message_page/home")
+
+                // todo: 渲染进程 与主进程通信
+                if (window.require) {
+                  var ipc = window.require('electron').ipcRenderer
+                }
+                if (window.require) {
+                  ipc.send('web_loginSucess', '')
+                }
+
+
+
               } else {
 
                 this.loginUser.usename = "";

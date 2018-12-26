@@ -102,13 +102,32 @@
         <figure>
           <div>
             <div class="img-box">
-              <img :src="groupInfo.avatar" :alt="groupInfo.text">
+              <img v-if="imageUrl" :src="imageUrl">
+              <img v-else :src="groupInfo.avatar">
             </div>
           </div>
-          <a class="upload-file" href="javascript:;">
-            <span>选择照片</span>
-            <input type="file" placeholder="选择照片">
-          </a>
+          <!--<el-upload-->
+            <!--class="avatar-uploader"-->
+            <!--:show-file-list="false"-->
+            <!--:on-success="handleAvatarSuccess"-->
+            <!--:before-upload="beforeAvatarUpload">-->
+            <!--&lt;!&ndash;<img v-if="imageUrl" :src="imageUrl" class="avatar">&ndash;&gt;-->
+            <!--上传头像-->
+            <!--&lt;!&ndash;action="https://jsonplaceholder.typicode.com/posts/"&ndash;&gt;-->
+          <!--</el-upload>-->
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            :before-upload="beforeUpload"
+            :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </figure>
       </div>
       <div class="dialog-content">
@@ -142,17 +161,6 @@
               </span>
     </el-dialog>
 
-    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
-    <!--<el-dialog class="add-member-dialog"-->
-    <!--:visible.sync="showGroupMembers"-->
-    <!--width="300px"-->
-    <!--:show-close="true"-->
-    <!--:modal-append-to-body="false"-->
-    <!--id="group-members"-->
-    <!--&gt;-->
-    <!--sdfasdfsadf-->
-    <!--</el-dialog>-->
-
     <!--群成员侧边栏组件-->
     <group-members
       v-if="showGroupMembers"
@@ -171,7 +179,8 @@ import {
   sendMsg,
   QUIT_GROUP,
   EDIT_GROUP,
-  DISSOLU_GROUP
+  DISSOLU_GROUP,
+  UPLOAD_FILE // 上传文件
 } from '~api/message.js';
 
 export default {
@@ -182,6 +191,7 @@ export default {
   },
   data() {
     return {
+      imageUrl: '', // 群头像
       defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
@@ -208,6 +218,49 @@ export default {
     }
   },
   methods: {
+
+    // 上传群头像
+    beforeUpload(file) {
+      console.log(file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', 225);
+      fd.append('size', file.size);
+      console.log('size',fd.size);
+      UPLOAD_FILE(fd).then(res => {
+        console.log('上传群头像res：',res)
+      });
+      return true
+    },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+
+    // 群头像上传成功后
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      debugger;
+    },
+    // 群头像上传前校验
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG/png 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
     addFaceToInput(face) {
@@ -288,7 +341,7 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      debugger;
+      // debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
@@ -385,7 +438,8 @@ export default {
         console.log('解散群聊异常：', err)
       })
     }
-  },
+  }
+  ,
   mounted() {
     this.getInfo();
     this.getGroupMsgList();
@@ -444,6 +498,7 @@ export default {
             height: 100%;
           }
         }
+
         .img-box__group {
           cursor: pointer;
         }

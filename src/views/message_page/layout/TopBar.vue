@@ -6,9 +6,9 @@
     <div class="topbar-right">
       <h3 class="page-title">首页</h3>
       <div class="btn-group">
-        <span class="btn btn-mini">-</span>
-        <span class="btn btn-max"><></span>
-        <span class="btn btn-close">X</span>
+        <span class="btn btn-mini" @click="web_minWindows()">-</span>
+        <span class="btn btn-max" @click="web_maxWindows()"><></span>
+        <span class="btn btn-close" @click="web_closeWindows()">X</span>
       </div>
     </div>
   </div>
@@ -16,7 +16,34 @@
 
 <script>
 export default {
-  name: "TopBar"
+  name: "TopBar",
+  methods: {
+    web_minWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_minWindows', '')
+      }
+
+    },
+    web_maxWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_maxWindows', '')
+      }
+    },
+    web_closeWindows() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_closeWindows', '')
+      }
+    },
+  }
 }
 </script>
 

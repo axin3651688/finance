@@ -80,13 +80,14 @@ export default {
 
       console.log('点击了卡片数据-->>', card.text);
 
-      if (window.require) {
-        var ipc = window.require('electron').ipcRenderer
-      }
 
-      if (window.require) {
-        ipc.send('openWebUrl', 'http://www.baidu.com')
-      }
+        if (window.require) {
+          var ipc = window.require('electron').ipcRenderer
+        }
+        if (window.require) {
+          ipc.send('web_openWebUrl', 'http://www.baidu.com')
+        }
+
 
     },
 
@@ -97,9 +98,8 @@ export default {
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
-
       if (window.require) {
-        ipc.send('openWebUrl', 'http://www.baidu.com')
+        ipc.send('web_openWebUrl', 'http://www.baidu.com')
       }
 
     },
