@@ -41,13 +41,24 @@
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
+        v-if="item.show "
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-        <el-row v-if="item.layout && item.layout.xtype === 'column'" :gutter="24">
+        <!-- sjz 按钮 -->
+        <!-- <el-button-group>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部展开<i class="el-icon-arrow-down"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部收起<i class="el-icon-arrow-up"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">刷新<i class="el-icon-refresh"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">导出<i class="el-icon-download"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">安全比例</el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">预警比例</el-button>
+        </el-button-group> -->
+        
+        <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
             v-for="(item1,index1) in item.children"
@@ -188,11 +199,12 @@ export default {
     * 设置item是否隐藏或显示
     */
     showSet(items){
+        let flag = true;
         items.forEach(item=>{
-           
-           let children = item.children;
-           if(children && children.length > 0){
-              this.showSet(children);
+           let funName = item.showFun;
+           if(typeof (funName) == "function"){
+                item.show = item.showFun(this.$store);
+                
            }else{
               let funName = item.showFun;
               if(typeof (funName) == "function"){
@@ -201,7 +213,10 @@ export default {
                   item.show = true;
               }
            }
-          
+          if(item.show==true&&flag){
+            item.tabIndex = '0';
+            flag = false;
+          }
         });
 
     },

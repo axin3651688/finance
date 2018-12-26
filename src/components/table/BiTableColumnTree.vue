@@ -6,6 +6,7 @@
         :col="cc"
         :key="cc.text"
         :data="data"
+
       ></bi-table-column-tree>
       <bi-table-column v-else :col="cc" :data="data" :key="cc.text" ref="tcol"/>
     </template>
@@ -30,7 +31,7 @@ export default {
       this.$set(this, "data", item);
       this.$set(this.data, "datas", item.datas);
       let refs = this.$refs;
-      debugger;
+      // debugger;
       if (refs) {
         if (refs.tcol) {
           if (refs.tcol.upData) {

@@ -1,10 +1,10 @@
 <template>
+<div>
   <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize)"
     border
     :stripe="true"
-    :width="item.width||6000"
-    :height="item.height || 480"
+    height="item.height || rowClass"
     :cell-style="cellStyle"
     @cell-click="onCellClick"
     :span-method="rowSpanAndColSpanHandler"
@@ -15,6 +15,24 @@
       <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
     </el-tag>
   </el-table>
+        <!-- sjz 分页功能 -->
+        <!-- <div class="paginationClass"> -->
+            <!-- page-sizes:每页展示条选择组件 -->
+            <!-- page-size:每页展示条 -->
+            <!-- current-change:currentPage改变时会触发 -->
+            <!-- size-change:pagesize改变时触发 -->
+            <el-pagination
+              v-if="item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[1, 2, 5, 10]"
+              :page-size="pagesize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="item.datas.length">
+            </el-pagination>
+        <!-- </div> -->
+</div>   
 </template>
 <script>
 //   :span-method="rowSpanAndColSpanHandler"
@@ -31,7 +49,8 @@ export default {
   props: ["item"],
   data() {
     return {
-      spanArr:[],
+      currentPage:1,
+      pagesize:1,
       id: 0,
       text: "",
       rows: [],
@@ -67,7 +86,16 @@ export default {
   },
 
   methods: {
+    //pagesize改变时触发 ---- 分页功能
+    handleSizeChange: function (size) {
+        this.pagesize = size;
+    },
+    //currentPage改变时会触发 --- 分页功能
+    handleCurrentChange: function(currentPage){
+        this.currentPage = currentPage;
+    },
     getDatas(item) {
+      debugger
       let rows = item.config.rows;
       if (rows && rows.length > 0) {
         return rows;
@@ -104,7 +132,15 @@ export default {
     /**
      * 单元格级别样式设置
      */
+
+    // 表格的高度 12.26
+      rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
+
+
     cellStyle(row) {
+      // debugger
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -330,5 +366,9 @@ export default {
 .el-table td,
 .el-table th {
   padding: 5px 0;
+}
+/* 横向滚动条 12.26 */
+.el-scrollbar__bar.is-horizontal>div{
+  height: 0;
 }
 </style>

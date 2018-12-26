@@ -59,6 +59,7 @@ export default {
 
   methods: {
     loadItems() {
+      // debugger
       let config = this.item.config;
       debugger;
       if (config) {
