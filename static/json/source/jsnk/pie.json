@@ -1,0 +1,204 @@
+{
+    "id": "nkfxfx",
+    "text": "风险分析",
+    "layout": {
+        "xtype": "form"
+    },
+    "config":{},
+    "items": [{
+        "xtype": "chart",
+        "id": "1416001",
+        "text": "风险级别占比情况",
+        "weight": 12,
+        "showFun":function($store){
+            return false;
+        },
+        "config": {
+            "sql": "select r.nrange as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by nrange order by nrange",
+            "mainDim": "itemperiod",
+            "random": {
+                "min": 100,
+                "max": 100000
+            },
+            "needDims": [
+                "year",
+                "month",
+                "company"
+            ],
+            "rows": [{
+                "id": 0,
+                "text":"待定"
+            }, {
+                "id": 1,
+                "text":"一般风险"
+            }, {
+                "id": 2,
+                "text": "中风险"
+            }, {
+                "id": 3,
+                "text": "高风险"
+            }],
+            "columns":[{
+                "id": "text",
+                "text": "名称"
+            },{
+                "id": "B",
+                "text": "数值"
+            }],
+            "type": 1
+
+        },
+        "listeners":[{
+            "type":"click",
+            "way":"addTab",
+            "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+            "handler":($vue,params)=>{
+                console.info(params);
+                debugger; 
+            }
+         }],
+        "options": {
+            "type": "singleseries",
+            "getData": {
+                "type": 2,
+                "subType":"pie",
+                "columns": [{
+                    "id": "text",
+                    "prop":"name"
+                }, {
+                     "id": "B",
+                     "prop":"value"
+                }],
+                "scope": true
+            }
+        },
+        "chartOptions":{
+            "dd":"this.item.text",
+            "title": {
+              "text": "this.item.text",
+              "x": "center"
+            },
+            "tooltip": {
+              "trigger": "item",
+              "formatter": "{a} <br/>{b} : {c} ({d}%)"
+            },
+            "series": [
+                {
+                  "name": "风险级别",
+                  "type": "pie",
+                  "radius": "55%",
+                  "center": ["50%", "60%"],
+                  "data": "this.item.options.datas",
+                  "itemStyle": {
+                    "emphasis": {
+                      "shadowBlur": 10,
+                      "shadowOffsetX": 0,
+                      "shadowColor": "rgba(0, 0, 0, 0.5)"
+                    }
+                  }
+                }
+              ] ,
+            "legend": {
+            "orient": "vertical",
+            "left": "5%",
+            "top": "10%",
+            "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+            }
+          }
+      }, {
+            "xtype": "chart",
+            "id": "1403100",
+            "text": "风险类别占比情况",
+            "weight": 12,
+            "config": {
+                "sql": "select r.ntype as id,count(*) as B  from dw_dimcompany c,Sys_RiskRange r where c.scode = :company and speriod = :period group by ntype order by ntype",
+                "mainDim": "itemperiod",
+                "needDims": [
+                    "year",
+                    "month",
+                    "company"
+                ],
+                "rows": [ {
+                    "id": 0,
+                    "text": "待定"
+                },{
+                    "id": 1,
+                    "text": "法律"
+                },  {
+                    "id": 2,
+                    "text": "运营"
+                },{
+                    "id": 3,
+                    "text": "财务"
+                },{
+                    "id": 4,
+                    "text": "市场"
+                },{
+                    "id": 5,
+                    "text": "战略"
+                }],
+                "columns":[{
+                    "id": "text",
+                    "text": "名称"
+                },{
+                    "id": "B",
+                    "text": "数值"
+                }],
+                "type": 1
+
+            },
+            
+            "options": {
+                "type": "singleseries",
+                "subType":"pie",
+                "getData": {
+                    "type": 2,
+                    "subType":"pie",
+                    "columns": [{
+                        "id": "text",
+                        "prop":"name"
+                    }, {
+                        "id": "B",
+                         "prop":"value"
+                    }],
+                    "scope": true
+                }
+            },
+            "chartOptions":{
+                "dd":"this.item.text",
+                "title": {
+                  "text": "this.item.text",
+                  "x": "center"
+                },
+                "tooltip": {
+                  "trigger": "item",
+                  "formatter": "{a} <br/>{b} : {c} ({d}%)"
+                },
+               
+                "series": [
+                    {
+                      "name": "风险类别",
+                      "type": "pie",
+                      "radius": "55%",
+                      "center": ["50%", "60%"],
+                      "data": "this.item.options.datas",
+                      "itemStyle": {
+                        "emphasis": {
+                          "shadowBlur": 10,
+                          "shadowOffsetX": 0,
+                          "shadowColor": "rgba(0, 0, 0, 0.5)"
+                        }
+                      }
+                    }
+                  ],
+                  "legend": {
+                    "orient": "vertical",
+                    "left": "5%",
+                    "top": "10%",
+                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                  }
+              }
+        }
+
+    ]
+}

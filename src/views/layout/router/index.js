@@ -42,14 +42,14 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Report_view.vue')
         },
+
+        // 消息模块
         {
           path: '/message',
           name: 'message',
           component: () =>
             import('@v/message/Message.vue')
-        },
-
-
+        }
       ]
     }, {
       path: '/',
@@ -87,6 +87,7 @@ const router = new Router({
 
       ]
     },
+
     {
       path: '/',
       name: '各种charts',
@@ -222,7 +223,21 @@ const router = new Router({
       name: '/404',
       component: () =>
         import('@v/common/404'),
-    }
+    },
+
+    // 消息独立页面
+    {
+      path: '/message_page',
+      name: 'MessagePage',
+      component: () => import('@v/message/layout/MessagePage.vue'),
+      children: [
+        {
+          path: '/message_page/index',
+          name: 'Index',
+          component: () => import('@v/message/Index.vue'),
+        }
+      ]
+    },
   ]
 })
 

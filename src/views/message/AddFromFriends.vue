@@ -9,11 +9,11 @@
           >
             <figure>
               <div class="img-box">
-                <img src=""/>
+                <img :src="friend.avatar"/>
               </div>
               <div class="info">
-                <h3>{{friend.name}}</h3>
-                <p>{{friend.info}}</p>
+                <h3>{{friend.trueName}}</h3>
+                <p>{{friend.phone}}</p>
               </div>
             </figure>
             <i class="list-icon list-icon__checked" v-if="friend.isChecked"></i>
@@ -30,10 +30,10 @@
         <ul>
           <li v-for="friend in addFromFriendsInstance.addList" :key="friend.id">
             <div class="img-box">
-              <img src="" alt="">
+              <img :src="friend.avatar" alt="">
               <div class="close-cover" @click="addFromFriendsInstance.changeFriendState(friend)"></div>
             </div>
-            <p class="info">{{friend.name}}</p>
+            <p class="info">{{friend.trueName}}</p>
           </li>
         </ul>
       </div>
@@ -43,6 +43,11 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
+import {
+  requestMyfriends,
+  CONTACT_INFO
+} from '~api/message.js'
 
 // 从好友列表添加成员到群组的类,单例模式
 class AddFromFriends {
@@ -104,20 +109,14 @@ export default {
   name: 'AddFromFriends',
   data() {
     return {
-      friendList: [
-        {name: '名字1', id: 1, info: '简单介绍1'},
-        {name: '名字2', id: 2, info: '简单介绍2'},
-        {name: '名字3', id: 3, info: '简单介绍3'},
-        {name: '名字4', id: 4, info: '简单介绍4'},
-        {name: '名字5', id: 5, info: '简单介绍5'},
-        {name: '名字6', id: 6, info: '简单介绍6'},
-        {name: '名字7', id: 7, info: '简单介绍7'},
-        {name: '名字8', id: 8, info: '简单介绍8'},
-        {name: '名字9', id: 9, info: '简单介绍9'},
-        {name: '名字11', id: 11, info: '简单介绍11'},
-        {name: '名字12', id: 12, info: '简单介绍12'}
-      ],
+      friendList: [],
       addFromFriendsInstance: null // 从好友列表添加好友到群组的类实例，单例模式
+    }
+  },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id
     }
   },
   filters: {
@@ -132,6 +131,19 @@ export default {
     }
   },
   methods: {
+    getFriendList() {
+      // let userId = this.user.user.id;
+      // alert(params.type)
+      requestMyfriends(this.loginUserId).then(res => {
+        console.log('获取我的好友列表-->>', res.data);
+        if (res.data.code === 200) {
+          this.friendList = res.data.data;
+          let formatFriendList = this.formatFriendList(this.friendList);
+          this.addFromFriendsInstance = new AddFromFriends(formatFriendList); // 实例化一个从好友中添加群组成员的对象
+          console.log('addFromFriendsInstance:', this.addFromFriendsInstance)
+        }
+      })
+    },
 
     // 将请求回来的好友列表遍历一遍，增加一个 isChecked 字段，用于判断它有没有被选中
     formatFriendList(friendList) {
@@ -147,10 +159,8 @@ export default {
     }
   },
   mounted() {
-    // debugger;
-    let formatFriendList = this.formatFriendList(this.friendList); // 格式化好友列表
-    this.addFromFriendsInstance = new AddFromFriends(formatFriendList); // 实例化一个从好友中添加群组成员的对象
-    console.log('addFromFriendsInstance:', this.addFromFriendsInstance)
+    // todo: 5添加群成员 from friends
+    this.getFriendList()
   }
 }
 </script>
@@ -279,7 +289,6 @@ export default {
         background: #e5e5e5;
 
         img, .close-cover {
-          opacity: 0;
           position: absolute;
           top: 0;
           left: 0;
@@ -288,6 +297,7 @@ export default {
         }
 
         .close-cover {
+          opacity: 0;
           background: rgba(255, 255, 255, .2) url('../../assets/green/group_person_unselected.svg') no-repeat;
           background-size: $itemSize $itemSize;
           transition: all .3s;

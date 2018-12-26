@@ -1,5 +1,5 @@
 <template>
-  <div class="GroupMembers vue-module">
+  <div class="GroupMembers">
     <div id="right-bar" class="right-bar">
       <div class="top">
         <div class="bar-header">
@@ -7,12 +7,7 @@
           <div class="icon icon__close" @click="handleCloseGroupMembers"></div>
         </div>
 
-        <!--<div class="addbar">-->
-        <!--<input type="text" placeholder="添加成员">-->
-        <!--<div class="icon icon__add">+</div>-->
-        <!--</div>-->
-
-        <div class="addbar" @click="showAddMember = true">
+        <div class="addbar" @click="showAddMember = true" v-if="senderId === groupOwnerId">
           <span class="text">添加成员</span>
           <div class="icon icon__add">+</div>
         </div>
@@ -20,21 +15,22 @@
       </div>
       <el-scrollbar>
         <ul class="member-list">
-          <li class="list-item" v-for="i in 35" :key="i">
+          <li class="list-item" v-for="item in groupMembers" :key="item.id">
             <figure>
               <div>
                 <div class="img-box">
-                  <img src="" alt="">
+                  <img :src="item.avatar" alt="">
                 </div>
               </div>
-              <h4 class="text">成员名</h4>
+              <h4 class="text">{{item.trueName}}</h4>
             </figure>
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown trigger="click" @command="handleCommand" v-if="senderId === groupOwnerId">
                           <span class="el-dropdown-link">
                           </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="`removeMember_${i}`"
-                                  style="color: #189271"
+                <el-dropdown-item
+                  :command="item"
+                  style="color: #189271"
                 >移除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -44,28 +40,12 @@
       </el-scrollbar>
     </div>
 
-    <!--移除群成员弹窗-->
-    <el-dialog
-      title="移除成员"
-      :visible.sync="showRemoveMember"
-      width="30%"
-      :show-close="false"
-      center>
-      <div class="dialog-content" style="font-size: 16px;line-height: 30px;">
-        <p>是否移除成员</p>
-        <p>“{{removeMemberName}}”?</p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-                <el-button size="small" @click="showRemoveMember = false">确 认</el-button>
-                <el-button type="primary" size="small" @click="showRemoveMember = false">取 消</el-button>
-              </span>
-    </el-dialog>
-
     <!--添加群成员弹窗-->
     <el-dialog class="add-member-dialog"
                :visible.sync="showAddMember"
                width="800px"
-               :show-close="false"
+               :show-close="true"
+               :modal-append-to-body="false"
     >
       <div class="dialog-content">
         <el-tabs v-model="activePanelName" type="card" @tab-click="handleClickTab">
@@ -89,6 +69,7 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import AddFromFriends from './AddFromFriends' // 从我的好友中添加群成员
 import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
 import {
@@ -100,27 +81,31 @@ export default {
   name: 'GroupMembers',
   data() {
     return {
+      groupMembers: null, // [{},{}]群成员列表
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
-      showRemoveMember: false, // 是否显示移除群成员弹窗
-      removeMemberName: '' // 需要移除的群组成员id
     }
   },
   components: {
     AddFromGroups,
     AddFromFriends
   },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    senderId() {
+      return this.user.user.id
+    },
+    groupId() {
+      return this.messageStore.groupInfo.info.groupId
+    },
+    groupOwnerId() {
+      return this.messageStore.groupInfo.info.ownerId
+    }
+  },
   methods: {
     // 关闭侧边群组成员栏
     handleCloseGroupMembers() {
       this.$emit('closeGroupMembers')
-    },
-
-    // 移除群成员
-    handleCommand(command) {
-      this.removeMemberName = command;
-      this.showRemoveMember = true;
-      console.log('需要移除的对象：', command)
     },
 
     // 添加群成员
@@ -136,7 +121,8 @@ export default {
 
     // 群id查询群信息
     getMembers() {
-      GROUP_INFO(4).then(res => {
+      debugger;
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群信息', res.data.data);
         if (res.data.code === 200) {
           this.groupMembers = res.data.data.users
@@ -146,26 +132,58 @@ export default {
       })
     },
 
+    // todo：4移除群成员(ok)
+    handleCommand(user) {
+      // debugger;
+      let msg = `确定移除群成员 "${user.trueName}" ?`;
+      this.$confirm(msg, '提示', {
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.delGroupUser(user)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消移除该群成员'
+        })
+      })
+    },
+
     // 移除群成员
-    clickDelGroupUser(item) {
+    delGroupUser(removeMember) {
+      // debugger;
       let params = {
-        groupId: 4,
-        remark: '1', //  '1,2,3' 传递多个id组成的字符串为批量操作
-        senderId: 225
+        groupId: this.groupId,
+        remark: removeMember.id.toString(), //  '1,2,3' 传递多个id组成的字符串为批量操作
+        senderId: this.senderId
       };
       DEL_GROUP_USER(params).then(res => {
-        console.log('移除群成员', res.data.data);
+        console.log('移除群成员res:', res);
         if (res.data.code === 200) {
-
+          // debugger;
+          // 更新本地显示
+          this.update
+          this.$message({
+            type: 'success',
+            message: res.data
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
         }
       }).catch(err => {
-        console.log('移除群成员', err)
+        console.log('移除群成员err:', err)
       })
     }
   },
   mounted() {
-    // debugger;
-    this.getMembers()
+    // 如果vuex中没有，则请求群信息
+    this.messageStore.groupInfo ?
+      this.groupMembers = this.messageStore.groupInfo.users :
+      this.groupMembers = this.getMembers()
   }
 }
 </script>
@@ -180,7 +198,7 @@ export default {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
-    z-index: 10;
+    z-index: 210;
   }
 
   .right-bar {
@@ -400,8 +418,14 @@ export default {
       }
     }
 
-    .el-dialog__header, .el-dialog__footer {
+    .el-dialog__footer {
       display: none;
+    }
+
+    .el-dialog__header {
+      position: absolute;
+      right: 0;
+      z-index: 999;
     }
 
     .el-dialog__body {

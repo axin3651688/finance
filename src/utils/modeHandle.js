@@ -40,29 +40,29 @@ export default function modeHandle(e) {
       * 单体公司（leaf=true）时展示明细表；
       * 合并公司（leaf=false）时展现二级汇总表
       * */
-    if(e.pid=='2002'){
-        if(e.id=='356'){
-            if(companyMessage.leaf){
-                e.url = '/cnbi/json/source/tjsp/yszk.json';
-            }else{
-                e.url = '/cnbi/json/source/tjsp/yszkhz.json' ;
-            }
-        }
-        if(e.id=='358'){
-            if(companyMessage.leaf){
-                e.url = '/cnbi/json/source/tjsp/yfzk.json';
-            }else{
-                e.url = '/cnbi/json/source/tjsp/yfzkhz.json' ;
-            }
-        }
-        if(e.id=='360'){
-            if(companyMessage.leaf){
-                e.url = '/cnbi/json/source/tjsp/qtysk.json';
-            }else{
-                e.url = '/cnbi/json/source/tjsp/qtyskhz.json' ;
-            }
-        }
-    }
+    // if(e.pid=='2002'){
+    //     if(e.id=='356'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/yszk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/yszkhz.json' ;
+    //         }
+    //     }
+    //     if(e.id=='358'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/yfzk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/yfzkhz.json' ;
+    //         }
+    //     }
+    //     if(e.id=='360'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/qtysk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/qtyskhz.json' ;
+    //         }
+    //     }
+    // }
 
     findDesignSource(e.sourceId, e.url)
         .then(response => {

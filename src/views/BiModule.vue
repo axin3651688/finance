@@ -37,10 +37,11 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
+        v-if="item.show "
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
@@ -48,14 +49,14 @@
         :closable="item.closable||false"
       >
         <!-- sjz 按钮 -->
-        <el-button-group>
+        <!-- <el-button-group>
             <el-button type="primary" v-if="layout.stype==='button_a'">全部展开<i class="el-icon-arrow-down"></i></el-button>
             <el-button type="primary" v-if="layout.stype==='button_a'">全部收起<i class="el-icon-arrow-up"></i></el-button>
             <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">刷新<i class="el-icon-refresh"></i></el-button>
             <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">导出<i class="el-icon-download"></i></el-button>
             <el-button type="primary" v-if="layout.stype==='button_a'">安全比例</el-button>
             <el-button type="primary" v-if="layout.stype==='button_a'">预警比例</el-button>
-        </el-button-group>
+        </el-button-group> -->
         
         <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
@@ -128,7 +129,6 @@ import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent } from "../utils/math";
 
-
 export default {
   name: "BiModule",
   components: {
@@ -143,11 +143,10 @@ export default {
       dataUrl: "",
       datas: {},
       flag: false,
-      config: {
-        random: {}
-      },
+      config: {},
       activeTabName: "0",
       api: null,
+
       layout: {
         xtype: "form"
       },
@@ -195,7 +194,29 @@ export default {
   },
 
   methods: {
-    ...mapActions(["GetSideMid"]),
+    ...mapActions(["GetSideMid", "ShowDims"]),
+   /**
+    * 设置item是否隐藏或显示
+    */
+    showSet(items){
+        debugger
+        let flag = true;
+        items.forEach(item=>{
+          debugger
+           let funName = item.showFun;
+           if(typeof (funName) == "function"){
+                item.show = item.showFun(this.$store);
+                
+           }else{
+              item.show = true;
+           }
+          if(item.show==true&&flag){
+            item.tabIndex = '0';
+            flag = false;
+          }
+        });
+
+    },
     /**
      * 动态设置参数至本组件
      */
@@ -204,6 +225,7 @@ export default {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
+          this.showSet(bean.items);
       }
       for (let key in bean) {
         this.$set(this, key, bean[key]);
@@ -211,6 +233,18 @@ export default {
       if (type == 1) {
         //设置页面标题
         document.title = bean.text;
+      }
+      //showDims控制顶部导航栏的显示及隐藏
+      // debugger;
+      // console.log(bean.showDims);
+      if (bean.hasOwnProperty("showDims")) {
+        bean.showDims.forEach(ele => {
+          if (ele == "day") {
+            this.ShowDims({ year: false, month: false, day: true });
+          }
+        });
+      } else {
+        this.ShowDims({ year: true, month: true, day: false });
       }
       return this;
     },
@@ -234,6 +268,7 @@ export default {
         this.loadModuleAfter(cache);
         return;
       }
+      debugger;
       this.loadRemoteSource(this.api);
     },
 
@@ -242,7 +277,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-    
+         api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -258,8 +293,9 @@ export default {
         });
         return;
       }
+      //  debugger;
       findDesignSource(api).then(res => {
-        debugger
+        // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -282,12 +318,13 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-    
       this.setScopeDatas(source, 1);
-      // this.datas = [];
-      if (this.config) {
-        this.correctWrongConfig();
+      this.correctWrongConfig();
+      if (this.config && this.config.columns.length > 0) {
         this.generateApiModelDatas(this, null, "company");
+      } else {
+        //解决当父亲没有配制config的情况
+        this.flag = true;
       }
       // else {
       //   this.datas = this.datas;
@@ -314,7 +351,7 @@ export default {
       let datas = {};
       needDims.forEach(element => {
         let val = params[element];
-        // 
+        //
         if (!val && element === "company") {
           val = params[element + "Id"];
         }
@@ -328,17 +365,30 @@ export default {
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
       }
-      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&0]的解析
+      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      debugger
-      let periodCount = config.periodCount;
-      let compareType = config.compareType;
-      let year = datas.year,month = datas.month;
-      if(year&&month&&periodCount&&compareType){
-        year = {id:year,text:"年"};
-        month = {id:month,text:"月"};
-        let comparePeriod = generatePeriod(periodCount,compareType,year,month);
-        datas.comparePeriod = comparePeriod;
+      //  debugger
+      let vars = config.generateVar;
+      if (vars && vars.periodCount && vars.compareType) {
+        let reverse = vars.reverse || false;
+        let year = datas.year, month = datas.month; 
+        year = { id: year, text: "年" }; month = { id: month, text: "月" };
+        let periodArr = generatePeriod(
+          vars.periodCount,
+          vars.compareType,
+          year,
+          month,
+          reverse
+        );
+        let index = 0;
+        if(reverse){
+          index = periodArr.length - 2;
+        }
+        datas.comparePeriod = periodArr[index].id;
+        if(vars.varName){
+         item.config[vars.varName] = periodArr;
+        }
+       //datas.period = periodArr.map(p=>p.id).join(",");
       }
       return datas;
     },
@@ -346,7 +396,6 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
-      debugger
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
@@ -371,16 +420,14 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-      
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
-
         Cnbi.paramsHandler(config, params);
         // 根据是否配置rows来改变rows的内容
-        if(config.group&&config.rows&&params.comparePeriod){
-          rowsOfChildrenContent(config, params);
-        }   
+        // if (config.group && config.rows && params.comparePeriod) {
+        //   rowsOfChildrenContent(config, params);
+        // }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -426,7 +473,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger
+      // debugger;
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
@@ -440,7 +487,7 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      debugger
+      //debugger
       findThirdPartData(params)
         .then(res => {
           debugger 
@@ -455,6 +502,23 @@ export default {
     },
     getActiveTabName(item) {
       return item.id;
+    },
+    removeTab(targetName){
+      debugger;
+      let tabs = this.items;
+      let activeTabName = this.activeTabName;
+      if (this.activeTabName === targetName) {
+         tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeTabName = nextTab.name;
+              }
+            }
+          });
+      }
+       this.activeTabName = activeName;
+       this.items = tabs.filter(tab => tab.name !== targetName);
     }
   }
 };

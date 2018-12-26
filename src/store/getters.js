@@ -31,11 +31,14 @@ const getters = {
   openPid: state => state.prame.command.openPid,
   // 侧边栏展开子级id
   activeId: state => state.prame.command.activeId,
+  // 控制顶部导航栏的显示及隐藏
+  showDims: state => state.prame.showDims,
   action: state => state.prame.command.action,
   action2: state => state.prame.command.action2,
   action3: state => state.prame.command.action3,
 
   newServerMsg: state => state.messageModule.newServerMsg, // 服务器推送的消息
-  chatWithUserId: state => state.messageModule.chatWithUserId // 和谁聊天，单聊
+  chatWithUserId: state => state.messageModule.chatWithUserId, // 和谁聊天，单聊
+  messageStore: state => state.messageModule.messageStore // 消息模块的所有数据
 }
 export default getters

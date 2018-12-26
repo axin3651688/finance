@@ -228,13 +228,13 @@
   * 获取配制模型的数据
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-      debugger;
+     // debugger;
      if (config.type === 1) {
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
      if (config.type === 2) {
-       // debuggerdebugger
+         // debugger;
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
      if (config.type === 3) {
@@ -374,7 +374,7 @@ const singleSeriesDataParser8 = (config, datas, rows, cols) => {
      return rows;
  }
 /**
- * 获取单系列数据，注意：有prop的则返回数据对象：[{prop:xxx}]
+ * 获取单系列数据，注意：有prop的则返回数据对象：[{prop:xxx}]==>[{}]
  * 否则则返回：[xxx,xxx]
  */
  const singleSeriesDataParse = (config, datas, rows, cols) => {
@@ -499,10 +499,12 @@ const getReverserDatas=(config, datas, rows, cols)=>{
  * @param {*} rows 
  */
 const getSeriesDataPie = (column, datas, rows) => {
+   // debugger
     let category = [],valProperty ="id";
     rows.forEach(row => {
         let val = getData(column, row, datas, rows,valProperty);
-        category.push({value:val,name:row.sname? row.sname:""});
+        let text = row.text || row.sname ; 
+        category.push({value:val,name:text? text:row.id});
     });
     return category;
 }
@@ -511,6 +513,7 @@ const getSeriesDataPie = (column, datas, rows) => {
   * 获取指定系列数据
   */
  const getSeriesData = (column, datas, rows) => {
+   //  debugger
      let category = [],valProperty ="id";
      rows.forEach(row => {
          let val = getData(column, row, datas, rows,valProperty);
@@ -534,8 +537,9 @@ const getSeriesDataPie = (column, datas, rows) => {
         return 0 ; 
      }
      if (column[valProperty].length == 1) {
-         let cell = column[valProperty] + "$" + row[valProperty];
-         val = getValue(cell, datas, rows);
+        // let cell = column[valProperty] + "$" + row[valProperty];
+         //val = getValue(cell, datas, rows);
+         val = getCellValue(datas, column[valProperty], row[valProperty], rows);
      } else {
          let cn = column[valProperty];
          val = row[cn+"After"] || row[cn];
@@ -593,7 +597,7 @@ const getSeriesDataPie = (column, datas, rows) => {
         params.comparePeriod.forEach(function(it,indx){
             it.idAfter = it.id;
         });
-        config.rows = params.comparePeriod;
+        config.rows = params.comparePeriod;//[{id:201505,text:"2015年05月"}]
     }
  }
 

@@ -4,12 +4,12 @@
       <el-scrollbar>
         <ul class="sub-item">
           <li :class="{active: activeGroupID === group.groupId}"
-              v-for="group in GroupListData"
+              v-for="group in groupList"
               :key="group.groupId"
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar"/>
+                <img :src="group.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3>{{group.text}}（{{group.count}}人）</h3>
@@ -21,65 +21,72 @@
       </el-scrollbar>
     </div>
     <div class="panel-right">
-      <div class="panel-right-top">
-        <div class="top-wrap">
-          <div>
-            <div class="img-box">
-              <img :src="rightInfo.avatar" alt="" class="avatar-img">
+      <template v-if="rightInfo">
+        <div class="panel-right-top">
+          <div class="top-wrap">
+            <div>
+              <div class="img-box">
+                <img :src="rightInfo.avatar" alt="" class="avatar-img" :onerror="avatar_male">
+              </div>
             </div>
+            <div class="text">
+              <h3 class="text-title">{{rightInfo.text}}</h3>
+              <p class="text-info">{{rightUsers.length}}人</p>
+            </div>
+            <el-button
+              type="primary"
+              size="medium"
+              class="my-btn"
+              @click="chatWithGroup(rightInfo.groupId)"
+            >发送信息
+            </el-button>
           </div>
-          <div class="text">
-            <h3 class="text-title">{{rightInfo.text}}</h3>
-            <p class="text-info">{{rightUsers.length}}人</p>
-          </div>
-          <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
         </div>
-      </div>
-      <div class="panel-right-content">
-        <div class="content-wrap">
-          <el-scrollbar>
-            <section>
-              <h4 class="title">群组成员</h4>
-              <div class="content">
-                <ul>
-                  <li v-for="user in rightUsers" :key="user.id">
-                    <figure>
-                      <div>
-                        <div class="img-box">
-                          <img :src="user.avatar">
+        <div class="panel-right-content">
+          <div class="content-wrap">
+            <el-scrollbar>
+              <section>
+                <h4 class="title">群组成员</h4>
+                <div class="content">
+                  <ul>
+                    <li v-for="user in rightUsers" :key="user.id">
+                      <figure>
+                        <div>
+                          <div class="img-box">
+                            <img :src="user.avatar" :onerror="avatar_male">
+                          </div>
                         </div>
-                      </div>
-                      <span class="info">{{user.trueName}}</span>
-                    </figure>
-                  </li>
-                </ul>
-              </div>
-            </section>
-            <section>
-              <h4 class="title">最新公告</h4>
-              <div class="content">
-                <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
-              </div>
-            </section>
-            <section>
-              <h4 class="title">群二维码</h4>
-              <div class="content">
-                <div class="qr-code">
-                  <img src="" alt="">
+                        <span class="info">{{user.trueName}}</span>
+                      </figure>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-            </section>
-          </el-scrollbar>
+              </section>
+              <section>
+                <h4 class="title">最新公告</h4>
+                <div class="content">
+                  <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
+                </div>
+              </section>
+              <section v-if="qrUrl">
+                <h4 class="title">群二维码</h4>
+                <div class="content">
+                  {{this.qrUrl}}
+                  <div class="qr-code">
+                    <qriously :value="qrUrl" />
+                  </div>
+                </div>
+              </section>
+            </el-scrollbar>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   MY_GROUP_LIST,
   FIND_GROUP_NOTICE,
@@ -90,26 +97,33 @@ import {
 export default {
   name: 'ContactsGroups',
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
+    }
   },
   data() {
     return {
+      qrUrl: null, // 群二维码地址
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
-      GroupListData: [],
+      groupList: null, // [{},{}] 我的群组列表
       rightUsers: [],
-      rightInfo: {},
+      rightInfo: null, // {},
       rightNotice: {}
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
     getData() {
-      // let userId = this.user.user.id;
-      // alert(params.type)
-      MY_GROUP_LIST(225).then(res => {
+      // debugger;
+      MY_GROUP_LIST(this.user.user.id).then(res => {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
-          this.GroupListData = res.data.data;
+          this.groupList = res.data.data;
+          // 默认请求第一个群组的信息
+          this.getInfo(this.groupList[0].groupId)
         }
       })
     },
@@ -130,11 +144,16 @@ export default {
         this.rightUsers = groupInfo.users;
         this.rightInfo = groupInfo.info;
         this.rightNotice = groupInfo.rightNotice;
+        this.qrUrl = groupInfo.qrUrl;
       } else {
         GROUP_INFO(groupId).then(res => {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
             let groupInfo = res.data.data;
+            this.ActionSetMessageStore({
+              groupInfo: groupInfo,
+            });
+            debugger;
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId] = groupInfo;
@@ -144,7 +163,7 @@ export default {
         });
 
         // 获取群公告   公告图片的字段: rightNotice.url
-        FIND_GROUP_NOTICE(groupId, 225).then(res => {
+        FIND_GROUP_NOTICE(groupId, this.user.user.id).then(res => {
           console.log('群id获取群公告:', res.data.data);
           if (res.data.code === 200) {
             if (res.data.data.noticeList.length > 0) {
@@ -156,26 +175,42 @@ export default {
           console.log('请求message：', err)
         });
 
+        debugger;
         let params = {
-          platform: 'windows',
+          platform: 'pc',
           type: 'group',
-          targetId: 4
+          targetId: groupId
         };
         // 获取二维码地址
         SCAN_URL(params).then(res => {
+          debugger;
           console.log('获取二维码的生成地址:', res);
           if (res.data.code === 200) {
-            // TODO 把地址生成二维码?
-            let url = res.data.data.url;
+            this.qrUrl = this.qrUrlFormat(res.data.data.url)
           }
         }).catch(err => {
-          console.log('请求message：', err)
+          console.log('获取二维码的生成地址err：', err)
         })
+      }
+    },
+
+    // 替换url后的 userId
+    qrUrlFormat(qrUrl) {
+      return qrUrl.replace(/{userId}/, this.loginUserId)
+    },
+
+    // 开始群聊天
+    chatWithGroup(groupId) {
+      if (groupId) {
+        this.ActionSetMessageStore({
+          miniType: 1101, // 1101 群聊,
+        });
+        this.$emit('chatWithGroup', groupId)
       }
     }
   },
   mounted() {
-    this.getData();
+    this.getData()
   }
 }
 
@@ -190,7 +225,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -264,7 +300,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     display: flex;
     flex-direction: column;
 
@@ -392,8 +428,9 @@ export default {
         .qr-code {
           width: 100px;
           height: 100px;
-          background: #cccccc;
+          /*background: #cccccc;*/
           overflow: hidden;
+          margin-left: -5px;
 
           img {
             width: 100%;

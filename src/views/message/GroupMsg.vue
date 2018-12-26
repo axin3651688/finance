@@ -2,13 +2,13 @@
   <div class="GroupMsg vue-module">
     <div class="top">
       <div class="left">
-        <div class="img-box">
-          <img src="" alt="">
+        <div class="img-box img-box__group" @click="showGroupMembers = true">
+          <img :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
         </div>
         <div class="content">
           <h3 class="title">
             <span>{{groupInfo.text}}</span>
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown trigger="click" @command="handleCommand" v-if="loginUserId === groupOwnerId">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="group-member" @click="handleShowGroupMembers">
+        <div class="group-member" @click="showGroupMembers = true">
           <div class="icon icon__group-person"></div>
           <span>成员</span>
         </div>
@@ -55,39 +55,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%">
-        <!--<div class="message-box" v-for="item in singleMsgList" :key="item.id">-->
-        <!--<div class="message-top">-->
-        <!--<div class="avatar-box">-->
-        <!--<img :src="item.avatar" alt="">-->
-        <!--</div>-->
-        <!--<h3 class="user-name">{{item.name}}</h3>-->
-        <!--<div class="send-time">-->
-        <!--&lt;!&ndash;<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>&ndash;&gt;-->
-        <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-        <!--<div class="status"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="message-content">-->
-        <!--<p>{{item.content}}</p>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <div class="message-box" v-for="item in groupMsgList" :key="item.id">
-          <div class="message-top">
-            <div class="avatar-box">
-              <img :src="item.avatar" :alt="item.name">
-            </div>
-            <h3 class="user-name">{{item.name}}</h3>
-            <div class="send-time">
-              <span class="time">2018-10-15&nbsp;&nbsp;15:00</span>
-              <!--<span class="time" v-text="formatTime(item.sendTime)"></span>-->
-              <div class="status"></div>
-            </div>
-          </div>
-          <div class="message-content">
-            <p>{{item.content}}</p>
-          </div>
-        </div>
+        <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
 
       <!--底部阴影-->
@@ -115,11 +83,12 @@
           </div>
         </transition>
       </div>
-      <textarea class="chat-textarea"
-                placeholder="请输入文字，按enter建发送信息"
-                v-model="sendText"
-                ref="textarea"
-                @keyup.enter="handleSendMessage"
+      <textarea
+        class="chat-textarea"
+        placeholder="请输入文字，按enter建发送信息"
+        v-model="sendText"
+        ref="textarea"
+        @keyup.enter="handleSendMessage"
       ></textarea>
     </div>
 
@@ -173,13 +142,28 @@
               </span>
     </el-dialog>
 
+    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
+    <!--<el-dialog class="add-member-dialog"-->
+    <!--:visible.sync="showGroupMembers"-->
+    <!--width="300px"-->
+    <!--:show-close="true"-->
+    <!--:modal-append-to-body="false"-->
+    <!--id="group-members"-->
+    <!--&gt;-->
+    <!--sdfasdfsadf-->
+    <!--</el-dialog>-->
+
     <!--群成员侧边栏组件-->
-    <group-members v-if="showGroupMembers" @closeGroupMembers="handleCloseGroupMembers"></group-members>
+    <group-members
+      v-if="showGroupMembers"
+      @closeGroupMembers="showGroupMembers = false"
+    ></group-members>
   </div>
 </template>
 
 <script>
-import GroupMembers from './GroupMembers'
+import {mapGetters, mapActions} from 'vuex'
+import MessageItem from './MessageItem'
 import emotionSprites from '@a/green/emotion_sprites.json';
 import {
   findGroupMsg,
@@ -193,10 +177,12 @@ import {
 export default {
   name: 'GroupMsg',
   components: {
-    GroupMembers
+    GroupMembers: () => import('./GroupMembers'),
+    MessageItem
   },
   data() {
     return {
+      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
@@ -207,6 +193,18 @@ export default {
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
       sendText: '' // 聊天发送的内容
+    }
+  },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id;
+    },
+    groupId() {
+      return this.messageStore.groupInfo.info.groupId
+    },
+    groupOwnerId() {
+      return this.messageStore.groupInfo.info.ownerId
     }
   },
   methods: {
@@ -224,33 +222,63 @@ export default {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
           content: this.sendText,
-          // receiverId: 538, // 538 程雪怡
-          senderId: 539, // 539 姜海斌
+          senderId: this.loginUserId, // 539 姜海斌
           type: 1
         },
-        // data: {
-        //     content: this.sendText,
-        //     receiverId: 244,
-        //     senderId: 397,
-        //     type: 1
-        // },
         device: '868938033321615'
       };
       this.sendText = '';
+      // debugger;
       sendMsg(sendData)
+    },
+
+
+    // 验证当前登录用户是不是群管理员，如果是群管理员则解散群组
+    isGroupOwner() {
+      return this.loginUserId === this.groupOwnerId
     },
 
     // 群组设置 与 退出群组 弹窗控制
     handleCommand(command) {
       switch (command) {
-      case 'groupSetting': {
-        this.showGroupSettingDialog = true;
-        break
-      }
-      case 'groupQuit': {
-        this.showGroupQuitDialog = true;
-        break
-      }
+        case 'groupSetting': {
+          this.showGroupSettingDialog = true;
+          break
+        }
+        case 'groupQuit': {
+          if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
+            // debugger;
+            let msg = `您是该群 ${this.messageStore.groupInfo.info.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            this.$confirm(msg, '警告', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.dissoluGroup() // 是群管理员则解散群组
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消退出'
+              });
+            });
+          } else {
+            // debugger;
+            let msg = `是否退出群组：${this.messageStore.groupInfo.info.text}`;
+            this.$confirm(msg, '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.quitGroup() // 不是群管理员则退出群
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消退出'
+              });
+            });
+          }
+          break
+        }
       }
     },
 
@@ -258,19 +286,11 @@ export default {
     selectFile() {
     },
 
-    // 显示群成员组件
-    handleShowGroupMembers() {
-      this.showGroupMembers = true;
-    },
-
-    // 关闭群成员组件
-    handleCloseGroupMembers() {
-      this.showGroupMembers = false;
-    },
-
     // 群id查询群信息
     getInfo() {
-      GROUP_INFO(4).then(res => {
+      debugger;
+      if (!this.groupId) return;
+      GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
@@ -293,7 +313,7 @@ export default {
       })
     },
 
-    // 设置群资料,修改图片需要先上传头像
+    // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let params = {
         avatar: 'avatar', // 上传头像的地址
@@ -313,35 +333,56 @@ export default {
       })
     },
 
-    // 退出群组
-    clickQuitGroup() {
+    // TODO：2退出群组(ok)
+    quitGroup() {
+      // debugger;
       let params = {
-        userId: 225,
-        groupId: 0
+        userId: this.loginUserId,
+        groupId: this.groupId
       };
       QUIT_GROUP(params).then(res => {
-        console.log('退出群组', res.data.data);
+        console.log('退出群组res:', res);
         if (res.data.code === 200) {
-
+          this.$message({
+            type: 'success',
+            message: res.data.msg,
+            showClose: true
+          })
+        } else {
+          this.$alert(res.data.msg, '退出群组失败', {
+            confirmButtonText: '确定'
+          })
         }
       }).catch(err => {
         console.log('退出群组', err)
       })
     },
 
-    // 解散群聊
-    clickDissoluGroup() {
+    // todo：解散群聊(ok)
+    dissoluGroup() {
+      // debugger;
       let params = {
-        senderId: 225,
-        groupId: 0
+        senderId: this.loginUserId,
+        groupId: this.groupId
       };
       DISSOLU_GROUP(params).then(res => {
-        console.log('解散群聊', res.data.data);
+        console.log('解散群聊：', res.data.data);
+        // debugger;
         if (res.data.code === 200) {
-
+          this.$message({
+            type: 'success',
+            message: res.data.msg,
+            showClose: true
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg,
+            showClose: true
+          })
         }
       }).catch(err => {
-        console.log('解散群聊', err)
+        console.log('解散群聊异常：', err)
       })
     }
   },
@@ -404,6 +445,9 @@ export default {
             width: 100%;
             height: 100%;
           }
+        }
+        .img-box__group {
+          cursor: pointer;
         }
 
         .content {
@@ -642,7 +686,7 @@ export default {
   }
 
   /deep/ .el-dialog {
-    min-width: 370px;
+    min-width: 300px;
     border-radius: 12px;
 
     .el-dialog__header {
@@ -735,6 +779,15 @@ export default {
       opacity: 0;
       filter: alpha(opacity=0);
     }
+  }
+
+  #group-members > .el-dialog {
+    margin: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    position: fixed !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
   }
 
 </style>

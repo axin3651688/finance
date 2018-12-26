@@ -24,7 +24,7 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
       page: 1,
       receiverId: receiverId,
       senderId: senderId,
-      size: 20
+      size: 10
     }
   })
 }
@@ -72,10 +72,7 @@ export function requestMyfriends(data) {
 
 // 查看个人资料
 export function CONTACT_INFO(userId, targetId) {
-  // userId: 当前登录的用户ID
-  // targetId: 需要查看的用户ID
   // debugger
-  console.log('api CONTACT_INFO');
   return request({
     url: '/api/api/contact_info',
     method: 'get',
@@ -171,7 +168,7 @@ export function NEW_FRIEND_LIST(data) {
 // 处理好友申请时调用，保存好友添加好友
 export function SAVE_FRIEND(data) {
   console.log('api SAVE_FRIEND');
-  // debugger
+  debugger;
   return request({
     url: '/api/api/save_friend',
     method: 'post',
@@ -240,8 +237,7 @@ export function DISSOLU_GROUP(data) {
 }
 // 移除团队成员
 export function DEL_GROUP_USER(data) {
-  console.log('api DEL_GROUP_USER');
-  // debugger
+  debugger;
   return request({
     url: '/api/api/del_group_user',
     method: 'post',
@@ -250,7 +246,6 @@ export function DEL_GROUP_USER(data) {
 }
 // 查询群聊公告
 export function FIND_GROUP_NOTICE(groupId, userId) {
-  console.log('api FIND_GROUP_NOTICE');
   // debugger
   return request({
     url: '/api/api/find_group_notice',
@@ -263,19 +258,15 @@ export function FIND_GROUP_NOTICE(groupId, userId) {
 }
 // 获取二维码的生成地址
 export function SCAN_URL(data) {
-  console.log('api SCAN_URL');
   // debugger
   return request({
     url: '/api/auth/cnbi_scan',
     method: 'get',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 我的公司列表,不查人员
 export function MY_COMPANY_LIST(userId) {
-  console.log('api MY_COMPANY_LIST');
   // debugger
   return request({
     url: '/api/api/my_company_list',

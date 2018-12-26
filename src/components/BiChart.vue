@@ -7,6 +7,7 @@
   <bi-bar v-else-if="item.options.type === 'bar'" :item="item" class="bgwight"></bi-bar>
   <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
   <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
+  <BiAdvanceChart v-else-if="item.options.type === 'singleseries'" :item="item" class="bgwight"></BiAdvanceChart>
 </template>
 <script>
 import BiColumn from "@c/charts/BiColumn";
@@ -16,7 +17,8 @@ import BiPie from "@c/charts/BiPie";
 import BiRadar from "@c/charts/BiRadar";
 import BiFunnel from "@c/charts/BiFunnel";
 import BiSPie from "@c/charts/BiSPie";
-import { getCellValue, getConfigModelDatas } from "../utils/math";
+import BiAdvanceChart from "@c/charts/BiAdvanceChart";
+import {getConfigModelDatas } from "../utils/math";
 export default {
   name: "BiChart",
   components: {
@@ -26,7 +28,8 @@ export default {
     BiPie,
     BiRadar,
     BiFunnel,
-    BiSPie
+    BiSPie,
+    BiAdvanceChart
   },
   props: ["item"],
   data() {
@@ -45,7 +48,7 @@ export default {
         return;
       }
       if (config.type === 5) {
-        debugger;
+       //debugger;
       }
       let tempData = getConfigModelDatas(
         config,
@@ -53,7 +56,6 @@ export default {
         this.item.config.rows,
         this.item.config.columns
       );
-      console.log(tempData);
       this.item.options.datas = tempData;
       this.$set(this, "item", this.item);
       this.$set(this.item.options, "datas", tempData);

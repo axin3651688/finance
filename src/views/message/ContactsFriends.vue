@@ -10,7 +10,7 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar"/>
+                <img :src="friend.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -44,11 +44,11 @@
               <p class="info">{{rightUserInfoData.user.email}}</p>
             </li>
             <li>
-              <div class="icon icon-gender"></div>
+              <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfoData.sex.text}}</p>
             </li>
             <li>
-              <div class="icon icon-slogen"></div>
+              <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfoData.user.sign}}</p>
             </li>
           </ul>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions, mapMutations} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   requestMyfriends,
   CONTACT_INFO
@@ -76,14 +76,12 @@ export default {
   name: 'ContactsFriends',
 
   computed: {
-    ...mapGetters(['user']),
-    ...mapState({
-      chatWithUserId: state => state.messageModule.chatWithUserId
-    })
+    ...mapGetters(['user', 'messageStore']),
   },
 
   data() {
     return {
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       activeFriend: null, // 当前选中的好友
@@ -92,11 +90,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ActionSetChatWithUserId']),
+    ...mapActions(['ActionSetMessageStore']),
+
     getdata() {
       // let userId = this.user.user.id;
       // alert(params.type)
-      requestMyfriends(372).then(res => {
+      requestMyfriends(this.user.user.id).then(res => {
         console.log('获取我的好友列表-->>', res.data);
 
         if (res.data.code === 200) {
@@ -139,14 +138,15 @@ export default {
 
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
-      this.ActionSetChatWithUserId(receiverId);
-      console.log('即将和用户', receiverId, '聊天')
+      this.ActionSetMessageStore({
+        miniType: 1100, // 1100 单聊
+        receiverData: this.rightUserInfoData
+      });
+      this.$emit('chatWithSingle', receiverId);
     }
   },
   mounted() {
     this.getdata();
-    // this.actionsTest('1231234234');
-    console.log('测试message vuex：', this.chatWithUserId);
   }
 }
 </script>
@@ -160,7 +160,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -234,7 +235,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     padding: 60px 30px 0 30px;
 
     .panel-right-top {
@@ -295,6 +296,14 @@ export default {
           border-radius: 12px;
           background: $colorTheme;
           margin-right: 20px;
+          background-repeat: no-repeat;
+          background-size: 36px 36px;
+        }
+        .icon-gender__male {
+          background-image: url($iconGenderMale);
+        }
+        .icon-text {
+          background-image: url($iconTest);
         }
       }
     }

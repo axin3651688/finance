@@ -2,62 +2,48 @@
   <div class="NewFriends vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未读 <span class="count">(10)</span></div>
-        <div class="btn">已读</div>
+        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+          未审核 <span class="count">({{messageListFilter.unChecked.count}})</span>
+        </div>
+        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+          已审核 <span class="count">({{messageListFilter.checked.count}})</span>
+        </div>
       </div>
     </div>
     <div class="bottom">
       <el-scrollbar>
         <section>
-          <div class="list-item" v-for="item in messageList" :key="item.id">
+          <div class="list-item" v-for="item in showMessageList" :key="item.id">
             <div class="item-left">
               <div>
-                <div class="img-box"><img :src="item.avatar" alt=""></div>
+                <div class="img-box"><img :src="item.avatar" :onerror="avatar_male"></div>
               </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
+              <h3 class="title">{{item.state}}{{item.name}}申请加你为好友</h3>
+              <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
                 <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
+                {{item.content}}
               </div>
             </div>
             <div class="item-right">
-              <div class="btns">
-                <el-button type="primary" size="small" class="my-btn my-btn-primary">同意</el-button>
-                <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
+              <span v-if="item.state === 4">已同意</span>
+              <span v-else-if="item.state === 3">已拒绝</span>
+              <div class="btns" v-else>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-primary"
+                  @click="saveFriend(item, 4)"
+                >同意
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-default"
+                  @click="updateState(item, 3)"
+                >拒绝
+                </el-button>
               </div>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
-              </div>
-            </div>
-            <div class="item-right">
-              <span>已同意</span>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="item-left">
-              <div>
-                <div class="img-box"><img src="" alt=""></div>
-              </div>
-              <h3 class="title">张某申请加你为好友</h3>
-              <span class="datetime">2018-12-16&nbsp;&nbsp;08:26</span>
-              <div class="text">
-                <span>理由：</span>
-                张某申请添加你为好友张某申请添加你为好友张某申请添加你为好友
-              </div>
-            </div>
-            <div class="item-right">
-              <span>等待审核</span>
             </div>
           </div>
         </section>
@@ -67,65 +53,134 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 import {
   NEW_FRIEND_LIST,
   SAVE_FRIEND,
   REFUSE_GROUP
 } from '~api/message.js';
+import {FORMAT_TIME} from 'utils/message.js'
 
 export default {
   name: 'NewFriends',
   data() {
     return {
-      messageList: [] // 好友申请消息列表
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
+      activeBtn: 'unChecked', // 1已审核 2未审核
+      messageList: [], // 好友申请消息列表
+      // showMessageList: [] // 好友申请消息列表筛选过的
     }
   },
-  mounted() {
-    this.getList()
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id
+    },
+    messageListFilter() {
+      let obj = {
+        checked: {
+          count: 0,
+          data: []
+        },
+        unChecked: {
+          count: 0,
+          data: []
+        },
+      };
+      this.messageList.forEach(item => {
+        if (item.state === 0) {
+          obj.unChecked.count++;
+          obj.unChecked.data.push(item)
+        } else {
+          obj.checked.count++;
+          obj.checked.data.push(item)
+        }
+      });
+      console.log('messageListFilter:', obj);
+      return obj
+    },
+    showMessageList() {
+      return this.activeBtn === 'checked' ?
+        this.messageListFilter.checked.data :
+        this.messageListFilter.unChecked.data
+    }
+  },
+  filters: {
+    formatTime(time) {
+      return FORMAT_TIME(time)
+    }
   },
   methods: {
+    // 获取好友申请列表
     getList() {
-      NEW_FRIEND_LIST(225).then(res => {
-        console.log('好友申请消息', res.data.data)
-        if (res.data.code == 200) {
+      NEW_FRIEND_LIST(this.loginUserId).then(res => {
+        console.log('好友申请消息', res.data.data);
+        if (res.data.code === 200) {
           this.messageList = res.data.data
         }
       }).catch(err => {
-        console.log('请求message：', err)
+        console.log('请求取好友申请列表err：', err)
       })
     },
+
+    // todo: 1新朋友接口调用（ok）
     saveFriend(item, state) {
       // 点同意，先保存，再修改状态，点拒绝直接改状态
+      // debugger;
       let params = {
         friendId: item.id,
-        userId: 225
-      }
+        userId: this.loginUserId
+      };
 
       SAVE_FRIEND(params).then(res => {
-        console.log('保存', res.data.data)
-        if (res.data.code == 200) {
+        console.log('保存', res.data.data);
+        if (res.data.code === 200) {
           this.updateState(item, state)
+        } else {
+          this.$message({
+            type: 'warning',
+            message: res.data.msg,
+            showClose: true,
+          })
         }
       }).catch(err => {
         console.log('请求message：', err)
       })
     },
     updateState(item, state) {
+      debugger;
       let params = {
         code: item.code,
-        state: 3 // 3拒绝，4同意
-      }
+        state: state // 3拒绝，4同意
+      };
       REFUSE_GROUP(params)
         .then(res => {
-          console.log('修改状态', res.data.data)
-          if (res.data.code == 200) {
-            console.log('修改成功')
+          console.log('修改好友请求状态res:', res.data);
+          if (res.data.code === 200) {
+            console.log('修改好友请求成功');
+            this.updateMessageList(item, state); // 更新本地页面显示
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.data.msg,
+              showClose: true,
+            })
           }
         }).catch(err => {
-        console.log('请求message：', err)
+        console.log('修改好友请求err：', err)
       })
+    },
+
+    // 等待服务器返回好友修改状态后，本地显示处理
+    updateMessageList(item, state) {
+      debugger;
+      let index = this.messageList.indexOf(item);
+      this.messageList[index].state = state
     }
 
+  },
+  mounted() {
+    this.getList()
   }
 }
 </script>
@@ -137,13 +192,16 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+
     .top {
       padding: 40px 40px 32px;
     }
+
     .bottom {
       position: relative;
       flex: 1;
       padding-right: 40px;
+
       /deep/ .el-scrollbar {
         height: 100%;
         position: absolute;
@@ -152,6 +210,7 @@ export default {
         left: 0;
         right: 0;
       }
+
       section {
         padding: 0 40px;
       }

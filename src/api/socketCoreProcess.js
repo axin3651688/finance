@@ -11,7 +11,7 @@ import {
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
 import {
-    processSingleMessage
+    processServerMessage
 } from 'utils/message'
 /**
  * 消息核心处理
@@ -24,11 +24,13 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
+        debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
                 break;
             case 1003:
+                // 登录已失效，请重新登录
                 console.log('socketCoreProcess: 1003');
                 break;
             case 1006:
@@ -36,12 +38,13 @@ export default function socketCoreProcess(websocket, datas) {
                 break;
             case 1100:
                 // 单聊
-                console.log('socket单聊: 1100');
-                processSingleMessage(data);
+                // debugger;
+                processServerMessage(data);
                 break;
             case 1101:
                 // 群聊
-                console.log('socketCoreProcess: 1101');
+              // debugger;
+                processServerMessage(data);
                 break;
             case 1500:
                 //终端控制处理逻辑 {text:"执行成功"}
@@ -53,13 +56,16 @@ export default function socketCoreProcess(websocket, datas) {
 
             default:
         }
-    }
+    };
 
     let allowNotification = window.Notification;
-
-    let showNotification = function (data) {
+    let showNotification=function(data){
+      debugger;
+        // notificationTypeList 需要消息提示的 code 列表
+        let notificationTypeList = [1100,1101,11017,11016,11018,1500,11021,1005, 1004];
+        if (notificationTypeList.indexOf(data.code) < 0) return; // 如果消息不在列表中，则 return
         let bean = data.data;
-        let user = bean.user;
+        let user  = bean.user;
         // debugger;
         let who = "自己";
         if (user) {
@@ -91,7 +97,7 @@ export default function socketCoreProcess(websocket, datas) {
 
     let permission = allowNotification.permission;
     if (permission == "denied") {
-        debugger;
+       // debugger;
         var notification = new window.Notification("这是一个通知撒:", {
             dir: "auto",
             lang: "hi",
