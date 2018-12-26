@@ -117,6 +117,12 @@ export default {
         }
       }
 
+      .nav-item.router-link-active{
+        .nav-item_icon {
+          background: $colorTheme;
+        }
+      }
+
       .nav-item_quit {
         position: absolute;
         bottom: 0;
