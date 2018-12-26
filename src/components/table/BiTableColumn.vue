@@ -41,6 +41,7 @@
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
   <el-table-column v-else-if="col.type === 'decimal'"
    :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150"
+   :cell-style = "rowClass"
    >
     <template slot-scope="scope">
       <el-tooltip
@@ -89,10 +90,10 @@ export default {
     }
   },
   methods: {
-    // rowClass({ row, rowIndex }) {
-      // :cell-style = "rowClass"
-    //   return "text-align:center";
-    // },
+    rowClass({ row, rowIndex }) {
+      
+      return "text-align:center";
+    },
     upData(item) {
       //   debugger;
       this.$set(this, "data", null);
