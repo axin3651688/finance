@@ -1,9 +1,11 @@
 <template>
+<!-- :height="item.height || rowClass" -->
   <el-table
+    class="table"
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    :height="item.height"
+    height="item.height || rowClass"
     :cell-style="cellStyle"
     @cell-click="onCellClick"
     :span-method="rowSpanAndColSpanHandler"
@@ -30,6 +32,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      height:480,
       spanArr:[],
       id: 0,
       text: "",
@@ -102,6 +105,13 @@ export default {
     /**
      * 单元格级别样式设置
      */
+
+    // 表格的高度 12.26
+      rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
+
+
     cellStyle(row) {
       debugger;
       let css = "padding: 4px 0;";
@@ -329,5 +339,9 @@ export default {
 .el-table td,
 .el-table th {
   padding: 5px 0;
+}
+/* 横向滚动条 12.26 */
+.el-scrollbar__bar.is-horizontal>div{
+  height: 0;
 }
 </style>

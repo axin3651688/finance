@@ -89,6 +89,10 @@ export default {
     }
   },
   methods: {
+    // rowClass({ row, rowIndex }) {
+      // :cell-style = "rowClass"
+    //   return "text-align:center";
+    // },
     upData(item) {
       //   debugger;
       this.$set(this, "data", null);

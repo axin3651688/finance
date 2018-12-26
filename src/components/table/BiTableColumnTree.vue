@@ -6,6 +6,7 @@
         :col="cc"
         :key="cc.text"
         :data="data"
+
       ></bi-table-column-tree>
       <bi-table-column v-else :col="cc" :data="data" :key="cc.text" ref="tcol"/>
     </template>
