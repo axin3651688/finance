@@ -189,7 +189,7 @@ export default {
     */
     showSet(items){
         items.forEach(item=>{
-           debugger;
+           
            let children = item.children;
            if(children && children.length > 0){
               this.showSet(children);
@@ -209,6 +209,7 @@ export default {
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
+      debugger
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -225,7 +226,7 @@ export default {
       //showDims控制顶部导航栏的显示及隐藏
       // debugger;
       // console.log(bean.showDims);
-      debugger
+      
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
           if (ele == "day") {
@@ -257,7 +258,6 @@ export default {
         this.loadModuleAfter(cache);
         return;
       }
-      debugger;
       this.loadRemoteSource(this.api);
     },
 
@@ -282,7 +282,7 @@ export default {
         });
         return;
       }
-       debugger;
+      
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -356,7 +356,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-       debugger
+
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -411,7 +411,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
+     
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
@@ -465,9 +465,18 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+       /**
+        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
+        */
+      if(item.__queryDataAfter && typeof(item.__queryDataAfter) == "function"){
+        // debugger;
+        datas = item.__queryDataAfter(datas);
+      }else 
+
+      // debugger
       //在此加了查询数据之后的拦截处理
       if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
-        debugger;
+        //debugger;
         datas = item.queryDataAfter(datas);
       }
       // debugger;
@@ -479,6 +488,9 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
+    },
+    __queryDataAfter(){
+      //  debugger;
     },
     /**
      * 设置模型数据
@@ -501,7 +513,6 @@ export default {
       return item.id;
     },
     removeTab(targetName) {
-      debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
