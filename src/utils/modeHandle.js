@@ -24,12 +24,12 @@ export default function modeHandle(e) {
     console.log(e.sourceId, e.url)
 
     /** 
-      * sjz
-      * 如果是应收款项分析表（e.pid==2002）才会执行；
-      * 只有三种分析表(e.id==356 || e.id==358 || e.id==360)时吧才会根据公司的leaf属性展现明细表还是二级汇总表；
-      * 单体公司（leaf=true）时展示明细表；
-      * 合并公司（leaf=false）时展现二级汇总表
-      * */
+     * sjz
+     * 如果是应收款项分析表（e.pid==2002）才会执行；
+     * 只有三种分析表(e.id==356 || e.id==358 || e.id==360)时吧才会根据公司的leaf属性展现明细表还是二级汇总表；
+     * 单体公司（leaf=true）时展示明细表；
+     * 合并公司（leaf=false）时展现二级汇总表
+     * */
     // if(e.pid=='2002'){
     //     if(e.id=='356'){
     //         if(companyMessage.leaf){

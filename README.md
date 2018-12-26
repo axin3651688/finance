@@ -99,15 +99,10 @@ BiText
     "generateVar":{//生成变量rows
        "periodCount":12,
         "compareType":"0&-1",
-<<<<<<< HEAD
-        "varName":"rows"
-    }
-=======
         "varName":"rows",
          "reverse":true
     },
     compareType:"0&-1" //-1&0
->>>>>>> aecee3c4838484564747e46ff1cc26bfd92b49bc
 }
 ~~~
 

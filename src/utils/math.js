@@ -378,7 +378,7 @@ const singleSeriesDataParser8 = (config, datas, rows, cols) => {
  * 否则则返回：[xxx,xxx]
  */
  const singleSeriesDataParse = (config, datas, rows, cols) => {
-     debugger
+    //  debugger
      let columns = config.columns,len = columns.length;
      let label = getSeriesData(columns[0], datas, rows, cols);
      let value = getSeriesData(columns[1], datas, rows, cols);
