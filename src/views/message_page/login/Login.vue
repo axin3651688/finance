@@ -92,6 +92,7 @@ export default {
   methods: {
     ...mapActions(["GetSideMid"]),
 
+    // electron 最小化
     web_minWindows() {
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
@@ -100,14 +101,6 @@ export default {
         ipc.send('web_minWindows', '')
       }
 
-    },
-    web_maxWindows() {
-      if (window.require) {
-        var ipc = window.require('electron').ipcRenderer
-      }
-      if (window.require) {
-        ipc.send('web_maxWindows', '')
-      }
     },
     web_closeWindows() {
       if (window.require) {

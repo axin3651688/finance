@@ -8,13 +8,15 @@
         <div class="content">
           <h3 class="title">
             <span>{{groupInfo.text}}</span>
-            <el-dropdown trigger="click" @command="handleCommand" v-if="loginUserId === groupOwnerId">
+            <el-dropdown trigger="click" @command="handleCommand">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="groupSetting"
-                                  style="padding-top: 15px;padding-bottom: 12px;">
+                <el-dropdown-item
+                  command="groupSetting"
+                  v-if="loginUserId === groupOwnerId"
+                  style="padding-top: 15px;padding-bottom: 12px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
                       <img src="../assets/icon/group_set_icon.svg"
@@ -102,13 +104,19 @@
         <figure>
           <div>
             <div class="img-box">
-              <img :src="groupInfo.avatar" :alt="groupInfo.text">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <img v-else :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
             </div>
           </div>
-          <a class="upload-file" href="javascript:;">
-            <span>选择照片</span>
-            <input type="file" placeholder="选择照片">
-          </a>
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            >
+            上传头像
+          </el-upload>
         </figure>
       </div>
       <div class="dialog-content">
@@ -120,7 +128,7 @@
         </el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="showGroupSettingDialog = false">保 存</el-button>
+                <el-button type="primary" size="small" @click="submitUpload">保 存</el-button>
                 <el-button size="small" @click="showGroupSettingDialog = false">取 消</el-button>
               </span>
     </el-dialog>
@@ -142,17 +150,6 @@
               </span>
     </el-dialog>
 
-    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
-    <!--<el-dialog class="add-member-dialog"-->
-    <!--:visible.sync="showGroupMembers"-->
-    <!--width="300px"-->
-    <!--:show-close="true"-->
-    <!--:modal-append-to-body="false"-->
-    <!--id="group-members"-->
-    <!--&gt;-->
-    <!--sdfasdfsadf-->
-    <!--</el-dialog>-->
-
     <!--群成员侧边栏组件-->
     <group-members
       v-if="showGroupMembers"
@@ -171,7 +168,8 @@ import {
   sendMsg,
   QUIT_GROUP,
   EDIT_GROUP,
-  DISSOLU_GROUP
+  DISSOLU_GROUP,
+  UPLOAD_FILE
 } from '~api/message.js';
 
 export default {
@@ -182,6 +180,8 @@ export default {
   },
   data() {
     return {
+      imgfd: null, // 要发给服务器的图片信息
+      imageUrl: '', // 上传图片时绑定的图
       defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
@@ -208,6 +208,30 @@ export default {
     }
   },
   methods: {
+
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      // debugger;
+      console.log(file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.imgfd = fd;
+      return true
+    },
+
+    submitUpload() {
+      let fd = this.imgfd;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传群头像res',res);
+          this.showGroupSettingDialog = false
+        });
+      }
+    },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
     addFaceToInput(face) {
@@ -333,7 +357,7 @@ export default {
       })
     },
 
-    // TODO：2退出群组(ok)
+    // TODO：2退出群组(ok) 成功后窗口怎么跳转
     quitGroup() {
       // debugger;
       let params = {

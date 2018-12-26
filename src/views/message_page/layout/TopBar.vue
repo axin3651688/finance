@@ -3,8 +3,7 @@
     <div class="topbar-left">
       <!--topbar-left-->
     </div>
-    <div class="topbar-right"
-         @dblclick="web_fullWindows()" >
+    <div class="topbar-right" @dblclick="web_minWindows()">
       <h3 class="page-title">首页</h3>
       <div class="btn-group">
         <span class="btn btn-mini" @click="web_minWindows()">-</span>
@@ -20,6 +19,7 @@ export default {
   name: "TopBar",
   methods: {
     web_minWindows() {
+      alert('web_minWindows');
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
@@ -28,7 +28,8 @@ export default {
       }
 
     },
-    web_fullWindows() {
+    web_maxWindows() {
+      alert('web_maxWindows');
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
@@ -37,6 +38,7 @@ export default {
       }
     },
     web_closeWindows() {
+      alert('web_closeWindows');
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
@@ -70,7 +72,7 @@ export default {
       overflow: hidden;
       flex: 1;
       -webkit-app-region: drag;
-      user-select: none;
+      /*user-select: none;*/
       &:after {
         $afterWidth: 20px;
         position: absolute;
@@ -101,6 +103,7 @@ export default {
           text-align: center;
           line-height: 40px;
           cursor: pointer;
+          transition: all .3s;
         }
       }
     }

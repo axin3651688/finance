@@ -29,6 +29,14 @@ let proxyObj = { // 配置跨域
             '^/api': '/'
         }
     },
+    '/file': {
+        target: 'http://192.168.1.118:8002/api',
+        ws: true,
+        changOrigin: true,
+        pathRewrite: {
+            '^/file': '/'
+        }
+    },
     '/cnbi': {
         //  target: 'http://192.168.1.118:8081', //gjx
         target: 'http://192.168.1.149:8000',
