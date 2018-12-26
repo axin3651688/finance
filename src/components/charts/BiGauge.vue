@@ -26,16 +26,16 @@ export default {
       receive: {
 				title : {
 				  // 	padding:[410,0,0,0],    //标题相对于容器边距
-					text:"营业收入目标完成率",
+					text:this.item.text,
           link:false,
           top:"10",
           x:'center',             //标题块相对于容器位置
           // y:260,
           textAlign:'left',
           textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
               fontSize: 16,
-              color: '#000',
+              color: '#8796B0',
               align:'center'
           }
         },

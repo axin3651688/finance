@@ -87,11 +87,6 @@
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
-  data(){
-    return {
-      tableDataaaa:[]
-    }
-  },
   props: ["col", "tableData"],
   computed: {
     isFolder() {
@@ -122,7 +117,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, colId, row, rows) {
-      //  debugger;
+        debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";
@@ -139,7 +134,7 @@ export default {
     }
   },
   created() {
-    this.$set(this, "tableData", null);
+    //this.$set(this, "tableData", null);
   }
 };
 </script>

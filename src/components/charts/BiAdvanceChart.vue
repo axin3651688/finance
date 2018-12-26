@@ -73,7 +73,7 @@ export default {
       debugger;
       let options = item.chartOptions;
       let defaultOptions = this.getDefautlChartConfigByType();
-      Cnbi.apply(options || {}, defaultOptions);
+      Cnbi.applyIf(options || {}, defaultOptions);
       this.evalVaiables(options);
       console.log(options);
 
@@ -108,7 +108,7 @@ export default {
     },
     getDefautlChartConfigByType() {
       debugger;
-      let chartSubType = this.item.options.subType.b;
+      let chartSubType = this.item.options.subType;
       if (!chartSubType) {
         console.error("没有正确的配置chart类型");
         return;

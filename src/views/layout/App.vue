@@ -14,7 +14,7 @@ export default {
     };
   },
   created() {
-    debugger;
+    //debugger;
     this.readLocalStorage();
     let authorization = localStorage.getItem("authorization");
 

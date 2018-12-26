@@ -13,7 +13,11 @@ export default {
     return {
       options: {
         title: {
-          text: this.item.text
+          text: this.item.text,
+          textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+              fontSize: 16,
+              color: '#8796B0' 
+          }
         },
 
         tooltip: {

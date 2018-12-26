@@ -119,11 +119,15 @@ export default {
           if (!resData.id) {
             resData = eval("(" + resData + ")");
           }
-          if (!resData.xtype && resData.items.length > 0) {}
+          if(!resData.children && resData.items){
+            resData.children = resData.items;
+            delete resData.items;
+          }
           resData.id = bb.id;
           resData.text = text;
           resData.tabIndex = text;
           resData.closable = true;
+          resData.show = true;
           module.items[action](resData);
           module.activeTabName = resData.text;
         });
