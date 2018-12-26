@@ -103,6 +103,7 @@ export default {
   computed: {
     // 格式化数据源
     formatData() {
+      debugger
       let tmp;
       if (!Array.isArray(this.item.rows)) {
         tmp = [this.item.rows];
@@ -142,6 +143,7 @@ export default {
       }
     },
     array(datas){
+    debugger
     let data=datas
     // console.log("w",data)
     let arr = []
@@ -182,6 +184,7 @@ export default {
       debugger
       this.tranformData(data,rootItem);
     }
+
     this.item.rows = rootItem;
 
     // for(let i = 0; i < data.length-1;i++){
@@ -208,21 +211,28 @@ export default {
     // this.item.rows = arr;
     // console.log("11",arr);
     },
+    // 孙子成写的------递归循环法
     tranformData(data,rootItem) {
-      debugger
+      // debugger
       let me = this;
       let children = [];
+      let itemArr = [];
       rootItem.children = children;
       for(let i = 0;i < data.length;i ++){
         let it = data[i];
+        if(rootItem.scode==it.scode){
+          continue;
+        }
         if(rootItem.scode==it.pid){
           rootItem.children.push(it);
+        }else {
+          itemArr.push(it);
         }
       }
       if(rootItem.children&&rootItem.children.length>0){
           for(let i = 0;i <rootItem.children.length;i ++){
             let tt = rootItem.children[i];
-            me.tranformData(data,tt);
+            me.tranformData(itemArr,tt);
           }
       }
       // console.log(rootItem);

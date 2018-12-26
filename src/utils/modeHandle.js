@@ -22,6 +22,38 @@ export default function modeHandle(e) {
 
     // e.url = "cnbi/json/source/jsnk/gauge.json";
     console.log(e.sourceId, e.url)
+
+    /** 
+      * sjz
+      * 如果是应收款项分析表（e.pid==2002）才会执行；
+      * 只有三种分析表(e.id==356 || e.id==358 || e.id==360)时吧才会根据公司的leaf属性展现明细表还是二级汇总表；
+      * 单体公司（leaf=true）时展示明细表；
+      * 合并公司（leaf=false）时展现二级汇总表
+      * */
+    // if(e.pid=='2002'){
+    //     if(e.id=='356'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/yszk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/yszkhz.json' ;
+    //         }
+    //     }
+    //     if(e.id=='358'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/yfzk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/yfzkhz.json' ;
+    //         }
+    //     }
+    //     if(e.id=='360'){
+    //         if(companyMessage.leaf){
+    //             e.url = '/cnbi/json/source/tjsp/qtysk.json';
+    //         }else{
+    //             e.url = '/cnbi/json/source/tjsp/qtyskhz.json' ;
+    //         }
+    //     }
+    // }
+
     findDesignSource(e.sourceId, e.url)
         .then(response => {
             // debugger
