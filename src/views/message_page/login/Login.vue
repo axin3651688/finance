@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="login">
+    <div class="login" ondragstart="return false;">
       <div class="left">
         <img src="@/assets/login/img.svg" alt="">
       </div>
       <div class="right">
-        <div>
-          <img src="@/assets/login/zuixiaohua.svg" class="img1" @click="web_minWindows()">
-          <img src="@/assets/login/close.svg" class="img2" @click="web_closeWindows()">
+        <div style="-webkit-app-region: drag" class="control-btns">
+          <img src="@/assets/login/zuixiaohua.svg" class="icon-mini img1" @click="web_minWindows()">
+          <img src="@/assets/login/close.svg" class=" icon-colse img2" @click="web_closeWindows()">
         </div>
         <h3>登陆</h3>
         <p class="copy">安徽经邦数据展示客户端</p>
@@ -189,6 +189,13 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    // 禁止滑动
+    document.body.addEventListener('touchmove', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+    }, { passive: false });
   }
 }
 </script>
@@ -203,9 +210,14 @@ export default {
   } */
 </style>
 <style scoped lang="scss">
+  * {
+    padding: 0;
+    margin: 0;
+  }
   .login {
     width: 700px;
     height: 420px;
+    overflow: hidden;
     position: absolute;
     left: 0;
     top: 0;
@@ -231,13 +243,19 @@ export default {
       background: rgba(255, 255, 255, 1);
       opacity: 1;
 
-      .img1 {
-        padding: 10px 16px 0 280px;
+      .img1{
+        margin-right: 16px;
+      }
+      .control-btns {
+        padding-right: 50px;
+        display: flex;
+        justify-content: flex-end;
+        .icon-mini,.icon-close{
+          padding: 5px;
+        }
       }
 
-      .img2 {
 
-      }
 
       h3 {
         font-size: 24px;

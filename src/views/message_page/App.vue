@@ -74,4 +74,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  #app{
+    background: #ffffff;
+    overflow: hidden;
+  }
 </style>

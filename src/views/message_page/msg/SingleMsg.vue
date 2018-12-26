@@ -90,6 +90,15 @@ export default {
     },
     singleMsgListReverse() {
       if (this.singleMsgList.length) return this.singleMsgList.reverse()
+    },
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    }
+  },
+  watch: {
+    receiverId(val) {
+      alert('watch receiverId');
+      this.findSingleMsg();
     }
   },
   methods: {
@@ -154,28 +163,27 @@ export default {
       this.$refs.textarea.focus();
     },
 
+    findSingleMsg(){
+      // ajax请求获取单聊消息内容
+      let _this = this;
+      FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
+        .then(res => {
+          console.log('获取单聊信息then：', res);
+          res = res.data;
+          if (res.code === 200 && res.data) {
+            _this.singleMsgList = res.data.data;
+            _this.receiverName = singleMsgList[0].name;
+            _this.receiverAvatar = singleMsgList[0].avatar
+          }
+        }).catch(err => {
+        console.log('获取单聊信息catch：', err)
+      });
+    }
+
   },
   mounted() {
-    // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
-      .then(res => {
-        console.log('获取单聊信息then：', res);
-        res = res.data;
-        if (res.code === 200 && res.data) {
-          this.singleMsgList = res.data.data;
-          this.receiverName = singleMsgList[0].name;
-          this.receiverAvatar = singleMsgList[0].avatar
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.msg,
-            showClose: true
-          })
-        }
-      }).catch(err => {
-      console.log('获取单聊信息catch：', err)
-    });
+    this.findSingleMsg();
 
     // 当点击的不是表情，则隐藏表情弹框
     document.addEventListener('click', e => {

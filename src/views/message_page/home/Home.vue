@@ -95,7 +95,7 @@ export default {
       }
 
       if (window.require) {
-        ipc.send('openWebUrl', 'http://www.baidu.com')
+        ipc.send('web_openWebUrl', 'http://www.baidu.com')
       }
 
     },
@@ -109,7 +109,7 @@ export default {
       }
 
       if (window.require) {
-        ipc.send('openWebUrl', 'http://www.baidu.com')
+        ipc.send('web_openWebUrl', 'http://www.baidu.com')
       }
 
     },
