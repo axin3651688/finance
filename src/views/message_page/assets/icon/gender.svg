@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.988 36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffb554;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="gender" transform="translate(-6360.99 -812)">
+    <rect id="矩形_2304" data-name="矩形 2304" class="cls-1" width="35.988" height="36" rx="8" transform="translate(6360.99 812)"/>
+    <g id="组_86" data-name="组 86" transform="translate(6216.39 683.467)">
+      <path id="路径_102" data-name="路径 102" class="cls-2" d="M605.6,191.147,600.747,196l1.259,1.26,4.858-4.858Z" transform="translate(-435.362 -53.175)"/>
+      <path id="路径_103" data-name="路径 103" class="cls-2" d="M603.631,136.533h-5.4a.9.9,0,1,0,0,1.8h5.4a.9.9,0,1,0,0-1.8Z" transform="translate(-432.039)"/>
+      <path id="路径_104" data-name="路径 104" class="cls-2" d="M803.033,136.533a.85.85,0,0,0-.9.9v5.4a.9.9,0,1,0,1.8,0v-5.4a.85.85,0,0,0-.9-.9Z" transform="translate(-631.441)"/>
+      <path id="路径_105" data-name="路径 105" class="cls-2" d="M803.033,136.533a.85.85,0,0,0-.9.9v4.5a.9.9,0,1,0,1.8,0v-4.5a.85.85,0,0,0-.9-.9Z" transform="translate(-631.441)"/>
+      <path id="路径_106" data-name="路径 106" class="cls-2" d="M172.042,136.533h-5.4a.425.425,0,0,0-.45.45v.9a.425.425,0,0,0,.45.45h5.4a.425.425,0,0,0,.45-.45v-.9A.425.425,0,0,0,172.042,136.533Zm-10.346,5.4a6.3,6.3,0,1,1-6.3,6.3,6.259,6.259,0,0,1,6.3-6.3m0-1.8a8.1,8.1,0,1,0,8.1,8.1A8.063,8.063,0,0,0,161.7,140.132Z"/>
+    </g>
+  </g>
+</svg>

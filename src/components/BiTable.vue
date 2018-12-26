@@ -64,7 +64,8 @@ export default {
   mounted() {
     // debugger;
     //document.getElementsByClassName("el-tabs__item")[0].click();
-    this.getSpanArr(this.item.datas);
+    //debugger;
+   // this.getTableDataParams();
   },
 
   methods: {
@@ -113,7 +114,6 @@ export default {
 
 
     cellStyle(row) {
-      debugger;
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -125,7 +125,7 @@ export default {
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
         css =  css + "font-weight:bold;" + textIndent + drill;
-        console.info(record.text+"==>css==>"+css);
+       // console.info(record.text+"==>css==>"+css);
         return css
       } else {
         return css;

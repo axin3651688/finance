@@ -237,19 +237,41 @@ const router = new Router({
         import('@v/common/404'),
     },
 
-    // 消息独立页面
+    // start---> 姜海斌 消息独立页面
+    {
+      path: '/message_page',
+      redirect: '/message_page/home',
+    },
     {
       path: '/message_page',
       name: 'MessagePage',
-      component: () => import('@v/message/layout/MessagePage.vue'),
+      component: () => import('@v/message_page/MessagePage.vue'),
       children: [
         {
-          path: '/message_page/index',
-          name: 'Index',
-          component: () => import('@v/message/Index.vue'),
+          path: '/message_page/home', // 消息-首页
+          name: 'Home',
+          component: () => import('@v/message_page/home/Home.vue'),
+        },
+        {
+          path: '/message_page/contact', // 消息-通讯录
+          name: 'Contact',
+          component: () => import('@v/message_page/contact/Contact.vue'),
+        },
+        {
+          path: '/message_page/msg', // 消息-聊天页面
+          name: 'Msg',
+          component: () => import('@v/message_page/msg/Msg.vue'),
         }
       ]
     },
+    {
+      path: '/message_login', // 消息-聊天页面
+      name: 'Login',
+      component: () => import('@v/message_page/login/Login.vue'),
+    }
+    // end---> 姜海斌 消息独立页面
+
+
   ]
 })
 

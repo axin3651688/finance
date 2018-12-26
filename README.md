@@ -99,10 +99,15 @@ BiText
     "generateVar":{//生成变量rows
        "periodCount":12,
         "compareType":"0&-1",
+<<<<<<< HEAD
+        "varName":"rows"
+    }
+=======
         "varName":"rows",
          "reverse":true
     },
     compareType:"0&-1" //-1&0
+>>>>>>> aecee3c4838484564747e46ff1cc26bfd92b49bc
 }
 ~~~
 
@@ -330,5 +335,5 @@ listeners:[
 
 ~~~
 ## 顶部需要日期的配置
-默认 年,月分开显示, 当需要有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
+默认 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
 此时,分开的年月将被隐藏,取而代之的为带日的日期选择器

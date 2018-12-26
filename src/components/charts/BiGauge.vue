@@ -24,66 +24,78 @@ export default {
   data() {
     return {
       receive: {
-        title: {
-          text: this.item.text
-        },
-
-        tooltip: {
-          formatter: "{b} : {c}%"
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
+				title : {
+				  // 	padding:[410,0,0,0],    //标题相对于容器边距
+					text:"营业收入目标完成率",
+          link:false,
+          top:"10",
+          x:'center',             //标题块相对于容器位置
+          // y:260,
+          textAlign:'left',
+          textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+              fontWeight: 'bold',
+              fontSize: 16,
+              color: '#000',
+              align:'center'
           }
+        },
+				tooltip : {
+          formatter: "{a}{b} : {c}%"
         },
         series: [
           {
-            type: "gauge",
-            radius: "65%",
-            // 刻度间隔
-            splitNumber: 5,
-            axisLine: {
-              // 坐标轴线
-              lineStyle: {
-                // 属性lineStyle控制线条样式
-                width: 10,
-                // 外圈线的颜色
-                color: [
-                  [0.25, "#F04864"],
-                  [0.5, "#FACC14"],
-                  [0.75, "#13C2C2"],
-                  [1, "#2FC25B"]
-                ]
+            name: '利润总额目标完成率',
+            type: 'gauge',
+            min:0,
+            max:200,//设置最大刻度
+            //设置仪表盘的园的程度，这里设置的是半圆
+            startAngle: 170,
+            endAngle: 10,
+            axisLine : {
+              show : true,
+              lineStyle : { 					// 属性lineStyle控制线条样式
+                color :[[ 0.25, "#F24764" ],
+                        [ 0.5, "#FBCE14" ],		
+                        [ 0.75, "#11C3C2" ],		
+                        [ 1,"#2FC35B" ]	],
+                width : 20//表盘宽度
               }
             },
-            splitLine: {
-              // 是否显示刻度线
-              show: false
+            axisLabel: {  			                
+              textStyle: {       // 属性lineStyle控制线条样式
+                fontSize:9   //改变仪表盘内刻度数字的大小
+              }
             },
-            axisTick: {
-              // 坐标轴小标记
-
-              length: 1 // 属性length控制线长
-            },
-            // 是否显示标签
-            axisLabel: {
-              show: false
-            },
+            center: ["50%", "70%"], //整体的位置设置
+            radius: '85%', //仪表盘大小
+            //设置指针样式
             pointer: {
-              length: "70%",
-              width: 9
+              show: true,
+              length: '65%',
+              width: 5
             },
-            detail: { formatter: "{value}%" },
-            data: [
-              {
-                value: Math.min(88, this.item.options.datas * 100),
-                name: "完成率"
-              }
-            ]
+            detail: {
+//			      show:false,
+              formatter:'{value}%',
+              textStyle:{
+                fontSize:20
+              },
+              offsetCenter:[0,20]     // 文字块相对于圆心偏移量
+            }, 
+            data: [{value: 10}],
+            markPoint:{						//最新发明，给指针中心加个空心轴
+              symbol:'circle',
+              symbolSize:5,
+              data:[
+                //跟你的仪表盘的中心位置对应上，颜色可以和画板底色一样
+                {x:'50%',y:'45%',itemStyle:{color:'#fff'}} 
+              ]
+            }
+                
           }
-        ]
+			  ]
       }
-    };
+    }
   }
   //   watch: {
   //   item: {
