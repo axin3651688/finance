@@ -28,29 +28,39 @@ export default {
     return {
       receive: {
         title: {
-          text: this.item.text
+          text: this.item.text,
+          x: "center",
+          top: "10",
+          textStyle: {
+            fontSize: 16
+          }
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          default: {
-            data: ["好", "坏"]
-          }
+          // default: {
+          data: ["好", "坏"],
+          // },
+          textStyle: {
+            fontSize: 10
+          },
+          x: "center",
+          y: "90%"
         },
         grid: {
-          default: {
-            left: "3%",
-            right: "4%",
-            bottom: "3%",
-            containLabel: true
-          }
+          // default: {
+          left: "3%",
+          right: "4%",
+          bottom: "15%",
+          containLabel: true
+          // }
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
+        // toolbox: {
+        //   feature: {
+        //     saveAsImage: {}
+        //   }
+        // },
         xAxis: {
           default: {
             type: "category",
@@ -78,8 +88,7 @@ export default {
       }
     };
   },
-  created() {
-    debugger;
+  mounted() {
     this.upData();
     //Cnbi.apply(this.receive, this.item.options.datas);
     // debugger;
@@ -99,6 +108,7 @@ export default {
       if (item) {
         this.item = item;
       }
+      debugger;
       let dd = this.item.options.datas;
       this.receive.xAxis = dd.xAxis;
       this.receive.series = dd.series;

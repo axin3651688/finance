@@ -41,13 +41,23 @@
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
+        v-if="item.show "
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-        <el-row v-if="item.layout && item.layout.xtype === 'column'" :gutter="24">
+        <!-- sjz 按钮 -->
+        <!-- <el-button-group>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部展开<i class="el-icon-arrow-down"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">全部收起<i class="el-icon-arrow-up"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">刷新<i class="el-icon-refresh"></i></el-button>
+            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">导出<i class="el-icon-download"></i></el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">安全比例</el-button>
+            <el-button type="primary" v-if="layout.stype==='button_a'">预警比例</el-button>
+        </el-button-group>-->
+        <el-row v-if="item.layout && item.layout === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
             v-for="(item1,index1) in item.children"
@@ -189,10 +199,11 @@ export default {
      * 设置item是否隐藏或显示
      */
     showSet(items) {
+      let flag = true;
       items.forEach(item => {
-        let children = item.children;
-        if (children && children.length > 0) {
-          this.showSet(children);
+        let funName = item.showFun;
+        if (typeof funName == "function") {
+          item.show = item.showFun(this.$store);
         } else {
           let funName = item.showFun;
           if (typeof funName == "function") {
@@ -201,12 +212,17 @@ export default {
             item.show = true;
           }
         }
+        if (item.show == true && flag) {
+          item.tabIndex = "0";
+          flag = false;
+        }
       });
     },
     /**
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
+      debugger;
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -225,6 +241,7 @@ export default {
       //showDims控制顶部导航栏的显示及隐藏
       // debugger;
       // console.log(bean.showDims);
+
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
           if (ele == "day") {
@@ -256,7 +273,6 @@ export default {
         this.loadModuleAfter(cache);
         return;
       }
-      debugger;
       this.loadRemoteSource(this.api);
     },
 
@@ -281,7 +297,7 @@ export default {
         });
         return;
       }
-      debugger;
+
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -355,7 +371,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      //  debugger
+
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -410,7 +426,6 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
@@ -464,13 +479,22 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      /**
+       * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
+       */
+      if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
+        // debugger;
+        datas = item.__queryDataAfter(datas);
+      }
+
+      // debugger
       //在此加了查询数据之后的拦截处理
-      if (
+      else if (
         item.queryDataAfter &&
         typeof item.queryDataAfter == "function" &&
         !item.correctWrongConfig
       ) {
-        debugger;
+        //debugger;
         datas = item.queryDataAfter(datas);
       }
       // debugger;
@@ -483,14 +507,17 @@ export default {
         $childVue.setItems(item, true);
       }
     },
+    __queryDataAfter() {
+      //  debugger;
+    },
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      //debugger
+      debugger;
       findThirdPartData(params)
         .then(res => {
-          //  debugger;
+          debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
@@ -504,7 +531,6 @@ export default {
       return item.id;
     },
     removeTab(targetName) {
-      debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {

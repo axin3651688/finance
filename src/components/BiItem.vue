@@ -41,6 +41,7 @@ export default {
     };
   },
   created() {
+    // debugger
     console.info(this.item);
   },
   mounted() {
@@ -58,9 +59,13 @@ export default {
 
   methods: {
     loadItems() {
+      // debugger
       let config = this.item.config;
-      // debugger;
+      debugger;
       if (config) {
+        if(this.item.id === "lrb3000000"){
+          debugger;
+        }
         config.rows = this.item.rows || config.rows || this.config.rows;
         config.columns =
           this.item.columns ||
