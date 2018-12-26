@@ -68,24 +68,6 @@ import {FORMAT_TIME} from 'utils/message.js'
 
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
-// 暂时定义一个通讯录类容
-const contact = {
-  avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
-  content: null,
-  count: 60,
-  id: null,
-  miniType: 101010,
-  name: "通讯录",
-  otherAvatar: null,
-  otherName: null,
-  platform: null,
-  receiverId: null,
-  sendTime: null,
-  senderId: null,
-  state: 0,
-  type: null,
-};
-
 // 消息左边栏
 class LeftBar {
   constructor(resList, ActionSetMessageStore) {

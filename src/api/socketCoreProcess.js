@@ -24,7 +24,7 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
-        debugger;
+        // debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
