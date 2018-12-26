@@ -129,7 +129,10 @@ export default {
       if (!value) {
         return "--";
       }
-      value = ((value - 0) / 10000).toLocaleString();
+      // value = ((value - 0) / 10000).toLocaleString();
+      // 千分位  保留两位小数
+       value = ((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+
       return value;
     }
   },
