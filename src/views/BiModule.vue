@@ -42,20 +42,12 @@
       <el-tab-pane
         v-for="(item,index) in items"
         v-bind:key="item.id"
+        v-if="item.show"
         v-bind:index="index"
         :label="item.text"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-        <!-- sjz 按钮 -->
-        <!-- <el-button-group>
-            <el-button type="primary" v-if="layout.stype==='button_a'">全部展开<i class="el-icon-arrow-down"></i></el-button>
-            <el-button type="primary" v-if="layout.stype==='button_a'">全部收起<i class="el-icon-arrow-up"></i></el-button>
-            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">刷新<i class="el-icon-refresh"></i></el-button>
-            <el-button type="primary" v-if="layout.ctype==='button' || layout.stype==='button_a' ">导出<i class="el-icon-download"></i></el-button>
-            <el-button type="primary" v-if="layout.stype==='button_a'">安全比例</el-button>
-            <el-button type="primary" v-if="layout.stype==='button_a'">预警比例</el-button>
-        </el-button-group>-->
         <el-row v-if="item.layout && item.layout.xtype === 'column'" :gutter="24">
           <!--说明是有item.items孩子的-->
           <el-col
@@ -173,20 +165,25 @@ export default {
   },
   watch: {
     module_api(newid) {
+      this.changeMonduleBefore(newid);
       this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
       this.loadModuleAfter(localStorage.module);
     },
 
     year(newyear) {
+      this.changeYearBefore(newyear);
       this.updateView("year");
+      
     },
 
     month(newmonth) {
+      this.changeMonthBefore(newmonth);
       this.updateView("month");
       console.log("改变", newmonth);
     },
     company(newId) {
+       this.changeCompanyBefore(newId);
       console.log("改变", newId);
       this.updateView("company");
     }
@@ -194,12 +191,29 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
+     /**
+      * 更新模块之前调用的方法
+      */
+    changeMonduleBefore(){},
+     /**
+      * 更新年之前调用的方法
+      */
+    changeYearBefore(){},
+     /**
+      * 更新月之前调用的方法
+      */
+    changeMonthBefore(){},
+
+     /**
+      * 更新公司之前调用的方法
+      */
+    changeCompanyBefore(){},
     /**
      * 设置item是否隐藏或显示
      */
     showSet(items) {
      // let flag = true;
-     debugger;
+    // debugger;
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -221,7 +235,7 @@ export default {
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
-      debugger;
+     // debugger;
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -515,7 +529,7 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      debugger;
+     // debugger;
       findThirdPartData(params)
         .then(res => {
           debugger;

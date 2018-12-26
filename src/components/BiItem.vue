@@ -59,7 +59,7 @@ export default {
 
   methods: {
     loadItems() {
-       debugger
+      // debugger
       let config = this.item.config;
       if (config) {
         //config.rows = this.item.rows || config.rows || this.config.rows;
