@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe height="item.height || rowClass">
     <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -116,7 +116,30 @@ export default {
     }
   },
   methods: {
-
+    rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
+    upData(item) {
+      this.$set(this.item, "datas", item.datas);
+      this.$set(this, "item", item);
+      let refs = this.$refs;
+      if (refs) {
+        if (refs.child) {
+          refs.child.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
+            }
+          });
+        }
+        if (refs.tchild) {
+          refs.tchild.forEach(children => {
+            if (children.upData) {
+              children.upData(item);
+            }
+          });
+        }
+      }
+    },
     array(datas){
       let data=datas
       // console.log("w",data)

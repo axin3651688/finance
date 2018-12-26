@@ -1,0 +1,205 @@
+{
+	"id": "qsb",
+	"text": "秋熟生产经营表",
+	"config": {
+		"sql":"SELECT ddi.scode AS id, ddi.sname AS text, dfa.fact_a AS A, dfa.fact_b AS B, dfa.fact_c AS C, dfa.fact_d AS D, dfa.fact_e AS E, dfa.fact_f AS F, dfa.fact_g AS G FROM dw_factautumnplan dfa RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfa.dim_item AND dfa.dim_company = :company AND dfa.dim_period = :period WHERE ddi.stype = '36' AND ddi.scode != '36' ORDER BY ddi.scode",
+		"cube": {
+			"cubeId": 4
+		},
+		"mainDim": "itemperiod",
+		"needDims": [
+			"year",
+			"month",
+			"company"
+		],
+		"random": {
+			"min": 100,
+			"max": 100000
+		},
+		"type": 1,
+		"columns": [
+            {
+				"id": "id",
+				"type": "string",
+				"hidden": true,
+				"text": "项目"
+			},
+			{
+				"id": "SSDA1A",
+				"type": "string",
+				"text": "从农垦集团内部租赁的面积",
+				"children": [{
+						"id": "A",
+						"text": "总面积",
+						"type": "decimal"
+					},
+					{
+						"id": "B",
+						"text": "其中：按年收取发包收入",
+						"type": "decimal"
+					},
+					{
+						"id": "C",
+						"text": "其中：按半年收取发包收入",
+						"type": "decimal"
+					},
+					{
+						"id": "D",
+						"text": "其中：其他",
+						"type": "decimal"
+					}
+				]
+			},
+			{
+				"id": "E",
+				"type": "decimal",
+				"text": "外拓基地"
+			},
+			{
+				"id": "SSsDsswSQAA",
+				"type": "string",
+				"text": "填报说明",
+				"children": [{
+						"id": "F",
+						"text": "从农垦集团内部租赁的面积",
+						"type": "decimal"
+					},
+					{
+						"id": "G",
+						"text": "外拓基地",
+						"type": "decimal"
+					}
+				]
+			}
+		],
+		"rows": [
+                {
+				"id": "1",
+				"type": "string",
+				"text": "项目",
+				"group":1
+				},
+				{
+					"id": "2",
+					"text": "经营规模及租金成本",
+					"type": "string",
+					"group":1
+				},
+				{
+					"id": "3",
+					"text": "面积（亩）",
+					"type": "string",
+					"group":1
+				},
+				{
+					"id": "4",
+					"text": "年度总承包金",
+					"type": "string",
+					"group":2
+				},
+				{
+					"id": "text",
+					"text": "亩承包金",
+                    "type": "string",
+                    "group":2
+				},
+                {
+                    "id": "text",
+                    "text": "经营模式构成",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "集体种植面积",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "联合承包面积",
+                    "type": "string",
+                    "group":2
+                    
+                },
+                {
+                    "id": "text",
+                    "text": "总面积",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "其中：集体种植面积",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "职工个人承包面积",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "职工人数",
+                    "type": "string",
+                    "group":2
+                },
+                {
+                    "id": "text",
+                    "text": "职工个人承包",
+                    "type": "string"
+                },
+                {
+                    "id": "text",
+                    "text": "面积（亩）",
+                    "type": "string"
+                },
+                {
+                    "id": "text",
+                    "text": "总金额",
+                    "type": "string"
+                },
+                {
+                    "id": "text",
+                    "text": "平均单价",
+                    "type": "string"
+                },
+                {
+                    "id": "text",
+                    "text": "职工个人承包人数",
+                    "type": "string"
+                },
+                {
+                    "id": "text",
+                    "text": "产品结构布局",
+                    "type": "string"
+
+				},
+				{
+					"id": "text",
+					"text": "水稻",
+					"type": "string"
+						
+				},
+				{
+					"id": "text",
+					"text": "高效农业",
+					"type": "string"
+				},
+				{
+					"id": "text",
+					"text": "其他",
+					"type": "string"
+				}
+			]
+		},
+		"items": [{
+			"id": "qsb",
+			"xtype": "bi-table"
+		}],
+		"layout": {
+			"xtype": "bi-table"
+		}
+	}

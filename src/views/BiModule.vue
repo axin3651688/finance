@@ -37,7 +37,7 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName"  @tab-remove="removeTab">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
@@ -208,7 +208,12 @@ export default {
                 item.show = item.showFun(this.$store);
                 
            }else{
-              item.show = true;
+              let funName = item.showFun;
+              if(typeof (funName) == "function"){
+                    item.show = item.showFun(this.$store);
+              }else{
+                  item.show = true;
+              }
            }
           if(item.show==true&&flag){
             item.tabIndex = '0';
@@ -225,7 +230,7 @@ export default {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
-          this.showSet(bean.items);
+        this.showSet(bean.items);
       }
       for (let key in bean) {
         this.$set(this, key, bean[key]);
@@ -237,6 +242,7 @@ export default {
       //showDims控制顶部导航栏的显示及隐藏
       // debugger;
       // console.log(bean.showDims);
+      debugger
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
           if (ele == "day") {
@@ -277,7 +283,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-         api = "cnbi/json/source/jsnk/pie.json";
+     // api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -293,7 +299,7 @@ export default {
         });
         return;
       }
-      //  debugger;
+       debugger;
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -367,12 +373,14 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      //  debugger
+       debugger
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
-        let year = datas.year, month = datas.month; 
-        year = { id: year, text: "年" }; month = { id: month, text: "月" };
+        let year = datas.year,
+          month = datas.month;
+        year = { id: year, text: "年" };
+        month = { id: month, text: "月" };
         let periodArr = generatePeriod(
           vars.periodCount,
           vars.compareType,
@@ -381,14 +389,14 @@ export default {
           reverse
         );
         let index = 0;
-        if(reverse){
+        if (reverse) {
           index = periodArr.length - 2;
         }
         datas.comparePeriod = periodArr[index].id;
-        if(vars.varName){
-         item.config[vars.varName] = periodArr;
+        if (vars.varName) {
+          item.config[vars.varName] = periodArr;
         }
-       //datas.period = periodArr.map(p=>p.id).join(",");
+        //datas.period = periodArr.map(p=>p.id).join(",");
       }
       return datas;
     },
@@ -420,14 +428,15 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
-        // 根据是否配置rows来改变rows的内容
-        // if (config.group && config.rows && params.comparePeriod) {
-        //   rowsOfChildrenContent(config, params);
-        // }
+        //在此加了查询数据之前的拦截处理
+        if(item.queryDataBefore && typeof(item.queryDataBefore) == "function"){
+          params = item.queryDataBefore(params);
+        }
         config.type = config.type || 1;
         if (config.sql) {
           params.sql = config.sql;
@@ -473,6 +482,11 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      //在此加了查询数据之后的拦截处理
+      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
+        debugger;
+        datas = item.queryDataAfter(datas);
+      }
       // debugger;
       item.datas = datas;
       if (!$childVue) {
@@ -487,10 +501,10 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      //debugger
+      debugger
       findThirdPartData(params)
         .then(res => {
-          debugger 
+           debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
@@ -503,22 +517,22 @@ export default {
     getActiveTabName(item) {
       return item.id;
     },
-    removeTab(targetName){
+    removeTab(targetName) {
       debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
-         tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-              let nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeTabName = nextTab.name;
-              }
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeTabName = nextTab.name;
             }
-          });
+          }
+        });
       }
-       this.activeTabName = activeName;
-       this.items = tabs.filter(tab => tab.name !== targetName);
+      this.activeTabName = activeName;
+      this.items = tabs.filter(tab => tab.name !== targetName);
     }
   }
 };

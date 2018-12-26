@@ -19,18 +19,8 @@ export default function modeHandle(e) {
         //
         return;
     }
-    debugger
-    let companyMessage = store.getters.treeInfo;
-    console.log('123:'+companyMessage);
-    // var obj = JSON.stringify(fxfx)
-    // var obj = JSON.stringify(report)
 
-    // localStorage.setItem("module", obj);
-    // store.dispatch("GetSideMid", {
-    //     module_api: api
-    // });
-    // console.log();
-
+    // e.url = "cnbi/json/source/jsnk/gauge.json";
     console.log(e.sourceId, e.url)
 
     /** 

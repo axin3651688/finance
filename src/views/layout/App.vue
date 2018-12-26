@@ -8,16 +8,16 @@ import { mapActions } from "vuex";
 import webSocket from "../../utils/webSocket";
 export default {
   name: "app",
-  data(){
-
+  data() {
     return {
-        caches:["module","company","year","month","data"]
-    }
+      caches: ["module", "company", "year", "month", "data"]
+    };
   },
   created() {
+    debugger;
     this.readLocalStorage();
     let authorization = localStorage.getItem("authorization");
-    // debugger;
+
     this.initSocket(authorization);
   },
   methods: {
@@ -41,9 +41,9 @@ export default {
             company: localStorage.company_cache,
             companyName: localStorage.companyName_cache
           });
-          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
         if (!this.isEmpty(localStorage.year_cache)) {
+          // debugger;
           this.GetSideMid({ year: localStorage.year_cache });
         }
         if (!this.isEmpty(localStorage.month_cache)) {
@@ -55,12 +55,15 @@ export default {
         if (!this.isEmpty(localStorage.module_cache)) {
           this.GetSideMid({ module: localStorage.module_cache });
         }
+        if (!this.isEmpty(localStorage.treeInfo)) {
+          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
+        }
       }
     },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
-      // let url = "ws://192.168.1.139:7006/socket.io/";
       let url = "ws://192.168.1.118:7006/socket.io/";
+      // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }
@@ -77,5 +80,6 @@ body,
 #app {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 </style>
