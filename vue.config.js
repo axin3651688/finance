@@ -81,7 +81,7 @@ module.exports = {
     pages: {
         index: {
             // 页面的入口文件
-            entry: 'src/views/layout/main.js',
+            entry: 'src/views/message_page/main.js',
             // entry: 'src/views/green/main.js',
             // 页面的模板文件
             template: 'public/index.html',
