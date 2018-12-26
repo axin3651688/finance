@@ -35,6 +35,10 @@
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
+        <!-- <span v-if="scope.row.balance!=0">
+            <el-button type="text">{{ scope.row[col.id] }}</el-button>
+        </span>
+        <span v-else>{{ scope.row[col.id] }}</span> -->
       </el-tooltip>
     </template>
   </el-table-column>

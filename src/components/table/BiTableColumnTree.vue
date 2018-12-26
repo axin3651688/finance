@@ -31,7 +31,7 @@ export default {
       this.$set(this, "data", item);
       this.$set(this.data, "datas", item.datas);
       let refs = this.$refs;
-      debugger;
+      // debugger;
       if (refs) {
         if (refs.tcol) {
           if (refs.tcol.upData) {
