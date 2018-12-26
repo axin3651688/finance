@@ -31,8 +31,7 @@ let proxyObj = { // 配置跨域
     },
     '/cnbi': {
         //  target: 'http://192.168.1.118:8081', //gjx
-        // target: 'http://192.168.1.138:8000', //gjx
-        target: 'http://192.168.2.12:8081', //gjx
+        target: 'http://192.168.1.149:8000',
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -82,7 +81,7 @@ module.exports = {
     pages: {
         index: {
             // 页面的入口文件
-            entry: 'src/views/layout/main.js',
+            entry: 'src/views/message_page/main.js',
             // entry: 'src/views/green/main.js',
             // 页面的模板文件
             template: 'public/index.html',
@@ -136,7 +135,7 @@ module.exports = {
         // index: 'white.html', //白色启动页面
         open: false,
         host: '0.0.0.0',
-        port: 8089,
+        port: 8085,
         https: false,
         hotOnly: false,
         // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理
