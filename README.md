@@ -99,8 +99,15 @@ BiText
     "generateVar":{//生成变量rows
        "periodCount":12,
         "compareType":"0&-1",
+<<<<<<< HEAD
         "varName":"rows"
     }
+=======
+        "varName":"rows",
+         "reverse":true
+    },
+    compareType:"0&-1" //-1&0
+>>>>>>> aecee3c4838484564747e46ff1cc26bfd92b49bc
 }
 ~~~
 
@@ -218,6 +225,12 @@ BiText
         {
             id: "1",
             text:"",//名字
+            "showFun":function($store){//是否显示
+                //所有的数据都在store里，自己加自己的判断吧
+                return trye;//默认显示
+            },
+            queryDataAfter:function(){}//数据的后置处理
+            queryDataBefore:function(){}//数据的前置处理
             xtype: "bi-text",
             weight: "6"//当layout=column时需要
             renderFunction:"functionName"//字面量函数
@@ -259,7 +272,7 @@ BiText
 
 + 表体合并单元格
 ~~~
-
+在item配置参数 colAndRowSanHandler函数  有4个 row, column, rowIndex, columnIndex
 ~~~
 
 + 事件对象
@@ -321,3 +334,6 @@ listeners:[
     }
 
 ~~~
+## 顶部需要日期的配置
+默认 年,月分开显示, 当需要有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
+此时,分开的年月将被隐藏,取而代之的为带日的日期选择器

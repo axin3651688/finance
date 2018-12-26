@@ -7,7 +7,7 @@
   <bi-bar v-else-if="item.options.type === 'bar'" :item="item" class="bgwight"></bi-bar>
   <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
   <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
-  <BiAdvanceChart v-else-if="item.options.type === 'singleseries'" :item="item" class="bgwight"></BiAdvanceChart>
+  <BiAdvanceChart v-else-if="item.options.type === 'advancechart'" :item="item" class="bgwight"></BiAdvanceChart>
 </template>
 <script>
 import BiColumn from "@c/charts/BiColumn";
@@ -18,7 +18,7 @@ import BiRadar from "@c/charts/BiRadar";
 import BiFunnel from "@c/charts/BiFunnel";
 import BiSPie from "@c/charts/BiSPie";
 import BiAdvanceChart from "@c/charts/BiAdvanceChart";
-import {getConfigModelDatas } from "../utils/math";
+import { getConfigModelDatas } from "../utils/math";
 export default {
   name: "BiChart",
   components: {
@@ -38,6 +38,7 @@ export default {
     };
   },
   created() {
+    // debugger;
     this.upData();
   },
   methods: {
@@ -48,7 +49,7 @@ export default {
         return;
       }
       if (config.type === 5) {
-       //debugger;
+        //debugger;
       }
       let tempData = getConfigModelDatas(
         config,

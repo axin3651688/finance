@@ -64,6 +64,7 @@
 <script>
 import {MY_SESSION} from '~api/message.js';
 import {mapGetters, mapActions} from 'vuex'
+import {FORMAT_TIME} from 'utils/message.js'
 
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
@@ -186,7 +187,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'newServerMsg', 'messageStore'])
+    ...mapGetters(['user', 'messageStore']),
+    newServerMsg() {
+      return this.messageStore.newServerMsg
+    }
   },
   filters: {
     trim(val) { // 去掉头尾空格
@@ -195,16 +199,17 @@ export default {
     },
     // 格式化时间戳
     formatTime(time) {
-      let date = new Date(time);
-      let Y = date.getFullYear();
-      let M = date.getMonth();
-      let D = date.getDay();
-      let H = date.getHours();
-      let m = date.getMinutes();
-      let newTime = `${Y}-${M}-${D} ${H}:${m}`;
-      // console.log(newTime)
-      return newTime
+      return FORMAT_TIME(time);
     }
+  },
+  watch: {
+    // 监听服务器推送的消息
+    // newServerMsg(val) {
+    //   this.$alert('收到服务器推送信息', '提示', {
+    //     confirmButtonText: '确定'
+    //   });
+    //   console.log('message.vue 监听到推送：', val)
+    // }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
@@ -267,7 +272,6 @@ export default {
   },
   mounted() {
     // 页面挂载后 请求消息列表数据
-    console.log('用户信息：', this.user);
     MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
     }).catch(err => {

@@ -19,17 +19,8 @@ export default function modeHandle(e) {
         //
         return;
     }
-    // debugger
-    // console.log(store.getters.treeInfo);
-    // var obj = JSON.stringify(fxfx)
-    // var obj = JSON.stringify(report)
 
-    // localStorage.setItem("module", obj);
-    // store.dispatch("GetSideMid", {
-    //     module_api: api
-    // });
-    // console.log();
-
+    e.url = "cnbi/json/source/jsnk/gauge.json";
     console.log(e.sourceId, e.url)
     findDesignSource(e.sourceId, e.url)
         .then(response => {

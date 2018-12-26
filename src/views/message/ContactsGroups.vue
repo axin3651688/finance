@@ -4,12 +4,12 @@
       <el-scrollbar>
         <ul class="sub-item">
           <li :class="{active: activeGroupID === group.groupId}"
-              v-for="group in GroupListData"
+              v-for="group in groupList"
               :key="group.groupId"
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar"/>
+                <img :src="group.avatar" :onerror="avatar_male"/>
               </div>
               <div class="info">
                 <h3>{{group.text}}（{{group.count}}人）</h3>
@@ -26,7 +26,7 @@
           <div class="top-wrap">
             <div>
               <div class="img-box">
-                <img :src="rightInfo.avatar" alt="" class="avatar-img">
+                <img :src="rightInfo.avatar" alt="" class="avatar-img" :onerror="avatar_male">
               </div>
             </div>
             <div class="text">
@@ -53,7 +53,7 @@
                       <figure>
                         <div>
                           <div class="img-box">
-                            <img :src="user.avatar">
+                            <img :src="user.avatar" :onerror="avatar_male">
                           </div>
                         </div>
                         <span class="info">{{user.trueName}}</span>
@@ -68,11 +68,12 @@
                   <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
                 </div>
               </section>
-              <section>
+              <section v-if="qrUrl">
                 <h4 class="title">群二维码</h4>
                 <div class="content">
+                  {{this.qrUrl}}
                   <div class="qr-code">
-                    <img src="" alt="">
+                    <qriously :value="qrUrl" />
                   </div>
                 </div>
               </section>
@@ -96,13 +97,18 @@ import {
 export default {
   name: 'ContactsGroups',
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
+    }
   },
   data() {
     return {
+      qrUrl: null, // 群二维码地址
+      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
-      GroupListData: [],
+      groupList: null, // [{},{}] 我的群组列表
       rightUsers: [],
       rightInfo: null, // {},
       rightNotice: {}
@@ -111,13 +117,13 @@ export default {
   methods: {
     ...mapActions(['ActionSetMessageStore']),
     getData() {
-      // let userId = this.user.user.id;
+      // debugger;
       MY_GROUP_LIST(this.user.user.id).then(res => {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
-          this.GroupListData = res.data.data;
+          this.groupList = res.data.data;
           // 默认请求第一个群组的信息
-          this.getInfo(this.GroupListData[0].groupId)
+          this.getInfo(this.groupList[0].groupId)
         }
       })
     },
@@ -138,6 +144,7 @@ export default {
         this.rightUsers = groupInfo.users;
         this.rightInfo = groupInfo.info;
         this.rightNotice = groupInfo.rightNotice;
+        this.qrUrl = groupInfo.qrUrl;
       } else {
         GROUP_INFO(groupId).then(res => {
           console.log('群id查询群信息res:', res);
@@ -146,6 +153,7 @@ export default {
             this.ActionSetMessageStore({
               groupInfo: groupInfo,
             });
+            debugger;
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId] = groupInfo;
@@ -167,22 +175,28 @@ export default {
           console.log('请求message：', err)
         });
 
+        debugger;
         let params = {
-          platform: 'windows',
+          platform: 'pc',
           type: 'group',
-          targetId: 4
+          targetId: groupId
         };
         // 获取二维码地址
         SCAN_URL(params).then(res => {
+          debugger;
           console.log('获取二维码的生成地址:', res);
           if (res.data.code === 200) {
-            // TODO 把地址生成二维码?
-            let url = res.data.data.url;
+            this.qrUrl = this.qrUrlFormat(res.data.data.url)
           }
         }).catch(err => {
-          console.log('请求message：', err)
+          console.log('获取二维码的生成地址err：', err)
         })
       }
+    },
+
+    // 替换url后的 userId
+    qrUrlFormat(qrUrl) {
+      return qrUrl.replace(/{userId}/, this.loginUserId)
     },
 
     // 开始群聊天
@@ -196,7 +210,7 @@ export default {
     }
   },
   mounted() {
-    this.getData();
+    this.getData()
   }
 }
 
@@ -211,7 +225,8 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
+    min-width: 300px;
+    max-width: 400px;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -285,7 +300,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     display: flex;
     flex-direction: column;
 
@@ -413,8 +428,9 @@ export default {
         .qr-code {
           width: 100px;
           height: 100px;
-          background: #cccccc;
+          /*background: #cccccc;*/
           overflow: hidden;
+          margin-left: -5px;
 
           img {
             width: 100%;

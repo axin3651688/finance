@@ -55,12 +55,10 @@
         v-model="value"
         @change="logTimeChange"
         type="date"
-        class="day"
         placeholder="选择日期"
         format="yyyy 年 MM 月 dd 日"
         value-format="yyyy-MM-dd"
       ></el-date-picker>
-
       <!-- 消息提醒 -->
       <el-badge :value="12">
         <i class="el-icon-bell iconclass"></i>

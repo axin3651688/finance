@@ -1,9 +1,12 @@
 <template>
   <div class="ContactsTeams">
     <div class="panel-left">
-      <el-scrollbar v-if="compList">
+      <el-scrollbar v-if="companyList">
         <el-collapse accordion>
-          <el-collapse-item v-for="comp in compList" :key="comp.id">
+          <el-collapse-item
+            v-for="comp in companyList"
+            :key="comp.id"
+          >
             <template slot="title">
               <div class="item-wrap">
                 <h3 class="item-title">
@@ -16,12 +19,14 @@
               </div>
             </template>
             <ul class="sub-item">
-              <li v-for="user in comp.children"
+              <li :class="{active: activeUser === user.id}"
+                  v-for="user in comp.children"
                   @click="getUserInfo(user.id)"
-                  :key="user.id">
+                  :key="user.id"
+              >
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar"/>
+                    <img :src="user.avatar" :onerror="avatar_male"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -40,7 +45,7 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" alt="" class="avatar-img">
+              <img :src="rightUserInfo.user.avatar" :onerror="avatar_male">
             </div>
           </div>
           <div class="text">
@@ -59,154 +64,119 @@
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
             <li>
-              <div class="icon icon-gender"></div>
+              <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
             <li>
-              <div class="icon icon-slogen"></div>
-              <p class="info">slogen</p>
+              <div class="icon icon-text"></div>
+              <p class="info">{{rightUserInfo.user.sign}}</p>
             </li>
           </ul>
         </div>
       </template>
-      <el-button type="primary" size="medium" class="my-btn">发送信息</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        class="my-btn"
+        @click="chatWithSingle(activeUser)"
+        v-if="activeUser !== loginUserId"
+      >发送信息</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   ALL_COMPANY_CONTACT_LIST,
   CONTACT_INFO
 } from '~api/message.js'
 
-// 获取公司列表
-function getCompanyList(companyId) {
-  ALL_COMPANY_CONTACT_LIST(companyId).then(res => {
-    console.log('我公司列表：', res.data);
-    if (res.data.code === 200) {
-      return res.data.data
-    }
-  })
-}
-
-// 通讯录我的团队类,单例
-class ContactsTeams {
-  constructor(loginUserId) {
-    if (!ContactsTeams.instance) {
-      this.loginUserId = loginUserId;
-      this.companyList = this.setCompanyList();
-      ContactsTeams.instance = this
-    }
-    return ContactsTeams.instance
-  }
-
-  // 设置公司列表
-  setCompanyList() {
-    let companyList = getCompanyList(this.loginUserId);
-    let newCompanyList = [];
-    companyList.forEach(company => {
-      let newCompany = new Company(company);
-      newCompanyList.push(newCompany)
-    })
-  }
-}
-
-// 公司类
-class Company {
-  constructor(companyData) {
-    this._init(companyData)
-  }
-
-  _init(companyData) {
-    let keys = Object.keys(companyData);
-    keys.forEach(key => {
-      this['key'] = companyData['key'];
-    });
-  }
-
-  // 获取公司的员工列表
-  getCompanyMembers() {
-    //
-  }
-}
-
-// 用户类
-class User {
-  constructor(userData) {
-    this._init(userData)
-  }
-
-  _init(userData) {
-    let keys = Object.keys(userData);
-    keys.forEach(key => {
-      this['key'] = userData['key']
-    })
-  }
-}
-
 export default {
   name: 'ContactsTeams',
   data() {
     return {
-      contactsTeamsInstance: null, // 我的团队类实例
-      compList: null, // [] 接收一个数组
-      rightUserInfo: null // 接收一个对象
+      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
+      activeUser: this.loginUserId, // 当前选中的用户id
+      companyList: null, // [] 接收一个数组
+      rightUserInfo: null, // 接收一个对象
+      requestedUser: {} // 已经请求过详细信息用户的用户信息
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'messageStore']), // vuex中保存的登陆用户数据
+    loginUserId() { // 当前登录用户的Id
+      return this.user.user.id
+    }
   },
   methods: {
-    getdata() {
-      // 获取公司列表
-      ALL_COMPANY_CONTACT_LIST(225).then(res => {
-        console.log('我公司列表：', res.data);
-        if (res.data.code === 200) {
-          this.compList = res.data.data;
-        }
-      })
+    ...mapActions(['ActionSetMessageStore']),
+
+    // 和某某单聊, 要切换到单聊窗口
+    chatWithSingle(receiverId) {
+      this.ActionSetMessageStore({
+        miniType: 1100, // 1100 单聊
+        receiverData: this.rightUserInfo
+      });
+      this.$emit('chatWithSingle', receiverId);
     },
 
-    getUserInfo(userId) {
-      // 查看个人资料
-      CONTACT_INFO(225, userId).then(res => {
-        console.log('查询个人资料', res.data.data);
-        if (res.data.code === 200) {
-          this.rightUserInfo = res.data.data
-        }
-      }).catch(err => {
-        console.log('查询个人资料', err)
-      })
-    },
-
-    // 获取公司列表
+    // 获取公司列表, 并把公司列表存vuex
     getCompanyList() {
-      ALL_COMPANY_CONTACT_LIST(225).then(res => {
+      // debugger;
+      ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
-          this.compList = res.data.data;
+          this.companyList = res.data.data;
+          this.ActionSetMessageStore({companyList: this.companyList})
         }
       })
     },
-    initContactsTeams(userId) {
-      this.contactsTeamsInstance = new ContactsTeams(userId);
-      console.log('我的团队类实例：', this.contactsTeamsInstance)
+
+    // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
+    checkUserInfo(userId) {
+      if (this.requestedUser.hasOwnProperty(userId)) {
+        console.log(`已经请求过用户的信息了:${userId}`);
+        return this.requestedUser[userId];
+      } else return null
+    },
+
+    // 查看个人资料,如果这个用户已经请求过一次了就不在发送请求
+    getUserInfo(userId) {
+      this.activeUser = userId;
+      let userInfo = this.checkUserInfo(userId);
+      if (userInfo) {
+        this.rightUserInfo = userInfo;
+      } else {
+        CONTACT_INFO(this.loginUserId, userId).then(res => {
+          console.log('查询个人资料', res.data.data);
+          if (res.data.code === 200) {
+            let userInfo = res.data.data;
+            this.rightUserInfo = userInfo;
+            this.requestedUser[userId] = userInfo;
+          }
+        }).catch(err => {
+          console.log('查询个人资料', err)
+        })
+      }
     }
+
   },
   mounted() {
     console.log('当前登录用户:', this.user);
-    this.getdata();
-    this.getUserInfo(225);
-    this.initContactsTeams(225 || this.user.user.id) // 初始化实例，传递当前登录用户的ID，225卢诚
+    this.messageStore.companyList ?
+      this.companyList = this.messageStore.companyList :
+      this.getCompanyList();
+
+    console.log('companyList:', this.companyList);
+    this.getUserInfo(this.companyList[0].children[0].id);
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "../styles/variables.scss";
 
   .ContactsTeams {
     display: flex;
@@ -214,8 +184,9 @@ export default {
   }
 
   .panel-left {
-    flex: .5;
     height: 100%;
+    min-width: 300px;
+    max-width: 400px;
     border-right: 1px solid $colorBorder2;
 
     /deep/ .el-collapse {
@@ -260,8 +231,9 @@ export default {
           li {
             position: relative;
             height: 60px;
-            padding: 0 30px;
+            padding: 0 30px 0 25px;
             cursor: pointer;
+            border-left: 5px solid transparent;
             transition: all .3s;
 
             &:hover {
@@ -278,7 +250,7 @@ export default {
           }
 
           li.active {
-            border-left: 5px solid $colorTheme;
+            border-left-color: $colorTheme;
           }
 
           figure {
@@ -326,7 +298,7 @@ export default {
   }
 
   .panel-right {
-    flex: .5;
+    flex: 1;
     padding: 60px 30px 0 30px;
 
     .panel-right-top {
@@ -351,18 +323,23 @@ export default {
 
       .text {
         font-weight: 400;
-        line-height: 20px;
+        line-height: 40px;
+        width: 200px;
 
         .text-title {
-          height: 40px;
           font-size: 30px;
           color: $colorText1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .text-info {
-          height: 24px;
           font-size: 18px;
           color: $colorText3;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
@@ -378,8 +355,16 @@ export default {
         font-weight: 400;
         line-height: 36px;
 
+        .info {
+          min-width: 300px;
+          max-width: 400px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
         .icon {
           position: absolute;
+          overflow: hidden;
           top: 0;
           left: 0;
           width: 36px;
@@ -387,6 +372,14 @@ export default {
           border-radius: 12px;
           background: $colorTheme;
           margin-right: 20px;
+          background-repeat: no-repeat;
+          background-size: 36px 36px;
+        }
+        .icon-gender__male {
+          background-image: url($iconGenderMale);
+        }
+        .icon-text {
+          background-image: url($iconTest);
         }
       }
     }

@@ -1,0 +1,274 @@
+{
+    "id": 1,
+    "text": "指标分析",
+    "showDims": ["company", "month", "year"],
+    "rows": [{
+
+            "id": "1416001",
+            "text": "营业收入"
+        }, {
+
+            "id": "1403100",
+            "text": "利润总额"
+        },
+        {
+
+            "id": "1400111",
+            "text": "归属于母公司净利润"
+        },
+        {
+
+            "id": "194",
+            "text": "净资产收益率"
+        },
+        {
+            "id": "235",
+            "text": "营业预算执行率"
+        },
+        {
+            "id": "236",
+            "text": "利润总额预算执行率"
+        },
+        {
+            "id": "238",
+            "text": "归属于母公司净利润预算执行率"
+        },
+        {
+            "id": "19",
+            "text": "净资产收益率预算执行情况"
+        },
+        {
+            "id": "23945",
+            "text": "应收款项周转率"
+        },
+
+        {
+            "id": "45457",
+            "text": "归属于母公司所有者权益"
+        },
+        {
+            "id": "1111401",
+            "text": "存货"
+        },
+        {
+            "id": "274",
+            "text": "三项费用合计"
+        },
+        {
+            "id": "240",
+            "text": "应收款项周转率预算执行情况"
+        },
+        {
+
+            "id": "1436701",
+            "text": "资产减值损失"
+        },
+        {
+
+            "id": "141600101",
+            "text": " 其中：营业收入"
+        },
+        {
+
+            "id": "14264010101",
+            "text": " 其中：主营业务成本"
+        },
+        {
+
+            "id": "14264010102",
+            "text": " 其他业务成本"
+        },
+        {
+
+            "id": "1426405",
+            "text": "营业税金及附加"
+        },
+        {
+            "id": "1436601",
+            "text": "销售费用"
+        },
+        {
+
+            "id": "1436602",
+            "text": "管理费用"
+        },
+        {
+
+            "id": "143660201",
+            "text": "其中：研究与开发费"
+        }
+    ],
+    "columns": [{
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "row",
+            "type": "number",
+            "text": "行次"
+        },
+        {
+            "id": "text",
+            "type": "string",
+            "text": "项目"
+        },
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "本期数"
+        },
+        {
+            "id": "B",
+            "type": "decimal",
+            "text": "累计数"
+        }
+    ],
+    "datas": {},
+    "config": {
+        "_cube": {
+            "subject": "0002",
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "needDims": ["year", "month", "company"],
+        "type": 1
+
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "id": "firstTab",
+        "layout": {
+            "xtype": "column"
+        },
+        "text": "指标分析",
+        "children": [{
+                "xtype": "chart",
+                "id": "1416001",
+                "text": "营业收入",
+                "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": 33,
+                    "handler": ($vue, params) => {
+                        console.info(params);
+                        debugger;
+                    }
+                }],
+                "options": {
+                    "type": "advancechart",
+                    "getData": {
+                        "type": 4,
+                        "columns": [{
+                            "id": "A"
+                        }, {
+                            "id": "B"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["1416001"]
+                            }
+                        },
+                        "reverse": true,
+                        "scope": true
+                    }
+                },
+                "chartOptions": {
+                    "title": {
+                        "text": "this.item.text"
+                    },
+
+                    "tooltip": {
+                        "trigger": "axis",
+                        "backgroundColor": "#fff",
+                        "textStyle": {
+                            "color": "#000"
+                        },
+                        "axisPointer": {
+
+                            "type": "none"
+                        }
+                    },
+                    "legend": {
+                        "data": []
+                    },
+
+                    "grid": {
+                        "top": 60,
+                        "left": "4%",
+                        "right": "4%",
+                        "bottom": "4%",
+                        "backgroundColor": "#666",
+                        "containLabel": true
+                    },
+
+                    "toolbox": {
+                        "show": true,
+                        "feature": {
+
+                            "mark": {
+                                "show": true
+                            },
+
+                            "dataView": {
+                                "show": true,
+                                "readOnly": false
+                            },
+
+                            "saveAsImage": {
+                                "show": true
+                            }
+                        }
+                    },
+
+                    "xAxis": [{
+                        "type": "category",
+                        "data": "this.item.options.datas[0]",
+
+                        "axisTick": {
+
+                            "alignWithLabel": true
+                        }
+                    }],
+                    "yAxis": [{
+                        "type": "value"
+                    }],
+                    "series": [{
+                        "type": "bar",
+
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": "this.item.options.datas[1]",
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
+                    }]
+                }
+            }
+
+        ]
+    }]
+}
