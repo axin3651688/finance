@@ -158,7 +158,7 @@ export default {
   mounted() {
     // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id)
+    FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
       .then(res => {
         console.log('获取单聊信息then：', res);
         res = res.data;
