@@ -240,6 +240,10 @@ const router = new Router({
     // start---> 姜海斌 消息独立页面
     {
       path: '/message_page',
+      redirect: '/message_page/home',
+    },
+    {
+      path: '/message_page',
       name: 'MessagePage',
       component: () => import('@v/message_page/MessagePage.vue'),
       children: [
@@ -260,6 +264,11 @@ const router = new Router({
         }
       ]
     },
+    {
+      path: '/message_login', // 消息-聊天页面
+      name: 'Login',
+      component: () => import('@v/message_page/login/Login.vue'),
+    }
     // end---> 姜海斌 消息独立页面
 
 
