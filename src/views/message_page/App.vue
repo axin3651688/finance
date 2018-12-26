@@ -18,6 +18,14 @@ export default {
     readLocalStorage() {
       // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
       if (localStorage.authorization) {
+        // 有 authorization 已经登陆的
+        if (window.require) {
+          var ipc = window.require('electron').ipcRenderer
+        }
+        if (window.require) {
+          ipc.send('web_autoLogin', '')
+        }
+
         // token存储到vuex中
         this.$store.dispatch(
           "setIsAutnenticated",
@@ -51,6 +59,8 @@ export default {
         if (!this.isEmpty(localStorage.treeInfo)) {
           this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
+      } else {
+        // 没有 authorization 没有登陆
       }
     },
     initSocket(authorization) {

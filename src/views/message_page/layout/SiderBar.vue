@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { logout } from "~api/interface.js";
+import {logout} from "~api/interface.js";
 // import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -53,6 +53,15 @@ export default {
           // 清除token
           localStorage.removeItem("authorization");
           this.$router.push("/message_login");
+
+          // electron 退出处理
+          if (window.require) {
+            var ipc = window.require('electron').ipcRenderer
+          }
+          if (window.require) {
+            ipc.send('web_outLogin', '')
+          }
+
         })
         .catch(res => {
           console.error("退出请求失败");
@@ -122,6 +131,7 @@ export default {
           justify-content: center;
           background: $colorBgSiderBar;
           transition: all .2s;
+
           img {
             width: 30px;
             height: 30px;
@@ -133,13 +143,16 @@ export default {
             background: $colorTheme;
             color: transparent;
             width: 5px;
-            img {display: none;}
+
+            img {
+              display: none;
+            }
           }
 
         }
       }
 
-      .nav-item.router-link-active{
+      .nav-item.router-link-active {
         .nav-item_icon {
           background: $colorTheme;
         }

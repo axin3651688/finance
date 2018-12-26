@@ -288,7 +288,7 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      debugger;
+      // debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
