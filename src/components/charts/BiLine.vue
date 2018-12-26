@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import EventMixins from '../mixins/EventMixins'
+import EventMixins from "../mixins/EventMixins";
 export default {
   mixins: [EventMixins],
   props: {
@@ -78,7 +78,7 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
     debugger;
     this.upData();
     //Cnbi.apply(this.receive, this.item.options.datas);
@@ -95,6 +95,7 @@ export default {
   },
   methods: {
     upData(item) {
+      debugger;
       if (item) {
         this.item = item;
       }

@@ -1,0 +1,116 @@
+{
+    "id": 1,
+    "text": "指标分析",
+    "showDims": ["company", "month", "year"],
+    "rows": [{
+
+            "id": "1416001",
+            "text": "营业收入"
+        }
+
+    ],
+    "columns": [{
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "本期数"
+        }
+    ],
+    "config": {
+        "_cube": {
+            "subject": "0002",
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "needDims": ["year", "month", "company"],
+        "type": 1
+
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "id": "firstTab",
+        "layout": {
+            "xtype": "column"
+        },
+        "text": "指标分析",
+        "children": [{
+            "xtype": "chart",
+            "id": "235",
+            "text": "营业预算执行率营业预算执行率",
+            "weight": 6,
+            "options": {
+                "subType": "gauge",
+                "type": "advancechart",
+                "getData": {
+                    "value": "A$1416001",
+                    "type": 1
+                }
+            },
+            "chartOptions": {
+                "title": {
+                    "text": "this.item.text"
+                },
+                "tooltip": {
+                    "formatter": "{b} : {c}%"
+                },
+                "toolbox": {
+                    "feature": {
+                        "saveAsImage": {}
+                    }
+                },
+                "series": [{
+                    "type": "gauge",
+                    "radius": "65%",
+
+                    "splitNumber": 5,
+                    "axisLine": {
+
+                        "lineStyle": {
+
+                            "width": 10,
+                            "color": [
+                                [0.25, "#F04864"],
+                                [0.5, "#FACC14"],
+                                [0.75, "#13C2C2"],
+                                [1, "#2FC25B"]
+                            ]
+                        }
+                    },
+                    "splitLine": {
+
+                        "show": false
+                    },
+                    "axisTick": {
+
+                        "length": 1
+                    },
+                    "axisLabel": {
+                        "show": false
+                    },
+                    "pointer": {
+                        "length": "70%",
+                        "width": 9
+                    },
+                    "detail": {
+                        "formatter": "{value}%"
+                    },
+                    "data": [{
+                        "value": "this.item.options.datas",
+                        "name": "完成率"
+                    }]
+                }]
+            }
+        }]
+    }]
+}

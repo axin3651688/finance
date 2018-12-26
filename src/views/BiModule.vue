@@ -144,6 +144,7 @@ export default {
         { xtype: "bi-table", id: "lrb", text: "表格测试" },
         { xtype: "bi-chart", id: "text", text: "图形测试" }
       ],
+      chartOptions: {},
       debug: 0
     };
   },
@@ -184,26 +185,23 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
-   /**
-    * 设置item是否隐藏或显示
-    */
-    showSet(items){
-        items.forEach(item=>{
-           debugger;
-           let children = item.children;
-           if(children && children.length > 0){
-              this.showSet(children);
-           }else{
-              let funName = item.showFun;
-              if(typeof (funName) == "function"){
-                    item.show = item.showFun(this.$store);
-              }else{
-                  item.show = true;
-              }
-           }
-          
-        });
-
+    /**
+     * 设置item是否隐藏或显示
+     */
+    showSet(items) {
+      items.forEach(item => {
+        let children = item.children;
+        if (children && children.length > 0) {
+          this.showSet(children);
+        } else {
+          let funName = item.showFun;
+          if (typeof funName == "function") {
+            item.show = item.showFun(this.$store);
+          } else {
+            item.show = true;
+          }
+        }
+      });
     },
     /**
      * 动态设置参数至本组件
@@ -213,6 +211,8 @@ export default {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
+      }
+      if (bean.items) {
         this.showSet(bean.items);
       }
       for (let key in bean) {
@@ -265,7 +265,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-     // api = "cnbi/json/source/jsnk/pie.json";
+      // api = "cnbi/json/source/jsnk/pie.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -281,7 +281,7 @@ export default {
         });
         return;
       }
-       debugger;
+      debugger;
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -416,7 +416,7 @@ export default {
         let config = item.config;
         Cnbi.paramsHandler(config, params);
         //在此加了查询数据之前的拦截处理
-        if(item.queryDataBefore && typeof(item.queryDataBefore) == "function"){
+        if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
           params = item.queryDataBefore(params);
         }
         config.type = config.type || 1;
@@ -465,7 +465,11 @@ export default {
      */
     queryDataAfter(item, datas, $childVue) {
       //在此加了查询数据之后的拦截处理
-      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
+      if (
+        item.queryDataAfter &&
+        typeof item.queryDataAfter == "function" &&
+        !item.correctWrongConfig
+      ) {
         debugger;
         datas = item.queryDataAfter(datas);
       }

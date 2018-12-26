@@ -38,11 +38,14 @@ export default {
     };
   },
   created() {
-    // debugger;
+    debugger;
+    console.log(this.item.options.type);
+
     this.upData();
   },
   methods: {
     upData(from) {
+      debugger;
       let config = this.item.options.getData;
       if (!config || !config.type) {
         console.error(this.item.text + "没有配制正确！");
