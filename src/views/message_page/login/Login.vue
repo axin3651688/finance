@@ -130,6 +130,15 @@ export default {
                 data.company.id === 121 ?
                   this.$router.push("/message_page/home") :
                   this.$router.push("/message_page/home")
+
+                // todo: electron
+                if (window.require) {
+                  var ipc = window.require('electron').ipcRenderer
+                }
+                if (window.require) {
+                  ipc.send('web_loginSucess', '')
+                }
+
               } else {
 
                 this.loginUser.usename = "";

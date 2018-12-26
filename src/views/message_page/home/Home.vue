@@ -76,6 +76,16 @@ export default {
 
   methods: {
 
+    web_openWebUrl() {
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+      }
+      if (window.require) {
+        ipc.send('web_openWebUrl', 'http://www.baidu.com')
+      }
+    },
+
+
     cardboxClick(card) {
 
       console.log('点击了卡片数据-->>', card.text);

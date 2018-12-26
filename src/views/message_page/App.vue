@@ -13,18 +13,6 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    ...mapGetters(['messageStore']),
-    newServerMsg() {
-      return this.messageStore.newServerMsg
-    }
-  },
-  watch: {
-    newServerMsg(val) {
-      console.log('message_page.app 监听到有服务器推送的消息：', val);
-      debugger;
-    }
-  },
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo"]),
     readLocalStorage() {
@@ -67,7 +55,7 @@ export default {
     },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
-      let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.237:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
