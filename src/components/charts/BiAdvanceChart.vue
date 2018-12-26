@@ -20,6 +20,7 @@ export default {
     // console.log(obj);
   },
   mounted() {
+    debugger
     // this.options.series[0].data = this.item.datas
   },
 

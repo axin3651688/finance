@@ -117,8 +117,8 @@ export default {
               if(!resData.id){
                 resData = eval("(" + resData + ")");
               }
-              if(!resData.xtype && resData.items.length > 0){
-              }
+              // if(!resData.xtype && resData.items.length > 0){
+              // }
               resData.id =  bb.id;
               resData.text =  text;
               resData.tabIndex =  text;

@@ -100,8 +100,7 @@ BiText
        "periodCount":12,
         "compareType":"0&-1",
         "varName":"rows"
-    },
-    compareType:"0&-1" //-1&0
+    }
 }
 ~~~
 

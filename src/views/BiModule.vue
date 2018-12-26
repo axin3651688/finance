@@ -37,7 +37,7 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName"  @tab-remove="removeTab">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
@@ -203,6 +203,7 @@ export default {
       //showDims控制顶部导航栏的显示及隐藏
       // debugger;
       // console.log(bean.showDims);
+      debugger
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
           if (ele == "day") {
@@ -333,7 +334,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      //  debugger
+       debugger
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -453,10 +454,10 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      //debugger
+      debugger
       findThirdPartData(params)
         .then(res => {
-          //  debugger;
+           debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
@@ -470,7 +471,7 @@ export default {
       return item.id;
     },
     removeTab(targetName){
-      debugger;
+      // debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
