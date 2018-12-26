@@ -113,9 +113,7 @@ export function UPDATE_MODULE_STATE_ALL(data) {
   return request({
     url: '/api/api/update_module_state_all',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 单条订阅消息，点击单条时
@@ -125,9 +123,7 @@ export function CHANGE_MODULE_STATE(data) {
   return request({
     url: '/api/api/change_module_state',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 
@@ -206,9 +202,7 @@ export function EDIT_GROUP(data) {
   return request({
     url: '/api/api/edit_group',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 退出群组
@@ -218,9 +212,7 @@ export function QUIT_GROUP(data) {
   return request({
     url: '/api/api/quit_group',
     method: 'delete',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 解散群聊
@@ -230,9 +222,7 @@ export function DISSOLU_GROUP(data) {
   return request({
     url: '/api/api/dissolu_group',
     method: 'delete',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 移除团队成员
