@@ -1,7 +1,7 @@
 <template>
   <div class="Index" style="height: 100%">
 
-    <el-scrollbar style="height: 100%">
+    <el-scrollbar style="height: 100%" v-if="findCardArrs.length">
       <div class="cardItem">
         <div v-for="card of findCardArrs" :key=card.id>
           <div class="card-box" @click="cardboxClick(card)">
@@ -118,7 +118,7 @@ export default {
       if (res.data.code === 200) {
         this.findCardArrs = res.data.data;
       }
-    })
+    });
 
     MY_NODE(this.user.user.id).then(res => {
       console.log('获取我的节点 MY_NODE -->>', res.data);
@@ -127,7 +127,7 @@ export default {
         this.nodeArrs = res.data.data;
 
       }
-    })
+    });
 
     LATEST_CONTACT(this.user.user.id).then(res => {
       console.log('获取我的常用联系人 -->>', res.data);

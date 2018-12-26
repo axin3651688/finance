@@ -5,13 +5,54 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {mapActions} from "vuex";
 import webSocket from "utils/webSocket";
+
 export default {
   name: "",
   data() {
     return {};
   },
   methods: {
+    ...mapActions(["GetSideMid", "GettRreeInfo"]),
+    readLocalStorage() {
+      // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
+      if (localStorage.authorization) {
+        // token存储到vuex中
+        this.$store.dispatch(
+          "setIsAutnenticated",
+          !this.isEmpty(localStorage.authorization)
+        );
+        // 由于localStorage只能存字符串,需转json
+        this.$store.dispatch("setUser", JSON.parse(localStorage.database));
+        // this.$store.dispatch("GET_YEAR", JSON.parse(localStorage.year_cache));这句话不知为什么不起作用?
+        // 假如用户是新用户或被清理了缓存,不执行以下语句
+
+        if (!this.isEmpty(localStorage.company_cache)) {
+          // debugger;
+          this.GetSideMid({
+            company: localStorage.company_cache,
+            companyName: localStorage.companyName_cache
+          });
+        }
+        if (!this.isEmpty(localStorage.year_cache)) {
+          // debugger;
+          this.GetSideMid({ year: localStorage.year_cache });
+        }
+        if (!this.isEmpty(localStorage.month_cache)) {
+          this.GetSideMid({ month: localStorage.month_cache });
+        }
+        if (!this.isEmpty(localStorage.date_cache)) {
+          this.GetSideMid({ date: localStorage.date_cache });
+        }
+        if (!this.isEmpty(localStorage.module_cache)) {
+          this.GetSideMid({ module: localStorage.module_cache });
+        }
+        if (!this.isEmpty(localStorage.treeInfo)) {
+          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
+        }
+      }
+    },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
       let url = "ws://192.168.1.118:7006/socket.io/";
@@ -22,9 +63,15 @@ export default {
       // debugger;
       webSocket({ url: url });
     }
-  }
+  },
+  created() {
+    // debugger;
+    this.readLocalStorage();
+    let authorization = localStorage.getItem("authorization");
+    this.initSocket(authorization);
+  },
 };
 </script>
 
-<style  lang="scss" scoped>
+<style lang="scss" scoped>
 </style>
