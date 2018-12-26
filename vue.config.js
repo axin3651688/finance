@@ -22,28 +22,11 @@ let proxyObj = { // 配置跨域
     '/api': {
         // target: 'http://192.168.2.2:8005',
         // target: 'http://192.168.1.118:8005',
-        // target: 'http://192.168.1.139:8005',
-        target: 'http://192.168.2.237:8005',
+        target: 'http://192.168.1.139:8005',
         ws: true,
         changOrigin: true,
         pathRewrite: {
             '^/api': '/'
-        }
-    },
-    '/apt': {
-        target: 'http://192.168.1.118:8005',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/apt': '/'
-        }
-    },
-    '/file': { // 文件上传
-        target: 'http://192.168.2.237:8002',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/file': '/'
         }
     },
     '/cnbi': {

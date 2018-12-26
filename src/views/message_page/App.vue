@@ -5,7 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters, mapActions} from "vuex";
+import {mapActions} from "vuex";
 import webSocket from "utils/webSocket";
 
 export default {
@@ -54,7 +54,9 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.2.237:7006/socket.io/";
+      // let url = "ws://192.168.2.2:7008/socket.io/";
+      let url = "ws://192.168.1.118:7006/socket.io/";
+      // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }
