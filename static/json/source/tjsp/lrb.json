@@ -1,63 +1,317 @@
 {
-    "id":"101",
-    "text":"资金集中情况汇总表",
-    "config":{
-        "sql":"WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE,SPCODE,SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE='100101' CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE,COUNT(*) JZHS FROM ((SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD='201711') A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE,SPCODE AS PID,SNAME,HS,JZHS,ROUND(JZHS/HS,4) AS GKM ,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD='201711' ORDER BY SCODE ",
-      "_cube":{
-         "subject":"0001",
-         "cubeId":5
-      },
-      "mainDim":"itempoint",
-      "needDims":["year","month","company"],
-      "random":{"min":100,"max":100000},
-      "type":1     
-   },
-  
+    "id": "0002",
+    "text": "利润表",
+    "config": {
+        "_sql": " select dim_itemperiod as id,fact_a as a,fact_b as b,fact_c as c,fact_d as d from DW_FactFinancePeriod where  subject = '0002'  and dim_period = '201712' and dim_company = '1' and dim_itemperiod in ('1416001','141600101','141600102','1426401','142640101','142640102','1426405','1436601','1436602','1436603','143660302','1436701','1416101','1416111','141611101','1416112','1416113','1402100','1416301','1426711','142671101','1403100','1426801','1400100','1400111','1400112','1400120','1400121','1400122')",
+        "cube": {
+            "subject": "0002",
+            "cubeId": 4
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1
+    },
+    "layout": "column",
     "columns": [
-      {
-          "text": "公司编码",
-          "value": "scode"
-      },
-      {
-          "text": "公司名称",
-          "value": "sname"
+        {
+            "id": "D",
+            "type": "decimal",
+            "hidden":true,
+            "text": "预算累计数"
         },
         {
-          "text": "下级户数",
-          "value": "hs"
+            "id":"index",
+            "type":"index",
+            "text":"序号"
         },
         {
-          "text": "下级集中户数",
-          "value": "pid"
+            "id": "text",
+            "type": "string",
+            "text": "项目"
         },
         {
-          "text": "掌控面",
-          "value": "gkm"
+            "id": "A",
+            "type": "decimal",
+            "text": "本期数"
         },
         {
-          "text": "货币金额",
-          "value": "hbzj"
+            "id": "B",
+            "type": "decimal",
+            "text": "累计数"
         },
         {
-          "text": "其中：银行存款",
-          "value": "yhck"
-        },
-        {
-          "text": "集中金额",
-          "value": "jzje"
-        },
-        {
-          "text": "集中度",
-          "value": "jzd"
+            "id": "C",
+            "type": "decimal",
+            "hidden":true,
+            "text": "预算数"
         }
-  ],
-  "layout": {
-    "xtype": "form"
-  },
-  "items": [{
-    "xtype": "tree-grid",
-    "id": "",
-    "text": ""
-  }],
-  "code":200,"msg":"查询数据源【company】维度成功！"
-  }
+        
+    ],
+    "rows": [{
+            "id": "1416001",
+            "text": "一、营业总收入",
+            "level":2,
+            "drill":{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
+                "handler": ($vue,params) =>{
+                    console.log(params);
+                }
+            },
+            "A": "A$141600101+A$141600102",
+            "B": "B$141600101+B$141600102",
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "141600101",
+            "text": "其中：主营业务收入",
+            "level":3,
+            "drill":{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
+                "handler": ($vue,params) =>{
+                    console.log(params);
+                }
+            },
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "141600102",
+            "text": "其他业务收入",
+            "level":2,
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1426401",
+            "text": "减：营业成本",
+            "A": "A$142640101+A$1426405+A$1436601+A$1436602+A$1436603+A$1436701+A$143670101",
+            "B": "B$142640101+B$1426405+B$1436601+B$1436602+B$1436603+B$1436701+B$143670101",
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "142640101",
+            "text": "其中：主营业务成本",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "142640102",
+            "text": "其他业务成本",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1426405",
+            "text": "营业税金及附加",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1436601",
+            "text": "销售费用",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1436602",
+            "text": "管理费用",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1436603",
+            "text": "财务费用",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "143660302",
+            "text": "其中：利息支出",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1436701",
+            "text": "资产减值损失",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1416101",
+            "text": "加：公允价值变动收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1416111",
+            "text": "投资收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "141611101",
+            "text": "其中：对联营企业和合营企业的投资收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1416112",
+            "text": "资产处置损益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1416113",
+            "text": "其他收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1402100",
+            "text": "二、营业利润",
+            "A": "A$1416001-A$1426401+A$1416101+A$1416111+A$1416113+A$141611102+A$141611103",
+            "B": "B$1416001-B$1426401+B$1416101+B$1416111+B$1416113+B$141611102+B$141611103",
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1416301",
+            "text": "加：营业外收入",
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1426711",
+            "text": "减：营业外支出",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "142671101",
+            "text": "其中：非流动资产处置损失",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1403100",
+            "text": "三、利润总额",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1426801",
+            "text": "减：所得税费用",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400100",
+            "text": "四、净利润",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400111",
+            "text": "归属于母公司所有者的净利润",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400112",
+            "text": "少数股东损益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400120",
+            "text": "每股收益：",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400121",
+            "text": "基本每股收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        },
+        {
+            "id": "1400122",
+            "text": "稀释每股收益",
+            "A": 0,
+            "B": 0,
+            "C": 0,
+            "D": 0
+        }
+    ],
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "lrb",
+        "text": "利润表"
+    }]
+}

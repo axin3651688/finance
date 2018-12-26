@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe height="item.height || rowClass">
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe height="item.height || rowClass">
     <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -67,6 +67,7 @@ export default {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
+      formatData:[]
     };
   },
   name: "TreeGrid",
@@ -98,7 +99,7 @@ export default {
     // this.item.options = this.item.items[0].columns
    
   },
-  computed: {
+  __computed: {
     // 格式化数据源
     formatData() {
       let tmp;
@@ -119,26 +120,32 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
+
+    /**
+      * 格式化数据源
+      */
+     convertData(){
+       //alert(this.item.show)
+        let tmp;
+        if (!Array.isArray(this.item.rows)) {
+          tmp = [this.item.rows];
+        } else {
+          tmp = this.item.rows;
+        }
+        const func = this.evalFunc || treeToArray;
+        const args = this.evalArgs
+          ? Array.concat([tmp, this.expandAll], this.evalArgs)
+          : [tmp, this.expandAll];
+        let formatData =  func.apply(null, args);
+        this.$set(this, "formatData", formatData); 
+     },
+
     upData(item) {
-      this.$set(this.item, "datas", item.datas);
-      this.$set(this, "item", item);
-      let refs = this.$refs;
-      if (refs) {
-        if (refs.child) {
-          refs.child.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-        if (refs.tchild) {
-          refs.tchild.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-      }
+      this.$set(this, "formatData", ""); 
+      this.$set(this, "formatData", null); 
+      this.item = item;
+      debugger;
+      this.convertData();
     },
     array(datas){
       let data=datas
@@ -257,7 +264,8 @@ export default {
     // this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas
 
-    this.array(this.item.datas)
+    this.array(this.item.datas);
+     this.convertData();
 
   }
 };

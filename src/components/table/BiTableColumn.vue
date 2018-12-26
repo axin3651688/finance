@@ -42,18 +42,19 @@
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
   <el-table-column v-else-if="col.type === 'decimal'"
    :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150"
+   
    >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(data.datas,col.id,scope.row,data.config.rows)"
+        :content="getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)"
         placement="right"
       >
-        <span v-if="data.datas">{{ getCellValues(data.datas,col.id,scope.row,data.config.rows)}}</span>
+        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -61,28 +62,37 @@
   <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="data.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
   <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="data.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
+
+  <!-- <el-table-column v-else-if="!col.type" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
+        <span>请定义列{{col.text}}的类型</span>
+      </el-tooltip>
+    </template>
+  </el-table-column> -->
 </template>
 <script>
-import EventMixins from "../mixins/EventMixins";
-import PromptMessage from "./PromptMessage.vue"
+//import EventMixins from "../mixins/EventMixins";
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
-  components:{
-    PromptMessage
+  data(){
+    return {
+      tableDataaaa:[]
+    }
   },
-  props: ["col", "data"],
+  props: ["col", "tableData"],
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -94,14 +104,19 @@ export default {
   },
   methods: {
     // rowClass({ row, rowIndex }) {
-      // :cell-style = "rowClass"
+      
     //   return "text-align:center";
     // },
     upData(item) {
-      //   debugger;
-      this.$set(this, "data", null);
-      this.$set(this, "data", item);
-      this.$set(this.data, "datas", item.datas);
+        // debugger;
+      // this.$set(this, "tableData", null);
+      if(item.datas.length > 0 ){
+           this.$set(this, "tableData", item);
+           this.$set(this.tableData, "datas", item.datas);
+      }else{
+          this.$set(this, "tableData", null);
+      }
+      
     },
     /**
      * 获取单元格数据
@@ -124,7 +139,7 @@ export default {
     }
   },
   created() {
-    //debugger;
+    this.$set(this, "tableData", null);
   }
 };
 </script>
