@@ -265,7 +265,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-     // api = "cnbi/json/source/jsnk/pie.json";
+     api = "cnbi/json/source/ts.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -326,6 +326,9 @@ export default {
     getModuleParams(item, changeDim) {
       let config = item.config,
         needDims = config.needDims;
+      if(!needDims){
+        return ;
+      }
       let ns = needDims.filter(dim => dim === changeDim);
       if (!ns || ns.length == 0) {
         console.info(item.text + "不依赖【" + changeDim + "】维度!");
@@ -500,7 +503,6 @@ export default {
       return item.id;
     },
     removeTab(targetName) {
-      debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {
