@@ -10,12 +10,93 @@
 
             "id": "1403100",
             "text": "利润总额"
-        }, {
+        },
+        {
 
             "id": "1400111",
             "text": "归属于母公司净利润"
-        }
+        },
+        {
 
+            "id": "194",
+            "text": "净资产收益率"
+        },
+        {
+            "id": "235",
+            "text": "营业预算执行率"
+        },
+        {
+            "id": "236",
+            "text": "利润总额预算执行率"
+        },
+        {
+            "id": "238",
+            "text": "归属于母公司净利润预算执行率"
+        },
+        {
+            "id": "19",
+            "text": "净资产收益率预算执行情况"
+        },
+        {
+            "id": "23945",
+            "text": "应收款项周转率"
+        },
+
+        {
+            "id": "45457",
+            "text": "归属于母公司所有者权益"
+        },
+        {
+            "id": "1111401",
+            "text": "存货"
+        },
+        {
+            "id": "274",
+            "text": "三项费用合计"
+        },
+        {
+            "id": "240",
+            "text": "应收款项周转率预算执行情况"
+        },
+        {
+
+            "id": "1436701",
+            "text": "资产减值损失"
+        },
+        {
+
+            "id": "141600101",
+            "text": " 其中：营业收入"
+        },
+        {
+
+            "id": "14264010101",
+            "text": " 其中：主营业务成本"
+        },
+        {
+
+            "id": "14264010102",
+            "text": " 其他业务成本"
+        },
+        {
+
+            "id": "1426405",
+            "text": "营业税金及附加"
+        },
+        {
+            "id": "1436601",
+            "text": "销售费用"
+        },
+        {
+
+            "id": "1436602",
+            "text": "管理费用"
+        },
+        {
+
+            "id": "143660201",
+            "text": "其中：研究与开发费"
+        }
     ],
     "columns": [{
             "id": "id",
@@ -44,6 +125,7 @@
             "text": "累计数"
         }
     ],
+    "datas": {},
     "config": {
         "_cube": {
             "subject": "0002",
@@ -70,8 +152,8 @@
         "children": [{
             "xtype": "chart",
             "id": "lrb3",
-            "text": "利润表3",
-            "weight": 18,
+            "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
+            "weight": 23,
             "config": {
                 "_cube": {
                     "subject": "0002",
@@ -193,6 +275,7 @@
 
             "options": {
                 "type": "advancechart",
+                "subType": "line",
                 "getData": {
                     "type": 5,
                     "columns": [{
@@ -206,7 +289,7 @@
                             "dim": "itemperiod",
                             "val": "1416001"
                         },
-                        "type": "advancechart",
+                        "type": "line",
                         "smooth": false
                     }, {
                         "id": "A",
@@ -215,7 +298,7 @@
                             "dim": "itemperiod",
                             "val": "1403100"
                         },
-                        "type": "advancechart",
+                        "type": "line",
                         "smooth": false
                     }, {
                         "id": "A",
@@ -224,7 +307,7 @@
                             "dim": "itemperiod",
                             "val": "1400111"
                         },
-                        "type": "advancechart",
+                        "type": "line",
                         "smooth": false
                     }]
 
@@ -239,7 +322,7 @@
                 },
                 "legend": {
                     "default": {
-                        "data": "this.item.options.datas.legend"
+                        "data": ["好", "坏"]
                     }
                 },
                 "grid": {
@@ -259,7 +342,7 @@
                     "default": {
                         "type": "category",
                         "boundaryGap": false,
-                        "data": "this.item.options.datas.xAxis"
+                        "data": []
                     }
                 },
                 "yAxis": {
@@ -275,7 +358,7 @@
                         "name": "坏",
                         "type": "line",
                         "smooth": false,
-                        "data": "this.item.options.datas.series"
+                        "data": []
                     }
                 ]
             }
