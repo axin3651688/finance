@@ -201,10 +201,13 @@ export default {
     }
   },
   watch: {
-    newServerMsg(val) {
-      console.log('message_page.app 监听到有服务器推送的消息：', val);
-      debugger;
-    }
+    // 监听服务器推送的消息
+    // newServerMsg(val) {
+    //   this.$alert('收到服务器推送信息', '提示', {
+    //     confirmButtonText: '确定'
+    //   });
+    //   console.log('message.vue 监听到推送：', val)
+    // }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),

@@ -13,6 +13,18 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    ...mapGetters(['messageStore']),
+    newServerMsg() {
+      return this.messageStore.newServerMsg
+    }
+  },
+  watch: {
+    newServerMsg(val) {
+      console.log('message_page.app 监听到有服务器推送的消息：', val);
+      debugger;
+    }
+  },
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo"]),
     readLocalStorage() {
