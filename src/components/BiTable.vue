@@ -123,8 +123,13 @@ export default {
 
 
     cellStyle(row) {
-      // debugger
+        if(this.item.cellStyle && typeof(this.item.cellStyle) == "function"){
+            return this.item.cellStyle(row);
+        }
       let css = "padding: 4px 0;";
+      if(!row.column.property){
+        return css;
+      }
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
         let drill = "";

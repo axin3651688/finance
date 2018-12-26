@@ -20,7 +20,7 @@
 	"columns": [{
 			"id": "id",
 			"type": "string",
-		
+			"hidden":true,
 			"text": "编码"
 		},
 		{
@@ -31,7 +31,7 @@
 		{
 			"id": "level",
 			"type": "number",
-		
+		   "hidden":true,
 			"text": "级别"
 		},
 		{
@@ -298,5 +298,6 @@
 		"xtype": "bi-table",
 		"id": "lrb",
 		"text": "利润表"
+		
 	}]
 }
