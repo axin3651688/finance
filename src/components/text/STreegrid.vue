@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe height="item.height || rowClass">
     <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -67,6 +67,7 @@ export default {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
+      formatData:[]
     };
   },
   name: "TreeGrid",
@@ -98,7 +99,7 @@ export default {
     // this.item.options = this.item.items[0].columns
    
   },
-  computed: {
+  __computed: {
     // 格式化数据源
     formatData() {
       let tmp;
@@ -116,7 +117,36 @@ export default {
     }
   },
   methods: {
+    rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
 
+    /**
+      * 格式化数据源
+      */
+     convertData(){
+       //alert(this.item.show)
+        let tmp;
+        if (!Array.isArray(this.item.rows)) {
+          tmp = [this.item.rows];
+        } else {
+          tmp = this.item.rows;
+        }
+        const func = this.evalFunc || treeToArray;
+        const args = this.evalArgs
+          ? Array.concat([tmp, this.expandAll], this.evalArgs)
+          : [tmp, this.expandAll];
+        let formatData =  func.apply(null, args);
+        this.$set(this, "formatData", formatData); 
+     },
+
+    upData(item) {
+      this.$set(this, "formatData", ""); 
+      this.$set(this, "formatData", null); 
+      this.item = item;
+      debugger;
+      this.convertData();
+    },
     array(datas){
       let data=datas
       // console.log("w",data)
@@ -125,6 +155,7 @@ export default {
       let flag = false;
       //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
       let root,rootItem,demoItem;
+      let rootArr = [];
       if(data&&data.length>0){
         demoItem = data[0];
         if(demoItem.pid){
@@ -141,12 +172,27 @@ export default {
         } 
         
       }
-      
-      if(rootItem){
-        this.tranformData(data,rootItem);
-        console.log("根节点"+rootItem);
+      //找到多个父节点
+      for(let i = 0;i < data.length;i ++){
+        if(!data[i].pid){
+          rootArr.push(data[i]);
+        }
       }
-      this.item.rows = rootItem;
+      if(rootArr&&rootArr.length>1){
+        for(let i = 0;i < rootArr.length;i ++){
+          let it = rootArr[i];
+          this.tranformData(data,it);
+        }
+        this.item.rows = rootArr;
+      }else {
+        if(rootItem){
+          this.tranformData(data,rootItem);
+          console.log("根节点"+rootItem);
+        }
+        this.item.rows = rootItem;
+      }
+      
+      
     },
     tranformData(data,rootItem) {
       let me = this;
@@ -218,7 +264,8 @@ export default {
     // this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas
 
-    this.array(this.item.datas)
+    this.array(this.item.datas);
+     this.convertData();
 
   }
 };

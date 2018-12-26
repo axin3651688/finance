@@ -1,109 +1,607 @@
 {
-    "id":"1005",
-    "text":"应收账款",
-    "config":{
-        "sql":"SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,(CASE WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB,(CASE WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC,D.SNAME AS FZCFL,E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1001') A  INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE='1001') B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE",
-        "cube":{
-          "subject":"1005",
-          "cubeId":4,
-          "dim_item":"1001"
-        },
-        
-        "mainDim":"itemperiod",
-        "needDims":["year","month","company"],
-        "random":{"min":100,"max":100000},
-        "type":1
-          
-     },
-    "columns":[
-      {
-        "id": "szxssje",
-        "type": "number",
-        "text": "已形成实质性损失金额"
+  "id": 1,
+  "text": "指标分析",
+  "showDims": ["company","month","year"],
+  "rows": [{
+
+          "id": "1416001",
+          "text": "营业收入"
+      }, {
+
+          "id": "1403100",
+          "text": "利润总额"
       },
       {
-        "id": "sk",
-        "type": "string",
-        "text": "客商"
+
+          "id": "1400111",
+          "text": "归属于母公司净利润"
       },
       {
-        "id": "balance",
-        "type": "number",
-        "text": "余额"
-      },
-            {
-                "id":"oneyear",
-                "type":"number",
-                "text":"1年以内"
-            },
-            {
-                "id":"twoyear",
-                "type":"number",
-                "text":"1-2年以内"
-            },
-            {
-                "id":"threeyear",
-                "type":"number",
-                "text":"2-3年以内"
-            },
-            {
-              "id":"fouryear",
-              "type":"number",
-              "text":"3年以上"
-          },
-      {
-        "id": "skxz",
-        "type": "number",
-        "text": "商客性质*"
+
+          "id": "194",
+          "text": "净资产收益率"
       },
       {
-        "id": "sfnb",
-        "type": "string",
-        "text": "是否内部*"
+          "id": "235",
+          "text": "营业预算执行率"
       },
       {
-        "id": "sfzc",
-        "type": "string",
-        "text": "是否正常*"
+          "id": "236",
+          "text": "利润总额预算执行率"
       },
       {
-        "id": "fzcfl",
-        "type": "number",
-        "text": "非正常分类*"
+          "id": "238",
+          "text": "归属于母公司净利润预算执行率"
       },
       {
-        "id": "zwrzk",
-        "type": "number",
-        "text": "债务人情况*"
+          "id": "19",
+          "text": "净资产收益率预算执行情况"
       },
       {
-        "id": "kshjk",
-        "type": "number",
-        "text": "可收回金额*"
+          "id": "23945",
+          "text": "应收款项周转率"
+      },
+
+      {
+          "id": "45457",
+          "text": "归属于母公司所有者权益"
       },
       {
-        "id": "dnkhsje",
-        "type": "number",
-        "text": "其中:当年可收回金额*"
+          "id": "1111401",
+          "text": "存货"
       },
       {
-        "id": "yqzk",
-        "type": "number",
-        "text": "逾期账款"
+          "id": "274",
+          "text": "三项费用合计"
+      },
+      {
+          "id": "240",
+          "text": "应收款项周转率预算执行情况"
+      },
+      {
+
+          "id": "1436701",
+          "text": "资产减值损失"
+      },
+      {
+
+          "id": "141600101",
+          "text": " 其中：营业收入"
+      },
+      {
+
+          "id": "14264010101",
+          "text": " 其中：主营业务成本"
+      },
+      {
+
+          "id": "14264010102",
+          "text": " 其他业务成本"
+      },
+      {
+
+          "id": "1426405",
+          "text": "营业税金及附加"
+      },
+      {
+          "id": "1436601",
+          "text": "销售费用"
+      },
+      {
+
+          "id": "1436602",
+          "text": "管理费用"
+      },
+      {
+
+          "id": "143660201",
+          "text": "其中：研究与开发费"
       }
-    ],
-    "rows":[
   ],
-  "layout":{
-      "xtype":"tab",
-      "ctype":"button"
-   },
-  "items":[
-     {
-      "xtype": "bi-table",
-      "id":"yszk",
-      "text":"应收账款"
-    }
-  ]
-  }
-  
+  "columns": [{
+          "id": "id",
+          "type": "string",
+          "hidden": true,
+          "text": "编码"
+      },
+      {
+          "id": "row",
+          "type": "number",
+          "text": "行次"
+      },
+      {
+          "id": "text",
+          "type": "string",
+          "text": "项目"
+      },
+      {
+          "id": "A",
+          "type": "decimal",
+          "text": "本期数"
+      },
+      {
+          "id": "B",
+          "type": "decimal",
+          "text": "累计数"
+      }
+  ],
+  "datas": {},
+  "config": {
+      "_cube": {
+          "subject": "0002",
+          "cubeId": 2
+      },
+      "mainDim": "itemperiod",
+      "random": {
+          "min": 100,
+          "max": 100000
+      },
+      "needDims": ["year", "month", "company"],
+      "type": 1
+
+  },
+  "layout": {
+      "xtype": "tab"
+  },
+  "items": [{
+      "id":"firstTab",
+      "layout":{
+          "xtype": "column"
+      },
+      "text": "指标分析",
+      "children": [{
+              "xtype": "chart",
+              "id": "1416001",
+              "text": "营业收入",
+              "weight": 6,
+              "listeners": [{
+                  "type": "click",
+                  "way": "addTab",
+                  "sourceApi": 33,
+                  "handler": ($vue, params) => {
+                      console.info(params);
+                      debugger;
+                  }
+              }],
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["1416001"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "1403100",
+              "text": "利润总额",
+              "show": [{
+                  "id": "company",
+                  "datas": [1]
+              }],
+              "weight": 6,
+              "listeners": [{
+                  "type": "click",
+                  "way": "addTab",
+                  "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
+                  "handler": ($vue, params) => {
+                      console.info(params);
+                      debugger;
+                  }
+              }],
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["1403100"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "1400111",
+              "text": "归属于母公司净利润",
+              "weight": 6,
+              "listeners": [{
+                  "type": "click",
+                  "way": "addTab",
+                  "sourceApi": "/cnbi/json/source/treegrid/demo.json",
+                  "handler": ($vue, params) => {
+                      console.info(params);
+                      debugger;
+                  }
+              }],
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["1400111"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+
+          {
+              "xtype": "chart",
+              "id": "194",
+              "text": "净资产收益率",
+              "weight": 6,
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["194"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+
+          {
+              "xtype": "chart",
+              "id": "235",
+              "text": "营业预算执行率",
+              "weight": 6,
+              "options": {
+                  "type": "gauge",
+                  "getData": {
+                      "value": "A$1416001",
+                      "type": 1
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "236",
+              "text": "利润总额预算执行率",
+              "weight": 6,
+              "options": {
+                  "type": "gauge",
+                  "getData": {
+                      "value": "A$1416001",
+                      "type": 1
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "238",
+              "text": "归属于母公司净利润预算执行率",
+              "weight": 6,
+              "options": {
+                  "type": "gauge",
+                  "getData": {
+                      "value": "A$1416001",
+                      "type": 1
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "19",
+              "text": "净资产收益率预算执行情况",
+              "weight": 6,
+              "options": {
+                  "type": "gauge",
+                  "getData": {
+                      "value": "A$1416001",
+                      "type": 1
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "23945",
+              "text": "应收款项周转率",
+              "weight": 6,
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["23945"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "45457",
+              "text": "归属于母公司所有者权益",
+              "weight": 6,
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["45457"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "1111401",
+              "text": "存货",
+              "weight": 6,
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["1111401"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "274",
+              "text": "三项费用合计",
+              "weight": 6,
+              "options": {
+                  "type": "column",
+                  "getData": {
+                      "type": 4,
+                      "columns": [{
+                          "id": "A"
+                      }, {
+                          "id": "B"
+                      }],
+                      "row": {
+                          "ids": {
+                              "items": ["274"]
+                          }
+                      },
+                      "reverse": true,
+                      "scope": true
+                  }
+              }
+          },
+          {
+              "xtype": "chart",
+              "id": "240",
+              "text": "应收款项周转率预算执行情况",
+              "weight": 6,
+              "options": {
+                  "type": "gauge",
+                  "getData": {
+                      "value": "A$1416001",
+                      "type": 1
+                  }
+              }
+          }, {
+              "xtype": "chart",
+              "id": "lrb3",
+              "text": "利润表3",
+              "weight": 18,
+              "config": {
+                  "_cube": {
+                      "subject": "0002",
+                      "dims": {
+                          "itemperiod": "1416001,1403100,1400111",
+                          "period": 0
+                      },
+                      "dimName": "period",
+                      "cubeId": 2
+
+                  },
+                  "generateVar":{
+                      "periodCount":12,
+                      "compareType":"0&-1",
+                       "varName":"rows",
+                       "reverse":true
+                   },
+                  "random": {
+                      "min": 100,
+                      "max": 100000
+                  },
+                  "mainDim": "period",
+                  "needDims": ["company", "year","month"],
+                  "type": 1,
+                  "rows": [{
+                          "id": "{year}01",
+                          "text": "{year}年1月"
+                      },
+                      {
+
+                          "id": "{year}02",
+                          "text": "{year}年2月"
+                      },
+                      {
+
+                          "id": "{year}03",
+                          "text": "{year}年3月"
+                      },
+                      {
+
+                          "id": "{year}04",
+                          "text": "{year}年4月"
+                      },
+                      {
+                          "id": "{year}05",
+                          "text": "{year}年5月"
+                      },
+                      {
+                          "id": "{year}06",
+                          "text": "{year}年6月"
+                      }, {
+                          "id": "{year}07",
+                          "text": "{year}年7月"
+                      },
+                      {
+
+                          "id": "{year}08",
+                          "text": "{year}年8月"
+                      },
+                      {
+
+                          "id": "{year}09",
+                          "text": "{year}年9月"
+                      },
+                      {
+
+                          "id": "{year}10",
+                          "text": "{year}年10月"
+                      },
+                      {
+                          "id": "{year}11",
+                          "text": "{year}年11月"
+                      },
+                      {
+                          "id": "{year}12",
+                          "text": "{year}年12月"
+                      }
+                  ],
+                  "columns": [{
+                          "id": "id",
+                          "type": "string",
+                          "hidden": true,
+                          "text": "编码"
+                      },
+                      {
+                          "id": "row",
+                          "type": "number",
+                          "text": "行次"
+                      },
+                      {
+                          "id": "text",
+                          "type": "string",
+                          "text": "项目"
+                      },
+                      {
+                          "id": "A",
+                          "type": "decimal",
+                          "text": "本期数"
+                      }
+                  ],
+                  "group": {
+                      "id": "itemperiod",
+                      "text": "itemperiod",
+                      "datas": [{
+                              "id": "1416001",
+                              "text": "营业收入"
+                          },
+                          {
+                              "id": "1403100",
+                              "text": "利润总额"
+                          },
+                          {
+                              "id": "1400111",
+                              "text": "归属于母公司净利润"
+                          }
+                      ]
+                  }
+              },
+
+              "options": {
+                  "type": "line",
+                  "getData": {
+                      "type": 5,
+                      "columns": [{
+                          "id": "id",
+                          "type": "category",
+                          "boundaryGap": false
+                      }, {
+                          "id": "A",
+                          "name": "营业收入",
+                          "group": {
+                              "dim": "itemperiod",
+                              "val": "1416001"
+                          },
+                          "type": "line",
+                          "smooth": false
+                      }, {
+                          "id": "A",
+                          "name": "利润总额",
+                          "group": {
+                              "dim": "itemperiod",
+                              "val": "1403100"
+                          },
+                          "type": "line",
+                          "smooth": false
+                      }, {
+                          "id": "A",
+                          "name": "归属于母公司净利润",
+                          "group": {
+                              "dim": "itemperiod",
+                              "val": "1400111"
+                          },
+                          "type": "line",
+                          "smooth": false
+                      }]
+
+                  }
+              }
+          }
+      ]
+  }]
+}

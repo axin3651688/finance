@@ -1,20 +1,30 @@
 <template>
+<div>
   <el-table
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    :width="item.width||6000"
-    :height="item.height || 480"
+    height="item.height || rowClass"
     :cell-style="cellStyle"
-    @cell-click="onCellClick"
-    :span-method="rowSpanAndColSpanHandler"
+    @cell-click="onCellClick" 
+     :span-method="rowSpanAndColSpanHandler" 
   >
-    <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
-      <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
     </el-tag>
   </el-table>
+
+    <!-- sjz 分页功能 -->
+  <el-pagination v-if="item.pagination"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-size="pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="item.datas.length">
+  </el-pagination>
+</div>   
 </template>
 <script>
 //   :span-method="rowSpanAndColSpanHandler"
@@ -31,42 +41,42 @@ export default {
   props: ["item"],
   data() {
     return {
-      spanArr:[],
+      currentPage:1,
+      pagesize:1,
       id: 0,
       text: "",
       rows: [],
+     // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
         idProperty: "group",
         textProperty: "groupName"
-      },
-      //   datas:{},
-      dataUrl: "",
-      cubeId: { id: 2, text: "江苏农垦" },
-      dims: {
-        company: { id: "1", text: "江苏农垦" },
-        period: { id: 201608, text: "2016年8月" },
-        unit: { id: 10000, text: "万元" },
-        items: [] //根据行配制生成的
       }
     };
   },
 
   created() {
-    debugger;
-    console.log(this.item);
-    //this.$set(this.item,"datas",null);
+    this.upData(this.item)
     //debugger;
     //this.getTableDataParams();
   },
   mounted() {
-    // debugger;
+     //zb 下属企业合并行
+     //if(this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")this.getSpanArr(this.item.datas);
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
    // this.getTableDataParams();
   },
 
   methods: {
+    //pagesize改变时触发 ---- 分页功能
+    handleSizeChange: function (size) {
+        this.pagesize = size;
+    },
+    //currentPage改变时会触发 --- 分页功能
+    handleCurrentChange: function(currentPage){
+        this.currentPage = currentPage;
+    },
     getDatas(item) {
       let rows = item.config.rows;
       if (rows && rows.length > 0) {
@@ -77,6 +87,7 @@ export default {
     },
 
     upData(item) {
+      debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
@@ -104,7 +115,15 @@ export default {
     /**
      * 单元格级别样式设置
      */
+
+    // 表格的高度 12.26
+      rowClass({ row, rowIndex }) {
+      return "height:100%-64px";
+    },
+
+
     cellStyle(row) {
+      // debugger
       let css = "padding: 4px 0;";
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
@@ -144,6 +163,9 @@ export default {
         console.info("没有设置事件");
       }
     },
+    /**
+     * 获取rowspan   
+     */
     getCellRowSpan(datas, row, config) {
       return datas.filter(record => record[config.id] === row[config.id])
         .length;
@@ -160,36 +182,27 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
-     getSpanArr(data) {　
-          for (var i = 0; i < data.length; i++) {
-            console.log(data[i].rowspan)
-            if (i === 0) {
-              this.spanArr.push(1);
-              this.pos = 0
-            } else {
-              // 判断当前元素与上一个元素是否相同
-            if (data[i].group === data[i - 1].group) {
-                this.spanArr[this.pos] += 1;
-                this.spanArr.push(0);
-              } 
-              else {
-                this.spanArr.push(1);
-                this.pos = i;
-              }
-            }
-          }
-     },
-    rowSpanAndColSpanHandler(row, column, rowIndex, columnIndex) {
-      if (columnIndex === 0) {
-            const _row = this.spanArr[rowIndex];
-            const _col = _row > 0 ? 1 : 0;
-            console.log("行",_row);
-            console.log("列",_col);
-            return {
-                  rowspan: _row,
-                  colspan: _col
-            }
-          }
+    //  getSpanArr(data) {　//合并行
+    //       for (var i = 0; i < data.length; i++) {
+    //         console.log(data[i].rowspan)
+    //         if (i === 0) {
+    //           this.spanArr.push(1);
+    //           this.pos = 0
+    //         } else {
+    //           // 判断当前元素与上一个元素是否相同
+    //         if (data[i].dim_company === data[i - 1].dim_company) {
+    //             this.spanArr[this.pos] += 1;
+    //             this.spanArr.push(0);
+    //           } 
+    //           else {
+    //             this.spanArr.push(1);
+    //             this.pos = i;
+    //           }
+    //         }
+    //       }
+    //  },
+    rowSpanAndColSpanHandler({row, column, rowIndex, columnIndex}) {//合并行
+     
  // let config =  this.groupConfig;
       // let cells = {rowspan:0,colspan:0};
       // debugger
@@ -208,10 +221,9 @@ export default {
       // return cells;
 
       //具体方法请参照elementUi-Table的配法
-      if(this.item &&  this.item.colAndRowSan && typeof(colAndRowSan) == "function"){
-          return this.item.colAndRowSanHandler({ row, column, rowIndex, columnIndex });
+      if(this.item &&  this.item.rowSpanAndColSpanHandler && typeof(rowSpanAndColSpanHandler) == "function"){
+          return this.item.rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex },this);
        }
-      console.log("item",this.item)
       // let config = this.groupConfig;
       // let cells = { rowspan: 0, colspan: 0 };
       // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
@@ -330,5 +342,9 @@ export default {
 .el-table td,
 .el-table th {
   padding: 5px 0;
+}
+/* 横向滚动条 12.26 */
+.el-scrollbar__bar.is-horizontal>div{
+  height: 0;
 }
 </style>

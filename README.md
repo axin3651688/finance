@@ -216,6 +216,10 @@ BiText
     text:"",//名字
     config:`config`  //为可选项
     layout:`layout`  //为可选项，不配制的话，默认为form
+    changeModuleBefore:funcntion(){},
+    changeYearBefore:funcntion(){},
+    changeMonthBefore:funcntion(){},
+    changeCompanyBefore:funcntion(){},
     items:[ //组件
         {
             id: "1",
@@ -231,6 +235,8 @@ BiText
             renderFunction:"functionName"//字面量函数
             params:["A$1111001","B$1111002"]，//参数集合
             config:`config`  //为可选项，当没有数据的时候，会从父亲里取
+            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选
             options:{
 
             }
@@ -285,16 +291,6 @@ listeners:[
   }
 ]
 ~~~
-+ 饼状图
-~~~
-
-~~~
-+ 多柱多线图
-~~~
-
-~~~
-
-
 ~~~
 
     {

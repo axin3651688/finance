@@ -3,7 +3,7 @@
 
         <el-table
             :span-method="arraySpanMethod" 
-            :data="list"
+            :data="item.list"
              border
         style="width: 100%">
             <el-table-column prop="xm_1" label="项目" width='150'></el-table-column>
@@ -39,8 +39,7 @@ export default {
     },
     name:"BiFlhz",
     created(){debugger
-       // console.log("a",this.item);
-        this.list = this.item.datas ;
+        this.$set(this.item, "list", this.item.datas);
        // this.dis();
     },
     computed: {
@@ -61,11 +60,14 @@ export default {
     //     }
     // },
     mounted(){
+      console.log(this.item);
         //this.dis();
     },
     methods:{
 
- 
+    upData(item) {
+      this.$set(this.item, "list", item.datas);
+    },
      arraySpanMethod({ row, column, rowIndex, columnIndex }) {debugger
         if (rowIndex=== 0 || rowIndex=== 1 ||rowIndex=== 2||rowIndex=== 15) {
           if (columnIndex === 0) {

@@ -144,18 +144,21 @@ export default {
         { xtype: "bi-table", id: "lrb", text: "表格测试" },
         { xtype: "bi-chart", id: "text", text: "图形测试" }
       ],
+      chartOptions: {},
       debug: 0
     };
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
     //
+    debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
   },
 
   mounted() {
+     debugger;
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -163,20 +166,25 @@ export default {
   },
   watch: {
     module_api(newid) {
+      this.changeMonduleBefore(newid);
       this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
       this.loadModuleAfter(localStorage.module);
     },
 
     year(newyear) {
+      this.changeYearBefore(newyear);
       this.updateView("year");
+      
     },
 
     month(newmonth) {
+      this.changeMonthBefore(newmonth);
       this.updateView("month");
       console.log("改变", newmonth);
     },
     company(newId) {
+       this.changeCompanyBefore(newId);
       console.log("改变", newId);
       this.updateView("company");
     }
@@ -184,35 +192,57 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
-   /**
-    * 设置item是否隐藏或显示
-    */
-    showSet(items){
-        items.forEach(item=>{
-           debugger;
-           let children = item.children;
-           if(children && children.length > 0){
-              this.showSet(children);
-           }else{
-              let funName = item.showFun;
-              if(typeof (funName) == "function"){
-                    item.show = item.showFun(this.$store);
-              }else{
-                  item.show = true;
-              }
-           }
-          
-        });
+     /**
+      * 更新模块之前调用的方法
+      */
+    changeMonduleBefore(){},
+     /**
+      * 更新年之前调用的方法
+      */
+    changeYearBefore(){},
+     /**
+      * 更新月之前调用的方法
+      */
+    changeMonthBefore(){},
 
+     /**
+      * 更新公司之前调用的方法
+      */
+    changeCompanyBefore(){},
+    /**
+     * 设置item是否隐藏或显示
+     */
+    showSet(items) {
+     // let flag = true;
+    // debugger;
+      items.forEach(item => {
+        let funName = item.showFun;
+        if (typeof funName == "function") {
+          item.show = item.showFun(this.$store);
+        }else{
+            item.show = true;
+        }
+        let cc = item.children;
+        if(cc && cc.length > 0){
+            this.showSet(cc);
+        }
+        // if (item.show == true && flag) {
+        //   item.tabIndex = "0";
+        //   flag = false;
+        // }
+      });
     },
     /**
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
+     // debugger;
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
         bean = eval("(" + bean + ")");
+      }
+      if (bean.items) {
         this.showSet(bean.items);
       }
       for (let key in bean) {
@@ -225,6 +255,7 @@ export default {
       //showDims控制顶部导航栏的显示及隐藏
       // debugger;
       // console.log(bean.showDims);
+
       if (bean.hasOwnProperty("showDims")) {
         bean.showDims.forEach(ele => {
           if (ele == "day") {
@@ -256,7 +287,6 @@ export default {
         this.loadModuleAfter(cache);
         return;
       }
-      debugger;
       this.loadRemoteSource(this.api);
     },
 
@@ -265,7 +295,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-     // api = "cnbi/json/source/jsnk/pie.json";
+    // api = "cnbi/json/source/ts.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -281,7 +311,7 @@ export default {
         });
         return;
       }
-       debugger;
+
       findDesignSource(api).then(res => {
         // debugger;
         let source = res.data; //默认认为是从文件服务器加载进来的
@@ -326,6 +356,9 @@ export default {
     getModuleParams(item, changeDim) {
       let config = item.config,
         needDims = config.needDims;
+      if(!needDims){
+        return ;
+      }
       let ns = needDims.filter(dim => dim === changeDim);
       if (!ns || ns.length == 0) {
         console.info(item.text + "不依赖【" + changeDim + "】维度!");
@@ -355,7 +388,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      //  debugger
+
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -410,13 +443,12 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
         //在此加了查询数据之前的拦截处理
-        if(item.queryDataBefore && typeof(item.queryDataBefore) == "function"){
+        if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
           params = item.queryDataBefore(params);
         }
         config.type = config.type || 1;
@@ -445,13 +477,11 @@ export default {
         console.info(datas);
         $cc.forEach(children => {
           if (children.item) {
-            console.info(children.item + "---setChlidComponent---");
+           // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
             if (cc && children.hasConfig) {
             } else {
-              console.info(
-                ii + "--" + children.item.id + "--" + children.item.text
-              );
+            //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
               children.$set(children.item, "datas", datas);
               children.setItems(children.item, true);
             }
@@ -464,9 +494,22 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      /**
+       * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
+       */
+      if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
+        // debugger;
+        datas = item.__queryDataAfter(datas);
+      }
+
+      // debugger
       //在此加了查询数据之后的拦截处理
-      if(item.queryDataAfter && typeof(item.queryDataAfter) == "function" && !item.correctWrongConfig){
-        debugger;
+      else if (
+        item.queryDataAfter &&
+        typeof item.queryDataAfter == "function" &&
+        !item.correctWrongConfig
+      ) {
+        //debugger;
         datas = item.queryDataAfter(datas);
       }
       // debugger;
@@ -479,14 +522,18 @@ export default {
         $childVue.setItems(item, true);
       }
     },
+    __queryDataAfter(datas) {
+      //  debugger;
+      return datas;
+    },
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      //debugger
+     // debugger;
       findThirdPartData(params)
         .then(res => {
-          //  debugger;
+          debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
@@ -500,7 +547,6 @@ export default {
       return item.id;
     },
     removeTab(targetName) {
-      debugger;
       let tabs = this.items;
       let activeTabName = this.activeTabName;
       if (this.activeTabName === targetName) {

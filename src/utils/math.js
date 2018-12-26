@@ -225,68 +225,26 @@
 
  }
  /**
-  * 获取配制模型的数据
+  * 作者：龚佳新
+  * 功能描述：获取配制模型的数据,只返回三种系列数据：1单值，2单系列，>=3多系列
+  * 更新时间:2018-12-26
+  * 
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-     // debugger;
-     if (config.type === 1) {
+     debugger;
+     if (config.type === 1) {//单值
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
-     if (config.type === 2) {
-         // debugger;
+     if (config.type === 2) {//单系列
+        if (config.reverse) { //如果有配制的行列反向的话
+            return getReverserDatas(config, datas, cols,rows);
+        }
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
-     if (config.type === 3) {
+     if (config.type >=3) {//多系列
          return seriesDataParse(config, datas, configRows, cols);
      }
-     if (config.type == 4) {
-       //  debugger;
-         return singleSeriesDataParser4(config, datas, configRows, cols);
-     }
-     if (config.type == 5) {
-        // debugger;
-        return singleSeriesDataParser4(config, datas, configRows, cols);
-     }
-//   饼状图的数据处理 暂时废弃
-    if (config.type == 88) {
-        return singleSeriesDataParser8(config, datas, configRows, cols);
-    }
-
- }
- /**
- * 根据config对象获取pie图数据
- */
-const singleSeriesDataParser8 = (config, datas, rows, cols) => {
-    let tpye = config.type;
-     let value = [],record = {},series = [],xAxis = {},legends = [],ii= 0;
-     //{series:[{},{}],xAxis:{}}
-     config.columns.forEach(item => {
-         let data = getSeriesDataPie(item, datas, rows);
-         if(Object.keys(item).length > 0){
-             let ss = {};
-            Cnbi.apply(ss,item);
-            ss.data = data;
-            delete ss.id;
-            if(ii == 0){
-                series = ss ;
-            }else{
-                legends.push(getColumnName(item,cols));
-                delete ss.group;
-                delete ss.text;
-                series.push(ss);
-            }
-         }else{
-            value.push(data);
-         }
-         ii++;
-     });
-     if(ii > 0){
-         let bb = {series:series,xAxis:xAxis,legend:legends};
-        // alert(JSON.stringify(bb))
-         return bb;
-     }
-     return value;
  }
  /**
   * 获取配制的行项目数据
@@ -409,8 +367,10 @@ const getColumnName = (column,cols)=>{
 }
 /**
  * 获取反向行列的数据
+ * 行列==》列行
+ * [{id:1,A:52,B:552},{id:1,A:52,B:552}] ==>[["colId=>colName", colId=>colName"],[record.colId, record.colId]==>[["本期数", "累计数"],[876029.22, 873665.74]]
  */
-const getReverserDatas=(config, datas, rows, cols)=>{
+const getReverserDatas=(config, datas,cols, rows)=>{
     let value = [],names = [],ii = 0;
     rows.forEach(row => {
         let val = [];
@@ -433,37 +393,12 @@ const getReverserDatas=(config, datas, rows, cols)=>{
 /**
  * 根据config对象获取echarts图数据
  */
- const singleSeriesDataParser4 = (config, datas, rows, cols) => {
-    let tpye = config.type;
-    let sign = config.sign;
+ const seriesDataParse = (config, datas, rows, cols) => {
      if (config.reverse) { //如果有配制的行列反向的话
-         return getReverserDatas(config, datas, rows, cols);
+         return getReverserDatas(config, datas, cols, rows);
      }
      let value = [],record = {},series = [],xAxis = {},legends = [],ii= 0;
-     //{series:[{},{}],xAxis:{}}
-     if(sign&&sign==="pie"){
-        config.columns.forEach(item => {
-            let data = getSeriesDataPie(item, datas, rows);
-            if(Object.keys(item).length > 0){
-                let ss = {};
-               Cnbi.apply(ss,item);
-               ss.data = data;
-               delete ss.id;
-               if(ii == 0){
-                   series.push(ss);
-               }else{
-                   legends.push(getColumnName(item,cols));
-                   delete ss.group;
-                   delete ss.text;
-                   series.push(ss);
-               }
-            }else{
-               value.push(data);
-            }
-            ii++;
-        });
-     }else {
-        config.columns.forEach(item => {
+     config.columns.forEach(item => {
             let data = getSeriesData(item, datas, rows);
             if(Object.keys(item).length > 1){
                 let ss = {};
@@ -483,32 +418,12 @@ const getReverserDatas=(config, datas, rows, cols)=>{
             }
             ii++;
         });
-     }
-     
      if(ii > 0){
          let bb = {series:series,xAxis:xAxis,legend:legends};
-        // alert(JSON.stringify(bb))
          return bb;
      }
      return value;
  }
-/**
- * 获取饼状图的数据
- * @param {*} column 
- * @param {*} datas 
- * @param {*} rows 
- */
-const getSeriesDataPie = (column, datas, rows) => {
-   // debugger
-    let category = [],valProperty ="id";
-    rows.forEach(row => {
-        let val = getData(column, row, datas, rows,valProperty);
-        let text = row.text || row.sname ; 
-        category.push({value:val,name:text? text:row.id});
-    });
-    return category;
-}
-
  /**
   * 获取指定系列数据
   */
@@ -554,10 +469,9 @@ const getSeriesDataPie = (column, datas, rows) => {
 
  }
 /**
- * 获取多系列图形数据
+ * fusioncharts获取多系列图形数据
  */
- const seriesDataParse = (config, datas, rows) => {
-
+ const seriesFusionDataParse = (config, datas, rows) => {
      let columns = config.columns,
          dataset = [];
      //category

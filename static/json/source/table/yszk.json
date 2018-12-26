@@ -20,6 +20,10 @@
       "random":{"min":100,"max":100000},
       "type":1
     },
+    queryDataAfter:function(datas){
+       debugger;
+   
+    },
     "columns":[
       {
         "text": "公司编码",

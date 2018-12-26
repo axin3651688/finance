@@ -35,19 +35,26 @@
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
+        <!-- <span v-if="scope.row.balance!=0">
+            <el-button type="text">{{ scope.row[col.id] }}</el-button>
+        </span>
+        <span v-else>{{ scope.row[col.id] }}</span> -->
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据-->
-  <el-table-column v-else-if="col.type === 'decimal'" :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150">
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
+  <el-table-column v-else-if="col.type === 'decimal'"
+   :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150"
+   
+   >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(data.datas,col.id,scope.row,data.config.rows)"
+        :content="getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)"
         placement="right"
       >
-        <span v-if="data.datas">{{ getCellValues(data.datas,col.id,scope.row,data.config.rows)}}</span>
+        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -55,28 +62,32 @@
   <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="data.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
   <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="data.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
+
+  <!-- <el-table-column v-else-if="!col.type" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
+        <span>请定义列{{col.text}}的类型</span>
+      </el-tooltip>
+    </template>
+  </el-table-column> -->
 </template>
 <script>
-import EventMixins from "../mixins/EventMixins";
-import PromptMessage from "./PromptMessage.vue"
+//import EventMixins from "../mixins/EventMixins";
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
-  components:{
-    PromptMessage
-  },
-  props: ["col", "data"],
+  props: ["col", "tableData"],
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -87,17 +98,26 @@ export default {
     }
   },
   methods: {
+    // rowClass({ row, rowIndex }) {
+      
+    //   return "text-align:center";
+    // },
     upData(item) {
-      //   debugger;
-      this.$set(this, "data", null);
-      this.$set(this, "data", item);
-      this.$set(this.data, "datas", item.datas);
+        // debugger;
+      // this.$set(this, "tableData", null);
+      if(item.datas.length > 0 ){
+           this.$set(this, "tableData", item);
+           this.$set(this.tableData, "datas", item.datas);
+      }else{
+          this.$set(this, "tableData", null);
+      }
+      
     },
     /**
      * 获取单元格数据
      */
     getCellValues(datas, colId, row, rows) {
-      //  debugger;
+        debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";
@@ -109,12 +129,15 @@ export default {
       if (!value) {
         return "--";
       }
-      value = ((value - 0) / 10000).toLocaleString();
+      // value = ((value - 0) / 10000).toLocaleString();
+      // 千分位  保留两位小数
+       value = ((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+
       return value;
     }
   },
   created() {
-    //debugger;
+    //this.$set(this, "tableData", null);
   }
 };
 </script>

@@ -56,10 +56,10 @@
                 }
             }],
             "options": {
+                "subType": "pie",
                 "type": "advancechart",
                 "getData": {
                     "type": 2,
-                    "subType": "pie",
                     "columns": [{
                         "id": "text",
                         "prop": "name"
@@ -149,7 +149,7 @@
                 "subType": "pie",
                 "getData": {
                     "type": 2,
-                    "subType": "pie",
+
                     "columns": [{
                         "id": "text",
                         "prop": "name"
@@ -163,7 +163,7 @@
             "chartOptions": {
                 "dd": "this.item.text",
                 "title": {
-                    "text": "xxx",
+                    "text": "this.item.text",
                     "x": "center"
                 },
                 "tooltip": {

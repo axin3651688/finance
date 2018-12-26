@@ -36,16 +36,12 @@ export default {
       chartOptions: this.getDataSource(this.item)
     };
   },
-  created() {
-    debugger;
-    console.log(this.item);
-    // var obj = JSON.stringify(this.dataSource);
-    // console.log(obj);
-  },
   mounted() {
-    // this.options.series[0].data = this.item.datas
+    debugger;
+    if (this.item.options.getData.type == 5) {
+      this.upData(this.item);
+    }
   },
-
   methods: {
     /** 
      *  动态替换配制中的变量 
@@ -74,10 +70,13 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
+      debugger;
       let options = item.chartOptions;
       let defaultOptions = this.getDefautlChartConfigByType();
-      Cnbi.apply(options || {}, defaultOptions);
+      Cnbi.applyIf(options || {}, defaultOptions);
       this.evalVaiables(options);
+      console.log(options);
+
       return options;
     },
     upData(item) {
@@ -92,21 +91,24 @@ export default {
          * 单独系列数据的图形 说白了就是series.length = 1
          */
         debugger;
-        let datas = item.options.datas;
-        this.chartOptions.xAxis.data = datas[0];
-        this.chartOptions.series[0].data = datas[1];
-      } else if (chartType === 3) {
+        this.chartOptions.series[0].data = this.item.options.datas;
+        // let datas = item.options.datas;
+        // this.chartOptions.xAxis.data = datas[0];
+        // this.chartOptions.series[0].data = datas[1];
+      } else if (chartType === 3 || chartType === 5) {
         /**
          * 多系列数据图形 说白了就是series.length > 1
          */
         let datas = item.options.datas;
+        // this.chartOptions.title = this.item.text;
         this.chartOptions.series = datas.series;
         this.chartOptions.xAxis = datas.xAxis;
         this.chartOptions.legend.data = datas.legend;
       }
     },
     getDefautlChartConfigByType() {
-      let chartSubType = this.item.options.getData.subType;
+      debugger;
+      let chartSubType = this.item.options.subType;
       if (!chartSubType) {
         console.error("没有正确的配置chart类型");
         return;
@@ -145,10 +147,6 @@ export default {
         default:
           break;
       }
-
-      //this.$children[0].chart
-      // return pie(this.item);
-      // return eval(chartSubType + "()");
     }
   }
 };
