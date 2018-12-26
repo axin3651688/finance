@@ -12,11 +12,9 @@
       </div>
     </div>
     <div class="message-content">
-      <div v-if="data.type === 1" v-html="parseEmotions(data.content)">
-        <!--{{data.content | parseEmotions}}-->
-      </div>
+
       <!--2图片-->
-      <div v-else-if="data.type === 2">
+      <div v-if="data.type === 2">
         <a :href="data.file.hdUrl" target="_blank">
           <div class="img-wrap">
             <div class="img-box">
@@ -57,7 +55,10 @@
           您的浏览器不支持 video 标签。
         </video>
       </div>
-      <div v-else>{{data.content}}</div>
+      <!--1 默认解析表情-->
+      <div v-else="data.type === 1" v-html="parseEmotions(data.content)">
+        <!--{{data.content | parseEmotions}}-->
+      </div>
 
 
       <!--<div v-else>{{data.content}} //其他</div>-->

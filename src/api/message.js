@@ -41,29 +41,24 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
   })
 }
 // 获取群聊聊消息
-export function findGroupMsg() {
+export function findGroupMsg(data) {
   // console.log(" api findGroupMsg");
   // debugger
   return request({
     url: '/api/api/find_group_msg',
     method: 'post',
-    data: {
-      page: 1,
-      groupId: 4,
-      userId: 225,
-      size: 20
-    }
+    data: data
     // data: {
-    //     page: 1,
-    //     receiverId: 244,
-    //     senderId: 397,
-    //     size: 10
+    //   page: 1,
+    //   groupId: 4,
+    //   userId: 225,
+    //   size: 20
     // }
   })
 }
 // 发送消息，接受一个完整的数据对象
 export function sendMsg(data) {
-  // debugger
+  debugger;
   return request({
     url: '/api/api/deliver',
     method: 'post',

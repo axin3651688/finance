@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="middle">
-      <el-scrollbar style="height: 100%">
+      <el-scrollbar style="height: 100%" ref="chatWindow">
         <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
 
@@ -85,13 +85,14 @@
           </div>
         </transition>
       </div>
-      <textarea
-        class="chat-textarea"
-        placeholder="请输入文字，按enter建发送信息"
-        v-model="sendText"
-        ref="textarea"
-        @keyup.enter="handleSendMessage"
-      ></textarea>
+      <div class="input-wrap">
+        <textarea class="chat-textarea"
+                  placeholder="请输入文字，按enter建发送信息"
+                  v-model="sendText"
+                  ref="textarea"
+                  @keyup.enter="handleSendMessage"
+        ></textarea>
+      </div>
     </div>
 
     <!--群设置弹窗-->
@@ -114,7 +115,7 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
-            >
+          >
             上传头像
           </el-upload>
         </figure>
@@ -227,7 +228,7 @@ export default {
       let fd = this.imgfd;
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
-          console.log('上传群头像res',res);
+          console.log('上传群头像res', res);
           this.showGroupSettingDialog = false
         });
       }
@@ -242,18 +243,58 @@ export default {
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
       console.log('要发送的内容是：', this.sendText);
-      let sendData = {
-        code: 1101, // 1100:单聊 1101:群聊
-        data: {
-          content: this.sendText,
-          senderId: this.loginUserId, // 539 姜海斌
-          type: 1
-        },
-        device: '868938033321615'
+      if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
+        let sendData = {
+          code: 1101, // 1100:单聊 1101:群聊
+          data: {
+            content: this.sendText,
+            senderId: this.loginUserId,
+            groupId: this.groupId,
+            type: 1
+          },
+          device: '868938033321615'
+        };
+        console.log('要发送的内容是：', this.sendText);
+        this.addMsgToWindow(this.sendText);
+        this.sendText = '';
+        debugger;
+        sendMsg(sendData).then(res => {
+          console.log('发送群消息返回数据res', res);
+          debugger;
+        }).catch(err => {
+          console.log('发送群消息返回数据err', err);
+          debugger;
+        })
+      } else {
+        this.sendText = '';
+        this.$message({
+          type: 'warning',
+          message: '发送内容不能为空',
+          showClose: true
+        });
+      }
+    },
+
+    // 把发送的内容显示到聊天窗口
+    addMsgToWindow(sendText) {
+      let data = {
+        avatar: this.user.user.avatar,
+        content: sendText,
+        name: this.user.user.trueName,
+        sendTime: new Date().getTime()
       };
-      this.sendText = '';
+      this.groupMsgList.push(data);
+      this.$nextTick(() => {
+        this.chatWindowScrollToBottom();
+      });
+    },
+
+    // 把聊天窗口滚动到最底部
+    chatWindowScrollToBottom() {
       // debugger;
-      sendMsg(sendData)
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
+      console.log('找滚动窗口：', chatWindow);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
 
@@ -327,10 +368,17 @@ export default {
 
     // 获取群消息
     getGroupMsgList() {
-      findGroupMsg().then(res => {
+      let data = {
+        page: 1,
+        groupId: this.groupId,
+        userId: this.loginUserId,
+        size: 20
+      };
+      findGroupMsg(data).then(res => {
+        debugger;
         console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {
-          this.groupMsgList = res.data.data.data
+          this.groupMsgList = res.data.data.data.reverse()
         }
       }).catch(err => {
         console.log('群消息', err)
@@ -468,6 +516,7 @@ export default {
             height: 100%;
           }
         }
+
         .img-box__group {
           cursor: pointer;
         }
@@ -606,7 +655,7 @@ export default {
     }
 
     .bottom {
-      position: relative;
+      height: 260px;
       box-sizing: border-box;
       /*height: 240px;*/
       width: 100%;
@@ -647,21 +696,26 @@ export default {
         }
       }
 
-      .chat-textarea {
-        min-height: 100px;
-        padding: 10px 20px;
-        color: rgba(0, 0, 0, 0.40);
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 12px;
+      .input-wrap {
         width: 100%;
-        border: none;
-        outline: 0;
-        resize: none;
-        text-align: left;
-        font-family: $fontFamilyMain;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 20px;
+
+        .chat-textarea {
+          box-sizing: border-box;
+          min-height: 100px;
+          padding: 10px 20px;
+          color: rgba(0, 0, 0, 0.40);
+          background: rgba(0, 0, 0, 0.06);
+          border-radius: 12px;
+          width: 100%;
+          border: none;
+          outline: 0;
+          resize: none;
+          text-align: left;
+          font-family: $fontFamilyMain;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20px;
+        }
       }
     }
 
