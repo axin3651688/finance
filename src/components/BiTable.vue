@@ -3,8 +3,7 @@
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    :width="item.width||6000"
-    :height="item.height || 480"
+    :height="item.height"
     :cell-style="cellStyle"
     @cell-click="onCellClick"
     :span-method="rowSpanAndColSpanHandler"
