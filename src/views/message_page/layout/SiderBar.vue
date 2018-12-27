@@ -10,28 +10,28 @@
         <router-link tag="li" to="/message_page/home" class="nav-item">
           <div class="nav-item_inner nav-item_text">首页</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="@ma/new_icon/home_page.svg" class="img-selected">
-            <img src="@ma/new_icon/home_page_unselected.svg" class="img-unselected">
+            <img src="@ma/icon/home_page.svg" class="img-selected">
+            <img src="@ma/icon/home_page_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_text">消息</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="@ma/new_icon/message_selected.svg" class="img-selected">
-            <img src="@ma/new_icon/message_unselected.svg" class="img-unselected">
+            <img src="@ma/icon/message_selected.svg" class="img-selected">
+            <img src="@ma/icon/message_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
           <div class="nav-item_inner nav-item_text">通讯录</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="@ma/new_icon/person_selected.svg" class="img-selected">
-            <img src="@ma/new_icon/person_unselected.svg" class="img-unselected">
+            <img src="@ma/icon/person_selected.svg" class="img-selected">
+            <img src="@ma/icon/person_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <li class="nav-item nav-item_quit">
           <div class="nav-item_inner nav-item_text" @click="logout()">退出</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="@ma/new_icon/quit.svg" alt="">
+            <img src="@ma/icon/quit.svg" alt="">
           </div>
         </li>
       </ul>

@@ -72,6 +72,7 @@
               <p class="info">{{rightUserInfo.user.sign}}</p>
             </li>
           </ul>
+
         </div>
       </template>
       <el-button
@@ -380,6 +381,12 @@ export default {
         }
         .icon-text {
           background-image: url($iconTest);
+        }
+        .icon-phone {
+          background-image: url($iconPhone);
+        }
+        .icon-email {
+          background-image: url($iconEmail);
         }
       }
     }

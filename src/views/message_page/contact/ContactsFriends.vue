@@ -305,6 +305,12 @@ export default {
         .icon-text {
           background-image: url($iconTest);
         }
+        .icon-phone {
+          background-image: url($iconPhone);
+        }
+        .icon-email {
+          background-image: url($iconEmail);
+        }
       }
     }
 

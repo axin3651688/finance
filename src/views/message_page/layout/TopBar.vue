@@ -8,9 +8,15 @@
       <h3 class="page-title" v-if="messageStore.routeName">{{messageStore.routeName}}</h3>
       <h3 class="page-title" v-else="messageStore.routeName">首页</h3>
       <div class="btn-group">
-        <span class="btn btn-mini" @click="web_minWindows()">-</span>
-        <span class="btn btn-max" @click="web_maxWindows()"><></span>
-        <span class="btn btn-close" @click="web_closeWindows()">X</span>
+        <div class="btn btn-mini" @click="web_minWindows()">
+          <img src="@ma/icon/minimize.svg">
+        </div>
+        <div class="btn btn-max" @click="web_maxWindows()">
+          <img src="@ma/icon/full.svg">
+        </div>
+        <div class="btn btn-close" @click="web_closeWindows()">
+          <img src="@ma/icon/close.svg">
+        </div>
       </div>
     </div>
   </div>
@@ -74,8 +80,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
-  @import "../styles/layout.scss";
+  @import "@ms/variables.scss";
+  @import "@ms/layout.scss";
 
   .TopBar {
     @include flex();
@@ -123,10 +129,10 @@ export default {
         float: right;
 
         .btn {
-          width: 40px;
-          height: 40px;
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
           text-align: center;
-          line-height: 40px;
           cursor: pointer;
           transition: all .3s;
           -webkit-app-region: no-drag;

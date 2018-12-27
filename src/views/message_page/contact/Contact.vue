@@ -76,12 +76,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@ms/variables.scss";
 
   .MessageContacts {
+    box-sizing: border-box;
     overflow: hidden;
     background: #ffffff;
     height: 100%;
+    padding: 15px 10px 0;
+    background: $colorBgPageGray;
     box-shadow: 0 20px 30px $colorShadowGreen;
 
     /deep/ li {
@@ -91,6 +94,10 @@ export default {
 
   /deep/ .el-tabs {
     height: 100%;
+    overflow: hidden;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background: #ffffff;
 
     .el-tabs__header {
       margin-bottom: 0;

@@ -161,6 +161,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  Index {
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+  }
   .cardItem {
 
     display: flex;

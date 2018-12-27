@@ -23,7 +23,7 @@
                            alt="群主设置"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">群主设置</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">群主设置</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
                 </el-dropdown-item>
@@ -34,7 +34,7 @@
                            alt="退出群组"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">退出群组</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">退出群组</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">退出群主将不再接收消息</p>
                 </el-dropdown-item>
@@ -509,7 +509,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 60px 40px 0 40px;
+      padding: 30px 40px 0 40px;
       box-sizing: border-box;
       margin-bottom: 20px;
 

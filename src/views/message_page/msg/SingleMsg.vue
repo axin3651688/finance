@@ -1,5 +1,5 @@
 <template>
-  <div class="SingleMsg vue-module">
+  <div class="SingleMsg">
     <div class="top">
       <div class="title">
         <div class="img-box">
@@ -12,9 +12,13 @@
           </h3>
           <p>安徽经邦软件有限公司</p>
         </div>
-        <div class="titleright">
-          <p class="message">消息</p>
-          <p class="file">文件</p>
+      </div>
+      <div class="btn-group">
+        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+          消息
+        </div>
+        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+          文件
         </div>
       </div>
     </div>
@@ -71,6 +75,7 @@ export default {
   components: {MessageItem},
   data() {
     return {
+      activeBtn: 'checked',
       defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       receiverName: '', // 聊天对象名称
       receiverAvatar: '', // 聊天对象头像
@@ -202,7 +207,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .SingleMsg.vue-module {
+  @import "@ms/variables.scss";
+
+  .SingleMsg {
     @import "../styles/variables.scss";
     display: flex;
     justify-content: space-between;
@@ -249,49 +256,15 @@ export default {
         }
       }
 
-      .titleright {
-        height: 24px;
-        width: 160px;
-        display: flex;
-        position: absolute;
-        right: 0;
-        top: 30px;
-        padding: 0;
-
-        .message {
-          width: 80px;
-          height: 24px;
-          background: $colorTheme;
-          opacity: 1;
-          border-radius: 66px 0px 0px 66px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: $colorText1;
-          text-align: center;
-        }
-
-        .file {
-          height: 24px;
-          width: 80px;
-          background: rgba(0, 0, 0, 0.1);
-          opacity: 1;
-          border-radius: 0px 66px 66px 0px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: rgba(0, 0, 0, 0.20);
-          text-align: center;
-        }
-      }
     }
 
     .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: rgba(235, 236, 236, 1);
       opacity: 1;
-      padding: 60px 40px 0 40px;
+      padding: 30px 40px 0 40px;
       box-sizing: border-box;
       margin-bottom: 20px;
     }
@@ -453,6 +426,28 @@ export default {
       opacity: 1;
       padding: 40px 30px 0 40px;
       box-sizing: border-box;
+    }
+  }
+
+  .btn-group {
+    display: inline-block;
+    $btnHeight: 24px;
+    border-radius: $btnHeight / 2;
+    overflow: hidden;
+
+    .btn {
+      display: inline-block;
+      line-height: $btnHeight;
+      padding: 0 36px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.20);
+      background: rgba(0, 0, 0, .1);
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background: $colorTheme;
+      color: #ffffff;
     }
   }
 </style>
