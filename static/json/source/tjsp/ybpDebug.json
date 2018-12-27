@@ -1,0 +1,475 @@
+{
+	"layout": {
+		"xtype":"column"
+	},
+	"id": "888",
+	"text": "指标分析",
+	"items": [
+		{
+			"xtype": "chart",
+			"id": "1403100000",
+			"text": "这个是钻取来的",
+			"weight": 8,
+			"closable": true,
+			"show": true,
+			"config": {
+				"_cube": {
+					"subject": "0001",
+					"cubeId": 4
+				},
+				"mainDim": "itempoint",
+				"needDims": [
+					"year",
+					"month",
+					"company"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"type": 1,
+				"columns": [
+					{
+						"id": "F",
+						"type": "decimal",
+						"text": "同比增减率"
+					},
+					{
+						"id": "id",
+						"type": "string",
+						"hidden": true,
+						"text": "编码"
+					},
+					{
+						"id": "text",
+						"type": "string",
+						"text": "项目"
+					},
+					{
+						"id": "A",
+						"type": "decimal",
+						"text": "全年考核目标建议值"
+					},
+					{
+						"id": "B",
+						"type": "decimal",
+						"text": "累计完成"
+					},
+					{
+						"id": "c",
+						"type": "decimal",
+						"text": "累计完成率"
+					},
+					{
+						"id": "D",
+						"type": "decimal",
+						"text": "上年同期"
+					},
+					{
+						"id": "E",
+						"type": "decimal",
+						"text": "同比增减额"
+					}	
+				],
+				"rows": [
+					{
+						"id": "1111001",
+						"text": "现代农牧渔业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111002",
+						"text": "食品加工业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111003",
+						"text": "食品贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "粮油贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "冷链仓储",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "房地产业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "商品贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "钢材贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "非食品加工业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "金融业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "服务业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "抵消差额",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "合计",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					}
+				]
+			},
+			"listeners":[
+				{
+					"type":"click",
+					"way":"addTab",
+					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
+					"handler": ($vue,params) =>{
+						console.log(params);
+					}
+				}
+			],
+			"options": {
+				"type": "advancechart",
+				"subType": "pie",
+				"getData": {
+					"type": 2,
+					"columns": [
+						{
+							"id": "text",
+							 "prop":"name"
+						},
+						{
+							"id": "A",
+							 "prop":"value"
+						}
+					],
+					"row": {
+						"ids": {
+							"items": [
+								"1111001","1111002","1111003"
+							]
+						}
+					},
+					"sign":"pie",
+					"scope": true
+				}
+			},
+			  "chartOptions": {
+                "dd": "this.item.text",
+                "title": {
+                    "text": "this.item.text",
+                    "x": "center"
+                },
+                "tooltip": {
+                    "trigger": "item",
+                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
+                },
+                "series": [{
+                    "name": "风险级别",
+                    "type": "pie",
+                    "radius": "55%",
+                    "center": ["50%", "60%"],
+                    "data": "this.item.options.datas",
+                    "itemStyle": {
+                        "emphasis": {
+                            "shadowBlur": 10,
+                            "shadowOffsetX": 0,
+                            "shadowColor": "rgba(0, 0, 0, 0.5)"
+                        }
+                    }
+                }],
+                "legend": {
+                    "orient": "vertical",
+                    "left": "5%",
+                    "top": "10%",
+                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                }
+            }
+		},
+		{
+			"xtype": "bi-table",
+			"id": "1400111",
+			"text": "这个也是钻取过来的表",
+			"weight": 16,
+				"show": true,
+			"config": {
+				"_cube": {
+					"subject": "0001",
+					"cubeId": 4
+				},
+				"mainDim": "itempoint",
+				"needDims": [
+					"year",
+					"month",
+					"company"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"type": 1,
+				"columns": [
+					{
+						"id": "F",
+						"type": "decimal",
+						"text": "同比增减率"
+					},
+					{
+						"id": "id",
+						"type": "string",
+						"hidden": true,
+						"text": "编码"
+					},
+					{
+						"id": "text",
+						"type": "string",
+						"text": "项目"
+					},
+					{
+						"id": "A",
+						"type": "decimal",
+						"text": "全年考核目标建议值"
+					},
+					{
+						"id": "B",
+						"type": "decimal",
+						"text": "累计完成"
+					},
+					{
+						"id": "c",
+						"type": "decimal",
+						"text": "累计完成率"
+					},
+					{
+						"id": "D",
+						"type": "decimal",
+						"text": "上年同期"
+					},
+					{
+						"id": "E",
+						"type": "decimal",
+						"text": "同比增减额"
+					}	
+				],
+				"rows": [
+					{
+						"id": "1111001",
+						"text": "现代农牧渔业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111002",
+						"text": "食品加工业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111003",
+						"text": "食品贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "粮油贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "冷链仓储",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "房地产业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "商品贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "钢材贸易",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "非食品加工业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "金融业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "服务业",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "抵消差额",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					},
+					{
+						"id": "1111001",
+						"text": "合计",
+						"A": 0,
+						"B": 0,
+						"C": 0,
+						"D": 0,
+						"E": 0,
+						"F": 0
+					}
+				]
+			}
+		}
+	]
+}
