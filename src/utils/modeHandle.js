@@ -20,7 +20,7 @@ export default function modeHandle(e) {
         return;
     }
 
-    // e.url = "cnbi/json/source/jsnk/gauge.json";
+    e.url = "cnbi/json/source/chart/bar.json";
     console.log(e.sourceId, e.url)
 
     /** 

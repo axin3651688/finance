@@ -67,7 +67,7 @@
                     "subType": "bar",
                     "type": "advancechart",
                     "getData": {
-                        "type": 4,
+                        "type": 2,
                         "columns": [{
                             "id": "A"
                         }, {
@@ -132,7 +132,7 @@
 
                     "xAxis": [{
                         "type": "category",
-                        "data": "this.item.options.datas[0]",
+                        "data": [],
 
                         "axisTick": {
 
@@ -146,7 +146,7 @@
                         "type": "bar",
                         "stack": "vistors",
                         "barWidth": "35%",
-                        "data": "this.item.options.datas[1]",
+                        "data": [],
                         "itemStyle": {
                             "normal": {
                                 "color": function (params) {

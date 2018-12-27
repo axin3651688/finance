@@ -32,15 +32,19 @@ export default {
   },
   data() {
     return {
-      // map
       chartOptions: this.getDataSource(this.item)
     };
   },
+  created() {
+    debugger;
+    console.log(this.getDataSource(this.item));
+  },
   mounted() {
     debugger;
-    if (this.item.options.getData.type == 5) {
-      this.upData(this.item);
-    }
+    this.upData(this.item);
+    // if (this.item.options.getData.type == 3) {
+
+    // }
   },
   methods: {
     /** 
@@ -70,10 +74,11 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      debugger;
+      // debugger;
       let options = item.chartOptions;
+
       let defaultOptions = this.getDefautlChartConfigByType();
-      Cnbi.apply(options || {}, defaultOptions);
+      Cnbi.applyIf(options || {}, defaultOptions);
       this.evalVaiables(options);
       console.log(options);
 
@@ -86,19 +91,23 @@ export default {
         /**
          * 就是一个值数据的图形  dataRange   value
          */
-      } else if (chartType === 2 || chartType === 4) {
+      } else if (chartType === 2) {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-        debugger;
-        this.chartOptions.series[0].data = this.item.options.datas;
-        // let datas = item.options.datas;
-        // this.chartOptions.xAxis.data = datas[0];
-        // this.chartOptions.series[0].data = datas[1];
-      } else if (chartType === 3 || chartType === 5) {
+
+        // this.chartOptions.legend.data = this.item.options.datas.map(item => {
+        //   return item.name;
+        // });
+        // this.chartOptions.series[0].data = this.item.options.datas;
+        let datas = item.options.datas;
+        this.chartOptions.xAxis.data = datas[0];
+        this.chartOptions.series[0].data = datas[1];
+      } else if (chartType === 3) {
         /**
          * 多系列数据图形 说白了就是series.length > 1
          */
+        debugger;
         let datas = item.options.datas;
         // this.chartOptions.title = this.item.text;
         this.chartOptions.series = datas.series;
@@ -108,7 +117,7 @@ export default {
     },
     getDefautlChartConfigByType() {
       debugger;
-      let chartSubType = this.item.options.subType.b;
+      let chartSubType = this.item.options.subType;
       if (!chartSubType) {
         console.error("没有正确的配置chart类型");
         return;
