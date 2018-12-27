@@ -55,11 +55,5 @@ export default {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  // background-color: #f0f2f5;
-
-  // &.mobile.openSidebar {
-  //   position: fixed;
-  //   top: 0;
-  // }
 }
 </style>

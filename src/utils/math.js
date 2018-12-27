@@ -231,15 +231,13 @@
   * 
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-     
      if (config.type === 1) {//单值
-        debugger
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
-            return getReverserDatas(config, datas, cols,rows);
+            return getReverserDatas(config, datas, cols,configRows);
         }
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
@@ -251,7 +249,6 @@
   * 获取配制的行项目数据
   */
  const getConfigRows = (configRows, rows) => {
-     // 
      if (!configRows || Object.keys(configRows).length === 0) {
          return rows;
      }
