@@ -101,6 +101,7 @@ export default {
         // });
         // this.chartOptions.series[0].data = this.item.options.datas;
         let datas = item.options.datas;
+        debugger;
         this.chartOptions.xAxis.data = datas[0];
         this.chartOptions.series[0].data = datas[1];
       } else if (chartType === 3) {
