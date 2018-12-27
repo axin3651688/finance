@@ -277,7 +277,7 @@
                 "type": "advancechart",
                 "subType": "line",
                 "getData": {
-                    "type": 5,
+                    "type": 3,
                     "columns": [{
                         "id": "id",
                         "type": "category",

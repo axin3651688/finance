@@ -26,7 +26,7 @@
           </div>
         </router-link>
         <li class="nav-item nav-item_quit">
-          <div class="nav-item_inner nav-item_text">退出</div>
+          <div class="nav-item_inner nav-item_text" @click="logout()">退出</div>
           <div class="nav-item_inner nav-item_icon">
             <img src="../assets/new_icon/quit.png" alt="">
           </div>
@@ -37,8 +37,39 @@
 </template>
 
 <script>
+import {logout} from "~api/interface.js";
+// import { mapGetters, mapActions } from "vuex";
+
 export default {
-  name: "SiderBar"
+  name: "SiderBar",
+  methods: {
+    logout() {
+      // todo备以后用,先不删
+      // localStorage.removeItem("database");
+      // this.$store.dispatch("clearCurrentState");
+      logout()
+        .then(res => {
+          // console.log(res.data.msg);
+          // 清除token
+          localStorage.removeItem("authorization");
+          this.$router.push("/message_login");
+
+          // electron 退出处理
+          if (window.require) {
+            var ipc = window.require('electron').ipcRenderer
+          }
+          if (window.require) {
+            ipc.send('web_outLogin', '')
+          }
+
+        })
+        .catch(res => {
+          console.error("退出请求失败");
+          localStorage.removeItem("authorization");
+          this.$router.push("/message_login");
+        });
+    },
+  }
 }
 </script>
 
@@ -100,6 +131,7 @@ export default {
           justify-content: center;
           background: $colorBgSiderBar;
           transition: all .2s;
+
           img {
             width: 30px;
             height: 30px;
@@ -111,13 +143,16 @@ export default {
             background: $colorTheme;
             color: transparent;
             width: 5px;
-            img {display: none;}
+
+            img {
+              display: none;
+            }
           }
 
         }
       }
 
-      .nav-item.router-link-active{
+      .nav-item.router-link-active {
         .nav-item_icon {
           background: $colorTheme;
         }
