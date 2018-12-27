@@ -38,21 +38,18 @@ export default {
     };
   },
   created() {
-    
     console.log(this.item.options.type);
 
     this.upData();
   },
   methods: {
     upData(from) {
-      
       let config = this.item.options.getData;
       if (!config || !config.type) {
         console.error(this.item.text + "没有配制正确！");
         return;
       }
       if (config.type === 2) {
-        
       }
       let tempData = getConfigModelDatas(
         config,
@@ -89,7 +86,7 @@ export default {
 
 <style lang='scss' scoped>
 .bgwight {
-  margin-top: 14px;
+  margin-bottom: 24px;
   background: #fff;
   //圆角 阴影
   // border-radius: 20px;

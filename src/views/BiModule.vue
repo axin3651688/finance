@@ -19,6 +19,7 @@
         :lg="item.weight"
         :sm="item.weight*2"
         :xs="item.weight*4"
+        :style="{'padding-top':item.class_top ? item.class:'24px'}"
       >
         <bi-item
           :item.sync="item"
@@ -47,8 +48,11 @@
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
-        <el-row v-if="item.layout && item.layout.xtype === 'column'" :gutter="24">
-          <!--说明是有item.items孩子的-->
+        <el-row
+          v-if="item.layout && item.layout.xtype === 'column'"
+          :gutter="24"
+          :style="{'padding-right':item.class_pr ? item.class:'24px'}"
+        >
           <el-col
             v-for="(item1,index1) in item.children"
             v-bind:key="item1.id"
@@ -151,14 +155,13 @@ export default {
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
     //
-    
+
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
   },
 
   mounted() {
-     
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -175,7 +178,6 @@ export default {
     year(newyear) {
       this.changeYearBefore(newyear);
       this.updateView("year");
-      
     },
 
     month(newmonth) {
@@ -184,7 +186,7 @@ export default {
       console.log("改变", newmonth);
     },
     company(newId) {
-       this.changeCompanyBefore(newId);
+      this.changeCompanyBefore(newId);
       console.log("改变", newId);
       this.updateView("company");
     }
@@ -192,39 +194,39 @@ export default {
 
   methods: {
     ...mapActions(["GetSideMid", "ShowDims"]),
-     /**
-      * 更新模块之前调用的方法
-      */
-    changeMonduleBefore(){},
-     /**
-      * 更新年之前调用的方法
-      */
-    changeYearBefore(){},
-     /**
-      * 更新月之前调用的方法
-      */
-    changeMonthBefore(){},
+    /**
+     * 更新模块之前调用的方法
+     */
+    changeMonduleBefore() {},
+    /**
+     * 更新年之前调用的方法
+     */
+    changeYearBefore() {},
+    /**
+     * 更新月之前调用的方法
+     */
+    changeMonthBefore() {},
 
-     /**
-      * 更新公司之前调用的方法
-      */
-    changeCompanyBefore(){},
+    /**
+     * 更新公司之前调用的方法
+     */
+    changeCompanyBefore() {},
     /**
      * 设置item是否隐藏或显示
      */
     showSet(items) {
-     // let flag = true;
-    // 
+      // let flag = true;
+      //
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
           item.show = item.showFun(this.$store);
-        }else{
-            item.show = true;
+        } else {
+          item.show = true;
         }
         let cc = item.children;
-        if(cc && cc.length > 0){
-            this.showSet(cc);
+        if (cc && cc.length > 0) {
+          this.showSet(cc);
         }
         // if (item.show == true && flag) {
         //   item.tabIndex = "0";
@@ -236,7 +238,7 @@ export default {
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
-     // 
+      //
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -253,7 +255,7 @@ export default {
         document.title = bean.text;
       }
       //showDims控制顶部导航栏的显示及隐藏
-      // 
+      //
       // console.log(bean.showDims);
 
       if (bean.hasOwnProperty("showDims")) {
@@ -295,7 +297,7 @@ export default {
      */
     loadRemoteSource(api) {
       this.activeTabName = "0";
-    // api = "cnbi/json/source/ts.json";
+      // api = "cnbi/json/source/ts.json";
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -313,7 +315,7 @@ export default {
       }
 
       findDesignSource(api).then(res => {
-        // 
+        //
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -356,8 +358,8 @@ export default {
     getModuleParams(item, changeDim) {
       let config = item.config,
         needDims = config.needDims;
-      if(!needDims){
-        return ;
+      if (!needDims) {
+        return;
       }
       let ns = needDims.filter(dim => dim === changeDim);
       if (!ns || ns.length == 0) {
@@ -477,11 +479,11 @@ export default {
         console.info(datas);
         $cc.forEach(children => {
           if (children.item) {
-           // console.info(children.item + "---setChlidComponent---");
+            // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
             if (cc && children.hasConfig) {
             } else {
-            //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
+              //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
               children.$set(children.item, "datas", datas);
               children.setItems(children.item, true);
             }
@@ -498,11 +500,11 @@ export default {
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
       if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
-        // 
+        //
         datas = item.__queryDataAfter(datas);
       }
 
-      // 
+      //
       //在此加了查询数据之后的拦截处理
       else if (
         item.queryDataAfter &&
@@ -512,7 +514,7 @@ export default {
         //
         datas = item.queryDataAfter(datas);
       }
-      // 
+      //
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
@@ -523,17 +525,16 @@ export default {
       }
     },
     __queryDataAfter(datas) {
-      //  
+      //
       return datas;
     },
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-     // 
+      //
       findThirdPartData(params)
         .then(res => {
-          
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
@@ -566,25 +567,13 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.el-col {
-  border-radius: 4px;
+.majun_right {
+  // 指标分析右边距离
+  padding-right: 24px;
 }
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
+.majun_top {
+  // 风险分析顶部距离
+  padding-top: 24px;
 }
 </style>
 
