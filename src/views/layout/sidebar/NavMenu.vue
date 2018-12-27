@@ -56,7 +56,7 @@ export default {
     },
     shownavMenu(e) {
       //天津食品的管理驾驶舱的跳转，现在是跳转不了的,id=336。
-      if(e.id=="336"){
+      if (e.id == "336") {
         if (this.device === "mobile") {
           this.ToggleSideBar({ opend: false });
         }
@@ -65,9 +65,9 @@ export default {
           : this.$router.push("/jsnk/module");
         // this.$router.push({ path: "/module", name: "", params: {} });
         modeHandle(e);
-      } else 
+      }
       //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
-      if (e.level === 2) {
+      else if (e.level === 2) {
         console.log(e);
         // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
         if (e.url == "/cnbi/json/source/tjsp/dash.json") {

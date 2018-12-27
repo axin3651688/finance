@@ -42,12 +42,12 @@ export default {
               align:'center'
           }
         },
-				tooltip : {
-          formatter: "{a}{b} : {c}% <br/>"+"本期累计:"+this.item.bnlj+"<br/> 本年目标:"+this.item.bnmb
+				tooltip : {//"{a}{b} : {c}% <br/>"+"本期累计:"+this.item.bnlj+"<br/> 本年目标:"+this.item.bnmb
+          formatter: ""
         },
         series: [
           {
-            name: '利润总额目标完成率',
+            name: '目标完成率',
             type: 'gauge',
             min:0,
             max:200,//设置最大刻度
@@ -101,22 +101,7 @@ export default {
     }
   },
   created() {
-    debugger
-    let me = this;
-    let GaData = this.item.datas;
-    let GItemScode = this.item.GItemScode;
-    if(GItemScode&&GaData&&GaData.length>0){
-      GaData.forEach(element => {
-        if(element.id==GItemScode){
-          me.item.bnlj = element.bnlj;
-          me.item.bnmb = element.bnmb;
-        }
-      });
-    }
-    
-  },
-  mounted(){
-    // debugger;
+    // debugger
     // let me = this;
     // let GaData = this.item.datas;
     // let GItemScode = this.item.GItemScode;
@@ -128,15 +113,21 @@ export default {
     //     }
     //   });
     // }
+    this.upData(this.item);
+    
+  },
+  mounted(){
+  },
+  methods:{
+     upData(item) {
+      if (item) {
+        this.item = item;
+      }
+      debugger;
+      this.receive.series[0].data[0].value = item.options.datas;//.toLocaleString();
+      let tempData = item.datas;//bnlj bnmb
+      this.receive.tooltip.formatter =  "本期累计:"+(tempData.bnmb||0)+"<br/> 本年目标:"+(tempData.bnlj||0);
+    }
   }
-  //   watch: {
-  //   item: {
-  //     handler: function() {
-  //       this.options.series[0].data = this.item.options.datas
-  //         ? this.item.options.datas.slice(1, 2)[0]
-  //         : [];
-  //     }
-  //   }
-  // },
 };
 </script>

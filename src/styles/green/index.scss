@@ -44,11 +44,11 @@
 
     .el-menu-item {
         .el-submenu {
-            padding-left: 20px !important;
+            // padding-left: 20px;
 
             &.is-active {
                 .eachItem {
-                    padding: 10px 20px;
+                    // padding: 10px -20px;
                     background: rgba(15, 109, 217, 1);
                     box-shadow: 0px 3px 10px rgba(15, 109, 217, 0.3);
                     border-radius: 6px;

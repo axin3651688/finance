@@ -50,6 +50,7 @@ export default {
         return;
       }
       if (config.type === 2) {
+        debugger;
       }
       let tempData = getConfigModelDatas(
         config,

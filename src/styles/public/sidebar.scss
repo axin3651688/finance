@@ -134,8 +134,14 @@
       .el-menu--collapse {
         overflow: hidden;
 
+        .el-menu-item {
+          margin-left: 0px;
+        }
+
         .el-submenu {
           padding-left: 0;
+
+
 
           &>.el-submenu__title {
             &>span {

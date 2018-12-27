@@ -55,7 +55,6 @@
    },
    "changeCompanyBefore":function(params){
        debugger;
-       
    },
     "layout": {
         "xtype": "tab"
@@ -64,9 +63,11 @@
     "__queryDataAfter":function(data){
                debugger;
                let me = this;
-               if(me.config.rows&&me.config.rows.length==0){
-                   me.config.rows = data;
+               if(me.config.rows && me.config.rows.length==0){
+                  // me.config.rows = data;
                }
+              // me.config.datas = data;
+               //var object = {a:0,b:{a:0}},source = {c:{e:2},b:{a:0,cc:54,mj:54}};Cnbi.applyDeepIf(object,source);console.info(object)
                return data;
    },
    
@@ -278,7 +279,7 @@
                debugger
                let me = this;
                if(me.config.rows&&me.config.rows.length==0){
-                   me.config.rows = data;
+                  // me.config.rows = data;
                }
                return data;
            },
@@ -393,7 +394,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                       //me.config.rows = data;
                    }
                    return data;
                },
@@ -498,7 +499,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                       //me.config.rows = data;
                    }
                    return data;
                },
@@ -612,7 +613,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                     //  me.config.rows = data;
                    }
                    return data;
                },
@@ -893,7 +894,7 @@
                    let rows = me.config.rows;
                    if(rows&&rows.length == 0){
                        
-                       me.config.rows = data;
+                      // me.config.rows = data;
                    }
                    return data;
                },
@@ -1013,7 +1014,7 @@
                    let rows = me.config.rows;
                    if(rows&&rows.length == 0){
                        
-                       me.config.rows = data;
+                     //  me.config.rows = data;
                    }
                    return data;
                },

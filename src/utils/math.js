@@ -220,6 +220,9 @@
          console.info(cell + "==>" + datas[cell]);
          return datas[cell];
      }
+     if(!datas || datas.length == 0){
+         return 0;
+     }
      let val = fomularParser(datas, cell, rows);
      return val;
 
@@ -233,9 +236,14 @@
  const getConfigModelDatas = (config, datas, rows, cols) => {
      debugger;
      if (config.type === 1) {//单值
+        debugger;
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
+     //当是动态行，没有配制rows的时候，就把datas给rows
+     if(configRows.length == 0){
+        configRows = datas;
+     }
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
             return getReverserDatas(config, datas, cols,rows);

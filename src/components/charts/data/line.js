@@ -1,7 +1,7 @@
 export default function line(item) {
     return {
         title: {
-            text: this.item.text
+            text: "this.item.text"
         },
         tooltip: {
             trigger: "axis"

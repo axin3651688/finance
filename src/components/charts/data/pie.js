@@ -1,7 +1,7 @@
 export default function pie() {
     return {
         title: {
-            text: "测试",
+            text: "this.item.text",
             x: "center"
         },
         tooltip: {
@@ -12,22 +12,14 @@ export default function pie() {
             orient: "vertical",
             left: "5%",
             top: "10%",
-            data: ["中国", "美国"]
+            data: []
         },
         series: [{
-            name: "测试",
+            name: "风险级别",
             type: "pie",
             radius: "55%",
             center: ["50%", "60%"],
-            data: [{
-                    name: "中国",
-                    value: "100"
-                },
-                {
-                    name: "美国",
-                    value: "80"
-                }
-            ],
+            data: [],
             itemStyle: {
                 emphasis: {
                     shadowBlur: 10,

@@ -183,49 +183,6 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -233,9 +190,7 @@
                             "alignWithLabel": true
                         }
                     }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
+
                     "series": [{
                         "type": "bar",
                         "stack": "vistors",
@@ -300,49 +255,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -413,49 +326,6 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -518,49 +388,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -831,49 +659,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -935,49 +721,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -1039,49 +783,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -1143,49 +845,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -1437,42 +1097,7 @@
 
                     }
                 },
-
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text"
-                    },
-                    "tooltip": {
-                        "trigger": "axis"
-                    },
-                    "legend": {
-                        "default": {
-                            "data": ["好", "坏"]
-                        }
-                    },
-                    "grid": {
-                        "default": {
-                            "left": "3%",
-                            "right": "4%",
-                            "bottom": "3%",
-                            "containLabel": true
-                        }
-                    },
-                    "toolbox": {
-                        "feature": {
-                            "saveAsImage": {}
-                        }
-                    },
-                    "xAxis": {
-                        "default": {
-                            "type": "category",
-                            "boundaryGap": false,
-                            "data": []
-                        }
-                    },
-                    "yAxis": {
-                        "type": "value"
-                    },
                     "series": [{
                             "name": "好",
                             "type": "line",

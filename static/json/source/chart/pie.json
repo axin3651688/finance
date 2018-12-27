@@ -71,15 +71,7 @@
                 }
             },
             "chartOptions": {
-                "dd": "this.item.text",
-                "title": {
-                    "text": "this.item.text",
-                    "x": "center"
-                },
-                "tooltip": {
-                    "trigger": "item",
-                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
-                },
+
                 "series": [{
                     "name": "风险级别",
                     "type": "pie",
@@ -93,13 +85,7 @@
                             "shadowColor": "rgba(0, 0, 0, 0.5)"
                         }
                     }
-                }],
-                "legend": {
-                    "orient": "vertical",
-                    "left": "5%",
-                    "top": "10%",
-                    "data": []
-                }
+                }]
             }
         },
         {
@@ -161,16 +147,6 @@
                 }
             },
             "chartOptions": {
-                "dd": "this.item.text",
-                "title": {
-                    "text": "this.item.text",
-                    "x": "center"
-                },
-                "tooltip": {
-                    "trigger": "item",
-                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
-                },
-
                 "series": [{
                     "name": "风险类别",
                     "type": "pie",
@@ -184,13 +160,7 @@
                             "shadowColor": "rgba(0, 0, 0, 0.5)"
                         }
                     }
-                }],
-                "legend": {
-                    "orient": "vertical",
-                    "left": "5%",
-                    "top": "10%",
-                    "data": []
-                }
+                }]
             }
         }
 
