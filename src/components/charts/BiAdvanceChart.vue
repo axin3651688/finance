@@ -42,9 +42,6 @@ export default {
   mounted() {
     debugger;
     this.upData(this.item);
-    // if (this.item.options.getData.type == 3) {
-
-    // }
   },
   methods: {
     /** 
@@ -86,11 +83,14 @@ export default {
     },
     upData(item) {
       let chartType = item.options.getData.type;
-
+      debugger;
       if (chartType === 1) {
         /**
          * 就是一个值数据的图形  dataRange   value
          */
+        this.chartOptions.series[0].data = [
+          { value: item.options.datas, name: "完成率" }
+        ];
       } else if (chartType === 2) {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1

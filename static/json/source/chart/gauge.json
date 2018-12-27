@@ -106,7 +106,7 @@
                         "formatter": "{value}%"
                     },
                     "data": [{
-                        "value": "this.item.options.datas",
+                        "value": "",
                         "name": "完成率"
                     }]
                 }]
