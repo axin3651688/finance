@@ -48,13 +48,14 @@
    
    >
     <template slot-scope="scope">
-      
-      <div v-if="col.render">
-       {{ getCellValues(tableData.datas,col,scope.row,tableData.config.rows,1)}}
-      </div>
-      <span v-else>
-            {{ getCellValues(tableData.datas,col,scope.row,tableData.config.rows)}}
-      </span>
+      <el-tooltip
+        class="item"
+        effect="light"
+        :content="getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)"
+        placement="right"
+      >
+        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col.id,scope.row,tableData.config.rows)}}</span>
+      </el-tooltip>
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  date类型的数据-->
@@ -72,6 +73,7 @@
       </el-tooltip>
     </template>
   </el-table-column>
+
   <!-- <el-table-column v-else-if="!col.type" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
@@ -114,8 +116,8 @@ export default {
     /**
      * 获取单元格数据
      */
-    getCellValues(datas, col, row, rows,type) {
-      let colId = col.id;
+    getCellValues(datas, colId, row, rows) {
+        // debugger;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {
         return "";
@@ -124,11 +126,6 @@ export default {
         rowId = row.id_; //并列行的
       }
       let value = Math.getCellValue(datas, colId, rowId, rows);
-      // if(type && col.render && typeof(col.render) == "function"){
-      //     let bbb =   col.render(value,col,row,datas);
-      //     debugger;
-      //     return bbb;
-      // }
       if (!value) {
         return "--";
       }

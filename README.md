@@ -237,7 +237,8 @@ BiText
             config:`config`  //为可选项，当没有数据的时候，会从父亲里取
             rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选
             groupConfig: { idProperty: "group",textProperty: "groupName"}//可选
-            cellStyle:"单元格样式"
+            cellStyle:"单元格样式",
+            onCellClick:"单元格点击事件"
             options:{}
         },
         {
