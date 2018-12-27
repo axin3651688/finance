@@ -135,7 +135,6 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row,this);
       }

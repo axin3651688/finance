@@ -476,7 +476,6 @@ export default {
       let $cc = this.$refs.mychild;
       if ($cc) {
         let ii = 0;
-        console.info(datas);
         $cc.forEach(children => {
           if (children.item) {
             // console.info(children.item + "---setChlidComponent---");
