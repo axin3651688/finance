@@ -244,6 +244,10 @@
      if(configRows.length == 0){
         configRows = datas;
      }
+     //当动态加载行，没有配制rows的时候，就把datas给rows
+     if(rows.length == 0){
+        rows = datas;
+     }
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
             return getReverserDatas(config, datas, cols,rows);

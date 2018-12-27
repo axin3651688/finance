@@ -59,6 +59,7 @@ export default {
   },
 
   created() {
+    debugger
     this.upData(this.item);
     //debugger;
     //this.getTableDataParams();

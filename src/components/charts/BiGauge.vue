@@ -124,9 +124,22 @@ export default {
         this.item = item;
       }
       debugger;
+      let companyId = this.$store.getters.treeInfo.id;
+      if(companyId == "121"){
+        this.receive.series[0].max = 125;
+      }else {
+        this.receive.series[0].max = 200;
+      }
       this.receive.series[0].data[0].value = item.options.datas;//.toLocaleString();
-      let tempData = item.datas;//bnlj bnmb
-      this.receive.tooltip.formatter =  "本期累计:"+(tempData.bnmb||0)+"<br/> 本年目标:"+(tempData.bnlj||0);
+      let GItemScoded = item.GItemScode;
+      let tempData = {};
+      if(GItemScoded){
+        tempData = item.datas.filter(ele => {
+          return ele.id == GItemScoded;
+        });//bnlj bnmb
+      }
+      
+      this.receive.tooltip.formatter =  "本期累计:"+(tempData[0].bnmb||0).toLocaleString()+"<br/> 本年目标:"+(tempData[0].bnlj||0).toLocaleString();
     }
   }
 };
