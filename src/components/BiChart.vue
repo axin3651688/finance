@@ -89,10 +89,10 @@ export default {
 
 <style lang='scss' scoped>
 .bgwight {
-  margin-top: 24px;
+  margin-top: 14px;
   background: #fff;
   //圆角 阴影
-  border-radius: 20px;
+  // border-radius: 20px;
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 </style>
