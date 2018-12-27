@@ -101,6 +101,16 @@ export default {
     receiverId(val) {
       alert('watch receiverId');
       this.findSingleMsg();
+    },
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.singleMsgList.push(item);
+      this.$nextTick(() => { // 把聊天窗口滚动到最底部
+        this.chatWindowScrollToBottom();
+      });
     }
   },
   methods: {
@@ -190,6 +200,10 @@ export default {
   mounted() {
     // ajax请求获取单聊消息内容
     this.findSingleMsg();
+
+    this.$nextTick(() => {
+      this.chatWindowScrollToBottom()
+    });
 
     // 当点击的不是表情，则隐藏表情弹框
     document.addEventListener('click', e => {

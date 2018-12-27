@@ -8,7 +8,7 @@
       <div class="send-time">
         <!--<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>-->
         <span class="time">{{data.sendTime| formatTime}}</span>
-        <div class="status"></div>
+        <div class="status" v-if="data.state !== 2"></div>
       </div>
     </div>
     <div class="message-content">
@@ -94,10 +94,10 @@ export default {
 
 <style lang="scss">
   /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "../styles/emotion_sprites.scss";
+  @import "@ms/emotion_sprites.scss";
 </style>
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/variables.scss";
 
   .message-box {
     padding: 10px 20px;

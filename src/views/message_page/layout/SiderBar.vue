@@ -2,7 +2,7 @@
   <div class="SiderBar">
     <div class="siderbar-top">
       <div class="login-info">
-        <img src="" alt="">
+        <img :src="user.user.avatar">
       </div>
     </div>
     <div class="siderbar-bottom">
@@ -45,6 +45,9 @@ import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "SiderBar",
+  computed: {
+    ...mapGetters(['user'])
+  },
   width: {
     $route: {
       handler: function (val, oldVal) {

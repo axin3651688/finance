@@ -68,7 +68,6 @@ export default {
       avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [], // 好友申请消息列表
-      // showMessageList: [] // 好友申请消息列表筛选过的
     }
   },
   computed: {
