@@ -29,16 +29,17 @@
 
 
     <!-- sjz 分页功能 -->
-  <el-pagination v-if="item.pagination"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[1, 2, 5, 10]"
-        :page-size="pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="item.datas.length">
-  </el-pagination>
-</div>   
+    <el-pagination
+      v-if="item.pagination"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[1, 2, 5, 10]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="item.datas.length"
+    ></el-pagination>
+  </div>
 </template>
 <script>
 //   :span-method="rowSpanAndColSpanHandler"
@@ -55,15 +56,13 @@ export default {
   props: ["item"],
   data() {
     return {
-      a:'',
-      b:'',
       dialogVisible: false,
       currentPage:1,
       pagesize:1,
       id: 0,
       text: "",
       rows: [],
-     // spanArr:[],////zb 下属企业合并行时用到
+      // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
         idProperty: "group",
@@ -73,17 +72,17 @@ export default {
   },
 
   created() {
-    this.upData(this.item)
+    this.upData(this.item);
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
   },
   mounted() {
-     //zb 下属企业合并行
-     //if(this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")this.getSpanArr(this.item.datas);
+    //zb 下属企业合并行
+    //if(this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")this.getSpanArr(this.item.datas);
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
-   // this.getTableDataParams();
+    // this.getTableDataParams();
   },
 
   methods: {
@@ -95,12 +94,12 @@ export default {
           .catch(_ => {});
       },
     //pagesize改变时触发 ---- 分页功能
-    handleSizeChange: function (size) {
-        this.pagesize = size;
+    handleSizeChange: function(size) {
+      this.pagesize = size;
     },
     //currentPage改变时会触发 --- 分页功能
-    handleCurrentChange: function(currentPage){
-        this.currentPage = currentPage;
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
     },
     getDatas(item) {
       let rows = item.config.rows;
@@ -108,7 +107,7 @@ export default {
         return rows;
       }
 
- return item.datas;
+      return item.datas;
     },
 
     upData(item) {
@@ -142,17 +141,16 @@ export default {
      */
 
     // 表格的高度 12.26
-      rowClass({ row, rowIndex }) {
+    rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
 
-
     cellStyle(row) {
-        if(this.item.cellStyle && typeof(this.item.cellStyle) == "function"){
-            return this.item.cellStyle(row);
-        }
+      if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
+        return this.item.cellStyle(row);
+      }
       let css = "padding: 4px 0;";
-      if(!row.column.property){
+      if (!row.column.property) {
         return css;
       }
       if (row.column.property.indexOf("text") != -1) {
@@ -164,9 +162,9 @@ export default {
         let level = record._level || record.level || 1;
         let textIndent =
           level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
-        css =  css + "font-weight:bold;" + textIndent + drill;
-       // console.info(record.text+"==>css==>"+css);
-        return css
+        css = css + "font-weight:bold;" + textIndent + drill;
+        // console.info(record.text+"==>css==>"+css);
+        return css;
       } else {
         return css;
       }
@@ -242,7 +240,7 @@ export default {
     //         if (data[i].dim_company === data[i - 1].dim_company) {
     //             this.spanArr[this.pos] += 1;
     //             this.spanArr.push(0);
-    //           } 
+    //           }
     //           else {
     //             this.spanArr.push(1);
     //             this.pos = i;
@@ -250,15 +248,16 @@ export default {
     //         }
     //       }
     //  },
-    rowSpanAndColSpanHandler({row, column, rowIndex, columnIndex}) {//合并行
-     
- // let config =  this.groupConfig;
+    rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex }) {
+      //合并行
+
+      // let config =  this.groupConfig;
       // let cells = {rowspan:0,colspan:0};
       // debugger
       // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
       // if(column.rowspan){
       //    let datas = [];//getTableDatas();
-         
+
       //    let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
       //    cells.rowspan = rowspan;
       // }
@@ -266,13 +265,20 @@ export default {
       // if(row.colspan){
       //     cells.colspan = row.colspan;
       // }
-      // // Todo colspan from where...? 
+      // // Todo colspan from where...?
       // return cells;
 
       //具体方法请参照elementUi-Table的配法
-      if(this.item &&  this.item.rowSpanAndColSpanHandler && typeof(rowSpanAndColSpanHandler) == "function"){
-          return this.item.rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex },this);
-       }
+      if (
+        this.item &&
+        this.item.rowSpanAndColSpanHandler &&
+        typeof rowSpanAndColSpanHandler == "function"
+      ) {
+        return this.item.rowSpanAndColSpanHandler(
+          { row, column, rowIndex, columnIndex },
+          this
+        );
+      }
       // let config = this.groupConfig;
       // let cells = { rowspan: 0, colspan: 0 };
       // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
@@ -288,7 +294,7 @@ export default {
       // }
       // // Todo colspan from where...?
       // return cells;
-    },
+    }
     // async getList() {
     //   let { data } = await this.axios.get("/api/cube/find_dim2/company/0/1/");
     //   console.log(data);
@@ -296,94 +302,94 @@ export default {
     //   return data;
     // },
 
-  //   getTableDataParams(rows) {
-  //     //   var ddd =  this.getList();
-  //     //   console.info(ddd);
-  //     // sql:"select * from dw_dimcompany"
-  //     // if(rows && rows.length > 0){
+    //   getTableDataParams(rows) {
+    //     //   var ddd =  this.getList();
+    //     //   console.info(ddd);
+    //     // sql:"select * from dw_dimcompany"
+    //     // if(rows && rows.length > 0){
 
-  //     //  }
-  //     //  return ;
+    //     //  }
+    //     //  return ;
 
-  //     //debugger;
-  //     // this.axios.get("/api/cube/find_dim2/company/0/1/").then(res =>{
-  //     // debugger;
-  //     // });
-  //     //    debugger;
-  //     // 1111122	应收账款
-  //     //1111123	预付款项
-  //     // 1111221	其他应收款
-  //     debugger;
-  //     let url = "/get/cube/find/";
-  //     var params = {
-  //       cubeId: this.cubeId.id,
-  //       subject: "0001",
-  //       fact: "A,B,C,D",
-  //       //periodCount:2,
-  //       dims: {
-  //         period: "201505,201605",
-  //         // company:"1,1500",
-  //         itempoint: "1111122,1111123,1111221"
-  //       },
-  //       dimName: "itempoint", //行项目的Id
-  //       // sort:"B",
-  //       //    unionDimName:"company", //行项目列名为：factId$unionDimId
-  //       // groupBy:"id",
-  //       //   showDims:"company",  //company_1
-  //       //"helpDims":"111",
-  //       order: "desc" //direction
-  //     };
-  //     params = {
-  //       cubeId: this.cubeId.id,
-  //       subjects: [
-  //         {
-  //           id: "1016",
-  //           fact: "val_B",
-  //           dims: {
-  //             indicator: "236,19",
-  //             fact: "B"
-  //           },
-  //           //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
-  // dimName: "indicator"
-  //         },
-  //         {
-  //           id: "0001",
-  //           fact: "B",
-  //           dims: {
-  //             itempoint: "1111122,1111123,1111221"
-  //           },
-  //           dimName: "itempoint"
-  //         },
-  //         {
-  //           id: "0002",
-  //           fact: "B",
-  //           dims: {
-  //             itemperiod: "1416001,1403100"
-  //           },
-  //           dimName: "itemperiod"
-  //         }
-  //       ],
-  //       dims: {
-  //         period: "201505,201605",
-  //         company: "1"
-  //       },
-  //       periodCount: 2
-  //     };
-  //     params.subjects = JSON.stringify(params.subjects);
-  //     this.axios({
-  //       method: "post",
-  //       url: url,
-  //       params: params
-  //     })
-  //       .then(res => {
-  //         debugger;
-  //         console.info(res);
-  //       })
-  //       .catch(res => {
-  //         debugger;
-  //         console.info(res);
-  //       });
-  //   }
+    //     //debugger;
+    //     // this.axios.get("/api/cube/find_dim2/company/0/1/").then(res =>{
+    //     // debugger;
+    //     // });
+    //     //    debugger;
+    //     // 1111122	应收账款
+    //     //1111123	预付款项
+    //     // 1111221	其他应收款
+    //     debugger;
+    //     let url = "/get/cube/find/";
+    //     var params = {
+    //       cubeId: this.cubeId.id,
+    //       subject: "0001",
+    //       fact: "A,B,C,D",
+    //       //periodCount:2,
+    //       dims: {
+    //         period: "201505,201605",
+    //         // company:"1,1500",
+    //         itempoint: "1111122,1111123,1111221"
+    //       },
+    //       dimName: "itempoint", //行项目的Id
+    //       // sort:"B",
+    //       //    unionDimName:"company", //行项目列名为：factId$unionDimId
+    //       // groupBy:"id",
+    //       //   showDims:"company",  //company_1
+    //       //"helpDims":"111",
+    //       order: "desc" //direction
+    //     };
+    //     params = {
+    //       cubeId: this.cubeId.id,
+    //       subjects: [
+    //         {
+    //           id: "1016",
+    //           fact: "val_B",
+    //           dims: {
+    //             indicator: "236,19",
+    //             fact: "B"
+    //           },
+    //           //   m:"0 as A,val as B, 0 as C",//辅助性度量设置
+    // dimName: "indicator"
+    //         },
+    //         {
+    //           id: "0001",
+    //           fact: "B",
+    //           dims: {
+    //             itempoint: "1111122,1111123,1111221"
+    //           },
+    //           dimName: "itempoint"
+    //         },
+    //         {
+    //           id: "0002",
+    //           fact: "B",
+    //           dims: {
+    //             itemperiod: "1416001,1403100"
+    //           },
+    //           dimName: "itemperiod"
+    //         }
+    //       ],
+    //       dims: {
+    //         period: "201505,201605",
+    //         company: "1"
+    //       },
+    //       periodCount: 2
+    //     };
+    //     params.subjects = JSON.stringify(params.subjects);
+    //     this.axios({
+    //       method: "post",
+    //       url: url,
+    //       params: params
+    //     })
+    //       .then(res => {
+    //         debugger;
+    //         console.info(res);
+    //       })
+    //       .catch(res => {
+    //         debugger;
+    //         console.info(res);
+    //       });
+    //   }
   }
 };
 </script>
@@ -393,7 +399,7 @@ export default {
   padding: 5px 0;
 }
 /* 横向滚动条 12.26 */
-.el-scrollbar__bar.is-horizontal>div{
+.el-scrollbar__bar.is-horizontal > div {
   height: 0;
 }
 /* 数字靠右 */

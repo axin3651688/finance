@@ -63,6 +63,8 @@
       <!--底部阴影-->
       <div class="inset-shadow"></div>
     </div>
+
+    <!--聊天编辑窗口-->
     <div class="bottom">
       <div class="chat-tool">
         <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
@@ -125,11 +127,12 @@
         <el-input
           placeholder="群名称"
           v-model="groupInfo.text"
+          ref="groupName"
           clearable>
         </el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="submitUpload">保 存</el-button>
+                <el-button type="primary" size="small" @click="clickEditGroup">保 存</el-button>
                 <el-button size="small" @click="showGroupSettingDialog = false">取 消</el-button>
               </span>
     </el-dialog>
@@ -181,6 +184,8 @@ export default {
   },
   data() {
     return {
+      hdUrl: '',
+      oldGroupName:'',
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
       defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
@@ -189,7 +194,6 @@ export default {
       groupMembers: [],
       groupMsgList: [],
       showGroupMembers: false, // 是否显示群成员组件
-      groupName: '群名称', // 群设置》群名称
       showGroupQuitDialog: false, // 退出群弹出
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
@@ -214,24 +218,54 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      // debugger;
       console.log(file);
       let fd = new FormData();
       fd.append('file', file);
       fd.append('userId', this.loginUserId);
       fd.append('size', file.size);
       this.imgfd = fd;
+      this.submitUpload(fd);
       return true
     },
 
-    submitUpload() {
-      let fd = this.imgfd;
+    submitUpload(fd) {
+      let _this = this;
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
           console.log('上传群头像res', res);
-          this.showGroupSettingDialog = false
+          if (res.data.code === 200) {
+            _this.hdUrl = res.data.data.hdUrl // 传递返回的图片地址
+          }
         });
       }
+    },
+
+    // todo 3设置群资料,修改图片需要先上传头像
+    clickEditGroup() {
+      let newGroupName = this.$refs.groupName.value;
+      if (newGroupName === this.messageStore.groupInfo.info.text && !this.imgfd) {
+        this.showGroupSettingDialog = false;
+        return; // 如果没有图片和群名字都没修改,则不往下执行
+      }
+      let params = {
+        // note: '群描述',
+        // avatar: hdUrl, // 上传头像的地址
+        id: this.groupId, // 群id
+        text: newGroupName,
+        type: 0, // 1可以被搜索到
+        userId: this.loginUserId
+      };
+      if (this.hdUrl) params['avatar'] = this.hdUrl; // 如果上传了群头像才设置头像
+      console.log('params', params);
+      EDIT_GROUP(params).then(res => {
+        console.log('设置群资料', res.data.data);
+        if (res.data.code === 200) {
+          // debugger
+        }
+        // debugger
+      }).catch(err => {
+        console.log('设置群资料', err)
+      })
     },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
@@ -375,33 +409,13 @@ export default {
         size: 20
       };
       findGroupMsg(data).then(res => {
-        debugger;
+        // debugger;
         console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {
           this.groupMsgList = res.data.data.data.reverse()
         }
       }).catch(err => {
         console.log('群消息', err)
-      })
-    },
-
-    // todo 3设置群资料,修改图片需要先上传头像
-    clickEditGroup() {
-      let params = {
-        avatar: 'avatar', // 上传头像的地址
-        id: 4, // 群id
-        note: '群描述',
-        text: '群名称',
-        type: 0, // 1可以被搜索到
-        userId: 225
-      };
-      EDIT_GROUP(params).then(res => {
-        console.log('设置群资料', res.data.data);
-        if (res.data.code === 200) {
-
-        }
-      }).catch(err => {
-        console.log('设置群资料', err)
       })
     },
 

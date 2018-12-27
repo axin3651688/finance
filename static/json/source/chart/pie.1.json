@@ -85,7 +85,7 @@
                     "type": "pie",
                     "radius": "55%",
                     "center": ["50%", "60%"],
-                    "data": [],
+                    "data": "this.item.options.datas",
                     "itemStyle": {
                         "emphasis": {
                             "shadowBlur": 10,
@@ -98,7 +98,7 @@
                     "orient": "vertical",
                     "left": "5%",
                     "top": "10%",
-                    "data": []
+                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
                 }
             }
         },
@@ -176,7 +176,7 @@
                     "type": "pie",
                     "radius": "55%",
                     "center": ["50%", "60%"],
-                    "data": [],
+                    "data": "this.item.options.datas",
                     "itemStyle": {
                         "emphasis": {
                             "shadowBlur": 10,
@@ -189,7 +189,7 @@
                     "orient": "vertical",
                     "left": "5%",
                     "top": "10%",
-                    "data": []
+                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
                 }
             }
         }
