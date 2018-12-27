@@ -13,14 +13,17 @@ export default {
         options: {
           type: "gauge",
           datas: "0.88"
-        }
-      }
+        } 
+      },
+      bnlj:0,
+      bnmb:0
     }
+    
   },
-  created() {
-    //debugger;
-    //console.log(this.item);
-  },
+  // created() {
+  //   //debugger;
+  //   //console.log(this.item);
+  // },
   data() {
     return {
       receive: {
@@ -40,7 +43,7 @@ export default {
           }
         },
 				tooltip : {
-          formatter: "{a}{b} : {c}%"
+          formatter: "{a}{b} : {c}% <br/>"+"本期累计:"+this.item.bnlj+"<br/> 本年目标:"+this.item.bnmb
         },
         series: [
           {
@@ -99,8 +102,33 @@ export default {
   },
   created() {
     debugger
-    this.item.options;
+    let me = this;
+    let GaData = this.item.datas;
+    let GItemScode = this.item.GItemScode;
+    if(GItemScode&&GaData&&GaData.length>0){
+      GaData.forEach(element => {
+        if(element.id==GItemScode){
+          me.item.bnlj = element.bnlj;
+          me.item.bnmb = element.bnmb;
+        }
+      });
+    }
+    
   },
+  mounted(){
+    // debugger;
+    // let me = this;
+    // let GaData = this.item.datas;
+    // let GItemScode = this.item.GItemScode;
+    // if(GItemScode&&GaData&&GaData.length>0){
+    //   GaData.forEach(element => {
+    //     if(element.id==GItemScode){
+    //       me.item.bnlj = element.bnlj;
+    //       me.item.bnmb = element.bnmb;
+    //     }
+    //   });
+    // }
+  }
   //   watch: {
   //   item: {
   //     handler: function() {

@@ -63,14 +63,24 @@ export default {
         //   }
         // },
         xAxis: {
-          default: {
-            type: "category",
-            boundaryGap: false,
-            data: []
+          type: "category",
+          boundaryGap: true,
+          data: [],
+          axisLabel : {
+              textStyle: {
+                  fontSize: 10
+                  
+              }
           }
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          axisLabel : {
+              textStyle: {
+                  fontSize: 10
+                  
+              }
+          }
         },
         series: [
           {
