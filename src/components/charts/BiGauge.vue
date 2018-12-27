@@ -82,7 +82,7 @@ export default {
               },
               offsetCenter:[0,20]     // 文字块相对于圆心偏移量
             }, 
-            data: [{value: 10}],
+            data: [{value: this.item.options.datas}],
             markPoint:{						//最新发明，给指针中心加个空心轴
               symbol:'circle',
               symbolSize:5,
@@ -96,7 +96,11 @@ export default {
 			  ]
       }
     }
-  }
+  },
+  created() {
+    debugger
+    this.item.options;
+  },
   //   watch: {
   //   item: {
   //     handler: function() {

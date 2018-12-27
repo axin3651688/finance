@@ -69,7 +69,7 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      // debugger;
+      debugger;
       let options = item.chartOptions;
 
       let defaultOptions = this.getDefautlChartConfigByType();
