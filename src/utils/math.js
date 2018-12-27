@@ -238,7 +238,7 @@
      var configRows = getConfigRows(config.row, rows);
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
-            return getReverserDatas(config, datas, cols,rows);
+            return getReverserDatas(config, datas, cols,configRows);
         }
          return singleSeriesDataParse(config, datas, configRows, cols);
      }

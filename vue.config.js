@@ -39,7 +39,7 @@ let proxyObj = { // 配置跨域
     },
     '/cnbi': {
         // target: 'http://192.168.1.118:8081', //gjx
-        target: 'http://192.168.1.138:8000',
+        target: 'http://192.168.1.118:8081',
         ws: true,
         changOrigin: true,
         pathRewrite: {
