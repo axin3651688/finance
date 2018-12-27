@@ -35,7 +35,7 @@
     ],
     "datas": {},
    "config": {
-       "sql":"SELECT B.SCODE as id,SUM(NVL(FACT_A,0)) AS BQ,SUM(NVL(FACT_B,0)) AS BNLJ, SUM(NVL(FACT_C,0)) AS BNMB,SUM(NVL(SNTQ,0)) AS SNTQ, CASE WHEN SUM(NVL(FACT_C,0))=0 THEN 0 ELSE SUM(NVL(FACT_B,0))/SUM(NVL(FACT_C,0))*100 END WCL FROM( SELECT DIM_ITEMPERIOD ,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B,SUM(NVL(FACT_C,0)) AS FACT_C,0 AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE='10010101' CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD='201701' AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD UNION ALL SELECT DIM_ITEMPERIOD ,0 AS FACT_A,0 AS FACT_B,0 AS FACT_C,SUM(NVL(FACT_B,0)) AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE='10010101' CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD='201801' AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SCODE,B.SNAME",
+       "sql":"SELECT B.SCODE as id,SUM(NVL(FACT_A,0)) AS BQ,SUM(NVL(FACT_B,0)) AS BNLJ, SUM(NVL(FACT_C,0)) AS BNMB,SUM(NVL(SNTQ,0)) AS SNTQ, CASE WHEN SUM(NVL(FACT_C,0))=0 THEN 0 ELSE SUM(NVL(FACT_B,0))/SUM(NVL(FACT_C,0))*100 END WCL FROM( SELECT DIM_ITEMPERIOD , SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B,SUM(NVL(FACT_C,0)) AS FACT_C,0 AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD=:comparePeriod AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD UNION ALL SELECT DIM_ITEMPERIOD ,0 AS FACT_A,0 AS FACT_B,0 AS FACT_C, SUM(NVL(FACT_B,0)) AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD=:period AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SCODE,B.SNAME",
        "_cube": {
            "subject": "0002",
            "cubeId": 4
@@ -47,13 +47,14 @@
        },
        "needDims":["year","month","company"],
        "type": 1,
-       "periodCount":10,
-       "compareType":"0&-1"
+       "generateVar":{
+           "periodCount":2,
+           "compareType":"-1&0"
+       }
 
    },
    "changeCompanyBefore":function(params){
        debugger;
-       
    },
     "layout": {
         "xtype": "tab"
@@ -62,9 +63,11 @@
     "__queryDataAfter":function(data){
                debugger;
                let me = this;
-               if(me.config.rows&&me.config.rows.length==0){
-                   me.config.rows = data;
+               if(me.config.rows && me.config.rows.length==0){
+                  // me.config.rows = data;
                }
+              // me.config.datas = data;
+               //var object = {a:0,b:{a:0}},source = {c:{e:2},b:{a:0,cc:54,mj:54}};Cnbi.applyDeepIf(object,source);console.info(object)
                return data;
    },
    
@@ -84,6 +87,7 @@
                 "text": "营业收入目标完成率",
                 "weight": 6,
                 "show":true,
+                "GItemScode":"1416001",
                 "listeners":[
                    {
                        "type":"click",
@@ -118,6 +122,7 @@
                        }
                    }
                 ],
+                "GItemScode":"1403100",
                 "options": {
                     "type": "gauge",
                     "getData": {
@@ -274,7 +279,7 @@
                debugger
                let me = this;
                if(me.config.rows&&me.config.rows.length==0){
-                   me.config.rows = data;
+                  // me.config.rows = data;
                }
                return data;
            },
@@ -389,7 +394,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                       //me.config.rows = data;
                    }
                    return data;
                },
@@ -494,7 +499,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                       //me.config.rows = data;
                    }
                    return data;
                },
@@ -608,7 +613,7 @@
                    
                    let me = this;
                    if(me.config.rows&&me.config.rows.length==0){
-                       me.config.rows = data;
+                     //  me.config.rows = data;
                    }
                    return data;
                },
@@ -889,7 +894,7 @@
                    let rows = me.config.rows;
                    if(rows&&rows.length == 0){
                        
-                       me.config.rows = data;
+                      // me.config.rows = data;
                    }
                    return data;
                },
@@ -921,6 +926,7 @@
                      "trigger": "item",
                      "formatter": "{a} <br/>{b} : {c} ({d}%)"
                    },
+                   "color":['#75c6ee','#f66f1e'],
                    "series": [
                        {
                            "name": "",
@@ -1008,7 +1014,7 @@
                    let rows = me.config.rows;
                    if(rows&&rows.length == 0){
                        
-                       me.config.rows = data;
+                     //  me.config.rows = data;
                    }
                    return data;
                },
@@ -1040,6 +1046,7 @@
                      "trigger": "item",
                      "formatter": "{a} <br/>{b} : {c} ({d}%)"
                    },
+                   "color":['#75c6ee','#f66f1e'],
                    "series": [
                        {
                            "name": "",

@@ -575,9 +575,6 @@
 	"items": [{
 		"xtype": "bi-table",
 		"id": "zcfzb",
-		"text": "资产负债表",
-		"onCellClick":function(row, column, cell, event) {
-			debugger;
-		}
+		"text": "资产负债表"
 	}]
 }

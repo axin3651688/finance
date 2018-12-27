@@ -390,7 +390,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-
+      // debugger
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -476,7 +476,6 @@ export default {
       let $cc = this.$refs.mychild;
       if ($cc) {
         let ii = 0;
-        console.info(datas);
         $cc.forEach(children => {
           if (children.item) {
             // console.info(children.item + "---setChlidComponent---");
