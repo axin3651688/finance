@@ -10,25 +10,28 @@
         <router-link tag="li" to="/message_page/home" class="nav-item">
           <div class="nav-item_inner nav-item_text">首页</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../assets/new_icon/home_page.svg" alt="">
+            <img src="@ma/new_icon/home_page.svg" class="img-selected">
+            <img src="@ma/new_icon/home_page_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_text">消息</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../assets/new_icon/message.svg" alt="">
+            <img src="@ma/new_icon/message_selected.svg" class="img-selected">
+            <img src="@ma/new_icon/message_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
           <div class="nav-item_inner nav-item_text">通讯录</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../assets/new_icon/person.svg" alt="">
+            <img src="@ma/new_icon/person_selected.svg" class="img-selected">
+            <img src="@ma/new_icon/person_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <li class="nav-item nav-item_quit">
           <div class="nav-item_inner nav-item_text" @click="logout()">退出</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="../assets/new_icon/quit.png" alt="">
+            <img src="@ma/new_icon/quit.svg" alt="">
           </div>
         </li>
       </ul>
@@ -38,13 +41,13 @@
 
 <script>
 import {logout} from "~api/interface.js";
-import { mapGetters, mapActions } from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "SiderBar",
   width: {
     $route: {
-      handler: function(val, oldVal){
+      handler: function (val, oldVal) {
         console.log('234343-2=-3402=3402=3', val);
       },
       // 深度观察监听
@@ -140,6 +143,12 @@ export default {
           justify-content: center;
           background: $colorBgSiderBar;
           transition: all .2s;
+          .img-unselected {
+            display: block;
+          }
+          .img-selected {
+            display: none;
+          }
 
           img {
             width: 30px;
@@ -164,6 +173,13 @@ export default {
       .nav-item.router-link-active {
         .nav-item_icon {
           background: $colorTheme;
+
+          .img-unselected {
+            display: none;
+          }
+          .img-selected {
+            display: block;
+          }
         }
       }
 

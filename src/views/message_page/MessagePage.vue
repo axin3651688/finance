@@ -50,6 +50,7 @@ export default {
         position: relative;
         overflow: hidden;
         flex: 1;
+
         &:after {
           $afterHeight: 20px;
           position: absolute;
@@ -59,7 +60,7 @@ export default {
           width: 100%;
           background: $colorTheme;
           top: -$afterHeight;
-          box-shadow: 0 5px 20px 0 rgba(0,0,0,.2);
+          box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
         }
       }
     }

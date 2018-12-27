@@ -18,11 +18,11 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: "TopBar",
-  data () {
-    return {
-    }
+  data() {
+    return {}
   },
   computed: {
     ...mapGetters(['messageStore'])
@@ -94,6 +94,7 @@ export default {
       overflow: hidden;
       flex: 1;
       -webkit-app-region: drag;
+
       &:after {
         $afterWidth: 20px;
         position: absolute;
@@ -104,8 +105,9 @@ export default {
         left: -$afterWidth;
         top: 0;
         bottom: 0;
-        box-shadow: 5px 0 20px 0 rgba(0,0,0,.2);
+        box-shadow: 5px 0px 60px rgba(0, 0, 0, 0.16);
       }
+
       .page-title {
         height: 100%;
         padding: 0 50px;
@@ -114,10 +116,12 @@ export default {
         line-height: $sizeTopBarHeight;
         display: inline-block;
       }
+
       .btn-group {
         @include flex();
         justify-content: space-between;
         float: right;
+
         .btn {
           width: 40px;
           height: 40px;
