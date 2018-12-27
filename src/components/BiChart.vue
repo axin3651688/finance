@@ -93,6 +93,6 @@ export default {
   background: #fff;
   //圆角 阴影
   border-radius: 20px;
-  box-shadow:3px 0px 10px rgba(0,0,0,0.1);
+  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 </style>
