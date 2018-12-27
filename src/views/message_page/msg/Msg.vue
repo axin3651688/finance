@@ -39,11 +39,6 @@
       </div>
       <div class="right">
         <template v-if="leftBarInstance">
-          <!--<contacts-->
-            <!--v-if="messageStore.miniType === 101010"-->
-            <!--@chatWithGroup="handleChatWithGroup"-->
-            <!--@chatWithSingle="handleChatWithSingle"-->
-          <!--&gt;</contacts>-->
           <new-friends v-if="messageStore.miniType === 11016"></new-friends>
           <group-helper v-if="messageStore.miniType === 11017"></group-helper>
           <Todo v-if="messageStore.miniType === 2"></Todo>
@@ -68,30 +63,11 @@ import {FORMAT_TIME} from 'utils/message.js'
 
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
-// 暂时定义一个通讯录类容
-const contact = {
-  avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
-  content: null,
-  count: 60,
-  id: null,
-  miniType: 101010,
-  name: "通讯录",
-  otherAvatar: null,
-  otherName: null,
-  platform: null,
-  receiverId: null,
-  sendTime: null,
-  senderId: null,
-  state: 0,
-  type: null,
-};
-
 // 消息左边栏
 class LeftBar {
   constructor(resList, ActionSetMessageStore) {
     if (!LeftBar.instance) {
       this.ActionSetMessageStore = ActionSetMessageStore;
-      // this.activeItem = new LeftBarItem(contact);
       this._init(resList);
       LeftBar.instance = this;
     }
@@ -110,7 +86,16 @@ class LeftBar {
   setItemActive(itemObj) {
     this.activeItem = itemObj;
     itemObj.setActive();
-    this.setMessageStore({miniType: itemObj.miniType})
+    let user = {
+      id: itemObj.senderId,
+      avatar: itemObj.avatar,
+      trunName: itemObj.name,
+    };
+    itemObj['user'] = user;
+    this.setMessageStore({
+      miniType: itemObj.miniType,
+      receiverData: itemObj
+    })
   }
 
   // 修改 vuex 中的变量 messageStore
@@ -130,8 +115,8 @@ class LeftBar {
   }
 
   checkExists(itemData) {
-    for (let i of this.leftBarList) {
-      return i.id === itemData.id ? i : false
+    for (let item of this.leftBarList) {
+      return item.senderId === itemData.senderId ? item : false
     }
   }
 }
@@ -140,6 +125,7 @@ class LeftBar {
 class LeftBarItem {
   constructor(obj) {
     this.isActive = false;
+    this.count = 1;
     this._init(obj)
   }
 
@@ -190,6 +176,16 @@ export default {
       return this.messageStore.newServerMsg
     }
   },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.leftBarInstance.addLeftBarItem(item);
+      // this.ActionSetMessageStore({miniType: miniType})
+    }
+  },
   filters: {
     trim(val) { // 去掉头尾空格
       debugger;
@@ -199,15 +195,6 @@ export default {
     formatTime(time) {
       return FORMAT_TIME(time);
     }
-  },
-  watch: {
-    // 监听服务器推送的消息
-    // newServerMsg(val) {
-    //   this.$alert('收到服务器推送信息', '提示', {
-    //     confirmButtonText: '确定'
-    //   });
-    //   console.log('message.vue 监听到推送：', val)
-    // }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),

@@ -88,6 +88,5 @@ export function PARSE_CHAT_CONTENT(content, type) {
 
 // 处理服务端socked端推送的消息
 export function processServerMessage(data) {
-  console.log('需要处理的服务器消息：', data);
   store.dispatch("ActionSetMessageStore", {newServerMsg: data});
 }

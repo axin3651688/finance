@@ -1,6 +1,18 @@
 // message 页面获取消息列表
 import request from 'utils/http'
 
+
+//上传文件
+export function UPLOAD_FILE(data) {
+  // debugger;
+  return request({
+    url: '/file/upload_file',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 获取消息左边栏数据
 export function MY_SESSION(userId) {
   // debugger
@@ -29,29 +41,24 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
   })
 }
 // 获取群聊聊消息
-export function findGroupMsg() {
+export function findGroupMsg(data) {
   // console.log(" api findGroupMsg");
   // debugger
   return request({
     url: '/api/api/find_group_msg',
     method: 'post',
-    data: {
-      page: 1,
-      groupId: 4,
-      userId: 225,
-      size: 20
-    }
+    data: data
     // data: {
-    //     page: 1,
-    //     receiverId: 244,
-    //     senderId: 397,
-    //     size: 10
+    //   page: 1,
+    //   groupId: 4,
+    //   userId: 225,
+    //   size: 20
     // }
   })
 }
 // 发送消息，接受一个完整的数据对象
 export function sendMsg(data) {
-  // debugger
+  debugger;
   return request({
     url: '/api/api/deliver',
     method: 'post',
@@ -113,9 +120,7 @@ export function UPDATE_MODULE_STATE_ALL(data) {
   return request({
     url: '/api/api/update_module_state_all',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 单条订阅消息，点击单条时
@@ -125,9 +130,7 @@ export function CHANGE_MODULE_STATE(data) {
   return request({
     url: '/api/api/change_module_state',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 
@@ -206,9 +209,7 @@ export function EDIT_GROUP(data) {
   return request({
     url: '/api/api/edit_group',
     method: 'put',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 退出群组
@@ -218,9 +219,7 @@ export function QUIT_GROUP(data) {
   return request({
     url: '/api/api/quit_group',
     method: 'delete',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 解散群聊
@@ -230,9 +229,7 @@ export function DISSOLU_GROUP(data) {
   return request({
     url: '/api/api/dissolu_group',
     method: 'delete',
-    params: {
-      data
-    }
+    params: data
   })
 }
 // 移除团队成员
