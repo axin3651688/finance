@@ -1,7 +1,7 @@
 {
     "id": 1,
     "text": "指标分析",
-    "showDims": ["company", "month", "year"],
+    "showDims": ["company","month","year"],
     "rows": [{
 
             "id": "1416001",
@@ -144,12 +144,10 @@
         "xtype": "tab"
     },
     "items": [{
-        "id": "firstTab",
-        "layout": {
+        "id":"firstTab",
+        "layout":{
             "xtype": "column"
         },
-        "class_pr": "24px",
-        "class_top": "24px",
         "text": "指标分析",
         "children": [{
                 "xtype": "chart",
@@ -388,7 +386,7 @@
                 "options": {
                     "type": "column",
                     "getData": {
-                        "type": 2,
+                        "type":2,
                         "columns": [{
                             "id": "A"
                         }, {
@@ -456,18 +454,18 @@
                         "cubeId": 2
 
                     },
-                    "generateVar": {
-                        "periodCount": 12,
-                        "compareType": "0&-1",
-                        "varName": "rows",
-                        "reverse": true
-                    },
+                    "generateVar":{
+                        "periodCount":12,
+                        "compareType":"0&-1",
+                         "varName":"rows",
+                         "reverse":true
+                     },
                     "random": {
                         "min": 100,
                         "max": 100000
                     },
                     "mainDim": "period",
-                    "needDims": ["company", "year", "month"],
+                    "needDims": ["company", "year","month"],
                     "type": 1,
                     "rows": [{
                             "id": "{year}01",

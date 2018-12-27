@@ -28,8 +28,8 @@
         },
         "mainDim": "itemperiod",
         "random": {
-            "min": 100,
-            "max": 100000
+            "min": 0,
+            "max": 100
         },
         "needDims": ["year", "month", "company"],
         "type": 1
@@ -53,8 +53,19 @@
                 "subType": "gauge",
                 "type": "advancechart",
                 "getData": {
-                    "value": "A$1416001",
-                    "type": 1
+                    "type": 2,
+                    "columns": [{
+                        "id": "text",
+                        "prop": "name"
+                    }, {
+                        "id": "A",
+                        "prop": "value"
+                    }],
+                    "row": {
+                        "ids": {
+                            "items": ["1416001"]
+                        }
+                    }
                 }
             },
             "chartOptions": {

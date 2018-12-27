@@ -1,10 +1,10 @@
-export default function pie() {
+export default function gauge() {
     return {
         title: {
             text: '仪表图'
         },
         tooltip: {
-            formatter: "{b} : {c}%"
+            formatter: "{a}{b} : {c}%"
         },
         toolbox: {
             feature: {
