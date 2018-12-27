@@ -18,7 +18,7 @@
     "columns": [{
         "id": "id",
         "type": "string",
-        "hidden": true,
+        
         "text": "编码"
     }, {
         "id": "row",
