@@ -98,7 +98,10 @@ export default {
     font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
-    box-shadow:#999 0px 0px 10px;
-    margin: 10px;
+    box-sizing: border-box;
+    border: 1px solid #333333;
+    margin: -1px;
+    /*box-shadow:#999 0px 0px 10px;*/
+    /*margin: 10px;*/
   }
 </style>

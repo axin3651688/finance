@@ -31,7 +31,8 @@ export default {
   .MessagePage {
     @include flex();
     overflow: hidden;
-    height: calc(100vh - 20px);
+    height: 100vh;
+    /*height: calc(100vh - 20px);*/
 
     .left, .right {
       height: 100%;

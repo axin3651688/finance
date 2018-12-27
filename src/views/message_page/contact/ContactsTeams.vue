@@ -55,19 +55,19 @@
         </div>
         <div class="panel-right-content">
           <ul>
-            <li>
+            <li v-if="rightUserInfo.user.phone">
               <div class="icon icon-phone"></div>
               <p class="info">{{rightUserInfo.user.phone}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.user.email">
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.sex.text">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.user.sign">
               <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfo.user.sign}}</p>
             </li>
@@ -182,6 +182,9 @@ export default {
   .ContactsTeams {
     display: flex;
     height: 100%;
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {

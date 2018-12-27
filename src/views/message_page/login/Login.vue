@@ -219,6 +219,8 @@ export default {
     bottom: 0;
     margin: auto;
     user-select: none;
+    box-sizing: border-box;
+    /*border: 1px solid #cccccc;*/
     box-shadow:#999 0px 0px 10px;
 
 

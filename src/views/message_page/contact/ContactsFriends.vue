@@ -35,19 +35,19 @@
         </div>
         <div class="panel-right-content">
           <ul>
-            <li>
+            <li v-if="rightUserInfoData.user.phone">
               <div class="icon icon-phone"></div>
               <p class="info">{{rightUserInfoData.user.phone}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.user.email">
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfoData.user.email}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.sex.text">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfoData.sex.text}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.user.sign">
               <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfoData.user.sign}}</p>
             </li>
@@ -157,6 +157,9 @@ export default {
   .ContactsFriends {
     display: flex;
     height: 100%;
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {

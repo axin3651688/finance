@@ -222,6 +222,9 @@ export default {
   .ContactsGroups {
     display: flex;
     height: 100%;
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {
@@ -357,13 +360,14 @@ export default {
       position: relative;
       flex: 1;
       font-weight: 400;
-      padding-left: 40px;
+      margin-left: 40px;
 
       .content-wrap {
         position: absolute;
         top: 0;
         bottom: 0;
         height: 100%;
+        width: 100%;
       }
 
       section {
