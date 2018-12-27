@@ -71,9 +71,8 @@ export default {
     getDataSource(item) {
       debugger;
       let options = item.chartOptions;
-
       let defaultOptions = this.getDefautlChartConfigByType();
-      Cnbi.applyIf(options || {}, defaultOptions);
+      Cnbi.applyDeepIf(options || {}, defaultOptions);
       this.evalVaiables(options);
       console.log(options);
 
@@ -93,15 +92,17 @@ export default {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-
-        // this.chartOptions.legend.data = this.item.options.datas.map(item => {
-        //   return item.name;
-        // });
-        // this.chartOptions.series[0].data = this.item.options.datas;
-        let datas = item.options.datas;
-        debugger;
-        this.chartOptions.xAxis.data = datas[0];
-        this.chartOptions.series[0].data = datas[1];
+        if (this.item.options.subType == "pie") {
+          this.chartOptions.legend.data = this.item.options.datas.map(item => {
+            return item.name;
+          });
+          this.chartOptions.series[0].data = this.item.options.datas;
+        } else {
+          let datas = item.options.datas;
+          debugger;
+          this.chartOptions.xAxis.data = datas[0];
+          this.chartOptions.series[0].data = datas[1];
+        }
       } else if (chartType === 3) {
         /**
          * 多系列数据图形 说白了就是series.length > 1
