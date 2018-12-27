@@ -83,6 +83,14 @@ export default {
 };
 </script>
 
+<style>
+  html {
+    overflow: hidden;
+  }
+  body {
+    overflow: hidden;
+  }
+</style>
 <style lang="scss" scoped>
   @import "@ms/variables.scss";
 
@@ -90,5 +98,7 @@ export default {
     font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
+    box-shadow:#999 0px 0px 10px;
+    margin: 10px;
   }
 </style>

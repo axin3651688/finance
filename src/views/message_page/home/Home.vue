@@ -45,10 +45,7 @@
 </template>
 
 <script>
-import {
-  mapGetters,
-  mapActions
-} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   FIND_CARD,
   LATEST_CONTACT,
@@ -129,6 +126,8 @@ export default {
   },
 
   mounted() {
+
+    this.ActionSetMessageStore({routeName: '首页'});
 
     FIND_CARD(this.user.user.id).then(res => {
       console.log('获取查询可以添加的卡片数据-->>', res.data);
@@ -233,6 +232,7 @@ export default {
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+
       &:hover {
         background: rgba(0, 83, 159, 0.12);
       }
@@ -279,7 +279,7 @@ export default {
 
     .contact-box {
       width: 260px;
-      height:100px;
+      height: 100px;
       margin-bottom: 10px;
       height: 100px;
       padding: 0px 0px 0px 10px;

@@ -219,6 +219,8 @@ export default {
     bottom: 0;
     margin: auto;
     user-select: none;
+    box-shadow:#999 0px 0px 10px;
+
 
     .left {
       float: left;
@@ -344,5 +346,4 @@ export default {
       }
     }
   }
-
 </style>

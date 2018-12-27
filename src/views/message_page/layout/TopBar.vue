@@ -5,7 +5,8 @@
     </div>
     <!--<div class="topbar-right">-->
     <div class="topbar-right" @dblclick="web_minWindows()">
-      <h3 class="page-title">首页</h3>
+      <h3 class="page-title" v-if="messageStore.routeName">{{messageStore.routeName}}</h3>
+      <h3 class="page-title" v-else="messageStore.routeName">首页</h3>
       <div class="btn-group">
         <span class="btn btn-mini" @click="web_minWindows()">-</span>
         <span class="btn btn-max" @click="web_maxWindows()"><></span>
@@ -16,14 +17,18 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
 export default {
   name: "TopBar",
   data () {
     return {
-      routeName: '/message_page/home', // 当前路由名
     }
   },
+  computed: {
+    ...mapGetters(['messageStore'])
+  },
   methods: {
+
     web_minWindows() {
       // alert('web_minWindows');
       if (window.require) {
@@ -64,11 +69,7 @@ export default {
           break;
       }
     }
-  },
-  mounted () {
-    console.log('当前路由：', this.$route.path)
-  },
-
+  }
 }
 </script>
 

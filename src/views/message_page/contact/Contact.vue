@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: 'MessageContacts',
   components: {
@@ -51,13 +53,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
       this.which_to_show = tab.name
     },
 
     // 开始群聊天
-    handleChatWithGroup(groupId){
+    handleChatWithGroup(groupId) {
       this.$emit('chatWithGroup', groupId)
     },
 
@@ -65,6 +68,9 @@ export default {
     handleChatWithSingle(receiverId) {
       this.$emit('chatWithSingle', receiverId);
     }
+  },
+  mounted() {
+    this.ActionSetMessageStore({routeName: '通讯录'})
   }
 }
 </script>
@@ -77,6 +83,7 @@ export default {
     background: #ffffff;
     height: 100%;
     box-shadow: 0 20px 30px $colorShadowGreen;
+
     /deep/ li {
       list-style: none;
     }

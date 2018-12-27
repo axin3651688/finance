@@ -245,6 +245,8 @@ export default {
 
   },
   mounted() {
+    this.ActionSetMessageStore({routeName: '消息'});
+
     // 页面挂载后 请求消息列表数据
     MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)

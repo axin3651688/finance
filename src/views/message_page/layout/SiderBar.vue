@@ -38,10 +38,19 @@
 
 <script>
 import {logout} from "~api/interface.js";
-// import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SiderBar",
+  width: {
+    $route: {
+      handler: function(val, oldVal){
+        console.log('234343-2=-3402=3402=3', val);
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
   methods: {
     logout() {
       // todo备以后用,先不删
