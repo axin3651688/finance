@@ -1,46 +1,22 @@
 <template>
   <div>
-    <!--zb 下属企业合并行 -->
     <el-table
-      v-if="item.id=='xsqydkdbqk' || item.id=='xsqydydkqk'"
-      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
-      border
-      :stripe="true"
-      :height="item.height || rowClass"
-      :cell-style="cellStyle"
-      @cell-click="onCellClick"
-      :span-method="rowSpanAndColSpanHandler"
-    >
-      <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
-        <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
-      </el-tag>
-    </el-table>
-    <el-table
-      v-else
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
       :stripe="true"
       height="item.height || rowClass"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
+      :span-method="rowSpanAndColSpanHandler"
     >
-      <!-- :span-method="rowSpanAndColSpanHandler" :header-cell-style="rowClass" -->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :data.sync="item" ref="tchild"/>
-        <!-- <bi-table-column v-else :col="cc" :data.sync="item" ref="child"/>   -->
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
       </el-tag>
     </el-table>
 
     <!-- sjz 分页功能 -->
-    <!-- <div class="paginationClass"> -->
-    <!-- page-sizes:每页展示条选择组件 -->
-    <!-- page-size:每页展示条 -->
-    <!-- current-change:currentPage改变时会触发  || item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'-->
-    <!-- size-change:pagesize改变时触发 -->
     <el-pagination
-      v-if="item.pagination "
+      v-if="item.pagination"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
@@ -49,7 +25,6 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="item.datas.length"
     ></el-pagination>
-    <!-- </div> -->
   </div>
 </template>
 <script>
@@ -72,35 +47,23 @@ export default {
       id: 0,
       text: "",
       rows: [],
-      spanArr: [], ////zb 下属企业合并行时用到
+      // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
         idProperty: "group",
         textProperty: "groupName"
-      },
-      //   datas:{},
-      dataUrl: "",
-      cubeId: { id: 2, text: "江苏农垦" },
-      dims: {
-        company: { id: "1", text: "江苏农垦" },
-        period: { id: 201608, text: "2016年8月" },
-        unit: { id: 10000, text: "万元" },
-        items: [] //根据行配制生成的
       }
     };
   },
 
   created() {
-    console.log(this.item);
-    this.upData();
-    //this.$set(this.item,"datas",null);
+    this.upData(this.item);
     //debugger;
     //this.getTableDataParams();
   },
   mounted() {
     //zb 下属企业合并行
-    if (this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")
-      this.getSpanArr(this.item.datas);
+    //if(this.item.id == "xsqydkdbqk" || this.item.id == "xsqydydkqk")this.getSpanArr(this.item.datas);
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
     // this.getTableDataParams();
@@ -129,7 +92,6 @@ export default {
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
-      console.log(refs);
       if (refs) {
         if (refs.child) {
           refs.child.forEach(children => {
@@ -161,8 +123,13 @@ export default {
     },
 
     cellStyle(row) {
-      // debugger
+      if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
+        return this.item.cellStyle(row);
+      }
       let css = "padding: 4px 0;";
+      if (!row.column.property) {
+        return css;
+      }
       if (row.column.property.indexOf("text") != -1) {
         let record = row.row;
         let drill = "";
@@ -201,6 +168,9 @@ export default {
         console.info("没有设置事件");
       }
     },
+    /**
+     * 获取rowspan
+     */
     getCellRowSpan(datas, row, config) {
       return datas.filter(record => record[config.id] === row[config.id])
         .length;
@@ -217,37 +187,28 @@ export default {
      *    {id:28,text:"行项目六",A:25,B:545,group:2,groupName:"bb公司"}
      * ]
      */
-    getSpanArr(data) {
-      //合并行
-      for (var i = 0; i < data.length; i++) {
-        console.log(data[i].rowspan);
-        if (i === 0) {
-          this.spanArr.push(1);
-          this.pos = 0;
-        } else {
-          // 判断当前元素与上一个元素是否相同
-          if (data[i].dim_company === data[i - 1].dim_company) {
-            this.spanArr[this.pos] += 1;
-            this.spanArr.push(0);
-          } else {
-            this.spanArr.push(1);
-            this.pos = i;
-          }
-        }
-      }
-    },
+    //  getSpanArr(data) {　//合并行
+    //       for (var i = 0; i < data.length; i++) {
+    //         console.log(data[i].rowspan)
+    //         if (i === 0) {
+    //           this.spanArr.push(1);
+    //           this.pos = 0
+    //         } else {
+    //           // 判断当前元素与上一个元素是否相同
+    //         if (data[i].dim_company === data[i - 1].dim_company) {
+    //             this.spanArr[this.pos] += 1;
+    //             this.spanArr.push(0);
+    //           }
+    //           else {
+    //             this.spanArr.push(1);
+    //             this.pos = i;
+    //           }
+    //         }
+    //       }
+    //  },
     rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex }) {
       //合并行
-      if (columnIndex === 0 || columnIndex === 1) {
-        const _row = this.spanArr[rowIndex];
-        const _col = _row > 0 ? 1 : 0;
-        console.log("行", _row);
-        console.log("列", _col);
-        return {
-          rowspan: _row,
-          colspan: _col
-        };
-      }
+
       // let config =  this.groupConfig;
       // let cells = {rowspan:0,colspan:0};
       // debugger
@@ -268,17 +229,14 @@ export default {
       //具体方法请参照elementUi-Table的配法
       if (
         this.item &&
-        this.item.colAndRowSan &&
-        typeof colAndRowSan == "function"
+        this.item.rowSpanAndColSpanHandler &&
+        typeof rowSpanAndColSpanHandler == "function"
       ) {
-        return this.item.colAndRowSanHandler({
-          row,
-          column,
-          rowIndex,
-          columnIndex
-        });
+        return this.item.rowSpanAndColSpanHandler(
+          { row, column, rowIndex, columnIndex },
+          this
+        );
       }
-      console.log("item", this.item);
       // let config = this.groupConfig;
       // let cells = { rowspan: 0, colspan: 0 };
       // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下

@@ -216,24 +216,29 @@ BiText
     text:"",//名字
     config:`config`  //为可选项
     layout:`layout`  //为可选项，不配制的话，默认为form
+    changeModuleBefore:funcntion(){},
+    changeYearBefore:funcntion(){},
+    changeMonthBefore:funcntion(){},
+    changeCompanyBefore:funcntion(){},
     items:[ //组件
         {
             id: "1",
             text:"",//名字
             "showFun":function($store){//是否显示
                 //所有的数据都在store里，自己加自己的判断吧
-                return trye;//默认显示
+                return true;//默认显示
             },
             queryDataAfter:function(){}//数据的后置处理
             queryDataBefore:function(){}//数据的前置处理
-            xtype: "bi-text",
+            xtype: "bi-table",
             weight: "6"//当layout=column时需要
             renderFunction:"functionName"//字面量函数
             params:["A$1111001","B$1111002"]，//参数集合
             config:`config`  //为可选项，当没有数据的时候，会从父亲里取
-            options:{
-
-            }
+            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选
+            cellStyle:"单元格样式"
+            options:{}
         },
         {
             id: "2",
@@ -262,7 +267,6 @@ BiText
 
 ## 图形组件Echarts
 [官方属性文档](http://echarts.baidu.com/echarts2/doc/doc.html)
-
 
 ## 尚未实现功能
 

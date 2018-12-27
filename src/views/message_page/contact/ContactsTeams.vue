@@ -118,7 +118,7 @@ export default {
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfo
       });
-      this.$emit('chatWithSingle', receiverId);
+      this.$router.push('/message_page/msg')
     },
 
     // 获取公司列表, 并把公司列表存vuex

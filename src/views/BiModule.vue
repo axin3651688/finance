@@ -42,7 +42,6 @@
       <el-tab-pane
         v-for="(item,index) in items"
         v-bind:key="item.id"
-        v-if="item.show"
         v-bind:index="index"
         :label="item.text"
         :name="item.tabIndex || index"
@@ -152,12 +151,14 @@ export default {
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
     //
+    debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
   },
 
   mounted() {
+     debugger;
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {

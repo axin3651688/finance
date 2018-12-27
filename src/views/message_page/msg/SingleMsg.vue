@@ -20,7 +20,7 @@
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <message-item v-for="item in singleMsgListReverse" :key="item.id" :data="item"></message-item>
+        <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
     <div class="bottom">
@@ -45,7 +45,7 @@
           </div>
         </transition>
       </div>
-      <div style="position: relative">
+      <div class="input-wrap">
         <textarea class="chat-textarea"
                   placeholder="请输入文字，按enter建发送信息"
                   v-model="sendText"
@@ -88,8 +88,14 @@ export default {
     receiverId() {
       return this.messageStore.receiverData.user.id
     },
-    singleMsgListReverse() {
-      if (this.singleMsgList.length) return this.singleMsgList.reverse()
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    }
+  },
+  watch: {
+    receiverId(val) {
+      alert('watch receiverId');
+      this.findSingleMsg();
     }
   },
   methods: {
@@ -114,7 +120,13 @@ export default {
         console.log('要发送的内容是：', sendData);
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
-        sendMsg(sendData);
+        sendMsg(sendData).then(res => {
+          console.log('发送单聊消息返回数据res', res);
+          debugger;
+        }).catch(err => {
+          console.log('发送单聊消息返回数据err', err);
+          debugger;
+        });
       } else {
         this.sendText = '';
         this.$message({
@@ -129,12 +141,13 @@ export default {
     // 把发送的内容显示到聊天窗口
     addMsgToWindow(sendText) {
       let data = {
-        avatar: this.receiverAvatar,
+        avatar: this.user.user.avatar,
         content: sendText,
-        name: this.receiverName,
+        name: this.user.user.trueName,
         sendTime: new Date().getTime()
       };
-      this.singleMsgListReverse.push(data);
+      debugger;
+      this.singleMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
       });
@@ -154,28 +167,24 @@ export default {
       this.$refs.textarea.focus();
     },
 
+    findSingleMsg(){
+      // ajax请求获取单聊消息内容
+      FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
+        .then(res => {
+          console.log('获取单聊信息then：', res);
+          res = res.data;
+          if (res.code === 200 && res.data) {
+            this.singleMsgList = res.data.data.reverse();
+          }
+        }).catch(err => {
+        console.log('获取单聊信息catch：', err)
+      });
+    }
+
   },
   mounted() {
-    // console.log('json测试：', this.EMOTION_SPRITES);
     // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id)
-      .then(res => {
-        console.log('获取单聊信息then：', res);
-        res = res.data;
-        if (res.code === 200 && res.data) {
-          this.singleMsgList = res.data.data;
-          this.receiverName = singleMsgList[0].name;
-          this.receiverAvatar = singleMsgList[0].avatar
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.msg,
-            showClose: true
-          })
-        }
-      }).catch(err => {
-      console.log('获取单聊信息catch：', err)
-    });
+    this.findSingleMsg();
 
     // 当点击的不是表情，则隐藏表情弹框
     document.addEventListener('click', e => {
@@ -191,10 +200,6 @@ export default {
   }
 }
 </script>
-<!--<style lang="scss">-->
-<!--/*这里不使用 scoped 是v-html生成表情能够应用到样式*/-->
-<!--@import "@s/green/emotion_sprites.scss";-->
-<!--</style>-->
 
 <style lang="scss" scoped>
   .SingleMsg.vue-module {
@@ -375,7 +380,7 @@ export default {
     }
 
     .bottom {
-      position: relative;
+      height: 260px;
       box-sizing: border-box;
       width: 100%;
       padding: 18px 40px 20px;
@@ -416,22 +421,27 @@ export default {
         }
       }
 
-      .chat-textarea {
-        min-height: 100px;
-        padding: 10px 20px;
-        color: rgba(0, 0, 0, 0.40);
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 12px;
+      .input-wrap {
         width: 100%;
-        border: none;
-        outline: 0;
-        resize: none;
-        text-align: left;
-        font-family: $fontFamilyMain;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 20px;
+        .chat-textarea {
+          box-sizing: border-box;
+          min-height: 100px;
+          padding: 10px 20px;
+          color: rgba(0, 0, 0, 0.40);
+          background: rgba(0, 0, 0, 0.06);
+          border-radius: 12px;
+          width: 100%;
+          border: none;
+          outline: 0;
+          resize: none;
+          text-align: left;
+          font-family: $fontFamilyMain;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20px;
+        }
       }
+
     }
 
     .comment {

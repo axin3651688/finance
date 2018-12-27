@@ -203,8 +203,9 @@ export default {
       if (groupId) {
         this.ActionSetMessageStore({
           miniType: 1101, // 1101 群聊,
+          receiverData: this.rightUserInfoData
         });
-        this.$emit('chatWithGroup', groupId)
+        this.$router.push('/message_page/msg')
       }
     }
   },

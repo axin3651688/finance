@@ -5,9 +5,7 @@
         v-if="cc.children && cc.children.length > 0 "
         :col="cc"
         :key="cc.text"
-        :tableData="tableData"
-
-      ></bi-table-column-tree>
+        :tableData="tableData" />
       <bi-table-column v-else :col="cc" :tableData="tableData" :key="cc.text" ref="tcol"/>
     </template>
   </el-table-column>
@@ -25,6 +23,10 @@ export default {
     isFolder() {
       return this.col.children && this.col.children.length;
     }
+  },
+  created(){
+    //alert(JSON.stringify(this.tableData))
+   // debugger;
   },
   methods: {
     upData(item) {

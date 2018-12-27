@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import EventMixins from "../mixins/EventMixins";
+import EventMixins from '../mixins/EventMixins'
 export default {
   mixins: [EventMixins],
   props: {
@@ -29,10 +29,11 @@ export default {
       receive: {
         title: {
           text: this.item.text,
-          x: "center",
-          top: "10",
-          textStyle: {
-            fontSize: 16
+          x:"center",
+          top:"10",
+          textStyle:{
+            fontSize:16,
+            color: '#8796B0'
           }
         },
         tooltip: {
@@ -40,20 +41,20 @@ export default {
         },
         legend: {
           // default: {
-          data: ["好", "坏"],
+            data: ["好", "坏"],
           // },
-          textStyle: {
-            fontSize: 10
+          textStyle:{
+            fontSize:10
           },
-          x: "center",
-          y: "90%"
+          x:"center",
+          y:"90%"
         },
         grid: {
           // default: {
-          left: "3%",
-          right: "4%",
-          bottom: "15%",
-          containLabel: true
+            left: "3%",
+            right: "4%",
+            bottom: "15%",
+            containLabel: true
           // }
         },
         // toolbox: {
@@ -104,11 +105,10 @@ export default {
   },
   methods: {
     upData(item) {
-      debugger;
       if (item) {
         this.item = item;
       }
-      debugger;
+      debugger
       let dd = this.item.options.datas;
       this.receive.xAxis = dd.xAxis;
       this.receive.series = dd.series;
