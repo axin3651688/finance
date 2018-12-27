@@ -18,6 +18,11 @@
 <script>
 export default {
   name: "TopBar",
+  data () {
+    return {
+      routeName: '/message_page/home', // 当前路由名
+    }
+  },
   methods: {
     web_minWindows() {
       // alert('web_minWindows');
@@ -48,7 +53,22 @@ export default {
       }
     },
 
-  }
+    // 根据路由显示不同的标题
+    showTitle() {
+      let routeStr = this.$route.path;
+      switch (routeStr) {
+        case '/message_page/home':
+          this.routeName = routeStr;
+          break;
+        case '':
+          break;
+      }
+    }
+  },
+  mounted () {
+    console.log('当前路由：', this.$route.path)
+  },
+
 }
 </script>
 
