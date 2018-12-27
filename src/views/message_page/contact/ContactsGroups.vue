@@ -71,7 +71,7 @@
               <section v-if="qrUrl">
                 <h4 class="title">群二维码</h4>
                 <div class="content">
-                  {{this.qrUrl}}
+                  <!--{{this.qrUrl}}-->
                   <div class="qr-code">
                     <qriously :value="qrUrl" />
                   </div>

@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div class="login" ondragstart="return false;">
-      <div class="left">
+    <div class="login">
+    <!--<div class="login" ondragstart="return false;">-->
+      <div class="left" ondragstart="return false;">
         <img src="@/assets/login/img.svg" alt="">
       </div>
       <div class="right">
         <div style="-webkit-app-region: drag" class="control-btns">
-          <img src="@/assets/login/zuixiaohua.svg" class="icon-mini img1" @click="web_minWindows()">
-          <img src="@/assets/login/close.svg" class=" icon-colse img2" @click="web_closeWindows()">
+          <img src="@/assets/login/zuixiaohua.svg" class="icon-mini img1" @click="web_minWindows()" style="-webkit-app-region: no-drag">
+          <img src="@/assets/login/close.svg" class=" icon-colse img2" @click="web_closeWindows()" style="-webkit-app-region: no-drag">
         </div>
         <h3>登陆</h3>
         <p class="copy">安徽经邦数据展示客户端</p>
@@ -217,6 +218,7 @@ export default {
     right: 0;
     bottom: 0;
     margin: auto;
+    user-select: none;
 
     .left {
       float: left;

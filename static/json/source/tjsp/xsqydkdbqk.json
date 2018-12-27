@@ -1,0 +1,146 @@
+
+
+      {
+        "id":"0014",
+        "text":"xsqydkdbqkTable",
+        "config":{
+            "sql":"SELECT A.DIM_COMPANY, CASE WHEN GROUPING(B.SNAME) =1 THEN '合计' ELSE B.SNAME END AS GSMC, CASE WHEN GROUPING(C.SNAME)=1 AND GROUPING(B.SNAME) =0 THEN A.DIM_COMPANY||'小计' ELSE C.SNAME END AS YHMC, D.SNAME AS RHMC, SUM(NVL(A.FACT_A,0)) AS FACT_A, A.SSTARTDATE,A.SENDDATE, A.FACT_B,A.SREPAYDATE,E.SNAME ename, CASE WHEN A.STATUS ='1' THEN '新增'WHEN A.STATUS ='-1' THEN '减少' ELSE '不符合条件' END AS STATUS,F.SNAME fname,A.SNOTE FROM DW_FACTFINANCEDETAIL A LEFT JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY = B.SCODE LEFT JOIN DW_DIMBANK C ON A.DIM_BANK =C.SCODE LEFT JOIN DW_DIMFINANCE D ON A.DIM_FINANCE =D.SCODE LEFT JOIN(SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') F ON A.DIM_GUARANTEE=F.SCODE WHERE CISGUARANTEE ='1' AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY ROLLUP((A.DIM_COMPANY,B.SNAME),(C.SNAME, D.SNAME,A.SSTARTDATE, A.SENDDATE, A.FACT_B, A.SREPAYDATE, E.SNAME, A.STATUS, F.SNAME, A.SNOTE)) ",
+            "cube":{
+              "subject":"1002",
+              "cubeId":4
+            },
+            
+            "mainDim":"itemperiod",
+            "needDims":["year","month","company"],
+            "random":{"min":100,"max":100000},
+            "type":1
+              
+         },
+        //  "groupConfig": { "idProperty": "dim_company","textProperty": "gsmc"},//可选
+        //   "queryDataAfter":function(){//数据的后置处理
+        //     debugger;
+        //   },
+        //  "queryDataBefore":function(){//数据的前置处理
+        //       debugger;
+        //   },
+          
+        "columns":[
+            {
+                "id": "snote",
+                "type": "string",
+                "text": "备注"
+              },
+              {
+                "id": "dim_company",
+                "type": "string",
+                "text": "公司编码"
+              },
+              {
+                "id": "gsmc",
+                "type": "number",
+                "text": "公司名称"
+              },
+               {
+                    "id":"yhmc",
+                    "type":"string",
+                    "text":"机构名称"
+                },
+                {
+                    "id":"rhmc",
+                    "type":"string",
+                    "text":"融资类型"
+                },
+                {
+                    "id":"fact_a",
+                    "type":"number",
+                    "text":"金额"
+                },
+                {
+                    "id":"sstrtdate",
+                    "type":"string",
+                    "text":"起始日期"
+            },
+              {
+                "id": "senddate",
+                "type": "string",
+                "text": "到期日期*"
+              },
+              {
+                "id": "fact_b",
+                "type": "number",
+                "text": "利率（%）",
+                "unit":"%"
+              },
+              {
+                "id": "srepaydate",
+                "type": "string",
+                "text": "已还款日期*"
+              },
+              {
+                "id": "ename",
+                "type": "string",
+                "text": "还款来源"
+              },
+              {
+                "id": "status",
+                "type": "string",
+                "text": "新增/减少"
+              },
+              {
+                "id": "fname",
+                "type": "string",
+                "text": "担保方式"
+              }
+        ],
+        "rows":[
+      ],
+      "layout":{
+          "xtype":"tab"
+       },
+      "items":[
+         {
+          "xtype": "bi-table",
+          "id":"xsqydkdbqk",
+          "text":"下属企业贷款担保情况表",
+          "groupConfig": { "id": "dim_company","text": "gsmc"},//可选
+          "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+              debugger;
+              let cells = {rowspan:0,colspan:0};
+              let data = option.item.datas;
+              let config =  option.item.groupConfig;
+              let rowspan = row.rowspan || option.getCellRowSpan(data,row,config) || 0 ;
+              cells.rowspan = rowspan;
+             // return cells;
+          }
+        }
+           
+        
+      ]
+      }
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+

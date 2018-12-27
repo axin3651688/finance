@@ -36,12 +36,10 @@ export default {
     };
   },
   created() {
-    debugger;
-    console.log(this.getDataSource(this.item));
+    this.upData(this.item);
   },
   mounted() {
-    debugger;
-    this.upData(this.item);
+    console.log(this.item.options.datas);
   },
   methods: {
     /** 

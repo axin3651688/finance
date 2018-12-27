@@ -1,24 +1,22 @@
 {
-    "id": "0001",
-    "text": "现金流量表",
-    "config": {
-        "_cube": {
-            "subject": "0002",
-            "cubeId": 2
-        },
-        "mainDim": "itemperiod",
-        "needDims": ["year", "month", "company"],
-        "random": {
-            "min": 100,
-            "max": 100000
-        },
-        "type": 1
-
+    "id":"0003",
+    "text":"现金流量表",
+    "config":{
+       "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD='201701' ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text,B.NLEVEL , B.NID as row1, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID row2, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
+      "_cube":{
+        "subject":"0002",
+        "cubeId":4
+      },
+      "mainDim":"itemperiod",
+      "needDims":["year","month","company"],
+      "random":{"min":100,"max":100000},
+      "type":1
     },
+<<<<<<< HEAD
     "columns": [{
         "id": "id",
         "type": "string",
-        "hidden": true,
+        
         "text": "编码"
     }, {
         "id": "row",
@@ -526,3 +524,54 @@
         "text": "现金流量表"
     }]
 }
+=======
+    "layout": {
+       "xtype": "tab"
+   },
+    "columns":[
+        {
+            "id": "snljje2",
+            "type": "decimal",
+            "text": "上年累计金额"
+        },  {
+            "id": "text",
+            "type": "string",
+            "text": "项目",
+            "width":"300px"
+        },{
+            "id":"row1",
+            "type":"number",
+            "text":"行次"
+        },{
+            "id": "bnljje1",
+            "type": "decimal",
+            "text": "本年累计金额"
+        }, {
+            "id": "snljje1",
+            "type": "decimal",
+            "text": "上年累计金额"
+        }, {
+            "id": "text2",
+            "type": "string",
+            "text": "项目",
+            "width":"400px"
+        }, {
+            "id":"row2",
+            "type":"number",
+            "text":"行次"
+        },{
+            "id": "bnljje2",
+            "type": "decimal",
+            "text": "本年累计金额"
+        } ],
+        "rows": [
+    ],
+    "items" : [
+      {
+        "xtype" : "bi-table",
+        "id" : "xjllb",
+        "text" : "现金流量表"
+      }
+    ]
+  }
+>>>>>>> 8476b513687ca38c13a00f3c12afccfe178a6992
