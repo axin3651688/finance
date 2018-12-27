@@ -577,6 +577,7 @@
 		"id": "zcfzb",
 		"text": "资产负债表",
 		"onCellClick":function(row, column, cell, event) {
+			console.info("什么都不做");
 			debugger;
 		}
 	}]
