@@ -38,17 +38,21 @@
               {
                 "id": "gsmc",
                 "type": "number",
-                "text": "公司名称"
+                "text": "公司名称",
+                "width":"300px"
+
               },
                {
                     "id":"yhmc",
                     "type":"string",
-                    "text":"机构名称"
+                    "text":"机构名称",
+                    "width":"240px"
                 },
                 {
                     "id":"rhmc",
                     "type":"string",
-                    "text":"融资类型"
+                    "text":"融资类型",
+                    "width":"240px"
                 },
                 {
                     "id":"fact_a",

@@ -35,11 +35,13 @@
 {
         "id": "jrjgmc",
         "type": "string",
-        "text": "机构名称"
+        "text": "机构名称",
+        "width":"300px"
       },	  {
         "id": "rzlx",
         "type": "string",
-        "text": "融资类型"
+        "text": "融资类型",
+        "width":"240px"
     }, {
         "id": "jkbj",
         "type": "number",
