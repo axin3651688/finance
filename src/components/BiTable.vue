@@ -13,21 +13,6 @@
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
     </el-tag>
   </el-table>
-
-  <!-- 弹框 -->
-  <el-dialog
-  title="提示"
-  :visible.sync="dialogVisible"
-  width="30%"
-  :before-close="handleClose">
-  <span>这是表格的数据:{{a}}</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-</el-dialog>
-
-
     <!-- sjz 分页功能 -->
     <el-pagination
       v-if="item.pagination"
@@ -86,13 +71,6 @@ export default {
   },
 
   methods: {
-    handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -195,6 +173,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
+      debugger
        if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
             return this.item.onCellClick(row, column, cell, event,this);
         }
