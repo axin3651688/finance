@@ -212,7 +212,7 @@
   * 获取单元格数据
   */
  function getValue(cell, datas, rows) {
-     // 
+     // debugger;
      if (!isNaN(cell)) {
          return cell - 0;
      }
@@ -231,13 +231,14 @@
   * 
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
+     debugger;
      if (config.type === 1) {//单值
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
-            return getReverserDatas(config, datas, cols,configRows);
+            return getReverserDatas(config, datas, cols,rows);
         }
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
@@ -249,6 +250,7 @@
   * 获取配制的行项目数据
   */
  const getConfigRows = (configRows, rows) => {
+     // debugger;
      if (!configRows || Object.keys(configRows).length === 0) {
          return rows;
      }
@@ -441,7 +443,7 @@ const getReverserDatas=(config, datas,cols, rows)=>{
      let record = {},prop = column.prop,val = null,gg = column.group;
      valProperty = valProperty ||"id";
      if(gg && Object.keys(gg).length > 0 ){
-        // 
+        // debugger;
         let rr =  datas.filter(record=> record[gg.dim] === gg.val && row[valProperty] === record[valProperty]);
         if(rr && rr.length > 0){
             return rr[0][column[valProperty]]
@@ -457,7 +459,7 @@ const getReverserDatas=(config, datas,cols, rows)=>{
          let cn = column[valProperty];
          val = row[cn+"After"] || row[cn];
      }
-     //
+     //debugger;
      //有prop属性就是对象[fusion]，没有则为数组[echart]
      if (prop) {
          record[prop] = val;
