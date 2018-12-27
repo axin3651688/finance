@@ -29,11 +29,11 @@
 
         <div v-for="contact of latest_contact" :key=contact.id>
           <div class="contact-box" @click="contactClick(contact)">
-            <img class="contactAvatar" :src="contact.avatar"/>
+            <img class="contactAvatar" :src="contact.avatar" :onerror="avatar_male"/>
 
             <div class="contact-flex">
               <span class="contactName">{{contact.trueName}}</span>
-              <span class="contactdes">{{contact.sign}}</span>
+              <span class="contactdes" v-if="contact.sign">{{contact.sign}}</span>
             </div>
 
           </div>
@@ -65,6 +65,7 @@ export default {
 
   data() {
     return {
+      avatar_male: 'this.src="' + require('@ma/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       findCardArrs: [],
       nodeArrs: [],
       latest_contact: [],
@@ -75,6 +76,7 @@ export default {
 
 
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
 
     web_openWebUrl() {
       if (window.require) {
@@ -114,9 +116,15 @@ export default {
 
     },
     contactClick(user) {
-      console.log('点击了联系人-->>', user.trueName);
+      console.log('点击了联系人-->>', user);
+      user['receiverId'] = user.id;
+      let newuUser = {user: user};
+      this.ActionSetMessageStore({
+        miniType: 1100, // 1100 单聊
+        receiverData: newuUser
+      });
+      this.$router.push('/message_page/msg')
     }
-
 
   },
 
@@ -170,6 +178,8 @@ export default {
       display: flex;
       align-items: center;
       flex-direction: column;
+      border-radius: 8px;
+      cursor: pointer;
       transition: all 0.3s;
 
       &:hover {
@@ -195,7 +205,7 @@ export default {
   }
 
   .spanTitle {
-    padding: 0px 30px 30px 40px;
+    padding: 0px 30px 30px 50px;
     font-size: 20px;
     font-family: Microsoft YaHei;
     font-weight: bold;
@@ -216,13 +226,13 @@ export default {
       width: 260px;
       height: 100px;
       margin-right: 60px;
-      // margin-bottom: 30px;
       padding: 0px 0px 0px 10px;
       display: flex;
       align-items: center;
       flex-direction: row;
+      border-radius: 8px;
+      cursor: pointer;
       transition: all 0.3s;
-
       &:hover {
         background: rgba(0, 83, 159, 0.12);
       }
@@ -250,7 +260,7 @@ export default {
   }
 
   .contactTitle {
-    padding: 30px 30px 30px 40px;
+    padding: 30px 30px 30px 50px;
     font-size: 20px;
     font-family: Microsoft YaHei;
     font-weight: bold;
@@ -268,16 +278,16 @@ export default {
     flex-direction: column;
 
     .contact-box {
-
+      width: 260px;
+      height:100px;
       margin-bottom: 10px;
-      // width: 260px;
       height: 100px;
-      // margin-right: 60px;
-      // margin-bottom: 30px;
       padding: 0px 0px 0px 10px;
       display: flex;
       align-items: center;
       flex-direction: row;
+      border-radius: 8px;
+      cursor: pointer;
       transition: all 0.3s;
 
       &:hover {
@@ -291,13 +301,16 @@ export default {
       }
 
       .contact-flex {
+        box-sizing: border-box;
+        padding: 20px;
         height: 100px;
         display: flex;
+        flex: 1;
+        overflow: hidden;
         flex-direction: column;
         justify-content: space-around;
 
         .contactName {
-          padding-left: 30px;
           font-size: 16px;
           font-family: Microsoft YaHei;
           font-weight: 400;
@@ -307,7 +320,10 @@ export default {
         }
 
         .contactdes {
-          padding-left: 30px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
           font-size: 16px;
           font-family: Microsoft YaHei;
           font-weight: 400;

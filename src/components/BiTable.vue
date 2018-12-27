@@ -1,19 +1,18 @@
 <template>
-  <div>
-    <el-table
-      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
-      border
-      :stripe="true"
-      height="item.height || rowClass"
-      :cell-style="cellStyle"
-      @cell-click="onCellClick"
-      :span-method="rowSpanAndColSpanHandler"
-    >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
-      </el-tag>
-    </el-table>
-
+<div>
+  <el-table
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+    border
+    :stripe="true"
+    height="item.height || rowClass"
+    :cell-style="cellStyle"
+    @cell-click="onCellClick"
+     :span-method="rowSpanAndColSpanHandler" 
+  >
+    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+    </el-tag>
+  </el-table>
     <!-- sjz 分页功能 -->
     <el-pagination
       v-if="item.pagination"
@@ -42,8 +41,9 @@ export default {
   props: ["item"],
   data() {
     return {
-      currentPage: 1,
-      pagesize: 1,
+      dialogVisible: false,
+      currentPage:1,
+      pagesize:1,
       id: 0,
       text: "",
       rows: [],
@@ -62,6 +62,7 @@ export default {
     this.upData(this.item);
     //debugger;
     //this.getTableDataParams();
+    // cell-click   (row, column, cell, event)
   },
   mounted() {
     //zb 下属企业合并行
@@ -72,6 +73,13 @@ export default {
   },
 
   methods: {
+    handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -151,10 +159,10 @@ export default {
         return css+textIndent;
       }
     },
-    /**
-     * 单元格单击事件
-     */
-    onCellClick(row, column, cell, event) {
+     /**
+      * 单元格单击默认事件
+      */
+    onCellClickDefault(row, column, cell, event) {
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
@@ -174,7 +182,26 @@ export default {
       }
     },
     /**
-     * 获取rowspan
+     * 单元格单击事件
+     */
+    onCellClick(row, column, cell, event) {
+       if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
+            return this.item.onCellClick(row, column, cell, event,this);
+        }
+        this.onCellClickDefault(row, column, cell, event);
+      // this.dialogVisible = true
+      // this.a = event.path[0].innerHTML //获取到某一个单元格数据
+      // this.b = event.target.innerHTML//获取到某一个单元格数据
+      // // event.target.innerHTML = "";//改变单元格里面的数据
+      // // event.target.style.backgroundColor = "red"
+      // cell.style.backgroundColor = "red"
+      // // console.log("b",b)
+      // // console.log(event.target)
+      // console.log(column.id)
+    },
+
+    /**
+     * 获取rowspan   
      */
     getCellRowSpan(datas, row, config) {
       return datas.filter(record => record[config.idProperty] === row[config.idProperty])
@@ -232,7 +259,6 @@ export default {
       // return cells;
 
       //具体方法请参照elementUi-Table的配法
-      debugger;
       if (
         this.item &&
         this.item.rowSpanAndColSpanHandler &&
@@ -242,7 +268,6 @@ export default {
           { row, column, rowIndex, columnIndex },
           this
         );
-         debugger;
         return cells;
       }
       // let config = this.groupConfig;
@@ -367,5 +392,12 @@ export default {
 /* 横向滚动条 12.26 */
 .el-scrollbar__bar.is-horizontal > div {
   height: 0;
+}
+/* 数字靠右 */
+.el-table td.is-center{
+  text-align: right;
+}
+.el-table td{
+
 }
 </style>

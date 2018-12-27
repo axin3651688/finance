@@ -44,9 +44,7 @@
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
   <el-table-column v-else-if="col.type === 'decimal'"
-   :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150"
-   
-   >
+   :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150" >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -117,7 +115,6 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, col, row, rows) {
-        debugger;
       let colId = col.id;
       let rowId = row.id || row.nid;
       if (isNaN(rowId)) {

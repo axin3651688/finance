@@ -2,7 +2,8 @@
   "id": 1,
   "text": "指标分析",
   "showDims": ["company","month","year"],
-  "rows": [{
+  "rows": [
+      {
 
           "id": "1416001",
           "text": "营业收入"
@@ -98,7 +99,8 @@
           "text": "其中：研究与开发费"
       }
   ],
-  "columns": [{
+  "columns": [
+      {
           "id": "id",
           "type": "string",
           "hidden": true,
@@ -143,6 +145,7 @@
   "layout": {
       "xtype": "tab"
   },
+
   "items": [{
       "id":"firstTab",
       "layout":{
@@ -604,4 +607,5 @@
           }
       ]
   }]
+
 }
