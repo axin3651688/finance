@@ -45,16 +45,16 @@ export default {
         }
         if (!this.isEmpty(localStorage.year_cache)) {
           // debugger;
-          this.GetSideMid({ year: localStorage.year_cache });
+          this.GetSideMid({year: localStorage.year_cache});
         }
         if (!this.isEmpty(localStorage.month_cache)) {
-          this.GetSideMid({ month: localStorage.month_cache });
+          this.GetSideMid({month: localStorage.month_cache});
         }
         if (!this.isEmpty(localStorage.date_cache)) {
-          this.GetSideMid({ date: localStorage.date_cache });
+          this.GetSideMid({date: localStorage.date_cache});
         }
         if (!this.isEmpty(localStorage.module_cache)) {
-          this.GetSideMid({ module: localStorage.module_cache });
+          this.GetSideMid({module: localStorage.module_cache});
         }
         if (!this.isEmpty(localStorage.treeInfo)) {
           this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
@@ -71,7 +71,7 @@ export default {
         url = url + "?Authorization=" + authorization;
       }
       // debugger;
-      webSocket({ url: url });
+      webSocket({url: url});
     }
   },
   created() {
@@ -84,7 +84,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #app{
+  @import "@ms/variables.scss";
+
+  #app {
+    font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
   }

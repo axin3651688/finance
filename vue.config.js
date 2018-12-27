@@ -120,7 +120,9 @@ module.exports = {
                 '@s': resolve('src/styles'),
                 '~api': resolve('src/api'),
                 '@v': resolve('src/views'),
-                "utils": resolve('src/utils')
+                "utils": resolve('src/utils'),
+                "@ms": resolve('src/views/message_page/styles'), // 消息页面的 样式
+                "@ma": resolve('src/views/message_page/assets') // 消息页面的 静态资源
             }
         }
     },
