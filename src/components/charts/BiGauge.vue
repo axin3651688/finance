@@ -138,8 +138,12 @@ export default {
           return ele.id == GItemScoded;
         });//bnlj bnmb
       }
+      if(tempData && tempData.length > 0){
+        this.receive.tooltip.formatter =  "本期累计:"+(tempData[0].bnmb||0).toLocaleString()+"<br/> 本年目标:"+(tempData[0].bnlj||0).toLocaleString();
+      } else{
+        this.receive.tooltip.formatter =  "本期累计:"+(0).toLocaleString()+"<br/> 本年目标:"+(0).toLocaleString();
+      }
       
-      this.receive.tooltip.formatter =  "本期累计:"+(tempData[0].bnmb||0).toLocaleString()+"<br/> 本年目标:"+(tempData[0].bnlj||0).toLocaleString();
     }
   }
 };

@@ -518,7 +518,21 @@ const getReverserDatas=(config, datas,cols, rows)=>{
         config.rows = params.comparePeriod;//[{id:201505,text:"2015年05月"}]
     }
  }
-
+/**
+ * 舒心
+ */
+function closeTabTaget (params,$vue) {
+    debugger;
+    let me = this;
+    let tabs = $vue.items;
+    let tabName = $vue.activeTabName;
+    $vue.items = tabs.filter(tab => !tab.from);
+    if($vue.items&&$vue.items.length > 1){
+        $vue.activeTabName = $vue.items[0].text;
+    } else {
+        $vue.activeTabName = "0";
+    }
+}
  //添加export抛出模块
  export {
      createRandomDatas,
@@ -526,5 +540,6 @@ const getReverserDatas=(config, datas,cols, rows)=>{
      fomularParser,
      getValue,
      getConfigModelDatas,
-     rowsOfChildrenContent
+     rowsOfChildrenContent,
+     closeTabTaget
  }
