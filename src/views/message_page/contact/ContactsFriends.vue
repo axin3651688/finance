@@ -139,6 +139,7 @@ export default {
     // 和某某单聊, 路由到消息页面，要切换到单聊窗口
     chatWithSingle(receiverId) {
       this.ActionSetMessageStore({
+        targetId: receiverId,
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfoData
       });

@@ -37,7 +37,7 @@
               type="primary"
               size="medium"
               class="my-btn"
-              @click="chatWithGroup(rightInfo.groupId)"
+              @click="chatWithGroup(rightInfo)"
             >发送信息
             </el-button>
           </div>
@@ -198,11 +198,12 @@ export default {
     },
 
     // 开始群聊天
-    chatWithGroup(groupId) {
-      if (groupId) {
+    chatWithGroup(rightInfo) {
+      if (rightInfo.groupId) {
         this.ActionSetMessageStore({
+          targetId: rightInfo.groupId,
           miniType: 1101, // 1101 群聊,
-          receiverData: this.rightUserInfoData
+          receiverData: rightInfo
         });
         this.$router.push('/message_page/msg')
       }

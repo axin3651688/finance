@@ -21,7 +21,10 @@
                   <span class="title" v-else>{{item.name}}</span>
                   <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
                 </div>
-                <p v-if="item.content" v-html="parseEmotions(item.content)">{{item.content}}</p>
+                <p v-if="item.content">
+                  <span v-if="item.miniType===1101">{{item.name}}: </span>
+                  <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
+                </p>
                 <div class="right-border"></div>
                 <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
               </li>
