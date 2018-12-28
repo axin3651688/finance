@@ -52,7 +52,7 @@
             "options": {
                 "subType": "gauge",
                 "type": "advancechart",
-                "unUseDefaultConfig":true,
+
                 "getData": {
                     "type": 2,
                     "columns": [{
@@ -71,71 +71,75 @@
             },
             "chartOptions": {
                 "title": {
-                    	"padding":[410,0,0,0],   
-                        "text":"dfdff",
-                            "link":false,
-                            "top":"10",
-                            "x":"center",            
-                            "textAlign":"left",
-                            "textStyle": {       
-                                 "fontWeight": "bold",
-                                "fontSize": 16,
-                                "color": "#8796B0",
-                                "align":"center"
+                    "padding": [410, 0, 0, 0],
+                    "text": "dfdff",
+                    "link": false,
+                    "top": "10",
+                    "x": "center",
+                    "textAlign": "left",
+                    "textStyle": {
+                        "fontWeight": "bold",
+                        "fontSize": 16,
+                        "color": "#8796B0",
+                        "align": "center"
+                    }
+                },
+                "tooltip": {
+                    "formatter": ""
+                },
+                "series": [{
+                    "name": "xxx",
+                    "type": "gauge",
+                    "min": 0,
+                    "max": 200,
+                    "startAngle": 170,
+                    "endAngle": 10,
+                    "axisLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": [
+                                [0.25, "#F24764"],
+                                [0.5, "#FBCE14"],
+                                [0.75, "#11C3C2"],
+                                [1, "#2FC35B"]
+                            ],
+                            "width": 20
+                        }
+                    },
+                    "axisLabel": {
+                        "textStyle": {
+                            "fontSize": 9
+                        },
+                        "show": true
+                    },
+                    "center": ["50%", "70%"],
+                    "radius": "85%",
+                    "pointer": {
+                        "show": true,
+                        "length": "65%",
+                        "width": 5
+                    },
+                    "detail": {
+                        "formatter": "{value}%",
+                        "textStyle": {
+                            "fontSize": 20
+                        },
+                        "offsetCenter": [0, 20]
+                    },
+                    "data": [],
+                    "markPoint": {
+                        "symbol": "circle",
+                        "symbolSize": 5,
+                        "data": [{
+                            "x": "50%",
+                            "y": "45%",
+                            "itemStyle": {
+                                "color": "#fff"
                             }
-                          },
-                  "tooltip" : {
-                            "formatter": ""
-                          },
-                          "series": [
-                            {
-                              "name": "xxx",
-                              "type": "gauge",
-                              "min":0,
-                              "max":200,
-                              "startAngle": 170,
-                              "endAngle": 10,
-                              "axisLine" : {
-                                "show" : true,
-                                "lineStyle" : { 	
-                                  "color" :[[ 0.25, "#F24764" ],
-                                          [ 0.5, "#FBCE14" ],
-                                          [ 0.75, "#11C3C2" ],
-                                          [ 1,"#2FC35B" ]	],
-                                  "width" : 20
-                                }
-                              },
-                              "axisLabel": {  	                
-                                "textStyle": {       
-                                  "fontSize":9   
-                                },
-                                "show":true
-                              },
-                              "center": ["50%", "70%"],
-                              "radius": "85%", 
-                              "pointer": {
-                                "show": true,
-                                "length": "65%",
-                                "width": 5
-                              },
-                              "detail": {
-                                "formatter":"{value}%",
-                                "textStyle":{
-                                  "fontSize":20
-                                },
-                                "offsetCenter":[0,20]     
-                              }, 
-                              "data": [],
-                              "markPoint":{	
-                                "symbol":"circle",
-                                "symbolSize":5,
-                                "data":[
-                                  {"x":"50%","y":"45%","itemStyle":{"color":"#fff"}} 
-                                ]
-                              }
-                                  
-                            }
-                    ]
+                        }]
+                    }
+
+                }]
             }
         }]
     }]
