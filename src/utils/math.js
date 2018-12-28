@@ -212,7 +212,6 @@
   * 获取单元格数据
   */
  function getValue(cell, datas, rows) {
-     // debugger;
      if (!isNaN(cell)) {
          return cell - 0;
      }
@@ -234,9 +233,7 @@
   * 
   */
  const getConfigModelDatas = (config, datas, rows, cols) => {
-     debugger;
      if (config.type === 1) {//单值
-        debugger;
          return getValue(config.value, datas, rows, cols);
      }
      var configRows = getConfigRows(config.row, rows);
@@ -244,13 +241,9 @@
      if(configRows.length == 0){
         configRows = datas;
      }
-     //当动态加载行，没有配制rows的时候，就把datas给rows
-     if(rows.length == 0){
-        rows = datas;
-     }
      if (config.type === 2) {//单系列
         if (config.reverse) { //如果有配制的行列反向的话
-            return getReverserDatas(config, datas, cols,rows);
+            return getReverserDatas(config, datas, cols,configRows);
         }
          return singleSeriesDataParse(config, datas, configRows, cols);
      }
@@ -262,7 +255,6 @@
   * 获取配制的行项目数据
   */
  const getConfigRows = (configRows, rows) => {
-     // debugger;
      if (!configRows || Object.keys(configRows).length === 0) {
          return rows;
      }
@@ -455,7 +447,7 @@ const getReverserDatas=(config, datas,cols, rows)=>{
      let record = {},prop = column.prop,val = null,gg = column.group;
      valProperty = valProperty ||"id";
      if(gg && Object.keys(gg).length > 0 ){
-        // debugger;
+        // 
         let rr =  datas.filter(record=> record[gg.dim] === gg.val && row[valProperty] === record[valProperty]);
         if(rr && rr.length > 0){
             return rr[0][column[valProperty]]
@@ -471,7 +463,7 @@ const getReverserDatas=(config, datas,cols, rows)=>{
          let cn = column[valProperty];
          val = row[cn+"After"] || row[cn];
      }
-     //debugger;
+     //
      //有prop属性就是对象[fusion]，没有则为数组[echart]
      if (prop) {
          record[prop] = val;
@@ -526,7 +518,21 @@ const getReverserDatas=(config, datas,cols, rows)=>{
         config.rows = params.comparePeriod;//[{id:201505,text:"2015年05月"}]
     }
  }
-
+/**
+ * 舒心
+ */
+function closeTabTaget (params,$vue) {
+    debugger;
+    let me = this;
+    let tabs = $vue.items;
+    let tabName = $vue.activeTabName;
+    $vue.items = tabs.filter(tab => !tab.from);
+    if($vue.items&&$vue.items.length > 1){
+        $vue.activeTabName = $vue.items[0].text;
+    } else {
+        $vue.activeTabName = "0";
+    }
+}
  //添加export抛出模块
  export {
      createRandomDatas,
@@ -534,5 +540,6 @@ const getReverserDatas=(config, datas,cols, rows)=>{
      fomularParser,
      getValue,
      getConfigModelDatas,
-     rowsOfChildrenContent
+     rowsOfChildrenContent,
+     closeTabTaget
  }

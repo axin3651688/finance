@@ -45,6 +45,7 @@
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
+        :v-if="item.show"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
@@ -120,7 +121,7 @@ import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
-import { rowsOfChildrenContent } from "../utils/math";
+import { rowsOfChildrenContent,closeTabTaget } from "../utils/math";
 
 export default {
   name: "BiModule",
@@ -163,7 +164,7 @@ export default {
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
-    ...mapGetters(["year", "month", "company", "module_api"])
+    ...mapGetters(["year", "month", "company", "module_api","conversion"])
   },
   watch: {
     module_api(newid) {
@@ -174,19 +175,23 @@ export default {
     },
 
     year(newyear) {
-      this.changeYearBefore(newyear);
+      this.changeYearBefore(newyear,this);
       this.updateView("year");
     },
 
     month(newmonth) {
-      this.changeMonthBefore(newmonth);
+      this.changeMonthBefore(newmonth,this);
       this.updateView("month");
       console.log("改变", newmonth);
     },
     company(newId) {
-      this.changeCompanyBefore(newId);
+      this.changeCompanyBefore(newId,this);
       console.log("改变", newId);
       this.updateView("company");
+    },
+    conversion(id){
+      console.log(111111111)
+      debugger
     }
   },
 
@@ -253,12 +258,12 @@ export default {
         //设置页面标题
         document.title = bean.text;
       }
-      //showDims控制顶部导航栏的显示及隐藏
-      // console.log(bean.showDims);
-
+      /**
+       * showDims控制顶部导航栏的显示及隐藏
+       *
+       */
       if (bean.hasOwnProperty("showDims")) {
         // debugger;
-        // console.log(bean.showDims);
         this.ShowDims(bean.showDims);
       } else {
         this.ShowDims({
@@ -539,22 +544,6 @@ export default {
       debugger
       return datas;
     },
-
-      // 日历
-    units(datas){
-      let money = []
-      for(var i = 0;i<datas.length;i++){
-        // money.push(datas[i].hbzj)
-        var obj = datas[i]
-        console.log(obj.hbzj)
-      }
-      // var unit = (money[0])/1000
-      // console.log(unit)
-      // var datas = unit
-      debugger
-      // this.$set(this, "datas", datas);
-    },
-
     /**
      * 设置模型数据
      */
@@ -592,6 +581,21 @@ export default {
       this.items = tabs.filter(tab => tab.text !== targetName);
       if (this.items.length == 1) {
         this.activeTabName = "0";
+      }
+    },
+    /**
+     * @author szc 2018年12月28日 書於经邦软件公司
+     * 切换公司、日期、关闭打开的tab页的操作。
+     */
+    closeTabTaget (params,$vue) {
+      let me = this;
+      let tabs = $vue.items;
+      let tabName = $vue.activeTabName;
+      $vue.items = tabs.filter(tab => !tab.from);
+      if($vue.items&&$vue.items.length > 1){
+          $vue.activeTabName = $vue.items[0].text;
+      } else {
+          $vue.activeTabName = "0";
       }
     }
   }

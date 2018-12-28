@@ -9,8 +9,47 @@
       "id":"yszk",
       "text":"其他应收款",
       "xtype":"bi-table",
+      "queryDataBefore":function(params,config,option){//根据所选项目进行筛选
+        config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
+        let len = option.items.length;
+        let id = option.items[len-1].id;//获取下钻科目的id
+        if(id == "1101"){//条件筛选
+           config.sql = config.sql + "  where sfnb='1'";
+        }else if(id == "1102"){
+           config.sql = config.sql + "  where sfnb='0' and sfzc='1'";
+        }else if(id == "1103"){
+            config.sql = config.sql + " where sfnb='0' and sfzc='0' ";
+        }else if(id == "110401"){
+           config.sql = config.sql + "  where sfnb='0' and sfzc='0'and zwrzk='110401'";
+        }else if(id == "110402"){
+           config.sql = config.sql + "  where sfnb='0' and sfzc='0'and zwrzk='110402' ";
+        }else if(id == "110403"){
+           config.sql = config.sql + " where sfnb='0' and sfzc='0'and zwrzk='110403' ";
+        }else if(id == "110404"){
+           config.sql = config.sql + " where sfnb='0' and sfzc='0'and zwrzk='110404' ";
+        }else if(id == "110405"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and zwrzk='110405' ";
+        }else if(id == "110501"){
+          config.sql = config.sql + "where sfnb='0' and sfzc='0'and fzcfl='110501'  ";
+        }else if(id == "110502"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110502' ";
+        }else if(id == "110503"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110503' ";
+        }else if(id == "110504"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110504'  ";
+        }else if(id == "110505"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110505' ";
+        }else if(id == "110506"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110506' ";
+        }else if(id == "110507"){
+          config.sql = config.sql + " where sfnb='0' and sfzc='0'and fzcfl='110507' ";
+        }
+        return params;
+
+    },
       "config":{
-        "sql":"WITH COM AS( SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE = :company OR SPCODE LIKE :company||'%') AND CISDEL='N' AND CISLEAF = '1') SELECT NID,SK, BALANCE, ONEYEAR, TWOYEAR,THREEYEAR, FOURYEAR, SKXZ,(CASE WHEN SFNB='1' THEN '是' ELSE '否' END) AS SFNB, (CASE WHEN SFZC='1' THEN '是' ELSE '否' END) AS SFZC,FZCFLTEXT AS FZCFL,ZWRZKTEXT AS ZWRZK, KHSJE, DNKHSJE,YQZK, SZXSSJE FROM (SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,ISINSIDE AS SFNB,ISNORMAL AS SFZC,D.SCODE FZCFL,D.SNAME AS FZCFLTEXT,E.SCODE AS ZWRZK, E.SNAME AS ZWRZKTEXT, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY IN (SELECT SCODE FROM COM) AND DIM_PERIOD=:period AND DIM_ITEM='1003') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE IN ('1001','100101')) B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ) ",
+        "sql":"",
+        "sql1":"WITH COM AS( SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE = :company OR SPCODE LIKE :company||'%') AND CISDEL='N' AND CISLEAF = '1') SELECT NID,SK, BALANCE, ONEYEAR, TWOYEAR,THREEYEAR, FOURYEAR, SKXZ,(CASE WHEN SFNB='1' THEN '是' ELSE '否' END) AS SFNB, (CASE WHEN SFZC='1' THEN '是' ELSE '否' END) AS SFZC,FZCFLTEXT AS FZCFL,ZWRZKTEXT AS ZWRZK, KHSJE, DNKHSJE,YQZK, SZXSSJE FROM (SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,ISINSIDE AS SFNB,ISNORMAL AS SFZC,D.SCODE FZCFL,D.SNAME AS FZCFLTEXT,E.SCODE AS ZWRZK, E.SNAME AS ZWRZKTEXT, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY IN (SELECT SCODE FROM COM) AND DIM_PERIOD=:period AND DIM_ITEM='1003') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE IN ('1001','100101')) B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ) ",
         "_cube":{
           "subject":"1001",
           "cubeId":4
@@ -22,13 +61,14 @@
         "columns":[
             {
               "id": "szxssje",
-              "type": "number",
+              "type": "decimal",
               "text": "已形成实质性损失金额"
             },
             {
               "id":"id",
               "type":"index",
-              "text":"序号"
+              "text":"序号",
+              "width":"60px"
             },
             {
               "id": "sk",
@@ -38,38 +78,38 @@
             },
             {
               "id": "balance",
-              "type": "number",
+              "type": "decimal",
               "text": "余额"
             },
             {
-                "type": "number",
+                "type": "decimal",
                 "text": "账期",
                 "children":[
                   {
                       "id":"oneyear",
-                      "type":"number",
+                      "type":"decimal",
                       "text":"1年以内"
                   },
                   {
                       "id":"twoyear",
-                      "type":"number",
+                      "type":"decimal",
                       "text":"1-2年以内"
                   },
                   {
                       "id":"threeyear",
-                      "type":"number",
+                      "type":"decimal",
                       "text":"2-3年以内"
                   },
                   {
                     "id":"fouryear",
-                    "type":"number",
+                    "type":"decimal",
                     "text":"3年以上"
                 }
             ]
         },
             {
               "id": "skxz",
-              "type": "number",
+              "type": "string",
               "text": "商客性质*"
             },
             {
@@ -84,27 +124,27 @@
             },
             {
               "id": "fzcfl",
-              "type": "number",
+              "type": "string",
               "text": "非正常分类*"
             },
             {
               "id": "zwrzk",
-              "type": "number",
+              "type": "string",
               "text": "债务人情况*"
             },
             {
               "id": "kshjk",
-              "type": "number",
+              "type": "decimal",
               "text": "可收回金额*"
             },
             {
               "id": "dnkhsje",
-              "type": "number",
+              "type": "decimal",
               "text": "其中:当年可收回金额*"
             },
             {
               "id": "yqzk",
-              "type": "number",
+              "type": "decimal",
               "text": "逾期账款"
             }
           ],
