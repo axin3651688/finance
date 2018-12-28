@@ -42,25 +42,6 @@ export default {
           backgroundColor: "#666",
           containLabel: true
         },
-
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {
-              show: true
-            },
-
-            dataView: {
-              show: true,
-              readOnly: false
-            },
-
-            saveAsImage: {
-              show: true
-            }
-          }
-        },
-
         xAxis: [
           {
             type: "category",

@@ -241,6 +241,7 @@ BiText
             levelProperties:{text:"level",text_:"level_"}//加缩进 可选 table
             cellStyle:"单元格样式", //可选 table
             onCellClick:"单元格点击事件" //可选 table 
+            onRowClick:"树表单元格点击事件"
             options:{}
         },
         {
@@ -330,3 +331,7 @@ listeners:[
 ## 顶部需要日期的配置
 默认 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
 此时,分开的年月将被隐藏,取而代之的为带日的日期选择器
+
+
+#指标分析右边距(BiModule 51行)
+默认不传为24px,如果需要修改其他值,在item下面加"class_pr":"36px"

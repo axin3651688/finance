@@ -129,11 +129,16 @@
       // 当折叠时显示的样式
       .el-menu--collapse {
         overflow: hidden;
-        .el-menu-item{
-          margin-left:0px;
+
+        .el-menu-item {
+          margin-left: 0px;
         }
+
         .el-submenu {
           padding-left: 0;
+
+
+
           &>.el-submenu__title {
             &>span {
               overflow: hidden;

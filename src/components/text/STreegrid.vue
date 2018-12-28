@@ -148,6 +148,7 @@ export default {
       this.convertData();
     },
     array(datas){
+      debugger
       let data=datas
       // console.log("w",data)
       let arr = []

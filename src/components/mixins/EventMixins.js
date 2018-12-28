@@ -21,6 +21,7 @@ export default {
     let xtype = me.item.xtype;
     if (me.item.listeners) {
       me.item.listeners.forEach(listener => {
+        debugger
         if (listener.type) {
           if (xtype === "chart" || xtype === "bi-chart") {
             this.chartEventHandler(listener);
@@ -60,12 +61,15 @@ export default {
     chartEventHandler(listener) {
       let me = this;
       this.$children[0].chart.on(listener.type, function (params) {
+        debugger
+        if(listener.clickBefore && typeof listener.clickBefore == "function"){
+          listener = listener.clickBefore(listener,me);
+        }
         me.commonHandler(listener, params);
 
       });
 
     },
-
     /**
      * 表格事件处理
      */

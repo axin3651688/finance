@@ -59,7 +59,9 @@ export default {
   },
 
   created() {
+    debugger
     this.upData(this.item);
+    console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -129,7 +131,7 @@ export default {
      */
     cellStyle(row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
-        return this.item.cellStyle(row);
+        return this.item.cellStyle(row,this);
       }
       let css = "padding: 4px 0;";
       let pro = row.column.property;
@@ -187,11 +189,11 @@ export default {
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
       // // event.target.innerHTML = "";//改变单元格里面的数据
-      // // event.target.style.backgroundColor = "red"
+      // event.target.style.backgroundColor = "red"
       // cell.style.backgroundColor = "red"
       // // console.log("b",b)
       // // console.log(event.target)
-      // console.log(column.id)
+      // console.log(column)
     },
 
     /**

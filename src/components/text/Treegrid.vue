@@ -1,6 +1,6 @@
 <template>
   <div v-if="item.show">
-    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe>
+    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe @row-click="onRowClick">
     <el-table-column v-if="item.config.columns.length === 0" width="120" ref="tchild">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -121,6 +121,13 @@ export default {
   //   }
   // },
   methods: {
+     onRowClick(row,e,column) {
+      //  console.log(column)
+      debugger
+       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
+            return this.item.onRowClick(row, column, e,this);
+        }
+     },
      /**
       * 格式化数据源
       */
