@@ -59,9 +59,9 @@ export default {
   },
 
   created() {
-    debugger
+    debugger;
     this.upData(this.item);
-    console.log(this.upData(this.item))
+   // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -93,7 +93,7 @@ export default {
     },
 
     upData(item) {
-      debugger;
+     // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
@@ -180,7 +180,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-      debugger
+     // debugger
        if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
             return this.item.onCellClick(row, column, cell, event,this);
         }
