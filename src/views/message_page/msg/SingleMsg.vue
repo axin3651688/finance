@@ -3,7 +3,7 @@
     <div class="top">
       <div class="title">
         <div class="img-box">
-          <img :src="messageStore.receiverData.user.avatar" :onerror="defaultImg">
+          <img :src="messageStore.receiverData.user.avatar" v-avatar="messageStore.receiverData.user.trueName">
         </div>
         <div class="titleleft">
           <h3>
@@ -76,7 +76,6 @@ export default {
   data() {
     return {
       activeBtn: 'checked',
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       receiverName: '', // 聊天对象名称
       receiverAvatar: '', // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据

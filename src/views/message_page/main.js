@@ -8,7 +8,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
 import {directive} from 'namedavatar/src/vue' // 填充默认头像 https://github.com/joaner/namedavatar
 
-
 Vue.directive('avatar', directive);
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

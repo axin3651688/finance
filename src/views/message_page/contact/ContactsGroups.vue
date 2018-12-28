@@ -9,7 +9,7 @@
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar" :onerror="avatar_male"/>
+                <img :src="group.avatar" v-avatar="group.text" />
               </div>
               <div class="info">
                 <h3>{{group.text}}（{{group.count}}人）</h3>
@@ -26,7 +26,7 @@
           <div class="top-wrap">
             <div>
               <div class="img-box">
-                <img :src="rightInfo.avatar" alt="" class="avatar-img" :onerror="avatar_male">
+                <img :src="rightInfo.avatar" class="avatar-img" v-avatar="rightInfo.text">
               </div>
             </div>
             <div class="text">
@@ -53,7 +53,7 @@
                       <figure>
                         <div>
                           <div class="img-box">
-                            <img :src="user.avatar" :onerror="avatar_male">
+                            <img :src="user.avatar" v-avatar="user.trueName">
                           </div>
                         </div>
                         <span class="info">{{user.trueName}}</span>
@@ -105,7 +105,6 @@ export default {
   data() {
     return {
       qrUrl: null, // 群二维码地址
-      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
       groupList: null, // [{},{}] 我的群组列表

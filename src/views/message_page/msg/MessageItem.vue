@@ -2,7 +2,7 @@
   <div class="MessageItem message-box">
     <div class="message-top">
       <div class="avatar-box">
-        <img :src="data.avatar" :alt="data.name" :onerror="defaultImg">
+        <img :src="data.avatar" v-avatar="data.name">
       </div>
       <h3 class="user-name">{{data.name}}</h3>
       <div class="send-time">
@@ -75,7 +75,6 @@ export default {
   props: ['data'],
   data() {
     return {
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
     }
   },

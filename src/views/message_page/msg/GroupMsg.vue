@@ -3,7 +3,7 @@
     <div class="top">
       <div class="left">
         <div class="img-box img-box__group" @click="showGroupMembers = true">
-          <img :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
+          <img :src="messageStore.groupInfo.info.avatar" v-avatar="messageStore.groupInfo.info.text">
         </div>
         <div class="content">
           <h3 class="title">
@@ -108,7 +108,7 @@
           <div>
             <div class="img-box">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <img v-else :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
+              <img v-else :src="messageStore.groupInfo.info.avatar" v-avatar="messageStore.groupInfo.info.text">
             </div>
           </div>
           <el-upload
@@ -188,7 +188,6 @@ export default {
       oldGroupName:'',
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],

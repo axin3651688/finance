@@ -26,7 +26,7 @@
               >
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar" :onerror="avatar_male"/>
+                    <img :src="user.avatar" v-avatar="user.trueName"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -45,7 +45,7 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" :onerror="avatar_male">
+              <img :src="rightUserInfo.user.avatar" v-avatar="rightUserInfo.user.trueName">
             </div>
           </div>
           <div class="text">
@@ -97,7 +97,6 @@ export default {
   name: 'ContactsTeams',
   data() {
     return {
-      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: this.loginUserId, // 当前选中的用户id
       companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象

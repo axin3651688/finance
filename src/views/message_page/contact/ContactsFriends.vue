@@ -10,7 +10,8 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar" :onerror="avatar_male"/>
+                <img :src="friend.avatar" v-avatar="friend.trueName"/>
+                <img v-avatar="'Tom Hanks'" width="36"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -26,11 +27,11 @@
       <div v-if="rightUserInfoData">
         <div class="panel-right-top">
           <div class="img-box">
-            <img src="" alt="" class="avatar-img">
+            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName" />
           </div>
           <div class="text">
             <h3 class="text-title" v-if="rightUserInfoData.user.trueName">{{rightUserInfoData.user.trueName}}</h3>
-            <p class="text-info">研发部 - 前段工程师</p>
+            <p class="text-info">{{rightUserInfoData.user.username}}</p>
           </div>
         </div>
         <div class="panel-right-content">
@@ -81,7 +82,6 @@ export default {
 
   data() {
     return {
-      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       activeFriend: null, // 当前选中的好友
@@ -151,12 +151,14 @@ export default {
 }
 </script>
 
+
 <style lang="scss" scoped>
   @import "../styles/variables.scss";
 
   .ContactsFriends {
     display: flex;
     height: 100%;
+
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }
@@ -186,7 +188,10 @@ export default {
           position: absolute;
           right: 24px;
           top: 50%;
+          font-size: 16px;
+          font-weight: bold;
           transform: translateY(-50%);
+          color: rgba(0, 0, 0, 0.2);
         }
       }
 
@@ -302,15 +307,19 @@ export default {
           background-repeat: no-repeat;
           background-size: 36px 36px;
         }
+
         .icon-gender__male {
           background-image: url($iconGenderMale);
         }
+
         .icon-text {
           background-image: url($iconTest);
         }
+
         .icon-phone {
           background-image: url($iconPhone);
         }
+
         .icon-email {
           background-image: url($iconEmail);
         }

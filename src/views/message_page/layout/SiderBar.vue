@@ -2,7 +2,7 @@
   <div class="SiderBar">
     <div class="siderbar-top">
       <div class="login-info">
-        <img :src="user.user.avatar">
+        <img :src="user.user.avatar" :title="user.user.trueName">
       </div>
     </div>
     <div class="siderbar-bottom">

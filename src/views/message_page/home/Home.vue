@@ -161,7 +161,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  Index {
+  .Index {
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }
