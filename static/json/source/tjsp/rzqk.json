@@ -44,7 +44,7 @@
         "width":"240px"
     }, {
         "id": "jkbj",
-        "type": "number",
+        "type": "decimal",
         "text": "借款本金"
     }, {
         "id": "qsrq",
@@ -56,12 +56,12 @@
         "text": "到期日期"
     }, {
         "id": "ll",
-        "type": "number",
+        "type": "decimal",
         "text": "利率（%）",
         "unit":"%"
     }, {
         "id": "zhcb",
-        "type": "number",
+        "type": "decimal",
         "text": "综合成本（%）",
         "unit":"%"
     }, {
