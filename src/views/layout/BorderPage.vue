@@ -38,17 +38,18 @@ export default {
       };
     }
   },
-  created(){
-    //alert("来created..."+isShow())
+  created() {
+    // alert("来created..." + this.isShow());
   },
 
   methods: {
     ...mapActions(["ToggleSideBar"]),
-    isShow(){
-      if(this.classObj.mobile){
+    isShow() {
+      // debugger;
+      if (this.classObj.mobile) {
         return false;
       }
-      if(Cnbi.isEmpty(this.user)){
+      if (Cnbi.isEmpty(this.user)) {
         return false;
       }
       return true;

@@ -1,322 +1,130 @@
 {
-    "id": "0002",
-    "text": "利润表",
-    "config": {
-        "_sql": " select dim_itemperiod as id,fact_a as a,fact_b as b,fact_c as c,fact_d as d from DW_FactFinancePeriod where  subject = '0002'  and dim_period = '201712' and dim_company = '1' and dim_itemperiod in ('1416001','141600101','141600102','1426401','142640101','142640102','1426405','1436601','1436602','1436603','143660302','1436701','1416101','1416111','141611101','1416112','1416113','1402100','1416301','1426711','142671101','1403100','1426801','1400100','1400111','1400112','1400120','1400121','1400122')",
-        "cube": {
-            "subject": "0002",
-            "cubeId": 4
-        },
-        "mainDim": "itemperiod",
-        "needDims": [
-            "year",
-            "month",
-            "company"
-        ],
-        "random": {
-            "min": 100,
-            "max": 100000
-        },
-        "type": 1
+    "id":"0002",
+    "text":"利润表",
+    "layout":{
+        "xtype":"tab"
     },
-    "layout": "column",
-    "columns": [
-        {
-            "id": "D",
-            "type": "decimal",
-            "hidden":true,
-            "text": "预算累计数"
+    
+    "changeMonthBefore":function(){
+        // alert('changeMonthBefore');
+    },
+    "changeCompanyBefore":function(){
+        // alert('changeCompanyBefore');
+    },
+    "changeYearBefore":function(){
+        // debugger
+		// alert('changeYearBefore');
+    },
+    "items":[{
+        "id":"jlr",
+        "text":"利润表",
+        "xtype":"bi-table",
+        
+        "config":{
+            "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
+            "cube":{
+                "cubeId":4,
+                "subject":"0002"
+            },
+            "mainDim":"itemperiod",
+            "needDims":["year","month","company"],
+            "random":{"min":100,"max":100000},
+            "type":1     
         },
-        {
-            "id": "C",
-            "type": "decimal",
-            "hidden":true,
-            "text": "预算数"
-        },
-        {
+        
+        "columns":[{      
             "id": "B",
             "type": "decimal",
-            "text": "累计数"
-        },
-        
-        {
+            "width":"600px",
+            "text": "累计数"       
+        },{
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+          },{
+            "id":"text",
+            "type":"string",
+            "width":"330px",
+            "text":"项目"
+        },{
             "id":"index",
             "type":"index",
-            "text":"序号"
-        },
-        {
-            "id": "text",
-            "type": "string",
-            "text": "项目"
-        },
-        
-        {
+            "width":"60px",
+            "text":"行次"
+        },{
             "id": "A",
             "type": "decimal",
-            "text": "本期数"
-        }
-        
-    ],
-    "rows": [{
-            "id": "1416001",
-            "text": "一、营业总收入",
-            "level":2,
-            "drill":{
-                "type":"click",
-                "way":"addTab",
-                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
-                "handler": ($vue,params) =>{
-                    console.log(params);
-                }
-            },
-            "A": "A$141600101+A$141600102",
-            "B": "B$141600101+B$141600102",
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "141600101",
-            "text": "其中：主营业务收入",
-            "level":3,
-            "drill":{
-                "type":"click",
-                "way":"addTab",
-                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
-                "handler": ($vue,params) =>{
-                    console.log(params);
-                }
-            },
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "141600102",
-            "text": "其他业务收入",
-            "level":2,
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1426401",
-            "text": "减：营业成本",
-            "A": "A$142640101+A$1426405+A$1436601+A$1436602+A$1436603+A$1436701+A$143670101",
-            "B": "B$142640101+B$1426405+B$1436601+B$1436602+B$1436603+B$1436701+B$143670101",
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "142640101",
-            "text": "其中：主营业务成本",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "142640102",
-            "text": "其他业务成本",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1426405",
-            "text": "营业税金及附加",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1436601",
-            "text": "销售费用",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1436602",
-            "text": "管理费用",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1436603",
-            "text": "财务费用",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "143660302",
-            "text": "其中：利息支出",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1436701",
-            "text": "资产减值损失",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1416101",
-            "text": "加：公允价值变动收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1416111",
-            "text": "投资收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "141611101",
-            "text": "其中：对联营企业和合营企业的投资收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1416112",
-            "text": "资产处置损益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1416113",
-            "text": "其他收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1402100",
-            "text": "二、营业利润",
-            "A": "A$1416001-A$1426401+A$1416101+A$1416111+A$1416113+A$141611102+A$141611103",
-            "B": "B$1416001-B$1426401+B$1416101+B$1416111+B$1416113+B$141611102+B$141611103",
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1416301",
-            "text": "加：营业外收入",
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1426711",
-            "text": "减：营业外支出",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "142671101",
-            "text": "其中：非流动资产处置损失",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1403100",
-            "text": "三、利润总额",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1426801",
-            "text": "减：所得税费用",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400100",
-            "text": "四、净利润",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400111",
-            "text": "归属于母公司所有者的净利润",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400112",
-            "text": "少数股东损益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400120",
-            "text": "每股收益：",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400121",
-            "text": "基本每股收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        },
-        {
-            "id": "1400122",
-            "text": "稀释每股收益",
-            "A": 0,
-            "B": 0,
-            "C": 0,
-            "D": 0
-        }
-    ],
-    "layout": {
-        "xtype": "tab"
-    },
-    "items": [{
-        "xtype": "bi-table",
-        "id": "lrb",
-        "text": "利润表",
-        "onCellClick":function(row, column, cell, event,param) {
+            "width":"600px",
+            "text": "当月数"
+        }],
+        "rows":[],
+        "sourceApi":'',
+        "levelProperties":{text:"nlevel"},//加缩进 可选 table
+        "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
             debugger
-        }
+            let id = row.id, text = row.text;
+            if((row.A && row.A!=0) || (row.B && row.B!=0)){
+                // if(vue.$store.getters.treeInfo.industryId){ //如果公司是1级公司就展示所有子属二级公司；自动展开；
+                    vue.commonHandler(
+                        {
+                            "type":"click",//事件类型
+                            "way":"addTab",//调用的公共方法
+                            "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
+                            "handler":($vue,params)=>{//自定义的回调
+                                console.info(params);
+                                debugger; 
+                            } 
+                        },
+                        { row: row, column: column, cell: cell, event: event },
+                        { id: id, text: text }
+                    );
+                // }else{//否则，直接展现子属二级及以下公司
+                //     vue.commonHandler(
+                //         {
+                //             "type":"click",//事件类型
+                //             "way":"addTab",//调用的公共方法
+                //             "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
+                //             "handler":($vue,params)=>{//自定义的回调
+                //                 console.info(params);
+                //                 debugger; 
+                //             } 
+                //         },
+                //         { row: row, column: column, cell: cell, event: event },
+                //         { id: id, text: text }
+                //     );
+                // }
+            }
+            console.log(this);
+        },
+        "drillProperties":["text"],//有钻取，给蓝色 可选 table
+        "cellStyle":function(row){
+            debugger
+            let css = "padding: 4px 0;";
+            let pro = row.column.property;
+            if (!pro) {
+                return css;
+            }
+            let levelProperties = this.levelProperties;//行缩进
+            let textIndent ="";
+            let record = row.row;  //获取的行数据        
+            let drillProperties = this.drillProperties;//给那一列赋予蓝色
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {//行缩进处理
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            if (drillProperties.indexOf(pro) != -1) { // 判断给那一列附蓝色；不然一行全是蓝色的
+                if ((record.A && record.A!=0) || (record.B && record.B!=0)) {//判断A、B的值是否存在 and 不能等于0；
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                } else {//否则不给蓝色：说明无click事件；不做处理；
+                    return css+textIndent;
+                }
+            } else {
+                return css+textIndent;
+            }
+        }      
     }]
 }

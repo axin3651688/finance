@@ -3,12 +3,8 @@
     "text": "指标分析",
     "showDims": ["company", "month", "year"],
     "rows": [{
-
-            "id": "1416001",
-            "text": "营业收入"
-        }
-
-    ],
+        "id": "1416001"
+    }],
     "columns": [{
             "id": "id",
             "type": "string",
@@ -98,7 +94,8 @@
                         "width": 9
                     },
                     "detail": {
-                        "formatter": "{value}%"
+                        "formatter": "{value}%",
+                        "offsetCenter": [0, 80]
                     },
                     "data": [{
                         "value": "",

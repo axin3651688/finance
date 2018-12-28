@@ -50,7 +50,7 @@ const prame = {
       localStorage.setItem('treeInfo', JSON.stringify(treeInfo));
     },
     SHOW_DIMS: (state, data) => {
-      // debugger
+      // 此方法即可以接受数组对状态初始化,又可以接受对象更改其状态
       console.log(data);
       if (data.constructor == Array) {
         state.showDims.company = false,
@@ -64,8 +64,6 @@ const prame = {
           state.showDims[keys] = data[keys]
         });
       }
-
-
     },
   },
 

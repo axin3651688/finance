@@ -253,12 +253,12 @@ export default {
         //设置页面标题
         document.title = bean.text;
       }
-      //showDims控制顶部导航栏的显示及隐藏
-      // console.log(bean.showDims);
-
+      /**
+       * showDims控制顶部导航栏的显示及隐藏
+       *
+       */
       if (bean.hasOwnProperty("showDims")) {
         // debugger;
-        // console.log(bean.showDims);
         this.ShowDims(bean.showDims);
       } else {
         this.ShowDims({

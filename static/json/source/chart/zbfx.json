@@ -435,8 +435,19 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["235"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
@@ -487,8 +498,19 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["236"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
@@ -539,8 +561,19 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["238"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
@@ -591,8 +624,19 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["1416001"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
@@ -891,8 +935,19 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["240"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
@@ -936,7 +991,7 @@
             }, {
                 "xtype": "chart",
                 "id": "lrb3",
-                "text": "利润表3",
+                "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
                 "weight": 18,
                 "config": {
                     "_cube": {
@@ -1059,7 +1114,7 @@
 
                 "options": {
                     "type": "advancechart",
-
+                    "subType": "line",
                     "getData": {
                         "type": 3,
                         "columns": [{
