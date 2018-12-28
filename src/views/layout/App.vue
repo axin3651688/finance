@@ -5,7 +5,8 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import webSocket from "../../utils/webSocket";
+import webSocket from "utils/webSocket";
+import { getClientParams } from "utils/index";
 export default {
   name: "app",
   data() {
@@ -16,8 +17,14 @@ export default {
   created() {
     //debugger;
     this.readLocalStorage();
-    let authorization = localStorage.getItem("authorization");
-
+    let bean = getClientParams();
+    let authorization = bean.authorization||bean.tikct||bean.token;
+    if(!authorization){
+        authorization = localStorage.getItem("authorization");
+    }else{
+      alert("-----------------从地址中取行了："+authorization)
+    }
+    debugger;
     this.initSocket(authorization);
   },
   methods: {
@@ -61,14 +68,17 @@ export default {
       }
     },
     initSocket(authorization) {
-      // let url = "ws://192.168.2.2:7008/socket.io/";
-      let url = "ws://192.168.1.118:7009/socket.io/";
+      let url = "ws://192.168.2.237:7006/socket.io/";
+      //  let url = "ws://192.168.1.118:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }
       // debugger;
       webSocket({ url: url });
+    },
+    destroyed: function() {
+      console.log("我已经离开了！");
     }
   }
 };

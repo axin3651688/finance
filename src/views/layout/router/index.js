@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
+import { getClientParams } from "utils/index";
 const router = new Router({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes: [{
       path: '/',
       redirect: '/message',
@@ -15,32 +15,17 @@ const router = new Router({
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
-          path: '/jsnk/module',
-          name: 'module',
+          path: '/main',
+          name: 'main',
           component: () =>
             import('@v/BiModule'),
         },
-        // 风险分析
-        {
-          path: '/Risk',
-          name: 'Risk',
-          component: () =>
-            import('@v/intelligenceReport/Risk_analysis.vue')
-        },
-
         // 列表
         {
           path: '/list',
           name: 'list',
           component: () =>
             import('@v/intelligenceReport/List.vue')
-        },
-        // 报告查看
-        {
-          path: '/Report_view',
-          name: 'Report_view',
-          component: () =>
-            import('@v/intelligenceReport/Report_view.vue')
         },
 
         // 消息模块
@@ -77,12 +62,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Report_view.vue')
         },
-        {
-          path: '/message',
-          name: 'message',
-          component: () =>
-            import('@v/message/Message.vue')
-        },
+
         {
           path: '/cross',
           name: 'cross',
@@ -228,7 +208,7 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: () =>
-        import('@v/layout/Login'),
+        import('@v/layout/login'),
     },
     {
       path: '*',
@@ -243,11 +223,15 @@ const router = new Router({
 // 路由守卫
 
 router.beforeEach((to, from, next) => {
-  const isLogin = localStorage.authorization ? true : false;
+  let bean = getClientParams();
+  let authorization = bean.authorization||bean.tikct||bean.token;
+  if(!authorization){
+    authorization = localStorage.authorization ? true : false;
+  }
   if (to.path == "/login" || to.path == "/register") {
     next();
   } else {
-    isLogin ? next() : next("/login");
+    authorization ? next() : next("/login");
   }
 })
 

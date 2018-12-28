@@ -82,6 +82,8 @@ export default {
     upData(item) {
       let chartType = item.options.getData.type,subType = this.item.options.subType;
       debugger;
+      console.log(this.item.options.datas);
+      
       if (chartType === 1) {
         /**
          * 就是一个值数据的图形  dataRange   value

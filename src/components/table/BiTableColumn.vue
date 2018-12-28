@@ -49,10 +49,10 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData.datas,col,scope.row,tableData.config.rows)"
+        :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
-        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col,scope.row,tableData.config.rows)}}</span>
+        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -114,27 +114,37 @@ export default {
     /**
      * 获取单元格数据
      */
-    getCellValues(datas, col, row, rows) {
+    getCellValues(datas, col, scope, rows) {
       let colId = col.id;
+      let row = scope.row;
       let rowId = row.id || row.nid;
-      if (isNaN(rowId)) {
+      if (rowId && isNaN(rowId)) {
         return "";
       }
       if (colId.indexOf("_") != -1) {
         rowId = row.id_; //并列行的
       }
-      let value = Math.getCellValue(datas, colId, rowId, rows);
+      let value = 0 ; 
+      if(Array.isArray(datas) && datas.length == 0){
+         return "--";
+      }
+      if(rowId){
+         value = Math.getCellValue(datas, colId, rowId, rows);
+      }else{
+        value = datas[scope.$index][colId];
+      }
       if (!value) {
         return "--";
       }
       // value = ((value - 0) / 10000).toLocaleString();
       // 千分位  保留两位小数
-       value = ((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+       value = Math.decimalToLocalString(value);//((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
       return value;
     }
   },
   created() {
+   // debugger;
     //this.$set(this, "tableData", null);
   }
 };

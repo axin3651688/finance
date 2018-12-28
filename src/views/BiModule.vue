@@ -45,6 +45,7 @@
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
+        :v-if="item.show"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >
@@ -139,7 +140,7 @@ export default {
       config: {},
       activeTabName: "0",
       api: null,
-
+      source_id: 0,
       layout: {
         xtype: "form"
       },
@@ -154,8 +155,6 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    //
-
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
@@ -255,17 +254,20 @@ export default {
         document.title = bean.text;
       }
       //showDims控制顶部导航栏的显示及隐藏
-      //
       // console.log(bean.showDims);
 
       if (bean.hasOwnProperty("showDims")) {
-        bean.showDims.forEach(ele => {
-          if (ele == "day") {
-            this.ShowDims({ year: false, month: false, day: true });
-          }
-        });
+        // debugger;
+        // console.log(bean.showDims);
+        this.ShowDims(bean.showDims);
       } else {
-        this.ShowDims({ year: true, month: true, day: false });
+        this.ShowDims({
+          company: true,
+          year: true,
+          month: true,
+          day: false,
+          conversion: false
+        });
       }
       return this;
     },
@@ -277,6 +279,10 @@ export default {
       this.debug = 1; //临时的动作
       if (this.module_api) {
         this.api = this.module_api;
+      }
+      //临时测试用
+      if (this.source_id) {
+        this.api = this.source_id;
       }
       //如果是测试环境，直接从远程加载，避免手动清理缓存的痛苦 debug=1
       if (this.debug) {
@@ -452,7 +458,7 @@ export default {
         // debugger
         //在此加了查询数据之前的拦截处理
         if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
-          params = item.queryDataBefore(params,config,this);
+          params = item.queryDataBefore(params, config, this);
         }
         config.type = config.type || 1;
         if (config.sql) {
@@ -562,7 +568,7 @@ export default {
       }
       this.activeTabName = tabName;
       this.items = tabs.filter(tab => tab.text !== targetName);
-      if(this.items.length==1){
+      if (this.items.length == 1) {
         this.activeTabName = "0";
       }
     },

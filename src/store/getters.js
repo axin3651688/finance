@@ -25,6 +25,8 @@ const getters = {
   company: state => state.prame.command.company,
   // 顶部选中公司名字
   companyName: state => state.prame.command.companyName,
+  // 顶部选中单位名字
+  conversion: state => state.prame.command.conversion,
   //顶部公司点击信息大全
   treeInfo: state => state.prame.treeInfo,
   // 侧边栏展开父级id

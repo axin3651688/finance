@@ -135,7 +135,6 @@
                 "subType": "pie",
                 "getData": {
                     "type": 2,
-
                     "columns": [{
                         "id": "text",
                         "prop": "name"

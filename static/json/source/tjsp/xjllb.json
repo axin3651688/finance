@@ -12,9 +12,6 @@
       "random":{"min":100,"max":100000},
       "type":1
     },
-    // "__queryDataAfter":function(data){//数据的后置处理
-    //     return data;
-    // },
     "layout": {
        "xtype": "tab"
    },

@@ -21,26 +21,11 @@
     },
     "layout": "column",
     "columns": [
-        
         {
-            "id": "text",
-            "type": "string",
-            "text": "项目"
-        },
-        {
-            "id":"index",
-            "type":"index",
-            "text":"序号"
-        },
-        {
-            "id": "A",
+            "id": "D",
             "type": "decimal",
-            "text": "本期数"
-        },
-        {
-            "id": "B",
-            "type": "decimal",
-            "text": "累计数"
+            "hidden":true,
+            "text": "预算累计数"
         },
         {
             "id": "C",
@@ -49,10 +34,26 @@
             "text": "预算数"
         },
         {
-            "id": "D",
+            "id": "B",
             "type": "decimal",
-            "hidden":true,
-            "text": "预算累计数"
+            "text": "累计数"
+        },
+        
+        {
+            "id":"index",
+            "type":"index",
+            "text":"序号"
+        },
+        {
+            "id": "text",
+            "type": "string",
+            "text": "项目"
+        },
+        
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "本期数"
         }
         
     ],
@@ -60,10 +61,14 @@
             "id": "1416001",
             "text": "一、营业总收入",
             "level":2,
-            "onCellClick":function(row){
-                debugger
-              alert("row")
-          },
+            "drill":{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
+                "handler": ($vue,params) =>{
+                    console.log(params);
+                }
+            },
             "A": "A$141600101+A$141600102",
             "B": "B$141600101+B$141600102",
             "C": 0,
@@ -73,6 +78,14 @@
             "id": "141600101",
             "text": "其中：主营业务收入",
             "level":3,
+            "drill":{
+                "type":"click",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug.json",
+                "handler": ($vue,params) =>{
+                    console.log(params);
+                }
+            },
             "A": 0,
             "B": 0,
             "C": 0,
@@ -301,6 +314,9 @@
     "items": [{
         "xtype": "bi-table",
         "id": "lrb",
-        "text": "利润表"
+        "text": "利润表",
+        "onCellClick":function(row, column, cell, event,param) {
+            debugger
+        }
     }]
 }

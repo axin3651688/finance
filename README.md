@@ -241,6 +241,7 @@ BiText
             levelProperties:{text:"level",text_:"level_"}//加缩进 可选 table
             cellStyle:"单元格样式", //可选 table
             onCellClick:"单元格点击事件" //可选 table 
+            onRowClick:"树表单元格点击事件"
             options:{}
         },
         {
