@@ -315,7 +315,8 @@
         "xtype": "bi-table",
         "id": "lrb",
         "text": "利润表",
-        "onCellClick":function(row, column, cell, event) {
+        "onCellClick":function(row, column, cell, event,param) {
+            debugger
         }
     }]
 }

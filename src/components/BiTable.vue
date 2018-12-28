@@ -73,6 +73,13 @@ export default {
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
     // this.getTableDataParams();
+    this.upData(this.item);
+    console.log(this.row)
+    // this.$nextTick(() => {
+    //   debugger;
+    //   this.upData(this.item);
+    //   this.$forceUpdate()
+    // })
   },
 
   methods: {
@@ -94,7 +101,7 @@ export default {
     },
 
     upData(item) {
-      debugger;
+     // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
@@ -161,10 +168,13 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
+      debugger
+      console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
+          console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
