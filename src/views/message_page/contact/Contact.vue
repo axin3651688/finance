@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
-          我的团队
+          团队
           <i class="splide-line"></i>
         </template>
         <contacts-teams
@@ -13,7 +13,7 @@
       </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
-          我的好友
+          好友
           <i class="splide-line"></i>
         </template>
         <contacts-friends
@@ -21,7 +21,7 @@
           @chatWithSingle="handleChatWithSingle"
         ></contacts-friends>
       </el-tab-pane>
-      <el-tab-pane label="我的群聊" name="ContactsGroups">
+      <el-tab-pane label="群聊" name="ContactsGroups">
         <contacts-groups
           v-if="which_to_show === 'ContactsGroups'"
           @chatWithGroup="handleChatWithGroup"

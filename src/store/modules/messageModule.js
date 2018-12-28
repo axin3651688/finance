@@ -1,6 +1,7 @@
 const messageModule = {
   state: {
     messageStore: {
+      targetId: null, // 接收群id或接收人id
       routeName: '首页', // 路由名字
       newServerMsg: null, // 服务器推送的最新消息
       receiverData: null, // 单聊对象的用户信息

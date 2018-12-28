@@ -29,7 +29,7 @@
                 <img :src="rightInfo.avatar" class="avatar-img" v-avatar="rightInfo.text">
               </div>
             </div>
-            <div class="text">
+            <div class="text">{{rightInfo.groupId}}
               <h3 class="text-title">{{rightInfo.text}}</h3>
               <p class="text-info">{{rightUsers.length}}人</p>
             </div>

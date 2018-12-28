@@ -5,19 +5,6 @@
         <el-scrollbar style="height: 100%">
           <ul v-if="leftBarInstance">
             <template v-for="item in leftBarInstance.leftBarList">
-              <!--<li v-if="!item.content"-->
-              <!--:class="{active: item.miniType === messageStore.miniType}"-->
-              <!--:key="item.miniType"-->
-              <!--@click="leftBarInstance.setItemActive(item)"-->
-              <!--&gt;-->
-              <!--<div class="img-box">-->
-              <!--<img class="avatar-img" :src="item.avatar" :alt="item.name">-->
-              <!--</div>-->
-              <!--<h3>{{item.name}}sdf</h3>-->
-              <!--&lt;!&ndash;<h3>{{item.name}} {{item.miniType}}</h3>&ndash;&gt;-->
-              <!--<img class="list-menu" src="@/assets/green/contact_list.svg" alt="">-->
-              <!--<div class="right-border"></div>-->
-              <!--</li>-->
               <li
                 :class="[{active: item.miniType === messageStore.miniType}]"
                 :key="item.miniType"
@@ -26,10 +13,12 @@
                 <div class="top">
                   <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
                     <div class="img-box">
-                      <img :src="item.avatar" alt="">
+                      <img :src="item.otherAvatar" v-if="item.miniType===1101" v-avatar="item.otherName">
+                      <img :src="item.avatar" v-else v-avatar="item.name">
                     </div>
                   </el-badge>
-                  <span class="title">{{item.name}}</span>
+                  <span class="title" v-if="item.miniType===1101">{{item.otherName}}</span>
+                  <span class="title" v-else>{{item.name}}</span>
                   <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
                 </div>
                 <p v-if="item.content" v-html="parseEmotions(item.content)">{{item.content}}</p>
@@ -62,14 +51,15 @@
 <script>
 import {MY_SESSION} from '~api/message.js';
 import {mapGetters, mapActions} from 'vuex'
-import {FORMAT_TIME, PARSE_EMOTIONS} from 'utils/message.js'
+import {FORMAT_MSG_TIME, PARSE_EMOTIONS} from 'utils/message.js'
 
 const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
 
 // 消息左边栏
 class LeftBar {
-  constructor(resList, ActionSetMessageStore) {
+  constructor(resList, ActionSetMessageStore, loginUserId) {
     if (!LeftBar.instance) {
+      this.loginUserId = loginUserId
       this.ActionSetMessageStore = ActionSetMessageStore;
       this._init(resList);
       LeftBar.instance = this;
@@ -88,6 +78,7 @@ class LeftBar {
 
   // 激活这个边栏项
   setItemActive(itemObj) {
+    debugger;
     this.activeItem = itemObj;
     itemObj.setActive();
     let user = {
@@ -96,10 +87,12 @@ class LeftBar {
       trunName: itemObj.name,
     };
     itemObj['user'] = user;
-    this.setMessageStore({
+    let obj = {
+      targetId: itemObj.targetId,
       miniType: itemObj.miniType,
       receiverData: itemObj
-    })
+    };
+    this.setMessageStore(obj)
   }
 
   // 修改 vuex 中的变量 messageStore
@@ -120,9 +113,13 @@ class LeftBar {
   }
 
   // 判断这个item是不是已近存在了，存在则返回这个item，否则返回 false
+  // 判断依据
   checkExists(itemData) {
     for (let item of this.leftBarList) {
-      return item.senderId === itemData.senderId ? item : false
+      console.log('bianlan:', item);
+      if (item.senderId === itemData.senderId && item.miniType === itemData.miniType) {
+        return item
+      }
     }
   }
 }
@@ -132,6 +129,7 @@ class LeftBarItem {
   constructor(obj) {
     this.isActive = false;
     this.count = 1;
+    debugger;
     this._init(obj)
   }
 
@@ -139,7 +137,14 @@ class LeftBarItem {
     let keys = Object.keys(obj);
     keys.forEach(key => {
       this[key] = obj[key]
-    })
+    });
+    this.miniType = obj.miniType;
+    // 只有是群聊1101时候targetId=receiverId 其余都= senderId
+    if (obj.miniType === 1101) {
+      this.targetId = obj.receiverId
+    } else {
+      this.targetId = obj.senderId
+    }
   }
 
   // 把自己设置为激活状态，并清除消息计数和聊天内容
@@ -186,6 +191,9 @@ export default {
     ...mapGetters(['user', 'messageStore']),
     newServerMsg() {
       return this.messageStore.newServerMsg
+    },
+    loginUserId() {
+      return this.user.user.id;
     }
   },
   watch: {
@@ -195,10 +203,10 @@ export default {
       let item = val.data;
       item['miniType'] = val.code;
       // 当当前窗口不是聊天窗时，才往侧栏添加提示
-      if (this.messageStore.miniType !== 1100 && this.messageStore.miniType !== 1101) {
+      // todo: 群消息处理
+      if (this.messageStore.miniType !== val.code) {
         this.leftBarInstance.addLeftBarItem(item);
       }
-      debugger;
     }
   },
   filters: {
@@ -208,7 +216,7 @@ export default {
     },
     // 格式化时间戳
     formatTime(time) {
-      return FORMAT_TIME(time);
+      return FORMAT_MSG_TIME(time);
     }
   },
   methods: {
@@ -226,7 +234,7 @@ export default {
 
     // 初始化消息左边栏
     initLeftBar(resList) {
-      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore)
+      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore, this.loginUserId)
     },
 
     // 页面挂载后 请求消息列表数据成功后的处理
@@ -286,7 +294,7 @@ export default {
   }
 </style>
 <style lang="scss" scoped>
-  @import "@ms/variables.scss";
+  @import "@ms/index.scss";
 
   .Message {
     font-family: $fontFamilyMain;
@@ -319,6 +327,9 @@ export default {
             .avatar-img {
               width: 46px;
             }
+            /deep/ .el-badge {
+              vertical-align: unset;
+            }
 
             .top {
               height: 46px;
@@ -343,6 +354,8 @@ export default {
               .title {
                 display: inline-block;
                 margin-left: 20px;
+                width: 80px;
+                @include singleEllipsis()
               }
 
               .mt {
@@ -387,14 +400,12 @@ export default {
             }
 
             p {
+              @include singleEllipsis();
               margin-top: 15px;
-              overflow: hidden;
               font-size: 12px;
               font-family: $fontFamilyMain;
               font-weight: 400;
               line-height: 16px;
-              text-overflow: ellipsis;
-              white-space: nowrap;
               color: $colorText2;
             }
 

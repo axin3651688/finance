@@ -1,9 +1,33 @@
 <template>
   <div class="SiderBar">
     <div class="siderbar-top">
-      <div class="login-info">
+      <div class="login-info" @click="showMyInfo=!showMyInfo">
         <img :src="user.user.avatar" :title="user.user.trueName">
       </div>
+      <transition name="el-fade-in-linear">
+        <my-dialog :value="showMyInfo" class="my-info-dialog">
+          <div class="top">
+            <div class="img-box">
+              <img :src="user.user.avatar" :title="user.user.trueName">
+            </div>
+            <div class="info">
+              <h3 class="info-title">mingzi
+                <i class="icon icon-gender"></i>
+              </h3>
+              <p class="info-text">个性签名</p>
+            </div>
+          </div>
+          <ul class="middle">
+            <li v-for="(item, index) in 3" :key="index">
+              <i class="icon"></i>
+              出差中···
+            </li>
+          </ul>
+          <div class="bottom">
+            <my-btn>分享名片</my-btn>
+          </div>
+        </my-dialog>
+      </transition>
     </div>
     <div class="siderbar-bottom">
       <ul>
@@ -45,17 +69,17 @@ import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "SiderBar",
+  data() {
+    return {
+      showMyInfo: false // 是否显示我的（登录用户的信息）
+    }
+  },
+  components: {
+    MyBtn: () => import('@mc/MyBtn'),
+    MyDialog: () => import('@mc/MyDialog')
+  },
   computed: {
     ...mapGetters(['user'])
-  },
-  width: {
-    $route: {
-      handler: function (val, oldVal) {
-        console.log('234343-2=-3402=3402=3', val);
-      },
-      // 深度观察监听
-      deep: true
-    }
   },
   methods: {
     logout() {
@@ -89,8 +113,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
-  @import "../styles/element.scss";
+  @import "@ms/variables.scss";
+  @import "@ms/element.scss";
+  @import "@ms/layout.scss";
 
   .SiderBar {
     @include flex($direction: column);
@@ -100,6 +125,7 @@ export default {
     color: #ffffff;
 
     .siderbar-top {
+      position: relative;
       height: $sizeTopBarHeight;
       display: flex;
       justify-content: center;
@@ -146,9 +172,11 @@ export default {
           justify-content: center;
           background: $colorBgSiderBar;
           transition: all .2s;
+
           .img-unselected {
             display: block;
           }
+
           .img-selected {
             display: none;
           }
@@ -163,13 +191,15 @@ export default {
           .nav-item_icon {
             background: $colorTheme;
             color: transparent;
-            width: 5px;
+            width: 4px;
 
             img {
               display: none !important;
             }
           }
-
+          .nav-item_text {
+            background:rgba(57,119,234,0.2);
+          }
         }
       }
 
@@ -180,6 +210,7 @@ export default {
           .img-unselected {
             display: none;
           }
+
           .img-selected {
             display: block;
           }
@@ -189,6 +220,71 @@ export default {
       .nav-item_quit {
         position: absolute;
         bottom: 0;
+      }
+    }
+  }
+
+  /deep/ .my-info-dialog {
+    color: #000;
+    width: 320px;
+    /*height: 400px;*/
+    z-index: 100;
+    box-shadow:0px 6px 30px rgba(0,0,0,0.3);
+    top: 20px;
+    left: 100%;
+    border-radius: 8px;
+    .top {
+      @include flex();
+      align-items: center;
+      padding: 30px 20px;
+      font-size: 14px;
+      color: $colorText2;
+      .img-box {
+        @include imgBox($width:60px,$height:60px,$borderRadius:50%);
+        background: #eee;
+      }
+      .info {
+        margin-left: 20px;
+        .info-title {
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          .icon {
+            width: 16px;
+            height: 16px;
+            overflow: hidden;
+            margin-left: 10px;
+            border-radius: 4px;
+            background: $colorTheme;
+          }
+          .icon-gender{
+            /*background: ;*/
+          }
+        }
+        .info-text {
+          margin-top: 10px;
+        }
+      }
+    }
+    .middle {
+      padding: 0 20px;
+      color: $colorText2;
+      .icon {
+        @include icon($width:24px,$height:24px);
+        background: $colorTheme;
+      }
+      .icon__state {}
+      .icon__phone {}
+      .iocn__email {}
+      >li {
+        padding-left: 44px;
+      }
+    }
+    .bottom {
+      text-align: center;
+      .btn {
+        @include myBtn($borderRadius:8px,$height:36px,$width:100px);
+        margin: 40px auto;
       }
     }
   }

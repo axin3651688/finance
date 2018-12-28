@@ -5,6 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import "@ms/index.scss"; // global css
 import {mapActions} from "vuex";
 import webSocket from "utils/webSocket";
 

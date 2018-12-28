@@ -3,7 +3,7 @@
     <div class="top">
       <div class="left">
         <div class="img-box img-box__group" @click="showGroupMembers = true">
-          <img :src="messageStore.groupInfo.info.avatar" v-avatar="messageStore.groupInfo.info.text">
+          <img :src="groupInfo.avatar" v-avatar="groupInfo.text">
         </div>
         <div class="content">
           <h3 class="title">
@@ -108,7 +108,7 @@
           <div>
             <div class="img-box">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <img v-else :src="messageStore.groupInfo.info.avatar" v-avatar="messageStore.groupInfo.info.text">
+              <img v-else :src="groupInfo.avatar" v-avatar="groupInfo.text">
             </div>
           </div>
           <el-upload
@@ -205,14 +205,14 @@ export default {
       return this.user.user.id;
     },
     groupId() {
-      return this.messageStore.groupInfo.info.groupId
+      return this.messageStore.targetId
     },
     groupOwnerId() {
-      return this.messageStore.groupInfo.info.ownerId
+      return this.groupInfo.ownerId
     }
   },
   methods: {
-
+    ...mapActions(['ActionSetMessageStore']),
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -242,7 +242,7 @@ export default {
     // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value;
-      if (newGroupName === this.messageStore.groupInfo.info.text && !this.imgfd) {
+      if (newGroupName === this.groupInfo.text && !this.imgfd) {
         this.showGroupSettingDialog = false;
         return; // 如果没有图片和群名字都没修改,则不往下执行
       }
@@ -346,7 +346,7 @@ export default {
         case 'groupQuit': {
           if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
             // debugger;
-            let msg = `您是该群 ${this.messageStore.groupInfo.info.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            let msg = `您是该群 ${this.groupInfo.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
             this.$confirm(msg, '警告', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -361,7 +361,7 @@ export default {
             });
           } else {
             // debugger;
-            let msg = `是否退出群组：${this.messageStore.groupInfo.info.text}`;
+            let msg = `是否退出群组：${this.groupInfo.text}`;
             this.$confirm(msg, '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -386,13 +386,15 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      // debugger;
+      debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
-          this.groupMembers = res.data.data.users
+          this.groupMembers = res.data.data.users;
+          debugger;
+          this.ActionSetMessageStore({groupInfo: res.data.data});
         }
       }).catch(err => {
         console.log('请求message：', err)

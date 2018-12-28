@@ -103,12 +103,15 @@ export default {
 
       console.log('点击了节点数据-->>', node.text);
 
+      console.log('获取设备号-->>', process.platform);
+
+
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
 
       if (window.require) {
-        ipc.send('web_openWebUrl', 'http://www.baidu.com')
+        ipc.send('web_openWebUrl', 'http://www.baidupppp.com')
       }
 
     },

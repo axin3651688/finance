@@ -3,17 +3,53 @@ import emotionSprites from '@a/green/emotion_sprites.json'; // 聊天表情数�
 
 const EMOTION_SPRITES = emotionSprites.data; // 聊天表情数据
 
-// 格式化时间戳
+// 格式化时间戳 返回 年-月-日 时:分
 export function FORMAT_TIME(time) {
   let date = new Date(time);
   let Y = date.getFullYear();
   let M = date.getMonth();
-  let D = date.getDay();
+  let D = date.getDate();
   let H = date.getHours();
   let m = date.getMinutes();
   let newTime = `${Y}-${M}-${D} ${H}:${m}`;
   // console.log(newTime)
   return newTime
+}
+
+// 格式化时间戳 更具不同的时长返回不同的显示方式
+export function FORMAT_MSG_TIME(publishtime) {
+  let publishDate = new Date(publishtime);
+  let Y = publishDate.getFullYear();
+  let M = publishDate.getMonth();
+  let D = publishDate.getDate();
+  let h = publishDate.getHours();
+  let m = publishDate.getMinutes();
+
+  let currTime = Date.parse(new Date()); // 获取当前时间戳
+  let l = parseInt(currTime) - parseInt(publishtime);
+  let time = l / 1000;
+
+  // 秒转小时
+  let hours = time / 3600;
+  if (hours < 24) {
+    return `${h}:${m}`;
+  }
+  //秒转天数
+  let days = time / 3600 / 24;
+  if (days < 30) {
+    return Math.floor(days) + "天前";
+  }
+  //秒转月
+  let months = time / 3600 / 24 / 30;
+  if (months < 12) {
+    return `${M}-${D} ${h}:${m}`;
+    // return Math.floor(months) + "月前";
+  }
+  //秒转年
+  // let years = time / 3600 / 24 / 30 / 12;
+  // return Math.floor(years) + "年前";
+  return `${Y}-${M}-${D} ${h}:${m}`;
+
 }
 
 // 解析聊天符号，替换成表情图

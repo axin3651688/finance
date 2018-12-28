@@ -6,8 +6,7 @@
       </div>
       <h3 class="user-name">{{data.name}}</h3>
       <div class="send-time">
-        <!--<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>-->
-        <span class="time">{{data.sendTime| formatTime}}</span>
+        <span class="time">{{data.sendTime| formatMsgTime}}</span>
         <div class="status" v-if="data.state !== 2"></div>
       </div>
     </div>
@@ -35,7 +34,6 @@
               <div class="size">{{data.file.size}}</div>
             </div>
             <div class="right">
-              <!--<div class="icon icon__download"></div>-->
               <i class="icon el-icon-download"></i>
             </div>
           </div>
@@ -67,7 +65,7 @@
 </template>
 
 <script>
-import {PARSE_EMOTIONS, FORMAT_TIME} from 'utils/message';
+import {PARSE_EMOTIONS, FORMAT_TIME, FORMAT_MSG_TIME} from 'utils/message';
 import emotionSprites from '@a/green/emotion_sprites.json';
 
 export default {
@@ -81,6 +79,9 @@ export default {
   filters: {
     formatTime(time) { // 格式化时间戳
       return FORMAT_TIME(time)
+    },
+    formatMsgTime(publishtime) {
+      return FORMAT_MSG_TIME(publishtime)
     }
   },
   methods: {
