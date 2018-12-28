@@ -151,14 +151,14 @@ export default {
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
     //
-    debugger;
+    
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
   },
 
   mounted() {
-     debugger;
+     
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -214,7 +214,7 @@ export default {
      */
     showSet(items) {
      // let flag = true;
-    // debugger;
+    // 
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -236,7 +236,7 @@ export default {
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
-     // debugger;
+     // 
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -253,7 +253,7 @@ export default {
         document.title = bean.text;
       }
       //showDims控制顶部导航栏的显示及隐藏
-      // debugger;
+      // 
       // console.log(bean.showDims);
 
       if (bean.hasOwnProperty("showDims")) {
@@ -313,7 +313,7 @@ export default {
       }
 
       findDesignSource(api).then(res => {
-        // debugger;
+        // 
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
@@ -498,21 +498,21 @@ export default {
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
       if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
-        // debugger;
+        // 
         datas = item.__queryDataAfter(datas);
       }
 
-      // debugger
+      // 
       //在此加了查询数据之后的拦截处理
       else if (
         item.queryDataAfter &&
         typeof item.queryDataAfter == "function" &&
         !item.correctWrongConfig
       ) {
-        //debugger;
+        //
         datas = item.queryDataAfter(datas);
       }
-      // debugger;
+      // 
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
@@ -523,17 +523,17 @@ export default {
       }
     },
     __queryDataAfter(datas) {
-      //  debugger;
+      //  
       return datas;
     },
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-     // debugger;
+     // 
       findThirdPartData(params)
         .then(res => {
-          debugger;
+          
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {

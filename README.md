@@ -235,10 +235,12 @@ BiText
             renderFunction:"functionName"//字面量函数
             params:["A$1111001","B$1111002"]，//参数集合
             config:`config`  //为可选项，当没有数据的时候，会从父亲里取
-            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选
-            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选
-            cellStyle:"单元格样式",
-            onCellClick:"单元格点击事件"
+            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选 table
+            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选 table
+            drillProperties:["text","text_"],//有钻取，给蓝色 可选 table
+            levelProperties:{text:"level",text_:"level_"}//加缩进 可选 table
+            cellStyle:"单元格样式", //可选 table
+            onCellClick:"单元格点击事件" //可选 table 
             options:{}
         },
         {

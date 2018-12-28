@@ -21,26 +21,11 @@
     },
     "layout": "column",
     "columns": [
-        
         {
-            "id": "text",
-            "type": "string",
-            "text": "项目"
-        },
-        {
-            "id":"index",
-            "type":"index",
-            "text":"序号"
-        },
-        {
-            "id": "A",
+            "id": "D",
             "type": "decimal",
-            "text": "本期数"
-        },
-        {
-            "id": "B",
-            "type": "decimal",
-            "text": "累计数"
+            "hidden":true,
+            "text": "预算累计数"
         },
         {
             "id": "C",
@@ -49,10 +34,26 @@
             "text": "预算数"
         },
         {
-            "id": "D",
+            "id": "B",
             "type": "decimal",
-            "hidden":true,
-            "text": "预算累计数"
+            "text": "累计数"
+        },
+        
+        {
+            "id":"index",
+            "type":"index",
+            "text":"序号"
+        },
+        {
+            "id": "text",
+            "type": "string",
+            "text": "项目"
+        },
+        
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "本期数"
         }
         
     ],
@@ -315,7 +316,6 @@
         "id": "lrb",
         "text": "利润表",
         "onCellClick":function(row, column, cell, event) {
-            debugger
         }
     }]
 }

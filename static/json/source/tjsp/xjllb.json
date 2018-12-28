@@ -12,25 +12,27 @@
       "random":{"min":100,"max":100000},
       "type":1
     },
-<<<<<<< HEAD
     "columns": [{
         "id": "id",
         "type": "string",
-        
+        "hidden":true,
         "text": "编码"
-    }, {
-        "id": "row",
-        "type": "index",
-        "text": "行次"
-    }, {
-        "id": "text",
-        "type": "string",
-        "text": "项目"
     }, {
         "id": "A",
         "type": "decimal",
         "text": "本期数"
-    }, {
+    }, 
+    {
+        "id": "row",
+        "type": "index",
+        "text": "行次"
+    },
+    {
+        "id": "text",
+        "type": "string",
+        "text": "项目"
+    },
+    {
         "id": "B",
         "type": "decimal",
         "text": "累计数"
@@ -42,7 +44,7 @@
         "id": "D",
         "type": "decimal",
         "text": "预算累计数"
-    }],
+    } ],
     "rows": [{
         "id": "161",
         "text": "一、经营活动产生的现金流量",
@@ -524,54 +526,3 @@
         "text": "现金流量表"
     }]
 }
-=======
-    "layout": {
-       "xtype": "tab"
-   },
-    "columns":[
-        {
-            "id": "snljje2",
-            "type": "decimal",
-            "text": "上年累计金额"
-        },  {
-            "id": "text",
-            "type": "string",
-            "text": "项目",
-            "width":"300px"
-        },{
-            "id":"row1",
-            "type":"number",
-            "text":"行次"
-        },{
-            "id": "bnljje1",
-            "type": "decimal",
-            "text": "本年累计金额"
-        }, {
-            "id": "snljje1",
-            "type": "decimal",
-            "text": "上年累计金额"
-        }, {
-            "id": "text2",
-            "type": "string",
-            "text": "项目",
-            "width":"400px"
-        }, {
-            "id":"row2",
-            "type":"number",
-            "text":"行次"
-        },{
-            "id": "bnljje2",
-            "type": "decimal",
-            "text": "本年累计金额"
-        } ],
-        "rows": [
-    ],
-    "items" : [
-      {
-        "xtype" : "bi-table",
-        "id" : "xjllb",
-        "text" : "现金流量表"
-      }
-    ]
-  }
->>>>>>> 8476b513687ca38c13a00f3c12afccfe178a6992

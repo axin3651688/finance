@@ -51,8 +51,10 @@ export default {
       columns: [],
       groupConfig: {
         idProperty: "group",
-        textProperty: "groupName"
-      }
+        textProperty: "groupName",
+      },
+      drillProperties:["text","text_"],//有钻取，给蓝色
+      levelProperties:{text:"level",text_:"level_"}//加缩进
     };
   },
 
@@ -122,29 +124,32 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-
+    /**
+     * 单元格样式处理，自己可以在自己的item里配制默认实现
+     */
     cellStyle(row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row);
       }
       let css = "padding: 4px 0;";
-      if (!row.column.property) {
+      let pro = row.column.property;
+      if (!pro) {
         return css;
       }
-      if (row.column.property.indexOf("text") != -1) {
-        let record = row.row;
-        let drill = "";
-        if (record._drill || record.drill) {
-          drill = "text-decoration: none;color: #428bca;cursor: pointer;";
-        }
-        let level = record._level || record.level || 1;
-        let textIndent =
-          level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
+      let levelProperties = this.item.levelProperties || this.levelProperties;
+      let textIndent ="",record = row.row;
+      let levelPro = levelProperties[pro];
+      if (levelPro && record[levelPro]) {
+          let level = record[levelPro] || 1;
+          textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+      }
+      let drillProperties = this.item.drillProperties || this.drillProperties;
+      if (drillProperties.indexOf(pro) != -1) {
+        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
         css = css + "font-weight:bold;" + textIndent + drill;
-        // console.info(record.text+"==>css==>"+css);
         return css;
       } else {
-        return css;
+        return css+textIndent;
       }
     },
      /**
@@ -193,7 +198,7 @@ export default {
      * 获取rowspan   
      */
     getCellRowSpan(datas, row, config) {
-      return datas.filter(record => record[config.id] === row[config.id])
+      return datas.filter(record => record[config.idProperty] === row[config.idProperty])
         .length;
     },
     /**
@@ -251,12 +256,13 @@ export default {
       if (
         this.item &&
         this.item.rowSpanAndColSpanHandler &&
-        typeof rowSpanAndColSpanHandler == "function"
+        typeof this.item.rowSpanAndColSpanHandler == "function"
       ) {
-        return this.item.rowSpanAndColSpanHandler(
+        let cells =  this.item.rowSpanAndColSpanHandler(
           { row, column, rowIndex, columnIndex },
           this
         );
+        return cells;
       }
       // let config = this.groupConfig;
       // let cells = { rowspan: 0, colspan: 0 };
@@ -385,7 +391,7 @@ export default {
 .el-table td.is-center{
   text-align: right;
 }
-.el-table td{
-
+.gutter{
+  display: none;
 }
 </style>

@@ -84,12 +84,12 @@ export default function socketCoreProcess(websocket, datas) {
             showClose: true,
             position: "bottom-right"
         });
-        //    var n = new allowNotification(title, {// 标题
-        //        body : "内容：" +data.msg , // 显示内容
-        //        icon : user?user.avatar:"http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
-        //        lang : 'zh-CN',
-        //        data : data
-        //    });
+           var n = new Notification("adfdfdf", {// 标题
+               body : "内容：" , // 显示内容
+               icon : "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
+               lang : 'zh-CN',
+               data : {}
+           });
         //    n.onclick = function(event,msg){
         //        event.preventDefault(); // prevent the browser from focusing the
         //        window.focus();
