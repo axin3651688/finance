@@ -451,9 +451,10 @@ export default {
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
+        // debugger
         //在此加了查询数据之前的拦截处理
         if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
-          params = item.queryDataBefore(params);
+          params = item.queryDataBefore(params,config,this);
         }
         config.type = config.type || 1;
         if (config.sql) {
@@ -550,19 +551,22 @@ export default {
     },
     removeTab(targetName) {
       let tabs = this.items;
-      let activeTabName = this.activeTabName;
-      if (this.activeTabName === targetName) {
+      let tabName = this.activeTabName;
+      if (tabName === targetName) {
         tabs.forEach((tab, index) => {
-          if (tab.name === targetName) {
+          if (tab.text === targetName) {
             let nextTab = tabs[index + 1] || tabs[index - 1];
             if (nextTab) {
-              activeTabName = nextTab.name;
+              tabName = nextTab.text;
             }
           }
         });
       }
-      this.activeTabName = activeName;
-      this.items = tabs.filter(tab => tab.name !== targetName);
+      this.activeTabName = tabName;
+      this.items = tabs.filter(tab => tab.text !== targetName);
+      if(this.items.length==1){
+        this.activeTabName = "0";
+      }
     }
   }
 };

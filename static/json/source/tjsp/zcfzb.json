@@ -28,15 +28,16 @@
         "text": "编码"
       },
       {
-        "id": "text",
-        "type": "string",
-        "text": "项目"
-      },
-      {
         "id": "row",
         "type": "number",
         "text": "行次"
       },
+      {
+        "id": "text",
+        "type": "string",
+        "text": "项目"
+      },
+      
       {
         "id": "A",
         "type": "decimal",
@@ -55,15 +56,16 @@
         "text": "编码"
       },
       {
-        "id": "text2",
-        "type": "string",
-        "text": "项目"
-      },
-      {
         "id": "row2",
         "type": "number",
         "text": "行次"
       },
+      {
+        "id": "text2",
+        "type": "string",
+        "text": "项目"
+      },
+      
       {
         "id": "A2",
         "type": "decimal",
