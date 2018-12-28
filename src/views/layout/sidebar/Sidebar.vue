@@ -132,7 +132,7 @@ export default {
     },
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         // console.log(code);
 
         for (let index = 0; index < this.leftMenus.length; index++) {

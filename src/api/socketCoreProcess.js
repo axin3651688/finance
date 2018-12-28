@@ -3,6 +3,8 @@ import {
     MessageBox,
     Notification
 } from 'element-ui'
+import router from '@v/layout/router'
+
 import {
     login
 } from "../api/interface.js";
@@ -33,15 +35,20 @@ export default function socketCoreProcess(websocket, datas) {
                 // 账号重复登录提示及处理
                 console.log(data);
                 console.log('账号在别端登录');
+                showMessage(data)
                 break;
             case 1003:
                 // 登录已失效，请重新登录
                 console.log('socketCoreProcess: 1003');
                 break;
             case 1004:
-            // 登录已失效，请重新登录
-               console.log('socketCoreProcess: 1003');
-            break;    
+                // 你已在Windows登陆
+                console.log('socketCoreProcess: 1003');
+                break;
+            case 1005:
+                // 你已在Windows下线
+                console.log('socketCoreProcess: 1005');
+                break;
             case 1006:
                 console.log('socketCoreProcess: 1006');
                 break;
@@ -87,12 +94,12 @@ export default function socketCoreProcess(websocket, datas) {
             showClose: true,
             position: "bottom-right"
         });
-           var n = new Notification("adfdfdf", {// 标题
-               body : "内容：" , // 显示内容
-               icon : "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
-               lang : 'zh-CN',
-               data : {}
-           });
+        // var n = new Notification("adfdfdf", { // 标题
+        //     body: "内容：", // 显示内容
+        //     icon: "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
+        //     lang: 'zh-CN',
+        //     data: {}
+        // });
         //    n.onclick = function(event,msg){
         //        event.preventDefault(); // prevent the browser from focusing the
         //        window.focus();
@@ -116,6 +123,23 @@ export default function socketCoreProcess(websocket, datas) {
         });
     }
 
+    function showMessage(data) {
+
+        MessageBox.confirm(data.msg, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+
+            if (Cnbi.isEmpty(data.data)) {
+                router.push("/login");
+            } else {
+                console.log("自动登录,调登录接口");
+            }
+        }).catch(() => {
+            router.push("/login");
+        })
+    }
 
     // debugger;
     if (isArray(datas)) {

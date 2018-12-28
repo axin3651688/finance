@@ -202,7 +202,7 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: () =>
-        import('@v/layout/Login'),
+        import('@v/layout/login'),
     },
     {
       path: '*',
