@@ -45,6 +45,7 @@
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
+        :v-if="item.show"
         :name="item.tabIndex || index"
         :closable="item.closable||false"
       >

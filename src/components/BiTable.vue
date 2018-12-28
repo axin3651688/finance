@@ -60,9 +60,8 @@ export default {
   },
 
   created() {
-    debugger;
     this.upData(this.item);
-    console.log(this.upData(this.item));
+   // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -193,10 +192,11 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-      if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
-        return this.item.onCellClick(row, column, cell, event, this);
-      }
-      this.onCellClickDefault(row, column, cell, event);
+     // debugger
+       if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
+            return this.item.onCellClick(row, column, cell, event,this);
+        }
+        this.onCellClickDefault(row, column, cell, event);
       // this.dialogVisible = true
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据

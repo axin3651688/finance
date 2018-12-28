@@ -1,12 +1,12 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <leftMenu class="sidebar-container" v-if="!classObj.mobile||Cnbi.isEmpty(user)"/>
+    <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="!classObj.mobile||Cnbi.isEmpty(user)"/>
+      <HeadNav v-if="isShow()"/>
     </div>
   </div>
 </template>
@@ -38,9 +38,21 @@ export default {
       };
     }
   },
+  created(){
+    //alert("来created..."+isShow())
+  },
 
   methods: {
-    ...mapActions(["ToggleSideBar"])
+    ...mapActions(["ToggleSideBar"]),
+    isShow(){
+      if(this.classObj.mobile){
+        return false;
+      }
+      if(Cnbi.isEmpty(this.user)){
+        return false;
+      }
+      return true;
+    }
   }
 };
 </script>

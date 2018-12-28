@@ -18,12 +18,13 @@ export default {
     //debugger;
     this.readLocalStorage();
     let bean = getClientParams();
-    let authorization = bean.authorization || bean.tikct || bean.token;
-    if (!authorization) {
-      authorization = localStorage.getItem("authorization");
-    } else {
-      alert("从地址中取行了：" + authorization);
+    let authorization = bean.authorization||bean.tikct||bean.token;
+    if(!authorization){
+        authorization = localStorage.getItem("authorization");
+    }else{
+      alert("-----------------从地址中取行了："+authorization)
     }
+    debugger;
     this.initSocket(authorization);
   },
   methods: {
