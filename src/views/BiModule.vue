@@ -215,6 +215,7 @@ export default {
     showSet(items) {
       // let flag = true;
       //
+      debugger
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -529,16 +530,37 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
+       this.units(datas)
     },
     __queryDataAfter(datas) {
       //
+     
+      console.log(datas)
+      debugger
       return datas;
     },
+
+      // 日历
+    units(datas){
+      let money = []
+      for(var i = 0;i<datas.length;i++){
+        // money.push(datas[i].hbzj)
+        var obj = datas[i]
+        console.log(obj.hbzj)
+      }
+      // var unit = (money[0])/1000
+      // console.log(unit)
+      // var datas = unit
+      debugger
+      // this.$set(this, "datas", datas);
+    },
+
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
       //
+      debugger
       findThirdPartData(params)
         .then(res => {
           this.queryDataAfter(item, res.data.data, $childVue);
