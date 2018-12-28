@@ -20,10 +20,10 @@ function resolve(dir) {
 }
 let proxyObj = { // 配置跨域
     '/api': {
-        // target: 'http://192.168.1.118:8005',
+        target: 'http://192.168.1.118:8005',
         //  target: 'http://192.168.1.139:8005',
         // target: 'http://192.168.1.139:8005',
-        target: 'http://192.168.2.237:8005',
+      //  target: 'http://192.168.2.237:8005',
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -39,10 +39,16 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
+<<<<<<< HEAD
+          target: 'http://192.168.1.118:8081', //gjx
+      //  target: 'http://192.168.2.34:8081',
+
+=======
         // target: 'http://192.168.1.118:8081', //gjx
         // target: 'http://192.168.2.12:8081',
         // target: 'http://192.168.1.149:8000',
         target: 'http://192.168.1.138:8000', //mj
+>>>>>>> db513deafba16ac406113cbf3d2dc6eec96032d8
         ws: true,
         changOrigin: true,
         pathRewrite: {
