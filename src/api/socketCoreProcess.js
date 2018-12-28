@@ -32,13 +32,16 @@ export default function socketCoreProcess(websocket, datas) {
             case 1002:
                 // 账号重复登录提示及处理
                 console.log(data);
-                alert('账号在别端登录')
                 console.log('账号在别端登录');
                 break;
             case 1003:
                 // 登录已失效，请重新登录
                 console.log('socketCoreProcess: 1003');
                 break;
+            case 1004:
+            // 登录已失效，请重新登录
+               console.log('socketCoreProcess: 1003');
+            break;    
             case 1006:
                 console.log('socketCoreProcess: 1006');
                 break;
