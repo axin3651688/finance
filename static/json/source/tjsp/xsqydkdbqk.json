@@ -37,7 +37,7 @@
               },
               {
                 "id": "gsmc",
-                "type": "number",
+                "type": "string",
                 "text": "公司名称",
                 "width":"300px"
 
@@ -71,7 +71,7 @@
               },
               {
                 "id": "fact_b",
-                "type": "number",
+                "type": "decimal",
                 "text": "利率（%）",
                 "unit":"%"
               },

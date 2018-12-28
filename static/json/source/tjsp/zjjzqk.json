@@ -1,8 +1,16 @@
 {
     "id":"1013",
     "text":"资金集中情况明细表",
+    
+  "layout": {
+    "xtype": "tab"
+  },
+  "items": [{
+    "xtype": "tree-grid",
+    "id": "123456",
+    "text": "资金集中情况明细表",
     "config":{
-      "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE,B.SCODE AS PID,B.SNAME AS GSMC,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD='201711' LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE='10010301' OR SPCODE LIKE '10010301%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC ",
+      "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN '' ELSE '' END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, case when C.scode is not null then '' else B.sname end sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,B.SCODE AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN (NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD='201711' LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE='10010301' OR SPCODE LIKE '10010301%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
       "_cube":{
          "subject":"0001",
          "cubeId":5
@@ -18,40 +26,38 @@
     "columns": [
       {
           "text": "公司编码",
-          "value": "scode"
+          "value": "gsbm"
       },
       {
           "text": "公司名称",
-          "value": "gsmc"
+          "value": "sname"
         },
         {
           "text": "银行账户名称",
+          "type":"decimal",
           "value": "yhzhmc"
         },
         {
           "text": "货币金额",
-          "value": "hbje"
+          "type":"decimal",
+          "value": "hbzj"
         },
         {
           "text": "其中：银行存款",
+          "type":"decimal",
           "value": "yhck"
         },
         {
           "text": "集中金额",
+          "type":"decimal",
           "value": "jzje"
         },
         {
           "text": "集中度",
+          "type":"decimal",
           "value": "jzd"
         }
-  ],
-  "layout": {
-    "xtype": "tab"
-  },
-  "items": [{
-    "xtype": "tree-grid",
-    "id": "123456",
-    "text": "资金集中情况明细表"
+    ]
   }],
   "code":200,"msg":"查询数据源【company】维度成功！"
   }
