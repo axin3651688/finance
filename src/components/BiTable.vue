@@ -59,8 +59,8 @@ export default {
   },
 
   created() {
-    debugger
-    this.upData(this.item);
+    // debugger
+    // this.upData(this.item);
     console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
@@ -72,6 +72,13 @@ export default {
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
     // this.getTableDataParams();
+    this.upData(this.item);
+    console.log(this.row)
+    // this.$nextTick(() => {
+    //   debugger;
+    //   this.upData(this.item);
+    //   this.$forceUpdate()
+    // })
   },
 
   methods: {

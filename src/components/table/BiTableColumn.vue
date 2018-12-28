@@ -135,7 +135,7 @@ export default {
     }
   },
   created() {
-    //this.$set(this, "tableData", null);
+    console.log(this.tableData)
   }
 };
 </script>
