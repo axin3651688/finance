@@ -101,7 +101,7 @@ export default {
     },
 
     upData(item) {
-      debugger;
+     // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;

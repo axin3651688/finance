@@ -62,8 +62,10 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
+import EventMixins from "../mixins/EventMixins";
 // data  columns list
 export default {
+  mixins: [EventMixins],
   data() {
     return {
       list: [],
@@ -130,6 +132,7 @@ export default {
         let cv = column.property + "",
           len = cv.length;
         let id = row.id,
+        
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
           id = row.id_; //两列的情况
@@ -142,6 +145,7 @@ export default {
       } else {
         console.info("没有设置事件");
       }
+      console.log(id)
     },
      onRowClick(row,e,column) {
       //  console.log(column)
