@@ -135,7 +135,7 @@ export default {
     }
   },
   created() {
-    console.log(this.tableData)
+    // console.log(this.tableData)
   }
 };
 </script>

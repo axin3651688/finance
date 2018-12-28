@@ -123,15 +123,36 @@ export default {
   //   }
   // },
   methods: {
+    onCellClickDefault(row, column, e) {
+          debugger
+      let listener = row._drill || row.drill;
+      if (listener) {
+        let cv = column.property + "",
+          len = cv.length;
+        let id = row.id,
+          text = row[cv];
+        if (cv.substring(len - 1, len) === "_") {
+          id = row.id_; //两列的情况
+        }
+        this.commonHandler(
+          listener,
+          { row: row, column: column,  e: e },
+          { id: id, text: text }
+        );
+      } else {
+        console.info("没有设置事件");
+      }
+    },
      onRowClick(row,e,column) {
       //  console.log(column)
       debugger
        if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
             return this.item.onRowClick(row, column, e,this);
         }
+        this.onCellClickDefault(row, column, e);
+
      },
       cellStyle(row) {
-        debugger
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row,this);
       }

@@ -168,10 +168,13 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
+      debugger
+      console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
+          console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
