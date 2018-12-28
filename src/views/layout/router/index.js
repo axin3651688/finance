@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
+import { getClientParams } from "utils/index";
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -217,11 +217,15 @@ const router = new Router({
 // 路由守卫
 
 router.beforeEach((to, from, next) => {
-  const isLogin = localStorage.authorization ? true : false;
+  let bean = getClientParams();
+  let authorization = bean.authorization||bean.tikct||bean.token;
+  if(!authorization){
+    authorization = localStorage.authorization ? true : false;
+  }
   if (to.path == "/login" || to.path == "/register") {
     next();
   } else {
-    isLogin ? next() : next("/login");
+    authorization ? next() : next("/login");
   }
 })
 
