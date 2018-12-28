@@ -18,11 +18,11 @@ export default {
     //debugger;
     this.readLocalStorage();
     let bean = getClientParams();
-    let authorization = bean.authorization||bean.tikct||bean.token;
-    if(!authorization){
-        authorization = localStorage.getItem("authorization");
-    }else{
-      alert("从地址中取行了："+authorization)
+    let authorization = bean.authorization || bean.tikct || bean.token;
+    if (!authorization) {
+      authorization = localStorage.getItem("authorization");
+    } else {
+      alert("从地址中取行了：" + authorization);
     }
     this.initSocket(authorization);
   },
@@ -67,14 +67,17 @@ export default {
       }
     },
     initSocket(authorization) {
-       let url = "ws://192.168.1.118:7006/socket.io/";
-    //  let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.237:7006/socket.io/";
+      //  let url = "ws://192.168.1.118:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }
       // debugger;
       webSocket({ url: url });
+    },
+    destroyed: function() {
+      console.log("我已经离开了！");
     }
   }
 };

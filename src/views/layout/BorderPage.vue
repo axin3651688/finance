@@ -1,12 +1,12 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <leftMenu class="sidebar-container"/>
+    <leftMenu class="sidebar-container" v-if="!classObj.mobile||Cnbi.isEmpty(user)"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav></HeadNav>
+      <HeadNav v-if="!classObj.mobile||Cnbi.isEmpty(user)"/>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ import HeadNav from "./topnav/HeadNav";
 import leftMenu from "./sidebar/Sidebar";
 import ResizeMixin from "./mixin/ResizeHandler";
 import "@/styles/black/index.scss"; // global css
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
   data() {
@@ -28,12 +28,7 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
-    sidebar() {
-      return this.$store.state.sideopen.sidebar;
-    },
-    device() {
-      return this.$store.state.sideopen.device;
-    },
+    ...mapGetters(["sidebar", "device", "user"]),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,

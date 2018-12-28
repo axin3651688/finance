@@ -5,6 +5,8 @@ const prame = {
       module_api: 0,
       month: new Date().getMonth(),
       date: new Date().getDate(),
+      // 单位转换
+      conversion: "元",
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
       openPid: 0,
@@ -27,7 +29,9 @@ const prame = {
       company: true,
       year: true,
       month: true,
-      day: false
+      day: false,
+      // 单位转换
+      conversion: false,
     }
   },
 
@@ -47,12 +51,21 @@ const prame = {
     },
     SHOW_DIMS: (state, data) => {
       // debugger
-      Object.keys(data).forEach(keys => {
-        if (data[keys] !== null || undefined) {
+      console.log(data);
+      if (data.constructor == Array) {
+        state.showDims.company = false,
+          state.showDims.year = false,
+          state.showDims.month = false,
+          data.forEach(ele => {
+            state.showDims[ele] = !state.showDims[ele]
+          });
+      } else {
+        Object.keys(data).forEach(keys => {
           state.showDims[keys] = data[keys]
-          localStorage.setItem([keys] + '_top', data[keys]);
-        }
-      });
+        });
+      }
+
+
     },
   },
 
