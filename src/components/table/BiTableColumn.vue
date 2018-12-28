@@ -144,8 +144,12 @@ export default {
     }
   },
   created() {
+<<<<<<< HEAD
    // debugger;
     //this.$set(this, "tableData", null);
+=======
+    console.log(this.tableData)
+>>>>>>> 7fefbb39f0b43abfc461c9b7ac1b5f58687cd773
   }
 };
 </script>

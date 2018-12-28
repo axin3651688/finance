@@ -1,18 +1,19 @@
 <template>
-<div>
-  <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
-    border
-    :stripe="true"
-    height="item.height || rowClass"
-    :cell-style="cellStyle"
-    @cell-click="onCellClick"
-     :span-method="rowSpanAndColSpanHandler" 
-  >
-    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
-    </el-tag>
-  </el-table>
+  <div>
+    <el-table
+      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+      border
+      :stripe="true"
+      height="item.height || rowClass"
+      :cell-style="cellStyle"
+      @cell-click="onCellClick"
+      :span-method="rowSpanAndColSpanHandler"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
+    >
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      </el-tag>
+    </el-table>
     <!-- sjz 分页功能 -->
     <el-pagination
       v-if="item.pagination"
@@ -42,8 +43,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      currentPage:1,
-      pagesize:1,
+      currentPage: 1,
+      pagesize: 1,
       id: 0,
       text: "",
       rows: [],
@@ -51,17 +52,21 @@ export default {
       columns: [],
       groupConfig: {
         idProperty: "group",
-        textProperty: "groupName",
+        textProperty: "groupName"
       },
-      drillProperties:["text","text_"],//有钻取，给蓝色
-      levelProperties:{text:"level",text_:"level_"}//加缩进
+      drillProperties: ["text", "text_"], //有钻取，给蓝色
+      levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
 
   created() {
     debugger;
     this.upData(this.item);
+<<<<<<< HEAD
    // console.log(this.upData(this.item))
+=======
+    console.log(this.upData(this.item));
+>>>>>>> 7fefbb39f0b43abfc461c9b7ac1b5f58687cd773
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -72,6 +77,13 @@ export default {
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
     // this.getTableDataParams();
+    this.upData(this.item);
+    console.log(this.row)
+    // this.$nextTick(() => {
+    //   debugger;
+    //   this.upData(this.item);
+    //   this.$forceUpdate()
+    // })
   },
 
   methods: {
@@ -131,7 +143,7 @@ export default {
      */
     cellStyle(row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
-        return this.item.cellStyle(row,this);
+        return this.item.cellStyle(row, this);
       }
       let css = "padding: 4px 0;";
       let pro = row.column.property;
@@ -139,11 +151,13 @@ export default {
         return css;
       }
       let levelProperties = this.item.levelProperties || this.levelProperties;
-      let textIndent ="",record = row.row;
+      let textIndent = "",
+        record = row.row;
       let levelPro = levelProperties[pro];
       if (levelPro && record[levelPro]) {
-          let level = record[levelPro] || 1;
-          textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+        let level = record[levelPro] || 1;
+        textIndent =
+          level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
       }
       let drillProperties = this.item.drillProperties || this.drillProperties;
       if (drillProperties.indexOf(pro) != -1) {
@@ -151,12 +165,12 @@ export default {
         css = css + "font-weight:bold;" + textIndent + drill;
         return css;
       } else {
-        return css+textIndent;
+        return css + textIndent;
       }
     },
-     /**
-      * 单元格单击默认事件
-      */
+    /**
+     * 单元格单击默认事件
+     */
     onCellClickDefault(row, column, cell, event) {
       let listener = row._drill || row.drill;
       if (listener) {
@@ -180,11 +194,18 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
+<<<<<<< HEAD
      // debugger
        if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
             return this.item.onCellClick(row, column, cell, event,this);
         }
         this.onCellClickDefault(row, column, cell, event);
+=======
+      if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
+        return this.item.onCellClick(row, column, cell, event, this);
+      }
+      this.onCellClickDefault(row, column, cell, event);
+>>>>>>> 7fefbb39f0b43abfc461c9b7ac1b5f58687cd773
       // this.dialogVisible = true
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
@@ -197,11 +218,12 @@ export default {
     },
 
     /**
-     * 获取rowspan   
+     * 获取rowspan
      */
     getCellRowSpan(datas, row, config) {
-      return datas.filter(record => record[config.idProperty] === row[config.idProperty])
-        .length;
+      return datas.filter(
+        record => record[config.idProperty] === row[config.idProperty]
+      ).length;
     },
     /**
      * 计算每一个单元格的rowspan和colspan
@@ -260,7 +282,7 @@ export default {
         this.item.rowSpanAndColSpanHandler &&
         typeof this.item.rowSpanAndColSpanHandler == "function"
       ) {
-        let cells =  this.item.rowSpanAndColSpanHandler(
+        let cells = this.item.rowSpanAndColSpanHandler(
           { row, column, rowIndex, columnIndex },
           this
         );
@@ -390,10 +412,9 @@ export default {
   height: 0;
 }
 /* 数字靠右 */
-.el-table td.is-center{
+.el-table td.is-center {
   text-align: right;
 }
-.gutter{
-  display: none;
+.el-table td {
 }
 </style>
