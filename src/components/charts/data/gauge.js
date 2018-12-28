@@ -1,16 +1,17 @@
 export default function gauge() {
     return {
         title: {
-            text: '仪表图'
+            text: "this.item.text"
         },
         tooltip: {
-            formatter: "{a}{b} : {c}%"
+            formatter: "{a} <br/>{b} : {c}%"
         },
         toolbox: {
             feature: {
                 saveAsImage: {}
             }
         },
+
         series: [{
             type: "gauge",
             radius: "65%",
@@ -48,7 +49,8 @@ export default function gauge() {
                 width: 9
             },
             detail: {
-                formatter: "{value}%"
+                formatter: "{value}%",
+                offsetCenter: [0, 80]
             },
             data: [{
                 value: 80,

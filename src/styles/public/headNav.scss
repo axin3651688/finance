@@ -47,7 +47,7 @@
     transition: margin-left .28s;
     // margin-left: $sideWidth;
     // 无内容背景
-    background: $NonbugColor;
+    background: $nonbugColor;
 
     .head-nav {
         position: fixed;
@@ -338,6 +338,10 @@
             margin-left: 0px;
             width: 100%;
         }
+
+        .containerMain {
+            padding-top: $app_contai_padding-top;
+        }
     }
 
     .mobile.openSidebar {
@@ -369,7 +373,7 @@
 
 #app {
     .containerMain {
-        background: $NonbugColor;
+        background: $nonbugColor;
         padding-left: 24px;
         // padding-right: 24px;
         padding-top: 64px;
