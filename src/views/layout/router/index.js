@@ -20,7 +20,13 @@ const router = new Router({
           component: () =>
             import('@v/BiModule'),
         },
-
+        // 列表
+        {
+          path: '/list',
+          name: 'list',
+          component: () =>
+            import('@v/intelligenceReport/List.vue')
+        },
 
         // 消息模块
         {

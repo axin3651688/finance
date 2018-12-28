@@ -68,14 +68,17 @@ export default {
       }
     },
     initSocket(authorization) {
-       let url = "ws://192.168.1.118:7006/socket.io/";
-    //  let url = "ws://192.168.1.118:7006/socket.io/";
+      let url = "ws://192.168.2.237:7006/socket.io/";
+      //  let url = "ws://192.168.1.118:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       }
       // debugger;
       webSocket({ url: url });
+    },
+    destroyed: function() {
+      console.log("我已经离开了！");
     }
   }
 };

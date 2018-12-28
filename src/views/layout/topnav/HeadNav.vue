@@ -6,7 +6,7 @@
       class="hamburger-container"
     />
     <div class="topcontent">
-      <span @click="showDilog">
+      <span @click="showDilog" v-if="showDims.company">
         <i class="el-icon-search iconclass"></i>
         <el-button type="text" class="underline">{{companyName}}</el-button>
       </span>
@@ -60,16 +60,16 @@
         value-format="yyyy-MM-dd"
       ></el-date-picker>
       <!-- 单位 -->
-      <el-dropdown trigger="click" v-if="showDims.month">
+      <el-dropdown trigger="click" v-if="showDims.conversion">
         <el-button type="text" class="underline">
-          元
+          {{conversion}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
             v-for="(item,index) of unit"
             :key="index"
-            @click.native="GetSideMid({month:item.substr(0, item.length - 1)})"
+            @click.native="GetSideMid({conversion:item.text})"
           >{{item.text}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -167,12 +167,12 @@ export default {
       y: [],
       m: [],
       day: [],
-      unit:[
-        {id:1,text:"元"},
-        {id:1000,text:"千元"},
-        {id:10000,text:"万元"},
-        {id:100000000,text:"亿元"}
-        ]
+      unit: [
+        { id: 1, text: "元" },
+        { id: 1000, text: "千元" },
+        { id: 10000, text: "万元" },
+        { id: 100000000, text: "亿元" }
+      ]
     };
   },
   components: {
@@ -218,7 +218,8 @@ export default {
       "company",
       "companyName",
       "showDims",
-      "date"
+      "date",
+      "conversion"
     ])
   },
 
@@ -294,9 +295,9 @@ export default {
 };
 </script>
 <style lang="scss">
-  .head-nav{
-    .button{
-      padding:7px 20px !important;
-    }
+.head-nav {
+  .button {
+    padding: 7px 20px !important;
   }
+}
 </style>
