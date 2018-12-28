@@ -60,13 +60,8 @@ export default {
   },
 
   created() {
-    debugger;
     this.upData(this.item);
-<<<<<<< HEAD
    // console.log(this.upData(this.item))
-=======
-    console.log(this.upData(this.item));
->>>>>>> 7fefbb39f0b43abfc461c9b7ac1b5f58687cd773
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -194,18 +189,11 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-<<<<<<< HEAD
      // debugger
        if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
             return this.item.onCellClick(row, column, cell, event,this);
         }
         this.onCellClickDefault(row, column, cell, event);
-=======
-      if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
-        return this.item.onCellClick(row, column, cell, event, this);
-      }
-      this.onCellClickDefault(row, column, cell, event);
->>>>>>> 7fefbb39f0b43abfc461c9b7ac1b5f58687cd773
       // this.dialogVisible = true
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
