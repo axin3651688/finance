@@ -1,6 +1,6 @@
 <template>
   <div v-if="item.show">
-    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe>
+    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe @row-click="onRowClick">
     <el-table-column v-if="item.config.columns.length === 0" width="120" ref="tchild">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -8,7 +8,6 @@
           <i v-if="!scope.row._expanded" class="el-icon-plus"/>
           <i v-else class="el-icon-minus"/>
         </span>
-        <!-- {{ scope.$index }} -->
       </template>
     </el-table-column>
     <el-table-column
@@ -102,26 +101,33 @@ export default {
     // this.item.options = this.item.items[0].columns
    
  // },
-  __computed: {
-    // 格式化数据源
-    formatData() {
-      debugger
-      let tmp;
-      if (!Array.isArray(this.item.rows)) {
-        tmp = [this.item.rows];
-      } else {
-        tmp = this.item.rows;
-      }
-      const func = this.evalFunc || treeToArray;
-      const args = this.evalArgs
-        ? Array.concat([tmp, this.expandAll], this.evalArgs)
-        : [tmp, this.expandAll];
-      let datas =  func.apply(null, args);
-      console.info(datas);
-      return datas;
-    }
-  },
+  // __computed: {
+  //   // 格式化数据源
+  //   formatData() {
+  //     debugger
+  //     let tmp;
+  //     if (!Array.isArray(this.item.rows)) {
+  //       tmp = [this.item.rows];
+  //     } else {
+  //       tmp = this.item.rows;
+  //     }
+  //     const func = this.evalFunc || treeToArray;
+  //     const args = this.evalArgs
+  //       ? Array.concat([tmp, this.expandAll], this.evalArgs)
+  //       : [tmp, this.expandAll];
+  //     let datas =  func.apply(null, args);
+  //     console.info(datas);
+  //     return datas;
+  //   }
+  // },
   methods: {
+     onRowClick(row,e,column) {
+      //  console.log(column)
+      debugger
+       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
+            return this.item.onRowClick(row, column, e,this);
+        }
+     },
      /**
       * 格式化数据源
       */
@@ -138,6 +144,7 @@ export default {
           ? Array.concat([tmp, this.expandAll], this.evalArgs)
           : [tmp, this.expandAll];
         let formatData =  func.apply(null, args);
+                console.log(formatData)
         this.$set(this, "formatData", formatData); 
      },
 
@@ -149,11 +156,11 @@ export default {
        this.$set(this, "formatData", ""); 
       this.$set(this, "formatData", null); 
       this.item = item;
-      debugger;
+      // debugger;
       this.convertData();
     },
     array(datas){
-    debugger
+    // debugger
     let data=datas
     // console.log("w",data)
     let arr = []
@@ -191,7 +198,7 @@ export default {
     // console.log(root,rootItem);
 
     if(root){
-      debugger
+      // debugger
       this.tranformData(data,rootItem);
     }
 
@@ -276,6 +283,8 @@ export default {
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
       const record = this.formatData[trIndex];
+      console.log(record)
+      
       record._expanded = !record._expanded;
     },
     // 图标显示
@@ -287,7 +296,6 @@ export default {
     }
   },
   created(){
-    debugger
     console.log("a",this.item)
     this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas

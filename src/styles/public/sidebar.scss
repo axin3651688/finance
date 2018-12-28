@@ -34,8 +34,6 @@
       background-color: $menuBg;
       height: calc(100% - #{$min_sideWidth});
       // overflow: auto;
-
-
       .avatarleft {
         height: $avatarleft-height;
         width: $avatarleft-height;
@@ -51,7 +49,6 @@
         font-weight: $font-weight2;
         margin-left: $nochild-margin-left;
         border-radius: 8px 0px 0px 8px;
-
         // 当鼠标移到上面时颜色1
         &:hover {
           background-color: $menuHover;
@@ -97,13 +94,12 @@
           background-color: $subMenuBg;
           color: $fontColor2;
           font-weight: $font-weight2;
-          padding-left: $font-padding-left !important;
+          padding-left: $font-padding-left;
           border-radius: 8px 0px 0px 8px;
           padding-right: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-
           // 当鼠标移到上面时颜色1
           &:hover {
             background-color: $menuHover;

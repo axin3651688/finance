@@ -5,7 +5,7 @@
       <!-- :disabled="disabled"  -->
       <el-tooltip class="item" effect="light" placement="right">
         <div slot="content">{{navMenu.text}}</div>
-        <el-menu-item
+        <el-menu-item 
           v-if="navMenu.leaf==1"
           :key="navMenu.code"
           :data="navMenu"
@@ -14,7 +14,7 @@
         >
           <!--图标-->
           <!-- <router-link :to="navMenu.url"> -->
-          <img :src="navMenu.avatar" v-if="navMenu.level===2" class="avatarleft fa-margin iconfont">
+          <img :src="navMenu.avatar" v-if="navMenu.level===2" class="avatarleft fa-margin iconfont ">
           <!--标题-->
           <span slot="title" class="eachItem">{{navMenu.text}}</span>
           <!-- </router-link> -->
@@ -50,7 +50,7 @@ export default {
       }
       this.user.company.id === 121
         ? this.$router.push("/tjsp/module")
-        : this.$router.push("/jsnk/module");
+        : this.$router.push("/main");
       // this.$router.push({ path: "/module", name: "", params: {} });
       modeHandle(e);
     },
@@ -62,7 +62,7 @@ export default {
         }
         this.user.company.id === 121
           ? this.$router.push("/tjsp/module")
-          : this.$router.push("/jsnk/module");
+          : this.$router.push("/main");
         // this.$router.push({ path: "/module", name: "", params: {} });
         modeHandle(e);
       }
@@ -80,6 +80,8 @@ export default {
   }
 };
 </script>
+<style>
+</style>
 <style lang="scss" scoped>
 .box {
   width: 400px;
@@ -112,5 +114,6 @@ export default {
     padding: 8px 10px;
   }
 }
+
 </style>
 

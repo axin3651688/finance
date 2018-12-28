@@ -53,9 +53,11 @@
        }
 
    },
-   "changeCompanyBefore":function(params){
-       debugger;
-   },
+   "changeYearBefore":function(params){
+    let me = this
+       console.log(me)
+       debugger
+   },   
     "layout": {
         "xtype": "tab"
     },

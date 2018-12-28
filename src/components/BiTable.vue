@@ -62,6 +62,7 @@ export default {
   created() {
     debugger;
     this.upData(this.item);
+    console.log(this.upData(this.item));
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -75,13 +76,6 @@ export default {
   },
 
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -197,11 +191,11 @@ export default {
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
       // // event.target.innerHTML = "";//改变单元格里面的数据
-      // // event.target.style.backgroundColor = "red"
+      // event.target.style.backgroundColor = "red"
       // cell.style.backgroundColor = "red"
       // // console.log("b",b)
       // // console.log(event.target)
-      // console.log(column.id)
+      // console.log(column)
     },
 
     /**

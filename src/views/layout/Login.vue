@@ -123,7 +123,7 @@
                   data.company.id === 121 ?
                     router.push("/tjsp/module") :
                    // router.push("/message");
-                     router.push("/jsnk/module") 
+                     router.push("/main") 
                 } else {
 
                   this.loginUser.usename = "";

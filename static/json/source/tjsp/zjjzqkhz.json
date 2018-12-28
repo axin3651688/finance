@@ -59,7 +59,10 @@
   "items": [{
     "xtype": "tree-grid",
     "id": "zjjzqkhz",
-    "text": "资金集中情况汇总表"
+    "text": "资金集中情况汇总表",
+    "onRowClick":function(row, column, e) {
+      debugger
+    }
   }],
   "code":200,"msg":"查询数据源【company】维度成功！"
   }
