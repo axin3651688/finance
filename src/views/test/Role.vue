@@ -28,8 +28,18 @@
         </el-aside>
       </el-col>
       <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
+        <el-row>
+          <el-tooltip class="item" effect="dark" content="授权" placement="top-start">
+            <el-button icon="iconfont icon-pression" circle @click="handleMenuPermiss"></el-button>
+          </el-tooltip>
+          <el-button icon="el-icon-plus" circle @click="handleMenuAdd"></el-button>
+          <el-button icon="el-icon-edit" circle @click="handleMenuEdit"></el-button>
+          <el-button icon="el-icon-delete" circle type="danger" @click="handleMenuDel"></el-button>
+        </el-row>
         <zk-table
+          class="menus"
           ref="table"
+          index-text="#"
           :data="authData"
           :columns="columns"
           :stripe="props.stripe"
@@ -121,12 +131,6 @@ export default {
       checkedPremiss: [],
       authData: [],
       columns: [
-        // {
-        //   label: "菜单编码",
-        //   prop: "code",
-        //   width: "20px"
-        //   // headerAlign: "center"
-        // },
         {
           label: "菜单列表",
           prop: "text",
@@ -366,6 +370,9 @@ export default {
 <style scoped>
 .roleM {
   margin-top: 10px;
+}
+.menus {
+  margin-top: 5px;
 }
 </style>
 

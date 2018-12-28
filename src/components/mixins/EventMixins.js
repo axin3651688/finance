@@ -67,7 +67,10 @@ export default {
         // if(!listener){
         //   return;
         // }
-        me.commonHandler(listener, params);
+       /**
+        * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
+        */
+        // me.commonHandler(listener, params);
 
       });
 
