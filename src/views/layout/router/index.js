@@ -15,8 +15,8 @@ const router = new Router({
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
-          path: '/jsnk/module',
-          name: 'module',
+          path: '/main',
+          name: 'main',
           component: () =>
             import('@v/BiModule'),
         },

@@ -50,7 +50,7 @@ export default {
       }
       this.user.company.id === 121
         ? this.$router.push("/tjsp/module")
-        : this.$router.push("/jsnk/module");
+        : this.$router.push("/main");
       // this.$router.push({ path: "/module", name: "", params: {} });
       modeHandle(e);
     },
@@ -62,7 +62,7 @@ export default {
         }
         this.user.company.id === 121
           ? this.$router.push("/tjsp/module")
-          : this.$router.push("/jsnk/module");
+          : this.$router.push("/main");
         // this.$router.push({ path: "/module", name: "", params: {} });
         modeHandle(e);
       }
