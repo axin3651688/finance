@@ -216,10 +216,10 @@ BiText
     text:"",//名字
     config:`config`  //为可选项
     layout:`layout`  //为可选项，不配制的话，默认为form
-    changeModuleBefore:funcntion(){},
-    changeYearBefore:funcntion(){},
-    changeMonthBefore:funcntion(){},
-    changeCompanyBefore:funcntion(){},
+    changeModuleBefore:funcntion(){},//改变模块之前的调用，
+    changeYearBefore:funcntion(){},//切换年的回调
+    changeMonthBefore:funcntion(){},//切换月份的回调
+    changeCompanyBefore:funcntion(){},//切换公司之前的回调
     items:[ //组件
         {
             id: "1",
@@ -289,6 +289,9 @@ listeners:[
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
         debugger; 
+    },
+    "clickBefore":function(params,$vue){//点击之前的回调，可以改变listeners里的参数变量
+
     }
   }
 ]
