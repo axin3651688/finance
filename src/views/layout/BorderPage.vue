@@ -45,7 +45,7 @@ export default {
   methods: {
     ...mapActions(["ToggleSideBar"]),
     isShow() {
-      debugger;
+      // debugger;
       if (this.classObj.mobile) {
         return false;
       }
