@@ -42,7 +42,7 @@ export default {
   },
   created() {
     // debugger
-    console.info(this.item);
+    // console.info(this.item);
   },
   mounted() {
     this.loadItems(this.item);

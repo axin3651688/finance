@@ -6,7 +6,10 @@ const prame = {
       month: new Date().getMonth(),
       date: new Date().getDate(),
       // 单位转换
-      conversion: "元",
+      conversion: {
+        id: 10000,
+        text: "万元"
+      },
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
       openPid: 0,
