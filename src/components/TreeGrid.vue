@@ -138,6 +138,7 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
+      debugger
       const record = this.formatData[trIndex];
       record._expanded = !record._expanded;
     },
@@ -150,7 +151,8 @@ export default {
     }
   },
   created(){
-    
+    debugger
+    console.log(this)
     this.options = this.list
     // console.log("1111")
     // console.log(this.item)

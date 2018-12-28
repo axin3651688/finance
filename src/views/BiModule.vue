@@ -121,7 +121,7 @@ import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
-import { rowsOfChildrenContent } from "../utils/math";
+import { rowsOfChildrenContent,closeTabTaget } from "../utils/math";
 
 export default {
   name: "BiModule",
@@ -175,17 +175,17 @@ export default {
     },
 
     year(newyear) {
-      this.changeYearBefore(newyear);
+      this.changeYearBefore(newyear,this);
       this.updateView("year");
     },
 
     month(newmonth) {
-      this.changeMonthBefore(newmonth);
+      this.changeMonthBefore(newmonth,this);
       this.updateView("month");
       console.log("改变", newmonth);
     },
     company(newId) {
-      this.changeCompanyBefore(newId);
+      this.changeCompanyBefore(newId,this);
       console.log("改变", newId);
       this.updateView("company");
     }
@@ -570,6 +570,21 @@ export default {
       this.items = tabs.filter(tab => tab.text !== targetName);
       if (this.items.length == 1) {
         this.activeTabName = "0";
+      }
+    },
+    /**
+     * @author szc 2018年12月28日 書於经邦软件公司
+     * 切换公司、日期、关闭打开的tab页的操作。
+     */
+    closeTabTaget (params,$vue) {
+      let me = this;
+      let tabs = $vue.items;
+      let tabName = $vue.activeTabName;
+      $vue.items = tabs.filter(tab => !tab.from);
+      if($vue.items&&$vue.items.length > 1){
+          $vue.activeTabName = $vue.items[0].text;
+      } else {
+          $vue.activeTabName = "0";
       }
     }
   }

@@ -61,10 +61,12 @@ export default {
     chartEventHandler(listener) {
       let me = this;
       this.$children[0].chart.on(listener.type, function (params) {
-        debugger
         if(listener.clickBefore && typeof listener.clickBefore == "function"){
-          listener = listener.clickBefore(listener,me);
+          listener = listener.clickBefore(listener,me,params);
         }
+        // if(!listener){
+        //   return;
+        // }
         me.commonHandler(listener, params);
 
       });
@@ -132,6 +134,8 @@ export default {
           resData.tabIndex = text;
           resData.closable = true;
           resData.show = true;
+          //加一个属性，表示是钻取的，方便刷新的时候过滤掉
+          resData.from = "isDrill";
           module.items[action](resData);
           module.activeTabName = resData.text;
         });

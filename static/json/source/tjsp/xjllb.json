@@ -1,6 +1,16 @@
 {
     "id":"0003",
     "text":"现金流量表",
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    }
+    ,//切换年的回调
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },//切换月份的回调
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },//切换公司之前的回调
     "config":{
        "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=(:year-1)||:month||'' ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text1,B.NLEVEL , B.NID as row1, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID row2, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
       "_cube":{
@@ -12,13 +22,16 @@
       "random":{"min":100,"max":100000},
       "type":1
     },
+    // "__queryDataAfter":function(data){//数据的后置处理
+    //     return data;
+    // },
     "layout": {
        "xtype": "tab"
    },
     "columns":[
         {
             "id": "snljje2",
-            "type": "number",
+            "type": "decimal",
             "text": "上年累计金额"
         },  {
             "id": "text1",
@@ -31,11 +44,11 @@
             "text":"行次"
         },{
             "id": "bnljje1",
-            "type": "number",
+            "type": "decimal",
             "text": "本年累计金额"
         }, {
             "id": "snljje1",
-            "type": "number",
+            "type": "decimal",
             "text": "上年累计金额"
         }, {
             "id": "text2",
@@ -48,7 +61,7 @@
             "text":"行次"
         },{
             "id": "bnljje2",
-            "type": "number",
+            "type": "decimal",
             "text": "本年累计金额"
         } ],
         "rows": [
