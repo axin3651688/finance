@@ -1,0 +1,221 @@
+{
+	"layout": {
+		"xtype":"column"
+	},
+	"id": "456",
+	"text": "指标分析",
+	"show":true,
+	"items": [
+		{
+			"xtype": "chart",
+			"id": "231",
+			"text": "公司效果图",
+			"weight": 8,
+			"closable": true,
+			"show":true,
+			"queryDataBefore":function(params, config, $vue){
+				debugger;
+				let chartData = $vue.$store.chartData;
+				if(chartData){
+					params.indscode = chartData[0].indscode;
+				}
+				return params;
+			},
+			"config": {
+				"sql":"WITH T AS( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE SINDCODE=:indscode AND CTYPE<>'R') SELECT HYMC,LJWC FROM( SELECT T.SNAME AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T INNER JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY T.SNAME ) ",
+				"_cube": {
+					"subject": "0001",
+					"cubeId": 4
+				},
+				"mainDim": "itempoint",
+				"needDims": [
+					"year",
+					"month",
+					"company"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"type": 1,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
+				"columns": [
+					{
+						"id": "tbzjl",
+						"type": "number",
+						"text": "同比增减率"
+					},
+					{
+						"id": "hymc",
+						"type": "string",
+						"text": "行业名称"
+					},
+					{
+						"id": "mbjy",
+						"type": "number",
+						"text": "全年考核目标建议值"
+					},
+					{
+						"id": "ljwc",
+						"type": "number",
+						"text": "累计完成"
+					},
+					{
+						"id": "ljwcl",
+						"type": "number",
+						"text": "累计完成率"
+					},
+					{
+						"id": "sntq",
+						"type": "number",
+						"text": "上年同期"
+					},
+					{
+						"id": "tbzje",
+						"type": "number",
+						"text": "同比增减额"
+					}
+				],
+				"rows": []
+			},
+			
+			"options": {
+				"type": "advancechart",
+				"subType": "pie",
+				"getData": {
+					"type": 2,
+					"columns": [
+						{
+							"id": "hymc",
+							 "prop":"name"
+						},
+						{
+							"id": "ljwc",
+							 "prop":"value"
+						}
+					],
+					"sign":"pie",
+					"scope": true
+				}
+			},
+			"chartOptions": {
+                "dd": "this.item.text",
+                "title": {
+                    "text": "this.item.text",
+                    "x": "center"
+                },
+                "tooltip": {
+                    "trigger": "item",
+                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
+                },
+                "series": [{
+                    "name": "风险级别",
+                    "type": "pie",
+                    "radius": "55%",
+                    "center": ["50%", "60%"],
+                    "data": "this.item.options.datas",
+                    "itemStyle": {
+                        "emphasis": {
+                            "shadowBlur": 10,
+                            "shadowOffsetX": 0,
+                            "shadowColor": "rgba(0, 0, 0, 0.5)"
+                        }
+                    }
+                }],
+                "legend": {
+                    "orient": "vertical",
+                    "left": "5%",
+                    "top": "10%",
+                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                }
+            }
+		},
+		{
+			"xtype": "bi-table",
+			"id": "8979",
+			"text": "这个也是钻取过来的表",
+			"weight": 16,
+			"show":true,
+			"queryDataBefore":function(params, config, $vue){
+				debugger;
+				let chartData = $vue.$store.chartData;
+				if(chartData){
+					params.indscode = chartData[0].indscode;
+				}
+				alert(params.indscode);
+				return params;
+			},
+			"config": {
+				"sql":"WITH T AS( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE SINDCODE=:indscode AND CTYPE<>'R') SELECT HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT DECODE(T.SNAME,NULL,'合计',T.SNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets (T.SNAME,()) )",
+				"_cube": {
+					"subject": "0001",
+					"cubeId": 4
+				},
+				"mainDim": "itempoint",
+				"needDims": [
+					"year",
+					"month",
+					"company"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"type": 1,
+				"show":true,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
+				"columns": [
+					{
+						"id": "tbzjl",
+						"type": "decimal",
+						"text": "同比增减率"
+					},
+					{
+						"id": "indscode",
+						"type": "string",
+						"text": "编码"
+					},
+					{
+						"id": "hymc",
+						"type": "string",
+						"text": "项目"
+					},
+					{
+						"id": "mbjy",
+						"type": "decimal",
+						"text": "全年考核目标建议值"
+					},
+					{
+						"id": "ljwc",
+						"type": "decimal",
+						"text": "累计完成"
+					},
+					{
+						"id": "ljwcl",
+						"type": "decimal",
+						"text": "累计完成率"
+					},
+					{
+						"id": "sntq",
+						"type": "decimal",
+						"text": "上年同期"
+					},
+					{
+						"id": "tbzje",
+						"type": "decimal",
+						"text": "同比增减额"
+					}	
+				],
+				"rows": []
+			}
+		}
+	]
+}

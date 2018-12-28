@@ -3,7 +3,7 @@
  * @Date: 2018-12-11 17:34:38 
  * @Decription: 本项目用到的通用方法 
  * @Last Modified by: cnbi.zhh
- * @Last Modified time: 2018-12-14 14:52:53
+ * @Last Modified time: 2018-12-19 20:00:06
  */
 //加载工具类 lodash
 let _ = require('lodash');
@@ -11,6 +11,33 @@ import { MessageBox } from 'element-ui';
 export default {
     //天津视频 数据源id 
     datasourceId: 4,
+
+    //将父子节点转成数组
+    transformToArray(setting, nodes) {
+        return this.transformToArrayFormat(setting, nodes);
+    },
+
+    transformToArrayFormat(setting, nodes) {
+        if (!nodes) return [];
+        var r = [];
+        if (Array.isArray(nodes)) {
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                var node = nodes[i];
+                this._do(setting, node);
+            }
+        } else {
+            this._do(setting, nodes);
+        }
+        return r;
+    },
+
+    _do(setting, _node) {
+        r.push(_node);
+        var children = this.nodeoChildren(setting, _node);
+        if (children) {
+            r = r.concat(this.transformToArrayFormat(setting, children));
+        }
+    },
 
     //将数组转为父子节点的对象 该方法来自于ztree方法
     transformToeTreeNodes(setting, simpleNodes) {
@@ -82,7 +109,7 @@ export default {
     /**
      * 操作请求
      */
-    , opt: [{ url: "save", text: "新增", method: "post" }, { url: "update", text: "修改", method: "put" }, { url: "del", del: "删除", method: "get" }]
+    , opt: [{ url: "save", text: "新增", method: "post" }, { url: "update", text: "修改", method: "put" }, { url: "del", del: "删除", method: "get" }, { url: "drag", drag: "移动", method: "post" }]
 
 }
 
