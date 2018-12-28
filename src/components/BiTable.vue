@@ -62,7 +62,6 @@ export default {
   created() {
     debugger;
     this.upData(this.item);
-    console.log(this.upData(this.item));
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -74,7 +73,6 @@ export default {
     //debugger;
     // this.getTableDataParams();
     this.upData(this.item);
-    console.log(this.row)
     // this.$nextTick(() => {
     //   debugger;
     //   this.upData(this.item);
@@ -407,5 +405,8 @@ export default {
   text-align: right;
 }
 .el-table td {
+}
+.gutter{
+  display: none;
 }
 </style>
