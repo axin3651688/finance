@@ -209,6 +209,22 @@ export default {
     },
     groupOwnerId() {
       return this.groupInfo.ownerId
+    },
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    }
+  },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      debugger;
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.groupMsgList.push(item);
+      this.$nextTick(() => { // 把聊天窗口滚动到最底部
+        this.chatWindowScrollToBottom();
+      });
     }
   },
   methods: {
@@ -283,6 +299,7 @@ export default {
             content: this.sendText,
             senderId: this.loginUserId,
             groupId: this.groupId,
+            // receiverId: this.groupId,
             type: 1
           },
           device: '868938033321615'
@@ -290,7 +307,6 @@ export default {
         console.log('要发送的内容是：', this.sendText);
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
-        debugger;
         sendMsg(sendData).then(res => {
           console.log('发送群消息返回数据res', res);
           debugger;
@@ -386,14 +402,13 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      debugger;
+      // debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
           this.groupMembers = res.data.data.users;
-          debugger;
           this.ActionSetMessageStore({groupInfo: res.data.data});
         }
       }).catch(err => {
