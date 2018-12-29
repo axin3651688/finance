@@ -44,6 +44,7 @@ export default {
         },
         tooltip: {
           //"{a}{b} : {c}% <br/>"+"本期累计:"+this.item.bnlj+"<br/> 本年目标:"+this.item.bnmb
+          confine: true,
           formatter: ""
         },
         series: [
@@ -52,6 +53,7 @@ export default {
             type: "gauge",
             min: 0,
             max: 200, //设置最大刻度
+            splitNumber:8,
             //设置仪表盘的园的程度，这里设置的是半圆
             startAngle: 170,
             endAngle: 10,
@@ -84,9 +86,13 @@ export default {
             },
             detail: {
               //			      show:false,
-              formatter: "{value}%",
+              //格式化表盘的数据
+              formatter: function(a,b,c){
+              
+                return Math.decimalToLocalString(a) + "%";
+              },
               textStyle: {
-                fontSize: 20
+                fontSize: 13
               },
               offsetCenter: [0, 20] // 文字块相对于圆心偏移量
             },
@@ -126,12 +132,26 @@ export default {
       if (item) {
         this.item = item;
       }
-      debugger;
+      // debugger;
       let companyId = this.$store.getters.treeInfo.id;
       if (companyId == "121") {
+        let fixedFirst = 0;
+        let color = [
+          [0.4, "#F24764"],
+          [0.6, "#FBCE14"],
+          [0.8, "#11C3C2"],
+          [1, "#2FC35B"]
+        ];
         this.receive.series[0].max = 125;
+        fixedFirst = 50/125;
+        this.receive.series[0].axisLine.lineStyle.color = color;
+        this.receive.series[0].splitNumber = 5;
       } else {
+        let fixedFirst = 0;
         this.receive.series[0].max = 200;
+        fixedFirst = 50/200;
+        this.receive.series[0].axisLine.lineStyle.color[0][0] = fixedFirst;
+        this.receive.series[0].splitNumber = 8;
       }
       this.receive.series[0].data[0].value = item.options.datas; //.toLocaleString();
       let GItemScoded = item.GItemScode;
@@ -141,18 +161,22 @@ export default {
           return ele.id == GItemScoded;
         }); //bnlj bnmb
       }
+      // debugger
+      let titleText = this.item.text.replace("（%）","");
       if (tempData && tempData.length > 0) {
         this.receive.tooltip.formatter =
-          "本期累计:" +
-          (tempData[0].bnmb || 0).toLocaleString() +
+          titleText + ":" + 
+          Math.decimalToLocalString(item.options.datas) +"% <br/> 本年累计:" +
+          Math.decimalToLocalString((tempData[0].bnmb || 0)) + "（元）" +
           "<br/> 本年目标:" +
-          (tempData[0].bnlj || 0).toLocaleString();
+          Math.decimalToLocalString((tempData[0].bnlj || 0)) + "（元）";
       } else {
         this.receive.tooltip.formatter =
-          "本期累计:" +
-          (0).toLocaleString() +
+          titleText + ":" + 
+          Math.decimalToLocalString((0)) +"% <br/> 本年累计:" +
+          Math.decimalToLocalString((0)) + "（元）" +
           "<br/> 本年目标:" +
-          (0).toLocaleString();
+          Math.decimalToLocalString((0)) + "（元）";
       }
     }
   }

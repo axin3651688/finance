@@ -18,8 +18,7 @@
         "cubeId":4
       },
       "mainDim":"itemperiod",
-      "needDims":["year","month","company"],
-      "random":{"min":100,"max":100000},
+      "needDims":["year","month","company","conversion"],
       "type":1
     },
     // "__queryDataAfter":function(data){//数据的后置处理
@@ -129,7 +128,6 @@
                         "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
                         "handler":($vue,params)=>{//自定义的回调
                             console.info(params);
-                            debugger; 
                         } 
                     },
                     { row: row, column: column, cell: cell, event: event },

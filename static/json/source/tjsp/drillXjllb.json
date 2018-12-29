@@ -33,7 +33,7 @@
 				"needDims": [
 					"year",
 					"month",
-					"company"
+					"company","conversion"
 				],
 				"random": {
 					"min": 100,

@@ -1,5 +1,5 @@
 <template>
-  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe height="item.height || rowClass">
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe height="item.height || rowClass" :cell-style="cellStyle">
     <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -60,8 +60,10 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
+import EventMixins from "../mixins/EventMixins";
 // data  columns list
 export default {
+  mixins: [EventMixins],
   data() {
     return {
       list: [],
@@ -70,7 +72,7 @@ export default {
       formatData:[]
     };
   },
-  name: "TreeGrid",
+  name: "STreeGrid",
   props: {
     /* eslint-disable */
     item:{
@@ -120,7 +122,32 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-
+   cellStyle(row) {
+    //  debugger
+      if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
+        return this.item.cellStyle(row,this);
+      }
+      // let css = "padding: 4px 0;";
+      // let pro = row.column.property;
+      // if (!pro) {
+      //   return css;
+      // }
+      // let levelProperties = this.item.levelProperties || this.levelProperties;
+      // let textIndent ="",record = row.row;
+      // let levelPro = levelProperties[pro];
+      // if (levelPro && record[levelPro]) {
+      //     let level = record[levelPro] || 1;
+      //     textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+      // }
+      // let drillProperties = this.item.drillProperties || this.drillProperties;
+      // if (drillProperties.indexOf(pro) != -1) {
+      //   let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+      //   css = css + "font-weight:bold;" + textIndent + drill;
+      //   return css;
+      // } else {
+      //   return css+textIndent;
+      // }
+    },
     /**
       * 格式化数据源
       */

@@ -189,11 +189,35 @@ export default {
       console.log("改变", newId);
       this.updateView("company");
     },
-    conversion(id){
-      console.log(111111111)
-      //循环当前组件的孩子，动态给datas调用切换单位的方法即可
-      debugger
-    }
+    // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
+    conversion(unit,older){
+      debugger;
+       let $cc = this.$refs.mychild,tempDatas = this.datas;
+       if(tempDatas.length > 0){
+          this.datas = Math.convertUnit(unit.id,tempDatas,this.config.columns || this.columns,older.id);
+       }
+       if ($cc) {
+        let ii = 0;
+        $cc.forEach(children => {
+          let cItem = children.item;
+          if (cItem) {
+               if(!children.hasConfig){
+                    children.$set(children.item, "datas",  this.datas);
+                    children.setItems(children.item, true);   
+               }else{
+                  let cc = cItem.datas;
+                  if(cc.length > 0){
+                    cc = Math.convertUnit(unit.id,cc,cItem.config.columns,older.id);
+                    children.$set(children.item, "datas", datas);
+                    children.setItems(children.item, true);   
+                  }
+               }
+               
+            ii++;
+          }
+        });
+      }
+  }
   },
 
   methods: {
@@ -492,6 +516,7 @@ export default {
           if (children.item) {
             // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
+            console.log(cc)
             if (cc && children.hasConfig) {
             } else {
               //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
@@ -542,8 +567,6 @@ export default {
     },
     __queryDataAfter(datas) {
       //
-     
-      console.log(datas)
       return datas;
     },
     /**

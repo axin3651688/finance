@@ -13,7 +13,7 @@ import {
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
 import {
-    processServerMessage
+    processServerMessage,processServerAck
 } from 'utils/message'
 /**
  * 消息核心处理
@@ -57,14 +57,16 @@ export default function socketCoreProcess(websocket, datas) {
                 console.log('socketCoreProcess: 1006');
                 break;
             case 1100:
-                // 单聊
-                // debugger;
+                // debugger; // 单聊
                 processServerMessage(data);
                 break;
             case 1101:
-                // 群聊
-                // debugger;
+                // debugger; // 群聊
                 processServerMessage(data);
+                break;
+            case 2000:
+                // debugger; // 消息 ack 回执
+                processServerAck(data);
                 break;
             case 1500:
                 //终端控制处理逻辑 {text:"执行成功"}

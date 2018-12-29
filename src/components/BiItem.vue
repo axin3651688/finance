@@ -5,6 +5,7 @@
   <tree-grid v-else-if="flag && item.show && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
   <s-tree-grid v-else-if="flag && item.show && item.xtype == 'stree-grid'" :item.sync="item" ref="child"></s-tree-grid>
   <bi-flhz v-else-if="flag && item.show && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>
+  <el-button plain  v-else-if="flag && item.show && item.xtype == 'button'" :item.sync="item" ref="child">11</el-button>
 </template>
 
 <script>
@@ -41,10 +42,13 @@ export default {
     };
   },
   created() {
+    debugger
+    console.log(this.item);
     // debugger
     // console.info(this.item);
   },
   mounted() {
+    debugger
     this.loadItems(this.item);
   },
   watch: {

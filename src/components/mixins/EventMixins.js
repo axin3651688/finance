@@ -8,7 +8,7 @@
         "way":"addTab",
         "handler":($vue,params)=>{
             console.info(params);
-                debugger; 
+                 
         }
   }]
  */
@@ -21,7 +21,6 @@ export default {
     let xtype = me.item.xtype;
     if (me.item.listeners) {
       me.item.listeners.forEach(listener => {
-        debugger
         if (listener.type) {
           if (xtype === "chart" || xtype === "bi-chart") {
             this.chartEventHandler(listener);
@@ -81,7 +80,7 @@ export default {
     tableEventHandler(listener) {
       // let me = this;
       // this.$children[0].chart.on(listener.type,function(params){
-      //    debugger;
+      //    
       //    me.commonHandler(listener,params);
       // })
     },
@@ -97,7 +96,7 @@ export default {
      * unshift()方法是向数组的开头添加一个或多个元素
      */
     addTab(params, listener, bb) {
-      debugger;
+      
       let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
       let module = tab.$parent.$parent;
       if (!bb) {
@@ -117,7 +116,7 @@ export default {
       if (listener.location && listener.location == "before") {
         action = "unshift";
       }
-      debugger;
+      
       if (listener.sourceApi) {
         //配制加载url的情况
         findDesignSource(listener.sourceApi).then(res => {
@@ -160,10 +159,10 @@ export default {
    */
   onCellClick(row, column, cell, event) {
     console.info(row);
-    debugger;
+    
     if (row._drill || row.drill) {
       if (cell.cellIndex === 0) {
-        debugger;
+        
       }
     }
   }

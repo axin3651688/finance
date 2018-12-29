@@ -9,10 +9,11 @@
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar" :onerror="avatar_male"/>
+                <img :src="group.avatar" v-avatar="group.text" />
               </div>
               <div class="info">
-                <h3>{{group.text}}（{{group.count}}人）</h3>
+                <span class="info-text">{{group.text}}</span>
+                <span class="info-count">（{{group.count}}人）</span>
               </div>
             </figure>
             <i class="arrow el-icon-arrow-right"></i>
@@ -26,10 +27,10 @@
           <div class="top-wrap">
             <div>
               <div class="img-box">
-                <img :src="rightInfo.avatar" alt="" class="avatar-img" :onerror="avatar_male">
+                <img :src="rightInfo.avatar" class="avatar-img" v-avatar="rightInfo.text">
               </div>
             </div>
-            <div class="text">
+            <div class="text">{{rightInfo.groupId}}
               <h3 class="text-title">{{rightInfo.text}}</h3>
               <p class="text-info">{{rightUsers.length}}人</p>
             </div>
@@ -37,7 +38,7 @@
               type="primary"
               size="medium"
               class="my-btn"
-              @click="chatWithGroup(rightInfo.groupId)"
+              @click="chatWithGroup(rightInfo)"
             >发送信息
             </el-button>
           </div>
@@ -53,7 +54,7 @@
                       <figure>
                         <div>
                           <div class="img-box">
-                            <img :src="user.avatar" :onerror="avatar_male">
+                            <img :src="user.avatar" v-avatar="user.trueName">
                           </div>
                         </div>
                         <span class="info">{{user.trueName}}</span>
@@ -105,7 +106,6 @@ export default {
   data() {
     return {
       qrUrl: null, // 群二维码地址
-      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
       groupList: null, // [{},{}] 我的群组列表
@@ -122,8 +122,18 @@ export default {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
           this.groupList = res.data.data;
+
           // 默认请求第一个群组的信息
-          this.getInfo(this.groupList[0].groupId)
+          if (this.groupList.length) {
+            this.getInfo(this.groupList[0].groupId)
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有加入任何群组',
+              showClose: true
+            })
+          }
+
         }
       })
     },
@@ -199,11 +209,12 @@ export default {
     },
 
     // 开始群聊天
-    chatWithGroup(groupId) {
-      if (groupId) {
+    chatWithGroup(rightInfo) {
+      if (rightInfo.groupId) {
         this.ActionSetMessageStore({
+          targetId: rightInfo.groupId,
           miniType: 1101, // 1101 群聊,
-          receiverData: this.rightUserInfoData
+          receiverData: rightInfo
         });
         this.$router.push('/message_page/msg')
       }
@@ -217,16 +228,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/index.scss";
 
   .ContactsGroups {
     display: flex;
     height: 100%;
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {
-    min-width: 300px;
-    max-width: 400px;
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -266,7 +280,7 @@ export default {
           width: 40px;
           height: 40px;
           overflow: hidden;
-          margin-right: 20px;
+          margin-right: 15px;
           border-radius: 8px;
           background: $colorTheme;
 
@@ -277,11 +291,15 @@ export default {
         }
 
         .info {
+          @include flex();
+          justify-content: space-between;
           font-family: $fontFamilyMain;
           font-weight: 400;
           line-height: 20px;
 
-          h3 {
+          .info-text {
+            @include singleEllipsis();
+            width: 134px;
             height: 19px;
             font-size: 14px;
             font-weight: bold;
@@ -303,6 +321,7 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: $colorBgPageGray;
 
     .panel-right-top {
       padding: 50px 40px;
@@ -357,13 +376,14 @@ export default {
       position: relative;
       flex: 1;
       font-weight: 400;
-      padding-left: 40px;
+      margin-left: 40px;
 
       .content-wrap {
         position: absolute;
         top: 0;
         bottom: 0;
         height: 100%;
+        width: 100%;
       }
 
       section {
