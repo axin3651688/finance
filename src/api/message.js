@@ -1,11 +1,12 @@
-// message 页面获取消息列表
 import request from 'utils/http'
+import proxy from './proxy.js'
 
 
 //上传文件
 export function UPLOAD_FILE(data) {
   // debugger;
   return request({
+    // url: proxy.file + '/api/file/upload_file',
     url: '/file/upload_file',
     method: 'post',
     data: data
@@ -17,6 +18,7 @@ export function UPLOAD_FILE(data) {
 export function MY_SESSION(userId) {
   // debugger
   return request({
+    // url: proxy.file + '/api/my_session',
     url: '/api/api/my_session',
     method: 'get',
     params: {

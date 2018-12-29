@@ -21,7 +21,7 @@ function resolve(dir) {
 
 let proxyObj = { // 配置跨域
     '/api': {
-        target: 'http://192.168.2.237:8005',
+        target: 'http://192.168.2.224:8005',
         // target: 'http://192.168.2.2:8005',
         // target: 'http://192.168.1.118:8005',
         //  target: 'http://192.168.1.139:8005',
