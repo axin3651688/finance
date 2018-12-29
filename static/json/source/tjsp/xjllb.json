@@ -113,7 +113,6 @@
             }
           },
         "onCellClick":function(row, column, cell, event,option){
-<<<<<<< HEAD
             debugger
             let cv = column.property + "",
             len = cv.length;
@@ -135,7 +134,6 @@
             { row: row, column: column, cell: cell, event: event },
             { id: id, text: text }
           );
-=======
                 let cv = column.property + "";
                 let listener = row._drill || row.drill;
                 if (listener && (cv == "text1" || cv == "text2" )) {
@@ -159,7 +157,6 @@
                     { id: id, text: text }
                     );
                 }
->>>>>>> d25c9819062d56eae9bdff2007dd1aee04aa0db1
         }
         
       }
