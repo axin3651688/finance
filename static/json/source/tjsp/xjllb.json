@@ -113,26 +113,29 @@
             }
           },
         "onCellClick":function(row, column, cell, event,option){
-            let cv = column.property + "",
-            len = cv.length;
-            let text = row[cv];
-            let id = "" ;
-            if(cv == "text1" )id = row.ascode;//下钻的标识
-            if(cv == "text2" )id = row.bscode;//下钻的标识
-            
-            option.commonHandler(
-            {
-                "type":"click",//事件类型
-                "way":"addTab",//调用的公共方法
-                "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
-                "handler":($vue,params)=>{//自定义的回调
-                    console.info(params);
-                    debugger; 
-                } 
-            },
-            { row: row, column: column, cell: cell, event: event },
-            { id: id, text: text }
-          );
+                let cv = column.property + "";
+                let listener = row._drill || row.drill;
+                if (listener && (cv == "text1" || cv == "text2" )) {
+                    let len = cv.length;
+                    let text = row[cv];
+                    let id = "" ;
+                    if(cv == "text1" )id = row.ascode;//下钻的标识
+                    if(cv == "text2" )id = row.bscode;//下钻的标识
+                    
+                    option.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                            debugger; 
+                        } 
+                    },
+                    { row: row, column: column, cell: cell, event: event },
+                    { id: id, text: text }
+                    );
+                }
         }
         
       }
