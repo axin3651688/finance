@@ -39,7 +39,7 @@ export default {
     this.upData(this.item);
   },
   mounted() {
-    console.log(this.item.options.datas);
+    // console.log(this.item.options.datas);
   },
   methods: {
     /** 
@@ -76,7 +76,7 @@ export default {
         Cnbi.applyDeepIf(options || {}, defaultOptions);
       }
       this.evalVaiables(options);
-      console.log(options);
+      // console.log(options);
       debugger;
       return options;
     },
@@ -84,7 +84,7 @@ export default {
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
       debugger;
-      console.log(this.item.options.datas);
+      // console.log(this.item.options.datas);
 
       if (chartType === 1) {
         /**
@@ -97,7 +97,7 @@ export default {
          * 单独系列数据的图形 说白了就是series.length = 1
          */
         if (subType == "pie") {
-          console.info(this.item);
+          // console.info(this.item);
 
           this.chartOptions.legend.data = this.item.options.datas.map(item => {
             return item.name;
@@ -130,7 +130,7 @@ export default {
         console.error("没有正确的配置chart类型");
         return;
       }
-      console.log(chartSubType);
+      // console.log(chartSubType);
       // debugger;
 
       switch (chartSubType) {

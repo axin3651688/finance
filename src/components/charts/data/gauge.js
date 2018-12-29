@@ -19,7 +19,7 @@ export default function gauge() {
         },
         tooltip: {
             //"{a}{b} : {c}% <br/>"+"本期累计:"+this.item.bnlj+"<br/> 本年目标:"+this.item.bnmb
-            formatter: ""
+            formatter: "{a} <br/>{b} : {c}%"
         },
         series: [{
             name: "目标完成率",

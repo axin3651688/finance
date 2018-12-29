@@ -26,28 +26,32 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
-        // debugger;
+        debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
                 break;
             case 1002:
                 // 账号重复登录提示及处理
-                console.log(data);
-                console.log('账号在别端登录');
-                showMessage(data)
+                console.log('socketCoreProcess: 1002+账号在别端登录');
+                reload(data)
                 break;
             case 1003:
                 // 登录已失效，请重新登录
-                console.log('socketCoreProcess: 1003');
+                console.log(data);
+                console.log('socketCoreProcess: 1003+登录已失效，请重新登录');
+                reload(data)
                 break;
             case 1004:
                 // 你已在Windows登陆
-                console.log('socketCoreProcess: 1003');
+                console.log('socketCoreProcess: 1004+你已在Windows登陆');
+                reload1004(data)
+
                 break;
             case 1005:
                 // 你已在Windows下线
                 console.log('socketCoreProcess: 1005');
+                reload(data)
                 break;
             case 1006:
                 console.log('socketCoreProcess: 1006');
@@ -123,19 +127,43 @@ export default function socketCoreProcess(websocket, datas) {
         });
     }
 
-    function showMessage(data) {
+    function reload1004(data) {
+        console.log(data.data);
+        if (!Cnbi.isEmpty(data.data)) {
+            let receive = data.data.user.id;
+            let local = JSON.parse(localStorage.database).user.id
+            if (receive === local) {
+                console.log("传来的ID和本地id一样,强制退到登录界面");
+                showMessage(data)
+            }
+        } else {
+            showMessage(data)
+        }
 
+    }
+
+    function reload(data) {
+        console.log(data.data);
+        if (!Cnbi.isEmpty(data.data)) {
+            let receive = data.data.user.id;
+            let local = JSON.parse(localStorage.database).user.id
+            if (receive === local) {
+                console.log("传来的ID和本地id一样,啥也不做");
+            }
+        } else {
+            showMessage(data)
+        }
+
+    }
+
+    function showMessage(data) {
         MessageBox.confirm(data.msg, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-
-            if (Cnbi.isEmpty(data.data)) {
-                router.push("/login");
-            } else {
-                console.log("自动登录,调登录接口");
-            }
+            // 以后要改为自动登录
+            router.push("/login");
         }).catch(() => {
             router.push("/login");
         })

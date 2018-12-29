@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-import { getClientParams } from "utils/index";
+import {
+  getClientParams
+} from "utils/index";
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -224,11 +226,11 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let bean = getClientParams();
-  let authorization = bean.authorization||bean.tikct||bean.token;
-  if(!authorization){
+  let authorization = bean.authorization || bean.tikct || bean.token;
+  if (!authorization) {
     authorization = localStorage.authorization ? true : false;
   }
-  if (to.path == "/login" || to.path == "/register") {
+  if (to.path == "/login") {
     next();
   } else {
     authorization ? next() : next("/login");
