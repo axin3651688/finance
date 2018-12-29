@@ -6,7 +6,8 @@
       :stripe="true"
       height="item.height || rowClass"
       :cell-style="cellStyle"
-      @cell-click="onCellClick"
+      @row-click="onRowClick"
+      
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
@@ -187,6 +188,13 @@ export default {
         console.info("没有设置事件");
       }
     },
+    onRowClick(row,e,column) {
+       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
+            return this.item.onRowClick(row, column, e,this);
+        }
+        this.onCellClickDefault(row, column, e);
+
+     },
     /**
      * 单元格单击事件
      */

@@ -18,40 +18,49 @@
     ],
     "columns": [
       {
-          "text": "公司编码",
-          "value": "scode"
+        "text": "集中度",
+        "type":"decimal",
+        "id": "jzd"
       },
       {
-          "text": "公司名称",
-          "value": "sname"
+        "text": "公司编码",
+         "type":"number",
+        "id": "scode"
+    },
+      {
+          "text": "公司名称", 
+          "type":"string",
+          "id": "sname"
         },
         {
           "text": "下级户数",
-          "value": "hs"
+           "type":"string",
+          "id": "hs"
         },
         {
           "text": "下级集中户数",
-          "value": "jzhs"
+           "type":"string",
+          "id": "jzhs"
         },
         {
-          "text": "掌控面",
-          "value": "gkm"
+          "text": "掌控面", 
+          "type":"decimal",
+          "id": "gkm"
         },
         {
           "text": "货币金额",
-          "value": "hbzj"
+          "type":"decimal",
+          "id": "hbzj"
         },
         {
           "text": "其中：银行存款",
-          "value": "yhck"
+          "type":"decimal",
+          "id": "yhck"
         },
         {
           "text": "集中金额",
-          "value": "jzje"
-        },
-        {
-          "text": "集中度",
-          "value": "jzd"
+          "type":"decimal",
+          "id": "jzje"
         }
   ],
   "layout": {

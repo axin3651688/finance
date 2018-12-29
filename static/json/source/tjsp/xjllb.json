@@ -1,6 +1,7 @@
 {
     "id":"0003",
     "text":"现金流量表",
+    "showDims": ["conversion","year","month","company"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
     }
@@ -113,6 +114,7 @@
             }
           },
         "onCellClick":function(row, column, cell, event,option){
+            debugger
             let cv = column.property + "",
             len = cv.length;
             let text = row[cv];
