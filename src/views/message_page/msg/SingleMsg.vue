@@ -85,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'messageStore']),
+    ...mapGetters(['user', 'messageStore', 'targetId']),
     loginUserId() {
       return this.user.user.id;
     },
@@ -98,7 +98,6 @@ export default {
   },
   watch: {
     receiverId(val) {
-      alert('watch receiverId');
       this.findSingleMsg();
     },
     //监听服务器推送的消息
@@ -106,10 +105,14 @@ export default {
       console.log('监听到服务器推送：', val);
       let item = val.data;
       item['miniType'] = val.code;
-      this.singleMsgList.push(item);
-      this.$nextTick(() => { // 把聊天窗口滚动到最底部
-        this.chatWindowScrollToBottom();
-      });
+      // 当目标id 和 发送者id相同时再把消息加入队列
+      if (this.messageStore.targetId === item.senderId) {
+        debugger;
+        this.singleMsgList.push(item);
+        this.$nextTick(() => { // 把聊天窗口滚动到最底部
+          this.chatWindowScrollToBottom();
+        });
+      }
     }
   },
   methods: {
@@ -136,7 +139,6 @@ export default {
         this.sendText = '';
         sendMsg(sendData).then(res => {
           console.log('发送单聊消息返回数据res', res);
-          debugger;
         }).catch(err => {
           console.log('发送单聊消息返回数据err', err);
           debugger;
@@ -160,7 +162,6 @@ export default {
         name: this.user.user.trueName,
         sendTime: new Date().getTime()
       };
-      debugger;
       this.singleMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
@@ -189,6 +190,9 @@ export default {
           res = res.data;
           if (res.code === 200 && res.data) {
             this.singleMsgList = res.data.data.reverse();
+            this.$nextTick(() => {
+              this.chatWindowScrollToBottom()
+            });
           }
         }).catch(err => {
         console.log('获取单聊信息catch：', err)
@@ -199,10 +203,6 @@ export default {
   mounted() {
     // ajax请求获取单聊消息内容
     this.findSingleMsg();
-
-    this.$nextTick(() => {
-      this.chatWindowScrollToBottom()
-    });
 
     // 当点击的不是表情，则隐藏表情弹框
     document.addEventListener('click', e => {

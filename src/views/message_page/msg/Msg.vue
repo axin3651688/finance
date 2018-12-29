@@ -81,13 +81,12 @@ class LeftBar {
 
   // 激活这个边栏项
   setItemActive(itemObj) {
-    debugger;
     this.activeItem = itemObj;
     itemObj.setActive();
     let user = {
       id: itemObj.senderId,
       avatar: itemObj.avatar,
-      trunName: itemObj.name,
+      trueName: itemObj.name,
     };
     itemObj['user'] = user;
     let obj = {
@@ -132,7 +131,6 @@ class LeftBarItem {
   constructor(obj) {
     this.isActive = false;
     this.count = 1;
-    debugger;
     this._init(obj)
   }
 
@@ -159,7 +157,6 @@ class LeftBarItem {
   // 消息计数+1，并跟新内容
   addCount(content) {
     this.count++;
-    debugger;
     this.content = content
   }
 
@@ -207,14 +204,14 @@ export default {
       item['miniType'] = val.code;
       // 当当前窗口不是聊天窗时，才往侧栏添加提示
       // todo: 群消息处理
-      if (this.messageStore.miniType !== val.code) {
+      if (this.messageStore.targetId !== item.senderId) {
+        debugger;
         this.leftBarInstance.addLeftBarItem(item);
       }
     }
   },
   filters: {
     trim(val) { // 去掉头尾空格
-      debugger;
       return val.trim()
     },
     // 格式化时间戳
