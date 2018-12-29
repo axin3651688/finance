@@ -83,7 +83,7 @@ export default {
     overflow: hidden;
     background: #ffffff;
     height: 100%;
-    padding: 15px 10px 0;
+    padding: 1px 0px 0;
     background: $colorBgPageGray;
     box-shadow: 0 20px 30px $colorShadowGreen;
 
@@ -95,8 +95,8 @@ export default {
   /deep/ .el-tabs {
     height: 100%;
     overflow: hidden;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    /*border-top-left-radius: 12px;*/
+    /*border-top-right-radius: 12px;*/
     background: #ffffff;
 
     .el-tabs__header {

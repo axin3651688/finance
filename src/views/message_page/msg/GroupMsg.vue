@@ -428,7 +428,11 @@ export default {
         // debugger;
         console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {
-          this.groupMsgList = res.data.data.data.reverse()
+          this.groupMsgList = res.data.data.data.reverse();
+          // 消息拿到后 把窗口内容滚到到底部
+          this.$nextTick(() => {
+            this.chatWindowScrollToBottom()
+          });
         }
       }).catch(err => {
         console.log('群消息', err)

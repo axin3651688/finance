@@ -121,8 +121,18 @@ export default {
         console.log('我的群组：', res.data);
         if (res.data.code === 200) {
           this.groupList = res.data.data;
+
           // 默认请求第一个群组的信息
-          this.getInfo(this.groupList[0].groupId)
+          if (this.groupList.length) {
+            this.getInfo(this.groupList[0].groupId)
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有加入任何群组',
+              showClose: true
+            })
+          }
+
         }
       })
     },

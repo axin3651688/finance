@@ -80,7 +80,7 @@ export default {
     formatTime(time) { // 格式化时间戳
       return FORMAT_TIME(time)
     },
-    formatMsgTime(publishtime) {
+    formatMsgTime(publishtime) { // 格式化时间戳(消息、聊天专用)
       return FORMAT_MSG_TIME(publishtime)
     }
   },

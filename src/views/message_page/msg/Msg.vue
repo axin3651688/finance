@@ -18,7 +18,7 @@
                     </div>
                   </el-badge>
                   <span class="title" v-if="item.miniType===1101">{{item.otherName}}</span>
-                  <span class="title" v-else>{{item.name}}</span>
+                  <span class="title" v-else>{{item.name}}</span>{{item.miniType}}
                   <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
                 </div>
                 <p v-if="item.content">
@@ -39,6 +39,7 @@
           <Todo v-if="messageStore.miniType === 2"></Todo>
           <single-msg v-if="messageStore.miniType === 1100"></single-msg>
           <group-msg v-if="messageStore.miniType === 1101"></group-msg>
+          <analysis v-if="messageStore.miniType === 11021"></analysis>
         </template>
 
         <!--右边区域左内阴影效果-->
@@ -171,11 +172,12 @@ class LeftBarItem {
 export default {
   name: 'Message',
   components: {
-    SingleMsg: () => import('./SingleMsg'), // 单聊消息
     // Todo: () => import('./Todo'), // 代办事项
-    NewFriends: () => import('./NewFriends'), // 新朋友
-    GroupHelper: () => import('./GroupHelper'), // 群助手
-    GroupMsg: () => import('./GroupMsg') // 群助手
+    Analysis: () => import('./Analysis'),           // 分析助手
+    SingleMsg: () => import('./SingleMsg'),         // 单聊消息
+    NewFriends: () => import('./NewFriends'),       // 新朋友
+    GroupHelper: () => import('./GroupHelper'),     // 群助手
+    GroupMsg: () => import('./GroupMsg')            // 群助手
   },
   data() {
     return {
@@ -457,9 +459,8 @@ export default {
         flex: 1;
         position: relative;
         overflow: hidden;
-        /*height: calc(100% - 60px);*/
         height: 100%;
-        min-width: 800px;
+        /*min-width: 800px;*/
         background: $colorBgPageGray;
 
         .inset-shadow {

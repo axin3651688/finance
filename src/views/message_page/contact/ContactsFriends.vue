@@ -100,9 +100,18 @@ export default {
 
         if (res.data.code === 200) {
           this.friendData = res.data.data;
-          let activeUserId = this.friendData[0].id;
-          this.getUserinfo(activeUserId);
-          this.activeUser = activeUserId
+          // 当有好友时才请求第一个好友的信息
+          if (this.friendData.length) {
+            let activeUserId = this.friendData[0].id;
+            this.getUserinfo(activeUserId);
+            this.activeUser = activeUserId
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有任何好友',
+              showClose: true
+            })
+          }
         }
       })
     },

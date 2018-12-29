@@ -190,6 +190,7 @@ export default {
           res = res.data;
           if (res.code === 200 && res.data) {
             this.singleMsgList = res.data.data.reverse();
+            // 消息拿到后 把窗口内容滚到到底部
             this.$nextTick(() => {
               this.chatWindowScrollToBottom()
             });

@@ -129,7 +129,19 @@ export default {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
           this.companyList = res.data.data;
-          this.ActionSetMessageStore({companyList: this.companyList})
+          this.ActionSetMessageStore({companyList: this.companyList});
+
+          // 当获得公司列表后，默认请求第一个公司第一个员工的信息
+          if (this.companyList[0].children.length) {
+            this.getUserInfo(this.companyList[0].children[0].id);
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有加入任团队',
+              showClose: true
+            })
+          }
+
         }
       })
     },
@@ -164,13 +176,7 @@ export default {
 
   },
   mounted() {
-    console.log('当前登录用户:', this.user);
-    this.messageStore.companyList ?
-      this.companyList = this.messageStore.companyList :
-      this.getCompanyList();
-
-    console.log('companyList:', this.companyList);
-    this.getUserInfo(this.companyList[0].children[0].id);
+    this.getCompanyList();
   }
 }
 
