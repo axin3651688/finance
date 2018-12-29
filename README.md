@@ -216,10 +216,10 @@ BiText
     text:"",//名字
     config:`config`  //为可选项
     layout:`layout`  //为可选项，不配制的话，默认为form
-    changeModuleBefore:funcntion(){},
-    changeYearBefore:funcntion(){},
-    changeMonthBefore:funcntion(){},
-    changeCompanyBefore:funcntion(){},
+    changeModuleBefore:funcntion(){},//改变模块之前的调用，
+    changeYearBefore:funcntion(){},//切换年的回调
+    changeMonthBefore:funcntion(){},//切换月份的回调
+    changeCompanyBefore:funcntion(){},//切换公司之前的回调
     items:[ //组件
         {
             id: "1",
@@ -235,9 +235,13 @@ BiText
             renderFunction:"functionName"//字面量函数
             params:["A$1111001","B$1111002"]，//参数集合
             config:`config`  //为可选项，当没有数据的时候，会从父亲里取
-            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选
-            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选
-            cellStyle:"单元格样式"
+            rowSpanAndColSpanHandler:function(){}//单元格处理 retrun  {rowspan:2,colspan:5}//可选 table
+            groupConfig: { idProperty: "group",textProperty: "groupName"}//可选 table
+            drillProperties:["text","text_"],//有钻取，给蓝色 可选 table
+            levelProperties:{text:"level",text_:"level_"}//加缩进 可选 table
+            cellStyle:"单元格样式", //可选 table
+            onCellClick:"单元格点击事件" //可选 table 
+            onRowClick:"树表单元格点击事件"
             options:{}
         },
         {
@@ -273,6 +277,8 @@ BiText
 + 表体合并单元格
 ~~~
 在item配置参数 colAndRowSanHandler函数  有4个 row, column, rowIndex, columnIndex
+
+树表的金额配置decimal类型
 ~~~
 
 + 事件对象
@@ -286,6 +292,9 @@ listeners:[
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
         debugger; 
+    },
+    "clickBefore":function(params,$vue){//点击之前的回调，可以改变listeners里的参数变量
+
     }
   }
 ]
@@ -325,5 +334,9 @@ listeners:[
 
 ~~~
 ## 顶部需要日期的配置
-默认 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
-此时,分开的年月将被隐藏,取而代之的为带日的日期选择器
+如果不配置showDims,默认显示公司, 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
+如果只要company 就配   "showDims": ["company"], 其他的都不显示
+
+
+#指标分析右边距(BiModule 51行)
+默认不传为24px,如果需要修改其他值,在item下面加"class_pr":"36px"

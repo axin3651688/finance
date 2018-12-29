@@ -17,19 +17,17 @@ export default function funnel() {
                 saveAsImage: {}
             }
         },
-        legend: {
-            data: ['展现', '点击', '访问', '咨询', '订单']
-        },
+
         calculable: true,
         series: [{
             name: '漏斗图',
             type: 'funnel',
             left: '10%',
             top: 60,
-            //x2: 80,
+
             bottom: 60,
             width: '80%',
-            // height: {totalHeight} - y - y2,
+
             min: 0,
             max: 100,
             minSize: '0%',

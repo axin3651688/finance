@@ -6,7 +6,7 @@
       class="hamburger-container"
     />
     <div class="topcontent">
-      <span @click="showDilog">
+      <span @click="showDilog" v-if="showDims.company">
         <i class="el-icon-search iconclass"></i>
         <el-button type="text" class="underline">{{companyName}}</el-button>
       </span>
@@ -59,6 +59,20 @@
         format="yyyy 年 MM 月 dd 日"
         value-format="yyyy-MM-dd"
       ></el-date-picker>
+      <!-- 单位 -->
+      <el-dropdown trigger="click" v-if="showDims.conversion">
+        <el-button type="text" class="underline">
+          {{conversion.text}}
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
+            v-for="(item,index) of unit"
+            :key="index"
+            @click.native="GetSideMid({conversion:item})"
+          >{{item.text}}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <!-- 消息提醒 -->
       <el-badge :value="12">
         <i class="el-icon-bell iconclass"></i>
@@ -152,7 +166,13 @@ export default {
       value: "",
       y: [],
       m: [],
-      day: []
+      day: [],
+      unit: [
+        { id: 1, text: "元" },
+        { id: 1000, text: "千元" },
+        { id: 10000, text: "万元" },
+        { id: 100000000, text: "亿元" }
+      ]
     };
   },
   components: {
@@ -198,7 +218,8 @@ export default {
       "company",
       "companyName",
       "showDims",
-      "date"
+      "date",
+      "conversion"
     ])
   },
 
@@ -253,8 +274,8 @@ export default {
         })
         .catch(res => {
           console.error("退出请求失败");
-          localStorage.removeItem("authorization");
-          this.$router.push("/login");
+          // localStorage.removeItem("authorization");
+          // this.$router.push("/login");
         });
     },
     // 公司点击确定事件
@@ -273,3 +294,10 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.head-nav {
+  .button {
+    padding: 7px 20px !important;
+  }
+}
+</style>

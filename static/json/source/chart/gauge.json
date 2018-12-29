@@ -3,12 +3,8 @@
     "text": "指标分析",
     "showDims": ["company", "month", "year"],
     "rows": [{
-
-            "id": "1416001",
-            "text": "营业收入"
-        }
-
-    ],
+        "id": "1416001"
+    }],
     "columns": [{
             "id": "id",
             "type": "string",
@@ -28,8 +24,8 @@
         },
         "mainDim": "itemperiod",
         "random": {
-            "min": 100,
-            "max": 100000
+            "min": 0,
+            "max": 100
         },
         "needDims": ["year", "month", "company"],
         "type": 1
@@ -53,42 +49,24 @@
                 "subType": "gauge",
                 "type": "advancechart",
                 "getData": {
-                    "value": "A$1416001",
-                    "type": 1
+                    "type": 2,
+                    "columns": [{
+                        "id": "text",
+                        "prop": "name"
+                    }, {
+                        "id": "A",
+                        "prop": "value"
+                    }],
+                    "row": {
+                        "ids": {
+                            "items": ["1416001"]
+                        }
+                    }
                 }
             },
             "chartOptions": {
                 "series": [{
                     "type": "gauge",
-                    "radius": "65%",
-                    "splitNumber": 5,
-                    "axisLine": {
-                        "lineStyle": {
-                            "width": 10,
-                            "color": [
-                                [0.25, "#F04864"],
-                                [0.5, "#FACC14"],
-                                [0.75, "#13C2C2"],
-                                [1, "#2FC25B"]
-                            ]
-                        }
-                    },
-                    "splitLine": {
-                        "show": false
-                    },
-                    "axisTick": {
-                        "length": 1
-                    },
-                    "axisLabel": {
-                        "show": false
-                    },
-                    "pointer": {
-                        "length": "70%",
-                        "width": 9
-                    },
-                    "detail": {
-                        "formatter": "{value}%"
-                    },
                     "data": [{
                         "value": "",
                         "name": "完成率"

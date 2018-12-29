@@ -38,14 +38,12 @@ export default {
     };
   },
   created() {
-    debugger;
     console.log(this.item.options.type);
 
     this.upData();
   },
   methods: {
     upData(from) {
-      debugger;
       let config = this.item.options.getData;
       if (!config || !config.type) {
         console.error(this.item.text + "没有配制正确！");
@@ -79,7 +77,7 @@ export default {
     item: {
       handler(newName, oldName) {
         console.log(1);
-        //debugger;
+        //
       },
       deep: true
     }
@@ -88,11 +86,18 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.bgwight {
-  margin-top: 24px;
+.tjspChartStyle {
+  margin-bottom: 24px;
   background: #fff;
   //圆角 阴影
   border-radius: 20px;
+  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.bgwight {
+  margin-bottom: 24px;
+  background: #fff;
+  //圆角 阴影
+  // border-radius: 20px;
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -5,6 +5,11 @@ const prame = {
       module_api: 0,
       month: new Date().getMonth(),
       date: new Date().getDate(),
+      // 单位转换
+      conversion: {
+        id: 10000,
+        text: "万元"
+      },
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
       openPid: 0,
@@ -27,7 +32,9 @@ const prame = {
       company: true,
       year: true,
       month: true,
-      day: false
+      day: false,
+      // 单位转换
+      conversion: false,
     }
   },
 
@@ -46,13 +53,20 @@ const prame = {
       localStorage.setItem('treeInfo', JSON.stringify(treeInfo));
     },
     SHOW_DIMS: (state, data) => {
-      // debugger
-      Object.keys(data).forEach(keys => {
-        if (data[keys] !== null || undefined) {
+      // 此方法即可以接受数组对状态初始化,又可以接受对象更改其状态
+      console.log(data);
+      if (data.constructor == Array) {
+        state.showDims.company = false,
+          state.showDims.year = false,
+          state.showDims.month = false,
+          data.forEach(ele => {
+            state.showDims[ele] = !state.showDims[ele]
+          });
+      } else {
+        Object.keys(data).forEach(keys => {
           state.showDims[keys] = data[keys]
-          localStorage.setItem([keys] + '_top', data[keys]);
-        }
-      });
+        });
+      }
     },
   },
 

@@ -21,6 +21,7 @@ export default {
     let xtype = me.item.xtype;
     if (me.item.listeners) {
       me.item.listeners.forEach(listener => {
+        debugger
         if (listener.type) {
           if (xtype === "chart" || xtype === "bi-chart") {
             this.chartEventHandler(listener);
@@ -60,12 +61,20 @@ export default {
     chartEventHandler(listener) {
       let me = this;
       this.$children[0].chart.on(listener.type, function (params) {
-        me.commonHandler(listener, params);
+        if(listener.clickBefore && typeof listener.clickBefore == "function"){
+          listener = listener.clickBefore(listener,me,params);
+        }
+        // if(!listener){
+        //   return;
+        // }
+       /**
+        * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
+        */
+        // me.commonHandler(listener, params);
 
       });
 
     },
-
     /**
      * 表格事件处理
      */
@@ -128,6 +137,8 @@ export default {
           resData.tabIndex = text;
           resData.closable = true;
           resData.show = true;
+          //加一个属性，表示是钻取的，方便刷新的时候过滤掉
+          resData.from = "isDrill";
           module.items[action](resData);
           module.activeTabName = resData.text;
         });

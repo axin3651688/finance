@@ -1,7 +1,7 @@
 
 {
     "id":"0005",
-    "text":"zwgcTable",
+    "text":"债务构成情况分析表",
     "config":{
         "cube":{
           "subject":"0007",
@@ -9,7 +9,7 @@
         },
         
         "mainDim":"itemperiod",
-        "needDims":["year","month","company"],
+        "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1
           
@@ -29,15 +29,15 @@
         "text": "项目"
       }, {
         "id": "je",
-        "type": "number",
+        "type": "decimal",
         "text": "金额"
     }, {
         "id": "bz",
-        "type": "number",
+        "type": "decimal",
         "text": "比重"
     }, {
         "id": "rzcb",
-        "type": "number",
+        "type": "decimal",
         "text": "加权平均融资成本"
     }
     ],

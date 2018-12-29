@@ -1,12 +1,12 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <leftMenu class="sidebar-container"/>
+    <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav></HeadNav>
+      <HeadNav v-if="isShow()"/>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ import HeadNav from "./topnav/HeadNav";
 import leftMenu from "./sidebar/Sidebar";
 import ResizeMixin from "./mixin/ResizeHandler";
 import "@/styles/black/index.scss"; // global css
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
   data() {
@@ -28,12 +28,7 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
-    sidebar() {
-      return this.$store.state.sideopen.sidebar;
-    },
-    device() {
-      return this.$store.state.sideopen.device;
-    },
+    ...mapGetters(["sidebar", "device", "user"]),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -43,9 +38,22 @@ export default {
       };
     }
   },
+  created() {
+    // alert("来created..." + this.isShow());
+  },
 
   methods: {
-    ...mapActions(["ToggleSideBar"])
+    ...mapActions(["ToggleSideBar"]),
+    isShow() {
+      // debugger;
+      if (this.classObj.mobile) {
+        return false;
+      }
+      if (Cnbi.isEmpty(this.user)) {
+        return false;
+      }
+      return true;
+    }
   }
 };
 </script>
@@ -55,11 +63,5 @@ export default {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  // background-color: #f0f2f5;
-
-  // &.mobile.openSidebar {
-  //   position: fixed;
-  //   top: 0;
-  // }
 }
 </style>

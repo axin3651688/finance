@@ -6,14 +6,15 @@
       :stripe="true"
       height="item.height || rowClass"
       :cell-style="cellStyle"
-      @cell-click="onCellClick"
+      @row-click="onRowClick"
+      
       :span-method="rowSpanAndColSpanHandler"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
       </el-tag>
     </el-table>
-
     <!-- sjz 分页功能 -->
     <el-pagination
       v-if="item.pagination"
@@ -42,6 +43,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      dialogVisible: false,
       currentPage: 1,
       pagesize: 1,
       id: 0,
@@ -52,14 +54,18 @@ export default {
       groupConfig: {
         idProperty: "group",
         textProperty: "groupName"
-      }
+      },
+      drillProperties: ["text", "text_"], //有钻取，给蓝色
+      levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
 
   created() {
     this.upData(this.item);
+   // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
+    // cell-click   (row, column, cell, event)
   },
   mounted() {
     //zb 下属企业合并行
@@ -67,6 +73,12 @@ export default {
     //document.getElementsByClassName("el-tabs__item")[0].click();
     //debugger;
     // this.getTableDataParams();
+    this.upData(this.item);
+    // this.$nextTick(() => {
+    //   debugger;
+    //   this.upData(this.item);
+    //   this.$forceUpdate()
+    // })
   },
 
   methods: {
@@ -88,7 +100,7 @@ export default {
     },
 
     upData(item) {
-      debugger;
+     // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
@@ -121,39 +133,47 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-
+    /**
+     * 单元格样式处理，自己可以在自己的item里配制默认实现
+     */
     cellStyle(row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
-        return this.item.cellStyle(row);
+        return this.item.cellStyle(row, this);
       }
       let css = "padding: 4px 0;";
-      if (!row.column.property) {
+      let pro = row.column.property;
+      if (!pro) {
         return css;
       }
-      if (row.column.property.indexOf("text") != -1) {
-        let record = row.row;
-        let drill = "";
-        if (record._drill || record.drill) {
-          drill = "text-decoration: none;color: #428bca;cursor: pointer;";
-        }
-        let level = record._level || record.level || 1;
-        let textIndent =
-          level > 1 ? "text-indent: " + (level - 1) * 20 + "px" : "";
+      let levelProperties = this.item.levelProperties || this.levelProperties;
+      let textIndent = "",
+        record = row.row;
+      let levelPro = levelProperties[pro];
+      if (levelPro && record[levelPro]) {
+        let level = record[levelPro] || 1;
+        textIndent =
+          level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+      }
+      let drillProperties = this.item.drillProperties || this.drillProperties;
+      if (drillProperties.indexOf(pro) != -1) {
+        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
         css = css + "font-weight:bold;" + textIndent + drill;
-        // console.info(record.text+"==>css==>"+css);
         return css;
       } else {
-        return css;
+        return css + textIndent;
       }
     },
     /**
-     * 单元格单击事件
+     * 单元格单击默认事件
      */
-    onCellClick(row, column, cell, event) {
+    onCellClickDefault(row, column, cell, event) {
+      debugger
+      console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
+          console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
@@ -168,12 +188,40 @@ export default {
         console.info("没有设置事件");
       }
     },
+    onRowClick(row,e,column) {
+       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
+            return this.item.onRowClick(row, column, e,this);
+        }
+        this.onCellClickDefault(row, column, e);
+
+     },
+    /**
+     * 单元格单击事件
+     */
+    onCellClick(row, column, cell, event) {
+     // debugger
+       if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
+            return this.item.onCellClick(row, column, cell, event,this);
+        }
+        this.onCellClickDefault(row, column, cell, event);
+      // this.dialogVisible = true
+      // this.a = event.path[0].innerHTML //获取到某一个单元格数据
+      // this.b = event.target.innerHTML//获取到某一个单元格数据
+      // // event.target.innerHTML = "";//改变单元格里面的数据
+      // event.target.style.backgroundColor = "red"
+      // cell.style.backgroundColor = "red"
+      // // console.log("b",b)
+      // // console.log(event.target)
+      // console.log(column)
+    },
+
     /**
      * 获取rowspan
      */
     getCellRowSpan(datas, row, config) {
-      return datas.filter(record => record[config.id] === row[config.id])
-        .length;
+      return datas.filter(
+        record => record[config.idProperty] === row[config.idProperty]
+      ).length;
     },
     /**
      * 计算每一个单元格的rowspan和colspan
@@ -230,12 +278,13 @@ export default {
       if (
         this.item &&
         this.item.rowSpanAndColSpanHandler &&
-        typeof rowSpanAndColSpanHandler == "function"
+        typeof this.item.rowSpanAndColSpanHandler == "function"
       ) {
-        return this.item.rowSpanAndColSpanHandler(
+        let cells = this.item.rowSpanAndColSpanHandler(
           { row, column, rowIndex, columnIndex },
           this
         );
+        return cells;
       }
       // let config = this.groupConfig;
       // let cells = { rowspan: 0, colspan: 0 };
@@ -359,5 +408,14 @@ export default {
 /* 横向滚动条 12.26 */
 .el-scrollbar__bar.is-horizontal > div {
   height: 0;
+}
+/* 数字靠右 */
+.el-table td.is-center {
+  text-align: right;
+}
+.el-table td {
+}
+.gutter{
+  display: none;
 }
 </style>

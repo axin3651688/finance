@@ -42,25 +42,6 @@ export default {
           backgroundColor: "#666",
           containLabel: true
         },
-
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {
-              show: true
-            },
-
-            dataView: {
-              show: true,
-              readOnly: false
-            },
-
-            saveAsImage: {
-              show: true
-            }
-          }
-        },
-
         xAxis: [
           {
             type: "category",
@@ -87,8 +68,8 @@ export default {
               normal: {
                 color: function(params) {
                   var colorList = [
-                    "#3AA1FF",
-                    "#13C2C2",
+                    "#75c6ee",
+                    "#75c6ee",
                     "rgb(25,46,94)",
                     "rgb(195,229,235)"
                   ];

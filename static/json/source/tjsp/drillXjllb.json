@@ -1,0 +1,120 @@
+{
+    "id":"0033",
+	"text":"二级穿透",
+	"layout":{
+		"xtype":"column"
+	 },
+	 "show":true,
+    "items":[
+        {
+			"xtype": "stree-grid",
+			
+			"id": "0002",
+			"text": "现金流量表二级",
+			"weight": 24,
+            "show":true,
+            "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
+                config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
+                let len = option.items.length;
+                let id = option.items[len-1].id;//获取下钻科目的id
+                config.sql = config.sql.replace(/:itemperiod/g,id);//全局替换:itemperiod
+                return params;
+
+            },
+			"config": {
+                "sql":"",
+                "sql1":"SELECT C.SCODE AS GSBM,C.SNAME AS GSMC,C.SPCODE AS PID, SUM(NVL(FACT_B,0)) AS LJSJ,SUM(NVL(SNTQ,0)) AS SNTQ, SUM(NVL(FACT_B,0))-SUM(NVL(SNTQ,0)) AS TBZJE, ROUND(DECODE(SUM(NVL(SNTQ,0)),0,0,(SUM(NVL(FACT_B,0))-SUM(NVL(SNTQ,0)))/SUM(NVL(SNTQ,0)),4)) AS TBZJL, SUM(NVL(FACT_C,0)) AS BNYS, SUM(NVL(FACT_B,0))-SUM(NVL(FACT_C,0)) AS CYE, ROUND(DECODE(SUM(NVL(FACT_C,0)),0,0,SUM(NVL(FACT_B,0))/SUM(NVL(FACT_C,0)),4 )) AS WCL FROM( SELECT DIM_COMPANY,DIM_ITEMPERIOD ,FACT_B ,0 AS SNTQ ,FACT_C FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY) AND DIM_PERIOD = :period AND DIM_ITEMPERIOD =':itemperiod' UNION ALL SELECT DIM_COMPANY,DIM_ITEMPERIOD,0 AS FACT_B,FACT_B AS SNTQ ,0 AS FACT_C FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY) AND DIM_PERIOD = (:year-1)||''||:month AND DIM_ITEMPERIOD =':itemperiod' ) A INNER JOIN DW_DIMITEMPERIOD B ON A.DIM_ITEMPERIOD = B.SCODE RIGHT JOIN (SELECT SCODE,SPCODE,SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE<>'R' START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE) C ON C.SCODE = A.DIM_COMPANY GROUP BY C.SCODE,C.SNAME, C.SPCODE ORDER BY GSBM", //
+				"_cube": {
+					"subject": "1005",
+					"cubeId": 4,
+					"dim_item": "1001"
+				},
+				"mainDim": "itemperiod",
+				"needDims": [
+					"year",
+					"month",
+					"company","conversion"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+                "type": 1,
+                "generateVar":{
+                    "periodCount":2,
+                     "compareType":"-1&0",
+                     "varName":"rows"
+                 },
+			
+                 
+			"columns": [
+				{
+					"id": "scode",
+					"type": "number",
+					"text": "公司编码"
+				},
+				{
+					"id": "gsmc",
+					"type": "string",
+					"text": "公司名称"
+                },
+                // {
+                //     "type": "number",
+                //     "text": "累计数",
+                //     "children":[
+                        {
+                            "id": "ljsj",
+                            "type": "number",
+                            "text": "累计实际"
+                        },{
+                            "id": "sntq",
+                            "type": "number",
+                            "text": "上年同期"
+                        },
+                        {
+                            "id": "tbzje",
+                            "type": "number",
+                            "text": "同比增减额"
+                        },
+                        {
+                            "id": "tbzjl",
+                            "type": "number",
+                            "text": "同比增减率",
+                            "unit":"%"
+                        }
+                //     ]
+                // }
+                ,
+                
+				
+				// {
+				// 	"type": "number",
+                //     "text": "预算数",
+                //     "children":[
+                        {
+                        "id": "bnlj",
+                        "type": "number",
+                        "text": "本年预算"
+                    },
+                    {
+                        "id": "cye",
+                        "type": "number",
+                        "text": "差异额"
+                    },
+                    {
+                        "id": "wcl",
+                        "type": "string",
+                        "text": "完成率",
+                        "unit":"%"
+                    }
+                // ]
+				// }
+			],
+			"rows": [
+				
+                ]
+            }
+	    }
+		
+    ]
+}

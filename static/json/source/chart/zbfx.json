@@ -1,7 +1,8 @@
 {
     "id": 1,
     "text": "指标分析",
-    "showDims": ["company", "month", "year"],
+    "showDims": ["company", "month", "year", "conversion"],
+
     "rows": [{
 
             "id": "1416001",
@@ -183,49 +184,6 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -233,32 +191,9 @@
                             "alignWithLabel": true
                         }
                     }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
+
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -300,49 +235,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -354,28 +247,8 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
+
                     }]
                 }
             },
@@ -413,49 +286,6 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -467,28 +297,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -518,49 +327,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -572,28 +339,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -607,46 +353,24 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["235"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -659,46 +383,24 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["236"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -711,46 +413,24 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["238"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -763,46 +443,25 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["1416001"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+
                     }]
                 }
             },
@@ -831,49 +490,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -885,28 +502,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -935,49 +531,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -989,28 +543,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -1039,49 +572,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -1093,28 +584,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -1143,49 +613,7 @@
                     }
                 },
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text",
-                        "textStyle": {
-                            "fontSize": 16,
-                            "color": '#8796B0'
-                        }
-                    },
-                    "tooltip": {
-                        "trigger": "axis",
-                        "backgroundColor": "#fff",
-                        "textStyle": {
-                            "color": "#000"
-                        },
-                        "axisPointer": {
-                            "type": "none"
-                        }
-                    },
-                    "legend": {
-                        "data": []
-                    },
-                    "grid": {
-                        "top": 60,
-                        "left": "4%",
-                        "right": "4%",
-                        "bottom": "4%",
-                        "backgroundColor": "#666",
-                        "containLabel": true
-                    },
-                    "toolbox": {
-                        "show": true,
-                        "feature": {
-                            "mark": {
-                                "show": true
-                            },
-                            "dataView": {
-                                "show": true,
-                                "readOnly": false
-                            },
-                            "saveAsImage": {
-                                "show": true
-                            }
-                        }
-                    },
+
                     "xAxis": [{
                         "type": "category",
                         "data": "this.item.options.datas[0]",
@@ -1197,28 +625,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -1231,52 +638,31 @@
                     "type": "advancechart",
                     "subType": "gauge",
                     "getData": {
-                        "value": "A$1416001",
-                        "type": 1
+                        "type": 2,
+                        "columns": [{
+                            "id": "text",
+                            "prop": "name"
+                        }, {
+                            "id": "A",
+                            "prop": "value"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["240"]
+                            }
+                        }
                     }
                 },
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+
                     }]
                 }
             }, {
                 "xtype": "chart",
                 "id": "lrb3",
-                "text": "利润表3",
+                "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
                 "weight": 18,
                 "config": {
                     "_cube": {
@@ -1399,7 +785,7 @@
 
                 "options": {
                     "type": "advancechart",
-
+                    "subType": "line",
                     "getData": {
                         "type": 3,
                         "columns": [{
@@ -1437,53 +823,12 @@
 
                     }
                 },
-
                 "chartOptions": {
-                    "title": {
-                        "text": "this.item.text"
-                    },
-                    "tooltip": {
-                        "trigger": "axis"
-                    },
-                    "legend": {
-                        "default": {
-                            "data": ["好", "坏"]
-                        }
-                    },
-                    "grid": {
-                        "default": {
-                            "left": "3%",
-                            "right": "4%",
-                            "bottom": "3%",
-                            "containLabel": true
-                        }
-                    },
-                    "toolbox": {
-                        "feature": {
-                            "saveAsImage": {}
-                        }
-                    },
-                    "xAxis": {
-                        "default": {
-                            "type": "category",
-                            "boundaryGap": false,
-                            "data": []
-                        }
-                    },
-                    "yAxis": {
-                        "type": "value"
-                    },
                     "series": [{
-                            "name": "好",
-                            "type": "line",
-                            "smooth": false,
-                            "data": []
+                            "type": "line"
                         },
                         {
-                            "name": "坏",
-                            "type": "line",
-                            "smooth": false,
-                            "data": []
+                            "type": "line"
                         }
                     ]
                 }

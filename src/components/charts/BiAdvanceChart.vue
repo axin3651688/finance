@@ -69,44 +69,53 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      // debugger;
       let options = item.chartOptions;
-
-      let defaultOptions = this.getDefautlChartConfigByType();
-      Cnbi.applyIf(options || {}, defaultOptions);
+      if (!item.options.unUseDefaultConfig && options) {
+        //不使用默认配制
+        let defaultOptions = this.getDefautlChartConfigByType();
+        Cnbi.applyDeepIf(options || {}, defaultOptions);
+      }
       this.evalVaiables(options);
       console.log(options);
-
+      debugger;
       return options;
     },
     upData(item) {
-      let chartType = item.options.getData.type;
+      let chartType = item.options.getData.type,
+        subType = this.item.options.subType;
       debugger;
+      console.log(this.item.options.datas);
+
       if (chartType === 1) {
         /**
          * 就是一个值数据的图形  dataRange   value
          */
-        this.chartOptions.series[0].data = [
-          { value: item.options.datas, name: "完成率" }
-        ];
+        this.chartOptions.series[0].data = this.item.options.datas; // [{ value: item.options.datas, name: "完成率" }];
       } else if (chartType === 2) {
+        debugger;
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
+        if (subType == "pie") {
+          console.info(this.item);
 
-        // this.chartOptions.legend.data = this.item.options.datas.map(item => {
-        //   return item.name;
-        // });
-        // this.chartOptions.series[0].data = this.item.options.datas;
-        let datas = item.options.datas;
-        debugger;
-        this.chartOptions.xAxis.data = datas[0];
-        this.chartOptions.series[0].data = datas[1];
+          this.chartOptions.legend.data = this.item.options.datas.map(item => {
+            return item.name;
+          });
+          this.chartOptions.series[0].data = this.item.options.datas;
+        } else if (subType == "gauge") {
+          this.chartOptions.series[0].data = [
+            { value: this.item.options.datas[0].value }
+          ];
+        } else {
+          let datas = item.options.datas;
+          this.chartOptions.xAxis.data = datas[0];
+          this.chartOptions.series[0].data = datas[1];
+        }
       } else if (chartType === 3) {
         /**
          * 多系列数据图形 说白了就是series.length > 1
          */
-        debugger;
         let datas = item.options.datas;
         // this.chartOptions.title = this.item.text;
         this.chartOptions.series = datas.series;
