@@ -193,7 +193,28 @@
                     }],
 
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -247,8 +268,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
-
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -297,7 +338,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -339,7 +401,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -502,7 +585,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -543,7 +647,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -584,7 +709,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -625,7 +771,28 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "stack": "vistors",
+                        "barWidth": "35%",
+                        "data": [],
+                        "itemStyle": {
+                            "normal": {
+                                "color": function (params) {
+                                    var colorList = [
+                                        "#3AA1FF",
+                                        "#13C2C2",
+                                        "rgb(25,46,94)",
+                                        "rgb(195,229,235)"
+                                    ];
+                                    return colorList[params.dataIndex];
+                                }
+                            },
+                            "emphasis": {
+                                "shadowBlur": 10,
+                                "shadowOffsetX": 0,
+                                "shadowColor": "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
                     }]
                 }
             },
@@ -825,10 +992,16 @@
                 },
                 "chartOptions": {
                     "series": [{
-                            "type": "line"
+                            "name": "好",
+                            "type": "line",
+                            "smooth": false,
+                            "data": []
                         },
                         {
-                            "type": "line"
+                            "name": "坏",
+                            "type": "line",
+                            "smooth": false,
+                            "data": []
                         }
                     ]
                 }

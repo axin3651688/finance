@@ -67,36 +67,6 @@
             "chartOptions": {
                 "series": [{
                     "type": "gauge",
-                    "radius": "65%",
-                    "splitNumber": 5,
-                    "axisLine": {
-                        "lineStyle": {
-                            "width": 10,
-                            "color": [
-                                [0.25, "#F04864"],
-                                [0.5, "#FACC14"],
-                                [0.75, "#13C2C2"],
-                                [1, "#2FC25B"]
-                            ]
-                        }
-                    },
-                    "splitLine": {
-                        "show": false
-                    },
-                    "axisTick": {
-                        "length": 1
-                    },
-                    "axisLabel": {
-                        "show": false
-                    },
-                    "pointer": {
-                        "length": "70%",
-                        "width": 9
-                    },
-                    "detail": {
-                        "formatter": "{value}%",
-                        "offsetCenter": [0, 80]
-                    },
                     "data": [{
                         "value": "",
                         "name": "完成率"
