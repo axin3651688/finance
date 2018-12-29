@@ -120,6 +120,7 @@ export default {
     },
 
     /**
+     * 监听到 ack 后更新消息
      * 监听ack消息回执 返回示例：
      * {
      *   code: 2000,
@@ -133,6 +134,8 @@ export default {
      * }
      */
     serverAck(val) {
+      console.log('服务器ACK：', val);
+      debugger;
       this.updateAck(val)
     }
 
@@ -144,7 +147,9 @@ export default {
      * 1.收到ack后把收到的内容原封返回个服务器
      * 2.遍历本地消息队列，更新消息的状态（已读，未读···）
      */
-    updateAck() {
+    updateAck(val) {
+      socket.send(JSON.stringify(val)); // 把收到的内容原封返回个服务器
+
 
     },
 
@@ -176,7 +181,7 @@ export default {
         this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
         this.sendText = ''; // 发送完后清空输入框
 
-        console.log('socket-->', socket);
+        console.log('socket对象-->', socket);
         socket.send(JSON.stringify(sendData));
 
         // sendMsg(sendData).then(res => {
