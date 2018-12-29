@@ -128,7 +128,6 @@
                         "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
                         "handler":($vue,params)=>{//自定义的回调
                             console.info(params);
-                            debugger; 
                         } 
                     },
                     { row: row, column: column, cell: cell, event: event },

@@ -1,6 +1,9 @@
 const messageModule = {
   state: {
     messageStore: {
+      serverAck: null, // socket 消息回执
+      targetId: null, // 接收群id或接收人id
+      routeName: '首页', // 路由名字
       newServerMsg: null, // 服务器推送的最新消息
       receiverData: null, // 单聊对象的用户信息
       groupInfo: null, // obj: 群信息
@@ -13,6 +16,7 @@ const messageModule = {
   actions: {
     // 设置所有的状态, 接收一个对象
     ActionSetMessageStore({commit}, dataObj) {
+      // debugger;
       if (dataObj instanceof Object) {
         commit('MutationSetMessageStore', dataObj)
       } else {

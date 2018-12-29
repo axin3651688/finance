@@ -2,13 +2,12 @@
   <div class="MessageItem message-box">
     <div class="message-top">
       <div class="avatar-box">
-        <img :src="data.avatar" :alt="data.name" :onerror="defaultImg">
+        <img :src="data.avatar" v-avatar="data.name">
       </div>
       <h3 class="user-name">{{data.name}}</h3>
       <div class="send-time">
-        <!--<span class="time">2018-10-15&nbsp;&nbsp;15:00</span>-->
-        <span class="time">{{data.sendTime| formatTime}}</span>
-        <div class="status"></div>
+        <span class="time">{{data.sendTime| formatMsgTime}}</span>
+        <div class="status" v-if="data.state !== 2"></div>
       </div>
     </div>
     <div class="message-content">
@@ -35,7 +34,6 @@
               <div class="size">{{data.file.size}}</div>
             </div>
             <div class="right">
-              <!--<div class="icon icon__download"></div>-->
               <i class="icon el-icon-download"></i>
             </div>
           </div>
@@ -67,7 +65,7 @@
 </template>
 
 <script>
-import {PARSE_EMOTIONS, FORMAT_TIME} from 'utils/message';
+import {PARSE_EMOTIONS, FORMAT_TIME, FORMAT_MSG_TIME} from 'utils/message';
 import emotionSprites from '@a/green/emotion_sprites.json';
 
 export default {
@@ -75,13 +73,15 @@ export default {
   props: ['data'],
   data() {
     return {
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
     }
   },
   filters: {
     formatTime(time) { // 格式化时间戳
       return FORMAT_TIME(time)
+    },
+    formatMsgTime(publishtime) { // 格式化时间戳(消息、聊天专用)
+      return FORMAT_MSG_TIME(publishtime)
     }
   },
   methods: {
@@ -94,10 +94,10 @@ export default {
 
 <style lang="scss">
   /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "../styles/emotion_sprites.scss";
+  @import "@ms/emotion_sprites.scss";
 </style>
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/variables.scss";
 
   .message-box {
     padding: 10px 20px;

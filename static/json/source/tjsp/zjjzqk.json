@@ -27,36 +27,38 @@
     "columns": [
       {
           "text": "公司编码",
-          "value": "gsbm"
+          "type":"number",
+          "id": "gsbm"
       },
       {
           "text": "公司名称",
-          "value": "sname"
+          "type":"string",
+          "id": "sname"
         },
         {
           "text": "银行账户名称",
           "type":"decimal",
-          "value": "yhzhmc"
+          "id": "yhzhmc"
         },
         {
           "text": "货币金额",
           "type":"decimal",
-          "value": "hbzj"
+          "id": "hbzj"
         },
         {
           "text": "其中：银行存款",
           "type":"decimal",
-          "value": "yhck"
+          "id": "yhck"
         },
         {
           "text": "集中金额",
           "type":"decimal",
-          "value": "jzje"
+          "id": "jzje"
         },
         {
           "text": "集中度",
           "type":"decimal",
-          "value": "jzd"
+          "id": "jzd"
         }
     ]
   }],

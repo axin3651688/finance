@@ -105,29 +105,29 @@
          {
           "xtype": "bi-table",
           "id":"xsqydkdbqk",
-          "text":"下属企业贷款担保情况表00"//,
-          "groupConfig": { "idProperty": "dim_company","textProperty": "gsmc"},//可选
-          "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
-              debugger;
-              let data = option.item.datas;
-              let config =  option.item.groupConfig;
-              let rowspan =  option.getCellRowSpan(data,row,config) || 1 ;\
+          "text":"下属企业贷款担保情况表"//,
+          // "groupConfig": { "idProperty": "dim_company","textProperty": "gsmc"},//可选
+          // "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+          //     debugger;
+          //     let data = option.item.datas;
+          //     let config =  option.item.groupConfig;
+          //     let rowspan =  option.getCellRowSpan(data,row,config) || 1 ;\
 
-              if (columnIndex === 0 ||columnIndex === 1) {
-                if (rowIndex ===0) {
-                  return {
-                    rowspan: rowspan,
-                    colspan: 1
-                  };
-                } else {
-                  return {
-                    rowspan: 1,
-                    colspan: 1
-                  };
-                }
-              }
+          //     if (columnIndex === 0 ||columnIndex === 1) {
+          //       if (rowIndex ===0) {
+          //         return {
+          //           rowspan: rowspan,
+          //           colspan: 1
+          //         };
+          //       } else {
+          //         return {
+          //           rowspan: 1,
+          //           colspan: 1
+          //         };
+          //       }
+          //     }
              
-          }
+          // }
         }
            
         

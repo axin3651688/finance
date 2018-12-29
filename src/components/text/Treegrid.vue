@@ -1,74 +1,38 @@
 <template>
-  <div v-if="item.show">
-    <el-table :row-style="showRow" v-bind="$attrs" class="content" :data.sync="formatData" border stripe @row-click="onRowClick" :cell-style="cellStyle">
-    <el-table-column v-if="item.config.columns.length === 0" width="120" ref="tchild">
-      <template slot-scope="scope">
-        <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
-        <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      v-for="(column, index) in item.config.columns"
-      v-else
-      :key="column.value"
-      :label="column.text"
-      :width="column.width"
-      ref="tchild"
+     <el-table
+      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+      border
+      :stripe="true"
+      height="item.height || rowClass"
+      :cell-style="cellStyle"
+      :row-style="showRow"
+      class="content"
+      
+      @row-click="onRowClick"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
-      <template slot-scope="scope">
-        <span
-          v-for="space in scope.row._level"
-          v-if=" column.text != '操作' && index === 0"
-          :key="space"
-          class="ms-tree-space"
-        />
-        <span
-          v-if="iconShow(index,scope.row) "
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        <span v-if=" column.text != '操作'">{{ scope.row[column.value] }}</span>
-
-        <el-button type="text" v-if="column.text === '操作'" @click="add">
-          <!-- ... -->
-          <img src="@/assets/green/list_menu.svg" alt>
-          <el-cascader :options="item.items[0].columns"  v-model="selectedOptions" @change="handleChange"></el-cascader>
-
-          <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleChange"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-          </el-dialog>
-        </el-button>
-      </template>
-    </el-table-column>
-    <slot/>
-  </el-table>
-  </div>
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      </el-tag>
+    </el-table>
 </template>
  
 <script>
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
+import BiTableColumn from "../table/BiTableColumn";
+import BiTableColumnTree from "../table/BiTableColumnTree";
 // data  columns list
 export default {
   mixins: [EventMixins],
+  components: {
+    BiTableColumn,
+    BiTableColumnTree
+  },
+  props: ["item"],
   data() {
     return {
-      list: [],
+      // list: [],
       dialogVisible: false,
       selectedOptions: [],
       formatData:[],
@@ -77,30 +41,30 @@ export default {
     };
   },
   name: "TreeGrid",
-  props: {
-    /* eslint-disable */
-    item:{
-      data: {
-        type: [Array, Object],
-        required: true
-      },
-      columns: {
-        type: [Array, Function],
-        default: () => []
-      },
-      evalFunc: Function,
-      evalArgs: Array,
-      expandAll: {
-        type: Boolean,
-        default: false
-      },
+  // props: {
+  //   /* eslint-disable */
+  //   item:{
+  //     data: {
+  //       type: [Array, Object],
+  //       required: true
+  //     },
+  //     columns: {
+  //       type: [Array, Function],
+  //       default: () => []
+  //     },
+  //     evalFunc: Function,
+  //     evalArgs: Array,
+  //     expandAll: {
+  //       type: Boolean,
+  //       default: false
+  //     },
 
-      options:{
-        type:[Array,Function],
-        default: () => []
-      },
-    }
-  },
+  //     options:{
+  //       type:[Array,Function],
+  //       default: () => []
+  //     },
+  //   }
+  // },
 //  mounted() {
     // this.item.options = this.item.items[0].columns
    
@@ -183,6 +147,7 @@ export default {
       * 格式化数据源
       */
      convertData(){
+       debugger
        //alert(this.item.show)
         let tmp;
         if (!Array.isArray(this.item.rows)) {
@@ -194,9 +159,9 @@ export default {
         const args = this.evalArgs
           ? Array.concat([tmp, this.expandAll], this.evalArgs)
           : [tmp, this.expandAll];
-        let formatData =  func.apply(null, args);
-                console.log(formatData)
-        this.$set(this, "formatData", formatData); 
+       this.item.datas  =  func.apply(null, args);
+        // console.log(this.item.datas)
+        this.$set(this, "item", this.item); 
      },
 
     //  rowClass({ row, rowIndex }) {
@@ -350,8 +315,8 @@ export default {
     console.log("a",this.item)
     this.item.rows = this.item.config.rows
   //  this.item.rows = this.item.datas
-    this.array(this.item.datas)
-     this.convertData();
+    this.array(this.item.datas);
+    this.convertData();
 
   }
 };
