@@ -1,7 +1,7 @@
 {
     "id": 1,
     "text": "指标分析",
-    "showDims": ["company","month","year","conversion"],
+    "showDims": ["company","month","year"],
     "rows": [{
 
             "id": "1416001",

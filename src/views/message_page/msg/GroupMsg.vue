@@ -3,7 +3,7 @@
     <div class="top">
       <div class="left">
         <div class="img-box img-box__group" @click="showGroupMembers = true">
-          <img :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
+          <img :src="groupInfo.avatar" v-avatar="groupInfo.text">
         </div>
         <div class="content">
           <h3 class="title">
@@ -23,7 +23,7 @@
                            alt="群主设置"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">群主设置</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">群主设置</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
                 </el-dropdown-item>
@@ -34,7 +34,7 @@
                            alt="退出群组"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">退出群组</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">退出群组</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">退出群主将不再接收消息</p>
                 </el-dropdown-item>
@@ -108,7 +108,7 @@
           <div>
             <div class="img-box">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <img v-else :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
+              <img v-else :src="groupInfo.avatar" v-avatar="groupInfo.text">
             </div>
           </div>
           <el-upload
@@ -188,7 +188,6 @@ export default {
       oldGroupName:'',
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
@@ -206,14 +205,30 @@ export default {
       return this.user.user.id;
     },
     groupId() {
-      return this.messageStore.groupInfo.info.groupId
+      return this.messageStore.targetId
     },
     groupOwnerId() {
-      return this.messageStore.groupInfo.info.ownerId
+      return this.groupInfo.ownerId
+    },
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    }
+  },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      debugger;
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.groupMsgList.push(item);
+      this.$nextTick(() => { // 把聊天窗口滚动到最底部
+        this.chatWindowScrollToBottom();
+      });
     }
   },
   methods: {
-
+    ...mapActions(['ActionSetMessageStore']),
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -243,7 +258,7 @@ export default {
     // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value;
-      if (newGroupName === this.messageStore.groupInfo.info.text && !this.imgfd) {
+      if (newGroupName === this.groupInfo.text && !this.imgfd) {
         this.showGroupSettingDialog = false;
         return; // 如果没有图片和群名字都没修改,则不往下执行
       }
@@ -284,6 +299,7 @@ export default {
             content: this.sendText,
             senderId: this.loginUserId,
             groupId: this.groupId,
+            // receiverId: this.groupId,
             type: 1
           },
           device: '868938033321615'
@@ -291,7 +307,6 @@ export default {
         console.log('要发送的内容是：', this.sendText);
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
-        debugger;
         sendMsg(sendData).then(res => {
           console.log('发送群消息返回数据res', res);
           debugger;
@@ -347,7 +362,7 @@ export default {
         case 'groupQuit': {
           if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
             // debugger;
-            let msg = `您是该群 ${this.messageStore.groupInfo.info.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            let msg = `您是该群 ${this.groupInfo.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
             this.$confirm(msg, '警告', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -362,7 +377,7 @@ export default {
             });
           } else {
             // debugger;
-            let msg = `是否退出群组：${this.messageStore.groupInfo.info.text}`;
+            let msg = `是否退出群组：${this.groupInfo.text}`;
             this.$confirm(msg, '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -393,7 +408,8 @@ export default {
         console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
-          this.groupMembers = res.data.data.users
+          this.groupMembers = res.data.data.users;
+          this.ActionSetMessageStore({groupInfo: res.data.data});
         }
       }).catch(err => {
         console.log('请求message：', err)
@@ -412,7 +428,11 @@ export default {
         // debugger;
         console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {
-          this.groupMsgList = res.data.data.data.reverse()
+          this.groupMsgList = res.data.data.data.reverse();
+          // 消息拿到后 把窗口内容滚到到底部
+          this.$nextTick(() => {
+            this.chatWindowScrollToBottom()
+          });
         }
       }).catch(err => {
         console.log('群消息', err)
@@ -509,17 +529,17 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 60px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
 
       .left {
         display: flex;
         align-items: center;
 
         .img-box {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           margin-right: 30px;
           overflow: hidden;
           border-radius: 50%;

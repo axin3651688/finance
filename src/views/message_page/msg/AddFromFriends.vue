@@ -174,6 +174,9 @@ export default {
   }
 
   .panel-left {
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
     flex: .5;
     height: 100%;
     border-right: 1px solid $colorBorder2;

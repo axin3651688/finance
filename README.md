@@ -335,7 +335,7 @@ listeners:[
 ~~~
 ## 顶部需要日期的配置
 如果不配置showDims,默认显示公司, 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
-如果只要company 就配   "showDims": ["company"], 其他的都不显示
+如果只要company 就配   "showDims": ["conversion"], 其他的都不显示
 
 
 #指标分析右边距(BiModule 51行)

@@ -8,6 +8,7 @@ import {
 // import report from '@a/table/report.json'
 import store from '@/store'
 export default function modeHandle(e) {
+    // console.log(e)
     if (!e.sourceId && !e.url) {
         let msg = "未定义[" + e.text + e.id + "]模块的标识！";
         console.error(msg);
@@ -19,7 +20,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-    e.url = "cnbi/json/source/chart/zbfx.json";
+    // e.url = "cnbi/json/source/chart/dash.json";
     //console.log(e.sourceId, e.url)
 
     /** 
@@ -52,10 +53,10 @@ export default function modeHandle(e) {
     //         }
     //     }
     // }
-
+    debugger
     findDesignSource(e.sourceId, e.url)
         .then(response => {
-            // debugger
+
             let bean = response.data;
             if (bean.data && bean.data.source) {
                 //数据库来的

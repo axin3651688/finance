@@ -1,9 +1,9 @@
 <template>
-  <div class="SingleMsg vue-module">
+  <div class="SingleMsg">
     <div class="top">
       <div class="title">
         <div class="img-box">
-          <img :src="messageStore.receiverData.user.avatar" :onerror="defaultImg">
+          <img :src="messageStore.receiverData.user.avatar" v-avatar="messageStore.receiverData.user.trueName">
         </div>
         <div class="titleleft">
           <h3>
@@ -12,9 +12,13 @@
           </h3>
           <p>安徽经邦软件有限公司</p>
         </div>
-        <div class="titleright">
-          <p class="message">消息</p>
-          <p class="file">文件</p>
+      </div>
+      <div class="btn-group">
+        <div :class="['btn', {active: activeBtn === 'message'}]" @click="changeMessage('message')">
+          消息
+        </div>
+        <div :class="['btn', {active: activeBtn === 'file'}]" @click="changeMessage('file')">
+          文件
         </div>
       </div>
     </div>
@@ -71,7 +75,8 @@ export default {
   components: {MessageItem},
   data() {
     return {
-      defaultImg: 'this.src="' + require('../assets/img/avatar_male.png') + '"',
+      msgPaddingList: [], // 待发送消息队列
+      activeBtn: 'message',
       receiverName: '', // 聊天对象名称
       receiverAvatar: '', // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -81,7 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user', 'messageStore']),
+    ...mapGetters(['user', 'messageStore', 'targetId']),
     loginUserId() {
       return this.user.user.id;
     },
@@ -90,22 +95,92 @@ export default {
     },
     newServerMsg() { // 服务器推送的消息
       return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
     }
   },
   watch: {
     receiverId(val) {
-      alert('watch receiverId');
       this.findSingleMsg();
+    },
+
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      // 当目标id 和 发送者id相同时再把消息加入队列
+      if (this.messageStore.targetId === item.senderId) {
+        debugger;
+        this.singleMsgList.push(item);
+        this.$nextTick(() => { // 把聊天窗口滚动到最底部
+          this.chatWindowScrollToBottom();
+        });
+      }
+    },
+
+    /**
+     * 监听到 ack 后更新消息
+     * 监听ack消息回执 返回示例：
+     * {
+     *   code: 2000,
+     *   data: {
+     *     id: '1546065114464cnbi',   // <String>
+     *     miniType: 1100,            // <Number>
+     *     sendTime: 1546065114464,   // <Number>
+     *     state: 0,                  // <Number>
+     *   },
+     *   msg: 'ACK即时消息确认报文'
+     * }
+     */
+    serverAck(val) {
+      console.log('服务器ACK：', val);
+      socket.send(JSON.stringify(val));
+      // val.code = 1500;
+      // socket.send(val);
+      debugger;
+      // this.updateAck(val)
     }
+
   },
   methods: {
+
+    /**
+     * 跟新消息 ack
+     * 1.收到ack后把收到的内容原封返回个服务器
+     * 2.遍历本地消息队列，更新消息的状态（已读，未读···）
+     */
+    updateAck(val) {
+      socket.deliver(val); // 把收到的内容原封返回个服务器
+      debugger;
+      for (let index in this.singleMsgList) {
+        if (this.singleMsgList[index].id === val.data.id) {
+          // 说明这条消息已近在聊天窗口，此时只需更新这条消息的状态
+          this.$set(this.singleMsgList[index], index, val.data)
+        } else {
+          // 这条消息不存在
+          debugger;
+        }
+      }
+
+    },
+
     // 聊天选择文件
     selectFile() {
       this.$refs['selectFile'].click()
     },
 
+    // 聊天窗口（消息、文件）切换
+    changeMessage(type) {
+      if (this.activeBtn !== type) {
+        this.activeBtn = type
+      }
+    },
+
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
+
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
         let sendData = {
           code: 1100, // 1100:单聊 1101:群聊
@@ -113,20 +188,20 @@ export default {
             content: this.sendText.trim(),
             receiverId: this.receiverId, //
             senderId: this.loginUserId, // 225:卢诚
-            type: 1
+            type: 1,
+            // fileId: 0,
+            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
+            sendTime: 0,
+            seq: 0,
           },
-          device: '868938033321615'
+          // todo: 获取设备号?
+          // device: '868938033321615'
         };
         console.log('要发送的内容是：', sendData);
-        this.addMsgToWindow(this.sendText);
-        this.sendText = '';
-        sendMsg(sendData).then(res => {
-          console.log('发送单聊消息返回数据res', res);
-          debugger;
-        }).catch(err => {
-          console.log('发送单聊消息返回数据err', err);
-          debugger;
-        });
+        console.log('socket对象-->', socket);
+        socket.deliver(sendData);
+        this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
+        this.sendText = ''; // 发送完后清空输入框
       } else {
         this.sendText = '';
         this.$message({
@@ -146,7 +221,6 @@ export default {
         name: this.user.user.trueName,
         sendTime: new Date().getTime()
       };
-      debugger;
       this.singleMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
@@ -155,9 +229,8 @@ export default {
 
     // 把聊天窗口滚动到最底部
     chatWindowScrollToBottom() {
-      // debugger;
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      console.log('找滚动窗口：', chatWindow);
+      // console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
@@ -175,6 +248,10 @@ export default {
           res = res.data;
           if (res.code === 200 && res.data) {
             this.singleMsgList = res.data.data.reverse();
+            // 消息拿到后 把窗口内容滚到到底部
+            this.$nextTick(() => {
+              this.chatWindowScrollToBottom()
+            });
           }
         }).catch(err => {
         console.log('获取单聊信息catch：', err)
@@ -202,7 +279,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .SingleMsg.vue-module {
+  @import "@ms/index.scss";
+
+  .SingleMsg {
     @import "../styles/variables.scss";
     display: flex;
     justify-content: space-between;
@@ -211,12 +290,14 @@ export default {
     height: 100%;
 
     .title {
+      @include flex();
+      align-items: center;
       position: relative;
       overflow: hidden;
 
       .img-box {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
@@ -228,11 +309,11 @@ export default {
       }
 
       .titleleft {
+        margin-left: 20px;
         float: left;
-        margin: 20px 0 0 30px;
 
         h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
 
           span {
@@ -241,7 +322,7 @@ export default {
         }
 
         p {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
           margin-top: 8px;
           color: $colorText2;
@@ -249,51 +330,17 @@ export default {
         }
       }
 
-      .titleright {
-        height: 24px;
-        width: 160px;
-        display: flex;
-        position: absolute;
-        right: 0;
-        top: 30px;
-        padding: 0;
-
-        .message {
-          width: 80px;
-          height: 24px;
-          background: $colorTheme;
-          opacity: 1;
-          border-radius: 66px 0px 0px 66px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: $colorText1;
-          text-align: center;
-        }
-
-        .file {
-          height: 24px;
-          width: 80px;
-          background: rgba(0, 0, 0, 0.1);
-          opacity: 1;
-          border-radius: 0px 66px 66px 0px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: rgba(0, 0, 0, 0.20);
-          text-align: center;
-        }
-      }
     }
 
     .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: rgba(235, 236, 236, 1);
       opacity: 1;
-      padding: 60px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .middle {
@@ -453,6 +500,28 @@ export default {
       opacity: 1;
       padding: 40px 30px 0 40px;
       box-sizing: border-box;
+    }
+  }
+
+  .btn-group {
+    display: inline-block;
+    $btnHeight: 24px;
+    border-radius: $btnHeight / 2;
+    overflow: hidden;
+
+    .btn {
+      display: inline-block;
+      line-height: $btnHeight;
+      padding: 0 36px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.20);
+      background: rgba(0, 0, 0, .1);
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background: $colorTheme;
+      color: #ffffff;
     }
   }
 </style>

@@ -14,6 +14,8 @@ export default {
       options: {
         title: {
           text: this.item.text,
+          x: "center",
+          top:10,
           textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
               fontSize: 16,
               color: '#8796B0' 
@@ -22,12 +24,15 @@ export default {
 
         tooltip: {
           trigger: "axis",
-          backgroundColor: "#fff",
-          textStyle: {
-            color: "#000"
-          },
-          axisPointer: {
-            type: "none"
+          // backgroundColor: "#fff",
+          // textStyle: {
+          //   color: "#000"
+          // },
+          // axisPointer: {
+          //   type: "none"
+          // }
+          formatter:function(a,b,c){
+            return a[0].name + ":" + Math.decimalToLocalString(a[0].value) + "万元";
           }
         },
         legend: {
@@ -100,6 +105,7 @@ export default {
   },
   methods: {
     upData(item) {
+      // debugger
       if (item) {
         this.item = item;
       }

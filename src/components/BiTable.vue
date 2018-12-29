@@ -1,12 +1,15 @@
 <template>
   <div>
+     <div v-if="item.toolbar && item.toolbar.length > 0 " class="toolbar" >
+       <el-button   v-for="btn in item.toolbar" v-bind:key="btn.id" plain  @click="btnClick(btn)">{{btn.text}}</el-button>
+     </div>
     <el-table
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
       :stripe="true"
       height="item.height || rowClass"
       :cell-style="cellStyle"
-      @row-click="onRowClick"
+      @cell-click="onCellClick"
       
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
@@ -43,6 +46,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      flag: true,
       dialogVisible: false,
       currentPage: 1,
       pagesize: 1,
@@ -82,6 +86,10 @@ export default {
   },
 
   methods: {
+
+     btnClick(btn){
+        btn.handler(this,btn);
+     },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -188,13 +196,13 @@ export default {
         console.info("没有设置事件");
       }
     },
-    onRowClick(row,e,column) {
-       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
-            return this.item.onRowClick(row, column, e,this);
-        }
-        this.onCellClickDefault(row, column, e);
+    // onRowClick(row,e,column) {
+    //    if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
+    //         return this.item.onRowClick(row, column, e,this);
+    //     }
+    //     this.onCellClickDefault(row, column, e);
 
-     },
+    //  },
     /**
      * 单元格单击事件
      */
@@ -401,6 +409,9 @@ export default {
 };
 </script>
 <style >
+.toolbar{
+  margin:2px 0 5px 0;
+}
 .el-table td,
 .el-table th {
   padding: 5px 0;

@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
-          我的团队
+          团队
           <i class="splide-line"></i>
         </template>
         <contacts-teams
@@ -13,7 +13,7 @@
       </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
-          我的好友
+          好友
           <i class="splide-line"></i>
         </template>
         <contacts-friends
@@ -21,7 +21,7 @@
           @chatWithSingle="handleChatWithSingle"
         ></contacts-friends>
       </el-tab-pane>
-      <el-tab-pane label="我的群聊" name="ContactsGroups">
+      <el-tab-pane label="群聊" name="ContactsGroups">
         <contacts-groups
           v-if="which_to_show === 'ContactsGroups'"
           @chatWithGroup="handleChatWithGroup"
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: 'MessageContacts',
   components: {
@@ -51,13 +53,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
       this.which_to_show = tab.name
     },
 
     // 开始群聊天
-    handleChatWithGroup(groupId){
+    handleChatWithGroup(groupId) {
       this.$emit('chatWithGroup', groupId)
     },
 
@@ -65,18 +68,24 @@ export default {
     handleChatWithSingle(receiverId) {
       this.$emit('chatWithSingle', receiverId);
     }
+  },
+  mounted() {
+    this.ActionSetMessageStore({routeName: '通讯录'})
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@ms/variables.scss";
 
   .MessageContacts {
+    box-sizing: border-box;
     overflow: hidden;
     background: #ffffff;
     height: 100%;
-    box-shadow: 0 20px 30px $colorShadowGreen;
+    padding: 1px 0px 0;
+    background: $colorBgPageGray;
+
     /deep/ li {
       list-style: none;
     }
@@ -84,19 +93,26 @@ export default {
 
   /deep/ .el-tabs {
     height: 100%;
+    overflow: hidden;
+    /*border-top-left-radius: 12px;*/
+    /*border-top-right-radius: 12px;*/
+    background: #ffffff;
 
     .el-tabs__header {
       margin-bottom: 0;
 
       .el-tabs__nav {
         border: none;
+        border-radius: 0;
+        width: $sizeNavBarWidth;
+        overflow: hidden;
       }
 
       .el-tabs__item {
         $tabsItemHeight: 50px;
         height: $tabsItemHeight;
         line-height: $tabsItemHeight;
-        padding-left: 40px;
+        padding-left: 39px;
         padding-right: 40px;
         border: none;
         color: $colorText3;

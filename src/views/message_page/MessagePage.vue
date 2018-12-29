@@ -22,15 +22,18 @@ export default {
     SiderBar: () => import('./layout/SiderBar')
   }
 };
+// todo: 限制窗口最小宽度1000px， 要配合electron 设置最小宽度
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/variables.scss";
-  @import "./styles/layout.scss";
+  @import "@ms/index.scss";
 
   .MessagePage {
     @include flex();
+    overflow: hidden;
     height: 100vh;
+    min-width: 1000px;
+    /*height: calc(100vh - 20px);*/
 
     .left, .right {
       height: 100%;
@@ -50,7 +53,8 @@ export default {
         position: relative;
         overflow: hidden;
         flex: 1;
-        &:after {
+
+        &:after2 {
           $afterHeight: 20px;
           position: absolute;
           display: block;
@@ -59,7 +63,7 @@ export default {
           width: 100%;
           background: $colorTheme;
           top: -$afterHeight;
-          box-shadow: 0 5px 20px 0 rgba(0,0,0,.2);
+          box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
         }
       }
     }

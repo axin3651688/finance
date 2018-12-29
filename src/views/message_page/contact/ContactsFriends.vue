@@ -10,7 +10,8 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar" :onerror="avatar_male"/>
+                <img :src="friend.avatar" v-avatar="friend.trueName"/>
+                <img v-avatar="'Tom Hanks'" width="36"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -26,28 +27,28 @@
       <div v-if="rightUserInfoData">
         <div class="panel-right-top">
           <div class="img-box">
-            <img src="" alt="" class="avatar-img">
+            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName" />
           </div>
           <div class="text">
             <h3 class="text-title" v-if="rightUserInfoData.user.trueName">{{rightUserInfoData.user.trueName}}</h3>
-            <p class="text-info">研发部 - 前段工程师</p>
+            <p class="text-info">{{rightUserInfoData.user.username}}</p>
           </div>
         </div>
         <div class="panel-right-content">
           <ul>
-            <li>
+            <li v-if="rightUserInfoData.user.phone">
               <div class="icon icon-phone"></div>
               <p class="info">{{rightUserInfoData.user.phone}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.user.email">
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfoData.user.email}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.sex.text">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfoData.sex.text}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfoData.user.sign">
               <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfoData.user.sign}}</p>
             </li>
@@ -81,7 +82,6 @@ export default {
 
   data() {
     return {
-      avatar_male: 'this.src="' + require('../assets/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       activeFriend: null, // 当前选中的好友
@@ -100,9 +100,18 @@ export default {
 
         if (res.data.code === 200) {
           this.friendData = res.data.data;
-          let activeUserId = this.friendData[0].id;
-          this.getUserinfo(activeUserId);
-          this.activeUser = activeUserId
+          // 当有好友时才请求第一个好友的信息
+          if (this.friendData.length) {
+            let activeUserId = this.friendData[0].id;
+            this.getUserinfo(activeUserId);
+            this.activeUser = activeUserId
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有任何好友',
+              showClose: true
+            })
+          }
         }
       })
     },
@@ -139,6 +148,7 @@ export default {
     // 和某某单聊, 路由到消息页面，要切换到单聊窗口
     chatWithSingle(receiverId) {
       this.ActionSetMessageStore({
+        targetId: receiverId,
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfoData
       });
@@ -151,17 +161,22 @@ export default {
 }
 </script>
 
+
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/index.scss";
 
   .ContactsFriends {
     display: flex;
     height: 100%;
+
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {
-    min-width: 300px;
-    max-width: 400px;
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -183,7 +198,10 @@ export default {
           position: absolute;
           right: 24px;
           top: 50%;
+          font-size: 16px;
+          font-weight: bold;
           transform: translateY(-50%);
+          color: rgba(0, 0, 0, 0.2);
         }
       }
 
@@ -237,6 +255,7 @@ export default {
   .panel-right {
     flex: 1;
     padding: 60px 30px 0 30px;
+    background: $colorBgPageGray;
 
     .panel-right-top {
       position: relative;
@@ -299,11 +318,21 @@ export default {
           background-repeat: no-repeat;
           background-size: 36px 36px;
         }
+
         .icon-gender__male {
           background-image: url($iconGenderMale);
         }
+
         .icon-text {
           background-image: url($iconTest);
+        }
+
+        .icon-phone {
+          background-image: url($iconPhone);
+        }
+
+        .icon-email {
+          background-image: url($iconEmail);
         }
       }
     }
