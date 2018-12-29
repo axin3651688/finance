@@ -1,0 +1,146 @@
+{
+    "id": 1,
+    "text": "指标分析",
+    "showDims": ["company", "month", "year"],
+    "rows": [{
+
+        "id": "1416001",
+        "text": "营业收入"
+    }],
+    "columns": [{
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "营业成本"
+        },
+        {
+            "id": "B",
+            "type": "decimal",
+            "text": "销售费用"
+        },
+        {
+            "id": "C",
+            "type": "decimal",
+            "text": "管理费用"
+        },
+        {
+            "id": "D",
+            "type": "decimal",
+            "text": "资产减值损失"
+        }
+    ],
+    "datas": {},
+    "config": {
+        "_cube": {
+            "subject": "0002",
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "needDims": ["year", "month", "company"],
+        "type": 1
+
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "id": "firstTab",
+        "layout": {
+            "xtype": "column"
+        },
+        "text": "智慧预测",
+        "children": [{
+                "xtype": "chart",
+                "id": "1416001",
+                "text": "利润预测模型",
+                "weight": 12,
+                "height": "400px",
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": 33,
+                    "handler": ($vue, params) => {
+                        console.info(params);
+                        debugger;
+                    }
+                }],
+
+                "options": {
+                    "subType": "bar",
+                    "type": "advancechart",
+                    "getData": {
+                        "type": 2,
+                        "columns": [{
+                            "id": "A"
+                        }, {
+                            "id": "B"
+                        }, {
+                            "id": "C"
+                        }, {
+                            "id": "D"
+                        }],
+                        "row": {
+                            "ids": {
+                                "items": ["1416001"]
+                            }
+                        },
+                        "reverse": true,
+                        "scope": true
+                    }
+                },
+                "chartOptions": {
+                    "series": [{
+                        "name": "漏斗图",
+                        "type": "funnel",
+                        "left": "10%",
+                        "top": 60,
+                        "bottom": 30,
+                        "width": "80%",
+                        "minSize": "0%",
+                        "maxSize": "100%",
+                        "sort": "descending",
+                        "gap": 2,
+                        "label": {
+                            "normal": {
+                                "show": true,
+                                "position": "inside"
+                            },
+                            "emphasis": {
+                                "textStyle": {
+                                    "fontSize": 20
+                                }
+                            }
+                        },
+                        "labelLine": {
+                            "normal": {
+                                "length": 10,
+                                "lineStyle": {
+                                    "width": 1,
+                                    "type": "solid"
+                                }
+                            }
+                        },
+                        "itemStyle": {
+                            "normal": {
+                                "borderColor": "#fff",
+                                "borderWidth": 1
+                            }
+                        },
+                        "data": []
+                    }]
+
+                }
+            }
+
+        ]
+    }]
+}
