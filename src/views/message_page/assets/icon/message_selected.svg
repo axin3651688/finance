@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(125,84,84,0);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="message_selected" transform="translate(-35 -115)">
+    <rect id="矩形_93" data-name="矩形 93" class="cls-1" width="30" height="30" transform="translate(35 115)"/>
+    <path id="icon-chat" class="cls-2" d="M130,183c-8.285,0-15,5.83-15,13.022a12.553,12.553,0,0,0,6.133,10.5s2.288,2.089-4.682,3.29c25.285,1.5,28.548-6.6,28.548-13.795S138.284,183,130,183Zm-4.526,13.513a1.608,1.608,0,1,1,1.6-1.607A1.6,1.6,0,0,1,125.474,196.513Zm9.664,0a1.608,1.608,0,1,1,1.6-1.607A1.6,1.6,0,0,1,135.138,196.513Z" transform="translate(-80 -66)"/>
+  </g>
+</svg>

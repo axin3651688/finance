@@ -18,8 +18,10 @@ const cross = require("./static/profit/cross.json") // 秋收
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
+
 let proxyObj = { // 配置跨域
     '/api': {
+        target: 'http://192.168.2.224:8005',
         // target: 'http://192.168.1.118:8005',
         //  target: 'http://192.168.1.139:8005',
         // target: 'http://192.168.1.139:8005',
@@ -125,7 +127,8 @@ module.exports = {
                 '@v': resolve('src/views'),
                 "utils": resolve('src/utils'),
                 "@ms": resolve('src/views/message_page/styles'), // 消息页面的 样式
-                "@ma": resolve('src/views/message_page/assets') // 消息页面的 静态资源
+                "@ma": resolve('src/views/message_page/assets'), // 消息页面的 静态资源
+                "@mc": resolve('src/views/message_page/components') // 消息页面的 公用组件
             }
         }
     },

@@ -18,6 +18,7 @@ export default function webSocket(data) {
     websocket.onopen = function (evnt) {
         // debugger;
         console.log("  websocket.onopen  ");
+        window.socket = websocket;
     };
 
     // 收到消息时

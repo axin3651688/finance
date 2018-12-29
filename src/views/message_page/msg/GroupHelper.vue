@@ -2,20 +2,24 @@
   <div class="GroupHelper vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未审核 <span class="count">({{messageList.length}})</span></div>
-        <div class="btn">已审核</div>
+        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+          未审核 <span class="count">({{messageListFilter.unChecked.count}})</span>
+        </div>
+        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+          已审核 <span class="count">({{messageListFilter.checked.count}})</span>
+        </div>
       </div>
     </div>
     <div class="bottom">
       <el-scrollbar>
         <section>
-          <div class="list-item" v-for="item in messageList" :key="item.code">
+          <div class="list-item" v-for="item in showMessageList" :key="item.code">
             <div class="item-left">
               <div>
                 <div class="img-box"><img src="" alt=""></div>
               </div>
               <h3 class="title">{{item.otherName}} 申请加入：{{item.text}}</h3>
-              <span class="datetime">{{item.sendTime}}</span>
+              <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
                 <span>理由：</span>
                 <span>{{item.content}}</span>
@@ -37,27 +41,52 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import {HELP_GROUP_MSG, JOIN_GROUP, REFUSE_GROUP} from '~api/message.js';
+import {FORMAT_TIME} from 'utils/message.js'
 
 export default {
   name: 'GroupHelper',
   data() {
     return {
+      activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [] // 好友申请消息列表
     }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {return this.user.user.id},
-    // checkNumgers() {
-    //   let checked = 0;
-    //   let unChecked = 0;
-    //   this.messageList.forEach(item => {
-    //
-    //   })
-    // }
+    messageListFilter() {
+      let obj = {
+        checked: {
+          count: 0,
+          data: []
+        },
+        unChecked: {
+          count: 0,
+          data: []
+        },
+      };
+      this.messageList.forEach(item => {
+        if (item.state === 0) {
+          obj.unChecked.count++;
+          obj.unChecked.data.push(item)
+        } else {
+          obj.checked.count++;
+          obj.checked.data.push(item)
+        }
+      });
+      console.log('messageListFilter:', obj);
+      return obj
+    },
+    showMessageList() {
+      return this.activeBtn === 'checked' ?
+        this.messageListFilter.checked.data :
+        this.messageListFilter.unChecked.data
+    }
   },
-  mounted() {
-    this.getList()
+  filters: {
+    formatTime(time) {
+      return FORMAT_TIME(time)
+    }
   },
   methods: {
     getList() {
@@ -100,7 +129,10 @@ export default {
         })
     }
 
-  }
+  },
+  mounted() {
+  this.getList()
+},
 }
 </script>
 
