@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-import { getClientParams } from "utils/index";
+import {
+  getClientParams
+} from "utils/index";
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -47,7 +49,6 @@ const router = new Router({
           component: () =>
             import('@v/BiModule'),
         },
-
         // 列表
         {
           path: '/list',
@@ -55,12 +56,21 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/List.vue')
         },
-        // 报告查看
         {
-          path: '/Report_view',
-          name: 'Report_view',
+          path: '/company',
+          name: 'company',
           component: () =>
-            import('@v/intelligenceReport/Report_view.vue')
+            import('@v/test/Company.vue')
+        }, {
+          path: '/user',
+          name: 'user',
+          component: () =>
+            import('@v/test/User.vue')
+        }, {
+          path: '/role',
+          name: 'role',
+          component: () =>
+            import('@v/test/Role.vue')
         },
 
         {
@@ -186,22 +196,7 @@ const router = new Router({
           component: () =>
             import('@v/test/Fill.vue')
         },
-        {
-          path: '/company',
-          name: 'company',
-          component: () =>
-            import('@v/test/Company.vue')
-        }, {
-          path: '/user',
-          name: 'user',
-          component: () =>
-            import('@v/test/User.vue')
-        }, {
-          path: '/role',
-          name: 'role',
-          component: () =>
-            import('@v/test/Role.vue')
-        }
+
       ]
     },
     {
@@ -224,11 +219,11 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let bean = getClientParams();
-  let authorization = bean.authorization||bean.tikct||bean.token;
-  if(!authorization){
+  let authorization = bean.authorization || bean.tikct || bean.token;
+  if (!authorization) {
     authorization = localStorage.authorization ? true : false;
   }
-  if (to.path == "/login" || to.path == "/register") {
+  if (to.path == "/login") {
     next();
   } else {
     authorization ? next() : next("/login");

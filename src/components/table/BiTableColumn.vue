@@ -1,5 +1,6 @@
 <template>
 
+<!-- 公司编码 这个是可变的 -->
   <el-table-column
     v-if="col.text == '公司编码'"
     :prop="col.id"
@@ -151,7 +152,6 @@ export default {
       if(Array.isArray(datas) && datas.length == 0){
          return "--";
       }
-      console.info("111111111111",scope.row)
       if(rowId){
          value = Math.getCellValue(datas, colId, rowId, rows);
       }else if(datas.length >= scope.$index){

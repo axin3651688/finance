@@ -36,9 +36,23 @@ export default {
             color: '#8796B0'
           }
         },
-        tooltip: {
-          trigger: "axis"
-        },
+        // tooltip: {
+        //   trigger: "axis"
+        //   ,
+        //   formatter:function(a,b,c,d,e){
+        //     debugger;
+        //     let value = "";
+        //     if(a && a.length > 0){
+        //       value += a[0].name + "指标如下:<br>";
+        //       a.forEach(ele => {
+        //         debugger;
+        //         value += ele.seriesName + ":" + Math.decimalToLocalString(ele.data)  + "<br/>";
+        //       });
+        //     }
+        //     return value;
+        //     // return Math.decimalToLocalString(b);
+        //   }
+        // },
         legend: {
           // default: {
             data: ["好", "坏"],
@@ -81,6 +95,11 @@ export default {
                   
               }
           }
+          // ,
+          // formatter: function(a,b,c){
+          //   debugger
+          //   return Math.decimalToLocalString(a) + "%";
+          // },
         },
         series: [
           {
@@ -114,15 +133,67 @@ export default {
     }
   },
   methods: {
-    upData(item) {
+    upData(item) {    
       if (item) {
         this.item = item;
       }
-      debugger
+      // debugger
       let dd = this.item.options.datas;
       this.receive.xAxis = dd.xAxis;
       this.receive.series = dd.series;
+      //颜色的设置
+      if(this.item.options.color){
+        this.receive.series[0].color = this.item.options.color;
+				
+      }
+      debugger;
+      let me = this;
+      me.unit = {};
+      if( dd.series){
+        dd.series.forEach(aa =>{
+          if(aa.unit){
+            me.unit[aa.name] = aa.unit;
+          }
+        });
+      }
+      let tooltip = {
+          trigger: "axis",
+          formatter:function(a,b,c,d,e){
+            debugger;
+            let value = "";
+            if(a && a.length > 0){
+              value += a[0].name + "指标如下:<br>";
+              a.forEach(ele => {
+                let unitFlag = false;
+                //判断是否有unit
+                for(let porp in me.unit){
+                  unitFlag = true;
+                  break;
+                }
+                if(unitFlag){
+                  value += ele.seriesName + ":" + Math.decimalToLocalString(ele.data)  + me.unit[ele.seriesName] + "<br/>";
+                }else{
+                  value += ele.seriesName + ":" + Math.decimalToLocalString(ele.data)  +  "<br/>";  //如果没有unit  那就默认不给单位
+                }
+              });
+            }
+            return value;
+          }
+        };
+      tooltip.formatter.call(this,me.unit);
+      this.receive.tooltip = tooltip;
+
+      // if(dd.series && dd.series.length > 0){
+      //   dd.series.forEach(element => {
+      //     if(element.data && element.data.length){
+      //       element.data.forEach(function(tt,indx){
+      //         tt = Math.decimalToLocalString(tt);
+      //       });
+      //     }
+      //   });
+      // }
       this.receive.legend.data = dd.legend;
+      
     }
   }
 };

@@ -19,7 +19,25 @@
         "id":"jlr",
         "text":"利润表",
         "xtype":"bi-table",
-        
+         "toolbar":[
+             {
+             "id":"1",
+             "text":"刷新",
+             "xtype":"button",
+             "handler":function(vue,btn){
+                 debugger
+                 console.log(vue);
+             }
+           }, {
+            "id":"2",
+            "text":"gj",
+            "xtype":"button",
+            "handler":function(vue,btn){
+                debugger
+                console.log(vue);
+            }
+          }
+        ],
         "config":{
             "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
             "cube":{
