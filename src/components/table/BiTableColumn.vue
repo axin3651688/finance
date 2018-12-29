@@ -123,6 +123,7 @@ export default {
       if(col.subfix || col.subfix === 0 ) {
         rowId = row["id"+col.subfix]; //并列行的后缀
         colId = colId.replace(col.subfix,"");
+      //  debugger
       }
       if(!row[colId]){
         return "--";
