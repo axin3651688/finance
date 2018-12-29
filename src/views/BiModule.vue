@@ -190,9 +190,10 @@ export default {
       this.updateView("company");
     },
     conversion(id){
-      console.log(111111111)
+            debugger
       //循环当前组件的孩子，动态给datas调用切换单位的方法即可
-      debugger
+     
+
     }
   },
 
@@ -492,6 +493,7 @@ export default {
           if (children.item) {
             // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
+            console.log(cc)
             if (cc && children.hasConfig) {
             } else {
               //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
@@ -542,8 +544,6 @@ export default {
     },
     __queryDataAfter(datas) {
       //
-     
-      console.log(datas)
       return datas;
     },
     /**

@@ -1,6 +1,63 @@
 {
     "id":"1013",
     "text":"资金集中情况汇总表",
+<<<<<<< HEAD
+    "showDims": ["conversion","year","month","company"],
+    "config":{
+      "sql":"WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE,SPCODE,SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE='100101' CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE,COUNT(*) JZHS FROM ((SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD='201711') A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE,SPCODE AS PID,SNAME,HS,JZHS,ROUND(JZHS/HS,4) AS GKM ,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD='201711' ORDER BY SCODE ",
+      "_cube":{
+         "subject":"0001",
+         "cubeId":5
+      },
+      "mainDim":"itempoint",
+      "needDims":["year","month","company"],
+      "random":{"min":100,"max":100000},
+      "type":1     
+   },
+    "rows":[
+        
+    ],
+    "columns": [
+      {
+        "text": "集中度",
+        "type":"decimal",
+        "id": "jzd"
+      },
+      {
+        "text": "公司编码",
+         "type":"number",
+        "id": "scode"
+    },
+      {
+          "text": "公司名称", 
+          "type":"string",
+          "id": "sname"
+        },
+        {
+          "text": "下级户数",
+           "type":"string",
+          "id": "hs"
+        },
+        {
+          "text": "下级集中户数",
+           "type":"string",
+          "id": "jzhs"
+        },
+        {
+          "text": "掌控面", 
+          "type":"decimal",
+          "id": "gkm"
+        },
+        {
+          "text": "货币金额",
+          "type":"decimal",
+          "id": "hbzj"
+        },
+        {
+          "text": "其中：银行存款",
+          "type":"decimal",
+          "id": "yhck"
+=======
     
     "layout": {
       "xtype": "tab"
@@ -14,6 +71,7 @@
         "_cube":{
           "subject":"0001",
           "cubeId":5
+>>>>>>> d25c9819062d56eae9bdff2007dd1aee04aa0db1
         },
         "mainDim":"itempoint",
         "needDims":["year","month","company","conversion"],
@@ -23,6 +81,11 @@
      
       "columns": [
         {
+<<<<<<< HEAD
+          "text": "集中金额",
+          "type":"decimal",
+          "id": "jzje"
+=======
             "text": "公司编码",
             "value": "scode"
         },
@@ -114,6 +177,7 @@
             }
         }else{
             return css+textIndent;
+>>>>>>> d25c9819062d56eae9bdff2007dd1aee04aa0db1
         }
       }
       //   if (levelPro && record[levelPro]) {//行缩进处理
