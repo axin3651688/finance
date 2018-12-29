@@ -5,7 +5,7 @@
   <tree-grid v-else-if="flag && item.show && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
   <s-tree-grid v-else-if="flag && item.show && item.xtype == 'stree-grid'" :item.sync="item" ref="child"></s-tree-grid>
   <bi-flhz v-else-if="flag && item.show && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>
-  <el-button plain  v-else-if="flag && item.show && item.xtype == 'button'" :item.sync="item" ref="child">11</el-button>
+  <!-- <bi-button v-else-if="flag && item.show && item.xtype == 'button'" :item.sync="item" ref="child"></bi-button> -->
 </template>
 
 <script>
@@ -15,6 +15,7 @@ import BiText from "./BiText";
 import TreeGrid from "./text/Treegrid.vue";
 import STreeGrid from "./text/STreegrid.vue";
 import BiFlhz from "./BiFlhz";
+import BiButton from "./BiButton";
 // import ElCascader from "./text/ElCascader.vue";
 
 export default {
@@ -26,8 +27,8 @@ export default {
     BiText,
     TreeGrid,
     STreeGrid,
-    BiFlhz
-    // ElCascader
+    BiFlhz,
+    BiButton
   },
   data() {
     return {
@@ -42,8 +43,8 @@ export default {
     };
   },
   created() {
-    // debugger
-    // console.info(this.item);
+    debugger
+    console.info(this.item);
   },
   mounted() {
     this.loadItems(this.item);

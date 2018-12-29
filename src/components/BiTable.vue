@@ -1,5 +1,8 @@
 <template>
   <div>
+     <div v-if="item.toolbar && item.toolbar.length > 0 " class="toolbar" >
+       <el-button   v-for="btn in item.toolbar" v-bind:key="btn.id" plain  @click="btnClick(btn)">{{btn.text}}</el-button>
+     </div>
     <el-table
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
@@ -83,6 +86,10 @@ export default {
   },
 
   methods: {
+
+     btnClick(btn){
+        btn.handler(this,btn);
+     },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -402,6 +409,9 @@ export default {
 };
 </script>
 <style >
+.toolbar{
+  margin:2px 0 5px 0;
+}
 .el-table td,
 .el-table th {
   padding: 5px 0;
