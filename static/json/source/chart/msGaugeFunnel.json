@@ -289,8 +289,8 @@
                             "dim": "itemperiod",
                             "val": "1416001"
                         },
-                        "type": "line",
-                        "smooth": false
+                        "type": "gauge"
+
                     }, {
                         "id": "A",
                         "name": "利润总额",
@@ -348,16 +348,16 @@
                         "name": "业务指标",
                         "type": "gauge",
                         "center": ["25%", "55%"],
-                        "splitNumber": 10,
+                        "splitNumber": "10",
                         "axisLine": {
                             "lineStyle": {
 
-                                "width": 8
+                                "width": "8"
                             }
                         },
                         "axisTick": {
-                            "splitNumber": 10,
-                            "length": 12,
+                            "splitNumber": "10",
+                            "length": "12",
                             "lineStyle": {
                                 "color": "auto"
                             }
@@ -369,13 +369,13 @@
                         },
                         "splitLine": {
                             "show": true,
-                            "length": 30,
+                            "length": "30",
                             "lineStyle": {
                                 "color": "auto"
                             }
                         },
                         "pointer": {
-                            "width": 5
+                            "width": "5"
                         },
                         "title": {
                             "show": true,
@@ -392,7 +392,7 @@
                             }
                         },
                         "data": [{
-                            "value": 50,
+                            "value": "50",
                             "name": "完成率"
                         }]
                     },
@@ -418,23 +418,23 @@
                             }
                         },
                         "data": [{
-                                "value": 60,
+                                "value": "60",
                                 "name": "访问"
                             },
                             {
-                                "value": 40,
+                                "value": "40",
                                 "name": "咨询"
                             },
                             {
-                                "value": 20,
+                                "value": "20",
                                 "name": "订单"
                             },
                             {
-                                "value": 80,
+                                "value": "80",
                                 "name": "点击"
                             },
                             {
-                                "value": 100,
+                                "value": "100",
                                 "name": "展现"
                             }
                         ]
@@ -465,23 +465,23 @@
                             }
                         },
                         "data": [{
-                                "value": 30,
+                                "value": "30",
                                 "name": "访问"
                             },
                             {
-                                "value": 10,
+                                "value": "10",
                                 "name": "咨询"
                             },
                             {
-                                "value": 5,
+                                "value": "5",
                                 "name": "订单"
                             },
                             {
-                                "value": 50,
+                                "value": "50",
                                 "name": "点击"
                             },
                             {
-                                "value": 80,
+                                "value": "80",
                                 "name": "展现"
                             }
                         ]

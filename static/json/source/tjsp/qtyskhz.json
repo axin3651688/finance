@@ -19,7 +19,7 @@
           "cubeId":4
         },
         "mainDim":"itemperiod",
-        "needDims":["year","month","company"],
+        "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1
           
@@ -94,7 +94,7 @@
       "text":"其他应收款分类汇总表",
       "drillProperties":["hs"],//有钻取，给蓝色
       
-      "cellStyle":function(row) {debugger
+      "cellStyle":function(row) {
          
           let css = "padding: 4px 0;";
           let pro = row.column.property;//列id
@@ -117,25 +117,28 @@
           }
         },
       "onCellClick":function(row, column, cell, event,option){
-          //let cv = column.property + "",
+          let cv = column.property + "";//下钻行的标识
           //len = cv.length;
-          let text = row.xm_2;//下钻显示的标题
-          let id = row.id ;//下钻行的标识
-          
-          option.commonHandler(
-          {
-              "type":"click",//事件类型
-              "way":"addTab",//调用的公共方法
-              "sourceApi":"/cnbi/json/source/tjsp/qtyskhzDrill.json",//下钻的json路径
-              "handler":($vue,params)=>{//自定义的回调
-                  console.info(params);
-                 // let pp = {id:params.xxx,xxx};
-                //  $vue.popop = pp;
-              } 
-          },
-          { row: row, column: column, cell: cell, event: event },
-          { id: id, text: text }
-        );
+          let listener = row._drill || row.drill;
+          if (listener && cv == "hs") {
+                let text = row.xm_2;//下钻显示的标题
+                let id = row.id ;//下钻行的标识
+                
+                option.commonHandler(
+                {
+                    "type":"click",//事件类型
+                    "way":"addTab",//调用的公共方法
+                    "sourceApi":"/cnbi/json/source/tjsp/qtyskhzDrill.json",//下钻的json路径
+                    "handler":($vue,params)=>{//自定义的回调
+                        console.info(params);
+                        // let pp = {id:params.xxx,xxx};
+                        //  $vue.popop = pp;
+                    } 
+                },
+                { row: row, column: column, cell: cell, event: event },
+                { id: id, text: text }
+                );
+            }
       },
       "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
             if (rowIndex=== 0 || rowIndex=== 1 ||rowIndex=== 2||rowIndex=== 15) {//合并单元格

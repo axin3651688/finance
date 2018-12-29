@@ -2,7 +2,7 @@
   {
     "id":"0006",
     "text":"预付账款分类汇总",
-    "changeYearBefore":function(newyear,option){debugger
+    "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
     }
     ,//切换年的回调
@@ -19,7 +19,7 @@
           "cubeId":4
         },
         "mainDim":"itemperiod",
-        "needDims":["year","month","company"],
+        "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1
           
@@ -117,25 +117,27 @@
           }
         },
       "onCellClick":function(row, column, cell, event,option){
-          //let cv = column.property + "",
-          //len = cv.length;
-          let text = row.xm_2;//下钻显示的标题
-          let id = row.id ;
-          
-          option.commonHandler(
-          {
-              "type":"click",//事件类型
-              "way":"addTab",//调用的公共方法
-              "sourceApi":"/cnbi/json/source/tjsp/yfzkhzDrill.json",//下钻json路径
-              "handler":($vue,params)=>{//自定义的回调
-                  console.info(params);
-                 // let pp = {id:params.xxx,xxx};
-                //  $vue.popop = pp;
-              } 
-          },
-          { row: row, column: column, cell: cell, event: event },
-          { id: id, text: text }
-        );
+            let cv = column.property + "";//下钻行的标识
+            let listener = row._drill || row.drill;
+            if (listener && cv== "hs") {
+                let text = row.xm_2;//下钻显示的标题
+                let id = row.id ;
+                
+                option.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/yfzkhzDrill.json",//下钻json路径
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                            // let pp = {id:params.xxx,xxx};
+                            //  $vue.popop = pp;
+                        } 
+                    },
+                    { row: row, column: column, cell: cell, event: event },
+                    { id: id, text: text }
+                );
+            }
       },
       "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
             if (rowIndex=== 0 || rowIndex=== 1 ||rowIndex=== 2||rowIndex=== 15) {//表格固定，所以写死
