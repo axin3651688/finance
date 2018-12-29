@@ -26,8 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "./styles/variables.scss";
-  @import "./styles/layout.scss";
+  @import "@ms/index.scss";
 
   .MessagePage {
     @include flex();
@@ -55,7 +54,7 @@ export default {
         overflow: hidden;
         flex: 1;
 
-        &:after {
+        &:after2 {
           $afterHeight: 20px;
           position: absolute;
           display: block;

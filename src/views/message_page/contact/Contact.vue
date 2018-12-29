@@ -85,7 +85,6 @@ export default {
     height: 100%;
     padding: 1px 0px 0;
     background: $colorBgPageGray;
-    box-shadow: 0 20px 30px $colorShadowGreen;
 
     /deep/ li {
       list-style: none;
@@ -104,13 +103,16 @@ export default {
 
       .el-tabs__nav {
         border: none;
+        border-radius: 0;
+        width: $sizeNavBarWidth;
+        overflow: hidden;
       }
 
       .el-tabs__item {
         $tabsItemHeight: 50px;
         height: $tabsItemHeight;
         line-height: $tabsItemHeight;
-        padding-left: 40px;
+        padding-left: 39px;
         padding-right: 40px;
         border: none;
         color: $colorText3;

@@ -18,6 +18,8 @@ const cross = require("./static/profit/cross.json") // 秋收
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
+
+// $api = "http://192.168.2.237:8005";
 let proxyObj = { // 配置跨域
     '/api': {
         target: 'http://192.168.2.237:8005',

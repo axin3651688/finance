@@ -126,3 +126,8 @@ export function PARSE_CHAT_CONTENT(content, type) {
 export function processServerMessage(data) {
   store.dispatch("ActionSetMessageStore", {newServerMsg: data});
 }
+
+// 处理消息发送的回执 code=2000 为ack回执
+export function processServerAck(data) {
+  store.dispatch("ActionSetMessageStore", {serverAck: data});
+}

@@ -255,6 +255,7 @@ export default {
   .panel-right {
     flex: 1;
     padding: 60px 30px 0 30px;
+    background: $colorBgPageGray;
 
     .panel-right-top {
       position: relative;

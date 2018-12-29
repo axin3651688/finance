@@ -46,6 +46,7 @@ export function findGroupMsg(data) {
   // debugger
   return request({
     url: '/api/api/find_group_msg',
+    // url: $api + '/api/find_group_msg',
     method: 'post',
     data: data
     // data: {

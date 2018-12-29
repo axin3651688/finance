@@ -94,12 +94,16 @@ export default {
     },
     newServerMsg() { // 服务器推送的消息
       return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
     }
   },
   watch: {
     receiverId(val) {
       this.findSingleMsg();
     },
+
     //监听服务器推送的消息
     newServerMsg(val) {
       console.log('监听到服务器推送：', val);
@@ -113,9 +117,37 @@ export default {
           this.chatWindowScrollToBottom();
         });
       }
+    },
+
+    /**
+     * 监听ack消息回执 返回示例：
+     * {
+     *   code: 2000,
+     *   data: {
+     *     id: '1546065114464cnbi',   // <String>
+     *     miniType: 1100,            // <Number>
+     *     sendTime: 1546065114464,   // <Number>
+     *     state: 0,                  // <Number>
+     *   },
+     *   msg: 'ACK即时消息确认报文'
+     * }
+     */
+    serverAck(val) {
+      this.updateAck(val)
     }
+
   },
   methods: {
+
+    /**
+     * 跟新消息 ack
+     * 1.收到ack后把收到的内容原封返回个服务器
+     * 2.遍历本地消息队列，更新消息的状态（已读，未读···）
+     */
+    updateAck() {
+
+    },
+
     // 聊天选择文件
     selectFile() {
       this.$refs['selectFile'].click()
