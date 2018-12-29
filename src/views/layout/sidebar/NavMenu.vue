@@ -44,71 +44,22 @@ export default {
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
-    toModule(e) {
+    shownavMenu(e) {
+      //  此判断是针对url不是json的,让它正常跳转,不是的就调用侧边栏点击加载配置文件。
+      // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
       if (this.device === "mobile") {
         this.ToggleSideBar({ opend: false });
       }
-      this.user.company.id === 121
-        ? this.$router.push("/tjsp/module")
-        : this.$router.push("/main");
-      // this.$router.push({ path: "/module", name: "", params: {} });
-      modeHandle(e);
-    },
-    shownavMenu(e) {
-      //天津食品的管理驾驶舱的跳转，现在是跳转不了的,id=336。
-      if (e.id == "336") {
-        if (this.device === "mobile") {
-          this.ToggleSideBar({ opend: false });
-        }
+      if (e.url.indexOf(".json") > 0 || Cnbi.isEmpty(e.url)) {
+        this.user.company.id === 121
+          ? this.$router.push("/tjsp/module")
+          : this.$router.push("/main");
         modeHandle(e);
-      }
-      //  此判断是针对消息这样子的一级无子的菜单,让它正常跳转,如果不写,跳转后不会正常
-      else if (e.level === 2) {
-        console.log(e);
-        // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
-        if (e.url == "/cnbi/json/source/tjsp/dash.json") {
-          this.toModule(e);
-        } else this.$router.push({ path: e.url });
       } else {
-        this.toModule(e);
+        this.$router.push({ path: e.url });
       }
     }
   }
 };
 </script>
-<style>
-</style>
-<style lang="scss" scoped>
-.box {
-  width: 400px;
-
-  .top {
-    text-align: center;
-  }
-
-  .left {
-    float: left;
-    width: 60px;
-  }
-
-  .right {
-    float: right;
-    width: 60px;
-  }
-
-  .bottom {
-    clear: both;
-    text-align: center;
-  }
-
-  .item {
-    margin: 4px;
-  }
-
-  .left .el-tooltip__popper,
-  .right .el-tooltip__popper {
-    padding: 8px 10px;
-  }
-}
-</style>
 
