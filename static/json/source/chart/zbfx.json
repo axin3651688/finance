@@ -193,28 +193,7 @@
                     }],
 
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -268,28 +247,8 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
+
                     }]
                 }
             },
@@ -338,28 +297,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -401,28 +339,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -453,40 +370,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -516,40 +400,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -579,40 +430,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+                        "type": "gauge"
                     }]
                 }
             },
@@ -643,39 +461,7 @@
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+
                     }]
                 }
             },
@@ -716,28 +502,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -778,28 +543,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -840,28 +584,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -902,28 +625,7 @@
                         "type": "value"
                     }],
                     "series": [{
-                        "type": "bar",
-                        "stack": "vistors",
-                        "barWidth": "35%",
-                        "data": [],
-                        "itemStyle": {
-                            "normal": {
-                                "color": function (params) {
-                                    var colorList = [
-                                        "#3AA1FF",
-                                        "#13C2C2",
-                                        "rgb(25,46,94)",
-                                        "rgb(195,229,235)"
-                                    ];
-                                    return colorList[params.dataIndex];
-                                }
-                            },
-                            "emphasis": {
-                                "shadowBlur": 10,
-                                "shadowOffsetX": 0,
-                                "shadowColor": "rgba(0, 0, 0, 0.5)"
-                            }
-                        }
+                        "type": "bar"
                     }]
                 }
             },
@@ -954,39 +656,7 @@
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
-                        "radius": "65%",
-                        "splitNumber": 5,
-                        "axisLine": {
-                            "lineStyle": {
-                                "width": 10,
-                                "color": [
-                                    [0.25, "#F04864"],
-                                    [0.5, "#FACC14"],
-                                    [0.75, "#13C2C2"],
-                                    [1, "#2FC25B"]
-                                ]
-                            }
-                        },
-                        "splitLine": {
-                            "show": false
-                        },
-                        "axisTick": {
-                            "length": 1
-                        },
-                        "axisLabel": {
-                            "show": false
-                        },
-                        "pointer": {
-                            "length": "70%",
-                            "width": 9
-                        },
-                        "detail": {
-                            "formatter": "{value}%"
-                        },
-                        "data": [{
-                            "value": "",
-                            "name": "完成率"
-                        }]
+
                     }]
                 }
             }, {
@@ -1155,16 +825,10 @@
                 },
                 "chartOptions": {
                     "series": [{
-                            "name": "好",
-                            "type": "line",
-                            "smooth": false,
-                            "data": []
+                            "type": "line"
                         },
                         {
-                            "name": "坏",
-                            "type": "line",
-                            "smooth": false,
-                            "data": []
+                            "type": "line"
                         }
                     ]
                 }

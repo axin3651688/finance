@@ -16,6 +16,7 @@
     "handsontable-pro": "^6.2.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.10",
+    "namedavatar": "^1.0.0",
     "resize-detector": "^0.1.7",
     "vue": "^2.5.17",
     "vue-qriously": "^1.1.1",

@@ -3,27 +3,38 @@
     <div class="topbar-left">
       <!--topbar-left-->
     </div>
-    <!--<div class="topbar-right">-->
-    <div class="topbar-right" @dblclick="web_minWindows()">
-      <h3 class="page-title">首页</h3>
+    <!--<div class="topbar-right" @dblclick="web_minWindows()">-->
+    <div class="topbar-right">
+      <h3 class="page-title" v-if="messageStore.routeName">{{messageStore.routeName}}</h3>
+      <h3 class="page-title" v-else="messageStore.routeName">首页</h3>
       <div class="btn-group">
-        <span class="btn btn-mini" @click="web_minWindows()">-</span>
-        <span class="btn btn-max" @click="web_maxWindows()"><></span>
-        <span class="btn btn-close" @click="web_closeWindows()">X</span>
+        <div class="btn btn-mini" @click="web_minWindows()">
+          <img src="@ma/icon/minimize.svg">
+        </div>
+        <div class="btn btn-max" @click="web_maxWindows()">
+          <img src="@ma/icon/full.svg">
+        </div>
+        <div class="btn btn-close" @click="web_closeWindows()">
+          <img src="@ma/icon/close.svg">
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: "TopBar",
-  data () {
-    return {
-      routeName: '/message_page/home', // 当前路由名
-    }
+  data() {
+    return {}
+  },
+  computed: {
+    ...mapGetters(['messageStore'])
   },
   methods: {
+
     web_minWindows() {
       // alert('web_minWindows');
       if (window.require) {
@@ -40,7 +51,7 @@ export default {
         var ipc = window.require('electron').ipcRenderer
       }
       if (window.require) {
-        ipc.send('web_fullWindows', '')
+        ipc.send('web_maxWindows', '')
       }
     },
     web_closeWindows() {
@@ -64,17 +75,13 @@ export default {
           break;
       }
     }
-  },
-  mounted () {
-    console.log('当前路由：', this.$route.path)
-  },
-
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
-  @import "../styles/layout.scss";
+  @import "@ms/variables.scss";
+  @import "@ms/layout.scss";
 
   .TopBar {
     @include flex();
@@ -93,6 +100,7 @@ export default {
       overflow: hidden;
       flex: 1;
       -webkit-app-region: drag;
+
       &:after {
         $afterWidth: 20px;
         position: absolute;
@@ -103,8 +111,9 @@ export default {
         left: -$afterWidth;
         top: 0;
         bottom: 0;
-        box-shadow: 5px 0 20px 0 rgba(0,0,0,.2);
+        box-shadow: 5px 0px 60px rgba(0, 0, 0, 0.16);
       }
+
       .page-title {
         height: 100%;
         padding: 0 50px;
@@ -113,15 +122,17 @@ export default {
         line-height: $sizeTopBarHeight;
         display: inline-block;
       }
+
       .btn-group {
         @include flex();
         justify-content: space-between;
         float: right;
+
         .btn {
-          width: 40px;
-          height: 40px;
+          width: 50px;
+          height: 50px;
+          line-height: 50px;
           text-align: center;
-          line-height: 40px;
           cursor: pointer;
           transition: all .3s;
           -webkit-app-region: no-drag;

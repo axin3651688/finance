@@ -277,6 +277,8 @@ BiText
 + 表体合并单元格
 ~~~
 在item配置参数 colAndRowSanHandler函数  有4个 row, column, rowIndex, columnIndex
+
+树表的金额配置decimal类型
 ~~~
 
 + 事件对象

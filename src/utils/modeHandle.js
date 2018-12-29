@@ -19,7 +19,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-  //  e.url = "cnbi/json/source/chart/zbfx.json";
+    //e.url = "cnbi/json/source/chart/zbfx.json";
     //console.log(e.sourceId, e.url)
 
     /** 

@@ -1,7 +1,28 @@
 <template>
+
+<!-- 公司编码 这个是可变的 -->
+  <el-table-column
+    v-if="col.text == '公司编码'"
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width||80"
+    >
+      <template slot-scope="scope">
+       <span
+          v-if="iconShow(0,scope.row) "
+          class="tree-ctrl"
+          v-bind="$attrs"
+          @click="toggleExpanded(scope.$index)" >
+          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
+          <i v-else class="el-icon-minus"/>
+        </span>
+      </template>
+  </el-table-column>
+
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
-    v-if="col.type === 'index' "
+    v-else-if="col.type === 'index' "
     :prop="col.id"
     :label="col.text"
     :width="col.width"
@@ -146,6 +167,30 @@ export default {
        value = Math.decimalToLocalString(value);//((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
       return value;
+    },
+    //treeGrid function
+     showRow(row) {
+      const show = row.row.parent
+        ? row.row.parent._expanded && row.row.parent._show
+        : true;
+      row.row._show = show;
+      return show
+        ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
+        : "display:none;";
+    },
+    // 切换下级是否展开
+    toggleExpanded: function(trIndex) {
+      const record = this.tableData.datas[trIndex];
+      console.log(record)
+      
+      record._expanded = !record._expanded;
+    },
+    // 图标显示
+    iconShow(index, record) {
+      return index === 0 && record.children && record.children.length > 0;
+    },
+    itemShow(index, record) {
+      return index === item && record.children && record.children.length > 0;
     }
   },
   created() {
@@ -212,4 +257,13 @@ tbody {
 .item3 {
   text-indent: 40px;
 } */
+/*
+  cxy treegrid + - style
+*/
+.tree-ctrl {
+  position: relative;
+  cursor: pointer;
+  color: #2196f3;
+  margin-left: 18px;
+}
 </style>

@@ -533,6 +533,7 @@ function closeTabTaget (params,$vue) {
         $vue.activeTabName = "0";
     }
 }
+
  //添加export抛出模块
  export {
      createRandomDatas,
