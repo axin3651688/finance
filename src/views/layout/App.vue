@@ -22,7 +22,7 @@ export default {
     if (!authorization) {
       authorization = localStorage.getItem("authorization");
     } else {
-      alert("-----------------从地址中取行了：" + authorization);
+      //alert("-----------------从地址中取行了：" + authorization);
     }
     // debugger;
     this.initSocket(authorization);
@@ -68,8 +68,8 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.2.237:7006/socket.io/";
-      //  let url = "ws://192.168.1.118:7006/socket.io/";
+     // let url = "ws://192.168.2.237:7006/socket.io/";
+        let url = "ws://192.168.1.118:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;

@@ -115,14 +115,17 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, col, scope, rows) {
-      let colId = col.id;
-      let row = scope.row;
+      let colId = col.id,row = scope.row;
       let rowId = row.id || row.nid;
       if (rowId && isNaN(rowId)) {
-        return "";
+        return "--";
       }
-      if (colId.indexOf("_") != -1) {
-        rowId = row.id_; //并列行的
+      if(col.subfix || col.subfix === 0 ) {
+        rowId = row["id"+col.subfix]; //并列行的后缀
+        colId = colId.replace(col.subfix,"");
+      }
+      if(!row[colId]){
+        return "--";
       }
       let value = 0 ; 
       if(Array.isArray(datas) && datas.length == 0){
@@ -130,8 +133,10 @@ export default {
       }
       if(rowId){
          value = Math.getCellValue(datas, colId, rowId, rows);
-      }else{
+      }else if(datas.length >= scope.$index){
         value = datas[scope.$index][colId];
+      }else{
+        console.error("人才搞的配制："+JSON.stringify(row));
       }
       if (!value) {
         return "--";

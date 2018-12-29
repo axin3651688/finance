@@ -73,7 +73,6 @@ export default {
     //debugger;
     // this.getTableDataParams();
     this.upData(this.item);
-    console.log(this.row)
     // this.$nextTick(() => {
     //   debugger;
     //   this.upData(this.item);
@@ -407,5 +406,8 @@ export default {
   text-align: right;
 }
 .el-table td {
+}
+.gutter{
+  display: none;
 }
 </style>

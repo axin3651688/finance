@@ -164,7 +164,7 @@ export default {
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
-    ...mapGetters(["year", "month", "company", "module_api"])
+    ...mapGetters(["year", "month", "company", "module_api","conversion"])
   },
   watch: {
     module_api(newid) {
@@ -188,6 +188,10 @@ export default {
       this.changeCompanyBefore(newId,this);
       console.log("改变", newId);
       this.updateView("company");
+    },
+    conversion(id){
+      console.log(111111111)
+      debugger
     }
   },
 
@@ -216,6 +220,7 @@ export default {
     showSet(items) {
       // let flag = true;
       //
+      debugger
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -427,6 +432,7 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
+      console.log(this.config)
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
@@ -529,9 +535,13 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
+       this.units(datas)
     },
     __queryDataAfter(datas) {
       //
+     
+      console.log(datas)
+      debugger
       return datas;
     },
     /**
@@ -539,6 +549,7 @@ export default {
      */
     setDatas(item, params, $childVue) {
       //
+      debugger
       findThirdPartData(params)
         .then(res => {
           this.queryDataAfter(item, res.data.data, $childVue);

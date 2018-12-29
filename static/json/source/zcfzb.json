@@ -72,20 +72,24 @@
 		{
 			"id": "text_",
 			"type": "string",
+			"subfix":"_",
 			"text": "项目"
 		},
 		{
 			"id": "A_",
 			"type": "decimal",
+			"subfix":"_",
 			"text": "年初余额"
 		},
 		{
 			"id": "B_",
 			"type": "decimal",
+			"subfix":"_",
 			"text": "期末余额"
 		}, {
 			"id": "C_",
 			"type": "decimal",
+			"subfix":"_",
 			"text": "预算数"
 		}
 	],

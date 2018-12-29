@@ -62,14 +62,14 @@
       <!-- 单位 -->
       <el-dropdown trigger="click" v-if="showDims.conversion">
         <el-button type="text" class="underline">
-          {{conversion}}
+          {{conversion.text}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
             v-for="(item,index) of unit"
             :key="index"
-            @click.native="GetSideMid({conversion:item.text})"
+            @click.native="GetSideMid({conversion:item})"
           >{{item.text}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
