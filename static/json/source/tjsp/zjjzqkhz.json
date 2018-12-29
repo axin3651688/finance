@@ -1,6 +1,7 @@
 {
     "id":"1013",
     "text":"资金集中情况汇总表",
+<<<<<<< HEAD
     "showDims": ["conversion","year","month","company"],
     "config":{
       "sql":"WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE,SPCODE,SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE='100101' CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE,COUNT(*) JZHS FROM ((SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD='201711') A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE,SPCODE AS PID,SNAME,HS,JZHS,ROUND(JZHS/HS,4) AS GKM ,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD='201711' ORDER BY SCODE ",
@@ -18,53 +19,184 @@
     ],
     "columns": [
       {
-          "text": "公司编码",
-          "value": "scode"
+        "text": "集中度",
+        "type":"decimal",
+        "id": "jzd"
       },
       {
-          "text": "公司名称",
-          "value": "sname"
+        "text": "公司编码",
+         "type":"number",
+        "id": "scode"
+    },
+      {
+          "text": "公司名称", 
+          "type":"string",
+          "id": "sname"
         },
         {
           "text": "下级户数",
-          "value": "hs"
+           "type":"string",
+          "id": "hs"
         },
         {
           "text": "下级集中户数",
-          "value": "jzhs"
+           "type":"string",
+          "id": "jzhs"
         },
         {
-          "text": "掌控面",
-          "value": "gkm"
+          "text": "掌控面", 
+          "type":"decimal",
+          "id": "gkm"
         },
         {
           "text": "货币金额",
-          "value": "hbzj"
+          "type":"decimal",
+          "id": "hbzj"
         },
         {
           "text": "其中：银行存款",
-          "value": "yhck"
+          "type":"decimal",
+          "id": "yhck"
+=======
+    
+    "layout": {
+      "xtype": "tab"
+    },
+    "items": [{
+      "xtype": "tree-grid",
+      "id": "zjjzqkhz",
+      "text": "资金集中情况汇总表",
+      "config":{
+        "sql":"WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE,SPCODE,SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE='100101' CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE,COUNT(*) JZHS FROM ((SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD='201711') A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE,SPCODE AS PID,SNAME,HS,JZHS,ROUND(JZHS/HS,4) AS GKM ,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD='201711' ORDER BY SCODE ",
+        "_cube":{
+          "subject":"0001",
+          "cubeId":5
+>>>>>>> d25c9819062d56eae9bdff2007dd1aee04aa0db1
         },
+        "mainDim":"itempoint",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1     
+      },
+     
+      "columns": [
         {
+<<<<<<< HEAD
           "text": "集中金额",
-          "value": "jzje"
+          "type":"decimal",
+          "id": "jzje"
+=======
+            "text": "公司编码",
+            "value": "scode"
         },
         {
-          "text": "集中度",
-          "value": "jzd"
+            "text": "公司名称",
+            "value": "sname"
+          },
+          {
+            "text": "下级户数",
+            "value": "hs"
+          },
+          {
+            "text": "下级集中户数",
+            "value": "jzhs"
+          },
+          {
+            "text": "掌控面",
+            "value": "gkm"
+          },
+          {
+            "text": "货币金额",
+            "value": "hbzj"
+          },
+          {
+            "text": "其中：银行存款",
+            "value": "yhck"
+          },
+          {
+            "text": "集中金额",
+            "value": "jzje"
+          },
+          {
+            "text": "集中度",
+            "value": "jzd"
+          }
+      ],
+      "rows":[],
+      "onRowClick":function(row,e,col,$vue){//"树表单元格点击事件"
+          debugger
+          let id = row.scode, text = row.sname , i=0;
+          for(i; i<$vue.item.config.columns.length; i++){
+            if($vue.item.config.columns[i].value==this.drillProperties[0]){
+              if(row[this.drillProperties[0]] && row[this.drillProperties[0]] > 0  ){            
+                $vue.commonHandler(
+                    {
+                      "type":"click",//事件类型
+                      "way":"addTab",//调用的公共方法
+                      "sourceApi":"/cnbi/json/source/tjsp/zjjzqk.json",
+                      "handler":($vue,params)=>{//自定义的回调
+                          console.info(params);
+                          debugger; 
+                      } 
+                    },
+                    { row: row, e: e, col: col },
+                    { id: id, text: text }
+                );
+              }
+            }
+          } 
+      },
+      "drillProperties":["jzhs"],//有钻取，给蓝色 可选 table
+      "cellStyle":function(row,obj){
+
+        // let a = obj.item.config.columns;
+        
+        debugger
+        for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
+            let pro = obj.item.config.columns[row.columnIndex].value ; 
+        
+        let css = "padding: 4px 0;";
+        // let pro = obj.item.config.columns;
+        // let pro = "";
+        if (!pro) {
+            return css;
         }
-  ],
-  "layout": {
-    "xtype": "tab"
-  },
-  "items": [{
-    "xtype": "tree-grid",
-    "id": "zjjzqkhz",
-    "text": "资金集中情况汇总表",
-    "onRowClick":function(row, column, e,params) {
-      console.log(params)
-      debugger
-    }
+        
+        let textIndent ="";
+        
+        let record = row.row;  //获取的行数据  
+        let drillProperties = this.drillProperties;//给那一列赋予蓝色
+        if(drillProperties.indexOf(pro) != -1){
+            if(record.jzhs && record.jzhs>0){
+              // return ;
+              let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+              css = css + "font-weight:bold;" + textIndent + drill;
+              return css;
+            }else{
+              return css+textIndent;
+            }
+        }else{
+            return css+textIndent;
+>>>>>>> d25c9819062d56eae9bdff2007dd1aee04aa0db1
+        }
+      }
+      //   if (levelPro && record[levelPro]) {//行缩进处理
+      //     let level = record[levelPro] || 1;
+      //     textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+      // }
+      // if (drillProperties.indexOf(pro) != -1) { // 判断给那一列附蓝色；不然一行全是蓝色的
+      //     if (row.jzhs && row.jzhs>0) {//判断A、B的值是否存在 and 不能等于0；
+      //         let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+      //         css = css + "font-weight:bold;" + textIndent + drill;
+      //         return css;
+      //     } else {//否则不给蓝色：说明无click事件；不做处理；
+      //         return css+textIndent;
+      //     }
+      // } else {
+      //     return css+textIndent;
+      // }
+      }
+      
   }],
   "code":200,"msg":"查询数据源【company】维度成功！"
   }
