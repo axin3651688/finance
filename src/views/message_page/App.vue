@@ -5,6 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import "@ms/index.scss"; // global css
 import {mapActions} from "vuex";
 import webSocket from "utils/webSocket";
 
@@ -65,7 +66,9 @@ export default {
     },
     initSocket(authorization) {
       // let url = "ws://192.168.2.2:7008/socket.io/";
-      let url = "ws://192.168.2.237:7006/socket.io/";
+      let url = "ws://192.168.2.224:7006/socket.io/";
+      // let url = "ws://192.168.1.139:7006/socket.io/";
+      // let url = "ws://192.168.2.2:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
@@ -83,6 +86,14 @@ export default {
 };
 </script>
 
+<style>
+  html {
+    overflow: hidden;
+  }
+  body {
+    overflow: hidden;
+  }
+</style>
 <style lang="scss" scoped>
   @import "@ms/variables.scss";
 
@@ -90,5 +101,10 @@ export default {
     font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid #333333;
+    // margin: -1px;
+    /*box-shadow:#999 0px 0px 10px;*/
+    /*margin: 10px;*/
   }
 </style>

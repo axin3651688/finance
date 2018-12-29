@@ -9,10 +9,6 @@ const getters = {
   userCompany: state => state.user.user.company,
   // 点击侧边栏返回的url
   module_api: state => state.prame.command.module_api,
-  // 点击侧边栏展开code
-  openPid: state => state.prame.command.openPid,
-  // 点击侧边栏二级激活code
-  activeId: state => state.prame.command.activeId,
   // 点击侧边栏返回资源id
   // sourceId: state => state.prame.command.sourceId,
   // 顶部期间年状态

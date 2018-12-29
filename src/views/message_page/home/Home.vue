@@ -45,10 +45,7 @@
 </template>
 
 <script>
-import {
-  mapGetters,
-  mapActions
-} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import {
   FIND_CARD,
   LATEST_CONTACT,
@@ -78,7 +75,7 @@ export default {
   methods: {
     ...mapActions(['ActionSetMessageStore']),
 
-    web_openWebUrl() {
+    web_openWebUrl(url) {
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
@@ -97,7 +94,12 @@ export default {
       }
 
       if (window.require) {
-        ipc.send('web_openWebUrl', 'http://www.baidu.com')
+        if (card.redirect) {
+          // debugger;
+          ipc.send('web_openWebUrl', card.redirect);
+          // debugger;
+        }
+
       }
 
     },
@@ -105,13 +107,16 @@ export default {
     nodeboxClick(node) {
 
       console.log('点击了节点数据-->>', node.text);
+      console.log('获取设备号-->>', process.platform);
 
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
 
       if (window.require) {
-        ipc.send('web_openWebUrl', 'http://www.baidu.com')
+        if (node.redirect) {
+          ipc.send('web_openWebUrl', node.redirect)
+        }
       }
 
     },
@@ -129,6 +134,8 @@ export default {
   },
 
   mounted() {
+
+    this.ActionSetMessageStore({routeName: '首页'});
 
     FIND_CARD(this.user.user.id).then(res => {
       console.log('获取查询可以添加的卡片数据-->>', res.data);
@@ -162,6 +169,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "@ms/index.scss";
+
+  .Index {
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+
+    &:after {
+      $afterHeight: 20px;
+      position: absolute;
+      display: block;
+      content: '';
+      height: $afterHeight;
+      width: 100%;
+      background: $colorTheme;
+      top: -$afterHeight;
+      box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
+    }
+  }
+
   .cardItem {
 
     display: flex;
@@ -233,6 +260,7 @@ export default {
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+
       &:hover {
         background: rgba(0, 83, 159, 0.12);
       }
@@ -279,7 +307,7 @@ export default {
 
     .contact-box {
       width: 260px;
-      height:100px;
+      height: 100px;
       margin-bottom: 10px;
       height: 100px;
       padding: 0px 0px 0px 10px;
