@@ -1,5 +1,6 @@
 <template>
 
+<!-- 公司编码 这个是可变的 -->
   <el-table-column
     v-if="col.text == '公司编码'"
     :prop="col.id"
