@@ -49,7 +49,7 @@
 				"columns": [
 					{
 						"value": "gsbm",
-						"type": "decimal",
+						"type": "string",
 						"text": "公司编码"
 					},
 					{
@@ -75,7 +75,8 @@
 					{
 						"value": "tbzjl",
 						"type": "decimal",
-						"text": "当月同比增减率"
+						"text": "当月同比增减率",
+						"unit":"%"
 					},
 					{
 						"value": "ljsj",
@@ -94,8 +95,9 @@
 					},
 					{
 						"value": "tbzjl_1",
-						"type": "string",
-						"text": "累计同比增减率"
+						"type": "decimal",
+						"text": "累计同比增减率",
+						"unit":"%"
 					},
 					{
 						"value": "bnys",
@@ -110,7 +112,8 @@
 					{
 						"value": "wcl",
 						"type": "decimal",
-						"text": "预算完成率"
+						"text": "预算完成率",
+						"unit":"%"
 					}
 				],
 				"rows": [

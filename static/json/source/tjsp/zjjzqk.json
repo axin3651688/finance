@@ -9,6 +9,7 @@
     "xtype": "tree-grid",
     "id": "123456",
     "text": "资金集中情况明细表",
+    "show":true,
     "config":{
       "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN '' ELSE '' END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, case when C.scode is not null then '' else B.sname end sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,B.SCODE AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN (NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD='201711' LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE='10010301' OR SPCODE LIKE '10010301%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
       "_cube":{
@@ -16,7 +17,7 @@
          "cubeId":5
       },
       "mainDim":"itempoint",
-      "needDims":["year","month","company"],
+      "needDims":["year","month","company","conversion"],
       "random":{"min":100,"max":100000},
       "type":1     
    },
