@@ -50,10 +50,12 @@ export default function socketCoreProcess(websocket, datas) {
                 console.log('socketCoreProcess: 1005');
                 break;
             case 1006:
+                // 对方收到消息或读了消息
+                debugger;
                 console.log('socketCoreProcess: 1006');
                 break;
             case 1100:
-                // debugger; // 单聊
+                debugger; // 单聊
                 processServerMessage(data);
                 break;
             case 1101:
@@ -61,7 +63,7 @@ export default function socketCoreProcess(websocket, datas) {
                 processServerMessage(data);
                 break;
             case 2000:
-                // debugger; // 消息 ack 回执
+                debugger; // 消息 ack 回执
                 processServerAck(data);
                 break;
             case 1500:
@@ -89,7 +91,7 @@ export default function socketCoreProcess(websocket, datas) {
         if (user) {
             who = "别人";
         }
-        var title = title = "收到" + who + "的消息";
+        var title = "收到消息";
         $notify.success({
             title: title,
             message: data.msg,

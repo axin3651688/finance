@@ -75,18 +75,19 @@ export default {
   methods: {
     ...mapActions(['ActionSetMessageStore']),
 
-    web_openWebUrl(url) {
+    web_openWebUrl(node) {
+      // debugger;
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
       if (window.require) {
-        ipc.send('web_openWebUrl', 'http://www.baidu.com')
+        ipc.send('web_openWebUrl', node.redirect)// api/auth/auth_url/{token}/
       }
     },
 
 
     cardboxClick(card) {
-
+      // debugger;
       console.log('点击了卡片数据-->>', card.text);
 
       if (window.require) {
@@ -105,7 +106,8 @@ export default {
     },
 
     nodeboxClick(node) {
-
+      let companyId = this.user.company.id;
+      node.redirect = 'http://192.168.2.224:8005/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=aHR0cCUzQS8vMTkyLjE2OC4xLjExOCUzQTgwODIvbWFpbiUzRnNvdXJjZV9pZCUzRDg=';
       console.log('点击了节点数据-->>', node.text);
       console.log('获取设备号-->>', process.platform);
 

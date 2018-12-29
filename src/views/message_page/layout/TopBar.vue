@@ -11,7 +11,7 @@
         <div class="btn btn-mini" @click="web_minWindows()">
           <img src="@ma/icon/minimize.svg">
         </div>
-        <div class="btn btn-max" @click="web_maxWindows()">
+        <div class="btn btn-max" @click="web_fullWindows()">
           <img src="@ma/icon/full.svg">
         </div>
         <div class="btn btn-close" @click="web_closeWindows()">
@@ -45,13 +45,13 @@ export default {
       }
 
     },
-    web_maxWindows() {
+    web_fullWindows() {
       // alert('web_maxWindows');
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
       if (window.require) {
-        ipc.send('web_maxWindows', '')
+        ipc.send('web_fullWindows', '')
       }
     },
     web_closeWindows() {
@@ -136,6 +136,9 @@ export default {
           cursor: pointer;
           transition: all .3s;
           -webkit-app-region: no-drag;
+          img {
+            -webkit-app-region: no-drag;
+          }
         }
       }
     }

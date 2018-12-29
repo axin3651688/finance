@@ -529,17 +529,17 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
 
       .left {
         display: flex;
         align-items: center;
 
         .img-box {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           margin-right: 30px;
           overflow: hidden;
           border-radius: 50%;

@@ -7,7 +7,8 @@
       <h3 class="user-name">{{data.name}}</h3>
       <div class="send-time">
         <span class="time">{{data.sendTime| formatMsgTime}}</span>
-        <div class="status" v-if="data.state !== 2"></div>
+        <!--<div class="status" v-if="data.state !== 2"></div>-->
+        <div class="status">{{data.state}}</div>
       </div>
     </div>
     <div class="message-content">
@@ -147,7 +148,8 @@ export default {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background: #EF3C3C;
+          color: #cccccc;
+          /*background: #EF3C3C;*/
         }
       }
     }

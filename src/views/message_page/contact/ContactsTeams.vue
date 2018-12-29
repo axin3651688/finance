@@ -131,7 +131,6 @@ export default {
           this.companyList = res.data.data;
           this.ActionSetMessageStore({companyList: this.companyList});
 
-          debugger;
           // 当获得公司列表后，默认请求第一个公司第一个员工的信息
           if (this.companyList.length) {
             if (this.companyList[0].children.length) {
