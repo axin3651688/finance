@@ -191,6 +191,7 @@ export default {
     },
     conversion(id){
       console.log(111111111)
+      //循环当前组件的孩子，动态给datas调用切换单位的方法即可
       debugger
     }
   },
@@ -219,8 +220,6 @@ export default {
      */
     showSet(items) {
       // let flag = true;
-      //
-      debugger
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -508,6 +507,11 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+       let params = this.$store.state.prame.command;
+       let unit = params.conversion;
+       if(unit && unit.id> 1){
+            datas = Math.convertUnit(unit.id,datas,item.config.columns);
+       }
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
@@ -515,7 +519,6 @@ export default {
         //
         datas = item.__queryDataAfter(datas);
       }
-
       //
       //在此加了查询数据之后的拦截处理
       else if (
@@ -535,21 +538,18 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
-       this.units(datas)
+     //  this.units(datas)
     },
     __queryDataAfter(datas) {
       //
      
       console.log(datas)
-      debugger
       return datas;
     },
     /**
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      //
-      debugger
       findThirdPartData(params)
         .then(res => {
           this.queryDataAfter(item, res.data.data, $childVue);
