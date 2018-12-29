@@ -96,7 +96,9 @@ export default {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-        if (subType == "pie") {
+        if (subType == "pie" || "funnel") {
+          console.info(this.item);
+
           this.chartOptions.legend.data = this.item.options.datas.map(item => {
             return item.name;
           });
