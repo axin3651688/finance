@@ -1,7 +1,7 @@
 {
     "id":"1013",
     "text":"资金集中情况明细表",
-    
+    "showDims": ["conversion","year","month","company"],
   "layout": {
     "xtype": "tab"
   },
