@@ -7,7 +7,7 @@
 	 
     "children":[
         {
-			"xtype": "tree-grid",
+			"xtype": "stree-grid",
 			"id": "0002",
 			"text": "利润表二级",
 			"weight": 24,
@@ -20,7 +20,7 @@
 					"cubeId": 4,
 					"dim_item": "1001"
 				},
-				"generateVar":{//生成变量rows
+				"generateVar":{
 					"periodCount":2,
 					 "compareType":"-1&0",
 					  "reverse":true
@@ -48,69 +48,69 @@
 				},
 				"columns": [
 					{
-						"value": "gsbm",
+						"id": "gsbm",
 						"type": "string",
 						"text": "公司编码"
 					},
 					{
-						"value": "gsmc",
+						"id": "gsmc",
 						"type": "string",
 						"text": "公司名称"
 					},
 					{
-						"value": "dysj",
+						"id": "dysj",
 						"type": "decimal",
 						"text": "当月实际"
 					},
 					{
-						"value": "sntq",
+						"id": "sntq",
 						"type": "decimal",
 						"text": "当月上年同期"
 					},
 					{
-						"value": "tbzje",
+						"id": "tbzje",
 						"type": "decimal",
 						"text": "当月同比增减额"
 					},
 					{
-						"value": "tbzjl",
+						"id": "tbzjl",
 						"type": "decimal",
 						"text": "当月同比增减率",
 						"unit":"%"
 					},
 					{
-						"value": "ljsj",
+						"id": "ljsj",
 						"type": "decimal",
 						"text": "累计实际"
 					},
 					{
-						"value": "sntq_1",
+						"id": "sntq_1",
 						"type": "decimal",
 						"text": "累计上年同期"
 					},
 					{
-						"value": "tbzje_1",
+						"id": "tbzje_1",
 						"type": "string",
 						"text": "累计同比增减额"
 					},
 					{
-						"value": "tbzjl_1",
+						"id": "tbzjl_1",
 						"type": "decimal",
 						"text": "累计同比增减率",
 						"unit":"%"
 					},
 					{
-						"value": "bnys",
+						"id": "bnys",
 						"type": "decimal",
 						"text": "本年预算"
 					},
 					{
-						"value": "cye",
+						"id": "cye",
 						"type": "decimal",
 						"text": "预算差异额"
 					},
 					{
-						"value": "wcl",
+						"id": "wcl",
 						"type": "decimal",
 						"text": "预算完成率",
 						"unit":"%"

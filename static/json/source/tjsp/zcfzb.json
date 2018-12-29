@@ -32,7 +32,7 @@
         },
         {
           "id": "id",
-          "type": "decimal",
+          "type": "string",
           "hidden": true,
           "text": "编码"
         },
@@ -1028,10 +1028,9 @@
         let id = "" ;
         if(cv == "text" )id = row.id;//下钻的标识
         if(cv == "text2" )id = row.id_;//下钻的标识
-
-        if(this.drillProperties.indexOf(column.id) != -1 ){
+        if( this.drillProperties.indexOf(column.property) != -1 ){
           if((row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
-
+  
                   option.commonHandler(
                   {
                       "type":"click",//事件类型
@@ -1047,8 +1046,10 @@
                   );
               
                   
-              }
+              
           }    
+        }
+        
       }
     }
   ]
