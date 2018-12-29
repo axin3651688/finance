@@ -43,13 +43,11 @@ export default function socketCoreProcess(websocket, datas) {
                 console.log('socketCoreProcess: 1006');
                 break;
             case 1100:
-                // 单聊
-                // debugger;
+                // debugger; // 单聊
                 processServerMessage(data);
                 break;
             case 1101:
-                // 群聊
-                // debugger;
+                // debugger; // 群聊
                 processServerMessage(data);
                 break;
             case 1500:

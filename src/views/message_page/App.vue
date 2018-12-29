@@ -65,8 +65,9 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.2.2:7008/socket.io/";
+      // let url = "ws://192.168.2.2:7008/socket.io/";
       // let url = "ws://192.168.2.237:7006/socket.io/";
+      let url = "ws://192.168.1.139:7006/socket.io/";
       // let url = "ws://192.168.2.2:7006/socket.io/";
       // let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
@@ -102,7 +103,7 @@ export default {
     overflow: hidden;
     box-sizing: border-box;
     border: 1px solid #333333;
-    margin: -1px;
+    // margin: -1px;
     /*box-shadow:#999 0px 0px 10px;*/
     /*margin: 10px;*/
   }

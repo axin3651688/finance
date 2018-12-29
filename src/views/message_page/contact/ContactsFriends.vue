@@ -163,7 +163,7 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/index.scss";
 
   .ContactsFriends {
     display: flex;
@@ -175,8 +175,8 @@ export default {
   }
 
   .panel-left {
-    min-width: 300px;
-    max-width: 400px;
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 

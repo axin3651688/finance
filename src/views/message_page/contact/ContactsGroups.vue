@@ -12,7 +12,8 @@
                 <img :src="group.avatar" v-avatar="group.text" />
               </div>
               <div class="info">
-                <h3>{{group.text}}（{{group.count}}人）</h3>
+                <span class="info-text">{{group.text}}</span>
+                <span class="info-count">（{{group.count}}人）</span>
               </div>
             </figure>
             <i class="arrow el-icon-arrow-right"></i>
@@ -227,7 +228,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/index.scss";
 
   .ContactsGroups {
     display: flex;
@@ -238,8 +239,8 @@ export default {
   }
 
   .panel-left {
-    min-width: 300px;
-    max-width: 400px;
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
     border-right: 1px solid $colorBorder2;
 
@@ -279,7 +280,7 @@ export default {
           width: 40px;
           height: 40px;
           overflow: hidden;
-          margin-right: 20px;
+          margin-right: 15px;
           border-radius: 8px;
           background: $colorTheme;
 
@@ -290,11 +291,15 @@ export default {
         }
 
         .info {
+          @include flex();
+          justify-content: space-between;
           font-family: $fontFamilyMain;
           font-weight: 400;
           line-height: 20px;
 
-          h3 {
+          .info-text {
+            @include singleEllipsis();
+            width: 134px;
             height: 19px;
             font-size: 14px;
             font-weight: bold;

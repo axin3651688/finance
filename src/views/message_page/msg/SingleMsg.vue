@@ -123,6 +123,7 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
+
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
         let sendData = {
           code: 1100, // 1100:单聊 1101:群聊
@@ -130,19 +131,30 @@ export default {
             content: this.sendText.trim(),
             receiverId: this.receiverId, //
             senderId: this.loginUserId, // 225:卢诚
-            type: 1
+            type: 1,
+            fileId: 0,
+            id: new Date().getTime() + 'cnbi',
+            sendTime: 0,
+            seq: 0,
           },
-          device: '868938033321615'
+          // todo: 获取设备号?
+          // device: '868938033321615'
         };
         console.log('要发送的内容是：', sendData);
-        this.addMsgToWindow(this.sendText);
-        this.sendText = '';
-        sendMsg(sendData).then(res => {
-          console.log('发送单聊消息返回数据res', res);
-        }).catch(err => {
-          console.log('发送单聊消息返回数据err', err);
-          debugger;
-        });
+        this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
+        this.sendText = ''; // 发送完后清空输入框
+
+        console.log('socket-->', socket);
+        socket.send(JSON.stringify(sendData));
+
+        // sendMsg(sendData).then(res => {
+        //   console.log('发送单聊消息返回数据res', res);
+        // }).catch(err => {
+        //   console.log('发送单聊消息返回数据err', err);
+        //   debugger;
+        // });
+
+
       } else {
         this.sendText = '';
         this.$message({

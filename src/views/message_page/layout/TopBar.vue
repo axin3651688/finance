@@ -3,8 +3,8 @@
     <div class="topbar-left">
       <!--topbar-left-->
     </div>
-    <!--<div class="topbar-right">-->
-    <div class="topbar-right" @dblclick="web_minWindows()">
+    <!--<div class="topbar-right" @dblclick="web_minWindows()">-->
+    <div class="topbar-right">
       <h3 class="page-title" v-if="messageStore.routeName">{{messageStore.routeName}}</h3>
       <h3 class="page-title" v-else="messageStore.routeName">首页</h3>
       <div class="btn-group">
@@ -51,7 +51,7 @@ export default {
         var ipc = window.require('electron').ipcRenderer
       }
       if (window.require) {
-        ipc.send('web_fullWindows', '')
+        ipc.send('web_maxWindows', '')
       }
     },
     web_closeWindows() {

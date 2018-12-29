@@ -131,9 +131,12 @@ export default {
           this.companyList = res.data.data;
           this.ActionSetMessageStore({companyList: this.companyList});
 
+          debugger;
           // 当获得公司列表后，默认请求第一个公司第一个员工的信息
-          if (this.companyList[0].children.length) {
-            this.getUserInfo(this.companyList[0].children[0].id);
+          if (this.companyList.length) {
+            if (this.companyList[0].children.length) {
+              this.getUserInfo(this.companyList[0].children[0].id);
+            }
           } else {
             this.$message({
               type: 'warning',
@@ -183,7 +186,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@ms/index.scss";
 
   .ContactsTeams {
     display: flex;
@@ -194,9 +197,9 @@ export default {
   }
 
   .panel-left {
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
-    min-width: 300px;
-    max-width: 400px;
     border-right: 1px solid $colorBorder2;
 
     /deep/ .el-collapse {

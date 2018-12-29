@@ -92,10 +92,10 @@ export default {
     // 查询订阅消息列表，
     getUnReadMsg() {
       let params = {
-        moduleId: 1, // 点击的时候传过来的id
+        moduleId: 1, // 点击的时候传过来的id (receiverId)
         page: 1, // 分页加载页码
         size: 20, // 每页20
-        state: 2, // state 1未读消息，2已读消息
+        state: 2, // state 1未读消息，2已读消息 (左上角的切换)
         userId: 225 // 当前用户的id
       };
       FIND_MODULE_MSG(params).then(res => {
