@@ -13,7 +13,8 @@ import {
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
 import {
-    processServerMessage,processServerAck
+    processServerMessage,
+    processServerAck
 } from 'utils/message'
 /**
  * 消息核心处理
@@ -45,7 +46,7 @@ export default function socketCoreProcess(websocket, datas) {
             case 1004:
                 // 你已在Windows登陆
                 console.log('socketCoreProcess: 1004+你已在Windows登陆');
-                reload1004(data)
+                // reload1004(data)
 
                 break;
             case 1005:
