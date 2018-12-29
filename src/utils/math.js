@@ -242,6 +242,7 @@
         configRows = datas;
      }
      if (config.type === 2) {//单系列
+        debugger
         if (config.reverse) { //如果有配制的行列反向的话
             return getReverserDatas(config, datas, cols,configRows);
         }
@@ -522,7 +523,6 @@ const getReverserDatas=(config, datas,cols, rows)=>{
  * 舒心
  */
 function closeTabTaget (params,$vue) {
-    debugger;
     let me = this;
     let tabs = $vue.items;
     let tabName = $vue.activeTabName;

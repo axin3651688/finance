@@ -192,7 +192,7 @@ export default {
     conversion(id){
       console.log(111111111)
       //循环当前组件的孩子，动态给datas调用切换单位的方法即可
-      debugger
+      // debugger
     }
   },
 

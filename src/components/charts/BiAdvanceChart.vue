@@ -83,7 +83,7 @@ export default {
     upData(item) {
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
-      debugger;
+      
       console.log(this.item.options.datas);
 
       if (chartType === 1) {
@@ -92,7 +92,7 @@ export default {
          */
         this.chartOptions.series[0].data = this.item.options.datas; // [{ value: item.options.datas, name: "完成率" }];
       } else if (chartType === 2) {
-        debugger;
+        
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
@@ -122,14 +122,14 @@ export default {
       }
     },
     getDefautlChartConfigByType() {
-      debugger;
+      
       let chartSubType = this.item.options.subType;
       if (!chartSubType) {
         console.error("没有正确的配置chart类型");
         return;
       }
       console.log(chartSubType);
-      // debugger;
+      // 
 
       switch (chartSubType) {
         case "bar":
