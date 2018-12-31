@@ -1,6 +1,6 @@
 {
     "id": 1,
-    "text": "指标分析",
+    "text": "柱图",
     "showDims": ["company", "month", "year"],
     "rows": [{
 
