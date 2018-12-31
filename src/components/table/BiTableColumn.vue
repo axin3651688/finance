@@ -18,8 +18,6 @@
         </span>
       </template>
   </el-table-column>
-
-
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
@@ -144,6 +142,7 @@ export default {
       if(col.subfix || col.subfix === 0 ) {
         rowId = row["id"+col.subfix]; //并列行的后缀
         colId = colId.replace(col.subfix,"");
+      //  debugger
       }
       if(!row[colId]){
         return "--";

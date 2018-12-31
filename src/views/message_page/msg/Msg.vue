@@ -14,7 +14,9 @@
                   <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
                     <div class="img-box">
                       <img :src="item.otherAvatar" v-if="item.miniType===1101" v-avatar="item.otherName">
-                      <img :src="item.avatar" v-else v-avatar="item.name">
+                      <img :src="item.avatar">
+                      <!--<img :src="item.avatar" v-else v-avatar="item.name">-->
+                      <!--<img :src="item.avatar">-->
                     </div>
                   </el-badge>
                   <span class="title" v-if="item.miniType===1101">{{item.otherName}}</span>

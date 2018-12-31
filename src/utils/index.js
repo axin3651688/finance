@@ -38,6 +38,7 @@ export function getClientParams(url) {
     decodeURIComponent(search)
     .replace(/"/g, '\\"')
     .replace(/&/g, '","')
+    .replace(/==/g, '')
     .replace(/=/g, '":"') +
     '"}'
   );

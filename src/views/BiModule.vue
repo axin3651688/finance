@@ -135,7 +135,7 @@ export default {
       rows: [],
       columns: [],
       dataUrl: "",
-      datas: {},
+      datas: [],
       flag: false,
       config: {},
       activeTabName: "0",
@@ -545,6 +545,7 @@ export default {
     queryDataAfter(item, datas, $childVue) {
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
+      debugger;
       if (unit && unit.id > 1) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }

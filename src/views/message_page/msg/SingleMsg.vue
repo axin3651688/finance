@@ -14,10 +14,10 @@
         </div>
       </div>
       <div class="btn-group">
-        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+        <div :class="['btn', {active: activeBtn === 'message'}]" @click="changeMessage('message')">
           消息
         </div>
-        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+        <div :class="['btn', {active: activeBtn === 'file'}]" @click="changeMessage('file')">
           文件
         </div>
       </div>
@@ -75,7 +75,8 @@ export default {
   components: {MessageItem},
   data() {
     return {
-      activeBtn: 'checked',
+      msgPaddingList: [], // 待发送消息队列
+      activeBtn: 'message',
       receiverName: '', // 聊天对象名称
       receiverAvatar: '', // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -135,8 +136,11 @@ export default {
      */
     serverAck(val) {
       console.log('服务器ACK：', val);
+      socket.send(JSON.stringify(val));
+      // val.code = 1500;
+      // socket.send(val);
       debugger;
-      this.updateAck(val)
+      // this.updateAck(val)
     }
 
   },
@@ -148,14 +152,30 @@ export default {
      * 2.遍历本地消息队列，更新消息的状态（已读，未读···）
      */
     updateAck(val) {
-      socket.send(JSON.stringify(val)); // 把收到的内容原封返回个服务器
-
+      socket.deliver(val); // 把收到的内容原封返回个服务器
+      debugger;
+      for (let index in this.singleMsgList) {
+        if (this.singleMsgList[index].id === val.data.id) {
+          // 说明这条消息已近在聊天窗口，此时只需更新这条消息的状态
+          this.$set(this.singleMsgList[index], index, val.data)
+        } else {
+          // 这条消息不存在
+          debugger;
+        }
+      }
 
     },
 
     // 聊天选择文件
     selectFile() {
       this.$refs['selectFile'].click()
+    },
+
+    // 聊天窗口（消息、文件）切换
+    changeMessage(type) {
+      if (this.activeBtn !== type) {
+        this.activeBtn = type
+      }
     },
 
     // 发送聊天内容,发送完一条消息后要清空输入框
@@ -169,8 +189,8 @@ export default {
             receiverId: this.receiverId, //
             senderId: this.loginUserId, // 225:卢诚
             type: 1,
-            fileId: 0,
-            id: new Date().getTime() + 'cnbi',
+            // fileId: 0,
+            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
             sendTime: 0,
             seq: 0,
           },
@@ -178,20 +198,10 @@ export default {
           // device: '868938033321615'
         };
         console.log('要发送的内容是：', sendData);
+        console.log('socket对象-->', socket);
+        socket.deliver(sendData);
         this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
         this.sendText = ''; // 发送完后清空输入框
-
-        console.log('socket对象-->', socket);
-        socket.send(JSON.stringify(sendData));
-
-        // sendMsg(sendData).then(res => {
-        //   console.log('发送单聊消息返回数据res', res);
-        // }).catch(err => {
-        //   console.log('发送单聊消息返回数据err', err);
-        //   debugger;
-        // });
-
-
       } else {
         this.sendText = '';
         this.$message({
@@ -219,9 +229,8 @@ export default {
 
     // 把聊天窗口滚动到最底部
     chatWindowScrollToBottom() {
-      // debugger;
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      console.log('找滚动窗口：', chatWindow);
+      // console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
@@ -270,7 +279,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/variables.scss";
+  @import "@ms/index.scss";
 
   .SingleMsg {
     @import "../styles/variables.scss";
@@ -281,12 +290,14 @@ export default {
     height: 100%;
 
     .title {
+      @include flex();
+      align-items: center;
       position: relative;
       overflow: hidden;
 
       .img-box {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
@@ -298,11 +309,11 @@ export default {
       }
 
       .titleleft {
+        margin-left: 20px;
         float: left;
-        margin: 20px 0 0 30px;
 
         h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
 
           span {
@@ -311,7 +322,7 @@ export default {
         }
 
         p {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
           margin-top: 8px;
           color: $colorText2;
@@ -327,9 +338,9 @@ export default {
       align-items: center;
       background: rgba(235, 236, 236, 1);
       opacity: 1;
-      padding: 30px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .middle {
