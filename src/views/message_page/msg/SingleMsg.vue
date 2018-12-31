@@ -137,8 +137,6 @@ export default {
     serverAck(val) {
       console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
-      // val.code = 1500;
-      // socket.send(val);
       debugger;
       // this.updateAck(val)
     }

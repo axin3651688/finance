@@ -212,6 +212,9 @@ export default {
     },
     newServerMsg() { // 服务器推送的消息
       return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
     }
   },
   watch: {
@@ -225,6 +228,12 @@ export default {
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
         this.chatWindowScrollToBottom();
       });
+    },
+    serverAck(val) {
+      console.log('服务器ACK：', val);
+      debugger;
+      socket.send(JSON.stringify(val));
+      debugger;
     }
   },
   methods: {
@@ -298,22 +307,25 @@ export default {
           data: {
             content: this.sendText,
             senderId: this.loginUserId,
-            groupId: this.groupId,
-            // receiverId: this.groupId,
+            receiverId: this.groupId,
+            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
             type: 1
           },
-          device: '868938033321615'
         };
-        console.log('要发送的内容是：', this.sendText);
+        console.log('群消息发送的内容是：', this.sendText);
         this.addMsgToWindow(this.sendText);
         this.sendText = '';
-        sendMsg(sendData).then(res => {
-          console.log('发送群消息返回数据res', res);
-          debugger;
-        }).catch(err => {
-          console.log('发送群消息返回数据err', err);
-          debugger;
-        })
+        debugger;
+        socket.deliver(sendData);
+
+        // sendMsg(sendData).then(res => {
+        //   console.log('发送群消息返回数据res', res);
+        //   debugger;
+        // }).catch(err => {
+        //   console.log('发送群消息返回数据err', err);
+        //   debugger;
+        // })
+
       } else {
         this.sendText = '';
         this.$message({

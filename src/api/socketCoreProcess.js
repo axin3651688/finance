@@ -27,7 +27,7 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
-        debugger;
+        // debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
@@ -64,7 +64,7 @@ export default function socketCoreProcess(websocket, datas) {
                 processServerMessage(data);
                 break;
             case 1101:
-                // debugger; // 群聊
+                debugger; // 群聊
                 processServerMessage(data);
                 break;
             case 2000:
