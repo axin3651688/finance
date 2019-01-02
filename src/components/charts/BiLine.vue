@@ -87,20 +87,31 @@ export default {
               }
           }
         },
-        yAxis: {
-          type: "value",
-          axisLabel : {
-              textStyle: {
-                  fontSize: 10
-                  
-              }
+        yAxis: [
+          {
+            type: "value",
+            axisLabel : {
+                textStyle: {
+                    fontSize: 10
+                    
+                }
+            }
+            // ,
+            // formatter: function(a,b,c){
+            //   debugger
+            //   return Math.decimalToLocalString(a) + "%";
+            // },
+          },
+          {
+            type: "value",
+            axisLabel : {
+                textStyle: {
+                    fontSize: 10
+                    
+                }
+            }
           }
-          // ,
-          // formatter: function(a,b,c){
-          //   debugger
-          //   return Math.decimalToLocalString(a) + "%";
-          // },
-        },
+        ],
         series: [
           {
             name: "好",
@@ -137,16 +148,15 @@ export default {
       if (item) {
         this.item = item;
       }
-      // debugger
       let dd = this.item.options.datas;
+      this.handleDataFormat(dd);
       this.receive.xAxis = dd.xAxis;
       this.receive.series = dd.series;
       //颜色的设置
       if(this.item.options.color){
-        this.receive.series[0].color = this.item.options.color;
+        this.receive.color = this.item.options.color;
 				
       }
-      debugger;
       let me = this;
       me.unit = {};
       if( dd.series){
@@ -159,7 +169,6 @@ export default {
       let tooltip = {
           trigger: "axis",
           formatter:function(a,b,c,d,e){
-            debugger;
             let value = "";
             if(a && a.length > 0){
               value += a[0].name + "指标如下:<br>";
@@ -194,6 +203,18 @@ export default {
       // }
       this.receive.legend.data = dd.legend;
       
+    },
+    handleDataFormat (dd) {
+      //加一个y轴的对应
+      if(dd && dd.series && dd.series.length > 0){
+        dd.series.forEach(ele => {
+          if(ele.unit && ele.unit === "%"){
+            ele.yAxisIndex = 1;
+          }else {
+            ele.yAxisIndex = 0;
+          }
+        });
+      }
     }
   }
 };

@@ -3,8 +3,6 @@ import {
     MessageBox,
     Notification
 } from 'element-ui'
-import router from '@v/layout/router'
-
 import {
     login
 } from "../api/interface.js";
@@ -13,8 +11,7 @@ import {
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
 import {
-    processServerMessage,
-    processServerAck
+    processServerMessage
 } from 'utils/message'
 /**
  * 消息核心处理
@@ -27,49 +24,36 @@ export default function socketCoreProcess(websocket, datas) {
         let code = data.code;
         console.info(data)
         showNotification(data);
-        debugger;
+        // debugger;
         switch (code) {
             case 1001:
                 console.log('socketCoreProcess: 1001');
                 break;
             case 1002:
                 // 账号重复登录提示及处理
-                console.log('socketCoreProcess: 1002+账号在别端登录');
-                reload(data)
+                console.log(data);
+                console.log('账号在别端登录');
                 break;
             case 1003:
                 // 登录已失效，请重新登录
-                console.log(data);
-                console.log('socketCoreProcess: 1003+登录已失效，请重新登录');
-                reload(data)
+                console.log('socketCoreProcess: 1003');
                 break;
             case 1004:
-                // 你已在Windows登陆
-                console.log('socketCoreProcess: 1004+你已在Windows登陆');
-                // reload1004(data)
-
-                break;
-            case 1005:
-                // 你已在Windows下线
-                console.log('socketCoreProcess: 1005');
-                reload(data)
-                break;
+            // 登录已失效，请重新登录
+             console.log('socketCoreProcess: 1003');
+            break;    
             case 1006:
-                // 对方收到消息或读了消息
-                debugger;
                 console.log('socketCoreProcess: 1006');
                 break;
             case 1100:
-                debugger; // 单聊
+                // 单聊
+                // debugger;
                 processServerMessage(data);
                 break;
             case 1101:
-                // debugger; // 群聊
+                // 群聊
+                // debugger;
                 processServerMessage(data);
-                break;
-            case 2000:
-                debugger; // 消息 ack 回执
-                processServerAck(data);
                 break;
             case 1500:
                 //终端控制处理逻辑 {text:"执行成功"}
@@ -96,19 +80,19 @@ export default function socketCoreProcess(websocket, datas) {
         if (user) {
             who = "别人";
         }
-        var title = "收到消息";
+        var title = title = "收到" + who + "的消息";
         $notify.success({
             title: title,
             message: data.msg,
             showClose: true,
             position: "bottom-right"
         });
-        // var n = new Notification("adfdfdf", { // 标题
-        //     body: "内容：", // 显示内容
-        //     icon: "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
-        //     lang: 'zh-CN',
-        //     data: {}
-        // });
+           var n = new Notification("adfdfdf", {// 标题
+               body : "内容：" , // 显示内容
+               icon : "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
+               lang : 'zh-CN',
+               data : {}
+           });
         //    n.onclick = function(event,msg){
         //        event.preventDefault(); // prevent the browser from focusing the
         //        window.focus();
@@ -132,47 +116,6 @@ export default function socketCoreProcess(websocket, datas) {
         });
     }
 
-    function reload1004(data) {
-        console.log(data.data);
-        if (!Cnbi.isEmpty(data.data)) {
-            let receive = data.data.user.id;
-            let local = JSON.parse(localStorage.database).user.id
-            if (receive === local) {
-                console.log("传来的ID和本地id一样,强制退到登录界面");
-                showMessage(data)
-            }
-        } else {
-            showMessage(data)
-        }
-
-    }
-
-    function reload(data) {
-        console.log(data.data);
-        if (!Cnbi.isEmpty(data.data)) {
-            let receive = data.data.user.id;
-            let local = JSON.parse(localStorage.database).user.id
-            if (receive === local) {
-                console.log("传来的ID和本地id一样,啥也不做");
-            }
-        } else {
-            showMessage(data)
-        }
-
-    }
-
-    function showMessage(data) {
-        MessageBox.confirm(data.msg, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }).then(() => {
-            // 以后要改为自动登录
-            router.push("/login");
-        }).catch(() => {
-            router.push("/login");
-        })
-    }
 
     // debugger;
     if (isArray(datas)) {
