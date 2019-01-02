@@ -3,7 +3,7 @@ const prame = {
     command: {
       year: new Date().getFullYear(),
       module_api: 0,
-      month: new Date().getMonth(),
+      month: new Date().getMonth() || 1,
       date: new Date().getDate(),
       // 单位转换
       conversion: {
