@@ -148,14 +148,13 @@ export default {
       if (item) {
         this.item = item;
       }
-      debugger
       let dd = this.item.options.datas;
       this.handleDataFormat(dd);
       this.receive.xAxis = dd.xAxis;
       this.receive.series = dd.series;
       //颜色的设置
       if(this.item.options.color){
-        this.receive.series[0].color = this.item.options.color;
+        this.receive.color = this.item.options.color;
 				
       }
       let me = this;
@@ -206,11 +205,9 @@ export default {
       
     },
     handleDataFormat (dd) {
-      debugger;
       //加一个y轴的对应
       if(dd && dd.series && dd.series.length > 0){
         dd.series.forEach(ele => {
-          debugger;
           if(ele.unit && ele.unit === "%"){
             ele.yAxisIndex = 1;
           }else {

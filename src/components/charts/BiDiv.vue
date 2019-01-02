@@ -1,7 +1,12 @@
 <template>
   <div class="bidiv">
       <span class="textStyle">
-          {{ text }}
+          <p>
+              {{ titleText }}
+          </p>
+          <p>
+            {{ text }}
+          </p>
       </span>
   </div>
 </template>
@@ -13,7 +18,8 @@ export default {
 
   data() {
     return {
-      text: ""
+      text: "",
+      titleText: ""
     };
   },
   created() {
@@ -27,6 +33,9 @@ export default {
         }
         let title = this.item.text;
         if(title){
+            this.titleText = title;
+            this.text = "此期间无数据！";
+        }else{
             this.text = "此期间无数据！";
         }
     }
@@ -44,7 +53,7 @@ export default {
         font-size: 20px;
         font-weight: bold;
         text-align: center;
-        line-height: 295px;
+        line-height: 100px;
         font-family: 楷体;
     }
 </style>

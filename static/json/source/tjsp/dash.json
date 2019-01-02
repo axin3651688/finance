@@ -330,8 +330,9 @@
 						   "unit":"万元"
 					   }
 				   ]
+			   },
+			   "color":['#1FE5BD','#A5AEFF','#26BAEE','#E15F09']
 					
-			   }
 		   }
 		}
 		
@@ -450,8 +451,9 @@
 						   "unit":"万元"
 					   }
 					]
+				},
+			   "color":['#1FE5BD','#A5AEFF','#26BAEE','#E15F09']
 					
-				}
 			}
 		}
 		
@@ -578,8 +580,8 @@
 						   "unit":"万元"
 					   }
 					]
-					
-				}
+				},
+			   "color":['#1FE5BD','#A5AEFF','#26BAEE','#E15F09']
 			}
 		}
 		
@@ -691,7 +693,7 @@
 					]
 					
 				},
-				"color":['#cc9ef7','#63bce8','#d48265','#d35f5f']
+				"color":['#26BAEE','#E15F09','#1BCDE1','#08B788']
 			}
 		}
 		
@@ -863,7 +865,8 @@
 					}
 					]
 					
-				}
+				},
+			   "color":['#26BAEE','#1875F0']
 			}
 		},
 		   {
@@ -977,7 +980,7 @@
 					 "trigger": "item",
 					 "formatter": "{b} : {c} ({d}%)"
 				   },
-				   "color":['#75c6ee','#f66f1e'],
+				   "color":['#1875F0','#1CD1A1'],
 				   "series": [
 					   {
 						   "name": "",
@@ -1113,7 +1116,7 @@
 					 "trigger": "item",
 					 "formatter": "{b} : {c} ({d}%)"
 				   },
-				   "color":['#75c6ee','#f66f1e'],
+				   "color":['#1875F0','#1CD1A1'],
 				   "series": [
 					   {
 						   "name": "",
