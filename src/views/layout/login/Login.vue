@@ -125,10 +125,10 @@ export default {
                 //this.initSocket(token);
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
-                data.company.id === 121
-                  ? router.push("/tjsp/module")
-                  : // router.push("/message");
-                    router.push("/main");
+                router.push("/main");
+                // data.company.id === 121
+                //   ? router.push("/tjsp/module")
+                //   : // router.push("/message");
               } else {
                 this.loginUser.usename = "";
                 this.loginUser.password = "";

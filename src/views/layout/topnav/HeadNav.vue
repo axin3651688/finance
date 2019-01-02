@@ -6,6 +6,7 @@
       class="hamburger-container"
     />
     <div class="topcontent">
+      <el-button type="primary" @click="send">发消息</el-button>
       <span @click="showDilog" v-if="showDims.company">
         <i class="el-icon-search iconclass"></i>
         <el-button type="text" class="underline">{{companyName}}</el-button>
@@ -290,6 +291,52 @@ export default {
     },
     sayhidden() {
       this.isShow = true;
+    },
+    send() {
+      debugger;
+      if (window.Notification) {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("safari") != -1) {
+          if (ua.indexOf("chrome") > -1) {
+            Notification.requestPermission().then(function(permission) {
+              if (permission == "granted") {
+                var notification = new Notification("桌面推送", {
+                  body: "这是我的第一条桌面推送",
+                  icon: "some/icon/url"
+                });
+
+                notification.onclick = function() {
+                  console.log("点击");
+                  notification.close();
+                };
+              } else {
+                Notification.requestPermission();
+                console.log("没有权限,用户拒绝:Notification");
+              }
+            });
+          } else {
+            // Safari
+            Notification.requestPermission(function(permission) {
+              if (permission == "granted") {
+                var notification = new Notification("桌面推送", {
+                  body: "这是我的第一条桌面推送",
+                  icon: "some/icon/url"
+                });
+
+                notification.onclick = function() {
+                  console.log("点击");
+                  notification.close();
+                };
+              } else {
+                Notification.requestPermission();
+                console.log("没有权限,用户拒绝:Notification");
+              }
+            });
+          }
+        }
+      } else {
+        console.log("不支持Notification");
+      }
     }
   }
 };
