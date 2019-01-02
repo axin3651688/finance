@@ -103,16 +103,16 @@ export default {
               // console.log(res);
               const data = res.data.data;
               // debugger;
-              if (!this.isEmpty(data.authorization)) {
-                console.log(this.loginUser);
-                const token = data.authorization;
+              const token = data.authorization;
+              if (!Cnbi.isEmpty(token)) {
+                // console.log(this.loginUser);
                 localStorage.setItem("authorization", token);
                 // 用户名记住,方便下次登录
                 localStorage.setItem("usename", this.loginUser.usename);
                 var obj = JSON.stringify(data); //转化为JSON字符串
                 localStorage.setItem("database", obj); //返回{"a":1,"b":2}
                 //    token存储到vuex中
-                store.dispatch("setIsAutnenticated", !this.isEmpty(token));
+                store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
                 store.dispatch("setUser", data);
                 // 把用户的状态更新到vuex
                 // alert(data.company.text);

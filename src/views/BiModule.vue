@@ -121,7 +121,7 @@ import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
-import { rowsOfChildrenContent,closeTabTaget } from "../utils/math";
+import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
 
 export default {
   name: "BiModule",
@@ -164,7 +164,7 @@ export default {
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
-    ...mapGetters(["year", "month", "company", "module_api","conversion"])
+    ...mapGetters(["year", "month", "company", "module_api", "conversion"])
   },
   watch: {
     module_api(newid) {
@@ -175,49 +175,60 @@ export default {
     },
 
     year(newyear) {
-      this.changeYearBefore(newyear,this);
+      this.changeYearBefore(newyear, this);
       this.updateView("year");
     },
 
     month(newmonth) {
-      this.changeMonthBefore(newmonth,this);
+      this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
     },
     company(newId) {
-      this.changeCompanyBefore(newId,this);
+      this.changeCompanyBefore(newId, this);
       console.log("改变", newId);
       this.updateView("company");
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
-    conversion(unit,older){
+    conversion(unit, older) {
       debugger;
-       let $cc = this.$refs.mychild,tempDatas = this.datas;
-       if(tempDatas.length > 0){
-          this.datas = Math.convertUnit(unit.id,tempDatas,this.config.columns || this.columns,older.id);
-       }
-       if ($cc) {
+      let $cc = this.$refs.mychild,
+        tempDatas = this.datas;
+      if (tempDatas.length > 0) {
+        this.datas = Math.convertUnit(
+          unit.id,
+          tempDatas,
+          this.config.columns || this.columns,
+          older.id
+        );
+      }
+      if ($cc) {
         let ii = 0;
         $cc.forEach(children => {
           let cItem = children.item;
           if (cItem) {
-               if(!children.hasConfig){
-                    children.$set(children.item, "datas",  this.datas);
-                    children.setItems(children.item, true);   
-               }else{
-                  let cc = cItem.datas;
-                  if(cc.length > 0){
-                    cc = Math.convertUnit(unit.id,cc,cItem.config.columns,older.id);
-                    children.$set(children.item, "datas", datas);
-                    children.setItems(children.item, true);   
-                  }
-               }
-               
+            if (!children.hasConfig) {
+              children.$set(children.item, "datas", this.datas);
+              children.setItems(children.item, true);
+            } else {
+              let cc = cItem.datas;
+              if (cc.length > 0) {
+                cc = Math.convertUnit(
+                  unit.id,
+                  cc,
+                  cItem.config.columns,
+                  older.id
+                );
+                children.$set(children.item, "datas", datas);
+                children.setItems(children.item, true);
+              }
+            }
+
             ii++;
           }
         });
       }
-  }
+    }
   },
 
   methods: {
@@ -319,7 +330,7 @@ export default {
       }
       //如果是非测试环境
       let cache = localStorage.module;
-      if (!this.isEmpty(cache)) {
+      if (!Cnbi.isEmpty(cache)) {
         this.loadModuleAfter(cache);
         return;
       }
@@ -455,7 +466,7 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
-      console.log(this.config)
+      console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
@@ -516,7 +527,7 @@ export default {
           if (children.item) {
             // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
-            console.log(cc)
+            console.log(cc);
             if (cc && children.hasConfig) {
             } else {
               //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
@@ -532,12 +543,12 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-       let params = this.$store.state.prame.command;
-       let unit = params.conversion;
-       debugger;
-       if(unit && unit.id> 1){
-            datas = Math.convertUnit(unit.id,datas,item.config.columns);
-       }
+      let params = this.$store.state.prame.command;
+      let unit = params.conversion;
+      debugger;
+      if (unit && unit.id > 1) {
+        datas = Math.convertUnit(unit.id, datas, item.config.columns);
+      }
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
@@ -564,7 +575,7 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
-     //  this.units(datas)
+      //  this.units(datas)
     },
     __queryDataAfter(datas) {
       //
@@ -611,15 +622,15 @@ export default {
      * @author szc 2018年12月28日 書於经邦软件公司
      * 切换公司、日期、关闭打开的tab页的操作。
      */
-    closeTabTaget (params,$vue) {
+    closeTabTaget(params, $vue) {
       let me = this;
       let tabs = $vue.items;
       let tabName = $vue.activeTabName;
       $vue.items = tabs.filter(tab => !tab.from);
-      if($vue.items&&$vue.items.length > 1){
-          $vue.activeTabName = $vue.items[0].text;
+      if ($vue.items && $vue.items.length > 1) {
+        $vue.activeTabName = $vue.items[0].text;
       } else {
-          $vue.activeTabName = "0";
+        $vue.activeTabName = "0";
       }
     }
   }
