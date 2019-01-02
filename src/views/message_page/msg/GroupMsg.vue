@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <h3 class="title">
-            <span>{{groupInfo.text}}</span>
+            <span class="title-text">{{groupInfo.text}}</span>
             <el-dropdown trigger="click" @command="handleCommand">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -571,9 +571,16 @@ export default {
           .title {
             font-size: 18px;
             color: $colorText1;
-
+            min-width: 220px;
             /deep/ .el-dropdown {
               cursor: pointer;
+            }
+            .title-text {
+              display: inline-block;
+              width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
 
@@ -590,6 +597,7 @@ export default {
         align-items: center;
 
         .group-member {
+          width: 58px;
           display: flex;
           align-items: center;
           margin-right: 30px;
@@ -629,13 +637,18 @@ export default {
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
       }
 
-      /deep/ .el-scrollbar__thumb {
-        background: $colorTheme;
+      /deep/ .el-scrollbar {
+
+        .el-scrollbar__thumb {
+          background: $colorTheme;
+        }
+
+        .el-scrollbar__wrap {
+          overflow-x: hidden;
+          padding-right: 40px;
+        }
       }
 
-      /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-      }
 
       /*background: #cccccc;*/
       .message-box {
@@ -785,6 +798,7 @@ export default {
     }
 
     .btn-group {
+      min-width: 136px;
       display: inline-block;
       $btnHeight: 24px;
       border-radius: $btnHeight / 2;

@@ -38,7 +38,7 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
       page: 1,
       receiverId: receiverId,
       senderId: senderId,
-      size: 10
+      size: 30
     }
   })
 }
