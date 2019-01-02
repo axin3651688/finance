@@ -1,4 +1,8 @@
 <template>
+<div>
+  <el-button-group  class="toolbar" >
+    <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+  </el-button-group>
   <el-table
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
@@ -14,6 +18,7 @@
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
     </el-tag>
   </el-table>
+</div>  
 </template>
  
 <script>

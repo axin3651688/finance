@@ -1,5 +1,5 @@
 <template>
-  <component v-if="flag" :is="item.xtype" :item.sync="item" ref="child"></component>
+  <component v-if="flag && item.show" :is="item.xtype" :item.sync="item" ref="child"></component>
   <!-- <bi-table v-if="flag && item.show && item.xtype == 'bi-table'" :item.sync="item" ref="child"></bi-table>
   <bi-text v-else-if="flag && item.show && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
   <chart v-else-if="flag && item.show && item.xtype == 'chart'" :item.sync="item" ref="child"></chart>
