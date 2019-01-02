@@ -73,8 +73,8 @@ export default {
               normal: {
                 color: function(params) {
                   var colorList = [
-                    "#75c6ee",
-                    "#75c6ee",
+                    "#1CD1A1",
+                    "#1875F0",
                     "rgb(25,46,94)",
                     "rgb(195,229,235)"
                   ];
