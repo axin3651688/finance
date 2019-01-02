@@ -153,7 +153,7 @@ module.exports = {
         // index: 'white.html', //白色启动页面
         open: false,
         host: '0.0.0.0',
-        port: 8080,
+        port: 8082,
         https: true,
         hotOnly: false,
         // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理
