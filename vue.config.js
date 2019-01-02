@@ -25,7 +25,7 @@ let proxyObj = { // 配置跨域
         // target: 'http://192.168.1.118:8005',
         //  target: 'http://192.168.1.139:8005',
         // target: 'http://192.168.1.139:8005',
-        target: 'http://192.168.1.118:8005',
+        target: 'https://192.168.1.118:8443',
         ws: true,
         changOrigin: true,
         pathRewrite: {
@@ -41,10 +41,21 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
+<<<<<<< HEAD
+        target: 'http://192.168.1.118:8081', //gjx
+        //  target: 'http://192.168.2.34:8081',
+        // target: 'http://192.168.1.138:8000',
+=======
         // target: 'http://192.168.1.118:8081', //gjx
+<<<<<<< HEAD
         //  target: 'http://192.168.2.12:8081',
         // target: 'http://192.168.1.138:8000',
         target: 'http://192.168.2.34:8081',
+>>>>>>> 6dd34bcc50cd817b3ebf07d484ee4cae3ae963a5
+=======
+        //  target: 'http://192.168.2.34:8081',
+        target: 'https://192.168.1.138:8001',
+>>>>>>> 35bb1c9ab558664d54a70b44c7f1f50c3bcb2dde
         // target: 'http://192.168.1.149:8000',
 
         ws: true,
@@ -154,8 +165,8 @@ module.exports = {
         // index: 'white.html', //白色启动页面
         open: false,
         host: '0.0.0.0',
-        port: 8080,
-        https: false,
+        port: 8082,
+        https: true,
         hotOnly: false,
         // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理
         proxy: proxyObj, // string | Object

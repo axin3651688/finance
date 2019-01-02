@@ -1,32 +1,8 @@
 <template>
   <component v-if="flag && item.show" :is="item.xtype" :item.sync="item" ref="child"></component>
-  <!-- <bi-table v-if="flag && item.show && item.xtype == 'bi-table'" :item.sync="item" ref="child"></bi-table>
-  <bi-text v-else-if="flag && item.show && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
-  <chart v-else-if="flag && item.show && item.xtype == 'chart'" :item.sync="item" ref="child"></chart>
-  <tree-grid
-    v-else-if="flag && item.show && item.xtype == 'tree-grid'"
-    :item.sync="item"
-    ref="child"
-  ></tree-grid>
-  <s-tree-grid
-    v-else-if="flag && item.show && item.xtype == 'stree-grid'"
-    :item.sync="item"
-    ref="child"
-  ></s-tree-grid>
-  <bi-flhz v-else-if="flag && item.show && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>-->
-  <!-- <bi-button v-else-if="flag && item.show && item.xtype == 'button'" :item.sync="item" ref="child"></bi-button> -->
 </template>
 
 <script>
-// import BiTable from "./BiTable";
-// import Chart from "./BiChart";
-// import BiText from "./BiText";
-// import TreeGrid from "./text/Treegrid.vue";
-// import STreeGrid from "./text/STreegrid.vue";
-// import BiFlhz from "./BiFlhz";
-// import BiButton from "./BiButton";
-// import ElCascader from "./text/ElCascader.vue";
-
 export default {
   name: "BiItem",
   props: ["item", "config", "datas"],

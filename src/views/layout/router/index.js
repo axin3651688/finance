@@ -173,6 +173,7 @@ router.beforeEach((to, from, next) => {
   if (!authorization) {
     authorization = localStorage.authorization ? true : false;
   }
+  // debugger;
   if (to.path == "/login") {
     next();
   } else {
