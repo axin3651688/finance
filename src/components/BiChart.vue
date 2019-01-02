@@ -1,14 +1,5 @@
 <template>
   <component :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
-  <!-- <bi-column v-if="item.options.type === 'column'" :item="item" class="bgwight"></bi-column>
-  <bi-gauge v-else-if="item.options.type === 'gauge'" :item="item" class="bgwight"></bi-gauge>
-  <bi-pie v-else-if="item.options.type === 'pie'" :item="item" class="bgwight"></bi-pie>
-  <bi-line v-else-if="item.options.type === 'line'" :item="item" class="bgwight"></bi-line>
-  <bi-radar v-else-if="item.options.type === 'radar'" :item="item" class="bgwight"></bi-radar>
-  <bi-bar v-else-if="item.options.type === 'bar'" :item="item" class="bgwight"></bi-bar>
-  <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
-  <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
-  <bi-advancechart v-else-if="item.options.type === 'advancechart'" :item="item" class="bgwight"></bi-advancechart>-->
 </template>
 <script>
 import { getConfigModelDatas } from "../utils/math";
@@ -61,12 +52,6 @@ export default {
     }
   },
   watch: {
-    // tempData(newName, oldName) {
-    //   console.log(newName);
-    //    this.item.options.datas = this.tempData;
-    //   console.log("111111");
-    // }
-
     item: {
       handler(newName, oldName) {
         console.log(1);
