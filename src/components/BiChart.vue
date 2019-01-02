@@ -1,15 +1,5 @@
 <template>
-  <component v-if="flag" :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
-  <component v-else :is="`bi-div`" :item="item" class="bgwight"></component>
-  <!-- <bi-column v-if="item.options.type === 'column'" :item="item" class="bgwight"></bi-column>
-  <bi-gauge v-else-if="item.options.type === 'gauge'" :item="item" class="bgwight"></bi-gauge>
-  <bi-pie v-else-if="item.options.type === 'pie'" :item="item" class="bgwight"></bi-pie>
-  <bi-line v-else-if="item.options.type === 'line'" :item="item" class="bgwight"></bi-line>
-  <bi-radar v-else-if="item.options.type === 'radar'" :item="item" class="bgwight"></bi-radar>
-  <bi-bar v-else-if="item.options.type === 'bar'" :item="item" class="bgwight"></bi-bar>
-  <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
-  <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
-  <bi-advancechart v-else-if="item.options.type === 'advancechart'" :item="item" class="bgwight"></bi-advancechart>-->
+  <component :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
 </template>
 <script>
 import { getConfigModelDatas } from "../utils/math";
@@ -61,14 +51,14 @@ export default {
         children[0].upData(this.item);
       }
       //判断为零时的渲染状态。
-      if(this.item.watchState){
+      if (this.item.watchState) {
         this.setFlagState();
       }
     },
-    setFlagState () {
-      if(this.item.datas && this.item.datas.length > 0){
+    setFlagState() {
+      if (this.item.datas && this.item.datas.length > 0) {
         this.flag = true;
-      }else {
+      } else {
         this.flag = false;
       }
     }
@@ -79,7 +69,7 @@ export default {
     //    this.item.options.datas = this.tempData;
     //   console.log("111111");
     // }
-    flag: function(val){
+    flag: function(val) {
       return this.flag;
     },
     item: {

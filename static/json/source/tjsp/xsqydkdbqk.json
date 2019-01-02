@@ -33,7 +33,7 @@
               {
                 "id": "id",
                 "type": "string",
-                "text": "公司编码"
+                "text": "单位编码"
               },
               {
                 "id": "gsmc",

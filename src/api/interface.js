@@ -35,8 +35,13 @@ export function logout() {
  */
 export function getCompanyTree(id, dimName, type, pid) {
   console.log("调用公司树异步请求接口");
+  // return request({
+  //   url: '/get/cube/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
+  //   // url: '/tree/cube/find_dim2/company/0/1',
+  //   method: 'get',
+  // })
   return request({
-    url: '/get/cube/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
+    url: '/api/api/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
     // url: '/tree/cube/find_dim2/company/0/1',
     method: 'get',
   })
