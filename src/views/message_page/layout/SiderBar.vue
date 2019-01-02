@@ -136,8 +136,8 @@ export default {
   @import "@ms/index.scss";
 
   .SiderBar {
-    @include flex($direction: column);
     position: relative;
+    box-sizing: border-box;
     background: $colorBgSiderBar;
     width: $sizeSiderBarWidth;
     height: 100%;

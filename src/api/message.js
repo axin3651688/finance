@@ -151,8 +151,7 @@ export function HELP_GROUP_MSG(data) {
 }
 // 群组同意某人加群
 export function JOIN_GROUP(data) {
-  console.log('api JOIN_GROUP');
-  // debugger
+  debugger;
   return request({
     url: '/api/api/join_group',
     method: 'post',
