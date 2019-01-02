@@ -1,3 +1,4 @@
+<!--从element-ui的dialog改版过来的-->
 <template>
   <div class="SiderBar">
     <div class="siderbar-top">
@@ -5,30 +6,32 @@
         <div class="login-info" @click="showMyInfo=!showMyInfo">
           <img :src="user.user.avatar" :title="user.user.trueName">
         </div>
-        <transition name="el-fade-in-linear">
-          <my-dialog :value="showMyInfo" class="my-info-dialog">
-            <div class="top">
-              <div class="img-box">
-                <img :src="user.user.avatar" :title="user.user.trueName">
-              </div>
-              <div class="info">
-                <h3 class="info-title">mingzi
-                  <i class="icon icon-gender"></i>
-                </h3>
-                <p class="info-text">个性签名</p>
-              </div>
+        <em-dialog
+          class="my-info-dialog"
+          :visible.sync="showMyInfo"
+          :modal-append-to-body="false"
+        >
+          <div class="top">
+            <div class="img-box">
+              <img :src="user.user.avatar" :title="user.user.trueName">
             </div>
-            <ul class="middle">
-              <li v-for="(item, index) in 3" :key="index">
-                <i class="icon"></i>
-                出差中···
-              </li>
-            </ul>
-            <div class="bottom">
-              <my-btn>分享名片</my-btn>
+            <div class="info">
+              <h3 class="info-title">mingzi
+                <i class="icon icon-gender"></i>
+              </h3>
+              <p class="info-text">个性签名</p>
             </div>
-          </my-dialog>
-        </transition>
+          </div>
+          <ul class="middle">
+            <li v-for="(item, index) in 3" :key="index">
+              <i class="icon"></i>
+              出差中···
+            </li>
+          </ul>
+          <div class="bottom">
+            <my-btn>分享名片</my-btn>
+          </div>
+        </em-dialog>
       </div>
     </div>
     <div class="siderbar-middle">
@@ -89,13 +92,15 @@ export default {
   name: "SiderBar",
   data() {
     return {
+      testShow: true,
       dialogQuitVisible: false, // 是否显示退出提示弹窗
       showMyInfo: false // 是否显示我的（登录用户的信息）
     }
   },
   components: {
     MyBtn: () => import('@mc/MyBtn'),
-    MyDialog: () => import('@mc/MyDialog')
+    MyDialog: () => import('@mc/MyDialog'),
+    EmDialog: () => import('@mc/em_dialog')
   },
   computed: {
     ...mapGetters(['user'])
@@ -265,6 +270,7 @@ export default {
     top: 20px;
     left: 100%;
     border-radius: 8px;
+    background: #ffffff;
 
     .top {
       @include flex();

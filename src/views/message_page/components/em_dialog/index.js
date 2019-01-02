@@ -1,8 +1,8 @@
-import ElDialog from './src/component';
+import EmDialog from './components/EmDialog.vue';
 
 /* istanbul ignore next */
-ElDialog.install = function(Vue) {
-  Vue.component(ElDialog.name, ElDialog);
+EmDialog.install = function(Vue) {
+  Vue.component(EmDialog.name, EmDialog);
 };
 
-export default ElDialog;
+export default EmDialog;
