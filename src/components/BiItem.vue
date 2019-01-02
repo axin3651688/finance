@@ -52,13 +52,11 @@ export default {
     };
   },
   created() {
-    debugger;
     console.log(this.item);
     // debugger
     // console.info(this.item);
   },
   mounted() {
-    debugger;
     this.loadItems(this.item);
   },
   watch: {

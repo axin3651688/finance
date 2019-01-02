@@ -191,7 +191,6 @@ export default {
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
-      debugger;
       let $cc = this.$refs.mychild,
         tempDatas = this.datas;
       if (tempDatas.length > 0) {
@@ -545,7 +544,6 @@ export default {
     queryDataAfter(item, datas, $childVue) {
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
-      debugger;
       if (unit && unit.id > 1) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }
