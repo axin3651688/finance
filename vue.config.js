@@ -41,21 +41,20 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
-<<<<<<< HEAD
-        target: 'http://192.168.1.118:8081', //gjx
+
+        // target: 'http://192.168.1.118:8081', //gjx
         //  target: 'http://192.168.2.34:8081',
         // target: 'http://192.168.1.138:8000',
-=======
+
         // target: 'http://192.168.1.118:8081', //gjx
-<<<<<<< HEAD
+
         //  target: 'http://192.168.2.12:8081',
         // target: 'http://192.168.1.138:8000',
-        target: 'http://192.168.2.34:8081',
->>>>>>> 6dd34bcc50cd817b3ebf07d484ee4cae3ae963a5
-=======
-        //  target: 'http://192.168.2.34:8081',
-        target: 'https://192.168.1.138:8001',
->>>>>>> 35bb1c9ab558664d54a70b44c7f1f50c3bcb2dde
+        // target: 'http://192.168.2.34:8081',
+
+
+         target: 'http://192.168.2.34:8081',
+        // target: 'https://192.168.1.138:8001',
         // target: 'http://192.168.1.149:8000',
 
         ws: true,
