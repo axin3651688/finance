@@ -79,41 +79,6 @@ export default function socketCoreProcess(websocket, datas) {
         if (user) {
             who = "别人";
         }
-<<<<<<< HEAD
-        var title = title = "收到" + who + "的消息";
-        $notify.success({
-            title: title,
-            message: data.msg,
-            showClose: true,
-            position: "bottom-right"
-        });
-           var n = new Notification("adfdfdf", {// 标题
-               body : "内容：" , // 显示内容
-               icon : "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
-               lang : 'zh-CN',
-               data : {}
-           });
-        //    n.onclick = function(event,msg){
-        //        event.preventDefault(); // prevent the browser from focusing the
-        //        window.focus();
-        //        //Cnbi.Msg.alert("可传入回调函数执行哦，亲！",4);
-        //        // var $btn = $("#layui-layim-min").parent();// $btn.trigger("click");
-        //        n.close();
-        //    }
-        //    setTimeout(function() {n.close();}, 6000);// 两秒后关闭通知
-
-    }
-
-    let permission = allowNotification.permission;
-    if (permission == "denied") {
-        // debugger;
-        var notification = new window.Notification("这是一个通知撒:", {
-            dir: "auto",
-            lang: "hi",
-            tag: "testTag",
-            icon: "https://static.cnblogs.com/images/adminlogo.gif",
-            body: "通知content"
-=======
         var title = "收到消息";
         // $notify.success({
         //     title: title,
@@ -126,7 +91,6 @@ export default function socketCoreProcess(websocket, datas) {
             icon: "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
             lang: 'zh-CN',
             data: {}
->>>>>>> 35bb1c9ab558664d54a70b44c7f1f50c3bcb2dde
         });
         n.onclick = function (event, msg) {
             event.preventDefault(); // prevent the browser from focusing the
