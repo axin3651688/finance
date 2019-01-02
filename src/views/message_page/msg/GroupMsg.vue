@@ -313,7 +313,7 @@ export default {
           },
         };
         console.log('群消息发送的内容是：', this.sendText);
-        this.addMsgToWindow(this.sendText);
+        // this.addMsgToWindow(this.sendText); // todo:这里会受到服务器返回的类容，就不自己推到窗口了，有待优化
         this.sendText = '';
         debugger;
         socket.deliver(sendData);

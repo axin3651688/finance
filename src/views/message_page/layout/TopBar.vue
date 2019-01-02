@@ -1,7 +1,20 @@
 <template>
   <div class="TopBar">
     <div class="topbar-left">
-      <!--topbar-left-->
+      <div class="search-bar">
+        <el-input
+          placeholder="搜索"
+          >
+          <div slot="suffix" class="icon-zoom img-box">
+            <img src="@ma/icon/zoom.svg" alt="">
+          </div>
+        </el-input>
+        <div class="search-bar_right">
+          <div class="img-box">
+            <img src="@ma/icon/group_add.svg" alt="" class="btn-add">
+          </div>
+        </div>
+      </div>
     </div>
     <!--<div class="topbar-right" @dblclick="web_minWindows()">-->
     <div class="topbar-right">
@@ -80,8 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/variables.scss";
-  @import "@ms/layout.scss";
+  @import "@ms/index.scss";
 
   .TopBar {
     @include flex();
@@ -93,6 +105,37 @@ export default {
 
     .topbar-left {
       width: $sizeNavBarWidth;
+      .search-bar {
+        @include flex();
+        height: 100%;
+        padding: 0 20px 0 10px;
+        align-items: center;
+        /deep/ .el-input {
+          .el-input__inner {
+            height: $sizeInputHeight;
+            line-height: $sizeInputHeight;
+            background: $colorBgInput;
+            border: none;
+            border-radius: 6px;
+            &::placeholder {
+              color: #666666;
+            }
+          }
+          .img-box {
+            margin-right: 8px;
+            @include imgBox($width:20px,$height:100%)
+          }
+        }
+
+        .search-bar_right {
+          margin-left: 20px;
+          cursor: pointer;
+          .img-box {
+            //@include imgBox($width:30px,$height:30px);
+          }
+        }
+
+      }
     }
 
     .topbar-right {

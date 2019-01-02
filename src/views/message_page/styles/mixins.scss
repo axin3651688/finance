@@ -1,6 +1,11 @@
 @charset "UTF-8";
 @import "./variables.scss";
-@import "./layout.scss";
+
+@mixin flex($direction:row,$display:flex) {
+  display: $display;
+  flex-direction: $direction;
+  flex-wrap: nowrap;
+}
 
 @mixin myBtn($height:30px,$fontSize:14px,$color:#fff,$bgcolor:$colorTheme,$borderRadius:0,$padding:0 10px,$width:auto) {
   box-sizing: border-box;
@@ -27,7 +32,7 @@
   }
 }
 
-@mixin icon($width:24px,$height:24px){
+@mixin icon($width:24px,$height:24px) {
   width: $width;
   height: $height;
   overflow: hidden;

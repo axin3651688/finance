@@ -27,7 +27,14 @@
             </div>
             <div class="item-right">
               <div class="btns">
-                <el-button type="primary" size="small" class="my-btn my-btn-primary">同意</el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-primary"
+                  @click="clickAgree()"
+                >
+                  同意
+                </el-button>
                 <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
               </div>
             </div>

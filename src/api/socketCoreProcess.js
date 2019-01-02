@@ -41,7 +41,7 @@ export default function socketCoreProcess(websocket, datas) {
                 // 登录已失效，请重新登录
                 console.log(data);
                 console.log('socketCoreProcess: 1003+登录已失效，请重新登录');
-                reload(data)
+                reloadLogin(data)
                 break;
             case 1004:
                 // 你已在Windows登陆
@@ -161,6 +161,37 @@ export default function socketCoreProcess(websocket, datas) {
 
     }
 
+    function reloadLogin(data) {
+        console.log(data.data);
+        if (!Cnbi.isEmpty(data.data)) {
+            let receive = data.data.user.id;
+            let local = JSON.parse(localStorage.database).user.id
+            if (receive === local) {
+                console.log("传来的ID和本地id一样,啥也不做");
+            }
+        } else {
+            MessageBox.confirm(data.msg, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                // electron 退出处理
+                if (window.require) {
+                    var ipc = window.require('electron').ipcRenderer
+                }
+                if (window.require) {
+                    ipc.send('web_outLogin', '')
+                }
+                // 以后要改为自动登录
+                router.push("/login");
+
+            }).catch(() => {
+                router.push("/login");
+            })
+        }
+
+    }
+
     function showMessage(data) {
         MessageBox.confirm(data.msg, '提示', {
             confirmButtonText: '确定',
@@ -169,6 +200,8 @@ export default function socketCoreProcess(websocket, datas) {
         }).then(() => {
             // 以后要改为自动登录
             router.push("/login");
+
+
         }).catch(() => {
             router.push("/login");
         })

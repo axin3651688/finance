@@ -20,7 +20,8 @@
                     </div>
                   </el-badge>
                   <span class="title" v-if="item.miniType===1101">{{item.otherName}}</span>
-                  <span class="title" v-else>{{item.name}}</span>{{item.miniType}}
+                  <span class="title" v-else>{{item.name}}</span>
+                  <!--{{item.miniType}}-->
                   <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
                 </div>
                 <p v-if="item.content">
