@@ -48,6 +48,11 @@
 				},
 				"columns": [
 					{
+						"id": "wcl",
+						"type":"decimal",
+						"text": "预算完成率"
+					},
+					{
 						"id": "gsbm",
 						"type":"string",
 						"text": "公司编码"
@@ -106,11 +111,6 @@
 						"id": "cye",
 						"type":"decimal",
 						"text": "预算差异额"
-					},
-					{
-						"id": "wcl",
-						"type":"decimal",
-						"text": "预算完成率"
 					}
 				],
 				"rows": [
