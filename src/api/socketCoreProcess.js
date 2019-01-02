@@ -40,7 +40,7 @@ export default function socketCoreProcess(websocket, datas) {
         break;
       case 1003:
         // 登录已失效，请重新登录
-        debugger;
+        // debugger;
         // todo: 根据不同平台（web/客户端）跳到不同的登录页面
         console.log('socketCoreProcess: 1003+登录已失效，请重新登录', data);
         reloadLogin(data)

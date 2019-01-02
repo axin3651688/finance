@@ -93,6 +93,19 @@ export function CONTACT_INFO(userId, targetId) {
   })
 }
 
+// 查看个人资料，左边自己的详细信息
+export function LEFT_USER_INFO(userId, targetId) {
+  // debugger
+  return request({
+    url: '/api/api/left_user_info',
+    method: 'get',
+    params: {
+      userId: userId,
+      targetId: targetId
+    }
+  })
+}
+
 // /api/my_group_list
 // 我的群组列表 MY_GROUP_LIST
 export function MY_GROUP_LIST(userId) {
@@ -298,4 +311,9 @@ export function ALL_COMPANY_CONTACT_LIST(userId) {
       userId: userId
     }
   })
+}
+
+
+export function f() {
+
 }

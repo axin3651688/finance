@@ -6,32 +6,11 @@
         <div class="login-info" @click="showMyInfo=!showMyInfo">
           <img :src="user.user.avatar" :title="user.user.trueName">
         </div>
-        <em-dialog
-          class="my-info-dialog"
-          :visible.sync="showMyInfo"
-          :modal-append-to-body="false"
-        >
-          <div class="top">
-            <div class="img-box">
-              <img :src="user.user.avatar" :title="user.user.trueName">
-            </div>
-            <div class="info">
-              <h3 class="info-title">mingzi
-                <i class="icon icon-gender"></i>
-              </h3>
-              <p class="info-text">个性签名</p>
-            </div>
-          </div>
-          <ul class="middle">
-            <li v-for="(item, index) in 3" :key="index">
-              <i class="icon"></i>
-              出差中···
-            </li>
-          </ul>
-          <div class="bottom">
-            <my-btn>分享名片</my-btn>
-          </div>
-        </em-dialog>
+
+        <my-dialog :value="showMyInfo" class="my-info-dialog">
+          <user-info></user-info>
+        </my-dialog>
+
       </div>
     </div>
     <div class="siderbar-middle">
@@ -92,7 +71,6 @@ export default {
   name: "SiderBar",
   data() {
     return {
-      testShow: true,
       dialogQuitVisible: false, // 是否显示退出提示弹窗
       showMyInfo: false // 是否显示我的（登录用户的信息）
     }
@@ -100,7 +78,7 @@ export default {
   components: {
     MyBtn: () => import('@mc/MyBtn'),
     MyDialog: () => import('@mc/MyDialog'),
-    EmDialog: () => import('@mc/em_dialog')
+    UserInfo: () => import('@mc/user_info/UserInfo.vue')
   },
   computed: {
     ...mapGetters(['user'])
@@ -261,87 +239,14 @@ export default {
     }
   }
 
-  /deep/ .my-info-dialog {
-    color: #000;
-    width: 320px;
-    /*height: 400px;*/
+  .my-info-dialog {
+    width: $sizeNavBarWidth;
     z-index: 100;
     box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.3);
-    top: 20px;
+    top: 100%;
     left: 100%;
-    border-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
     background: #ffffff;
-
-    .top {
-      @include flex();
-      align-items: center;
-      padding: 30px 20px;
-      font-size: 14px;
-      color: $colorText2;
-
-      .img-box {
-        @include imgBox($width: 60px, $height: 60px, $borderRadius: 50%);
-        background: #eee;
-      }
-
-      .info {
-        margin-left: 20px;
-
-        .info-title {
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-
-          .icon {
-            width: 16px;
-            height: 16px;
-            overflow: hidden;
-            margin-left: 10px;
-            border-radius: 4px;
-            background: $colorTheme;
-          }
-
-          .icon-gender {
-            /*background: ;*/
-          }
-        }
-
-        .info-text {
-          margin-top: 10px;
-        }
-      }
-    }
-
-    .middle {
-      padding: 0 20px;
-      color: $colorText2;
-
-      .icon {
-        @include icon($width: 24px, $height: 24px);
-        background: $colorTheme;
-      }
-
-      .icon__state {
-      }
-
-      .icon__phone {
-      }
-
-      .iocn__email {
-      }
-
-      > li {
-        padding-left: 44px;
-      }
-    }
-
-    .bottom {
-      text-align: center;
-
-      .btn {
-        @include myBtn($borderRadius: 8px, $height: 36px, $width: 100px);
-        margin: 40px auto;
-      }
-    }
   }
 </style>

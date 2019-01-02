@@ -185,7 +185,7 @@ export default {
   data() {
     return {
       hdUrl: '',
-      oldGroupName:'',
+      oldGroupName: '',
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -264,7 +264,6 @@ export default {
       }
     },
 
-    // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value;
       if (newGroupName === this.groupInfo.text && !this.imgfd) {
@@ -476,7 +475,6 @@ export default {
       })
     },
 
-    // todo：解散群聊(ok)
     dissoluGroup() {
       // debugger;
       let params = {
@@ -502,14 +500,11 @@ export default {
       }).catch(err => {
         console.log('解散群聊异常：', err)
       })
-    }
-  },
-  mounted() {
-    this.getInfo();
-    this.getGroupMsgList();
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hidenFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -518,7 +513,17 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    }
+  },
+  mounted() {
+    this.getInfo();
+    this.getGroupMsgList();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hidenFaceIcon)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hidenFaceIcon)
   }
 }
 </script>
@@ -572,9 +577,11 @@ export default {
             font-size: 18px;
             color: $colorText1;
             min-width: 220px;
+
             /deep/ .el-dropdown {
               cursor: pointer;
             }
+
             .title-text {
               display: inline-block;
               width: 200px;

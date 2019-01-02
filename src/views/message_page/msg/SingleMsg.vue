@@ -254,15 +254,11 @@ export default {
         }).catch(err => {
         console.log('获取单聊信息catch：', err)
       });
-    }
-
-  },
-  mounted() {
-    // ajax请求获取单聊消息内容
-    this.findSingleMsg();
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hidenFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -271,7 +267,19 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    }
+
+  },
+  mounted() {
+    // ajax请求获取单聊消息内容
+    this.findSingleMsg();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hidenFaceIcon)
+
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hidenFaceIcon)
   }
 }
 </script>
