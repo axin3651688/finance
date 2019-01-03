@@ -3,8 +3,9 @@
       {
         "id":"0021",
         "text":"下属企业贷款担保情况表",
+        "showDims":["year","month","company","conversion"],
         "config":{
-            "sql":"SELECT A.DIM_COMPANY, CASE WHEN GROUPING(B.SNAME) =1 THEN '合计' ELSE B.SNAME END AS GSMC, CASE WHEN GROUPING(C.SNAME)=1 AND GROUPING(B.SNAME) =0 THEN B.SNAME||'小计' ELSE C.SNAME END AS YHMC, D.SNAME AS RHMC, SUM(NVL(A.FACT_A,0)) AS FACT_A, A.SSTARTDATE,A.SENDDATE, A.FACT_B,A.SREPAYDATE,E.SNAME ename, CASE WHEN A.STATUS ='1' THEN '新增'WHEN A.STATUS ='-1' THEN '减少' ELSE '不符合条件' END AS STATUS,F.SNAME fname,A.SNOTE FROM DW_FACTFINANCEDETAIL A LEFT JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY = B.SCODE LEFT JOIN DW_DIMBANK C ON A.DIM_BANK =C.SCODE LEFT JOIN DW_DIMFINANCE D ON A.DIM_FINANCE =D.SCODE LEFT JOIN(SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') F ON A.DIM_GUARANTEE=F.SCODE WHERE CISGUARANTEE ='1' AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY ROLLUP((A.DIM_COMPANY,B.SNAME),(C.SNAME, D.SNAME,A.SSTARTDATE, A.SENDDATE, A.FACT_B, A.SREPAYDATE, E.SNAME, A.STATUS, F.SNAME, A.SNOTE)) ",
+            "sql":"SELECT A.DIM_COMPANY id, CASE WHEN GROUPING(B.SNAME) =1 THEN '合计' ELSE B.SNAME END AS GSMC, CASE WHEN GROUPING(C.SNAME)=1 AND GROUPING(B.SNAME) =0 THEN B.SNAME||'小计' ELSE C.SNAME END AS YHMC, D.SNAME AS RHMC, SUM(NVL(A.FACT_A,0)) AS A, A.SSTARTDATE,A.SENDDATE, A.FACT_B b,A.SREPAYDATE,E.SNAME ename, CASE WHEN A.STATUS ='1' THEN '新增'WHEN A.STATUS ='-1' THEN '减少' ELSE '不符合条件' END AS STATUS,F.SNAME fname,A.SNOTE FROM DW_FACTFINANCEDETAIL A LEFT JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY = B.SCODE LEFT JOIN DW_DIMBANK C ON A.DIM_BANK =C.SCODE LEFT JOIN DW_DIMFINANCE D ON A.DIM_FINANCE =D.SCODE LEFT JOIN(SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') F ON A.DIM_GUARANTEE=F.SCODE WHERE CISGUARANTEE ='1' AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY ROLLUP((A.DIM_COMPANY,B.SNAME),(C.SNAME, D.SNAME,A.SSTARTDATE, A.SENDDATE, A.FACT_B, A.SREPAYDATE, E.SNAME, A.STATUS, F.SNAME, A.SNOTE)) ",
             "cube":{
               "subject":"0007",
               "cubeId":4
@@ -31,9 +32,9 @@
                 "text": "备注"
               },
               {
-                "id": "dim_company",
+                "id": "id",
                 "type": "string",
-                "text": "公司编码"
+                "text": "单位编码"
               },
               {
                 "id": "gsmc",
@@ -55,7 +56,7 @@
                     "width":"240px"
                 },
                 {
-                    "id":"fact_a",
+                    "id":"A",
                     "type":"decimal",
                     "text":"金额"
                 },
@@ -70,7 +71,7 @@
                 "text": "到期日期*"
               },
               {
-                "id": "fact_b",
+                "id": "B",
                 "type": "decimal",
                 "text": "利率（%）",
                 "unit":"%"
@@ -105,7 +106,32 @@
          {
           "xtype": "bi-table",
           "id":"xsqydkdbqk",
-          "text":"下属企业贷款担保情况表"//,
+          "text":"下属企业贷款担保情况表",
+          "toolbar":[
+            {
+               "id":"1",
+               "text":"刷新",
+               "xtype":"button",
+               "cellStyle":{
+                   "color":"black",
+                   "background-color":"#189271"
+               },
+               "handler":function(vue,btn){
+                   console.log(vue);
+               }
+           }, {
+               "id":"2",
+               "text":"导出",
+               "cellStyle":{
+                   "color":"black",
+                   "background-color":"#189271"
+               },
+               "handler":function(vue,btn){
+                   console.log(vue);
+               }
+           }
+           ]
+           //,
           // "groupConfig": { "idProperty": "dim_company","textProperty": "gsmc"},//可选
           // "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
           //     debugger;

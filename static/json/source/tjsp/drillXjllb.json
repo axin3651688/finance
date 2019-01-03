@@ -7,10 +7,11 @@
 	 "show":true,
     "items":[
         {
-			"xtype": "stree-grid",
+			"xtype": "STreeGrid",
 			
 			"id": "0002",
-			"text": "现金流量表二级",
+            "text": "现金流量表二级",
+            "showDims":["year","month","company","conversion"],
 			"weight": 24,
             "show":true,
             "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
@@ -48,9 +49,16 @@
 			
                  
 			"columns": [
+                
+                    {
+                        "id": "wcl",
+                        "type": "string",
+                        "text": "完成率",
+                        "unit":"%"
+                    },
 				{
 					"id": "scode",
-					"type": "number",
+					"type": "string",
 					"text": "公司编码"
 				},
 				{
@@ -100,12 +108,6 @@
                         "id": "cye",
                         "type": "number",
                         "text": "差异额"
-                    },
-                    {
-                        "id": "wcl",
-                        "type": "string",
-                        "text": "完成率",
-                        "unit":"%"
                     }
                 // ]
 				// }

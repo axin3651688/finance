@@ -8,7 +8,7 @@
       <div class="send-time">
         <span class="time">{{data.sendTime| formatMsgTime}}</span>
         <!--<div class="status" v-if="data.state !== 2"></div>-->
-        <div class="status">{{data.state}}</div>
+        <!--<div class="status">{{data.state}}</div>-->
       </div>
     </div>
     <div class="message-content">
@@ -55,7 +55,7 @@
         </video>
       </div>
       <!--1 默认解析表情-->
-      <div v-else="data.type === 1" v-html="parseEmotions(data.content)">
+      <div class="content-text" v-else="data.type === 1" v-html="parseEmotions(data.content)">
         <!--{{data.content | parseEmotions}}-->
       </div>
 
@@ -101,6 +101,7 @@ export default {
   @import "@ms/variables.scss";
 
   .message-box {
+    width: 100%;
     padding: 10px 20px;
     margin: 10px 40px 20px 0;
     background: #ffffff;
@@ -159,6 +160,11 @@ export default {
       font-weight: 400;
       line-height: 20px;
       color: rgba(0, 0, 0, 0.80);
+      .content-text {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .file-wrap {

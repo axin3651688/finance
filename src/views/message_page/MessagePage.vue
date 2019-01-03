@@ -22,7 +22,6 @@ export default {
     SiderBar: () => import('./layout/SiderBar')
   }
 };
-// todo: 限制窗口最小宽度1000px， 要配合electron 设置最小宽度
 </script>
 
 <style lang="scss" scoped>
