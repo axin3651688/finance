@@ -112,14 +112,14 @@
             </div>
           </div>
           <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
-            上传头像
-          </el-upload>
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          上传头像
+        </el-upload>
         </figure>
       </div>
       <div class="dialog-content">
@@ -503,7 +503,7 @@ export default {
     },
 
     // 当点击的不是表情，则隐藏表情弹框
-    hidenFaceIcon(e) {
+    hideFaceIcon(e) {
       // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
@@ -520,10 +520,10 @@ export default {
     this.getGroupMsgList();
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', this.hidenFaceIcon)
+    document.addEventListener('click', this.hideFaceIcon)
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.hidenFaceIcon)
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>

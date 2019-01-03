@@ -15,30 +15,38 @@
 
       <!--2图片-->
       <div v-if="data.type === 2">
-        <a :href="data.file.hdUrl" target="_blank">
-          <div class="img-wrap">
-            <div class="img-box">
-              <img :src="data.file.thumbUrl" :alt="data.content">
+        <!--2&ndash;&gt; {{data}}-->
+        <template v-if="data.file">
+          <a :href="data.file.hdUrl" target="_blank">
+            <div class="img-wrap">
+              <div class="img-box">
+                <img :src="data.file.thumbUrl" :alt="data.content">
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </template>
+        <span v-else>图片异常···</span>
       </div>
       <!--3文件-->
       <div v-else-if="data.type === 3">
-        <a :href="data.file.hdUrl" target="_blank">
-          <div class="file-wrap">
-            <!--{{data.file}}-->
-            <div class="left">
-              <div class="title">
-                <span class="text">{{data.file.text}}</span>
+        <!--3&#45;&#45;》 {{data}}-->
+        <template v-if="data.file">
+          <a :href="data.file.hdUrl" target="_blank">
+            <div class="file-wrap">
+              <!--{{data.file}}-->
+              <div class="left">
+                <div class="title">
+                  <span class="text">{{data.file.text+data.file.category}}</span>
+                </div>
+                <div class="size">{{data.file.size}}</div>
               </div>
-              <div class="size">{{data.file.size}}</div>
+              <div class="right">
+                <i class="icon el-icon-download"></i>
+              </div>
             </div>
-            <div class="right">
-              <i class="icon el-icon-download"></i>
-            </div>
-          </div>
-        </a>
+          </a>
+        </template>
+        <span v-else>文件异常···</span>
       </div>
       <!--4语音-->
       <div v-else-if="data.type === 4">
@@ -99,6 +107,10 @@ export default {
 </style>
 <style lang="scss" scoped>
   @import "@ms/variables.scss";
+
+  a {
+    text-decoration: none;
+  }
 
   .message-box {
     width: 100%;
