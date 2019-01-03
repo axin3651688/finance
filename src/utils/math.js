@@ -236,6 +236,10 @@
      if (config.type === 1) {//单值
          return getValue(config.value, datas, rows, cols);
      }
+     //如果没有配置行，则用查询的出来的行作为配置的行，不然柱状图会出现数据重复问题
+     if(rows.length == 0){
+        rows = datas;
+     }
      var configRows = getConfigRows(config.row, rows);
      //当是动态行，没有配制rows的时候，就把datas给rows
      if(configRows.length == 0){
