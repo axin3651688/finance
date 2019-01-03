@@ -197,7 +197,7 @@ export default {
       if (this.monthCount == 4) {
         this.months.push(i + "季度");
       } else if (this.monthCount >= 12) {
-        if (i < 13) {
+        if (i <= 13) {
           this.months.push(i + "月");
         } else if (i < 17) {
           this.months.push(this.monthCount + 1 - i + "季度");

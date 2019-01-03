@@ -1,22 +1,22 @@
 <template>
-
-<!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
+  <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
     v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-    >
-      <template slot-scope="scope">
-       <span
-          v-if="iconShow(0,scope.row) "
-          class="tree-ctrl"
-          v-bind="$attrs"
-          @click="toggleExpanded(scope.$index)" >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-      </template>
+  >
+    <template slot-scope="scope">
+      <span
+        v-if="iconShow(0,scope.row) "
+        class="tree-ctrl"
+        v-bind="$attrs"
+        @click="toggleExpanded(scope.$index)"
+      >
+        <i v-if="!scope.row._expanded" class="el-icon-plus"/>
+        <i v-else class="el-icon-minus"/>
+      </span>
+    </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
@@ -57,13 +57,18 @@
         <!-- <span v-if="scope.row.balance!=0">
             <el-button type="text">{{ scope.row[col.id] }}</el-button>
         </span>
-        <span v-else>{{ scope.row[col.id] }}</span> -->
+        <span v-else>{{ scope.row[col.id] }}</span>-->
       </el-tooltip>
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
-  <el-table-column v-else-if="col.type === 'decimal'"
-   :prop="col.id" :label="col.text"  :align="col.align|| 'center'" :width="col.width||150" >
+  <el-table-column
+    v-else-if="col.type === 'decimal'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'center'"
+    :width="col.width||150"
+  >
     <template slot-scope="scope">
       <el-tooltip
         class="item"
@@ -71,19 +76,31 @@
         :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
-        <span v-if="tableData.datas">{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
+        <span
+          v-if="tableData.datas"
+        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  date类型的数据-->
-  <el-table-column v-else-if="col.type === 'date'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
+  <el-table-column
+    v-else-if="col.type === 'date'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+  >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
-  <el-table-column v-else-if="col.type === 'select'" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
+  <el-table-column
+    v-else-if="col.type === 'select'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+  >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
         <span v-if="tableData.datas">--</span>
@@ -97,7 +114,7 @@
         <span>请定义列{{col.text}}的类型</span>
       </el-tooltip>
     </template>
-  </el-table-column> -->
+  </el-table-column>-->
 </template>
 <script>
 //import EventMixins from "../mixins/EventMixins";
@@ -116,63 +133,63 @@ export default {
   },
   methods: {
     // rowClass({ row, rowIndex }) {
-      
+
     //   return "text-align:center";
     // },
     __upData(item) {
-     // debugger;
-     // this.$set(this.tableData, "datas", null);
-     // this.$set(this.tableData, "datas", []);
-      if(item.datas.length == 0 ){
-         item.datas = null;
-          item.datas = [];
+      // debugger;
+      // this.$set(this.tableData, "datas", null);
+      // this.$set(this.tableData, "datas", []);
+      if (item.datas.length == 0) {
+        item.datas = null;
+        item.datas = [];
       }
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
-      
     },
     /**
      * 获取单元格数据
      */
     getCellValues(datas, col, scope, rows) {
-      let colId = col.id,row = scope.row;
+      let colId = col.id,
+        row = scope.row;
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
         return "--";
       }
-      if(col.subfix || col.subfix === 0 ) {
-        rowId = row["id"+col.subfix]; //并列行的后缀
-        colId = colId.replace(col.subfix,"");
+      if (col.subfix || col.subfix === 0) {
+        rowId = row["id" + col.subfix]; //并列行的后缀
+        colId = colId.replace(col.subfix, "");
         union = true;
-      //  debugger
+        //  debugger
       }
-     // debugger
-      if(!row[colId] && !union){
+      // debugger
+      if (!row[colId] && !union) {
         return "--";
       }
-      let value = 0 ; 
-      if(Array.isArray(datas) && datas.length == 0){
-         return "--";
+      let value = 0;
+      if (Array.isArray(datas) && datas.length == 0) {
+        return "--";
       }
-      if(rowId){
-         value = Math.getCellValue(datas, colId, rowId, rows);
-      }else if(datas.length >= scope.$index){
+      if (rowId) {
+        value = Math.getCellValue(datas, colId, rowId, rows);
+      } else if (datas.length >= scope.$index) {
         value = datas[scope.$index][colId];
-      }else{
-        console.error("人才搞的配制："+JSON.stringify(row));
+      } else {
+        console.error("人才搞的配制：" + JSON.stringify(row));
       }
       if (!value) {
         return "--";
       }
       // value = ((value - 0) / 10000).toLocaleString();
       // 千分位  保留两位小数
-       value = Math.decimalToLocalString(value);//((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+      value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
       return value;
     },
     //treeGrid function
-     showRow(row) {
+    showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
         : true;
@@ -184,8 +201,8 @@ export default {
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
       const record = this.tableData.datas[trIndex];
-      console.log(record)
-      
+      console.log(record);
+
       record._expanded = !record._expanded;
     },
     // 图标显示
@@ -197,20 +214,19 @@ export default {
     }
   },
   created() {
-   // debugger;
+    // debugger;
     //this.$set(this, "tableData", null);
   }
 };
 </script>
 <style lang="scss">
-.el-table__body{
+.el-table__body {
   // width: 6000px !important;
 }
-.el-table__header{
+.el-table__header {
   // table-layout:auto;
- 
 }
-.el-table__header-wrapper{
+.el-table__header-wrapper {
   // overflow-x: scroll;
 }
 .el-table thead {
@@ -242,9 +258,9 @@ tbody {
 // 合并表头align=right不起效,
 // 加下面样式 马军 2018/12/24 .el-table td,
 // .el-table td,
- .el-table th {
-   text-align: center;
- }
+.el-table th {
+  text-align: center;
+}
 </style>
 <style>
 /* .el-tooltip__popper.is-dark {
