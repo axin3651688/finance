@@ -9,7 +9,7 @@
         {
 			"xtype": "STreeGrid",
 			
-			"id": "0002",
+			"id": "0067",
             "text": "现金流量表二级",
             "showDims":["year","month","company","conversion"],
 			"weight": 24,
@@ -41,12 +41,7 @@
 					"max": 100000
 				},
                 "type": 1,
-                "generateVar":{
-                    "periodCount":2,
-                     "compareType":"-1&0",
-                     "varName":"rows"
-                 },
-			
+            
                  
 			"columns": [
                 
@@ -59,8 +54,7 @@
 				{
 					"id": "id",
 					"type": "string",
-                    "text": "公司编码",
-                    "isTree":true
+                    "text": "公司编码"
 				},
 				{
 					"id": "gsmc",
