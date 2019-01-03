@@ -136,10 +136,10 @@ export default {
 
     //   return "text-align:center";
     // },
-    upData(item) {
-      // debugger;
-      // this.$set(this.tableData, "datas", null);
-      // this.$set(this.tableData, "datas", []);
+   upData(item) {
+     debugger;
+     // this.$set(this.tableData, "datas", null);
+     // this.$set(this.tableData, "datas", []);
       // if(item.datas.length == 0 ){
       //     item.datas = null;
       //     item.datas = [];
