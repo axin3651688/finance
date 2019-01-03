@@ -30,13 +30,6 @@
     <div class="bottom">
       <div class="chat-tool">
         <div id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></div>
-
-        <!--<div class="tool-icon file-icon" @click="selectFile">-->
-        <!--<form action="">-->
-        <!--<input type="file" name="file" ref="selectFile">-->
-        <!--</form>-->
-        <!--</div>-->
-
         <el-upload
           class="avatar-uploader"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -85,55 +78,7 @@ import {
   FIND_SINGLE_MSG       // 查询单聊信息
 } from '~api/message.js';
 import emotionSprites from '@a/green/emotion_sprites.json';
-// 文件类型列表
-const FILE_TYPE = [
-  {
-    type: 2,
-    suffix: 'jpg'
-  },{
-    type: 2,
-    suffix: 'jpeg'
-  },{
-    type: 2,
-    suffix: 'png'
-  },{
-    type: 2,
-    suffix: 'gif'
-  },{
-    type: 2,
-    suffix: 'bmp'
-  },{
-    type: 2,
-    suffix: 'bmp'
-  },{
-    type: 4,
-    suffix: 'mp3'
-  },{
-    type: 4,
-    suffix: 'amr'
-  },{
-    type: 4,
-    suffix: 'aac'
-  },{
-    type: 4,
-    suffix: 'wav'
-  },{
-    type: 5,
-    suffix: 'mp4'
-  },{
-    type: 5,
-    suffix: 'avi'
-  },{
-    type: 5,
-    suffix: 'rm'
-  },{
-    type: 5,
-    suffix: 'rmvb'
-  },{
-    type: 5,
-    suffix: '3gp'
-  }
-];
+import FILE_TYPE from '@m_config/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'SingleMsg',
@@ -223,42 +168,10 @@ export default {
       }
     },
 
-    // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMessage() {
-
-      if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
-        let sendData = {
-          code: 1100, // 1100:单聊 1101:群聊
-          data: {
-            content: this.sendText.trim(),
-            receiverId: this.receiverId,
-            senderId: this.loginUserId, // 225:卢诚
-            type: 1,
-            // fileId: 0,
-            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
-            sendTime: 0,
-            seq: 0,
-          },
-        };
-        console.log('要发送的内容是：', sendData);
-        socket.deliver(sendData);
-        this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
-        this.sendText = ''; // 发送完后清空输入框
-      } else {
-        this.sendText = '';
-        this.$message({
-          type: 'warning',
-          message: '发送内容不能为空',
-          showClose: true
-        });
-      }
-
-    },
-
-    // 发送文件，现在独立处理，需改善
+    // 发送消息
     handleSendMsg(fileData) {
-      console.log('要发送的文件：', fileData);
       debugger;
+      console.log('要发送的文件：', fileData);
       let pushData = {
         type: 1,
         data: this.sendText
@@ -277,15 +190,16 @@ export default {
         },
       };
 
-      if (fileData) {
+      if (fileData) { // 如果是发文件，设置文件type，和文件的data
         sendData.data.content = fileData.text;
         sendData.data.fileId = fileData.id;
         for (let item of FILE_TYPE) {
+          debugger;
           console.log(item);
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type;
-            pushData.type =item.type;
-            pushData.data =fileData;
+            pushData.type = item.type;
+            pushData.data = fileData;
             break
           } else {
             sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
@@ -294,9 +208,16 @@ export default {
       }
 
       console.log('要发送的内容是：', sendData);
-      debugger;
+      if (!sendData.data.content) {
+        this.sendText = '';
+        this.$message({
+          type: 'warning',
+          message: '发送内容不能为空',
+          showClose: true
+        });
+        return;
+      }
       socket.deliver(sendData);
-
       this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
@@ -399,6 +320,7 @@ export default {
 
   },
   mounted() {
+    console.log('文件类型：', FILE_TYPE);
     // ajax请求获取单聊消息内容
     this.findSingleMsg();
 

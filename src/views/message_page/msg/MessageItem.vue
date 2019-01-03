@@ -109,6 +109,7 @@ export default {
   @import "@ms/variables.scss";
 
   a {
+    display: inline-block;
     text-decoration: none;
   }
 
