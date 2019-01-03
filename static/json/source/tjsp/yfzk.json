@@ -1,6 +1,6 @@
 {
     "id":"66602",
-    "text":"",
+    "text":"1333165",
     "layout":{
         "xtype":"tab"
     },
@@ -199,7 +199,7 @@
                         },
                         {
                             "text": "公司名称",
-                            "width":"350",
+                            "width":"250",
                             "type":"string",
                             "id": "gsmc"
                         },

@@ -9,7 +9,7 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar"/>
+                <img :src="friend.avatar" v-avatar="friend.trueName"/>
               </div>
               <div class="info">
                 <h3>{{friend.trueName}}</h3>
@@ -30,14 +30,14 @@
         <ul>
           <li v-for="friend in addFromFriendsInstance.addList" :key="friend.id">
             <div class="img-box">
-              <img :src="friend.avatar" alt="">
+              <img :src="friend.avatar" v-avatar="friend.trueName">
               <div class="close-cover" @click="addFromFriendsInstance.changeFriendState(friend)"></div>
             </div>
             <p class="info">{{friend.trueName}}</p>
           </li>
         </ul>
       </div>
-      <el-button type="primary" size="medium" class="my-btn">添 加</el-button>
+      <el-button type="primary" size="medium" class="my-btn" @click="commitAddMembers">添 加</el-button>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import {
+  SEND_GROUP_INVITE_MSG, // 拉人进群
   requestMyfriends,
   CONTACT_INFO
 } from '~api/message.js'
@@ -73,15 +74,12 @@ class AddFromFriends {
     friend.changeCheckState()
   }
 
-  moveToAddList(friend) {
-    friend.changeCheckState();
-    this.addList.push(friend)
-  }
-
-  removeFromAddList(friend) {
-    let index = this.addList.indexOf(friend);
-    this.addList.splice(index, 1);
-    friend.changeCheckState();
+  // 清空addList,同事列表内的成员的激活状态也要取消
+  clearAddList() {
+    this.addList.forEach(user => {
+      user.changeCheckState()
+    });
+    this.addList = []
   }
 }
 
@@ -107,6 +105,7 @@ class Friend {
 
 export default {
   name: 'AddFromFriends',
+  props: ['groupId'],
   data() {
     return {
       friendList: [],
@@ -132,9 +131,7 @@ export default {
   },
   methods: {
     getFriendList() {
-      debugger;
-      // let userId = this.user.user.id;
-      // alert(params.type)
+      // debugger;
       requestMyfriends(this.loginUserId).then(res => {
         console.log('获取我的好友列表-->>', res.data);
         if (res.data.code === 200) {
@@ -157,6 +154,37 @@ export default {
         newList.push(friendInstance)
       });
       return newList
+    },
+
+    // 提交添加的群成员
+    commitAddMembers() {
+      let targets = [];
+      this.addFromFriendsInstance.addList.forEach(item => {
+        targets.push(item.id)
+      });
+      let postData = {
+        groupId: this.groupId,
+        targets: targets.join(','),
+        userId: this.loginUserId
+      };
+      console.log('添加群成员postData：', postData);
+      SEND_GROUP_INVITE_MSG(postData)
+        .then(res => {
+          console.log('添加群成员res:', res);
+          this.$message({
+            type: 'success',
+            message: '已经成功发出邀请！',
+            showClose: true
+          });
+          // 清除添加列表，关闭窗口
+          this.addFromFriendsInstance.clearAddList();
+          debugger;
+        })
+        .catch(err => {
+          console.log('添加群成员err:', err)
+        });
+      console.log('添加群成员到', this.groupId, this.addFromFriendsInstance.addList)
+
     }
   },
   mounted() {
@@ -178,6 +206,7 @@ export default {
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }
+
     flex: .5;
     height: 100%;
     border-right: 1px solid $colorBorder2;

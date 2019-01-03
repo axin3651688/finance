@@ -68,11 +68,20 @@
     <div class="bottom">
       <div class="chat-tool">
         <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
-        <span class="tool-icon file-icon" @click="selectFile">
+        <div class="tool-icon file-icon">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :before-upload="beforeFileUpload"
+          >
+            <div class="tool-icon file-icon">
               <form action="">
-                  <input type="file" name="file" ref="selectFile">
+                <input type="file" name="file" ref="selectFile">
               </form>
-          </span>
+            </div>
+          </el-upload>
+        </div>
         <span class="tool-icon link-icon"></span>
         <transition name="el-zoom-in-bottom">
           <div v-show="showFacePop" class="face-pop">
@@ -92,7 +101,7 @@
                   placeholder="请输入文字，按enter建发送信息"
                   v-model="sendText"
                   ref="textarea"
-                  @keyup.enter="handleSendMessage"
+                  @keyup.enter="handleSendMsg()"
         ></textarea>
       </div>
     </div>
@@ -175,6 +184,7 @@ import {
   DISSOLU_GROUP,
   UPLOAD_FILE
 } from '~api/message.js';
+import FILE_TYPE from '@m_config/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'GroupMsg',
@@ -184,8 +194,9 @@ export default {
   },
   data() {
     return {
-      hdUrl: '',
-      oldGroupName: '',
+      fileData: null,                       // 上传文件成功后返回的文件信息
+      hdUrl: '', // 群头像
+      oldGroupName: '', // 修改前的群名
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -238,6 +249,8 @@ export default {
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
+
+    // 上传群头像文件
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -251,7 +264,6 @@ export default {
       this.submitUpload(fd);
       return true
     },
-
     submitUpload(fd) {
       let _this = this;
       if (fd) {
@@ -264,6 +276,30 @@ export default {
       }
     },
 
+    // 群聊天文件上传
+    beforeFileUpload(file) {
+      console.log(file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.submitFileUpload(fd);
+      return true
+    },
+    submitFileUpload(fd) {
+      let _this = this;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传群头像res', res);
+          if (res.data.code === 200) {
+            _this.fileData = res.data.data;
+            this.handleSendMsg(res.data.data)
+          }
+        });
+      }
+    },
+
+    // 群设置
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value;
       if (newGroupName === this.groupInfo.text && !this.imgfd) {
@@ -298,6 +334,58 @@ export default {
     },
 
     // 发送聊天内容,发送完一条消息后要清空输入框
+    handleSendMsg(fileData) {
+      debugger;
+      console.log('要发送的内容是：', this.sendText);
+      let pushData = {
+        type: 1,
+        data: this.sendText
+      };
+      let sendData = {
+        code: 1101, // 1100:单聊 1101:群聊
+        data: {
+          content: this.sendText.trim(),
+          senderId: this.loginUserId,
+          receiverId: this.groupId,
+          type: 1,
+          fileId: null,
+          id: 'cnbift' + new Date().getTime() + new Date().getTime(),
+          sendTime: new Date().getTime(),
+        },
+      };
+
+      if (fileData) { // 如果是发文件，设置文件type，和文件的data
+        sendData.data.content = fileData.text;
+        sendData.data.fileId = fileData.id;
+        for (let item of FILE_TYPE) {
+          debugger;
+          console.log(item);
+          if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
+            sendData.data.type = item.type;
+            pushData.type = item.type;
+            pushData.data = fileData;
+            break
+          } else {
+            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+          }
+        }
+      }
+
+      console.log('要发送的内容是：', sendData);
+      if (!sendData.data.content) {
+        this.sendText = '';
+        this.$message({
+          type: 'warning',
+          message: '发送内容不能为空',
+          showClose: true
+        });
+        return;
+      }
+      socket.deliver(sendData);
+      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
+    },
+
+    // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMessage() {
       console.log('要发送的内容是：', this.sendText);
       if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
@@ -311,19 +399,11 @@ export default {
             type: 1
           },
         };
-        console.log('群消息发送的内容是：', this.sendText);
+        console.log('群消息发送的内容是：', sendData);
         // this.addMsgToWindow(this.sendText); // todo:这里会受到服务器返回的类容，就不自己推到窗口了，有待优化
         this.sendText = '';
         debugger;
         socket.deliver(sendData);
-
-        // sendMsg(sendData).then(res => {
-        //   console.log('发送群消息返回数据res', res);
-        //   debugger;
-        // }).catch(err => {
-        //   console.log('发送群消息返回数据err', err);
-        //   debugger;
-        // })
 
       } else {
         this.sendText = '';
@@ -336,13 +416,24 @@ export default {
     },
 
     // 把发送的内容显示到聊天窗口
-    addMsgToWindow(sendText) {
+    addMsgToWindow(pushData) {
       let data = {
         avatar: this.user.user.avatar,
-        content: sendText,
+        content: '',
         name: this.user.user.trueName,
-        sendTime: new Date().getTime()
+        sendTime: new Date().getTime(),
+        type: 1
       };
+      if (pushData.type === 1) {
+        data.content = pushData.data;
+      } else {
+        data.content = pushData.data.text;
+        data.file = pushData.data;
+        data.type = pushData.type
+      }
+
+      console.log('要添加到群聊天窗口的数据是：', data);
+      debugger;
       this.groupMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
@@ -356,7 +447,6 @@ export default {
       console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
-
 
     // 验证当前登录用户是不是群管理员，如果是群管理员则解散群组
     isGroupOwner() {
@@ -405,10 +495,6 @@ export default {
           break
         }
       }
-    },
-
-    // 选择上传文件，这里是上传群组头像
-    selectFile() {
     },
 
     // 群id查询群信息
@@ -503,7 +589,7 @@ export default {
     },
 
     // 当点击的不是表情，则隐藏表情弹框
-    hidenFaceIcon(e) {
+    hideFaceIcon(e) {
       // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
@@ -516,14 +602,15 @@ export default {
     }
   },
   mounted() {
+    console.log('文件类型：', FILE_TYPE);
     this.getInfo();
     this.getGroupMsgList();
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', this.hidenFaceIcon)
+    document.addEventListener('click', this.hideFaceIcon)
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.hidenFaceIcon)
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>
