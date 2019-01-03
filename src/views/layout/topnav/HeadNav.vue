@@ -117,7 +117,8 @@
       :modal-append-to-body="false"
     >
       <div class="img-box">
-        <img src="../../../assets/infoshow.png">
+        <!-- oginpic   ../../../assets/infoshow.png -->
+        <img :src="user.company.id === 121 ? '../../../assets/oginpic.png' : ' ../../../assets/infoshow.png'">
       </div>
       <el-row class="row-bg">
         <div class="user">
