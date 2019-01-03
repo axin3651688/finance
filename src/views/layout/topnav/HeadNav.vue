@@ -118,7 +118,7 @@
     >
       <div class="img-box">
         <!-- <img src="../../../assets/infoshow.png"> -->
-        <img src="../../../assets/123.png"> <!-- zdk 加的 -->
+        <img src="../../../assets/tjsp_info.png"> <!-- zdk 加的 -->
       </div>
       <el-row class="row-bg">
         <div class="user">
