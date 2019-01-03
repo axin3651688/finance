@@ -8,7 +8,7 @@
       <div class="send-time">
         <span class="time">{{data.sendTime| formatMsgTime}}</span>
         <!--<div class="status" v-if="data.state !== 2"></div>-->
-        <div class="status">{{data.state}}</div>
+        <!--<div class="status">{{data.state}}</div>-->
       </div>
     </div>
     <div class="message-content">
