@@ -310,7 +310,13 @@ listeners:[
         B:120//累计数
         sntq:120//上年同数，
         dimName://0001=>itempoint/0002=>itemperiod/1016=>indicator
-      }],
+      },
+      {  "text": "公司编码",
+        "type":"string",
+        "id": "ID",
+        "isTree":true //isTree设置是true 
+          }
+      ],
     gauge:[
         {
             A:100,  //inds

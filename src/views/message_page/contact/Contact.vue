@@ -48,8 +48,8 @@ export default {
   },
   data() {
     return {
-      which_to_show: 'ContactsFriends',
-      activeName: 'ContactsFriends'
+      which_to_show: 'ContactsTeams',
+      activeName: 'ContactsTeams'
     };
   },
   methods: {

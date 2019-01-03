@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <h3 class="title">
-            <span>{{groupInfo.text}}</span>
+            <span class="title-text">{{groupInfo.text}}</span>
             <el-dropdown trigger="click" @command="handleCommand">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -185,7 +185,7 @@ export default {
   data() {
     return {
       hdUrl: '',
-      oldGroupName:'',
+      oldGroupName: '',
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
@@ -212,6 +212,9 @@ export default {
     },
     newServerMsg() { // 服务器推送的消息
       return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
     }
   },
   watch: {
@@ -225,6 +228,12 @@ export default {
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
         this.chatWindowScrollToBottom();
       });
+    },
+    serverAck(val) {
+      console.log('服务器ACK：', val);
+      debugger;
+      socket.send(JSON.stringify(val));
+      debugger;
     }
   },
   methods: {
@@ -255,7 +264,6 @@ export default {
       }
     },
 
-    // todo 3设置群资料,修改图片需要先上传头像
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value;
       if (newGroupName === this.groupInfo.text && !this.imgfd) {
@@ -298,22 +306,25 @@ export default {
           data: {
             content: this.sendText,
             senderId: this.loginUserId,
-            groupId: this.groupId,
-            // receiverId: this.groupId,
+            receiverId: this.groupId,
+            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
             type: 1
           },
-          device: '868938033321615'
         };
-        console.log('要发送的内容是：', this.sendText);
-        this.addMsgToWindow(this.sendText);
+        console.log('群消息发送的内容是：', this.sendText);
+        // this.addMsgToWindow(this.sendText); // todo:这里会受到服务器返回的类容，就不自己推到窗口了，有待优化
         this.sendText = '';
-        sendMsg(sendData).then(res => {
-          console.log('发送群消息返回数据res', res);
-          debugger;
-        }).catch(err => {
-          console.log('发送群消息返回数据err', err);
-          debugger;
-        })
+        debugger;
+        socket.deliver(sendData);
+
+        // sendMsg(sendData).then(res => {
+        //   console.log('发送群消息返回数据res', res);
+        //   debugger;
+        // }).catch(err => {
+        //   console.log('发送群消息返回数据err', err);
+        //   debugger;
+        // })
+
       } else {
         this.sendText = '';
         this.$message({
@@ -464,7 +475,6 @@ export default {
       })
     },
 
-    // todo：解散群聊(ok)
     dissoluGroup() {
       // debugger;
       let params = {
@@ -490,14 +500,11 @@ export default {
       }).catch(err => {
         console.log('解散群聊异常：', err)
       })
-    }
-  },
-  mounted() {
-    this.getInfo();
-    this.getGroupMsgList();
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hidenFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -506,7 +513,17 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    }
+  },
+  mounted() {
+    this.getInfo();
+    this.getGroupMsgList();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hidenFaceIcon)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hidenFaceIcon)
   }
 }
 </script>
@@ -559,9 +576,18 @@ export default {
           .title {
             font-size: 18px;
             color: $colorText1;
+            min-width: 220px;
 
             /deep/ .el-dropdown {
               cursor: pointer;
+            }
+
+            .title-text {
+              display: inline-block;
+              width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
 
@@ -578,6 +604,7 @@ export default {
         align-items: center;
 
         .group-member {
+          width: 58px;
           display: flex;
           align-items: center;
           margin-right: 30px;
@@ -617,13 +644,18 @@ export default {
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
       }
 
-      /deep/ .el-scrollbar__thumb {
-        background: $colorTheme;
+      /deep/ .el-scrollbar {
+
+        .el-scrollbar__thumb {
+          background: $colorTheme;
+        }
+
+        .el-scrollbar__wrap {
+          overflow-x: hidden;
+          padding-right: 40px;
+        }
       }
 
-      /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-      }
 
       /*background: #cccccc;*/
       .message-box {
@@ -773,6 +805,7 @@ export default {
     }
 
     .btn-group {
+      min-width: 136px;
       display: inline-block;
       $btnHeight: 24px;
       border-radius: $btnHeight / 2;

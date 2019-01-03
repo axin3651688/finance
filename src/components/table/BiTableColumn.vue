@@ -1,8 +1,8 @@
 <template>
 
-<!-- 公司编码 这个是可变的 -->
+<!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.text == '公司编码'"
+    v-if="col.isTree  && tableData.xtype==='tree-grid'"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -120,7 +120,7 @@ export default {
     //   return "text-align:center";
     // },
     __upData(item) {
-      debugger;
+     // debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
       if(item.datas.length == 0 ){
@@ -147,7 +147,7 @@ export default {
         union = true;
       //  debugger
       }
-      debugger
+     // debugger
       if(!row[colId] && !union){
         return "--";
       }

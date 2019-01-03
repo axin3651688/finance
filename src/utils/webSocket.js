@@ -56,7 +56,6 @@ export default function webSocket(data) {
 
     websocket.onclose = function (evnt) {
         // 服务断开连接，正在重连
-        // todo：加一个变量判断socket链接状态
         socketIsClosed = true;
         console.log("  websocket.onclose  ");
         closeShow();

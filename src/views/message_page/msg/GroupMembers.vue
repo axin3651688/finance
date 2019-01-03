@@ -54,7 +54,7 @@
               我的团队
               <i class="splide-line">分隔竖线</i>
             </template>
-            <add-from-groups></add-from-groups>
+            <add-from-groups :groupId="groupId"></add-from-groups>
           </el-tab-pane>
           <el-tab-pane label="我的好友" name="friends">
             <add-from-friends></add-from-friends>
@@ -71,7 +71,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import AddFromFriends from './AddFromFriends' // 从我的好友中添加群成员
-// import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
+import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
 import {
   GROUP_INFO,
   DEL_GROUP_USER
@@ -86,10 +86,10 @@ export default {
       showAddMember: false, // 是否显示添加群成员弹窗
     }
   },
-  // components: {
-  //   AddFromGroups,
-  //   AddFromFriends
-  // },
+  components: {
+    AddFromGroups,
+    AddFromFriends
+  },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     senderId() {
@@ -132,7 +132,6 @@ export default {
       })
     },
 
-    // todo：4移除群成员(ok)
     handleCommand(user) {
       // debugger;
       let msg = `确定移除群成员 "${user.trueName}" ?`;
@@ -152,7 +151,8 @@ export default {
 
     // 移除群成员
     delGroupUser(removeMember) {
-      // debugger;
+      debugger;
+      // return;
       let params = {
         groupId: this.groupId,
         remark: removeMember.id.toString(), //  '1,2,3' 传递多个id组成的字符串为批量操作
@@ -162,8 +162,8 @@ export default {
         console.log('移除群成员res:', res);
         if (res.data.code === 200) {
           // debugger;
-          // 更新本地显示
-          this.update
+          // 移除群成员成功后从新获取移除群列表
+          this.getMembers();
           this.$message({
             type: 'success',
             message: res.data

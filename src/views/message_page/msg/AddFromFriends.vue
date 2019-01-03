@@ -132,6 +132,7 @@ export default {
   },
   methods: {
     getFriendList() {
+      debugger;
       // let userId = this.user.user.id;
       // alert(params.type)
       requestMyfriends(this.loginUserId).then(res => {

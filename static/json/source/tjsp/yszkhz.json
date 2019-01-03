@@ -1,6 +1,7 @@
 {
     "id": "0005",
     "text": "应收账款分类汇总",
+    "showDims": ["year", "month", "company", "conversion"],
     "changeYearBefore": function (newyear, option) {
         option.closeTabTaget(newyear, option);
     }, //切换年的回调

@@ -137,10 +137,7 @@ export default {
     serverAck(val) {
       console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
-      // val.code = 1500;
-      // socket.send(val);
       debugger;
-      // this.updateAck(val)
     }
 
   },
@@ -240,7 +237,7 @@ export default {
       this.$refs.textarea.focus();
     },
 
-    findSingleMsg(){
+    findSingleMsg() {
       // ajax请求获取单聊消息内容
       FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
         .then(res => {
@@ -256,15 +253,11 @@ export default {
         }).catch(err => {
         console.log('获取单聊信息catch：', err)
       });
-    }
-
-  },
-  mounted() {
-    // ajax请求获取单聊消息内容
-    this.findSingleMsg();
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hidenFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -273,7 +266,19 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    }
+
+  },
+  mounted() {
+    // ajax请求获取单聊消息内容
+    this.findSingleMsg();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hidenFaceIcon)
+
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hidenFaceIcon)
   }
 }
 </script>
@@ -287,7 +292,11 @@ export default {
     justify-content: space-between;
     flex-direction: column;
     overflow: hidden;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     .title {
       @include flex();
@@ -302,6 +311,7 @@ export default {
         background-color: $colorTheme;
         border-radius: 50%;
         float: left;
+
         img {
           width: 100%;
           height: 100%;
@@ -345,19 +355,26 @@ export default {
 
     .middle {
       flex: 1;
-      /*padding-right: 24px;*/
-      padding-left: 40px;
+      position: relative;
+      margin-left: 40px;
       overflow: hidden;
 
-      /deep/ .el-scrollbar__thumb {
-        background: $colorTheme;
+      /deep/ .el-scrollbar {
+        .el-scrollbar__thumb {
+          background: $colorTheme;
+        }
+
+        .el-scrollbar__wrap {
+          padding-right: 40px;
+          overflow-x: hidden;
+        }
+
+        .el-scrollbar__bar.is-horizontal {
+          display: none
+        }
       }
 
-      /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-      }
 
-      /*background: #cccccc;*/
       .message-box {
         padding: 10px 20px;
         margin: 10px 40px 20px 0;
@@ -470,6 +487,7 @@ export default {
 
       .input-wrap {
         width: 100%;
+
         .chat-textarea {
           box-sizing: border-box;
           min-height: 100px;
