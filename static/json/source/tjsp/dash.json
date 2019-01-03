@@ -3,36 +3,42 @@
 	"text": "指标分析",
 	"rows": [],
 	"columns": [{
-			"id": "scode",
+			"id": "id",
 			"type": "string",
 			"text": "编码"
 		},
 		{
 			"id": "bq",
 			"type": "number",
-			"text": "本期数"
+			"text": "本期数",
+			"unit":"万元"
 		},
 		{
 			"id": "bnlj",
 			"type": "number",
-			"text": "本年累计"
+			"text": "本年累计",
+			"unit":"万元"
 		},
 		{
 			"id": "bnmb",
 			"type": "decimal",
-			"text": "本年目标"
+			"text": "本年目标",
+			"unit":"万元"
 		},
 		{
 			"id": "sntq",
 			"type": "decimal",
-			"text": "上年同期"
+			"text": "上年同期",
+			"unit":"万元"
 		},
 	   {
 		   "id": "wcl",
 		   "type": "decimal",
-		   "text": "wc"
+		   "text": "完成率",
+		   "unit":"%"
 	   }
 	],
+	"unit":10000,
 	"datas": {},
    "config": {
 	   "sql":"SELECT B.SCODE as id,SUM(NVL(FACT_A,0)) AS BQ,SUM(NVL(FACT_B,0)) AS BNLJ, SUM(NVL(FACT_C,0)) AS BNMB,SUM(NVL(SNTQ,0)) AS SNTQ, CASE WHEN SUM(NVL(FACT_C,0))=0 THEN 0 ELSE SUM(NVL(FACT_B,0))/SUM(NVL(FACT_C,0))*100 END WCL FROM( SELECT DIM_ITEMPERIOD , SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B,SUM(NVL(FACT_C,0)) AS FACT_C,0 AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD=:comparePeriod AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD UNION ALL SELECT DIM_ITEMPERIOD ,0 AS FACT_A,0 AS FACT_B,0 AS FACT_C, SUM(NVL(FACT_B,0)) AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD=:period AND DIM_ITEMPERIOD IN('1416001','1403100') GROUP BY DIM_PERIOD,DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SCODE,B.SNAME",
@@ -67,13 +73,25 @@
 		"xtype": "tab"
 	},
 	 "show":true,
-	"__queryDataAfter":function(data){
-			   
-			   let me = this;
-			   if(me.config.rows&&me.config.rows.length==0){
-				   
+   "__queryDataAfter":function(data){
+	   let me = this;
+	   let columns = me.columns;
+	   let unit = me.unit;
+	   if(columns && columns.length > 0){
+		   for(let i = 0;i < data.length;i ++){
+			   let dataItem = data[i];
+			   for(let j = 0;j < columns.length;j ++){
+				   let columnItem = columns[j];
+				   if(columnItem.unit && columnItem.unit == "万元"){
+					   let columnId = columnItem.id;
+					   if(dataItem[columnId]){
+						   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+					   }
+				   }
 			   }
-			   return data;
+		   }
+	   }
+	   return data;
    },
    
 	"items": [
@@ -140,7 +158,7 @@
 			},
 			{
 				"xtype": "chart",
-				"id": "1400111",
+				"id": "14001112",
 				"text": "营业收入（万元）",
 				"watchState":true,
 				"weight": 6,
@@ -214,12 +232,13 @@
 
 
 	   {
-			"xtype": "chart",
-			"id": "lrb3000000",
-			"text": "应收账款（万元/%）",
-			"watchState":true,
-			"weight": 12,
-			"listeners":[
+		   "xtype": "chart",
+		   "id": "lrb3000000",
+		   "text": "应收账款（万元/%）",
+		   "watchState":true,
+		   "weight": 12,
+		   "unit":"万元",
+		   "listeners":[
 			   {
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
@@ -292,6 +311,50 @@
 				   }
 			   ]
 		   },
+		   "conversionUnit":function(unit){
+			   let me = this;
+			   let unitObjs = [
+				   {"text":"万元","value":10000},
+				   {"text":"千元","value":1000},
+				   {"text":"百元","value":100},
+				   {"text":"十元","value":10},
+				   {"text":"元","value":1}
+			   ];
+			   if(!unit){
+				   unit = me.unit;
+			   }
+			   if(!unit){
+				   unit = "元";
+			   }
+			   for(let i = 0;i < unitObjs.length;i ++){
+				   let unitItem = unitObjs[i];
+				   if(unitItem.text == unit){
+					   return unitItem.value;
+				   }
+			   }
+			   return 1;
+		   },
+		   "queryDataAfter":function(data){
+			   let me = this;
+			   let columns = me.options.getData.columns;
+			   let unit = me.unit;
+			   unit = me.conversionUnit(unit);
+			   if(columns && columns.length > 0){
+				   for(let i = 0;i < data.length;i ++){
+					   let dataItem = data[i];
+					   for(let j = 0;j < columns.length;j ++){
+						   let columnItem = columns[j];
+						   if(columnItem.unit && columnItem.unit == "万元"){
+							   let columnId = columnItem.id;
+							   if(dataItem[columnId]){
+								   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   return data;
+		   },
 		   "options": {
 			   "type": "line",
 			   "getData": {
@@ -340,6 +403,7 @@
 			"xtype": "chart",
 			"id": "lrb3",
 			"text": "预付账款（万元/%）",
+			"unit":"万元",
 			"watchState":true,
 			"weight": 12,
 			   "config": {
@@ -413,6 +477,50 @@
 				   }
 			   }
 			],
+			"conversionUnit":function(unit){
+			   let me = this;
+			   let unitObjs = [
+				   {"text":"万元","value":10000},
+				   {"text":"千元","value":1000},
+				   {"text":"百元","value":100},
+				   {"text":"十元","value":10},
+				   {"text":"元","value":1}
+			   ];
+			   if(!unit){
+				   unit = me.unit;
+			   }
+			   if(!unit){
+				   unit = "元";
+			   }
+			   for(let i = 0;i < unitObjs.length;i ++){
+				   let unitItem = unitObjs[i];
+				   if(unitItem.text == unit){
+					   return unitItem.value;
+				   }
+			   }
+			   return 1;
+		   },
+		   "queryDataAfter":function(data){
+			   let me = this;
+			   let columns = me.options.getData.columns;
+			   let unit = me.unit;
+			   unit = me.conversionUnit(unit);
+			   if(columns && columns.length > 0){
+				   for(let i = 0;i < data.length;i ++){
+					   let dataItem = data[i];
+					   for(let j = 0;j < columns.length;j ++){
+						   let columnItem = columns[j];
+						   if(columnItem.unit && columnItem.unit == "万元"){
+							   let columnId = columnItem.id;
+							   if(dataItem[columnId]){
+								   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   return data;
+		   },
 			"options": {
 				"type": "line",
 				"getData": {
@@ -461,6 +569,7 @@
 		   "xtype": "chart",
 		   "id": "lrb3",
 		   "text": "其他应收款（万元/%）",
+		   "unit":"万元",
 		   "watchState":true,
 		   "weight": 12,
 			   "config": {
@@ -542,6 +651,50 @@
 				   }
 			   }
 			],
+			"conversionUnit":function(unit){
+			   let me = this;
+			   let unitObjs = [
+				   {"text":"万元","value":10000},
+				   {"text":"千元","value":1000},
+				   {"text":"百元","value":100},
+				   {"text":"十元","value":10},
+				   {"text":"元","value":1}
+			   ];
+			   if(!unit){
+				   unit = me.unit;
+			   }
+			   if(!unit){
+				   unit = "元";
+			   }
+			   for(let i = 0;i < unitObjs.length;i ++){
+				   let unitItem = unitObjs[i];
+				   if(unitItem.text == unit){
+					   return unitItem.value;
+				   }
+			   }
+			   return 1;
+		   },
+		   "queryDataAfter":function(data){
+			   let me = this;
+			   let columns = me.options.getData.columns;
+			   let unit = me.unit;
+			   unit = me.conversionUnit(unit);
+			   if(columns && columns.length > 0){
+				   for(let i = 0;i < data.length;i ++){
+					   let dataItem = data[i];
+					   for(let j = 0;j < columns.length;j ++){
+						   let columnItem = columns[j];
+						   if(columnItem.unit && columnItem.unit == "万元"){
+							   let columnId = columnItem.id;
+							   if(dataItem[columnId]){
+								   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   return data;
+		   },
 			"options": {
 				"type": "line",
 				"getData": {
@@ -589,6 +742,7 @@
 			"xtype": "chart",
 			"id": "lrb3",
 			"text": "资产、负债、权益（万元/%）",
+			"unit":"万元",
 			"watchState":true,
 			"weight": 12,
 			   "config": {
@@ -658,6 +812,50 @@
 				   }
 			   }
 			],
+			"conversionUnit":function(unit){
+			   let me = this;
+			   let unitObjs = [
+				   {"text":"万元","value":10000},
+				   {"text":"千元","value":1000},
+				   {"text":"百元","value":100},
+				   {"text":"十元","value":10},
+				   {"text":"元","value":1}
+			   ];
+			   if(!unit){
+				   unit = me.unit;
+			   }
+			   if(!unit){
+				   unit = "元";
+			   }
+			   for(let i = 0;i < unitObjs.length;i ++){
+				   let unitItem = unitObjs[i];
+				   if(unitItem.text == unit){
+					   return unitItem.value;
+				   }
+			   }
+			   return 1;
+		   },
+		   "queryDataAfter":function(data){
+			   let me = this;
+			   let columns = me.options.getData.columns;
+			   let unit = me.unit;
+			   unit = me.conversionUnit(unit);
+			   if(columns && columns.length > 0){
+				   for(let i = 0;i < data.length;i ++){
+					   let dataItem = data[i];
+					   for(let j = 0;j < columns.length;j ++){
+						   let columnItem = columns[j];
+						   if(columnItem.unit && columnItem.unit == "万元"){
+							   let columnId = columnItem.id;
+							   if(dataItem[columnId]){
+								   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   return data;
+		   },
 			"options": {
 				"type": "line",
 				"getData": {
@@ -704,6 +902,7 @@
 			"xtype": "chart",
 			"id": "lrb3",
 			"text": "融资性债务（万元/%）",
+			"unit":"万元",
 			"watchState":true,
 			"weight": 12,
 			  "config": {
@@ -835,6 +1034,50 @@
 				   }
 			   }
 			],
+		   "conversionUnit":function(unit){
+			   let me = this;
+			   let unitObjs = [
+				   {"text":"万元","value":10000},
+				   {"text":"千元","value":1000},
+				   {"text":"百元","value":100},
+				   {"text":"十元","value":10},
+				   {"text":"元","value":1}
+			   ];
+			   if(!unit){
+				   unit = me.unit;
+			   }
+			   if(!unit){
+				   unit = "元";
+			   }
+			   for(let i = 0;i < unitObjs.length;i ++){
+				   let unitItem = unitObjs[i];
+				   if(unitItem.text == unit){
+					   return unitItem.value;
+				   }
+			   }
+			   return 1;
+		   },
+		   "queryDataAfter":function(data){
+			   let me = this;
+			   let columns = me.options.getData.columns;
+			   let unit = me.unit;
+			   unit = me.conversionUnit(unit);
+			   if(columns && columns.length > 0){
+				   for(let i = 0;i < data.length;i ++){
+					   let dataItem = data[i];
+					   for(let j = 0;j < columns.length;j ++){
+						   let columnItem = columns[j];
+						   if(columnItem.unit && columnItem.unit == "万元"){
+							   let columnId = columnItem.id;
+							   if(dataItem[columnId]){
+								   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+							   }
+						   }
+					   }
+				   }
+			   }
+			   return data;
+		   },
 			"options": {
 				"type": "line",
 				"getData": {
