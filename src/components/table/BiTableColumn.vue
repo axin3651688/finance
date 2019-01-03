@@ -136,14 +136,18 @@ export default {
 
     //   return "text-align:center";
     // },
-    __upData(item) {
+    upData(item) {
       // debugger;
       // this.$set(this.tableData, "datas", null);
       // this.$set(this.tableData, "datas", []);
-      if (item.datas.length == 0) {
-        item.datas = null;
-        item.datas = [];
-      }
+      // if(item.datas.length == 0 ){
+      //     item.datas = null;
+      //     item.datas = [];
+      // }
+      // this.$set(this, "tableData", item);
+      // this.$set(this.tableData, "datas", item.datas);
+
+      this.$set(this, "tableData", null);
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
     },
@@ -164,7 +168,7 @@ export default {
         union = true;
         //  debugger
       }
-      // debugger
+      //debugger
       if (!row[colId] && !union) {
         return "--";
       }

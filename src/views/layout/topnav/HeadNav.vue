@@ -178,6 +178,7 @@ export default {
     CompanyTree
   },
   created() {
+    // console.log("vvv",this.user.company.id)
     this.value = this.year + this.month + this.date;
     console.log(this.value);
     let bean = getClientParams();
