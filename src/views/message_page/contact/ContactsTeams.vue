@@ -177,7 +177,7 @@ export default {
     }
 
   },
-  mounted() {
+  created() {
     this.getCompanyList();
   }
 }
@@ -243,14 +243,12 @@ export default {
           li {
             position: relative;
             height: 60px;
-            padding: 0 30px 0 25px;
+            padding: 0 30px 0 30px;
             cursor: pointer;
-            border-left: 5px solid transparent;
             transition: all .3s;
 
             &:hover {
               box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-              border-right-color: $colorTheme;
             }
 
             .arrow {
@@ -262,7 +260,7 @@ export default {
           }
 
           li.active {
-            border-left-color: $colorTheme;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
           }
 
           figure {

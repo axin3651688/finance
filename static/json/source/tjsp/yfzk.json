@@ -27,6 +27,31 @@
                             return false ;
                         }                        
                     },
+                    "toolbar":[{
+                        "id":"1",
+                        "text":"刷新",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    }, {
+                       "id":"2",
+                       "text":"导出",
+                       "xtype":"button",
+                       "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                       "handler":function(vue,btn){
+                           debugger
+                           console.log(vue);
+                       }
+                    }],
                     "config":{
                         "sql2":"",
                         "sql":"SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,(CASE WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB,(CASE WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC,D.SNAME AS FZCFL,E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1002') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMSUPPLIER WHERE SCOMCODE='1001') B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ",
@@ -255,39 +280,63 @@
                         }],
                         "rows":[ ]
                     },
-                    "drillProperties":["riskrange"],
+                    "drillProperties":["riskrange","gsmc"],
+                    "onRowClick":function(row, column, e,$this){
+                        debugger
+                        let id = row.gsbm, text = row.gsmc;
+                        if(this.drillProperties[1].indexOf(column.property) != -1){
+                            if(row.gsmc != "" && row.gsmc != undefined){
+                                $this.commonHandler(
+                                    {
+                                        "type":"click",//事件类型
+                                        "way":"addTab",//调用的公共方法
+                                        "sourceApi":"/cnbi/json/source/tjsp/yfzkmxb.json",
+                                        "handler":($vue,params)=>{//自定义的回调
+                                            console.info(params);
+                                            debugger; 
+                                        } 
+                                    },
+                                    { row: row, column: column, e: e },
+                                    { id: id, text: text }
+                                );
+                            }    
+                        }    
+                    },
                     "cellStyle":function(row,obj){
                         debugger
                         for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
                           let pro = obj.item.config.columns[row.columnIndex].id ; 
                       
-                      let css = "padding: 4px 0;";
-                      // let pro = obj.item.config.columns;
-                      // let pro = "";
-                      if (!pro) {
-                          return css;
-                      }
-                      
-                      let textIndent ="";
-                      
-                      let record = row.row;  
-                      let drillProperties = this.drillProperties;
-                      if(drillProperties.indexOf(pro) != -1){
-                          if(record.riskrange && record.riskrange=="安全"){
+                            let css = "padding: 4px 0;";
+                            // let pro = obj.item.config.columns;
+                            // let pro = "";
+                            if (!pro) {
+                                return css;
+                            }
                             
-                            let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;";
-                            css = css + "font-weight:bold;" + textIndent + drill;
-                            return css;
-                          }else{
-                            return css+textIndent;
-                          }
-                      }else{
-                          return css+textIndent;
-                      }
-                    }
+                            let textIndent ="";
+                            
+                            let record = row.row;  
+                            let drillProperties = this.drillProperties;
+                            if(drillProperties.indexOf(pro) != -1){
+                                if(record.riskrange && record.riskrange=="安全" && pro!="gsmc"){
+                                    
+                                    let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;text-align: center;";
+                                    css = css + "font-weight:bold;" + textIndent + drill;
+                                    return css;
+                                }else if(pro == "gsmc" && record.gsmc!="总计"){
+                                    let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
+                                    css = css + "font-weight:bold;" + textIndent + drill;
+                                    return css;
+                                }else{
+                                    return css+textIndent;
+                                }
+                            }else{
+                                return css+textIndent;
+                            }
+                        }
                
-                  }
-                    
+                    }                  
 
                 }
             ]

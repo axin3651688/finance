@@ -96,8 +96,13 @@ export default {
      * unshift()方法是向数组的开头添加一个或多个元素
      */
     addTab(params, listener, bb) {
+<<<<<<< HEAD
      // let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
      let tab = this.$parent.$parent;
+=======
+      debugger
+      let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
+>>>>>>> 678cc9cd7688b97168b8e2e9a6ab6befdbf501b6
       let module = tab.$parent.$parent;
       if (!bb) {
         bb = this.item;

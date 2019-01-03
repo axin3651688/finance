@@ -279,7 +279,6 @@ export default {
 
       .text {
         overflow: hidden;
-        width: 342px;
         height: 41px;
         line-height: 20px;
         font-size: 16px;

@@ -27,7 +27,7 @@
       <div v-if="rightUserInfoData">
         <div class="panel-right-top">
           <div class="img-box">
-            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName" />
+            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName"/>
           </div>
           <div class="text">
             <h3 class="text-title" v-if="rightUserInfoData.user.trueName">{{rightUserInfoData.user.trueName}}</h3>
