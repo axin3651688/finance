@@ -16,7 +16,7 @@
             "cubeId":4
         },
         "mainDim":"itempoint",
-        "needDims":["year","month","company"],
+        "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1
     

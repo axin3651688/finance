@@ -5,6 +5,7 @@
 		"xtype":"column"
 	},
 	"show":true,
+	"showDims": ["year","month","company","conversion"],
 	"items": [
 		{
 			"xtype": "STreeGrid",
@@ -38,7 +39,8 @@
 				"needDims": [
 					"year",
 					"month",
-					"company"
+					"company",
+					"conversion"
 				],
 				"random": {
 					"min": 100,

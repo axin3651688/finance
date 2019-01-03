@@ -2,7 +2,7 @@
 
 <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.isTree  && tableData.xtype==='tree-grid'"
+    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
