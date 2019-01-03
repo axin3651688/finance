@@ -123,6 +123,12 @@ export default {
                 // debugger;
                 // debugger;
                 //this.initSocket(token);
+                if (data.company && data.company.id === 121) {
+                  localStorage.module_api_cache =
+                    "/cnbi/json/source/tjsp/dash.json";
+
+                  // alert("-----" + localStorage.module_api_cache);
+                }
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
                 router.push("/main");

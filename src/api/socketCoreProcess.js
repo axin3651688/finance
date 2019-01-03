@@ -51,7 +51,7 @@ export default function socketCoreProcess(websocket, datas) {
             case 1005:
                 // 你已在Windows下线
                 console.log('socketCoreProcess: 1005');
-                reload(data)
+                // reload(data)
                 break;
             case 1006:
                 // 对方收到消息或读了消息

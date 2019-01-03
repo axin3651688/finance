@@ -59,6 +59,8 @@ const prame = {
         state.showDims.company = false,
           state.showDims.year = false,
           state.showDims.month = false,
+          state.showDims.day = false,
+          state.showDims.conversion = false,
           data.forEach(ele => {
             state.showDims[ele] = !state.showDims[ele]
           });
