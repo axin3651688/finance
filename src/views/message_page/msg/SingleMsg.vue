@@ -138,7 +138,6 @@ export default {
       console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
       debugger;
-      // this.updateAck(val)
     }
 
   },
