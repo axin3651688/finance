@@ -56,7 +56,8 @@
 					{
 						"id": "gsbm",
 						"type":"string",
-						"text": "公司编码"
+						"text": "公司编码",
+						"isTree":true
 					},
 					{
 						"id": "gsmc",
