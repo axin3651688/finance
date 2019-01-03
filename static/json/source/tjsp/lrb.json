@@ -4,7 +4,7 @@
     "layout":{
         "xtype":"tab"
     },
-    
+    "showDims": ["year","month","company","conversion"],
     "changeMonthBefore":function(){
         // alert('changeMonthBefore');
     },
@@ -51,7 +51,7 @@
                 "subject":"0002"
             },
             "mainDim":"itemperiod",
-            "needDims":["year","month","company"],
+            "needDims":["year","month","company","conversion"],
             "random":{"min":100,"max":100000},
             "type":1     
         },

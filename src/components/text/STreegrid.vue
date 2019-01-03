@@ -1,4 +1,8 @@
 <template>
+<div>
+<el-button-group  class="toolbar" >
+    <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+  </el-button-group>
   <el-table
     :row-style="showRow"
     v-bind="$attrs"
@@ -8,6 +12,7 @@
     stripe
     height="item.height || rowClass"
     :cell-style="cellStyle"
+    @row-click="onRowClick"
   >
     <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
@@ -73,6 +78,7 @@
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
     </el-tag>
   </el-table>
+</div>  
 </template>
  
 <script>
@@ -144,6 +150,13 @@ export default {
   methods: {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
+    },
+    onRowClick(row, e, column) {
+      debugger
+      if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
+        return this.item.onRowClick(row, column, e, this);
+      }
+      this.onCellClickDefault(row, column, e);
     },
     cellStyle(row) {
       //  debugger
