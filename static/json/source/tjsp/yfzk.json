@@ -4,6 +4,7 @@
     "layout":{
         "xtype":"tab"
     },
+    "showDims": ["year","month","company","conversion"],
    "items":[
         {
             
@@ -150,7 +151,7 @@
                     }
                 },
                 {
-                    "xtype": "stree-grid",
+                    "xtype": "STreeGrid",
                     "id": "yfzkej",
                     "text": "laji",
                     "show":false,
@@ -184,12 +185,19 @@
                         "ctype":"button"
                         },
                         "columns": [
+                            {
+                                "text": "已形成实质性损失金额",
+                                "type":"decimal",
+                                "id": "www4"
+                            },    
                         {
                             "text": "公司编码",
+                            "type":"string",
                             "id": "scode"
                         },
                         {
                             "text": "公司名称",
+                            "type":"string",
                             "id": "gsmc"
                         },
                         {
@@ -204,82 +212,170 @@
                         },
                         {
                             "text": "与年初相比增减额",
+                            "type":"decimal",
                             "id": "zje"
                         },
                         {
                             "text": "与年初相比增减率",
+                            "type":"decimal",
+                            "unit":"%",
                             "id": "zjl"
                         },
                         {
                             "text": "预警等级",
+                            "type":"string",
                             "id": "riskrange"
                         },
                         {
                             "text": "1年以内",
+                            "type":"decimal",
                             "id": "oneYear"
                         },
                         {
                             "text": "1-2年",
+                            "type":"decimal",
                             "id": "twoYear"
                         },
                         {
                             "text": "2-3年",
+                            "type":"decimal",
                             "id": "threeYear"
                         },
                         {
                             "text": "3年以上",
+                            "type":"decimal",
                             "id": "allYear"
                         },
                         {
                             "text": "正常余额",
+                            "type":"decimal",
                             "id": "zcje"
                         },
                         {
                             "text": "向系统外出借资金",
+                            "type":"decimal",
                             "id": "fff1"
                         },
                         {
                             "text": "成本费用挂账",
+                            "type":"decimal",
                             "id": "fff2"
                         },
                         {
                             "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+                            "type":"decimal",
                             "id": "fff3"
                         },
                         {
                             "text": "为其他企业代偿金融机构的贷款",
+                            "type":"decimal",
                             "id": "fff4"
                         },
                         {
                             "text": "长期挂账、未及时清理",
+                            "type":"decimal",
                             "id": "fff5"
                         },
                         {
                             "text": "核算不规范",
+                            "type":"decimal",
                             "id": "fff6"
                         },
                         {
                             "text": "其他",
+                            "type":"decimal",
                             "id": "fff7"
                         },
                         {
                             "text": "可收回金额",
+                            "type":"decimal",
                             "id": "www1"
                         },
                         {
                             "text": "其中：当年可收回金额",
+                            "type":"decimal",
                             "id": "www2"
                         },
                         {
                             "text": "逾期账款",
+                            "type":"decimal",
                             "id": "www3"
-                        },
-                        {
-                            "text": "已形成实质性损失金额",
-                            "id": "www4"
                         }],
                         "rows":[ ]
                     },
+                    "toolbar":[{
+                        "id":"1",
+                        "text":"全部展开",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"2",
+                        "text":"全部收起",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"3",
+                        "text":"刷新",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    }, {
+                       "id":"4",
+                       "text":"导出",
+                       "xtype":"button",
+                       "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                       "handler":function(vue,btn){
+                           debugger
+                           console.log(vue);
+                       }
+                    },{
+                        "id":"5",
+                        "text":"安全比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"6",
+                        "text":"预警比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    }],
                     "drillProperties":["riskrange","gsmc"],
                     "onRowClick":function(row, column, e,$this){
                         debugger
