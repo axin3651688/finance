@@ -1,5 +1,5 @@
 <template>
-  <component v-if="flag" :is="item.xtype" :item.sync="item" ref="child"></component>
+  <component v-if="flag && item.show" :is="item.xtype" :item.sync="item" ref="child"></component>
 </template>
 
 <script>

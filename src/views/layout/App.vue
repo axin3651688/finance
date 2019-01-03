@@ -23,6 +23,8 @@ export default {
       authorization = localStorage.getItem("authorization");
     } else {
       //alert("-----------------从地址中取行了：" + authorization);
+      //暂时
+      return ;
     }
     // debugger;
     this.initSocket(authorization);

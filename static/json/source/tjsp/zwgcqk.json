@@ -332,7 +332,31 @@
      {
       "xtype": "bi-table",
       "id":"zwgc",
-      "text":"债务构成情况分析表"
+      "text":"债务构成情况分析表",
+      "toolbar":[
+        {
+           "id":"1",
+           "text":"刷新",
+           "xtype":"button",
+           "cellStyle":{
+               "color":"black",
+               "background-color":"#189271"
+           },
+           "handler":function(vue,btn){
+               console.log(vue);
+           }
+       }, {
+           "id":"2",
+           "text":"导出",
+           "cellStyle":{
+               "color":"black",
+               "background-color":"#189271"
+           },
+           "handler":function(vue,btn){
+               console.log(vue);
+           }
+       }
+       ]
     }
   ]
   }

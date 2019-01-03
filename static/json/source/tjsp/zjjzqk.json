@@ -1,12 +1,12 @@
 {
     "id":"1013",
     "text":"资金集中情况明细表",
-    "showDims": ["conversion","year","month","company"],
+    
   "layout": {
     "xtype": "tab"
   },
   "items": [{
-    "xtype": "tree-grid",
+    "xtype": "TreeGrid",
     "id": "123456",
     "text": "资金集中情况明细表",
     "show":true,
@@ -17,27 +17,83 @@
          "cubeId":5
       },
       "mainDim":"itempoint",
-      "needDims":["year","month","company","conversion"],
+      "needDims":["year","month","company"],
       "random":{"min":100,"max":100000},
       "type":1     
    },
     "rows":[
       
     ],
+    "toolbar":[{
+      "id":"1",
+      "text":"刷新",
+      "xtype":"button",
+      "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+      "handler":function(vue,btn){
+          debugger
+          console.log(vue);
+      }
+  }, {
+     "id":"2",
+     "text":"导出",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+         debugger
+         console.log(vue);
+     }
+  },{
+    "id":"3",
+     "text":"全部展开",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+         debugger
+         console.log(vue);
+     }
+  },{
+    "id":"4",
+     "text":"全部收起",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+         debugger
+         console.log(vue);
+     }
+  }],
     "columns": [
       {
+        "text": "集中度",
+        "type":"decimal",
+        "id": "jzd"
+      },
+      {
           "text": "公司编码",
-          "type":"number",
+          "type":"string",
           "id": "gsbm"
       },
       {
           "text": "公司名称",
           "type":"string",
+          "width":"200",
           "id": "sname"
         },
         {
           "text": "银行账户名称",
-          "type":"decimal",
+          "type":"string",
+          "width":"310",
           "id": "yhzhmc"
         },
         {
@@ -54,12 +110,8 @@
           "text": "集中金额",
           "type":"decimal",
           "id": "jzje"
-        },
-        {
-          "text": "集中度",
-          "type":"decimal",
-          "id": "jzd"
         }
+        
     ]
   }],
   "code":200,"msg":"查询数据源【company】维度成功！"
