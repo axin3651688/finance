@@ -1,8 +1,8 @@
 <template>
 
-<!-- 公司编码 这个是可变的 -->
+<!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.text == '公司编码'"
+    v-if="col.isTree  && tableData.xtype==='tree-grid'"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"

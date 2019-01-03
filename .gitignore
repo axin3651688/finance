@@ -2,7 +2,7 @@
 node_modules
 /dist
 vue.config.js
-
+static
 # local env files
 .env.local
 .env.*.local
