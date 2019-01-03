@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <div class="login-shadow"></div>
     <div class="login-border">
       <!-- banner -->
       <i class="bannerimg"></i>
@@ -11,8 +12,8 @@
           <el-input v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <!-- <P>公司</P>
-                <el-form-item prop="usename">
-                    <el-input v-model="loginUser.usename" placeholder="请选择公司"></el-input>
+                  <el-form-item prop="usename">
+                      <el-input v-model="loginUser.usename" placeholder="请选择公司"></el-input>
         </el-form-item>-->
         <P>密码</P>
         <el-form-item prop="password">
@@ -99,6 +100,7 @@ export default {
         if (valid) {
           login(this.loginUser)
             .then(res => {
+              debugger;
               // 获取token
               // console.log(res);
               const data = res.data.data;
@@ -123,9 +125,15 @@ export default {
                 // debugger;
                 // debugger;
                 //this.initSocket(token);
+                let url = "/main";
+                if (data.company && data.company.id === 121) {
+                  url += "?monthCount=13";
+                  localStorage.module_api_cache =
+                    "/cnbi/json/source/tjsp/dash.json";
+                }
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
-                router.push("/main");
+                router.push(url);
                 // data.company.id === 121
                 //   ? router.push("/tjsp/module")
                 //   : // router.push("/message");

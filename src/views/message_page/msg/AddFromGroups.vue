@@ -26,7 +26,7 @@
                 >
                   <figure>
                     <div class="img-box">
-                      <img :src="member.avatar"/>
+                      <img :src="member.avatar" v-avatar="member.trueName"/>
                     </div>
                     <div class="info">
                       <h3>{{member.trueName}}</h3>
@@ -49,7 +49,7 @@
           <ul v-if="addFromGroupsInstance.addList.length">
             <li v-for="member in addFromGroupsInstance.addList" :key="member.id">
               <div class="img-box">
-                <img :src="member.avatar" alt="">
+                <img :src="member.avatar" v-avatar="member.trueName">
                 <div class="close-cover" @click="addFromGroupsInstance.changeMemberState(member)"></div>
               </div>
               <p class="info">{{member.trueName}}</p>
@@ -64,7 +64,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import {ALL_COMPANY_CONTACT_LIST} from '~api/message.js'
+import {ALL_COMPANY_CONTACT_LIST, SEND_GROUP_INVITE_MSG} from '~api/message.js'
 
 // 从团队列表添加成员到群组的类,单例模式
 class AddFromGroups {
@@ -89,6 +89,14 @@ class AddFromGroups {
     }
     // 最后切换member的选中状态
     member.changeCheckState()
+  }
+
+  // 清空addList,同事列表内的成员的激活状态也要取消
+  clearAddList() {
+    this.addList.forEach(user => {
+      user.changeCheckState()
+    });
+    this.addList = []
   }
 }
 
@@ -195,7 +203,32 @@ export default {
   methods: {
     // 提交添加的群成员
     commitAddMembers() {
-      console.log('添加群成员到', this.groupId, this.addFromGroupsInstance.addList)
+      let targets = [];
+      this.addFromGroupsInstance.addList.forEach(item => {
+        targets.push(item.id)
+      });
+      let postData = {
+        groupId: this.groupId,
+        targets: targets.join(','),
+        userId: this.loginUserId
+      };
+      console.log('添加群成员postData：', postData);
+      SEND_GROUP_INVITE_MSG(postData)
+        .then(res => {
+          console.log('添加群成员res:', res);
+          this.$message({
+            type: 'success',
+            message: '已经成功发出邀请！',
+            showClose: true
+          });
+          // 清除添加列表，关闭窗口
+          this.addFromGroupsInstance.clearAddList();
+          debugger;
+        })
+        .catch(err => {
+          console.log('添加群成员err:', err)
+        })
+      // console.log('添加群成员到', this.groupId, this.addFromGroupsInstance.addList)
 
     },
 
@@ -216,14 +249,11 @@ export default {
         let newGroup = new Group(group);
         newGroupList.push(newGroup)
       });
-      this.addFromGroupsInstance =  new AddFromGroups(newGroupList);
+      this.addFromGroupsInstance = new AddFromGroups(newGroupList);
       console.log('从团队中添加好友实例：', this.addFromGroupsInstance);
     }
   },
   mounted() {
-    // todo: 5添加群成员 from groups
-    // this.addFromGroupsInstance = this.getAddFromGroupsInstance(this.groupList);
-    // console.log('从团队中添加好友实例：', this.addFromGroupsInstance);
     this.getCompanyList()
   }
 }

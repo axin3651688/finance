@@ -82,6 +82,8 @@ export default {
       return options;
     },
     upData(item) {
+      console.log(item);
+
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
       // debugger;
@@ -97,8 +99,6 @@ export default {
          * 单独系列数据的图形 说白了就是series.length = 1
          */
         if (subType == "pie") {
-          // console.info(this.item);
-
           this.chartOptions.legend.data = this.item.options.datas.map(item => {
             return item.name;
           });
@@ -107,6 +107,11 @@ export default {
           this.chartOptions.series[0].data = [
             { value: this.item.options.datas[0].value }
           ];
+        } else if (subType == "funnel") {
+          // console.info(this.item);
+          console.log(subType + "我是漏斗");
+
+          this.chartOptions.series[0].data = this.item.options.datas;
         } else {
           let datas = item.options.datas;
           this.chartOptions.xAxis.data = datas[0];

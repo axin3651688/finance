@@ -102,7 +102,7 @@ BiText
         "varName":"rows",
          "reverse":true
     },
-    compareType:"0&-1" //-1&0
+  
 }
 ~~~
 
@@ -220,6 +220,7 @@ BiText
     changeYearBefore:funcntion(){},//切换年的回调
     changeMonthBefore:funcntion(){},//切换月份的回调
     changeCompanyBefore:funcntion(){},//切换公司之前的回调
+    showDims:["company","year","month","conversion","date"] //配置顶部需要显示的期间,这里全部写就显示全部
     items:[ //组件
         {
             id: "1",
@@ -309,7 +310,13 @@ listeners:[
         B:120//累计数
         sntq:120//上年同数，
         dimName://0001=>itempoint/0002=>itemperiod/1016=>indicator
-      }],
+      },
+      {  "text": "公司编码",
+        "type":"string",
+        "id": "ID",
+        "isTree":true //isTree设置是true 
+          }
+      ],
     gauge:[
         {
             A:100,  //inds

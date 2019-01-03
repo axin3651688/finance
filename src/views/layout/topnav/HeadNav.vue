@@ -116,9 +116,7 @@
       v-if="isShow"
       :modal-append-to-body="false"
     >
-      <div class="img-box">
-        <img src="../../../assets/infoshow.png">
-      </div>
+      <div class="img-box"></div>
       <el-row class="row-bg">
         <div class="user">
           <img :src="user.user.avatar" class="avatar">
@@ -180,6 +178,7 @@ export default {
     CompanyTree
   },
   created() {
+    // console.log("vvv",this.user.company.id)
     this.value = this.year + this.month + this.date;
     console.log(this.value);
     let bean = getClientParams();
@@ -199,7 +198,7 @@ export default {
       if (this.monthCount == 4) {
         this.months.push(i + "季度");
       } else if (this.monthCount >= 12) {
-        if (i < 13) {
+        if (i <= 13) {
           this.months.push(i + "月");
         } else if (i < 17) {
           this.months.push(this.monthCount + 1 - i + "季度");
@@ -255,7 +254,8 @@ export default {
     getname(e) {
       console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.id;
+      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
+      // console.log(this.companyId);
       this.companyName_cache = e.text;
     },
     showDilog() {
@@ -296,8 +296,5 @@ export default {
 </script>
 <style lang="scss">
 .head-nav {
-  .button {
-    padding: 7px 20px !important;
-  }
 }
 </style>

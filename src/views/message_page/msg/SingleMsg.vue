@@ -30,11 +30,20 @@
     <div class="bottom">
       <div class="chat-tool">
         <div id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></div>
-        <div class="tool-icon file-icon" @click="selectFile">
-          <form action="">
-            <input type="file" name="file" ref="selectFile">
-          </form>
-        </div>
+        <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <div class="tool-icon file-icon">
+            <form action="">
+              <input type="file" name="file" ref="selectFile">
+            </form>
+          </div>
+        </el-upload>
+
         <div class="tool-icon link-icon"></div>
         <transition name="el-zoom-in-bottom">
           <div v-show="showFacePop" class="face-pop">
@@ -54,7 +63,7 @@
                   placeholder="请输入文字，按enter建发送信息"
                   v-model="sendText"
                   ref="textarea"
-                  @keyup.enter="handleSendMessage"
+                  @keyup.enter="handleSendMsg()"
         ></textarea>
       </div>
     </div>
@@ -65,24 +74,27 @@
 import {mapGetters} from 'vuex';
 import MessageItem from './MessageItem'
 import {
-  FIND_SINGLE_MSG,
-  sendMsg
+  UPLOAD_FILE,          // 上传文件
+  FIND_SINGLE_MSG       // 查询单聊信息
 } from '~api/message.js';
 import emotionSprites from '@a/green/emotion_sprites.json';
+import FILE_TYPE from '@m_config/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'SingleMsg',
   components: {MessageItem},
   data() {
     return {
-      msgPaddingList: [], // 待发送消息队列
-      activeBtn: 'message',
-      receiverName: '', // 聊天对象名称
-      receiverAvatar: '', // 聊天对象头像
+      fileData: null,                       // 上传文件成功后返回的文件信息
+      fd: null,                             // 上传的文件信息
+      msgPaddingList: [],                   // 待发送消息队列
+      activeBtn: 'message',                 // 聊天（消息/文件）默认显示
+      receiverName: '',                     // 聊天对象名称
+      receiverAvatar: '',                   // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
-      singleMsgList: [], // 单聊消息队列
-      sendText: '', // 发要发送的文本类容
-      showFacePop: false // 是否显示聊天表情弹窗
+      singleMsgList: [],                    // 单聊消息队列
+      sendText: '',                         // 发要发送的文本类容
+      showFacePop: false                    // 是否显示聊天表情弹窗
     }
   },
   computed: {
@@ -135,6 +147,7 @@ export default {
      * }
      */
     serverAck(val) {
+      debugger;
       console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
       debugger;
@@ -142,26 +155,6 @@ export default {
 
   },
   methods: {
-
-    /**
-     * 跟新消息 ack
-     * 1.收到ack后把收到的内容原封返回个服务器
-     * 2.遍历本地消息队列，更新消息的状态（已读，未读···）
-     */
-    updateAck(val) {
-      socket.deliver(val); // 把收到的内容原封返回个服务器
-      debugger;
-      for (let index in this.singleMsgList) {
-        if (this.singleMsgList[index].id === val.data.id) {
-          // 说明这条消息已近在聊天窗口，此时只需更新这条消息的状态
-          this.$set(this.singleMsgList[index], index, val.data)
-        } else {
-          // 这条消息不存在
-          debugger;
-        }
-      }
-
-    },
 
     // 聊天选择文件
     selectFile() {
@@ -175,49 +168,78 @@ export default {
       }
     },
 
-    // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMessage() {
+    // 发送消息
+    handleSendMsg(fileData) {
+      debugger;
+      console.log('要发送的文件：', fileData);
+      let pushData = {
+        type: 1,
+        data: this.sendText
+      };
+      let sendData = {
+        code: 1100, // 1100:单聊 1101:群聊
+        data: {
+          content: this.sendText.trim(),
+          receiverId: this.receiverId,
+          senderId: this.loginUserId,
+          type: 1,
+          fileId: null,
+          id: 'cnbift' + new Date().getTime() + new Date().getTime(),
+          sendTime: new Date().getTime(),
+          seq: 0,
+        },
+      };
 
-      if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
-        let sendData = {
-          code: 1100, // 1100:单聊 1101:群聊
-          data: {
-            content: this.sendText.trim(),
-            receiverId: this.receiverId, //
-            senderId: this.loginUserId, // 225:卢诚
-            type: 1,
-            // fileId: 0,
-            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
-            sendTime: 0,
-            seq: 0,
-          },
-          // todo: 获取设备号?
-          // device: '868938033321615'
-        };
-        console.log('要发送的内容是：', sendData);
-        console.log('socket对象-->', socket);
-        socket.deliver(sendData);
-        this.addMsgToWindow(this.sendText); // 本地处理把消息推到聊天窗口显示
-        this.sendText = ''; // 发送完后清空输入框
-      } else {
+      if (fileData) { // 如果是发文件，设置文件type，和文件的data
+        sendData.data.content = fileData.text;
+        sendData.data.fileId = fileData.id;
+        for (let item of FILE_TYPE) {
+          debugger;
+          console.log(item);
+          if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
+            sendData.data.type = item.type;
+            pushData.type = item.type;
+            pushData.data = fileData;
+            break
+          } else {
+            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+          }
+        }
+      }
+
+      console.log('要发送的内容是：', sendData);
+      if (!sendData.data.content) {
         this.sendText = '';
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
           showClose: true
         });
+        return;
       }
-
+      socket.deliver(sendData);
+      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
-    addMsgToWindow(sendText) {
+    addMsgToWindow(pushData) {
       let data = {
         avatar: this.user.user.avatar,
-        content: sendText,
+        content: '',
         name: this.user.user.trueName,
-        sendTime: new Date().getTime()
+        sendTime: new Date().getTime(),
+        type: 1
       };
+      if (pushData.type === 1) {
+        data.content = pushData.data;
+      } else {
+        data.content = pushData.data.text;
+        data.file = pushData.data;
+        data.type = pushData.type
+      }
+
+      console.log('要添加到聊天窗口的数据是：', data);
+      debugger;
       this.singleMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
@@ -256,7 +278,7 @@ export default {
     },
 
     // 当点击的不是表情，则隐藏表情弹框
-    hidenFaceIcon(e) {
+    hideFaceIcon(e) {
       // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
@@ -266,19 +288,48 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    }
+    },
+
+    // 处理文件上传
+    handleAvatarSuccess(res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      console.log('要上传的文件信息：', file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.fd = fd;
+      this.submitUpload(fd);
+      return true
+    },
+    submitUpload(fd) {
+      let _this = this;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传群文件res', res);
+          debugger;
+          if (res.data.code === 200) {
+            _this.fileData = res.data.data;
+            this.handleSendMsg(res.data.data)
+          }
+        });
+      }
+    },
 
   },
   mounted() {
+    console.log('文件类型：', FILE_TYPE);
     // ajax请求获取单聊消息内容
     this.findSingleMsg();
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', this.hidenFaceIcon)
+    document.addEventListener('click', this.hideFaceIcon)
 
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.hidenFaceIcon)
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>
@@ -454,6 +505,10 @@ export default {
       .chat-tool {
         position: relative;
         margin-bottom: 18px;
+
+        .avatar-uploader {
+          display: inline-block;
+        }
 
         .tool-icon {
           display: inline-block;

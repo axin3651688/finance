@@ -62,7 +62,7 @@
                             "cubeId":4
                         },        
                         "mainDim":"itemperiod",
-                        "needDims":["year","month","company"],
+                        "needDims":["year","month","company","conversion"],
                         "random":{"min":100,"max":100000},
                         "type":1, 
                         "columns":[
@@ -79,6 +79,7 @@
                         {
                             "id": "sk",
                             "type": "string",
+                            "width":"330",
                             "text": "客商"
                         },
                         {
@@ -177,7 +178,7 @@
                             "reverse":true
                         },        
                         "mainDim":"itemperiod",
-                        "needDims":["year","month","company"],
+                        "needDims":["year","month","company","conversion"],
                         "random":{"min":100,"max":100000},
                         "type":1,          
                         
@@ -194,11 +195,13 @@
                         {
                             "text": "公司编码",
                             "type":"string",
-                            "id": "scode"
+                            "id": "scode",
+                            "isTree":true
                         },
                         {
                             "text": "公司名称",
                             "type":"string",
+                            "width":"250",
                             "id": "gsmc"
                         },
                         {
@@ -401,12 +404,13 @@
                     },
                     "cellStyle":function(row,obj){
                         // debugger
-                        for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
-                            let pro = obj.item.config.columns[row.columnIndex].id ; 
-                            let pra = obj.item.config.columns[row.columnIndex].id ;
+                        // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
+                        //     let pro = obj.item.config.columns[row.columnIndex].id ; 
+                        //     let pra = obj.item.config.columns[row.columnIndex].id ;
                             let css = "padding: 4px 0;";
                             // let pro = obj.item.config.columns;
                             // let pro = "";
+                            let pro = row.column.property;
                             if (!pro) {
                                 return css;
                             }
@@ -431,7 +435,7 @@
                             }else{
                                 return css+textIndent;
                             }
-                        }
+                        // }
                
                     }
                     

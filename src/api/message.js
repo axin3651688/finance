@@ -314,6 +314,11 @@ export function ALL_COMPANY_CONTACT_LIST(userId) {
 }
 
 
-export function f() {
-
+export function SEND_GROUP_INVITE_MSG(data) {
+  debugger;
+  return request({
+    url: '/api/api/send_group_invite_msg',
+    method: 'post',
+    data: data
+  })
 }

@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <component :is="user.company.id === 121 ? 'tjsp' : 'jsnk'"></component>
+    <!-- <component :is="flag"></component> -->
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -17,15 +17,23 @@ import ResizeMixin from "./mixin/ResizeHandler";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
+  data() {
+    return {};
+  },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
-    leftMenu: () => import("./sidebar/Sidebar"),
-    jsnk: () => import("./topnav/jsnk.vue"),
-    tjsp: () => import("./topnav/tjsp.vue")
+    leftMenu: () => import("./sidebar/Sidebar")
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters(["sidebar", "device", "user"]),
+    styleSlect() {
+      if (!Cnbi.isEmpty(this.user)) {
+        this.user.company.id === 121
+          ? import("@/styles/green/index.scss")
+          : import("@/styles/black/index.scss");
+      }
+    },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -35,9 +43,13 @@ export default {
       };
     }
   },
-  created() {},
+  created() {
+    this.styleSlect;
+  },
+
   methods: {
     ...mapActions(["ToggleSideBar"]),
+
     isShow() {
       // debugger;
       if (this.classObj.mobile) {

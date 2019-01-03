@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     upData(item) {
-      // debugger
+      debugger
       if (item) {
         this.item = item;
       }

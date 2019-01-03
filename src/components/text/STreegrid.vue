@@ -12,6 +12,7 @@
     stripe
     height="item.height || rowClass"
     :cell-style="cellStyle"
+    @row-click="onRowClick"
   >
     <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
@@ -149,6 +150,13 @@ export default {
   methods: {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
+    },
+    onRowClick(row, e, column) {
+      debugger
+      if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
+        return this.item.onRowClick(row, column, e, this);
+      }
+      this.onCellClickDefault(row, column, e);
     },
     cellStyle(row) {
       //  debugger

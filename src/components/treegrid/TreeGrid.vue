@@ -22,7 +22,7 @@
 </template>
  
 <script>
-import treeToArray from "../treegrid/eval";
+import treeToArray from "./eval";
 import EventMixins from "../mixins/EventMixins";
 import BiTableColumn from "../table/BiTableColumn";
 import BiTableColumnTree from "../table/BiTableColumnTree";
@@ -115,6 +115,7 @@ export default {
       console.log(id);
     },
     onRowClick(row, e, column) {
+      debugger
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }

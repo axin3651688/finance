@@ -1,5 +1,6 @@
 <template>
-  <component :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
+  <component v-if="flag" :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
+  <component v-else :is="`bi-div`" :item="item" class="bgwight"></component>
 </template>
 <script>
 import { getConfigModelDatas } from "../utils/math";
