@@ -7,7 +7,7 @@
 	 "show":true,
     "items":[
         {
-			"xtype": "stree-grid",
+			"xtype": "STreeGrid",
 			
 			"id": "0002",
 			"text": "现金流量表二级",
@@ -48,9 +48,16 @@
 			
                  
 			"columns": [
+                
+                    {
+                        "id": "wcl",
+                        "type": "string",
+                        "text": "完成率",
+                        "unit":"%"
+                    },
 				{
 					"id": "scode",
-					"type": "number",
+					"type": "string",
 					"text": "公司编码"
 				},
 				{
@@ -100,12 +107,6 @@
                         "id": "cye",
                         "type": "number",
                         "text": "差异额"
-                    },
-                    {
-                        "id": "wcl",
-                        "type": "string",
-                        "text": "完成率",
-                        "unit":"%"
                     }
                 // ]
 				// }
