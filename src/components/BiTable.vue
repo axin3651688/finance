@@ -19,7 +19,8 @@
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+        <!-- <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/> -->
+        <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild"/>
       </el-tag>
     </el-table>
     <!-- sjz 分页功能 -->

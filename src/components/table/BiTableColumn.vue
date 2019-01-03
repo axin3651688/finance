@@ -120,7 +120,7 @@ export default {
     //   return "text-align:center";
     // },
    upData(item) {
-     // debugger;
+     debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
       // if(item.datas.length == 0 ){
