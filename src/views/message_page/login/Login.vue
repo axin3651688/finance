@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="login">
-    <!--<div class="login" ondragstart="return false;">-->
+      <!--<div class="login" ondragstart="return false;">-->
       <div class="left" ondragstart="return false;">
-        <img src="@/assets/login/img.svg" alt="">
+        <img src="@/assets/login/img.svg" alt>
       </div>
       <div class="right">
         <div style="-webkit-app-region: drag" class="control-btns">
-          <img src="@/assets/login/zuixiaohua.svg" class="icon-mini img1" @click="web_minWindows()" style="-webkit-app-region: no-drag">
-          <img src="@/assets/login/close.svg" class=" icon-colse img2" @click="web_closeWindows()" style="-webkit-app-region: no-drag">
+          <img
+            src="@/assets/login/zuixiaohua.svg"
+            class="icon-mini img1"
+            @click="web_minWindows()"
+            style="-webkit-app-region: no-drag"
+          >
+          <img
+            src="@/assets/login/close.svg"
+            class="icon-colse img2"
+            @click="web_closeWindows()"
+            style="-webkit-app-region: no-drag"
+          >
         </div>
         <h3>登陆</h3>
         <p class="copy">安徽经邦数据展示客户端</p>
@@ -31,18 +41,15 @@
           <el-checkbox label="记住密码" name="type" class="label"></el-checkbox>
           <el-checkbox label="自动登陆" name="type" class="label"></el-checkbox>
           <p @click="forget_password()">忘记密码?</p>
-          <el-button
-            type="primary"
-            @click="submitForm('loginForm')"
-            class="button">登陆</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')" class="button">登陆</el-button>
         </el-form>
         <div class="buttom">
           <span>注册账号</span>
           <div class="img">
-            <img src="@/assets/login/qq_selected.svg" alt="">
-            <img src="@/assets/login/wechat_unselected.svg" alt="">
-            <img src="@/assets/login/weibo_unselected.svg" alt="">
-            <img src="@/assets/login/erweima.svg" alt="">
+            <img src="@/assets/login/qq_selected.svg" alt>
+            <img src="@/assets/login/wechat_unselected.svg" alt>
+            <img src="@/assets/login/weibo_unselected.svg" alt>
+            <img src="@/assets/login/erweima.svg" alt>
           </div>
         </div>
       </div>
@@ -51,12 +58,8 @@
 </template>
 
 <script>
-import {
-  login
-} from "~api/interface.js";
-import {
-  mapActions
-} from "vuex";
+import { login } from "~api/interface.js";
+import { mapActions } from "vuex";
 import router from "@v/layout/router";
 import store from "@/store";
 
@@ -69,16 +72,19 @@ export default {
         password: ""
       },
       rules: {
-        usename: [{
-          required: true,
-          message: "用户名不能为空",
-          trigger: "blur"
-        }],
-        password: [{
-          required: true,
-          message: "密码不能为空",
-          trigger: "blur"
-        },
+        usename: [
+          {
+            required: true,
+            message: "用户名不能为空",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "密码不能为空",
+            trigger: "blur"
+          },
           {
             // 需要修改  todo
             min: 1,
@@ -96,19 +102,18 @@ export default {
     // electron 最小化
     web_minWindows() {
       if (window.require) {
-        var ipc = window.require('electron').ipcRenderer
+        var ipc = window.require("electron").ipcRenderer;
       }
       if (window.require) {
-        ipc.send('web_minWindows', '')
+        ipc.send("web_minWindows", "");
       }
-
     },
     web_closeWindows() {
       if (window.require) {
-        var ipc = window.require('electron').ipcRenderer
+        var ipc = window.require("electron").ipcRenderer;
       }
       if (window.require) {
-        ipc.send('web_closeWindows', '')
+        ipc.send("web_closeWindows", "");
       }
     },
 
@@ -127,16 +132,16 @@ export default {
               // 获取token
               // console.log(res);
               const data = res.data.data;
+              const token = data.authorization;
               // debugger;
-              if (!this.isEmpty(data.authorization)) {
-                const token = data.authorization;
+              if (!Cnbi.isEmpty(token)) {
                 localStorage.setItem("authorization", token);
                 // 用户名记住,方便下次登录
                 localStorage.setItem("usename", this.loginUser.usename);
                 var obj = JSON.stringify(data); //转化为JSON字符串
                 localStorage.setItem("database", obj); //返回{"a":1,"b":2}
                 //    token存储到vuex中
-                store.dispatch("setIsAutnenticated", !this.isEmpty(token));
+                store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
                 store.dispatch("setUser", data);
                 // 把用户的状态更新到vuex
                 // alert(data.company.text);
@@ -148,20 +153,18 @@ export default {
                 //this.initSocket(token);
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
-                data.company.id === 121 ?
-                  this.$router.push("/message_page/home") :
-                  this.$router.push("/message_page/home")
+                data.company.id === 121
+                  ? this.$router.push("/message_page/home")
+                  : this.$router.push("/message_page/home");
 
                 // todo: electron
                 if (window.require) {
-                  var ipc = window.require('electron').ipcRenderer
+                  var ipc = window.require("electron").ipcRenderer;
                 }
                 if (window.require) {
-                  ipc.send('web_loginSucess', '')
+                  ipc.send("web_loginSucess", "");
                 }
-
               } else {
-
                 this.loginUser.usename = "";
                 this.loginUser.password = "";
                 let msg = res.data.msg;
@@ -182,170 +185,172 @@ export default {
             });
         }
       });
-    },
+    }
   },
   mounted() {
     // 禁止滑动
-    document.body.addEventListener('touchmove', function(e){
-      e.preventDefault();
-      e.stopPropagation();
-    }, { passive: false });
+    document.body.addEventListener(
+      "touchmove",
+      function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      { passive: false }
+    );
   }
-}
+};
 </script>
 <style>
-  .login .el-checkbox__input.is-checked .el-checkbox__label {
-    color: rgba(0, 0, 0, 0.70);;
-  }
+.login .el-checkbox__input.is-checked .el-checkbox__label {
+  color: rgba(0, 0, 0, 0.7);
+}
 
-  /* .login .el-button primary */
-  /* .el-checkbox__input.is-checked .el-checkbox__label{
+/* .login .el-button primary */
+/* .el-checkbox__input.is-checked .el-checkbox__label{
 
   } */
 </style>
 <style scoped lang="scss">
-  * {
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
+}
+.login {
+  width: 700px;
+  height: 420px;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  user-select: none;
+  box-sizing: border-box;
+  /*border: 1px solid #cccccc;*/
+  box-shadow: #999 0px 0px 10px;
+
+  .left {
+    float: left;
+
+    img {
+      width: 300px;
+    }
   }
-  .login {
-    width: 700px;
-    height: 420px;
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    user-select: none;
+
+  .right {
     box-sizing: border-box;
-    /*border: 1px solid #cccccc;*/
-    box-shadow:#999 0px 0px 10px;
+    width: 400px;
+    height: 420px;
+    float: right;
+    position: relative;
+    padding-left: 50px;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
 
-
-    .left {
-      float: left;
-
-      img {
-        width: 300px;
+    .img1 {
+      margin-right: 16px;
+    }
+    .control-btns {
+      padding-right: 50px;
+      display: flex;
+      justify-content: flex-end;
+      .icon-mini,
+      .icon-close {
+        padding: 5px;
       }
     }
 
-    .right {
-      box-sizing: border-box;
-      width: 400px;
-      height: 420px;
-      float: right;
-      position: relative;
-      padding-left: 50px;
-      background: rgba(255, 255, 255, 1);
+    h3 {
+      font-size: 24px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      line-height: 31px;
+      color: rgba(0, 0, 0, 1);
       opacity: 1;
+    }
 
-      .img1{
-        margin-right: 16px;
-      }
-      .control-btns {
-        padding-right: 50px;
-        display: flex;
-        justify-content: flex-end;
-        .icon-mini,.icon-close{
-          padding: 5px;
-        }
-      }
+    .copy {
+      font-size: 16px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      line-height: 21px;
+      color: rgba(0, 0, 0, 0.8);
+      opacity: 1;
+    }
 
+    .input {
+      padding-right: 50px;
 
-
-      h3 {
-        font-size: 24px;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        line-height: 31px;
-        color: rgba(0, 0, 0, 1);
-        opacity: 1;
+      .username {
+        margin: 20px 0;
       }
 
-      .copy {
-        font-size: 16px;
+      .password {
+        margin-bottom: 17px;
+      }
+
+      .label {
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
-        line-height: 21px;
-        color: rgba(0, 0, 0, 0.80);
+        line-height: 16px;
+        color: rgba(0, 0, 0, 0.7);
         opacity: 1;
       }
 
-      .input {
-        padding-right: 50px;
-
-        .username {
-          margin: 20px 0;
-        }
-
-        .password {
-          margin-bottom: 17px;
-        }
-
-        .label {
-          font-size: 12px;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          line-height: 16px;
-          color: rgba(0, 0, 0, 0.70);
-          opacity: 1;
-        }
-
-        p {
-          font-size: 12px;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          line-height: 16px;
-          color: rgba(90, 139, 236, 1);
-          opacity: 1;
-          float: right;
-        }
-
-        .button {
-          width: 300px;
-          height: 40px;
-          margin-top: 17px;
-          background: rgba(57, 119, 234, 1);
-          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
-          opacity: 1;
-          border-radius: 4px;
-
-          span {
-            font-size: 16px;
-            font-family: Microsoft YaHei;
-            font-weight: bold;
-            line-height: 21px;
-            color: rgba(255, 255, 255, 1);
-            opacity: 1;
-          }
-        }
+      p {
+        font-size: 12px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        line-height: 16px;
+        color: rgba(90, 139, 236, 1);
+        opacity: 1;
+        float: right;
       }
 
-      .buttom {
-        position: absolute;
-        bottom: 25px;
+      .button {
+        width: 300px;
+        height: 40px;
+        margin-top: 17px;
+        background: rgba(57, 119, 234, 1);
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
+        opacity: 1;
+        border-radius: 4px;
 
         span {
-          font-size: 14px;
+          font-size: 16px;
           font-family: Microsoft YaHei;
-          font-weight: 400;
-          line-height: 19px;
-          color: rgba(90, 139, 236, 1);
+          font-weight: bold;
+          line-height: 21px;
+          color: rgba(255, 255, 255, 1);
           opacity: 1;
         }
+      }
+    }
 
-        .img {
-          float: right;
-          margin-left: 96px;
+    .buttom {
+      position: absolute;
+      bottom: 25px;
 
-          img {
-            margin-right: 20px;
-          }
+      span {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        line-height: 19px;
+        color: rgba(90, 139, 236, 1);
+        opacity: 1;
+      }
+
+      .img {
+        float: right;
+        margin-left: 96px;
+
+        img {
+          margin-right: 20px;
         }
       }
     }
   }
+}
 </style>

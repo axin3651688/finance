@@ -1,40 +1,25 @@
 <template>
-  <bi-column v-if="item.options.type === 'column'" :item="item" class="bgwight"></bi-column>
-  <bi-gauge v-else-if="item.options.type === 'gauge'" :item="item" class="bgwight"></bi-gauge>
-  <bi-pie v-else-if="item.options.type === 'pie'" :item="item" class="bgwight"></bi-pie>
-  <bi-line v-else-if="item.options.type === 'line'" :item="item" class="bgwight"></bi-line>
-  <bi-radar v-else-if="item.options.type === 'radar'" :item="item" class="bgwight"></bi-radar>
-  <bi-bar v-else-if="item.options.type === 'bar'" :item="item" class="bgwight"></bi-bar>
-  <bi-funnel v-else-if="item.options.type === 'funnel'" :item="item" class="bgwight"></bi-funnel>
-  <BiSPie v-else-if="item.options.type === 'spie'" :item="item" class="bgwight"></BiSPie>
-  <BiAdvanceChart v-else-if="item.options.type === 'advancechart'" :item="item" class="bgwight"></BiAdvanceChart>
+  <component :is="`bi-${item.options.type}`" :item="item" class="bgwight"></component>
 </template>
 <script>
-import BiColumn from "@c/charts/BiColumn";
-import BiGauge from "@c/charts/BiGauge";
-import BiLine from "@c/charts/BiLine";
-import BiPie from "@c/charts/BiPie";
-import BiRadar from "@c/charts/BiRadar";
-import BiFunnel from "@c/charts/BiFunnel";
-import BiSPie from "@c/charts/BiSPie";
-import BiAdvanceChart from "@c/charts/BiAdvanceChart";
 import { getConfigModelDatas } from "../utils/math";
 export default {
   name: "BiChart",
   components: {
-    BiColumn,
-    BiGauge,
-    BiLine,
-    BiPie,
-    BiRadar,
-    BiFunnel,
-    BiSPie,
-    BiAdvanceChart
+    BiColumn: () => import("@c/charts/BiColumn"),
+    BiGauge: () => import("@c/charts/BiGauge"),
+    BiLine: () => import("@c/charts/BiLine"),
+    BiPie: () => import("@c/charts/BiPie"),
+    BiRadar: () => import("@c/charts/BiRadar"),
+    BiFunnel: () => import("@c/charts/BiFunnel"),
+    BiSPie: () => import("@c/charts/BiSPie"),
+    BiAdvancechart: () => import("@c/charts/BiAdvanceChart"),
+    BiDiv: () => import("@c/charts/BiDiv")
   },
   props: ["item"],
   data() {
     return {
-      flag: false
+      flag: true
     };
   },
   created() {
@@ -65,6 +50,17 @@ export default {
       if (from && children && children.length > 0 && children[0].upData) {
         children[0].upData(this.item);
       }
+      //判断为零时的渲染状态。
+      if (this.item.watchState) {
+        this.setFlagState();
+      }
+    },
+    setFlagState() {
+      if (this.item.datas && this.item.datas.length > 0) {
+        this.flag = true;
+      } else {
+        this.flag = false;
+      }
     }
   },
   watch: {
@@ -73,7 +69,9 @@ export default {
     //    this.item.options.datas = this.tempData;
     //   console.log("111111");
     // }
-
+    flag: function(val) {
+      return this.flag;
+    },
     item: {
       handler(newName, oldName) {
         console.log(1);

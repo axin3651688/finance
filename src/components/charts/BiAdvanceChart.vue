@@ -22,7 +22,7 @@ import sankey from "./data/sankey.js";
 ECharts.registerMap("china", chinaMap);
 
 export default {
-  name: "BiAdvanceChart",
+  // name: "BiAdvanceChart",
   mixins: [EventMixins],
   props: {
     item: {}
@@ -69,6 +69,7 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
+      debugger;
       let options = item.chartOptions;
       if (!item.options.unUseDefaultConfig && options) {
         //不使用默认配制

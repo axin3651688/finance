@@ -18,8 +18,6 @@
         </span>
       </template>
   </el-table-column>
-
-
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
@@ -121,15 +119,16 @@ export default {
       
     //   return "text-align:center";
     // },
-    upData(item) {
-        // debugger;
-      // this.$set(this, "tableData", null);
-      if(item.datas.length > 0 ){
-           this.$set(this, "tableData", item);
-           this.$set(this.tableData, "datas", item.datas);
-      }else{
-          this.$set(this, "tableData", null);
+    __upData(item) {
+      debugger;
+     // this.$set(this.tableData, "datas", null);
+     // this.$set(this.tableData, "datas", []);
+      if(item.datas.length == 0 ){
+         item.datas = null;
+          item.datas = [];
       }
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
       
     },
     /**
@@ -138,14 +137,18 @@ export default {
     getCellValues(datas, col, scope, rows) {
       let colId = col.id,row = scope.row;
       let rowId = row.id || row.nid;
+      let union = false;
       if (rowId && isNaN(rowId)) {
         return "--";
       }
       if(col.subfix || col.subfix === 0 ) {
         rowId = row["id"+col.subfix]; //并列行的后缀
         colId = colId.replace(col.subfix,"");
+        union = true;
+      //  debugger
       }
-      if(!row[colId]){
+      debugger
+      if(!row[colId] && !union){
         return "--";
       }
       let value = 0 ; 

@@ -66,7 +66,7 @@ export default {
     return {
       options: [],
       dialogVisible: false,
-      selectedOptions: [],
+      selectedOptions: []
       // a:[{c:111},{b:222}]
     };
   },
@@ -74,7 +74,7 @@ export default {
   props: {
     /* eslint-disable */
     // item:{
-      data: {
+    data: {
       type: [Array, Object],
       required: true
     },
@@ -89,14 +89,13 @@ export default {
       default: false
     },
     // item: Number
-     list:{
-       type:[Array,Function],
-       default: () => []
-     },
+    list: {
+      type: [Array, Function],
+      default: () => []
+    }
     // }
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     // 格式化数据源
     formatData: function() {
@@ -115,10 +114,7 @@ export default {
   },
   methods: {
     add() {
-      // if(!this.isEmpty(this.item.list)){
-          this.options = this.list
-      // }
-    
+      this.options = this.list;
     },
     handleChange(value, done) {
       this.$confirm("<div>111</div>")
@@ -138,7 +134,7 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      debugger
+      debugger;
       const record = this.formatData[trIndex];
       record._expanded = !record._expanded;
     },
@@ -150,13 +146,12 @@ export default {
       return index === item && record.children && record.children.length > 0;
     }
   },
-  created(){
-    debugger
-    console.log(this)
-    this.options = this.list
+  created() {
+    debugger;
+    console.log(this);
+    this.options = this.list;
     // console.log("1111")
     // console.log(this.item)
-    // console.log(this.isEmpty(this.a))
   }
 };
 </script>

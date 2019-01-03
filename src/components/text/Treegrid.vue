@@ -1,20 +1,24 @@
 <template>
-     <el-table
-      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
-      border
-      :stripe="true"
-      height="item.height || rowClass"
-      :cell-style="cellStyle"
-      :row-style="showRow"
-      class="content"
-      
-      @row-click="onRowClick"
-      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
-    >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
-      </el-tag>
-    </el-table>
+<div>
+  <el-button-group  class="toolbar" >
+    <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+  </el-button-group>
+  <el-table
+    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+    border
+    :stripe="true"
+    height="item.height || rowClass"
+    :cell-style="cellStyle"
+    :row-style="showRow"
+    class="content"
+    @row-click="onRowClick"
+    :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
+  >
+    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+    </el-tag>
+  </el-table>
+</div>  
 </template>
  
 <script>
@@ -35,9 +39,9 @@ export default {
       // list: [],
       dialogVisible: false,
       selectedOptions: [],
-      formatData:[],
-      drillProperties:["text","text_"],//有钻取，给蓝色
-      levelProperties:{text:"level",text_:"level_"}//加缩进
+      formatData: [],
+      drillProperties: ["text", "text_"], //有钻取，给蓝色
+      levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
   name: "TreeGrid",
@@ -65,10 +69,10 @@ export default {
   //     },
   //   }
   // },
-//  mounted() {
-    // this.item.options = this.item.items[0].columns
-   
- // },
+  //  mounted() {
+  // this.item.options = this.item.items[0].columns
+
+  // },
   // __computed: {
   //   // 格式化数据源
   //   formatData() {
@@ -90,37 +94,35 @@ export default {
   // },
   methods: {
     onCellClickDefault(row, column, e) {
-          debugger
+      debugger;
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
         let id = row.id,
-        
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
           id = row.id_; //两列的情况
         }
         this.commonHandler(
           listener,
-          { row: row, column: column,  e: e },
+          { row: row, column: column, e: e },
           { id: id, text: text }
         );
       } else {
         console.info("没有设置事件");
       }
-      console.log(id)
+      console.log(id);
     },
-     onRowClick(row,e,column) {
-       if(this.item.onRowClick && typeof(this.item.onRowClick) == "function"){
-            return this.item.onRowClick(row, column, e,this);
-        }
-        this.onCellClickDefault(row, column, e);
-
-     },
-      cellStyle(row) {
+    onRowClick(row, e, column) {
+      if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
+        return this.item.onRowClick(row, column, e, this);
+      }
+      this.onCellClickDefault(row, column, e);
+    },
+    cellStyle(row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
-        return this.item.cellStyle(row,this);
+        return this.item.cellStyle(row, this);
       }
       let css = "padding: 4px 0;";
       let pro = row.column.property;
@@ -128,11 +130,13 @@ export default {
         return css;
       }
       let levelProperties = this.item.levelProperties || this.levelProperties;
-      let textIndent ="",record = row.row;
+      let textIndent = "",
+        record = row.row;
       let levelPro = levelProperties[pro];
       if (levelPro && record[levelPro]) {
-          let level = record[levelPro] || 1;
-          textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+        let level = record[levelPro] || 1;
+        textIndent =
+          level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
       }
       let drillProperties = this.item.drillProperties || this.drillProperties;
       if (drillProperties.indexOf(pro) != -1) {
@@ -140,147 +144,143 @@ export default {
         css = css + "font-weight:bold;" + textIndent + drill;
         return css;
       } else {
-        return css+textIndent;
+        return css + textIndent;
       }
     },
-     /**
-      * 格式化数据源
-      */
-     convertData(){
-       debugger
-       //alert(this.item.show)
-        let tmp;
-        if (!Array.isArray(this.item.rows)) {
-          tmp = [this.item.rows];
-        } else {
-          tmp = this.item.rows;
-        }
-        const func = this.evalFunc || treeToArray;
-        const args = this.evalArgs
-          ? Array.concat([tmp, this.expandAll], this.evalArgs)
-          : [tmp, this.expandAll];
-       this.item.datas  =  func.apply(null, args);
-        // console.log(this.item.datas)
-        this.$set(this, "item", this.item); 
-     },
+    /**
+     * 格式化数据源
+     */
+    convertData() {
+      debugger;
+      //alert(this.item.show)
+      let tmp;
+      if (!Array.isArray(this.item.rows)) {
+        tmp = [this.item.rows];
+      } else {
+        tmp = this.item.rows;
+      }
+      const func = this.evalFunc || treeToArray;
+      const args = this.evalArgs
+        ? Array.concat([tmp, this.expandAll], this.evalArgs)
+        : [tmp, this.expandAll];
+      this.item.datas = func.apply(null, args);
+      // console.log(this.item.datas)
+      this.$set(this, "item", this.item);
+    },
 
     //  rowClass({ row, rowIndex }) {
-      //  height="item.height || rowClass"
+    //  height="item.height || rowClass"
     //   return "height:100%-64px";
     // },
     upData(item) {
-       this.$set(this, "formatData", ""); 
-      this.$set(this, "formatData", null); 
+      this.$set(this, "formatData", "");
+      this.$set(this, "formatData", null);
       this.item = item;
       // debugger;
       this.convertData();
     },
-    array(datas){
-    // debugger
-    let data=datas
-    // console.log("w",data)
-    let arr = []
-    let index=0
-     let flag = false;
-     //找到父亲
-     let root;
-     let rootItem;
-     for(let i = 0; i < data.length-1;i++){
-       let it = data[i];
-       if(root&&it.scode==root){
+    array(datas) {
+      // debugger
+      let data = datas;
+      // console.log("w",data)
+      let arr = [];
+      let index = 0;
+      let flag = false;
+      //找到父亲
+      let root;
+      let rootItem;
+      for (let i = 0; i < data.length - 1; i++) {
+        let it = data[i];
+        if (root && it.scode == root) {
           root = it.pid;
           rootItem = it;
-       }else if (root) {
-         continue;
-       }else {
-         for(let j = 0;j < data.length-1;j++){
-          let tt = data[j];
-          if(it.scode==tt.pid){
-            root = it.pid;
-            rootItem = it;
-          }else {
-            root = it.pid;
-            rootItem =it;
-            flag = true;
-            break;
+        } else if (root) {
+          continue;
+        } else {
+          for (let j = 0; j < data.length - 1; j++) {
+            let tt = data[j];
+            if (it.scode == tt.pid) {
+              root = it.pid;
+              rootItem = it;
+            } else {
+              root = it.pid;
+              rootItem = it;
+              flag = true;
+              break;
+            }
           }
         }
-       }
-       if(flag){
-         break;
-       }
-    
-    }
-    // console.log(root,rootItem);
+        if (flag) {
+          break;
+        }
+      }
+      // console.log(root,rootItem);
 
-    if(root){
-      // debugger
-      this.tranformData(data,rootItem);
-    }
+      if (root) {
+        // debugger
+        this.tranformData(data, rootItem);
+      }
 
-    this.item.rows = rootItem;
+      this.item.rows = rootItem;
 
-    // for(let i = 0; i < data.length-1;i++){
-    //  flag=true
-    //   for(let j = i+1; j < data.length;j++){
-    //     if (data[i].scode == data[j].pid) {
-    //       debugger
-    //       if (flag) {
-    //           arr[index]=data[i]
-    //              arr[index].children=[data[j]]
-    //          index++
-    //          flag=false
-    //             debugger
-            
-    //       }else{
-    //         //  arr[index-1].children.push(data[j])
-    //       }
-    //     }
+      // for(let i = 0; i < data.length-1;i++){
+      //  flag=true
+      //   for(let j = i+1; j < data.length;j++){
+      //     if (data[i].scode == data[j].pid) {
+      //       debugger
+      //       if (flag) {
+      //           arr[index]=data[i]
+      //              arr[index].children=[data[j]]
+      //          index++
+      //          flag=false
+      //             debugger
 
-    //   } 
-    
-    // }
-    
-    // this.item.rows = arr;
-    // console.log("11",arr);
+      //       }else{
+      //         //  arr[index-1].children.push(data[j])
+      //       }
+      //     }
+
+      //   }
+
+      // }
+
+      // this.item.rows = arr;
+      // console.log("11",arr);
     },
     // 孙子成写的------递归循环法
-    tranformData(data,rootItem) {
+    tranformData(data, rootItem) {
       // debugger
       let me = this;
       let children = [];
       let itemArr = [];
       rootItem.children = children;
-      for(let i = 0;i < data.length;i ++){
+      for (let i = 0; i < data.length; i++) {
         let it = data[i];
-        if(rootItem.scode==it.scode){
+        if (rootItem.scode == it.scode) {
           continue;
         }
-        if(rootItem.scode==it.pid){
+        if (rootItem.scode == it.pid) {
           rootItem.children.push(it);
-        }else {
+        } else {
           itemArr.push(it);
         }
       }
-      if(rootItem.children&&rootItem.children.length>0){
-          for(let i = 0;i <rootItem.children.length;i ++){
-            let tt = rootItem.children[i];
-            me.tranformData(itemArr,tt);
-          }
+      if (rootItem.children && rootItem.children.length > 0) {
+        for (let i = 0; i < rootItem.children.length; i++) {
+          let tt = rootItem.children[i];
+          me.tranformData(itemArr, tt);
+        }
       }
       // console.log(rootItem);
     },
     add() {
       // debugger
-      // if(!this.isEmpty(this.item.options)){
-        // this.dialogVisible = true
-          this.item.options = this.item.items[0].columns
-          console.log( this.item.options)
-      // }
-    
+
+      this.item.options = this.item.items[0].columns;
+      console.log(this.item.options);
     },
     handleChange(value, done) {
-      console.log(value)
+      console.log(value);
       this.$confirm("<div>111</div>")
         .then(_ => {
           done();
@@ -299,8 +299,8 @@ export default {
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
       const record = this.formatData[trIndex];
-      console.log(record)
-      
+      console.log(record);
+
       record._expanded = !record._expanded;
     },
     // 图标显示
@@ -311,13 +311,12 @@ export default {
       return index === item && record.children && record.children.length > 0;
     }
   },
-  created(){
-    console.log("a",this.item)
-    this.item.rows = this.item.config.rows
-  //  this.item.rows = this.item.datas
+  created() {
+    console.log("a", this.item);
+    this.item.rows = this.item.config.rows;
+    //  this.item.rows = this.item.datas
     this.array(this.item.datas);
     this.convertData();
-
   }
 };
 </script>
@@ -374,8 +373,8 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .el-table__body .el-table__row td{
-    padding:4px 0;
+  .el-table__body .el-table__row td {
+    padding: 4px 0;
   }
 }
 </style>
@@ -420,7 +419,7 @@ img {
   position: absolute;
   right: 50%;
   top: 5px;
-  -moz-transform:rotate(-90deg);
-  -webkit-transform:rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
 }
 </style>

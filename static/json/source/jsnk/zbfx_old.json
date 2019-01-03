@@ -1,8 +1,7 @@
 {
     "id": 1,
     "text": "指标分析",
-    "showDims": ["company", "month", "year", "conversion"],
-
+    "showDims": ["company","month","year","conversion"],
     "rows": [{
 
             "id": "1416001",
@@ -145,8 +144,8 @@
         "xtype": "tab"
     },
     "items": [{
-        "id": "firstTab",
-        "layout": {
+        "id":"firstTab",
+        "layout":{
             "xtype": "column"
         },
         "text": "指标分析",
@@ -165,8 +164,7 @@
                     }
                 }],
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -182,19 +180,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
             {
@@ -216,8 +201,7 @@
                     }
                 }],
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -233,23 +217,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-
-                    }]
                 }
             },
             {
@@ -267,8 +234,7 @@
                     }
                 }],
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -284,21 +250,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
 
@@ -308,8 +259,7 @@
                 "text": "净资产收益率",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -325,22 +275,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
 
@@ -350,28 +284,11 @@
                 "text": "营业预算执行率",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "gauge",
+                    "type": "gauge",
                     "getData": {
-                        "type": 2,
-                        "columns": [{
-                            "id": "text",
-                            "prop": "name"
-                        }, {
-                            "id": "A",
-                            "prop": "value"
-                        }],
-                        "row": {
-                            "ids": {
-                                "items": ["235"]
-                            }
-                        }
+                        "value": "A$1416001",
+                        "type": 1
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                        "type": "gauge"
-                    }]
                 }
             },
             {
@@ -380,28 +297,11 @@
                 "text": "利润总额预算执行率",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "gauge",
+                    "type": "gauge",
                     "getData": {
-                        "type": 2,
-                        "columns": [{
-                            "id": "text",
-                            "prop": "name"
-                        }, {
-                            "id": "A",
-                            "prop": "value"
-                        }],
-                        "row": {
-                            "ids": {
-                                "items": ["236"]
-                            }
-                        }
+                        "value": "A$1416001",
+                        "type": 1
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                        "type": "gauge"
-                    }]
                 }
             },
             {
@@ -410,28 +310,11 @@
                 "text": "归属于母公司净利润预算执行率",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "gauge",
+                    "type": "gauge",
                     "getData": {
-                        "type": 2,
-                        "columns": [{
-                            "id": "text",
-                            "prop": "name"
-                        }, {
-                            "id": "A",
-                            "prop": "value"
-                        }],
-                        "row": {
-                            "ids": {
-                                "items": ["238"]
-                            }
-                        }
+                        "value": "A$1416001",
+                        "type": 1
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                        "type": "gauge"
-                    }]
                 }
             },
             {
@@ -440,29 +323,11 @@
                 "text": "净资产收益率预算执行情况",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "gauge",
+                    "type": "gauge",
                     "getData": {
-                        "type": 2,
-                        "columns": [{
-                            "id": "text",
-                            "prop": "name"
-                        }, {
-                            "id": "A",
-                            "prop": "value"
-                        }],
-                        "row": {
-                            "ids": {
-                                "items": ["1416001"]
-                            }
-                        }
+                        "value": "A$1416001",
+                        "type": 1
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                        "type": "gauge",
-
-                    }]
                 }
             },
             {
@@ -471,8 +336,7 @@
                 "text": "应收款项周转率",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -488,22 +352,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
             {
@@ -512,8 +360,7 @@
                 "text": "归属于母公司所有者权益",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -529,22 +376,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
             {
@@ -553,10 +384,9 @@
                 "text": "存货",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
-                        "type": 2,
+                        "type":2,
                         "columns": [{
                             "id": "A"
                         }, {
@@ -570,22 +400,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
             {
@@ -594,8 +408,7 @@
                 "text": "三项费用合计",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "bar",
+                    "type": "column",
                     "getData": {
                         "type": 2,
                         "columns": [{
@@ -611,22 +424,6 @@
                         "reverse": true,
                         "scope": true
                     }
-                },
-                "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
-                    "series": [{
-                        "type": "bar"
-                    }]
                 }
             },
             {
@@ -635,34 +432,16 @@
                 "text": "应收款项周转率预算执行情况",
                 "weight": 6,
                 "options": {
-                    "type": "advancechart",
-                    "subType": "gauge",
+                    "type": "gauge",
                     "getData": {
-                        "type": 2,
-                        "columns": [{
-                            "id": "text",
-                            "prop": "name"
-                        }, {
-                            "id": "A",
-                            "prop": "value"
-                        }],
-                        "row": {
-                            "ids": {
-                                "items": ["240"]
-                            }
-                        }
+                        "value": "A$1416001",
+                        "type": 1
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                        "type": "gauge",
-
-                    }]
                 }
             }, {
                 "xtype": "chart",
                 "id": "lrb3",
-                "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
+                "text": "利润表3",
                 "weight": 18,
                 "config": {
                     "_cube": {
@@ -675,18 +454,18 @@
                         "cubeId": 2
 
                     },
-                    "generateVar": {
-                        "periodCount": 12,
-                        "compareType": "0&-1",
-                        "varName": "rows",
-                        "reverse": true
-                    },
+                    "generateVar":{
+                        "periodCount":12,
+                        "compareType":"0&-1",
+                         "varName":"rows",
+                         "reverse":true
+                     },
                     "random": {
                         "min": 100,
                         "max": 100000
                     },
                     "mainDim": "period",
-                    "needDims": ["company", "year", "month"],
+                    "needDims": ["company", "year","month"],
                     "type": 1,
                     "rows": [{
                             "id": "{year}01",
@@ -784,8 +563,7 @@
                 },
 
                 "options": {
-                    "type": "advancechart",
-                    "subType": "line",
+                    "type": "line",
                     "getData": {
                         "type": 3,
                         "columns": [{
@@ -822,15 +600,6 @@
                         }]
 
                     }
-                },
-                "chartOptions": {
-                    "series": [{
-                            "type": "line"
-                        },
-                        {
-                            "type": "line"
-                        }
-                    ]
                 }
             }
         ]

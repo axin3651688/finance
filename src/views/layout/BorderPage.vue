@@ -1,5 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
+    <component :is="user.company.id === 121 ? 'tjsp' : 'jsnk'"></component>
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -12,19 +13,15 @@
 </template>
 
 <script>
-import HeadNav from "./topnav/HeadNav";
-import leftMenu from "./sidebar/Sidebar";
 import ResizeMixin from "./mixin/ResizeHandler";
-import "@/styles/black/index.scss"; // global css
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
-  data() {
-    return {};
-  },
   components: {
-    HeadNav,
-    leftMenu
+    HeadNav: () => import("./topnav/HeadNav"),
+    leftMenu: () => import("./sidebar/Sidebar"),
+    jsnk: () => import("./topnav/jsnk.vue"),
+    tjsp: () => import("./topnav/tjsp.vue")
   },
   mixins: [ResizeMixin],
   computed: {
@@ -38,10 +35,7 @@ export default {
       };
     }
   },
-  created() {
-    // alert("来created..." + this.isShow());
-  },
-
+  created() {},
   methods: {
     ...mapActions(["ToggleSideBar"]),
     isShow() {

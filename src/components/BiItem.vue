@@ -1,34 +1,19 @@
 <template>
-  <bi-table v-if="flag && item.show && item.xtype == 'bi-table'" :item.sync="item" ref="child"></bi-table>
-  <bi-text v-else-if="flag && item.show && item.xtype == 'bi-text'" :item.sync="item" ref="child"></bi-text>
-  <bi-chart v-else-if="flag && item.show && item.xtype == 'chart'" :item.sync="item" ref="child"></bi-chart>
-  <tree-grid v-else-if="flag && item.show && item.xtype == 'tree-grid'" :item.sync="item" ref="child"></tree-grid>
-  <s-tree-grid v-else-if="flag && item.show && item.xtype == 'stree-grid'" :item.sync="item" ref="child"></s-tree-grid>
-  <bi-flhz v-else-if="flag && item.show && item.xtype == 'bi-flhz'" :item.sync="item" ref="child"></bi-flhz>
-  <!-- <bi-button v-else-if="flag && item.show && item.xtype == 'button'" :item.sync="item" ref="child"></bi-button> -->
+  <component v-if="flag && item.show" :is="item.xtype" :item.sync="item" ref="child"></component>
 </template>
 
 <script>
-import BiTable from "./BiTable";
-import BiChart from "./BiChart";
-import BiText from "./BiText";
-import TreeGrid from "./text/Treegrid.vue";
-import STreeGrid from "./text/STreegrid.vue";
-import BiFlhz from "./BiFlhz";
-import BiButton from "./BiButton";
-// import ElCascader from "./text/ElCascader.vue";
-
 export default {
   name: "BiItem",
   props: ["item", "config", "datas"],
   components: {
-    BiTable,
-    BiChart,
-    BiText,
-    TreeGrid,
-    STreeGrid,
-    BiFlhz,
-    BiButton
+    BiTable: () => import("./BiTable"),
+    Chart: () => import("./BiChart"),
+    BiText: () => import("./BiText"),
+    TreeGrid: () => import("./text/Treegrid.vue"),
+    STreeGrid: () => import("./text/STreegrid.vue"),
+    BiFlhz: () => import("./BiFlhz"),
+    BiButton: () => import("./BiButton")
   },
   data() {
     return {
@@ -43,13 +28,11 @@ export default {
     };
   },
   created() {
-    debugger
     console.log(this.item);
     // debugger
     // console.info(this.item);
   },
   mounted() {
-    debugger
     this.loadItems(this.item);
   },
   watch: {
@@ -68,11 +51,12 @@ export default {
       let config = this.item.config;
       if (config) {
         //config.rows = this.item.rows || config.rows || this.config.rows;
-       //config.columns = this.item.columns || config.columns || this.config.columns || this.item.items[0].columns;
-       config.rows =  config.rows||this.item.rows|| this.config.rows;
-       config.columns = config.columns ||this.item.columns|| this.config.columns;//|| config.columns || this.config.columns || this.item.items[0].columns;
-       config.type = config.type || 2;
-      //  this.item.config = config;
+        //config.columns = this.item.columns || config.columns || this.config.columns || this.item.items[0].columns;
+        config.rows = config.rows || this.item.rows || this.config.rows;
+        config.columns =
+          config.columns || this.item.columns || this.config.columns; //|| config.columns || this.config.columns || this.item.items[0].columns;
+        config.type = config.type || 2;
+        //  this.item.config = config;
         this.hasConfig = true;
         this.$emit("getDatas", this.item, this, "company");
       } else {

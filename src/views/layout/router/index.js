@@ -38,56 +38,6 @@ const router = new Router({
             import('@v/message/Message.vue')
         }
       ]
-    }, {
-      path: '/',
-      name: '我的工作台',
-      component: () =>
-        import('@v/layout/TjspPage'),
-      children: [{
-          path: '/tjsp/module',
-          name: 'module',
-          component: () =>
-            import('@v/BiModule'),
-        },
-        // 列表
-        {
-          path: '/list',
-          name: 'list',
-          component: () =>
-            import('@v/intelligenceReport/List.vue')
-        },
-        {
-          path: '/company',
-          name: 'company',
-          component: () =>
-            import('@v/test/Company.vue')
-        }, {
-          path: '/user',
-          name: 'user',
-          component: () =>
-            import('@v/test/User.vue')
-        }, {
-          path: '/role',
-          name: 'role',
-          component: () =>
-            import('@v/test/Role.vue')
-        },
-
-        {
-          path: '/cross',
-          name: 'cross',
-          component: () =>
-            import('@v/intelligenceReport/Cross_table.vue')
-        },
-        {
-          path: '/a',
-          name: 'a',
-          component: () =>
-            import('@v/intelligenceReport/a.vue')
-        },
-
-
-      ]
     },
 
     {
@@ -203,7 +153,7 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: () =>
-        import('@v/layout/login'),
+        import('@v/layout/login/Login'),
     },
     {
       path: '*',
@@ -223,6 +173,7 @@ router.beforeEach((to, from, next) => {
   if (!authorization) {
     authorization = localStorage.authorization ? true : false;
   }
+  // debugger;
   if (to.path == "/login") {
     next();
   } else {
