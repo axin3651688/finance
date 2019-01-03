@@ -14,10 +14,11 @@
       height="item.height || rowClass"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
-      
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
+      <!--  :summary-method="getSummaries"  -->
+     <!-- :show-summary="item.showSummary || true"     -->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" >
         <!-- <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/> -->
         <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild" v-if="!cc.hidden"/>
@@ -226,6 +227,24 @@ export default {
       // // console.log("b",b)
       // // console.log(event.target)
       // console.log(column)
+    },
+
+    getSummaries(param){
+        debugger;
+        const { columns, data } = param;
+            const sums = {};
+            columns.forEach((column, index) => {
+               let datas = 0;
+               if(column.property.length == 1){
+                   data.forEach((row, index) => {
+                       datas+=row[column.property];
+                   });
+               }
+               sums[column.property] = datas;
+                  
+            });
+            debugger;
+            return sums;
     },
 
     /**
