@@ -36,7 +36,29 @@ const router = new Router({
           name: 'message',
           component: () =>
             import('@v/message/Message.vue')
+        },
+        // 公司
+        {
+          path: '/company',
+          name: 'company',
+          component: () =>
+            import('@v/test/Company.vue')
+        },
+        // 用户
+        {
+          path: '/user',
+          name: 'user',
+          component: () =>
+            import('@v/test/User.vue')
+        },
+        // 角色
+        {
+          path: '/role',
+          name: 'role',
+          component: () =>
+            import('@v/test/Role.vue')
         }
+
       ]
     },
 

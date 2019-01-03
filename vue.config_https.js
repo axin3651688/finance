@@ -41,10 +41,18 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
+<<<<<<< HEAD:vue.config.js
+        // target: 'http://192.168.1.118:8081', //gjx
+        //  target: 'http://192.168.2.34:8081',
+        // target: 'http://192.168.1.138:8000',
+        // target: 'http://192.168.2.34:8081',
+        target: 'http://192.168.1.149:8000',
+=======
         target: 'http://192.168.1.118:8081', //gjx
         //  target: 'http://192.168.2.34:8081',
         // target: 'http://192.168.1.138:8000',
         // target: 'http://192.168.1.149:8000',
+>>>>>>> 6a96f929ea7d430e6eca665e769d2ad61104a7bd:vue.config_https.js
 
         ws: true,
         changOrigin: true,

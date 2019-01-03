@@ -31,7 +31,8 @@
         {
             "text": "公司编码",
             "type":"string",
-            "id": "ID"
+            "id": "ID",
+            "isTree":true
         },
         {
             "text": "公司名称",
