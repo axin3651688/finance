@@ -31,7 +31,7 @@
         {
             "text": "公司编码",
             "type":"string",
-            "id": "ID",
+            "id": "id",
             "isTree":true
         },
         {
@@ -101,9 +101,9 @@
        }
     }],
       "onRowClick":function(row,e,col,$vue){
-      //     debugger
+           debugger
           let id = row.scode, text = row.sname ;
-          if(this.drillProperties.indexOf(column.property) != -1){
+          if(this.drillProperties.indexOf(e.property) != -1){
             if(row.jzhs && row.jzhs>0){  
                 $vue.commonHandler(
                     {

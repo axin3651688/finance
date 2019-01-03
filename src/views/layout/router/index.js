@@ -141,12 +141,7 @@ const router = new Router({
           component: () =>
             import('@v/test/BiColumn.vue')
         },
-        // {
-        //   path: '/t',
-        //   name: 't',
-        //   component: () =>
-        //     import('@v/intelligenceReport/t.vue')
-        // },
+
 
         // 填报表格
         {
@@ -155,13 +150,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Itable.vue')
         },
-        // 展现
-        // {
-        //   path: '/show',
-        //   name: 'show',
-        //   component: () =>
-        //     import('@v/intelligenceReport/show.vue')
-        // },
+
         {
           path: '/Fill',
           name: 'Fill',
