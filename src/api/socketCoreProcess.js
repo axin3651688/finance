@@ -2,6 +2,8 @@ import {
   Message,
   MessageBox
 } from 'element-ui'
+import router from '@v/layout/router'
+
 import {
   login
 } from "../api/interface.js";

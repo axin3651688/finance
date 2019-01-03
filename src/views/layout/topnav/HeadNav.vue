@@ -117,10 +117,15 @@
       :modal-append-to-body="false"
     >
       <div class="img-box">
+<<<<<<< HEAD
         <!-- loginpic   ../../../assets/infoshow.png -->
         <!-- <img :src="user.company.id == 121 ?  require('../../../assets/loginpic.png' ): require(' ../../../assets/infoshow.png')"> -->
         <img src="../../../assets/loginpic.png"  alt="">
         
+=======
+        <!-- <img src="../../../assets/infoshow.png"> -->
+        <img src="../../../assets/tjsp_info.png"> <!-- zdk 加的 -->
+>>>>>>> 1c7bdd943a135f5d983736d910a79f5821536dac
       </div>
       <el-row class="row-bg">
         <div class="user">
@@ -257,9 +262,9 @@ export default {
       }
     },
     getname(e) {
-      console.log("a:", e);
+      // console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.id;
+      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
       this.companyName_cache = e.text;
     },
     showDilog() {

@@ -19,12 +19,6 @@ export default {
     return {
       flag: false,
       hasConfig: false
-      // id:"",
-      // text:"",
-      // config:{},
-      // options:{},
-      // xtype:"",
-      // datas:{}
     };
   },
   created() {

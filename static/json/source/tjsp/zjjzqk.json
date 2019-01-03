@@ -7,7 +7,7 @@
   },
   "showDims": ["year","month","company","conversion"],
   "items": [{
-    "xtype": "TreeGrid",
+    "xtype": "tree-grid",
     "id": "123456",
     "text": "资金集中情况明细表",
     "show":true,
@@ -18,7 +18,7 @@
          "cubeId":5
       },
       "mainDim":"itempoint",
-      "needDims":["year","month","company"],
+      "needDims":["year","month","company","conversion"],
       "random":{"min":100,"max":100000},
       "type":1     
    },
@@ -83,7 +83,8 @@
       {
           "text": "公司编码",
           "type":"string",
-          "id": "gsbm"
+          "id": "gsbm",
+          "isTree":true
       },
       {
           "text": "公司名称",

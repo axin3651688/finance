@@ -16,7 +16,7 @@
             "cubeId":4
         },
         "mainDim":"itempoint",
-        "needDims":["year","month","company"],
+        "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1
     
@@ -48,7 +48,7 @@
       }],
       "columns":[
         {
-          "id": "B_",
+          "id": "A_",
           "type": "decimal",
           "text": "年初余额",
           "subfix":"_",
@@ -75,13 +75,13 @@
         
         
         {
-          "id": "A",
+          "id": "B",
           "type": "decimal",
           "text": "期末余额",
           "width":"150px"
         },
         {
-          "id": "B",
+          "id": "A",
           "type": "decimal",
           "text": "年初余额",
           "width":"150px"
@@ -107,7 +107,7 @@
           "width":"60px"
         },
         {
-          "id": "A_",
+          "id": "B_",
           "type": "decimal",
           "subfix":"_",
           "text": "期末余额",

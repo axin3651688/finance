@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     upData(item) {
-      debugger;
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
       let refs = this.$refs;

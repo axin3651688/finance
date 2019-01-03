@@ -218,7 +218,7 @@ export default {
                   cItem.config.columns,
                   older.id
                 );
-                children.$set(children.item, "datas", datas);
+                children.$set(children.item, "datas", cc);
                 children.setItems(children.item, true);
               }
             }
@@ -545,7 +545,7 @@ export default {
       debugger;
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
-      if (unit && unit.id > 1) {
+      if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }
       /**

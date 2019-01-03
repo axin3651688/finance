@@ -2,7 +2,7 @@
 
 <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.isTree  && tableData.xtype==='tree-grid'"
+    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -120,15 +120,21 @@ export default {
     //   return "text-align:center";
     // },
    upData(item) {
-      debugger;
+     // debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
-      if(item.datas.length == 0 ){
-          item.datas = null;
-          item.datas = [];
-      }
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
+      // if(item.datas.length == 0 ){
+      //     item.datas = null;
+      //     item.datas = [];
+      // }
+      // this.$set(this, "tableData", item);
+      // this.$set(this.tableData, "datas", item.datas);
+
+          
+          this.$set(this,"tableData",null);
+          this.$set(this,"tableData",item);
+          this.$set(this.tableData,"datas",item.datas);
+
       
     },
     /**
@@ -147,7 +153,7 @@ export default {
         union = true;
       //  debugger
       }
-      debugger
+      //debugger
       if(!row[colId] && !union){
         return "--";
       }
