@@ -256,7 +256,7 @@ export default {
     getname(e) {
       // console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.lvel == 1 ? e.customerId : e.id;
+      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
       this.companyName_cache = e.text;
     },
     showDilog() {
