@@ -57,7 +57,7 @@
             <add-from-groups :groupId="groupId"></add-from-groups>
           </el-tab-pane>
           <el-tab-pane label="我的好友" name="friends">
-            <add-from-friends></add-from-friends>
+            <add-from-friends :groupId="groupId"></add-from-friends>
           </el-tab-pane>
           <!--inset-shadow 阴影效果-->
           <div class="inset-shadow"></div>

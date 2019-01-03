@@ -16,7 +16,7 @@
     </div>
     <ul class="middle">
       <!--工作状态-->
-      <li v-if="userInfo.work.text">
+      <li v-if="userInfo.work">
         <div class="icon img-box">
           <img src="@ma/icon/my_state_fly.svg" alt="">
         </div>

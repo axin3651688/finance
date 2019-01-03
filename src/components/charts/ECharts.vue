@@ -1,10 +1,9 @@
 <template>
-<div class="echarts" />
+  <div class="echarts"/>
 </template>
 
 <style>
 .echarts {
-  width: 100%;
   height: 294px;
 }
 </style>
@@ -13,7 +12,7 @@
 import echarts from "echarts";
 import debounce from "lodash/debounce";
 import { addListener, removeListener } from "resize-detector";
-
+// :style="{'padding-top':item.class_top ? item.class:'24px'}"
 // enumerating ECharts events for now
 const EVENTS = [
   "legendselectchanged",
@@ -228,21 +227,21 @@ export default {
   },
   created() {
     // 内置集成公共属性,减少代码
-    let t=this.options.title
+    let t = this.options.title;
     if (t) {
-      if (!t.hasOwnProperty('x')) {
-          this.options.title = {
-      text: t.text,
-      top: 10,
-      left: "4%",
-      textStyle: {
-        fontSize: 16
+      if (!t.hasOwnProperty("x")) {
+        this.options.title = {
+          text: t.text,
+          top: 10,
+          left: "4%",
+          textStyle: {
+            fontSize: 16
+          }
+        };
+        subtext: t.subtext;
       }
-      }
-      subtext: t.subtext
-    };
     }
-   
+
     if (!this.manualUpdate) {
       this.$watch(
         "options",
