@@ -167,16 +167,16 @@ export default {
         this.receive.tooltip.formatter =
           titleText + ":" + 
           Math.decimalToLocalString(item.options.datas) +"% <br/> 本年累计:" +
-          Math.decimalToLocalString((tempData[0].bnlj || 0)) + "（元）" +
+          Math.decimalToLocalString((tempData[0].bnlj || 0)) + "万元" +
           "<br/> 本年目标:" +
-          Math.decimalToLocalString((tempData[0].bnmb || 0)) + "（元）";
+          Math.decimalToLocalString((tempData[0].bnmb || 0)) + "万元";
       } else {
         this.receive.tooltip.formatter =
           titleText + ":" + 
           Math.decimalToLocalString((0)) +"% <br/> 本年累计:" +
-          Math.decimalToLocalString((0)) + "（元）" +
+          Math.decimalToLocalString((0)) + "万元" +
           "<br/> 本年目标:" +
-          Math.decimalToLocalString((0)) + "（元）";
+          Math.decimalToLocalString((0)) + "万元";
       }
     }
   }
