@@ -44,14 +44,15 @@ export default function webSocket(data) {
     };
 
     let closeShow = function () {
-        Notification.success({
-            title: '提示',
-            message: '已断开连接',
-            showClose: true,
-            position: "bottom-right"
-        });
-        // TODO: 加心跳检测
-        alert('已断开连接')
+        //zdk 2019-1-3 11:10:38 注释   没搞好就别放进来
+        // Notification.success({
+        //     title: '提示',
+        //     message: '已断开连接',
+        //     showClose: true,
+        //     position: "bottom-right"
+        // });
+      //  // TODO: 加心跳检测
+        // alert('已断开连接')
     };
 
     websocket.onclose = function (evnt) {
