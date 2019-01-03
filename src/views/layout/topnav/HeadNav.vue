@@ -117,7 +117,8 @@
       :modal-append-to-body="false"
     >
       <div class="img-box">
-        <img src="../../../assets/infoshow.png">
+        <!-- <img src="../../../assets/infoshow.png"> -->
+        <img src="../../../assets/123.png"> <!-- zdk 加的 -->
       </div>
       <el-row class="row-bg">
         <div class="user">
@@ -253,9 +254,9 @@ export default {
       }
     },
     getname(e) {
-      console.log("a:", e);
+      // console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.id;
+      this.companyId = e.lvel == 1 ? e.customerId : e.id;
       this.companyName_cache = e.text;
     },
     showDilog() {
