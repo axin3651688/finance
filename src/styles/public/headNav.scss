@@ -58,6 +58,10 @@
         height: $topHeight;
         background: $top-background;
 
+        .button {
+            padding: 7px 20px !important;
+        }
+
         .topcontent {
             line-height: $topcontent-line-height;
             height: $topcontent-line-height;
@@ -244,7 +248,9 @@
 
                         & img {
                             width: 150px;
+                            height: 150px;
                             border-radius: 50%;
+                            overflow: hidden;
                         }
                     }
 
@@ -253,11 +259,8 @@
                         height: 420px;
                         overflow: hidden;
                         float: left;
-
-                        img {
-                            width: 100%;
-                            height: 100%;
-                        }
+                        background-image: url($infoImg);
+                        // background-repeat: no-repeat;
                     }
 
                     .btn-primary {

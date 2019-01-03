@@ -2,8 +2,6 @@ import {
   Message,
   MessageBox
 } from 'element-ui'
-import router from '@v/layout/router'
-
 import {
   login
 } from "../api/interface.js";
@@ -125,13 +123,6 @@ export default function socketCoreProcess(websocket, datas) {
 
   function reloadLogin(data) {
     console.log(data.data);
-    if (!Cnbi.isEmpty(data.data)) {
-      let receive = data.data.user.id;
-      let local = JSON.parse(localStorage.database).user.id;
-      if (receive === local) {
-        console.log("传来的ID和本地id一样,啥也不做");
-      }
-    } else {
       MessageBox.confirm(data.msg, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -150,7 +141,6 @@ export default function socketCoreProcess(websocket, datas) {
       }).catch(() => {
         router.push("/message_login");
       })
-    }
 
   }
 }
