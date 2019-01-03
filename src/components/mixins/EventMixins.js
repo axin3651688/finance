@@ -96,12 +96,13 @@ export default {
      * unshift()方法是向数组的开头添加一个或多个元素
      */
     addTab(params, listener, bb) {
-      
-      let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
+     // let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
+     let tab = this.$parent.$parent;
       let module = tab.$parent.$parent;
       if (!bb) {
         bb = this.item;
       }
+      // debugger;
       let text = bb.text;
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
