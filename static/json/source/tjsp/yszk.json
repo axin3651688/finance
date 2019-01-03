@@ -75,6 +75,7 @@
                         {
                             "id": "sk",
                             "type": "string",
+                            "width":"330",
                             "text": "客商"
                         },
                         {
@@ -264,10 +265,12 @@
                         {
                             "text": "公司编码",
                             "type":"string",
-                            "id": "scode"
+                            "id": "id",
+                            "isTree":true
                         },
                         {
                             "text": "公司名称",
+                            "width":"350",
                             "type":"string",
                             "id": "gsmc"
                         },
@@ -398,12 +401,13 @@
                     },
                     "cellStyle":function(row,obj){
                         debugger
-                        for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
-                          let pro = obj.item.config.columns[row.columnIndex].id ; 
+                        // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
+                        //   let pro = obj.item.config.columns[row.columnIndex].id ; 
                       
                       let css = "padding: 4px 0;";
                       // let pro = obj.item.config.columns;
                       // let pro = "";
+                      let pro = row.column.property;
                       if (!pro) {
                           return css;
                       }
@@ -430,7 +434,7 @@
                       }
                     }
                
-                  }
+                //   }
                     
 
                 }

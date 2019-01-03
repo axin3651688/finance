@@ -98,7 +98,7 @@ export default {
     addTab(params, listener, bb) {
       // let module = this.$parent.$parent;
      //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
-      let module = tab.$parent.$parent;
+      // let module = tab.$parent.$parent;
       if (!bb) {
         bb = this.item;
       }

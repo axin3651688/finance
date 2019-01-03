@@ -254,9 +254,9 @@ export default {
       }
     },
     getname(e) {
-      console.log("a:", e);
+      // console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.id;
+      this.companyId = e.lvel == 1 ? e.customerId : e.id;
       this.companyName_cache = e.text;
     },
     showDilog() {

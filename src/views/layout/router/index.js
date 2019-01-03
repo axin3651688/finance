@@ -36,7 +36,29 @@ const router = new Router({
           name: 'message',
           component: () =>
             import('@v/message/Message.vue')
+        },
+        // 公司
+        {
+          path: '/company',
+          name: 'company',
+          component: () =>
+            import('@v/test/Company.vue')
+        },
+        // 用户
+        {
+          path: '/user',
+          name: 'user',
+          component: () =>
+            import('@v/test/User.vue')
+        },
+        // 角色
+        {
+          path: '/role',
+          name: 'role',
+          component: () =>
+            import('@v/test/Role.vue')
         }
+
       ]
     },
 
@@ -119,12 +141,7 @@ const router = new Router({
           component: () =>
             import('@v/test/BiColumn.vue')
         },
-        // {
-        //   path: '/t',
-        //   name: 't',
-        //   component: () =>
-        //     import('@v/intelligenceReport/t.vue')
-        // },
+
 
         // 填报表格
         {
@@ -133,13 +150,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Itable.vue')
         },
-        // 展现
-        // {
-        //   path: '/show',
-        //   name: 'show',
-        //   component: () =>
-        //     import('@v/intelligenceReport/show.vue')
-        // },
+
         {
           path: '/Fill',
           name: 'Fill',
