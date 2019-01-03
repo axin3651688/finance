@@ -265,8 +265,7 @@
                         {
                             "text": "公司编码",
                             "type":"string",
-                            "id": "id",
-                            "isTree":true
+                            "id": ""
                         },
                         {
                             "text": "公司名称",
