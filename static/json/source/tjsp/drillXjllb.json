@@ -10,7 +10,8 @@
 			"xtype": "STreeGrid",
 			
 			"id": "0002",
-			"text": "现金流量表二级",
+            "text": "现金流量表二级",
+            "showDims":["year","month","company","conversion"],
 			"weight": 24,
             "show":true,
             "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod

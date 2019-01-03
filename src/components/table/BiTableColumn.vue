@@ -120,7 +120,7 @@ export default {
     //   return "text-align:center";
     // },
     __upData(item) {
-      debugger;
+     // debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
       if(item.datas.length == 0 ){
@@ -147,7 +147,7 @@ export default {
         union = true;
       //  debugger
       }
-      debugger
+     // debugger
       if(!row[colId] && !union){
         return "--";
       }

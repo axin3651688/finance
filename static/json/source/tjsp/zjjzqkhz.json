@@ -20,11 +20,12 @@
         "random":{"min":100,"max":100000},
         "type":1     
       },
-     
+      "showDims": ["year","month","company","conversion"],
       "columns": [
         {
           "text": "集中度",
           "type":"decimal",
+          "unit":"%",
           "id": "jzd"
         },
         {
@@ -52,6 +53,7 @@
           {
             "text": "掌控面",
             "type":"decimal",
+            "unit":"%",
             "id": "gkm"
           },
           {

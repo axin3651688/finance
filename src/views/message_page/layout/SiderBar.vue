@@ -1,3 +1,4 @@
+<!--从element-ui的dialog改版过来的-->
 <template>
   <div class="SiderBar">
     <div class="siderbar-top">
@@ -5,30 +6,11 @@
         <div class="login-info" @click="showMyInfo=!showMyInfo">
           <img :src="user.user.avatar" :title="user.user.trueName">
         </div>
-        <transition name="el-fade-in-linear">
-          <my-dialog :value="showMyInfo" class="my-info-dialog">
-            <div class="top">
-              <div class="img-box">
-                <img :src="user.user.avatar" :title="user.user.trueName">
-              </div>
-              <div class="info">
-                <h3 class="info-title">mingzi
-                  <i class="icon icon-gender"></i>
-                </h3>
-                <p class="info-text">个性签名</p>
-              </div>
-            </div>
-            <ul class="middle">
-              <li v-for="(item, index) in 3" :key="index">
-                <i class="icon"></i>
-                出差中···
-              </li>
-            </ul>
-            <div class="bottom">
-              <my-btn>分享名片</my-btn>
-            </div>
-          </my-dialog>
-        </transition>
+
+        <my-dialog :value="showMyInfo" class="my-info-dialog">
+          <user-info></user-info>
+        </my-dialog>
+
       </div>
     </div>
     <div class="siderbar-middle">
@@ -95,7 +77,8 @@ export default {
   },
   components: {
     MyBtn: () => import('@mc/MyBtn'),
-    MyDialog: () => import('@mc/MyDialog')
+    MyDialog: () => import('@mc/MyDialog'),
+    UserInfo: () => import('@mc/user_info/UserInfo.vue')
   },
   computed: {
     ...mapGetters(['user'])
@@ -136,8 +119,8 @@ export default {
   @import "@ms/index.scss";
 
   .SiderBar {
-    @include flex($direction: column);
     position: relative;
+    box-sizing: border-box;
     background: $colorBgSiderBar;
     width: $sizeSiderBarWidth;
     height: 100%;
@@ -256,86 +239,14 @@ export default {
     }
   }
 
-  /deep/ .my-info-dialog {
-    color: #000;
-    width: 320px;
-    /*height: 400px;*/
+  .my-info-dialog {
+    width: $sizeNavBarWidth;
     z-index: 100;
     box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.3);
-    top: 20px;
+    top: 100%;
     left: 100%;
-    border-radius: 8px;
-
-    .top {
-      @include flex();
-      align-items: center;
-      padding: 30px 20px;
-      font-size: 14px;
-      color: $colorText2;
-
-      .img-box {
-        @include imgBox($width: 60px, $height: 60px, $borderRadius: 50%);
-        background: #eee;
-      }
-
-      .info {
-        margin-left: 20px;
-
-        .info-title {
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-
-          .icon {
-            width: 16px;
-            height: 16px;
-            overflow: hidden;
-            margin-left: 10px;
-            border-radius: 4px;
-            background: $colorTheme;
-          }
-
-          .icon-gender {
-            /*background: ;*/
-          }
-        }
-
-        .info-text {
-          margin-top: 10px;
-        }
-      }
-    }
-
-    .middle {
-      padding: 0 20px;
-      color: $colorText2;
-
-      .icon {
-        @include icon($width: 24px, $height: 24px);
-        background: $colorTheme;
-      }
-
-      .icon__state {
-      }
-
-      .icon__phone {
-      }
-
-      .iocn__email {
-      }
-
-      > li {
-        padding-left: 44px;
-      }
-    }
-
-    .bottom {
-      text-align: center;
-
-      .btn {
-        @include myBtn($borderRadius: 8px, $height: 36px, $width: 100px);
-        margin: 40px auto;
-      }
-    }
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: #ffffff;
   }
 </style>

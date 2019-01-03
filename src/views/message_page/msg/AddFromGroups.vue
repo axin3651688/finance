@@ -132,7 +132,7 @@ class Group {
 class Member {
   constructor(memberData) {
     this._init(memberData);
-    this.isChecked = false
+    this.isChecked = false;
   }
 
   _init(obj) { // 用传进来的对象初始化一个 member 成员
@@ -167,6 +167,7 @@ class AjaxMethod {
 
 export default {
   name: 'AddFromFriends',
+  props: ['groupId'],
   data() {
     return {
       companyList: [], // 我的公司列表
@@ -194,6 +195,7 @@ export default {
   methods: {
     // 提交添加的群成员
     commitAddMembers() {
+      console.log('添加群成员到', this.groupId, this.addFromGroupsInstance.addList)
 
     },
 
