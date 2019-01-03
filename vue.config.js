@@ -20,33 +20,6 @@ function resolve(dir) {
 }
 
 let proxyObj = { // 配置跨域
-<<<<<<< HEAD
-    '/api': {
-        // target: 'http://192.168.2.224:8005',
-        // target: 'http://192.168.1.118:8005',
-        //  target: 'http://192.168.1.139:8005',
-        // target: 'http://192.168.1.139:8005',
-        target: 'https://192.168.1.118:8443',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/api': '/'
-        }
-    },
-    '/file': {
-        target: 'http://192.168.1.118:8002/api',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/file': '/'
-        }
-    },
-    '/cnbi': {
-        target: 'http://192.168.1.118:8081', //gjx
-        //  target: 'http://192.168.2.34:8081',
-        // target: 'http://192.168.1.138:8000',
-        // target: 'http://192.168.1.149:8000',
-=======
   '/api': {
     // target: 'http://192.168.2.224:8005',
     target: 'https://192.168.1.118:8443',
@@ -67,12 +40,11 @@ let proxyObj = { // 配置跨域
     }
   },
   '/cnbi': {
-    // target: 'http://192.168.1.118:8081', //gjx
-    target: 'http://192.168.2.34:8081',
+    target: 'http://192.168.1.118:8081', //gjx
+    // target: 'http://192.168.2.34:8081',
     // target: 'http://192.168.1.138:8000',
     // target: 'http://192.168.2.34:8081',
     // target: 'http://192.168.1.149:8000',
->>>>>>> 678cc9cd7688b97168b8e2e9a6ab6befdbf501b6
 
     ws: true,
     changOrigin: true,
