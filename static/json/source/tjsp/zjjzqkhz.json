@@ -101,7 +101,7 @@
           debugger
           let id = row.scode, text = row.sname , i=0;
           for(i; i<$vue.item.config.columns.length; i++){
-            if($vue.item.config.columns[i].value==this.drillProperties[0]){
+            if($vue.item.config.columns[i].id==this.drillProperties[0]){
               if(row[this.drillProperties[0]] && row[this.drillProperties[0]] > 0  ){            
                 $vue.commonHandler(
                     {
