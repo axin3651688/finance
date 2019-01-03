@@ -2,6 +2,7 @@
   {
     "id":"0008",
     "text":"其他应收款分类汇总",
+    "showDims":["year","month","company","conversion"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
     }
@@ -102,7 +103,6 @@
                 "background-color":"#189271"
             },
             "handler":function(vue,btn){
-                debugger
                 console.log(vue);
             }
         }, {
@@ -113,7 +113,6 @@
                 "background-color":"#189271"
             },
             "handler":function(vue,btn){
-                debugger
                 console.log(vue);
             }
         }

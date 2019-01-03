@@ -2,6 +2,7 @@
 {
     "id":"0005",
     "text":"债务构成情况分析表",
+    "showDims":["year","month","company","conversion"],
     "config":{
         "cube":{
           "subject":"0007",

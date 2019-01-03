@@ -2,6 +2,7 @@
   {
     "id":"0006",
     "text":"预付账款分类汇总",
+    "showDims":["year","month","company","conversion"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
     }
