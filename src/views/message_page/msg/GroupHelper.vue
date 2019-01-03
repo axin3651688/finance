@@ -27,7 +27,14 @@
             </div>
             <div class="item-right">
               <div class="btns">
-                <el-button type="primary" size="small" class="my-btn my-btn-primary">同意</el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-primary"
+                  @click="clickAgree(item, 4)"
+                >
+                  同意
+                </el-button>
                 <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
               </div>
             </div>
@@ -100,6 +107,7 @@ export default {
       })
     },
     clickAgree(item, state) {
+      debugger;
       let params = {
         groupId: item.groupId,
         userId: this.loginUserId
@@ -108,24 +116,32 @@ export default {
         console.log('处理申请消息', res.data.data);
         if (res.data.code === 200) {
           this.updateState(item, state)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg,
+            showClose: true
+          })
         }
       }).catch(err => {
         console.log('请求message：', err)
       })
     },
     updateState(item, state) {
+      debugger;
       let params = {
         code: item.code,
-        state: 3 // 3拒绝，4同意
+        state: state // 3拒绝，4同意
       };
       REFUSE_GROUP(params)
         .then(res => {
+          debugger;
           console.log('修改状态', res.data.data);
           if (res.data.code === 200) {
             console.log('修改成功')
           }
         }).catch(err => {
-          console.log('请求message：', err)
+          console.log('群助手修改状态异常：', err)
         })
     }
 

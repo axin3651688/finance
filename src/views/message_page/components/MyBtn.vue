@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@ms/element.scss";
+@import "@ms/mixins.scss";
 .btn{
   @include myBtn();
 }

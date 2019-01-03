@@ -38,7 +38,7 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
       page: 1,
       receiverId: receiverId,
       senderId: senderId,
-      size: 10
+      size: 30
     }
   })
 }
@@ -85,6 +85,19 @@ export function CONTACT_INFO(userId, targetId) {
   // debugger
   return request({
     url: '/api/api/contact_info',
+    method: 'get',
+    params: {
+      userId: userId,
+      targetId: targetId
+    }
+  })
+}
+
+// 查看个人资料，左边自己的详细信息
+export function LEFT_USER_INFO(userId, targetId) {
+  // debugger
+  return request({
+    url: '/api/api/left_user_info',
     method: 'get',
     params: {
       userId: userId,
@@ -151,8 +164,7 @@ export function HELP_GROUP_MSG(data) {
 }
 // 群组同意某人加群
 export function JOIN_GROUP(data) {
-  console.log('api JOIN_GROUP');
-  // debugger
+  debugger;
   return request({
     url: '/api/api/join_group',
     method: 'post',
@@ -299,4 +311,9 @@ export function ALL_COMPANY_CONTACT_LIST(userId) {
       userId: userId
     }
   })
+}
+
+
+export function f() {
+
 }
