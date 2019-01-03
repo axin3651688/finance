@@ -20,7 +20,7 @@ function resolve(dir) {
 }
 
 let proxyObj = { // 配置跨域
-<<<<<<< HEAD
+
     '/api': {
         // target: 'http://192.168.2.224:8005',
         // target: 'http://192.168.1.118:8005',
@@ -42,11 +42,15 @@ let proxyObj = { // 配置跨域
         }
     },
     '/cnbi': {
-        target: 'http://192.168.1.118:8081', //gjx
+        // target: 'http://192.168.1.118:8081', //gjx
+         target: 'http://192.168.2.34:8082',
+
+        // target: 'http://192.168.1.118:8081', //gjx
         //  target: 'http://192.168.2.34:8081',
+
         // target: 'http://192.168.1.138:8000',
         // target: 'http://192.168.1.149:8000',
-=======
+
   '/api': {
     // target: 'http://192.168.2.224:8005',
     target: 'https://192.168.1.118:8443',
@@ -72,7 +76,6 @@ let proxyObj = { // 配置跨域
     // target: 'http://192.168.1.138:8000',
     // target: 'http://192.168.2.34:8081',
     // target: 'http://192.168.1.149:8000',
->>>>>>> 678cc9cd7688b97168b8e2e9a6ab6befdbf501b6
 
     ws: true,
     changOrigin: true,
@@ -164,83 +167,11 @@ module.exports = {
     }
   },
 
-<<<<<<< HEAD
-    chainWebpack: config => { // webpack链接API，用于生成和修改webapck配置，https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-        if (debug) {
-            // 本地开发配置
-        } else {
-            // 生产开发配置
-        }
-    },
-    parallel: require('os').cpus().length > 1, // 构建时开启多进程处理babel编译
-    pluginOptions: { // 第三方插件配置
-    },
-    pwa: { // 单页插件相关配置 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
-    },
-    devServer: {
-        // index: 'black.html', //绿色启动页面
-        // index: 'green.html', //绿色启动页面
-        // index: 'white.html', //白色启动页面
-        open: false,
-        host: '0.0.0.0',
-        port: 8080,
-        https: true,
-        hotOnly: false,
-        // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理
-        proxy: proxyObj, // string | Object
-        // 自定义加载数据
-        before: app => {
-            app.get('/api/qwe', (req, res) => {
-                    res.json(configView)
-                }),
-                app.get('/apis/PrefaceData', (req, res) => {
-                    res.json(PrefaceData)
-                }),
-                app.get('/apis/Preface', (req, res) => {
-                    res.json(Preface)
-                }),
-                app.get('/apis/tableData', (req, res) => {
-                    res.json(tableData)
-                }),
-                app.get('/apis/test', (req, res) => {
-                    res.json(configtest)
-                }),
-                app.get('/api/Risk', (req, res) => {
-                    res.json(Risk)
-                }),
-                app.get('/api/company1', (req, res) => {
-                    res.json(company1)
-                }),
-                app.get('/apis/Configtest1', (req, res) => {
-                    res.json(Configtest1)
-                }),
-                app.get('/apis/Configtest2', (req, res) => {
-                    res.json(Configtest2)
-                }),
-
-                app.get('/api/list', (req, res) => {
-                    res.json(list)
-                }),
-                // app.get('/api/Report_view', (req, res) => {
-                //     res.json(Report_view)
-                // }),
-                app.get('/api/operating', (req, res) => {
-                    res.json(operating)
-                }),
-                app.get('/api/cross', (req, res) => {
-                    res.json(cross)
-                })
-        },
-        // vue-cli 解决Invalid Host header,
-        // compress: true,
-        disableHostCheck: true, // That solved it
-=======
   chainWebpack: config => { // webpack链接API，用于生成和修改webapck配置，https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
     if (debug) {
       // 本地开发配置
     } else {
       // 生产开发配置
->>>>>>> 678cc9cd7688b97168b8e2e9a6ab6befdbf501b6
     }
   },
   parallel: require('os').cpus().length > 1, // 构建时开启多进程处理babel编译
