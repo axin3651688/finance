@@ -116,9 +116,7 @@
       v-if="isShow"
       :modal-append-to-body="false"
     >
-      <div class="img-box">
-        <img src="../../../assets/infoshow.png">
-      </div>
+      <div class="img-box"></div>
       <el-row class="row-bg">
         <div class="user">
           <img :src="user.user.avatar" class="avatar">
@@ -253,9 +251,10 @@ export default {
       }
     },
     getname(e) {
-      // console.log("a:", e);
+      console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = e.lvel == 1 ? e.customerId : e.id;
+      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
+      // console.log(this.companyId);
       this.companyName_cache = e.text;
     },
     showDilog() {
@@ -296,8 +295,5 @@ export default {
 </script>
 <style lang="scss">
 .head-nav {
-  .button {
-    padding: 7px 20px !important;
-  }
 }
 </style>

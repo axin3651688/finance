@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <component v-if="flag" :is="user.company.id === 121 ? 'tjsp' : 'jsnk'"></component>
+    <!-- <component :is="flag"></component> -->
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -22,13 +22,18 @@ export default {
   },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
-    leftMenu: () => import("./sidebar/Sidebar"),
-    jsnk: () => import("./topnav/jsnk.vue"),
-    tjsp: () => import("./topnav/tjsp.vue")
+    leftMenu: () => import("./sidebar/Sidebar")
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters(["sidebar", "device", "user"]),
+    styleSlect() {
+      if (!Cnbi.isEmpty(this.user)) {
+        this.user.company.id === 121
+          ? import("@/styles/green/index.scss")
+          : import("@/styles/black/index.scss");
+      }
+    },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -36,15 +41,15 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === "mobile"
       };
-    },
-    flag() {
-      return !Cnbi.isEmpty(this.user);
     }
   },
-  created() {},
+  created() {
+    this.styleSlect;
+  },
 
   methods: {
     ...mapActions(["ToggleSideBar"]),
+
     isShow() {
       // debugger;
       if (this.classObj.mobile) {

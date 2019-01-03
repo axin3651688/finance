@@ -20,7 +20,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-    // e.url = "cnbi/json/source/chart/bar1.json";
+    e.url = "cnbi/json/source/chart/funnel.json";
     // console.log(e)
 
     /** 
