@@ -30,8 +30,9 @@
                 <img :src="rightInfo.avatar" class="avatar-img" v-avatar="rightInfo.text">
               </div>
             </div>
-            <div class="text">{{rightInfo.groupId}}
-              <h3 class="text-title">{{rightInfo.text}}</h3>
+            <div class="text">
+              <!--{{rightInfo.groupId}}-->
+              <h3 class="text-title" :title="rightInfo.text">{{rightInfo.text}}</h3>
               <p class="text-info">{{rightUsers.length}}人</p>
             </div>
             <el-button
@@ -351,6 +352,10 @@ export default {
         line-height: 20px;
 
         .text-title {
+          max-width: 300px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           line-height: 40px;
           font-size: 30px;
           color: $colorText1;
@@ -439,7 +444,6 @@ export default {
         }
 
         .pure-text {
-          height: 21px;
           font-size: 16px;
           line-height: 20px;
           color: $colorText1;
