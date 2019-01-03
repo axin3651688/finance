@@ -24,7 +24,7 @@ export default {
     } else {
       //alert("-----------------从地址中取行了：" + authorization);
       //暂时
-      return ;
+      return;
     }
     // debugger;
     this.initSocket(authorization);
