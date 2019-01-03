@@ -8,6 +8,7 @@ export default function funnel() {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c}%"
         },
+
         toolbox: {
             feature: {
                 dataView: {
@@ -22,11 +23,13 @@ export default function funnel() {
         series: [{
             name: '漏斗图',
             type: 'funnel',
-            left: '10%',
-            width: '80%',
-            min: 0,
-            minSize: '0%',
-            maxSize: '100%',
+            left: '30%',
+            // top: 60,
+            bottom: 300,
+            // width: '80%',
+            // min: 0,
+            // minSize: '0%',
+            // maxSize: '100%',
             sort: 'descending',
             gap: 2,
             label: {
@@ -40,21 +43,21 @@ export default function funnel() {
                     }
                 }
             },
-            labelLine: {
-                normal: {
-                    length: 10,
-                    lineStyle: {
-                        width: 1,
-                        type: 'solid'
-                    }
-                }
-            },
-            itemStyle: {
-                normal: {
-                    borderColor: '#fff',
-                    borderWidth: 1
-                }
-            },
+            // labelLine: {
+            //     normal: {
+            //         length: 10,
+            //         lineStyle: {
+            //             width: 1,
+            //             type: 'solid'
+            //         }
+            //     }
+            // },
+            // itemStyle: {
+            //     normal: {
+            //         borderColor: '#fff',
+            //         borderWidth: 1
+            //     }
+            // },
             data: []
         }]
     };

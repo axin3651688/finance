@@ -109,6 +109,7 @@
                     }
                 },
                 "chartOptions": {
+                    "height": "400px",
                     "series": [{
                         "type": "funnel",
                         "data": []
