@@ -10,7 +10,7 @@ export default {
     BiTable: () => import("./BiTable"),
     Chart: () => import("./BiChart"),
     BiText: () => import("./BiText"),
-    TreeGrid: () => import("./text/Treegrid.vue"),
+    TreeGrid: () => import("./treegrid/TreeGrid.vue"),
     STreeGrid: () => import("./text/STreegrid.vue"),
     BiFlhz: () => import("./BiFlhz"),
     BiButton: () => import("./BiButton")
