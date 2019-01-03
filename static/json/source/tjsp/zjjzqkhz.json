@@ -5,12 +5,13 @@
     "layout": {
       "xtype": "tab"
     },
+    "showDims": ["year","month","company","conversion"],
     "items": [{
       "xtype": "tree-grid",
       "id": "zjjzqkhz",
       "text": "资金集中情况汇总表",
       "config":{
-        "sql":"WITH TMP1 AS(SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE, SPCODE, SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE='100101' CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE, COUNT(*) JZHS FROM ( (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD='201711') A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE, SCODE AS ID, SPCODE AS PID, SNAME, HS, JZHS, ROUND(JZHS/HS, 4) AS GKM , FACT_A AS HBZJ, FACT_B AS YHCK, FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD='201711' ORDER BY SCODE ",
+        "sql":"WITH TMP1 AS(SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE, SPCODE, SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE IN('1','0') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE), TMP3 AS (SELECT ROOT_SCODE, COUNT(*) JZHS FROM ( (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD=:period) A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE) SELECT SCODE, SCODE AS ID, SPCODE AS PID, SNAME, HS, JZHS, ROUND(JZHS/HS, 4) AS GKM , FACT_A AS HBZJ, FACT_B AS YHCK, FACT_C AS JZJE, CASE WHEN SCODE='1001' THEN (CASE WHEN FACT_A=0 THEN 0 ELSE ROUND(FACT_C/FACT_A,4) END) ELSE (CASE WHEN FACT_A+FACT_B=0 THEN 0 ELSE ROUND(FACT_C/(FACT_A+FACT_B),4) END) END AS JZD FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD=:period ORDER BY SCODE ",
         "_cube":{
           "subject":"0001",
           "cubeId":5
@@ -20,7 +21,6 @@
         "random":{"min":100,"max":100000},
         "type":1     
       },
-      "showDims": ["year","month","company","conversion"],
       "columns": [
         {
           "text": "集中度",
@@ -47,6 +47,7 @@
           },
           {
             "text": "下级集中户数",
+            "width":"150",
             "type":"number",
             "id": "jzhs"
           },
@@ -99,18 +100,17 @@
            console.log(vue);
        }
     }],
-      "onRowClick":function(row,e,col,$vue){//"树表单元格点击事件"
+      "onRowClick":function(row,e,col,$vue){
           debugger
-          let id = row.scode, text = row.sname , i=0;
-          for(i; i<$vue.item.config.columns.length; i++){
-            if($vue.item.config.columns[i].id==this.drillProperties[0]){
-              if(row[this.drillProperties[0]] && row[this.drillProperties[0]] > 0  ){            
+          let id = row.scode, text = row.sname ;
+          if(this.drillProperties.indexOf(column.property) != -1){
+            if(row.jzhs && row.jzhs>0){  
                 $vue.commonHandler(
                     {
-                      "type":"click",//事件类型
-                      "way":"addTab",//调用的公共方法
-                      "sourceApi":"/cnbi/json/source/tjsp/zjjzqk.json",
-                      "handler":($vue,params)=>{//自定义的回调
+                      "type":"click",
+                      "way":"addTab",
+                      "sourceApi":"/cnbi/json/source/tjsp/zjjzqkmxb.json",
+                      "handler":($vue,params)=>{
                           console.info(params);
                           debugger; 
                       } 
@@ -118,8 +118,8 @@
                     { row: row, e: e, col: col },
                     { id: id, text: text }
                 );
-              }
-            }
+            }      
+            
           } 
       },
       "drillProperties":["jzhs"],//有钻取，给蓝色 可选 table
@@ -128,12 +128,13 @@
         // let a = obj.item.config.columns;
         
         debugger
-        for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
-            let pro = obj.item.config.columns[row.columnIndex].id ; 
+        // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
+        //     let pro = obj.item.config.columns[row.columnIndex].id ; 
         
         let css = "padding: 4px 0;";
         // let pro = obj.item.config.columns;
         // let pro = "";
+        let pro = row.column.property;
         if (!pro) {
             return css;
         }
@@ -154,7 +155,7 @@
         }else{
             return css+textIndent;
         }
-      }
+      // }
       //   if (levelPro && record[levelPro]) {//行缩进处理
       //     let level = record[levelPro] || 1;
       //     textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";

@@ -27,6 +27,7 @@ export default {
   created(){
     //alert(JSON.stringify(this.tableData))
    // debugger;
+   console.log(this.tableData)
   },
   methods: {
     upData(item) {
@@ -34,7 +35,7 @@ export default {
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
       let refs = this.$refs;
-      // debugger;
+
       if (refs) {
         if (refs.tcol) {
           if (refs.tcol.upData) {

@@ -542,6 +542,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      debugger;
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
       if (unit && unit.id > 1) {
@@ -583,6 +584,7 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
+      // debugger
       findThirdPartData(params)
         .then(res => {
           this.queryDataAfter(item, res.data.data, $childVue);

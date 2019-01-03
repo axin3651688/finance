@@ -119,12 +119,12 @@ export default {
       
     //   return "text-align:center";
     // },
-    __upData(item) {
-     // debugger;
+   upData(item) {
+      debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
       if(item.datas.length == 0 ){
-         item.datas = null;
+          item.datas = null;
           item.datas = [];
       }
       this.$set(this, "tableData", item);
@@ -147,7 +147,7 @@ export default {
         union = true;
       //  debugger
       }
-     // debugger
+      debugger
       if(!row[colId] && !union){
         return "--";
       }

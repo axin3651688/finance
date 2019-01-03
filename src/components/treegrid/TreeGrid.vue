@@ -115,6 +115,7 @@ export default {
       console.log(id);
     },
     onRowClick(row, e, column) {
+      debugger
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }

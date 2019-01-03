@@ -47,7 +47,7 @@ export default {
           var a = localStorage[keys];
           if (!Cnbi.isEmpty(a) && keys.indexOf("_cache") > -1) {
             var b = keys.replace("_cache", "");
-            vd[b] = a;
+            b == "conversion" ? (vd[b] = JSON.parse(a)) : (vd[b] = a);
           }
         });
         this.GetSideMid(vd);

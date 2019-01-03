@@ -7,8 +7,8 @@ const prame = {
       date: new Date().getDate(),
       // 单位转换
       conversion: {
-        id: 10000,
-        text: "万元"
+        id: 1,
+        text: "元"
       },
       companyName: "登录有问题哦,重新登录吧",
       company: '1',
@@ -44,7 +44,11 @@ const prame = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
-          localStorage.setItem([keys] + '_cache', data[keys]);
+          if (typeof data[keys] == "object") {
+            localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
+          } else {
+            localStorage.setItem([keys] + '_cache', data[keys]);
+          }
         }
       });
     },

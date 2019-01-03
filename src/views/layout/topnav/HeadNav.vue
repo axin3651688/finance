@@ -117,8 +117,10 @@
       :modal-append-to-body="false"
     >
       <div class="img-box">
-        <!-- oginpic   ../../../assets/infoshow.png -->
-        <img :src="user.company.id === 121 ? '../../../assets/oginpic.png' : ' ../../../assets/infoshow.png'">
+        <!-- loginpic   ../../../assets/infoshow.png -->
+        <!-- <img :src="user.company.id == 121 ?  require('../../../assets/loginpic.png' ): require(' ../../../assets/infoshow.png')"> -->
+        <img src="../../../assets/loginpic.png"  alt="">
+        
       </div>
       <el-row class="row-bg">
         <div class="user">
@@ -181,6 +183,7 @@ export default {
     CompanyTree
   },
   created() {
+    // console.log("vvv",this.user.company.id)
     this.value = this.year + this.month + this.date;
     console.log(this.value);
     let bean = getClientParams();
