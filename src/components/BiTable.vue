@@ -4,22 +4,25 @@
       <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
       style="background-color: #189271;color: black;"
     </el-button-group> -->
-    <el-button-group  class="toolbar" >
+    <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
+    <el-button-group  class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
     </el-button-group>
     <el-table
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
       :stripe="true"
-      height="item.height || rowClass"
+      :height="item.height || rowClass"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
-      
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      <!--  :summary-method="getSummaries"  -->
+     <!-- :show-summary="item.showSummary || true"     -->
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" >
+        <!-- <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/> -->
+        <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
     <!-- sjz 分页功能 -->
@@ -225,6 +228,24 @@ export default {
       // // console.log("b",b)
       // // console.log(event.target)
       // console.log(column)
+    },
+
+    getSummaries(param){
+        debugger;
+        const { columns, data } = param;
+            const sums = {};
+            columns.forEach((column, index) => {
+               let datas = 0;
+               if(column.property.length == 1){
+                   data.forEach((row, index) => {
+                       datas+=row[column.property];
+                   });
+               }
+               sums[column.property] = datas;
+                  
+            });
+            debugger;
+            return sums;
     },
 
     /**

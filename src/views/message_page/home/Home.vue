@@ -107,7 +107,7 @@ export default {
 
     nodeboxClick(node) {
       let companyId = this.user.company.id;
-      node.redirect = 'http://192.168.2.224:8005/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=aHR0cCUzQS8vMTkyLjE2OC4xLjExOCUzQTgwODIvbWFpbiUzRnNvdXJjZV9pZCUzRDg=';
+      node.redirect = 'https://192.168.1.118:8443/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=aHR0cHM6Ly8xOTIuMTY4LjEuMTE4OjgwODIvbWFpbj9zb3VyY2VfaWQ9Nw==';
       console.log('点击了节点数据-->>', node.text);
       console.log('获取设备号-->>', process.platform);
 

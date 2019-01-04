@@ -138,15 +138,14 @@
 			"xtype": "bi-table",
 			"id": "8979",
 			"text": "这个也是钻取过来的表",
+			"height":300,
 			"weight": 16,
 			"show":true,
 			"queryDataBefore":function(params, config, $vue){
-				debugger;
 				let chartData = $vue.$store.chartData;
 				if(chartData){
 					params.indscode = chartData[0].indscode;
 				}
-				alert(params.indscode);
 				return params;
 			},
 			"config": {

@@ -82,7 +82,6 @@
                 "background-color":"#189271"
             },
             "handler":function(vue,btn){
-                debugger
                 console.log(vue);
             }
           }, {
@@ -93,7 +92,6 @@
                 "background-color":"#189271"
             },
            "handler":function(vue,btn){
-               debugger
                console.log(vue);
            }
          }
@@ -123,6 +121,7 @@
                     row.row.drill = true;//下钻设置
                     return css ;
                  }else{
+                    //row.row.drill = false;
                     return css+ textIndent; 
                  }
             }else if(pro.indexOf("text2") != -1){//第二列项目
@@ -132,6 +131,7 @@
                     row.row._drill = true;//下钻设置
                     return css;
                  }else{
+                   // row.row._drill = false;
                     return css + textIndent; 
                  }
 
@@ -139,9 +139,11 @@
               return css+textIndent;
             }
           },
-        "onCellClick":function(row, column, cell, event,option){debugger;
+        "onCellClick":function(row, column, cell, event,option){
                 let cv = column.property + "";
-                let listener = row._drill || row.drill;
+                let listener = false;
+                if(cv == "text1")listener = row.drill;
+                if(cv == "text2")listener = row._drill;
                 if (listener && (cv == "text1" || cv == "text2" )) {
                     let len = cv.length;
                     let text = row[cv];

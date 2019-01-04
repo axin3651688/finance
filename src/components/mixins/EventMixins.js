@@ -69,7 +69,7 @@ export default {
        /**
         * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
         */
-        // me.commonHandler(listener, params);
+        me.commonHandler(listener, params);
 
       });
 
@@ -97,8 +97,12 @@ export default {
      */
     addTab(params, listener, bb) {
       let module = this.$parent.$parent.$parent.$parent.items?this.$parent.$parent.$parent.$parent:this.$parent.$parent.$parent.$parent.$parent.$parent;
-     //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
-      // let module = this.$parent.$parent.$parent.$parent;
+      //判断指标分析的穿透
+      if(!module.items){
+        module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
+      }
+      //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
+      // let module = tab.$parent.$parent;
       if (!bb) {
         bb = this.item;
       }
@@ -132,6 +136,7 @@ export default {
             resData.children = resData.items;
             delete resData.items;
           }
+          
           resData.id = bb.id;
           resData.text = text;
           resData.tabIndex = text;
@@ -141,6 +146,11 @@ export default {
           resData.from = "isDrill";
           module.items[action](resData);
           module.activeTabName = resData.text;
+          //钻取穿透过来的也要有show属性判断，可以封装成上面的格式传进来，此时采用最后一个传法。
+          if (resData) {
+            let moduleItem = module.items[module.items.length-1];
+            module.showSet([moduleItem]);
+          }
         });
         return;
       }

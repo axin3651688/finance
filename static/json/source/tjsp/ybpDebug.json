@@ -8,11 +8,12 @@
 		{
 			"xtype": "chart",
 			"id": "1403100000",
-			"text": "这个是钻取来的",
+			"text": "行业效果图",
 			"weight": 8,
 			"closable": true,
 			"show": true,
 			"config": {
+				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,A.SCODE,B.SCODE INDSCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND CTYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,LJWC FROM ( SELECT T.INDSCODE INDSCODE,T.DSNAME AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T INNER JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY T.DSNAME,T.INDSCODE)",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -28,181 +29,54 @@
 					"max": 100000
 				},
 				"type": 1,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
 				"columns": [
 					{
-						"id": "F",
+						"id": "tbzjl",
 						"type": "decimal",
 						"text": "同比增减率"
 					},
 					{
-						"id": "id",
+						"id": "indscode",
 						"type": "string",
-						"hidden": true,
 						"text": "编码"
 					},
 					{
-						"id": "text",
+						"id": "hymc",
 						"type": "string",
 						"text": "项目"
 					},
 					{
-						"id": "A",
+						"id": "mbjy",
 						"type": "decimal",
 						"text": "全年考核目标建议值"
 					},
 					{
-						"id": "B",
+						"id": "ljwc",
 						"type": "decimal",
 						"text": "累计完成"
 					},
 					{
-						"id": "c",
+						"id": "ljwcl",
 						"type": "decimal",
 						"text": "累计完成率"
 					},
 					{
-						"id": "D",
+						"id": "sntq",
 						"type": "decimal",
 						"text": "上年同期"
 					},
 					{
-						"id": "E",
+						"id": "tbzje",
 						"type": "decimal",
 						"text": "同比增减额"
 					}	
 				],
-				"rows": [
-					{
-						"id": "1111001",
-						"text": "现代农牧渔业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111002",
-						"text": "食品加工业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111003",
-						"text": "食品贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "粮油贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "冷链仓储",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "房地产业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "商品贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "钢材贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "非食品加工业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "金融业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "服务业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "抵消差额",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "合计",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					}
-				]
+				"rows": []
 			},
 			"listeners":[
 				{
@@ -210,6 +84,16 @@
 					"way":"addTab",
 					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
 					"handler": ($vue,params) =>{
+						debugger;
+						let me = this;
+						let name = params.name;
+						let data;
+						if(name){
+							data = $vue.item.datas.filter(function(it,indx){
+								return it.hymc == name;
+							})
+						}
+						$vue.$store.chartData = data;
 						console.log(params);
 					}
 				}
@@ -221,21 +105,14 @@
 					"type": 2,
 					"columns": [
 						{
-							"id": "text",
+							"id": "hymc",
 							 "prop":"name"
 						},
 						{
-							"id": "A",
+							"id": "ljwc",
 							 "prop":"value"
 						}
 					],
-					"row": {
-						"ids": {
-							"items": [
-								"1111001","1111002","1111003"
-							]
-						}
-					},
 					"sign":"pie",
 					"scope": true
 				}
@@ -277,8 +154,10 @@
 			"id": "1400111",
 			"text": "这个也是钻取过来的表",
 			"weight": 16,
-				"show": true,
+			"height":300,
+			"show": true,
 			"config": {
+				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,B.SCODE INDSCODE,A.SCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND CTYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT T.INDSCODE INDSCODE,DECODE(T.DSNAME,NULL,'合计',T.DSNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets ((T.DSNAME,T.INDSCODE),()))",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -294,181 +173,54 @@
 					"max": 100000
 				},
 				"type": 1,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
 				"columns": [
 					{
-						"id": "F",
+						"id": "tbzjl",
 						"type": "decimal",
 						"text": "同比增减率"
 					},
 					{
-						"id": "id",
+						"id": "indscode",
 						"type": "string",
-						"hidden": true,
 						"text": "编码"
 					},
 					{
-						"id": "text",
+						"id": "hymc",
 						"type": "string",
 						"text": "项目"
 					},
 					{
-						"id": "A",
+						"id": "mbjy",
 						"type": "decimal",
 						"text": "全年考核目标建议值"
 					},
 					{
-						"id": "B",
+						"id": "ljwc",
 						"type": "decimal",
 						"text": "累计完成"
 					},
 					{
-						"id": "c",
+						"id": "ljwcl",
 						"type": "decimal",
 						"text": "累计完成率"
 					},
 					{
-						"id": "D",
+						"id": "sntq",
 						"type": "decimal",
 						"text": "上年同期"
 					},
 					{
-						"id": "E",
+						"id": "tbzje",
 						"type": "decimal",
 						"text": "同比增减额"
 					}	
 				],
-				"rows": [
-					{
-						"id": "1111001",
-						"text": "现代农牧渔业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111002",
-						"text": "食品加工业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111003",
-						"text": "食品贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "粮油贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "冷链仓储",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "房地产业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "商品贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "钢材贸易",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "非食品加工业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "金融业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "服务业",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "抵消差额",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					},
-					{
-						"id": "1111001",
-						"text": "合计",
-						"A": 0,
-						"B": 0,
-						"C": 0,
-						"D": 0,
-						"E": 0,
-						"F": 0
-					}
-				]
+				"rows": []
 			}
 		}
 	]

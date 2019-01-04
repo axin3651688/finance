@@ -19,6 +19,8 @@ export const webSocket = function (data) {
 
     // let heartCheck = {
     //   timeout: 30000,
+
+    
     //   timeoutObj: null,
     //   serverTimeoutObj: null,
     //   reset: function(){
