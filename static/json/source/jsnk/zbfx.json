@@ -825,12 +825,8 @@
                 },
                 "chartOptions": {
                     "series": [{
-                            "type": "line"
-                        },
-                        {
-                            "type": "line"
-                        }
-                    ]
+                        "type": "line"
+                    }]
                 }
             }
         ]

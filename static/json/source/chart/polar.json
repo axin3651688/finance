@@ -2,6 +2,7 @@
     "id": 1,
     "text": "极坐标",
     "showDims": ["company", "month", "year"],
+
     "rows": [{
 
         "id": "1416001",
@@ -15,6 +16,12 @@
         "id": "1400111",
         "text": "归属于母公司净利润"
     }],
+    "generateVar": {
+        "periodCount": 12,
+        "compareType": "0&-1",
+        "varName": "rows",
+        "reverse": true
+    },
     "columns": [{
             "id": "id",
             "type": "string",
@@ -24,15 +31,7 @@
         {
             "id": "A",
             "type": "decimal",
-            "text": "汇总"
-        }, {
-            "id": "B",
-            "type": "decimal",
-            "text": "汇总"
-        }, {
-            "id": "C",
-            "type": "decimal",
-            "text": "汇总"
+            "text": "本期"
         }
     ],
     "datas": {},
@@ -78,17 +77,16 @@
                 ],
                 "rows": [{
                         "id": "A",
-                        "type": "decimal",
+
                         "text": "营业成本"
                     },
                     {
                         "id": "B",
-                        "type": "decimal",
                         "text": "销售费用"
                     },
                     {
                         "id": "C",
-                        "type": "decimal",
+
                         "text": "管理费用"
                     }
                 ],
@@ -105,7 +103,7 @@
                 }
             }],
             "options": {
-                "subType": "pie",
+                "subType": "polar",
                 "type": "advancechart",
                 "getData": {
                     "type": 3,
@@ -114,63 +112,31 @@
                         "prop": "name"
                     }, {
                         "id": "A",
-                        "prop": "value"
+                        "type": "bar",
+                        "coordinateSystem": "polar",
+                        "name": "1",
+                        "stack": "A"
                     }, {
                         "id": "B",
-                        "prop": "value"
+                        "type": "bar",
+                        "coordinateSystem": "polar",
+                        "name": "销售费用",
+                        "stack": "B"
                     }, {
                         "id": "C",
-                        "prop": "value"
+                        "type": "bar",
+                        "coordinateSystem": "polar",
+                        "name": "管理费用",
+                        "stack": "C"
                     }],
                     "scope": true
                 }
             },
             "chartOptions": {
                 "height_s": "600px",
-
-                "angleAxis": {},
-                "radiusAxis": {
-                    "type": "category",
-                    "data": [
-                        "周一",
-                        "周二",
-                        "周三",
-                        "周四"
-                    ],
-                    "z": 10
-                },
-                "polar": {},
                 "series": [{
-                        "type": "bar",
-                        "data": [],
-                        "coordinateSystem": "polar",
-                        "name": "A",
-                        "stack": "a"
-                    },
-                    {
-                        "type": "bar",
-                        "data": [],
-                        "coordinateSystem": "polar",
-                        "name": "B",
-                        "stack": "a"
-                    },
-                    {
-                        "type": "bar",
-                        "data": [],
-                        "coordinateSystem": "polar",
-                        "name": "C",
-                        "stack": "a"
-                    }
-                ],
-                "legend": {
-                    "show": true,
-                    "data": [
-                        "A",
-                        "B",
-                        "C"
-                    ]
-                }
-
+                    "type": "bar"
+                }]
             }
         }]
     }]

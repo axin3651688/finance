@@ -30,8 +30,8 @@
         "children": [{
             "xtype": "chart",
             "id": "lrb3",
-            "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
-            "weight": 23,
+            "text": "营业收入、利润总额及增减率趋势图",
+            "weight": 16,
             "config": {
                 "_cube": {
                     "subject": "0002",
@@ -44,7 +44,7 @@
 
                 },
                 "generateVar": {
-                    "periodCount": 12,
+                    "periodCount": 6,
                     "compareType": "0&-1",
                     "varName": "rows",
                     "reverse": true
@@ -90,7 +90,7 @@
 
             "options": {
                 "type": "advancechart",
-                "subType": "line",
+                "subType": "polar",
                 "getData": {
                     "type": 3,
                     "columns": [{
@@ -104,8 +104,8 @@
                             "dim": "itemperiod",
                             "val": "1416001"
                         },
-                        "type": "line",
-                        "smooth": false
+                        "type": "bar",
+                        "coordinateSystem": "polar"
                     }, {
                         "id": "A",
                         "name": "利润总额",
@@ -113,8 +113,8 @@
                             "dim": "itemperiod",
                             "val": "1403100"
                         },
-                        "type": "line",
-                        "smooth": false
+                        "type": "bar",
+                        "coordinateSystem": "polar"
                     }, {
                         "id": "A",
                         "name": "归属于母公司净利润",
@@ -122,19 +122,15 @@
                             "dim": "itemperiod",
                             "val": "1400111"
                         },
-                        "type": "line",
-                        "smooth": false
+                        "type": "bar",
+                        "coordinateSystem": "polar"
                     }]
 
                 }
             },
             "chartOptions": {
-                "series": [{
-                    "name": "好",
-                    "type": "line",
-                    "smooth": false,
-                    "data": []
-                }]
+                "height_s": "600px",
+                "series": []
             }
         }]
     }]

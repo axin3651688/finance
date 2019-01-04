@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <bi-column :item="itemData"></bi-column>
+    <bi-column></bi-column>
     <bi-pie v-if="itemqq.length" :item="itemqq"></bi-pie>
     <echarts :item="itemData"></echarts>
     <el-button type="primary" @click="update">主要按钮</el-button>
@@ -9,7 +9,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import BiColumn from "@c/charts/BiColumn";
+import BiColumn from "@v/test/BiColumn";
 import BiPie from "@c/charts/BiPie.vue";
 import echarts from "./echarts";
 export default {
