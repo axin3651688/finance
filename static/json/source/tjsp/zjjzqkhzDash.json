@@ -3,20 +3,9 @@
     "text":"资金集中情况汇总表",
     
     "layout": {
-      "xtype": "tab"
+      "xtype": "column"
     },
-    "changeYearBefore":function(newyear,option){
-      option.closeTabTaget(newyear,option);
-  }
-  ,//切换年的回调
-  "changeMonthBefore":function(newmonth,option){
-      option.closeTabTaget(newmonth,option);
-  },//切换月份的回调
-  "changeCompanyBefore":function(newcompany,option){
-      option.closeTabTaget(newcompany,option);
-  },//切换公司之前的回调
-    "showDims": ["year","month","company","conversion"],
-    "items": [{
+    "children": [{
       "xtype": "tree-grid",
       "id": "zjjzqkhz",
       "text": "资金集中情况汇总表",
@@ -29,8 +18,8 @@
         "mainDim":"itempoint",
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
-        "type":1     
-      },
+        "type":1,    
+      
       "columns": [
         {
           "text": "集中度",
@@ -84,7 +73,8 @@
           }
           
       ],
-      "rows":[],
+      "rows":[]
+	  },
       "toolbar":[{
         "id":"1",
         "text":"刷新",
@@ -111,7 +101,7 @@
        }
     }],
       "onRowClick":function(row,e,col,$vue){
-          debugger
+           debugger
           let id = row.scode, text = row.sname ;
           if(this.drillProperties.indexOf(e.property) != -1){
             if(row.jzhs && row.jzhs>0){  
@@ -183,6 +173,5 @@
       // }
       }
       
-  }],
-  "code":200,"msg":"查询数据源【company】维度成功！"
+  }]
   }

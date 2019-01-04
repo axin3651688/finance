@@ -422,7 +422,9 @@ export default {
         if (!val && element === "company") {
           val = params[element + "Id"];
         }
-        datas[element] = val;
+        if(element != "conversion"){
+           datas[element] = val;
+        }
       });
       if (datas.year && datas.month) {
         // let date = new Date();
@@ -577,7 +579,6 @@ export default {
       //  this.units(datas)
     },
     __queryDataAfter(datas) {
-      //
       return datas;
     },
     /**

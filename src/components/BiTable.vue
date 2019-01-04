@@ -14,13 +14,14 @@
       height="item.height || rowClass"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
-      
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" >
-        <!-- <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/> -->
-        <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild" v-if="!cc.hidden"/>
+      <!--  :summary-method="getSummaries"  -->
+     <!-- :show-summary="item.showSummary || true"     -->
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
+        <!-- <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild"   v-if="!cc.hidden"/> -->
       </el-tag>
     </el-table>
     <!-- sjz 分页功能 -->
@@ -113,7 +114,7 @@ export default {
     },
 
     upData(item) {
-     // debugger;
+     debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       let refs = this.$refs;
@@ -143,13 +144,14 @@ export default {
      */
 
     // 表格的高度 12.26
-    rowClass({ row, rowIndex }) {
-      return "height:100%-64px";
-    },
+    // rowClass({ row, rowIndex }) {
+    //   return "height:100%-104px";
+    // },
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
+      debugger
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -181,12 +183,12 @@ export default {
      */
     onCellClickDefault(row, column, cell, event) {
       debugger
-      console.log(this)
+      // console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
-          console.log(cv)
+          // console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
@@ -226,6 +228,24 @@ export default {
       // // console.log("b",b)
       // // console.log(event.target)
       // console.log(column)
+    },
+
+    getSummaries(param){
+        debugger;
+        const { columns, data } = param;
+            const sums = {};
+            columns.forEach((column, index) => {
+               let datas = 0;
+               if(column.property.length == 1){
+                   data.forEach((row, index) => {
+                       datas+=row[column.property];
+                   });
+               }
+               sums[column.property] = datas;
+                  
+            });
+            debugger;
+            return sums;
     },
 
     /**
@@ -429,9 +449,12 @@ export default {
 .el-table td.is-center {
   text-align: right;
 }
-.el-table td {
-}
 .gutter{
   display: none;
+}
+.el-table {
+    height: calc(100vh - 170px);
+    /* width: 100%; */
+    /* overflow: auto; */
 }
 </style>

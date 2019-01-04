@@ -184,6 +184,12 @@ export function uniqueArr(arr) {
   return Array.from(new Set(arr))
 }
 
+
+export function getDevice() {
+  let agent = navigator.deviceMemory+"@"+navigator.connection.effectiveType+navigator.userAgent.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g,"");
+  return agent.toLowerCase();
+}
+
 /**
  * 对象转换成一个新的对象
  * @param object
