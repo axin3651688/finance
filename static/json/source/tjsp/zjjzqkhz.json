@@ -5,6 +5,15 @@
     "layout": {
       "xtype": "tab"
     },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
     "showDims": ["year","month","company","conversion"],
     "items": [{
       "xtype": "tree-grid",

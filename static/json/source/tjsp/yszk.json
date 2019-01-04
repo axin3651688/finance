@@ -5,10 +5,16 @@
         "xtype":"tab"
     },
     "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(a,b){
+    "changeCompanyBefore":function(newcompany,option){
         this.showSet(this.items[0].children); 
- },
-
+        option.closeTabTaget(newcompany,option);
+    },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },
    "items":[
         {
             
