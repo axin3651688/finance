@@ -132,6 +132,10 @@ export default {
           if (!resData.id) {
             resData = eval("(" + resData + ")");
           }
+          //钻取的数据的转换
+          if(resData && resData.layout && resData.layout.xtype != "column"){
+            resData = this.transformDrillJsonData(resData);
+          }
           if(!resData.children && resData.items){
             resData.children = resData.items;
             delete resData.items;
@@ -163,6 +167,19 @@ export default {
         tabIndex: text,
       });
       module.activeTabName = text;
+    },
+    /**
+     * @author szc
+     * 兼容穿透到表的处理，不用再重新配置一个相似的表。
+     * (此方法只处理了是tab页形式的表,并且穿透的表还具有穿透功能)
+     */
+    transformDrillJsonData(resData){
+      let me = this;
+      if(resData.items && resData.items.length > 0){
+        resData = resData.items[0];
+      }
+      return resData;
+
     }
   },
   /**
