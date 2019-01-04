@@ -14,6 +14,45 @@
     "changeCompanyBefore":function(newcompany,option){
         option.closeTabTaget(newcompany,option);
     },
+    "config":{
+        "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
+        "_cube":{
+            "cubeId":4,
+            "subject":"0002"
+        },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1     
+    },
+    
+    "columns":[{      
+        "id": "B",
+        "type": "decimal",
+        "width":"600px",
+        "text": "累计数"       
+    },{
+        "id": "id",
+        "type": "string",
+        "hidden": true,
+        "text": "编码"
+      },{
+        "id":"text",
+        "type":"string",
+        "width":"330px",
+        "text":"项目"
+    },{
+        "id":"index",
+        "type":"index",
+        "width":"60px",
+        "text":"行次"
+    },{
+        "id": "A",
+        "type": "decimal",
+        "width":"600px",
+        "text": "当月数"
+    }],
+    "rows":[],
     "items":[{
         "id":"jlr",
         "text":"利润表",
@@ -43,50 +82,16 @@
                 console.log(vue);
             }
         }],
-        "config":{
-            "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
-            "cube":{
-                "cubeId":4,
-                "subject":"0002"
-            },
-            "mainDim":"itemperiod",
-            "needDims":["year","month","company","conversion"],
-            "random":{"min":100,"max":100000},
-            "type":1     
-        },
-        
-        "columns":[{      
-            "id": "B",
-            "type": "decimal",
-            "width":"600px",
-            "text": "累计数"       
-        },{
-            "id": "id",
-            "type": "string",
-            "hidden": true,
-            "text": "编码"
-          },{
-            "id":"text",
-            "type":"string",
-            "width":"330px",
-            "text":"项目"
-        },{
-            "id":"index",
-            "type":"index",
-            "width":"60px",
-            "text":"行次"
-        },{
-            "id": "A",
-            "type": "decimal",
-            "width":"600px",
-            "text": "当月数"
-        }],
-        "rows":[],
-        "sourceApi":'',
         "levelProperties":{text:"nlevel"},//加缩进 可选 table
         "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
             debugger
             let id = row.id, text = row.text;
+            let datas = this.datas;
+                let data = datas.filter(function(item){
+                        return item.id == row.id;
+                });
+            row = data[0];
+
             if(this.drillProperties.indexOf(column.property) != -1){
                 if((row.A && row.A!=0) || (row.B && row.B!=0)){
                     // if(vue.$store.getters.treeInfo.industryId){ //如果公司是1级公司就展示所有子属二级公司；自动展开；
