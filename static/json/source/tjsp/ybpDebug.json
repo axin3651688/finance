@@ -41,14 +41,9 @@
 						"text": "同比增减率"
 					},
 					{
-						"id": "indscode",
-						"type": "string",
-						"text": "编码"
-					},
-					{
 						"id": "hymc",
 						"type": "string",
-						"text": "项目"
+						"text": "行业名称"
 					},
 					{
 						"id": "mbjy",
@@ -124,11 +119,12 @@
                     "x": "center"
                 },
                 "tooltip": {
-                    "trigger": "item",
-                    "formatter": "{a} <br/>{b} : {c} ({d}%)"
+					"trigger": "item",
+					"confine": true,
+                    "formatter": "{b} : {c} ({d}%)"
                 },
                 "series": [{
-                    "name": "风险级别",
+                    "name": "",
                     "type": "pie",
                     "radius": "55%",
                     "center": ["50%", "60%"],
@@ -185,14 +181,9 @@
 						"text": "同比增减率"
 					},
 					{
-						"id": "indscode",
-						"type": "string",
-						"text": "编码"
-					},
-					{
 						"id": "hymc",
 						"type": "string",
-						"text": "项目"
+						"text": "行业名称"
 					},
 					{
 						"id": "mbjy",

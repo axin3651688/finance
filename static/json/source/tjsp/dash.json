@@ -41,8 +41,8 @@
 	"unit":10000,
 	"datas": {},
    "config": {
-	   "sql":"SELECT B.SCODE AS id,B.SNAME AS ITEM,SUM(NVL(FACT_A,0)) AS BQ,SUM(NVL(FACT_B,0)) AS BNLJ, SUM(NVL(FACT_C,0)) AS BNMB,SUM(NVL(SNTQ,0)) AS SNTQ, CASE WHEN SUM(NVL(FACT_C,0))=0 THEN 0 ELSE ROUND(SUM(NVL(FACT_B,0))/SUM(NVL(FACT_C,0))*100,4) END WCL FROM( SELECT DIM_ITEMPERIOD ,FACT_A,FACT_B,FACT_C,0 AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEMPERIOD IN('1416001','1403100') UNION ALL SELECT DIM_ITEMPERIOD,0 AS FACT_A,0 AS FACT_B,0 AS FACT_C,FACT_B AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:comparePeriod AND DIM_ITEMPERIOD IN('1416001','1403100')) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME,B.SCODE",
-	   "_cube": {
+	   "sql":"SELECT B.SCODE AS id, B.SNAME AS ITEM , SUM(NVL(FACT_B, 0)) AS BQ , SUM(NVL(FACT_B, 0)) AS BNLJ , SUM(NVL(FACT_C, 0)) AS BNMB , SUM(NVL(SNTQ, 0)) AS SNTQ , CASE  WHEN SUM(NVL(FACT_C, 0)) = 0 THEN 0 ELSE ROUND(SUM(NVL(FACT_B, 0)) / SUM(NVL(FACT_C, 0)) * 100, 4) END AS WCL FROM ( SELECT DIM_ITEMPERIOD, FACT_B, FACT_C, 0 AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE (DIM_COMPANY = :company AND DIM_PERIOD = :period AND DIM_ITEMPERIOD IN ('1416001', '1403100')) UNION ALL SELECT DIM_ITEMPERIOD, 0 AS FACT_B, 0 AS FACT_C, FACT_B AS SNTQ FROM DW_FACTFINANCEPERIOD WHERE (DIM_COMPANY = :company AND DIM_PERIOD = :comparePeriod AND DIM_ITEMPERIOD IN ('1416001', '1403100')) ) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME, B.SCODE",
+	    "_cube": {
 		   "subject": "0002",
 		   "cubeId": 4
 	   },
@@ -1120,182 +1120,7 @@
 			   "color":['#26BAEE','#1875F0']
 			}
 		},
-		   {
-			   "xtype": "chart",
-			   "id": "lrb3465",
-			   "text": "资金集中度占比图（%）",
-			   "unit":10000,
-			   "watchState":true,
-			   "weight": 6,
-			   "config": {
-				   "sql":"WITH TMP1 AS(SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE<>'R' AND SCODE=:company), TMP3 AS (SELECT ROOT_SCODE, COUNT(*) JZHS FROM ( (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD=:period) A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE), FACT AS (SELECT SCODE, '集中度' JZD,JZHS,'非集中度' FJZD,NVL((HS-JZHS),0) FJZHS,'管控面' GKM,FACT_C JZJE, '非管控面' FGKM, CASE WHEN SCODE=:company THEN NVL(FACT_A-FACT_C,0) ELSE NVL(FACT_B,0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD=:period ORDER BY SCODE) SELECT 1 ID, JZD AS TEXT, JZHS AS A, GKM AS TEXT1, JZJE AS B FROM FACT UNION ALL SELECT 2 ID, FJZD, FJZHS, FGKM, FJZJE FROM FACT",
-				   "_cubes": {
-					   "subject": "0002",
-					   "dims":{
-						   "itemperiod":"1416001,1403100,1400111",
-						   "period":0
-					   },
-					   "dimName":"period",
-					   "cubeId": 2
-				   },
-				   "random": {
-					   "min": 100,
-					   "max": 100000
-				   },
-				   "mainDim": "period",
-				   "needDims":["company","year","month"],
-				   "type": 1,
-				   "generateVar":{
-					   "periodCount":2,
-					   "compareType":"0&-1",
-					   "reverse":true
-				   },
-				   "rows": [],
-				   "columns": [
-					   {
-						   "id": "scode",
-						   "type": "string",
-						   "text": "编码"
-					   },
-					   {
-						   "id": "text",
-						   "type": "string",
-						   "text": "项目"
-					   },
-					   {
-						   "id": "A",
-						   "type": "number",
-						   "text": "集中金额"
-					   },
-					   {
-						   "id": "text1",
-						   "type": "string",
-						   "text": "项目"
-					   },
-					   {
-						   "id": "B",
-						   "type": "number",
-						   "text": "金额"
-					   }
-				   ]
-			   },
-			   "conversionUnit":function(unit){
-				   let me = this;
-				   let unitObjs = [
-					   {"text":"万元","value":10000},
-					   {"text":"千元","value":1000},
-					   {"text":"百元","value":100},
-					   {"text":"十元","value":10},
-					   {"text":"元","value":1}
-				   ];
-				   if(!unit){
-					   unit = me.unit;
-				   }
-				   if(!unit){
-					   unit = "元";
-				   }
-				   for(let i = 0;i < unitObjs.length;i ++){
-					   let unitItem = unitObjs[i];
-					   if(unitItem.text == unit){
-						   return unitItem.value;
-					   }
-				   }
-				   return 1;
-			   },
-			   "queryDataAfter":function(data){
-				   debugger;
-				   let me = this;
-				   let columns = me.options.getData.columns;
-				   let unit = me.unit;
-				   if(!unit){
-					   unit = 1;
-				   }
-				   //unit = me.conversionUnit(unit);
-				   if(columns && columns.length > 0){
-					   for(let i = 0;i < data.length;i ++){
-						   let dataItem = data[i];
-						   for(let j = 0;j < columns.length;j ++){
-							   let columnItem = columns[j];
-							   if(columnItem.unit && columnItem.unit == "万元"){
-								   let columnId = columnItem.id;
-								   if(dataItem[columnId]){
-									   dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
-								   }
-							   }
-						   }
-					   }
-				   }
-				   return data;
-			   },
-			   "listeners":[
-				   {
-					   "type":"click",
-					   "way":"addTab",
-					   "sourceApi":"/cnbi/json/source/tjsp/zjjzqkhzDash.json",
-					   "handler": ($vue,params) =>{
-						   console.log(params);
-					   }
-				   }
-			   ],
-			   "options": {
-				   "type": "advancechart",
-				   "subType": "pie",
-				   "getData": {
-					   "type": 2,
-					   "columns": [
-						   {
-							   "id": "text1",
-							   "prop":"name"
-						   },
-						   {
-							   "id": "B",
-							   "prop":"value",
-							   "unit":"万元"
-						   }
-					   ],
-					   "scope": true
-				   }
-			   },
-			   "chartOptions":{
-				   "dd":"this.item.text",
-				   "title": {
-					   "text": "this.item.text",
-					   "x": "center",
-					   "top":10,
-					   "textStyle":{
-						   "fontSize": 16,
-						   "color":"#8796B0"
-					   }
-				   },
-				   "tooltip": {
-					 "trigger": "item",
-					 "formatter": "{b} : {c} ({d}%)"
-				   },
-				   "color":['#1875F0','#1CD1A1'],
-				   "series": [
-					   {
-						   "name": "",
-						   "type": "pie",
-						   "radius": "55%",
-						   "center": ["50%", "60%"],
-						   "data": "this.item.options.datas",
-						   "itemStyle": {
-							   "emphasis": {
-								   "shadowBlur": 10,
-								   "shadowOffsetX": 0,
-								   "shadowColor": "rgba(0, 0, 0, 0.5)"
-							   }
-						   }
-					   }
-				   ] ,
-				   "legend": {
-					   "orient": "vertical",
-					   "left": "5%",
-					   "top": "15%",
-					   "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
-				   }
-			   }
-		   },
+		  
 		   {
 			   "xtype": "chart",
 			   "id": "pie456",
@@ -1303,8 +1128,8 @@
 			   "watchState":true,
 			   "weight": 6,
 			   "config": {
-				   "sql":"WITH TMP1 AS(SELECT ROOT_SCODE, COUNT(*) HS FROM (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE)GROUP BY ROOT_SCODE), TMP2 AS (SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE CISDEL='N' AND CTYPE<>'R' AND SCODE=:company), TMP3 AS (SELECT ROOT_SCODE, COUNT(*) JZHS FROM ( (SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' CONNECT BY PRIOR SCODE = SPCODE) A1 INNER JOIN (SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD=:period) A2 ON A1.SCODE = A2.DIM_COMPANY) GROUP BY ROOT_SCODE), FACT AS (SELECT SCODE, '集中度' JZD,JZHS,'非集中度' FJZD,NVL((HS-JZHS),0) FJZHS,'管控面' GKM,FACT_C JZJE, '非管控面' FGKM, CASE WHEN SCODE=:company THEN NVL(FACT_A-FACT_C,0) ELSE NVL(FACT_B,0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE=T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE=T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON T1.SCODE=A.DIM_COMPANY AND DIM_BANK='SH' AND DIM_PERIOD=:period ORDER BY SCODE) SELECT 1 ID, JZD AS TEXT, JZHS AS A, GKM AS TEXT1, JZJE AS B FROM FACT UNION ALL SELECT 2 ID, FJZD, FJZHS, FGKM, FJZJE FROM FACT",
-				   "_cubes": {
+				   "sql":"WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND CTYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY AND DIM_BANK = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+				    "_cubes": {
 					   "subject": "0002",
 					   "dims":{
 						   "itemperiod":"1416001,1403100,1400111",
@@ -1431,7 +1256,185 @@
 					   "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
 				   }
 			   }
-		   }
+		   },
+		   {
+			"xtype": "chart",
+			"id": "lrb3465",
+			"text": "资金管控面占比图（%）",
+			"unit":1,
+			"watchState":true,
+			"weight": 6,
+			"config": {
+				"sql":"WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND CTYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CTYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY AND DIM_BANK = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+				 "_cubes": {
+					"subject": "0002",
+					"dims":{
+						"itemperiod":"1416001,1403100,1400111",
+						"period":0
+					},
+					"dimName":"period",
+					"cubeId": 2
+				},
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"mainDim": "period",
+				"needDims":["company","year","month"],
+				"type": 1,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"0&-1",
+					"reverse":true
+				},
+				"rows": [],
+				"columns": [
+					{
+						"id": "scode",
+						"type": "string",
+						"text": "编码"
+					},
+					{
+						"id": "text",
+						"type": "string",
+						"text": "项目"
+					},
+					{
+						"id": "A",
+						"type": "number",
+						"text": "集中金额"
+					},
+					{
+						"id": "text1",
+						"type": "string",
+						"text": "项目"
+					},
+					{
+						"id": "B",
+						"type": "number",
+						"text": "金额"
+					}
+				]
+			},
+			"conversionUnit":function(unit){
+				let me = this;
+				let unitObjs = [
+					{"text":"万元","value":10000},
+					{"text":"千元","value":1000},
+					{"text":"百元","value":100},
+					{"text":"十元","value":10},
+					{"text":"元","value":1}
+				];
+				if(!unit){
+					unit = me.unit;
+				}
+				if(!unit){
+					unit = "元";
+				}
+				for(let i = 0;i < unitObjs.length;i ++){
+					let unitItem = unitObjs[i];
+					if(unitItem.text == unit){
+						return unitItem.value;
+					}
+				}
+				return 1;
+			},
+			"queryDataAfter":function(data){
+				debugger;
+				let me = this;
+				let columns = me.options.getData.columns;
+				let unit = me.unit;
+				if(!unit){
+					unit = 1;
+				}
+				//unit = me.conversionUnit(unit);
+				if(columns && columns.length > 0){
+					for(let i = 0;i < data.length;i ++){
+						let dataItem = data[i];
+						for(let j = 0;j < columns.length;j ++){
+							let columnItem = columns[j];
+							if(columnItem.unit && columnItem.unit == "万元"){
+								let columnId = columnItem.id;
+								if(dataItem[columnId]){
+									dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+								}
+							}
+						}
+					}
+				}
+				return data;
+			},
+			"listeners":[
+				{
+					"type":"click",
+					"way":"addTab",
+					"sourceApi":"/cnbi/json/source/tjsp/zjjzqkhzDash.json",
+					"handler": ($vue,params) =>{
+						console.log(params);
+					}
+				}
+			],
+			"options": {
+				"type": "advancechart",
+				"subType": "pie",
+				"getData": {
+					"type": 2,
+					"columns": [
+						{
+							"id": "text1",
+							"prop":"name"
+						},
+						{
+							"id": "B",
+							"prop":"value",
+							"unit":"万元"
+						}
+					],
+					"scope": true
+				}
+			},
+			"chartOptions":{
+				"dd":"this.item.text",
+				"title": {
+					"text": "this.item.text",
+					"x": "center",
+					"top":10,
+					"textStyle":{
+						"fontSize": 16,
+						"color":"#8796B0"
+					}
+				},
+				"tooltip": {
+				  "trigger": "item",
+				  "formatter": "{b} : {c} ({d}%)"
+				},
+				"color":['#1875F0','#1CD1A1'],
+				"series": [
+					{
+						"name": "",
+						"type": "pie",
+						"radius": "55%",
+						"center": ["50%", "60%"],
+						"data": "this.item.options.datas",
+						"itemStyle": {
+							"emphasis": {
+								"shadowBlur": 10,
+								"shadowOffsetX": 0,
+								"shadowColor": "rgba(0, 0, 0, 0.5)"
+							}
+						}
+					}
+				] ,
+				"legend": {
+					"orient": "vertical",
+					"left": "5%",
+					"top": "15%",
+					"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+				}
+			}
+		}
+
+
 		   
 		]
 	   } 
