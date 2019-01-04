@@ -243,9 +243,9 @@
                             "id": "zje"
                         },
                         {
-                            "text": "与年初相比增减率",
+                            "text": "与年初相比增减率（%）",
                             "type":"decimal",
-                            "unit":"%",
+                            "conversion":"%",
                             "id": "zjl"
                         },
                         {

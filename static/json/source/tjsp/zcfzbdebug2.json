@@ -78,7 +78,8 @@
 					{
 						"id": "zjl",
 						"type": "decimal",
-						"text": "增减率"
+						"conversion":"%",
+						"text": "增减率（%）"
 					},
 					{
 						"id": "sntq",
@@ -91,9 +92,9 @@
 						"text": "同比增减额"
 					},{
 						"id":"tbzjl",
-						"text":"同比增减率",
+						"text":"同比增减率（%）",
 						"type":"decimal",
-						"unit":"%"
+						"conversion":"%"
 					},
 					{
 						"id": "bnys",

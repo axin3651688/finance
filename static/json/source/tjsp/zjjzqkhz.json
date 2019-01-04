@@ -34,7 +34,7 @@
         {
           "text": "集中度（%）",
           "type":"decimal",
-          "unit":"%",
+          "conversion":"%",
           "id": "jzd"
         },
         {
@@ -63,7 +63,7 @@
           {
             "text": "管控面（%）",
             "type":"decimal",
-            "unit":"%",
+            "conversion":"%",
             "id": "gkm"
           },
           {

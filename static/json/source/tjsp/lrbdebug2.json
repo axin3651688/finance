@@ -51,7 +51,8 @@
 					{
 						"id": "wcl",
 						"type":"decimal",
-						"text": "预算完成率"
+						"conversion":"%",
+						"text": "预算完成率（%）"
 					},
 					{
 						"id": "gsbm",
@@ -82,7 +83,8 @@
 					{
 						"id": "tbzjl",
 						"type":"decimal",
-						"text": "当月同比增减率"
+						"conversion":"%",
+						"text": "当月同比增减率（%）"
 					},
 					{
 						"id": "ljsj",
@@ -102,7 +104,8 @@
 					{
 						"id": "tbzjl_1",
 						"type":"decimal",
-						"text": "累计同比增减率"
+						"conversion":"%",
+						"text": "累计同比增减率（%）"
 					},
 					{
 						"id": "bnys",

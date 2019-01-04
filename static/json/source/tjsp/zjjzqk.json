@@ -32,8 +32,9 @@
   ],
   "columns": [
     {
-      "text": "集中度",
+      "text": "集中度（%）",
       "type":"decimal",
+      "conversion":"%",
       "id": "jzd"
     },
     {
