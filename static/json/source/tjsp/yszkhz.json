@@ -116,20 +116,21 @@
         "drillProperties": ["hs"], //有钻取，给蓝色
 
         "cellStyle": function (row) {
-
+            let datas = this.datas;
+            let record = [];
+            record = datas[row.rowIndex];
             let css = "padding: 4px 0;";
             let pro = row.column.property; //列id
             if (!pro) {
                 return css;
             }
-            let textIndent = "",
-                record = row.row;
+            let textIndent = "";
             let drillProperties = this.drillProperties; //钻取列获取
             if (drillProperties.indexOf(pro) != -1) { //匹配需要下钻的列
-                if (row.row.hs && row.row.hs != 0 && row.row.id != '1106') { //有数据时才显示蓝色，并且可以下钻(合计行不能下钻)
+                if (record.hs && record.hs != 0 && record.id != '1106') { //有数据时才显示蓝色，并且可以下钻(合计行不能下钻)
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
                     css = css + "font-weight:bold;" + textIndent + drill;
-                    row.row.drill = true; //下钻设置
+                    datas[row.rowIndex].drill = true; //下钻设置
                     return css;
                 } else {
                     return css + textIndent;
@@ -139,6 +140,11 @@
             }
         },
         "onCellClick": function (row, column, cell, event, option) {
+            let datas = this.datas;
+            let data = datas.filter(function(item){
+                    return item.id == row.id;
+            });
+            row = data[0];
             let cv = column.property + ""; //下钻行的标识
             let listener = row._drill || row.drill;
             if (listener && cv == "hs") {
