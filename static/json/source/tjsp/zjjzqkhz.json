@@ -5,6 +5,15 @@
     "layout": {
       "xtype": "tab"
     },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
     "showDims": ["year","month","company","conversion"],
     "items": [{
       "xtype": "tree-grid",
@@ -101,11 +110,7 @@
        }
     }],
       "onRowClick":function(row,e,col,$vue){
-<<<<<<< HEAD
           debugger
-=======
-           debugger
->>>>>>> 1c7bdd943a135f5d983736d910a79f5821536dac
           let id = row.scode, text = row.sname ;
           if(this.drillProperties.indexOf(e.property) != -1){
             if(row.jzhs && row.jzhs>0){  

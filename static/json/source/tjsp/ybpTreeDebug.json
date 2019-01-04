@@ -146,7 +146,6 @@
 				if(chartData){
 					params.indscode = chartData[0].indscode;
 				}
-				alert(params.indscode);
 				return params;
 			},
 			"config": {
