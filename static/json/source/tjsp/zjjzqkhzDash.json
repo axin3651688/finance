@@ -22,7 +22,7 @@
       
       "columns": [
         {
-          "text": "集中度",
+          "text": "集中度（%）",
           "type":"decimal",
           "unit":"%",
           "id": "jzd"
@@ -51,7 +51,7 @@
             "id": "jzhs"
           },
           {
-            "text": "管控面",
+            "text": "管控面（%）",
             "type":"decimal",
             "unit":"%",
             "id": "gkm"
