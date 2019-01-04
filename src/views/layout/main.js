@@ -11,7 +11,7 @@ import '../../../node_modules/handsontable/dist/handsontable.full.css'
 import VueECharts from '@c/charts/ECharts'
 Vue.component('chart', VueECharts);
 import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
-
+import "@s/green/index.scss" //cxy
 Vue.use(ZkTable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);

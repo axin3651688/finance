@@ -100,14 +100,17 @@
         "levelProperties":{"text1":"nlevel","text2":"level_"},//加缩进
         
         "cellStyle":function(row) {
-           
+           let datas = this.datas;
+           let record = [];
+           record = datas[row.rowIndex];
+             
             let css = "padding: 4px 0;";
             let pro = row.column.property;//列id
             if (!pro) {
               return css;
             }
             let levelProperties = this.levelProperties;//缩进列获取
-            let textIndent ="",record = row.row;
+            let textIndent ="";
             let levelPro = levelProperties[pro];
             if (levelPro && record[levelPro]) {
                 let level = record[levelPro] || 1;
@@ -115,20 +118,20 @@
             }
             let drillProperties = this.drillProperties;//钻取列获取
             if (pro.indexOf("text1") != -1) {//第一列项目
-                if((row.row.bnljje1 && row.row.bnljje1 != 0) || (row.row.snljje1 && row.row.snljje1 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                if((record.bnljje1 && record.bnljje1 != 0) || (record.snljje1 && record.snljje1 != 0) ){//有数据时才显示蓝色，并且可以下钻
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
                     css = css + "font-weight:bold;" + textIndent + drill;
-                    row.row.drill = true;//下钻设置
+                    datas[row.rowIndex].drill = true;//下钻设置
                     return css ;
                  }else{
                     //row.row.drill = false;
                     return css+ textIndent; 
                  }
             }else if(pro.indexOf("text2") != -1){//第二列项目
-                if((row.row.bnljje2 && row.row.bnljje2 != 0) || (row.row.snljje2 && row.row.snljje2 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                if((record.bnljje2 && record.bnljje2 != 0) || (record.snljje2 && record.snljje2 != 0) ){//有数据时才显示蓝色，并且可以下钻
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
                     css = css + "font-weight:bold;" + textIndent + drill;
-                    row.row._drill = true;//下钻设置
+                    datas[row.rowIndex]._drill = true;//下钻设置
                     return css;
                  }else{
                    // row.row._drill = false;
@@ -140,6 +143,11 @@
             }
           },
         "onCellClick":function(row, column, cell, event,option){
+                let datas = this.datas;
+                let data = datas.filter(function(item){
+                        return item.ascode == row.ascode;
+                });
+                row = data[0];
                 let cv = column.property + "";
                 let listener = false;
                 if(cv == "text1")listener = row.drill;

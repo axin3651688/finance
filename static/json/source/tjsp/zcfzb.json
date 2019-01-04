@@ -1020,28 +1020,32 @@
             let rows = this.rows;
             for(let i=0;i<data.length;i++){
                 rows = rows.filter(function(item){
-                    if(data[i].id == item.id){
+                    if(data[i].id == item.id ){
+                      debugger
                         if(data[i].A)item.A=data[i].A;
                         if(data[i].B)item.B=data[i].B;
+                        
                     }
                     return item;
                 }) ;
                 rows = rows.filter(function(item){
                     if(data[i].id == item.id_){
+                      debugger
                         if(data[i].A)item.A_=data[i].A;
                         if(data[i].B)item.B_=data[i].B;
                     }
                     return item;
-                }) ;
-
+                }) 
             }
             return data;
       },
-      "drillProperties":["text","text2","1110"],//有钻取，给蓝色
+      "drillProperties":["text","text2"],//有钻取，给蓝色
 
       "levelProperties":{text:"level",text2:"level2"},//加缩进 可选 table
       "cellStyle":function(row) {
           debugger 
+        // let datas = this.datas;
+        // let record = datas[row.rowIndex];
         let css = "padding: 4px 0;";
         let pro = row.column.property;//列id
         if (!pro) {
