@@ -21,7 +21,7 @@ export default function modeHandle(e) {
         return;
     }
     // e.url = "cnbi/json/source/chart/funnel.json";
-    console.log(e)
+    // console.log(e)
 
     /** 
      * sjz

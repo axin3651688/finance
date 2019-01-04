@@ -8,6 +8,7 @@ export default function funnel() {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c}%"
         },
+
         toolbox: {
             feature: {
                 dataView: {
@@ -22,12 +23,12 @@ export default function funnel() {
         series: [{
             name: '漏斗图',
             type: 'funnel',
-            left: '10%',
             width: '80%',
-            min: 0,
-            minSize: '0%',
-            maxSize: '100%',
-            sort: 'descending',
+            height: '90%',
+            left: '10%',
+            top: '10%',
+            // 下面为倒过来
+            // sort: 'ascending',
             gap: 2,
             label: {
                 normal: {

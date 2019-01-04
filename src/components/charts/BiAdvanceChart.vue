@@ -18,6 +18,7 @@ import map from "./map/map";
 import chinaMap from "./map/china.json";
 import scatter from "./data/scatter.js";
 import sankey from "./data/sankey.js";
+import polar from "./data/polar.js";
 
 ECharts.registerMap("china", chinaMap);
 
@@ -71,14 +72,16 @@ export default {
     getDataSource(item) {
       debugger;
       let options = item.chartOptions;
+      // let defaultOptions = this.getDefautlChartConfigByType();
       if (!item.options.unUseDefaultConfig && options) {
         //不使用默认配制
         let defaultOptions = this.getDefautlChartConfigByType();
         Cnbi.applyDeepIf(options || {}, defaultOptions);
       }
       this.evalVaiables(options);
-      // console.log(options);
+      console.log(options);
       debugger;
+
       return options;
     },
     upData(item) {
@@ -122,10 +125,15 @@ export default {
          * 多系列数据图形 说白了就是series.length > 1
          */
         let datas = item.options.datas;
-        // this.chartOptions.title = this.item.text;
-        this.chartOptions.series = datas.series;
-        this.chartOptions.xAxis = datas.xAxis;
-        this.chartOptions.legend.data = datas.legend;
+        if (subType == "line") {
+          this.chartOptions.series = datas.series;
+          this.chartOptions.xAxis = datas.xAxis;
+          this.chartOptions.legend.data = datas.legend;
+        } else if (subType == "polar") {
+          this.chartOptions.series = datas.series;
+          this.chartOptions.radiusAxis = datas.xAxis;
+          this.chartOptions.legend.data = datas.legend;
+        }
       }
     },
     getDefautlChartConfigByType() {
@@ -134,8 +142,8 @@ export default {
         console.error("没有正确的配置chart类型");
         return;
       }
-      // console.log(chartSubType);
-      // debugger;
+      console.log(chartSubType);
+      debugger;
 
       switch (chartSubType) {
         case "bar":
@@ -164,6 +172,9 @@ export default {
           break;
         case "themeRiver":
           return themeRiver();
+          break;
+        case "polar":
+          return polar();
           break;
         default:
           break;

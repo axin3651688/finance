@@ -62,6 +62,8 @@ export default {
       let url = "wss://192.168.1.118:8441/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
+      } else {
+        url = url + "?device=" + Cnbi.getDevice();
       }
       // debugger;
       webSocket({ url: url });

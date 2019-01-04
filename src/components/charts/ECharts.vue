@@ -1,18 +1,11 @@
 <template>
-  <div class="echarts"/>
+  <div class="echarts" :style="{'height':options.height_s ? options.height_s:'294px'}"/>
 </template>
-
-<style>
-.echarts {
-  height: 294px;
-}
-</style>
-
 <script>
 import echarts from "echarts";
 import debounce from "lodash/debounce";
 import { addListener, removeListener } from "resize-detector";
-// :style="{'padding-top':item.class_top ? item.class:'24px'}"
+//
 // enumerating ECharts events for now
 const EVENTS = [
   "legendselectchanged",

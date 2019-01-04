@@ -98,45 +98,67 @@
                     }
                 },
                 "chartOptions": {
+                    "height_s": "600px",
+                    "tooltip": {
+                        "trigger": "axis",
+                        "axisPointer": {
+                            "type": "shadow"
+                        }
+                    },
+                    "legend": {
+                        "data": ["利润", "支出", "收入"]
+                    },
+                    "grid": {
+                        "left": "3%",
+                        "right": "4%",
+                        "bottom": "3%",
+                        "containLabel": true
+                    },
+                    "xAxis": [{
+                        "type": "value"
+                    }],
+                    "yAxis": [{
+                        "type": "category",
+                        "axisTick": {
+                            "show": false
+                        },
+                        "data": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+                    }],
                     "series": [{
-                        "name": "漏斗图",
-                        "type": "funnel",
-                        "left": "10%",
-                        "top": 60,
-                        "bottom": 30,
-                        "width": "80%",
-                        "minSize": "0%",
-                        "maxSize": "100%",
-                        "sort": "descending",
-                        "gap": 2,
-                        "label": {
-                            "normal": {
-                                "show": true,
-                                "position": "inside"
+                            "name": "利润",
+                            "type": "bar",
+                            "label": {
+                                "normal": {
+                                    "show": true,
+                                    "position": "inside"
+                                }
                             },
-                            "emphasis": {
-                                "textStyle": {
-                                    "fontSize": 20
+                            "data": [200, 170, 240, 244, 200, 220, 210]
+                        },
+                        {
+                            "name": "收入",
+                            "type": "bar",
+                            "stack": "总量",
+                            "label": {
+                                "normal": {
+                                    "show": true
                                 }
-                            }
+                            },
+                            "data": [320, 302, 341, 374, 390, 450, 420]
                         },
-                        "labelLine": {
-                            "normal": {
-                                "length": 10,
-                                "lineStyle": {
-                                    "width": 1,
-                                    "type": "solid"
+                        {
+                            "name": "支出",
+                            "type": "bar",
+                            "stack": "总量",
+                            "label": {
+                                "normal": {
+                                    "show": true,
+                                    "position": "left"
                                 }
-                            }
-                        },
-                        "itemStyle": {
-                            "normal": {
-                                "borderColor": "#fff",
-                                "borderWidth": 1
-                            }
-                        },
-                        "data": []
-                    }]
+                            },
+                            "data": [-120, -132, -101, -134, -190, -230, -210]
+                        }
+                    ]
 
                 }
             }
