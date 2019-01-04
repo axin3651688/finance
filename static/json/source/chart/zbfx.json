@@ -688,60 +688,6 @@
                     "mainDim": "period",
                     "needDims": ["company", "year", "month"],
                     "type": 1,
-                    "rows": [{
-                            "id": "{year}01",
-                            "text": "{year}年1月"
-                        },
-                        {
-
-                            "id": "{year}02",
-                            "text": "{year}年2月"
-                        },
-                        {
-
-                            "id": "{year}03",
-                            "text": "{year}年3月"
-                        },
-                        {
-
-                            "id": "{year}04",
-                            "text": "{year}年4月"
-                        },
-                        {
-                            "id": "{year}05",
-                            "text": "{year}年5月"
-                        },
-                        {
-                            "id": "{year}06",
-                            "text": "{year}年6月"
-                        }, {
-                            "id": "{year}07",
-                            "text": "{year}年7月"
-                        },
-                        {
-
-                            "id": "{year}08",
-                            "text": "{year}年8月"
-                        },
-                        {
-
-                            "id": "{year}09",
-                            "text": "{year}年9月"
-                        },
-                        {
-
-                            "id": "{year}10",
-                            "text": "{year}年10月"
-                        },
-                        {
-                            "id": "{year}11",
-                            "text": "{year}年11月"
-                        },
-                        {
-                            "id": "{year}12",
-                            "text": "{year}年12月"
-                        }
-                    ],
                     "columns": [{
                             "id": "id",
                             "type": "string",
@@ -824,13 +770,7 @@
                     }
                 },
                 "chartOptions": {
-                    "series": [{
-                            "type": "line"
-                        },
-                        {
-                            "type": "line"
-                        }
-                    ]
+                    "series": []
                 }
             }
         ]

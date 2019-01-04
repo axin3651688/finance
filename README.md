@@ -340,9 +340,8 @@ listeners:[
     }
 
 ~~~
-## 顶部需要日期的配置
-如果不配置showDims,默认显示公司, 年,月分开显示, 当有表格需要用日属性的,在json最外层配置     "showDims": ["day"],
-如果只要company 就配   "showDims": ["conversion"], 其他的都不显示
+## Echart图表高度配置
+在options(旧方法)或chartOptions(新方法)中配置height_s字段如 "height_s": "600px",就会得到相应高度
 
 
 #指标分析右边距(BiModule 51行)

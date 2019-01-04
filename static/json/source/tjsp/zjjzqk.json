@@ -6,16 +6,15 @@
     "xtype": "tab"
   },
   "showDims": ["year","month","company","conversion"],
-  "changeYearBefore":function(newyear,option){
-    option.closeTabTaget(newyear,option);
-}
-,//切换年的回调
-"changeMonthBefore":function(newmonth,option){
-    option.closeTabTaget(newmonth,option);
-},//切换月份的回调
-"changeCompanyBefore":function(newcompany,option){
-    option.closeTabTaget(newcompany,option);
-},//切换公司之前的回调
+  // "changeYearBefore":function(newyear,option){
+  //   option.closeTabTaget(newyear,option);
+  // },
+  // "changeMonthBefore":function(newmonth,option){
+  //     option.closeTabTaget(newmonth,option);
+  // },
+  // "changeCompanyBefore":function(newcompany,option){
+  //     option.closeTabTaget(newcompany,option);
+  // },
   "items": [{
     "xtype": "STreeGrid",
     "id": "123456",
