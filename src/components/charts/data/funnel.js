@@ -23,14 +23,12 @@ export default function funnel() {
         series: [{
             name: '漏斗图',
             type: 'funnel',
-            left: '30%',
-            // top: 60,
-            bottom: 300,
-            // width: '80%',
-            // min: 0,
-            // minSize: '0%',
-            // maxSize: '100%',
-            sort: 'descending',
+            width: '80%',
+            height: '90%',
+            left: '10%',
+            top: '10%',
+            // 下面为倒过来
+            // sort: 'ascending',
             gap: 2,
             label: {
                 normal: {
@@ -43,21 +41,21 @@ export default function funnel() {
                     }
                 }
             },
-            // labelLine: {
-            //     normal: {
-            //         length: 10,
-            //         lineStyle: {
-            //             width: 1,
-            //             type: 'solid'
-            //         }
-            //     }
-            // },
-            // itemStyle: {
-            //     normal: {
-            //         borderColor: '#fff',
-            //         borderWidth: 1
-            //     }
-            // },
+            labelLine: {
+                normal: {
+                    length: 10,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                }
+            },
+            itemStyle: {
+                normal: {
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }
+            },
             data: []
         }]
     };

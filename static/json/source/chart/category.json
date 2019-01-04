@@ -1,0 +1,177 @@
+{
+    "id": 1,
+    "text": "极坐标",
+    "showDims": ["company", "month", "year"],
+    "rows": [{
+
+        "id": "1416001",
+        "text": "营业收入"
+    }, {
+
+        "id": "1403100",
+        "text": "利润总额"
+    }, {
+
+        "id": "1400111",
+        "text": "归属于母公司净利润"
+    }],
+    "columns": [{
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "汇总"
+        }, {
+            "id": "B",
+            "type": "decimal",
+            "text": "汇总"
+        }, {
+            "id": "C",
+            "type": "decimal",
+            "text": "汇总"
+        }
+    ],
+    "datas": {},
+    "config": {
+        "_cube": {
+            "subject": "0002",
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "needDims": ["year", "month", "company"],
+        "type": 1
+
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "id": "firstTab",
+        "layout": {
+            "xtype": "column"
+        },
+        "text": "智慧预测",
+        "children": [{
+            "xtype": "chart",
+            "id": "1416001",
+            "text": "风险级别占比情况",
+            "weight": 16,
+            "config": {
+
+                "mainDim": "itemperiod",
+                "random": {
+                    "min": 100,
+                    "max": 100000
+                },
+                "needDims": [
+                    "year",
+                    "month",
+                    "company"
+                ],
+                "rows": [{
+                        "id": "A",
+                        "type": "decimal",
+                        "text": "营业成本"
+                    },
+                    {
+                        "id": "B",
+                        "type": "decimal",
+                        "text": "销售费用"
+                    },
+                    {
+                        "id": "C",
+                        "type": "decimal",
+                        "text": "管理费用"
+                    }
+                ],
+                "type": 1
+
+            },
+            "listeners": [{
+                "type": "click",
+                "way": "addTab",
+                "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
+                "handler": ($vue, params) => {
+                    console.info(params);
+                    debugger;
+                }
+            }],
+            "options": {
+                "subType": "pie",
+                "type": "advancechart",
+                "getData": {
+                    "type": 3,
+                    "columns": [{
+                        "id": "text",
+                        "prop": "name"
+                    }, {
+                        "id": "A",
+                        "prop": "value"
+                    }, {
+                        "id": "B",
+                        "prop": "value"
+                    }, {
+                        "id": "C",
+                        "prop": "value"
+                    }],
+                    "scope": true
+                }
+            },
+            "chartOptions": {
+                "height_s": "600px",
+
+                "angleAxis": {},
+                "radiusAxis": {
+                    "type": "category",
+                    "data": [
+                        "周一",
+                        "周二",
+                        "周三",
+                        "周四"
+                    ],
+                    "z": 10
+                },
+                "polar": {},
+                "series": [{
+                        "type": "bar",
+                        "data": [],
+                        "coordinateSystem": "polar",
+                        "name": "A",
+                        "stack": "a"
+                    },
+                    {
+                        "type": "bar",
+                        "data": [],
+                        "coordinateSystem": "polar",
+                        "name": "B",
+                        "stack": "a"
+                    },
+                    {
+                        "type": "bar",
+                        "data": [],
+                        "coordinateSystem": "polar",
+                        "name": "C",
+                        "stack": "a"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "data": [
+                        "A",
+                        "B",
+                        "C"
+                    ]
+                }
+
+            }
+        }]
+    }]
+}

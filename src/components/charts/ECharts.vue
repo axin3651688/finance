@@ -1,7 +1,6 @@
 <template>
-  <div class="echarts" :style="{'height':options.height ? options.height:'294px'}"/>
+  <div class="echarts" :style="{'height':options.height_s ? options.height_s:'294px'}"/>
 </template>
-
 <script>
 import echarts from "echarts";
 import debounce from "lodash/debounce";

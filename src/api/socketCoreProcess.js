@@ -38,7 +38,7 @@ export default function socketCoreProcess(websocket, datas) {
         break;
       case 1003:
         // 登录已失效，请重新登录
-        reloadLogin(data);
+        // reloadLogin(data);
         break;
       case 1004:
         // 登录已失效，请重新登录
