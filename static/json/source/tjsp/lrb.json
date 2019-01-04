@@ -124,7 +124,9 @@
         },
         "drillProperties":["text"],//有钻取，给蓝色 可选 table
         "cellStyle":function(row){
-            debugger
+            debugger           
+            let datas = this.datas;
+            let record = datas[row.rowIndex];
             let css = "padding: 4px 0;";
             let pro = row.column.property;
             if (!pro) {
@@ -132,7 +134,7 @@
             }
             let levelProperties = this.levelProperties;//行缩进
             let textIndent ="";
-            let record = row.row;  //获取的行数据        
+            // let record = row.row;  //获取的行数据        
             let drillProperties = this.drillProperties;//给那一列赋予蓝色
             let levelPro = levelProperties[pro];
             if (levelPro && record[levelPro]) {//行缩进处理
