@@ -46,7 +46,7 @@
             "width":"300px"
         },{
             "id":"row1",
-            "type":"number",
+            "type":"index",
             "text":"行次"
         },{
             "id": "bnljje1",
@@ -63,7 +63,7 @@
             "width":"400px"
         }, {
             "id":"row2",
-            "type":"number",
+            "type":"index",
             "text":"行次"
         },{
             "id": "bnljje2",

@@ -136,10 +136,10 @@ export default {
         }
       }
     },
-    // rowClass({ row, rowIndex }) {
-    //   // 头部颜色和居中配置,马军2018.12.24
-    //   return "background:#F0F8FF;text-align: center";
-    // },
+    rowClass({ row, rowIndex }) {
+      // 头部颜色和居中配置,马军2018.12.24
+      return "background:#F0F8FF;text-align: center";
+    },
     /**
      * 单元格级别样式设置
      */
@@ -152,7 +152,7 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger
+      // debugger
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }

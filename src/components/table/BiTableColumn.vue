@@ -1,7 +1,7 @@
 <template>
   <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid')"
+    v-if="col.isTree  && (tableData1.xtype==='tree-grid' || tableData1.xtype==='STreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -73,12 +73,12 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
+        :content="getCellValues(tableData1.datas,col,scope,tableData1.config.rows)"
         placement="right"
       >
         <span
-          v-if="tableData.datas"
-        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
+          v-if="tableData1.datas"
+        >{{ getCellValues(tableData1.datas,col,scope,tableData1.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -91,7 +91,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="tableData1.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -103,7 +103,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="tableData1.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -122,6 +122,11 @@
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
+  data(){
+    return{
+      tableData1:''
+    }
+  },
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -132,27 +137,33 @@ export default {
     }
   },
   created(){
+    this.tableData1=this.tableData
+  },
+  watch:{
+    tableData1(oldval,newval){
+      debugger
+      console.log(newval)
+    }
   },
   methods: {
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
     // },
-   upData(tableData) {
+   upData(item) {
      debugger;
-     // this.$set(this.tableData, "datas", null);
-     // this.$set(this.tableData, "datas", []);
+     // this.$set(this.tableData1, "datas", null);
+     // this.$set(this.tableData1, "datas", []);
       // if(item.datas.length == 0 ){
       //     item.datas = null;
       //     item.datas = [];
       // }
-      // this.$set(this, "tableData", item);
-      // this.$set(this.tableData, "datas", item.datas);
+      // this.$set(this, "tableData1", item);
+      // this.$set(this.tableData1, "datas", item.datas);
 
-      this.$set(this, "tableData", null);
-      // this.$set(item.datas, "tableData", null);
-      this.$set(this, "tableData", tableData);
-      this.$set(this.tableData, "datas", tableData.datas);
+      this.$set(this, "tableData1", null);
+      this.$set(this, "tableData1", item);
+      this.$set(this.tableData1, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -207,7 +218,7 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      const record = this.tableData.datas[trIndex];
+      const record = this.tableData1.datas[trIndex];
       // console.log(record);
 
       record._expanded = !record._expanded;
@@ -222,7 +233,7 @@ export default {
   },
   created() {
     // debugger;
-    //this.$set(this, "tableData", null);
+    //this.$set(this, "tableData1", null);
   }
 };
 </script>
