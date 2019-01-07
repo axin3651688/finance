@@ -14,7 +14,7 @@
     },//切换公司之前的回调
     
     "config":{
-       "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD= :comparePeriod ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text1,B.NLEVEL , B.NID as row1, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID row2, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
+       "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD= :comparePeriod ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text1,B.NLEVEL , B.NID as id, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID id_, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
       "_cube":{
         "subject":"0002",
         "cubeId":4
@@ -45,8 +45,8 @@
             "text": "项目",
             "width":"300px"
         },{
-            "id":"row1",
-            "type":"index",
+            "id":"id",
+            "type":"number",
             "text":"行次"
         },{
             "id": "bnljje1",
@@ -62,8 +62,8 @@
             "text": "项目",
             "width":"400px"
         }, {
-            "id":"row2",
-            "type":"index",
+            "id":"id_",
+            "type":"number",
             "text":"行次"
         },{
             "id": "bnljje2",

@@ -137,12 +137,14 @@ export default {
     }
   },
   created(){
+    debugger
     this.tableData1=this.tableData
+    
   },
   watch:{
     tableData1(oldval,newval){
       debugger
-      console.log(newval)
+      // console.log(newval)
     }
   },
   methods: {
@@ -184,7 +186,15 @@ export default {
       }
       //debugger
       if (!row[colId] && !union) {
-        return "--";
+        let temp = datas.filter(tempRow=>{
+          return tempRow.id == rowId;
+        })
+        if(temp.length > 0 && temp[0][colId]){
+            row = temp[0];
+        }else{
+             return "--";
+        }
+       
       }
       let value = 0;
       if (Array.isArray(datas) && datas.length == 0) {
