@@ -1250,7 +1250,7 @@
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record.drill = true;//下钻设置
                     return css ;
-                }else if(record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100"){
+                }else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
