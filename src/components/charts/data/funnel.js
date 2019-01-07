@@ -41,6 +41,7 @@ export default function funnel() {
                     }
                 }
             },
+
             labelLine: {
                 normal: {
                     length: 10,

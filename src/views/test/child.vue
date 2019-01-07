@@ -12,6 +12,7 @@
 import BiColumn from "@v/test/BiColumn";
 import BiPie from "@c/charts/BiPie.vue";
 import echarts from "./echarts";
+
 export default {
   name: "",
   data() {

@@ -770,9 +770,7 @@
                     }
                 },
                 "chartOptions": {
-                    "series": [{
-                        "type": "line"
-                    }]
+                    "series": []
                 }
             }
         ]

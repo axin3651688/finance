@@ -1,5 +1,5 @@
 <template>
-  <charts :options="chartOptions" auto-resize/>
+  <charts :options="chartOptions" auto-resize theme="bule"/>
   <!-- <chart :options="map" auto-resize/> -->
   <!-- @click="item1()" -->
 </template>
@@ -21,7 +21,8 @@ import sankey from "./data/sankey.js";
 import polar from "./data/polar.js";
 
 ECharts.registerMap("china", chinaMap);
-
+import bule from "@s/theme/theme.json";
+ECharts.registerTheme("bule", bule);
 export default {
   // name: "BiAdvanceChart",
   mixins: [EventMixins],

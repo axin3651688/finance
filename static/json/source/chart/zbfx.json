@@ -460,7 +460,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
+                        "type": "gauge"
 
                     }]
                 }
@@ -655,7 +655,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge",
+                        "type": "gauge"
 
                     }]
                 }
