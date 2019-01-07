@@ -49,7 +49,7 @@
                         "id": "wcl",
                         "type": "decimal",
                         "text": "完成率",
-                        "unit":"%"
+                        "conversion":"%"
                     },
 				{
 					"id": "gsbm",
@@ -85,7 +85,7 @@
                             "id": "tbzjl",
                             "type": "decimal",
                             "text": "同比增减率",
-                            "unit":"%"
+                            "conversion":"%"
                         }
                 //     ]
                 // }

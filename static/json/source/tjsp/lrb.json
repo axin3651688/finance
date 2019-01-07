@@ -39,7 +39,7 @@
       },{
         "id":"text",
         "type":"string",
-        "width":"330px",
+        "width":"370px",
         "text":"项目"
     },{
         "id":"index",
@@ -151,7 +151,11 @@
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                } else {//否则不给蓝色：说明无click事件；不做处理；
+                } else if(record.id=="1416001" || record.id=="1426400" || record.id=="1402100" || record.id=='1403100' || record.id=='1400100'){
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else {//否则不给蓝色：说明无click事件；不做处理；
                     return css+textIndent;
                 }
             } else {

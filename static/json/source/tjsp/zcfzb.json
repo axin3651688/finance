@@ -708,7 +708,7 @@
     "level":2.5,
     "A":0,
     "B":0,
-    "id_": "nb",
+    "id_": "1310",
     "text2": "所有者权益（或股东权益）：",
     "row2":0,
     "A_":0,
@@ -1250,6 +1250,10 @@
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record.drill = true;//下钻设置
                     return css ;
+                }else if(record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100"){
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
                 }else{
                     return css+ textIndent; 
                 }
@@ -1258,6 +1262,10 @@
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record._drill = true;//下钻设置
+                    return css;
+                }else if(record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100"){
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
                 }else{
                     return css + textIndent; 
@@ -1273,7 +1281,7 @@
         len = cv.length;
         let text = row[cv];
         let id = "" ;
-        if(cv == "text" )id = row.id;//下钻的标识
+        if(cv == "text1" )id = row.id;//下钻的标识
         if(cv == "text2" )id = row.id_;//下钻的标识
         // let datas = this.datas;
         //         let data = datas.filter(function(item){

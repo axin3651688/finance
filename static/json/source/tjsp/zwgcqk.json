@@ -40,7 +40,9 @@
     }, {
         "id": "bz",
         "type": "decimal",
-        "text": "比重"
+        "text": "比重（%）",
+        "conversion":"%"
+
     }
     ],
     "rows":[{
