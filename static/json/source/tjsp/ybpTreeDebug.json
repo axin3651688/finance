@@ -10,7 +10,7 @@
 			"xtype": "chart",
 			"id": "231",
 			"text": "公司效果图",
-			"weight": 8,
+			"weight": 24,
 			"closable": true,
 			"show":true,
 			"queryDataBefore":function(params, config, $vue){
@@ -140,7 +140,7 @@
 			"id": "8979",
 			"text": "这个也是钻取过来的表",
 			"height":300,
-			"weight": 16,
+			"weight": 24,
 			"show":true,
 			"queryDataBefore":function(params, config, $vue){
 				debugger;
@@ -198,6 +198,7 @@
 						"id": "ljwcl",
 						"type": "decimal",
 						"text": "累计完成率"
+						
 					},
 					{
 						"id": "sntq",
