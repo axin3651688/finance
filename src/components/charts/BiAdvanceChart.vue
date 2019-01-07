@@ -24,7 +24,6 @@ ECharts.registerMap("china", chinaMap);
 import bule from "@s/theme/theme.json";
 ECharts.registerTheme("bule", bule);
 export default {
-  // name: "BiAdvanceChart",
   mixins: [EventMixins],
   props: {
     item: {}
@@ -34,7 +33,8 @@ export default {
   },
   data() {
     return {
-      chartOptions: this.getDataSource(this.item)
+      chartOptions: this.getDataSource(this.item),
+      map
     };
   },
   created() {

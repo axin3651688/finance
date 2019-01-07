@@ -2,7 +2,9 @@
     "color": [
         "#3aa1ff",
         "#2fc25b",
-        "#13c2c2"
+        "#13c2c2",
+        "#167ECF",
+        "#9FCF16"
     ],
     "backgroundColor": "rgba(0,0,0,0)",
     "textStyle": {},

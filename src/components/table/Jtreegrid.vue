@@ -20,67 +20,7 @@
       :cell-style="cellStyle"
       @row-click="onRowClick"
     >
-      <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
-      <template slot-scope="scope">
-        <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
-        <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-      </span>-->
-      <!-- {{ scope.$index }} -->
-      <!-- </template>
-      </el-table-column>-->
-      <!-- <el-table-column
-      v-for="(column, index) in item.config.columns"
-      v-else
-      :prop="column.id"
-      :key="column.id"
-      :label="column.text"
-      :width="column.width"
-      >-->
-      <!-- <template slot-scope="scope">
-        <span
-          v-for="space in scope.row._level"
-          v-if=" column.text != '操作' && index === 0"
-          :key="space"
-          class="ms-tree-space"
-        />
-        <span
-          v-if="iconShow(index,scope.row) "
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        <span v-else-if="column.text != '操作'">{{ scope.row[column.id] }}</span>
-
-        <el-button type="text" v-if="column.text === '操作'" @click="add">
-          
-          <img src="@/assets/green/list_menu.svg" alt>
-          <el-cascader
-            :options="item.items[0].columns"
-            v-model="selectedOptions"
-            @change="handleChange"
-          ></el-cascader>
-
-          <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleChange"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-          </el-dialog>
-      </el-button>-->
-      <!-- </template>
-      </el-table-column>-->
-      <!-- <slot/> -->
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
       </el-tag>
     </el-table>
@@ -90,7 +30,6 @@
 <script>
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
-
 import BiTableColumnTree from "../table/BiTableColumnTree";
 // data  columns list
 export default {
@@ -106,51 +45,19 @@ export default {
       formatData: []
     };
   },
-  name: "STreeGrid",
+  name: "Jtreegrid",
   props: ["item"],
-  // props: {
-
-  //   item: {
-  //     data: {
-  //       type: [Array, Object],
-  //       required: true
-  //     },
-  //     columns: {
-  //       type: [Array, Function],
-  //       default: () => []
-  //     },
-  //     evalFunc: Function,
-  //     evalArgs: Array,
-  //     expandAll: {
-  //       type: Boolean,
-  //       default: false
-  //     },
-
-  //     options: {
-  //       type: [Array, Function],
-  //       default: () => []
-  //     }
-  //   }
-  // },
   mounted() {
     // this.item.options = this.item.items[0].columns
   },
-  __computed: {
-    // 格式化数据源
-    formatData() {
-      let tmp;
-      if (!Array.isArray(this.item.rows)) {
-        tmp = [this.item.rows];
-      } else {
-        tmp = this.item.rows;
-      }
-      // return this.item.rows = this.item.datas;
-      const func = this.evalFunc || treeToArray;
-      const args = this.evalArgs
-        ? Array.concat([tmp, this.expandAll], this.evalArgs)
-        : [tmp, this.expandAll];
-      return func.apply(null, args);
-    }
+  created() {
+    debugger;
+    console.log("a", this.item);
+    // this.item.rows = this.item.config.rows
+    //  this.item.rows = this.item.datas
+
+    this.array(this.item.datas);
+    this.convertData();
   },
   methods: {
     rowClass({ row, rowIndex }) {
@@ -161,33 +68,13 @@ export default {
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
-      this.onCellClickDefault(row, column, e);
+      // this.onCellClickDefault(row, column, e);
     },
     cellStyle(row) {
       //  debugger
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
-      // let css = "padding: 4px 0;";
-      // let pro = row.column.property;
-      // if (!pro) {
-      //   return css;
-      // }
-      // let levelProperties = this.item.levelProperties || this.levelProperties;
-      // let textIndent ="",record = row.row;
-      // let levelPro = levelProperties[pro];
-      // if (levelPro && record[levelPro]) {
-      //     let level = record[levelPro] || 1;
-      //     textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
-      // }
-      // let drillProperties = this.item.drillProperties || this.drillProperties;
-      // if (drillProperties.indexOf(pro) != -1) {
-      //   let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
-      //   css = css + "font-weight:bold;" + textIndent + drill;
-      //   return css;
-      // } else {
-      //   return css+textIndent;
-      // }
     },
     /**
      * 格式化数据源
@@ -215,50 +102,11 @@ export default {
       debugger;
       this.convertData();
     },
+    // 点击加载数据在下面做
     array(datas) {
       debugger;
-      let data = datas;
-      // console.log("w",data)
-      let arr = [];
-      let index = 0;
-      let flag = false;
-      //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
-      let root, rootItem, demoItem;
-      let rootArr = [];
-      if (data && data.length > 0) {
-        demoItem = data[0];
-        if (demoItem.pid) {
-          for (let i = 1; i < data.length - 1; i++) {
-            let eveItem = data[i];
-            //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
-            if (eveItem.gsbm == demoItem.pid) {
-              demoItem = eveItem;
-            }
-          }
-          rootItem = demoItem;
-        } else {
-          rootItem = demoItem;
-        }
-      }
-      //找到多个父节点
-      for (let i = 0; i < data.length; i++) {
-        if (!data[i].pid) {
-          rootArr.push(data[i]);
-        }
-      }
-      if (rootArr && rootArr.length > 1) {
-        for (let i = 0; i < rootArr.length; i++) {
-          let it = rootArr[i];
-          this.tranformData(data, it);
-        }
-        this.item.rows = rootArr;
-      } else {
-        if (rootItem) {
-          this.tranformData(data, rootItem);
-          console.log("根节点" + rootItem);
-        }
-        this.item.rows = rootItem;
-      }
+
+      this.item.rows = datas;
     },
     tranformData(data, rootItem) {
       let me = this;
@@ -320,15 +168,6 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    debugger;
-    console.log("a", this.item);
-    // this.item.rows = this.item.config.rows
-    //  this.item.rows = this.item.datas
-
-    this.array(this.item.datas);
-    this.convertData();
   }
 };
 </script>

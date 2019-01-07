@@ -1,0 +1,142 @@
+{
+    "id": 1,
+    "text": "指标分析",
+    "showDims": ["company", "month", "year"],
+    "columns": [],
+    "datas": {},
+    "config": {
+        "_cube": {
+            "subject": "0002",
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "needDims": ["year", "month", "company"],
+        "type": 1
+
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+        "id": "firstTab",
+        "layout": {
+            "xtype": "column"
+        },
+        "text": "指标分析",
+        "children": [{
+            "xtype": "chart",
+            "id": "lrb3",
+            "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
+            "weight": 23,
+            "config": {
+                "_cube": {
+                    "subject": "0002",
+                    "dims": {
+                        "itemperiod": "1416001,1403100,1400111",
+                        "period": 0
+                    },
+                    "dimName": "period",
+                    "cubeId": 2
+
+                },
+                "generateVar": {
+                    "periodCount": 12,
+                    "compareType": "0&-1",
+                    "varName": "rows",
+                    "reverse": true
+                },
+                "random": {
+                    "min": 100,
+                    "max": 100000
+                },
+                "mainDim": "period",
+                "needDims": ["company", "year", "month"],
+                "type": 1,
+                "rows": [],
+                "columns": [{
+                        "id": "id",
+                        "type": "string",
+                        "hidden": true,
+                        "text": "编码"
+                    },
+                    {
+                        "id": "A",
+                        "type": "decimal",
+                        "text": "本期数"
+                    }
+                ],
+                "group": {
+                    "id": "itemperiod",
+                    "text": "itemperiod",
+                    "datas": [{
+                            "id": "1416001",
+                            "text": "营业收入"
+                        },
+                        {
+                            "id": "1403100",
+                            "text": "利润总额"
+                        },
+                        {
+                            "id": "1400111",
+                            "text": "归属于母公司净利润"
+                        }
+                    ]
+                }
+            },
+
+            "options": {
+                "type": "advancechart",
+                "subType": "line",
+                "getData": {
+                    "type": 3,
+                    "columns": [{
+                        "id": "id",
+                        "type": "category",
+                        "boundaryGap": false
+                    }, {
+                        "id": "A",
+                        "name": "营业收入",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1416001"
+                        },
+                        "type": "bar",
+                        "smooth": false
+                    }, {
+                        "id": "A",
+                        "name": "利润总额",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1403100"
+                        },
+                        "type": "line",
+                        "smooth": false
+                    }, {
+                        "id": "A",
+                        "name": "归属于母公司净利润",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1400111"
+                        },
+                        "type": "line",
+                        "smooth": false
+                    }]
+
+                }
+            },
+            "chartOptions": {
+                "height_s": "500px",
+                "series": [{
+                    "name": "好",
+                    "type": "line",
+                    "smooth": false,
+                    "data": []
+                }]
+            }
+        }]
+    }]
+}

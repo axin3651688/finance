@@ -85,7 +85,7 @@ export function findThirdPartData(params) {
 export function findDesignSource(sourceId, url) {
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
   if (isNaN(sourceId)) {
-    debugger
+    // debugger
     url = sourceId;
     sourceId = 0;
   }
