@@ -9,7 +9,7 @@
       <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
     </el-button-group>
     <el-table
-      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+      :data.sync="(item.config.rows && item.config.rows.length > 0)? item.config.rows : (item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk')? item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize):item.datas"
       border
       :stripe="true"
       :height="item.height || rowClass"
@@ -27,11 +27,11 @@
     </el-table>
     <!-- sjz 分页功能 -->
     <el-pagination
-      v-if="item.pagination"
+      v-if="item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[1, 2, 5, 10]"
+      :page-sizes="[100, 200, 500, 1000]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="item.datas.length"
@@ -56,7 +56,7 @@ export default {
       flag: true,
       dialogVisible: false,
       currentPage: 1,
-      pagesize: 1,
+      pagesize: 100,
       id: 0,
       text: "",
       rows: [],
