@@ -3,10 +3,9 @@
         <el-aside>
 
             <el-scrollbar style="height: 100%">
-                <el-input v-model="search" placeholder="请输入内容" clearable class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
 
+                <el-input v-model="search"  suffix-icon="el-icon-search" placeholder="请输入内容" clearable class="input-with-select">
+                </el-input>
 
                 <ul style="margin-bottom: 100px">
                     <li :class="['item_role', {active: item.id===activeItem}]"
@@ -19,8 +18,8 @@
                             <el-popover
                                     placement="bottom">
                                 <div>
-                                    <el-button size="mini" type="text">修改</el-button>
-                                    <el-button type="primary" size="mini">删除</el-button>
+                                    <el-button size="mini" type="text" @click="handleUpdateRole(item)">修改</el-button>
+                                    <el-button type="primary" size="mini" @click="handleDelRole(item)">删除</el-button>
                                 </div>
                                 <img slot="reference" v-show="activeItem===item.id" class="list-menu"
                                      src="@/assets/green/list_menu_white.svg" alt="">
@@ -30,18 +29,31 @@
                     </li>
                 </ul>
 
-                <el-button class="aside-btn" @click="centerDialogVisible = true" type="primary">添加角色</el-button>
+                <el-button class="aside-btn" @click="createDialogVisible = true" type="primary">添加角色</el-button>
 
                 <el-dialog
-                        :visible.sync="centerDialogVisible"
+                        :visible.sync="createDialogVisible"
                         width="24%"
                         :before-close="handleClose">
                     <el-input v-model="newRoleName" class="dialog-input name" placeholder="角色名称"></el-input>
                     <el-input v-model="newRoleNote" class="dialog-input note" placeholder="角色描述"></el-input>
                     <span slot="title" class="dialog-title">创建角色</span>
                     <span slot="footer" class="dialog-footer">
-    <el-button @click="centerDialogVisible = false">保存，并返回</el-button>
-    <el-button type="primary" @click="centerDialogVisible = false">保存，并继续创建</el-button>
+    <el-button @click="createDialogVisible = false">保存，并返回</el-button>
+    <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
+  </span>
+                </el-dialog>
+
+                <el-dialog
+                        :visible.sync="updateDialogVisible"
+                        width="24%"
+                        :before-close="handleClose">
+                    <el-input v-model="selectRole.text" class="dialog-input name" placeholder="角色名称"></el-input>
+                    <el-input v-model="selectRole.note" class="dialog-input note" placeholder="角色描述"></el-input>
+                    <span slot="title" class="dialog-title">修改角色</span>
+                    <span slot="footer" class="dialog-footer">
+    <el-button @click="updateDialogVisible = false">保存，并返回</el-button>
+    <el-button type="primary" @click="updateDialogVisible = false">保存，并继续创建</el-button>
   </span>
                 </el-dialog>
             </el-scrollbar>
@@ -78,12 +90,14 @@
             return {
                 activeItem: null,
                 activeName: '',
-                centerDialogVisible: false,
+                createDialogVisible: false,
+                updateDialogVisible:false,
                 roleList: [],
                 search: '',
                 newRoleName:'',
                 newRoleNote:'',
                 activeBtn:1,
+                selectRole:{},
             }
         },
         mounted() {
@@ -92,6 +106,20 @@
         methods: {
             handleClose(done) {
                 this.$confirm('尚未保存，确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
+            handleUpdateRole(role){
+                console.log('role：', role)
+                this.updateDialogVisible =true;
+                this.selectRole = role;
+
+            },
+            handleDelRole(role){
+                this.$confirm('确定删除角色:'+role.text+'？')
                     .then(_ => {
                         done();
                     })
@@ -171,7 +199,7 @@
             }
 
             .input-with-select {
-                width: fit-content;
+                width: 260px;
                 height: 30px;
                 margin: 20px;
                 background: rgba(218, 217, 216, 0.6);
