@@ -99,6 +99,30 @@ const router = new Router({
           component: () =>
             import('@v/PXView/Organiz'),
         }
+        , {
+          path: '/ManageRoles',
+          name: 'ManageRoles',
+          component: () =>
+              import('@v/organize/ManageRoles'),
+        }
+        , {
+          path: '/ManageLogs',
+          name: 'ManageLogs',
+          component: () =>
+              import('@v/organize/ManageLogs'),
+        }
+        , {
+          path: '/ManageOnlineUsers',
+          name: 'ManageOnlineUsers',
+          component: () =>
+              import('@v/organize/ManageOnlineUsers'),
+        }
+        , {
+          path: '/ManageApps',
+          name: 'ManageApps',
+          component: () =>
+              import('@v/organize/ManageApps'),
+        }
       ]
     },
     {
