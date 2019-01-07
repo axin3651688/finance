@@ -19,8 +19,7 @@
           <p>{{user.user.phone}}</p>
         </div>
         <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
-        <!-- 模拟链接 -->
-        <!--
+      
         <el-submenu index="123">
           <span slot="title">各种chart图表</span>
           <el-menu-item v-for="item of chartData" :index="item.id" :key="item.id">
@@ -31,7 +30,7 @@
             </template>
           </el-menu-item>
         </el-submenu>
-        -->
+
       </el-menu>
     </el-scrollbar>
   </div>
@@ -81,7 +80,9 @@ export default {
       chartData: [
         { p: "/BiFunnel", n: " 漏斗图", id: "5" },
         { p: "/BiRadar", n: " 雷达图", id: "6" },
-        { p: "/BiTreemap", n: " 矩形树图", id: "8" }
+        { p: "/BiTreemap", n: " 矩形树图", id: "8" },
+        { p: "/ManageMember", n: " 成员管理", id: "98" },
+        { p: "/Organiz", n: " 组织架构", id: "99" }
       ]
     };
   },

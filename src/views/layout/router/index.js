@@ -88,6 +88,16 @@ const router = new Router({
           name: 'BiTreemap',
           component: () =>
             import('@c/charts/BiTreemap'),
+        }, {
+          path: '/ManageMember',
+          name: 'ManageMember',
+          component: () =>
+            import('@v/PXView/ManageMember'),
+        }, {
+          path: '/Organiz',
+          name: 'Organiz',
+          component: () =>
+            import('@v/PXView/Organiz'),
         }
       ]
     },
