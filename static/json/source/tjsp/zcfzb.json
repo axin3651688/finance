@@ -249,8 +249,8 @@
   {
     "id": "1111201",
     "text1": "△应收保费",
-    "level":10,
-    "row":12,
+    "level":2,
+    "row":10,
     "A":0,
     "B":0,
     "id_": "1212203",
@@ -1156,12 +1156,12 @@
 
                 }else if(data.length == 1){
                   if(data[0].id == row.row.id){
-                      if(data[0].A){
+                      if(data[0].A || data[0].A == 0){
                         row.row.A = data[0].A;
                       }else{
                         row.row.A = 0;
                       }
-                      if(data[0].B){
+                      if(data[0].B || data[0].B == 0){
                         row.row.B = data[0].B;
                       }else{
                         row.row.B = 0;
@@ -1170,12 +1170,12 @@
                       row.row.B_ = 0;
 
                   }else{
-                      if(data[0].A){
+                      if(data[0].A || data[0].A == 0){
                         row.row.A_ = data[0].A;
                       }else{
                         row.row.A_ = 0;
                       }
-                      if(data[0].B){
+                      if(data[0].B || data[0].B == 0){
                         row.row.B_ = data[0].B;
                       }else{
                         row.row.B_ = 0;
@@ -1187,45 +1187,45 @@
 
                 }else{
                   if(data[0].id == row.row.id){
-                    if(data[0].A){
+                    if(data[0].A || data[0].A == 0){
                       row.row.A = data[0].A;
                     }else{
                       row.row.A = 0;
                     }
-                    if(data[0].B){
+                    if(data[0].B || data[0].B == 0){
                       row.row.B = data[0].B;
                     }else{
                       row.row.B = 0;
                     }
-                    if(data[1].A){
-                      row.row.A_ = data[0].A;
+                    if(data[1].A || data[1].A == 0){
+                      row.row.A_ = data[1].A;
                     }else{
                       row.row.A_ = 0;
                     }
-                    if(data[1].B){
-                      row.row.B_ = data[0].B;
+                    if(data[1].B || data[1].B == 0){
+                      row.row.B_ = data[1].B;
                     }else{
                       row.row.B_ = 0;
                     }
 
                 }else{
-                    if(data[0].A){
+                    if(data[0].A || data[0].A == 0){
                       row.row.A_ = data[0].A;
                     }else{
                       row.row.A_ = 0;
                     }
-                    if(data[0].B){
+                    if(data[0].B || data[0].B == 0){
                       row.row.B_ = data[0].B;
                     }else{
                       row.row.B_ = 0;
                     }
-                    if(data[1].A){
-                      row.row.A = data[0].A;
+                    if(data[1].A || data[1].A == 0){
+                      row.row.A = data[1].A;
                     }else{
                       row.row.A = 0;
                     }
-                    if(data[1].B){
-                      row.row.B = data[0].B;
+                    if(data[1].B || data[1].B == 0){
+                      row.row.B = data[1].B;
                     }else{
                       row.row.B = 0;
                     }
@@ -1276,7 +1276,7 @@
                     record._drill = true;//下钻设置
                     return css;
                 }
-                else if(record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100"){
+                else if(!record.A_ && !record.B_ && (record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100")){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
