@@ -83,6 +83,13 @@
                     }
                 },
                 "chartOptions": {
+                    "xAxis": [{
+                        "type": "category",
+                        "data": [],
+                        "axisTick": {
+                            "alignWithLabel": true
+                        }
+                    }],
                     "series": [{
                         "type": "bar",
                         "data": []

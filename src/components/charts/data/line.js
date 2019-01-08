@@ -1,4 +1,4 @@
-export default function line(item) {
+export default function line() {
     return {
         title: {
             text: "this.item.text"
@@ -12,12 +12,10 @@ export default function line(item) {
             }
         },
         grid: {
-            default: {
-                left: "3%",
-                right: "4%",
-                bottom: "3%",
-                containLabel: true
-            }
+            left: "3%",
+            right: "4%",
+            bottom: "4%",
+            containLabel: true
         },
         toolbox: {
             feature: {
@@ -25,11 +23,9 @@ export default function line(item) {
             }
         },
         xAxis: {
-            default: {
-                type: "category",
-                boundaryGap: false,
-                data: []
-            }
+            type: "category",
+            boundaryGap: false,
+            data: []
         },
         yAxis: {
             type: "value"
