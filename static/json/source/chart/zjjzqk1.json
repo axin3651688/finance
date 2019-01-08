@@ -3,7 +3,7 @@
   "text": "营业收入明细表",
   "xtype": "JtreeGrid",
   "layout": {
-    "xtype": "tab"
+    "xtype": "column"
   },
   "showDims": ["year", "month", "company", "conversion"],
   "items": [{
