@@ -1,7 +1,7 @@
 {
   "id": "1013",
-  "text": "营业收入明细表",
-  "xtype": "JtreeGrid",
+  "text": "资金集中情况明细表",
+
   "layout": {
     "xtype": "tab"
   },

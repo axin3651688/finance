@@ -249,7 +249,10 @@ export default {
     },
     // 图标显示
     iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
+      return (
+        (index === 0 && record.leaf == 0) ||
+        (record.children && record.children.length > 0)
+      );
       // 为了树表异步加载,修改,上面为天津一次性加载,马军2019.1.7
       // return index === 0 && record.leaf == 0;
     },

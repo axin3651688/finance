@@ -13,8 +13,8 @@ export default {
     TreeGrid: () => import("./treegrid/TreeGrid.vue"),
     STreeGrid: () => import("./text/STreegrid.vue"),
     JtreeGrid: () => import("./table/Jtreegrid.vue"),
-    BiFlhz: () => import("./BiFlhz"),
-    BiButton: () => import("./BiButton")
+    BiFlhz: () => import("./BiFlhz")
+    // BiButton: () => import("./BiButton")
   },
   data() {
     return {

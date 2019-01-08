@@ -20,7 +20,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-    e.url = "cnbi/json/source/chart/zjjzqk1.json";
+    e.url = "cnbi/json/source/chart/zbfx.json";
 
     debugger
     findDesignSource(e.sourceId, e.url)

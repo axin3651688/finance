@@ -157,7 +157,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": 33,
+                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
                         console.info(params);
                         debugger;
