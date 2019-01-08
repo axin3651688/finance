@@ -57,6 +57,13 @@ const router = new Router({
           name: 'role',
           component: () =>
             import('@v/test/Role.vue')
+        },
+        // 日志管理
+        {
+          path: '/main',
+          name: 'main',
+          component: () =>
+            import('@v/BiModule'),
         }
 
       ]
