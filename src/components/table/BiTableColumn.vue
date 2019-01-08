@@ -204,16 +204,52 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded(trIndex) {
+      if (
+        this.tableData.hasOwnProperty("sync") &&
+        this.tableData.sync == true
+      ) {
+        console.log(trIndex);
+
+        debugger;
+      }
       const record = this.tableData.datas[trIndex];
       console.log(record);
 
       record._expanded = !record._expanded;
     },
+    generateApiModelDatas(item, $childVue, changeDim) {
+      debugger;
+      try {
+        let params = this.getModuleParams(item, changeDim);
+        if (!params) return;
+        let config = item.config;
+        Cnbi.paramsHandler(config, params);
+        // debugger
+        //在此加了查询数据之前的拦截处理
+        if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
+          params = item.queryDataBefore(params, config, this);
+        }
+        config.type = config.type || 1;
+        if (config.sql) {
+          params.sql = config.sql;
+          this.setDatas(item, params, $childVue);
+        } else if (config.cube) {
+          this.setDatas(item, params, $childVue);
+        } else if (config.defined) {
+          return config.datas;
+        } else if (config.random) {
+          this.queryDataAfter(item, Math.createRandomDatas(config), $childVue);
+        }
+      } catch (error) {
+        console.log(item);
+        console.error(error);
+      }
+    },
     // 图标显示
     iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
+      // return index === 0 && record.children && record.children.length > 0;
       // 为了树表异步加载,修改,上面为天津一次性加载,马军2019.1.7
-      // return index === 0 && record.leaf == 0;
+      return index === 0 && record.leaf == 0;
     },
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;

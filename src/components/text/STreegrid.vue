@@ -285,20 +285,20 @@ export default {
       }
       // console.log(rootItem);
     },
-    add() {
-      // debugger
+    // add() {
+    //   // debugger
 
-      this.item.options = this.item.items[0].columns;
-      console.log(this.item.options);
-    },
-    handleChange(id, done) {
-      console.log(id);
-      this.$confirm("<div>111</div>")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
+    //   this.item.options = this.item.items[0].columns;
+    //   console.log(this.item.options);
+    // },
+    // handleChange(id, done) {
+    //   console.log(id);
+    //   this.$confirm("<div>111</div>")
+    //     .then(_ => {
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // },
     showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
@@ -307,19 +307,19 @@ export default {
       return show
         ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
         : "display:none;";
-    },
-    // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
-      const record = this.formatData[trIndex];
-      record._expanded = !record._expanded;
-    },
-    // 图标显示
-    iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
-    },
-    itemShow(index, record) {
-      return index === item && record.children && record.children.length > 0;
     }
+    // 切换下级是否展开
+    // toggleExpanded: function(trIndex) {
+    //   const record = this.formatData[trIndex];
+    //   record._expanded = !record._expanded;
+    // },
+    // // 图标显示
+    // iconShow(index, record) {
+    //   return index === 0 && record.children && record.children.length > 0;
+    // },
+    // itemShow(index, record) {
+    //   return index === item && record.children && record.children.length > 0;
+    // }
   },
   created() {
     debugger;

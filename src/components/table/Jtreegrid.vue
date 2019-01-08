@@ -47,15 +47,10 @@ export default {
   },
   name: "Jtreegrid",
   props: ["item"],
-  mounted() {
-    // this.item.options = this.item.items[0].columns
-  },
+
   created() {
     debugger;
     console.log("a", this.item);
-    // this.item.rows = this.item.config.rows
-    //  this.item.rows = this.item.datas
-
     this.array(this.item.datas);
     this.convertData();
   },
@@ -64,7 +59,7 @@ export default {
       return "height:100%-64px";
     },
     onRowClick(row, e, column) {
-      debugger;
+      // debugger;
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
@@ -104,7 +99,7 @@ export default {
     },
     // 点击加载数据在下面做
     array(datas) {
-      debugger;
+      // debugger;
 
       this.item.rows = datas;
     },
@@ -131,22 +126,8 @@ export default {
           me.tranformData(dataArr, tt);
         }
       }
-      // console.log(rootItem);
     },
-    add() {
-      // debugger
 
-      this.item.options = this.item.items[0].columns;
-      console.log(this.item.options);
-    },
-    handleChange(id, done) {
-      console.log(id);
-      this.$confirm("<div>111</div>")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
     showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
@@ -155,18 +136,6 @@ export default {
       return show
         ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
         : "display:none;";
-    },
-    // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
-      const record = this.formatData[trIndex];
-      record._expanded = !record._expanded;
-    },
-    // 图标显示
-    iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
-    },
-    itemShow(index, record) {
-      return index === item && record.children && record.children.length > 0;
     }
   }
 };

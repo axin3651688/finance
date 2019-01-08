@@ -23,7 +23,7 @@ export default {
     };
   },
   created() {
-    console.log(this.item);
+    // console.log(this.item);
     // debugger
     // console.info(this.item);
   },

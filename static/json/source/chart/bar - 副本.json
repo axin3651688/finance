@@ -84,8 +84,7 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "bar",
-                        "data": []
+                        "type": "bar"
 
                     }]
                 }

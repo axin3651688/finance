@@ -1,8 +1,7 @@
 {
     "id": 1,
     "text": "指标分析",
-    "showDims": ["company", "month", "year", "conversion"],
-
+    "showDims": ["company", "month", "year"],
     "rows": [{
 
             "id": "1416001",
@@ -184,16 +183,9 @@
                     }
                 },
                 "chartOptions": {
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -235,20 +227,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
-
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -286,18 +267,9 @@
                     }
                 },
                 "chartOptions": {
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -327,19 +299,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -370,7 +332,8 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge"
+                        "type": "gauge",
+                        "data": []
                     }]
                 }
             },
@@ -400,7 +363,8 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge"
+                        "type": "gauge",
+                        "data": []
                     }]
                 }
             },
@@ -430,7 +394,8 @@
                 },
                 "chartOptions": {
                     "series": [{
-                        "type": "gauge"
+                        "type": "gauge",
+                        "data": []
                     }]
                 }
             },
@@ -461,7 +426,7 @@
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
-
+                        "data": []
                     }]
                 }
             },
@@ -490,19 +455,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -531,19 +486,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -572,19 +517,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -613,19 +548,9 @@
                     }
                 },
                 "chartOptions": {
-
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
-                    "yAxis": [{
-                        "type": "value"
-                    }],
                     "series": [{
-                        "type": "bar"
+                        "type": "bar",
+                        "data": []
                     }]
                 }
             },
@@ -656,6 +581,7 @@
                 "chartOptions": {
                     "series": [{
                         "type": "gauge",
+                        "data": []
 
                     }]
                 }
@@ -770,7 +696,10 @@
                     }
                 },
                 "chartOptions": {
-                    "series": []
+                    "series": [{
+                        "data": []
+                    }]
+
                 }
             }
         ]
