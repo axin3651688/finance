@@ -138,40 +138,40 @@
           //      }
           //  }
            ]
-           ,
-          "groupConfig": { "idProperty": "id","textProperty": "gsmc"},//可选
-          "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
-              let data = option.item.datas;
-              let config =  option.item.groupConfig;
-              let rowspan =  option.getCellRowSpan(data,row,config) || 1 ;
-              let index = 0;
-              if(rowIndex != 0){
-                if(data && data.length > 0){
-                  for(let i = 1;i < data.length;i++){
-                    if(data[i-1].id != row.id && data[i].id == row.id){
-                      index = i; 
-                      break;
-                    }
-                  }
-                }
+          //  ,
+          // "groupConfig": { "idProperty": "id","textProperty": "gsmc"},//可选
+          // "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+          //     let data = option.item.datas;
+          //     let config =  option.item.groupConfig;
+          //     let rowspan =  option.getCellRowSpan(data,row,config) || 1 ;
+          //     let index = 0;
+          //     if(rowIndex != 0){
+          //       if(data && data.length > 0){
+          //         for(let i = 1;i < data.length;i++){
+          //           if(data[i-1].id != row.id && data[i].id == row.id){
+          //             index = i; 
+          //             break;
+          //           }
+          //         }
+          //       }
 
-              }
+          //     }
 
-              if (columnIndex === 0 ||columnIndex === 1) {debugger
-                if (rowIndex === index) {
-                  return {
-                    rowspan: rowspan,
-                    colspan: 1
-                  };
-                } else {
-                  return {
-                    rowspan: 0,
-                    colspan: 0
-                  };
-                }
-              }
+          //     if (columnIndex === 0 ||columnIndex === 1) {debugger
+          //       if (rowIndex === index) {
+          //         return {
+          //           rowspan: rowspan,
+          //           colspan: 1
+          //         };
+          //       } else {
+          //         return {
+          //           rowspan: 0,
+          //           colspan: 0
+          //         };
+          //       }
+          //     }
              
-          }
+          // }
         }
            
         
