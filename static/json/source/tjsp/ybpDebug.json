@@ -116,6 +116,10 @@
 			  "chartOptions": {
 				"dd": "this.item.text",
 				"height_s":"400px",
+				"unitObj":{
+					"mult":10000,
+					"unitName":"万元"
+				},
                 "title": {
                     "text": "this.item.text",
                     "x": "center"
@@ -129,7 +133,7 @@
                     "name": "",
                     "type": "pie",
                     "radius": "55%",
-                    "center": ["50%", "60%"],
+                    "center": ["50%", "50%"],
                     "data": "this.item.options.datas",
                     "itemStyle": {
                         "emphasis": {
