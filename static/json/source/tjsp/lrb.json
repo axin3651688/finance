@@ -69,7 +69,6 @@
                 debugger
                 console.log(vue);
                 console.log(vue.item)
-                location.reload()
             }
         }, {
             "id":"2",
