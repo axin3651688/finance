@@ -2,9 +2,9 @@
 node_modules
 /dist
 /public
-vue.config.js
+vue.config.jss
 pubilc
-
+static
 # local env files
 .env.local
 .env.*.local

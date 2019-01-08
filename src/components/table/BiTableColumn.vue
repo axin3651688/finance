@@ -1,7 +1,7 @@
 <template>
   <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.isTree  && (tableData1.xtype==='tree-grid' || tableData1.xtype==='STreeGrid')"
+    v-if="col.isTree  && (tableData.xtype==='tree-grid'|| tableData.xtype==='STreeGrid') "
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -13,8 +13,8 @@
         v-bind="$attrs"
         @click="toggleExpanded(scope.$index)"
       >
-        <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-        <i v-else class="el-icon-minus"/>
+        <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+        <i v-else class="el-icon-minus"></i>
       </span>
     </template>
   </el-table-column>
@@ -73,12 +73,12 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData1.datas,col,scope,tableData1.config.rows)"
+        :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
         <span
-          v-if="tableData1.datas"
-        >{{ getCellValues(tableData1.datas,col,scope,tableData1.config.rows)}}</span>
+          v-if="tableData.datas"
+        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -91,7 +91,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="tableData1.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -103,7 +103,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="tableData1.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -124,7 +124,7 @@ export default {
   props: ["col", "tableData"],
   data(){
     return{
-      tableData1:''
+     // tableData:''
     }
   },
   computed: {
@@ -137,15 +137,15 @@ export default {
     }
   },
   created(){
-    debugger
-    this.tableData1=this.tableData
+   // debugger
+   // this.tableData=this.tableData
     
   },
   watch:{
-    tableData1(oldval,newval){
-      debugger
+    // tableData(oldval,newval){
+      //debugger
       // console.log(newval)
-    }
+    // }
   },
   methods: {
     // rowClass({ row, rowIndex }) {
@@ -154,18 +154,18 @@ export default {
     // },
    upData(item) {
      debugger;
-     // this.$set(this.tableData1, "datas", null);
-     // this.$set(this.tableData1, "datas", []);
+     // this.$set(this.tableData, "datas", null);
+     // this.$set(this.tableData, "datas", []);
       // if(item.datas.length == 0 ){
       //     item.datas = null;
       //     item.datas = [];
       // }
-      // this.$set(this, "tableData1", item);
-      // this.$set(this.tableData1, "datas", item.datas);
+      // this.$set(this, "tableData", item);
+      // this.$set(this.tableData, "datas", item.datas);
 
-      this.$set(this, "tableData1", null);
-      this.$set(this, "tableData1", item);
-      this.$set(this.tableData1, "datas", item.datas);
+      this.$set(this, "tableData", null);
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -228,7 +228,7 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      const record = this.tableData1.datas[trIndex];
+      const record = this.tableData.datas[trIndex];
       // console.log(record);
 
       record._expanded = !record._expanded;
@@ -243,11 +243,17 @@ export default {
   },
   created() {
     // debugger;
-    //this.$set(this, "tableData1", null);
+    //this.$set(this, "tableData", null);
   }
 };
 </script>
 <style lang="scss">
+.el-table--border::after, .el-table--group::after, .el-table::before {
+    content: '';
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+}
 .el-table__body {
   // width: 6000px !important;
 }
