@@ -141,6 +141,8 @@ export default {
       activeTabName: "0",
       api: null,
       source_id: 0,
+      scope: 0,
+      token: "",
       layout: {
         xtype: "form"
       },
@@ -466,7 +468,7 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) {
+    updateView(changeDim) {//updateView(null)
       console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);

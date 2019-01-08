@@ -1,9 +1,11 @@
 const prame = {
   state: {
     command: {
-      year: new Date().getFullYear(),
+     // year: new Date().getFullYear(),
+    //  month: new Date().getMonth() || 1,
+      year:2017,
+      month:6,
       module_api: 0,
-      month: new Date().getMonth() || 1,
       date: new Date().getDate(),
       // 单位转换
       conversion: {
