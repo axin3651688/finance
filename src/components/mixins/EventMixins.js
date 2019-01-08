@@ -96,6 +96,8 @@ export default {
      * unshift()方法是向数组的开头添加一个或多个元素
      */
     addTab(params, listener, bb) {
+      debugger;
+
       let module = this.$parent.$parent.$parent.$parent.items?this.$parent.$parent.$parent.$parent:this.$parent.$parent.$parent.$parent.$parent.$parent;
       //判断指标分析的穿透
       if(!module.items){
@@ -108,8 +110,25 @@ export default {
       }
       // debugger;
       let text = bb.text;
+      if(text){
+        let index = text.indexOf("（%");
+        let index2 =  text.indexOf("（万");
+        if(index != -1){
+          text = text.substring(0,index)
+        }else if(index2 != -1){
+          text = text.substring(0,index2)
+        }
+      }
+      // debugger;
+      module.items = module.items.filter(tab => tab.text !=text);
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
+        // module.items = module.items.filter(tab => tab.text !=text);
+        // if ($vue.items && $vue.items.length > 1) {
+        //   $vue.activeTabName = $vue.items[0].text;
+        // } else {
+        //   $vue.activeTabName = "0";
+        // }
         module.items.forEach((item, index) => {
           if (item.tabIndex && item.tabIndex === text) {
             module.activeTabName = item.tabIndex;
@@ -141,7 +160,8 @@ export default {
             delete resData.items;
           }
           // debugger;
-          resData.id = bb.id;
+          // let 
+          resData.id = bb.id ;
           if(text){
             let index = text.indexOf("（%");
             let index2 =  text.indexOf("（万");
