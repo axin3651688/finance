@@ -51,7 +51,7 @@
         "id": "rzlx",
         "type": "string",
         "text": "融资类型",
-        "width":"240px"
+        "width":"300px"
     }, {
         "id": "jkbj",
         "type": "decimal",

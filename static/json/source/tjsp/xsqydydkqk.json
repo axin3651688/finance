@@ -44,7 +44,7 @@
                     "id":"yhmc",
                     "type":"string",
                     "text":"机构名称",
-                    "width":"240px"
+                    "width":"300px"
                 },
                 {
                     "id":"rhmc",
