@@ -159,7 +159,8 @@
                     "way": "addTab",
                     "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
-                        console.info(params);
+                        let itemBean =  {id:$vue.item.id,text:$vue.item.text};
+                        localStorage.item = JSON.stringify(itemBean) ; 
                         debugger;
                     }
                 }],
