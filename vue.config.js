@@ -40,11 +40,11 @@ let proxyObj = { // 配置跨域
     }
   },
   '/cnbi': {
-    // target: 'http://192.168.1.118:8081', //gjx
+     target: 'http://192.168.1.118:8081', //gjx
     // target: 'http://192.168.2.34:8081',
     // target: 'http://192.168.1.138:8000',
     // target: 'http://192.168.2.34:8081',
-    target: 'http://192.168.1.149:8000',
+    // target: 'http://192.168.1.149:8000',
 
     ws: true,
     changOrigin: true,
@@ -156,7 +156,7 @@ module.exports = {
     open: false,
     host: '0.0.0.0',
     port: 8080,
-    https: false,
+    https: true,
     hotOnly: false,
     // proxy: 'http://localhost:8081/api/', // 配置跨域处理,只有一个代理
     proxy: proxyObj, // string | Object
