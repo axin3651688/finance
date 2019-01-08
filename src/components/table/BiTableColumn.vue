@@ -23,6 +23,7 @@
     v-else-if="col.type === 'index' "
     :prop="col.id"
     :label="col.text"
+    :align="col.align|| 'left'"
     :width="col.width"
     type="index"
   />
@@ -66,7 +67,7 @@
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
-    :align="col.align|| 'center'"
+    :align="col.align|| 'right'"
     :width="col.width||150"
   >
     <template slot-scope="scope">
@@ -293,7 +294,7 @@ tbody {
 // 加下面样式 马军 2018/12/24 .el-table td,
 // .el-table td,
 .el-table th {
-  text-align: center;
+  text-align: center !important;
 }
 </style>
 <style>
