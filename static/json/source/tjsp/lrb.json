@@ -49,7 +49,7 @@
     },{
         "id": "A",
         "type": "decimal",
-        "width":"170px",
+        "width":"150px",
         "text": "当月数"
     }],
     "rows":[],
@@ -68,7 +68,6 @@
             "handler":function(vue,btn){
                 debugger
                 console.log(vue);
-                console.log(vue.item)
             }
         }, {
             "id":"2",
