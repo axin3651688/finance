@@ -1425,12 +1425,17 @@
 						}
 					}
 				] ,
-				"legend": {
-					"orient": "vertical",
-					"left": "5%",
-					"top": "15%",
+				// "legend": {
+				// 	"orient": "vertical",
+				// 	"left": "5%",
+				// 	"top": "15%",
+				// 	"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+				// }		//zdk 注释  2019-1-8 09:25:05  boss 和 ly 说图例要放在下方
+				"legend": {	
+					"bottom": 10,
+					"left": "center",
 					"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
-				}
+				},
 			}
 		}
 

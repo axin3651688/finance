@@ -10,6 +10,7 @@
 			"id": "1403100000",
 			"text": "行业效果图",
 			"weight": 24,
+			
 			"closable": true,
 			"show": true,
 			"config": {
@@ -113,7 +114,8 @@
 				}
 			},
 			  "chartOptions": {
-                "dd": "this.item.text",
+				"dd": "this.item.text",
+				"height_s":"400px",
                 "title": {
                     "text": "this.item.text",
                     "x": "center"
@@ -122,7 +124,7 @@
 					"trigger": "item",
 					"confine": true,
                     "formatter": "{b} : {c} ({d}%)"
-                },
+				},
                 "series": [{
                     "name": "",
                     "type": "pie",
@@ -136,13 +138,16 @@
                             "shadowColor": "rgba(0, 0, 0, 0.5)"
                         }
                     }
-                }],
-                "legend": {
-                    "orient": "vertical",
-                    "left": "5%",
-                    "top": "10%",
-                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+				}],
+				"legend": {
+					"bottom": 10,
+					"left": "center",
+                    // "orient": "vertical",
+                    // "left": "5%",
+                    // "top": "10%",
+                    "data": "[this.item.chartOptions.series[0].data.map(item=>{return item.name; })]"
                 }
+               
             }
 		},
 		{
@@ -150,7 +155,7 @@
 			"id": "1400111",
 			"text": "这个也是钻取过来的表",
 			"weight": 24,
-			"height":400,
+			// "height":400,
 			"show": true,
 			"config": {
 				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,B.SCODE INDSCODE,A.SCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND CTYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT T.INDSCODE INDSCODE,DECODE(T.DSNAME,NULL,'合计',T.DSNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets ((T.DSNAME,T.INDSCODE),()))",
@@ -183,7 +188,8 @@
 					{
 						"id": "hymc",
 						"type": "string",
-						"text": "行业名称"
+						"text": "行业名称",
+						"width":"300px"
 					},
 					{
 						"id": "mbjy",
