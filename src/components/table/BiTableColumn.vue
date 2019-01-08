@@ -131,12 +131,13 @@ export default {
       return level + 1;
     }
   },
+  created() {},
   methods: {
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
     // },
-    upData(item) {
+    upData(tableData) {
       debugger;
       // this.$set(this.tableData, "datas", null);
       // this.$set(this.tableData, "datas", []);
@@ -148,8 +149,9 @@ export default {
       // this.$set(this.tableData, "datas", item.datas);
 
       this.$set(this, "tableData", null);
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
+      // this.$set(item.datas, "tableData", null);
+      this.$set(this, "tableData", tableData);
+      this.$set(this.tableData, "datas", tableData.datas);
     },
     /**
      * 获取单元格数据
@@ -213,7 +215,7 @@ export default {
         debugger;
       }
       const record = this.tableData.datas[trIndex];
-      console.log(record);
+      // console.log(record);
 
       record._expanded = !record._expanded;
     },

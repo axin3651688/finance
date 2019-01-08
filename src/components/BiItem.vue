@@ -25,7 +25,8 @@ export default {
   created() {
     // console.log(this.item);
     // debugger
-    // console.info(this.item);
+    // console.info(this.datas);
+    // console.info(this.config);
   },
   mounted() {
     this.loadItems(this.item);
