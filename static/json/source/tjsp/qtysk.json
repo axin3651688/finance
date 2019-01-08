@@ -57,19 +57,21 @@
                             console.log(vue);
                             vue.item.updateView("company");
                         }
-                    }, {
-                       "id":"2",
-                       "text":"导出",
-                       "xtype":"button",
-                       "cellStyle":{
-                            "color":"black",
-                            "background-color":"#189271"
-                        },
-                       "handler":function(vue,btn){
-                           debugger
-                           console.log(vue);
-                       }
-                    }],
+                    }
+                    // , {
+                    //    "id":"2",
+                    //    "text":"导出",
+                    //    "xtype":"button",
+                    //    "cellStyle":{
+                    //         "color":"black",
+                    //         "background-color":"#189271"
+                    //     },
+                    //    "handler":function(vue,btn){
+                    //        debugger
+                    //        console.log(vue);
+                    //    }
+                    // }
+                ],
                     "config":{
                         "sql":"SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,(CASE WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB,(CASE WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC,D.SNAME AS FZCFL,E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1003') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE IN('1001',:company)) B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE  ",
                         // "sql":"SELECT NID,DIM_CUSUPPLIER as sk,FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, ISNATURE AS SKXZ, ISINSIDE AS SFNB, ISNORMAL AS SFZC, SCONTENTA AS FZCFL, SCONTENTB AS ZWRK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM(SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE,ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB, FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS A WHERE A.DIM_COMPANY=:company AND A.DIM_PERIOD=:period AND A.DIM_ITEM='1003') A INNER JOIN (SELECT SCODE FROM DW_DIMCUSTOMER WHERE SCOMCODE IN ('1001',:company)) B ON A.DIM_CUSUPPLIER=B.SCODE ",
@@ -334,31 +336,33 @@
                         }],
                         "rows":[ ]
                     },
-                    "toolbar":[{
-                        "id":"1",
-                        "text":"全部展开",
-                        "xtype":"button",
-                        "cellStyle":{
-                            "color":"black",
-                            "background-color":"#189271"
-                        },
-                        "handler":function(vue,btn){
-                            debugger
-                            console.log(vue);
-                        }
-                    },{
-                        "id":"2",
-                        "text":"全部收起",
-                        "xtype":"button",
-                        "cellStyle":{
-                            "color":"black",
-                            "background-color":"#189271"
-                        },
-                        "handler":function(vue,btn){
-                            debugger
-                            console.log(vue);
-                        }
-                    },{
+                    "toolbar":[
+                    //     {
+                    //     "id":"1",
+                    //     "text":"全部展开",
+                    //     "xtype":"button",
+                    //     "cellStyle":{
+                    //         "color":"black",
+                    //         "background-color":"#189271"
+                    //     },
+                    //     "handler":function(vue,btn){
+                    //         debugger
+                    //         console.log(vue);
+                    //     }
+                    // },{
+                    //     "id":"2",
+                    //     "text":"全部收起",
+                    //     "xtype":"button",
+                    //     "cellStyle":{
+                    //         "color":"black",
+                    //         "background-color":"#189271"
+                    //     },
+                    //     "handler":function(vue,btn){
+                    //         debugger
+                    //         console.log(vue);
+                    //     }
+                    // },
+                    {
                         "id":"3",
                         "text":"刷新",
                         "xtype":"button",
@@ -383,31 +387,33 @@
                            debugger
                            console.log(vue);
                        }
-                    },{
-                        "id":"5",
-                        "text":"安全比例",
-                        "xtype":"button",
-                        "cellStyle":{
-                            "color":"black",
-                            "background-color":"#189271"
-                        },
-                        "handler":function(vue,btn){
-                            debugger
-                            console.log(vue);
-                        }
-                    },{
-                        "id":"6",
-                        "text":"预警比例",
-                        "xtype":"button",
-                        "cellStyle":{
-                            "color":"black",
-                            "background-color":"#189271"
-                        },
-                        "handler":function(vue,btn){
-                            debugger
-                            console.log(vue);
-                        }
-                    }],
+                    }
+                    // ,{
+                    //     "id":"5",
+                    //     "text":"安全比例",
+                    //     "xtype":"button",
+                    //     "cellStyle":{
+                    //         "color":"black",
+                    //         "background-color":"#189271"
+                    //     },
+                    //     "handler":function(vue,btn){
+                    //         debugger
+                    //         console.log(vue);
+                    //     }
+                    // },{
+                    //     "id":"6",
+                    //     "text":"预警比例",
+                    //     "xtype":"button",
+                    //     "cellStyle":{
+                    //         "color":"black",
+                    //         "background-color":"#189271"
+                    //     },
+                    //     "handler":function(vue,btn){
+                    //         debugger
+                    //         console.log(vue);
+                    //     }
+                    // }
+                ],
                     "drillProperties":["riskrange","gsmc"],
                     "onRowClick":function(row, column, e,$this){
                         // debugger
