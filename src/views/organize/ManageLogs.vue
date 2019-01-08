@@ -6,8 +6,10 @@
     <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))" stripe style="width: 100%" class="main_table" :header-cell-style="getRowClass" :default-sort = "{prop: 'time', order: 'descending'}">
       <el-table-column prop="name" align="center" label="操作人" width="180">
         <template slot-scope="scope">
-          <img class="row-user-avatar" :src="scope.row.avatar">
-          <span style="margin-left: 10px">{{ scope.row.name }}</span>
+          <div class="row-user-col">
+            <img class="row-user-avatar" :src="scope.row.avatar">
+            <span class="row-user-name">{{ scope.row.name }}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="module" align="center" label="模块" width="180">
@@ -22,7 +24,7 @@
 
 <script>
   export default {
-    name: 'Todo',
+    name: 'ManageLogs',
     data() {
       return {
         search:'',
@@ -82,24 +84,46 @@
 
 <style lang="scss" scoped>
   @import "@s/green/variables.scss";
+
+  .containerMain {
+    padding-left: 0 !important;
+    height: 100vh;
+  }
+
   .input-with-select {
     width: 220px;
     height: 30px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
     opacity: 1;
-    margin-top: 24px;
+    margin: 20px 0 0 20px;
     border-radius: 8px;
   }
 
   .main_table{
-    margin-top: 20px;
+    margin : 20px;
     border-radius:20px 20px 0px 0px;
 
     box-shadow:0px 10px 20px rgba(8,69,81,0.1);
-    .row-user-avatar{
-      height: 40px;
-      width: 40px;
+    .row-user-col {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      .row-user-avatar {
+        margin-left: 20px;
+        height: 40px;
+        width: 40px;
+      }
+      .row-user-name{
+        font-size:14px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        margin-left: 40px;
+        color:rgba(102,102,102,1);
+        opacity:1;
+      }
     }
   }
 </style>
