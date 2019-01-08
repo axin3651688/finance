@@ -1128,7 +1128,7 @@
 		   {
 			   "xtype": "chart",
 			   "id": "pie456",
-			   "text": "资金管控面占比图（%）",
+			   "text": "资金集中度占比图（%）",
 			   "watchState":true,
 			   "weight": 6,
 			   "config": {
@@ -1223,6 +1223,10 @@
 			   },
 			   "chartOptions":{
 				   "dd":"this.item.text",
+				   "unitObj":{
+					"mult":10000,
+					"unitName":"万元"
+					},
 				   "title": {
 					   "text": "this.item.text",
 					   "x": "center",
@@ -1242,7 +1246,7 @@
 						   "name": "",
 						   "type": "pie",
 						   "radius": "55%",
-						   "center": ["50%", "60%"],
+						   "center": ["50%", "50%"],
 						   "data": "this.item.options.datas",
 						   "itemStyle": {
 							   "emphasis": {
@@ -1254,10 +1258,13 @@
 					   }
 				   ] ,
 				   "legend": {
-					   "orient": "vertical",
-					   "left": "5%",
-					   "top": "15%",
-					   "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+					//    "orient": "vertical",
+					//    "left": "5%",
+					//    "top": "15%",
+					//    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"	//zdk 注释  2019-1-8 09:25:05  boss 和 ly 说图例要放在下方
+					"bottom": 10,
+					"left": "center",
+					"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
 				   }
 			   }
 		   },
@@ -1399,6 +1406,10 @@
 			},
 			"chartOptions":{
 				"dd":"this.item.text",
+				"unitObj":{
+					"mult":1,
+					"unitName":"户"
+				},
 				"title": {
 					"text": "this.item.text",
 					"x": "center",
@@ -1418,7 +1429,7 @@
 						"name": "",
 						"type": "pie",
 						"radius": "55%",
-						"center": ["50%", "60%"],
+						"center": ["50%", "50%"],
 						"data": "this.item.options.datas",
 						"itemStyle": {
 							"emphasis": {

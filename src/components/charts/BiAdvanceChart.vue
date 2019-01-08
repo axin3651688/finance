@@ -68,6 +68,27 @@ export default {
       }
       return chartOptions;
     },
+    /**
+     * 提示信息格式化（千分位，两位小数）
+     * zdk   2019-1-8 16:36:03
+     */
+     getToolTip(options){
+      return {
+          trigger: "item",
+          formatter:function(a,b,c,d){
+            debugger;
+            let aa = options,unitObj = options.unitObj || {};
+            if(unitObj && unitObj.mult && !isNaN(unitObj.mult) && unitObj.unitName ){
+                if( ["户","个"].indexOf(unitObj.unitName) != -1 ){
+                  // return a.name + ":" + Math.numberToLocalString(a.value/unitObj.mult,null,null,0) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";  //龚总方法没加
+                  return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
+                }
+                  return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
+              }
+                return a.name + ":" + Math.decimalToLocalString(a.value) + "("+ Math.decimalToLocalString(a.percent) +"%)";
+          }
+      };
+    },
     getDataSource(item) {
       debugger;
       let options = item.chartOptions;
@@ -76,6 +97,13 @@ export default {
         let defaultOptions = this.getDefautlChartConfigByType();
         Cnbi.applyDeepIf(options || {}, defaultOptions);
       }
+    // 图例数据千分位，两位小数处理  zdk 
+      // this.setToolTip(options,items);
+       options.tooltip = this.getToolTip(options);
+
+     
+
+
       this.evalVaiables(options);
       // console.log(options);
       debugger;

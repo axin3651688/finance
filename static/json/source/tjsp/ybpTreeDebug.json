@@ -106,6 +106,10 @@
 			"chartOptions": {
 				"dd": "this.item.text",
 				"height_s":"400px",
+				"unitObj":{
+					"mult":10000,
+					"unitName":"万元"
+				},
                 "title": {
                     "text": "this.item.text",
                     "x": "center"
@@ -119,7 +123,7 @@
                     "name": "",
                     "type": "pie",
                     "radius": "55%",
-                    "center": ["50%", "60%"],
+                    "center": ["50%", "50%"],
                     "data": "this.item.options.datas",
                     "itemStyle": {
                         "emphasis": {
@@ -130,10 +134,12 @@
                     }
                 }],
                 "legend": {
-                    "orient": "vertical",
-                    "left": "5%",
-                    "top": "10%",
-                    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                    "bottom": 10,
+					"left": "center",
+                    // "orient": "vertical",
+                    // "left": "5%",
+                    // "top": "10%",
+                    "data": "[this.item.chartOptions.series[0].data.map(item=>{return item.name; })]"
                 }
             }
 		},
