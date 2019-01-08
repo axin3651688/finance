@@ -9,7 +9,7 @@
     "backgroundColor": "rgba(0,0,0,0)",
     "textStyle": {},
     "title": {
-        "left": "4%",
+        "left": "12px",
         "top": 10,
         "textStyle": {
             "color": "#0D3C67",

@@ -1,20 +1,10 @@
 {
   "id": "1013",
   "text": "资金集中情况明细表",
-
   "layout": {
     "xtype": "tab"
   },
   "showDims": ["year", "month", "company", "conversion"],
-  // "changeYearBefore":function(newyear,option){
-  //   option.closeTabTaget(newyear,option);
-  // },
-  // "changeMonthBefore":function(newmonth,option){
-  //     option.closeTabTaget(newmonth,option);
-  // },
-  // "changeCompanyBefore":function(newcompany,option){
-  //     option.closeTabTaget(newcompany,option);
-  // },
   "items": [{
     "xtype": "JtreeGrid",
     "id": "123456",

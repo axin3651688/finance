@@ -134,9 +134,6 @@ export default {
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
                 router.push(url);
-                // data.company.id === 121
-                //   ? router.push("/tjsp/module")
-                //   : // router.push("/message");
               } else {
                 this.loginUser.usename = "";
                 this.loginUser.password = "";

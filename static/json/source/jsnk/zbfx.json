@@ -680,7 +680,7 @@
                                 "dim": "itemperiod",
                                 "val": "1403100"
                             },
-                            "type": "line",
+                            "type": "bar",
                             "smooth": false
                         }, {
                             "id": "A",

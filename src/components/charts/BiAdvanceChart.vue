@@ -108,8 +108,12 @@ export default {
           });
           this.chartOptions.series[0].data = this.item.options.datas;
         } else if (subType == "gauge") {
+          // this.chartOptions.series[0].data = [
+          //   { value: this.item.options.datas[0].value }
+          // ];
+          // 为了做演示,先搞个1-100的随机取数
           this.chartOptions.series[0].data = [
-            { value: this.item.options.datas[0].value }
+            { value: (Math.random() * 100).toFixed(2) }
           ];
         } else if (subType == "funnel") {
           // console.info(this.item);

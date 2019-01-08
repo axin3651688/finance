@@ -20,12 +20,11 @@ export default function modeHandle(e) {
         //
         return;
     }
-    e.url = "cnbi/json/source/chart/line.json";
+    e.url = "cnbi/json/source/chart/zjjzqk1.json";
 
     debugger
     findDesignSource(e.sourceId, e.url)
         .then(response => {
-
             let bean = response.data;
             if (bean.data && bean.data.source) {
                 //数据库来的
