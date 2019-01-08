@@ -15,7 +15,11 @@
     "changeMonthBefore":function(newmonth,option){
         option.closeTabTaget(newmonth,option);
     },//切换月份的回调
-
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        return data;
+    },
    "items":[
         {
             
@@ -50,6 +54,7 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            vue.item.updateView("company");
                         }
                     }, {
                        "id":"2",
@@ -363,6 +368,7 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            vue.item.updateView("company");
                         }
                     }, {
                        "id":"4",

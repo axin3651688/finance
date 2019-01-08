@@ -6,6 +6,11 @@
     "xtype": "tab"
   },
   "showDims": ["year","month","company","conversion"],
+  "__queryDataAfter":function(data,$vue){//数据的后置处理
+    let me = this;
+    me.items[0].updateView = $vue.updateView;
+    return data;
+},
   // "changeYearBefore":function(newyear,option){
   //   option.closeTabTaget(newyear,option);
   // },
@@ -74,7 +79,7 @@
   ],
   "items": [{
     "xtype": "STreeGrid",
-    "id": "123456",
+    "id": "zjjzqk",
     "text": "资金集中情况明细表",
     "show":true,
     
@@ -89,6 +94,7 @@
       "handler":function(vue,btn){
           debugger
           console.log(vue);
+          vue.item.updateView("company");
       }
   }, {
      "id":"2",
