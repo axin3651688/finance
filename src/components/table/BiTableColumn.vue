@@ -1,7 +1,7 @@
 <template>
   <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
-    v-if="col.isTree  && (tableData1.xtype==='tree-grid' || tableData1.xtype==='STreeGrid')"
+    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -10,11 +10,10 @@
       <span
         v-if="iconShow(0,scope.row) "
         class="tree-ctrl"
-        v-bind="$attrs"
         @click="toggleExpanded(scope.$index)"
       >
-        <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-        <i v-else class="el-icon-minus"/>
+        <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
+        <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
     </template>
   </el-table-column>
@@ -73,12 +72,12 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData1.datas,col,scope,tableData1.config.rows)"
+        :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
         <span
-          v-if="tableData1.datas"
-        >{{ getCellValues(tableData1.datas,col,scope,tableData1.config.rows)}}</span>
+          v-if="tableData.datas"
+        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -91,7 +90,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="tableData1.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -103,7 +102,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="tableData1.datas">--</span>
+        <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -124,7 +123,7 @@ export default {
   props: ["col", "tableData"],
   data(){
     return{
-      tableData1:''
+      // tableData1:''
     }
   },
   computed: {
@@ -138,14 +137,14 @@ export default {
   },
   created(){
     debugger
-    this.tableData1=this.tableData
+    // this.tableData1=this.tableData
     
   },
   watch:{
-    tableData1(oldval,newval){
-      debugger
-      // console.log(newval)
-    }
+    // tableData1(oldval,newval){
+    //   debugger
+    //   // console.log(newval)
+    // }
   },
   methods: {
     // rowClass({ row, rowIndex }) {
@@ -163,9 +162,9 @@ export default {
       // this.$set(this, "tableData1", item);
       // this.$set(this.tableData1, "datas", item.datas);
 
-      this.$set(this, "tableData1", null);
-      this.$set(this, "tableData1", item);
-      this.$set(this.tableData1, "datas", item.datas);
+      this.$set(this, "tableData", null);
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -219,6 +218,7 @@ export default {
     //treeGrid function
     showRow(row) {
       const show = row.row.parent
+      console.log(show)
         ? row.row.parent._expanded && row.row.parent._show
         : true;
       row.row._show = show;
@@ -228,7 +228,7 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      const record = this.tableData1.datas[trIndex];
+      const record = this.tableData.datas[trIndex];
       // console.log(record);
 
       record._expanded = !record._expanded;
@@ -290,7 +290,7 @@ tbody {
   text-align: center;
 }
 </style>
-<style>
+<style scoped>
 /* .el-tooltip__popper.is-dark {
   background: #fff;
   color: #000;
@@ -307,6 +307,20 @@ tbody {
 /*
   cxy treegrid + - style
 */
+.ms-tree-space {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  width: 18px;
+  height: 14px;
+}
+
+.ms-tree-space::before {
+  content: "";
+}
 .tree-ctrl {
   position: relative;
   cursor: pointer;

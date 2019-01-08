@@ -424,11 +424,11 @@
                         }    
                     },
                     "cellStyle":function(row,obj){
-                        // debugger
+                        debugger
                         // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
                         //     let pro = obj.item.config.columns[row.columnIndex].id ; 
                         //     let pra = obj.item.config.columns[row.columnIndex].id ;
-                            let css = "padding: 4px 0;";
+                            let css = "padding: 4px 0";
                             // let pro = obj.item.config.columns;
                             // let pro = "";
                             let pro = row.column.property;

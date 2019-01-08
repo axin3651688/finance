@@ -21,8 +21,8 @@ export default {
     };
   },
   created() {
-    // console.log(this.item);
-    // debugger
+    console.log(this.item);
+    debugger
     // console.info(this.datas);
     // console.info(this.config);
   },
