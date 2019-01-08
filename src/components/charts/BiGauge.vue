@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       receive: {
+        height_s: this.item.height_s,
         title: {
           // 	padding:[410,0,0,0],    //标题相对于容器边距
           text: this.item.text,
@@ -53,7 +54,7 @@ export default {
             type: "gauge",
             min: 0,
             max: 200, //设置最大刻度
-            splitNumber:8,
+            splitNumber: 8,
             //设置仪表盘的园的程度，这里设置的是半圆
             startAngle: 170,
             endAngle: 10,
@@ -87,8 +88,7 @@ export default {
             detail: {
               //			      show:false,
               //格式化表盘的数据
-              formatter: function(a,b,c){
-              
+              formatter: function(a, b, c) {
                 return Math.decimalToLocalString(a) + "%";
               },
               textStyle: {
@@ -124,6 +124,7 @@ export default {
     //     }
     //   });
     // }
+    console.log(this.item);
     this.upData(this.item);
   },
   mounted() {},
@@ -143,13 +144,13 @@ export default {
           [1, "#2FC35B"]
         ];
         this.receive.series[0].max = 125;
-        fixedFirst = 50/125;
+        fixedFirst = 50 / 125;
         this.receive.series[0].axisLine.lineStyle.color = color;
         this.receive.series[0].splitNumber = 5;
       } else {
         let fixedFirst = 0;
         this.receive.series[0].max = 200;
-        fixedFirst = 50/200;
+        fixedFirst = 50 / 200;
         this.receive.series[0].axisLine.lineStyle.color[0][0] = fixedFirst;
         this.receive.series[0].splitNumber = 8;
       }
@@ -162,21 +163,29 @@ export default {
         }); //bnlj bnmb
       }
       // debugger
-      let titleText = this.item.text.replace("（%）","");
+      let titleText = this.item.text.replace("（%）", "");
       if (tempData && tempData.length > 0) {
         this.receive.tooltip.formatter =
-          titleText + ":" + 
-          Math.decimalToLocalString(item.options.datas) +"% <br/> 本年累计:" +
-          Math.decimalToLocalString((tempData[0].bnlj || 0)) + "万元" +
+          titleText +
+          ":" +
+          Math.decimalToLocalString(item.options.datas) +
+          "% <br/> 本年累计:" +
+          Math.decimalToLocalString(tempData[0].bnlj || 0) +
+          "万元" +
           "<br/> 本年目标:" +
-          Math.decimalToLocalString((tempData[0].bnmb || 0)) + "万元";
+          Math.decimalToLocalString(tempData[0].bnmb || 0) +
+          "万元";
       } else {
         this.receive.tooltip.formatter =
-          titleText + ":" + 
-          Math.decimalToLocalString((0)) +"% <br/> 本年累计:" +
-          Math.decimalToLocalString((0)) + "万元" +
+          titleText +
+          ":" +
+          Math.decimalToLocalString(0) +
+          "% <br/> 本年累计:" +
+          Math.decimalToLocalString(0) +
+          "万元" +
           "<br/> 本年目标:" +
-          Math.decimalToLocalString((0)) + "万元";
+          Math.decimalToLocalString(0) +
+          "万元";
       }
     }
   }

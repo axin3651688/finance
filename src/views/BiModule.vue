@@ -492,6 +492,7 @@ export default {
      * $childVue   vue子组件对象
      */
     generateApiModelDatas(item, $childVue, changeDim) {
+      debugger;
       try {
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
@@ -548,7 +549,7 @@ export default {
       debugger;
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
-      if (unit && unit.id > 1 && datas && datas.length > 0 ) {
+      if (unit && unit.id > 1 && datas && datas.length > 0) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }
       /**

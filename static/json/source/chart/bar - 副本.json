@@ -6,10 +6,6 @@
 
         "id": "1416001",
         "text": "营业收入"
-    }, {
-
-        "id": "1403100",
-        "text": "利润总额"
     }],
     "columns": [{
             "id": "id",
@@ -87,13 +83,6 @@
                     }
                 },
                 "chartOptions": {
-                    "xAxis": [{
-                        "type": "category",
-                        "data": "this.item.options.datas[0]",
-                        "axisTick": {
-                            "alignWithLabel": true
-                        }
-                    }],
                     "series": [{
                         "type": "bar"
 

@@ -1,37 +1,43 @@
 <template>
-<div>
-<el-button-group  class="toolbar" >
-    <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
-  </el-button-group>
-  <el-table
-    :row-style="showRow"
-    v-bind="$attrs"
-    class="content"
-    :data.sync="formatData"
-    border
-    stripe
-    height="item.height || rowClass"
-    :cell-style="cellStyle"
-    @row-click="onRowClick"
-  >
-    <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
+  <div>
+    <el-button-group class="toolbar">
+      <el-button
+        v-if="item.toolbar && item.toolbar.length > 0 "
+        v-for="btn in item.toolbar"
+        v-bind:key="btn.id"
+        :style="btn.cellStyle"
+        @click="btnClick(btn)"
+      >{{btn.text}}</el-button>
+    </el-button-group>
+    <el-table
+      :row-style="showRow"
+      v-bind="$attrs"
+      class="content"
+      :data.sync="formatData"
+      border
+      stripe
+      height="item.height || rowClass"
+      :cell-style="cellStyle"
+      @row-click="onRowClick"
+    >
+      <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
           <i v-if="!scope.row._expanded" class="el-icon-plus"/>
           <i v-else class="el-icon-minus"/>
-        </span> -->
-        <!-- {{ scope.$index }} -->
+      </span>-->
+      <!-- {{ scope.$index }} -->
       <!-- </template>
-    </el-table-column> -->
-    <!-- <el-table-column
+      </el-table-column>-->
+      <!-- <el-table-column
       v-for="(column, index) in item.config.columns"
       v-else
       :prop="column.id"
       :key="column.id"
       :label="column.text"
       :width="column.width"
-    > -->
+      >-->
       <!-- <template slot-scope="scope">
         <span
           v-for="space in scope.row._level"
@@ -70,27 +76,26 @@
               <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
           </el-dialog>
-        </el-button> -->
+      </el-button>-->
       <!-- </template>
-    </el-table-column> -->
-    <!-- <slot/> -->
-    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
-    </el-tag>
-  </el-table>
-</div>  
+      </el-table-column>-->
+      <!-- <slot/> -->
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      </el-tag>
+    </el-table>
+  </div>
 </template>
  
 <script>
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
-import BiTableColumn from "../table/BiTableColumn";
+
 import BiTableColumnTree from "../table/BiTableColumnTree";
 // data  columns list
 export default {
   mixins: [EventMixins],
   components: {
-    BiTableColumn,
     BiTableColumnTree
   },
   data() {
@@ -104,7 +109,7 @@ export default {
   name: "STreeGrid",
   props: ["item"],
   // props: {
-    
+
   //   item: {
   //     data: {
   //       type: [Array, Object],
@@ -152,7 +157,7 @@ export default {
       return "height:100%-64px";
     },
     onRowClick(row, e, column) {
-      debugger
+      debugger;
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
@@ -280,20 +285,20 @@ export default {
       }
       // console.log(rootItem);
     },
-    add() {
-      // debugger
+    // add() {
+    //   // debugger
 
-      this.item.options = this.item.items[0].columns;
-      console.log(this.item.options);
-    },
-    handleChange(id, done) {
-      console.log(id);
-      this.$confirm("<div>111</div>")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
+    //   this.item.options = this.item.items[0].columns;
+    //   console.log(this.item.options);
+    // },
+    // handleChange(id, done) {
+    //   console.log(id);
+    //   this.$confirm("<div>111</div>")
+    //     .then(_ => {
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // },
     showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
@@ -302,19 +307,19 @@ export default {
       return show
         ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
         : "display:none;";
-    },
-    // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
-      const record = this.formatData[trIndex];
-      record._expanded = !record._expanded;
-    },
-    // 图标显示
-    iconShow(index, record) {
-      return index === 0 && record.children && record.children.length > 0;
-    },
-    itemShow(index, record) {
-      return index === item && record.children && record.children.length > 0;
     }
+    // 切换下级是否展开
+    // toggleExpanded: function(trIndex) {
+    //   const record = this.formatData[trIndex];
+    //   record._expanded = !record._expanded;
+    // },
+    // // 图标显示
+    // iconShow(index, record) {
+    //   return index === 0 && record.children && record.children.length > 0;
+    // },
+    // itemShow(index, record) {
+    //   return index === item && record.children && record.children.length > 0;
+    // }
   },
   created() {
     debugger;

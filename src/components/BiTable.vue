@@ -12,7 +12,7 @@
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
       :stripe="true"
-      :height="item.height || rowClass"
+      :height="item.height || heights-88"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
@@ -53,6 +53,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      heights:document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,
@@ -70,9 +71,16 @@ export default {
       levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
-
+  watch:{
+    heights(newval){
+      debugger
+      this.heights = newval
+    }
+  },
   created() {
     this.upData(this.item);
+    // console.log(this.heights)
+    // console.log(this.heights-88)
    // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
@@ -143,11 +151,6 @@ export default {
     /**
      * 单元格级别样式设置
      */
-
-    // 表格的高度 12.26
-    // rowClass({ row, rowIndex }) {
-    //   return "height:100%-104px";
-    // },
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
@@ -452,10 +455,5 @@ export default {
 }
 .gutter{
   display: none;
-}
-.el-table {
-    height: calc(100vh - 170px);
-    /* width: 100%; */
-    /* overflow: auto; */
 }
 </style>

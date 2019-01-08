@@ -125,6 +125,8 @@ export default {
       }
       this.nodes.push(clickNodeId);
       if (!flag) {
+        console.log(key, code);
+
         if (code.length === 1) {
           this.fetchData(userId, code[0]);
         } else {

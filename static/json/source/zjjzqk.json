@@ -3,7 +3,7 @@
     "text":"资金集中情况明细表",
     
   "layout": {
-    "xtype": "column"
+    "xtype": "tab"
   },
   "showDims": ["year","month","company","conversion"],
   // "changeYearBefore":function(newyear,option){

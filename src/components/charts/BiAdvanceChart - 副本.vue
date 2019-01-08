@@ -37,9 +37,10 @@ export default {
       map
     };
   },
-  created() {},
-  mounted() {
+  created() {
     this.upData(this.item);
+  },
+  mounted() {
     // console.log(this.item.options.datas);
   },
   methods: {
@@ -70,7 +71,7 @@ export default {
       return chartOptions;
     },
     getDataSource(item) {
-      // debugger;
+      debugger;
       let options = item.chartOptions;
       // let defaultOptions = this.getDefautlChartConfigByType();
       if (!item.options.unUseDefaultConfig && options) {
@@ -79,13 +80,13 @@ export default {
         Cnbi.applyDeepIf(options || {}, defaultOptions);
       }
       this.evalVaiables(options);
-      // console.log(options);
-      // debugger;
+      console.log(options);
+      debugger;
 
       return options;
     },
     upData(item) {
-      // console.log(item);
+      console.log(item);
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
@@ -143,8 +144,8 @@ export default {
         console.error("没有正确的配置chart类型");
         return;
       }
-      // console.log(chartSubType);
-      // debugger;
+      console.log(chartSubType);
+      debugger;
 
       switch (chartSubType) {
         case "bar":

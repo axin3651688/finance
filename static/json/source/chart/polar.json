@@ -1,39 +1,8 @@
 {
     "id": 1,
-    "text": "极坐标",
+    "text": "指标分析",
     "showDims": ["company", "month", "year"],
-
-    "rows": [{
-
-        "id": "1416001",
-        "text": "营业收入"
-    }, {
-
-        "id": "1403100",
-        "text": "利润总额"
-    }, {
-
-        "id": "1400111",
-        "text": "归属于母公司净利润"
-    }],
-    "generateVar": {
-        "periodCount": 12,
-        "compareType": "0&-1",
-        "varName": "rows",
-        "reverse": true
-    },
-    "columns": [{
-            "id": "id",
-            "type": "string",
-            "hidden": true,
-            "text": "编码"
-        },
-        {
-            "id": "A",
-            "type": "decimal",
-            "text": "本期"
-        }
-    ],
+    "columns": [],
     "datas": {},
     "config": {
         "_cube": {
@@ -57,86 +26,111 @@
         "layout": {
             "xtype": "column"
         },
-        "text": "智慧预测",
+        "text": "指标分析",
         "children": [{
             "xtype": "chart",
-            "id": "1416001",
-            "text": "风险级别占比情况",
+            "id": "lrb3",
+            "text": "营业收入、利润总额及增减率趋势图",
             "weight": 16,
             "config": {
+                "_cube": {
+                    "subject": "0002",
+                    "dims": {
+                        "itemperiod": "1416001,1403100,1400111",
+                        "period": 0
+                    },
+                    "dimName": "period",
+                    "cubeId": 2
 
-                "mainDim": "itemperiod",
+                },
+                "generateVar": {
+                    "periodCount": 4,
+                    "compareType": "0&-1",
+                    "varName": "rows",
+                    "reverse": true
+                },
                 "random": {
                     "min": 100,
                     "max": 100000
                 },
-                "needDims": [
-                    "year",
-                    "month",
-                    "company"
-                ],
-                "rows": [{
+                "mainDim": "period",
+                "needDims": ["company", "year", "month"],
+                "type": 1,
+                "rows": [],
+                "columns": [{
+                        "id": "id",
+                        "type": "string",
+                        "hidden": true,
+                        "text": "编码"
+                    },
+                    {
                         "id": "A",
-
-                        "text": "营业成本"
-                    },
-                    {
-                        "id": "B",
-                        "text": "销售费用"
-                    },
-                    {
-                        "id": "C",
-
-                        "text": "管理费用"
+                        "type": "decimal",
+                        "text": "本期数"
                     }
                 ],
-                "type": 1
-
-            },
-            "listeners": [{
-                "type": "click",
-                "way": "addTab",
-                "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
-                "handler": ($vue, params) => {
-                    console.info(params);
-                    debugger;
+                "group": {
+                    "id": "itemperiod",
+                    "text": "itemperiod",
+                    "datas": [{
+                            "id": "1416001",
+                            "text": "营业收入"
+                        },
+                        {
+                            "id": "1403100",
+                            "text": "利润总额"
+                        },
+                        {
+                            "id": "1400111",
+                            "text": "归属于母公司净利润"
+                        }
+                    ]
                 }
-            }],
+            },
+
             "options": {
-                "subType": "polar",
                 "type": "advancechart",
+                "subType": "polar",
                 "getData": {
                     "type": 3,
                     "columns": [{
-                        "id": "text",
-                        "prop": "name"
+                        "id": "id",
+                        "type": "category",
+                        "boundaryGap": false
                     }, {
                         "id": "A",
+                        "name": "营业收入",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1416001"
+                        },
                         "type": "bar",
-                        "coordinateSystem": "polar",
-                        "name": "1",
-                        "stack": "A"
+                        "coordinateSystem": "polar"
                     }, {
-                        "id": "B",
+                        "id": "A",
+                        "name": "利润总额",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1403100"
+                        },
                         "type": "bar",
-                        "coordinateSystem": "polar",
-                        "name": "销售费用",
-                        "stack": "B"
+                        "coordinateSystem": "polar"
                     }, {
-                        "id": "C",
+                        "id": "A",
+                        "name": "归属于母公司净利润",
+                        "group": {
+                            "dim": "itemperiod",
+                            "val": "1400111"
+                        },
                         "type": "bar",
-                        "coordinateSystem": "polar",
-                        "name": "管理费用",
-                        "stack": "C"
-                    }],
-                    "scope": true
+                        "coordinateSystem": "polar"
+                    }]
+
                 }
             },
             "chartOptions": {
                 "height_s": "600px",
-                "series": [{
-                    "type": "bar"
-                }]
+                "series": []
             }
         }]
     }]
