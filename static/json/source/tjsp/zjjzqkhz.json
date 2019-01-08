@@ -22,7 +22,7 @@
   },
     "showDims": ["year","month","company","conversion"],
     "items": [{
-      "xtype": "tree-grid",
+      "xtype": "STreeGrid",
       "id": "zjjzqkhz",
       "text": "资金集中情况汇总表",
       "config":{
@@ -44,10 +44,14 @@
           "id": "jzd"
         },
         {
+            "text": "",
+            "type":"string",
+            "id": "",
+            "isTree":true
+        },{
             "text": "公司编码",
             "type":"string",
-            "id": "id",
-            "isTree":true
+            "id": "id"
         },
         {
             "text": "公司名称",

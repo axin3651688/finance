@@ -43,10 +43,16 @@
       "id": "jzd"
     },
     {
-        "text": "公司编码",
+        "text": "",
         "type":"string",
-        "id": "gsbm",
+        "id": "id",
         "isTree":true
+    },
+    {
+      "text": "公司编码",
+      "type":"string",
+      "id": "gsbm"//,
+      // "isTree":true
     },
     {
         "text": "公司名称",
