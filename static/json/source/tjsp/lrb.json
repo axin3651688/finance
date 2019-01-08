@@ -68,6 +68,7 @@
             "handler":function(vue,btn){
                 debugger
                 console.log(vue);
+                console.log(vue.item)
             }
         }, {
             "id":"2",

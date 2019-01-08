@@ -146,7 +146,8 @@ export default {
 
     // 表格的高度 12.26
     rowClass({ row, rowIndex }) {
-      return "height:100%-64px";
+      // return "height:100%-64px";
+      return "height: calc(100% - 110px)"
     },
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现

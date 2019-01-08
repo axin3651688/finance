@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <!-- <component :is="flag"></component> -->
-    <leftMenu class="sidebar-container" v-if="isShow()"/>
+    <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
@@ -30,8 +30,12 @@ export default {
     styleSlect() {
       if (!Cnbi.isEmpty(this.user)) {
         this.user.company.id === 121
-          ? import("@/styles/green/index.scss")
-          : import("@/styles/black/index.scss");
+          ? import("@/styles/green/index.scss").then(_ => {
+              this.flag = true;
+            })
+          : import("@/styles/black/index.scss").then(_ => {
+              this.flag = true;
+            });
       }
     },
     classObj() {
