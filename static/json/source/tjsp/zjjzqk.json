@@ -6,6 +6,11 @@
     "xtype": "tab"
   },
   "showDims": ["year","month","company","conversion"],
+  "__queryDataAfter":function(data,$vue){//数据的后置处理
+    let me = this;
+    me.items[0].updateView = $vue.updateView;
+    return data;
+},
   // "changeYearBefore":function(newyear,option){
   //   option.closeTabTaget(newyear,option);
   // },
@@ -16,8 +21,8 @@
   //     option.closeTabTaget(newcompany,option);
   // },
   "config":{
-    "sql000":"SELECT CASE WHEN C.SCODE IS NULL THEN '' ELSE '' END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,B.SCODE AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
-    "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN B.scode ELSE C.SCODE END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,( CASE WHEN C.SNAME IS NULL THEN null ELSE B.SCODE END)  AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
+    //"sql000":"SELECT CASE WHEN C.SCODE IS NULL THEN '' ELSE '' END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,B.SCODE AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
+    "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN B.scode ELSE C.SCODE END AS gsbm, CASE WHEN C.SCODE IS NULL AND B.SNAME IS NOT NULL THEN B.SCODE ELSE '' END AS scode, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname , C.SNAME AS YHZHMC,( CASE WHEN C.SNAME IS NULL THEN null ELSE B.SCODE END)  AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_BANK DESC",
     "_cube":{
        "subject":"0001",
        "cubeId":5
@@ -38,10 +43,16 @@
       "id": "jzd"
     },
     {
-        "text": "公司编码",
+        "text": "",
         "type":"string",
-        "id": "gsbm",
+        "id": "id",
         "isTree":true
+    },
+    {
+      "text": "公司编码",
+      "type":"string",
+      "id": "scode"//,
+      // "isTree":true
     },
     {
         "text": "公司名称",
@@ -74,7 +85,7 @@
   ],
   "items": [{
     "xtype": "STreeGrid",
-    "id": "123456",
+    "id": "zjjzqk",
     "text": "资金集中情况明细表",
     "show":true,
     
@@ -89,44 +100,47 @@
       "handler":function(vue,btn){
           debugger
           console.log(vue);
+          vue.item.updateView("company");
       }
-  }, {
-     "id":"2",
-     "text":"导出",
-     "xtype":"button",
-     "cellStyle":{
-          "color":"black",
-          "background-color":"#189271"
-      },
-     "handler":function(vue,btn){
-         debugger
-         console.log(vue);
-     }
-  },{
-    "id":"3",
-     "text":"全部展开",
-     "xtype":"button",
-     "cellStyle":{
-          "color":"black",
-          "background-color":"#189271"
-      },
-     "handler":function(vue,btn){
-         debugger
-         console.log(vue);
-     }
-  },{
-    "id":"4",
-     "text":"全部收起",
-     "xtype":"button",
-     "cellStyle":{
-          "color":"black",
-          "background-color":"#189271"
-      },
-     "handler":function(vue,btn){
-         debugger
-         console.log(vue);
-     }
-  }]
+  }
+  // , {
+  //    "id":"2",
+  //    "text":"导出",
+  //    "xtype":"button",
+  //    "cellStyle":{
+  //         "color":"black",
+  //         "background-color":"#189271"
+  //     },
+  //    "handler":function(vue,btn){
+  //        debugger
+  //        console.log(vue);
+  //    }
+  // },{
+  //   "id":"3",
+  //    "text":"全部展开",
+  //    "xtype":"button",
+  //    "cellStyle":{
+  //         "color":"black",
+  //         "background-color":"#189271"
+  //     },
+  //    "handler":function(vue,btn){
+  //        debugger
+  //        console.log(vue);
+  //    }
+  // },{
+  //   "id":"4",
+  //    "text":"全部收起",
+  //    "xtype":"button",
+  //    "cellStyle":{
+  //         "color":"black",
+  //         "background-color":"#189271"
+  //     },
+  //    "handler":function(vue,btn){
+  //        debugger
+  //        console.log(vue);
+  //    }
+  // }
+]
     
   }],
   "code":200,"msg":"查询数据源【company】维度成功！"

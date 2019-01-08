@@ -10,7 +10,7 @@
 		{
 			// "xtype": "tree-grid",
 			"xtype":"STreeGrid",
-			"id": "1403100000",
+			"id": "zcfzbej",
 			"text": "资产负债表二级",
 			"weight": 24,
 			"show":true,
@@ -53,16 +53,23 @@
 						"id": "cyl",
 						"type": "decimal",
 						"text": "差异率"
+					},{
+						"id": "",
+						"type": "string",
+						"text": "",
+						"isTree":true
 					},
 					{
 						"id": "gsbm",
 						"type": "string",
-						"text": "编码",
-						"isTree":true
+						"width":"120",
+						"text": "编码"
+						// "isTree":true
 					},
 					{
 						"id": "gsmc",
 						"type": "string",
+						"width":"300px",
 						"text": "公司名称"
 					},
 					{
@@ -78,6 +85,7 @@
 					{
 						"id": "zjl",
 						"type": "decimal",
+						"width": "110",
 						"conversion":"%",
 						"text": "增减率（%）"
 					},
@@ -93,6 +101,7 @@
 					},{
 						"id":"tbzjl",
 						"text":"同比增减率（%）",
+						"width": "110",
 						"type":"decimal",
 						"conversion":"%"
 					},

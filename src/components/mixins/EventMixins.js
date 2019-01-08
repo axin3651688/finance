@@ -140,8 +140,19 @@ export default {
             resData.children = resData.items;
             delete resData.items;
           }
-          
+          // debugger;
           resData.id = bb.id;
+          if(text){
+            let index = text.indexOf("（%");
+            let index2 =  text.indexOf("（万");
+            if(index != -1){
+              text = text.substring(0,index)
+            }else if(index2 != -1){
+              text = text.substring(0,index2)
+            }
+            // index !== -1? text = text.substring(0,index):"";
+            
+          }
           resData.text = text;
           resData.tabIndex = text;
           resData.closable = true;
@@ -174,8 +185,19 @@ export default {
      * (此方法只处理了是tab页形式的表,并且穿透的表还具有穿透功能)
      */
     transformDrillJsonData(resData){
+      // debugger
       let me = this;
       if(resData.items && resData.items.length > 0){
+        //判断是不是不要toolbar
+        resData.items.forEach(ele => {
+          if(ele.children && ele.children.length > 0){
+            ele.children.forEach(tt => {
+              if(tt.toolbar){
+                delete tt.toolbar;
+              }
+            });
+          }
+        });
         resData = resData.items[0];
       }
       return resData;

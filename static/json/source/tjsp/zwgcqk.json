@@ -26,8 +26,9 @@
         },
       {
         "id": "xh",
-        "type": "string",
-        "text": "序号"
+        "type": "index",
+        "text": "序号",
+        "width":"60px"
       },
       {
         "id": "xm",
@@ -49,8 +50,8 @@
         "xh": "1",
         "xm": "一、债务类型情况",
         "je": 3456,
-        "bz": "--",
-        "rzcb": "--"
+        "bz": 0,
+        "rzcb": 0
     },{
         "xh": "2",
         "xm": "（一）融资性债务",
@@ -266,7 +267,7 @@
         "xm": "（三）非融资性债务",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb":0
     },{
         "xh": "38",
         "xm": "      地方政府债券",
@@ -278,7 +279,7 @@
         "xm": "      财政借款",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb": 0
     },{
         "xh": "40",
         "xm": "      企业借款",
@@ -296,7 +297,7 @@
         "xm": "      工程占款",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb": 0
     },{
         "xh": "43",
         "xm": "      其他",
@@ -307,26 +308,26 @@
         "xh": "44",
         "xm": "二、年化融资成本情况(融资性债务)",
         "je": 3456,
-        "bz": "--",
-        "rzcb": "--"
+        "bz": 0,
+        "rzcb": 0
     },{
         "xh": "45",
         "xm": "一年期",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb": 0
     },{
         "xh": "46",
         "xm": "1-5年",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb": 0
     },{
         "xh": "47",
         "xm": "5年以上",
         "je": 3456,
         "bz": 2365,
-        "rzcb": "--"
+        "rzcb": 0
     }
   ],
   "layout":{
@@ -336,31 +337,32 @@
      {
       "xtype": "bi-table",
       "id":"zwgc",
-      "text":"债务构成情况分析表",
-      "toolbar":[
-        {
-           "id":"1",
-           "text":"刷新",
-           "xtype":"button",
-           "cellStyle":{
-               "color":"black",
-               "background-color":"#189271"
-           },
-           "handler":function(vue,btn){
-               console.log(vue);
-           }
-       }, {
-           "id":"2",
-           "text":"导出",
-           "cellStyle":{
-               "color":"black",
-               "background-color":"#189271"
-           },
-           "handler":function(vue,btn){
-               console.log(vue);
-           }
-       }
-       ]
+      "text":"债务构成情况分析表"
+    //   ,
+    //   "toolbar":[
+    //     {
+    //        "id":"1",
+    //        "text":"刷新",
+    //        "xtype":"button",
+    //        "cellStyle":{
+    //            "color":"black",
+    //            "background-color":"#189271"
+    //        },
+    //        "handler":function(vue,btn){
+    //            console.log(vue);
+    //        }
+    //    }, {
+    //        "id":"2",
+    //        "text":"导出",
+    //        "cellStyle":{
+    //            "color":"black",
+    //            "background-color":"#189271"
+    //        },
+    //        "handler":function(vue,btn){
+    //            console.log(vue);
+    //        }
+    //    }
+    //    ]
     }
   ]
   }
