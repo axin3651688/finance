@@ -265,7 +265,7 @@ export default {
     }
   },
   created() {
-    // debugger
+    debugger
     /**
      * name: sjz
      * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部
@@ -274,35 +274,31 @@ export default {
       let companyId = this.$store.getters.company;//获取公司id
       let level = this.$store.getters.treeInfo.level;//获取公司等级
       let len = this.tableData.datas;//获取数据长度
-      if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
-          if(companyId=='1001'){//判断公司id为总集团公司              
-                const record = this.tableData.datas[0];
-                record._expanded = true;               
-          }else {
-              for(let i=0;i<len.length;i++){
-                if(len[i].children.length>0){
-                  this.tableData.datas[i]._expanded=true;
-                  for(let o=0;o<len[i].children.length;o++){
-                    if(len[i].children[o].children.length>0){
-                      this.tableData.datas[i].children[o]._expanded=true;
-                      for(let p=0;p<len[i].children[o].children.length;p++){
-                        if(len[i].children[o].children[p].children.length>0){
-                          this.tableData.datas[i].children[o].children[p]._expanded=true;
+      let id = this.$parent.tableData.id;//获取下钻表的id名称
+      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej'){
+        if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
+            if(companyId=='1001'){//判断公司id为总集团公司              
+                  const record = this.tableData.datas[0];
+                  record._expanded = true;               
+            }else {
+                for(let i=0;i<len.length;i++){
+                  if(len[i].children.length>0){
+                    this.tableData.datas[i]._expanded=true;
+                    for(let o=0;o<len[i].children.length;o++){
+                      if(len[i].children[o].children.length>0){
+                        this.tableData.datas[i].children[o]._expanded=true;
+                        for(let p=0;p<len[i].children[o].children.length;p++){
+                          if(len[i].children[o].children[p].children.length>0){
+                            this.tableData.datas[i].children[o].children[p]._expanded=true;
+                          }
                         }
                       }
                     }
-                  }
+                  }            
                 }
-                  // const record = this.tableData.datas[0];
-                  // const record2= this.tableData.datas[0].children[0];
-                  // const record3= this.tableData.datas[0].children[0].children[0];
-                  // record._expanded = true;
-                  // record2._expanded = true;
-                  // record3._expanded = true;
-                  
-              }
-          }
-      }
+            }
+        }
+      }  
     //this.$set(this, "tableData", null);
   }
 };

@@ -14,6 +14,11 @@
     "changeCompanyBefore":function(newcompany,option){
         option.closeTabTaget(newcompany,option);
     },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        return data;
+    },
     "config":{
         "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
         "_cube":{
@@ -69,6 +74,7 @@
             "handler":function(vue,btn){
                 debugger
                 console.log(vue);
+                vue.item.updateView("company");
             }
         }, {
             "id":"2",

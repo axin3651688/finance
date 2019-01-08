@@ -17,8 +17,10 @@
   // option.cellStyle(this.items[0]);
   option.closeTabTaget(newmonth,option);
 },
-"__queryDataAfter":function(data){
+"__queryDataAfter":function(data,$vue){
   debugger
+  let me = this;
+  me.items[0].updateView = $vue.updateView;
    let rows = this.rows;
    for(let i=0;i<data.length;i++){
        rows = rows.filter(function(item){
@@ -1115,6 +1117,7 @@
         "handler":function(vue,btn){
             debugger
             console.log(vue);
+            vue.item.updateView("company");
         }
       }, {
         "id":"2",
@@ -1135,103 +1138,103 @@
       "cellStyle":function(row) {
           // debugger 
              let datas = this.datas;
-            //  if(datas && datas.length>0){
-            //     let data = datas.filter(function(item){
-            //       return item.id == row.row.id || item.id == row.row.id_;
+             if(datas && datas.length>0){
+                let data = datas.filter(function(item){
+                  return item.id == row.row.id || item.id == row.row.id_;
 
-            //     });
-            //     if(data.length == 0){
-            //       row.row.A = 0;
-            //       row.row.B = 0;
-            //       row.row.A_ = 0;
-            //       row.row.B_ = 0;
+                });
+                if(data.length == 0){
+                  row.row.A = 0;
+                  row.row.B = 0;
+                  row.row.A_ = 0;
+                  row.row.B_ = 0;
 
-            //     }else if(data.length == 1){
-            //       if(data[0].id == row.row.id){
-            //           if(data[0].A){
-            //             row.row.A = data[0].A;
-            //           }else{
-            //             row.row.A = 0;
-            //           }
-            //           if(data[0].B){
-            //             row.row.B = data[0].B;
-            //           }else{
-            //             row.row.B = 0;
-            //           }
-            //           row.row.A_ = 0;
-            //           row.row.B_ = 0;
+                }else if(data.length == 1){
+                  if(data[0].id == row.row.id){
+                      if(data[0].A){
+                        row.row.A = data[0].A;
+                      }else{
+                        row.row.A = 0;
+                      }
+                      if(data[0].B){
+                        row.row.B = data[0].B;
+                      }else{
+                        row.row.B = 0;
+                      }
+                      row.row.A_ = 0;
+                      row.row.B_ = 0;
 
-            //       }else{
-            //           if(data[0].A){
-            //             row.row.A_ = data[0].A;
-            //           }else{
-            //             row.row.A_ = 0;
-            //           }
-            //           if(data[0].B){
-            //             row.row.B_ = data[0].B;
-            //           }else{
-            //             row.row.B_ = 0;
-            //           }
-            //           row.row.A = 0;
-            //           row.row.B = 0;
+                  }else{
+                      if(data[0].A){
+                        row.row.A_ = data[0].A;
+                      }else{
+                        row.row.A_ = 0;
+                      }
+                      if(data[0].B){
+                        row.row.B_ = data[0].B;
+                      }else{
+                        row.row.B_ = 0;
+                      }
+                      row.row.A = 0;
+                      row.row.B = 0;
 
-            //       }
+                  }
 
-            //     }else{
-            //       if(data[0].id == row.row.id){
-            //         if(data[0].A){
-            //           row.row.A = data[0].A;
-            //         }else{
-            //           row.row.A = 0;
-            //         }
-            //         if(data[0].B){
-            //           row.row.B = data[0].B;
-            //         }else{
-            //           row.row.B = 0;
-            //         }
-            //         if(data[1].A){
-            //           row.row.A_ = data[0].A;
-            //         }else{
-            //           row.row.A_ = 0;
-            //         }
-            //         if(data[1].B){
-            //           row.row.B_ = data[0].B;
-            //         }else{
-            //           row.row.B_ = 0;
-            //         }
+                }else{
+                  if(data[0].id == row.row.id){
+                    if(data[0].A){
+                      row.row.A = data[0].A;
+                    }else{
+                      row.row.A = 0;
+                    }
+                    if(data[0].B){
+                      row.row.B = data[0].B;
+                    }else{
+                      row.row.B = 0;
+                    }
+                    if(data[1].A){
+                      row.row.A_ = data[0].A;
+                    }else{
+                      row.row.A_ = 0;
+                    }
+                    if(data[1].B){
+                      row.row.B_ = data[0].B;
+                    }else{
+                      row.row.B_ = 0;
+                    }
 
-            //     }else{
-            //         if(data[0].A){
-            //           row.row.A_ = data[0].A;
-            //         }else{
-            //           row.row.A_ = 0;
-            //         }
-            //         if(data[0].B){
-            //           row.row.B_ = data[0].B;
-            //         }else{
-            //           row.row.B_ = 0;
-            //         }
-            //         if(data[1].A){
-            //           row.row.A = data[0].A;
-            //         }else{
-            //           row.row.A = 0;
-            //         }
-            //         if(data[1].B){
-            //           row.row.B = data[0].B;
-            //         }else{
-            //           row.row.B = 0;
-            //         }
+                }else{
+                    if(data[0].A){
+                      row.row.A_ = data[0].A;
+                    }else{
+                      row.row.A_ = 0;
+                    }
+                    if(data[0].B){
+                      row.row.B_ = data[0].B;
+                    }else{
+                      row.row.B_ = 0;
+                    }
+                    if(data[1].A){
+                      row.row.A = data[0].A;
+                    }else{
+                      row.row.A = 0;
+                    }
+                    if(data[1].B){
+                      row.row.B = data[0].B;
+                    }else{
+                      row.row.B = 0;
+                    }
 
-            //     }
+                }
 
-            //     }
+                }
               
-            // }else{
-            //       row.row.A = 0;
-            //       row.row.B = 0;
-            //       row.row.A_ = 0;
-            //       row.row.B_ = 0;
-            // }
+            }else{
+                  row.row.A = 0;
+                  row.row.B = 0;
+                  row.row.A_ = 0;
+                  row.row.B_ = 0;
+            }
             let css = "padding: 4px 0;";
             let pro = row.column.property;//列id
             if (!pro) {
