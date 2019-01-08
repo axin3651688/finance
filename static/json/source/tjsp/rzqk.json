@@ -34,7 +34,8 @@
       {
         "id": "xh",
         "type": "index",
-        "text": "序号"
+        "text": "序号",
+        "width":"60px"
       },
       {
         "id": "jrjg",

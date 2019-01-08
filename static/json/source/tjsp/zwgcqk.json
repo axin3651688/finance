@@ -26,8 +26,9 @@
         },
       {
         "id": "xh",
-        "type": "string",
-        "text": "序号"
+        "type": "index",
+        "text": "序号",
+        "width":"60px"
       },
       {
         "id": "xm",
