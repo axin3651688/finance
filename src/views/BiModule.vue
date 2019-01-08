@@ -553,7 +553,7 @@ export default {
        */
       if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
         //
-        datas = item.__queryDataAfter(datas);
+        datas = item.__queryDataAfter(datas,this);
       }
       //
       //在此加了查询数据之后的拦截处理

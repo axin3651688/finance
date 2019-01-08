@@ -8,7 +8,7 @@
     "children":[
         {
 			"xtype": "STreeGrid",
-			"id": "0002",
+			"id": "lrbej",
 			"text": "利润表二级",
 			"weight": 24,
 			"show":true,

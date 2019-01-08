@@ -28,9 +28,12 @@
          "reverse":true
      }
     },
-    // "__queryDataAfter":function(data){//数据的后置处理
-    //     return data;
-    // },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
     "layout": {
        "xtype": "tab"
    },
@@ -91,19 +94,24 @@
                 "background-color":"#189271"
             },
             "handler":function(vue,btn){
-                location.reload();
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+
+                //location.reload();
             }
-          }, {
-           "id":"2",
-           "text":"导出",
-           "cellStyle":{
-                "color":"black",
-                "background-color":"#189271"
-            },
-           "handler":function(vue,btn){
-               console.log(vue);
-           }
-         }
+          }
+        //   , {
+        //    "id":"2",
+        //    "text":"导出",
+        //    "cellStyle":{
+        //         "color":"black",
+        //         "background-color":"#189271"
+        //     },
+        //    "handler":function(vue,btn){
+        //        console.log(vue);
+        //    }
+        //  }
        ],
         "drillProperties":["text1","text2"],//有钻取，给蓝色
         "levelProperties":{"text1":"nlevel","text2":"level_"},//加缩进

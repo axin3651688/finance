@@ -10,7 +10,7 @@
 		{
 			// "xtype": "tree-grid",
 			"xtype":"STreeGrid",
-			"id": "1403100000",
+			"id": "zcfzbej",
 			"text": "资产负债表二级",
 			"weight": 24,
 			"show":true,

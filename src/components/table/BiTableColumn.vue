@@ -11,7 +11,7 @@
         v-if="iconShow(0,scope.row) "
         class="tree-ctrl"
         v-bind="$attrs"
-        @click="toggleExpanded(scope.$index)"
+        @click="toggleExpanded(scope.$index,scope)"
       >
         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
         <i v-else class="el-icon-minus"></i>
@@ -228,11 +228,21 @@ export default {
         : "display:none;";
     },
     // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
-      const record = this.tableData.datas[trIndex];
-      // console.log(record);
-
-      record._expanded = !record._expanded;
+    toggleExpanded: function(trIndex,scope) {
+      debugger
+      let rows = scope.row;
+      rows._expanded = !rows._expanded ;
+      for(let i=0;i<rows.children.length;i++){
+        if(rows.children.length>0){
+          rows.children[i]._expanded = true;
+          for(let o=0;o<rows.children[i].children.length;o++){
+            rows.children[i].children[o]._expanded = true;
+          }
+        }
+      }
+      // let record = this.tableData.datas[trIndex];
+      // record._expanded = !record._expanded;
+      console.log(record);
     },
     // 图标显示
     iconShow(index, record) {
@@ -243,7 +253,40 @@ export default {
     }
   },
   created() {
-    // debugger;
+    debugger
+    /**
+     * name: sjz
+     * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部
+     */
+      let xtype = this.$parent.tableData.xtype; //获取树表类型
+      let companyId = this.$store.getters.company;//获取公司id
+      let level = this.$store.getters.treeInfo.level;//获取公司等级
+      let len = this.tableData.datas;//获取数据长度
+      let id = this.$parent.tableData.id;//获取下钻表的id名称
+      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej'){
+        if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
+            if(companyId=='1001'){//判断公司id为总集团公司              
+                  const record = this.tableData.datas[0];
+                  record._expanded = true;               
+            }else {
+                for(let i=0;i<len.length;i++){
+                  if(len[i].children.length>0){
+                    this.tableData.datas[i]._expanded=true;
+                    for(let o=0;o<len[i].children.length;o++){
+                      if(len[i].children[o].children.length>0){
+                        this.tableData.datas[i].children[o]._expanded=true;
+                        for(let p=0;p<len[i].children[o].children.length;p++){
+                          if(len[i].children[o].children[p].children.length>0){
+                            this.tableData.datas[i].children[o].children[p]._expanded=true;
+                          }
+                        }
+                      }
+                    }
+                  }            
+                }
+            }
+        }
+      }  
     //this.$set(this, "tableData", null);
   }
 };
