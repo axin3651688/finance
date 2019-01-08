@@ -53,16 +53,23 @@
 						"id": "cyl",
 						"type": "decimal",
 						"text": "差异率"
+					},{
+						"id": "",
+						"type": "string",
+						"text": "",
+						"isTree":true
 					},
 					{
 						"id": "gsbm",
 						"type": "string",
-						"text": "编码",
-						"isTree":true
+						"width":"120",
+						"text": "编码"
+						// "isTree":true
 					},
 					{
 						"id": "gsmc",
 						"type": "string",
+						"width":"300px",
 						"text": "公司名称"
 					},
 					{

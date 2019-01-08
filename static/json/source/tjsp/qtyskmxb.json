@@ -44,6 +44,7 @@
             {
                 "id": "sk",
                 "type": "string",
+                "width":"300px",
                 "text": "客商"
             },
             {
