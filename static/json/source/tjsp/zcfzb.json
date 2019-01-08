@@ -284,7 +284,7 @@
     "B_":0
   },
   {
-    "id": "1111132",
+    "id": "1111131",
     "text1": "应收利息",
     "level":2.5,
     "row":0,
@@ -298,7 +298,7 @@
     "B_":0
   },
   {
-    "id": "1111131",
+    "id": "1111132",
     "text1": "应收股利",
     "level":2.5,
     "row":0,
@@ -1250,7 +1250,7 @@
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record.drill = true;//下钻设置
                     return css ;
-                }else if(record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100"){
+                }else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;

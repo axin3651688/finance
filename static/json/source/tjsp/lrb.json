@@ -29,7 +29,7 @@
     "columns":[{      
         "id": "B",
         "type": "decimal",
-        "width":"600px",
+        "width":"170px",
         "text": "累计数"       
     },{
         "id": "id",
@@ -49,7 +49,7 @@
     },{
         "id": "A",
         "type": "decimal",
-        "width":"600px",
+        "width":"170px",
         "text": "当月数"
     }],
     "rows":[],
