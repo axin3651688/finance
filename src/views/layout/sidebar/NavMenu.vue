@@ -45,18 +45,26 @@ export default {
   methods: {
     ...mapActions(["ToggleSideBar"]),
     shownavMenu(e) {
+      debugger;
       //  此判断是针对url不是json的,让它正常跳转,不是的就调用侧边栏点击加载配置文件。
       // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
       if (this.device === "mobile") {
         this.ToggleSideBar({ opend: false });
       }
-      if (e.url.indexOf(".json") > 0 || Cnbi.isEmpty(e.url)) {
+      //---------------------   zdk 2019-1-8 21:32:27  没做的页面不显示了，不给点
+       if(e.url.indexOf("api/test") > 0 || e.id=== 351){
+        alert("正在玩命开发中...");
+        return ;
+          
+      }
+      //---------------------
+      else if (e.url.indexOf(".json") > 0 || Cnbi.isEmpty(e.url)) {
         // this.user.company.id === 121
         //   ? this.$router.push("/tjsp/module")
         //   :
         this.$router.push("/main");
         modeHandle(e);
-      } else {
+      }else{
         this.$router.push({ path: e.url });
       }
     }

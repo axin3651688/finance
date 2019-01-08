@@ -27,7 +27,7 @@ export default {
       return;
     }
     // debugger;
-    this.initSocket(authorization);
+    //this.initSocket(authorization);     //zdk  2019-1-8 21:31:16 暂时注释掉，用不到
   },
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo"]),
