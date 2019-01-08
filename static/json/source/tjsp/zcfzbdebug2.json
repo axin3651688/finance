@@ -78,6 +78,7 @@
 					{
 						"id": "zjl",
 						"type": "decimal",
+						"width": "110",
 						"conversion":"%",
 						"text": "增减率（%）"
 					},
@@ -93,6 +94,7 @@
 					},{
 						"id":"tbzjl",
 						"text":"同比增减率（%）",
+						"width": "110",
 						"type":"decimal",
 						"conversion":"%"
 					},

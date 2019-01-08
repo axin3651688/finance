@@ -447,11 +447,10 @@ export default {
   height: 0;
 }
 /* 数字靠右 */
-.el-table td.is-center {
+/* .el-table td.is-center {
   text-align: right;
-}
-.el-table td {
-}
+} */
+
 .gutter{
   display: none;
 }
