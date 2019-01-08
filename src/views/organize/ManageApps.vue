@@ -2,11 +2,16 @@
 
     <splitpanes class="default-theme">
         <span splitpanes-default="20" splitpanes-min="16" splitpanes-max="30" class="left-con">
-            <el-tree
-                    :data="compList"
-                    node-key="id"
-                    @node-click="handleNodeClick"
-                    :expand-on-click-node="true">
+            <el-scrollbar style="height: 100%;background: rgba(255, 255, 255, 1);">
+                 <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search" placeholder="请输入内容" clearable class="input-with-select">
+                </el-input>
+                <el-tree
+                        :data="compList"
+                        node-key="id"
+                        @node-click="handleNodeClick"
+                        :filter-node-method="filterNode"
+                        ref="tree"
+                        :expand-on-click-node="true">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
                         <span :class="['node-text', {active: data.id===activeItem}]">{{ node.label }}</span>
                             <el-dropdown>
@@ -21,6 +26,9 @@
                             </el-dropdown>
       </span>
             </el-tree>
+            </el-scrollbar>
+
+
         </span>
 
         <span splitpanes-default="80" splitpanes-min="70" splitpanes-max="84">
@@ -67,6 +75,42 @@
                     }, {
                         id: 10,
                         label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 13,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 14,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 15,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 16,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 17,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 18,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 19,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 20,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 21,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 22,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 23,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                    }, {
+                        id: 24,
+                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
                     }]
                 }]
             }, {
@@ -91,6 +135,7 @@
                 }]
             }];
             return {
+                search: '',
                 activeItem: null,
                 compList: JSON.parse(JSON.stringify(data)),
                 defaultProps: {
@@ -136,6 +181,15 @@
                 console.log('handleNodeClick', data);
                 this.activeItem = data.id
                 console.log('activeItem', data.id);
+            },
+            filterChange(){
+                this.$refs.tree.filter(this.search);
+            },
+            filterNode(value, data) {
+                if (!value) return true;
+                console.log('search', this.search);
+                console.log('filterNode', value);
+                return data.label.indexOf(value) !== -1;
             }
         }
     }
@@ -155,7 +209,26 @@
         background: rgba(255, 255, 255, 1);
         box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
         opacity: 1;
-
+        /deep/ .el-input__inner {
+            height: 30px;
+            line-height: 30px;
+        }
+        /deep/.el-input__icon {
+            height: 100%;
+            width: 25px;
+            text-align: center;
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            line-height: 0px;
+        }
+        .input-with-select {
+            width: 260px;
+            height: 30px;
+            margin: 20px;
+            background: rgba(218, 217, 216, 0.6);
+            opacity: 1;
+            border-radius: 6px;
+        }
         .custom-tree-node {
             flex: 1;
             width: 300px;

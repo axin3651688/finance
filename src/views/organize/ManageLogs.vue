@@ -89,7 +89,18 @@
     padding-left: 0 !important;
     height: 100vh;
   }
-
+  /deep/ .el-input__inner {
+    height: 30px;
+    line-height: 30px;
+  }
+  /deep/.el-input__icon {
+    height: 100%;
+    width: 25px;
+    text-align: center;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    line-height: 0px;
+  }
   .input-with-select {
     width: 220px;
     height: 30px;
