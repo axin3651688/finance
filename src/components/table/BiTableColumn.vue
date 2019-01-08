@@ -154,7 +154,7 @@ export default {
     //   return "text-align:center";
     // },
    upData(item) {
-     debugger;
+    //  debugger;
      // this.$set(this.tableData, "datas", null);
      // this.$set(this.tableData, "datas", []);
       // if(item.datas.length == 0 ){
@@ -253,7 +253,7 @@ export default {
     }
   },
   created() {
-    debugger
+    // debugger
     /**
      * name: sjz
      * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部
