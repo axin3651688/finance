@@ -678,10 +678,9 @@
 					   return params;
 				   },
 				   "way":"addTab",
-				   "sourceApi":"/cnbi/json/source/tjsp/yszkDebug.json",
+				   "sourceApi":"/cnbi/json/source/tjsp/qtysk.json",
 				   "handler": ($vue,params) =>{
 						let selectPeriod = params.name;
-						let data;
 						if(selectPeriod){
 							$vue.$store.selectPeriod = selectPeriod;
 						}

@@ -185,8 +185,19 @@ export default {
      * (此方法只处理了是tab页形式的表,并且穿透的表还具有穿透功能)
      */
     transformDrillJsonData(resData){
+      // debugger
       let me = this;
       if(resData.items && resData.items.length > 0){
+        //判断是不是不要toolbar
+        resData.items.forEach(ele => {
+          if(ele.children && ele.children.length > 0){
+            ele.children.forEach(tt => {
+              if(tt.toolbar){
+                delete tt.toolbar;
+              }
+            });
+          }
+        });
         resData = resData.items[0];
       }
       return resData;
