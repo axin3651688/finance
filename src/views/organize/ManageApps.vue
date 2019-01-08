@@ -1,28 +1,45 @@
 <template>
 
     <splitpanes class="default-theme">
-        <span splitpanes-default="20" splitpanes-min="16" splitpanes-max="40" class="left-con">
+        <span splitpanes-default="20" splitpanes-min="16" splitpanes-max="30" class="left-con">
             <el-tree
                     :data="compList"
                     node-key="id"
-                    accordion
                     @node-click="handleNodeClick"
-                    :render-content="renderContent"
                     :expand-on-click-node="true">
+                        <span class="custom-tree-node" slot-scope="{ node, data }">
 
+
+                        <span :class="['node-text', {active: data.id===activeItem}]">{{ node.label }}</span>
+                        <i v-show="activeItem===data.id" class="el-icon-more" style="transform: rotate(90deg);"></i>
+      </span>
             </el-tree>
         </span>
 
-        <div>main</div>
+        <span splitpanes-default="80" splitpanes-min="70" splitpanes-max="84">
+                <div class="edit-tab">
+                    <div class="edit-title">已授权应用</div>
+                        <el-button type="primary" icon="el-icon-circle-plus">添加应用</el-button>
+                </div>
+            <div class="edit-container">
+                <div class="tab-title">
+
+                </div>
+                    <div class="tab-container">
+
+                    </div>
+            </div>
+        </span>
     </splitpanes>
 </template>
 
 <script>
     import Splitpanes from 'splitpanes'
     import 'splitpanes/dist/splitpanes.css'
+
     export default {
         name: 'ManageApps',
-        components: { Splitpanes },
+        components: {Splitpanes},
         data() {
             const data = [{
                 id: 1,
@@ -73,35 +90,27 @@
                     children: 'children',
                     label: 'label'
                 },
+                tableData: [{
+                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
+                    name: '分析助手1',
+                    action: 0,
+                }, {
+                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
+                    name: '分析助手2',
+                    action: 0,
+                }, {
+                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
+                    name: '分析助手3',
+                    action: 0,
+                },
+
+                ]
             }
         },
         mounted() {
 
         },
         methods: {
-
-            renderContent(h, { node, data, store }) {
-                if (this.activeItem ===data.id){
-                    return (
-                        <el-tooltip class="item" effect="dark" content="123" placement="top-start">
-                        <span class="custom-tree-node">
-
-                        <span>{node.label}</span>
-
-
-                        <span style="position: absolute;right: 20px;">
-                        <i  class="el-icon-more"></i>
-                        </span>
-                        </span>
-                        </el-tooltip>);
-                }else {
-                    return (
-                        <span class="custom-tree-node">
-                        <span>{node.label}</span>
-                        </span>);
-                }
-
-            },
             append(data) {
                 const newChild = {id: id++, label: 'test1', children: []};
                 if (!data.children) {
@@ -134,146 +143,91 @@
     }
 
 
-    .left-con{
+    .left-con {
         height: 100vh;
         background: rgba(255, 255, 255, 1);
         box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
         opacity: 1;
+
         .custom-tree-node {
             flex: 1;
             width: 300px;
             display: flex;
             align-items: center;
-            position: absolute;
+            position: relative;
             right: 20px;
             justify-content: space-between;
             padding-right: 8px;
-            .list-menu {
-                position: absolute;
-                right: 20px;
-                top: 50%;
+
+            .node-text{
+                width:360px;
+                overflow:hidden;
                 margin-left: 20px;
-                height: 20px !important;
-                width: 20px !important;
-                cursor: pointer;
-                transform: translateY(-50%);
+                text-overflow:ellipsis;
+                white-space:nowrap;
+}
             }
+        .node-text.active{
+            color:rgba(255,255,255,1);
         }
-        /deep/ .el-tree-node__content {
-            height: 60px;
-        }
-    }
-
-
-    .el-container {
-        font-family: $fontFamilyMain;
-        position: relative;
-        height: 100vh !important;
-
-        .el-aside {
-            position: relative;
-            width: 30%;
-            min-width: 100px;
-            height: 100%;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
-            opacity: 1;
-            .custom-tree-node {
-                flex: 1;
-                width: 300px;
-                display: flex;
-                align-items: center;
-                position: absolute;
-                right: 20px;
-                justify-content: space-between;
-                padding-right: 8px;
-                .list-menu {
-                    position: absolute;
-                    right: 20px;
-                    top: 50%;
-                    margin-left: 20px;
-                    height: 20px !important;
-                    width: 20px !important;
-                    cursor: pointer;
-                    transform: translateY(-50%);
-                }
-            }
-            /deep/ .el-tree-node__content {
-                height: 60px;
-            }
-
-            .item_role {
-                width: fit-content;
-                position: relative;
-                height: 60px;
-                opacity: 1;
-
-                .role_text {
-                    font-size: 16px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    line-height: 60px;
-                    margin-left: 6px;
-                    color: rgba(102, 102, 102, 0.80);
-                    opacity: 1;
-                }
-
-                .list-menu {
-                    position: absolute;
-                    right: 20px;
-                    top: 50%;
-                    height: 20px !important;
-                    width: 20px !important;
-                    cursor: pointer;
-                    transform: translateY(-50%);
-                }
-            }
-
-            .item_role.active {
-                background: rgba(24, 144, 255, 1);
-
-                .role_text {
-                    color: rgba(255, 255, 255, 1);
-                }
+            .el-icon-more{
+                color: white;
             }
         }
 
-        .el-main {
-            width: 70%;
-            height: 460px;
-            min-width: 600px;
-            margin: 20px 20px 20px 20px;
-            padding: 0px;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-            opacity: 1;
-            border-radius: 20px;
-        }
-    }
-
-    .item_role {
-        position: relative;
+    .edit-tab {
         opacity: 1;
-        height: 60px;
+        display: flex;
+        padding: 20px 40px 0px 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
 
-        .role_text {
-            font-size: 16px;
+        .edit-title {
+            font-size: 22px;
             font-family: Microsoft YaHei;
             font-weight: 400;
-            line-height: 60px;
-            margin-left: 56px;
-            color: rgba(102, 102, 102, 0.80);
+            color: rgba(102, 102, 102, 1);
             opacity: 1;
         }
+    }
 
-        .list-menu {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            height: 20px !important;
-            width: 20px !important;
-            cursor: pointer;
-            transform: translateY(-50%);
+    .edit-container {
+        width: 96%;
+        margin: 20px 40px 0px 20px;
+        padding: 20px;
+        min-width: 600px;
+        min-height: 400px;
+
+        background: rgba(255, 255, 255, 1);
+        opacity: 1;
+        border-radius: 20px;
+
+        .table-title {
+            background: rgba(221, 235, 246, 1);
+            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+            opacity: 1;
+            border-radius: 20px 20px 0px 0px;
+        }
+    }
+
+    /deep/ .el-tree-node__expand-icon{
+        font-size: 16px;
+    }
+    /deep/ .el-tree-node__content {
+        height: 60px;
+        background:rgba(255,255,255,1);
+
+        .is-current{
+            background:rgba(24,144,255,1);
+        }
+        &:hover {
+            background:rgba(24,144,255,0.2);
+        }
+    }
+    /deep/ .el-tree-node.is-current.is-focusable {
+        >.el-tree-node__content{
+            background:rgba(24,144,255,1);
         }
     }
 </style>

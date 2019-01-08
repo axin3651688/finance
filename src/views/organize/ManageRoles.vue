@@ -12,20 +12,19 @@
                         v-show="item.text.toLowerCase().includes(search.toLowerCase())" v-for="item in roleList"
                         @click="activeItem=item.id">
                         <!--{{item}}-->
-                        <div>
+
                             <div class="role_text">{{item.text}}</div>
 
-                            <el-popover
-                                    placement="bottom">
-                                <div>
-                                    <el-button size="mini" type="text" @click="handleUpdateRole(item)">修改</el-button>
-                                    <el-button type="primary" size="mini" @click="handleDelRole(item)">删除</el-button>
-                                </div>
-                                <img slot="reference" v-show="activeItem===item.id" class="list-menu"
-                                     src="@/assets/green/list_menu_white.svg" alt="">
-                            </el-popover>
-                        </div>
+                            <el-dropdown>
 
+                                <span style="margin-right: 20px" v-show="activeItem===item.id" class="el-dropdown-link">
+                                    <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>修改</el-dropdown-item>
+                                    <el-dropdown-item>删除</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                     </li>
                 </ul>
 
@@ -146,6 +145,10 @@
         height: 100vh;
     }
 
+    .el-icon-more{
+        color:rgba(255,255,255,1);
+    }
+
     .el-container {
         font-family: $fontFamilyMain;
         position: relative;
@@ -162,6 +165,9 @@
 
             .item_role {
                 position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
                 opacity: 1;
 
                 .role_text {

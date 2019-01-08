@@ -114,6 +114,7 @@
       .row-user-avatar {
         margin-left: 20px;
         height: 40px;
+        border-radius: 50%;
         width: 40px;
       }
       .row-user-name{
