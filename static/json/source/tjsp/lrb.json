@@ -44,6 +44,7 @@
     },{
         "id":"index",
         "type":"index",
+        "align":"center",
         "width":"60px",
         "text":"行次"
     },{

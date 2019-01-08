@@ -229,10 +229,32 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      const record = this.tableData.datas[trIndex];
-      // console.log(record);
-
+      // debugger
+      // let _expanded = false;
+      // let xtype = this.$parent.tableData.xtype; //获取树表类型
+      // let companyId = this.$store.getters.company;//获取公司id
+      // let len = this.tableData.datas;//获取数据长度
+      // if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){
+      //   if(companyId=='1001'){
+      //     if(len[0].children.length>0){
+      //       let lens = len[0].children[trIndex-1];
+      //       lens._expanded = true;
+      //       for(let i=0;i<lens.children.length;i++){
+      //         if(lens.children[i].children.length>0){
+      //           lens.children[i]._expanded = true;
+      //           for(let o=0;o<lens.children.children[o].children.length;o++){
+      //             if(lens.children[i].children[o].children.length>0){
+      //               lens.children[i].children[o]._expanded = true;
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+      let record = this.tableData.datas[trIndex];
       record._expanded = !record._expanded;
+      console.log(record);
     },
     // 图标显示
     iconShow(index, record) {
@@ -243,7 +265,44 @@ export default {
     }
   },
   created() {
-    // debugger;
+    // debugger
+    /**
+     * name: sjz
+     * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部
+     */
+      let xtype = this.$parent.tableData.xtype; //获取树表类型
+      let companyId = this.$store.getters.company;//获取公司id
+      let level = this.$store.getters.treeInfo.level;//获取公司等级
+      let len = this.tableData.datas;//获取数据长度
+      if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
+          if(companyId=='1001'){//判断公司id为总集团公司              
+                const record = this.tableData.datas[0];
+                record._expanded = true;               
+          }else {
+              for(let i=0;i<len.length;i++){
+                if(len[i].children.length>0){
+                  this.tableData.datas[i]._expanded=true;
+                  for(let o=0;o<len[i].children.length;o++){
+                    if(len[i].children[o].children.length>0){
+                      this.tableData.datas[i].children[o]._expanded=true;
+                      for(let p=0;p<len[i].children[o].children.length;p++){
+                        if(len[i].children[o].children[p].children.length>0){
+                          this.tableData.datas[i].children[o].children[p]._expanded=true;
+                        }
+                      }
+                    }
+                  }
+                }
+                  // const record = this.tableData.datas[0];
+                  // const record2= this.tableData.datas[0].children[0];
+                  // const record3= this.tableData.datas[0].children[0].children[0];
+                  // record._expanded = true;
+                  // record2._expanded = true;
+                  // record3._expanded = true;
+                  
+              }
+          }
+      }
     //this.$set(this, "tableData", null);
   }
 };
