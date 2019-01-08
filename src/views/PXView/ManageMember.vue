@@ -21,11 +21,12 @@
                                     </div>
                                 </template>
                                 <ul class="sub-item">
-                                    <li :class="{active: activeUser === user.id}" v-for="user in comp.children" @click="getUserInfo(user.id)"
+                                    <li :class="{active: activeUser === user.id}" v-for="user in comp.children"
+                                        @click="getUserInfo(user.id)"
                                         :key="user.id">
                                         <figure>
                                             <div class="img-box">
-                                                <img :src="user.avatar" v-avatar="user.trueName" />
+                                                <img :src="user.avatar" v-avatar="user.trueName"/>
                                             </div>
                                             <div class="info">
                                                 <h3>{{user.trueName}}</h3>
@@ -44,19 +45,21 @@
             <div class="right">
 
 
-                <el-table :data="tableData" stripe style="width: 100%" class="right_table" :header-cell-style="getRowClass">
-                    <el-table-column prop="name" label="姓名" width="180">
+                <el-table :data="tableData" stripe style="width: 100%" class="right_table"
+                          :header-cell-style="getRowClass">
+                    <el-table-column prop="name" label="姓名" width="180" align="center">
                     </el-table-column>
-                    <el-table-column prop="phone" label="电话" width="180">
+                    <el-table-column prop="phone" label="电话" width="180" align="center" >
                     </el-table-column>
-                    <el-table-column prop="aboutCompany" label="公司" width="180">
+                    <el-table-column prop="aboutCompany" label="公司" width="180" align="center">
                     </el-table-column>
-                    <el-table-column prop="role" label="角色">
+                    <el-table-column prop="role" label="角色" align="center">
                     </el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -72,7 +75,6 @@
 </template>
 
 
-
 <script>
     import {
         mapGetters,
@@ -82,12 +84,12 @@
         ALL_COMPANY_CONTACT_LIST,
         CONTACT_INFO
     } from '~api/message.js'
+
     export default {
         data() {
             return {
 
                 companyList: null, // [] 接收一个数组
-
                 tableData: [{
                     phone: '2016-05-02',
                     name: '王小虎',
@@ -117,17 +119,16 @@
 
 
 //设置表格第一行的颜色
-			getRowClass({ row, column, rowIndex, columnIndex }) {
-				if (rowIndex == 0) {
+            getRowClass({row, column, rowIndex, columnIndex}) {
+                if (rowIndex == 0) {
                     return 'background:rgba(221,235,246,1)';
 
 
-
-					// return 'background:#EFEFEF'
-				} else {
-					return ''
-				}
-			},
+                    // return 'background:#EFEFEF'
+                } else {
+                    return ''
+                }
+            },
 
 
             ...mapActions(['ActionSetMessageStore']),
@@ -210,6 +211,7 @@
     @import "@ms/index.scss";
 
     .containerMain {
+        display: flex;
         padding-left: 0 !important;
         height: 100vh;
     }
@@ -351,14 +353,15 @@
                 overflow: hidden;
                 height: 100%;
                 padding: 20px;
-                
+
                 /*min-width: 800px;*/
                 background: $colorBgPageGray;
 
-                .right_table{
-                    border-radius:20px 20px 0px 0px;
-                    box-shadow:0px 10px 20px rgba(8,69,81,0.1);
+                .right_table {
+                    border-radius: 20px 20px 0px 0px;
+                    box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
                 }
+
                 .inset-shadow {
                     $insetShadowWidth: 20px;
                     position: absolute;

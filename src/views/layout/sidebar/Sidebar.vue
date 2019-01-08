@@ -84,6 +84,7 @@ export default {
         { p: "/BiTreemap", n: " 矩形树图", id: "8" },
         { p: "/ManageMember", n: " 成员管理", id: "98" },
         { p: "/Organiz", n: " 组织架构", id: "99" },
+        { p: "/AddUserInfo", n: " 添加成员", id: "100" },
         { p: "/ManageRoles", n: "角色管理", id: "121" },
         { p: "/ManageApps", n: "应用服务", id: "122" },
         { p: "/ManageLogs", n: "日志管理", id: "123" },

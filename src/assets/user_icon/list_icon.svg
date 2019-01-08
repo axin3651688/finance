@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(255,142,142,0);
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="list_icon" transform="translate(10) rotate(90)">
+    <rect id="矩形_2" data-name="矩形 2" class="cls-1" width="10" height="10"/>
+    <path id="矩形_12" data-name="矩形 12" class="cls-2" d="M0,3.748,3.28,0,6.56,3.748" transform="translate(1.733 2.907)"/>
+  </g>
+</svg>

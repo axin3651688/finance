@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(136,71,71,0);
+      }
+
+      .cls-2, .cls-3 {
+        fill: #f04862;
+      }
+
+      .cls-2 {
+        stroke: #f04862;
+      }
+    </style>
+  </defs>
+  <g id="tishi_icon_" data-name="tishi_icon " transform="translate(-56.922 -56.889)">
+    <rect id="矩形_159" data-name="矩形 159" class="cls-1" width="20" height="20" transform="translate(56.922 56.889)"/>
+    <g id="组_119" data-name="组 119" transform="translate(0.757 0.757)">
+      <path id="路径_143" data-name="路径 143" class="cls-2" d="M66.132,56.889a9.243,9.243,0,1,0,9.243,9.243,9.271,9.271,0,0,0-9.243-9.243m0,17.331a8.088,8.088,0,1,1,8.088-8.088,8.038,8.038,0,0,1-8.088,8.088" transform="translate(0 0)"/>
+      <path id="路径_144" data-name="路径 144" class="cls-3" d="M456.4,236.165a1.286,1.286,0,0,0-.9.323.928.928,0,0,0,0,1.507,1.42,1.42,0,0,0,1.8,0,.928.928,0,0,0,0-1.507A1.286,1.286,0,0,0,456.4,236.165Zm-1.159-8.609.386,7.748h1.416l.515-7.748Z" transform="translate(-390.266 -166.804)"/>
+    </g>
+  </g>
+</svg>

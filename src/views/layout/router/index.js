@@ -98,12 +98,17 @@ const router = new Router({
           name: 'Organiz',
           component: () =>
             import('@v/PXView/Organiz'),
+        }, {
+          path: '/AddUserInfo',
+          name: 'AddUserInfo',
+          component: () =>
+              import('@v/PXView/AddUserInfo'),
         }
         , {
           path: '/ManageRoles',
           name: 'ManageRoles',
           component: () =>
-              import('@v/organize/ManageRoles'),
+              import('@v/organize/ManageRoles.vue'),
         }
         , {
           path: '/ManageLogs',

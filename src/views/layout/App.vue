@@ -4,6 +4,7 @@
   </div>
 </template>
 <script>
+
 import { mapActions } from "vuex";
 import webSocket from "utils/webSocket";
 import { getClientParams } from "utils/index";
