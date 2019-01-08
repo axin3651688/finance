@@ -56,14 +56,21 @@
 						"text": "预算完成率（%）"
 					},
 					{
+						"id": "",
+						"type":"string",
+						"text": "",
+						"isTree":true
+					},
+					{
 						"id": "gsbm",
 						"type":"string",
-						"text": "公司编码",
-						"isTree":true
+						"width":"120",
+						"text": "公司编码"
 					},
 					{
 						"id": "gsmc",
 						"type":"string",
+						"width":"300px",
 						"text": "公司名称"
 					},
 					{
