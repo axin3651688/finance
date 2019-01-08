@@ -7,7 +7,7 @@
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="isShow()"/>
+      <HeadNav v-if="isShow()&&flag"/>
     </div>
   </div>
 </template>
@@ -18,7 +18,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
   data() {
-    return {};
+    return {
+      flag: false
+    };
   },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),

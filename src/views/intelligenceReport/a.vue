@@ -1,5 +1,6 @@
 <template>
 <div>
+  <div>暂无数据</div>
   <!-- <el-button-group  class="toolbar" >
     <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
   </el-button-group>
