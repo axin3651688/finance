@@ -50,7 +50,8 @@
         {
             "id": "xm2",
             "type": "string",
-            "text": ""
+            "text": "",
+            "width":"340px"
         }, {
             "id": "hs",
             "type": "number",
