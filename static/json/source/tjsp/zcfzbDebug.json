@@ -9,32 +9,15 @@
       "xtype" : "bi-table",
       "id" : "zcfzb",
       "text" : "资产负债表",
-      "toolbar":[{
-        "id":"1",
-        "text":"刷新",
-        "xtype":"button",
-        "cellStyle":{
-            "color":"black",
-            "background-color":"#189271"
-        },
-        "handler":function(vue,btn){
-            debugger
-            console.log(vue);
-            vue.item.updateView("company");
-        }
-      }, {
-        "id":"2",
-        "text":"导出",
-        "xtype":"button",
-        "cellStyle":{
-            "color":"black",
-            "background-color":"#189271"
-        },
-        "handler":function(vue,btn){
-            debugger
-            console.log(vue);
-        }
-      }],
+	  "queryDataBefore":function(params,config,$vue){
+				debugger;
+				let me = this;
+				let selectPeriod = $vue.$store.selectPeriod;
+				if(selectPeriod){
+					params.period = selectPeriod;
+				}
+				return params;
+			},
 	  "config":{
     "cube":{
         "subject":"0001",

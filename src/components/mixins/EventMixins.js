@@ -140,8 +140,13 @@ export default {
             resData.children = resData.items;
             delete resData.items;
           }
-          
+          debugger;
           resData.id = bb.id;
+          if(text){
+            let index = text.indexOf("（%") || text.indexOf("（万");
+            index !== -1? text = text.substring(0,index):"";
+            
+          }
           resData.text = text;
           resData.tabIndex = text;
           resData.closable = true;

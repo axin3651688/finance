@@ -75,31 +75,6 @@
       ],
       "rows":[]
 	  },
-      "toolbar":[{
-        "id":"1",
-        "text":"刷新",
-        "xtype":"button",
-        "cellStyle":{
-            "color":"black",
-            "background-color":"#189271"
-        },
-        "handler":function(vue,btn){
-            debugger
-            console.log(vue);
-        }
-    }, {
-       "id":"2",
-       "text":"导出",
-       "xtype":"button",
-       "cellStyle":{
-            "color":"black",
-            "background-color":"#189271"
-        },
-       "handler":function(vue,btn){
-           debugger
-           console.log(vue);
-       }
-    }],
       "onRowClick":function(row,e,col,$vue){
            debugger
           let id = row.scode, text = row.sname ;
