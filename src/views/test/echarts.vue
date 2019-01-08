@@ -7,7 +7,7 @@
 
 <script>
 import echarts from "echarts";
-
+import "echarts/theme/infographic.js";
 export default {
   props: {
     item: {
@@ -42,7 +42,10 @@ export default {
 
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById(this.id));
+      this.chart = echarts.init(
+        document.getElementById(this.id),
+        "infographic"
+      );
       //   debugger;
       this.chart.setOption({
         tooltip: {

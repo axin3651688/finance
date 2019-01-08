@@ -1,11 +1,11 @@
 <template>
-  <div class="echarts" :style="{'height':options.height_s ? options.height_s:'294px'}"/>
+  <div :style="{'height':options.height_s ? options.height_s:'294px'}"/>
 </template>
 <script>
 import echarts from "echarts";
 import debounce from "lodash/debounce";
 import { addListener, removeListener } from "resize-detector";
-//
+
 // enumerating ECharts events for now
 const EVENTS = [
   "legendselectchanged",
@@ -219,22 +219,6 @@ export default {
     }
   },
   created() {
-    // 内置集成公共属性,减少代码
-    let t = this.options.title;
-    if (t) {
-      if (!t.hasOwnProperty("x")) {
-        this.options.title = {
-          text: t.text,
-          top: 10,
-          left: "4%",
-          textStyle: {
-            fontSize: 16
-          }
-        };
-        subtext: t.subtext;
-      }
-    }
-
     if (!this.manualUpdate) {
       this.$watch(
         "options",

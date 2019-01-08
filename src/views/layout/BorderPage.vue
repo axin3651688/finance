@@ -1,13 +1,13 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <!-- <component :is="flag"></component> -->
-    <leftMenu class="sidebar-container" v-if="isShow()"/>
+    <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="isShow()"/>
+      <HeadNav v-if="isShow()&&flag"/>
     </div>
   </div>
 </template>
@@ -18,7 +18,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
   data() {
-    return {};
+    return {
+      flag: false
+    };
   },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
@@ -30,8 +32,12 @@ export default {
     styleSlect() {
       if (!Cnbi.isEmpty(this.user)) {
         this.user.company.id === 121
-          ? import("@/styles/green/index.scss")
-          : import("@/styles/black/index.scss");
+          ? import("@/styles/green/index.scss").then(_ => {
+              this.flag = true;
+            })
+          : import("@/styles/black/index.scss").then(_ => {
+              this.flag = true;
+            });
       }
     },
     classObj() {

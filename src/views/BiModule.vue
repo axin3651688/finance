@@ -141,6 +141,8 @@ export default {
       activeTabName: "0",
       api: null,
       source_id: 0,
+      scope: 0,
+      token: "",
       layout: {
         xtype: "form"
       },
@@ -466,7 +468,7 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) {
+    updateView(changeDim) {//updateView(null)
       console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
@@ -491,6 +493,7 @@ export default {
      * $childVue   vue子组件对象
      */
     generateApiModelDatas(item, $childVue, changeDim) {
+      debugger;
       try {
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
@@ -547,7 +550,7 @@ export default {
       debugger;
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
-      if (unit && unit.id > 1 && datas && datas.length > 0 ) {
+      if (unit && unit.id > 1 && datas && datas.length > 0) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }
       /**
