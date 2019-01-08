@@ -113,7 +113,7 @@
 
     .main_table {
         width: 100%;
-        margin : 20px;
+        margin : 20px 40px 40px 20px;
         border-radius: 20px 20px 0px 0px;
         box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
 

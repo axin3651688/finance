@@ -8,10 +8,17 @@
                     @node-click="handleNodeClick"
                     :expand-on-click-node="true">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
-
-
                         <span :class="['node-text', {active: data.id===activeItem}]">{{ node.label }}</span>
-                        <i v-show="activeItem===data.id" class="el-icon-more" style="transform: rotate(90deg);"></i>
+                            <el-dropdown>
+
+                                <span style="margin-right: 20px" v-show="activeItem===data.id" class="el-dropdown-link">
+                                    <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>修改</el-dropdown-item>
+                                    <el-dropdown-item>删除</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
       </span>
             </el-tree>
         </span>
