@@ -28,9 +28,11 @@
          "reverse":true
      }
     },
-    // "__queryDataAfter":function(data){//数据的后置处理
-    //     return data;
-    // },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        return data;
+    },
     "layout": {
        "xtype": "tab"
    },
@@ -47,7 +49,9 @@
         },{
             "id":"id",
             "type":"number",
-            "text":"行次"
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
         },{
             "id": "bnljje1",
             "type": "decimal",
@@ -60,11 +64,13 @@
             "id": "text2",
             "type": "string",
             "text": "项目",
-            "width":"400px"
+            "width":"460px"
         }, {
             "id":"id_",
             "type":"number",
-            "text":"行次"
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
         },{
             "id": "bnljje2",
             "type": "decimal",
@@ -87,7 +93,8 @@
                 "background-color":"#189271"
             },
             "handler":function(vue,btn){
-                console.log(vue);
+                vue.item.updateView("company");
+                //location.reload();
             }
           }, {
            "id":"2",

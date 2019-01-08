@@ -1,12 +1,6 @@
 <template>
-  <div class="echarts"/>
+  <div :style="{'height':options.height_s ? options.height_s:'294px'}"/>
 </template>
-
-<style>
-.echarts {
-  height: 294px;
-}
-</style>
 
 <script>
 import echarts from "echarts";
