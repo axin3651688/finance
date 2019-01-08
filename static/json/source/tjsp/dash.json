@@ -492,10 +492,10 @@
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
 					   if(!$vue.$store.getters.treeInfo.leaf){
-						   params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+						   params.sourceApi = "cnbi/json/source/tjsp/yfzk.json";
 						   return params;
 					   }
-					   params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+					   params.sourceApi = "cnbi/json/source/tjsp/yfzk.json";
 					   return params;
 				   },
 				   "way":"addTab",
@@ -671,10 +671,10 @@
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
 					   if(!$vue.$store.getters.treeInfo.leaf){
-						   params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+						   params.sourceApi = "cnbi/json/source/tjsp/qtysk.json";
 						   return params;
 					   }
-					   params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+					   params.sourceApi = "cnbi/json/source/tjsp/qtysk.json";
 					   return params;
 				   },
 				   "way":"addTab",
