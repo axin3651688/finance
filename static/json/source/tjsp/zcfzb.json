@@ -1133,103 +1133,103 @@
       "cellStyle":function(row) {
           debugger 
              let datas = this.datas;
-             if(datas && datas.length>0){
-                let data = datas.filter(function(item){
-                  return item.id == row.row.id || item.id == row.row.id_;
+            //  if(datas && datas.length>0){
+            //     let data = datas.filter(function(item){
+            //       return item.id == row.row.id || item.id == row.row.id_;
 
-                });
-                if(data.length == 0){
-                  row.row.A = 0;
-                  row.row.B = 0;
-                  row.row.A_ = 0;
-                  row.row.B_ = 0;
+            //     });
+            //     if(data.length == 0){
+            //       row.row.A = 0;
+            //       row.row.B = 0;
+            //       row.row.A_ = 0;
+            //       row.row.B_ = 0;
 
-                }else if(data.length == 1){
-                  if(data[0].id == row.row.id){
-                      if(data[0].A){
-                        row.row.A = data[0].A;
-                      }else{
-                        row.row.A = 0;
-                      }
-                      if(data[0].B){
-                        row.row.B = data[0].B;
-                      }else{
-                        row.row.B = 0;
-                      }
-                      row.row.A_ = 0;
-                      row.row.B_ = 0;
+            //     }else if(data.length == 1){
+            //       if(data[0].id == row.row.id){
+            //           if(data[0].A){
+            //             row.row.A = data[0].A;
+            //           }else{
+            //             row.row.A = 0;
+            //           }
+            //           if(data[0].B){
+            //             row.row.B = data[0].B;
+            //           }else{
+            //             row.row.B = 0;
+            //           }
+            //           row.row.A_ = 0;
+            //           row.row.B_ = 0;
 
-                  }else{
-                      if(data[0].A){
-                        row.row.A_ = data[0].A;
-                      }else{
-                        row.row.A_ = 0;
-                      }
-                      if(data[0].B){
-                        row.row.B_ = data[0].B;
-                      }else{
-                        row.row.B_ = 0;
-                      }
-                      row.row.A = 0;
-                      row.row.B = 0;
+            //       }else{
+            //           if(data[0].A){
+            //             row.row.A_ = data[0].A;
+            //           }else{
+            //             row.row.A_ = 0;
+            //           }
+            //           if(data[0].B){
+            //             row.row.B_ = data[0].B;
+            //           }else{
+            //             row.row.B_ = 0;
+            //           }
+            //           row.row.A = 0;
+            //           row.row.B = 0;
 
-                  }
+            //       }
 
-                }else{
-                  if(data[0].id == row.row.id){
-                    if(data[0].A){
-                      row.row.A = data[0].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[0].B){
-                      row.row.B = data[0].B;
-                    }else{
-                      row.row.B = 0;
-                    }
-                    if(data[1].A){
-                      row.row.A_ = data[0].A;
-                    }else{
-                      row.row.A_ = 0;
-                    }
-                    if(data[1].B){
-                      row.row.B_ = data[0].B;
-                    }else{
-                      row.row.B_ = 0;
-                    }
+            //     }else{
+            //       if(data[0].id == row.row.id){
+            //         if(data[0].A){
+            //           row.row.A = data[0].A;
+            //         }else{
+            //           row.row.A = 0;
+            //         }
+            //         if(data[0].B){
+            //           row.row.B = data[0].B;
+            //         }else{
+            //           row.row.B = 0;
+            //         }
+            //         if(data[1].A){
+            //           row.row.A_ = data[0].A;
+            //         }else{
+            //           row.row.A_ = 0;
+            //         }
+            //         if(data[1].B){
+            //           row.row.B_ = data[0].B;
+            //         }else{
+            //           row.row.B_ = 0;
+            //         }
 
-                }else{
-                    if(data[0].A){
-                      row.row.A_ = data[0].A;
-                    }else{
-                      row.row.A_ = 0;
-                    }
-                    if(data[0].B){
-                      row.row.B_ = data[0].B;
-                    }else{
-                      row.row.B_ = 0;
-                    }
-                    if(data[1].A){
-                      row.row.A = data[0].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[1].B){
-                      row.row.B = data[0].B;
-                    }else{
-                      row.row.B = 0;
-                    }
+            //     }else{
+            //         if(data[0].A){
+            //           row.row.A_ = data[0].A;
+            //         }else{
+            //           row.row.A_ = 0;
+            //         }
+            //         if(data[0].B){
+            //           row.row.B_ = data[0].B;
+            //         }else{
+            //           row.row.B_ = 0;
+            //         }
+            //         if(data[1].A){
+            //           row.row.A = data[0].A;
+            //         }else{
+            //           row.row.A = 0;
+            //         }
+            //         if(data[1].B){
+            //           row.row.B = data[0].B;
+            //         }else{
+            //           row.row.B = 0;
+            //         }
 
-                }
+            //     }
 
-                }
+            //     }
               
-            }else{
-                  row.row.A = 0;
-                  row.row.B = 0;
-                  row.row.A_ = 0;
-                  row.row.B_ = 0;
-            }
+            // }else{
+            //       row.row.A = 0;
+            //       row.row.B = 0;
+            //       row.row.A_ = 0;
+            //       row.row.B_ = 0;
+            // }
             let css = "padding: 4px 0;";
             let pro = row.column.property;//列id
             if (!pro) {
@@ -1250,11 +1250,13 @@
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record.drill = true;//下钻设置
                     return css ;
-                }else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
+                }
+                else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else{
+                }
+                else{
                     return css+ textIndent; 
                 }
             }else if(pro.indexOf("text2") != -1){//第二列项目
@@ -1263,11 +1265,13 @@
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record._drill = true;//下钻设置
                     return css;
-                }else if(record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100"){
+                }
+                else if(record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100"){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else{
+                }
+                else{
                     return css + textIndent; 
                 }
             }else {
