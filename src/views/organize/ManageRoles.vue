@@ -59,10 +59,11 @@
                         center>
                     <el-form :model="formUpdate">
                         <el-form-item>
-                            <el-input v-model="formUpdate.name" autocomplete="off"></el-input>
+                            <el-input placeholder="角色名称" maxlength="10" v-model="formUpdate.name" clearable class="dialog-input name"></el-input>
                         </el-form-item>
-                        <el-form-item>
-                            <el-input v-model="formUpdate.note" autocomplete="off"></el-input>
+                        <el-form-item  prop="desc">
+                            <el-input placeholder="角色描述"  maxlength="100" clearable  type="textarea"
+                                      :autosize="{ minRows: 2, maxRows: 4}"  v-model="formUpdate.note" class="dialog-input note"></el-input>
                         </el-form-item>
                     </el-form>
                     <span slot="title" class="dialog-title">修改角色</span>
@@ -78,13 +79,30 @@
 
         <el-main>
             <div class="tab-main">
-                <el-button @click="activeBtn =1">管理权限</el-button>
-                <el-button @click="activeBtn =2">应用权限</el-button>
-                <el-button @click="activeBtn =3">功能权限</el-button>
-                <el-button @click="activeBtn =4">其他权限</el-button>
+                <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]" >
+                    <i class="el-bi-icon-yonghushezhi"></i>
+                    管理权限
+                </el-button>
+                <el-button @click="activeBtn =2" :class="['tab-btn', {active: activeBtn ===2}]">
+                    <i class="el-bi-icon-app"></i>
+                    应用权限
+                </el-button>
+                <el-button @click="activeBtn =3" :class="['tab-btn', {active: activeBtn ===3}]">
+                    <i class="el-bi-icon-yingyong"></i>
+                    功能权限
+                </el-button>
+                <el-button @click="activeBtn =4" :class="['tab-btn', {active: activeBtn ===4}]" >
+                    <i class="el-bi-icon-qita"></i>
+                    其他权限
+                </el-button>
             </div>
 
-            <span>{{activeBtn}}</span>
+            <div>
+                <tab1 v-if="activeBtn === 1" :selectRole="selectRole"></tab1>
+                <tab2 v-else-if="activeBtn === 2"></tab2>
+                <tab3 v-else-if="activeBtn === 3"></tab3>
+                <tab4 v-else-if="activeBtn === 4"></tab4>
+            </div>
         </el-main>
     </el-container>
 </template>
@@ -94,6 +112,12 @@
 
     export default {
         name: 'ManageRoles',
+        components: {
+            Tab1: () => import('./manage_roles_tab/Tab1'),
+            Tab2: () => import('./manage_roles_tab/Tab2'),
+            Tab3: () => import('./manage_roles_tab/Tab3'),
+            Tab4: () => import('./manage_roles_tab/Tab4'),
+        },
         data() {
             return {
                 createDialogVisible: false,
@@ -308,6 +332,7 @@
             .dialog-input.note {
                 /deep/ .el-textarea__inner {
                     height: 60px;
+                    max-height: 120px;
                 }
 
                 border-radius: 6px;
@@ -339,7 +364,27 @@
                 box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
 
                 .tab-btn {
+                    background:rgba(255,255,255,1);
+                    box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+                    opacity:1;
+                    border-radius:6px;
 
+                    font-size:14px;
+                    font-family:Microsoft YaHei;
+                    font-weight:400;
+                    color:rgba(102,102,102,0.60);
+                    opacity:1;
+                    i{
+                        font-size: 14px;
+                    }
+                }
+                .tab-btn.active {
+                    background:rgba(24,144,255,1);
+                    box-shadow:0px 3px 6px rgba(0,0,0,0.16);
+                    opacity:1;
+                    border-radius:6px;
+
+                    color:rgba(255,255,255,1);
                 }
             }
         }
