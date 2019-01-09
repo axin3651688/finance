@@ -94,6 +94,9 @@
                              cmd[keys] = y
                      }
                      break;
+                 case "item":
+                     localStorage.item = JSON.stringify(command[keys])
+                     break;
              }
          }
      })
