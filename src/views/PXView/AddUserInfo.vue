@@ -158,7 +158,7 @@
     
 
     .Root{
-
+        width:100% ;
         min-width: 600px;
 
 

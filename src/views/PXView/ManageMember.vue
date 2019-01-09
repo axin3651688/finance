@@ -211,7 +211,7 @@
     @import "@ms/index.scss";
 
     .containerMain {
-        display: flex;
+        
         padding-left: 0 !important;
         height: 100vh;
     }
