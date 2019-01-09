@@ -24,7 +24,7 @@ let proxyObj = { // 配置跨域
     // target: 'http://192.168.2.224:8005',
     //target: 'https://192.168.1.118:8443',
     //  target: 'http://192.168.1.139:8005',
-     target: 'http://192.168.1.118:8005',
+    target: 'http://192.168.1.118:8005',
     ws: true,
     changOrigin: true,
     pathRewrite: {
@@ -116,8 +116,7 @@ module.exports = {
       config.devtool = 'cheap-module-eval-source-map'
       // 生产环境配置
       proxy: proxyObj; // string | Object
-    } else {
-    }
+    } else {}
     config.resolve = {
       extensions: ['.js', '.vue', '.json', ".css"],
       alias: {
@@ -129,8 +128,8 @@ module.exports = {
         '~api': resolve('src/api'),
         '@v': resolve('src/views'),
         "utils": resolve('src/utils'),
-        "@ms": resolve('src/views/message_page/styles'),    // 消息页面的 样式
-        "@ma": resolve('src/views/message_page/assets'),    // 消息页面的 静态资源
+        "@ms": resolve('src/views/message_page/styles'), // 消息页面的 样式
+        "@ma": resolve('src/views/message_page/assets'), // 消息页面的 静态资源
         "@mc": resolve('src/views/message_page/components'), // 消息页面的 公用组件
         "@m_config": resolve('src/views/message_page/config') // 配置文件，常量
       }
@@ -163,8 +162,8 @@ module.exports = {
     // 自定义加载数据
     before: app => {
       app.get('/api/qwe', (req, res) => {
-        res.json(configView)
-      }),
+          res.json(configView)
+        }),
         app.get('/apis/PrefaceData', (req, res) => {
           res.json(PrefaceData)
         }),

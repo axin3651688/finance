@@ -7,7 +7,7 @@
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    height="item.height || rowClass"
+    :height="item.height || heights-110"
     :cell-style="cellStyle"
     :row-style="showRow"
     class="content"
@@ -37,7 +37,7 @@ export default {
   props: ["item"],
   data() {
     return {
-      // list: [],
+      heights:document.body.offsetHeight,
       dialogVisible: false,
       selectedOptions: [],
       formatData: [],
@@ -93,6 +93,12 @@ export default {
   //     return datas;
   //   }
   // },
+  watch:{
+    heights(newval){
+      debugger
+      this.heights = newval
+    }
+  },
   methods: {
     onCellClickDefault(row, column, e) {
       debugger;
