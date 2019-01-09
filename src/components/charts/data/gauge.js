@@ -26,7 +26,7 @@ export default function gauge() {
             name: "目标完成率",
             type: "gauge",
             min: 0,
-            max: 200, //设置最大刻度
+            max: 150, //设置最大刻度
             //设置仪表盘的园的程度，这里设置的是半圆
             startAngle: 170,
             endAngle: 10,

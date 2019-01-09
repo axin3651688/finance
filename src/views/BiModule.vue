@@ -141,6 +141,8 @@ export default {
       activeTabName: "0",
       api: null,
       source_id: 0,
+      scope: 0,
+      token: "",
       layout: {
         xtype: "form"
       },
@@ -155,13 +157,14 @@ export default {
   },
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    console.log(this.item)
+    debugger;
     let bean = getClientParams();
     this.setScopeDatas(bean);
     this.loadModule();
   },
 
   mounted() {
+     debugger;
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -423,8 +426,8 @@ export default {
         if (!val && element === "company") {
           val = params[element + "Id"];
         }
-        if(element != "conversion"){
-           datas[element] = val;
+        if (element != "conversion") {
+          datas[element] = val;
         }
       });
       if (datas.year && datas.month) {
@@ -467,7 +470,7 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) {
+    updateView(changeDim) {//updateView(null)
       console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);

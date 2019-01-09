@@ -39,7 +39,7 @@ export default function socketCoreProcess(websocket, datas) {
         break;
       case 1003:
         // 登录已失效，请重新登录
-        // reloadLogin(data);
+        reloadLogin1003(data);
         break;
       case 1004:
         // 登录已失效，请重新登录
@@ -113,7 +113,6 @@ export default function socketCoreProcess(websocket, datas) {
 
   }
 
-
   // debugger;
   if (isArray(datas)) {
     datas.forEach(data => {
@@ -121,6 +120,34 @@ export default function socketCoreProcess(websocket, datas) {
     });
   } else {
     parseData(datas);
+  }
+  /* 刷新有1003过来,用传来的替换本地的token */
+  function reloadLogin1003(data) {
+    console.log(data.data);
+    if (!Cnbi.isEmpty(data.data)) {
+      debugger
+      let token = data.data.authorization;
+      localStorage.authorization = token;
+      router.push("/main");
+    } else {
+      MessageBox.confirm("当前登录已失效,请重新登录!", '提示', {
+        confirmButtonText: '确定',
+        type: 'warning'
+      }).then(() => {
+        // electron 退出处理
+        if (window.require) {
+          var ipc = window.require('electron').ipcRenderer
+        }
+        if (window.require) {
+          ipc.send('web_outLogin', '')
+        }
+        // 以后要改为自动登录
+        router.push("/Login");
+
+      }).catch(() => {
+        router.push("/Login");
+      })
+    }
   }
 
   function reloadLogin(data) {

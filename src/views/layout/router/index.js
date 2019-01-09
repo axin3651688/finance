@@ -8,10 +8,7 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [{
-      path: '/',
-      redirect: '/message',
-    },
-    {
+
       path: '/',
       name: '我的工作台',
       component: () =>
@@ -198,5 +195,12 @@ router.beforeEach((to, from, next) => {
     authorization ? next() : next("/login");
   }
 })
-
+// beforeRouteLeave(to, from, next) {
+//   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+//   if (answer) {
+//     next()
+//   } else {
+//     next(false)
+//   }
+// }
 export default router;

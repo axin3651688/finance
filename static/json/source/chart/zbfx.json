@@ -157,9 +157,10 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": 33,
+                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
-                        console.info(params);
+                        let itemBean =  {id:$vue.item.id,text:$vue.item.text};
+                        localStorage.item = JSON.stringify(itemBean) ; 
                         debugger;
                     }
                 }],
@@ -241,7 +242,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "/cnbi/json/source/treegrid/demo.json",
+                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
                         console.info(params);
                         debugger;

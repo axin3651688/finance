@@ -5,7 +5,8 @@
         v-if="cc.children && cc.children.length > 0 "
         :col="cc"
         :key="cc.text"
-        :tableData.sync="tableData" />
+        :tableData.sync="tableData"
+      />
       <bi-table-column v-else :col="cc" :tableData.sync="tableData" :key="cc.text" ref="tcol"/>
     </template>
   </el-table-column>
@@ -24,10 +25,10 @@ export default {
       return this.col.children && this.col.children.length;
     }
   },
-  created(){
+  created() {
     //alert(JSON.stringify(this.tableData))
-   // debugger;
-  //  console.log(this.tableData)
+    // debugger;
+    console.log(this.tableData);
   },
   methods: {
     upData(item) {

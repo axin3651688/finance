@@ -44,18 +44,19 @@ export default function bar() {
             }
         },
 
-        xAxis: [{
+        xAxis: {
             type: "category",
             data: [],
 
             axisTick: {
                 alignWithLabel: true
             }
-        }],
-        yAxis: [{
+        },
+        yAxis: {
             type: "value"
-        }],
+        },
         series: [{
+            name: "this.item.text",
             type: "bar",
             stack: "vistors",
             barWidth: "35%",
