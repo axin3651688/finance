@@ -4,27 +4,29 @@
 
             <el-scrollbar style="height: 100%">
 
-                <el-input v-model="search"  suffix-icon="el-icon-search" placeholder="请输入内容" clearable class="input-with-select">
+                <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
+                          class="input-with-select">
                 </el-input>
 
                 <ul style="margin-bottom: 100px">
-                    <li :class="['item_role', {active: item.id===activeItem}]"
+                    <li :class="['item_role', {active: item.id===selectRole.id}]"
                         v-show="item.text.toLowerCase().includes(search.toLowerCase())" v-for="item in roleList"
-                        @click="activeItem=item.id">
+                        @click="selectRole=item">
                         <!--{{item}}-->
 
-                            <div class="role_text">{{item.text}}</div>
+                        <div class="role_text">{{item.text}}</div>
 
-                            <el-dropdown>
+                        <el-dropdown @command="handleCommand">
 
-                                <span style="margin-right: 20px" v-show="activeItem===item.id" class="el-dropdown-link">
+                                <span style="margin-right: 20px" v-show="selectRole.id===item.id"
+                                      class="el-dropdown-link">
                                     <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
                                 </span>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>修改</el-dropdown-item>
-                                    <el-dropdown-item>删除</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="update">修改</el-dropdown-item>
+                                <el-dropdown-item command="delete">删除</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </li>
                 </ul>
 
@@ -33,27 +35,41 @@
                 <el-dialog
                         :visible.sync="createDialogVisible"
                         width="24%"
-                        :before-close="handleClose">
-                    <el-input v-model="newRoleName" class="dialog-input name" placeholder="角色名称"></el-input>
-                    <el-input v-model="newRoleNote" class="dialog-input note" placeholder="角色描述"></el-input>
+                        center>
+                    <el-form :model="formCreate">
+                        <el-form-item>
+                            <el-input placeholder="角色名称" maxlength="10" v-model="formCreate.name" clearable class="dialog-input name"></el-input>
+                        </el-form-item>
+                        <el-form-item  prop="desc">
+                            <el-input placeholder="角色描述"  maxlength="100" clearable  type="textarea"
+                                      :autosize="{ minRows: 2, maxRows: 4}"  v-model="formCreate.note" class="dialog-input note"></el-input>
+                        </el-form-item>
+                    </el-form>
+
                     <span slot="title" class="dialog-title">创建角色</span>
                     <span slot="footer" class="dialog-footer">
-    <el-button @click="createDialogVisible = false">保存，并返回</el-button>
-    <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
-  </span>
+                        <el-button @click="createDialogVisible = false">保存，并返回</el-button>
+                        <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
+                      </span>
                 </el-dialog>
 
                 <el-dialog
                         :visible.sync="updateDialogVisible"
                         width="24%"
-                        :before-close="handleClose">
-                    <el-input v-model="selectRole.text" class="dialog-input name" placeholder="角色名称"></el-input>
-                    <el-input v-model="selectRole.note" class="dialog-input note" placeholder="角色描述"></el-input>
+                        center>
+                    <el-form :model="formUpdate">
+                        <el-form-item>
+                            <el-input v-model="formUpdate.name" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="formUpdate.note" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-form>
                     <span slot="title" class="dialog-title">修改角色</span>
                     <span slot="footer" class="dialog-footer">
-    <el-button @click="updateDialogVisible = false">保存，并返回</el-button>
-    <el-button type="primary" @click="updateDialogVisible = false">保存，并继续创建</el-button>
-  </span>
+                        <el-button @click="updateDialogVisible = false">取消</el-button>
+                        <el-button type="primary" @click="updateDialogVisible = false">保存</el-button>
+                        </span>
                 </el-dialog>
             </el-scrollbar>
 
@@ -62,17 +78,10 @@
 
         <el-main>
             <div class="tab-main">
-                <!--<el-radio-group v-model="activeName" style="margin-bottom: 30px;">-->
-                    <!--<el-radio-button label="管理权限" name="1"></el-radio-button>-->
-                    <!--<el-radio-button label="应用权限" name="2"></el-radio-button>-->
-                    <!--<el-radio-button label="功能权限" name="3"></el-radio-button>-->
-                    <!--<el-radio-button label="其他权限" name="4"></el-radio-button>-->
-                <!--</el-radio-group>-->
-
-                    <el-button @click="activeBtn =1">管理权限</el-button>
-                    <el-button @click="activeBtn =2">应用权限</el-button>
-                    <el-button @click="activeBtn =3">功能权限</el-button>
-                    <el-button @click="activeBtn =4">其他权限</el-button>
+                <el-button @click="activeBtn =1">管理权限</el-button>
+                <el-button @click="activeBtn =2">应用权限</el-button>
+                <el-button @click="activeBtn =3">功能权限</el-button>
+                <el-button @click="activeBtn =4">其他权限</el-button>
             </div>
 
             <span>{{activeBtn}}</span>
@@ -87,43 +96,43 @@
         name: 'ManageRoles',
         data() {
             return {
-                activeItem: null,
-                activeName: '',
                 createDialogVisible: false,
-                updateDialogVisible:false,
+                updateDialogVisible: false,
                 roleList: [],
                 search: '',
-                newRoleName:'',
-                newRoleNote:'',
-                activeBtn:1,
-                selectRole:{},
+                newRoleName: '',
+                newRoleNote: '',
+                activeBtn: 1,
+                selectRole: {},
+                formCreate: {
+                    name: '',
+                    note: '',
+                },
+                formUpdate: {
+                    name: '',
+                    note: '',
+                },
+                formLabelWidth: '120px',
             }
         },
         mounted() {
             this.getRoleList()
         },
         methods: {
-            handleClose(done) {
-                this.$confirm('尚未保存，确认关闭？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {
-                    });
-            },
-            handleUpdateRole(role){
-                console.log('role：', role)
-                this.updateDialogVisible =true;
-                this.selectRole = role;
-
-            },
-            handleDelRole(role){
-                this.$confirm('确定删除角色:'+role.text+'？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {
-                    });
+            handleCommand(command) {
+                if (command === 'update') {
+                    console.log('updateRole：', this.selectRole)
+                    this.updateDialogVisible = true;
+                    this.formUpdate.name = this.selectRole.text;
+                    this.formUpdate.note = this.selectRole.note;
+                } else if (command === 'delete') {
+                    this.$confirm('确定删除角色:' + this.selectRole.text + '？')
+                        .then(_ => {
+                            done();
+                        })
+                        .catch(_ => {
+                        });
+                }
             },
             getRoleList() {
                 ROLE_LIST(225, 1).then(res => {
@@ -145,8 +154,8 @@
         height: 100vh;
     }
 
-    .el-icon-more{
-        color:rgba(255,255,255,1);
+    .el-icon-more {
+        color: rgba(255, 255, 255, 1);
     }
 
     .el-container {
@@ -203,14 +212,16 @@
                 height: 30px;
                 line-height: 30px;
             }
-            /deep/.el-input__icon {
+
+            /deep/ .el-input__icon {
                 height: 100%;
                 width: 25px;
                 text-align: center;
                 -webkit-transition: all .3s;
                 transition: all .3s;
-                 line-height: 0px;
+                line-height: 0px;
             }
+
             .input-with-select {
                 width: 260px;
                 height: 30px;
@@ -247,32 +258,60 @@
                     opacity: 1;
                 }
             }
-            .dialog-title{
+
+            .dialog-title {
+                font-size: 16px;
+                font-family: Microsoft YaHei;
+                font-weight: bold;
+                color: rgba(24, 144, 255, 1);
+                opacity: 1;
+            }
+            .dialog-footer{
                 font-size:16px;
                 font-family:Microsoft YaHei;
-                font-weight:bold;
-                color:rgba(24,144,255,1);
+                font-weight:400;
+                color:rgba(255,255,255,1);
                 opacity:1;
             }
-
-            .dialog-input{
+            .dialog-input {
                 padding: 2px;
-                opacity:1;
-                border-radius:6px;
+                opacity: 1;
+                border-radius: 6px;
+                font-size: 16px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: rgba(255, 255, 255, 1);
 
-                /deep/ .el-input__inner{
-                    font-size:16px;
-                    font-family:Microsoft YaHei;
-                    font-weight:400;
-                    color:rgba(159,167,174,1);
-                    background:rgba(239,242,246,1);
+                /deep/ .el-input__inner {
+                    font-size: 16px;
+                    font-family: Microsoft YaHei;
+                    font-weight: 400;
+                    color: rgba(159, 167, 174, 1);
+                    background: rgba(239, 242, 246, 1);
+                }
+                /deep/ .el-textarea__inner{
+                    font-size: 16px;
+                    font-family: Microsoft YaHei;
+                    font-weight: 400;
+                    color: rgba(159, 167, 174, 1);
+                    background: rgba(239, 242, 246, 1);
                 }
             }
-            .dialog-input.name{
 
+            .dialog-input.name {
+                /deep/ .el-input__inner {
+                    height: 40px;
+                }
+                border-radius: 6px;
             }
-            .dialog-input.note{
-                margin-top: 20px;
+
+            .dialog-input.note {
+                /deep/ .el-textarea__inner {
+                    height: 60px;
+                }
+
+                border-radius: 6px;
+                margin-top: 10px;
             }
         }
 
@@ -281,7 +320,7 @@
             height: 460px;
             min-width: 600px;
             margin: 20px 20px 20px 20px;
-            padding:0px;
+            padding: 0px;
             background: rgba(255, 255, 255, 1);
             box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
             opacity: 1;
@@ -298,7 +337,8 @@
                 padding-right: 40px;
                 align-items: center;
                 box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-                .tab-btn{
+
+                .tab-btn {
 
                 }
             }
