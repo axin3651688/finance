@@ -295,7 +295,7 @@ export default {
 .el-table--border::after, .el-table--group::after, .el-table::before {
     content: '';
     position: absolute;
-    background-color: #fff;
+    background-color: transparent;
     z-index: 1;
 }
 .el-table__body {

@@ -177,7 +177,7 @@ const router = new Router({
       path: '*',
       name: '/404',
       component: () =>
-        import('@v/common/404'),
+        import('@v/common/404')
     },
 
   ]
