@@ -5,6 +5,7 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
+      fixed="left"
   >
     <template slot-scope="scope">
       <span
@@ -16,30 +17,20 @@
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
     </template>
-     <template slot-scope="scope">
-        <span
-          v-for="space in scope.row._level"
-          v-if=" column.text != '操作' && index === 0"
-          :key="space"
-          class="ms-tree-space"
-        />
-        <span
-          v-if="iconShow(index,scope.row) "
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        <span v-if=" column.text != '操作'">{{ scope.row[column.value] }}</span>
-
-        <el-button type="text" v-if="column.text === '操作'" @click="add">
-          <!-- ... -->
+  </el-table-column>
+    <el-table-column
+        v-else-if ="col.type== 'template' "
+        :prop="col.id"
+        :label="col.text"
+        :width="col.width||80"
+        fixed="right"
+      >
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">
           <img src="@/assets/green/list_menu.svg" alt>
-          <!-- <el-cascader :options="options"></el-cascader> -->
         </el-button>
       </template>
-  </el-table-column>
+    </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
@@ -70,6 +61,7 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
+      fixed="left"
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -88,7 +80,7 @@
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
-    :align="col.align|| 'center'"
+    :align="col.align|| 'right'"
     :width="col.width||150"
   >
     <template slot-scope="scope">
@@ -347,7 +339,7 @@ tbody {
 // 加下面样式 马军 2018/12/24 .el-table td,
 // .el-table td,
 .el-table th {
-  text-align: center;
+  text-align: center !important;
 }
 </style>
 <style scoped>

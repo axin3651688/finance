@@ -441,6 +441,9 @@ export default {
 .toolbar{
   margin:2px 0 5px 0;
 }
+.el-table{
+  background-color: transparent !important;
+}
 .el-table td,
 .el-table th {
   padding: 5px 0;
@@ -450,9 +453,9 @@ export default {
   height: 0;
 }
 /* 数字靠右 */
-.el-table td.is-center {
+/* .el-table td.is-center {
   text-align: right;
-}
+} */
 .gutter{
   display: none;
 }

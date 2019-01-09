@@ -14,8 +14,9 @@
     @row-click="onRowClick"
     :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
   >
-    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden">
+      </bi-table-column-tree>
     </el-tag>
   </el-table>
 </div>  
@@ -298,7 +299,7 @@ export default {
         : "display:none;";
     },
     // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
+    toggleExpanded(trIndex) {
       const record = this.formatData[trIndex];
       console.log(record);
 

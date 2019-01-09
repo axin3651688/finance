@@ -242,7 +242,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
+                    "sourceApi": "cnbi/json/source/chart/demo.json",
                     "handler": ($vue, params) => {
                         console.info(params);
                         debugger;
