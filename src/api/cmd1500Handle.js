@@ -96,6 +96,10 @@
                      break;
                  case "item":
                      localStorage.item = JSON.stringify(command[keys])
+                     modeHandle({
+                         sourceId: null,
+                         url: "cnbi/json/source/chart/zjjzqk1.json"
+                     });
                      break;
              }
          }
