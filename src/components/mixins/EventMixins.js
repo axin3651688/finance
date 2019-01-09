@@ -60,15 +60,15 @@ export default {
     chartEventHandler(listener) {
       let me = this;
       this.$children[0].chart.on(listener.type, function (params) {
-        if(listener.clickBefore && typeof listener.clickBefore == "function"){
-          listener = listener.clickBefore(listener,me,params);
+        if (listener.clickBefore && typeof listener.clickBefore == "function") {
+          listener = listener.clickBefore(listener, me, params);
         }
         // if(!listener){
         //   return;
         // }
-       /**
-        * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
-        */
+        /**
+         * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
+         */
         me.commonHandler(listener, params);
 
       });
@@ -97,9 +97,9 @@ export default {
      */
     addTab(params, listener, bb) {
       debugger;
-      let module = this.$parent.$parent.$parent.$parent.items?this.$parent.$parent.$parent.$parent:this.$parent.$parent.$parent.$parent.$parent.$parent;
+      let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
       //判断指标分析的穿透
-      if(!module.items){
+      if (!module.items) {
         module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
       }
       //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
@@ -122,7 +122,7 @@ export default {
       if (listener.location && listener.location == "before") {
         action = "unshift";
       }
-      
+
       if (listener.sourceApi) {
         //配制加载url的情况
         findDesignSource(listener.sourceApi).then(res => {
@@ -133,11 +133,11 @@ export default {
           if (!resData.id) {
             resData = eval("(" + resData + ")");
           }
-          if(!resData.children && resData.items){
+          if (!resData.children && resData.items) {
             resData.children = resData.items;
             delete resData.items;
           }
-          
+
           resData.id = bb.id;
           resData.text = text;
           resData.tabIndex = text;
@@ -149,7 +149,7 @@ export default {
           module.activeTabName = resData.text;
           //钻取穿透过来的也要有show属性判断，可以封装成上面的格式传进来，此时采用最后一个传法。
           if (resData) {
-            let moduleItem = module.items[module.items.length-1];
+            let moduleItem = module.items[module.items.length - 1];
             module.showSet([moduleItem]);
           }
         });
@@ -171,10 +171,10 @@ export default {
    */
   onCellClick(row, column, cell, event) {
     console.info(row);
-    
+
     if (row._drill || row.drill) {
       if (cell.cellIndex === 0) {
-        
+
       }
     }
   }

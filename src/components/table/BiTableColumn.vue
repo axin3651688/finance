@@ -66,7 +66,7 @@
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
-    :align="col.align|| 'center'"
+    :align="col.align|| 'right'"
     :width="col.width||150"
   >
     <template slot-scope="scope">
@@ -77,6 +77,7 @@
         placement="right"
       >
         <span
+          @click="dilogShow(col,scope)"
           v-if="tableData.datas"
         >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
@@ -117,12 +118,14 @@
   </el-table-column>-->
 </template>
 <script>
-//import EventMixins from "../mixins/EventMixins";
+import { mapActions, mapGetters } from "vuex";
+import ShowDialog from "../mixins/ShowDialog";
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
   computed: {
+    ...mapGetters(["year", "month"]),
     isFolder() {
       return this.col.children && this.col.children.length;
     },
@@ -131,8 +134,13 @@ export default {
       return level + 1;
     }
   },
-  created() {},
+  created() {
+    // debugger;
+    //this.$set(this, "tableData", null);
+  },
+  mixins: [ShowDialog],
   methods: {
+    ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
@@ -259,23 +267,10 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    // debugger;
-    //this.$set(this, "tableData", null);
   }
 };
 </script>
 <style lang="scss">
-.el-table__body {
-  // width: 6000px !important;
-}
-.el-table__header {
-  // table-layout:auto;
-}
-.el-table__header-wrapper {
-  // overflow-x: scroll;
-}
 .el-table thead {
   th {
     .cell {
@@ -306,7 +301,7 @@ tbody {
 // 加下面样式 马军 2018/12/24 .el-table td,
 // .el-table td,
 .el-table th {
-  text-align: center;
+  text-align: center !important;
 }
 </style>
 <style>

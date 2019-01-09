@@ -160,6 +160,11 @@ const router = new Router({
           name: 'Fill',
           component: () =>
             import('@v/test/Fill.vue')
+        }, {
+          path: '/TableTest',
+          name: 'TableTest',
+          component: () =>
+            import('@v/test/TableTest.vue')
         },
 
       ]

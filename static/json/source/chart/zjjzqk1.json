@@ -10,19 +10,18 @@
     "xtype": "JtreeGrid",
     "id": "1416001",
     "text": "营业收入",
-    "queryDataBefore":function(params,b){
+    "queryDataBefore": function (params, b) {
       debugger;
       let item = localStorage.item;
-      if(!Cnbi.isEmpty(item)){
+      if (!Cnbi.isEmpty(item)) {
         let itemBean = JSON.parse(item);
-        Cnbi.apply(this,itemBean);
-        params.item = itemBean.id; 
-        alert(JSON.stringify(params));
+        Cnbi.apply(this, itemBean);
+        params.item = itemBean.id;
         localStorage.removeItem('item');
-      }else{
-        params.item = this.id; 
+      } else {
+        params.item = this.id;
       }
-      return  params;
+      return params;
     },
     "show": true,
     "config": {
@@ -40,54 +39,55 @@
       },
       "type": 1,
       "columns": [{
-        "text": "预算完成率(%)",
-        "width": "200",
-        "type": "decimal",
-        "id": "yswclv"
-      }, {
-        "text": "公司编码",
-        "type": "string",
-        "width": "200",
-        "id": "id",
-        "isTree": true
-      },
-      {
-        "text": "公司名称",
-        "type": "string",
-        "width": "280",
-        "id": "text"
-      },
-      {
-        "text": "本年累计",
-        "type": "decimal",
-        "width": "200",
-        "id": "bnlj"
-      },
-      {
-        "text": "上年同期",
-        "width": "200",
-        "type": "decimal",
-        "id": "sntq"
-      },
-      {
-        "text": "增减额",
-        "type": "decimal",
-        "id": "zje"
-      },
-      {
-        "text": "增减率(%)",
-        "type": "decimal",
-        "id": "zjlv"
-      }, {
-        "text": "本年预算",
-        "width": "200",
-        "type": "decimal",
-        "id": "bnys"
-      }
+          "text": "预算完成率(%)",
+          "width": "200",
+          "type": "decimal",
+          "id": "yswclv"
+        }, {
+          "text": "公司编码",
+          "type": "string",
+          "width": "200",
+          "id": "id",
+          "isTree": true
+        },
+        {
+          "text": "公司名称",
+          "type": "string",
+          "width": "280",
+          "id": "text"
+        },
+        {
+          "text": "本年累计",
+          "type": "decimal",
+          "width": "200",
+          "id": "bnlj"
+        },
+        {
+          "text": "上年同期",
+          "width": "200",
+          "type": "decimal",
+          "id": "sntq"
+        },
+        {
+          "text": "增减额",
+          "type": "decimal",
+          "id": "zje"
+        },
+        {
+          "text": "增减率(%)",
+          "type": "decimal",
+          "id": "zjlv",
+          "showdilog": true
+        }, {
+          "text": "本年预算",
+          "width": "200",
+          "type": "decimal",
+          "id": "bnys"
+        }
 
-    ],
-    "rows": []
-     },
+      ],
+      "rows": []
+    },
     "toolbar": [{
       "id": "1",
       "text": "导出",
@@ -122,6 +122,6 @@
         console.log(vue);
       }
     }]
-    
+
   }]
 }
