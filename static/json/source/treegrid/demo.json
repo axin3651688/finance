@@ -18,35 +18,35 @@
     "columns": [
         {
             "text": "单位编码",
-            "value": "company"
+            "id": "company"
         },
         {
             "text": "单位名称",
-            "value": "title"
+            "id": "title"
           },
           {
             "text": "报表名称",
-            "value": "reportName"
+            "id": "reportName"
           },
           {
             "text": "上报否",
-            "value": "scomcategory"
+            "id": "scomcategory"
           },
           {
             "text": "上报人",
-            "value": "level"
+            "id": "level"
           },
           {
             "text": "角色",
-            "value": "rolename"
+            "id": "rolename"
           },
           {
             "text": "上报时间",
-            "value": "lockedTime"
+            "id": "lockedTime"
           },
           {
             "text": "操作",
-            "value": ""
+            "id": ""
           }
     ],
     

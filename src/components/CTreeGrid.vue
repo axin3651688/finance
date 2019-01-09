@@ -1,19 +1,18 @@
 <template>
-  <el-table :data="formatData" :row-style="showRow" v-bind="$attrs" class="content">
-    <el-table-column v-if="columns.length===0" width="120">
+  <el-table :row-style="showRow" v-bind="$attrs" class="content" :data="formatData" border stripe>
+    <el-table-column v-if="item.config.columns.length===0" width="120">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
         <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
           <i v-if="!scope.row._expanded" class="el-icon-plus"/>
           <i v-else class="el-icon-minus"/>
         </span>
-        <!-- {{ scope.$index }} -->
       </template>
     </el-table-column>
     <el-table-column
-      v-for="(column, index) in columns"
+      v-for="(column, index) in item.config.columns"
       v-else
-      :key="column.value"
+      :key="column.id"
       :label="column.text"
       :width="column.width"
     >
@@ -37,6 +36,7 @@
         <el-button type="text" v-if="column.text === '操作'" @click="add">
           <!-- ... -->
           <img src="@/assets/green/list_menu.svg" alt>
+          <!-- <el-cascader :options="options"></el-cascader> -->
           <el-cascader :options="options" v-model="selectedOptions" @change="handleChange"></el-cascader>
 
           <el-dialog
@@ -60,50 +60,53 @@
  
 <script>
 import treeToArray from "./treegrid/eval";
-// data  columns list
 export default {
   data() {
     return {
-      options: [],
+      // options: [],
       dialogVisible: false,
-      selectedOptions: []
-      // a:[{c:111},{b:222}]
+      selectedOptions: [],
     };
   },
   name: "TreeGrid",
   props: {
-    /* eslint-disable */
-    // item:{
-    data: {
-      type: [Array, Object],
-      required: true
-    },
-    columns: {
-      type: [Array, Function],
-      default: () => []
-    },
-    evalFunc: Function,
-    evalArgs: Array,
-    expandAll: {
-      type: Boolean,
-      default: false
-    },
-    // item: Number
-    list: {
-      type: [Array, Function],
-      default: () => []
+    item:{
+      data: {
+        type: [Array, Object],
+        required: true
+      },
+      columns: {
+        type: [Array, Function],
+        default: () => []
+      },
+      evalFunc: Function,
+      evalArgs: Array,
+      expandAll: {
+        type: Boolean,
+        default: false
+      },
+
+      options:{
+        type:[Array,Function],
+        default: () => []
+      },
     }
-    // }
   },
-  mounted() {},
+   created(){
+    console.log(this.item)
+    this.item.rows = this.item.config.rows
+    console.log(this.item.config.rows)
+  },
+  mounted() {
+  },
   computed: {
     // 格式化数据源
-    formatData: function() {
+    formatData() {
       let tmp;
-      if (!Array.isArray(this.data)) {
-        tmp = [this.data];
+      if (!Array.isArray(this.item.rows)) {
+        tmp = [this.item.rows];
       } else {
-        tmp = this.data;
+        tmp = this.item.rows;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -114,7 +117,7 @@ export default {
   },
   methods: {
     add() {
-      this.options = this.list;
+          this.item.options = this.item.items[0].columns
     },
     handleChange(value, done) {
       this.$confirm("<div>111</div>")
@@ -123,7 +126,7 @@ export default {
         })
         .catch(_ => {});
     },
-    showRow: function(row) {
+    showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
         : true;
@@ -134,7 +137,6 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
-      debugger;
       const record = this.formatData[trIndex];
       record._expanded = !record._expanded;
     },
@@ -145,13 +147,6 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    debugger;
-    console.log(this);
-    this.options = this.list;
-    // console.log("1111")
-    // console.log(this.item)
   }
 };
 </script>
@@ -208,6 +203,9 @@ export default {
     width: 100%;
     height: 100%;
   }
+  .el-table__body .el-table__row td{
+    padding:0;
+  }
 }
 </style>
  
@@ -251,5 +249,7 @@ img {
   position: absolute;
   right: 50%;
   top: 5px;
+  -moz-transform:rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
 }
 </style>

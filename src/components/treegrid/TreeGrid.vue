@@ -7,15 +7,16 @@
     :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
     border
     :stripe="true"
-    height="item.height || rowClass"
+    :height="item.height || heights-110"
     :cell-style="cellStyle"
     :row-style="showRow"
     class="content"
     @row-click="onRowClick"
     :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
   >
-    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden">
+      </bi-table-column-tree>
     </el-tag>
   </el-table>
 </div>  
@@ -36,7 +37,7 @@ export default {
   props: ["item"],
   data() {
     return {
-      // list: [],
+      heights:document.body.offsetHeight,
       dialogVisible: false,
       selectedOptions: [],
       formatData: [],
@@ -92,6 +93,12 @@ export default {
   //     return datas;
   //   }
   // },
+  watch:{
+    heights(newval){
+      debugger
+      this.heights = newval
+    }
+  },
   methods: {
     onCellClickDefault(row, column, e) {
       debugger;
@@ -298,7 +305,7 @@ export default {
         : "display:none;";
     },
     // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
+    toggleExpanded(trIndex) {
       const record = this.formatData[trIndex];
       console.log(record);
 

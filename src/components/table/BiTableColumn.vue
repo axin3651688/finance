@@ -5,17 +5,26 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
+    fixed="left"
   >
     <template slot-scope="scope">
-      <span
-        v-if="iconShow(0,scope.row) "
-        class="tree-ctrl"
-        v-bind="$attrs"
-        @click="toggleExpanded(scope.$index)"
-      >
+      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope.$index)">
         <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
+    </template>
+  </el-table-column>
+  <el-table-column
+    v-else-if="col.type== 'template' "
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width||80"
+    fixed="right"
+  >
+    <template slot-scope="scope">
+      <el-button @click="handleClick(scope.row)" type="text" size="small">
+        <img src="@/assets/green/list_menu.svg" alt>
+      </el-button>
     </template>
   </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
@@ -48,6 +57,7 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
+    fixed="left"
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -124,6 +134,11 @@ import ShowDialog from "../mixins/ShowDialog";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
+  data() {
+    return {
+      // tableData1:''
+    };
+  },
   computed: {
     ...mapGetters(["year", "month"]),
     isFolder() {
@@ -153,13 +168,12 @@ export default {
       //     item.datas = null;
       //     item.datas = [];
       // }
-      // this.$set(this, "tableData", item);
-      // this.$set(this.tableData, "datas", item.datas);
+      // this.$set(this, "tableData1", item);
+      // this.$set(this.tableData1, "datas", item.datas);
 
       this.$set(this, "tableData", null);
-      // this.$set(item.datas, "tableData", null);
-      this.$set(this, "tableData", tableData);
-      this.$set(this.tableData, "datas", tableData.datas);
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -180,7 +194,14 @@ export default {
       }
       //debugger
       if (!row[colId] && !union) {
-        return "--";
+        let temp = datas.filter(tempRow => {
+          return tempRow.id == rowId;
+        });
+        if (temp.length > 0 && temp[0][colId]) {
+          row = temp[0];
+        } else {
+          return "--";
+        }
       }
       let value = 0;
       if (Array.isArray(datas) && datas.length == 0) {
@@ -204,7 +225,8 @@ export default {
     },
     //treeGrid function
     showRow(row) {
-      const show = row.row.parent
+      const show = row.row.parent;
+      console.log(show)
         ? row.row.parent._expanded && row.row.parent._show
         : true;
       row.row._show = show;
@@ -271,6 +293,23 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  z-index: 1;
+}
+.el-table__body {
+  // width: 6000px !important;
+}
+.el-table__header {
+  // table-layout:auto;
+}
+.el-table__header-wrapper {
+  // overflow-x: scroll;
+}
 .el-table thead {
   th {
     .cell {
@@ -304,7 +343,7 @@ tbody {
   text-align: center !important;
 }
 </style>
-<style>
+<style scoped>
 /* .el-tooltip__popper.is-dark {
   background: #fff;
   color: #000;
@@ -321,6 +360,20 @@ tbody {
 /*
   cxy treegrid + - style
 */
+.ms-tree-space {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  width: 18px;
+  height: 14px;
+}
+
+.ms-tree-space::before {
+  content: "";
+}
 .tree-ctrl {
   position: relative;
   cursor: pointer;
