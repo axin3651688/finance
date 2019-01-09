@@ -1,10 +1,10 @@
 ﻿{
-	"id": "0001",
+	"id": "xj0002",
 	"text": "现金流量表",
 	"config": {
 		"cube": {
 			"subject": "0002",
-			"cubeId": 2
+			"cubeId": 7
 		},
 		"mainDim": "itemperiod",
 		"needDims": ["year", "month", "company"],
@@ -16,6 +16,10 @@
 
 	},
 	"columns": [{
+		"id": "D",
+		"type": "decimal",
+		"text": "预算累计数"
+	},{
 		"id": "id",
 		"type": "string",
 		"hidden": true,
@@ -27,11 +31,12 @@
 		"text": "级别"
 	}, {
 		"id": "row",
-		"type": "number",
+		"type": "index",
 		"text": "行次"
 	}, {
 		"id": "text",
 		"type": "string",
+		"width":350,
 		"text": "项目"
 	}, {
 		"id": "A",
@@ -45,10 +50,6 @@
 		"id": "C",
 		"type": "decimal",
 		"text": "预算数"
-	}, {
-		"id": "D",
-		"type": "decimal",
-		"text": "预算累计数"
 	}],
 	"rows": [{
 		"id": "161",

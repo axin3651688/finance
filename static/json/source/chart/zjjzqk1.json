@@ -17,7 +17,7 @@
         let itemBean = JSON.parse(item);
         Cnbi.apply(this,itemBean);
         params.item = itemBean.id; 
-        alert(JSON.stringify(params));
+      //  alert(JSON.stringify(params));
         localStorage.removeItem('item');
       }else{
         params.item = this.id; 
@@ -88,7 +88,7 @@
     ],
     "rows": []
      },
-    "toolbar": [{
+    "toolbar000": [{
       "id": "1",
       "text": "导出",
       "cellStyle": {

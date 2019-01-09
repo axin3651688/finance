@@ -162,6 +162,9 @@ export default {
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
+        if(!row.hasOwnProperty(colId)){
+          return "";
+        }
         return "--";
       }
       if (col.subfix || col.subfix === 0) {
@@ -172,7 +175,14 @@ export default {
       }
       //debugger
       if (!row[colId] && !union) {
-        return "--";
+        let temp = datas.filter(tempRow=>{
+          return tempRow.id == rowId;
+        })
+        if(temp.length > 0 && temp[0][colId]){
+            row = temp[0];
+        }else{
+             return "--";
+        }
       }
       let value = 0;
       if (Array.isArray(datas) && datas.length == 0) {

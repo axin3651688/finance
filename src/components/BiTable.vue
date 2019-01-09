@@ -16,7 +16,7 @@
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
-      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}" style="widht:100%;"
     >
       <!--  :summary-method="getSummaries"  -->
      <!-- :show-summary="item.showSummary || true"     -->
@@ -156,14 +156,14 @@ export default {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
-      let css = "padding: 4px 0;";
+      let css = "padding: 4px 0;",record = row.row;
       let pro = row.column.property;
-      if (!pro) {
+      if (!pro || !record.hasOwnProperty(pro)) {
         return css;
       }
       let levelProperties = this.item.levelProperties || this.levelProperties;
-      let textIndent = "",
-        record = row.row;
+      let textIndent = "";
+     
       let levelPro = levelProperties[pro];
       if (levelPro && record[levelPro]) {
         let level = record[levelPro] || 1;
