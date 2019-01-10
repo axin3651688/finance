@@ -1,7 +1,22 @@
 <template>
     <div class="root">
-        <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable class="input-with-select">
-        </el-input>
+
+        <div class="header">
+
+            <el-dropdown  trigger="click"  @command="handleCommand">
+                <el-button  type="plain" class="btn-module" >
+                    {{tipModule}}<i class="el-bi-icon-zhankai el-icon--right" style="margin-left: 20px"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item :command="item.module" v-for="item in tableData">{{item.module}}</el-dropdown-item>
+                    <el-dropdown-item  command="0">不选择</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable class="input-with-select">
+            </el-input>
+        </div>
+
 
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))"
@@ -46,6 +61,7 @@
                 search: '',
                 currentPage:1,
                 tableData: [],
+                tipModule:'模块',
             }
         },
         mounted() {
@@ -54,13 +70,14 @@
         methods: {
             getTableData(){
                 let tempList=[];
-                for (let i =0;i<50;i++) {
+                for (let i =0;i<14;i++) {
                   let temp =   {
                         avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
                             time: '2016-10-05',
                         name: 'Name:'+i,
                         module: '分析助手:'+i,
                         action: '修改了报告:'+i,
+                        id:i,
                     }
                     tempList.push(temp)
                 }
@@ -98,6 +115,14 @@
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
             },
+            handleCommand(command) {
+                if (command=='0'){
+                    this.tipModule  = "模块"
+                }else {
+                    this.tipModule  = command
+                }
+
+            }
         }
     }
 </script>
@@ -124,19 +149,52 @@
         -webkit-transition: all .3s;
         transition: all .3s;
         line-height: 0px;
+
+        font-size:14px;
+        font-family:Microsoft YaHei;
+        font-weight:400;
+        line-height:19px;
+        color:rgba(102,102,102,0.80);
+        opacity:1;
     }
 
     .root {
         padding: 20px;
-        .input-with-select {
-            width: 220px;
-            height: 30px;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            opacity: 1;
-            margin: 20px 0 0 0px;
-            border-radius: 8px;
+
+        .btn-module{
+            width:160px;
+            height:30px;
+            background:rgba(255,255,255,1);
+            box-shadow:0px 3px 6px rgba(0,0,0,0.2);
+            opacity:1;
+            border-radius:8px;
+            border: 0px;
+            /deep/.el-button{
+                padding: 0;
+                color:rgba(102,102,102,0.80);
+            }
+            /deep/.el-button:focus, .el-button:hover{
+                color:rgba(102,102,102,0.80);
+            }
         }
+
+        .header {
+            padding: 20px 0 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            .input-with-select {
+                width: 220px;
+                height: 30px;
+                margin-left: 20px;
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+                opacity: 1;
+                border-radius: 8px;
+            }
+
+        }
+
 
         .main_table {
             margin: 20px 0px 0px 0px;
