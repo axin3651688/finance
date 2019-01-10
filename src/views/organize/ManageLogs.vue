@@ -156,7 +156,13 @@
         color:rgba(102,102,102,0.80);
         opacity:1;
     }
-
+    /deep/.el-button{
+        padding: 0px 20px 0px 20px;
+        color:rgba(102,102,102,0.80);
+    }
+    /deep/.el-button:focus, .el-button:hover{
+        color:rgba(102,102,102,0.80);
+    }
     .root {
         padding: 20px;
 
@@ -176,13 +182,7 @@
             i{
                 font-size: 14px;
             }
-            /deep/.el-button{
-                padding: 0px 20px 0px 20px;
-                color:rgba(102,102,102,0.80);
-            }
-            /deep/.el-button:focus, .el-button:hover{
-                color:rgba(102,102,102,0.80);
-            }
+
         }
 
         .header {
