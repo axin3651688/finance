@@ -5,7 +5,7 @@
 
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))"
-                stripe height="100vh"  class="main_table" :header-cell-style="getHeaderClass"
+                stripe height="80vh" max-height="80vh" class="main_table" :header-cell-style="getHeaderClass"
                 :cell-style="getRowClass" :default-sort="{prop: 'time', order: 'descending'}">
             <el-table-column prop="name" align="center" min-width="20%" label="操作人"  >
                 <template slot-scope="scope">
@@ -21,7 +21,7 @@
             </el-table-column>
             <el-table-column prop="action" align="center" min-width="40%" label="动作"  >
             </el-table-column>
-            <el-table-column prop="time" sortable min-width="10%" align="center" label="时间">
+            <el-table-column prop="time" min-width="10%" align="center" label="时间">
             </el-table-column>
         </el-table>
 
@@ -45,73 +45,27 @@
             return {
                 search: '',
                 currentPage:1,
-                tableData: [{
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '王qq',
-                    module: '分析助手1111',
-                    action: '修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '王aq',
-                    module: '分析助手444',
-                    action: '修改了报告444',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-04',
-                    name: '张aa',
-                    module: '分析助手2222',
-                    action: '修改了报告2222',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-04',
-                    name: '张wa',
-                    module: '分析助手5555',
-                    action: '修改了报告5555',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-05',
-                    name: '赵ss',
-                    module: '分析助手3333',
-                    action: '修改了报告3333',
-                },{
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '王qq',
-                    module: '分析助手1111',
-                    action: '修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111修改了报告1111',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '王aq',
-                    module: '分析助手444',
-                    action: '修改了报告444',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-04',
-                    name: '张aa',
-                    module: '分析助手2222',
-                    action: '修改了报告2222',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-04',
-                    name: '张wa',
-                    module: '分析助手5555',
-                    action: '修改了报告5555',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-05',
-                    name: '赵ss',
-                    module: '分析助手3333',
-                    action: '修改了报告3333',
-                }]
+                tableData: [],
             }
         },
         mounted() {
-
+            this.getTableData()
         },
         methods: {
+            getTableData(){
+                let tempList=[];
+                for (let i =0;i<50;i++) {
+                  let temp =   {
+                        avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
+                            time: '2016-10-05',
+                        name: 'Name:'+i,
+                        module: '分析助手:'+i,
+                        action: '修改了报告:'+i,
+                    }
+                    tempList.push(temp)
+                }
+                this.tableData = tempList;
+            },
             //设置表格第一行的颜色
             getHeaderClass({row, column, rowIndex, columnIndex}) {
                 if (rowIndex == 0) {
@@ -185,7 +139,6 @@
         }
 
         .main_table {
-            height: 600px;
             margin: 20px 0px 0px 0px;
             border-radius: 20px 20px 20px 20px;
             box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);

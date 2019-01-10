@@ -9,28 +9,31 @@
         </div>
 
 
-        <el-table
-                :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                stripe height="100vh" class="main_table" :header-cell-style="getRowClass">
-            <el-table-column prop="name" align="center" label="用户名" min-width="20%">
-                <template slot-scope="scope">
-                    <div class="row-user-an">
-                        <div class="row-user-col">
-                            <img class="row-user-avatar" :src="scope.row.avatar">
-                            <span class="row-user-name">{{ scope.row.name }}</span>
+        <div class="main-table">
+            <el-table
+                    :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
+                    stripe     :header-cell-style="getRowClass">
+                <el-table-column prop="name" align="center" label="用户名" min-width="20%">
+                    <template slot-scope="scope">
+                        <div class="row-user-an">
+                            <div class="row-user-col">
+                                <img class="row-user-avatar" :src="scope.row.avatar">
+                                <span class="row-user-name">{{ scope.row.name }}</span>
+                            </div>
                         </div>
-                    </div>
-                </template>
-            </el-table-column>
-            <el-table-column prop="aboutCompany" align="center" label="所属公司" min-width="40%">
-            </el-table-column>
-            <el-table-column prop="role" align="center" label="角色" min-width="30%">
-            </el-table-column>
-            <el-table-column prop="time" sortable align="center" label="登录时间" min-width="10%">
-            </el-table-column>
-        </el-table>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="aboutCompany" align="center" label="所属公司" min-width="40%">
+                </el-table-column>
+                <el-table-column prop="role" align="center" label="角色" min-width="30%">
+                </el-table-column>
+                <el-table-column prop="time" align="center" label="登录时间" min-width="10%">
+                </el-table-column>
+            </el-table>
+        </div>
 
-        <div class="page">
+
+        <div class="page" >
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
@@ -116,6 +119,7 @@
 
     .root {
         padding: 20px;
+        height: 100%;
 
         .main-header {
             padding: 20px 20px 0  0px;
@@ -143,8 +147,7 @@
             }
         }
 
-        .main_table {
-            height: 600px;
+        .main-table {
             margin: 20px 0px 0px 0px;
             border-radius: 20px 20px 20px 20px;
             box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
