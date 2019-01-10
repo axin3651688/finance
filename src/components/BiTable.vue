@@ -12,6 +12,7 @@
       :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
       :stripe="true"
+      style="width: 100%"
       :height="item.height || heights-88"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
@@ -218,7 +219,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-     // debugger
+     debugger
        if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
             return this.item.onCellClick(row, column, cell, event,this);
         }
@@ -455,8 +456,9 @@ export default {
 /* 数字靠右 */
 /* .el-table td.is-center {
   text-align: right;
+     
 } */
-.gutter{
-  display: none;
-}
+/* table th.gutter {
+    display: none !important;
+} */
 </style>

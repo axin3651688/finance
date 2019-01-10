@@ -18,16 +18,22 @@
       </span>
     </template>
   </el-table-column>
+
+  <!-- 树表的操作列 -->
     <el-table-column
         v-else-if ="col.type== 'template' "
         :prop="col.id"
         :label="col.text"
         :width="col.width||80"
-        fixed="right"
+   
       >
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">
+       <template slot-scope="scope">
+        <el-button @click="templateClick(scope.row)" type="text">
           <img src="@/assets/green/list_menu.svg" alt>
+            <el-cascader
+            :options="options"
+            >
+          </el-cascader>
         </el-button>
       </template>
     </el-table-column>
@@ -61,7 +67,7 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
-      fixed="left"
+
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -132,13 +138,14 @@
 </template>
 <script>
 //import EventMixins from "../mixins/EventMixins";
-//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
+//import {getCellValue} from "../../utils/math"
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
   data(){
     return{
       // tableData1:''
+       options: [],
     }
   },
   computed: {
@@ -150,13 +157,33 @@ export default {
       return level + 1;
     }
   },
-  created() {},
+  created() {
+    this.options = this.tableData.config.columns[0].menu.list
+    // console.log("ooo",this.options)
+  },
   methods: {
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
     // },
-    upData(tableData) {
+    handleChange(value) {
+        console.log(value);
+      },
+    templateClick(row){
+      debugger
+      if(this.tableData.templateClick && typeof(this.tableData.templateClick) == "function"){
+            return this.tableData.templateClick(row, event,this);
+        }
+    },
+    // handleChange(value, done) {
+    //   console.log(value);
+    //   this.$confirm("<div>111</div>")
+    //     .then(_ => {
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // },
+    upData(item) {
       debugger;
       // this.$set(this.tableData, "datas", null);
       // this.$set(this.tableData, "datas", []);
@@ -286,10 +313,6 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    // debugger;
-    //this.$set(this, "tableData1", null);
   }
 };
 </script>
@@ -343,6 +366,14 @@ tbody {
 }
 </style>
 <style scoped>
+img {
+  width: 20px;
+  /* position: absolute; */
+  /* right: 50%; */
+  /* top: 5px; */
+  -moz-transform:rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
+}
 /* .el-tooltip__popper.is-dark {
   background: #fff;
   color: #000;

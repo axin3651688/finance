@@ -9,11 +9,8 @@
       />
       <bi-table-column v-else :col="cc" :tableData.sync="tableData" :key="cc.text" ref="tcol"/>
     </template>
-    
   </el-table-column>
-  
   <bi-table-column v-else :col="col" :key="col.text" :tableData.sync="tableData" ref="tcol"/>
-  
 </template>
 <script>
 import BiTableColumn from "./BiTableColumn";

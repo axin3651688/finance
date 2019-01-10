@@ -11,6 +11,7 @@
     :cell-style="cellStyle"
     :row-style="showRow"
     class="content"
+    style="width: 100%"
     @row-click="onRowClick"
     :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
   >

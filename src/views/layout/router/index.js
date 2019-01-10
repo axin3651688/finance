@@ -154,6 +154,12 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Itable.vue')
         },
+        {
+          path: '/a',
+          name: 'a',
+          component: () =>
+            import('@v/intelligenceReport/a.vue')
+        },
 
         {
           path: '/Fill',
