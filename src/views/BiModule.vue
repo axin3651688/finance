@@ -133,7 +133,6 @@ export default {
       text: "",
       rows: [],
       columns: [],
-      dataUrl: "",
       datas: [],
       flag: false,
       config: {},
@@ -341,6 +340,9 @@ export default {
     loadRemoteSource(api) {
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
+       if (!api) {
+         api = "cnbi/json/source/chart/zbfx.json";
+       }
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(

@@ -50,14 +50,14 @@
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
   <el-table-column
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
-    fixed="left"
+  
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -160,7 +160,7 @@ export default {
 
     //   return "text-align:center";
     // },
-    upData(tableData) {
+    upData(item) {
       debugger;
       // this.$set(this.tableData, "datas", null);
       // this.$set(this.tableData, "datas", []);
@@ -184,6 +184,9 @@ export default {
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
+        if(!row.hasOwnProperty(colId)){
+          return "";
+        }
         return "--";
       }
       if (col.subfix || col.subfix === 0) {
