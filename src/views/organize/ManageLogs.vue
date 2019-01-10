@@ -4,7 +4,7 @@
         <div class="header">
 
             <el-dropdown  trigger="click"  @command="handleCommand">
-                <el-button  type="plain" class="btn-module" >{{tipModule}}<i class="el-bi-icon-xiala"  style="margin-left: 10px"></i>
+                <el-button   type="plain" class="btn-module" >{{tipModule}}<i class="el-bi-icon-xiala"  style="margin-left: 10px"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item :command="item.module" v-for="item in tableData">{{item.module}}</el-dropdown-item>
