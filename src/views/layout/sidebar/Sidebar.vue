@@ -45,7 +45,7 @@ export default {
   name: "Leftmenu",
   created() {
     // debugger;
-    console.log(this.$refs.submenu);
+    // console.log(this.$refs.submenu);
 
     findSideBar(this.userId).then(response => {
       // console.log(response.data);

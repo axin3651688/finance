@@ -4,11 +4,9 @@ import {
 import {
     Notification
 } from 'element-ui'
-// import fxfx from '@a/table/fxfx.json'
-// import report from '@a/table/report.json'
+
 import store from '@/store'
 export default function modeHandle(e) {
-    // console.log(e)
     if (!e.sourceId && !e.url) {
         let msg = "未定义[" + e.text + e.id + "]模块的标识！";
         console.error(msg);
@@ -20,9 +18,11 @@ export default function modeHandle(e) {
         //
         return;
     }
-    e.url = "cnbi/json/source/chart/zbfx.json";
+    // e.url = "cnbi/json/source/chart/zjjzqk1.json";
 
     debugger
+    console.log(e.url);
+
     findDesignSource(e.sourceId, e.url)
         .then(response => {
             let bean = response.data;
@@ -33,7 +33,7 @@ export default function modeHandle(e) {
                 //加处理函数来的
                 bean = JSON.stringify(bean);
             }
-            //  debugger;
+            debugger;
             localStorage.setItem("module", bean);
             store.dispatch("GetSideMid", {
                 module_api: response.config.url

@@ -9,10 +9,10 @@
       <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
     </el-button-group>
     <el-table
-      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
+      :data.sync="tableDatas"
       border
       :stripe="true"
-      :height="item.height || rowClass"
+      :height="item.height || heights-88"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
@@ -53,6 +53,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      heights:document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,
@@ -60,6 +61,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
+      tableDatas:[],
       // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
@@ -70,9 +72,16 @@ export default {
       levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
-
+  watch:{
+    heights(newval){
+      debugger
+      this.heights = newval
+    }
+  },
   created() {
     this.upData(this.item);
+    // console.log(this.heights)
+    // console.log(this.heights-88)
    // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
@@ -105,19 +114,21 @@ export default {
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
     },
-    getDatas(item) {
+    setTableDatas(item) {
       let rows = item.config.rows;
+      let tempDatas = [];
       if (rows && rows.length > 0) {
-        return rows;
+        tempDatas =  rows;
+      }else{
+        tempDatas =  item.datas;
       }
-
-      return item.datas;
+      this.$set(this,"tableDatas",tempDatas)
+      return this.tableDatas;
     },
-
     upData(item) {
-     debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
+      this.setTableDatas(item);
       let refs = this.$refs;
       if (refs) {
         if (refs.child) {
@@ -136,23 +147,18 @@ export default {
         }
       }
     },
-    // rowClass({ row, rowIndex }) {
-    //   // 头部颜色和居中配置,马军2018.12.24
-    //   return "background:#F0F8FF;text-align: center";
-    // },
+    rowClass({ row, rowIndex }) {
+      // 头部颜色和居中配置,马军2018.12.24
+      return "background:#F0F8FF;text-align: center";
+    },
     /**
      * 单元格级别样式设置
      */
-
-    // 表格的高度 12.26
-    // rowClass({ row, rowIndex }) {
-    //   return "height:100%-104px";
-    // },
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger
+      // debugger
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -438,6 +444,9 @@ export default {
 .toolbar{
   margin:2px 0 5px 0;
 }
+.el-table{
+  background-color: transparent !important;
+}
 .el-table td,
 .el-table th {
   padding: 5px 0;
@@ -447,15 +456,10 @@ export default {
   height: 0;
 }
 /* 数字靠右 */
-.el-table td.is-center {
+/* .el-table td.is-center {
   text-align: right;
-}
+} */
 .gutter{
   display: none;
-}
-.el-table {
-    height: calc(100vh - 170px);
-    /* width: 100%; */
-    /* overflow: auto; */
 }
 </style>
