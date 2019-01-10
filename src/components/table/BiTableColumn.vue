@@ -5,32 +5,28 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-      fixed="left"
+    fixed="left"
   >
     <template slot-scope="scope">
-      <span
-        v-if="iconShow(0,scope.row) "
-        class="tree-ctrl"
-        @click="toggleExpanded(scope.$index)"
-      >
+      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope.$index)">
         <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
     </template>
   </el-table-column>
-    <el-table-column
-        v-else-if ="col.type== 'template' "
-        :prop="col.id"
-        :label="col.text"
-        :width="col.width||80"
-        fixed="right"
-      >
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">
-          <img src="@/assets/green/list_menu.svg" alt>
-        </el-button>
-      </template>
-    </el-table-column>
+  <el-table-column
+    v-else-if="col.type== 'template' "
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width||80"
+    fixed="right"
+  >
+    <template slot-scope="scope">
+      <el-button @click="handleClick(scope.row)" type="text" size="small">
+        <img src="@/assets/green/list_menu.svg" alt>
+      </el-button>
+    </template>
+  </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
@@ -54,14 +50,14 @@
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
   <el-table-column
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
-    :fixed="left"
+  
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -91,6 +87,7 @@
         placement="right"
       >
         <span
+          @click="dilogShow(col,scope)"
           v-if="tableData.datas"
         >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
@@ -131,17 +128,19 @@
   </el-table-column>-->
 </template>
 <script>
-//import EventMixins from "../mixins/EventMixins";
+import { mapActions, mapGetters } from "vuex";
+import ShowDialog from "../mixins/ShowDialog";
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
-  data(){
-    return{
+  data() {
+    return {
       // tableData1:''
-    }
+    };
   },
   computed: {
+    ...mapGetters(["year", "month"]),
     isFolder() {
       return this.col.children && this.col.children.length;
     },
@@ -150,8 +149,13 @@ export default {
       return level + 1;
     }
   },
-  created() {},
+  created() {
+    // debugger;
+    //this.$set(this, "tableData", null);
+  },
+  mixins: [ShowDialog],
   methods: {
+    ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
@@ -193,13 +197,13 @@ export default {
       }
       //debugger
       if (!row[colId] && !union) {
-        let temp = datas.filter(tempRow=>{
+        let temp = datas.filter(tempRow => {
           return tempRow.id == rowId;
-        })
-        if(temp.length > 0 && temp[0][colId]){
-            row = temp[0];
-        }else{
-             return "--";
+        });
+        if (temp.length > 0 && temp[0][colId]) {
+          row = temp[0];
+        } else {
+          return "--";
         }
       }
       let value = 0;
@@ -224,7 +228,7 @@ export default {
     },
     //treeGrid function
     showRow(row) {
-      const show = row.row.parent
+      const show = row.row.parent;
       console.log(show)
         ? row.row.parent._expanded && row.row.parent._show
         : true;
@@ -288,19 +292,17 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    // debugger;
-    //this.$set(this, "tableData1", null);
   }
 };
 </script>
 <style lang="scss">
-.el-table--border::after, .el-table--group::after, .el-table::before {
-    content: '';
-    position: absolute;
-    background-color: transparent;
-    z-index: 1;
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  z-index: 1;
 }
 .el-table__body {
   // width: 6000px !important;

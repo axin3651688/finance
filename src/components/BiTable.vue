@@ -3,10 +3,16 @@
     <!-- <el-button-group>
       <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
       style="background-color: #189271;color: black;"
-    </el-button-group> -->
+    </el-button-group>-->
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
-    <el-button-group  class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
-      <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+    <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
+      <el-button
+        v-if="item.toolbar && item.toolbar.length > 0 "
+        v-for="btn in item.toolbar"
+        v-bind:key="btn.id"
+        :style="btn.cellStyle"
+        @click="btnClick(btn)"
+      >{{btn.text}}</el-button>
     </el-button-group>
     <el-table
       :data.sync="tableDatas"
@@ -19,7 +25,7 @@
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}" style="widht:100%;"
     >
       <!--  :summary-method="getSummaries"  -->
-     <!-- :show-summary="item.showSummary || true"     -->
+      <!-- :show-summary="item.showSummary || true"     -->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
         <!-- <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild"   v-if="!cc.hidden"/> -->
@@ -53,7 +59,7 @@ export default {
   props: ["item"],
   data() {
     return {
-      heights:document.body.offsetHeight,
+      heights: document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,
@@ -72,17 +78,17 @@ export default {
       levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
-  watch:{
-    heights(newval){
-      debugger
-      this.heights = newval
+  watch: {
+    heights(newval) {
+      debugger;
+      this.heights = newval;
     }
   },
   created() {
     this.upData(this.item);
     // console.log(this.heights)
     // console.log(this.heights-88)
-   // console.log(this.upData(this.item))
+    // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -102,10 +108,9 @@ export default {
   },
 
   methods: {
-
-     btnClick(btn){
-        btn.handler(this,btn);
-     },
+    btnClick(btn) {
+      btn.handler(this, btn);
+    },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -158,7 +163,7 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      // debugger
+      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -189,13 +194,13 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
-      debugger
+      debugger;
       // console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
-          // console.log(cv)
+        // console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
@@ -221,11 +226,11 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-     // debugger
-       if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
-            return this.item.onCellClick(row, column, cell, event,this);
-        }
-        this.onCellClickDefault(row, column, cell, event);
+      // debugger
+      if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
+        return this.item.onCellClick(row, column, cell, event, this);
+      }
+      this.onCellClickDefault(row, column, cell, event);
       // this.dialogVisible = true
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
@@ -237,22 +242,21 @@ export default {
       // console.log(column)
     },
 
-    getSummaries(param){
-        debugger;
-        const { columns, data } = param;
-            const sums = {};
-            columns.forEach((column, index) => {
-               let datas = 0;
-               if(column.property.length == 1){
-                   data.forEach((row, index) => {
-                       datas+=row[column.property];
-                   });
-               }
-               sums[column.property] = datas;
-                  
-            });
-            debugger;
-            return sums;
+    getSummaries(param) {
+      debugger;
+      const { columns, data } = param;
+      const sums = {};
+      columns.forEach((column, index) => {
+        let datas = 0;
+        if (column.property.length == 1) {
+          data.forEach((row, index) => {
+            datas += row[column.property];
+          });
+        }
+        sums[column.property] = datas;
+      });
+      debugger;
+      return sums;
     },
 
     /**
@@ -441,10 +445,10 @@ export default {
 };
 </script>
 <style >
-.toolbar{
-  margin:2px 0 5px 0;
+.toolbar {
+  margin: 2px 0 5px 0;
 }
-.el-table{
+.el-table {
   background-color: transparent !important;
 }
 .el-table td,
@@ -459,7 +463,7 @@ export default {
 /* .el-table td.is-center {
   text-align: right;
 } */
-.gutter{
+.gutter {
   display: none;
 }
 </style>

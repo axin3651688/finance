@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <!-- <component :is="flag"></component> -->
+    <OpenDialog :showDialog="showDialog"></OpenDialog>
     <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -24,11 +24,12 @@ export default {
   },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
-    leftMenu: () => import("./sidebar/Sidebar")
+    leftMenu: () => import("./sidebar/Sidebar"),
+    OpenDialog: () => import("@c/common/OpenDialog.vue")
   },
   mixins: [ResizeMixin],
   computed: {
-    ...mapGetters(["sidebar", "device", "user"]),
+    ...mapGetters(["sidebar", "device", "user", "showDialog"]),
     styleSlect() {
       if (!Cnbi.isEmpty(this.user)) {
         this.user.company.id === 121
@@ -51,6 +52,8 @@ export default {
   },
   created() {
     this.styleSlect;
+    debugger;
+    console.log(this.showDialog);
   },
 
   methods: {
