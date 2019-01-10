@@ -245,7 +245,7 @@
     }
 
     .custom-resizer > .pane {
-
+        background: rgba(255, 255, 255, 1);
         .left-con {
             height: 100vh;
             background: rgba(255, 255, 255, 1);
