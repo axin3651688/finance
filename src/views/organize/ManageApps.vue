@@ -1,15 +1,17 @@
 <template>
-    <div style="position: relative;">
-        <multipane class="custom-resizer" layout="vertical" style="position: absolute;top: 60px;height: 100%;left: 0; width: 100%">
-            <div class="pane">
-                <div class="left-con">
-                    <el-scrollbar style="height: 100%">
+    <div >
+        <multipane class="custom-resizer" layout="vertical" style="height: 100%">
+            <div class="pane" style="height: 100%">
+                <div class="left-con" style="height: 100%">
+
+                    <el-scrollbar style="height: 100%;">
                         <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search" placeholder="请输入内容"
-                                  clearable class="input-with-select">
+                                  clearable class="input-with-select" >
                         </el-input>
                         <el-tree
                                 :data="compList"
                                 node-key="id"
+                                :default-checked-keys="[1]"
                                 @node-click="handleNodeClick"
                                 :filter-node-method="filterNode"
                                 ref="tree"
@@ -42,7 +44,7 @@
                     <div class="item-row" v-for="item in appData" :key="item.id">
                         <div class="left-item">
                             <img :src="item.avatar" class="left-img"/>
-                            <div class="left-text">{{item.name}}</div>
+                            <div class="left-text">{{selectComp.label}}{{item.name}}</div>
                         </div>
                         <el-switch
                                 v-model="item.action"
@@ -253,6 +255,9 @@
             /deep/ .el-input__inner {
                 height: 30px;
                 line-height: 30px;
+                background:rgba(218,217,216,0.6);
+                border: 0px;
+                color:rgba(102,102,102,0.80);
             }
 
             /deep/ .el-input__icon {
@@ -265,7 +270,7 @@
             }
 
             .input-with-select {
-                width: 260px;
+                width: 220px;
                 height: 30px;
                 margin: 20px;
                 background: rgba(218, 217, 216, 0.6);

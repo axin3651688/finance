@@ -235,6 +235,9 @@
             /deep/ .el-input__inner {
                 height: 30px;
                 line-height: 30px;
+                background:rgba(218,217,216,0.6);
+                border: 0px;
+                color:rgba(102,102,102,0.80);
             }
 
             /deep/ .el-input__icon {
@@ -247,7 +250,7 @@
             }
 
             .input-with-select {
-                width: 260px;
+                width: 220px;
                 height: 30px;
                 margin: 20px;
                 background: rgba(218, 217, 216, 0.6);

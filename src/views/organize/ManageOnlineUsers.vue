@@ -88,8 +88,10 @@
     /deep/ .el-input__inner {
         height: 30px;
         line-height: 30px;
+        border: 0px;
     }
-    /deep/.el-input__icon {
+
+    /deep/ .el-input__icon {
         height: 100%;
         width: 25px;
         text-align: center;

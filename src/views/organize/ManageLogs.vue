@@ -92,8 +92,10 @@
   /deep/ .el-input__inner {
     height: 30px;
     line-height: 30px;
+    border: 0px;
   }
-  /deep/.el-input__icon {
+
+  /deep/ .el-input__icon {
     height: 100%;
     width: 25px;
     text-align: center;
@@ -112,7 +114,7 @@
   }
 
   .main_table{
-    margin : 20px;
+    margin : 20px 40px 40px 20px;
     border-radius:20px 20px 0px 0px;
 
     box-shadow:0px 10px 20px rgba(8,69,81,0.1);
