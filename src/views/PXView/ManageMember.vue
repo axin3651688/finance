@@ -47,20 +47,31 @@
 
                 <el-table :data="tableData" stripe style="width: 100%" class="right_table"
                           :header-cell-style="getRowClass">
-                    <el-table-column prop="name" label="姓名" width="180" align="center">
+                    <el-table-column prop="name" label="姓名" min-width="20%" align="center">
                     </el-table-column>
-                    <el-table-column prop="phone" label="电话" width="180" align="center" >
+                    <el-table-column prop="phone" label="电话" min-width="20%" align="center" >
                     </el-table-column>
-                    <el-table-column prop="aboutCompany" label="公司" width="180" align="center">
+                    <el-table-column prop="aboutCompany" label="公司" min-width="20%" align="center">
                     </el-table-column>
-                    <el-table-column prop="role" label="角色" align="center">
+                    <el-table-column prop="role"  min-width="20%" label="角色" align="center">
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
-                        <template slot-scope="scope">
-                            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
-                            </el-button>
-                        </template>
+                    <el-table-column label="操作" min-width="20%" align="center">
+                        <div slot-scope="scope" class="template_edit">
+
+                            <div class="leftIcon_title">
+                                <img src="@a/user_icon/xiugai_icon.svg" >
+                                <span class="itemSpan" >编辑</span>
+                            </div>
+
+                            <div class="leftIcon_title1">
+                                <img src="@a/user_icon/jinyong_icon.svg" >
+                                <span class="itemSpan1" >删除</span>
+                            </div>
+
+                            <!--<el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row)"><i stripe style="margin-right: 4px;font-size: 80px" class="el-bi-icon-iconset0137-copy"></i>编辑</el-button>-->
+                            <!--<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除-->
+                            <!--</el-button>-->
+                        </div>
                     </el-table-column>
                 </el-table>
 
@@ -121,7 +132,7 @@
 //设置表格第一行的颜色
             getRowClass({row, column, rowIndex, columnIndex}) {
                 if (rowIndex == 0) {
-                    return 'background:rgba(221,235,246,1)';
+                    return 'background:rgba(221,235,246,1);color: rgba(19,84,143,1);font-weight:bold;font-size:16px;';
 
 
                     // return 'background:#EFEFEF'
@@ -360,6 +371,48 @@
                 .right_table {
                     border-radius: 20px 20px 0px 0px;
                     box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+
+
+                    .template_edit{
+
+                        display: flex;
+                        flex-direction: row;
+                        text-align: center;
+                        justify-content: space-around;
+
+                        .leftIcon_title{
+
+                            display: flex;
+                            flex-direction: row;
+                            .itemSpan{
+                                /*width: 120px;*/
+                                font-size:14px;
+                                font-family:Microsoft YaHei;
+                                font-weight:400;
+                                line-height:19px;
+                                color:rgba(28,141,10,1);
+                                opacity:1;
+                                opacity:1;
+                                padding-left: 10px;
+                            }
+                        }
+
+                        .leftIcon_title1{
+
+                            display: flex;
+                            flex-direction: row;
+                            .itemSpan1{
+                                font-size:14px;
+                                font-family:Microsoft YaHei;
+                                font-weight:400;
+                                line-height:19px;
+                                color:rgba(229,51,51,1);
+                                opacity:1;
+                                padding-left: 10px;
+                            }
+                        }
+
+                    }
                 }
 
                 .inset-shadow {
@@ -383,6 +436,10 @@
                 background: #ffffff;
                 box-shadow: 0 3px 60px rgba(0, 0, 0, 0.16);
             }
+
+
+
+
 
         }
     }

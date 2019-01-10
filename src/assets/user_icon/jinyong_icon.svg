@@ -1,0 +1,15 @@
+<svg id="jinyong_icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(165,68,68,0);
+      }
+
+      .cls-2 {
+        fill: #e53333;
+      }
+    </style>
+  </defs>
+  <rect id="矩形_123" data-name="矩形 123" class="cls-1" width="20" height="20"/>
+  <path id="路径_141" data-name="路径 141" class="cls-2" d="M2.6,15.118a8.878,8.878,0,1,1,12.556,0,8.878,8.878,0,0,1-12.556,0ZM4.393,4.357a6.341,6.341,0,0,0-.807,7.981L12.375,3.55a6.341,6.341,0,0,0-7.981.807Zm9.775.988L5.381,14.132a6.341,6.341,0,0,0,8.787-8.787Z" transform="translate(1.104 1.141)"/>
+</svg>
