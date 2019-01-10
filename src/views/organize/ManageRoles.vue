@@ -83,15 +83,15 @@
         <el-main>
             <div class="tab-main">
                 <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]" >
-                    <i class="el-bi-icon-yonghushezhi"></i>
+                    <i class="el-bi-icon-guanli"></i>
                     管理权限
                 </el-button>
                 <el-button @click="activeBtn =2" :class="['tab-btn', {active: activeBtn ===2}]">
-                    <i class="el-bi-icon-app"></i>
+                    <i class="el-bi-icon-yingyong_icon"></i>
                     应用权限
                 </el-button>
                 <el-button @click="activeBtn =3" :class="['tab-btn', {active: activeBtn ===3}]">
-                    <i class="el-bi-icon-yingyong"></i>
+                    <i class="el-bi-icon-gongneng"></i>
                     功能权限
                 </el-button>
                 <el-button @click="activeBtn =4" :class="['tab-btn', {active: activeBtn ===4}]" >

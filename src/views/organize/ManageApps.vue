@@ -1,13 +1,14 @@
 <template>
-    <div >
+    <div>
         <multipane class="custom-resizer" layout="vertical" style="height: 100%">
             <div class="pane" style="height: 100%">
                 <div class="left-con" style="height: 100%">
                     <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search" placeholder="请输入内容"
-                              clearable class="input-with-select" >
+                              clearable class="input-with-select">
                     </el-input>
 
-                    <el-scrollbar style="height: 90%;min-height: 600px;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
+                    <el-scrollbar
+                            style="height: 90%;min-height: 600px;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
                         <el-tree
                                 :data="compList"
                                 node-key="id"
@@ -36,22 +37,24 @@
             </div>
             <multipane-resizer></multipane-resizer>
             <div class="pane" :style="{ flexGrow: 1 }">
-                <div class="edit-tab">
-                    <div class="edit-title">已授权应用</div>
-                    <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 40px">添加应用</el-button>
-                </div>
-                <div class="edit-container">
-                    <div class="item-row" v-for="item in appData" :key="item.id">
-                        <div class="left-item">
-                            <img :src="item.avatar" class="left-img"/>
-                            <div class="left-text">{{selectComp.label}}{{item.name}}</div>
+                <div class="right-col">
+                    <div class="edit-tab">
+                        <div class="edit-title">已授权应用</div>
+                        <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 40px">添加应用</el-button>
+                    </div>
+                    <div class="edit-container">
+                        <div class="item-row" v-for="item in appData" :key="item.id">
+                            <div class="left-item">
+                                <img :src="item.avatar" class="left-img"/>
+                                <div class="left-text">{{selectComp.label}}{{item.name}}</div>
+                            </div>
+                            <el-switch
+                                    v-model="item.action"
+                                    @change="changeStatus($event,item)"
+                                    active-color="#ff4949"
+                                    inactive-color="#3BB75E">
+                            </el-switch>
                         </div>
-                        <el-switch
-                                v-model="item.action"
-                                @change="changeStatus($event,item)"
-                                active-color="#ff4949"
-                                inactive-color="#3BB75E">
-                        </el-switch>
                     </div>
                 </div>
             </div>
@@ -246,6 +249,7 @@
 
     .custom-resizer > .pane {
         background: rgba(255, 255, 255, 1);
+
         .left-con {
             height: 100vh;
             background: rgba(255, 255, 255, 1);
@@ -255,9 +259,9 @@
             /deep/ .el-input__inner {
                 height: 30px;
                 line-height: 30px;
-                background:rgba(218,217,216,0.6);
+                background: rgba(218, 217, 216, 0.6);
                 border: 0px;
-                color:rgba(102,102,102,0.80);
+                color: rgba(102, 102, 102, 0.80);
             }
 
             /deep/ .el-input__icon {
@@ -306,67 +310,73 @@
             }
         }
 
-        .edit-tab {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 20px 0px 20px;
-            .edit-title {
-                font-size:22px;
-                font-family:Microsoft YaHei;
-                font-weight:400;
-                color:rgba(102,102,102,1);
-                opacity:1;
-            }
-        }
-
-        .edit-container {
-            width: 96%;
-            margin: 20px 40px 0px 20px;
-            padding: 20px;
-            min-width: 600px;
-            min-height: 400px;
-
-            background: rgba(255, 255, 255, 1);
-            opacity: 1;
-            border-radius: 20px;
-
-            .table-title {
-                background: rgba(221, 235, 246, 1);
-                box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
-                opacity: 1;
-                border-radius: 20px 20px 0px 0px;
-            }
-
-            .item-row {
-                padding: 6px;
+        .right-col {
+            background: rgba(240, 242, 245, 1);
+            height: 100%;
+            .edit-tab {
                 display: flex;
-                align-items: center;
-                border-bottom-color:rgba(165,171,177,0.4);
-                border-bottom-width: 1px;
-                border-bottom-style: solid;
-                padding: 10px 0px 10px 0px;
                 justify-content: space-between;
+                align-items: center;
+                padding: 20px 20px 0px 20px;
 
+                .edit-title {
+                    font-size: 22px;
+                    font-family: Microsoft YaHei;
+                    font-weight: 400;
+                    color: rgba(102, 102, 102, 1);
+                    opacity: 1;
+                }
+            }
 
-                .left-item {
+            .edit-container {
+                width: 96%;
+                margin: 20px 40px 0px 20px;
+                padding: 20px;
+                min-width: 600px;
+                min-height: 400px;
+
+                background: rgba(255, 255, 255, 1);
+                opacity: 1;
+                border-radius: 20px;
+
+                .table-title {
+                    background: rgba(221, 235, 246, 1);
+                    box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+                    opacity: 1;
+                    border-radius: 20px 20px 0px 0px;
+                }
+
+                .item-row {
+                    padding: 6px;
                     display: flex;
                     align-items: center;
-                    justify-content: start;
+                    border-bottom-color: rgba(165, 171, 177, 0.4);
+                    border-bottom-width: 1px;
+                    border-bottom-style: solid;
+                    padding: 10px 0px 10px 0px;
+                    justify-content: space-between;
 
-                    .left-img {
-                        margin-left: 20px;
-                        height: 40px;
-                        border-radius: 50%;
-                        width: 40px;
-                        margin-right: 20px;
-                    }
-                    .left-text{
-                        font-size:14px;
-                        font-family:Microsoft YaHei;
-                        font-weight:400;
-                        color:rgba(102,102,102,1);
-                        opacity:1;
+
+                    .left-item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: start;
+
+                        .left-img {
+                            margin-left: 20px;
+                            height: 40px;
+                            border-radius: 50%;
+                            width: 40px;
+                            margin-right: 20px;
+                        }
+
+                        .left-text {
+                            font-size: 14px;
+                            font-family: Microsoft YaHei;
+                            font-weight: 400;
+                            color: rgba(102, 102, 102, 1);
+                            opacity: 1;
+                        }
                     }
                 }
             }
