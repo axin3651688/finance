@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="root">
         <div class="main-header">
             <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
                       class="input-with-select">
@@ -11,23 +11,35 @@
 
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                stripe style="width: 100%" class="main_table" :header-cell-style="getRowClass">
-            <el-table-column prop="name" align="center" label="用户名" width="180">
+                stripe height="100vh" class="main_table" :header-cell-style="getRowClass">
+            <el-table-column prop="name" align="center" label="用户名" min-width="20%">
                 <template slot-scope="scope">
-                    <div class="row-user-col">
-                        <img class="row-user-avatar" :src="scope.row.avatar">
-                        <span class="row-user-name">{{ scope.row.name }}</span>
+                    <div class="row-user-an">
+                        <div class="row-user-col">
+                            <img class="row-user-avatar" :src="scope.row.avatar">
+                            <span class="row-user-name">{{ scope.row.name }}</span>
+                        </div>
                     </div>
-
                 </template>
             </el-table-column>
-            <el-table-column prop="aboutCompany" align="center" label="所属公司" width="180">
+            <el-table-column prop="aboutCompany" align="center" label="所属公司" min-width="40%">
             </el-table-column>
-            <el-table-column prop="role" align="center" label="角色" width="180">
+            <el-table-column prop="role" align="center" label="角色" min-width="30%">
             </el-table-column>
-            <el-table-column prop="time" sortable align="center" label="登录时间">
+            <el-table-column prop="time" sortable align="center" label="登录时间" min-width="10%">
             </el-table-column>
         </el-table>
+
+        <div class="page">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="15"
+                    layout="prev, pager, next, jumper"
+                    :total="1000">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
@@ -81,10 +93,12 @@
 
 <style lang="scss" scoped>
     @import "@s/green/variables.scss";
+
     .containerMain {
-        padding-left: 0 !important;
+        padding-left: 20px !important;
         height: 100vh;
     }
+
     /deep/ .el-input__inner {
         height: 30px;
         line-height: 30px;
@@ -99,57 +113,79 @@
         transition: all .3s;
         line-height: 0px;
     }
-    .main-header {
-        padding: 20px 20px 0 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        .input-with-select {
-            width: 220px;
-            height: 30px;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-            opacity: 1;
-            border-radius: 8px;
-        }
 
-        .online-count {
-            font-size: 22px;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            margin-right: 80px;
-            color: rgba(24, 144, 255, 1);
-            opacity: 1;
-        }
-    }
+    .root {
+        padding: 20px;
 
-    .main_table {
-        width: 100%;
-        margin : 20px 40px 40px 20px;
-        border-radius: 20px 20px 0px 0px;
-        box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
-
-        .row-user-col {
+        .main-header {
+            padding: 20px 20px 0  0px;
             display: flex;
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
 
-            .row-user-avatar {
-                margin-left: 20px;
-                height: 40px;
-                border-radius: 50%;
-                width: 40px;
+            .input-with-select {
+                width: 220px;
+                height: 30px;
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+                opacity: 1;
+                border-radius: 8px;
             }
-            .row-user-name{
-                font-size:14px;
-                font-family:Microsoft YaHei;
-                font-weight:400;
-                margin-left: 40px;
-                color:rgba(102,102,102,1);
-                opacity:1;
+
+            .online-count {
+                font-size: 22px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                margin-right: 80px;
+                color: rgba(24, 144, 255, 1);
+                opacity: 1;
             }
+        }
+
+        .main_table {
+            height: 600px;
+            margin: 20px 0px 0px 0px;
+            border-radius: 20px 20px 20px 20px;
+            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+
+            /deep/ .gutter {
+                background: rgba(221, 235, 246, 1);
+            }
+
+            .row-user-an {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
+                .row-user-col {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: start;
+                    align-items: center;
+
+                    .row-user-avatar {
+                        margin-left: 20px;
+                        height: 40px;
+                        border-radius: 50%;
+                        width: 40px;
+                    }
+
+                    .row-user-name {
+                        font-size: 14px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        margin-left: 20px;
+                        color: rgba(102, 102, 102, 1);
+                        opacity: 1;
+                    }
+                }
+            }
+
+        }
+        .page{
+            margin: 10px 0 20px 0;
         }
     }
 </style>

@@ -42,7 +42,7 @@
                     <div class="right-col">
                         <div class="edit-tab">
                             <div class="edit-title">已授权应用</div>
-                            <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 40px">添加应用
+                            <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 20px">添加应用
                             </el-button>
                         </div>
                         <div class="edit-container">
