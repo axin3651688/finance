@@ -16,6 +16,11 @@
 
 	},
 	"columns": [{
+		"id": "C_",
+		"type": "decimal",
+		"subfix":"_",
+		"text": "预算数"
+	},{
 			"id": "id",
 			"type": "string",
 			"hidden": true,
@@ -86,11 +91,6 @@
 			"type": "decimal",
 			"subfix":"_",
 			"text": "期末余额"
-		}, {
-			"id": "C_",
-			"type": "decimal",
-			"subfix":"_",
-			"text": "预算数"
 		}
 	],
 	"rows": [{

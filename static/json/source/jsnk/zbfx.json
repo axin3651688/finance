@@ -159,8 +159,12 @@
                     "way": "addTab",
                     "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
-                        console.info(params);
-                        debugger;
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+
                     }
                 }],
                 "options": {
@@ -201,10 +205,14 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
+                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
-                        console.info(params);
-                        debugger;
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+
                     }
                 }],
                 "options": {
@@ -241,10 +249,14 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "/cnbi/json/source/treegrid/demo.json",
+                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
                     "handler": ($vue, params) => {
-                        console.info(params);
-                        debugger;
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+
                     }
                 }],
                 "options": {

@@ -5,14 +5,10 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-      fixed="left"
+    fixed="left"
   >
     <template slot-scope="scope">
-      <span
-        v-if="iconShow(0,scope.row) "
-        class="tree-ctrl"
-        @click="toggleExpanded(scope.$index)"
-      >
+      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope.$index)">
         <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
@@ -60,14 +56,14 @@
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
   <el-table-column
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
-
+  
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -97,6 +93,7 @@
         placement="right"
       >
         <span
+          @click="dilogShow(col,scope)"
           v-if="tableData.datas"
         >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
@@ -142,13 +139,14 @@
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
-  data(){
-    return{
+  data() {
+    return {
       // tableData1:''
        options: [],
     }
-  },
+    },
   computed: {
+    ...mapGetters(["year", "month"]),
     isFolder() {
       return this.col.children && this.col.children.length;
     },
@@ -162,6 +160,7 @@ export default {
     // console.log("ooo",this.options)
   },
   methods: {
+    ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
@@ -207,6 +206,9 @@ export default {
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
+        if(!row.hasOwnProperty(colId)){
+          return "";
+        }
         return "--";
       }
       if (col.subfix || col.subfix === 0) {
@@ -217,15 +219,14 @@ export default {
       }
       //debugger
       if (!row[colId] && !union) {
-        let temp = datas.filter(tempRow=>{
+        let temp = datas.filter(tempRow => {
           return tempRow.id == rowId;
-        })
-        if(temp.length > 0 && temp[0][colId]){
-            row = temp[0];
-        }else{
-             return "--";
+        });
+        if (temp.length > 0 && temp[0][colId]) {
+          row = temp[0];
+        } else {
+          return "--";
         }
-       
       }
       let value = 0;
       if (Array.isArray(datas) && datas.length == 0) {
@@ -249,7 +250,7 @@ export default {
     },
     //treeGrid function
     showRow(row) {
-      const show = row.row.parent
+      const show = row.row.parent;
       console.log(show)
         ? row.row.parent._expanded && row.row.parent._show
         : true;
@@ -317,11 +318,13 @@ export default {
 };
 </script>
 <style lang="scss">
-.el-table--border::after, .el-table--group::after, .el-table::before {
-    content: '';
-    position: absolute;
-    background-color: transparent;
-    z-index: 1;
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  z-index: 1;
 }
 .el-table__body {
   // width: 6000px !important;

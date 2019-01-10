@@ -11,6 +11,7 @@ import '../../../node_modules/handsontable/dist/handsontable.full.css'
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'
 Vue.component('chart', VueECharts);
+
 import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
 
 Vue.use(ZkTable)

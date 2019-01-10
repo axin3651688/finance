@@ -3,8 +3,10 @@ const getters = {
   // 用户个人信息
   user: state => state.user.user,
   // 侧边栏状态
-  sidebar: state => state.sideopen.sidebar,
-  device: state => state.sideopen.device,
+  sidebar: state => state.componentstate.sidebar,
+  device: state => state.componentstate.device,
+  // dialog显示及隐藏
+  showDialog: state => state.componentstate.showDialog,
   // 用户公司信息
   userCompany: state => state.user.user.company,
   // 点击侧边栏返回的url
@@ -31,6 +33,7 @@ const getters = {
   activeId: state => state.prame.command.activeId,
   // 控制顶部导航栏的显示及隐藏
   showDims: state => state.prame.showDims,
+
   action: state => state.prame.command.action,
   action2: state => state.prame.command.action2,
   action3: state => state.prame.command.action3,

@@ -134,7 +134,6 @@ export default {
       text: "",
       rows: [],
       columns: [],
-      dataUrl: "",
       datas: [],
       flag: false,
       config: {},
@@ -164,7 +163,7 @@ export default {
   },
 
   mounted() {
-     debugger;
+    debugger;
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -172,7 +171,7 @@ export default {
   },
   watch: {
     module_api(newid) {
-      debugger
+      debugger;
       this.changeMonduleBefore(newid);
       this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
@@ -347,6 +346,9 @@ export default {
     loadRemoteSource(api) {
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
+       if (!api) {
+         api = "cnbi/json/source/chart/zbfx.json";
+       }
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -471,7 +473,8 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) {//updateView(null)
+    updateView(changeDim) {
+      //updateView(null)
       console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
@@ -499,6 +502,8 @@ export default {
       debugger;
       try {
         let params = this.getModuleParams(item, changeDim);
+        // console.log(params);
+        // alert(params);
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
