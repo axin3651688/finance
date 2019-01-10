@@ -74,6 +74,13 @@ export default {
     }
   },
   methods: {
+    /**
+     * name: sjz
+     * 功能：添加刷新功能--作用在json里的hander方法中。
+     */
+    btnClick(btn){
+        btn.handler(this,btn);
+     },
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
@@ -126,12 +133,13 @@ export default {
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
         : [tmp, this.expandAll];
       let formatData = func.apply(null, args);
-      this.$set(this, "formatData", formatData);
+      this.$set(this, "formatData", tmp);
     },
 
     upData(item) {
       debugger
       this.$set(this, "formatData", "");
+      //  this.$set(this, "formatData", formatData);
       this.$set(this, "formatData", null);
       this.item = item;
       debugger;

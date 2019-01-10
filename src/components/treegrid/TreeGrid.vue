@@ -57,6 +57,13 @@ export default {
     this.convertData();
   },
   methods: {
+    /**
+     * name: sjz
+     * 功能：添加刷新功能--作用在json里的hander方法中。
+     */
+    btnClick(btn){
+        btn.handler(this,btn);
+     },
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
