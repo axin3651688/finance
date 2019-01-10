@@ -5,11 +5,11 @@
 
             <el-dropdown  trigger="click"  @command="handleCommand">
                 <el-button  type="plain" class="btn-module" >
-                    {{tipModule}}<i class="el-bi-icon-zhankai el-icon--right" style="margin-left: 20px"></i>
+                    {{tipModule}}<i class="el-bi-icon-zhankai"  style="margin-left: 10px"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="item.module" v-for="item in tableData">{{item.module}}</el-dropdown-item>
-                    <el-dropdown-item  command="0">不选择</el-dropdown-item>
+                        <el-dropdown-item :command="item.module" v-for="item in tableData">{{item.module}}</el-dropdown-item>
+                        <el-dropdown-item  command="0">不选择</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
 
@@ -162,15 +162,20 @@
         padding: 20px;
 
         .btn-module{
-            width:160px;
             height:30px;
+            min-width: 160px;
             background:rgba(255,255,255,1);
             box-shadow:0px 3px 6px rgba(0,0,0,0.2);
             opacity:1;
             border-radius:8px;
             border: 0px;
+            font-size:14px;
+            font-family:Microsoft YaHei;
+            font-weight:400;
+            line-height:19px;
+            color:rgba(102,102,102,0.80);
             /deep/.el-button{
-                padding: 0;
+                padding: 0px 20px 0px 20px;
                 color:rgba(102,102,102,0.80);
             }
             /deep/.el-button:focus, .el-button:hover{
