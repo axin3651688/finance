@@ -45,13 +45,13 @@
 
 
             <!--max-height="650"-->
-            <el-table :data="tableData" stripe style="width: 100%" max-height=650;  class="right_table"
+            <el-table :data="tableData" stripe style="width: 100%"  height="80vh" max-height="80vh"  class="right_table"
                       :header-cell-style="getRowClass">
                 <el-table-column prop="name" label="姓名" min-width="20%" align="center">
                 </el-table-column>
                 <el-table-column prop="phone" label="电话" min-width="20%" align="center">
                 </el-table-column>
-                <el-table-column prop="aboutCompany" label="公司" min-width="20%" align="center">
+                <el-table-column prop="aboutCompany" label="公司" min-width="40%" align="center">
                 </el-table-column>
                 <el-table-column prop="role" min-width="20%" label="角色" align="center">
                 </el-table-column>
@@ -425,7 +425,7 @@
         /*display: flex;*/
         /*flex-direction: column;*/
 
-
+        padding: 20px;
         height: 100%;
         background: $colorBgPageGray;
 
