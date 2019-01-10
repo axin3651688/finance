@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.049" height="20" viewBox="0 0 20.049 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(165,68,68,0);
+      }
+
+      .cls-2 {
+        fill: #1890ff;
+      }
+    </style>
+  </defs>
+  <g id="tianjiazibumen_icon" transform="translate(-2192.951 -251)">
+    <g id="组_108" data-name="组 108" transform="translate(2182.551 240)">
+      <rect id="矩形_123" data-name="矩形 123" class="cls-1" width="20" height="20" transform="translate(10.449 11)"/>
+      <path id="路径_165" data-name="路径 165" class="cls-2" d="M20.249,30.7A9.85,9.85,0,1,1,30.1,20.849,9.911,9.911,0,0,1,20.249,30.7Zm0-17.625a7.775,7.775,0,1,0,7.776,7.774A7.831,7.831,0,0,0,20.249,13.075Zm0,0" transform="translate(0 0)"/>
+      <path id="路径_166" data-name="路径 166" class="cls-2" d="M272.713,462.073h-7.776a1.036,1.036,0,1,1,0-2.073h7.776a1.036,1.036,0,0,1,0,2.073Zm0,0" transform="translate(-248.524 -440.187)"/>
+      <path id="路径_167" data-name="路径 167" class="cls-2" d="M460.436,269.253a.979.979,0,0,1-1.036-1.036v-7.88a1.036,1.036,0,0,1,2.073,0v7.88A.979.979,0,0,1,460.436,269.253Zm0,0" transform="translate(-440.187 -243.427)"/>
+    </g>
+  </g>
+</svg>

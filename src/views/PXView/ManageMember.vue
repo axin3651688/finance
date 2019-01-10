@@ -1,92 +1,91 @@
 <template>
-    <div class="Message">
-        <div class="container">
-            <div class="left">
-
-                <!-- <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree> -->
-
-                <div class="panel-left">
-                    <el-scrollbar v-if="companyList">
-                        <el-collapse accordion>
-                            <el-collapse-item v-for="comp in companyList" :key="comp.id">
-                                <template slot="title">
-                                    <div class="item-wrap">
-                                        <h3 class="item-title">
-                                            {{comp.text}}
-                                            <span>（{{comp.userCount}}人）</span>
-                                        </h3>
-                                        <p class="item-info">
-                                            公司介绍{{comp.text}}
-                                        </p>
-                                    </div>
-                                </template>
-                                <ul class="sub-item">
-                                    <li :class="{active: activeUser === user.id}" v-for="user in comp.children"
-                                        @click="getUserInfo(user.id)"
-                                        :key="user.id">
-                                        <figure>
-                                            <div class="img-box">
-                                                <img :src="user.avatar" v-avatar="user.trueName"/>
-                                            </div>
-                                            <div class="info">
-                                                <h3>{{user.trueName}}</h3>
-                                                <p>{{user.deptName}}{{user.position}}</p>
-                                            </div>
-                                        </figure>
-                                        <i class="arrow el-icon-arrow-right"></i>
-                                    </li>
-                                </ul>
-                            </el-collapse-item>
-                        </el-collapse>
-                    </el-scrollbar>
-                </div>
-
-            </div>
-            <div class="right">
 
 
-                <el-table :data="tableData" stripe style="width: 100%" class="right_table"
-                          :header-cell-style="getRowClass">
-                    <el-table-column prop="name" label="姓名" min-width="20%" align="center">
-                    </el-table-column>
-                    <el-table-column prop="phone" label="电话" min-width="20%" align="center" >
-                    </el-table-column>
-                    <el-table-column prop="aboutCompany" label="公司" min-width="20%" align="center">
-                    </el-table-column>
-                    <el-table-column prop="role"  min-width="20%" label="角色" align="center">
-                    </el-table-column>
-                    <el-table-column label="操作" min-width="20%" align="center">
-                        <div slot-scope="scope" class="template_edit">
+    <splitpanes class="default-theme" style="height:100vh">
 
-                            <div class="leftIcon_title">
-                                <img src="@a/user_icon/xiugai_icon.svg" >
-                                <span class="itemSpan" >编辑</span>
-                            </div>
 
-                            <div class="leftIcon_title1">
-                                <img src="@a/user_icon/jinyong_icon.svg" >
-                                <span class="itemSpan1" >删除</span>
-                            </div>
+        <el-scrollbar class="left" splitpanes-default="25%" splitpanes-min="20%">
+            <el-tree
+                    :data="data"
+                    node-key="id"
+                    :default-checked-keys="[1]"
+                    @node-click="handleNodeClick"
 
-                            <!--<el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row)"><i stripe style="margin-right: 4px;font-size: 80px" class="el-bi-icon-iconset0137-copy"></i>编辑</el-button>-->
-                            <!--<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除-->
-                            <!--</el-button>-->
+                    :expand-on-click-node="true">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
+            <el-dropdown>
+
+            <span style="margin-right: 20px" v-show="selectComp.id===data.id"
+                  class="el-dropdown-link">
+            <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>修改</el-dropdown-item>
+            <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+            </el-dropdown>
+            </span>
+            </el-tree>
+        </el-scrollbar>
+
+        <div class="right" splitpanes-default="75%" >
+
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable
+                      class="input-with-select">
+            </el-input>
+
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable
+                      class="input-with-select">
+            </el-input>
+
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable
+                      class="input-with-select1">
+            </el-input>
+
+
+            <!--max-height="650"-->
+            <el-table :data="tableData" stripe style="width: 100%" max-height=650;  class="right_table"
+                      :header-cell-style="getRowClass">
+                <el-table-column prop="name" label="姓名" min-width="20%" align="center">
+                </el-table-column>
+                <el-table-column prop="phone" label="电话" min-width="20%" align="center">
+                </el-table-column>
+                <el-table-column prop="aboutCompany" label="公司" min-width="20%" align="center">
+                </el-table-column>
+                <el-table-column prop="role" min-width="20%" label="角色" align="center">
+                </el-table-column>
+                <el-table-column label="操作" min-width="20%" align="center">
+                    <div slot-scope="scope" class="template_edit">
+
+                        <div class="leftIcon_title">
+                            <img src="@a/user_icon/xiugai_icon.svg">
+                            <span class="itemSpan">编辑</span>
                         </div>
-                    </el-table-column>
-                </el-table>
 
-                <!--右边区域左内阴影效果-->
-                <div class="inset-shadow"></div>
-            </div>
+                        <div class="leftIcon_title1">
+                            <img src="@a/user_icon/jinyong_icon.svg">
+                            <span class="itemSpan1">删除</span>
+                        </div>
 
-            <!--container区域上边贴导航栏内阴影效果-->
-            <div class="inset-shadow"></div>
+                    </div>
+                </el-table-column>
+            </el-table>
+
+
         </div>
-    </div>
+
+    </splitpanes>
+
+
 </template>
 
 
 <script>
+
+    import Splitpanes from 'splitpanes'
+    import 'splitpanes/dist/splitpanes.css'
+
     import {
         mapGetters,
         mapActions
@@ -96,10 +95,96 @@
         CONTACT_INFO
     } from '~api/message.js'
 
-    export default {
-        data() {
-            return {
 
+    export default {
+
+        components: {Splitpanes},
+        data() {
+
+
+            return {
+                search:null,
+                selectComp: {},
+
+                data:[{
+                    id: 1,
+                    label: '一级啊啊三级啊啊三级啊啊三级啊啊 1',
+                    children: [{
+                        id: 4,
+                        label: '二级啊啊三级啊啊三级啊啊三级啊啊 1-1',
+                        children: [{
+                            id: 9,
+                            label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-1',
+                            children: [{
+                                id: 11,
+                                label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-1'
+                            }, {
+                                id: 12,
+                                label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-2'
+                            }]
+                        }, {
+                            id: 10,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 13,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 14,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 15,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 16,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 17,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 18,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 19,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 20,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 21,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 22,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 23,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }, {
+                            id: 24,
+                            label: '三级啊啊三级啊啊三级啊啊 1-1-2'
+                        }]
+                    }]
+                }, {
+                    id: 2,
+                    label: '一级 2',
+                    children: [{
+                        id: 5,
+                        label: '二级 2-1'
+                    }, {
+                        id: 6,
+                        label: '二级 2-2'
+                    }]
+                }, {
+                    id: 3,
+                    label: '一级 3',
+                    children: [{
+                        id: 7,
+                        label: '二级 3-1'
+                    }, {
+                        id: 8,
+                        label: '二级 3-2'
+                    }]
+                }],
+                tableHeight: 50,
                 companyList: null, // [] 接收一个数组
                 tableData: [{
                     phone: '2016-05-02',
@@ -113,12 +198,138 @@
                     role: '后端研发工程师',
                 }, {
                     phone: '2016-05-02',
-                    name: '赵小虎',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '张小虎',
+                    aboutCompany: '合肥经邦集团',
+                    role: '后端研发工程师',
+                }, {
+                    phone: '2016-05-02',
+                    name: '赵小虎1123123123',
                     aboutCompany: '合肥经邦集团',
                     role: '后端研发工程师',
                 }]
             }
         },
+
 
         computed: {
             ...mapGetters(['user', 'messageStore']), // vuex中保存的登陆用户数据
@@ -128,6 +339,12 @@
         },
         methods: {
 
+
+            handleNodeClick(data) {
+                console.log('handleNodeClick', data);
+                this.selectComp = data
+                console.log('selectComp', this.selectComp);
+            },
 
 //设置表格第一行的颜色
             getRowClass({row, column, rowIndex, columnIndex}) {
@@ -144,75 +361,9 @@
 
             ...mapActions(['ActionSetMessageStore']),
 
-            // 和某某单聊, 要切换到单聊窗口
-            chatWithSingle(receiverId) {
-                this.ActionSetMessageStore({
-                    targetId: receiverId,
-                    miniType: 1100, // 1100 单聊
-                    receiverData: this.rightUserInfo
-                });
-                this.$router.push('/message_page/msg')
-            },
-
-            // 获取公司列表, 并把公司列表存vuex
-            getCompanyList() {
-                // debugger;
-                ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
-                    console.log('我公司列表：', res.data);
-                    if (res.data.code === 200) {
-                        this.companyList = res.data.data;
-                        this.ActionSetMessageStore({
-                            companyList: this.companyList
-                        });
-
-                        // 当获得公司列表后，默认请求第一个公司第一个员工的信息
-                        if (this.companyList.length) {
-                            if (this.companyList[0].children.length) {
-                                this.getUserInfo(this.companyList[0].children[0].id);
-                            }
-                        } else {
-                            this.$message({
-                                type: 'warning',
-                                message: '你还没有加入任团队',
-                                showClose: true
-                            })
-                        }
-
-                    }
-                })
-            },
-
-            // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
-            checkUserInfo(userId) {
-                if (this.requestedUser.hasOwnProperty(userId)) {
-                    console.log(`已经请求过用户的信息了:${userId}`);
-                    return this.requestedUser[userId];
-                } else return null
-            },
-
-            // 查看个人资料,如果这个用户已经请求过一次了就不在发送请求
-            getUserInfo(userId) {
-                this.activeUser = userId;
-                let userInfo = this.checkUserInfo(userId);
-                if (userInfo) {
-                    this.rightUserInfo = userInfo;
-                } else {
-                    CONTACT_INFO(this.loginUserId, userId).then(res => {
-                        console.log('查询个人资料', res.data.data);
-                        if (res.data.code === 200) {
-                            let userInfo = res.data.data;
-                            this.rightUserInfo = userInfo;
-                            this.requestedUser[userId] = userInfo;
-                        }
-                    }).catch(err => {
-                        console.log('查询个人资料', err)
-                    })
-                }
-            }
 
         },
         created() {
-            this.getCompanyList();
         }
     }
 </script>
@@ -222,225 +373,178 @@
     @import "@ms/index.scss";
 
     .containerMain {
-        
+
         padding-left: 0 !important;
-        height: 100vh;
+        /*height: 100vh;*/
     }
 
-    .Message {
-        font-family: $fontFamilyMain;
-        position: relative;
-        height: 100vh !important;
-
-        .container {
-            position: relative;
-            display: flex;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-
-            .left {
-                width: $sizeNavBarWidth;
-                height: 100%;
-                background: rgba(255, 255, 255, 1);
-
-                .panel-left {
-                    box-sizing: border-box;
-                    width: $sizeNavBarWidth;
-                    height: 100%;
-                    border-right: 1px solid $colorBorder2;
-
-                    /deep/ .el-collapse {
-                        .el-collapse-item__header.is-active {
-                            border-bottom-color: #ebeef5;
-                        }
-
-                        .el-collapse-item__header {
-                            $itemHeaderHeight: 80px;
-                            height: $itemHeaderHeight;
-
-                            .item-wrap {
-                                height: 100%;
-                                box-sizing: border-box;
-                                padding: 15px 30px;
-
-                                h3 {
-                                    line-height: 21px;
-                                    color: $colorText1;
-                                    font-size: 16px;
-                                    font-weight: bold;
-                                }
-
-                                p {
-                                    margin-top: 10px;
-                                    line-height: 20px;
-                                    color: $colorText3;
-                                }
-                            }
-
-                            .el-collapse-item__arrow {
-                                line-height: $itemHeaderHeight;
-                                height: $itemHeaderHeight;
-                                margin-right: 22px;
-                            }
-                        }
-
-                        /deep/ .el-collapse-item__content {
-                            padding-bottom: 0;
-
-                            ul.sub-item {
-                                li {
-                                    position: relative;
-                                    height: 60px;
-                                    padding: 0 30px 0 30px;
-                                    cursor: pointer;
-                                    transition: all .3s;
-
-                                    &:hover {
-                                        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-                                    }
-
-                                    .arrow {
-                                        position: absolute;
-                                        right: 24px;
-                                        top: 50%;
-                                        transform: translateY(-50%);
-                                    }
-                                }
-
-                                li.active {
-                                    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-                                }
-
-                                figure {
-                                    display: flex;
-                                    align-items: center;
-                                    height: 100%;
-                                    border-top: 1px solid $colorBorder2;
-                                    margin-top: -1px;
-
-                                    .img-box {
-                                        width: 40px;
-                                        height: 40px;
-                                        overflow: hidden;
-                                        margin-right: 20px;
-                                        border-radius: 8px;
-                                        background: $colorTheme;
-
-                                        img {
-                                            width: 100%;
-                                            height: 100%;
-                                        }
-                                    }
-
-                                    .info {
-                                        font-family: $fontFamilyMain;
-                                        font-weight: 400;
-                                        line-height: 20px;
-
-                                        h3 {
-                                            height: 19px;
-                                            font-size: 14px;
-                                            color: $colorText1;
-                                        }
-
-                                        p {
-                                            height: 16px;
-                                            font-size: 12px;
-                                            color: $colorText5;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            .right {
-                flex: 1;
-                position: relative;
-                overflow: hidden;
-                height: 100%;
-                padding: 20px;
-
-                /*min-width: 800px;*/
-                background: $colorBgPageGray;
-
-                .right_table {
-                    border-radius: 20px 20px 0px 0px;
-                    box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
-
-
-                    .template_edit{
-
-                        display: flex;
-                        flex-direction: row;
-                        text-align: center;
-                        justify-content: space-around;
-
-                        .leftIcon_title{
-
-                            display: flex;
-                            flex-direction: row;
-                            .itemSpan{
-                                /*width: 120px;*/
-                                font-size:14px;
-                                font-family:Microsoft YaHei;
-                                font-weight:400;
-                                line-height:19px;
-                                color:rgba(28,141,10,1);
-                                opacity:1;
-                                opacity:1;
-                                padding-left: 10px;
-                            }
-                        }
-
-                        .leftIcon_title1{
-
-                            display: flex;
-                            flex-direction: row;
-                            .itemSpan1{
-                                font-size:14px;
-                                font-family:Microsoft YaHei;
-                                font-weight:400;
-                                line-height:19px;
-                                color:rgba(229,51,51,1);
-                                opacity:1;
-                                padding-left: 10px;
-                            }
-                        }
-
-                    }
-                }
-
-                .inset-shadow {
-                    $insetShadowWidth: 20px;
-                    position: absolute;
-                    left: -$insetShadowWidth;
-                    top: 0;
-                    bottom: 0;
-                    width: $insetShadowWidth;
-                    height: 100%;
-                    box-shadow: 3px 0 $insetShadowWidth rgba(0, 0, 0, 0.1);
-                }
-            }
-
-            .inset-shadow {
-                position: absolute;
-                top: -20px;
-                left: 0;
-                right: 0;
-                height: 20px;
-                background: #ffffff;
-                box-shadow: 0 3px 60px rgba(0, 0, 0, 0.16);
-            }
+.default-theme{
 
 
 
 
+    /deep/ .el-tree-node__expand-icon {
+        font-size: 16px;
+    }
 
+    /deep/ .el-tree-node__content {
+        height: 60px;
+        background: rgba(255, 255, 255, 1);
+
+        .is-current {
+            background: rgba(24, 144, 255, 1);
+        }
+
+        &:hover {
+            background: rgba(24, 144, 255, 0.2);
         }
     }
+
+    /deep/ .el-tree-node.is-current.is-focusable {
+        > .el-tree-node__content {
+            background: rgba(24, 144, 255, 1);
+        }
+    }
+
+
+
+
+
+    .left {
+        height: 100%;
+        /*background: rgba(255, 255, 255, 1);*/
+
+
+
+
+    }
+
+
+    .right {
+
+        /*display: flex;*/
+        /*flex-direction: column;*/
+
+
+        height: 100%;
+        background: $colorBgPageGray;
+
+        /*height: 200px;*/
+
+        .input-with-select {
+            width: 220px;
+            height: 30px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+            opacity: 1;
+            margin: 20px 0 20px 20px;
+            border-radius: 8px;
+        }
+
+        .input-with-select1 {
+
+            position: absolute;
+            right: 20px;
+            width: 220px;
+            height: 30px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+            opacity: 1;
+            margin: 20px 0 20px 20px;
+            border-radius: 8px;
+        }
+
+
+        .right_table {
+
+            /*.el-table {*/
+
+                /*height: 100%;*/
+            /*}*/
+            /*.el-table__body-wrapper {*/
+
+                /*height: calc(100% - 42px);*/
+            /*}*/
+
+
+            border-radius: 20px 20px 0px 0px;
+            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+
+
+            .template_edit {
+
+                display: flex;
+                flex-direction: row;
+                text-align: center;
+                justify-content: space-around;
+
+                .leftIcon_title {
+
+                    display: flex;
+                    flex-direction: row;
+
+                    .itemSpan {
+                        /*width: 120px;*/
+                        font-size: 14px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        line-height: 19px;
+                        color: rgba(28, 141, 10, 1);
+                        opacity: 1;
+                        opacity: 1;
+                        padding-left: 10px;
+                    }
+                }
+
+                .leftIcon_title1 {
+
+                    display: flex;
+                    flex-direction: row;
+
+                    .itemSpan1 {
+                        font-size: 14px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        line-height: 19px;
+                        color: rgba(229, 51, 51, 1);
+                        opacity: 1;
+                        padding-left: 10px;
+                    }
+                }
+
+            }
+        }
+
+        .inset-shadow {
+            $insetShadowWidth: 20px;
+            position: absolute;
+            left: -$insetShadowWidth;
+            top: 0;
+            bottom: 0;
+            width: $insetShadowWidth;
+            height: 100%;
+            box-shadow: 3px 0 $insetShadowWidth rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .inset-shadow {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: #ffffff;
+        box-shadow: 0 3px 60px rgba(0, 0, 0, 0.16);
+    }
+
+}
+
+
+
+
+
+
+
+
+
 </style>

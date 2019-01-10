@@ -33,6 +33,7 @@
     "element-ui": "^2.4.9",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
+    "splitpanes": "^1.9.2",
     "style-loader": "^0.23.1",
     "vue-template-compiler": "^2.5.17"
   },
