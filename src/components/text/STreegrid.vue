@@ -195,6 +195,7 @@ export default {
      * 格式化数据源
      */
     convertData() {
+      debugger
       //alert(this.item.show)
       let tmp;
       if (!Array.isArray(this.item.rows)) {

@@ -58,11 +58,13 @@
         {
           "text": "下级户数",
           "type":"number",
+          "align":"center",
           "id": "hs"
         },
         {
           "text": "下级集中户数",
           "width":"150",
+          "align":"center",
           "type":"number",
           "id": "jzhs"
         },
