@@ -54,15 +54,7 @@ const router = new Router({
           name: 'role',
           component: () =>
             import('@v/test/Role.vue')
-        },
-        // 日志管理
-        {
-          path: '/main',
-          name: 'main',
-          component: () =>
-            import('@v/BiModule'),
         }
-
       ]
     },
 
@@ -87,11 +79,6 @@ const router = new Router({
           name: 'BiPie',
           component: () =>
             import('@c/charts/BiPie'),
-        }, {
-          path: '/BiTreemap',
-          name: 'BiTreemap',
-          component: () =>
-            import('@c/charts/BiTreemap'),
         }
       ]
     },

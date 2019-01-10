@@ -52,8 +52,6 @@ export default {
   },
   created() {
     this.styleSlect;
-    debugger;
-    console.log(this.showDialog);
   },
 
   methods: {

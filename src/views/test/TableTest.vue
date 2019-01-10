@@ -1,17 +1,22 @@
  <template>
   <div>
     <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
+      <el-table-column prop="date" label="日期" width="180">
+        <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+          <span>这是一段信息</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>-->
+        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange"></el-cascader> -->
+      </el-table-column>
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="address" label="地址">
+        <el-button type="danger">危险按钮</el-button>
+      </el-table-column>
     </el-table>
   </div>
 </template>

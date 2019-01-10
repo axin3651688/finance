@@ -87,14 +87,18 @@ export default {
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
         : [tmp, this.expandAll];
       let formatData = func.apply(null, args);
+
       this.$set(this, "formatData", formatData);
+      // console.log(this.formatData);
+      // alert(this.formatData);
+      debugger;
     },
 
     upData(item) {
       this.$set(this, "formatData", "");
       this.$set(this, "formatData", null);
       this.item = item;
-      debugger;
+
       this.convertData();
     },
     // 点击加载数据在下面做

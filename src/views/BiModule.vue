@@ -119,8 +119,7 @@
 import BiItem from "@c/BiItem";
 import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
-import { getClientParams } from "../utils/index";
-import { generatePeriod } from "../utils/period";
+import { getClientParams, getModuleParams } from "../utils/index";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
 
 export default {
@@ -146,11 +145,7 @@ export default {
       layout: {
         xtype: "form"
       },
-      items: [
-        { xtype: "bi-text", id: "text", text: "文字测试" },
-        { xtype: "bi-table", id: "lrb", text: "表格测试" },
-        { xtype: "bi-chart", id: "text", text: "图形测试" }
-      ],
+      items: [],
       chartOptions: {},
       debug: 0
     };
@@ -165,7 +160,6 @@ export default {
 
   mounted() {
     debugger;
-    // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
     ...mapGetters(["year", "month", "company", "module_api", "conversion"])
@@ -400,74 +394,7 @@ export default {
       //   //  item.config = this.config;
       // }
     },
-    /**
-     * 获取模块的参数
-     *  */
 
-    getModuleParams(item, changeDim) {
-      let config = item.config,
-        needDims = config.needDims;
-      if (!needDims) {
-        return;
-      }
-      let ns = needDims.filter(dim => dim === changeDim);
-      if (!ns || ns.length == 0) {
-        console.info(item.text + "不依赖【" + changeDim + "】维度!");
-        return;
-      }
-      if (!needDims || needDims.length < 1) {
-        throw new Error("未定义正确的needDims=['company','year','month']参数");
-        return;
-      }
-      let params = this.$store.state.prame.command;
-      let datas = {};
-      needDims.forEach(element => {
-        let val = params[element];
-        //
-        if (!val && element === "company") {
-          val = params[element + "Id"];
-        }
-        if (element != "conversion") {
-          datas[element] = val;
-        }
-      });
-      if (datas.year && datas.month) {
-        // let date = new Date();
-        // datas.year =  date.getFullYear();
-        // datas.month =  date.getMonth()-1;
-        datas.month =
-          datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
-        datas.period = datas.year + "" + datas.month;
-      }
-      //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
-      //目标：在datas.comparePeriod= 调用period.js的一个方法
-      // debugger
-      let vars = config.generateVar;
-      if (vars && vars.periodCount && vars.compareType) {
-        let reverse = vars.reverse || false;
-        let year = datas.year,
-          month = datas.month;
-        year = { id: year, text: "年" };
-        month = { id: month, text: "月" };
-        let periodArr = generatePeriod(
-          vars.periodCount,
-          vars.compareType,
-          year,
-          month,
-          reverse
-        );
-        let index = 0;
-        if (reverse) {
-          index = periodArr.length - 2;
-        }
-        datas.comparePeriod = periodArr[index].id;
-        if (vars.varName) {
-          item.config[vars.varName] = periodArr;
-        }
-        //datas.period = periodArr.map(p=>p.id).join(",");
-      }
-      return datas;
-    },
     /**
      * 更新vuex属性过来更新组件数据的
      */
@@ -499,8 +426,8 @@ export default {
     generateApiModelDatas(item, $childVue, changeDim) {
       debugger;
       try {
-        let params = this.getModuleParams(item, changeDim);
-        // console.log(params);
+        let params = getModuleParams(item, changeDim);
+        console.log(params);
         // alert(params);
         if (!params) return;
         let config = item.config;
@@ -514,8 +441,10 @@ export default {
         if (config.sql) {
           params.sql = config.sql;
           this.setDatas(item, params, $childVue);
+          // item.params = $childVue;
         } else if (config.cube) {
           this.setDatas(item, params, $childVue);
+          // item.params = $childVue;
         } else if (config.defined) {
           return config.datas;
         } else if (config.random) {
@@ -647,14 +576,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.majun_right {
-  // 指标分析右边距离
-  padding-right: 24px;
-}
-.majun_top {
-  // 风险分析顶部距离
-  padding-top: 24px;
-}
 </style>
 
 
