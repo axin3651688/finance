@@ -1,4 +1,7 @@
 <template>
+    <div>
+
+
     <el-container>
         <el-aside>
 
@@ -108,6 +111,7 @@
             </div>
         </el-main>
     </el-container>
+    </div>
 </template>
 
 <script>
@@ -185,10 +189,23 @@
         color: rgba(255, 255, 255, 1);
     }
 
+
     .el-container {
         font-family: $fontFamilyMain;
         position: relative;
         height: 100vh !important;
+        &:after{
+            $afterHeight: 20px;
+            position: absolute;
+            display: block;
+            content: '';
+            height: $afterHeight;
+            width: 100%;
+            background: $colorTheme;
+            top: -$afterHeight;
+            box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
+
+        }
 
         .el-aside {
             position: relative;
@@ -197,7 +214,8 @@
             height: 100%;
             min-height: 600px;
             background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
+
+            box-shadow: 3px 10px 0px 0px rgba(0, 0, 0, 0.1),3px 20px 20px rgba(0, 0, 0, 0.1);
             opacity: 1;
             .item_role {
                 position: relative;
