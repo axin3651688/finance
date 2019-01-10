@@ -14,66 +14,6 @@
     :cell-style="cellStyle"
     @row-click="onRowClick"
   >
-    <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
-      <template slot-scope="scope">
-        <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
-        <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span> -->
-        <!-- {{ scope.$index }} -->
-      <!-- </template>
-    </el-table-column> -->
-    <!-- <el-table-column
-      v-for="(column, index) in item.config.columns"
-      v-else
-      :prop="column.id"
-      :key="column.id"
-      :label="column.text"
-      :width="column.width"
-    > -->
-      <!-- <template slot-scope="scope">
-        <span
-          v-for="space in scope.row._level"
-          v-if=" column.text != '操作' && index === 0"
-          :key="space"
-          class="ms-tree-space"
-        />
-        <span
-          v-if="iconShow(index,scope.row) "
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        <span v-else-if="column.text != '操作'">{{ scope.row[column.id] }}</span>
-
-        <el-button type="text" v-if="column.text === '操作'" @click="add">
-          
-          <img src="@/assets/green/list_menu.svg" alt>
-          <el-cascader
-            :options="item.items[0].columns"
-            v-model="selectedOptions"
-            @change="handleChange"
-          ></el-cascader>
-
-          <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleChange"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-          </el-dialog>
-        </el-button> -->
-      <!-- </template>
-    </el-table-column> -->
-    <!-- <slot/> -->
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
     </el-tag>
@@ -103,31 +43,17 @@ export default {
   },
   name: "STreeGrid",
   props: ["item"],
-  // props: {
-    
-  //   item: {
-  //     data: {
-  //       type: [Array, Object],
-  //       required: true
-  //     },
-  //     columns: {
-  //       type: [Array, Function],
-  //       default: () => []
-  //     },
-  //     evalFunc: Function,
-  //     evalArgs: Array,
-  //     expandAll: {
-  //       type: Boolean,
-  //       default: false
-  //     },
+    created() {
+    debugger;
+    console.log("a", this.item);
+    // this.item.rows = this.item.config.rows
+    //  this.item.rows = this.item.datas
 
-  //     options: {
-  //       type: [Array, Function],
-  //       default: () => []
-  //     }
-  //   }
-  // },
+    this.array(this.item.datas);
+    this.convertData();
+  },
   mounted() {
+    this.convertData();
     // this.item.options = this.item.items[0].columns
   },
   __computed: {
@@ -196,23 +122,24 @@ export default {
      */
     convertData() {
       debugger
-      //alert(this.item.show)
       let tmp;
-      if (!Array.isArray(this.item.rows)) {
-        tmp = [this.item.rows];
+      if (!Array.isArray(this.item.datas)) {
+        tmp = [this.item.datas];
       } else {
-        tmp = this.item.rows;
+        tmp = this.item.datas;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
         : [tmp, this.expandAll];
       let formatData = func.apply(null, args);
-      this.$set(this, "formatData", formatData);
+      this.$set(this, "formatData", tmp);
     },
 
     upData(item) {
+      debugger
       this.$set(this, "formatData", "");
+      //  this.$set(this, "formatData", formatData);
       this.$set(this, "formatData", null);
       this.item = item;
       debugger;
@@ -258,7 +185,7 @@ export default {
       } else {
         if (rootItem) {
           this.tranformData(data, rootItem);
-          console.log("根节点" + rootItem);
+          // console.log("根节点" + rootItem);
         }
         this.item.rows = rootItem;
       }
@@ -288,20 +215,6 @@ export default {
       }
       // console.log(rootItem);
     },
-    add() {
-      // debugger
-
-      this.item.options = this.item.items[0].columns;
-      console.log(this.item.options);
-    },
-    handleChange(id, done) {
-      console.log(id);
-      this.$confirm("<div>111</div>")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
     showRow(row) {
       const show = row.row.parent
         ? row.row.parent._expanded && row.row.parent._show
@@ -323,15 +236,6 @@ export default {
     itemShow(index, record) {
       return index === item && record.children && record.children.length > 0;
     }
-  },
-  created() {
-    debugger;
-    console.log("a", this.item);
-    // this.item.rows = this.item.config.rows
-    //  this.item.rows = this.item.datas
-
-    this.array(this.item.datas);
-    this.convertData();
   }
 };
 </script>

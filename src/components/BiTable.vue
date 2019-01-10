@@ -3,35 +3,42 @@
     <!-- <el-button-group>
       <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
       style="background-color: #189271;color: black;"
-    </el-button-group> -->
+    </el-button-group>-->
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
-    <el-button-group  class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
-      <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+    <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
+      <el-button
+        v-if="item.toolbar && item.toolbar.length > 0 "
+        v-for="btn in item.toolbar"
+        v-bind:key="btn.id"
+        :style="btn.cellStyle"
+        @click="btnClick(btn)"
+      >{{btn.text}}</el-button>
     </el-button-group>
     <el-table
-      :data.sync="(item.config.rows && item.config.rows.length > 0)? item.config.rows : (item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk')? item.datas.slice((currentPage-1)*pagesize,currentPage*pagesize):item.datas"
+      :data.sync="tableDatas"
       border
       :stripe="true"
-      :height="item.height || rowClass"
+      style="width: 100%"
+      :height="item.height || heights-88"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
       <!--  :summary-method="getSummaries"  -->
-     <!-- :show-summary="item.showSummary || true"     -->
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" >
-        <!-- <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/> -->
-        <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild" v-if="!cc.hidden"/>
+      <!-- :show-summary="item.showSummary || true"     -->
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
+        <!-- <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild"   v-if="!cc.hidden"/> -->
       </el-tag>
     </el-table>
     <!-- sjz 分页功能 -->
     <el-pagination
-      v-if="item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk'"
+      v-if="item.pagination"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[100, 200, 500, 1000]"
+      :page-sizes="[1, 2, 5, 10]"
       :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="item.datas.length"
@@ -53,13 +60,15 @@ export default {
   props: ["item"],
   data() {
     return {
+      heights: document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,
-      pagesize: 100,
+      pagesize: 1,
       id: 0,
       text: "",
       rows: [],
+      tableDatas:[],
       // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
@@ -70,10 +79,17 @@ export default {
       levelProperties: { text: "level", text_: "level_" } //加缩进
     };
   },
-
+  watch: {
+    heights(newval) {
+      debugger;
+      this.heights = newval;
+    }
+  },
   created() {
     this.upData(this.item);
-   // console.log(this.upData(this.item))
+    // console.log(this.heights)
+    // console.log(this.heights-88)
+    // console.log(this.upData(this.item))
     //debugger;
     //this.getTableDataParams();
     // cell-click   (row, column, cell, event)
@@ -93,10 +109,9 @@ export default {
   },
 
   methods: {
-
-     btnClick(btn){
-        btn.handler(this,btn);
-     },
+    btnClick(btn) {
+      btn.handler(this, btn);
+    },
     //pagesize改变时触发 ---- 分页功能
     handleSizeChange: function(size) {
       this.pagesize = size;
@@ -105,19 +120,21 @@ export default {
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
     },
-    getDatas(item) {
+    setTableDatas(item) {
       let rows = item.config.rows;
+      let tempDatas = [];
       if (rows && rows.length > 0) {
-        return rows;
+        tempDatas =  rows;
+      }else{
+        tempDatas =  item.datas;
       }
-
-      return item.datas;
+      this.$set(this,"tableDatas",tempDatas)
+      return this.tableDatas;
     },
-
     upData(item) {
-     // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
+      this.setTableDatas(item);
       let refs = this.$refs;
       if (refs) {
         if (refs.child) {
@@ -136,34 +153,29 @@ export default {
         }
       }
     },
-    // rowClass({ row, rowIndex }) {
-    //   // 头部颜色和居中配置,马军2018.12.24
-    //   return "background:#F0F8FF;text-align: center";
-    // },
+    rowClass({ row, rowIndex }) {
+      // 头部颜色和居中配置,马军2018.12.24
+      return "background:#F0F8FF;text-align: center";
+    },
     /**
      * 单元格级别样式设置
      */
-
-    // 表格的高度 12.26
-    rowClass({ row, rowIndex }) {
-      // return "height:100%-64px";
-      return "height: calc(100% - 110px)"
-    },
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
+      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
-      let css = "padding: 4px 0;";
+      let css = "padding: 4px 0;",record = row.row;
       let pro = row.column.property;
-      if (!pro) {
+      if (!pro || !record.hasOwnProperty(pro)) {
         return css;
       }
       let levelProperties = this.item.levelProperties || this.levelProperties;
-      let textIndent = "",
-        record = row.row;
+      let textIndent = "";
+     
       let levelPro = levelProperties[pro];
       if (levelPro && record[levelPro]) {
         let level = record[levelPro] || 1;
@@ -183,13 +195,13 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
-      debugger
-      console.log(this)
+      debugger;
+      // console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
         let cv = column.property + "",
           len = cv.length;
-          console.log(cv)
+        // console.log(cv)
         let id = row.id,
           text = row[cv];
         if (cv.substring(len - 1, len) === "_") {
@@ -215,11 +227,11 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-     // debugger
-       if(this.item.onCellClick && typeof(this.item.onCellClick) == "function"){
-            return this.item.onCellClick(row, column, cell, event,this);
-        }
-        this.onCellClickDefault(row, column, cell, event);
+      // debugger
+      if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
+        return this.item.onCellClick(row, column, cell, event, this);
+      }
+      this.onCellClickDefault(row, column, cell, event);
       // this.dialogVisible = true
       // this.a = event.path[0].innerHTML //获取到某一个单元格数据
       // this.b = event.target.innerHTML//获取到某一个单元格数据
@@ -231,22 +243,21 @@ export default {
       // console.log(column)
     },
 
-    getSummaries(param){
-        debugger;
-        const { columns, data } = param;
-            const sums = {};
-            columns.forEach((column, index) => {
-               let datas = 0;
-               if(column.property.length == 1){
-                   data.forEach((row, index) => {
-                       datas+=row[column.property];
-                   });
-               }
-               sums[column.property] = datas;
-                  
-            });
-            debugger;
-            return sums;
+    getSummaries(param) {
+      debugger;
+      const { columns, data } = param;
+      const sums = {};
+      columns.forEach((column, index) => {
+        let datas = 0;
+        if (column.property.length == 1) {
+          data.forEach((row, index) => {
+            datas += row[column.property];
+          });
+        }
+        sums[column.property] = datas;
+      });
+      debugger;
+      return sums;
     },
 
     /**
@@ -435,8 +446,11 @@ export default {
 };
 </script>
 <style >
-.toolbar{
-  margin:2px 0 5px 0;
+.toolbar {
+  margin: 2px 0 5px 0;
+}
+.el-table {
+  background-color: transparent !important;
 }
 .el-table td,
 .el-table th {
@@ -449,9 +463,9 @@ export default {
 /* 数字靠右 */
 /* .el-table td.is-center {
   text-align: right;
+     
 } */
-
-.gutter{
-  display: none;
-}
+/* table th.gutter {
+    display: none !important;
+} */
 </style>
