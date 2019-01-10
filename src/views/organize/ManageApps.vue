@@ -3,11 +3,11 @@
         <multipane class="custom-resizer" layout="vertical" style="height: 100%">
             <div class="pane" style="height: 100%">
                 <div class="left-con" style="height: 100%">
+                    <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search" placeholder="请输入内容"
+                              clearable class="input-with-select" >
+                    </el-input>
 
-                    <el-scrollbar style="height: 100%;">
-                        <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search" placeholder="请输入内容"
-                                  clearable class="input-with-select" >
-                        </el-input>
+                    <el-scrollbar style="height: 90%;min-height: 600px;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
                         <el-tree
                                 :data="compList"
                                 node-key="id"
@@ -270,9 +270,9 @@
             }
 
             .input-with-select {
-                width: 220px;
+                width: 260px;
                 height: 30px;
-                margin: 20px;
+                margin: 25px 20px 25px 20px;
                 background: rgba(218, 217, 216, 0.6);
                 opacity: 1;
                 border-radius: 6px;

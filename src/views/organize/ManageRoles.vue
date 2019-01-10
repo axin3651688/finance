@@ -2,13 +2,15 @@
     <el-container>
         <el-aside>
 
-            <el-scrollbar style="height: 100%">
 
                 <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
                           class="input-with-select">
                 </el-input>
 
-                <ul style="margin-bottom: 100px">
+
+            <el-scrollbar style="height: 80%">
+
+                <ul style="margin-bottom:40px;height: 100%;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
                     <li :class="['item_role', {active: item.id===selectRole.id}]"
                         v-show="item.text.toLowerCase().includes(search.toLowerCase())" v-for="item in roleList"
                         @click="selectRole=item">
@@ -30,28 +32,7 @@
                     </li>
                 </ul>
 
-                <el-button class="aside-btn" @click="createDialogVisible = true" type="primary">添加角色</el-button>
 
-                <el-dialog
-                        :visible.sync="createDialogVisible"
-                        width="24%"
-                        center>
-                    <el-form :model="formCreate">
-                        <el-form-item>
-                            <el-input placeholder="角色名称" maxlength="10" v-model="formCreate.name" clearable class="dialog-input name"></el-input>
-                        </el-form-item>
-                        <el-form-item  prop="desc">
-                            <el-input placeholder="角色描述"  maxlength="100" clearable  type="textarea"
-                                      :autosize="{ minRows: 2, maxRows: 4}"  v-model="formCreate.note" class="dialog-input note"></el-input>
-                        </el-form-item>
-                    </el-form>
-
-                    <span slot="title" class="dialog-title">创建角色</span>
-                    <span slot="footer" class="dialog-footer">
-                        <el-button @click="createDialogVisible = false">保存，并返回</el-button>
-                        <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
-                      </span>
-                </el-dialog>
 
                 <el-dialog
                         :visible.sync="updateDialogVisible"
@@ -74,6 +55,28 @@
                 </el-dialog>
             </el-scrollbar>
 
+            <el-button class="aside-btn" @click="createDialogVisible = true" type="primary">添加角色</el-button>
+
+            <el-dialog
+                    :visible.sync="createDialogVisible"
+                    width="24%"
+                    center>
+                <el-form :model="formCreate">
+                    <el-form-item>
+                        <el-input placeholder="角色名称" maxlength="10" v-model="formCreate.name" clearable class="dialog-input name"></el-input>
+                    </el-form-item>
+                    <el-form-item  prop="desc">
+                        <el-input placeholder="角色描述"  maxlength="100" clearable  type="textarea"
+                                  :autosize="{ minRows: 2, maxRows: 4}"  v-model="formCreate.note" class="dialog-input note"></el-input>
+                    </el-form-item>
+                </el-form>
+
+                <span slot="title" class="dialog-title">创建角色</span>
+                <span slot="footer" class="dialog-footer">
+                        <el-button @click="createDialogVisible = false">保存，并返回</el-button>
+                        <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
+                      </span>
+            </el-dialog>
 
         </el-aside>
 
@@ -192,10 +195,10 @@
             width: 30%;
             min-width: 100px;
             height: 100%;
+            min-height: 600px;
             background: rgba(255, 255, 255, 1);
             box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
             opacity: 1;
-
             .item_role {
                 position: relative;
                 display: flex;
@@ -250,9 +253,9 @@
             }
 
             .input-with-select {
-                width: 220px;
+                width: 260px;
                 height: 30px;
-                margin: 20px;
+                margin: 25px 20px 25px 20px;
                 background: rgba(218, 217, 216, 0.6);
                 opacity: 1;
                 border-radius: 6px;

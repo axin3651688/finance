@@ -25,7 +25,7 @@
             </el-table-column>
             <el-table-column prop="role" align="center" label="角色" width="180">
             </el-table-column>
-            <el-table-column prop="time" align="center" label="登录时间">
+            <el-table-column prop="time" sortable align="center" label="登录时间">
             </el-table-column>
         </el-table>
     </div>
