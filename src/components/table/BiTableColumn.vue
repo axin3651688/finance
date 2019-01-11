@@ -25,11 +25,19 @@
       <el-button @click="templateClick(scope.row)" type="text" size="small">
         <img v-if= "col.icon" :src="col.icon" alt="">
         <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
-         <el-cascader
-            :options="options"
-            @click="dilogShow(col,scope)"
-            >
-          </el-cascader>
+         <el-cascader :options="options" @change="dilogShow"></el-cascader>
+         <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="dilogShow"
+          >
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog>
       </el-button>
     </template>
   </el-table-column>
@@ -161,6 +169,13 @@ export default {
   },
   mixins: [ShowDialog],
   methods: {
+      dilogShow() {
+      this.$confirm("<div>111</div>")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
     ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
     //   return "text-align:center";
