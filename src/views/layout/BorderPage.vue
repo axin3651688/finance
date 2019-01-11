@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <OpenDialog :showDialog="showDialog"></OpenDialog>
+    <OpenDialog/>
     <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -29,7 +29,7 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
-    ...mapGetters(["sidebar", "device", "user", "showDialog"]),
+    ...mapGetters(["sidebar", "device", "user"]),
     styleSlect() {
       if (!Cnbi.isEmpty(this.user)) {
         this.user.company.id === 121
