@@ -11,7 +11,7 @@ export default {
     debugger;
   },
   components: {
-    ShowDialog: () => import("@c/common/OpenDialog")
+   
   }
 };
 </script>

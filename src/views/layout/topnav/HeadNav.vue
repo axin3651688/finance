@@ -11,7 +11,12 @@
         <el-button type="text" class="underline">{{companyName}}</el-button>
       </span>
 
-      <el-dialog title="选择公司" :visible.sync="dialogVisible" :modal-append-to-body="false">
+      <el-dialog
+        title="选择公司"
+        :visible.sync="dialogVisible"
+        :modal-append-to-body="false"
+        v-dialogDrag
+      >
         <companyTree @click="getname"/>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>

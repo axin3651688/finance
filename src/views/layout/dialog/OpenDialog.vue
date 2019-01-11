@@ -1,13 +1,14 @@
 <template>
   <el-dialog
     :modal="true"
-    :modal-append-to-body="true"
+    :modal-append-to-body="false"
     :visible.sync="showDialog.isShow"
     :width="showDialog.width"
     :height="showDialog.height"
     :close-on-click-modal="false"
     :show-close="true"
     :close-on-press-escape="true"
+    lock-scroll
   >
     <span slot="title" class="dialog-title">
       <img src="@a/icons/jsnk/laba.svg">

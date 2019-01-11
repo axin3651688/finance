@@ -33,6 +33,7 @@
       border: none;
       background-color: $menuBg;
       height: calc(100% - #{$min_sideWidth});
+
       // overflow: auto;
       .avatarleft {
         height: $avatarleft-height;
@@ -49,6 +50,7 @@
         font-weight: $font-weight2;
         margin-left: $nochild-margin-left;
         border-radius: 8px 0px 0px 8px;
+
         // 当鼠标移到上面时颜色1
         &:hover {
           background-color: $menuHover;
@@ -100,6 +102,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+
           // 当鼠标移到上面时颜色1
           &:hover {
             background-color: $menuHover;
@@ -226,6 +229,9 @@
 
 // 这是手机时水平显示跟App同级必须写最外面
 .el-menu--vertical {
+  overflow: auto;
+  max-height: 800px;
+
   .el-menu--popup {
     background-color: $menuBg;
     color: $fontActive;

@@ -11,7 +11,6 @@
         :default-openeds="openeds"
         :default-active="active"
         class="leftmemu"
-        unique-opened
       >
         <div class="username" v-if="user.company.id === 121">
           <img :src="user.user.avatar" alt>
