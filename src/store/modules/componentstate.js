@@ -13,7 +13,8 @@ const app = {
       switchStyle: true,
       tittle: "标题",
       width: "35%",
-      height: "1000px"
+      height: "1000px",
+      api: "cnbi/json/source/chart/pie.json"
     }
   },
   mutations: {
