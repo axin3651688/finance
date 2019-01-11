@@ -91,6 +91,8 @@ export default {
                 et.leaf = true;
               } else {
                 et.leaf = false;
+                debugger;
+                getCompanyTree(this.licenseId, "company", "0", et.id);
               }
             });
             let data = res.data.data;

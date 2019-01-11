@@ -166,6 +166,9 @@ export default {
       module.activeTabName = text;
     }
   },
+  showDialog() {
+    debugger
+  },
   /**
    * 表格的单元格事件
    */

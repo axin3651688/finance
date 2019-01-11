@@ -25,7 +25,7 @@ export default {
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
     leftMenu: () => import("./sidebar/Sidebar"),
-    OpenDialog: () => import("@c/common/OpenDialog.vue")
+    OpenDialog: () => import("@v/layout/dialog/OpenDialog.vue")
   },
   mixins: [ResizeMixin],
   computed: {
@@ -52,8 +52,6 @@ export default {
   },
   created() {
     this.styleSlect;
-    debugger;
-    console.log(this.showDialog);
   },
 
   methods: {

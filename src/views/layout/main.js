@@ -11,7 +11,8 @@ import '../../../node_modules/handsontable/dist/handsontable.full.css'
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'
 Vue.component('chart', VueECharts);
-
+// 引入Dialog可拖拽，注意文件所在目录。目前尚未发现引入的先后关系，若有再补充
+import './dialog/directives.js';
 import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
 
 Vue.use(ZkTable)

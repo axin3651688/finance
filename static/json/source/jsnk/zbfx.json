@@ -157,7 +157,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
                     "handler": ($vue, params) => {
                         let itemBean = {
                             id: $vue.item.id,
@@ -205,7 +205,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
                     "handler": ($vue, params) => {
                         let itemBean = {
                             id: $vue.item.id,
@@ -249,7 +249,7 @@
                 "listeners": [{
                     "type": "click",
                     "way": "addTab",
-                    "sourceApi": "cnbi/json/source/chart/zjjzqk1.json",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
                     "handler": ($vue, params) => {
                         let itemBean = {
                             id: $vue.item.id,
@@ -291,6 +291,19 @@
                 "id": "194",
                 "text": "净资产收益率",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/jzcsyl.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -323,6 +336,18 @@
                 "id": "235",
                 "text": "营业预算执行率",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysryszxl.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "gauge",
@@ -354,6 +379,18 @@
                 "id": "236",
                 "text": "利润总额预算执行率",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/lrzzyszxl.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "gauge",
@@ -602,6 +639,19 @@
                 "id": "lrb3",
                 "text": "营业收入、利润总额及归属于母公司净利润增减率趋势图",
                 "weight": 18,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr-lrze.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+
+                    }
+                }],
                 "config": {
                     "_cube": {
                         "subject": "0002",

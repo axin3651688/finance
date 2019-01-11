@@ -15,7 +15,6 @@ export default {
     JtreeGrid: () => import("./table/Jtreegrid.vue"),
     CTreeGrid: () => import("./CTreeGrid.vue"),
     BiFlhz: () => import("./BiFlhz")
-    // BiButton: () => import("./BiButton")
   },
   data() {
     return {
@@ -24,8 +23,8 @@ export default {
     };
   },
   created() {
-    console.log(this.item);
-    debugger
+    // console.log(this.item);
+    debugger;
     // console.info(this.datas);
     // console.info(this.config);
   },

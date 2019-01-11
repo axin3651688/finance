@@ -21,7 +21,13 @@
         </el-menu-item>
       </el-tooltip>
       <!--有多级菜单-->
-      <el-submenu v-if="navMenu.leaf==0" :key="navMenu.code" :data="navMenu" :index="navMenu.code">
+      <el-submenu
+        v-if="navMenu.leaf==0"
+        :key="navMenu.code"
+        :data="navMenu"
+        :index="navMenu.code"
+        popper-append-to-body
+      >
         <template slot="title">
           <img :src="navMenu.avatar" v-if="navMenu.level===2" class="avatarleft fa-margin iconfont">
           <span>{{navMenu.text}}</span>

@@ -36,7 +36,7 @@ const app = {
       state.device = device
     },
     SHOW_DIALOG: (state, data) => {
-      debugger
+      // debugger
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.showDialog[keys] = data[keys]

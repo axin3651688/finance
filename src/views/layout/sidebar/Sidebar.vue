@@ -11,7 +11,6 @@
         :default-openeds="openeds"
         :default-active="active"
         class="leftmemu"
-        unique-opened
       >
         <div class="username" v-if="user.company.id === 121">
           <img :src="user.user.avatar" alt>
@@ -57,7 +56,7 @@ export default {
       // console.log(mapArry);
       // debugger;
       let me = this;
-      // 设个定时器把定时任务做上去,让二级目录数据自动加载
+      // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
       setTimeout(function() {
         mapArry.forEach(element => {
           me.handleOpen(this.openPid, [element + ""]);
@@ -125,7 +124,7 @@ export default {
       }
       this.nodes.push(clickNodeId);
       if (!flag) {
-        console.log(key, code);
+        // console.log(key, code);
 
         if (code.length === 1) {
           this.fetchData(userId, code[0]);
