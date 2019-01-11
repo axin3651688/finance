@@ -1,8 +1,5 @@
 <template>
-
-    <splitpanes watch-slots   @resized="resized($event)" class="default-theme" style="height:100vh">
-
-
+    <splitpanes watch-slots @resized="resized($event)" class="default-theme" style="height:100vh">
         <div class="left-col" :splitpanes-default="leftWidth" splitpanes-min="18">
             <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
                       class="input-with-select">
@@ -134,8 +131,8 @@
         },
         data() {
             return {
-                leftWidth:20,
-                rightWidth:80,
+                leftWidth: 20,
+                rightWidth: 80,
                 createDialogVisible: false,
                 updateDialogVisible: false,
                 roleList: [],
@@ -159,8 +156,8 @@
             this.getRoleList()
         },
         methods: {
-            resized(val){
-                console.log('resized',val)
+            resized(val) {
+                console.log('resized', val)
                 this.leftWidth = val[0].width
                 this.rightWidth = val[1].width
             },
@@ -203,7 +200,6 @@
         color: rgba(255, 255, 255, 1);
     }
 
-
     .default-theme {
         font-family: $fontFamilyMain;
         position: relative;
@@ -234,7 +230,7 @@
             .left-scrollbar {
                 height: 90%;
                 border-top-width: 1px;
-                padding: 0 0 50px 0 ;
+                padding: 0 0 50px 0;
                 border-top-style: solid;
                 border-top-color: rgba(159, 167, 174, 0.6);
             }

@@ -1,8 +1,6 @@
 <template>
     <splitpanes watch-slots  @resized="resized($event)" class="default-theme" style="height:100vh">
-
-
-        <div class="left-col" :splitpanes-default="leftWidth"  splitpanes-min="10">
+        <div class="left-col" :splitpanes-default="leftWidth"  splitpanes-min="18">
             <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search"
                       placeholder="请输入内容"
                       clearable class="input-with-select">

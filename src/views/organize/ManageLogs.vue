@@ -2,7 +2,6 @@
     <div class="root">
 
         <div class="header">
-
             <el-cascader
                     class="btn-module"
                     placeholder="模块"
@@ -10,42 +9,46 @@
                     clearable
             ></el-cascader>
 
-            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable class="input-with-select">
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable
+                      class="input-with-select">
             </el-input>
         </div>
-
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))"
-                stripe height="80vh" max-height="80vh" class="main_table" :header-cell-style="getHeaderClass"
+                stripe  max-height="100%" class="main_table" :header-cell-style="getHeaderClass"
                 :cell-style="getRowClass" :default-sort="{prop: 'time', order: 'descending'}">
-            <el-table-column prop="name" align="center" min-width="20%" label="操作人"  >
+            <el-table-column prop="name" align="center" min-width="20%" label="操作人">
                 <template slot-scope="scope">
                     <div class="row-user-an">
-                    <div class="row-user-col">
-                        <img class="row-user-avatar" :src="scope.row.avatar">
-                        <span class="row-user-name">{{ scope.row.name }}</span>
-                    </div>
+                        <div class="row-user-col">
+                            <img class="row-user-avatar" :src="scope.row.avatar">
+                            <span class="row-user-name">{{ scope.row.name }}</span>
+                        </div>
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="module" align="center" min-width="20%" label="模块"  >
+            <el-table-column prop="module" align="center" min-width="20%" label="模块">
             </el-table-column>
-            <el-table-column prop="action" align="center" min-width="40%" label="动作"  >
+            <el-table-column prop="action" align="center" min-width="40%" label="动作">
             </el-table-column>
             <el-table-column prop="time" min-width="10%" align="center" label="时间">
             </el-table-column>
         </el-table>
 
-        <div class="page">
-            <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="15"
-                    layout="prev, pager, next, jumper"
-                    :total="1000">
-            </el-pagination>
+        <div v-show="tableData.length>pageSize" class="page-row">
+            <div class="page">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="pageSize"
+                        background
+                        layout="prev, pager, next, total, jumper"
+                        :total="tableData.length">
+                </el-pagination>
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -55,32 +58,33 @@
         data() {
             return {
                 search: '',
-                currentPage:1,
-                moduleData:[],
+                currentPage: 1,
+                moduleData: [],
                 tableData: [],
-                tipModule:'模块',
+                pageSize: 20,
+                tipModule: '模块',
             }
         },
         mounted() {
             this.getTableData()
         },
         methods: {
-            getTableData(){
-                let tempTableList=[];
-                let tempModuleList=[];
-                for (let i =0;i<14;i++) {
-                  let temp =   {
+            getTableData() {
+                let tempTableList = [];
+                let tempModuleList = [];
+                for (let i = 0; i < 21; i++) {
+                    let temp = {
                         avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                            time: '2016-10-05',
-                        name: 'Name:'+i,
-                        module: '分析助手:'+i,
-                        action: '修改了报告:'+i,
-                        id:i,
+                        time: '2016-10-05',
+                        name: 'Name:' + i,
+                        module: '分析助手:' + i,
+                        action: '修改了报告:' + i,
+                        id: i,
                     }
 
-                    let tempModule =   {
-                        label: '分析助手:'+i,
-                        value:i,
+                    let tempModule = {
+                        label: '分析助手:' + i,
+                        value: i,
                     }
                     tempModuleList.push(tempModule)
                     tempTableList.push(temp)
@@ -148,44 +152,51 @@
         transition: all .3s;
         line-height: 0px;
 
-        font-size:14px;
-        font-family:Microsoft YaHei;
-        font-weight:400;
-        line-height:19px;
-        color:rgba(102,102,102,0.80);
-        opacity:1;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        line-height: 19px;
+        color: rgba(102, 102, 102, 0.80);
+        opacity: 1;
     }
-    /deep/.el-button{
+
+    /deep/ .el-button {
         padding: 0px 20px 0px 20px;
-        color:rgba(102,102,102,0.80);
+        color: rgba(102, 102, 102, 0.80);
     }
-    /deep/.el-button:focus, .el-button:hover{
-        color:rgba(102,102,102,0.80);
+
+    /deep/ .el-button:focus, .el-button:hover {
+        color: rgba(102, 102, 102, 0.80);
     }
+
     .root {
         padding: 20px;
-
-        .btn-module{
-            height:30px;
-            min-width: 100px;
-            background:rgba(255,255,255,1);
-            box-shadow:0px 3px 6px rgba(0,0,0,0.2);
-            opacity:1;
-            border-radius:8px;
-            border: 0px;
-            font-size:14px;
-            font-family:Microsoft YaHei;
-            font-weight:400;
-            line-height: 30px;
-            color:rgba(102,102,102,0.80);
-
-        }
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
 
         .header {
             padding: 20px 0 0 0;
             display: flex;
             align-items: center;
             justify-content: start;
+
+            .btn-module {
+                height: 30px;
+                min-width: 100px;
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+                opacity: 1;
+                border-radius: 8px;
+                border: 0px;
+                font-size: 14px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                line-height: 30px;
+                color: rgba(102, 102, 102, 0.80);
+
+            }
+
             .input-with-select {
                 width: 220px;
                 height: 30px;
@@ -203,20 +214,23 @@
             margin: 20px 0px 0px 0px;
             border-radius: 20px 20px 20px 20px;
             box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
-            /deep/ .gutter{
-                background: rgba(221,235,246,1);
+
+            /deep/ .gutter {
+                background: rgba(221, 235, 246, 1);
             }
 
-            .row-user-an{
+            .row-user-an {
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
+
                 .row-user-col {
                     display: flex;
                     flex-direction: row;
                     justify-content: start;
                     align-items: center;
+
                     .row-user-avatar {
                         margin-left: 20px;
                         height: 40px;
@@ -237,9 +251,15 @@
 
         }
 
-        .page{
-            margin: 10px 0 20px 0;
+        .page-row {
+            display: flex;
+            justify-content: center;
+
+            .page {
+                margin: 10px 0 0px 0;
+            }
         }
+
 
     }
 </style>
