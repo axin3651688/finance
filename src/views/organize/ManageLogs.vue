@@ -3,14 +3,12 @@
 
         <div class="header">
 
-            <el-dropdown  trigger="click"  @command="handleCommand">
-                <el-button   type="plain" class="btn-module" >{{tipModule}}<i class="el-bi-icon-xiala"  style="margin-left: 10px"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="item.module" v-for="item in tableData">{{item.module}}</el-dropdown-item>
-                        <el-dropdown-item  command="0">不选择</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+            <el-cascader
+                    class="btn-module"
+                    placeholder="模块"
+                    :options="moduleData"
+                    clearable
+            ></el-cascader>
 
             <el-input v-model="search" suffix-icon="el-icon-search" placeholder="名称/动作" clearable class="input-with-select">
             </el-input>
@@ -59,6 +57,7 @@
             return {
                 search: '',
                 currentPage:1,
+                moduleData:[],
                 tableData: [],
                 tipModule:'模块',
             }
@@ -68,7 +67,8 @@
         },
         methods: {
             getTableData(){
-                let tempList=[];
+                let tempTableList=[];
+                let tempModuleList=[];
                 for (let i =0;i<14;i++) {
                   let temp =   {
                         avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
@@ -78,9 +78,16 @@
                         action: '修改了报告:'+i,
                         id:i,
                     }
-                    tempList.push(temp)
+
+                    let tempModule =   {
+                        label: '分析助手:'+i,
+                        value:i,
+                    }
+                    tempModuleList.push(tempModule)
+                    tempTableList.push(temp)
                 }
-                this.tableData = tempList;
+                this.tableData = tempTableList;
+                this.moduleData = tempModuleList;
             },
             //设置表格第一行的颜色
             getHeaderClass({row, column, rowIndex, columnIndex}) {
@@ -114,14 +121,7 @@
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
             },
-            handleCommand(command) {
-                if (command=='0'){
-                    this.tipModule  = "模块"
-                }else {
-                    this.tipModule  = command
-                }
 
-            }
         }
     }
 </script>
@@ -168,7 +168,7 @@
 
         .btn-module{
             height:30px;
-            min-width: 160px;
+            min-width: 100px;
             background:rgba(255,255,255,1);
             box-shadow:0px 3px 6px rgba(0,0,0,0.2);
             opacity:1;
@@ -177,7 +177,7 @@
             font-size:14px;
             font-family:Microsoft YaHei;
             font-weight:400;
-            line-height:19px;
+            line-height: 30px;
             color:rgba(102,102,102,0.80);
             i{
                 font-size: 14px;

@@ -23,7 +23,7 @@
 
                         <el-dropdown @command="handleCommand">
 
-                                <span style="margin-right: 20px" v-show="selectRole.id===item.id"
+                                <span v-on:click.stop="" style="margin-right: 20px" v-show="selectRole.id===item.id"
                                       class="el-dropdown-link">
                                     <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
                                 </span>
