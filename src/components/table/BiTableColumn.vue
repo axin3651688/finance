@@ -27,6 +27,7 @@
         <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
          <el-cascader
             :options="options"
+            @click="dilogShow(col,scope)"
             >
           </el-cascader>
       </el-button>
