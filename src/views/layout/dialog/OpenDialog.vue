@@ -14,7 +14,7 @@
       <img src="@a/icons/jsnk/laba.svg">
       <span>{{showDialog.tittle}}</span>
     </span>
-    <BiModule></BiModule>
+    <BiModule :dialogData="dialogData"></BiModule>
     <span>{{showDialog.data}}</span>
     <span slot="footer" class="dialog-footer">
       <el-button @click="ShowDialog({isShow:false})">关 闭</el-button>
@@ -29,6 +29,11 @@ export default {
   created() {},
   components: {
     BiModule
+  },
+  data() {
+    return {
+      dialogData: "cnbi/json/source/chart/bar.json"
+    };
   },
   methods: {
     ...mapActions(["ShowDialog"])
