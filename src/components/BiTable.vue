@@ -19,7 +19,7 @@
       border
       :stripe="true"
       style="width: 100%"
-      :height="item.height || heights-88"
+      :height="item.height || heights-170"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
@@ -500,7 +500,7 @@ export default {
   text-align: right;
      
 } */
-/* table th.gutter {
-    display: none !important;
-} */
+table th.gutter {
+    display: none ;
+}
 </style>
