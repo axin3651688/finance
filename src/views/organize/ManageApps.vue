@@ -76,89 +76,11 @@
             MultipaneResizer
         },
         data() {
-            const data = [{
-                id: 1,
-                label: '一级啊啊三级啊啊三级啊啊三级啊啊 1',
-                children: [{
-                    id: 4,
-                    label: '二级啊啊三级啊啊三级啊啊三级啊啊 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-1',
-                        children: [{
-                            id: 11,
-                            label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-1'
-                        }, {
-                            id: 12,
-                            label: '三级啊啊三级啊啊三级啊啊三级啊啊 1-1-2'
-                        }]
-                    }, {
-                        id: 10,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 13,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 14,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 15,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 16,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 17,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 18,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 19,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 20,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 21,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 22,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 23,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }, {
-                        id: 24,
-                        label: '三级啊啊三级啊啊三级啊啊 1-1-2'
-                    }]
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }];
             return {
                 value1: true,
                 search: '',
                 selectComp: {},
-                compList: JSON.parse(JSON.stringify(data)),
+                compList: [],
                 defaultProps: {
                     children: 'children',
                     label: 'label'
@@ -188,7 +110,7 @@
             }
         },
         mounted() {
-
+            this.getTreeData()
         },
         methods: {
             changeStatus: function ($event, item) {
@@ -209,6 +131,35 @@
                 console.log('search', this.search);
                 console.log('filterNode', value);
                 return data.label.indexOf(value) !== -1;
+            },
+            getTreeData() {
+                let oneList = []
+                for (let i = 0; i < 10; i++) {
+                    let oneTemp = {
+                        id: 'i' + i,
+                        label: '1级公司:' + i,
+                        children: []
+                    }
+                    for (let j = 0; j < i; j++) {
+                        let twoTemp = {
+                            id: 'i'+i+'j' + j,
+                            label: '2级公司:' + 'i'+i+'j' + j,
+                            children: []
+                        }
+
+                        for (let k = 0; k < j; k++) {
+                            let threeTemp = {
+                                id: 'i'+i+'j' + j+'k' + k,
+                                label: '3级公司:' + 'i'+i+'j' + j+'k' + k,
+                                children: []
+                            }
+                            twoTemp.children.push(threeTemp)
+                        }
+                        oneTemp.children.push(twoTemp)
+                    }
+                    oneList.push(oneTemp)
+                }
+                this.compList = oneList
             }
         }
     }
@@ -319,13 +270,15 @@
                         overflow: hidden;
                         margin-left: 20px;
                         text-overflow: ellipsis;
+                        color:rgba(102,102,102,0.80);
                         white-space: nowrap;
+                    }
+                    .node-text.active {
+                        color: rgba(255, 255, 255, 1);
                     }
                 }
 
-                .node-text.active {
-                    color: rgba(255, 255, 255, 1);
-                }
+
 
                 .el-icon-more {
                     color: white;
