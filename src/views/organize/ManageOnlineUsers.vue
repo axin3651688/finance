@@ -9,10 +9,10 @@
         </div>
 
 
-        <div class="main-table">
+        <div >
             <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                    stripe     :header-cell-style="getRowClass">
+                    stripe  class="main-table"   :header-cell-style="getRowClass">
                 <el-table-column prop="name" align="center" label="用户名" min-width="20%">
                     <template slot-scope="scope">
                         <div class="row-user-an">
@@ -118,6 +118,7 @@
     }
 
     .root {
+
         padding: 20px;
         height: 100%;
 

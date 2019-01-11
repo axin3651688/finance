@@ -178,7 +178,7 @@
     }
 
     /deep/ .el-tree-node__content {
-        height: 60px;
+        padding: 30px 0 30px 0;
         background: rgba(255, 255, 255, 1);
 
         .is-current {
@@ -222,6 +222,7 @@
 
         .custom-resizer > .pane {
             background: rgba(255, 255, 255, 1);
+            min-width: 250px;
 
             .left-con {
                 height: 100vh;
@@ -271,6 +272,7 @@
                         margin-left: 20px;
                         text-overflow: ellipsis;
                         color:rgba(102,102,102,0.80);
+                        line-height: 30px;
                         white-space: nowrap;
                     }
                     .node-text.active {
