@@ -78,6 +78,40 @@ export default {
      * name: sjz
      * 功能：添加刷新功能--作用在json里的hander方法中。
      */
+    handleDownload(vue) {
+      vue.downloadLoading = true
+      import('@/excel/Export2Excel').then(excel => {
+        const tHeader = [],filterVal = [];
+        const columns = vue.item.config.columns;
+        if(columns && columns.length > 0){
+           for(let i = 1;i < columns.length;i++){
+              if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);
+              if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);
+           }
+           tHeader.push(columns[0].text);
+           filterVal.push(columns[0].id);
+        }
+        const list = vue.item.datas;
+        const data = vue.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: vue.item.text,
+          autoWidth:  "200px",
+          bookType: 'xlsx'
+        })
+        vue.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
     btnClick(btn){
         btn.handler(this,btn);
      },

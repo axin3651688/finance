@@ -12,6 +12,7 @@
     "@handsontable/vue": "^3.1.0",
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
+    "file-saver": "^2.0.0",
     "handsontable": "^6.2.0",
     "handsontable-pro": "^6.2.2",
     "js-cookie": "^2.2.0",
@@ -22,7 +23,8 @@
     "vue-qriously": "^1.1.1",
     "vue-router": "^3.0.1",
     "vue-table-with-tree-grid": "^0.2.4",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "xlsx": "^0.14.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",
@@ -32,6 +34,7 @@
     "element-ui": "^2.4.9",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
+    "script-loader": "^0.7.2",
     "style-loader": "^0.23.1",
     "vue-template-compiler": "^2.5.17"
   },
