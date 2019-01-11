@@ -1,8 +1,8 @@
 <template>
-    <splitpanes watch-slots class="default-theme" style="height:100vh">
+    <splitpanes watch-slots  @resized="resized($event)" class="default-theme" style="height:100vh">
 
 
-        <div class="left-col" splitpanes-default="20"  splitpanes-min="10">
+        <div class="left-col" :splitpanes-default="leftWidth"  splitpanes-min="10">
             <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search"
                       placeholder="请输入内容"
                       clearable class="input-with-select">
@@ -35,7 +35,7 @@
                 </el-tree>
             </el-scrollbar>
         </div>
-        <div class="right-col" splitpanes-default="80" splitpanes-min="40">
+        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="40">
             <div class="edit-tab">
                 <div class="edit-title">已授权应用{{search}}</div>
                 <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 20px">添加应用
@@ -73,6 +73,8 @@
                 search: '',
                 selectComp: {},
                 compList: [],
+                leftWidth:20,
+                rightWidth:80,
                 defaultProps: {
                     children: 'children',
                     label: 'label'
@@ -108,6 +110,11 @@
 
         },
         methods: {
+            resized(val){
+              console.log('resized',val)
+                this.leftWidth = val[0].width
+                this.rightWidth = val[1].width
+            },
             changeStatus: function ($event, item) {
                 console.log($event);
                 console.log(this.appData);

@@ -1,9 +1,9 @@
 <template>
 
-    <splitpanes watch-slots class="default-theme" style="height:100vh">
+    <splitpanes watch-slots   @resized="resized($event)" class="default-theme" style="height:100vh">
 
 
-        <div class="left-col" splitpanes-default="20" splitpanes-min="18">
+        <div class="left-col" :splitpanes-default="leftWidth" splitpanes-min="18">
             <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
                       class="input-with-select">
             </el-input>
@@ -82,7 +82,7 @@
                       </span>
             </el-dialog>
         </div>
-        <div class="right-col" splitpanes-default="80" splitpanes-min="60">
+        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="60">
             <div class="el-main" v-if="roleList.length>0">
                 <div class="tab-main">
                     <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]">
@@ -134,6 +134,8 @@
         },
         data() {
             return {
+                leftWidth:20,
+                rightWidth:80,
                 createDialogVisible: false,
                 updateDialogVisible: false,
                 roleList: [],
@@ -157,6 +159,11 @@
             this.getRoleList()
         },
         methods: {
+            resized(val){
+                console.log('resized',val)
+                this.leftWidth = val[0].width
+                this.rightWidth = val[1].width
+            },
             handleCommand(command) {
                 if (command === 'update') {
                     console.log('updateRole：', this.selectRole)
