@@ -14,7 +14,6 @@
             </el-input>
         </div>
 
-
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))"
                 stripe height="80vh" max-height="80vh" class="main_table" :header-cell-style="getHeaderClass"
@@ -179,9 +178,6 @@
             font-weight:400;
             line-height: 30px;
             color:rgba(102,102,102,0.80);
-            i{
-                font-size: 14px;
-            }
 
         }
 
