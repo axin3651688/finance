@@ -109,7 +109,6 @@
                 "background-color":"#189271"
             },
            "handler":function(vue,btn){
-               debugger
                vue.handleDownload(vue);
            }
          }

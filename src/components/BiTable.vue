@@ -110,7 +110,6 @@ export default {
 
   methods: {
     handleDownload(vue) {//导出 zb
-    debugger;
       vue.downloadLoading = true
       import('@/excel/Export2Excel').then(excel => {
         const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id

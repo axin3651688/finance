@@ -40,7 +40,9 @@
             "text": "已形成实质性损失金额"
         },
         {
-            "id": ""
+            "id": "",
+            "text": "",
+             "hidden": true
         },
         {
             "id": "xm1",
@@ -114,17 +116,17 @@
                 vue.item.updateView("company");
             }
         }
-        // , {
-        //     "id": "2",
-        //     "text": "导出",
-        //     "cellStyle": {
-        //         "color": "black",
-        //         "background-color": "#189271"
-        //     },
-        //     "handler": function (vue, btn) {
-        //         console.log(vue);
-        //     }
-        // }
+        , {
+            "id": "2",
+            "text": "导出",
+            "cellStyle": {
+                "color": "black",
+                "background-color": "#189271"
+            },
+            "handler": function (vue, btn) {
+                vue.handleDownload(vue);
+            }
+        }
     ],
         "drillProperties": ["hs"], //有钻取，给蓝色
 
