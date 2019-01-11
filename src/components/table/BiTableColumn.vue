@@ -14,25 +14,24 @@
       </span>
     </template>
   </el-table-column>
-
-  <!-- 树表的操作列 -->
-    <el-table-column
-        v-else-if ="col.type== 'template' "
-        :prop="col.id"
-        :label="col.text"
-        :width="col.width||80"
-   
-      >
-       <template slot-scope="scope">
-        <el-button @click="templateClick(scope.row)" type="text">
-          <img src="@/assets/green/list_menu.svg" alt>
-            <el-cascader
+  <el-table-column
+    v-else-if="col.type== 'template' "
+    :prop="col.id"
+    :label="col.text"
+    :width="col.width||80"
+    fixed="right"
+  >
+    <template slot-scope="scope">
+      <el-button @click="templateClick(scope.row)" type="text" size="small">
+        <img v-if= "col.icon" :src="col.icon" alt="">
+        <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
+         <el-cascader
             :options="options"
             >
           </el-cascader>
-        </el-button>
-      </template>
-    </el-table-column>
+      </el-button>
+    </template>
+  </el-table-column>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
@@ -134,17 +133,18 @@
   </el-table-column>-->
 </template>
 <script>
-//import EventMixins from "../mixins/EventMixins";
-//import {getCellValue} from "../../utils/math"
+import { mapActions, mapGetters } from "vuex";
+import ShowDialog from "../mixins/ShowDialog";
+//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
   data() {
     return {
       // tableData1:''
-       options: [],
-    }
-    },
+      options:[]
+    };
+  },
   computed: {
     ...mapGetters(["year", "month"]),
     isFolder() {
@@ -157,30 +157,12 @@ export default {
   },
   created() {
     this.options = this.tableData.config.columns[0].menu.list
-    // console.log("ooo",this.options)
   },
+  mixins: [ShowDialog],
   methods: {
     ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
-
     //   return "text-align:center";
-    // },
-    handleChange(value) {
-        console.log(value);
-      },
-    templateClick(row){
-      debugger
-      if(this.tableData.templateClick && typeof(this.tableData.templateClick) == "function"){
-            return this.tableData.templateClick(row, event,this);
-        }
-    },
-    // handleChange(value, done) {
-    //   console.log(value);
-    //   this.$confirm("<div>111</div>")
-    //     .then(_ => {
-    //       done();
-    //     })
-    //     .catch(_ => {});
     // },
     upData(item) {
       debugger;
@@ -192,10 +174,15 @@ export default {
       // }
       // this.$set(this, "tableData1", item);
       // this.$set(this.tableData1, "datas", item.datas);
-
       this.$set(this, "tableData", null);
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
+    },
+    templateClick(row){
+      debugger
+      if(this.tableData.templateClick && typeof(this.tableData.templateClick) == "function"){
+            return this.tableData.templateClick(row, event,this);
+        }
     },
     /**
      * 获取单元格数据
@@ -245,7 +232,6 @@ export default {
       // value = ((value - 0) / 10000).toLocaleString();
       // 千分位  保留两位小数
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-
       return value;
     },
     //treeGrid function
@@ -266,12 +252,10 @@ export default {
         this.tableData.sync == true
       ) {
         console.log(trIndex);
-
         debugger;
       }
       const record = this.tableData.datas[trIndex];
       // console.log(record);
-
       record._expanded = !record._expanded;
     },
     generateApiModelDatas(item, $childVue, changeDim) {
@@ -340,7 +324,6 @@ export default {
     .cell {
       // max-width: 100%;
       // height: 100%;
-
       // overflow: hidden;
       // text-overflow: ellipsis;
       white-space: nowrap;
@@ -369,11 +352,11 @@ tbody {
 }
 </style>
 <style scoped>
-img {
+.img {
   width: 20px;
-  /* position: absolute; */
-  /* right: 50%; */
-  /* top: 5px; */
+  position: absolute;
+  right: 50%;
+  top: 5px;
   -moz-transform:rotate(-90deg);
   -webkit-transform:rotate(-90deg);
 }
@@ -403,7 +386,6 @@ img {
   width: 18px;
   height: 14px;
 }
-
 .ms-tree-space::before {
   content: "";
 }
