@@ -80,19 +80,19 @@
                 vue.item.updateView("company");
             }
         }
-        // , {
-        //     "id":"2",
-        //     "text":"导出",
-        //     "xtype":"button",
-        //     "cellStyle":{
-        //         "color":"black",
-        //         "background-color":"#189271"
-        //     },
-        //     "handler":function(vue,btn){
-        //         debugger
-        //         console.log(vue);
-        //     }
-        // }
+        , {
+            "id":"2",
+            "text":"导出",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+            "handler":function(vue,btn){
+                debugger
+                console.log(vue);
+            }
+        }
     ],
         "levelProperties":{text:"nlevel"},//加缩进 可选 table
         "onCellClick":function(row, column, cell, event,vue){//单元格点击事件

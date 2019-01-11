@@ -107,57 +107,57 @@
           vue.item.updateView("company");
       }
   }
-  // , {
-  //    "id":"2",
-  //    "text":"导出",
-  //    "xtype":"button",
-  //    "cellStyle":{
-  //         "color":"black",
-  //         "background-color":"#189271"
-  //     },
-  //    "handler":function(vue,btn){
-  //        debugger
-  //        console.log(vue);
-  //    }
-  // }
-  // ,{
-  //   "id":"3",
-  //    "text":"全部展开",
-  //    "xtype":"button",
-  //    "cellStyle":{
-  //         "color":"black",
-  //         "background-color":"#189271"
-  //     },
-  //    "handler":function(vue,btn){
-  //       debugger
-  //       console.log(vue);
-  //       let row = vue.item.rows; 
-  //       for(let i=0; i<row.length; i++){
-  //         if(row[i].children.length>0){
-  //           row[i]._expanded = true;
-  //         }
-  //       }
-  //    }
-  // }
-  // ,{
-  //   "id":"4",
-  //    "text":"全部收起",
-  //    "xtype":"button",
-  //    "cellStyle":{
-  //         "color":"black",
-  //         "background-color":"#189271"
-  //     },
-  //    "handler":function(vue,btn){
-  //       debugger
-  //       console.log(vue);
-  //       let row = vue.item.rows; 
-  //       for(let i=0; i<row.length; i++){
-  //         if(row[i].children.length>0){
-  //           row[i]._expanded = false;
-  //         }
-  //       }
-  //    }
-  // }
+  , {
+     "id":"2",
+     "text":"导出",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+         debugger
+         console.log(vue);
+     }
+  }
+  ,{
+    "id":"3",
+     "text":"全部展开",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+        debugger
+        console.log(vue);
+        let row = vue.item.rows; 
+        for(let i=0; i<row.length; i++){
+          if(row[i].children.length>0){
+            row[i]._expanded = true;
+          }
+        }
+     }
+  }
+  ,{
+    "id":"4",
+     "text":"全部收起",
+     "xtype":"button",
+     "cellStyle":{
+          "color":"black",
+          "background-color":"#189271"
+      },
+     "handler":function(vue,btn){
+        debugger
+        console.log(vue);
+        let row = vue.item.rows; 
+        for(let i=0; i<row.length; i++){
+          if(row[i].children.length>0){
+            row[i]._expanded = false;
+          }
+        }
+     }
+  }
 ]
     
   }],

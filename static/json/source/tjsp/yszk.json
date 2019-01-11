@@ -57,19 +57,19 @@
                             vue.item.updateView("company");
                         }
                     }
-                    // , {
-                    //    "id":"2",
-                    //    "text":"导出",
-                    //    "xtype":"button",
-                    //    "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //    "handler":function(vue,btn){
-                    //        debugger
-                    //        console.log(vue);
-                    //    }
-                    // }
+                    , {
+                       "id":"2",
+                       "text":"导出",
+                       "xtype":"button",
+                       "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                       "handler":function(vue,btn){
+                           debugger
+                           console.log(vue);
+                       }
+                    }
                 ],
                     
                     "config":{
@@ -185,31 +185,31 @@
                         }                       
                     },
                     "toolbar":[
-                    //     {
-                    //     "id":"1",
-                    //     "text":"全部展开",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // },{
-                    //     "id":"2",
-                    //     "text":"全部收起",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // },
+                        {
+                        "id":"1",
+                        "text":"全部展开",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"2",
+                        "text":"全部收起",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },
                     {
                         "id":"3",
                         "text":"刷新",
@@ -224,43 +224,43 @@
                             vue.item.updateView("company");
                         }
                     }
-                    // , {
-                    //    "id":"4",
-                    //    "text":"导出",
-                    //    "xtype":"button",
-                    //    "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //    "handler":function(vue,btn){
-                    //        debugger
-                    //        console.log(vue);
-                    //    }
-                    // },{
-                    //     "id":"5",
-                    //     "text":"安全比例",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // },{
-                    //     "id":"6",
-                    //     "text":"预警比例",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // }
+                    , {
+                       "id":"4",
+                       "text":"导出",
+                       "xtype":"button",
+                       "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                       "handler":function(vue,btn){
+                           debugger
+                           console.log(vue);
+                       }
+                    },{
+                        "id":"5",
+                        "text":"安全比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"6",
+                        "text":"预警比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    }
                 ],
                     "queryDataBefore":function(params,config,$vue){
                         debugger
