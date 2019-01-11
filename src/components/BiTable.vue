@@ -109,26 +109,26 @@ export default {
   },
 
   methods: {
-    handleDownload(vue) {
+    handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/Export2Excel').then(excel => {
-        const tHeader = [],filterVal = [];
+        const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
         const columns = vue.item.config.columns;
         if(columns && columns.length > 0){
            for(let i = 1;i < columns.length;i++){
-              if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);
-              if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);
+              if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
+              if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
            }
            tHeader.push(columns[0].text);
            filterVal.push(columns[0].id);
         }
-        let list = vue.item.datas;
-        if((!vue.item.datas || vue.item.datas) && !vue.item.config.sql)list = vue.item.config.rows;
-        const data = vue.formatJson(filterVal, list)
+        let list = vue.item.datas;//获取数据
+        if((!vue.item.datas || vue.item.datas) && !vue.item.config.sql)list = vue.item.config.rows;//cube配置时，显示配置的行数据
+        const data = vue.formatJson(filterVal, list);//根据id获取相应的数据
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: vue.item.text,
+          filename: vue.item.text,//导出表的表名称
           autoWidth: "200px",
           bookType: 'xlsx'
         })
