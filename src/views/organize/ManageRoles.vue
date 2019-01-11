@@ -1,92 +1,89 @@
 <template>
-    <div>
+
+    <splitpanes watch-slots class="default-theme" style="height:100vh">
 
 
-        <el-container>
-            <el-aside>
+        <div class="left-col" splitpanes-default="20" splitpanes-min="18">
+            <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
+                      class="input-with-select">
+            </el-input>
 
 
-                <el-input v-model="search" suffix-icon="el-icon-search" placeholder="请输入内容" clearable
-                          class="input-with-select">
-                </el-input>
+            <el-scrollbar class="left-scrollbar">
 
+                <ul style="margin-bottom:40px;height: 100%;  ">
+                    <li :class="['item_role', {active: item.id===selectRole.id}]"
+                        v-show="item.text.toLowerCase().includes(search.toLowerCase())" v-for="item in roleList"
+                        @click="selectRole=item">
+                        <!--{{item}}-->
 
-                <el-scrollbar style="height: 80%">
+                        <div class="role_text">{{item.text}}</div>
 
-                    <ul style="margin-bottom:40px;height: 100%;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
-                        <li :class="['item_role', {active: item.id===selectRole.id}]"
-                            v-show="item.text.toLowerCase().includes(search.toLowerCase())" v-for="item in roleList"
-                            @click="selectRole=item">
-                            <!--{{item}}-->
-
-                            <div class="role_text">{{item.text}}</div>
-
-                            <el-dropdown @command="handleCommand">
+                        <el-dropdown @command="handleCommand">
 
                                 <span v-on:click.stop="" style="margin-right: 20px" v-show="selectRole.id===item.id"
                                       class="el-dropdown-link">
                                     <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
                                 </span>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item command="update">修改</el-dropdown-item>
-                                    <el-dropdown-item command="delete">删除</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </li>
-                    </ul>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="update">修改</el-dropdown-item>
+                                <el-dropdown-item command="delete">删除</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </li>
+                </ul>
 
-
-                    <el-dialog
-                            :visible.sync="updateDialogVisible"
-                            width="24%"
-                            center>
-                        <el-form :model="formUpdate">
-                            <el-form-item>
-                                <el-input placeholder="角色名称" maxlength="10" v-model="formUpdate.name" clearable
-                                          class="dialog-input name"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="desc">
-                                <el-input placeholder="角色描述" maxlength="100" clearable type="textarea"
-                                          :autosize="{ minRows: 2, maxRows: 4}" v-model="formUpdate.note"
-                                          class="dialog-input note"></el-input>
-                            </el-form-item>
-                        </el-form>
-                        <span slot="title" class="dialog-title">修改角色</span>
-                        <span slot="footer" class="dialog-footer">
-                        <el-button @click="updateDialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="updateDialogVisible = false">保存</el-button>
-                        </span>
-                    </el-dialog>
-                </el-scrollbar>
-
-                <el-button class="aside-btn" @click="createDialogVisible = true" type="primary">添加角色</el-button>
 
                 <el-dialog
-                        :visible.sync="createDialogVisible"
+                        :visible.sync="updateDialogVisible"
                         width="24%"
                         center>
-                    <el-form :model="formCreate">
+                    <el-form :model="formUpdate">
                         <el-form-item>
-                            <el-input placeholder="角色名称" maxlength="10" v-model="formCreate.name" clearable
+                            <el-input placeholder="角色名称" maxlength="10" v-model="formUpdate.name" clearable
                                       class="dialog-input name"></el-input>
                         </el-form-item>
                         <el-form-item prop="desc">
                             <el-input placeholder="角色描述" maxlength="100" clearable type="textarea"
-                                      :autosize="{ minRows: 2, maxRows: 4}" v-model="formCreate.note"
+                                      :autosize="{ minRows: 2, maxRows: 4}" v-model="formUpdate.note"
                                       class="dialog-input note"></el-input>
                         </el-form-item>
                     </el-form>
-
-                    <span slot="title" class="dialog-title">创建角色</span>
+                    <span slot="title" class="dialog-title">修改角色</span>
                     <span slot="footer" class="dialog-footer">
+                        <el-button @click="updateDialogVisible = false">取消</el-button>
+                        <el-button type="primary" @click="updateDialogVisible = false">保存</el-button>
+                        </span>
+                </el-dialog>
+            </el-scrollbar>
+
+            <el-button class="aside-btn" @click="createDialogVisible = true" type="primary">添加角色</el-button>
+
+            <el-dialog
+                    :visible.sync="createDialogVisible"
+                    width="24%"
+                    center>
+                <el-form :model="formCreate">
+                    <el-form-item>
+                        <el-input placeholder="角色名称" maxlength="10" v-model="formCreate.name" clearable
+                                  class="dialog-input name"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="desc">
+                        <el-input placeholder="角色描述" maxlength="100" clearable type="textarea"
+                                  :autosize="{ minRows: 2, maxRows: 4}" v-model="formCreate.note"
+                                  class="dialog-input note"></el-input>
+                    </el-form-item>
+                </el-form>
+
+                <span slot="title" class="dialog-title">创建角色</span>
+                <span slot="footer" class="dialog-footer">
                         <el-button @click="createDialogVisible = false">保存，并返回</el-button>
                         <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
                       </span>
-                </el-dialog>
-
-            </el-aside>
-
-            <el-main v-if="roleList.length>0">
+            </el-dialog>
+        </div>
+        <div class="right-col" splitpanes-default="80" splitpanes-min="60">
+            <div class="el-main" v-if="roleList.length>0">
                 <div class="tab-main">
                     <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]">
                         <i class="el-bi-icon-guanli"></i>
@@ -112,18 +109,19 @@
                     <tab3 v-else-if="activeBtn === 3"></tab3>
                     <tab4 v-else-if="activeBtn === 4"></tab4>
                 </div>
-            </el-main>
+            </div>
             <div v-else class="right-none">
                 <img class="none-img" src="@a/green/bg_no_role.svg">
                 <div class="none-text">暂无角色</div>
             </div>
-
-        </el-container>
-    </div>
+        </div>
+    </splitpanes>
 </template>
 
 <script>
     import {ROLE_LIST} from '~api/organize.js';
+    import Splitpanes from 'splitpanes'
+    import 'splitpanes/dist/splitpanes.css'
 
     export default {
         name: 'ManageRoles',
@@ -132,6 +130,7 @@
             Tab2: () => import('./manage_roles_tab/Tab2'),
             Tab3: () => import('./manage_roles_tab/Tab3'),
             Tab4: () => import('./manage_roles_tab/Tab4'),
+            Splitpanes,
         },
         data() {
             return {
@@ -198,7 +197,7 @@
     }
 
 
-    .el-container {
+    .default-theme {
         font-family: $fontFamilyMain;
         position: relative;
         height: 100vh !important;
@@ -216,16 +215,22 @@
 
         }
 
-        .el-aside {
+        .left-col {
             position: relative;
-            width: 30%;
-            min-width: 100px;
+            min-width: 300px;
             height: 100%;
-            min-height: 600px;
+            min-height: 620px;
             background: rgba(255, 255, 255, 1);
-
             box-shadow: 3px 10px 0px 0px rgba(0, 0, 0, 0.1), 3px 20px 20px rgba(0, 0, 0, 0.1);
             opacity: 1;
+
+            .left-scrollbar {
+                height: 90%;
+                border-top-width: 1px;
+                padding: 0 0 50px 0 ;
+                border-top-style: solid;
+                border-top-color: rgba(159, 167, 174, 0.6);
+            }
 
             .item_role {
                 position: relative;
@@ -378,77 +383,81 @@
             }
         }
 
-        .el-main {
-            width: 70%;
-            min-width: 600px;
-            margin: 20px 20px 20px 20px;
-            padding: 0px;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-            opacity: 1;
-            border-radius: 20px;
-
-            .tab-main {
-                width: 100%;
-                height: 60px;
+        .right-col {
+            .el-main {
+                min-width: 600px;
+                height: 600px;
+                margin: 20px 20px 20px 20px;
+                padding: 0px;
                 background: rgba(255, 255, 255, 1);
-                opacity: 1;
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-                padding-right: 40px;
-                align-items: center;
                 box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+                opacity: 1;
+                border-radius: 20px;
 
-                .tab-btn {
+                .tab-main {
+                    width: 100%;
+                    height: 60px;
                     background: rgba(255, 255, 255, 1);
-                    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
                     opacity: 1;
-                    border-radius: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                    padding-right: 40px;
+                    align-items: center;
+                    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
 
-                    font-size: 14px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    color: rgba(102, 102, 102, 0.60);
-                    opacity: 1;
+                    .tab-btn {
+                        background: rgba(255, 255, 255, 1);
+                        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                        opacity: 1;
+                        border-radius: 6px;
 
-                    i {
                         font-size: 14px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        color: rgba(102, 102, 102, 0.60);
+                        opacity: 1;
+
+                        i {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .tab-btn.active {
+                        background: rgba(24, 144, 255, 1);
+                        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+                        opacity: 1;
+                        border-radius: 6px;
+
+                        color: rgba(255, 255, 255, 1);
                     }
                 }
+            }
 
-                .tab-btn.active {
-                    background: rgba(24, 144, 255, 1);
-                    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+            .right-none {
+                width: 100%;
+                height: 100%;
+                background: rgba(240, 242, 245, 1);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                /*padding-left: 200px;*/
+                align-items: center;
+
+                .none-img {
+
+                }
+
+                .none-text {
+                    margin-top: 10px;
+                    font-size: 34px;
+                    font-weight: normal;
+                    color: rgba(51, 51, 51, 1);
                     opacity: 1;
-                    border-radius: 6px;
-
-                    color: rgba(255, 255, 255, 1);
                 }
             }
+
         }
-
-        .right-none {
-            width: 100%;
-            height: 100%;
-            background:rgba(240,242,245,1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            /*padding-left: 200px;*/
-            align-items: center;
-            .none-img{
-
-            }
-            .none-text{
-                margin-top: 10px;
-                font-size:34px;
-                font-weight:normal;
-                color:rgba(51,51,51,1);
-                opacity:1;
-            }
-        }
-
     }
 
 </style>
