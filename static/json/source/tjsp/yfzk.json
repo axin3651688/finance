@@ -68,6 +68,7 @@
                        "handler":function(vue,btn){
                            debugger
                            console.log(vue);
+                           vue.handleDownload(vue);
                        }
                     }
                 ],
@@ -416,6 +417,7 @@
                        "handler":function(vue,btn){
                            debugger
                            console.log(vue);
+                           vue.handleDownload(vue);
                        }
                     },{
                         "id":"5",
