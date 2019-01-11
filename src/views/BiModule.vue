@@ -149,12 +149,18 @@ export default {
       debug: 0
     };
   },
+  props: ["dialogData"],
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
     debugger;
-    let bean = getClientParams();
-    this.setScopeDatas(bean);
-    this.loadModule();
+    console.log();
+    if (Cnbi.isEmpty(this.dialogData)) {
+      let bean = getClientParams();
+      this.setScopeDatas(bean);
+      this.loadModule();
+    } else {
+      this.loadRemoteSource(this.dialogData);
+    }
   },
 
   mounted() {
@@ -340,9 +346,9 @@ export default {
     loadRemoteSource(api) {
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
-       if (!api) {
-         api = "cnbi/json/source/chart/zbfx.json";
-       }
+      if (!api) {
+        api = "cnbi/json/source/chart/zbfx.json";
+      }
       if (!api) {
         api = localStorage.module_api_cache;
         console.warn(
@@ -358,6 +364,7 @@ export default {
         });
         return;
       }
+      debugger;
 
       findDesignSource(api).then(res => {
         //
