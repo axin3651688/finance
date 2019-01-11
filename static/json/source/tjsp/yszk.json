@@ -196,6 +196,12 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            let row = vue.item.rows; 
+                            for(let i=0; i<row.length; i++){
+                                if(row[i].children.length>0){
+                                    row[i]._expanded = true;
+                                }
+                            }
                         }
                     },{
                         "id":"2",
@@ -208,6 +214,12 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            let row = vue.item.rows; 
+                            for(let i=0; i<row.length; i++){
+                                if(row[i].children.length>0){
+                                    row[i]._expanded = true;
+                                }
+                            }
                         }
                     },
                     {
@@ -294,12 +306,16 @@
                                 "text": "已形成实质性损失金额",
                                 "type":"decimal",
                                 "id": "www4"
+                            },{
+                                "text": "",
+                                "type":"string",
+                                "id": "",
+                                "isTree":true
                             },
                         {
                             "text": "公司编码",
                             "type":"string",
-                            "id": "scode",
-                            "isTree":true
+                            "id": "scode"                           
                         },
                         {
                             "text": "公司名称",

@@ -232,12 +232,17 @@
                                 "text": "已形成实质性损失金额",
                                 "type":"decimal",
                                 "id": "www4"
-                            },    
+                            }, 
+                            {
+                                "text": "",
+                                "type":"string",
+                                "id": "",
+                                "isTree":true
+                            },   
                         {
                             "text": "公司编码",
                             "type":"string",
-                            "id": "scode",
-                            "isTree":true
+                            "id": "scode"                          
                         },
                         {
                             "text": "公司名称",
@@ -360,6 +365,12 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            let row = vue.item.rows; 
+                            for(let i=0; i<row.length; i++){
+                                if(row[i].children.length>0){
+                                    row[i]._expanded = true;
+                                }
+                            }
                         }
                     },{
                         "id":"2",
@@ -372,6 +383,12 @@
                         "handler":function(vue,btn){
                             debugger
                             console.log(vue);
+                            let row = vue.item.rows; 
+                            for(let i=0; i<row.length; i++){
+                                if(row[i].children.length>0){
+                                    row[i]._expanded = false;
+                                }
+                            }
                         }
                     },
                     {
@@ -388,43 +405,43 @@
                             vue.item.updateView("company");
                         }
                     }
-                    // , {
-                    //    "id":"4",
-                    //    "text":"导出",
-                    //    "xtype":"button",
-                    //    "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //    "handler":function(vue,btn){
-                    //        debugger
-                    //        console.log(vue);
-                    //    }
-                    // },{
-                    //     "id":"5",
-                    //     "text":"安全比例",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // },{
-                    //     "id":"6",
-                    //     "text":"预警比例",
-                    //     "xtype":"button",
-                    //     "cellStyle":{
-                    //         "color":"black",
-                    //         "background-color":"#189271"
-                    //     },
-                    //     "handler":function(vue,btn){
-                    //         debugger
-                    //         console.log(vue);
-                    //     }
-                    // }
+                    , {
+                       "id":"4",
+                       "text":"导出",
+                       "xtype":"button",
+                       "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                       "handler":function(vue,btn){
+                           debugger
+                           console.log(vue);
+                       }
+                    },{
+                        "id":"5",
+                        "text":"安全比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    },{
+                        "id":"6",
+                        "text":"预警比例",
+                        "xtype":"button",
+                        "cellStyle":{
+                            "color":"black",
+                            "background-color":"#189271"
+                        },
+                        "handler":function(vue,btn){
+                            debugger
+                            console.log(vue);
+                        }
+                    }
                 ],
                     "drillProperties":["riskrange","gsmc"],
                     "onRowClick":function(row, column, e,$this){
