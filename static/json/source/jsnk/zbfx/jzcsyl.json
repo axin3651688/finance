@@ -1,0 +1,130 @@
+{
+  "id": "194",
+  "text": "净资产收益率",
+  "xtype": "JtreeGrid",
+  "layout": {
+    "xtype": "column"
+  },
+  "showDims": ["year", "month", "company", "conversion"],
+  "items": [{
+    "xtype": "JtreeGrid",
+    "id": "1416001",
+    "text": "营业收入",
+    //包括营业收入,利润总额,归属于母公司净利润
+    "queryDataBefore": function (params, b) {
+      debugger;
+      let item = localStorage.item;
+      if (!Cnbi.isEmpty(item)) {
+        let itemBean = JSON.parse(item);
+        Cnbi.apply(this, itemBean);
+        params.item = itemBean.id;
+        //  alert(JSON.stringify(params));
+        localStorage.removeItem('item');
+      } else {
+        params.item = this.id;
+      }
+      return params;
+    },
+    "show": true,
+    "config": {
+      "sql": "SELECT id, text, leaf, isdrill, bnlj, sntq, zje, zjlv, indis, cyz, CASE WHEN( dimpeirod <> 3 AND dimpeirod <> 6 AND dimpeirod <> 9 AND dimpeirod <> 12) AND m.groups = 0 AND ( zje >= ( 0 ) OR zje <= ( 0 ) ) THEN 1 WHEN ( dimpeirod = 3 OR dimpeirod = 6 OR dimpeirod = 9 OR dimpeirod = 12 ) AND ( zje >= ( m.zze ) OR zje <= ( m.jse ) ) THEN 1 ELSE 0 END AS isjump FROM ( SELECT id, text, leaf, isdrill, bnlj, sntq, bnlj - sntq AS zje, round(DECODE(nvl(sntq, 0), 0, 0,(nvl(bnlj, 0) - nvl(sntq, 0)) * 100 / abs(nvl(sntq, 0))), 2) AS zjlv, round(c / 1, 2) AS indis, round(bnlj - c / 1, 2) AS cyz FROM ( SELECT n.scode AS id, n.sname AS text, n.spcode AS isdrill, round(DECODE(nvl(cbn, 0), 0, 0,(nvl(bbn, 0)) * 100 * 2 / nvl(cbn, 0)), 2) AS bnlj, round(DECODE(nvl(csn, 0), 0, 0,(nvl(bsn, 0)) * 100 * 2 / nvl(csn, 0)), 2) AS sntq, ids.a, ids.b, ids.c, ids.d, ids.e, n.cisleaf AS leaf FROM ( SELECT bbn, cbn, bsn, csn, n.scode, n.cisleaf, n.sname, ( CASE WHEN n.sindcode IS NULL THEN 'Z' ELSE n.sindcode END ) AS sindcode, n.srangecode, n.spcode FROM ( SELECT SUM(bbn) AS bbn, SUM(cbn) AS cbn, SUM(bsn) AS bsn, SUM(csn) AS csn, dim_company FROM ( SELECT SUM(bbn) AS bbn, SUM(bsn) AS bsn, 0 AS cbn, 0 AS csn, dim_company FROM ( SELECT nvl(fact_b, 0) AS bbn, 0 AS bsn, dim_company FROM dw_factfinanceperiod WHERE dim_itemperiod IN ( '1400111' ) AND dim_period = '201712' AND dim_company IN (select scode from dw_dimcompany where spcode = :company and cisdel = 'N' and scode not in (select scode from dw_dimcompany dd where dd.spcode = 0 and dd.scode <> 1)) UNION ALL SELECT 0 AS bbn, nvl(fact_b, 0) AS bsn, dim_company FROM dw_factfinanceperiod WHERE dim_itemperiod IN ( '1400111' ) AND dim_period = '201612' AND dim_company IN (select scode from dw_dimcompany where spcode = :company and cisdel = 'N' and scode not in (select scode from dw_dimcompany dd where dd.spcode = 0 and dd.scode <> 1)) ) bn GROUP BY dim_company UNION ALL SELECT 0 AS bbn, 0 AS bsn, SUM(cbn) AS cbn, SUM(csn) AS csn, dim_company FROM ( SELECT nvl(fact_a, 0) + nvl(fact_b, 0) AS cbn, 0 AS csn, dim_company FROM dw_factfinancepoint WHERE dim_itempoint IN (1311009) AND dim_period = :period AND dim_company IN (select scode from dw_dimcompany where spcode = :company and cisdel = 'N' and scode not in (select scode from dw_dimcompany dd where dd.spcode = 0 and dd.scode <> 1)) UNION ALL SELECT 0 AS cbn, nvl(fact_a, 0) + nvl(fact_b, 0) AS csn, dim_company FROM dw_factfinancepoint WHERE dim_itempoint IN (1311009) AND dim_period = :comparePeriod AND dim_company IN (select scode from dw_dimcompany where spcode = :company and cisdel = 'N' and scode not in (select scode from dw_dimcompany dd where dd.spcode = 0 and dd.scode <> 1)) ) sn GROUP BY dim_company ) nwt GROUP BY dim_company ) m RIGHT JOIN dw_dimcompany n ON m.dim_company = n.scode WHERE n.scode IN (select scode from dw_dimcompany where spcode = :company and cisdel = 'N' and scode not in (select scode from dw_dimcompany dd where dd.spcode = 0 and dd.scode <> 1)) ) n LEFT JOIN ( SELECT * FROM dw_factindustry WHERE indsyear = ( SELECT MAX(scode) FROM dw_dimindsyear WHERE scode <= substr( :period, 1, 4) ) ) ids ON ids.indsclassify = n.sindcode AND ids.indsrange = n.srangecode AND indspara = '02' ) ) w LEFT JOIN ( SELECT mp.scomcode, mp.monitor_zze AS zze, mp.monitor_jse AS jse, mp.monitor_zzl AS zzl, mp.monitor_jsl AS jsl, mi.sgroup AS groups, 12 AS dimpeirod, mp.speriod FROM rpt_monitor_parameter mp INNER JOIN rpt_monitor_index mi ON mp.nmonitor_id = mi.nmonitor_id LEFT JOIN ( SELECT scomcode, MAX(speriod) AS speriod FROM rpt_monitor_parameter WHERE speriod <= :period AND spamtype = ( CASE WHEN mod(substr( :period, 5, 2), 3) = 0 THEN '3' ELSE '4' END ) GROUP BY scomcode ) tt ON ( tt.scomcode = mp.scomcode ) WHERE mi.stype = 'inds' AND mi.sfieldcode = '19' AND mp.speriod = tt.speriod AND spamtype = ( CASE WHEN mod(substr( :period, 5, 2), 3) = 0 THEN '3' ELSE '4' END ) ) m ON m.scomcode = w.id order by id",
+      "apisql": "SELECT c.nid AS id, c.scontent AS cause, c.suser AS createUser, c.screatetime AS createTime, c.platform AS platform, c.stitle AS title, c.nsource AS source, s.scontent AS text,(SELECT struename FROM sys_user WHERE suser = c.suser) AS trueName, (SELECT nlocked FROM rpt_company_report cr WHERE scompany = '1010' AND speriod = '201606' AND nreport > 1) AS locked FROM sys_source_comment c INNER JOIN sys_topic_source s ON s.nid = c.nsource WHERE s.smoduleid IN ('report') AND s.scontent LIKE '%/_1010_201606_1-1416001%' ESCAPE '/' ORDER BY s.createtime DESC",
+      "generateVar": {
+        "periodCount": 2,
+        "compareType": "-1&0",
+        "reverse": true
+      },
+      "mainDim": "itempoint",
+      "needDims": ["year", "month", "company", "conversion"],
+      "random": {
+        "min": 100,
+        "max": 100000
+      },
+      "type": 1,
+      "columns": [{
+          "text": "预算完成率(%)",
+          "width": "200",
+          "type": "decimal",
+          "id": "yswclv"
+        }, {
+          "text": "公司编码",
+          "type": "string",
+          "width": "200",
+          "id": "id",
+          "isTree": true
+        },
+        {
+          "text": "公司名称",
+          "type": "string",
+          "width": "280",
+          "id": "text"
+        },
+        {
+          "text": "本年累计",
+          "type": "decimal",
+          "width": "200",
+          "id": "bnlj"
+        },
+        {
+          "text": "上年同期",
+          "width": "200",
+          "type": "decimal",
+          "id": "sntq"
+        },
+        {
+          "text": "增减百分比",
+          "type": "decimal",
+          "id": "zjbfb"
+        },
+        {
+          "text": "标杆值",
+          "type": "decimal",
+          "id": "bgz",
+          "showdilog": true
+        }, {
+          "text": "差异",
+          "width": "200",
+          "type": "decimal",
+          "id": "cy"
+        }
+
+      ],
+      "rows": []
+    },
+    "toolbar000": [{
+      "id": "1",
+      "text": "导出",
+      "cellStyle": {
+        "color": "#FFFFFF",
+        "background-color": "#3AA1FF"
+      },
+      "handler": function (vue, btn) {
+        debugger
+        console.log(vue);
+      }
+    }, {
+      "id": "2",
+      "text": "全部展开",
+      "cellStyle": {
+        "color": "#FFFFFF",
+        "background-color": "#3AA1FF"
+      },
+      "handler": function (vue, btn) {
+        debugger
+        console.log(vue);
+      }
+    }, {
+      "id": "3",
+      "text": "全部收起",
+      "cellStyle": {
+        "color": "#FFFFFF",
+        "background-color": "#3AA1FF"
+      },
+      "handler": function (vue, btn) {
+        debugger
+        console.log(vue);
+      }
+    }]
+
+  }]
+}

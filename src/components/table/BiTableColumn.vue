@@ -147,15 +147,6 @@ import EventMixins from "../mixins/EventMixins";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
-<<<<<<< HEAD
-  data() {
-    return {
-      // tableData1:''
-      options:[]
-    };
-  },
-=======
->>>>>>> f3f49b9aeae09399b3203d0c7df96dd1d18d63e4
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -166,25 +157,15 @@ export default {
     }
   },
   created() {
-<<<<<<< HEAD
-    this.options = this.tableData.config.columns[0].menu.list
-=======
-    debugger;
-    console.log(this.tableData);
-
     //this.$set(this, "tableData", null);
->>>>>>> f3f49b9aeae09399b3203d0c7df96dd1d18d63e4
   },
   mixins: [EventMixins],
   methods: {
-<<<<<<< HEAD
       dilogShow() {
         debugger
         this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
     },
-    ...mapActions(["ShowDialog"]),
-=======
->>>>>>> f3f49b9aeae09399b3203d0c7df96dd1d18d63e4
+    // ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
     //   return "text-align:center";
     // },
