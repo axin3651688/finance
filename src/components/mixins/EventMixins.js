@@ -15,30 +15,42 @@
 import {
   findDesignSource
 } from "~api/interface";
+import {
+  mapActions
+} from "vuex";
+
 export default {
   mounted() {
     let me = this;
-    let xtype = me.item.xtype;
-    if (me.item.listeners) {
-      me.item.listeners.forEach(listener => {
-        if (listener.type) {
-          if (xtype === "chart" || xtype === "bi-chart") {
-            this.chartEventHandler(listener);
-          } else if (xtype === "table" || xtype === "bi-table") {
-
-          } else if (xtype === "text" || xtype === "bi-text") {
-
-          } else if (xtype === "form" || xtype === "tree-grid") {
-            this.tableEventHandler(listener)
-          }
-        } else {
-          console.error("没有为事件对象配制type属性，" + me.item.text);
-        }
-
-      });
+    if (me.item && me.item.listeners) {
+      this.eventHandler(me.item.listeners);
     }
   },
   methods: {
+    ...mapActions(["ShowDialog"]),
+    eventHandler(listeners, params, bb) {
+      listeners.forEach(listener => {
+        this.eventFire(listener, params, bb);
+      });
+    },
+
+    eventFire(listener, params, bb) {
+      let xtype = this.item.xtype;
+      if (listener.type) {
+        if (xtype === "chart" || xtype === "bi-chart") {
+          this.chartEventHandler(listener);
+        } else if (xtype === "JtreeGrid" || xtype === "table" || xtype === "bi-table") {
+          this.commonHandler();
+        } else if (xtype === "text" || xtype === "bi-text") {
+          this.commonHandler(listener);
+        } else if (xtype === "form" || xtype === "tree-grid") {
+          this.tableEventHandler(listener)
+        }
+      } else {
+        console.error("没有为事件对象配制type属性，" + me.item.text);
+      }
+    },
+
     /**
      * 事件通用处理
      */
@@ -49,6 +61,11 @@ export default {
       } else {
         console.log("没有设置回调函数，你真的不想干点什么了吗：", listener);
       }
+
+      if (listener.way && me[listener.way]) {
+        me[listener.way](params, listener, bb);
+      }
+
     },
 
     /**
@@ -88,8 +105,17 @@ export default {
     textEventHandler() {
 
     },
+    openDialog(params, listener) {
+      this.ShowDialog({
+        api: listener.sourceApi,
+        isShow: true,
+        tittle: "xxxxxx",
+        width: "80%",
+        height: "200px"
+      });
+    },
     /**
-     * 增加到tab的动作  openDilog  openWindow
+     * 增加到tab的动作 openDialog openWindow
      * unshift()方法是向数组的开头添加一个或多个元素
      */
     addTab(params, listener, bb) {
@@ -163,9 +189,7 @@ export default {
       module.activeTabName = text;
     }
   },
-  showDialog() {
-    debugger
-  },
+
   /**
    * 表格的单元格事件
    */

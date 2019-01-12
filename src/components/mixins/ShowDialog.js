@@ -25,7 +25,7 @@ export default {
                             isShow: true,
                             tittle: t,
                             width: "80%",
-                            height: "500px"
+                            height: "200px"
                         });
                     })
                     .catch(res => {
@@ -33,7 +33,6 @@ export default {
                     });
             }
             console.log(this.tableData);
-
         }
     }
 }

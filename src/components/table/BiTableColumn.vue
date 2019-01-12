@@ -57,7 +57,6 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width||150"
-  
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -86,9 +85,10 @@
         :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
+        <!--    @click="dilogShow(col,scope)" -->
         <span
-          @click="dilogShow(col,scope)"
           v-if="tableData.datas"
+          @click="columnClick(col,scope)"
         >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
       </el-tooltip>
     </template>
@@ -128,19 +128,12 @@
   </el-table-column>-->
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
-import ShowDialog from "../mixins/ShowDialog";
+import EventMixins from "../mixins/EventMixins";
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
-  data() {
-    return {
-      // tableData1:''
-    };
-  },
   computed: {
-    ...mapGetters(["year", "month"]),
     isFolder() {
       return this.col.children && this.col.children.length;
     },
@@ -150,16 +143,24 @@ export default {
     }
   },
   created() {
-    // debugger;
+    debugger;
+    console.log(this.tableData);
+
     //this.$set(this, "tableData", null);
   },
-  mixins: [ShowDialog],
+  mixins: [EventMixins],
   methods: {
-    ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
 
     //   return "text-align:center";
     // },
+    columnClick(column, scope) {
+      debugger;
+      if (column.listeners) {
+        this.commonHandler(column.listeners[0]);
+      }
+    },
+
     upData(item) {
       debugger;
       // this.$set(this.tableData, "datas", null);
@@ -184,7 +185,7 @@ export default {
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
-        if(!row.hasOwnProperty(colId)){
+        if (!row.hasOwnProperty(colId)) {
           return "";
         }
         return "--";
@@ -251,34 +252,6 @@ export default {
       // console.log(record);
 
       record._expanded = !record._expanded;
-    },
-    generateApiModelDatas(item, $childVue, changeDim) {
-      debugger;
-      try {
-        let params = this.getModuleParams(item, changeDim);
-        if (!params) return;
-        let config = item.config;
-        Cnbi.paramsHandler(config, params);
-        // debugger
-        //在此加了查询数据之前的拦截处理
-        if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
-          params = item.queryDataBefore(params, config, this);
-        }
-        config.type = config.type || 1;
-        if (config.sql) {
-          params.sql = config.sql;
-          this.setDatas(item, params, $childVue);
-        } else if (config.cube) {
-          this.setDatas(item, params, $childVue);
-        } else if (config.defined) {
-          return config.datas;
-        } else if (config.random) {
-          this.queryDataAfter(item, Math.createRandomDatas(config), $childVue);
-        }
-      } catch (error) {
-        console.log(item);
-        console.error(error);
-      }
     },
     // 图标显示
     iconShow(index, record) {
