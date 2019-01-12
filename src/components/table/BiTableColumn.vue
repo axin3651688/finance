@@ -26,7 +26,7 @@
         <img v-if= "col.icon" :src="col.icon" alt="">
         <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
          <el-cascader :options="options" @change="dilogShow"></el-cascader>
-         <el-dialog
+         <!-- <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
@@ -37,7 +37,7 @@
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
-          </el-dialog>
+          </el-dialog> -->
       </el-button>
     </template>
   </el-table-column>
@@ -170,11 +170,8 @@ export default {
   mixins: [ShowDialog],
   methods: {
       dilogShow() {
-      this.$confirm("<div>111</div>")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+        debugger
+        this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
     },
     ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
@@ -195,7 +192,6 @@ export default {
       this.$set(this.tableData, "datas", item.datas);
     },
     templateClick(row){
-      debugger
       if(this.tableData.templateClick && typeof(this.tableData.templateClick) == "function"){
             return this.tableData.templateClick(row, event,this);
         }
