@@ -1,6 +1,5 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <OpenDialog/>
     <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -8,6 +7,7 @@
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
       <HeadNav v-if="isShow()&&flag"/>
+       <OpenDialog/>
     </div>
   </div>
 </template>

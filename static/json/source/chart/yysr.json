@@ -10,6 +10,7 @@
     "xtype": "JtreeGrid",
     "id": "1416001",
     "text": "营业收入",
+    //包括营业收入,利润总额,归属于母公司净利润
     "queryDataBefore": function (params, b) {
       debugger;
       let item = localStorage.item;
@@ -79,17 +80,7 @@
           "text": "增减率(%)",
           "type": "decimal",
           "id": "zjlv",
-          "showdilog": true,
-          "listeners": [{
-            "type": "click",
-            "way": "openDialog",
-            "sourceApi": "cnbi/json/source/chart/bar.json",
-            "handler": ($vue, params) => {
-
-              return params;
-
-            }
-          }],
+          "showdilog": true
         }, {
           "text": "本年预算",
           "width": "200",

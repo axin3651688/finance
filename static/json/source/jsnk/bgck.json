@@ -3,18 +3,18 @@
     "text": "报告查看",
     "xtype": "JtreeGrid",
     "layout": {
-      "xtype": "column"
+      "xtype": "form"
     },
     "showDims": ["year", "month", "company", "conversion"],
     "items": [{
       "xtype": "JtreeGrid",
       "id": "1416001",
       "text": "报告查看",
-      "templateClick":function($vue,row){
+      "optionColumnClick":function($vue,row){
           let me = this
           console.log(me)
           console.log($vue)
-        debugger;
+          return row;
     },
       "queryDataBefore":function(params,b){
         debugger;
@@ -55,7 +55,23 @@
                     "list":[{
                         "value":"shengcheng",
                         "label":"生成",
-                        "showdilog": true
+                        "id":"shengcheng",
+                        "text":"生成",
+                        "showdilog": true,
+                        "listeners": [{
+                            "type": "click",//openDialog
+                            "way": "openDialog",
+                            "config":{
+                                  "width":800,
+                                  "height":750     
+                             },
+                            "sourceApi": "cnbi/json/source/chart/bar1.json",
+                            "handler": ($vue, params) => {
+                
+                              return params;
+                
+                            }
+                          }]
                     },
                     {
                         "value":"chakan",

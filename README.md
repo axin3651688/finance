@@ -295,6 +295,10 @@ listeners:[
         console.info(params);
         debugger; 
     },
+    "config":{
+        "width":800,
+        "height":750     
+    },
     "clickBefore":function(params,$vue){//点击之前的回调，可以改变listeners里的参数变量
 
     }

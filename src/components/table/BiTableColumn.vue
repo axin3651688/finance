@@ -22,10 +22,11 @@
     fixed="right"
   >
     <template slot-scope="scope">
-      <el-button @click="templateClick(scope.row)" type="text" size="small">
+      <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if= "col.icon" :src="col.icon" alt="">
         <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
-         <el-cascader :options="options" @change="dilogShow"></el-cascader>
+        <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
+         <el-cascader :options="options"  @change="columnDropDownClick" ></el-cascader>
          <!-- <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
@@ -147,6 +148,13 @@ import EventMixins from "../mixins/EventMixins";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
+  data() {
+    return {
+      clickRow:{},
+      clickRowParams:{},
+      options:[]
+    };
+  },
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -157,21 +165,36 @@ export default {
     }
   },
   created() {
+    this.options = this.tableData.config.columns[0].menu.list
+    debugger;
+    console.log(this.tableData);
+
     //this.$set(this, "tableData", null);
   },
   mixins: [EventMixins],
   methods: {
-      dilogShow() {
-        debugger
-        this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
-    },
+    //   dilogShow(item) {
+    //     debugger
+    //     this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
+    // },
     // ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
     //   return "text-align:center";
     // },
+   columnDropDownClick(items){
+     let menuId = items[0];
+     debugger;
+      let menu = this.col.menu.list.filter(c=>c.value === menuId)[0];
+      if(menu && menu.listeners){
+          this.commonHandler(menu.listeners[0],this.clickRow,menu);
+      }
+   },
+
     columnClick(column, scope) {
       debugger;
-      if (column.listeners) {
+      if (column.listeners || column.menu.list[0].listeners[0]) {
+        console.log(column.menu.list[0])
+        console.log(column.menu.list[0].listeners[0])
         this.commonHandler(column.listeners[0]);
       }
     },
@@ -190,9 +213,10 @@ export default {
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
     },
-    templateClick(row){
-      if(this.tableData.templateClick && typeof(this.tableData.templateClick) == "function"){
-            return this.tableData.templateClick(row, event,this);
+    optionColumnClick(row){
+      this.clickRow = row;
+      if(this.tableData.optionColumnClick && typeof(this.tableData.optionColumnClick) == "function"){
+             this.clickRowParams =  this.tableData.optionColumnClick(row, event,this);
         }
     },
     /**
