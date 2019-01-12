@@ -4,7 +4,7 @@ node_modules
 /public
 vue.config.js
 pubilc
-static
+
 
 # local env files
 .env.local
