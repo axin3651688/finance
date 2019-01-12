@@ -150,10 +150,10 @@ export default {
     };
   },
   props: ["dialogData"],
-  //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    debugger;
-    console.log();
+    // debugger;
+    /*     下面是针对弹框写的判断,可以再次引用bimodule
+    马军  2019.1.11 */
     if (Cnbi.isEmpty(this.dialogData)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -163,9 +163,6 @@ export default {
     }
   },
 
-  mounted() {
-    debugger;
-  },
   computed: {
     ...mapGetters(["year", "month", "company", "module_api", "conversion"])
   },
@@ -226,7 +223,6 @@ export default {
                 children.setItems(children.item, true);
               }
             }
-
             ii++;
           }
         });
@@ -279,7 +275,6 @@ export default {
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
-      //
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -584,7 +579,6 @@ export default {
   }
 };
 </script>
-<style lang='scss' scoped>
-</style>
+
 
 

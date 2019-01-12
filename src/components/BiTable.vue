@@ -22,7 +22,8 @@
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
-      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}" style="widht:100%;"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
+      style="widht:100%;"
     >
       <!--  :summary-method="getSummaries"  -->
       <!-- :show-summary="item.showSummary || true"     -->
@@ -67,7 +68,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
-      tableDatas:[],
+      tableDatas: [],
       // spanArr:[],////zb 下属企业合并行时用到
       columns: [],
       groupConfig: {
@@ -122,11 +123,11 @@ export default {
       let rows = item.config.rows;
       let tempDatas = [];
       if (rows && rows.length > 0) {
-        tempDatas =  rows;
-      }else{
-        tempDatas =  item.datas;
+        tempDatas = rows;
+      } else {
+        tempDatas = item.datas;
       }
-      this.$set(this,"tableDatas",tempDatas)
+      this.$set(this, "tableDatas", tempDatas);
       return this.tableDatas;
     },
     upData(item) {
@@ -162,18 +163,18 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
-      let css = "padding: 4px 0;",record = row.row;
+      let css = "padding: 4px 0;",
+        record = row.row;
       let pro = row.column.property;
       if (!pro || !record.hasOwnProperty(pro)) {
         return css;
       }
       let levelProperties = this.item.levelProperties || this.levelProperties;
       let textIndent = "";
-     
+
       let levelPro = levelProperties[pro];
       if (levelPro && record[levelPro]) {
         let level = record[levelPro] || 1;
