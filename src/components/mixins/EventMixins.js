@@ -44,9 +44,6 @@ export default {
      */
     commonHandler(listener, params, bb) {
       let me = this;
-      if (listener.way && me[listener.way]) {
-        me[listener.way](params, listener, bb);
-      }
       if (listener.handler) {
         listener.handler(me, params);
       } else {
