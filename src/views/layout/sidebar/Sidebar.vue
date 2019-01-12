@@ -12,11 +12,6 @@
         :default-active="active"
         class="leftmemu"
       >
-        <div class="username" v-if="user.company.id === 121">
-          <img :src="user.user.avatar" alt>
-          <h3>{{user.user.trueName}}</h3>
-          <p>{{user.user.phone}}</p>
-        </div>
         <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
         <!-- 模拟链接 -->
         <!--
@@ -43,9 +38,6 @@ import NavMenu from "./NavMenu.vue";
 export default {
   name: "Leftmenu",
   created() {
-    // debugger;
-    // console.log(this.$refs.submenu);
-
     findSideBar(this.userId).then(response => {
       // console.log(response.data);
       let data = response.data.data;
@@ -57,12 +49,12 @@ export default {
       // debugger;
       let me = this;
       // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
-      setTimeout(function() {
-        mapArry.forEach(element => {
-          me.handleOpen(this.openPid, [element + ""]);
-        });
-        // debugger;
-      }, 600);
+      // setTimeout(function() {
+      //   mapArry.forEach(element => {
+      //     me.handleOpen(this.openPid, [element + ""]);
+      //   });
+      //   // debugger;
+      // }, 600);
     });
   },
   components: {
@@ -124,7 +116,7 @@ export default {
       }
       this.nodes.push(clickNodeId);
       if (!flag) {
-        // console.log(key, code);
+        console.log(key, code);
 
         if (code.length === 1) {
           this.fetchData(userId, code[0]);
@@ -135,8 +127,8 @@ export default {
     },
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
-        // console.log(response.data);
-        // console.log(code);
+        console.log(response.data);
+        console.log(code);
 
         for (let index = 0; index < this.leftMenus.length; index++) {
           // 匹配哪个children值加进去

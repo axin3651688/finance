@@ -41,6 +41,9 @@ export default {
       this.$refs.tree2.filter(val);
     }
   },
+  components: {
+    tree: () => import("@v/test/tree/tree")
+  },
   mounted() {
     debugger;
     // console.log(document.getElementsByClassName("el-tree-node__content"));

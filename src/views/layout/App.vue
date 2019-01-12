@@ -9,11 +9,6 @@ import webSocket from "utils/webSocket";
 import { getClientParams } from "utils/index";
 export default {
   name: "app",
-  data() {
-    return {
-      caches: ["module", "company", "year", "month", "data"]
-    };
-  },
   created() {
     //debugger;
     this.readLocalStorage();
@@ -59,8 +54,8 @@ export default {
     initSocket(authorization) {
       // let url = "ws://192.168.2.237:7006/socket.io/";
       // let url = "ws://192.168.2.224:7006/socket.io/";
-       let url = "ws://192.168.1.118:7006/socket.io/";
-     // let url = "wss://192.168.1.118:8441/socket.io/";
+      let url = "ws://192.168.1.118:7006/socket.io/";
+      // let url = "wss://192.168.1.118:8441/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       } else {

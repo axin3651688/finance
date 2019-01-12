@@ -85,7 +85,7 @@
             "way": "openDialog",
             "sourceApi": "cnbi/json/source/chart/bar.json",
             "handler": ($vue, params) => {
-
+              debugger
               return params;
 
             }
