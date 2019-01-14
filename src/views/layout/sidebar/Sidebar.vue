@@ -11,6 +11,7 @@
         :default-openeds="openeds"
         :default-active="active"
         class="leftmemu"
+        unique-opened
       >
         <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
         <!-- 模拟链接 -->
@@ -49,12 +50,12 @@ export default {
       // debugger;
       let me = this;
       // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
-      // setTimeout(function() {
-      //   mapArry.forEach(element => {
-      //     me.handleOpen(this.openPid, [element + ""]);
-      //   });
-      //   // debugger;
-      // }, 600);
+      setTimeout(function() {
+        mapArry.forEach(element => {
+          me.handleOpen(this.openPid, [element + ""]);
+        });
+        // debugger;
+      }, 600);
     });
   },
   components: {

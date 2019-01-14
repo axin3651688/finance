@@ -129,6 +129,7 @@
 </template>
 <script>
 import EventMixins from "../mixins/EventMixins";
+
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",

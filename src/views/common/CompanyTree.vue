@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
+    <!-- default-expand-all -->
     <el-tree
       :props="props"
       :load="loadNode"
-      node-key="id"
       ref="tree2"
       :default-expanded-keys="['1']"
       highlight-current
