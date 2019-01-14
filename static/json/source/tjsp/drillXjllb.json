@@ -8,7 +8,6 @@
     "items":[
         {
 			"xtype": "STreeGrid",
-			
 			"id": "xjllbej",
             "text": "现金流量表二级",
             "showDims":["year","month","company","conversion"],

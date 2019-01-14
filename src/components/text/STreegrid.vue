@@ -75,10 +75,7 @@ export default {
     }
   },
   methods: {
-    /**
-     * name: sjz
-     * 功能：添加刷新功能--作用在json里的hander方法中。
-     */
+    
     handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/Export2Excel').then(excel => {
@@ -178,6 +175,8 @@ export default {
       this.$set(this, "formatData", null);
       this.item = item;
       debugger;
+      // sjz 调用一下递归生成树表类型
+      this.array(this.item.datas)
       this.convertData();
     },
     array(datas) {

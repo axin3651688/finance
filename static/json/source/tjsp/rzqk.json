@@ -40,7 +40,7 @@
       {
         "id": "jrjg",
         "type": "string",
-        "text": "是否金融机构"
+        "text": "是否金融机构*"
       },
 {
         "id": "jrjgmc",
@@ -50,38 +50,38 @@
       },	  {
         "id": "rzlx",
         "type": "string",
-        "text": "融资类型",
+        "text": "融资类型*",
         "width":"300px"
     }, {
         "id": "jkbj",
         "type": "decimal",
-        "text": "借款本金"
+        "text": "借款本金*"
     }, {
         "id": "qsrq",
         "type": "string",
-        "text": "起始日期"
+        "text": "起始日期*"
     }, {
         "id": "dqrq",
         "type": "string",
-        "text": "到期日期"
+        "text": "到期日期*"
     }, {
         "id": "ll",
         "type": "decimal",
-        "text": "利率（%）",
+        "text": "利率（%）*",
         "conversion":"%"
     }, {
         "id": "zhcb",
         "type": "decimal",
-        "text": "综合成本（%）",
+        "text": "综合成本（%）*",
         "conversion":"%"
     }, {
         "id": "sfjtdb",
         "type": "string",
-        "text": "是否集团担保"
+        "text": "是否集团担保*"
     }, {
         "id": "dbfs",
         "type": "string",
-        "text": "担保方式"
+        "text": "担保方式*"
     }, {
         "id": "yhkrq",
         "type": "string",

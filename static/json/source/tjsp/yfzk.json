@@ -107,7 +107,7 @@
                             "id": "sk",
                             "type": "string",
                             "width":"330",
-                            "text": "客商"
+                            "text": "供应商"
                         },
                         {
                             "id": "balance",
