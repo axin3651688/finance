@@ -13,9 +13,10 @@
                       class="input-with-select">
             </el-input>
         </div>
+
         <el-table
                 :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.action.toLowerCase().includes(search.toLowerCase()))"
-                stripe  max-height="100%" class="main_table" :header-cell-style="getHeaderClass"
+                stripe height="100%" max-height="100%" class="main_table" :header-cell-style="getHeaderClass"
                 :cell-style="getRowClass" :default-sort="{prop: 'time', order: 'descending'}">
             <el-table-column prop="name" align="center" min-width="20%" label="操作人">
                 <template slot-scope="scope">

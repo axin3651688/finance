@@ -9,10 +9,9 @@
         </div>
 
 
-        <div >
             <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                    stripe  class="main-table"   :header-cell-style="getRowClass">
+                    stripe height="100%" max-height="100%" class="main-table"   :header-cell-style="getRowClass">
                 <el-table-column prop="name" align="center" label="用户名" min-width="20%">
                     <template slot-scope="scope">
                         <div class="row-user-an">
@@ -30,18 +29,19 @@
                 <el-table-column prop="time" align="center" label="登录时间" min-width="10%">
                 </el-table-column>
             </el-table>
-        </div>
 
-
-        <div class="page" >
-            <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="15"
-                    layout="prev, pager, next, jumper"
-                    :total="1000">
-            </el-pagination>
+        <div v-show="tableData.length>pageSize" class="page-row">
+            <div class="page">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="pageSize"
+                        background
+                        layout="prev, pager, next, total, jumper"
+                        :total="100">
+                </el-pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -53,29 +53,16 @@
         data() {
             return {
                 search: '',
-                tableData: [{
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '王小虎',
-                    aboutCompany: '合肥经邦集团',
-                    role: '后端研发工程师',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '张小虎',
-                    aboutCompany: '合肥经邦集团',
-                    role: '后端研发工程师',
-                }, {
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    time: '2016-05-02',
-                    name: '赵小虎',
-                    aboutCompany: '合肥经邦集团',
-                    role: '后端研发工程师',
-                }]
+                pageSize: 20,
+                currentPage: 1,
+                tableData: []
             }
         },
         mounted() {
 
+        },
+        created(){
+            this.getTableData()
         },
         methods: {
             //设置表格第一行的颜色
@@ -89,6 +76,26 @@
                 } else {
                     return ''
                 }
+            },
+            getTableData() {
+                let tempTableList = [];
+                for (let i = 0; i < 21; i++) {
+                    let temp = {
+                        avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
+                        time: '2016-05-02',
+                        name: '赵小虎',
+                        aboutCompany: '第'+this.currentPage+'页，合肥经邦集团',
+                        role: '后端研发工程师',
+                    }
+                    tempTableList.push(temp)
+                }
+                this.tableData = tempTableList;
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.getTableData()
             },
         }
     }
@@ -118,16 +125,16 @@
     }
 
     .root {
-
         padding: 20px;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
 
         .main-header {
-            padding: 20px 20px 0  0px;
+            padding: 20px 0 0 0;
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
 
             .input-with-select {
                 width: 220px;
@@ -188,8 +195,13 @@
             }
 
         }
-        .page{
-            margin: 10px 0 20px 0;
+        .page-row {
+            display: flex;
+            justify-content: center;
+
+            .page {
+                margin: 10px 0 0px 0;
+            }
         }
     }
 </style>
