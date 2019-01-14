@@ -230,6 +230,10 @@ export default {
     // 切换下级是否展开
     toggleExpanded: function(trIndex,scope) {
       debugger
+      /**
+       * name：sjz
+       * 功能：点击父级，展现他所有的孩子。 
+       */
       let rows = scope.row;
       rows._expanded = !rows._expanded ;
       for(let i=0;i<rows.children.length;i++){
@@ -263,7 +267,7 @@ export default {
       let level = this.$store.getters.treeInfo.level;//获取公司等级
       let len = this.tableData.datas;//获取数据长度
       let id = this.$parent.tableData.id;//获取下钻表的id名称
-      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej'){
+      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej'){ //判断是否为三张主表的下钻，如果不是，不做一下操作。
         if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
             if(companyId=='1001'){//判断公司id为总集团公司              
                   const record = this.tableData.datas[0];
