@@ -1,17 +1,19 @@
 <template>
   <div>
-    <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
-    <!-- default-expand-all -->
-    <el-tree
+    <tree
       :props="props"
       :load="loadNode"
+      :node-key="text"
       ref="tree2"
       :default-expanded-keys="['1']"
       highlight-current
       lazy
+      accordion
+      :expandOnClickNode="false"
       @node-click="handleNodeClick "
       :filter-node-method="filterNode"
-    ></el-tree>
+      default-expand-all
+    ></tree>
   </div>
 </template>
 
@@ -26,10 +28,10 @@ export default {
         children: [],
         isLeaf: "leaf"
       },
-      firstcompany: [],
-      filterText: ""
+      firstcompany: []
     };
   },
+  props: ["filterText"],
   created() {
     this.firstcompany = this.$store.getters.user.company;
     this.id = this.firstcompany.customerId;
@@ -52,8 +54,11 @@ export default {
 
   methods: {
     filterNode(value, data) {
+      console.log(value);
+      console.log(data);
+
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data.text.indexOf(value) !== -1;
     },
 
     // 异步树节点点击事件
@@ -95,7 +100,7 @@ export default {
               } else {
                 et.leaf = false;
                 debugger;
-                getCompanyTree(this.licenseId, "company", "0", et.id);
+                // getCompanyTree(this.licenseId, "company", "0", et.id);
               }
             });
             let data = res.data.data;

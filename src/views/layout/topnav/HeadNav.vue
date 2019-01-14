@@ -11,17 +11,13 @@
         <el-button type="text" class="underline">{{companyName}}</el-button>
       </span>
 
-      <el-dialog
-        title="选择公司"
-        :visible.sync="dialogVisible"
-        :modal-append-to-body="false"
-        v-dialogDrag
-      >
-        <companyTree @click="getname"/>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleQoose">确 定</el-button>
+      <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false" v-dialogDrag>
+        <span slot="title" class="dialog-title">
+          <span>选择公司</span>
+          <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
         </span>
+        <companyTree @click="getname" :filterText="filterText"/>
+        <span slot="footer" class="dialog-footer"></span>
       </el-dialog>
 
       <el-dropdown trigger="click" v-if="showDims.year">
@@ -175,7 +171,8 @@ export default {
         { id: 1000, text: "千元" },
         { id: 10000, text: "万元" },
         { id: 100000000, text: "亿元" }
-      ]
+      ],
+      filterText: ""
     };
   },
   components: {
@@ -259,9 +256,12 @@ export default {
     getname(e) {
       console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
-      // console.log(this.companyId);
-      this.companyName_cache = e.text;
+      this.GetSideMid({
+        company: typeof e.id == "string" ? e.id : e.customerId,
+        companyName: e.text
+      });
+      this.GettRreeInfo(e);
+      this.dialogVisible = false;
     },
     showDilog() {
       this.dialogVisible = true;
@@ -282,16 +282,6 @@ export default {
           // localStorage.removeItem("authorization");
           // this.$router.push("/login");
         });
-    },
-    // 公司点击确定事件
-    handleQoose() {
-      //   点击确定,把子组件选择的id,neme存到Vuex中
-      this.GetSideMid({
-        company: this.companyId,
-        companyName: this.companyName_cache
-      });
-      this.GettRreeInfo(this.treeInfo);
-      this.dialogVisible = false;
     },
     sayhidden() {
       this.isShow = true;
