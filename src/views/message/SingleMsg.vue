@@ -1,9 +1,9 @@
 <template>
-  <div class="SingleMsg vue-module">
+  <div class="SingleMsg">
     <div class="top">
       <div class="title">
         <div class="img-box">
-          <img :src="messageStore.receiverData.user.avatar" :onerror="defaultImg">
+          <img :src="messageStore.receiverData.user.avatar" v-avatar="messageStore.receiverData.user.trueName">
         </div>
         <div class="titleleft">
           <h3>
@@ -12,25 +12,38 @@
           </h3>
           <p>安徽经邦软件有限公司</p>
         </div>
-        <div class="titleright">
-          <p class="message">消息</p>
-          <p class="file">文件</p>
+      </div>
+      <div class="btn-group">
+        <div :class="['btn', {active: activeBtn === 'message'}]" @click="changeMessage('message')">
+          消息
+        </div>
+        <div :class="['btn', {active: activeBtn === 'file'}]" @click="changeMessage('file')">
+          文件
         </div>
       </div>
     </div>
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <message-item v-for="item in singleMsgListReverse" :key="item.id" :data="item"></message-item>
+        <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
     <div class="bottom">
       <div class="chat-tool">
         <div id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></div>
-        <div class="tool-icon file-icon" @click="selectFile">
-          <form action="">
-            <input type="file" name="file" ref="selectFile">
-          </form>
-        </div>
+        <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <div class="tool-icon file-icon">
+            <form action="">
+              <input type="file" name="file" ref="selectFile">
+            </form>
+          </div>
+        </el-upload>
+
         <div class="tool-icon link-icon"></div>
         <transition name="el-zoom-in-bottom">
           <div v-show="showFacePop" class="face-pop">
@@ -45,96 +58,189 @@
           </div>
         </transition>
       </div>
-      <textarea class="chat-textarea"
-                placeholder="请输入文字，按enter建发送信息"
-                v-model="sendText"
-                ref="textarea"
-                @keyup.enter="handleSendMessage"
-      ></textarea>
+      <div class="input-wrap">
+        <textarea class="chat-textarea"
+                  placeholder="请输入文字，按enter建发送信息"
+                  v-model="sendText"
+                  ref="textarea"
+                  @keyup.enter="handleSendMsg()"
+        ></textarea>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
-import MessageItem from './MessageItem'
+import MessageItem from '@c/message/message_item/MessageItem.vue'
 import {
-  FIND_SINGLE_MSG,
-  sendMsg
+  UPLOAD_FILE,          // 上传文件
+  FIND_SINGLE_MSG       // 查询单聊信息
 } from '~api/message.js';
-import {PARSE_CHAT_CONTENT} from 'utils/message';
-import emotionSprites from '@a/green/emotion_sprites.json';
+import emotionSprites from '@a/message/data/emotion_sprites.json';
+import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'SingleMsg',
-  props: ['chatWithUserId'],
   components: {MessageItem},
   data() {
     return {
-      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
-      receiverName: '', // 聊天对象名称
-      receiverAvatar: '', // 聊天对象头像
+      fileData: null,                       // 上传文件成功后返回的文件信息
+      fd: null,                             // 上传的文件信息
+      msgPaddingList: [],                   // 待发送消息队列
+      activeBtn: 'message',                 // 聊天（消息/文件）默认显示
+      receiverName: '',                     // 聊天对象名称
+      receiverAvatar: '',                   // 聊天对象头像
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
-      singleMsgList: [], // 单聊消息队列
-      sendText: '', // 发要发送的文本类容
-      showFacePop: false // 是否显示聊天表情弹窗
+      singleMsgList: [],                    // 单聊消息队列
+      sendText: '',                         // 发要发送的文本类容
+      showFacePop: false                    // 是否显示聊天表情弹窗
     }
   },
   computed: {
-    ...mapGetters(['user', 'messageStore']),
+    ...mapGetters(['user', 'messageStore', 'targetId']),
     loginUserId() {
       return this.user.user.id;
     },
     receiverId() {
       return this.messageStore.receiverData.user.id
     },
-    singleMsgListReverse() {
-      if (this.singleMsgList.length) return this.singleMsgList.reverse()
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
     }
   },
+  watch: {
+    receiverId(val) {
+      this.findSingleMsg();
+    },
+
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      // 当目标id 和 发送者id相同时再把消息加入队列
+      if (this.messageStore.targetId === item.senderId) {
+        // debugger;
+        this.singleMsgList.push(item);
+        this.$nextTick(() => { // 把聊天窗口滚动到最底部
+          this.chatWindowScrollToBottom();
+        });
+      }
+    },
+
+    /**
+     * 监听到 ack 后更新消息
+     * 监听ack消息回执 返回示例：
+     * {
+     *   code: 2000,
+     *   data: {
+     *     id: '1546065114464cnbi',   // <String>
+     *     miniType: 1100,            // <Number>
+     *     sendTime: 1546065114464,   // <Number>
+     *     state: 0,                  // <Number>
+     *   },
+     *   msg: 'ACK即时消息确认报文'
+     * }
+     */
+    serverAck(val) {
+      debugger;
+      console.log('服务器ACK：', val);
+      socket.send(JSON.stringify(val));
+      debugger;
+    }
+
+  },
   methods: {
+
     // 聊天选择文件
     selectFile() {
       this.$refs['selectFile'].click()
     },
 
-    // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMessage() {
-      if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
-        let sendData = {
-          code: 1100, // 1100:单聊 1101:群聊
-          data: {
-            content: this.sendText.trim(),
-            receiverId: this.receiverId, //
-            senderId: this.loginUserId, // 225:卢诚
-            type: 1
-          },
-          device: '868938033321615'
-        };
-        console.log('要发送的内容是：', sendData);
-        this.addMsgToWindow(this.sendText);
-        this.sendText = '';
-        sendMsg(sendData);
-      } else {
+    // 聊天窗口（消息、文件）切换
+    changeMessage(type) {
+      if (this.activeBtn !== type) {
+        this.activeBtn = type
+      }
+    },
+
+    // 发送消息
+    handleSendMsg(fileData) {
+      debugger;
+      console.log('要发送的文件：', fileData);
+      let pushData = {
+        type: 1,
+        data: this.sendText
+      };
+      let sendData = {
+        code: 1100, // 1100:单聊 1101:群聊
+        data: {
+          content: this.sendText.trim(),
+          receiverId: this.receiverId,
+          senderId: this.loginUserId,
+          type: 1,
+          fileId: null,
+          id: 'cnbift' + new Date().getTime() + new Date().getTime(),
+          sendTime: new Date().getTime(),
+          seq: 0,
+        },
+      };
+
+      if (fileData) { // 如果是发文件，设置文件type，和文件的data
+        sendData.data.content = fileData.text;
+        sendData.data.fileId = fileData.id;
+        for (let item of FILE_TYPE) {
+          debugger;
+          console.log(item);
+          if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
+            sendData.data.type = item.type;
+            pushData.type = item.type;
+            pushData.data = fileData;
+            break
+          } else {
+            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+          }
+        }
+      }
+
+      console.log('要发送的内容是：', sendData);
+      if (!sendData.data.content) {
         this.sendText = '';
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
           showClose: true
         });
+        return;
       }
-
+      socket.deliver(sendData);
+      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
-    addMsgToWindow(sendText) {
+    addMsgToWindow(pushData) {
       let data = {
-        avatar: this.receiverAvatar,
-        content: sendText,
-        name: this.receiverName,
-        sendTime: new Date().getTime()
+        avatar: this.user.user.avatar,
+        content: '',
+        name: this.user.user.trueName,
+        sendTime: new Date().getTime(),
+        type: 1
       };
-      this.singleMsgListReverse.push(data);
+      if (pushData.type === 1) {
+        data.content = pushData.data;
+      } else {
+        data.content = pushData.data.text;
+        data.file = pushData.data;
+        data.type = pushData.type
+      }
+
+      console.log('要添加到聊天窗口的数据是：', data);
+      debugger;
+      this.singleMsgList.push(data);
       this.$nextTick(() => {
         this.chatWindowScrollToBottom();
       });
@@ -142,9 +248,8 @@ export default {
 
     // 把聊天窗口滚动到最底部
     chatWindowScrollToBottom() {
-      // debugger;
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      console.log('找滚动窗口：', chatWindow);
+      // console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
@@ -154,31 +259,27 @@ export default {
       this.$refs.textarea.focus();
     },
 
-  },
-  mounted() {
-    // console.log('json测试：', this.EMOTION_SPRITES);
-    // ajax请求获取单聊消息内容
-    FIND_SINGLE_MSG(this.loginUserId, this.messageStore.receiverData.user.id)
-      .then(res => {
-        console.log('获取单聊信息then：', res);
-        res = res.data;
-        if (res.code === 200 && res.data) {
-          this.singleMsgList = res.data.data;
-          this.receiverName = singleMsgList[0].name;
-          this.receiverAvatar = singleMsgList[0].avatar
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.msg,
-            showClose: true
-          })
-        }
-      }).catch(err => {
-      console.log('获取单聊信息catch：', err)
-    });
+    findSingleMsg() {
+      // ajax请求获取单聊消息内容
+      FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
+        .then(res => {
+          console.log('获取单聊信息then：', res);
+          res = res.data;
+          if (res.code === 200 && res.data) {
+            this.singleMsgList = res.data.data.reverse();
+            // 消息拿到后 把窗口内容滚到到底部
+            this.$nextTick(() => {
+              this.chatWindowScrollToBottom()
+            });
+          }
+        }).catch(err => {
+        console.log('获取单聊信息catch：', err)
+      });
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hideFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -187,35 +288,81 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    },
+
+    // 处理文件上传
+    handleAvatarSuccess(res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      console.log('要上传的文件信息：', file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.fd = fd;
+      this.submitUpload(fd);
+      return true
+    },
+    submitUpload(fd) {
+      debugger;
+      let _this = this;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传群文件res', res);
+          debugger;
+          if (res.data.code === 200) {
+            _this.fileData = res.data.data;
+            this.handleSendMsg(res.data.data)
+          }
+        });
+      }
+    },
+
+  },
+  mounted() {
+    // ajax请求获取单聊消息内容
+    this.findSingleMsg();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hideFaceIcon)
+
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>
-<!--<style lang="scss">-->
-<!--/*这里不使用 scoped 是v-html生成表情能够应用到样式*/-->
-<!--@import "@s/green/emotion_sprites.scss";-->
-<!--</style>-->
 
 <style lang="scss" scoped>
-  .SingleMsg.vue-module {
-    @import "@s/green/variables.scss";
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
+
+  .SingleMsg {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     overflow: hidden;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     .title {
+      @include flex();
+      align-items: center;
       position: relative;
       overflow: hidden;
 
       .img-box {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
         float: left;
+
         img {
           width: 100%;
           height: 100%;
@@ -223,11 +370,11 @@ export default {
       }
 
       .titleleft {
+        margin-left: 20px;
         float: left;
-        margin: 20px 0 0 30px;
 
         h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
 
           span {
@@ -236,7 +383,7 @@ export default {
         }
 
         p {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
           margin-top: 8px;
           color: $colorText2;
@@ -244,138 +391,43 @@ export default {
         }
       }
 
-      .titleright {
-        height: 24px;
-        width: 160px;
-        display: flex;
-        position: absolute;
-        right: 0;
-        top: 30px;
-        padding: 0;
-
-        .message {
-          width: 80px;
-          height: 24px;
-          background: $colorTheme;
-          opacity: 1;
-          border-radius: 66px 0px 0px 66px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: $colorText1;
-          text-align: center;
-        }
-
-        .file {
-          height: 24px;
-          width: 80px;
-          background: rgba(0, 0, 0, 0.1);
-          opacity: 1;
-          border-radius: 0px 66px 66px 0px;
-          font-size: 14px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 24px;
-          color: rgba(0, 0, 0, 0.20);
-          text-align: center;
-        }
-      }
     }
 
     .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: rgba(235, 236, 236, 1);
       opacity: 1;
-      padding: 60px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .middle {
       flex: 1;
-      /*padding-right: 24px;*/
-      padding-left: 40px;
+      position: relative;
+      margin-left: 40px;
       overflow: hidden;
 
-      /deep/ .el-scrollbar__thumb {
-        background: $colorTheme;
-      }
-
-      /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-      }
-
-      /*background: #cccccc;*/
-      .message-box {
-        padding: 10px 20px;
-        margin: 10px 40px 20px 0;
-        background: #ffffff;
-        box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
-        border-radius: 12px;
-
-        .message-top {
-          overflow: hidden;
-          margin-bottom: 20px;
-
-          .avatar-box {
-            width: 40px;
-            height: 40px;
-            margin-right: 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            float: left;
-            background: #cccccc;
-
-            img {
-              width: 100%;
-            }
-          }
-
-          .user-name {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText1;
-          }
-
-          .send-time {
-            position: relative;
-            margin-top: 3px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText4;
-            font-family: $fontFamilyMain;
-
-            .status {
-              position: absolute;
-              left: 215px;
-              top: 0;
-              width: 10px;
-              height: 10px;
-              border-radius: 50%;
-              background: #EF3C3C;
-            }
-          }
+      /deep/ .el-scrollbar {
+        .el-scrollbar__thumb {
+          background: $colorTheme;
         }
 
-        .message-content {
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 20px;
-          color: rgba(0, 0, 0, 0.80);
+        .el-scrollbar__wrap {
+          padding-right: 77px;
+          overflow-x: hidden;
+        }
 
-          /deep/ .face-img {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-          }
+        .el-scrollbar__bar.is-horizontal {
+          display: none
         }
       }
     }
 
     .bottom {
-      position: relative;
+      /*height: 260px;*/
       box-sizing: border-box;
       width: 100%;
       padding: 18px 40px 20px;
@@ -386,15 +438,19 @@ export default {
         position: relative;
         margin-bottom: 18px;
 
+        .avatar-uploader {
+          display: inline-block;
+        }
+
         .tool-icon {
           display: inline-block;
           width: 24px;
           height: 24px;
-          /*border-radius: 50%;*/
           cursor: pointer;
           background: #ccc;
           margin-right: 30px;
           background-size: 24px 24px;
+          background: $colorTheme;
 
           form {
             width: 0;
@@ -416,22 +472,28 @@ export default {
         }
       }
 
-      .chat-textarea {
-        min-height: 100px;
-        padding: 10px 20px;
-        color: rgba(0, 0, 0, 0.40);
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 12px;
+      .input-wrap {
         width: 100%;
-        border: none;
-        outline: 0;
-        resize: none;
-        text-align: left;
-        font-family: $fontFamilyMain;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 20px;
+
+        .chat-textarea {
+          box-sizing: border-box;
+          min-height: 100px;
+          padding: 10px 20px;
+          color: rgba(0, 0, 0, 0.40);
+          background: rgba(0, 0, 0, 0.06);
+          border-radius: 12px;
+          width: 100%;
+          border: none;
+          outline: 0;
+          resize: none;
+          text-align: left;
+          font-family: $fontFamilyMain;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20px;
+        }
       }
+
     }
 
     .comment {
@@ -443,6 +505,28 @@ export default {
       opacity: 1;
       padding: 40px 30px 0 40px;
       box-sizing: border-box;
+    }
+  }
+
+  .btn-group {
+    display: inline-block;
+    $btnHeight: 24px;
+    border-radius: $btnHeight / 2;
+    overflow: hidden;
+
+    .btn {
+      display: inline-block;
+      line-height: $btnHeight;
+      padding: 0 36px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.20);
+      background: rgba(0, 0, 0, .1);
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background: $colorTheme;
+      color: #ffffff;
     }
   }
 </style>

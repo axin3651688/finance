@@ -1,15 +1,16 @@
-<!--从element-ui的dialog改版过来的-->
 <template>
   <div class="SiderBar">
     <div class="siderbar-top">
       <div class="login-info-wrap">
         <div class="login-info" @click="showMyInfo=!showMyInfo">
-          <img :src="user.user.avatar" :title="user.user.trueName">
+          <img :src="user.user.avatar" v-avatar="user.user.trueName">
         </div>
 
-        <my-dialog :value="showMyInfo" class="my-info-dialog">
-          <user-info></user-info>
-        </my-dialog>
+        <div class="my-info-dialog">
+          <my-dialog :value="showMyInfo" class="">
+            <user-info></user-info>
+          </my-dialog>
+        </div>
 
       </div>
     </div>
@@ -25,8 +26,12 @@
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_text">消息</div>
           <div class="nav-item_inner nav-item_icon">
-            <img src="@ma/icon/message_selected.svg" class="img-selected">
-            <img src="@ma/icon/message_unselected.svg" class="img-unselected">
+            <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" class="item">
+              <img src="@ma/icon/message_selected.svg" class="img-selected">
+              <img src="@ma/icon/message_unselected.svg" class="img-unselected">
+            </el-badge>
+            <!--<img src="@ma/icon/message_selected.svg" class="img-selected">-->
+            <!--<img src="@ma/icon/message_unselected.svg" class="img-unselected">-->
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
@@ -76,22 +81,83 @@ export default {
     }
   },
   components: {
-    MyBtn: () => import('@mc/MyBtn'),
-    MyDialog: () => import('@mc/MyDialog'),
+    MyDialog: () => import('@c/message/my_dialog/MyDialog.vue'),
     UserInfo: () => import('@mc/user_info/UserInfo.vue')
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'messageStore']),
+    messageCount() {
+      let count = 0;
+      if (this.messageStore.sessionList) {
+        this.messageStore.sessionList.forEach(sessionItem => {
+          count += sessionItem.count
+        });
+      }
+      return count
+    },
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
+    }
+  },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      debugger;
+      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
+      let sessionItem = {};
+      sessionItem['miniType'] = val.code;
+      sessionItem['targetId'] = targetId;
+      sessionItem['count'] = 1;
+      sessionItem['content'] = val.data.content;
+      sessionItem['sendTime'] = val.data.sendTime;
+      sessionItem['originData'] = val.data;
+      switch (val.code) {
+        case 1100: // 单聊
+          sessionItem['name'] = val.data.name;
+          sessionItem['avatar'] = val.data.avatar;
+          sessionItem['id'] = val.data.senderId;
+          break;
+        case 1101: // 群聊
+          sessionItem['name'] = val.data.otherName;
+          sessionItem['avatar'] = val.data.otherAvatar;
+          sessionItem['id'] = val.data.receiverId;
+      }
+
+      // 如果这条消息的targetId不在sessionList中，这加到队首
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === targetId) { // 在队列
+          // 在队列, 并且没有打开聊天窗口，则更新当条消息
+          if (targetId === this.messageStore.sessionActiveItem.targetId && this.$route.name.toLowerCase() === 'msg') {
+            return false // 收到的消息来自当前聊天对象，不需增加计数
+          }
+          this.ActionUpdateSessionList({ // 增加一条计数
+            type: 'update',
+            method: 'addCount',
+            data: sessionItem
+          });
+          return false
+        }
+      }
+      this.ActionUpdateSessionList({
+        type: 'addItem',
+        data: sessionItem
+      });
+    },
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     doLogout() {
       // todo备以后用,先不删
-      // localStorage.removeItem("database");
-      // this.$store.dispatch("clearCurrentState");
+      localStorage.removeItem("database");
+      this.$store.dispatch("clearCurrentState");
+
       this.dialogQuitVisible = false;
       logout()
         .then(res => {
-          // console.log(res.data.msg);
           // 清除token
           localStorage.removeItem("authorization");
           this.$router.push("/message_login");
@@ -116,7 +182,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
 
   .SiderBar {
     position: relative;
@@ -151,6 +217,7 @@ export default {
         width: 100%;
         height: 100%;
         position: relative;
+        padding: 0;
       }
     }
 
@@ -240,6 +307,7 @@ export default {
   }
 
   .my-info-dialog {
+    position: absolute;
     width: $sizeNavBarWidth;
     z-index: 100;
     box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.3);
@@ -247,6 +315,7 @@ export default {
     left: 100%;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+    overflow: hidden;
     background: #ffffff;
   }
 </style>

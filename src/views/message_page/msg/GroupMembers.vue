@@ -19,7 +19,7 @@
             <figure>
               <div>
                 <div class="img-box">
-                  <img :src="item.avatar" alt="">
+                  <img :src="item.avatar" v-avatar="item.trueName">
                 </div>
               </div>
               <h4 class="text">{{item.trueName}}</h4>
@@ -30,7 +30,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
                   :command="item"
-                  style="color: #189271"
+                  style="color: #1890ff"
                 >移除
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -189,7 +189,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
 
   .GroupMembers {
     position: fixed;
@@ -328,7 +329,7 @@ export default {
           display: block;
           width: 20px;
           height: 20px;
-          background: url("../assets/icon/list_menu.svg") no-repeat;
+          background: url($iconListMenu) no-repeat;
           background-size: 20px 20px;
           cursor: pointer;
         }

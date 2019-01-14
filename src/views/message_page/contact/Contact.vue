@@ -76,14 +76,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/variables.scss";
+  @import "@s/message/variables.scss";
 
   .MessageContacts {
     box-sizing: border-box;
     overflow: hidden;
     background: #ffffff;
     height: 100%;
-    padding: 1px 0px 0;
     background: $colorBgPageGray;
 
     /deep/ li {
@@ -120,7 +119,7 @@ export default {
         .splide-line {
           width: 1px;
           height: 30px;
-          background: #cccccc;
+          background: $colorBorder2;
           position: absolute;
           right: 0;
           top: 50%;

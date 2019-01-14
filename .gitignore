@@ -3,12 +3,7 @@ node_modules
 /dist
 /public
 vue.config.js
-<<<<<<< HEAD
-pubilcsss
-=======
 pubilc
-
->>>>>>> dde9b647e8f460cc62691739fc2bb6a04a2126f4
 
 # local env files
 .env.local

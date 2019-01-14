@@ -58,7 +58,7 @@
           type="primary"
           size="medium"
           class="my-btn"
-          @click="chatWithSingle(activeUser)"
+          @click="chatWithSingle(rightUserInfoData)"
         >发送信息
         </el-button>
       </div>
@@ -78,6 +78,9 @@ export default {
 
   computed: {
     ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id
+    }
   },
 
   data() {
@@ -90,7 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ActionSetMessageStore']),
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
 
     getdata() {
       // let userId = this.user.user.id;
@@ -146,12 +149,42 @@ export default {
     },
 
     // 和某某单聊, 路由到消息页面，要切换到单聊窗口
-    chatWithSingle(receiverId) {
+    chatWithSingle(rightUserInfoData) {
+      debugger;
+      let sessionItem = {};
+      let targetId = '1100_' + rightUserInfoData.user.id + '_' + this.loginUserId;
+      sessionItem['miniType'] = 1100;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = rightUserInfoData.user.id;
+      sessionItem['name'] = rightUserInfoData.user.trueName;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = rightUserInfoData.user.avatar;
+      sessionItem['originData'] = rightUserInfoData;
       this.ActionSetMessageStore({
-        targetId: receiverId,
-        miniType: 1100, // 1100 单聊
-        receiverData: this.rightUserInfoData
+        sessionActiveItem: sessionItem,
+        miniType: sessionItem.miniType
       });
+      let itemExist = false;
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true;
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          });
+          break;
+        }
+      }
+      if (!itemExist) { // 如果不存在，则进队列
+        let addObj = {
+          type: 'addItem', // 可取'addItem','deleteItem','update'
+          data: sessionItem
+        };
+        this.ActionUpdateSessionList(addObj);
+      }
       this.$router.push('/message_page/msg')
     }
   },
@@ -163,7 +196,8 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
 
   .ContactsFriends {
     display: flex;

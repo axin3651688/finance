@@ -173,8 +173,8 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import MessageItem from './MessageItem'
-import emotionSprites from '@a/green/emotion_sprites.json';
+import MessageItem from '@c/message/message_item/MessageItem.vue'
+import emotionSprites from '@a/message/data/emotion_sprites.json';
 import {
   findGroupMsg,
   GROUP_INFO,
@@ -184,7 +184,7 @@ import {
   DISSOLU_GROUP,
   UPLOAD_FILE
 } from '~api/message.js';
-import FILE_TYPE from '@m_config/file_type.js' // 可以上传的文件列表
+import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'GroupMsg',
@@ -216,7 +216,8 @@ export default {
       return this.user.user.id;
     },
     groupId() {
-      return this.messageStore.targetId
+      debugger;
+      return this.messageStore.sessionActiveItem.id
     },
     groupOwnerId() {
       return this.groupInfo.ownerId
@@ -231,6 +232,8 @@ export default {
   watch: {
     //监听服务器推送的消息
     newServerMsg(val) {
+      // 如果不是群消息 或 接收群id不是当前窗口,不往下执行
+      if (val.code !== 1101 || val.data.receiverId !== this.groupId) return false;
       debugger;
       console.log('监听到服务器推送：', val);
       let item = val.data;
@@ -382,37 +385,7 @@ export default {
         return;
       }
       socket.deliver(sendData);
-      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
-    },
-
-    // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMessage() {
-      console.log('要发送的内容是：', this.sendText);
-      if (this.sendText.trim()) { // 默认会带一个回车符，所以要先去掉
-        let sendData = {
-          code: 1101, // 1100:单聊 1101:群聊
-          data: {
-            content: this.sendText,
-            senderId: this.loginUserId,
-            receiverId: this.groupId,
-            id: 'cnbift' + new Date().getTime() + new Date().getTime(),
-            type: 1
-          },
-        };
-        console.log('群消息发送的内容是：', sendData);
-        // this.addMsgToWindow(this.sendText); // todo:这里会受到服务器返回的类容，就不自己推到窗口了，有待优化
-        this.sendText = '';
-        debugger;
-        socket.deliver(sendData);
-
-      } else {
-        this.sendText = '';
-        this.$message({
-          type: 'warning',
-          message: '发送内容不能为空',
-          showClose: true
-        });
-      }
+      // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
@@ -444,7 +417,7 @@ export default {
     chatWindowScrollToBottom() {
       // debugger;
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      console.log('找滚动窗口：', chatWindow);
+      // console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
@@ -499,7 +472,7 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      // debugger;
+      debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data);
@@ -536,7 +509,6 @@ export default {
       })
     },
 
-    // TODO：2退出群组(ok) 成功后窗口怎么跳转
     quitGroup() {
       // debugger;
       let params = {
@@ -615,12 +587,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  /*这里不使用 scoped 使v-html生成表情能够应用到样式*/
-  @import "../styles/emotion_sprites.scss";
-</style>
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@s/message/index.scss";
 
   .GroupMsg {
     display: flex;
@@ -671,7 +639,7 @@ export default {
 
             .title-text {
               display: inline-block;
-              width: 200px;
+              max-width: 200px;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -742,73 +710,10 @@ export default {
           padding-right: 40px;
         }
       }
-
-
-      /*background: #cccccc;*/
-      .message-box {
-        padding: 10px 20px;
-        margin: 10px 40px 20px 0;
-        background: #ffffff;
-        box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
-        border-radius: 12px;
-
-        .message-top {
-          overflow: hidden;
-          margin-bottom: 20px;
-
-          .avatar-box {
-            width: 40px;
-            height: 40px;
-            margin-right: 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            float: left;
-            background: #cccccc;
-
-            img {
-              width: 100%;
-            }
-          }
-
-          .user-name {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText1;
-          }
-
-          .send-time {
-            position: relative;
-            margin-top: 3px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText4;
-            font-family: $fontFamilyMain;
-
-            .status {
-              position: absolute;
-              left: 215px;
-              top: 0;
-              width: 10px;
-              height: 10px;
-              border-radius: 50%;
-              background: #EF3C3C;
-            }
-          }
-        }
-
-        .message-content {
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 20px;
-          color: rgba(0, 0, 0, 0.80);
-        }
-      }
     }
 
     .bottom {
-      height: 260px;
+      /*height: 260px;*/
       box-sizing: border-box;
       /*height: 240px;*/
       width: 100%;

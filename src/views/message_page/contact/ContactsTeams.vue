@@ -79,7 +79,7 @@
         type="primary"
         size="medium"
         class="my-btn"
-        @click="chatWithSingle(activeUser)"
+        @click="chatWithSingle(rightUserInfo)"
         v-if="activeUser !== loginUserId"
       >发送信息</el-button>
     </div>
@@ -110,15 +110,45 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ActionSetMessageStore']),
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
 
     // 和某某单聊, 要切换到单聊窗口
-    chatWithSingle(receiverId) {
+    chatWithSingle(rightUserInfo) {
+      // debugger;
+      let sessionItem = {};
+      let targetId = '1100_' + rightUserInfo.user.id + '_' + this.loginUserId;
+      sessionItem['miniType'] = 1100;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = rightUserInfo.user.id;
+      sessionItem['name'] = rightUserInfo.user.trueName;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = rightUserInfo.user.avatar;
+      sessionItem['originData'] = rightUserInfo;
       this.ActionSetMessageStore({
-        targetId: receiverId,
-        miniType: 1100, // 1100 单聊
-        receiverData: this.rightUserInfo
+        sessionActiveItem: sessionItem,
+        miniType: sessionItem.miniType
       });
+      let itemExist = false;
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === targetId) { // 如果已经在队列中了，清除消息计数
+          itemExist = true;
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          });
+          break;
+        }
+      }
+      if (!itemExist) { // 如果不存在，则进队列
+        let addObj = {
+          type: 'addItem', // 可取'addItem','deleteItem','update'
+          data: sessionItem
+        };
+        this.ActionUpdateSessionList(addObj);
+      }
       this.$router.push('/message_page/msg')
     },
 
@@ -185,7 +215,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
 
   .ContactsTeams {
     display: flex;

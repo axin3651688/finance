@@ -1,9 +1,12 @@
-import store from '@/store'
-import emotionSprites from '@a/green/emotion_sprites.json'; // 聊天表情数据
+import store from '@/store' // vuex
+import router from '@v/message_page/router'
 
-const EMOTION_SPRITES = emotionSprites.data; // 聊天表情数据
 
-// 格式化时间戳 返回 年-月-日 时:分
+const EMOTION_SPRITES = require('@a/message/data/emotion_sprites.json').data; // 聊天表情数据
+
+/**
+ * 格式化时间戳 返回 年-月-日 时:分
+ */
 export function FORMAT_TIME(time) {
   let date = new Date(time);
   let Y = date.getFullYear();
@@ -16,14 +19,21 @@ export function FORMAT_TIME(time) {
   return newTime
 }
 
-// 格式化时间戳 更具不同的时长返回不同的显示方式
+/**
+ * 格式化时间戳 更具不同的时长返回不同的显示方式
+ */
 export function FORMAT_MSG_TIME(publishtime) {
-  let publishDate = new Date(publishtime);
-  let Y = publishDate.getFullYear();
-  let M = publishDate.getMonth();
-  let D = publishDate.getDate();
-  let h = publishDate.getHours();
-  let m = publishDate.getMinutes();
+  debugger;
+  let dateTime = new Date(publishtime);
+  let Y = dateTime.getFullYear();
+  let M = dateTime.getMonth();
+  let D = dateTime.getDate();
+  let h = dateTime.getHours();
+  let m = dateTime.getMinutes();
+  M = M > 9 ? M : '0'+M;
+  D = D > 9 ? D : '0'+D;
+  h = h > 9 ? h : '0'+h;
+  m = m > 9 ? m : '0'+m;
 
   let currTime = Date.parse(new Date()); // 获取当前时间戳
   let l = parseInt(currTime) - parseInt(publishtime);
@@ -52,7 +62,9 @@ export function FORMAT_MSG_TIME(publishtime) {
 
 }
 
-// 解析聊天符号，替换成表情图
+/**
+ * 解析聊天符号，替换成表情图
+ */
 export function PARSE_EMOTIONS(content) {
   // debugger;
   if (!content) return;
@@ -72,62 +84,78 @@ export function PARSE_EMOTIONS(content) {
   return content
 }
 
-// 处理图片类型
-export function PARSE_IMG(content) {
+/**
+ * 1003 处理electron 登录失效后重新登录
+ */
+function _processLoginExpired(data) {
+  // alert('1003====authorization'+JSON.stringify(data.data.authorization));
+  if (data.data.authorization) {
+    // 重登录成功窗口变大
+    if (window.require) {
+      var ipc = window.require('electron').ipcRenderer
+    }
+    if (window.require) {
+      ipc.send('web_autoLogin', '')
+    }
+  } else {
 
-}
+    // 登陆失败 electron 退出处理
+    // debugger;
+    // 清除本地记录的一些数据
+    localStorage.removeItem("database");
+    store.dispatch("clearCurrentState");
+    localStorage.removeItem("authorization"); // 清token
 
-// 处理音频类型
-export function PARSE_AUDIO(content) {
+    if (window.require) {
+      var ipc = window.require('electron').ipcRenderer
+    }
+    if (window.require) {
+      // alert('web_outLogin');
+      router.push('/message_login');
+      ipc.send('web_outLogin', '')
+    }
 
-}
-
-// 处理视频类型
-export function PARSE_VIDEO(content) {
-
-}
-
-// 处理文件类型
-export function PARSE_FILE(content) {
-
-}
-
-// 解析聊天内容，把聊天中的 语音、文件、表情符号替换
-// content:聊天内容  type:内容的类型（1、文本有表情的也是；6、图片）
-export function PARSE_CHAT_CONTENT(content, type) {
-  // debugger;
-  switch (type) {
-    case 1:
-      // 处理 表情文本 消息，替换表情符号
-      return PARSE_EMOTIONS(content);
-      break;
-    case 2:
-      // 处理 图片 类型的内容
-      return PARSE_IMG(content);
-      break;
-    case 3:
-      // 处理 文件 类型的内容
-      return PARSE_FILE(content);
-      break;
-    case 4:
-      // 处理 音频 类型的内容
-      return PARSE_AUDIO(content);
-      break;
-    case 5:
-      // 处理 视频 类型的内容
-      return PARSE_VIDEO(content);
-      break;
-    default:
-      return content
   }
+
 }
 
-// 处理服务端socked端推送的消息
-export function processServerMessage(data) {
-  store.dispatch("ActionSetMessageStore", {newServerMsg: data});
-}
-
-// 处理消息发送的回执 code=2000 为ack回执
-export function processServerAck(data) {
-  store.dispatch("ActionSetMessageStore", {serverAck: data});
+/**
+ * 统一处理服务器推送的socket信息
+ */
+export function messagePageProcessSocket(data) {
+  // debugger;
+  switch (data.code) {
+    case 1001: // 与服务器连接成功
+      // 连接成功后会得到 token
+      store.dispatch("ActionSetMessageStore", {token: data.data.token});
+      break;
+    case 1003: // 登录已失效
+      _processLoginExpired(data);
+      break;
+    case 1006: // 对方收到消息或读了消息
+      console.log('socketCoreProcess: 1006');
+      break;
+    case 1100: // 单聊
+      store.dispatch("ActionSetMessageStore", {newServerMsg: data});
+      break;
+    case 1101: // 群聊
+      // debugger;
+      store.dispatch("ActionSetMessageStore", {newServerMsg: data});
+      break;
+    case 1500: // 语音控制
+      console.log('1500语音控制:', data);
+      debugger;
+      break;
+    case 2000: // 消息 ack 回执
+      store.dispatch("ActionSetMessageStore", {serverAck: data});
+      break;
+    case 10010: // 10010-APP已扫码通知，扫码成功
+      console.log('10010扫码成功：', data);
+      store.dispatch("ActionSetMessageStore", {scanStatus: data});
+      break;
+    case 10011: // 10011-APP登录通知，登陆成功
+      console.log('10011扫码登陆：', data);
+      store.dispatch("ActionSetMessageStore", {scanStatus: data});
+      break;
+  }
 }

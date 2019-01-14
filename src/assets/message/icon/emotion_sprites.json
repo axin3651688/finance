@@ -1,0 +1,432 @@
+{
+  "data": [
+    {
+      "className": "bg-f_static_000",
+      "value": "[/呲牙]"
+    },
+    {
+      "className": "bg-f_static_001",
+      "value": "[/调皮]"
+    },
+    {
+      "className": "bg-f_static_002",
+      "value": "[/流汗]"
+    },
+    {
+      "className": "bg-f_static_003",
+      "value": "[/偷笑]"
+    },
+    {
+      "className": "bg-f_static_004",
+      "value": "[/再见]"
+    },
+    {
+      "className": "bg-f_static_005",
+      "value": "[/敲打]"
+    },
+    {
+      "className": "bg-f_static_006",
+      "value": "[/擦汗]"
+    },
+    {
+      "className": "bg-f_static_007",
+      "value": "[/猪头]"
+    },
+    {
+      "className": "bg-f_static_008",
+      "value": "[/玫瑰]"
+    },
+    {
+      "className": "bg-f_static_009",
+      "value": "[/流泪]"
+    },
+    {
+      "className": "bg-f_static_010",
+      "value": "[/大哭]"
+    },
+    {
+      "className": "bg-f_static_011",
+      "value": "[/嘘]"
+    },
+    {
+      "className": "bg-f_static_012",
+      "value": "[/酷]"
+    },
+    {
+      "className": "bg-f_static_013",
+      "value": "[/抓狂]"
+    },
+    {
+      "className": "bg-f_static_014",
+      "value": "[/委屈]"
+    },
+    {
+      "className": "bg-f_static_015",
+      "value": "[/便便]"
+    },
+    {
+      "className": "bg-f_static_016",
+      "value": "[/炸弹]"
+    },
+    {
+      "className": "bg-f_static_017",
+      "value": "[/菜刀]"
+    },
+    {
+      "className": "bg-f_static_018",
+      "value": "[/可爱]"
+    },
+    {
+      "className": "bg-f_static_019",
+      "value": "[/色]"
+    },
+    {
+      "className": "bg-f_static_020",
+      "value": "[/害羞]"
+    },
+    {
+      "className": "bg-f_static_021",
+      "value": "[/得意]"
+    },
+    {
+      "className": "bg-f_static_022",
+      "value": "[/吐]"
+    },
+    {
+      "className": "bg-f_static_023",
+      "value": "[/微笑]"
+    },
+    {
+      "className": "bg-f_static_024",
+      "value": "[/发怒]"
+    },
+    {
+      "className": "bg-f_static_025",
+      "value": "[/尴尬]"
+    },
+    {
+      "className": "bg-f_static_026",
+      "value": "[/惊恐]"
+    },
+    {
+      "className": "bg-f_static_027",
+      "value": "[/冷汗]"
+    },
+    {
+      "className": "bg-f_static_028",
+      "value": "[/爱心]"
+    },
+    {
+      "className": "bg-f_static_029",
+      "value": "[/示爱]"
+    },
+    {
+      "className": "bg-f_static_030",
+      "value": "[/白眼]"
+    },
+    {
+      "className": "bg-f_static_031",
+      "value": "[/傲慢]"
+    },
+    {
+      "className": "bg-f_static_032",
+      "value": "[/难过]"
+    },
+    {
+      "className": "bg-f_static_033",
+      "value": "[/惊讶]"
+    },
+    {
+      "className": "bg-f_static_034",
+      "value": "[/疑问]"
+    },
+    {
+      "className": "bg-f_static_035",
+      "value": "[/睡]"
+    },
+    {
+      "className": "bg-f_static_036",
+      "value": "[/亲亲]"
+    },
+    {
+      "className": "bg-f_static_037",
+      "value": "[/憨笑]"
+    },
+    {
+      "className": "bg-f_static_038",
+      "value": "[/爱情]"
+    },
+    {
+      "className": "bg-f_static_039",
+      "value": "[/衰]"
+    },
+    {
+      "className": "bg-f_static_040",
+      "value": "[/撇嘴]"
+    },
+    {
+      "className": "bg-f_static_041",
+      "value": "[/阴险]"
+    },
+    {
+      "className": "bg-f_static_042",
+      "value": "[/奋斗]"
+    },
+    {
+      "className": "bg-f_static_043",
+      "value": "[/发呆]"
+    },
+    {
+      "className": "bg-f_static_044",
+      "value": "[/右哼哼]"
+    },
+    {
+      "className": "bg-f_static_045",
+      "value": "[/拥抱]"
+    },
+    {
+      "className": "bg-f_static_046",
+      "value": "[/坏笑]"
+    },
+    {
+      "className": "bg-f_static_047",
+      "value": "[/飞吻]"
+    },
+    {
+      "className": "bg-f_static_048",
+      "value": "[/鄙视]"
+    },
+    {
+      "className": "bg-f_static_049",
+      "value": "[/晕]"
+    },
+    {
+      "className": "bg-f_static_050",
+      "value": "[/大兵]"
+    },
+    {
+      "className": "bg-f_static_051",
+      "value": "[/可怜]"
+    },
+    {
+      "className": "bg-f_static_052",
+      "value": "[/强]"
+    },
+    {
+      "className": "bg-f_static_053",
+      "value": "[/弱]"
+    },
+    {
+      "className": "bg-f_static_054",
+      "value": "[/握手]"
+    },
+    {
+      "className": "bg-f_static_055",
+      "value": "[/胜利]"
+    },
+    {
+      "className": "bg-f_static_056",
+      "value": "[/抱拳]"
+    },
+    {
+      "className": "bg-f_static_057",
+      "value": "[/凋谢]"
+    },
+    {
+      "className": "bg-f_static_058",
+      "value": "[/饭]"
+    },
+    {
+      "className": "bg-f_static_059",
+      "value": "[/蛋糕]"
+    },
+    {
+      "className": "bg-f_static_060",
+      "value": "[/西瓜]"
+    },
+    {
+      "className": "bg-f_static_061",
+      "value": "[/啤酒]"
+    },
+    {
+      "className": "bg-f_static_062",
+      "value": "[/飘虫]"
+    },
+    {
+      "className": "bg-f_static_063",
+      "value": "[/勾引]"
+    },
+    {
+      "className": "bg-f_static_064",
+      "value": "[/OK]"
+    },
+    {
+      "className": "bg-f_static_065",
+      "value": "[/爱你]"
+    },
+    {
+      "className": "bg-f_static_066",
+      "value": "[/咖啡]"
+    },
+    {
+      "className": "bg-f_static_067",
+      "value": "[/钱]"
+    },
+    {
+      "className": "bg-f_static_068",
+      "value": "[/月亮]"
+    },
+    {
+      "className": "bg-f_static_069",
+      "value": "[/美女]"
+    },
+    {
+      "className": "bg-f_static_070",
+      "value": "[/刀]"
+    },
+    {
+      "className": "bg-f_static_071",
+      "value": "[/发抖]"
+    },
+    {
+      "className": "bg-f_static_072",
+      "value": "[/差劲]"
+    },
+    {
+      "className": "bg-f_static_073",
+      "value": "[/拳头]"
+    },
+    {
+      "className": "bg-f_static_074",
+      "value": "[/心碎]"
+    },
+    {
+      "className": "bg-f_static_075",
+      "value": "[/太阳]"
+    },
+    {
+      "className": "bg-f_static_076",
+      "value": "[/礼物]"
+    },
+    {
+      "className": "bg-f_static_077",
+      "value": "[/足球]"
+    },
+    {
+      "className": "bg-f_static_078",
+      "value": "[/骷髅]"
+    },
+    {
+      "className": "bg-f_static_079",
+      "value": "[/挥手]"
+    },
+    {
+      "className": "bg-f_static_080",
+      "value": "[/闪电]"
+    },
+    {
+      "className": "bg-f_static_081",
+      "value": "[/饥饿]"
+    },
+    {
+      "className": "bg-f_static_082",
+      "value": "[/困]"
+    },
+    {
+      "className": "bg-f_static_083",
+      "value": "[/咒骂]"
+    },
+    {
+      "className": "bg-f_static_084",
+      "value": "[/折磨]"
+    },
+    {
+      "className": "bg-f_static_085",
+      "value": "[/抠鼻]"
+    },
+    {
+      "className": "bg-f_static_086",
+      "value": "[/鼓掌]"
+    },
+    {
+      "className": "bg-f_static_087",
+      "value": "[/糗大了]"
+    },
+    {
+      "className": "bg-f_static_088",
+      "value": "[/左哼哼]"
+    },
+    {
+      "className": "bg-f_static_089",
+      "value": "[/哈欠]"
+    },
+    {
+      "className": "bg-f_static_090",
+      "value": "[/快哭了]"
+    },
+    {
+      "className": "bg-f_static_091",
+      "value": "[/吓]"
+    },
+    {
+      "className": "bg-f_static_092",
+      "value": "[/篮球]"
+    },
+    {
+      "className": "bg-f_static_093",
+      "value": "[/乒乓球]"
+    },
+    {
+      "className": "bg-f_static_094",
+      "value": "[/NO]"
+    },
+    {
+      "className": "bg-f_static_095",
+      "value": "[/跳跳]"
+    },
+    {
+      "className": "bg-f_static_096",
+      "value": "[/怄火]"
+    },
+    {
+      "className": "bg-f_static_097",
+      "value": "[/转圈]"
+    },
+    {
+      "className": "bg-f_static_098",
+      "value": "[/磕头]"
+    },
+    {
+      "className": "bg-f_static_099",
+      "value": "[/回头]"
+    },
+    {
+      "className": "bg-f_static_100",
+      "value": "[/跳绳]"
+    },
+    {
+      "className": "bg-f_static_101",
+      "value": "[/激动]"
+    },
+    {
+      "className": "bg-f_static_102",
+      "value": "[/街舞]"
+    },
+    {
+      "className": "bg-f_static_103",
+      "value": "[/献吻]"
+    },
+    {
+      "className": "bg-f_static_104",
+      "value": "[/左太极]"
+    },
+    {
+      "className": "bg-f_static_105",
+      "value": "[/右太极]"
+    },
+    {
+      "className": "bg-f_static_106",
+      "value": "[/闭嘴]"
+    }
+  ]
+}

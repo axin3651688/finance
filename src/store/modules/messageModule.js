@@ -1,15 +1,18 @@
 const messageModule = {
   state: {
     messageStore: {
+      sessionActiveItem: null, // session选中的item
+      sessionList: null, // session消息队列
+      scanStatus: null, // 扫码登陆信息
+      token: null, // socket连接后服务器发的令牌
       serverAck: null, // socket 消息回执
-      targetId: null, // 接收群id或接收人id
+      // targetId: null, // 接收群id或接收人id
       routeName: '首页', // 路由名字
       newServerMsg: null, // 服务器推送的最新消息
       receiverData: null, // 单聊对象的用户信息
       groupInfo: null, // obj: 群信息
       companyList: null, // [{}.{}] 公司（团队）列表
-      miniType: 11016, // 设置消息类型 11016:新朋友、11017:群助手、11021:分析助手
-      mySessionList: null,  // [{},{}] 消息左边栏
+      miniType: null, // 设置消息类型 11016:新朋友、11017:群助手、11021:分析助手
     }
   },
 
@@ -21,6 +24,17 @@ const messageModule = {
         commit('MutationSetMessageStore', dataObj)
       } else {
         console.log('设置messageStore传入数据类型有误');
+        debugger;
+      }
+    },
+
+    // 更新session消息队列
+    ActionUpdateSessionList({commit}, dataObj) {
+      // debugger;
+      if (dataObj instanceof Object) {
+        commit('MutationUpdateSessionList', dataObj)
+      } else {
+        console.log('更新messageStore传入数据类型有误');
         debugger;
       }
     }
@@ -50,10 +64,44 @@ const messageModule = {
       } catch (e) {
         console.log('设置localStorage.messageStore失败:', e)
       }
+    },
+
+    // 更新session消息队列
+    MutationUpdateSessionList(state, dataObj) {
+      let sessionList = state.messageStore.sessionList;
+      switch (dataObj.type) {
+        case 'addItem':
+          // debugger;
+          state.messageStore.sessionList.unshift(dataObj.data);
+          state.messageStore.sessionAllCount++;
+          break;
+        case 'deleteItem':
+          debugger;
+          break;
+        case 'update':
+          // debugger;
+          for (let index in sessionList) {
+            if(sessionList[index].targetId === dataObj.data.targetId){
+              if (dataObj.method === 'addCount') { // 增加消息计数
+                sessionList[index].count++;
+                sessionList[index].content = dataObj.data.content;
+                sessionList[index].originData = dataObj.data.originData;
+                break;
+              } else { // 'clearCount' 清除消息计数,清除时间
+                sessionList[index].count = 0;
+                sessionList[index].content = '';
+                sessionList[index].sendTime = null;
+                break;
+              }
+            }
+          }
+          break;
+      }
     }
   }
 
 };
+
 
 
 export default messageModule

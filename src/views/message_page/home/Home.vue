@@ -1,11 +1,11 @@
 <template>
   <div class="Index" style="height: 100%">
 
-    <el-scrollbar style="height: 100%" v-if="findCardArrs.length">
-      <div class="cardItem">
+    <el-scrollbar style="height: 100%">
+      <div class="cardItem" v-if="findCardArrs.length">
         <div v-for="card of findCardArrs" :key=card.id>
           <div class="card-box" @click="cardboxClick(card)">
-            <img class="cardImg" :src="card.avatar"/>
+            <img class="cardImg" :src="card.avatar" v-avatar="card.text"/>
             <span class="cardTitle">{{card.text}}</span>
           </div>
         </div>
@@ -17,7 +17,7 @@
 
         <div v-for="node of nodeArrs" :key=node.id>
           <div class="node-box" @click="nodeboxClick(node)">
-            <img class="nodeImg" :src="node.avatar"/>
+            <img class="nodeImg" :src="node.avatar" v-avatar="node.text"/>
             <span class="nodeTitle">{{node.text}}</span>
           </div>
         </div>
@@ -29,7 +29,7 @@
 
         <div v-for="contact of latest_contact" :key=contact.id>
           <div class="contact-box" @click="contactClick(contact)">
-            <img class="contactAvatar" :src="contact.avatar" :onerror="avatar_male"/>
+            <img class="contactAvatar" :src="contact.avatar" v-avatar="contact.trueName"/>
 
             <div class="contact-flex">
               <span class="contactName">{{contact.trueName}}</span>
@@ -62,7 +62,6 @@ export default {
 
   data() {
     return {
-      avatar_male: 'this.src="' + require('@ma/img/avatar_male.png') + '"', // 图片失效，加载默认图片
       findCardArrs: [],
       nodeArrs: [],
       latest_contact: [],
@@ -106,18 +105,18 @@ export default {
     },
 
     nodeboxClick(node) {
+      debugger;
       let companyId = this.user.company.id;
-      node.redirect = 'https://192.168.1.118:8443/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=aHR0cHM6Ly8xOTIuMTY4LjEuMTE4OjgwODIvbWFpbj9zb3VyY2VfaWQ9Nw==';
-      console.log('点击了节点数据-->>', node.text);
-      console.log('获取设备号-->>', process.platform);
+      let redirectUrl = 'http://192.168.1.118:8005/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect;
+      // console.log('获取设备号-->>', process.platform);
 
       if (window.require) {
         var ipc = window.require('electron').ipcRenderer
       }
 
       if (window.require) {
-        if (node.redirect) {
-          ipc.send('web_openWebUrl', node.redirect)
+        if (redirectUrl) {
+          ipc.send('web_openWebUrl', redirectUrl)
         }
       }
 
@@ -152,7 +151,7 @@ export default {
 
       if (res.data.code === 200) {
         this.nodeArrs = res.data.data;
-
+        console.log('this.nodeArrs:', this.nodeArrs)
       }
     });
 
@@ -171,7 +170,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
 
   .Index {
     /deep/ .el-scrollbar__wrap {
