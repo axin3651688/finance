@@ -33,7 +33,8 @@
       {
         "id": "xm",
         "type": "string",
-        "text": "项目"
+        "text": "项目",
+        "width":"260px"
       }, {
         "id": "je",
         "type": "decimal",
