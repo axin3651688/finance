@@ -127,6 +127,11 @@ const router = new Router({
           name: 'ManageApps',
           component: () =>
               import('@v/organize/ManageApps'),
+        },{
+          path: '/ManageComp',
+          name: 'ManageComp',
+          component: () =>
+              import('@v/organize/ManageComp'),
         }
       ]
     },

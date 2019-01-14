@@ -11,7 +11,8 @@
 
             <el-table
                     :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                    stripe height="100%" max-height="100%" class="main-table"   :header-cell-style="getRowClass">
+                    stripe height="100%" max-height="100%" class="main-table"   :header-cell-style="getHeaderClass"
+                    :cell-style="getRowClass">
                 <el-table-column prop="name" align="center" label="用户名" min-width="20%">
                     <template slot-scope="scope">
                         <div class="row-user-an">
@@ -66,13 +67,27 @@
         },
         methods: {
             //设置表格第一行的颜色
-            getRowClass({row, column, rowIndex, columnIndex}) {
-                if (rowIndex === 0) {
+            getHeaderClass({row, column, rowIndex, columnIndex}) {
+                if (rowIndex == 0) {
                     return 'background:rgba(221,235,246,1);font-size:16px;' +
                         'font-family:Microsoft YaHei;' +
                         'font-weight:bold;' +
+                        'line-height:21px;' +
                         'color:rgba(19,84,143,1);' +
                         'opacity:1;';
+                } else {
+                    return ''
+                }
+            },
+            getRowClass({row, column, rowIndex, columnIndex}) {
+                if (rowIndex % 2 == 0) {
+                    console.log('rowIndex%2==0---' + rowIndex)
+                    return 'background:rgba(255,255,255,1);' +
+                        'height:50px';
+                } else if (rowIndex % 2 == 1) {
+                    console.log('rowIndex%2==1---' + rowIndex)
+                    return 'background:rgba(196,215,233,0.15);' +
+                        'height:50px';
                 } else {
                     return ''
                 }

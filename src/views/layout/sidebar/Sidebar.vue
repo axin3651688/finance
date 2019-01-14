@@ -89,6 +89,7 @@ export default {
         { p: "/ManageApps", n: "应用服务", id: "122" },
         { p: "/ManageLogs", n: "日志管理", id: "123" },
         { p: "/ManageOnlineUsers", n: "在线用户", id: "124" },
+        { p: "/ManageComp", n: "公司管理", id: "125" },
       ]
     };
   },
