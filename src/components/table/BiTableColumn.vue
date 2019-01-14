@@ -37,7 +37,7 @@
     :width="col.width||100"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
@@ -125,7 +125,7 @@ export default {
   props: ["col", "tableData"],
   data(){
     return{
-     // tableData:''
+     tmptabledata:[]
     }
   },
   computed: {
@@ -138,9 +138,7 @@ export default {
     }
   },
   created(){
-   // debugger
-   // this.tableData=this.tableData
-    
+    this.tmptabledata = this.tableData
   },
   watch:{
     // tableData(oldval,newval){
@@ -164,9 +162,13 @@ export default {
       // this.$set(this, "tableData", item);
       // this.$set(this.tableData, "datas", item.datas);
 
-      this.$set(this, "tableData", null);
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
+      // this.$set(this, "tableData", null);
+      // this.$set(this, "tableData", item);
+      // this.$set(this.tableData, "datas", item.datas);
+
+      this.$set(this, "tmptabledata", null);
+      this.$set(this, "tmptabledata", item);
+      this.$set(this.tmptabledata, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -253,7 +255,7 @@ export default {
     }
   },
   created() {
-    // debugger
+    debugger
     /**
      * name: sjz
      * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部

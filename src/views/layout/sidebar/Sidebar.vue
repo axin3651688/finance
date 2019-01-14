@@ -14,7 +14,7 @@
         unique-opened
       >
         <div class="username" v-if="user.company.id === 121">
-          <img :src="user.user.avatar" alt>
+          <img :src="user.user.avatar" alt/>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
@@ -50,8 +50,10 @@ export default {
     findSideBar(this.userId).then(response => {
       // console.log(response.data);
       let data = response.data.data;
+      // console.log("侧边栏",data)
       this.leftMenus = data;
       let mapArry = data.map(function(data) {
+        console.log(data)
         return data.code;
       });
       // console.log(mapArry);
@@ -62,7 +64,6 @@ export default {
         mapArry.forEach(element => {
           me.handleOpen(this.openPid, [element + ""]);
         });
-        // debugger;
       }, 600);
     });
   },
@@ -93,7 +94,7 @@ export default {
   },
   watch: {
     openPid(newid) {
-      // debugger;
+      debugger;
       // console.log(newid);
       this.handleOpen(this.openPid, [newid + ""]);
       this.openeds = [newid + ""];
@@ -127,7 +128,7 @@ export default {
       if (!flag) {
         if (code.length === 1) {
           this.fetchData(userId, code[0]);
-        } else {
+        }else {
           this.fetchData2(userId, code);
         }
       }
@@ -147,11 +148,11 @@ export default {
       });
     },
     fetchData2(userId, code) {
+        debugger;
       findSideBar(userId, code[1]).then(response => {
         let data = response.data.data;
         console.log(data);
         // console.log(code);
-        debugger;
         for (let index = 0; index < this.leftMenus.length; index++) {
           // 匹配哪个children值加进去
           let flag = false;

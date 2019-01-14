@@ -46,7 +46,7 @@ export default {
       if (config) {
         //config.rows = this.item.rows || config.rows || this.config.rows;
         //config.columns = this.item.columns || config.columns || this.config.columns || this.item.items[0].columns;
-        config.rows = config.rows || this.item.rows || this.config.rows;
+        config.rows = config.rows || this.item.rows || this.config.rows || this.item.datas;
         config.columns =
           config.columns || this.item.columns || this.config.columns; //|| config.columns || this.config.columns || this.item.items[0].columns;
         config.type = config.type || 2;

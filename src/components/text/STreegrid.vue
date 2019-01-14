@@ -10,7 +10,7 @@
     :data.sync="formatData"
     border
     stripe
-    height="item.height || rowClass"
+    :height="item.height || heights-170"
     :cell-style="cellStyle"
     @row-click="onRowClick"
   >
@@ -35,10 +35,11 @@ export default {
   },
   data() {
     return {
+      heights: document.body.offsetHeight,
       list: [],
       dialogVisible: false,
       selectedOptions: [],
-      formatData: []
+      formatData: [],
     };
   },
   name: "STreeGrid",
@@ -247,7 +248,6 @@ export default {
           me.tranformData(dataArr, tt);
         }
       }
-      // console.log(rootItem);
     },
     showRow(row) {
       const show = row.row.parent
@@ -265,6 +265,7 @@ export default {
     },
     // 图标显示
     iconShow(index, record) {
+      debugger
       return index === 0 && record.children && record.children.length > 0;
     },
     itemShow(index, record) {
