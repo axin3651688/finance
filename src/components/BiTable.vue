@@ -503,4 +503,7 @@ export default {
 table th.gutter {
     display: none ;
 }
+.el-scrollbar__thumb {
+    display: none;
+}
 </style>
