@@ -10,16 +10,19 @@ import {
  * 取数小接口
  * item vue组件对象
  */
-export function apiItemDatas(item) {
+export function apiItemDatas(item, data) {
     debugger
     try {
         let params = getModuleParams(item, "company");
+        params.comId = data
+        params.item = item.id
+        params.property = "spcode"
         console.log(params);
         if (!params) return;
         let config = item.config;
         config.type = config.type || 1;
-        if (config.apisql) {
-            params.sql = config.apisql;
+        if (config.sql) {
+            params.sql = config.sql;
             return params;
         } else if (config.cube) {
             return params;

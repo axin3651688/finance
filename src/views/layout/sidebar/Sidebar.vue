@@ -117,7 +117,7 @@ export default {
       }
       this.nodes.push(clickNodeId);
       if (!flag) {
-        console.log(key, code);
+        // console.log(key, code);
 
         if (code.length === 1) {
           this.fetchData(userId, code[0]);
@@ -128,8 +128,8 @@ export default {
     },
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
-        console.log(response.data);
-        console.log(code);
+        // console.log(response.data);
+        // console.log(code);
 
         for (let index = 0; index < this.leftMenus.length; index++) {
           // 匹配哪个children值加进去

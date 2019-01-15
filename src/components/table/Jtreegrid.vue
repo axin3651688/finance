@@ -1,8 +1,7 @@
 <template>
   <div>
-    <el-button-group class="toolbar">
+    <el-button-group v-if="item.toolbar && item.toolbar.length > 0 " class="toolbar">
       <el-button
-        v-if="item.toolbar && item.toolbar.length > 0 "
         v-for="btn in item.toolbar"
         v-bind:key="btn.id"
         :style="btn.cellStyle"
@@ -20,8 +19,8 @@
       :cell-style="cellStyle"
       @row-click="onRowClick"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
@@ -30,10 +29,11 @@
 <script>
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
+import fetchData from "../mixins/fetchdata";
 import BiTableColumnTree from "../table/BiTableColumnTree";
 // data  columns list
 export default {
-  mixins: [EventMixins],
+  mixins: [EventMixins, fetchData],
   components: {
     BiTableColumnTree
   },
@@ -49,10 +49,19 @@ export default {
   props: ["item"],
 
   created() {
-    debugger;
+    // debugger;
     console.log("a", this.item);
     this.array(this.item.datas);
     this.convertData();
+    let me = this;
+    this.$bus.$on("fetchdata", function(code) {
+      // debugger;
+      // console.log(val);
+      me.fetchData(code);
+    });
+  },
+  beforeDestroy() {
+    this.$bus.off("fetchdata");
   },
   methods: {
     rowClass({ row, rowIndex }) {
@@ -103,7 +112,7 @@ export default {
     },
     // 点击加载数据在下面做
     array(datas) {
-      // debugger;
+      debugger;
 
       this.item.rows = datas;
     },

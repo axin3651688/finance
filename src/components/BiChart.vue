@@ -24,8 +24,6 @@ export default {
     };
   },
   created() {
-    console.log(this.item.options.type);
-
     this.upData();
   },
   methods: {
@@ -75,7 +73,7 @@ export default {
     },
     item: {
       handler(newName, oldName) {
-        console.log(1);
+        // console.log(1);
         //
       },
       deep: true

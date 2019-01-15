@@ -7,7 +7,6 @@
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <el-button
-        v-if="item.toolbar && item.toolbar.length > 0 "
         v-for="btn in item.toolbar"
         v-bind:key="btn.id"
         :style="btn.cellStyle"

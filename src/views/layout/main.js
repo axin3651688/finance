@@ -20,7 +20,8 @@ Vue.use(ZkTable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueQriously)
-
+import Bus from "@v/common/bus.js";
+Vue.use(Bus);
 Vue.prototype.axios = axios;
 
 new Vue({

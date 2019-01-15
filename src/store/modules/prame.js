@@ -1,10 +1,10 @@
 const prame = {
   state: {
     command: {
-     // year: new Date().getFullYear(),
-    //  month: new Date().getMonth() || 1,
-      year:2017,
-      month:6,
+      // year: new Date().getFullYear(),
+      //  month: new Date().getMonth() || 1,
+      year: 2017,
+      month: 6,
       module_api: 0,
       date: new Date().getDate(),
       // 单位转换
@@ -60,7 +60,7 @@ const prame = {
     },
     SHOW_DIMS: (state, data) => {
       // 此方法即可以接受数组对状态初始化,又可以接受对象更改其状态
-      console.log(data);
+      // console.log(data);
       if (data.constructor == Array) {
         state.showDims.company = false,
           state.showDims.year = false,

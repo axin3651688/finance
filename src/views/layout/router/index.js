@@ -152,6 +152,11 @@ const router = new Router({
           name: 'TableTest',
           component: () =>
             import('@v/test/TableTest.vue')
+        }, {
+          path: '/fu',
+          name: 'fu',
+          component: () =>
+            import('@v/test/fu.vue')
         },
 
       ]

@@ -8,7 +8,7 @@
     fixed="left"
   >
     <template slot-scope="scope">
-      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope.$index)">
+      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope)">
         <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
@@ -144,9 +144,8 @@ export default {
     }
   },
   created() {
-    debugger;
-    console.log(this.tableData);
-
+    // debugger;
+    // console.log(this.tableData);
     //this.$set(this, "tableData", null);
   },
   mixins: [EventMixins],
@@ -241,15 +240,18 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded(trIndex) {
-      if (
-        this.tableData.hasOwnProperty("sync") &&
-        this.tableData.sync == true
-      ) {
-        console.log(trIndex);
+      // debugger;
 
+      if (
+        this.tableData.hasOwnProperty("async") &&
+        this.tableData.async == true
+      ) {
+        // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
+        console.log(trIndex);
         debugger;
+        this.$bus.emit("fetchdata", trIndex.row.id); //触发    发送数据
       }
-      const record = this.tableData.datas[trIndex];
+      const record = this.tableData.datas[trIndex.$index];
       // console.log(record);
 
       record._expanded = !record._expanded;
