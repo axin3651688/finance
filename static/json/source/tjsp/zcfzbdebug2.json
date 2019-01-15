@@ -14,6 +14,9 @@
 			"text": "资产负债表二级",
 			"weight": 24,
 			"show":true,
+			"style":{
+				"height": "812px"
+			},
 			"queryDataBefore":function(a,b,c){
 				debugger
 				// var pointItem = c.$store.pointItem;

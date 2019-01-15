@@ -176,6 +176,9 @@
                     "xtype": "STreeGrid",
                     "id": "yszkej",
                     "text": "laji",
+                    "style":{
+                        "height": "780px"
+                    },
                     "show":false,
                     "showFun":function($store){
                         debugger

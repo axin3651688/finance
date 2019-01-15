@@ -1,5 +1,10 @@
 <template>
 <div>
+  <!-- 
+    name：sjz
+    :style="item.style"   
+    json里起作用，调滚动条x轴的 
+  -->
 <el-button-group  class="toolbar" >
     <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
   </el-button-group>
@@ -13,6 +18,7 @@
     height="item.height || rowClass"
     :cell-style="cellStyle"
     @row-click="onRowClick"
+    :style="item.style"
   >
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>

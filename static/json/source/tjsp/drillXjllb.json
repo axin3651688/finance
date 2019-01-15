@@ -13,6 +13,9 @@
             "showDims":["year","month","company","conversion"],
 			"weight": 24,
             "show":true,
+            "style":{
+				"height": "812px"
+			},
             "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
                 config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
                 let len = option.items.length;
