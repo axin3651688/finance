@@ -109,6 +109,7 @@
                                          placeholder="请输入公司规模......"
                                          :show-all-levels="false"
                                          :props="rangeProps"
+                                         @visible-change="handleRangeVisible"
                                          @change="handleRangeChange"
                                          filterable
                             ></el-cascader>
@@ -376,6 +377,9 @@
                 this.compForm.range = value[0]
                 console.log('range', value[0])
             },
+            handleRangeVisible(val){
+                console.log('rangeVisible', val)
+            },
             handleTypeChange(value) {
                 this.compForm.type = value[0]
                 console.log('type', value[0])
@@ -420,7 +424,8 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.submitUpload()
+                        this.$refs['compForm'].resetFields();
+                        // this.submitUpload()
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -431,33 +436,27 @@
             createComp(fileEntity) {
                 let params = {
                     avatar: fileEntity.hdUrl,
-                    // code: "",
                     createUser: 225,
-                    // customerId: "",
-                    // enable: 0,
-                    fullName: "经邦子公司123",
-                    // id: 0,
-                    industryId: 645,
-                    // leaf: 0,
-                    level: 0,
-                    // licenseId: 0,
+                    fullName: this.compForm.text,
+                    industryId: this.compForm.indus,
                     note: "这里是简介",
                     ownerId: 225,
                     pid: "2458",
-                    rangeId: 16,
-                    regionId: 110108,
-                    // sort: 0,
-                    text: "经邦子公司123",
-                    type: 12,
+                    rangeId: this.compForm.range,
+                    regionId: this.compForm.area,
+                    text: this.compForm.text,
+                    type: this.compForm.type,
                     updateUser: 225,
-                    // url: ""
                 }
 
                 console.log('params', params)
                 SAVE_SUB_COMPANY(params).then(res => {
                     console.log('res', res)
-                    if (res.data.code == 200) {
+                    if (res.data.code === 200) {
+                        alert(res.data.msg)
                         console.log('upload---create',res.data.data);
+                        this.getCompList()
+                        this.$refs['compForm'].resetFields();
                     }
                 })
             }

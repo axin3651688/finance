@@ -31,7 +31,7 @@ export function FIND_SUB_COMPANY_LIST(userId) {
 export function SELECT_INDUSTRY() {
     // debugger
     return request({
-        url: '/bidata/select_industry',
+        url: '/api/api/select_industry',
         method: 'get',
         params: {}
     })
@@ -40,7 +40,7 @@ export function SELECT_INDUSTRY() {
 export function SELECT_SCALE() {
     // debugger
     return request({
-        url: '/bidata/select_scale',
+        url: '/api/api/select_scale',
         method: 'get',
         params: {}
     })
@@ -49,7 +49,7 @@ export function SELECT_SCALE() {
 export function SELECT_AREA() {
     // debugger
     return request({
-        url: '/bidata/select_area',
+        url: '/api/api/select_area',
         method: 'get',
         params: {}
     })
