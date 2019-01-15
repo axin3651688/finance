@@ -13,10 +13,10 @@
         v-bind="$attrs"
         @click="toggleExpanded(scope.$index,scope)"
       >
-        <!-- <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-        <i v-else class="el-icon-minus"></i> -->
-        <i v-if="!scope.row._expanded" class="el-icon-caret-right" aria-hidden="true"></i>  
-        <i v-if="scope.row._expanded" class="el-icon-caret-bottom" aria-hidden="true"></i> 
+        <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+        <i v-else class="el-icon-minus"></i>
+        <!-- <i v-if="!scope.row._expanded" class="el-icon-caret-right" aria-hidden="true"></i>  
+        <i v-if="scope.row._expanded" class="el-icon-caret-bottom" aria-hidden="true"></i>  -->
       </span>
     </template>
   </el-table-column>
