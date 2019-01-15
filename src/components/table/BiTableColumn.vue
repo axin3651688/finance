@@ -321,7 +321,7 @@ export default {
 
       // overflow: hidden;
       // text-overflow: ellipsis;
-      white-space: nowrap;
+      // white-space: nowrap;
       // background-color: #000;
     }
   }
@@ -334,7 +334,7 @@ tbody {
         // height: 100%;
         // overflow: hidden;
         // text-overflow: ellipsis;
-        white-space: nowrap;
+        // white-space: nowrap;
       }
     }
   }
