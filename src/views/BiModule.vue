@@ -46,7 +46,7 @@
         v-bind:index="index"
         :label="item.text"
         :v-if="item.show"
-        :name="item.tabIndex || index"
+        :name="item.tabIndex || ''"
         :closable="item.closable||false"
       >
         <el-row
@@ -133,6 +133,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
+      showDims:{},
       columns: [],
       dataUrl: "",
       datas: [],
