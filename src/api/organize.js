@@ -27,6 +27,30 @@ export function FIND_SUB_COMPANY_LIST(userId) {
         }
     })
 }
+
+// 查询公司基本信息
+export function FIND_COMPANY_BASE_INFO(companyId) {
+    // debugger
+    return request({
+        url: '/api/api/find_company_base_info',
+        method: 'get',
+        params: {
+            'companyId': companyId,
+        }
+    })
+}
+
+
+//更新公司信息
+export function EDIT_COMPANY_INFO(data) {
+    // debugger
+    return request({
+        url: '/api/api/edit_company_info',
+        method: 'put',
+        data:data
+    })
+}
+
 //选择行业
 export function SELECT_INDUSTRY() {
     // debugger

@@ -20,156 +20,26 @@
                         :expand-on-click-node="true">
             <span class="custom-tree-node" slot-scope="{ node, data }">
             <span :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
-            <el-dropdown>
+            <el-dropdown  @command="handleCommand">
 
             <span style="margin-right: 20px" v-show="selectComp.id===data.id"
                   class="el-dropdown-link">
             <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>创建子公司</el-dropdown-item>
-            <el-dropdown-item>编辑公司</el-dropdown-item>
+            <el-dropdown-item command="2">创建子公司</el-dropdown-item>
+            <el-dropdown-item command="3">编辑公司</el-dropdown-item>
             </el-dropdown-menu>
             </el-dropdown>
             </span>
                 </el-tree>
             </el-scrollbar>
         </div>
-        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="40">
-            <div class="edit-tab">
-                <div class="edit-title">{{selectComp.text}}</div>
-            </div>
+        <div class="right-col"  :splitpanes-default="rightWidth" splitpanes-min="40">
             <div class="edit-container">
-
-
-                <el-form :model="compForm" ref="compForm" :rules="rules" label-position='left' status-icon
-                         label-width="10px" class="comp-form">
-                    <el-form-item prop="avatar">
-                        <el-upload
-                                style="display: flex;align-items: center"
-                                drag
-                                ref="upload"
-                                :auto-upload="false"
-                                :show-file-list="false"
-                                :on-change="imgPreview"
-                                :before-upload="beforeUpload"
-                                action="xxx">
-                            <div v-if="localAvatar || oldAvatar">
-                                <img v-if="localAvatar" :src="localAvatar" style="width:400px;height: 140px">
-                                <img v-else :src="oldAvatar" style="width:400px;height: 140px">
-                            </div>
-                            <div v-else>
-                                <i class="el-icon-upload" style="height: 50px;width: 60px;margin-top: 10px"></i>
-                                <div class="el-upload__text">请上传公司LOGO</div>
-                            </div>
-
-                        </el-upload>
-                    </el-form-item>
-
-
-                    <el-form-item prop="text">
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/name_icon.svg">
-                            </div>
-
-                            <el-input placeholder="请输入公司名称..." stripe class="input-form" v-model="compForm.text"
-                                      autocomplete="off"></el-input>
-                        </div>
-                    </el-form-item>
-
-
-                    <el-form-item prop="indus">
-
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/hangye_icon.svg">
-                            </div>
-
-                            <el-cascader stripe class="input-form"
-                                         :options="industries"
-                                         placeholder="请选择行业..."
-                                         :show-all-levels="false"
-                                         :props="indusProps"
-                                         @change="handleIndusChange"
-                                         filterable
-                            ></el-cascader>
-                        </div>
-                    </el-form-item>
-
-                    <el-form-item prop="range">
-
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/guimo_icon.svg">
-                            </div>
-
-                            <el-cascader stripe class="input-form"
-                                         :options="ranges"
-                                         placeholder="请输入公司规模......"
-                                         :show-all-levels="false"
-                                         :props="rangeProps"
-                                         @visible-change="handleRangeVisible"
-                                         @change="handleRangeChange"
-                                         filterable
-                            ></el-cascader>
-                        </div>
-                    </el-form-item>
-                    <el-form-item prop="type">
-
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/guimo_icon.svg">
-                            </div>
-
-                            <el-cascader stripe class="input-form"
-                                         :options="types"
-                                         placeholder="请输入公司类型......"
-                                         :show-all-levels="false"
-                                         :props="typeProps"
-                                         @change="handleTypeChange"
-                                         filterable
-                            ></el-cascader>
-                        </div>
-                    </el-form-item>
-
-                    <el-form-item prop="area">
-
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/dizhi_icon.svg">
-                            </div>
-
-                            <el-cascader stripe class="input-form"
-                                         :options="areas"
-                                         change-on-select
-                                         placeholder="所属地区"
-                                         expand-trigger="hover"
-                                         separator=""
-                                         @change="handleAreaChange"
-                                         :props="areaProps"
-                                         filterable
-                            ></el-cascader>
-                        </div>
-                    </el-form-item>
-
-                    <el-form-item v-show="false">
-
-                        <div class="item-form">
-                            <div class="item-img">
-                                <img class="img-margin" src="@a/green/bianma_icon.svg">
-                            </div>
-
-                            <el-input placeholder="公司编码" stripe class="input-form" v-model="compForm.code"
-                                      autocomplete="off"></el-input>
-                        </div>
-                    </el-form-item>
-                    <el-form-item prop="note">
-                        <el-input type="textarea" class="text-note" placeholder="请输入描述..."
-                                  v-model="compForm.note"></el-input>
-                    </el-form-item>
-                </el-form>
-                <el-button type="primary" @click="submitForm('compForm')" class="btn-confirm">确定</el-button>
+                <tab-show-comp v-if="tab==1" :selectCompId="selectComp.id"></tab-show-comp>
+                <tab-create-comp v-else-if="tab==2" :selectComp="selectComp"  @compCreated="handleCreate"></tab-create-comp>
+                <tab-edit-comp v-else="tab==3" :selectCompId="selectComp.id"></tab-edit-comp>
             </div>
 
         </div>
@@ -192,10 +62,14 @@
     export default {
         name: 'ManageApps',
         components: {
-            Splitpanes
+            Splitpanes,
+            TabShowComp: () => import('./manage_comps_tab/TabShowComp'),
+            TabCreateComp: () => import('./manage_comps_tab/TabCreateComp'),
+            TabEditComp: () => import('./manage_comps_tab/TabEditComp'),
         },
         data() {
             return {
+                tab:1,
                 value1: true,
                 search: '',
                 selectComp: {},
@@ -228,6 +102,7 @@
                     label: 'text',
                     value: 'id',
                 },
+                isFormDisabled:false,
                 compForm: {
                     text: '',
                     note: '',
@@ -239,26 +114,26 @@
                     code: '',
                 },
                 rules: {
-                    avatar: [{required: true, message: '请选择上传的logo', trigger: 'change'},],
+                    avatar: [{required: true, message: '请选择上传的logo', trigger: 'blur'},],
                     text: [
                         {required: true, message: '请输入名称', trigger: 'change'},
-                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'change'}
+                        {required: true,min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                     ],
                     note: [
                         {required: true, message: '请输入描述', trigger: 'blur'},
-                        {min: 5, max: 50, message: '长度在 5 到 50 个字符', trigger: 'change'}
+                        {min: 5, max: 50, message: '长度在 5 到 50 个字符', trigger: 'blur'}
                     ],
                     area: [
-                        {required: true, message: '请选择地区', trigger: 'change'}
+                        {required: true, message: '请选择地区', trigger: 'blur'}
                     ],
                     indus: [
-                        {required: true, message: '请选择行业', trigger: 'change'}
+                        {required: true, message: '请选择行业', trigger: 'blur'}
                     ],
                     range: [
-                        {required: true, message: '请选择规模', trigger: 'change'}
+                        {required: true, message: '请选择规模', trigger: 'blur'}
                     ],
                     type: [
-                        {required: true, message: '请选择类型', trigger: 'change'}
+                        {required: true, message: '请选择类型', trigger: 'blur'}
                     ],
                     code: [
                         {required: true, message: '请填写编码', trigger: 'blur'}
@@ -275,10 +150,6 @@
             },
         },
         created() {
-            this.getScaleData()
-            this.getAreaData()
-            this.getIndusData()
-            this.getTypeData()
             this.getCompList()
         },
         mounted() {
@@ -298,6 +169,7 @@
             handleNodeClick(data) {
                 console.log('handleNodeClick', data);
                 this.selectComp = data
+                this.tab = 1
                 console.log('selectComp', this.selectComp);
             },
             filterChange() {
@@ -313,8 +185,9 @@
                 FIND_SUB_COMPANY_LIST(225).then(res => {
                     console.log('请求FIND_SUB_COMPANY_LIST：', res.data.data)
                     if (res.data.code == 200) {
+                        this.selectComp = res.data.data
                         let temp = []
-                        temp.push(res.data.data.data)
+                        temp.push(res.data.data)
                         this.compList = temp
                     }
 
@@ -322,145 +195,16 @@
                     console.log('请求compList：', err)
                 });
             },
-            getIndusData() {
-                SELECT_INDUSTRY().then(res => {
-                    console.log('请求industries：', res.data.data)
-                    this.industries = res.data.data
-                }).catch(err => {
-                    console.log('请求compList：', err)
-                });
+            handleCommand(command) {
+                console.log('handleCommand', command)
+                this.tab =command
             },
-            getScaleData() {
-                SELECT_SCALE().then(res => {
-                    console.log('请求ranges：', res.data.data)
-                    this.ranges = res.data.data
-                }).catch(err => {
-                    console.log('请求ranges：', err)
-                });
+            handleCreate(data){
+                //创建成功刷新列表，显示新的
+                this.getCompList()
+                this.selectComp.id = data
+                this.tab = 1
             },
-            getTypeData() {
-                FIND_COMPANY_TYPE().then(res => {
-                    console.log('请求types：', res.data.data)
-                    this.types = res.data.data
-                }).catch(err => {
-                    console.log('请求types：', err)
-                });
-            },
-            getAreaData() {
-                SELECT_AREA().then(res => {
-
-                    console.log('请求areas1：', res.data.data)
-                    let temp = res.data.data
-                    this.checkAreaChild(temp)
-                    this.areas = temp
-                    console.log('请求areas2：', this.areas)
-                }).catch(err => {
-                    console.log('请求areas：', err)
-                });
-            },
-
-            //地区子节点为0的children =null
-            checkAreaChild(areas) {
-                areas.forEach(area => {
-                    if (area.children != null && area.children.length == 0) {
-                        area.children = null
-                    } else {
-                        this.checkAreaChild(area.children)
-                    }
-                })
-            },
-            handleIndusChange(value) {
-                this.compForm.indus = value[1]
-                console.log('indus', value[1])
-            },
-            handleRangeChange(value) {
-                this.compForm.range = value[0]
-                console.log('range', value[0])
-            },
-            handleRangeVisible(val){
-                console.log('rangeVisible', val)
-            },
-            handleTypeChange(value) {
-                this.compForm.type = value[0]
-                console.log('type', value[0])
-            },
-            handleAreaChange(value) {
-                this.compForm.area = value[value.length - 1]
-                console.log('area', value[value.length - 1])
-            },
-
-            // 上传群头像文件
-            imgPreview(file, fileList) {
-                let fileName = file.name;
-                let regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
-                if (regex.test(fileName.toLowerCase())) {
-                    this.localAvatar = URL.createObjectURL(file.raw);
-                    this.compForm.avatar = this.localAvatar
-                    console.log('file-path', this.localAvatar)
-                } else {
-                    this.$message.error('请选择图片文件');
-                }
-            },
-            beforeUpload(file) {
-                console.log(file)
-                let fd = new FormData()
-                fd.append('file', file)
-                fd.append('userId', 225)
-                fd.append('size', file.size)
-                console.log('size', fd.size)
-                UPLOAD_FILE(fd).then(res => {
-                    console.log('res', res)
-                    if (res.data.code == 200) {
-                        console.log('upload---res.data.data',res.data.data);
-                        this.createComp(res.data.data)
-                    }
-                })
-                return true
-            },
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.$refs['compForm'].resetFields();
-                        // this.submitUpload()
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-
-            createComp(fileEntity) {
-                let params = {
-                    avatar: fileEntity.hdUrl,
-                    createUser: 225,
-                    fullName: this.compForm.text,
-                    industryId: this.compForm.indus,
-                    note: "这里是简介",
-                    ownerId: 225,
-                    pid: "2458",
-                    rangeId: this.compForm.range,
-                    regionId: this.compForm.area,
-                    text: this.compForm.text,
-                    type: this.compForm.type,
-                    updateUser: 225,
-                }
-
-                console.log('params', params)
-                SAVE_SUB_COMPANY(params).then(res => {
-                    console.log('res', res)
-                    if (res.data.code === 200) {
-                        alert(res.data.msg)
-                        console.log('upload---create',res.data.data);
-                        this.getCompList()
-                        this.$refs['compForm'].resetFields();
-                    }
-                })
-            }
-
         }
     }
 </script>
@@ -583,80 +327,11 @@
             width: 100%;
             background: rgba(240, 242, 245, 1);
             height: 100%;
-
-            .edit-tab {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 20px 20px 0px 20px;
-
-                .edit-title {
-                    font-size: 22px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    color: rgba(102, 102, 102, 1);
-                    opacity: 1;
-                }
-            }
+            display: flex;
+            flex-direction: column;
 
             .edit-container {
-                margin: 20px 40px 0px 20px;
-                padding: 20px;
-                min-width: 600px;
-                min-height: 400px;
-                background: rgba(255, 255, 255, 1);
-                opacity: 1;
-                border-radius: 20px;
-
-                .comp-form {
-                    margin-top: 20px;
-
-                    .item-form {
-                        display: flex;
-                        align-items: center;
-                        justify-content: start;
-
-                        .item-img {
-                            width: 60px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            margin-right: 24px;
-
-                            .img-margin {
-
-                            }
-                        }
-
-                        .input-form {
-                            width: 260px;
-                        }
-                    }
-
-                    .text-note {
-                        width: 400px;
-                        background: rgba(255, 255, 255, 1);
-                        opacity: 1;
-                        border-radius: 12px;
-
-                        font-size: 14px;
-                        font-family: Microsoft YaHei;
-                        font-weight: 400;
-                        line-height: 19px;
-                        color: rgba(102, 102, 102, 1);
-                    }
-                }
-
-                .btn-confirm {
-                    width: 160px;
-                    height: 50px;
-                    background: rgba(24, 144, 255, 1);
-                    opacity: 1;
-                    margin-left: 300px;
-                    border-radius: 20px;
-
-
-                }
+                flex: 1;
             }
         }
     }
