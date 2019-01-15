@@ -7,10 +7,16 @@
   },
   "showDims": ["year","month","company","conversion"],
   "__queryDataAfter":function(data,$vue){//数据的后置处理
-    debugger
+    // debugger
     let me = this;
+    let datas = [];
     me.items[0].updateView = $vue.updateView;
-    return data;
+    data.forEach((item,index)=>{
+      if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
+        datas.push(item);
+      }
+    });
+    return datas;
 },
 
   // "changeYearBefore":function(newyear,option){
