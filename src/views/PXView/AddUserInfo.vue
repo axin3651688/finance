@@ -1,41 +1,54 @@
 <template>
     <div class="Root">
 
+        <div class="content">
+
+            <div class="rootTitle">
+                <l class="titleSpan">填写成员信息</l>
+                <img class="titileicon" src="@a/user_icon/tishi_icon .svg">
+                <!--<l class="titleSpan_right">添加成员后，需要成员激活才能使用</l>-->
+                <l class="titleSpan_right">添加成员后，需要成员激活才能使用</l>
+            </div>
 
 
-
-            <el-form :model="ruleForm2" label-position='left' label="123" status-icon :rules="rules2" ref="ruleForm2" label-width="10px" class="demo-ruleForm">
-
-
+            <el-form :model="userdata" label-position='left' label="123" status-icon :rules="rules2" ref="userdata"
+                     label-width="10px" class="demo-ruleForm">
 
 
-                <el-form-item  prop="name_item">
+                <el-form-item prop="username">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/name_icon.svg" >
-                       <span class="itemSpan" >姓名：</span>
-                        <el-input placeholder="请输入姓名..." stripe style="width: 300px"  v-model="userdata.username" autocomplete="off"></el-input>
+                    <div class="formitem">
+                        <img src="@a/user_icon/name_icon.svg">
+                        <span class="itemSpan">姓名：</span>
+                        <el-input placeholder="请输入姓名..." stripe style="width: 300px" v-model="userdata.username"
+                                  autocomplete="off"></el-input>
+
+                        <img v-if="username_po" style="margin-left: 20px" src="@a/user_icon/tishi_icon .svg">
+                        <span style="margin-left: 20px">{{username_po}}</span>
+
                     </div>
                 </el-form-item>
 
 
-                <el-form-item  prop="pass">
+                <el-form-item prop="phone">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/tel_icon.svg" >
-                        <span  class="itemSpan" >手机号：</span>
-                        <el-input  placeholder="请输入手机号码..." stripe style="width: 300px"  v-model="userdata.phone" autocomplete="off"></el-input>
+                    <div class="formitem">
+                        <img src="@a/user_icon/tel_icon.svg">
+                        <span class="itemSpan">手机号：</span>
+                        <el-input placeholder="请输入手机号码..." stripe style="width: 300px" v-model="userdata.phone"
+                                  autocomplete="off"></el-input>
                     </div>
                 </el-form-item>
 
 
-                <el-form-item  prop="pass">
+                <el-form-item prop="role">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/juese_icon.svg" >
+                    <div class="formitem">
+                        <img src="@a/user_icon/juese_icon.svg">
                         <span class="itemSpan">所属角色：</span>
 
-                        <el-select  stripe style="width: 300px"  v-model="value5" filterable multiple placeholder="请选择所属角色">
+                        <el-select stripe style="width: 300px" v-model="value5" filterable multiple
+                                   placeholder="请选择所属角色">
                             <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -49,25 +62,26 @@
                 </el-form-item>
 
 
-                <el-form-item  prop="pass">
+                <el-form-item prop="email">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/mail_icon .svg" >
+                    <div class="formitem">
+                        <img src="@a/user_icon/mail_icon .svg">
                         <span class="itemSpan">Email邮箱：</span>
-                        <el-input  placeholder="请输入邮箱..." stripe style="width: 300px"  v-model="userdata.email" autocomplete="off"></el-input>
+                        <el-input placeholder="请输入邮箱..." stripe style="width: 300px" v-model="userdata.email"
+                                  autocomplete="off"></el-input>
                     </div>
                 </el-form-item>
 
 
-                <el-form-item  prop="pass">
+                <el-form-item prop="company">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/conpany_icon.svg" >
+                    <div class="formitem">
+                        <img src="@a/user_icon/conpany_icon.svg">
                         <span class="itemSpan">所属公司：</span>
 
                         <el-cascader stripe style="width: 300px"
-                                :options="options2"
-                                :show-all-levels="false"
+                                     :options="options2"
+                                     :show-all-levels="false"
                                      filterable
                         ></el-cascader>
 
@@ -75,51 +89,88 @@
                     </div>
                 </el-form-item>
 
-                <el-form-item  prop="pass">
+                <el-form-item prop="department">
 
-                    <div class="itemUserName">
-                        <img src="@a/user_icon/bumen_icon.svg" >
+                    <div class="formitem">
+                        <img src="@a/user_icon/bumen_icon.svg">
                         <span class="itemSpan">所属部门：</span>
-                        <el-input  placeholder="请输入所属部门..." stripe style="width: 300px"  v-model="userdata.department" autocomplete="off"></el-input>
+                        <el-input placeholder="请输入所属部门..." stripe style="width: 300px" v-model="userdata.department"
+                                  autocomplete="off"></el-input>
+
                     </div>
                 </el-form-item>
-
-
 
 
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
                 </el-form-item>
             </el-form>
+
+        </div>
+
+
     </div>
 </template>
 
 
 <script>
+    import BiDiv from "../../components/charts/BiDiv";
+
+    import {isvalidPhone,checkUserName} from "../../views/PXView/validate";
+
     export default {
+        components: {BiDiv},
         data() {
+
+
+            var username=(rule, value,callback)=>{
+                if (!value){
+
+                    this.username_po='请输入用户名';
+                    callback(new Error('  '))
+                }else  if (!checkUserName(value)){
+                    callback(new Error('  '))
+                    this.username_po='请输入1-5位';
+                }else {
+                    callback()
+                    this.username_po='';
+                }
+            };
+
+
+
+            var validPhone=(rule, value,callback)=>{
+                if (!value){
+
+                    this.username_po='请输入电话号码';
+                    callback(new Error('  '))
+                }else  if (!isvalidPhone(value)){
+
+                    // { required: true, message: '请输入用户名', trigger: 'blur' },
+                    // { min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
+
+                    callback(new Error('  '))
+                    this.username_po='请输入正确的11位手机号码';
+                }else {
+                    callback()
+                }
+                // this.username_po='12312'
+            };
+
+
+
+
             var checkAge = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('年龄不能为空'));
                 }
-                setTimeout(() => {
-                    if (!Number.isInteger(value)) {
-                        callback(new Error('请输入数字值'));
-                    } else {
-                        if (value < 18) {
-                            callback(new Error('必须年满18岁'));
-                        } else {
-                            callback();
-                        }
-                    }
-                }, 1000);
+
             };
 
 
             return {
 
-
-
+                username_po:'',
 
                 options2: [{
                     value: 'zhinan',
@@ -318,11 +369,6 @@
                 }],
 
 
-
-
-
-
-
                 options: [{
                     value: '选项1',
                     label: '黄金糕'
@@ -352,14 +398,23 @@
                 },
                 rules2: {
                     username: [
-                        { validator: checkAge, trigger: 'blur' }
+
+                        { required: true, trigger: 'blur', validator: username }
                     ],
                     phone: [
-                        { validator: checkAge, trigger: 'blur' }
+                        { required: true, trigger: 'blur', validator: validPhone }
                     ],
+
                     role: [
-                        { validator: checkAge, trigger: 'blur' }
-                    ]
+                        {validator: checkAge, trigger: 'blur'}
+                    ],
+                    email: [
+                        {required: true, message: '请输入邮箱地址', trigger: 'blur'},
+                        {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
+                    ],
+
+
+
                 }
             };
         },
@@ -389,32 +444,79 @@
         height: 100vh;
     }
 
-    
 
-    .Root{
-        width:100% ;
+    .Root {
+        width: 100%;
         min-width: 600px;
 
 
-        .demo-ruleForm{
+        }
+
+        .content{
 
             margin: 30px;
             padding: 20px;
-            background:#ffffff;
-            box-shadow:3px 0px 20px rgba(0,0,0,0.1);
-            opacity:1;
-            border-radius:20px;
+            background: #ffffff;
+            box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
+            opacity: 1;
+            border-radius: 20px;
+
+            .rootTitle {
+
+                display: flex;
+                /*flex-direction: column;*/
+                margin-left: 10px;
+                margin-bottom: 34px;
+
+
+                .titleSpan {
+
+                    font-size:22px;
+                    font-family:Microsoft YaHei;
+                    font-weight:400;
+                    line-height:29px;
+                    color:rgba(102,102,102,1);
+                    opacity:1;
+                }
+
+                .titileicon{
+
+                    margin-left: 20px;
+                }
+                .titleSpan_right {
+
+                    margin-left: 20px;
+                    font-size: 4px;
+                    line-height:29px;
+                    font-family: Microsoft YaHei;
+                    color: rgba(24, 144, 255, 1);
+                }
+
         }
 
-        .itemUserName{
+        .demo-ruleForm {
 
-            display: flex;
+            .formitem {
 
-            .itemSpan{
-                width: 120px;
-                padding-left: 30px;
+                display: flex;
+
+                .itemSpan {
+                    width: 120px;
+                    padding-left: 30px;
+                    font-size:16px;
+                    font-family:Microsoft YaHei;
+                    font-weight:400;
+                    /*line-height:21px;*/
+                    color:rgba(102,102,102,1);
+                    opacity:1;
+                }
             }
+
+
+
         }
+
+
 
 
     }
