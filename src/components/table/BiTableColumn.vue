@@ -249,7 +249,7 @@ export default {
         // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
         console.log(trIndex);
         debugger;
-        this.$bus.emit("fetchdata", trIndex.row.id); //触发    发送数据
+        this.$bus.emit("fetchdata", trIndex); //触发    发送数据
       }
       const record = this.tableData.datas[trIndex.$index];
       // console.log(record);

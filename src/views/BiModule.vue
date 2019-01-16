@@ -291,7 +291,7 @@ export default {
        *
        */
       if (bean.hasOwnProperty("showDims")) {
-        // debugger;
+        debugger;
         this.ShowDims(bean.showDims);
       } else {
         this.ShowDims({
@@ -381,6 +381,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
+      debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {

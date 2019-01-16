@@ -17,7 +17,7 @@ export function apiItemDatas(item, data) {
         params.comId = data
         params.item = item.id
         params.property = "spcode"
-        console.log(params);
+        // console.log(params);
         if (!params) return;
         let config = item.config;
         config.type = config.type || 1;

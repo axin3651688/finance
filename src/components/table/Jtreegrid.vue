@@ -29,11 +29,13 @@
 <script>
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
-import fetchData from "../mixins/fetchdata";
 import BiTableColumnTree from "../table/BiTableColumnTree";
+import { apiItemDatas } from "utils/apiItemDatas";
+import { handleOpen } from "utils/index";
+import { findThirdPartData } from "~api/interface";
 // data  columns list
 export default {
-  mixins: [EventMixins, fetchData],
+  mixins: [EventMixins],
   components: {
     BiTableColumnTree
   },
@@ -42,21 +44,20 @@ export default {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
-      formatData: []
+      formatData: [],
+      nodes: [],
+      customerId: this.$store.getters.user.company.customerId
     };
   },
   name: "Jtreegrid",
   props: ["item"],
 
   created() {
-    // debugger;
-    console.log("a", this.item);
-    this.array(this.item.datas);
-    this.convertData();
+    debugger;
+    // console.log("a", this.item.datas);
+    this.convertData(this.item.datas);
     let me = this;
     this.$bus.$on("fetchdata", function(code) {
-      // debugger;
-      // console.log(val);
       me.fetchData(code);
     });
   },
@@ -81,15 +82,40 @@ export default {
       }
     },
     /**
+     * 根据sql, params发请求,先加载子公司节点,在这里不加载所有
+     */
+    fetchData(dat) {
+      var params = apiItemDatas(this.item, dat.row.id);
+      debugger;
+      var flag = handleOpen(dat.row.id, this.nodes);
+      if (flag) return;
+      findThirdPartData(params)
+        .then(res => {
+          debugger;
+          let data = res.data.data;
+          this.findAddData(dat, data);
+          this.convertData(this.item.datas);
+        })
+        .catch(res => {
+          console.info(res);
+        });
+    },
+    findAddData(code, data) {
+      //添加元素到指定位置
+      // debugger;
+      data.unshift(code.$index + 1, 0);
+      Array.prototype.splice.apply(this.item.datas, data);
+    },
+    /**
      * 格式化数据源
      */
-    convertData() {
+    convertData(data) {
       //alert(this.item.show)
       let tmp;
-      if (!Array.isArray(this.item.rows)) {
-        tmp = [this.item.rows];
+      if (!Array.isArray(data)) {
+        tmp = [data];
       } else {
-        tmp = this.item.rows;
+        tmp = data;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -99,7 +125,6 @@ export default {
 
       this.$set(this, "formatData", formatData);
       // console.log(this.formatData);
-      // alert(this.formatData);
       debugger;
     },
 
@@ -111,11 +136,7 @@ export default {
       this.convertData();
     },
     // 点击加载数据在下面做
-    array(datas) {
-      debugger;
-
-      this.item.rows = datas;
-    },
+    array(datas) {},
     tranformData(data, rootItem) {
       let me = this;
       let children = [];

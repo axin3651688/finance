@@ -7,7 +7,6 @@
       <el-menu
         mode="vertical"
         :collapse="isCollapse"
-        @open="handleOpen"
         :default-openeds="openeds"
         :default-active="active"
         class="leftmemu"
@@ -40,22 +39,9 @@ export default {
   name: "Leftmenu",
   created() {
     findSideBar(this.userId).then(response => {
-      // console.log(response.data);
       let data = response.data.data;
       this.leftMenus = data;
-      let mapArry = data.map(function(data) {
-        return data.code;
-      });
-      // console.log(mapArry);
-      // debugger;
-      let me = this;
-      // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
-      setTimeout(function() {
-        mapArry.forEach(element => {
-          me.handleOpen(this.openPid, [element + ""]);
-        });
-        // debugger;
-      }, 600);
+      this.auotoAdd(data);
     });
   },
   components: {
@@ -68,7 +54,6 @@ export default {
       active: "",
       userId: this.$store.getters.user.user.id,
       leftMenus: [],
-      nodes: [],
       clickNodeId: "",
       chartData: [
         { p: "/BiFunnel", n: " 漏斗图", id: "5" },
@@ -86,87 +71,60 @@ export default {
   watch: {
     openPid(newid) {
       // debugger;
-      // console.log(newid);
-      this.handleOpen(this.openPid, [newid + ""]);
       this.openeds = [newid + ""];
     },
     activeId(newid) {
       // debugger;
-      // console.log(newid);
       this.active = newid + "";
     }
   },
   methods: {
-    handleOpen(key, code) {
-      let userId = this.userId;
-      var clickNodeId = "";
-      if (code.length === 1) {
-        clickNodeId = userId + "_" + code[0];
-      } else {
-        clickNodeId = userId + "_" + code[1];
-      }
-
-      var flag = false;
-      // 只要侧边栏被点开请求过一次,那么下次就不再发送请求
-      // 如果在数组中,找到相同的clickNodeId,那么标记改为真
-      for (let index = 0; index < this.nodes.length; index++) {
-        if (this.nodes[index] === clickNodeId) {
-          flag = true;
-          break;
+    /**
+     * 递归设置节点的孩子
+     * @param  nodes   所有节点
+     * @param  nodeId   节点编码
+     * @param  children  节点的孩子
+     */
+    setTreeNodeChildren(nodes, nodeId, children) {
+      if (!children) return;
+      if (!nodes) nodes = this.leftMenus;
+      nodes.forEach(node => {
+        if (node.code == nodeId) {
+          node.children = children;
+        } else if (node.leaf == 0) {
+          this.setTreeNodeChildren(node.children, nodeId, children);
         }
-      }
-      this.nodes.push(clickNodeId);
-      if (!flag) {
-        // console.log(key, code);
-
-        if (code.length === 1) {
-          this.fetchData(userId, code[0]);
-        } else {
-          this.fetchData2(userId, code);
-        }
-      }
+      });
     },
+    /**
+     * 加载数据
+     * @param  userId   用户id
+     * @param  code     编码
+     */
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
-        // console.log(response.data);
-        // console.log(code);
-
-        for (let index = 0; index < this.leftMenus.length; index++) {
-          // 匹配哪个children值加进去
-          if (this.leftMenus[index].code === code) {
-            this.$set(this.leftMenus[index], "children", response.data.data);
+        let data = response.data.data;
+        data.forEach(ele => {
+          // console.log(this.nodes);
+          if (ele.leaf == 0) {
+            this.fetchData(userId, ele.code);
           }
-        }
-        // console.log(this.leftMenus);
+        });
+        this.setTreeNodeChildren(null, code, data);
       });
     },
-    fetchData2(userId, code) {
-      findSideBar(userId, code[1]).then(response => {
-        let data = response.data.data;
-        console.log(data);
-        // console.log(code);
-        debugger;
-        for (let index = 0; index < this.leftMenus.length; index++) {
-          // 匹配哪个children值加进去
-          let flag = false;
-          if (this.leftMenus[index].code === code[0]) {
-            let qoose = this.leftMenus[index].children;
-            for (let i = 0; i < qoose.length; i++) {
-              if (qoose[i].code === code[1]) {
-                debugger;
-                console.log(qoose[i].text);
-                this.$set(this.leftMenus[index].children[i], "children", data);
-                flag = true;
-                break;
-              }
-            }
-          }
-          if (flag) {
-            break;
-          }
-        }
-        // console.log(this.leftMenus);
+    auotoAdd(data) {
+      let mapArry = data.map(function(data) {
+        return data.code;
       });
+      let me = this;
+      // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
+      setTimeout(function() {
+        mapArry.forEach(element => {
+          debugger;
+          me.fetchData(me.userId, element);
+        });
+      }, 600);
     }
   }
 };

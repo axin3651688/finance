@@ -39,7 +39,7 @@ export default {
   },
   watch: {
     filterText(val) {
-      console.log(this.$refs.tree2);
+      // console.log(this.$refs.tree2);
       this.$refs.tree2.filter(val);
     }
   },
@@ -54,8 +54,8 @@ export default {
 
   methods: {
     filterNode(value, data) {
-      console.log(value);
-      console.log(data);
+      // console.log(value);
+      // console.log(data);
 
       if (!value) return true;
       return data.text.indexOf(value) !== -1;
@@ -69,11 +69,11 @@ export default {
     // 异步树叶子节点懒加载逻辑
     loadNode(node, resolve) {
       // 一级节点处理
-      console.log(node);
+      // console.log(node);
 
       // debugger;
       if (node.level === 0) {
-        debugger;
+        // debugger;
         resolve([this.firstcompany]);
       }
       if (node.level >= 1) {
@@ -91,15 +91,15 @@ export default {
         getCompanyTree(this.licenseId, "company", "0", id).then(res => {
           if (res.data.code === 200) {
             var data = res.data.data;
-            debugger;
-            console.log(data);
+            // debugger;
+            // console.log(data);
             // 处理节点是否是叶子节点
             data.forEach(et => {
               if (et.leaf !== 0) {
                 et.leaf = true;
               } else {
                 et.leaf = false;
-                debugger;
+                // debugger;
                 // getCompanyTree(this.licenseId, "company", "0", et.id);
               }
             });
