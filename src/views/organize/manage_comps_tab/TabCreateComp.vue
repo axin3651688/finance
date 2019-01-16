@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div>
         <div class="edit-tab">
             <div class="edit-title">{{'创建 '+selectComp.text+' 的子公司'}}</div>
         </div>
@@ -16,9 +16,8 @@
                             :on-change="imgPreview"
                             :before-upload="beforeUpload"
                             action="xxx">
-                        <div v-if="localAvatar || oldAvatar">
-                            <img v-if="localAvatar" :src="localAvatar" style="width:400px;height: 140px">
-                            <img v-else :src="oldAvatar" style="width:400px;height: 140px">
+                        <div v-if="localAvatar">
+                            <img :src="localAvatar" style="width:400px;height: 140px">
                         </div>
                         <div v-else>
                             <i class="el-icon-upload" style="height: 50px;width: 60px;margin-top: 10px"></i>
@@ -79,20 +78,20 @@
                 </el-form-item>
                 <!--<el-form-item prop="type">-->
 
-                    <!--<div class="item-form">-->
-                        <!--<div class="item-img">-->
-                            <!--<img class="img-margin" src="@a/green/guimo_icon.svg">-->
-                        <!--</div>-->
+                <!--<div class="item-form">-->
+                <!--<div class="item-img">-->
+                <!--<img class="img-margin" src="@a/green/guimo_icon.svg">-->
+                <!--</div>-->
 
-                        <!--<el-cascader stripe class="input-form"-->
-                                     <!--:options="types"-->
-                                     <!--placeholder="请输入公司类型......"-->
-                                     <!--:show-all-levels="false"-->
-                                     <!--:props="typeProps"-->
-                                     <!--@change="handleTypeChange"-->
-                                     <!--filterable-->
-                        <!--&gt;</el-cascader>-->
-                    <!--</div>-->
+                <!--<el-cascader stripe class="input-form"-->
+                <!--:options="types"-->
+                <!--placeholder="请输入公司类型......"-->
+                <!--:show-all-levels="false"-->
+                <!--:props="typeProps"-->
+                <!--@change="handleTypeChange"-->
+                <!--filterable-->
+                <!--&gt;</el-cascader>-->
+                <!--</div>-->
                 <!--</el-form-item>-->
 
                 <el-form-item prop="area">
@@ -115,8 +114,9 @@
                     </div>
                 </el-form-item>
 
-                <el-form-item prop="note" >
-                    <el-input class="text-note" type="textarea" resize="none" rows="6"  placeholder="请输入描述..." v-model="createForm.note"></el-input>
+                <el-form-item prop="note">
+                    <el-input class="text-note" type="textarea" resize="none" rows="6" placeholder="请输入描述..."
+                              v-model="createForm.note"></el-input>
                 </el-form-item>
             </el-form>
             <el-button type="primary" @click="submitCreate('createForm')" class="btn-confirm">确定</el-button>
@@ -230,20 +230,41 @@
         },
         methods: {
             getIndusData() {
-                SELECT_INDUSTRY().then(res => {
-                    console.log('请求industries：', res.data.data)
-                    if (res.data.code === 200) this.industries = res.data.data
-                }).catch(err => {
-                    console.log('请求compList：', err)
-                });
+                let localData = localStorage.getItem('SELECT_INDUSTRY')
+                //判断有无本地缓存
+                if (localData) {
+                    this.industries = JSON.parse(localData)
+                } else {
+                    SELECT_INDUSTRY().then(res => {
+                        if (res.data.code === 200) {
+                            this.industries = res.data.data
+                            //本地缓存
+                            localStorage.setItem('SELECT_INDUSTRY', JSON.stringify(res.data.data));
+                        }
+                        console.log('请求areas：', this.areas)
+                    }).catch(err => {
+                        console.log('请求areas：', err)
+                    });
+                }
             },
             getScaleData() {
-                SELECT_SCALE().then(res => {
-                    console.log('请求ranges：', res.data.data)
-                    if (res.data.code === 200) this.ranges = res.data.data
-                }).catch(err => {
-                    console.log('请求ranges：', err)
-                });
+
+                let localData = localStorage.getItem('SELECT_SCALE')
+                //判断有无本地缓存
+                if (localData) {
+                    this.ranges = JSON.parse(localData)
+                } else {
+                    SELECT_SCALE().then(res => {
+                        if (res.data.code === 200) {
+                            this.ranges = res.data.data
+                            //本地缓存
+                            localStorage.setItem('SELECT_SCALE', JSON.stringify(res.data.data));
+                        }
+                        console.log('请求areas：', this.areas)
+                    }).catch(err => {
+                        console.log('请求areas：', err)
+                    });
+                }
             },
             getTypeData() {
                 FIND_COMPANY_TYPE().then(res => {
@@ -254,18 +275,25 @@
                 });
             },
             getAreaData() {
-                SELECT_AREA().then(res => {
-                    if (res.data.code === 200) {
-                        let temp = res.data.data
-                        this.checkAreaChild(temp)
-                        this.areas = temp
-                        console.log('请求areas2：', this.areas)
-                    }
-                }).catch(err => {
-                    console.log('请求areas：', err)
-                });
-            },
 
+                let localData = localStorage.getItem('SELECT_AREA')
+                //判断有无本地缓存
+                if (localData) {
+                    this.areas = JSON.parse(localData)
+                } else {
+                    SELECT_AREA().then(res => {
+                        if (res.data.code === 200) {
+                            let temp = res.data.data
+                            this.checkAreaChild(temp)
+                            this.areas = temp
+                            localStorage.setItem('SELECT_AREA', JSON.stringify(temp));
+                            console.log('请求areas2：', this.areas)
+                        }
+                    }).catch(err => {
+                        console.log('请求areas：', err)
+                    });
+                }
+            },
             //地区子节点为0的children =null
             checkAreaChild(areas) {
                 areas.forEach(area => {
@@ -361,8 +389,8 @@
                     console.log('res', res)
                     if (res.data.code === 200) {
                         alert(res.data.msg)
-                        this.$emit('compCreated', res.data.data);
-                        console.log('upload---create', res.data.data);
+                        this.$emit('compCreated', res.data.data.id);
+                        console.log('upload---create', res.data.data.id);
                         this.$refs['createForm'].resetFields();
                     }
                 })
@@ -378,7 +406,6 @@
     /deep/ .el-form-item {
         width: 400px;
     }
-
     .edit-tab {
         display: flex;
         justify-content: space-between;
@@ -430,20 +457,15 @@
 
             .text-note {
                 width: 400px;
-                height:140px;
                 background: rgba(255, 255, 255, 1);
                 opacity: 1;
                 border-radius: 12px;
-                margin-left: 20px;
 
                 font-size: 14px;
                 font-family: Microsoft YaHei;
                 font-weight: 400;
+                line-height: 19px;
                 color: rgba(102, 102, 102, 1);
-                /deep/ .el-input__inner{
-                    height: 140px;
-                }
-
             }
         }
 

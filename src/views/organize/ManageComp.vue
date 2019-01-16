@@ -12,9 +12,10 @@
                         :data="compList"
                         node-key="id"
                         :props="compProps"
-                        :default-expanded-keys="[122]"
-                        :default-checked-keys="[1]"
+                        :default-expanded-keys="[expandedKey]"
+                        :current-node-key="expandedKey"
                         @node-click="handleNodeClick"
+                        highlight-current
                         :filter-node-method="filterNode"
                         ref="tree"
                         :expand-on-click-node="true">
@@ -37,9 +38,9 @@
         </div>
         <div class="right-col"  :splitpanes-default="rightWidth" splitpanes-min="40">
             <div class="edit-container">
-                <tab-show-comp v-if="tab==1" :selectCompId="selectComp.id"></tab-show-comp>
+                <tab-show-comp v-if="tab==1" :selectCompId="selectComp.id" ></tab-show-comp>
                 <tab-create-comp v-else-if="tab==2" :selectComp="selectComp"  @compCreated="handleCreate"></tab-create-comp>
-                <tab-edit-comp v-else="tab==3" :selectCompId="selectComp.id"></tab-edit-comp>
+                <tab-edit-comp v-else="tab==3" :selectComp="selectComp"  @compUpdated="handleUpdate"></tab-edit-comp>
             </div>
 
         </div>
@@ -70,77 +71,16 @@
         data() {
             return {
                 tab:1,
-                value1: true,
                 search: '',
                 selectComp: {},
                 compList: [],
-                leftWidth: 20,
-                rightWidth: 80,
-                industries: [],
-                ranges: [],
-                areas: [],
-                types: [],
+                expandedKey:1,
                 compProps: {
                     children: 'children',
                     label: 'text'
                 },
-                indusProps: {
-                    children: 'children',
-                    label: 'text',
-                    value: 'id',
-                },
-                rangeProps: {
-                    label: 'text',
-                    value: 'id',
-                },
-                typeProps: {
-                    label: 'text',
-                    value: 'id',
-                },
-                areaProps: {
-                    children: 'children',
-                    label: 'text',
-                    value: 'id',
-                },
-                isFormDisabled:false,
-                compForm: {
-                    text: '',
-                    note: '',
-                    range: '',
-                    type:'',
-                    area: '',
-                    indus: '',
-                    avatar: '',
-                    code: '',
-                },
-                rules: {
-                    avatar: [{required: true, message: '请选择上传的logo', trigger: 'blur'},],
-                    text: [
-                        {required: true, message: '请输入名称', trigger: 'change'},
-                        {required: true,min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
-                    ],
-                    note: [
-                        {required: true, message: '请输入描述', trigger: 'blur'},
-                        {min: 5, max: 50, message: '长度在 5 到 50 个字符', trigger: 'blur'}
-                    ],
-                    area: [
-                        {required: true, message: '请选择地区', trigger: 'blur'}
-                    ],
-                    indus: [
-                        {required: true, message: '请选择行业', trigger: 'blur'}
-                    ],
-                    range: [
-                        {required: true, message: '请选择规模', trigger: 'blur'}
-                    ],
-                    type: [
-                        {required: true, message: '请选择类型', trigger: 'blur'}
-                    ],
-                    code: [
-                        {required: true, message: '请填写编码', trigger: 'blur'}
-                    ]
-                },
-                localAvatar: '',
-                oldAvatar: '',
+                leftWidth: 20,
+                rightWidth: 80,
             }
         },
         computed: {
@@ -150,7 +90,7 @@
             },
         },
         created() {
-            this.getCompList()
+            this.getCompList(-1)
         },
         mounted() {
 
@@ -181,11 +121,19 @@
                 console.log('filterNode', value);
                 return data.label.indexOf(value) !== -1;
             },
-            getCompList() {
+            getCompList(key) {
+
                 FIND_SUB_COMPANY_LIST(225).then(res => {
                     console.log('请求FIND_SUB_COMPANY_LIST：', res.data.data)
-                    if (res.data.code == 200) {
-                        this.selectComp = res.data.data
+                    if (res.data.code === 200) {
+                        if (key!==-1){
+                            this.expandedKey = key
+                        }else {
+                            this.expandedKey = res.data.data.id
+                            this.selectComp = {
+                                id:res.data.data.id
+                            }
+                        }
                         let temp = []
                         temp.push(res.data.data)
                         this.compList = temp
@@ -201,10 +149,21 @@
             },
             handleCreate(data){
                 //创建成功刷新列表，显示新的
-                this.getCompList()
-                this.selectComp.id = data
+                console.log('handleCreate', data)
+                this.selectComp = {
+                    id:data
+                }
+                this.getCompList(data)
                 this.tab = 1
             },
+            handleUpdate(data){
+                console.log('handleUpdate', data)
+                this.selectComp = {
+                    id:data
+                }
+                this.expandedKey = data
+                this.getCompList()
+            }
         }
     }
 </script>
@@ -223,24 +182,11 @@
 
     /deep/ .el-tree-node__content {
         padding: 30px 0 30px 0;
-        background: rgba(255, 255, 255, 1);
 
-        .is-current {
-            background: rgba(24, 144, 255, 1);
-        }
-
-        &:hover {
-            background: rgba(24, 144, 255, 0.2);
-        }
     }
-
-    /deep/ .el-tree-node.is-current.is-focusable {
-        > .el-tree-node__content {
-            background: rgba(24, 144, 255, 1);
-        }
+    /deep/.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+        background-color: rgba(24, 144, 255, 1);
     }
-
-
     .default-theme {
         font-family: $fontFamilyMain;
         height: 100%;
@@ -294,7 +240,6 @@
 
             .custom-tree-node {
                 flex: 1;
-                width: 300px;
                 display: flex;
                 align-items: center;
                 position: relative;
@@ -303,17 +248,16 @@
                 padding-right: 8px;
 
                 .node-text {
-                    width: 360px;
                     overflow: hidden;
                     margin-left: 20px;
                     text-overflow: ellipsis;
                     color: rgba(102, 102, 102, 0.80);
-                    line-height: 30px;
+                    line-height: 60px;
                     white-space: nowrap;
                 }
 
                 .node-text.active {
-                    color: rgba(255, 255, 255, 1);
+                    /*color: rgba(255, 255, 255, 1);*/
                 }
             }
 

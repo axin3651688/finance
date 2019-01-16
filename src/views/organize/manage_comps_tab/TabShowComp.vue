@@ -13,7 +13,7 @@
                     <div class="el-upload__text">请上传公司LOGO</div>
                 </div>
 
-                <div class="item-form">
+                <div class="item-form" style="margin-top: 14px">
                     <div class="item-img">
                         <img class="img-margin" src="@a/green/name_icon.svg">
                     </div>
@@ -201,7 +201,7 @@
                 }
 
                 .input-form {
-                    margin: 14px;
+                    margin: 12px 0 12px 20px;
                     width: 260px;
                     height: 40px;
                     background: rgba(255, 255, 255, 1);

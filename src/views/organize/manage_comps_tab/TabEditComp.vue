@@ -4,12 +4,10 @@
             <div class="edit-title">{{preCompInfo.text}}</div>
         </div>
         <div class="edit-container">
-            <el-form :model="compForm" disabled="true" status-icon="false" ref="compForm" :rules="rules" label-position='left'
-
-                     label-width="10px" class="comp-form">
-                <el-form-item prop="avatar">
+            <el-form :model="compForm" ref="compForm" :rules="rules" label-position='left' class="comp-form">
+                <el-form-item prop="avatar" style="width: 400px">
                     <el-upload
-                            style="display: flex;align-items: center"
+                            style="display: flex;align-items: center;width:400px;height: 140px"
                             drag
                             ref="upload"
                             :auto-upload="false"
@@ -160,9 +158,9 @@
         name: 'ManageApps',
         components: {},
         props: {
-            selectCompId: {
-                type: Number,
-                default: -1,
+            selectComp: {
+                type: Object,
+                default: {},
             }
         },
         data() {
@@ -208,11 +206,11 @@
                     avatar: [{required: true, message: '请选择上传的logo', trigger: 'blur'},],
                     text: [
                         {required: true, message: '请输入名称', trigger: 'change'},
-                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                        {min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
                     ],
                     note: [
                         {required: true, message: '请输入描述', trigger: 'blur'},
-                        {min: 5, max: 50, message: '长度在 5 到 50 个字符', trigger: 'blur'}
+                        {min: 5, max: 150, message: '长度在 5 到 150 个字符', trigger: 'blur'}
                     ],
                     area: [
                         {required: true, message: '请选择地区', trigger: 'change'}
@@ -254,8 +252,8 @@
             },
             getBaseInfo() {
                 console.log('getBaseInfo')
-                if (this.selectComp != -1) {
-                    FIND_COMPANY_BASE_INFO(this.selectCompId).then(res => {
+                if (this.selectComp) {
+                    FIND_COMPANY_BASE_INFO(this.selectComp.id).then(res => {
                         console.log('FIND_COMPANY_BASE_INFO：', res.data.data)
                         if (res.data.code == 200) {
                             this.preCompInfo = res.data.data
@@ -273,33 +271,55 @@
 
             },
             getIndusData() {
-                SELECT_INDUSTRY().then(res => {
-                    console.log('请求industries：', res.data.data)
-                    this.industries = res.data.data
+                let localData = localStorage.getItem('SELECT_INDUSTRY')
+                if (localData){
+                    this.handleIndusData(JSON.parse(localData))
+                } else {
+                    SELECT_INDUSTRY().then(res => {
+                        console.log('请求industries：', res.data.data)
+                        this.handleIndusData(res.data.data)
+                        //本地缓存
+                        localStorage.setItem('SELECT_INDUSTRY',JSON.stringify(res.data.data));
+                    }).catch(err => {
+                        console.log('请求industries：', err)
+                    });
+                }
 
-                    console.log('请求industries', this.preCompInfo.industryId)
-                    res.data.data.forEach(itemPar => {
-                        itemPar.children.forEach(itemChild => {
-                            if (itemChild.id == this.preCompInfo.industryId) {
-                                this.compForm.indus = [itemPar.id, itemChild.id]
-                                console.log('compForm.indus：', [itemPar.id, itemChild.id])
-                            }
-                        })
+
+            },
+            handleIndusData(temp){
+                this.industries = temp
+                console.log('localDataindus：', this.industries)
+                temp.forEach(itemPar => {
+                    itemPar.children.forEach(itemChild => {
+                        if (itemChild.id == this.preCompInfo.industryId) {
+                            this.compForm.indus = [itemPar.id, itemChild.id]
+                            console.log('compForm.indus：', [itemPar.id, itemChild.id])
+                        }
                     })
-                }).catch(err => {
-                    console.log('请求compList：', err)
-                });
+                })
             },
             getScaleData() {
-                SELECT_SCALE().then(res => {
-                    console.log('请求ranges：', res.data.data)
-                    this.ranges = res.data.data
 
-                    //form设置当前规模
-                    this.compForm.range = [this.preCompInfo.rangeId]
-                }).catch(err => {
-                    console.log('请求ranges：', err)
-                });
+                let localData = localStorage.getItem('SELECT_SCALE')
+                if (localData){
+                    this.handleRangeData(JSON.parse(localData))
+                } else {
+                    SELECT_SCALE().then(res => {
+                        console.log('请求ranges：', res.data.data)
+                        //本地缓存
+                        localStorage.setItem('SELECT_SCALE',JSON.stringify(res.data.data));
+                        this.handleRangeData(res.data.data)
+                    }).catch(err => {
+                        console.log('请求ranges：', err)
+                    });
+                }
+
+            },
+            handleRangeData(temp){
+                this.ranges = temp
+                //form设置当前规模
+                this.compForm.range = [this.preCompInfo.rangeId]
             },
             getTypeData() {
                 FIND_COMPANY_TYPE().then(res => {
@@ -312,50 +332,55 @@
                 });
             },
             getAreaData() {
-                SELECT_AREA().then(res => {
-
-
-                    let temp = res.data.data
-                    this.checkAreaChild(temp)
-                    this.areas = temp
-                    console.log('请求areas1：', this.preCompInfo.regionId)
-                    res.data.data.forEach(itemA => {
-                        if (itemA.id == this.preCompInfo.regionId) {
-                            this.compForm.area = [itemA.id]
-                            return
-                        } else {
-                            if (itemA.children && itemA.children.length > 0) {
-                                itemA.children.forEach(itemB => {
-                                    if (itemB.id == this.preCompInfo.regionId) {
-                                        this.compForm.area = [itemA.id, itemB.id]
-                                        return
-                                    } else {
-                                        if (itemB.children && itemB.children.length > 0) {
-                                            itemB.children.forEach(itemC => {
-
-                                                if (itemC.id == this.preCompInfo.regionId) {
-                                                    console.log('33333333333：', itemC.id)
-                                                    this.compForm.area = [itemA.id, itemB.id, itemC.id]
-                                                    return
-                                                } else {
-
-                                                }
-                                            })
-                                        }
-                                    }
-                                })
-                            } else {
-
-                            }
-                        }
-                    })
-
-                    console.log('请求areas2：', this.areas)
-                }).catch(err => {
-                    console.log('请求areas：', err)
-                });
+                let localData = localStorage.getItem('SELECT_AREA')
+                //判断有无本地缓存
+                if (localData){
+                    this.handleAreaData(JSON.parse(localData))
+                } else {
+                    SELECT_AREA().then(res => {
+                        let temp = res.data.data
+                        this.checkAreaChild(temp)
+                        //本地缓存
+                        localStorage.setItem('SELECT_AREA',JSON.stringify(temp));
+                        console.log('请求areas：', this.areas)
+                    }).catch(err => {
+                        console.log('请求areas：', err)
+                    });
+                }
             },
 
+            handleAreaData(temp){
+                this.areas = temp
+                temp.forEach(itemA => {
+                    if (itemA.id == this.preCompInfo.regionId) {
+                        this.compForm.area = [itemA.id]
+                        return
+                    } else {
+                        if (itemA.children && itemA.children.length > 0) {
+                            itemA.children.forEach(itemB => {
+                                if (itemB.id == this.preCompInfo.regionId) {
+                                    this.compForm.area = [itemA.id, itemB.id]
+                                    return
+                                } else {
+                                    if (itemB.children && itemB.children.length > 0) {
+                                        itemB.children.forEach(itemC => {
+
+                                            if (itemC.id == this.preCompInfo.regionId) {
+                                                this.compForm.area = [itemA.id, itemB.id, itemC.id]
+                                                return
+                                            } else {
+
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        } else {
+
+                        }
+                    }
+                })
+            },
             //地区子节点为0的children =null
             checkAreaChild(areas) {
                 areas.forEach(area => {
@@ -438,26 +463,46 @@
 
             updateComp(hdUrl) {
                 let params = {
-                    avatar: hdUrl,
-                    id: this.selectCompId,
-                    industryId: this.compForm.indus[1],
-                    note: this.compForm.note,
-                    rangeId: this.compForm.range[0],
-                    regionId: this.compForm.area[this.compForm.area.length - 1],
-                    text: this.compForm.text,
+                    id: this.selectComp.id,
                     userId: this.loginUserId,
                 }
-
+                let b = false
+                if (hdUrl!=this.preCompInfo.avatar){
+                    params.avatar=  hdUrl
+                    b=true
+                }
+                if (this.compForm.text!=this.preCompInfo.text){
+                    params.text=  this.compForm.text
+                    b=true
+                }
+                if (this.compForm.indus[1]!=this.preCompInfo.industryId){
+                    params.industryId=  this.compForm.indus[1]
+                    b=true
+                }
+                if (this.compForm.note!=this.preCompInfo.note){
+                    params.note=  this.compForm.note
+                    b=true
+                }
+                if (this.compForm.range[0]!=this.preCompInfo.rangeId){
+                    params.rangeId=  this.compForm.range[0]
+                    b=true
+                }
+                if (this.compForm.area[this.compForm.area.length - 1]!=this.preCompInfo.regionId){
+                    params.regionId=  this.compForm.area[this.compForm.area.length - 1]
+                    b=true
+                }
+                console.log('b', b)
                 console.log('params', params)
-                EDIT_COMPANY_INFO(params).then(res => {
-                    console.log('res', res)
-                    if (res.data.code === 200) {
-                        alert(res.data.msg)
-                        console.log('upload---update', res.data.data);
-                        this.getCompList()
-                        this.$refs['compForm'].resetFields();
-                    }
-                })
+                if (b){
+                    EDIT_COMPANY_INFO(params).then(res => {
+                        console.log('updateComp', res.data)
+                        if (res.data.code === 200) {
+                            this.$emit('compUpdated', this.selectComp.id);
+                            this.getBaseInfo()
+                        }
+                    })
+                }
+
             }
 
         }
