@@ -7,7 +7,6 @@
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-
       <HeadNav v-if="isShow()"/>
       <OpenDialog/>
     </div>
