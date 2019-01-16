@@ -1,22 +1,15 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-<<<<<<< HEAD
     <OpenDialog/>
     <leftMenu class="sidebar-container" v-if="isShow()"/>
-=======
-    <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
->>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-<<<<<<< HEAD
+
       <HeadNav v-if="isShow()"/>
-=======
-      <HeadNav v-if="isShow()&&flag"/>
-       <OpenDialog/>
->>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
+      <OpenDialog/>
     </div>
   </div>
 </template>

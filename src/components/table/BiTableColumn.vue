@@ -23,11 +23,11 @@
   >
     <template slot-scope="scope">
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
-        <img v-if= "col.icon" :src="col.icon" alt="">
-        <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
+        <img v-if="col.icon" :src="col.icon" alt>
+        <img v-else src="@/assets/green/list_menu.svg" alt class="img">
         <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
-         <el-cascader :options="options"  @change="columnDropDownClick" ></el-cascader>
-         <!-- <el-dialog
+        <el-cascader :options="options" @change="columnDropDownClick"></el-cascader>
+        <!-- <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
@@ -38,7 +38,7 @@
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
-          </el-dialog> -->
+        </el-dialog>-->
       </el-button>
     </template>
   </el-table-column>
@@ -151,9 +151,9 @@ export default {
   props: ["col", "tableData"],
   data() {
     return {
-      clickRow:{},
-      clickRowParams:{},
-      options:[]
+      clickRow: {},
+      clickRowParams: {},
+      options: []
     };
   },
   computed: {
@@ -166,15 +166,10 @@ export default {
     }
   },
   created() {
-<<<<<<< HEAD
-    // debugger;
-    // console.log(this.tableData);
-=======
-    this.options = this.tableData.config.columns[0].menu.list
+    this.options = this.tableData.config.columns[0].menu.list;
     debugger;
     console.log(this.tableData);
 
->>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
     //this.$set(this, "tableData", null);
   },
   mixins: [EventMixins],
@@ -187,20 +182,20 @@ export default {
     // rowClass({ row, rowIndex }) {
     //   return "text-align:center";
     // },
-   columnDropDownClick(items){
-     let menuId = items[0];
-     debugger;
-      let menu = this.col.menu.list.filter(c=>c.value === menuId)[0];
-      if(menu && menu.listeners){
-          this.commonHandler(menu.listeners[0],this.clickRow,menu);
+    columnDropDownClick(items) {
+      let menuId = items[0];
+      debugger;
+      let menu = this.col.menu.list.filter(c => c.value === menuId)[0];
+      if (menu && menu.listeners) {
+        this.commonHandler(menu.listeners[0], this.clickRow, menu);
       }
-   },
+    },
 
     columnClick(column, scope) {
       debugger;
       if (column.listeners || column.menu.list[0].listeners[0]) {
-        console.log(column.menu.list[0])
-        console.log(column.menu.list[0].listeners[0])
+        console.log(column.menu.list[0]);
+        console.log(column.menu.list[0].listeners[0]);
         this.commonHandler(column.listeners[0]);
       }
     },
@@ -219,11 +214,18 @@ export default {
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
     },
-    optionColumnClick(row){
+    optionColumnClick(row) {
       this.clickRow = row;
-      if(this.tableData.optionColumnClick && typeof(this.tableData.optionColumnClick) == "function"){
-             this.clickRowParams =  this.tableData.optionColumnClick(row, event,this);
-        }
+      if (
+        this.tableData.optionColumnClick &&
+        typeof this.tableData.optionColumnClick == "function"
+      ) {
+        this.clickRowParams = this.tableData.optionColumnClick(
+          row,
+          event,
+          this
+        );
+      }
     },
     /**
      * 获取单元格数据
@@ -374,8 +376,8 @@ tbody {
   position: absolute;
   right: 50%;
   top: 5px;
-  -moz-transform:rotate(-90deg);
-  -webkit-transform:rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
 }
 /* .el-tooltip__popper.is-dark {
   background: #fff;
