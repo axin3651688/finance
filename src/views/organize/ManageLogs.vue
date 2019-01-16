@@ -108,11 +108,9 @@
             },
             getRowClass({row, column, rowIndex, columnIndex}) {
                 if (rowIndex % 2 == 0) {
-                    console.log('rowIndex%2==0---' + rowIndex)
                     return 'background:rgba(255,255,255,1);' +
                         'height:50px';
                 } else if (rowIndex % 2 == 1) {
-                    console.log('rowIndex%2==1---' + rowIndex)
                     return 'background:rgba(196,215,233,0.15);' +
                         'height:50px';
                 } else {

@@ -20,6 +20,12 @@
 <script>
     export default {
         name: "Tab3",
+        props: {
+            selectRole: {
+                type: Object,
+                default: {}
+            }
+        },
         data() {
 
             return {

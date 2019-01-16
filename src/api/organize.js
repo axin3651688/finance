@@ -130,4 +130,43 @@ export function ENABLE_COMPANY_APPS(data) {
         data:data
     })
 }
+//查看角色的管理权限
+export function FIND_ROLE_ACCREDIT_ADMIN(roleId) {
+    // debugger
+    return request({
+        url: '/api/api/find_role_accredit_admin',
+        method: 'get',
+        params: {
+            'roleId':roleId,
+        }
+    })
+}
+
+//保存角色的管理权限
+export function SAVE_ROLE_ACCREDIT_ADMIN(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_role_accredit_admin',
+        method: 'post',
+        data: data
+    })
+}
+//查看角色的功能权限
+export function FIND_ROLE_ACCREDIT_FUNCTION(roleId) {
+    // debugger
+    return request({
+        url: '/api/api/find_role_accredit_function',
+        method: 'get',
+        params: {
+            'roleId':roleId,
+        }
+    })
+}
+
+
+
+
+
+
+
 

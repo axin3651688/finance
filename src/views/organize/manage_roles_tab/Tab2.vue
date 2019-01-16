@@ -1,48 +1,53 @@
 <template>
     <div class="main">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
 
-        <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-        </el-checkbox-group>
     </div>
 </template>
 
 <script>
-    const cityOptions = ['上海2', '北京2', '广州2', '深圳2'];
+
+    import {FIND_ROLE_ACCREDIT_FUNCTION} from '~api/organize.js';
     export default {
         name: "Tab2",
-        // props: ['selectRole'],
         props: {
             selectRole: {
                 type: Object,
                 default: {}
             }
         },
+        watch: {
+            selectRole(val) {
+                this.getData()
+            }
+        },
         data() {
 
             return {
-                time: null,
-                checkAll: false,
-                checkedCities: ['上海2', '北京2'],
-                cities: cityOptions,
-                isIndeterminate: true
+
             }
         },
         created() {
-            this.time = new Date()
+
         },
         methods: {
-            handleCheckAllChange(val) {
-                this.checkedCities = val ? cityOptions : [];
-                this.isIndeterminate = false;
-            },
-            handleCheckedCitiesChange(value) {
-                let checkedCount = value.length;
-                this.checkAll = checkedCount === this.cities.length;
-                this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-            }
+           getData(){
+               FIND_ROLE_ACCREDIT_FUNCTION(this.selectRole.id).then(res => {
+                   this.rightList = res.data.data
+                   //复制一份元数据
+                   this.preList = JSON.parse(JSON.stringify(res.data.data))
+                   let temp = []
+                   res.data.data.forEach(right => {
+                       if (right.accredit != 0) {
+                           console.log('right.accredit!=0', right)
+                           temp.push(right)
+                       }
+                   })
+                   this.checkedList = temp
+                   console.log('请求FIND_ROLE_ACCREDIT_ADMIN：', res.data.data)
+               }).catch(err => {
+                   console.log('请求FIND_ROLE_ACCREDIT_ADMIN：', err)
+               });
+           }
         },
     }
 </script>

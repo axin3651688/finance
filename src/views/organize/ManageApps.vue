@@ -42,8 +42,6 @@
         name: 'ManageApps',
         data() {
             return {
-                company: {},
-                expandedKey:1,
                 preData:[],
                 appData: [],
             }
@@ -55,23 +53,13 @@
             },
         },
         created(){
-            this.getCompList()
+            // this.getCompList()
+            this.getAppData(this.user.company.id)
         },
         mounted() {
 
         },
         methods: {
-            getCompList() {
-                FIND_SUB_COMPANY_LIST(this.loginUserId).then(res => {
-                    console.log('请求FIND_SUB_COMPANY_LIST：', res.data.data)
-                    if (res.data.code === 200) {
-                        this.company = res.data.data
-                        this.getAppData(res.data.data.id)
-                    }
-                }).catch(err => {
-                    console.log('请求compList：', err)
-                });
-            },
             getAppData(compId){
                 FIND_COMPANY_MODULE(compId).then(res => {
                     console.log('请求FIND_COMPANY_MODULE：', res.data.data)
@@ -111,7 +99,7 @@
                 }
                 if (moduleList.length>0){
                     let params={
-                        "companyId": this.company.id,
+                        "companyId": this.user.company.id,
                         "moduleList": moduleList,
                         "userId": this.loginUserId
                     }
@@ -119,7 +107,7 @@
                     ENABLE_COMPANY_APPS(params).then(res => {
                         console.log('请求ENABLE_COMPANY_APPS：', res.data)
                         if (res.data.code === 200) {
-                            this.getAppData(this.company.id)
+                            this.getAppData(this.user.company.id)
                             this.$message({
                                 showClose: true,
                                 message: res.data.msg,

@@ -82,29 +82,35 @@
         <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="60">
             <div class="el-main" v-if="roleList.length>0">
                 <div class="tab-main">
-                    <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]">
-                        <i class="el-bi-icon-guanli"></i>
-                        管理权限
-                    </el-button>
-                    <el-button @click="activeBtn =2" :class="['tab-btn', {active: activeBtn ===2}]">
-                        <i class="el-bi-icon-yingyong_icon"></i>
-                        应用权限
-                    </el-button>
-                    <el-button @click="activeBtn =3" :class="['tab-btn', {active: activeBtn ===3}]">
-                        <i class="el-bi-icon-gongneng"></i>
-                        功能权限
-                    </el-button>
-                    <el-button @click="activeBtn =4" :class="['tab-btn', {active: activeBtn ===4}]">
-                        <i class="el-bi-icon-qita"></i>
-                        其他权限
-                    </el-button>
+                    <div class="tab-title">
+                        {{selectRole.text}}
+                    </div>
+                    <div class="tab-right">
+                        <el-button @click="activeBtn =1" :class="['tab-btn', {active: activeBtn ===1}]">
+                            <i class="el-bi-icon-guanli"></i>
+                            管理权限
+                        </el-button>
+                        <el-button @click="activeBtn =2" :class="['tab-btn', {active: activeBtn ===2}]">
+                            <i class="el-bi-icon-yingyong_icon"></i>
+                            应用权限
+                        </el-button>
+                        <el-button @click="activeBtn =3" :class="['tab-btn', {active: activeBtn ===3}]">
+                            <i class="el-bi-icon-gongneng"></i>
+                            功能权限
+                        </el-button>
+                        <el-button @click="activeBtn =4" :class="['tab-btn', {active: activeBtn ===4}]">
+                            <i class="el-bi-icon-qita"></i>
+                            其他权限
+                        </el-button>
+                    </div>
                 </div>
+
 
                 <div>
                     <tab1 v-if="activeBtn === 1" :selectRole="selectRole"></tab1>
-                    <tab2 v-else-if="activeBtn === 2"></tab2>
-                    <tab3 v-else-if="activeBtn === 3"></tab3>
-                    <tab4 v-else-if="activeBtn === 4"></tab4>
+                    <tab2 v-else-if="activeBtn === 2" :selectRole="selectRole"></tab2>
+                    <tab3 v-else-if="activeBtn === 3" :selectRole="selectRole"></tab3>
+                    <tab4 v-else-if="activeBtn === 4" :selectRole="selectRole"></tab4>
                 </div>
             </div>
             <div v-else class="right-none">
@@ -404,10 +410,19 @@
                     opacity: 1;
                     display: flex;
                     flex-direction: row;
-                    justify-content: flex-end;
+                    justify-content: space-between;
                     padding-right: 40px;
                     align-items: center;
                     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+
+                    .tab-title {
+                        font-size: 16px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        margin-left: 20px;
+                        color: rgba(102, 102, 102, 0.80);
+                        opacity: 1;
+                    }
 
                     .tab-btn {
                         background: rgba(255, 255, 255, 1);

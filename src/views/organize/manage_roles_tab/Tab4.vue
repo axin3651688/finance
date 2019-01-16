@@ -6,7 +6,18 @@
 
 <script>
     export default {
-        name: "Tab4"
+        name: "Tab4",
+        props: {
+            selectRole: {
+                type: Object,
+                default: {}
+            }
+        },
+        data() {
+
+            return {
+            }
+        },
     }
 </script>
 
