@@ -85,10 +85,10 @@ export default {
      * 根据sql, params发请求,先加载子公司节点,在这里不加载所有
      */
     fetchData(dat) {
-      var params = apiItemDatas(this.item, dat.row.id);
-      debugger;
       var flag = handleOpen(dat.row.id, this.nodes);
       if (flag) return;
+      var params = apiItemDatas(this.item, dat.row.id);
+      debugger;
       findThirdPartData(params)
         .then(res => {
           debugger;
