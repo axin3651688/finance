@@ -3,36 +3,38 @@
     <div class="top">
       <div class="left">
         <div class="img-box img-box__group" @click="showGroupMembers = true">
-          <img :src="messageStore.groupInfo.info.avatar" :onerror="defaultImg">
+          <img :src="groupInfo.avatar" v-avatar="groupInfo.text">
         </div>
         <div class="content">
           <h3 class="title">
-            <span>{{groupInfo.text}}</span>
-            <el-dropdown trigger="click" @command="handleCommand" v-if="loginUserId === groupOwnerId">
+            <span class="title-text">{{groupInfo.text}}</span>
+            <el-dropdown trigger="click" @command="handleCommand">
                               <span class="el-dropdown-link">
                                 <i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="groupSetting"
-                                  style="padding-top: 15px;padding-bottom: 12px;">
+                <el-dropdown-item
+                  command="groupSetting"
+                  v-if="loginUserId === groupOwnerId"
+                  style="padding-top: 15px;padding-bottom: 12px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
-                      <img src="../../assets/green/group_set_icon.svg"
+                      <img src="@a/green/group_set_icon.svg"
                            alt="群主设置"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">群主设置</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">群主设置</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
                 </el-dropdown-item>
                 <el-dropdown-item command="groupQuit" style="padding-top: 15px;padding-bottom: 12px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
-                      <img src="../../assets/green/group_set_tuichu.svg"
+                      <img src="@a/green/group_set_tuichu.svg"
                            alt="退出群组"
                            style="width: 100%;height: 100%;">
                     </div>
-                    <span style="font-weight: bold;font-size: 16px;color: #189271   ">退出群组</span>
+                    <span style="font-weight: bold;font-size: 16px;color: #1890ff   ">退出群组</span>
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">退出群主将不再接收消息</p>
                 </el-dropdown-item>
@@ -54,21 +56,32 @@
       </div>
     </div>
     <div class="middle">
-      <el-scrollbar style="height: 100%">
+      <el-scrollbar style="height: 100%" ref="chatWindow">
         <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
 
       <!--底部阴影-->
       <div class="inset-shadow"></div>
     </div>
+
+    <!--聊天编辑窗口-->
     <div class="bottom">
       <div class="chat-tool">
         <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
-        <span class="tool-icon file-icon" @click="selectFile">
+        <div class="tool-icon file-icon">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :before-upload="beforeFileUpload"
+          >
+            <div class="tool-icon file-icon">
               <form action="">
-                  <input type="file" name="file" ref="selectFile">
+                <input type="file" name="file" ref="selectFile">
               </form>
-          </span>
+            </div>
+          </el-upload>
+        </div>
         <span class="tool-icon link-icon"></span>
         <transition name="el-zoom-in-bottom">
           <div v-show="showFacePop" class="face-pop">
@@ -83,13 +96,14 @@
           </div>
         </transition>
       </div>
-      <textarea
-        class="chat-textarea"
-        placeholder="请输入文字，按enter建发送信息"
-        v-model="sendText"
-        ref="textarea"
-        @keyup.enter="handleSendMessage"
-      ></textarea>
+      <div class="input-wrap">
+        <textarea class="chat-textarea"
+                  placeholder="请输入文字，按enter建发送信息"
+                  v-model="sendText"
+                  ref="textarea"
+                  @keyup.enter="handleSendMsg()"
+        ></textarea>
+      </div>
     </div>
 
     <!--群设置弹窗-->
@@ -102,13 +116,19 @@
         <figure>
           <div>
             <div class="img-box">
-              <img :src="groupInfo.avatar" :alt="groupInfo.text">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <img v-else :src="groupInfo.avatar" v-avatar="groupInfo.text">
             </div>
           </div>
-          <a class="upload-file" href="javascript:;">
-            <span>选择照片</span>
-            <input type="file" placeholder="选择照片">
-          </a>
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            上传头像
+          </el-upload>
         </figure>
       </div>
       <div class="dialog-content">
@@ -116,11 +136,12 @@
         <el-input
           placeholder="群名称"
           v-model="groupInfo.text"
+          ref="groupName"
           clearable>
         </el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="showGroupSettingDialog = false">保 存</el-button>
+                <el-button type="primary" size="small" @click="clickEditGroup">保 存</el-button>
                 <el-button size="small" @click="showGroupSettingDialog = false">取 消</el-button>
               </span>
     </el-dialog>
@@ -142,17 +163,6 @@
               </span>
     </el-dialog>
 
-    <!--群成员侧边栏组件 弹窗 先不用，以后再改-->
-    <!--<el-dialog class="add-member-dialog"-->
-    <!--:visible.sync="showGroupMembers"-->
-    <!--width="300px"-->
-    <!--:show-close="true"-->
-    <!--:modal-append-to-body="false"-->
-    <!--id="group-members"-->
-    <!--&gt;-->
-    <!--sdfasdfsadf-->
-    <!--</el-dialog>-->
-
     <!--群成员侧边栏组件-->
     <group-members
       v-if="showGroupMembers"
@@ -163,16 +173,18 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import MessageItem from './MessageItem'
-import emotionSprites from '@a/green/emotion_sprites.json';
+import MessageItem from '@c/message/message_item/MessageItem.vue'
+import emotionSprites from '@a/message/data/emotion_sprites.json';
 import {
   findGroupMsg,
   GROUP_INFO,
   sendMsg,
   QUIT_GROUP,
   EDIT_GROUP,
-  DISSOLU_GROUP
+  DISSOLU_GROUP,
+  UPLOAD_FILE
 } from '~api/message.js';
+import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
 
 export default {
   name: 'GroupMsg',
@@ -182,13 +194,16 @@ export default {
   },
   data() {
     return {
-      defaultImg: 'this.src="' + require('../../assets/green/avatar_male.png') + '"',
+      fileData: null,                       // 上传文件成功后返回的文件信息
+      hdUrl: '', // 群头像
+      oldGroupName: '', // 修改前的群名
+      imgfd: null, // 要发给服务器的图片信息
+      imageUrl: '', // 上传图片时绑定的图
       EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
       groupMsgList: [],
       showGroupMembers: false, // 是否显示群成员组件
-      groupName: '群名称', // 群设置》群名称
       showGroupQuitDialog: false, // 退出群弹出
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
@@ -201,13 +216,113 @@ export default {
       return this.user.user.id;
     },
     groupId() {
-      return this.messageStore.groupInfo.info.groupId
+      return this.messageStore.targetId
     },
     groupOwnerId() {
-      return this.messageStore.groupInfo.info.ownerId
+      return this.groupInfo.ownerId
+    },
+    newServerMsg() { // 服务器推送的消息
+      return this.messageStore.newServerMsg
+    },
+    serverAck() { // 服务器推送的 ack回执
+      return this.messageStore.serverAck
+    }
+  },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      // console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.groupMsgList.push(item);
+      this.$nextTick(() => { // 把聊天窗口滚动到最底部
+        this.chatWindowScrollToBottom();
+      });
+    },
+    serverAck(val) {
+      // console.log('服务器ACK：', val);
+      socket.send(JSON.stringify(val));
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore']),
+
+    // 上传群头像文件
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      // console.log(file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.imgfd = fd;
+      this.submitUpload(fd);
+      return true
+    },
+    submitUpload(fd) {
+      let _this = this;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传群头像res', res);
+          if (res.data.code === 200) {
+            _this.hdUrl = res.data.data.hdUrl // 传递返回的图片地址
+          }
+        });
+      }
+    },
+
+    // 群聊天文件上传
+    beforeFileUpload(file) {
+      // console.log(file);
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      this.submitFileUpload(fd);
+      return true
+    },
+    submitFileUpload(fd) {
+      let _this = this;
+      if (fd) {
+        UPLOAD_FILE(fd).then(res => {
+          console.log('上传聊天文件res', res);
+          if (res.data.code === 200) {
+            _this.fileData = res.data.data;
+            this.handleSendMsg(res.data.data)
+          }
+        });
+      }
+    },
+
+    // 群设置
+    clickEditGroup() {
+      let newGroupName = this.$refs.groupName.value;
+      if (newGroupName === this.groupInfo.text && !this.imgfd) {
+        this.showGroupSettingDialog = false;
+        return; // 如果没有图片和群名字都没修改,则不往下执行
+      }
+      let params = {
+        // note: '群描述',
+        // avatar: hdUrl, // 上传头像的地址
+        id: this.groupId, // 群id
+        text: newGroupName,
+        type: 0, // 1可以被搜索到
+        userId: this.loginUserId
+      };
+      if (this.hdUrl) params['avatar'] = this.hdUrl; // 如果上传了群头像才设置头像
+      console.log('params', params);
+      EDIT_GROUP(params).then(res => {
+        console.log('设置群资料', res.data.data);
+        if (res.data.code === 200) {
+          // debugger
+        }
+        // debugger
+      }).catch(err => {
+        console.log('设置群资料', err)
+      })
+    },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
     addFaceToInput(face) {
@@ -216,22 +331,87 @@ export default {
     },
 
     // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMessage() {
-      console.log('要发送的内容是：', this.sendText);
+    handleSendMsg(fileData) {
+      debugger;
+      let pushData = {
+        type: 1,
+        data: this.sendText
+      };
       let sendData = {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
-          content: this.sendText,
-          senderId: this.loginUserId, // 539 姜海斌
-          type: 1
+          content: this.sendText.trim(),
+          senderId: this.loginUserId,
+          receiverId: this.groupId,
+          type: 1,
+          fileId: null,
+          id: 'cnbift' + new Date().getTime() + new Date().getTime(),
+          sendTime: new Date().getTime(),
         },
-        device: '868938033321615'
       };
-      this.sendText = '';
-      // debugger;
-      sendMsg(sendData)
+
+      if (fileData) { // 如果是发文件，设置文件type，和文件的data
+        sendData.data.content = fileData.text;
+        sendData.data.fileId = fileData.id;
+        for (let item of FILE_TYPE) {
+          // debugger;
+          if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
+            sendData.data.type = item.type;
+            pushData.type = item.type;
+            pushData.data = fileData;
+            break
+          } else {
+            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+          }
+        }
+      }
+
+      console.log('要发送的内容是：', sendData);
+      if (!sendData.data.content) {
+        this.sendText = '';
+        this.$message({
+          type: 'warning',
+          message: '发送内容不能为空',
+          showClose: true
+        });
+        return;
+      }
+      socket.deliver(sendData);
+      // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
+    // 把发送的内容显示到聊天窗口
+    addMsgToWindow(pushData) {
+      let data = {
+        avatar: this.user.user.avatar,
+        content: '',
+        name: this.user.user.trueName,
+        sendTime: new Date().getTime(),
+        type: 1
+      };
+      if (pushData.type === 1) {
+        data.content = pushData.data;
+      } else {
+        data.content = pushData.data.text;
+        data.file = pushData.data;
+        data.type = pushData.type
+      }
+
+      console.log('要添加到群聊天窗口的数据是：', data);
+      debugger;
+      this.groupMsgList.push(data);
+      this.$nextTick(() => {
+        this.chatWindowScrollToBottom();
+      });
+    },
+
+    // 把聊天窗口滚动到最底部
+    chatWindowScrollToBottom() {
+      // debugger;
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
+      // console.log('找滚动窗口：', chatWindow);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    },
 
     // 验证当前登录用户是不是群管理员，如果是群管理员则解散群组
     isGroupOwner() {
@@ -248,7 +428,7 @@ export default {
         case 'groupQuit': {
           if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
             // debugger;
-            let msg = `您是该群 ${this.messageStore.groupInfo.info.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            let msg = `您是该群 ${this.groupInfo.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
             this.$confirm(msg, '警告', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -263,7 +443,7 @@ export default {
             });
           } else {
             // debugger;
-            let msg = `是否退出群组：${this.messageStore.groupInfo.info.text}`;
+            let msg = `是否退出群组：${this.groupInfo.text}`;
             this.$confirm(msg, '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -282,19 +462,16 @@ export default {
       }
     },
 
-    // 选择上传文件，这里是上传群组头像
-    selectFile() {
-    },
-
     // 群id查询群信息
     getInfo() {
-      debugger;
+      // debugger;
       if (!this.groupId) return;
       GROUP_INFO(this.groupId).then(res => {
-        console.log('群id查询群信息:', res.data.data);
+        // console.log('群id查询群信息:', res.data.data);
         if (res.data.code === 200) {
           this.groupInfo = res.data.data.info;
-          this.groupMembers = res.data.data.users
+          this.groupMembers = res.data.data.users;
+          this.ActionSetMessageStore({groupInfo: res.data.data});
         }
       }).catch(err => {
         console.log('请求message：', err)
@@ -303,37 +480,28 @@ export default {
 
     // 获取群消息
     getGroupMsgList() {
-      findGroupMsg().then(res => {
-        console.log('群消息列表：', res.data.data);
+      let data = {
+        page: 1,
+        groupId: this.groupId,
+        userId: this.loginUserId,
+        size: 20
+      };
+      findGroupMsg(data).then(res => {
+        // debugger;
+        // console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {
-          this.groupMsgList = res.data.data.data
+          this.groupMsgList = res.data.data.data.reverse();
+          // 消息拿到后 把窗口内容滚到到底部
+          this.$nextTick(() => {
+            this.chatWindowScrollToBottom()
+          });
         }
       }).catch(err => {
         console.log('群消息', err)
       })
     },
 
-    // todo 3设置群资料,修改图片需要先上传头像
-    clickEditGroup() {
-      let params = {
-        avatar: 'avatar', // 上传头像的地址
-        id: 4, // 群id
-        note: '群描述',
-        text: '群名称',
-        type: 0, // 1可以被搜索到
-        userId: 225
-      };
-      EDIT_GROUP(params).then(res => {
-        console.log('设置群资料', res.data.data);
-        if (res.data.code === 200) {
-
-        }
-      }).catch(err => {
-        console.log('设置群资料', err)
-      })
-    },
-
-    // TODO：2退出群组(ok)
+    // TODO：2退出群组(ok) 成功后窗口怎么跳转
     quitGroup() {
       // debugger;
       let params = {
@@ -341,7 +509,7 @@ export default {
         groupId: this.groupId
       };
       QUIT_GROUP(params).then(res => {
-        console.log('退出群组res:', res);
+        // console.log('退出群组res:', res);
         if (res.data.code === 200) {
           this.$message({
             type: 'success',
@@ -358,7 +526,6 @@ export default {
       })
     },
 
-    // todo：解散群聊(ok)
     dissoluGroup() {
       // debugger;
       let params = {
@@ -366,7 +533,7 @@ export default {
         groupId: this.groupId
       };
       DISSOLU_GROUP(params).then(res => {
-        console.log('解散群聊：', res.data.data);
+        // console.log('解散群聊：', res.data.data);
         // debugger;
         if (res.data.code === 200) {
           this.$message({
@@ -384,14 +551,11 @@ export default {
       }).catch(err => {
         console.log('解散群聊异常：', err)
       })
-    }
-  },
-  mounted() {
-    this.getInfo();
-    this.getGroupMsgList();
+    },
 
     // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', e => {
+    hideFaceIcon(e) {
+      // debugger;
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
@@ -400,19 +564,29 @@ export default {
         elem = elem.parentNode
       }
       this.showFacePop = false
-    })
+    }
+  },
+  mounted() {
+    console.log('文件类型：', FILE_TYPE);
+    this.getInfo();
+    this.getGroupMsgList();
+
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hideFaceIcon)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>
 
 <style lang="scss">
   /*这里不使用 scoped 使v-html生成表情能够应用到样式*/
-  @import "@s/green/emotion_sprites.scss";
+  @import "@s/message/emotion_sprites.scss";
 </style>
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
-
-  $iconGroupPersonUrl: '../../assets/green/group_person.svg';
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
 
   .GroupMsg {
     display: flex;
@@ -425,17 +599,17 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 60px 40px 0 40px;
+      padding: 15px 40px 0 40px;
       box-sizing: border-box;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
 
       .left {
         display: flex;
         align-items: center;
 
         .img-box {
-          width: 80px;
-          height: 80px;
+          width: 60px;
+          height: 60px;
           margin-right: 30px;
           overflow: hidden;
           border-radius: 50%;
@@ -446,6 +620,7 @@ export default {
             height: 100%;
           }
         }
+
         .img-box__group {
           cursor: pointer;
         }
@@ -454,9 +629,18 @@ export default {
           .title {
             font-size: 18px;
             color: $colorText1;
+            min-width: 220px;
 
             /deep/ .el-dropdown {
               cursor: pointer;
+            }
+
+            .title-text {
+              display: inline-block;
+              max-width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
 
@@ -473,6 +657,7 @@ export default {
         align-items: center;
 
         .group-member {
+          width: 58px;
           display: flex;
           align-items: center;
           margin-right: 30px;
@@ -487,7 +672,7 @@ export default {
           }
 
           .icon__group-person {
-            background: url($iconGroupPersonUrl);
+            background: url($iconGroupPerson);
           }
         }
       }
@@ -512,79 +697,21 @@ export default {
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
       }
 
-      /deep/ .el-scrollbar__thumb {
-        background: $colorTheme;
-      }
+      /deep/ .el-scrollbar {
 
-      /deep/ .el-scrollbar__wrap {
-        overflow-x: hidden;
-      }
-
-      /*background: #cccccc;*/
-      .message-box {
-        padding: 10px 20px;
-        margin: 10px 40px 20px 0;
-        background: #ffffff;
-        box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
-        border-radius: 12px;
-
-        .message-top {
-          overflow: hidden;
-          margin-bottom: 20px;
-
-          .avatar-box {
-            width: 40px;
-            height: 40px;
-            margin-right: 20px;
-            border-radius: 50%;
-            overflow: hidden;
-            float: left;
-            background: #cccccc;
-
-            img {
-              width: 100%;
-            }
-          }
-
-          .user-name {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText1;
-          }
-
-          .send-time {
-            position: relative;
-            margin-top: 3px;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-            color: $colorText4;
-            font-family: $fontFamilyMain;
-
-            .status {
-              position: absolute;
-              left: 215px;
-              top: 0;
-              width: 10px;
-              height: 10px;
-              border-radius: 50%;
-              background: #EF3C3C;
-            }
-          }
+        .el-scrollbar__thumb {
+          background: $colorTheme;
         }
 
-        .message-content {
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 20px;
-          color: rgba(0, 0, 0, 0.80);
+        .el-scrollbar__wrap {
+          overflow-x: hidden;
+          padding-right: 40px;
         }
       }
     }
 
     .bottom {
-      position: relative;
+      /*height: 260px;*/
       box-sizing: border-box;
       /*height: 240px;*/
       width: 100%;
@@ -613,33 +740,38 @@ export default {
         }
 
         .face-icon {
-          background: url("../../assets/green/emoji.svg") no-repeat;
+          background: url($iconEmojiUrl) no-repeat;
         }
 
         .file-icon {
-          background: url("../../assets/green/file.svg") no-repeat;
+          background: url($iconFileUrl) no-repeat;
         }
 
         .link-icon {
-          background: url("../../assets/green/url.svg") no-repeat;
+          background: url($iconLinkUrl) no-repeat;
         }
       }
 
-      .chat-textarea {
-        min-height: 100px;
-        padding: 10px 20px;
-        color: rgba(0, 0, 0, 0.40);
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 12px;
+      .input-wrap {
         width: 100%;
-        border: none;
-        outline: 0;
-        resize: none;
-        text-align: left;
-        font-family: $fontFamilyMain;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 20px;
+
+        .chat-textarea {
+          box-sizing: border-box;
+          min-height: 100px;
+          padding: 10px 20px;
+          color: rgba(0, 0, 0, 0.40);
+          background: rgba(0, 0, 0, 0.06);
+          border-radius: 12px;
+          width: 100%;
+          border: none;
+          outline: 0;
+          resize: none;
+          text-align: left;
+          font-family: $fontFamilyMain;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20px;
+        }
       }
     }
 
@@ -663,6 +795,7 @@ export default {
     }
 
     .btn-group {
+      min-width: 136px;
       display: inline-block;
       $btnHeight: 24px;
       border-radius: $btnHeight / 2;

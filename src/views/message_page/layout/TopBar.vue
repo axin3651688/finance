@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
 
   .TopBar {
     @include flex();
@@ -104,7 +104,9 @@ export default {
     }
 
     .topbar-left {
+      box-sizing: border-box;
       width: $sizeNavBarWidth;
+      border-right: 1px solid $colorBorder1;
       .search-bar {
         @include flex();
         height: 100%;
@@ -143,19 +145,6 @@ export default {
       overflow: hidden;
       flex: 1;
       -webkit-app-region: drag;
-
-      &:after {
-        $afterWidth: 20px;
-        position: absolute;
-        display: block;
-        content: '';
-        width: $afterWidth;
-        background: $colorTheme;
-        left: -$afterWidth;
-        top: 0;
-        bottom: 0;
-        box-shadow: 5px 0px 60px rgba(0, 0, 0, 0.16);
-      }
 
       .page-title {
         height: 100%;

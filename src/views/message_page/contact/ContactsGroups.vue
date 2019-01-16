@@ -9,7 +9,7 @@
               @click="getInfo(group.groupId)">
             <figure>
               <div class="img-box">
-                <img :src="group.avatar" v-avatar="group.text" />
+                <img :src="group.avatar" v-avatar="group.text"/>
               </div>
               <div class="info">
                 <span class="info-text">{{group.text}}</span>
@@ -75,7 +75,7 @@
                 <div class="content">
                   <!--{{this.qrUrl}}-->
                   <div class="qr-code">
-                    <qriously :value="qrUrl" />
+                    <qriously :value="qrUrl"/>
                   </div>
                 </div>
               </section>
@@ -99,7 +99,7 @@ import {
 export default {
   name: 'ContactsGroups',
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id
     }
@@ -116,7 +116,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['ActionSetMessageStore']),
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     getData() {
       // debugger;
       MY_GROUP_LIST(this.user.user.id).then(res => {
@@ -211,14 +211,38 @@ export default {
 
     // 开始群聊天
     chatWithGroup(rightInfo) {
-      if (rightInfo.groupId) {
-        this.ActionSetMessageStore({
-          targetId: rightInfo.groupId,
-          miniType: 1101, // 1101 群聊,
-          receiverData: rightInfo
-        });
-        this.$router.push('/message_page/msg')
+      debugger;
+      let sessionItem = {};
+      let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId;
+      sessionItem['miniType'] = 1100;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = rightInfo.groupId;
+      sessionItem['name'] = rightInfo.text;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = rightInfo.avatar;
+      sessionItem['originData'] = rightInfo;
+      this.ActionSetMessageStore({
+        sessionActiveItem: sessionItem,
+        miniType: 1101, // 1101 群聊,
+        receiverData: rightInfo
+      });
+      let itemExist = false;
+      for (let sessionItem of this.messageStore.sessionList) {
+        if (sessionItem.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true;
+          break;
+        }
       }
+      if (!itemExist) { // 如果不存在，则进队列
+        let addObj = {
+          type: 'addItem', // 可取'addItem','deleteItem','update'
+          data: sessionItem
+        };
+        this.ActionUpdateSessionList(addObj);
+      }
+      this.$router.push('/message_page/msg')
     }
   },
   mounted() {
@@ -229,11 +253,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
 
   .ContactsGroups {
     display: flex;
     height: 100%;
+
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }

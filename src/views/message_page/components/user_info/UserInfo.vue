@@ -55,7 +55,7 @@ export default {
     }
   },
   components: {
-    MyBtn: () => import('@mc/MyBtn.vue')
+    MyBtn: () => import('@c/message/my_btn/MyBtn.vue')
   },
   computed: {
     ...mapGetters(['user'])
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@ms/index.scss";
+  @import "@s/message/index.scss";
 
   .UserInfo {
     color: $colorText2;

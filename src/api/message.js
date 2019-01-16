@@ -1,5 +1,7 @@
+/**
+ * get请求用params，post用data
+ */
 import request from 'utils/http'
-import proxy from './proxy.js'
 
 
 //上传文件
@@ -42,6 +44,7 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
     }
   })
 }
+
 // 获取群聊聊消息
 export function findGroupMsg(data) {
   // console.log(" api findGroupMsg");
@@ -59,6 +62,7 @@ export function findGroupMsg(data) {
     // }
   })
 }
+
 // 发送消息，接受一个完整的数据对象
 export function sendMsg(data) {
   debugger;
@@ -68,6 +72,7 @@ export function sendMsg(data) {
     data: data
   })
 }
+
 // 发送消息，接受一个完整的数据对象
 export function requestMyfriends(data) {
   // debugger
@@ -129,6 +134,7 @@ export function FIND_MODULE_MSG(data) {
     data: data
   })
 }
+
 // 消除订阅消息左侧红点未读数，进入页面时请求
 export function UPDATE_MODULE_STATE_ALL(data) {
   console.log('api UPDATE_MODULE_STATE_ALL');
@@ -139,6 +145,7 @@ export function UPDATE_MODULE_STATE_ALL(data) {
     params: data
   })
 }
+
 // 单条订阅消息，点击单条时
 export function CHANGE_MODULE_STATE(data) {
   console.log('api CHANGE_MODULE_STATE');
@@ -162,6 +169,7 @@ export function HELP_GROUP_MSG(data) {
     }
   })
 }
+
 // 群组同意某人加群
 export function JOIN_GROUP(data) {
   debugger;
@@ -171,6 +179,7 @@ export function JOIN_GROUP(data) {
     data: data
   })
 }
+
 // 查询新朋友消息通知
 export function NEW_FRIEND_LIST(data) {
   console.log('api NEW_FRIEND_LIST');
@@ -183,9 +192,13 @@ export function NEW_FRIEND_LIST(data) {
     }
   })
 }
+
 // 处理好友申请时调用，保存好友添加好友
 export function SAVE_FRIEND(data) {
-  console.log('api SAVE_FRIEND');
+  // let temp = { // 数据模板
+  //   friendId: 0,
+  //   userId: 0
+  // };
   debugger;
   return request({
     url: '/api/api/save_friend',
@@ -193,18 +206,35 @@ export function SAVE_FRIEND(data) {
     data: data
   })
 }
+
 // 处理好友申请时调用，保存好友,之后更新这条消息的状态 更新群组邀请消息状态
-export function REFUSE_GROUP(data) {
-  console.log('api REFUSE_GROUP');
-  // debugger
+export function REFUSE_GROUP(params) {
+  // let temp = {    // 模板数据
+  //   code: '',     // 字符串
+  //   state: 3      // 3拒绝，4同意
+  // };
+  debugger;
+  return request({
+    url: '/api/api/refuse_group',
+    method: 'put',
+    params: params
+  })
+}
+
+// 处理好友申请时调用，保存好友,之后更新这条消息的状态 更新新朋友消息通知
+export function REFUSE_FRIEND(params) {
+  // let temp = {    // 模板数据
+  //   code: '',     // 字符串
+  //   state: 3      // 3拒绝，4同意
+  // };
+  debugger;
   return request({
     url: '/api/api/refuse_friend',
     method: 'get',
-    params: {
-      userId: data
-    }
+    params: params
   })
 }
+
 // 查看群组详细资料
 export function GROUP_INFO(data) {
   console.log('api GROUP_INFO');
@@ -217,6 +247,7 @@ export function GROUP_INFO(data) {
     }
   })
 }
+
 // 修改群资料
 export function EDIT_GROUP(data) {
   console.log('api EDIT_GROUP');
@@ -227,6 +258,7 @@ export function EDIT_GROUP(data) {
     params: data
   })
 }
+
 // 退出群组
 export function QUIT_GROUP(data) {
   console.log('api QUIT_GROUP');
@@ -237,6 +269,7 @@ export function QUIT_GROUP(data) {
     params: data
   })
 }
+
 // 解散群聊
 export function DISSOLU_GROUP(data) {
   console.log('api DISSOLU_GROUP');
@@ -247,6 +280,7 @@ export function DISSOLU_GROUP(data) {
     params: data
   })
 }
+
 // 移除团队成员
 export function DEL_GROUP_USER(data) {
   debugger;
@@ -256,6 +290,7 @@ export function DEL_GROUP_USER(data) {
     data: data
   })
 }
+
 // 查询群聊公告
 export function FIND_GROUP_NOTICE(groupId, userId) {
   // debugger
@@ -268,6 +303,7 @@ export function FIND_GROUP_NOTICE(groupId, userId) {
     }
   })
 }
+
 // 获取二维码的生成地址
 export function SCAN_URL(data) {
   // debugger
@@ -277,6 +313,7 @@ export function SCAN_URL(data) {
     params: data
   })
 }
+
 // 我的公司列表,不查人员
 export function MY_COMPANY_LIST(userId) {
   // debugger
@@ -288,6 +325,7 @@ export function MY_COMPANY_LIST(userId) {
     }
   })
 }
+
 // 组织成员列表
 export function MY_COMPANY_CONTACT_LIST(companyId) {
   console.log('api MY_COMPANY_CONTACT_LIST');
@@ -300,9 +338,9 @@ export function MY_COMPANY_CONTACT_LIST(companyId) {
     }
   })
 }
+
 // 查询团队与人员的二及列表
 export function ALL_COMPANY_CONTACT_LIST(userId) {
-  console.log('api ALL_COMPANY_CONTACT_LIST');
   // debugger
   return request({
     url: '/api/api/my_company_contact_list',
@@ -313,12 +351,22 @@ export function ALL_COMPANY_CONTACT_LIST(userId) {
   })
 }
 
-
+// 拉好友进群
 export function SEND_GROUP_INVITE_MSG(data) {
-  debugger;
+  // debugger;
   return request({
     url: '/api/api/send_group_invite_msg',
     method: 'post',
     data: data
+  })
+}
+
+// 获取登录二维码
+export function SCAN_LOGIN_URL(params) {
+  // debugger;
+  return request({
+    url: '/auth/scan_login_url',
+    method: 'get',
+    params: params
   })
 }

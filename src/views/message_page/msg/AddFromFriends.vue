@@ -195,7 +195,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@s/message/variables.scss";
+  @import "@s/message/icons.scss";
 
   .AddFromFriends {
     display: flex;
@@ -234,11 +235,11 @@ export default {
         }
 
         .list-icon__checked {
-          background: url("../assets/icon/list_icon.svg") no-repeat;
+          background: url($iconIsChecked) no-repeat;
         }
 
         .list-icon__normal {
-          background: url("../assets/icon/group_person_add.svg") no-repeat;
+          background: url($iconNotChecked) no-repeat;
         }
       }
 
@@ -331,7 +332,7 @@ export default {
 
         .close-cover {
           opacity: 0;
-          background: rgba(255, 255, 255, .2) url('../assets/icon/group_person_unselected.svg') no-repeat;
+          background: rgba(255, 255, 255, .2) url($iconCloseCover) no-repeat;
           background-size: $itemSize $itemSize;
           transition: all .3s;
         }

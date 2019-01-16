@@ -106,7 +106,6 @@ export default {
     //   this.$forceUpdate()
     // })
   },
-
   methods: {
     btnClick(btn) {
       btn.handler(this, btn);
@@ -220,7 +219,6 @@ export default {
     //         return this.item.onRowClick(row, column, e,this);
     //     }
     //     this.onCellClickDefault(row, column, e);
-
     //  },
     /**
      * 单元格单击事件
@@ -241,7 +239,6 @@ export default {
       // // console.log(event.target)
       // console.log(column)
     },
-
     getSummaries(param) {
       debugger;
       const { columns, data } = param;
@@ -258,7 +255,6 @@ export default {
       debugger;
       return sums;
     },
-
     /**
      * 获取rowspan
      */
@@ -300,14 +296,12 @@ export default {
     //  },
     rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex }) {
       //合并行
-
       // let config =  this.groupConfig;
       // let cells = {rowspan:0,colspan:0};
       // debugger
       // //哪一列合并多少行，可以传过来，如果没有传的话，就再计算一下
       // if(column.rowspan){
       //    let datas = [];//getTableDatas();
-
       //    let rowspan = row.rowspan || this.getCellRowSpan(datas,row,config) || 0 ;
       //    cells.rowspan = rowspan;
       // }
@@ -317,7 +311,6 @@ export default {
       // }
       // // Todo colspan from where...?
       // return cells;
-
       //具体方法请参照elementUi-Table的配法
       if (
         this.item &&
@@ -352,16 +345,13 @@ export default {
     //   this.list = data;
     //   return data;
     // },
-
     //   getTableDataParams(rows) {
     //     //   var ddd =  this.getList();
     //     //   console.info(ddd);
     //     // sql:"select * from dw_dimcompany"
     //     // if(rows && rows.length > 0){
-
     //     //  }
     //     //  return ;
-
     //     //debugger;
     //     // this.axios.get("/api/cube/find_dim2/company/0/1/").then(res =>{
     //     // debugger;

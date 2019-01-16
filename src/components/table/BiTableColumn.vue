@@ -22,8 +22,23 @@
     fixed="right"
   >
     <template slot-scope="scope">
-      <el-button @click="handleClick(scope.row)" type="text" size="small">
-        <img src="@/assets/green/list_menu.svg" alt>
+      <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
+        <img v-if= "col.icon" :src="col.icon" alt="">
+        <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
+        <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
+         <el-cascader :options="options"  @change="columnDropDownClick" ></el-cascader>
+         <!-- <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="dilogShow"
+          >
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog> -->
       </el-button>
     </template>
   </el-table-column>
@@ -134,6 +149,13 @@ import EventMixins from "../mixins/EventMixins";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
+  data() {
+    return {
+      clickRow:{},
+      clickRowParams:{},
+      options:[]
+    };
+  },
   computed: {
     isFolder() {
       return this.col.children && this.col.children.length;
@@ -144,19 +166,41 @@ export default {
     }
   },
   created() {
+<<<<<<< HEAD
     // debugger;
     // console.log(this.tableData);
+=======
+    this.options = this.tableData.config.columns[0].menu.list
+    debugger;
+    console.log(this.tableData);
+
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
     //this.$set(this, "tableData", null);
   },
   mixins: [EventMixins],
   methods: {
+    //   dilogShow(item) {
+    //     debugger
+    //     this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
+    // },
+    // ...mapActions(["ShowDialog"]),
     // rowClass({ row, rowIndex }) {
-
     //   return "text-align:center";
     // },
+   columnDropDownClick(items){
+     let menuId = items[0];
+     debugger;
+      let menu = this.col.menu.list.filter(c=>c.value === menuId)[0];
+      if(menu && menu.listeners){
+          this.commonHandler(menu.listeners[0],this.clickRow,menu);
+      }
+   },
+
     columnClick(column, scope) {
       debugger;
-      if (column.listeners) {
+      if (column.listeners || column.menu.list[0].listeners[0]) {
+        console.log(column.menu.list[0])
+        console.log(column.menu.list[0].listeners[0])
         this.commonHandler(column.listeners[0]);
       }
     },
@@ -171,10 +215,15 @@ export default {
       // }
       // this.$set(this, "tableData1", item);
       // this.$set(this.tableData1, "datas", item.datas);
-
       this.$set(this, "tableData", null);
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
+    },
+    optionColumnClick(row){
+      this.clickRow = row;
+      if(this.tableData.optionColumnClick && typeof(this.tableData.optionColumnClick) == "function"){
+             this.clickRowParams =  this.tableData.optionColumnClick(row, event,this);
+        }
     },
     /**
      * 获取单元格数据
@@ -224,7 +273,6 @@ export default {
       // value = ((value - 0) / 10000).toLocaleString();
       // 千分位  保留两位小数
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-
       return value;
     },
     //treeGrid function
@@ -253,7 +301,6 @@ export default {
       }
       const record = this.tableData.datas[trIndex.$index];
       // console.log(record);
-
       record._expanded = !record._expanded;
     },
     // 图标显示
@@ -294,7 +341,6 @@ export default {
     .cell {
       // max-width: 100%;
       // height: 100%;
-
       // overflow: hidden;
       // text-overflow: ellipsis;
       white-space: nowrap;
@@ -323,6 +369,14 @@ tbody {
 }
 </style>
 <style scoped>
+.img {
+  width: 20px;
+  position: absolute;
+  right: 50%;
+  top: 5px;
+  -moz-transform:rotate(-90deg);
+  -webkit-transform:rotate(-90deg);
+}
 /* .el-tooltip__popper.is-dark {
   background: #fff;
   color: #000;
@@ -349,7 +403,6 @@ tbody {
   width: 18px;
   height: 14px;
 }
-
 .ms-tree-space::before {
   content: "";
 }

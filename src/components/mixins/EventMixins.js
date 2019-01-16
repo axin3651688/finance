@@ -121,13 +121,17 @@ export default {
      */
     addTab(params, listener, bb) {
       debugger;
-      let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
+      //let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
       //判断指标分析的穿透
-      if (!module.items) {
-        module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
+      // if (!module.items) {
+      //   module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
+      // }
+      let module = this.$root.$children[0].$children[0].$children[0].$children[0];//.$children[0].$children[0];
+     // let module = tab.$parent.$parent;
+      if(!module){
+        alert("未能获取module对象！");
+        return ;
       }
-      //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
-      // let module = tab.$parent.$parent;
       if (!bb) {
         bb = this.item;
       }

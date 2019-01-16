@@ -3,18 +3,30 @@
     "text": "报告查看",
     "xtype": "JtreeGrid",
     "layout": {
+<<<<<<< HEAD
       "xtype": "column"
+=======
+      "xtype": "form"
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
     },
     "showDims": ["year", "month", "company", "conversion"],
     "items": [{
       "xtype": "JtreeGrid",
       "id": "1416001",
       "text": "报告查看",
+<<<<<<< HEAD
       "templateClick":function($vue,row){
           let me = this
           console.log(me)
           console.log($vue)
         debugger;
+=======
+      "optionColumnClick":function($vue,row){
+          let me = this
+          console.log(me)
+          console.log($vue)
+          return row;
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
     },
       "queryDataBefore":function(params,b){
         debugger;
@@ -55,11 +67,25 @@
                     "list":[{
                         "value":"shengcheng",
                         "label":"生成",
+<<<<<<< HEAD
                         "showdilog": true,
                         "listeners": [{
                             "type": "click",
                             "way": "openDialog",
                             "sourceApi": "cnbi/json/source/chart/bar.json",
+=======
+                        "id":"shengcheng",
+                        "text":"生成",
+                        "showdilog": true,
+                        "listeners": [{
+                            "type": "click",//openDialog
+                            "way": "openDialog",
+                            "config":{
+                                  "width":800,
+                                  "height":750     
+                             },
+                            "sourceApi": "cnbi/json/source/chart/bar1.json",
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
                             "handler": ($vue, params) => {
                 
                               return params;
@@ -69,6 +95,7 @@
                     },
                     {
                         "value":"chakan",
+<<<<<<< HEAD
                         "label":"查看",
                         "listeners": [{
                             "type": "click",
@@ -136,6 +163,25 @@
                 
                             }
                           }]
+=======
+                        "label":"查看"
+                    },
+                    {
+                        "value":"shenyue",
+                        "label":"审阅"
+                    },
+                    {
+                        "value":"tuihui",
+                        "label":"退回"
+                    },
+                    {
+                        "value":"cuibao",
+                        "label":"催报"
+                    },
+                    {
+                        "value":"sqth",
+                        "label":"申请退回"
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
                     },
                     {
                         "value":"daochu",
@@ -143,6 +189,7 @@
                         "children":[
                             {
                                 "value":"wanzheng",
+<<<<<<< HEAD
                                 "label":"完整",
                                 "listeners": [{
                                     "type": "click",
@@ -168,11 +215,19 @@
                         
                                     }
                                   }]
+=======
+                                "label":"完整"
+                            },
+                            {
+                                "value":"jianyao",
+                                "label":"简要"
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
                             }
                         ]
                     },
                     {
                         "value":"pingjias",
+<<<<<<< HEAD
                         "label":"评价",
                         "listeners": [{
                             "type": "click",
@@ -184,6 +239,9 @@
                 
                             }
                           }]
+=======
+                        "label":"评价"
+>>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
                     }]
                      
                 },

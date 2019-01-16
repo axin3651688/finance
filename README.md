@@ -243,6 +243,7 @@ BiText
             cellStyle:"单元格样式", //可选 table
             onCellClick:"单元格点击事件" //可选 table 
             onRowClick:"树表单元格点击事件"
+            handleClick:"单元格的操作"
             options:{}
         },
         {
@@ -293,6 +294,10 @@ listeners:[
     "handler":($vue,params)=>{//自定义的回调
         console.info(params);
         debugger; 
+    },
+    "config":{
+        "width":800,
+        "height":750     
     },
     "clickBefore":function(params,$vue){//点击之前的回调，可以改变listeners里的参数变量
 

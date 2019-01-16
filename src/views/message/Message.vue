@@ -3,52 +3,45 @@
     <div class="container">
       <div class="left">
         <el-scrollbar style="height: 100%">
-          <ul>
-            <template v-if="leftBarInstance">
-              <template v-for="item in leftBarInstance.leftBarList">
-                <li v-if="!item.content"
-                    :class="['have-sub', {active: item.miniType === messageStore.miniType}]"
-                    :key="item.miniType"
-                    @click="leftBarInstance.setItemActive(item)"
-                >
-                  <img class="avatar-img" :src="item.avatar" :alt="item.name">
-                  <h3>{{item.name}} {{item.miniType}}</h3>
-                  <img class="list-menu" src="@/assets/green/contact_list.svg" alt="">
-                  <div class="right-border"></div>
-                </li>
-                <li v-else
-                    :class="[{active: item.miniType === messageStore.miniType}]"
-                    :key="item.miniType"
-                    @click="leftBarInstance.setItemActive(item)"
-                >
-                  <div class="top">
-                    <img :src="item.avatar" alt="">
-                    <span class="count mt" v-if="item.count">{{item.count}}</span>
-                    <span class="publish-time mt">{{item.sendTime | formatTime}}</span>
-                  </div>
-                  <h3 class="title">{{item.name}}
-                    <img class="list-menu" src="@/assets/green/list_menu.svg" alt="">
-                  </h3>
-                  <p>{{item.content}}</p>
-                  <div class="right-border"></div>
-                </li>
-              </template>
+          <ul v-if="leftBarInstance">
+            <template v-for="item in leftBarInstance.leftBarList">
+              <li
+                :class="[{active: item.miniType === messageStore.miniType}]"
+                :key="item.miniType"
+                @click="leftBarInstance.setItemActive(item)"
+              >
+                <div class="top">
+                  <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
+                    <div class="img-box">
+                      <img :src="item.otherAvatar" v-if="item.miniType===1101" v-avatar="item.otherName">
+                      <img v-else :src="item.avatar">
+                    </div>
+                  </el-badge>
+                  <span class="title" v-if="item.miniType===1101">{{item.otherName}}</span>
+                  <span class="title" v-else>{{item.name}}</span>
+                  <!--{{item.miniType}}-->
+                  <span class="publish-time mt" v-if="item.sendTime">{{item.sendTime | formatTime}}</span>
+                </div>
+                <p v-if="item.content">
+                  <span v-if="item.miniType===1101">{{item.name}}: </span>
+                  <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
+                </p>
+                <div class="right-border"></div>
+                <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
+              </li>
             </template>
           </ul>
         </el-scrollbar>
       </div>
       <div class="right">
         <template v-if="leftBarInstance">
-          <contacts
-            v-if="messageStore.miniType === 101010"
-            @chatWithGroup="handleChatWithGroup"
-            @chatWithSingle="handleChatWithSingle"
-          ></contacts>
+          <contacts v-if="messageStore.miniType === 101010"></contacts>
           <new-friends v-if="messageStore.miniType === 11016"></new-friends>
           <group-helper v-if="messageStore.miniType === 11017"></group-helper>
           <Todo v-if="messageStore.miniType === 2"></Todo>
           <single-msg v-if="messageStore.miniType === 1100"></single-msg>
           <group-msg v-if="messageStore.miniType === 1101"></group-msg>
+          <analysis v-if="messageStore.miniType === 11021"></analysis>
         </template>
 
         <!--右边区域左内阴影效果-->
@@ -64,34 +57,25 @@
 <script>
 import {MY_SESSION} from '~api/message.js';
 import {mapGetters, mapActions} from 'vuex'
-import {FORMAT_TIME} from 'utils/message.js'
-
-const NAV_HEADER_HEIGHT = 64; // 头部导航栏的高度
+import {FORMAT_MSG_TIME, PARSE_EMOTIONS} from 'utils/message.js'
 
 // 暂时定义一个通讯录类容
 const contact = {
   avatar: "http://jiaxin365.cn/images/cloud/msg_icon/message_new%20friends.png",
   content: null,
-  count: 60,
+  count: null,
   id: null,
   miniType: 101010,
   name: "通讯录",
-  otherAvatar: null,
-  otherName: null,
-  platform: null,
-  receiverId: null,
-  sendTime: null,
-  senderId: null,
   state: 0,
-  type: null,
 };
 
 // 消息左边栏
 class LeftBar {
-  constructor(resList, ActionSetMessageStore) {
+  constructor(resList, ActionSetMessageStore, loginUserId) {
     if (!LeftBar.instance) {
+      this.loginUserId = loginUserId;
       this.ActionSetMessageStore = ActionSetMessageStore;
-      this.activeItem = new LeftBarItem(contact);
       this._init(resList);
       LeftBar.instance = this;
     }
@@ -104,14 +88,26 @@ class LeftBar {
       let leftBarItem = new LeftBarItem(i);
       itemList.push(leftBarItem)
     });
-    itemList.push(new LeftBarItem(contact));
+    itemList.unshift(new LeftBarItem(contact));
     this.leftBarList = itemList;
   }
 
+  // 激活这个边栏项
   setItemActive(itemObj) {
     this.activeItem = itemObj;
     itemObj.setActive();
-    this.setMessageStore({miniType: itemObj.miniType})
+    let user = {
+      id: itemObj.senderId,
+      avatar: itemObj.avatar,
+      trueName: itemObj.name,
+    };
+    itemObj['user'] = user;
+    let obj = {
+      targetId: itemObj.targetId,
+      miniType: itemObj.miniType,
+      receiverData: itemObj
+    };
+    this.setMessageStore(obj)
   }
 
   // 修改 vuex 中的变量 messageStore
@@ -120,19 +116,25 @@ class LeftBar {
     this.ActionSetMessageStore(obj)
   }
 
+  // 添加一条边栏
   addLeftBarItem(itemData) {
-    let result = this.checkExists(itemData);
-    if (result) {
-      result.addCount()
+    let item = this.checkExists(itemData);
+    if (item) {
+      item.addCount(itemData.content)
     } else {
       let leftBarItem = new LeftBarItem(itemData);
       this.leftBarList.unshift(leftBarItem)
     }
   }
 
+  // 判断这个item是不是已近存在了，存在则返回这个item，否则返回 false
+  // 判断依据
   checkExists(itemData) {
-    for (let i of this.leftBarList) {
-      return i.id === itemData.id ? i : false
+    for (let item of this.leftBarList) {
+      console.log('bianlan:', item);
+      if (item.senderId === itemData.senderId && item.miniType === itemData.miniType) {
+        return item
+      }
     }
   }
 }
@@ -141,6 +143,7 @@ class LeftBar {
 class LeftBarItem {
   constructor(obj) {
     this.isActive = false;
+    this.count = 1;
     this._init(obj)
   }
 
@@ -148,20 +151,32 @@ class LeftBarItem {
     let keys = Object.keys(obj);
     keys.forEach(key => {
       this[key] = obj[key]
-    })
+    });
+    this.miniType = obj.miniType;
+    // 只有是群聊1101时候targetId=receiverId 其余都= senderId
+    if (obj.miniType === 1101) {
+      this.targetId = obj.receiverId
+    } else {
+      this.targetId = obj.senderId
+    }
   }
 
+  // 把自己设置为激活状态，并清除消息计数和聊天内容
   setActive() {
     if (!this.isActive) this.isActive = true;
     this.clearCount()
   }
 
-  addCount() {
-    this.count++
+  // 消息计数+1，并跟新内容
+  addCount(content) {
+    this.count++;
+    this.content = content
   }
 
+  // 清除消息计数，和消息内容
   clearCount() {
-    this.count = 0
+    this.count = 0;
+    this.content = ''
   }
 
 }
@@ -169,12 +184,13 @@ class LeftBarItem {
 export default {
   name: 'Message',
   components: {
-    SingleMsg: () => import('./SingleMsg'), // 单聊消息
-    Contacts: () => import('./Contacts'), // 通讯录
-    Todo: () => import('./Todo'), // 代办事项
-    NewFriends: () => import('./NewFriends'), // 新朋友
-    GroupHelper: () => import('./GroupHelper'), // 群助手
-    GroupMsg: () => import('./GroupMsg') // 群助手
+    // Todo: () => import('./Todo'), // 代办事项
+    Analysis: () => import('./Analysis'),           // 分析助手
+    SingleMsg: () => import('./SingleMsg'),         // 单聊消息
+    NewFriends: () => import('./NewFriends'),       // 新朋友
+    GroupHelper: () => import('./GroupHelper'),     // 群助手
+    GroupMsg: () => import('./GroupMsg'),           // 群助手
+    Contacts: () => import('./Contacts')            // 通讯录
   },
   data() {
     return {
@@ -190,30 +206,41 @@ export default {
     ...mapGetters(['user', 'messageStore']),
     newServerMsg() {
       return this.messageStore.newServerMsg
+    },
+    loginUserId() {
+      return this.user.user.id;
+    }
+  },
+  watch: {
+    //监听服务器推送的消息
+    newServerMsg(val) {
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      // 当当前窗口不是聊天窗时，才往侧栏添加提示
+      debugger;
+      if (this.messageStore.targetId !== item.receiverId) {
+        debugger;
+        this.leftBarInstance.addLeftBarItem(item);
+      }
     }
   },
   filters: {
     trim(val) { // 去掉头尾空格
-      debugger;
       return val.trim()
     },
     // 格式化时间戳
     formatTime(time) {
-      return FORMAT_TIME(time);
+      return FORMAT_MSG_TIME(time);
     }
-  },
-  watch: {
-    // 监听服务器推送的消息
-    // newServerMsg(val) {
-    //   this.$alert('收到服务器推送信息', '提示', {
-    //     confirmButtonText: '确定'
-    //   });
-    //   console.log('message.vue 监听到推送：', val)
-    // }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
 
+    // 解析表情包
+    parseEmotions(content) {
+      return PARSE_EMOTIONS(content)
+    },
 
     // 弹出系统推送的消息
     alertServerMsg(data) {
@@ -222,7 +249,7 @@ export default {
 
     // 初始化消息左边栏
     initLeftBar(resList) {
-      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore)
+      this.leftBarInstance = new LeftBar(resList, this.ActionSetMessageStore, this.loginUserId)
     },
 
     // 页面挂载后 请求消息列表数据成功后的处理
@@ -246,31 +273,11 @@ export default {
     activeThisItem(activeItem) {
       // console.log('需要激活的选项：', activeItem);
       this.activeItem = activeItem
-    },
-
-    // 动态设置message视图的高度（窗口高度-头部导航栏的高度）
-    messageResize() {
-      let windowHeiht = window.innerHeight; // 浏览器内部窗口高度
-      let messagecContainer = this.$refs.messagecContainer;
-      let resizeHeight = windowHeiht - NAV_HEADER_HEIGHT;
-      messagecContainer.style.height = resizeHeight + 'px';
-      console.log('message视图高度：', resizeHeight);
-      console.log('message视图dom：', messagecContainer)
-    },
-
-    // 开始群聊天
-    handleChatWithGroup(groupId) {
-      console.log('开始群聊天：', groupId);
-      this.groupId = groupId;
-      this.leftBarInstance.activeMiniType = 1101
-    },
-
-    // 开始单聊
-    handleChatWithSingle(receiverId) {
-      console.log('即将和用户', receiverId, '聊天');
     }
   },
   mounted() {
+    this.ActionSetMessageStore({routeName: '消息'});
+
     // 页面挂载后 请求消息列表数据
     MY_SESSION(this.user.user.id).then(res => {
       this.getSessionThen(res)
@@ -280,22 +287,26 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-  @import "@s/green/variables.scss";
 
-  #app {
-    .containerMain {
-      padding-left: 0;
-      padding-right: 0;
-      width: 100%;
-      height: calc(100% - 64px);
-    }
+<style lang="scss">
+  /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
+  @import "@s/message/emotion_sprites.scss";
+
+  .face-img {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
   }
+</style>
+<style lang="scss" scoped>
+  @import "@s/message/index.scss";
 
   .Message {
+    box-sizing: border-box;
     font-family: $fontFamilyMain;
     position: relative;
-    height: 100vh !important;
+    height: 100vh;
+    padding-left: 0 !important;
 
     .container {
       position: relative;
@@ -305,7 +316,7 @@ export default {
       overflow: hidden;
 
       .left {
-        width: 300px;
+        width: $sizeNavBarWidth;
         height: 100%;
         background: rgba(255, 255, 255, 1);
 
@@ -313,25 +324,10 @@ export default {
           width: 100%;
           height: 100%;
 
-          li.have-sub {
-            img.avatar-img {
-              width: 46px;
-              height: 46px;
-              border-radius: 50%;
-              float: left;
-            }
-
-            h3 {
-              float: left;
-              margin-top: 15px;
-              margin-left: 20px;
-            }
-          }
-
           li {
             position: relative;
             overflow: hidden;
-            padding: 20px;
+            padding: 20px 20px 18px;
             border-bottom: 1px solid $colorBorder1;
             cursor: pointer;
 
@@ -339,19 +335,39 @@ export default {
               width: 46px;
             }
 
+            /deep/ .el-badge {
+              vertical-align: unset;
+            }
+
             .top {
               height: 46px;
+              line-height: 46px;
               padding-right: 10px;
 
-              .mt {
-                margin-top: 15px;
-              }
-
-              img {
+              .img-box {
                 width: 46px;
                 height: 46px;
                 border-radius: 50%;
-                float: left;
+                overflow: hidden;
+                background: $colorTheme;
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 50%;
+                  float: left;
+                }
+              }
+
+              .title {
+                display: inline-block;
+                margin-left: 20px;
+                width: 80px;
+                @include singleEllipsis()
+              }
+
+              .mt {
+                margin-top: 15px;
               }
 
               .count {
@@ -381,18 +397,9 @@ export default {
               }
             }
 
-            .title {
-              margin-top: 10px;
-              line-height: 21px;
-              font-size: 16px;
-              font-family: $fontFamilyMain;
-              font-weight: 400;
-              color: $colorText1;
-            }
-
             .list-menu {
               position: absolute;
-              right: 20px;
+              right: 5px;
               top: 50%;
               height: 20px !important;
               width: 20px !important;
@@ -401,15 +408,12 @@ export default {
             }
 
             p {
-              margin-top: 8px;
-              min-width: 240px;
-              overflow: hidden;
+              @include singleEllipsis();
+              margin-top: 15px;
               font-size: 12px;
               font-family: $fontFamilyMain;
               font-weight: 400;
               line-height: 16px;
-              text-overflow: ellipsis;
-              white-space: nowrap;
               color: $colorText2;
             }
 
@@ -461,9 +465,8 @@ export default {
         flex: 1;
         position: relative;
         overflow: hidden;
-        /*height: calc(100% - 60px);*/
         height: 100%;
-        min-width: 800px;
+        /*min-width: 800px;*/
         background: $colorBgPageGray;
 
         .inset-shadow {

@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-Vue.use(Router)
+
+Vue.use(Router);
 
 const router = new Router({
   // mode: 'history',
   // base: process.env.BASE_URL,
-  routes: [{
+  routes: [
+    {
       path: '/',
       redirect: '/message_page/home',
     },
@@ -16,7 +18,6 @@ const router = new Router({
         import('@v/common/404'),
     },
 
-    // start---> 姜海斌 消息独立页面
     {
       path: '/message_page',
       redirect: '/message_page/home',
@@ -25,11 +26,13 @@ const router = new Router({
       path: '/message_page',
       name: 'MessagePage',
       component: () => import('@v/message_page/MessagePage.vue'),
-      children: [{
+      children: [
+        {
           path: '/message_page/home', // 消息-通讯录
           name: 'Home',
           component: () => import('@v/message_page/home/Home.vue'),
-        }, {
+        },
+        {
           path: '/message_page/contact', // 消息-通讯录
           name: 'Contact',
           component: () => import('@v/message_page/contact/Contact.vue'),
@@ -46,21 +49,17 @@ const router = new Router({
       name: 'Login',
       component: () => import('@v/message_page/login/Login.vue'),
     }
-    // end---> 姜海斌 消息独立页面
-
-
   ]
-})
+});
 
 // 路由守卫
-
 router.beforeEach((to, from, next) => {
-  const isLogin = localStorage.authorization ? true : false;
+  const IS_LOGIN = localStorage.authorization ? true : false;
   if (to.path == "/message_login") {
     next();
   } else {
-    isLogin ? next() : next("/message_login");
+    IS_LOGIN ? next() : next("/message_login");
   }
-})
+});
 
 export default router;
