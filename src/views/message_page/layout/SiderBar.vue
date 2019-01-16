@@ -2,7 +2,7 @@
   <div class="SiderBar">
     <div class="siderbar-top">
       <div class="login-info-wrap">
-        <div class="login-info" @click="showMyInfo=!showMyInfo">
+        <div class="login-info" @click="showMyInfo=!showMyInfo" v-if="user.user">
           <img :src="user.user.avatar" v-avatar="user.user.trueName">
         </div>
 
@@ -132,7 +132,7 @@ export default {
         if (item.targetId === targetId) { // 在队列
           // 在队列, 并且没有打开聊天窗口，则更新当条消息
           if (targetId === this.messageStore.sessionActiveItem.targetId && this.$route.name.toLowerCase() === 'msg') {
-            return false // 收到的消息来自当前聊天对象，不需增加计数
+            return false // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
           }
           this.ActionUpdateSessionList({ // 增加一条计数
             type: 'update',
