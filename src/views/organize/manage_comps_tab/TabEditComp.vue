@@ -501,6 +501,13 @@
                             this.getBaseInfo()
                         }
                     })
+                }else {
+                    this.$alert('尚未进行修改', '提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+
+                        }
+                    });
                 }
 
             }

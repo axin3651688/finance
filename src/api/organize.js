@@ -87,6 +87,19 @@ export function FIND_COMPANY_TYPE() {
         params: {}
     })
 }
+
+// 查看该公司是否可以创建子公司
+export function ENABLE_CREATE_SUB_COMPANY(companyId) {
+    // debugger
+    return request({
+        url: '/api/api/enable_create_sub_company',
+        method: 'get',
+        params: {
+            'companyId':companyId,
+        }
+    })
+}
+
 // 添加子公司
 export function SAVE_SUB_COMPANY(data) {
     // debugger
@@ -94,6 +107,27 @@ export function SAVE_SUB_COMPANY(data) {
         url: '/api/api/save_sub_company',
         method: 'post',
         data: data
+    })
+}
+
+//公司应用列表
+export function FIND_COMPANY_MODULE(companyId) {
+    // debugger
+    return request({
+        url: '/api/api/find_company_module',
+        method: 'get',
+        params: {
+            'companyId':companyId,
+        }
+    })
+}
+//启/禁用公司应用
+export function ENABLE_COMPANY_APPS(data) {
+    // debugger
+    return request({
+        url: '/api/api/enable_company_apps',
+        method: 'put',
+        data:data
     })
 }
 

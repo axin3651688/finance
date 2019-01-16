@@ -55,7 +55,7 @@
         FIND_SUB_COMPANY_LIST,
         SELECT_AREA,
         SELECT_INDUSTRY,SAVE_SUB_COMPANY,
-        SELECT_SCALE
+        SELECT_SCALE,ENABLE_CREATE_SUB_COMPANY
     } from '~api/organize.js'
     import {UPLOAD_FILE} from '~api/message.js';
     import {mapGetters} from 'vuex'
@@ -123,7 +123,7 @@
             },
             getCompList(key) {
 
-                FIND_SUB_COMPANY_LIST(225).then(res => {
+                FIND_SUB_COMPANY_LIST(this.loginUserId).then(res => {
                     console.log('请求FIND_SUB_COMPANY_LIST：', res.data.data)
                     if (res.data.code === 200) {
                         if (key!==-1){
@@ -145,7 +145,30 @@
             },
             handleCommand(command) {
                 console.log('handleCommand', command)
-                this.tab =command
+                if (command==2){
+                    ENABLE_CREATE_SUB_COMPANY(this.selectComp.id).then(res => {
+                        console.log('请求ENABLE_CREATE_SUB_COMPANY：', res.data.data)
+                        if (res.data.code === 200) {
+                            if (res.data.data){
+                                console.log('handleCommand if', res.data.data)
+                                this.tab =command
+                            } else {
+                                this.$alert('该公司下无法创建子公司', '提示', {
+                                    confirmButtonText: '确定',
+                                    callback: action => {
+
+                                    }
+                                });
+                            }
+                        }
+
+                    }).catch(err => {
+                        console.log('请求compList：', err)
+                    });
+                } else {
+                    this.tab =command
+                }
+
             },
             handleCreate(data){
                 //创建成功刷新列表，显示新的
@@ -162,7 +185,7 @@
                     id:data
                 }
                 this.expandedKey = data
-                this.getCompList()
+                this.getCompList(data)
             }
         }
     }

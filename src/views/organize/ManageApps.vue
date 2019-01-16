@@ -1,166 +1,151 @@
 <template>
-    <splitpanes watch-slots  @resized="resized($event)" class="default-theme" style="height:100vh">
-        <div class="left-col" :splitpanes-default="leftWidth"  splitpanes-min="18">
-            <el-input v-model="search" @change="filterChange" suffix-icon="el-icon-search"
-                      placeholder="请输入内容"
-                      clearable class="input-with-select">
-            </el-input>
-
-            <el-scrollbar
-                    style="height:90%;min-height: 600px;border-top-width: 1px;border-top-style: solid;border-top-color: rgba(159,167,174,0.6);  ">
-                <el-tree
-                        :data="compList"
-                        node-key="id"
-                        :default-checked-keys="[1]"
-                        @node-click="handleNodeClick"
-                        :filter-node-method="filterNode"
-                        ref="tree"
-                        :expand-on-click-node="true">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
-            <el-dropdown>
-
-            <span style="margin-right: 20px" v-show="selectComp.id===data.id"
-                  class="el-dropdown-link">
-            <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>修改</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-            </el-dropdown-menu>
-            </el-dropdown>
-            </span>
-                </el-tree>
-            </el-scrollbar>
+    <div  class="right-col">
+        <div class="edit-tab">
+            <div class="edit-title">已授权应用</div>
+            <el-button type="primary" icon="el-icon-circle-plus" @click="addApp" style="margin-right: 20px">添加应用
+            </el-button>
         </div>
-        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="40">
-            <div class="edit-tab">
-                <div class="edit-title">已授权应用{{search}}</div>
-                <el-button type="primary" icon="el-icon-circle-plus" style="margin-right: 20px">添加应用
+        <div class="edit-container">
+            <div class="item-row" v-for="item in appData" :key="item.id">
+                <div class="left-item">
+                    <img :src="item.avatar" class="left-img"/>
+                    <div class="left-text">{{item.text}}</div>
+                </div>
+                <el-switch
+                        v-model="item.enable"
+                        :active-value="1"
+                        :inactive-value="0"
+                        @change="changeStatus($event,item)"
+                        active-color="#3BB75E"
+                        inactive-color="#F5222D">
+                </el-switch>
+            </div>
+
+            <div class="row-save">
+                <el-button v-show="appData.length>0" type="primary" @click="updateAppData" class="btn-save">保存
                 </el-button>
             </div>
-            <div class="edit-container">
-                <div class="item-row" v-for="item in appData" :key="item.id">
-                    <div class="left-item">
-                        <img :src="item.avatar" class="left-img"/>
-                        <div class="left-text">{{selectComp.label}}{{item.name}}</div>
-                    </div>
-                    <el-switch
-                            v-model="item.action"
-                            @change="changeStatus($event,item)"
-                            active-color="#ff4949"
-                            inactive-color="#3BB75E">
-                    </el-switch>
-                </div>
-            </div>
+
         </div>
-    </splitpanes>
+    </div>
 </template>
 
 <script>
-    import Splitpanes from 'splitpanes'
-    import 'splitpanes/dist/splitpanes.css'
+    import {mapGetters} from 'vuex'
+    import {
+        FIND_SUB_COMPANY_LIST,
+        FIND_COMPANY_MODULE,
+        ENABLE_COMPANY_APPS
+    } from '~api/organize.js'
+
     export default {
         name: 'ManageApps',
-        components: {
-            Splitpanes
-        },
         data() {
             return {
-                value1: true,
-                search: '',
-                selectComp: {},
-                compList: [],
-                leftWidth:20,
-                rightWidth:80,
-                defaultProps: {
-                    children: 'children',
-                    label: 'label'
-                },
-                appData: [{
-                    id: 1,
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    name: '分析助手1',
-                    action: false,
-                }, {
-                    id: 2,
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    name: '分析助手2',
-                    action: false,
-                }, {
-                    id: 3,
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    name: '分析助手3',
-                    action: false,
-                }, {
-                    id: 4,
-                    avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                    name: '分析助手4',
-                    action: true,
-                },
-                ]
+                company: {},
+                expandedKey:1,
+                preData:[],
+                appData: [],
             }
         },
+        computed: {
+            ...mapGetters(['user', 'messageStore']),
+            loginUserId() {
+                return this.user.user.id;
+            },
+        },
         created(){
-            this.getTreeData()
+            this.getCompList()
         },
         mounted() {
 
         },
         methods: {
-            resized(val){
-              console.log('resized',val)
-                this.leftWidth = val[0].width
-                this.rightWidth = val[1].width
+            getCompList() {
+                FIND_SUB_COMPANY_LIST(this.loginUserId).then(res => {
+                    console.log('请求FIND_SUB_COMPANY_LIST：', res.data.data)
+                    if (res.data.code === 200) {
+                        this.company = res.data.data
+                        this.getAppData(res.data.data.id)
+                    }
+                }).catch(err => {
+                    console.log('请求compList：', err)
+                });
+            },
+            getAppData(compId){
+                FIND_COMPANY_MODULE(compId).then(res => {
+                    console.log('请求FIND_COMPANY_MODULE：', res.data.data)
+                    if (res.data.code === 200) {
+                        this.preData = res.data.data
+                        this.appData =  JSON.parse(JSON.stringify(this.preData)).slice(0)
+                        this.appData.forEach(item=>{
+                            console.log('item.enable'+item.id, item.enable)
+                        })
+                    }
+
+                }).catch(err => {
+                    console.log('请求FIND_COMPANY_MODULE：', err)
+                });
             },
             changeStatus: function ($event, item) {
                 console.log($event);
                 console.log(this.appData);
+                console.log(this.preData);
             },
-
-            handleNodeClick(data) {
-                console.log('handleNodeClick', data);
-                this.selectComp = data
-                console.log('selectComp', this.selectComp);
-            },
-            filterChange() {
-                this.$refs.tree.filter(this.search);
-            },
-            filterNode(value, data) {
-                if (!value) return true;
-                console.log('search', this.search);
-                console.log('filterNode', value);
-                return data.label.indexOf(value) !== -1;
-            },
-            getTreeData() {
-                let oneList = []
-                for (let i = 0; i < 10; i++) {
-                    let oneTemp = {
-                        id: 'i' + i,
-                        label: '1级公司:' + i,
-                        children: []
-                    }
-                    for (let j = 0; j < i; j++) {
-                        let twoTemp = {
-                            id: 'i' + i + 'j' + j,
-                            label: '2级公司:' + 'i' + i + 'j' + j,
-                            children: []
-                        }
-
-                        for (let k = 0; k < j; k++) {
-                            let threeTemp = {
-                                id: 'i' + i + 'j' + j + 'k' + k,
-                                label: '3级公司:' + 'i' + i + 'j' + j + 'k' + k,
-                                children: []
+            updateAppData(){
+                let moduleList=[]
+                console.log('appData：', this.appData)
+                console.log('preData：', this.preData)
+                for (let i=0;i<this.appData.length;i++){
+                    for (let j=0;j<this.preData.length;j++){
+                        if (this.appData[i].id==this.preData[j].id){
+                            if (this.appData[i].enable!=this.preData[i].enable){
+                                let temp = {
+                                    'enable':this.appData[i].enable,
+                                    'moduleId':this.appData[i].id
+                                }
+                                moduleList.push(temp)
                             }
-                            twoTemp.children.push(threeTemp)
                         }
-                        oneTemp.children.push(twoTemp)
                     }
-                    oneList.push(oneTemp)
                 }
-                this.compList = oneList
-                console.log("list",oneList)
+                if (moduleList.length>0){
+                    let params={
+                        "companyId": this.company.id,
+                        "moduleList": moduleList,
+                        "userId": this.loginUserId
+                    }
+                    console.log('请求ENABLE_COMPANY_APPS：params',params)
+                    ENABLE_COMPANY_APPS(params).then(res => {
+                        console.log('请求ENABLE_COMPANY_APPS：', res.data)
+                        if (res.data.code === 200) {
+                            this.getAppData(this.company.id)
+                            this.$message({
+                                showClose: true,
+                                message: res.data.msg,
+                                type: 'success'
+                            });
+                        }
+                    }).catch(err => {
+                        console.log('请求FIND_COMPANY_MODULE：', err)
+                    });
+                }else {
+                    this.$message({
+                        showClose: true,
+                        message: '未进行修改',
+                        type: 'warning'
+                    });
+                }
+
+
+
+            },
+            addApp(){
+                this.$message({
+                    showClose: true,
+                    message: '暂未开放',
+                    type: 'info'
+                });
             }
         }
     }
@@ -173,183 +158,91 @@
         padding-left: 0 !important;
         height: 100vh;
     }
-
-    /deep/ .el-tree-node__expand-icon {
-        font-size: 16px;
-    }
-
-    /deep/ .el-tree-node__content {
-        padding: 30px 0 30px 0;
-        background: rgba(255, 255, 255, 1);
-
-        .is-current {
-            background: rgba(24, 144, 255, 1);
-        }
-
-        &:hover {
-            background: rgba(24, 144, 255, 0.2);
-        }
-    }
-
-    /deep/ .el-tree-node.is-current.is-focusable {
-        > .el-tree-node__content {
-            background: rgba(24, 144, 255, 1);
-        }
-    }
-
-
-    .default-theme {
-        font-family: $fontFamilyMain;
-        height: 100%;
+    .right-col {
         width: 100%;
+        background: rgba(240, 242, 245, 1);
+        height: 100%;
 
-        &:after {
-            $afterHeight: 20px;
-            position: absolute;
-            display: block;
-            content: '';
-            height: $afterHeight;
-            width: 100%;
-            background: $colorTheme;
-            top: -$afterHeight;
-            z-index: 1;
-            box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
+        .edit-tab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 0px 20px;
 
+            .edit-title {
+                font-size: 22px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: rgba(102, 102, 102, 1);
+                opacity: 1;
+            }
         }
 
-        .left-col {
-            height: 100%;
+        .edit-container {
+            margin: 20px 40px 0px 20px;
+            padding: 20px;
+            min-width: 600px;
+            min-height: 400px;
             background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 0px 20px rgba(0, 0, 0, 0.1);
             opacity: 1;
+            border-radius: 20px;
 
-            /deep/ .el-input__inner {
-                height: 30px;
-                line-height: 30px;
-                background: rgba(218, 217, 216, 0.6);
-                border: 0px;
-                color: rgba(102, 102, 102, 0.80);
-            }
-
-            /deep/ .el-input__icon {
-                height: 100%;
-                width: 25px;
-                text-align: center;
-                -webkit-transition: all .3s;
-                transition: all .3s;
-                line-height: 0px;
-            }
-
-            .input-with-select {
-                width: 260px;
-                height: 30px;
-                margin: 25px 20px 25px 20px;
-                background: rgba(218, 217, 216, 0.6);
+            .table-title {
+                background: rgba(221, 235, 246, 1);
+                box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
                 opacity: 1;
-                border-radius: 6px;
+                border-radius: 20px 20px 0px 0px;
             }
 
-            .custom-tree-node {
-                flex: 1;
-                width: 300px;
+            .item-row {
+                padding: 6px;
                 display: flex;
                 align-items: center;
-                position: relative;
-                right: 20px;
+                border-bottom-color: rgba(165, 171, 177, 0.4);
+                border-bottom-width: 1px;
+                border-bottom-style: solid;
+                padding: 10px 0px 10px 0px;
                 justify-content: space-between;
-                padding-right: 8px;
-
-                .node-text {
-                    width: 360px;
-                    overflow: hidden;
-                    margin-left: 20px;
-                    text-overflow: ellipsis;
-                    color: rgba(102, 102, 102, 0.80);
-                    line-height: 30px;
-                    white-space: nowrap;
-                }
-
-                .node-text.active {
-                    color: rgba(255, 255, 255, 1);
-                }
-            }
 
 
-            .el-icon-more {
-                color: white;
-            }
-        }
-
-        .right-col {
-            width: 100%;
-            background: rgba(240, 242, 245, 1);
-            height: 100%;
-
-            .edit-tab {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 20px 20px 0px 20px;
-
-                .edit-title {
-                    font-size: 22px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    color: rgba(102, 102, 102, 1);
-                    opacity: 1;
-                }
-            }
-
-            .edit-container {
-                margin: 20px 40px 0px 20px;
-                padding: 20px;
-                min-width: 600px;
-                min-height: 400px;
-                background: rgba(255, 255, 255, 1);
-                opacity: 1;
-                border-radius: 20px;
-
-                .table-title {
-                    background: rgba(221, 235, 246, 1);
-                    box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
-                    opacity: 1;
-                    border-radius: 20px 20px 0px 0px;
-                }
-
-                .item-row {
-                    padding: 6px;
+                .left-item {
                     display: flex;
                     align-items: center;
-                    border-bottom-color: rgba(165, 171, 177, 0.4);
-                    border-bottom-width: 1px;
-                    border-bottom-style: solid;
-                    padding: 10px 0px 10px 0px;
-                    justify-content: space-between;
+                    justify-content: start;
 
+                    .left-img {
+                        margin-left: 20px;
+                        height: 40px;
+                        border-radius: 50%;
+                        width: 40px;
+                        margin-right: 20px;
+                    }
 
-                    .left-item {
-                        display: flex;
-                        align-items: center;
-                        justify-content: start;
-
-                        .left-img {
-                            margin-left: 20px;
-                            height: 40px;
-                            border-radius: 50%;
-                            width: 40px;
-                            margin-right: 20px;
-                        }
-
-                        .left-text {
-                            font-size: 14px;
-                            font-family: Microsoft YaHei;
-                            font-weight: 400;
-                            color: rgba(102, 102, 102, 1);
-                            opacity: 1;
-                        }
+                    .left-text {
+                        font-size: 14px;
+                        font-family: Microsoft YaHei;
+                        font-weight: 400;
+                        color: rgba(102, 102, 102, 1);
+                        opacity: 1;
                     }
                 }
             }
+            .row-save{
+                margin-top: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                .btn-save{
+                    width:140px;
+                    height:50px;
+                    background:rgba(24,144,255,1);
+                    box-shadow:0px 3px 6px rgba(64,65,65,0.4);
+                    opacity:1;
+                    border-radius:12px;
+                }
+            }
+
         }
     }
 </style>
