@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div>
     <el-button-group class="toolbar">
       <el-button
@@ -11,45 +10,22 @@
       >{{btn.text}}</el-button>
     </el-button-group>
     <el-table
-      :row-style="showRow"
-      v-bind="$attrs"
-      class="content"
-      :data.sync="formatData"
+      :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
       border
-      stripe
-      height="item.height || rowClass"
+      :stripe="true"
+      :height="item.height || heights-110"
       :cell-style="cellStyle"
+      :row-style="showRow"
+      class="content"
+      style="width: 100%"
       @row-click="onRowClick"
+      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"></bi-table-column-tree>
       </el-tag>
     </el-table>
   </div>
-=======
-<div>
-  <el-button-group  class="toolbar" >
-    <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
-  </el-button-group>
-  <el-table
-    :data.sync="(item.config.rows && item.config.rows.length > 0)?item.config.rows : item.datas"
-    border
-    :stripe="true"
-    :height="item.height || heights-110"
-    :cell-style="cellStyle"
-    :row-style="showRow"
-    class="content"
-    style="width: 100%"
-    @row-click="onRowClick"
-    :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
-  >
-    <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-      <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden">
-      </bi-table-column-tree>
-    </el-tag>
-  </el-table>
-</div>  
->>>>>>> 4ce39e2f8d5e9e551ac77e8127df734b50733d71
 </template>
  
 <script>

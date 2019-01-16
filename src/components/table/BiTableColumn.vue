@@ -26,19 +26,7 @@
         <img v-if="col.icon" :src="col.icon" alt>
         <img v-else src="@/assets/green/list_menu.svg" alt class="img">
         <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
-        <el-cascader :options="options" @change="columnDropDownClick"></el-cascader>
-        <!-- <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="dilogShow"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-        </el-dialog>-->
+        <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
   </el-table-column>
@@ -152,8 +140,8 @@ export default {
   data() {
     return {
       clickRow: {},
-      clickRowParams: {},
-      options: []
+      clickRowParams: {}
+      //options: []
     };
   },
   computed: {
@@ -166,8 +154,8 @@ export default {
     }
   },
   created() {
-    this.options = this.tableData.config.columns[0].menu.list;
-    debugger;
+    // this.options = this.tableData.config.columns[0].menu.list;
+    //debugger;
     console.log(this.tableData);
 
     //this.$set(this, "tableData", null);
