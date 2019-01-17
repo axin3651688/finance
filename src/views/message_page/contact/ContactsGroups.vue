@@ -8,12 +8,14 @@
               :key="group.groupId"
               @click="getInfo(group.groupId)">
             <figure>
-              <div class="img-box">
-                <img :src="group.avatar" v-avatar="group.text"/>
+              <div>
+                <div class="img-box">
+                  <img :src="group.avatar" v-avatar="group.text"/>
+                </div>
               </div>
               <div class="info">
                 <span class="info-text">{{group.text}}</span>
-                <span class="info-count">（{{group.count}}人）</span>
+                <!--<span class="info-count">（{{group.count}}人）</span>-->
               </div>
             </figure>
             <i class="arrow el-icon-arrow-right"></i>
@@ -273,11 +275,22 @@ export default {
     ul.sub-item {
       li {
         position: relative;
+        box-sizing: border-box;
         height: 60px;
-        padding: 0 30px 0 25px;
-        border-left: 5px solid transparent;
+        padding: 0 20px 0 10px;
         cursor: pointer;
+        border-bottom: 1px solid $colorBorderLayoutLight;
         transition: all .3s;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 4px;
+          transition: all .3s;
+        }
 
         &:hover {
           box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
@@ -293,14 +306,15 @@ export default {
       }
 
       li.active {
-        border-left-color: $colorTheme;
+        &:after {
+          background-color: $colorTheme;
+        }
       }
 
       figure {
         display: flex;
         align-items: center;
         height: 100%;
-        border-bottom: 1px solid $colorBorder2;
 
         .img-box {
           width: 40px;
@@ -347,10 +361,9 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: $colorBgPageGray;
 
     .panel-right-top {
-      padding: 50px 40px;
+      padding: 0 40px 40px;
 
       .top-wrap {
         position: relative;

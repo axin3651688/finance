@@ -1,29 +1,41 @@
 @charset "UTF-8";
 // 姜海斌抽离出来的变量 start ===============================================>>
 // 所有颜色相关的 ***********************
-$colorTheme: #1890ff;                     // 页面整体的主题色
-$colorBgPageGray: rgba(240,240,240,1);    // 页面灰色背景
-$colorBgBtnGray: #A5ACAA;                 // 灰色按钮
-$colorBgSiderBar: #001529;                // 消息左边固定边栏背景色
-$colorBgInput: rgba(218,217,216,1);;      // 消息左边固定边栏背景色
-$colorShadowGreen: rgba(8, 69, 81, 0.1);  // 绿色阴影
+$colorTheme: #1890ff;                         // 页面整体的主题色
+$colorThemePrimary: rgba(219,238,255,0.53);   // 页面整体的主题色
+$colorBgPageGray: rgba(240,240,240,1);        // 页面灰色背景
+$colorBgBtnGray: #A5ACAA;                     // 灰色按钮
+$colorBgSideBar: #001529;                    // 消息左边固定边栏背景色
+$colorShadowGreen: rgba(8, 69, 81, 0.1);      // 绿色阴影
 
 $colorText1: #000000;                     // 主要文字颜色，1级黑
 $colorText2: rgba(0, 0, 0, 0.7);          // 常规文字颜色，2级黑
 $colorText3: rgba(0, 0, 0, 0.6);          // 常规文字颜色，3级黑
 $colorText4: rgba(0, 0, 0, 0.5);          // 常规文字颜色，4级黑
-$colorText5: rgba(0, 0, 0, 0.4);          // 常规文字颜色，5级黑
+$colorText5: rgba(102,102,102,0.4);          // 常规文字颜色，5级黑
+$colorTextSessionTitle: rgba(102,102,102,1);    // session 栏，标题颜色
+$colorTextSessionContent: rgba(102,102,102,.8);    // session 栏，内容颜色
+$colorTextChatContent: rgba(24,50,112,1); // 聊天文字颜色
+
+$colorTextBlack2: rgba(0, 0, 0, 0.2);
+$colorTextBlack4: rgba(0, 0, 0, 0.4);
+$colorTextBlack6: rgba(0, 0, 0, 0.6);
+$colorTextBlack8: rgba(0, 0, 0, 0.8);
+$colorTextBlack0: rgba(0, 0, 0, 1);
+
 
 $colorBorder1: rgba(102,102,102,0.2);     // 边框颜色，1级黑
 $colorBorder2: #e5e5e5;                   // 边框颜色，2级黑
+$colorBorderLayoutDark: rgba(112,112,112,0.1);; // 整体布局分割区域用的边框
+$colorBorderLayoutLight: rgba(153,153,153,0.1); // 整体布局分割区域用的边框
 
 // 所有字体相关 ***********************
 $fontFamilyMain: Microsoft YaHei;         // 图题字体，页面中最主要的字体
 
 // 所有尺寸（height width）相关 *************
-$sizeSiderBarWidth: 80px;       // 消息左边固定边栏宽度
-$sizeTopBarHeight: 76px;        // 消息顶部栏高度
-$sizeNavBarWidth: 320px;        // 右边窗口左边导航栏宽度
+$sizeSideBarWidth: 60px;       // 消息左边固定边栏宽度
+$sizeTopBarHeight: 60px;        // 消息顶部栏高度
+$sizeNavBarWidth: 220px;        // 右边窗口左边导航栏宽度
 $sizeInputHeight: 30px;         // input框高度
 
 // 姜海斌抽离出来的变量 end <<=================================================
