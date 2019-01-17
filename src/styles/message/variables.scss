@@ -5,7 +5,7 @@ $colorTheme: #1890ff;                         // 页面整体的主题色
 $colorThemePrimary: rgba(219,238,255,0.53);   // 页面整体的主题色
 $colorBgPageGray: rgba(240,240,240,1);        // 页面灰色背景
 $colorBgBtnGray: #A5ACAA;                     // 灰色按钮
-$colorBgSiderBar: #001529;                    // 消息左边固定边栏背景色
+$colorBgSideBar: #001529;                    // 消息左边固定边栏背景色
 $colorShadowGreen: rgba(8, 69, 81, 0.1);      // 绿色阴影
 
 $colorText1: #000000;                     // 主要文字颜色，1级黑
@@ -18,6 +18,8 @@ $colorTextSessionContent: rgba(102,102,102,.8);    // session 栏，内容颜色
 $colorTextChatContent: rgba(24,50,112,1); // 聊天文字颜色
 
 $colorTextBlack2: rgba(0, 0, 0, 0.2);
+$colorTextBlack4: rgba(0, 0, 0, 0.4);
+$colorTextBlack6: rgba(0, 0, 0, 0.6);
 $colorTextBlack8: rgba(0, 0, 0, 0.8);
 $colorTextBlack0: rgba(0, 0, 0, 1);
 

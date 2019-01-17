@@ -218,14 +218,12 @@ export default {
       li {
         position: relative;
         height: 60px;
-        padding: 0 30px 0 25px;
-        border-left: 5px solid transparent;
+        padding: 0 15px 0 10px;
         cursor: pointer;
         transition: all .3s;
 
         &:hover {
           box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-          border-right-color: $colorTheme;
         }
 
         .arrow {
@@ -288,8 +286,7 @@ export default {
 
   .panel-right {
     flex: 1;
-    padding: 60px 30px 0 30px;
-    background: $colorBgPageGray;
+    padding: 0 30px;
 
     .panel-right-top {
       position: relative;

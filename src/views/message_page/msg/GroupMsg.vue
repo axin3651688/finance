@@ -59,9 +59,6 @@
       <el-scrollbar style="height: 100%" ref="chatWindow">
         <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
-
-      <!--底部阴影-->
-      <div class="inset-shadow"></div>
     </div>
 
     <!--聊天编辑窗口-->
@@ -175,7 +172,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import MessageItem from '@c/message/message_item/MessageItem.vue'
-import emotionSprites from '@a/message/data/emotion_sprites.json';
+import emotionSprites from '@a/message/data/emotion_sprites.json'
 import {
   findGroupMsg,
   GROUP_INFO,
@@ -184,7 +181,7 @@ import {
   EDIT_GROUP,
   DISSOLU_GROUP,
   UPLOAD_FILE
-} from '~api/message.js';
+} from '~api/message.js'
 import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
 
 export default {
@@ -214,10 +211,10 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
     },
     groupId() {
-      debugger;
+      debugger
       return this.messageStore.sessionActiveItem.id
     },
     groupOwnerId() {
@@ -234,21 +231,21 @@ export default {
     //监听服务器推送的消息
     newServerMsg(val) {
       // 如果不是群消息 或 接收群id不是当前窗口,不往下执行
-      if (val.code !== 1101 || val.data.receiverId !== this.groupId) return false;
-      debugger;
-      console.log('监听到服务器推送：', val);
-      let item = val.data;
-      item['miniType'] = val.code;
-      this.groupMsgList.push(item);
+      if (val.code !== 1101 || val.data.receiverId !== this.groupId) return false
+      debugger
+      console.log('监听到服务器推送：', val)
+      let item = val.data
+      item['miniType'] = val.code
+      this.groupMsgList.push(item)
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
-        this.chatWindowScrollToBottom();
-      });
+        this.chatWindowScrollToBottom()
+      })
     },
     serverAck(val) {
-      console.log('服务器ACK：', val);
-      debugger;
-      socket.send(JSON.stringify(val));
-      debugger;
+      console.log('服务器ACK：', val)
+      debugger
+      socket.send(JSON.stringify(val))
+      debugger
     }
   },
   methods: {
@@ -256,59 +253,59 @@ export default {
 
     // 上传群头像文件
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
-      console.log(file);
-      let fd = new FormData();
-      fd.append('file', file);
-      fd.append('userId', this.loginUserId);
-      fd.append('size', file.size);
-      this.imgfd = fd;
-      this.submitUpload(fd);
+      console.log(file)
+      let fd = new FormData()
+      fd.append('file', file)
+      fd.append('userId', this.loginUserId)
+      fd.append('size', file.size)
+      this.imgfd = fd
+      this.submitUpload(fd)
       return true
     },
     submitUpload(fd) {
-      let _this = this;
+      let _this = this
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
-          console.log('上传群头像res', res);
+          console.log('上传群头像res', res)
           if (res.data.code === 200) {
             _this.hdUrl = res.data.data.hdUrl // 传递返回的图片地址
           }
-        });
+        })
       }
     },
 
     // 群聊天文件上传
     beforeFileUpload(file) {
-      console.log(file);
-      let fd = new FormData();
-      fd.append('file', file);
-      fd.append('userId', this.loginUserId);
-      fd.append('size', file.size);
-      this.submitFileUpload(fd);
+      console.log(file)
+      let fd = new FormData()
+      fd.append('file', file)
+      fd.append('userId', this.loginUserId)
+      fd.append('size', file.size)
+      this.submitFileUpload(fd)
       return true
     },
     submitFileUpload(fd) {
-      let _this = this;
+      let _this = this
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
-          console.log('上传群头像res', res);
+          console.log('上传群头像res', res)
           if (res.data.code === 200) {
-            _this.fileData = res.data.data;
+            _this.fileData = res.data.data
             this.handleSendMsg(res.data.data)
           }
-        });
+        })
       }
     },
 
     // 群设置
     clickEditGroup() {
-      let newGroupName = this.$refs.groupName.value;
+      let newGroupName = this.$refs.groupName.value
       if (newGroupName === this.groupInfo.text && !this.imgfd) {
-        this.showGroupSettingDialog = false;
-        return; // 如果没有图片和群名字都没修改,则不往下执行
+        this.showGroupSettingDialog = false
+        return // 如果没有图片和群名字都没修改,则不往下执行
       }
       let params = {
         // note: '群描述',
@@ -317,11 +314,11 @@ export default {
         text: newGroupName,
         type: 0, // 1可以被搜索到
         userId: this.loginUserId
-      };
-      if (this.hdUrl) params['avatar'] = this.hdUrl; // 如果上传了群头像才设置头像
-      console.log('params', params);
+      }
+      if (this.hdUrl) params['avatar'] = this.hdUrl // 如果上传了群头像才设置头像
+      console.log('params', params)
       EDIT_GROUP(params).then(res => {
-        console.log('设置群资料', res.data.data);
+        console.log('设置群资料', res.data.data)
         if (res.data.code === 200) {
           // debugger
         }
@@ -333,18 +330,18 @@ export default {
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框
     addFaceToInput(face) {
-      this.sendText += face;
-      this.$refs.textarea.focus();
+      this.sendText += face
+      this.$refs.textarea.focus()
     },
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMsg(fileData) {
-      debugger;
-      console.log('要发送的内容是：', this.sendText);
+      debugger
+      console.log('要发送的内容是：', this.sendText)
       let pushData = {
         type: 1,
         data: this.sendText
-      };
+      }
       let sendData = {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
@@ -356,36 +353,36 @@ export default {
           id: 'cnbift' + new Date().getTime() + new Date().getTime(),
           sendTime: new Date().getTime(),
         },
-      };
+      }
 
       if (fileData) { // 如果是发文件，设置文件type，和文件的data
-        sendData.data.content = fileData.text;
-        sendData.data.fileId = fileData.id;
+        sendData.data.content = fileData.text
+        sendData.data.fileId = fileData.id
         for (let item of FILE_TYPE) {
-          debugger;
-          console.log(item);
+          debugger
+          console.log(item)
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
-            sendData.data.type = item.type;
-            pushData.type = item.type;
-            pushData.data = fileData;
+            sendData.data.type = item.type
+            pushData.type = item.type
+            pushData.data = fileData
             break
           } else {
-            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+            sendData.data.type = 3 // 暂时处理，没有匹配到都当文件处理
           }
         }
       }
 
-      console.log('要发送的内容是：', sendData);
+      console.log('要发送的内容是：', sendData)
       if (!sendData.data.content) {
-        this.sendText = '';
+        this.sendText = ''
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
           showClose: true
-        });
-        return;
+        })
+        return
       }
-      socket.deliver(sendData);
+      socket.deliver(sendData)
       // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
@@ -397,29 +394,29 @@ export default {
         name: this.user.user.trueName,
         sendTime: new Date().getTime(),
         type: 1
-      };
+      }
       if (pushData.type === 1) {
-        data.content = pushData.data;
+        data.content = pushData.data
       } else {
-        data.content = pushData.data.text;
-        data.file = pushData.data;
+        data.content = pushData.data.text
+        data.file = pushData.data
         data.type = pushData.type
       }
 
-      console.log('要添加到群聊天窗口的数据是：', data);
-      debugger;
-      this.groupMsgList.push(data);
+      console.log('要添加到群聊天窗口的数据是：', data)
+      debugger
+      this.groupMsgList.push(data)
       this.$nextTick(() => {
-        this.chatWindowScrollToBottom();
-      });
+        this.chatWindowScrollToBottom()
+      })
     },
 
     // 把聊天窗口滚动到最底部
     chatWindowScrollToBottom() {
       // debugger;
-      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
       // console.log('找滚动窗口：', chatWindow);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+      chatWindow.scrollTop = chatWindow.scrollHeight
     },
 
     // 验证当前登录用户是不是群管理员，如果是群管理员则解散群组
@@ -431,13 +428,13 @@ export default {
     handleCommand(command) {
       switch (command) {
         case 'groupSetting': {
-          this.showGroupSettingDialog = true;
+          this.showGroupSettingDialog = true
           break
         }
         case 'groupQuit': {
           if (this.isGroupOwner()) { // 如果是群管理员不能直接退出
             // debugger;
-            let msg = `您是该群 ${this.groupInfo.text} 的管理员，直接退出会解散该群组！\n是否继续?`;
+            let msg = `您是该群 ${this.groupInfo.text} 的管理员，直接退出会解散该群组！\n是否继续?`
             this.$confirm(msg, '警告', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -448,11 +445,11 @@ export default {
               this.$message({
                 type: 'info',
                 message: '已取消退出'
-              });
-            });
+              })
+            })
           } else {
             // debugger;
-            let msg = `是否退出群组：${this.groupInfo.text}`;
+            let msg = `是否退出群组：${this.groupInfo.text}`
             this.$confirm(msg, '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -463,8 +460,8 @@ export default {
               this.$message({
                 type: 'info',
                 message: '已取消退出'
-              });
-            });
+              })
+            })
           }
           break
         }
@@ -473,14 +470,14 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      debugger;
-      if (!this.groupId) return;
+      debugger
+      if (!this.groupId) return
       GROUP_INFO(this.groupId).then(res => {
-        console.log('群id查询群信息:', res.data.data);
+        console.log('群id查询群信息:', res.data.data)
         if (res.data.code === 200) {
-          this.groupInfo = res.data.data.info;
-          this.groupMembers = res.data.data.users;
-          this.ActionSetMessageStore({groupInfo: res.data.data});
+          this.groupInfo = res.data.data.info
+          this.groupMembers = res.data.data.users
+          this.ActionSetMessageStore({groupInfo: res.data.data})
         }
       }).catch(err => {
         console.log('请求message：', err)
@@ -494,16 +491,16 @@ export default {
         groupId: this.groupId,
         userId: this.loginUserId,
         size: 20
-      };
+      }
       findGroupMsg(data).then(res => {
         // debugger;
-        console.log('群消息列表：', res.data.data);
+        console.log('群消息列表：', res.data.data)
         if (res.data.code === 200) {
-          this.groupMsgList = res.data.data.data.reverse();
+          this.groupMsgList = res.data.data.data.reverse()
           // 消息拿到后 把窗口内容滚到到底部
           this.$nextTick(() => {
             this.chatWindowScrollToBottom()
-          });
+          })
         }
       }).catch(err => {
         console.log('群消息', err)
@@ -515,9 +512,9 @@ export default {
       let params = {
         userId: this.loginUserId,
         groupId: this.groupId
-      };
+      }
       QUIT_GROUP(params).then(res => {
-        console.log('退出群组res:', res);
+        console.log('退出群组res:', res)
         if (res.data.code === 200) {
           this.$message({
             type: 'success',
@@ -539,9 +536,9 @@ export default {
       let params = {
         senderId: this.loginUserId,
         groupId: this.groupId
-      };
+      }
       DISSOLU_GROUP(params).then(res => {
-        console.log('解散群聊：', res.data.data);
+        console.log('解散群聊：', res.data.data)
         // debugger;
         if (res.data.code === 200) {
           this.$message({
@@ -564,7 +561,7 @@ export default {
     // 当点击的不是表情，则隐藏表情弹框
     hideFaceIcon(e) {
       // debugger;
-      let elem = e.target || e.srcElement;
+      let elem = e.target || e.srcElement
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'face-icon') {
           return
@@ -575,9 +572,9 @@ export default {
     }
   },
   mounted() {
-    console.log('文件类型：', FILE_TYPE);
-    this.getInfo();
-    this.getGroupMsgList();
+    console.log('文件类型：', FILE_TYPE)
+    this.getInfo()
+    this.getGroupMsgList()
 
     // 当点击的不是表情，则隐藏表情弹框
     document.addEventListener('click', this.hideFaceIcon)
@@ -689,18 +686,6 @@ export default {
       padding-left: 40px;
       overflow: hidden;
 
-      .inset-shadow {
-        $shadowHeight: 20px;
-        width: 100%;
-        height: $shadowHeight;
-        position: absolute;
-        background: #eee;
-        bottom: -$shadowHeight;
-        left: 0;
-        right: 0;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
-      }
-
       /deep/ .el-scrollbar {
 
         .el-scrollbar__thumb {
@@ -715,12 +700,11 @@ export default {
     }
 
     .bottom {
-      /*height: 260px;*/
       box-sizing: border-box;
-      /*height: 240px;*/
       width: 100%;
       padding: 18px 40px 20px;
       background: #ffffff;
+      border-top: 1px solid $colorBorderLayoutLight;
 
       .chat-tool {
         position: relative;
@@ -763,8 +747,8 @@ export default {
           box-sizing: border-box;
           min-height: 100px;
           padding: 10px 20px;
-          color: rgba(0, 0, 0, 0.40);
-          background: rgba(0, 0, 0, 0.06);
+          color: $colorTextBlack6;
+          background: $colorThemePrimary;
           border-radius: 12px;
           width: 100%;
           border: none;
@@ -772,9 +756,13 @@ export default {
           resize: none;
           text-align: left;
           font-family: $fontFamilyMain;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
           line-height: 20px;
+
+          &::placeholder {
+            color: $colorTextBlack2;
+          }
         }
       }
     }

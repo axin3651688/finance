@@ -436,7 +436,7 @@ export default {
       width: 100%;
       padding: 18px 40px 20px;
       background: #ffffff;
-      border-top: 1px solid $colorBorder1;
+      border-top: 1px solid $colorBorderLayoutLight;
 
       .chat-tool {
         position: relative;
@@ -488,8 +488,8 @@ export default {
           box-sizing: border-box;
           min-height: 100px;
           padding: 10px 20px;
-          color: rgba(0, 0, 0, 0.40);
-          background: rgba(0, 0, 0, 0.06);
+          color: $colorTextBlack6;
+          background: $colorThemePrimary;
           border-radius: 12px;
           width: 100%;
           border: none;
@@ -497,9 +497,12 @@ export default {
           resize: none;
           text-align: left;
           font-family: $fontFamilyMain;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
           line-height: 20px;
+          &::placeholder{
+            color: $colorTextBlack2;
+          }
         }
       }
 

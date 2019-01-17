@@ -2,7 +2,7 @@
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
 
     <div class="avatar">
-      <div class="img-box">
+      <div class="img-box" :title="data.name">
         <img :src="data.avatar" v-avatar="data.name">
       </div>
     </div>
@@ -168,6 +168,7 @@ export default {
     .time {
       color: $colorTextBlack2;
       line-height: 44px;
+      font-size: 14px;
       min-width: 56px;
       text-align: center;
     }

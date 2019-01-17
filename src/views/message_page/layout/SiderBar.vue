@@ -188,7 +188,7 @@ export default {
   .SiderBar {
     position: relative;
     box-sizing: border-box;
-    background: $colorBgSiderBar;
+    background: $colorBgSideBar;
     width: $sizeSideBarWidth;
     height: 100%;
     color: #ffffff;
@@ -273,7 +273,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: $colorBgSiderBar;
+        background: $colorBgSideBar;
         transition: all .2s;
 
         .img-unselected {

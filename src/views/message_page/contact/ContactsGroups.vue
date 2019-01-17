@@ -347,10 +347,9 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: $colorBgPageGray;
 
     .panel-right-top {
-      padding: 50px 40px;
+      padding: 0 40px 40px;
 
       .top-wrap {
         position: relative;
