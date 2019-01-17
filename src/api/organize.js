@@ -162,6 +162,44 @@ export function FIND_ROLE_ACCREDIT_FUNCTION(roleId) {
         }
     })
 }
+// 添加角色 SAVE_ROLE
+export function SAVE_ROLE(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_role',
+        method: 'post',
+        data: data
+    })
+}
+//编辑角色
+export function UPDATE_ROLE(data) {
+    // debugger
+    return request({
+        url: '/api/api/update_role',
+        method: 'put',
+        data: data
+    })
+}
+//删除角色
+export function DEL_ROLE(data) {
+    // debugger
+    return request({
+        url: '/api/api/del_role',
+        method: 'delete',
+        data: data
+    })
+}
+//保存角色的功能权限
+export function SAVE_ROLE_ACCREDIT_FUNCTION(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_role_accredit_function',
+        method: 'post',
+        data: data
+    })
+}
+
+
 
 
 

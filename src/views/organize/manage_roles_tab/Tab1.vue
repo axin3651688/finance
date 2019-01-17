@@ -50,7 +50,6 @@
         },
         methods: {
             handleCheckAllChange(val) {
-
                 this.checkedList = val ? this.rightList : [];
                 this.isIndeterminate = false;
                 console.log('handleCheckAllChange', this.checkedList)
@@ -143,6 +142,10 @@
 
     .main {
         padding: 30px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        opacity: 1;
+        border-radius:  0 0 20px 20px;
 
         .row-save {
             margin-top: 20px;

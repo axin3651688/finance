@@ -48,8 +48,8 @@
                     </el-form>
                     <span slot="title" class="dialog-title">修改角色</span>
                     <span slot="footer" class="dialog-footer">
-                        <el-button @click="updateDialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="updateDialogVisible = false">保存</el-button>
+                        <el-button @click="cancelUpdate">取消</el-button>
+                        <el-button type="primary" @click="updateRole">保存</el-button>
                         </span>
                 </el-dialog>
             </el-scrollbar>
@@ -74,12 +74,12 @@
 
                 <span slot="title" class="dialog-title">创建角色</span>
                 <span slot="footer" class="dialog-footer">
-                        <el-button @click="createDialogVisible = false">保存，并返回</el-button>
-                        <el-button type="primary" @click="createDialogVisible = false">保存，并继续创建</el-button>
+                        <el-button @click="save('back')">保存，并返回</el-button>
+                        <el-button type="primary" @click="save('create')">保存，并继续创建</el-button>
                       </span>
             </el-dialog>
         </div>
-        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="60">
+        <div class="right-col":splitpanes-default="rightWidth" splitpanes-min="60">
             <div class="el-main" v-if="roleList.length>0">
                 <div class="tab-main">
                     <div class="tab-title">
@@ -106,7 +106,7 @@
                 </div>
 
 
-                <div>
+                <div class="foot-main">
                     <tab1 v-if="activeBtn === 1" :selectRole="selectRole"></tab1>
                     <tab2 v-else-if="activeBtn === 2" :selectRole="selectRole"></tab2>
                     <tab3 v-else-if="activeBtn === 3" :selectRole="selectRole"></tab3>
@@ -122,7 +122,8 @@
 </template>
 
 <script>
-    import {ROLE_LIST} from '~api/organize.js';
+    import {mapGetters} from 'vuex'
+    import {ROLE_LIST, SAVE_ROLE, UPDATE_ROLE,DEL_ROLE} from '~api/organize.js';
     import Splitpanes from 'splitpanes'
     import 'splitpanes/dist/splitpanes.css'
 
@@ -134,6 +135,12 @@
             Tab3: () => import('./manage_roles_tab/Tab3'),
             Tab4: () => import('./manage_roles_tab/Tab4'),
             Splitpanes,
+        },
+        computed: {
+            ...mapGetters(['user', 'messageStore']),
+            loginUserId() {
+                return this.user.user.id;
+            },
         },
         data() {
             return {
@@ -176,18 +183,109 @@
                 } else if (command === 'delete') {
                     this.$confirm('确定删除角色:' + this.selectRole.text + '？')
                         .then(_ => {
-                            done();
+                            this.deleteRole()
                         })
                         .catch(_ => {
                         });
                 }
             },
-            getRoleList() {
-                ROLE_LIST(225, 1).then(res => {
+            getRoleList(selectedId) {
+                ROLE_LIST(this.loginUserId, this.user.company.id).then(res => {
                     this.roleList = res.data.data
+                    if (selectedId) {
+                        if (this.roleList.length > 0) {
+                            this.roleList.forEach(role => {
+                                if (role.id === selectedId) {
+                                    this.selectRole = role
+                                }
+                            })
+                        }
+                    } else {
+                        if (this.roleList.length > 0) this.selectRole = this.roleList[0]
+                    }
                     console.log('请求roleList：', res.data.data)
                 }).catch(err => {
                     console.log('请求message：', err)
+                });
+            },
+            save(val) {
+                if (!this.formCreate.name || !this.formCreate.note) {
+                    this.$message({
+                        showClose: true,
+                        message: '请填写完整信息',
+                        type: 'warning'
+                    });
+                    return
+                }
+                let params = {
+                    "companyId": this.user.company.id,
+                    "note": this.formCreate.note,
+                    "text": this.formCreate.name,
+                    "userId": this.loginUserId
+                }
+                SAVE_ROLE(params).then(res => {
+                    console.log('请求SAVE_ROLE：', res.data)
+                    if (val==='back'){
+                        this.createDialogVisible = false
+                    }
+                    if (res.data.code === 200) {
+                        this.$message({
+                            showClose: true,
+                            message: res.data.msg,
+                            type: 'success'
+                        });
+                        this.getRoleList(res.data.data)
+                    }
+                    this.formCreate.note = ''
+                    this.formCreate.name = ''
+                }).catch(err => {
+                    console.log('请求SAVE_ROLE：', err)
+                });
+            },
+            cancelUpdate() {
+                this.formUpdate.note = ''
+                this.formUpdate.name = ''
+                this.updateDialogVisible = false
+            },
+            updateRole() {
+                let params = {
+                    "note": this.formUpdate.note,
+                    "roleId": this.selectRole.id,
+                    "text": this.formUpdate.name,
+                    "userId": this.loginUserId
+                }
+                UPDATE_ROLE(params).then(res => {
+                    console.log('请求UPDATE_ROLE：', res.data)
+                    if (res.data.code === 200) {
+                        this.updateDialogVisible = false
+                        this.$message({
+                            showClose: true,
+                            message: res.data.msg,
+                            type: 'success'
+                        });
+                        this.getRoleList(params.roleId)
+                    }
+                }).catch(err => {
+                    console.log('请求UPDATE_ROLE：', err)
+                });
+            },
+            deleteRole(){
+                let params = {
+                    "roleId": this.selectRole.id,
+                    "userId": this.loginUserId
+                }
+                DEL_ROLE(params).then(res => {
+                    console.log('请求DEL_ROLE：', res.data)
+                    if (res.data.code === 200) {
+                        this.$message({
+                            showClose: true,
+                            message: res.data.msg,
+                            type: 'success'
+                        });
+                        this.getRoleList()
+                    }
+                }).catch(err => {
+                    console.log('请求UPDATE_ROLE：', err)
                 });
             },
         }
@@ -206,276 +304,267 @@
         color: rgba(255, 255, 255, 1);
     }
 
-    .default-theme {
-        font-family: $fontFamilyMain;
+    .left-col {
         position: relative;
-        height: 100vh !important;
+        min-width: 300px;
+        height: 100%;
+        min-height: 600px;
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 3px 10px 0px 0px rgba(0, 0, 0, 0.1), 3px 20px 20px rgba(0, 0, 0, 0.1);
+        opacity: 1;
 
-        &:after {
-            $afterHeight: 20px;
-            position: absolute;
-            display: block;
-            content: '';
-            height: $afterHeight;
-            width: 100%;
-            background: $colorTheme;
-            top: -$afterHeight;
-            box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
-
+        .left-scrollbar {
+            height: 90%;
+            border-top-width: 1px;
+            padding: 0 0 50px 0;
+            border-top-style: solid;
+            border-top-color: rgba(159, 167, 174, 0.6);
         }
 
-        .left-col {
+        .item_role {
             position: relative;
-            min-width: 300px;
-            height: 100%;
-            min-height: 620px;
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 3px 10px 0px 0px rgba(0, 0, 0, 0.1), 3px 20px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             opacity: 1;
 
-            .left-scrollbar {
-                height: 90%;
-                border-top-width: 1px;
-                padding: 0 0 50px 0;
-                border-top-style: solid;
-                border-top-color: rgba(159, 167, 174, 0.6);
+            .role_text {
+                font-size: 16px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                line-height: 60px;
+                margin-left: 56px;
+                color: rgba(102, 102, 102, 0.80);
+                opacity: 1;
             }
 
-            .item_role {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                opacity: 1;
+            .list-menu {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                height: 20px !important;
+                width: 20px !important;
+                cursor: pointer;
+                transform: translateY(-50%);
+            }
+        }
 
-                .role_text {
+        .item_role.active {
+            background: rgba(24, 144, 255, 1);
+
+            .role_text {
+                color: rgba(255, 255, 255, 1);
+            }
+        }
+
+        /deep/ .el-input__inner {
+            height: 30px;
+            line-height: 30px;
+            background: rgba(218, 217, 216, 0.6);
+            border: 0px;
+            color: rgba(102, 102, 102, 0.80);
+        }
+
+        /deep/ .el-input__icon {
+            height: 100%;
+            width: 25px;
+            text-align: center;
+            -webkit-transition: all .3s;
+            transition: all .3s;
+            line-height: 0px;
+        }
+
+        .input-with-select {
+            width: 260px;
+            height: 30px;
+            margin: 25px 20px 25px 20px;
+            background: rgba(218, 217, 216, 0.6);
+            opacity: 1;
+            border-radius: 6px;
+        }
+
+        .item-list-wrap {
+            flex: 1;
+        }
+
+        .aside-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            width: 180px;
+            height: 50px;
+            background: rgba(24, 144, 255, 1);
+            box-shadow: 0px 3px 6px rgba(64, 65, 65, 0.4);
+            opacity: 1;
+            border-radius: 12px;
+            transform: translateX(-50%);
+
+            .aside-btn-text {
+                width: fit-content;
+                height: 24px;
+                font-size: 18px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                line-height: 50px;
+                color: rgba(255, 255, 255, 1);
+                opacity: 1;
+            }
+        }
+
+        .dialog-title {
+            font-size: 16px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            color: rgba(24, 144, 255, 1);
+            opacity: 1;
+        }
+
+        .dialog-footer {
+            font-size: 16px;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+            opacity: 1;
+        }
+
+        .dialog-input {
+            padding: 2px;
+            opacity: 1;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 1);
+
+            /deep/ .el-input__inner {
+                font-size: 16px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: rgba(159, 167, 174, 1);
+                background: rgba(239, 242, 246, 1);
+            }
+
+            /deep/ .el-textarea__inner {
+                font-size: 16px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: rgba(159, 167, 174, 1);
+                background: rgba(239, 242, 246, 1);
+            }
+        }
+
+        .dialog-input.name {
+            /deep/ .el-input__inner {
+                height: 40px;
+            }
+
+            border-radius: 6px;
+        }
+
+        .dialog-input.note {
+            /deep/ .el-textarea__inner {
+                height: 60px;
+                max-height: 120px;
+            }
+
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+    }
+
+    .right-col {
+        padding: 20px;
+        height: 100%;
+        min-height: 600px;
+
+        .el-main {
+            position: relative;
+            min-width: 700px;
+            height: 100%;
+            padding: 0px;
+
+            display: flex;
+            flex-direction: column;
+
+            .tab-main {
+                width: 100%;
+                height: 60px;
+                background: rgba(255, 255, 255, 1);
+                opacity: 1;
+                z-index: 1;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding-right: 40px;
+                align-items: center;
+                box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+
+                .tab-title {
                     font-size: 16px;
                     font-family: Microsoft YaHei;
                     font-weight: 400;
-                    line-height: 60px;
-                    margin-left: 56px;
+                    margin-left: 20px;
                     color: rgba(102, 102, 102, 0.80);
                     opacity: 1;
                 }
 
-                .list-menu {
-                    position: absolute;
-                    right: 20px;
-                    top: 50%;
-                    height: 20px !important;
-                    width: 20px !important;
-                    cursor: pointer;
-                    transform: translateY(-50%);
-                }
-            }
-
-            .item_role.active {
-                background: rgba(24, 144, 255, 1);
-
-                .role_text {
-                    color: rgba(255, 255, 255, 1);
-                }
-            }
-
-            /deep/ .el-input__inner {
-                height: 30px;
-                line-height: 30px;
-                background: rgba(218, 217, 216, 0.6);
-                border: 0px;
-                color: rgba(102, 102, 102, 0.80);
-            }
-
-            /deep/ .el-input__icon {
-                height: 100%;
-                width: 25px;
-                text-align: center;
-                -webkit-transition: all .3s;
-                transition: all .3s;
-                line-height: 0px;
-            }
-
-            .input-with-select {
-                width: 260px;
-                height: 30px;
-                margin: 25px 20px 25px 20px;
-                background: rgba(218, 217, 216, 0.6);
-                opacity: 1;
-                border-radius: 6px;
-            }
-
-            .item-list-wrap {
-                flex: 1;
-            }
-
-            .aside-btn {
-                position: absolute;
-                bottom: 30px;
-                left: 50%;
-                width: 180px;
-                height: 50px;
-                background: rgba(24, 144, 255, 1);
-                box-shadow: 0px 3px 6px rgba(64, 65, 65, 0.4);
-                opacity: 1;
-                border-radius: 12px;
-                transform: translateX(-50%);
-
-                .aside-btn-text {
-                    width: fit-content;
-                    height: 24px;
-                    font-size: 18px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    line-height: 50px;
-                    color: rgba(255, 255, 255, 1);
-                    opacity: 1;
-                }
-            }
-
-            .dialog-title {
-                font-size: 16px;
-                font-family: Microsoft YaHei;
-                font-weight: bold;
-                color: rgba(24, 144, 255, 1);
-                opacity: 1;
-            }
-
-            .dialog-footer {
-                font-size: 16px;
-                font-family: Microsoft YaHei;
-                font-weight: 400;
-                color: rgba(255, 255, 255, 1);
-                opacity: 1;
-            }
-
-            .dialog-input {
-                padding: 2px;
-                opacity: 1;
-                border-radius: 6px;
-                font-size: 16px;
-                font-family: Microsoft YaHei;
-                font-weight: 400;
-                color: rgba(255, 255, 255, 1);
-
-                /deep/ .el-input__inner {
-                    font-size: 16px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    color: rgba(159, 167, 174, 1);
-                    background: rgba(239, 242, 246, 1);
-                }
-
-                /deep/ .el-textarea__inner {
-                    font-size: 16px;
-                    font-family: Microsoft YaHei;
-                    font-weight: 400;
-                    color: rgba(159, 167, 174, 1);
-                    background: rgba(239, 242, 246, 1);
-                }
-            }
-
-            .dialog-input.name {
-                /deep/ .el-input__inner {
-                    height: 40px;
-                }
-
-                border-radius: 6px;
-            }
-
-            .dialog-input.note {
-                /deep/ .el-textarea__inner {
-                    height: 60px;
-                    max-height: 120px;
-                }
-
-                border-radius: 6px;
-                margin-top: 10px;
-            }
-        }
-
-        .right-col {
-            .el-main {
-                min-width: 600px;
-                height: 600px;
-                margin: 20px 20px 20px 20px;
-                padding: 0px;
-                background: rgba(255, 255, 255, 1);
-                box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-                opacity: 1;
-                border-radius: 20px;
-
-                .tab-main {
-                    width: 100%;
-                    height: 60px;
+                .tab-btn {
                     background: rgba(255, 255, 255, 1);
+                    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
                     opacity: 1;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    padding-right: 40px;
-                    align-items: center;
-                    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+                    border-radius: 6px;
 
-                    .tab-title {
-                        font-size: 16px;
-                        font-family: Microsoft YaHei;
-                        font-weight: 400;
-                        margin-left: 20px;
-                        color: rgba(102, 102, 102, 0.80);
-                        opacity: 1;
-                    }
+                    font-size: 14px;
+                    font-family: Microsoft YaHei;
+                    font-weight: 400;
+                    color: rgba(102, 102, 102, 0.60);
+                    opacity: 1;
 
-                    .tab-btn {
-                        background: rgba(255, 255, 255, 1);
-                        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-                        opacity: 1;
-                        border-radius: 6px;
-
+                    i {
                         font-size: 14px;
-                        font-family: Microsoft YaHei;
-                        font-weight: 400;
-                        color: rgba(102, 102, 102, 0.60);
-                        opacity: 1;
-
-                        i {
-                            font-size: 14px;
-                        }
-                    }
-
-                    .tab-btn.active {
-                        background: rgba(24, 144, 255, 1);
-                        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-                        opacity: 1;
-                        border-radius: 6px;
-
-                        color: rgba(255, 255, 255, 1);
                     }
                 }
-            }
 
-            .right-none {
-                width: 100%;
-                height: 100%;
-                background: rgba(240, 242, 245, 1);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                /*padding-left: 200px;*/
-                align-items: center;
-
-                .none-img {
-
-                }
-
-                .none-text {
-                    margin-top: 10px;
-                    font-size: 34px;
-                    font-weight: normal;
-                    color: rgba(51, 51, 51, 1);
+                .tab-btn.active {
+                    background: rgba(24, 144, 255, 1);
+                    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
                     opacity: 1;
+                    border-radius: 6px;
+
+                    color: rgba(255, 255, 255, 1);
                 }
             }
 
+            .foot-main {
+                flex: 1;
+                position: relative;
+
+            }
         }
+
+        .right-none {
+            width: 100%;
+            height: 100%;
+            background: rgba(240, 242, 245, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /*padding-left: 200px;*/
+            align-items: center;
+
+            .none-img {
+
+            }
+
+            .none-text {
+                margin-top: 10px;
+                font-size: 34px;
+                font-weight: normal;
+                color: rgba(51, 51, 51, 1);
+                opacity: 1;
+            }
+        }
+
     }
 
 </style>
