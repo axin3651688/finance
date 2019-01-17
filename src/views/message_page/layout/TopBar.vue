@@ -116,7 +116,7 @@ export default {
           .el-input__inner {
             height: $sizeInputHeight;
             line-height: $sizeInputHeight;
-            background: $colorBgInput;
+            background: $colorThemePrimary;
             border: none;
             border-radius: 6px;
             &::placeholder {

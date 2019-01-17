@@ -168,6 +168,7 @@
       v-if="showGroupMembers"
       @closeGroupMembers="showGroupMembers = false"
     ></group-members>
+
   </div>
 </template>
 

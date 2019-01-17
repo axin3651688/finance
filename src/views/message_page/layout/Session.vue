@@ -22,7 +22,6 @@
           <span v-if="item.miniType===1101">{{item.originData.name}}: </span>
           <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
         </p>
-        <div class="right-border"></div>
         <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
       </li>
     </ul>
@@ -98,7 +97,6 @@ export default {
       position: relative;
       overflow: hidden;
       padding: 20px 20px 18px;
-      border-bottom: 1px solid $colorBorder1;
       cursor: pointer;
 
       .avatar-img {
@@ -186,20 +184,10 @@ export default {
         line-height: 16px;
         color: $colorText2;
       }
-
-      .right-border {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 6px;
-      }
     }
 
     li.active {
-      .right-border {
-        background-color: $colorTheme;
-      }
+      background: $colorThemePrimary;
     }
   }
 </style>
