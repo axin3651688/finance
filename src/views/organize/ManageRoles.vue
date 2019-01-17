@@ -271,9 +271,10 @@
             },
             deleteRole(){
                 let params = {
-                    "roleId": this.selectRole.id,
-                    "userId": this.loginUserId
+                    roleId: this.selectRole.id,
+                    userId: this.loginUserId
                 }
+                console.log('请求DEL_ROLE：', params)
                 DEL_ROLE(params).then(res => {
                     console.log('请求DEL_ROLE：', res.data)
                     if (res.data.code === 200) {

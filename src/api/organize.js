@@ -208,7 +208,7 @@ export function DEL_ROLE(data) {
     return request({
         url: '/api/api/del_role',
         method: 'delete',
-        data: data
+        params: data
     })
 }
 //保存角色的功能权限
