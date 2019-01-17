@@ -162,6 +162,28 @@ export function FIND_ROLE_ACCREDIT_FUNCTION(roleId) {
         }
     })
 }
+// 查询角色的应用权限
+export function FIND_ROLE_ACCREDIT_APPS(roleId) {
+    // debugger
+    return request({
+        url: '/api/api/find_role_accredit_apps',
+        method: 'get',
+        params: {
+            'roleId':roleId,
+        }
+    })
+}
+// 查询角色的授权公司权限
+export function FIND_ROLE_ACCREDIT_OTHER(roleId) {
+    // debugger
+    return request({
+        url: '/api/api/find_role_accredit_other',
+        method: 'get',
+        params: {
+            'roleId':roleId,
+        }
+    })
+}
 // 添加角色 SAVE_ROLE
 export function SAVE_ROLE(data) {
     // debugger
@@ -198,8 +220,24 @@ export function SAVE_ROLE_ACCREDIT_FUNCTION(data) {
         data: data
     })
 }
-
-
+//保存角色的应用权限
+export function SAVE_ROLE_ACCREDIT_APPS(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_role_accredit_apps',
+        method: 'post',
+        data: data
+    })
+}
+// 保存角色的授权公司权限
+export function SAVE_ROLE_ACCREDIT_OTHER(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_role_accredit_other',
+        method: 'post',
+        data: data
+    })
+}
 
 
 

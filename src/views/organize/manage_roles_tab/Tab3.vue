@@ -3,12 +3,11 @@
         <div class="main">
 
             <el-scrollbar class="left-col">
-                <el-tree class="left-tree"
+                <el-tree v-show="nodeList.length>0" class="left-tree"
                          :data="nodeList"
                          show-checkbox
                          node-key="id"
                          ref="tree"
-                         default-expand-all
                          check-on-click-node
                          check-strictly
                          highlight-current
@@ -18,7 +17,7 @@
 
             <div class="mid-divider"></div>
             <div class="right-col">
-                <el-checkbox :indeterminate="isActionIndeterminate" v-model="checkActionAll"
+                <el-checkbox :indeterminate="isActionIndeterminate" v-show="actionList.length>0" v-model="checkActionAll"
                              @change="handleActionCheckAllChange">全选
                 </el-checkbox>
 
