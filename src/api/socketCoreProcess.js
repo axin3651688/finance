@@ -12,10 +12,7 @@ import {
   isArray
 } from 'util';
 import cmd1500Handle from './cmd1500Handle'
-import {
-  processServerMessage,
-  processServerAck
-} from 'utils/message'
+import {messagePageProcessSocket} from 'utils/message'
 
 /**
  * 消息核心处理
@@ -25,13 +22,13 @@ import {
 export default function socketCoreProcess(websocket, datas) {
   let $notify = Notification;
   let parseData = function (data) {
+    messagePageProcessSocket(data); // 独立消息页面message_page的消息自己处理
     let code = data.code;
-    console.info(data)
+    console.info(data);
     showNotification(data);
     // debugger;
     switch (code) {
       case 1001:
-        console.log('socketCoreProcess: 1001');
         break;
       case 1002:
         // 账号重复登录提示及处理
@@ -40,19 +37,15 @@ export default function socketCoreProcess(websocket, datas) {
         break;
       case 1003:
         // 登录已失效，请重新登录
-        // reloadLogin1003(data);
         break;
       case 1004:
         // 登录已失效，请重新登录
         break;
       case 1006:
         // 对方收到消息或读了消息
-        console.log('socketCoreProcess: 1006');
         break;
       case 1100:
         // 单聊
-        // debugger;
-        processServerMessage(data);
         break;
       case 1101:
         // 群聊
@@ -67,8 +60,6 @@ export default function socketCoreProcess(websocket, datas) {
         // websocket.send(sendBean);
         break;
       case 2000:
-        debugger; // 消息 ack 回执
-        processServerAck(data);
         break;
 
       default:
@@ -78,9 +69,13 @@ export default function socketCoreProcess(websocket, datas) {
   // let allowNotification = window.Notification;
   let showNotification = function (data) {
     // debugger;
-    // notificationTypeList 需要消息提示的 code 列表
+
+    if (!localStorage.authorization) return false; // 如果没有登陆不弹消息提示
+
+    // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，则 return
     let notificationTypeList = [1100, 1101, 11017, 11016, 11018, 1500, 11021, 1005, 1004];
-    if (notificationTypeList.indexOf(data.code) < 0) return; // 如果消息不在列表中，则 return
+    if (notificationTypeList.indexOf(data.code) < 0) return false; // 如果消息不在列表中，则 return
+
     let bean = data.data;
     let user = bean.user;
     // debugger;
@@ -121,64 +116,5 @@ export default function socketCoreProcess(websocket, datas) {
     });
   } else {
     parseData(datas);
-  }
-  /* 刷新有1003过来,用传来的替换本地的token */
-  function reloadLogin1003(data) {
-    console.log(data.data);
-    if (!Cnbi.isEmpty(data.data)) {
-      debugger
-      let token = data.data.authorization;
-      localStorage.authorization = token;
-      router.push("/main");
-    } else {
-      MessageBox.confirm("当前登录已失效,请重新登录!", '提示', {
-        confirmButtonText: '确定',
-        type: 'warning'
-      }).then(() => {
-        // electron 退出处理
-        if (window.require) {
-          var ipc = window.require('electron').ipcRenderer
-        }
-        if (window.require) {
-          ipc.send('web_outLogin', '')
-        }
-        // 以后要改为自动登录
-        router.push("/Login");
-
-      }).catch(() => {
-        router.push("/Login");
-      })
-    }
-  }
-
-  function reloadLogin(data) {
-    console.log(data.data);
-    if (!Cnbi.isEmpty(data.data)) {
-      let receive = data.data.user.id;
-      let local = JSON.parse(localStorage.database).user.id;
-      if (receive === local) {
-        console.log("传来的ID和本地id一样,啥也不做");
-      }
-    } else {
-      MessageBox.confirm(data.msg, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // electron 退出处理
-        if (window.require) {
-          var ipc = window.require('electron').ipcRenderer
-        }
-        if (window.require) {
-          ipc.send('web_outLogin', '')
-        }
-        // 以后要改为自动登录
-        router.push("/message_login");
-
-      }).catch(() => {
-        router.push("/message_login");
-      })
-    }
-
   }
 }

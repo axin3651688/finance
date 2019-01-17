@@ -342,7 +342,7 @@ export default {
 
   created() {
     this.isTree = true;
-
+    debugger;
     this.store = new TreeStore({
       key: this.nodeKey,
       data: this.data,

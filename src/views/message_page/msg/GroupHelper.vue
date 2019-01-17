@@ -14,9 +14,10 @@
       <el-scrollbar>
         <section>
           <div class="list-item" v-for="item in showMessageList" :key="item.code">
+            <!--{{item}}-->
             <div class="item-left">
               <div>
-                <div class="img-box"><img src="" alt=""></div>
+                <div class="img-box"><img :src="item.otherName" v-avatar="item.otherName"></div>
               </div>
               <h3 class="title">{{item.otherName}} 申请加入：{{item.text}}</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>
@@ -26,16 +27,15 @@
               </div>
             </div>
             <div class="item-right">
-              <div class="btns">
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="my-btn my-btn-primary"
-                  @click="clickAgree(item, 4)"
-                >
+              <span v-if="item.state === 4">已同意</span>
+              <span v-else-if="item.state === 3">已拒绝</span>
+              <div class="btns" v-else>
+                <my-btn class="my-btn" @click="saveFriend(item, 4)">
                   同意
-                </el-button>
-                <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
+                </my-btn>
+                <my-btn class="my-btn my-btn-default" @click="updateState(item, 3)">
+                  拒绝
+                </my-btn>
               </div>
             </div>
           </div>
@@ -46,9 +46,10 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import MyBtn from '@c/message/my_btn/MyBtn.vue';
+import {mapGetters, mapActions} from 'vuex';
 import {HELP_GROUP_MSG, JOIN_GROUP, REFUSE_GROUP} from '~api/message.js';
-import {FORMAT_TIME} from 'utils/message.js'
+import {FORMAT_TIME} from 'utils/message.js';
 
 export default {
   name: 'GroupHelper',
@@ -58,9 +59,14 @@ export default {
       messageList: [] // 好友申请消息列表
     }
   },
+  components: {
+    MyBtn
+  },
   computed: {
     ...mapGetters(['user', 'messageStore']),
-    loginUserId() {return this.user.user.id},
+    loginUserId() {
+      return this.user.user.id
+    },
     messageListFilter() {
       let obj = {
         checked: {
@@ -108,24 +114,27 @@ export default {
     },
     clickAgree(item, state) {
       debugger;
-      let params = {
+      let data = {
         groupId: item.groupId,
         userId: this.loginUserId
       };
-      JOIN_GROUP(params).then(res => {
-        console.log('处理申请消息', res.data.data);
-        if (res.data.code === 200) {
-          this.updateState(item, state)
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.data.msg,
-            showClose: true
-          })
-        }
-      }).catch(err => {
-        console.log('请求message：', err)
-      })
+      JOIN_GROUP(data)
+        // post
+        .then(res => {
+          console.log('处理申请消息', res.data.data);
+          if (res.data.code === 200) {
+            this.updateState(item, state)
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg,
+              showClose: true
+            })
+          }
+        })
+        .catch(err => {
+          console.log('请求message：', err)
+        })
     },
     updateState(item, state) {
       debugger;
@@ -134,6 +143,7 @@ export default {
         state: state // 3拒绝，4同意
       };
       REFUSE_GROUP(params)
+        // put
         .then(res => {
           debugger;
           console.log('修改状态', res.data.data);
@@ -141,19 +151,19 @@ export default {
             console.log('修改成功')
           }
         }).catch(err => {
-          console.log('群助手修改状态异常：', err)
-        })
+        console.log('群助手修改状态异常：', err)
+      })
     }
 
   },
   mounted() {
-  this.getList()
-},
+    this.getList()
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@s/message/index.scss";
 
   .GroupHelper.vue-module {
     display: flex;
@@ -223,6 +233,7 @@ export default {
       .img-box {
         width: 48px;
         height: 48px;
+        overflow: hidden;
         background: $colorTheme;
         margin-right: 20px;
         border-radius: 50%;
@@ -261,19 +272,15 @@ export default {
   }
 
   .my-btn {
-    border-radius: 8px;
     border: none;
+    @include myBtn($borderRadius: 8px,$height:32px);
   }
 
   .my-btn + .my-btn {
     margin-left: 20px;
   }
 
-  .my-btn-primary {
-    background: $colorTheme;
-  }
-
   .my-btn-default {
-    background: rgba(196, 196, 196, 1);
+    background: $colorBgBtnGray;
   }
 </style>

@@ -7,6 +7,7 @@ import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import '../../../node_modules/handsontable/dist/handsontable.full.css'
+import "@/styles/black/index.scss"
 // import "@s/green/index.scss"
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'
@@ -19,7 +20,8 @@ Vue.use(ZkTable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VueQriously)
-
+import Bus from "@v/common/bus.js";
+Vue.use(Bus);
 Vue.prototype.axios = axios;
 
 new Vue({

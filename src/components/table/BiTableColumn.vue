@@ -8,7 +8,7 @@
     fixed="left"
   >
     <template slot-scope="scope">
-      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope.$index)">
+      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope)">
         <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
         <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
       </span>
@@ -23,22 +23,10 @@
   >
     <template slot-scope="scope">
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
-        <img v-if= "col.icon" :src="col.icon" alt="">
-        <img v-else src="@/assets/green/list_menu.svg" alt="" class="img">
+        <img v-if="col.icon" :src="col.icon" alt>
+        <img v-else src="@/assets/green/list_menu.svg" alt class="img">
         <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
-         <el-cascader :options="options"  @change="columnDropDownClick" ></el-cascader>
-         <!-- <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="dilogShow"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-          </el-dialog> -->
+        <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
   </el-table-column>
@@ -144,16 +132,16 @@
 </template>
 <script>
 import EventMixins from "../mixins/EventMixins";
+
 //import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
   data() {
     return {
-      clickRow:{},
-      clickRowParams:{},
-      options:[],
-      tmptabledata:[]
+      clickRow: {},
+      clickRowParams: {}
+      //options: []
     };
   },
   computed: {
@@ -166,11 +154,8 @@ export default {
     }
   },
   created() {
-        debugger;
-    this.tmptabledata = this.tableData
-    if(this.tableData.config.columns[0].menu && this.tableData.config.columns[0].menu.length !=0){
-        this.options = this.tableData.config.columns[0].menu.list
-    }
+    // this.options = this.tableData.config.columns[0].menu.list;
+    //debugger;
     console.log(this.tableData);
 
     //this.$set(this, "tableData", null);
@@ -185,20 +170,20 @@ export default {
     // rowClass({ row, rowIndex }) {
     //   return "text-align:center";
     // },
-   columnDropDownClick(items){
-     let menuId = items[0];
-     debugger;
-      let menu = this.col.menu.list.filter(c=>c.value === menuId)[0];
-      if(menu && menu.listeners){
-          this.commonHandler(menu.listeners[0],this.clickRow,menu);
+    columnDropDownClick(items) {
+      let menuId = items[0];
+      debugger;
+      let menu = this.col.menu.list.filter(c => c.value === menuId)[0];
+      if (menu && menu.listeners) {
+        this.commonHandler(menu.listeners[0], this.clickRow, menu);
       }
-   },
+    },
 
     columnClick(column, scope) {
       debugger;
       if (column.listeners || column.menu.list[0].listeners[0]) {
-        console.log(column.menu.list[0])
-        console.log(column.menu.list[0].listeners[0])
+        console.log(column.menu.list[0]);
+        console.log(column.menu.list[0].listeners[0]);
         this.commonHandler(column.listeners[0]);
       }
     },
@@ -222,11 +207,18 @@ export default {
       this.$set(this, "tmptabledata", item);
       this.$set(this.tmptabledata, "datas", item.datas);
     },
-    optionColumnClick(row){
+    optionColumnClick(row) {
       this.clickRow = row;
-      if(this.tableData.optionColumnClick && typeof(this.tableData.optionColumnClick) == "function"){
-             this.clickRowParams =  this.tableData.optionColumnClick(row, event,this);
-        }
+      if (
+        this.tableData.optionColumnClick &&
+        typeof this.tableData.optionColumnClick == "function"
+      ) {
+        this.clickRowParams = this.tableData.optionColumnClick(
+          row,
+          event,
+          this
+        );
+      }
     },
     /**
      * 获取单元格数据
@@ -291,14 +283,18 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded(trIndex) {
+      // debugger;
+
       if (
-        this.tableData.hasOwnProperty("sync") &&
-        this.tableData.sync == true
+        this.tableData.hasOwnProperty("async") &&
+        this.tableData.async == true
       ) {
+        // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
         console.log(trIndex);
         debugger;
+        this.$bus.emit("fetchdata", trIndex); //触发    发送数据
       }
-      const record = this.tableData.datas[trIndex];
+      const record = this.tableData.datas[trIndex.$index];
       // console.log(record);
       record._expanded = !record._expanded;
     },
@@ -373,8 +369,8 @@ tbody {
   position: absolute;
   right: 50%;
   top: 5px;
-  -moz-transform:rotate(-90deg);
-  -webkit-transform:rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
 }
 /* .el-tooltip__popper.is-dark {
   background: #fff;

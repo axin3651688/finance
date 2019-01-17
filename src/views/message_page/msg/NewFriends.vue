@@ -18,7 +18,7 @@
               <div>
                 <div class="img-box"><img :src="item.avatar" v-avatar="item.name"></div>
               </div>
-              <h3 class="title">{{item.state}}{{item.name}}申请加你为好友</h3>
+              <h3 class="title">{{item.name}}申请加你为好友</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
                 <span>理由：</span>
@@ -29,20 +29,12 @@
               <span v-if="item.state === 4">已同意</span>
               <span v-else-if="item.state === 3">已拒绝</span>
               <div class="btns" v-else>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="my-btn my-btn-primary"
-                  @click="saveFriend(item, 4)"
-                >同意
-                </el-button>
-                <el-button
-                  type="primary"
-                  size="small"
-                  class="my-btn my-btn-default"
-                  @click="updateState(item, 3)"
-                >拒绝
-                </el-button>
+                <my-btn class="my-btn" @click="saveFriend(item, 4)">
+                  同意
+                </my-btn>
+                <my-btn class="my-btn my-btn-default" @click="updateState(item, 3)">
+                  拒绝
+                </my-btn>
               </div>
             </div>
           </div>
@@ -53,11 +45,12 @@
 </template>
 
 <script>
+import MyBtn from '@c/message/my_btn/MyBtn.vue'
 import {mapGetters, mapActions} from 'vuex'
 import {
   NEW_FRIEND_LIST,
   SAVE_FRIEND,
-  REFUSE_GROUP
+  REFUSE_FRIEND
 } from '~api/message.js';
 import {FORMAT_TIME} from 'utils/message.js'
 
@@ -68,6 +61,9 @@ export default {
       activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [], // 好友申请消息列表
     }
+  },
+  components:{
+    MyBtn
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
@@ -121,16 +117,16 @@ export default {
       })
     },
 
-    // todo: 1新朋友接口调用（ok）
     saveFriend(item, state) {
       // 点同意，先保存，再修改状态，点拒绝直接改状态
-      // debugger;
-      let params = {
+      debugger;
+      let data = {
         friendId: item.id,
         userId: this.loginUserId
       };
-
-      SAVE_FRIEND(params).then(res => {
+      SAVE_FRIEND(data).then(res => {
+        // post
+        debugger;
         console.log('保存', res.data.data);
         if (res.data.code === 200) {
           this.updateState(item, state)
@@ -151,7 +147,8 @@ export default {
         code: item.code,
         state: state // 3拒绝，4同意
       };
-      REFUSE_GROUP(params)
+      REFUSE_FRIEND(params)
+        // get
         .then(res => {
           console.log('修改好友请求状态res:', res.data);
           if (res.data.code === 200) {
@@ -183,8 +180,10 @@ export default {
 }
 </script>
 
+
+
 <style lang="scss" scoped>
-  @import "../styles/variables.scss";
+  @import "@s/message/index.scss";
 
   .vue-module {
     display: flex;
@@ -286,25 +285,21 @@ export default {
     }
 
     .item-right {
-      text-align: center;
-      min-width: 128px;
+      text-align: right;
+      min-width: 150px;
     }
   }
 
   .my-btn {
-    border-radius: 8px;
     border: none;
+    @include myBtn($borderRadius: 8px,$height:32px);
   }
 
   .my-btn + .my-btn {
     margin-left: 20px;
   }
 
-  .my-btn-primary {
-    background: $colorTheme;
-  }
-
   .my-btn-default {
-    background: rgba(196, 196, 196, 1);
+    background: $colorBgBtnGray;
   }
 </style>

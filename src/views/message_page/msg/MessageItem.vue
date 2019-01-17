@@ -27,9 +27,9 @@
         </template>
         <span v-else>图片异常···</span>
       </div>
+
       <!--3文件-->
       <div v-else-if="data.type === 3">
-        <!--3&#45;&#45;》 {{data}}-->
         <template v-if="data.file">
           <a :href="data.file.hdUrl" target="_blank">
             <div class="file-wrap">
@@ -48,49 +48,46 @@
         </template>
         <span v-else>文件异常···</span>
       </div>
+
       <!--4语音-->
       <div v-else-if="data.type === 4">
         <!--{{data.file}}-->
-        <audio :src="data.file.thumbUrl" controls="controls">
-          您的浏览器不支持该音频播放。
-        </audio>
+        <!--<audio :src="data.file.thumbUrl" controls="controls">-->
+        <!--您的浏览器不支持该音频播放。-->
+        <!--</audio>-->
+        <my-audio-player :src="data.file.thumbUrl"></my-audio-player>
       </div>
-      <!--5语音-->
-      <div v-else-if="data.type === 5">
+
+      <!--5视频-->
+      <div v-else-if="data.type === 5" class="video-wrap">
         <!--{{data.file}}-->
-        <video :src="data.file.thumbUrl" controls="controls">
-          您的浏览器不支持 video 标签。
-        </video>
+        <my-video-player :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
       </div>
+
       <!--1 默认解析表情-->
       <div class="content-text" v-else="data.type === 1" v-html="parseEmotions(data.content)">
-        <!--{{data.content | parseEmotions}}-->
       </div>
 
-
-      <!--<div v-else>{{data.content}} //其他</div>-->
     </div>
   </div>
 </template>
 
 <script>
-import {PARSE_EMOTIONS, FORMAT_TIME, FORMAT_MSG_TIME} from 'utils/message';
-import emotionSprites from '@a/green/emotion_sprites.json';
+import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message';
+import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue';
+import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue';
 
+const EMOTION_SPRITES = require('@a/message/data/emotion_sprites').data;
 export default {
   name: "MessageItem",
   props: ['data'],
-  data() {
-    return {
-      EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
-    }
+  components: {
+    MyAudioPlayer,
+    MyVideoPlayer
   },
   filters: {
-    formatTime(time) { // 格式化时间戳
-      return FORMAT_TIME(time)
-    },
-    formatMsgTime(publishtime) { // 格式化时间戳(消息、聊天专用)
-      return FORMAT_MSG_TIME(publishtime)
+    formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
+      return FORMAT_MSG_TIME(publishTime)
     }
   },
   methods: {
@@ -103,10 +100,10 @@ export default {
 
 <style lang="scss">
   /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "@ms/emotion_sprites.scss";
+  @import "@s/message/emotion_sprites.scss";
 </style>
 <style lang="scss" scoped>
-  @import "@ms/variables.scss";
+  @import "@s/message/variables.scss";
 
   a {
     display: inline-block;
@@ -173,10 +170,22 @@ export default {
       font-weight: 400;
       line-height: 20px;
       color: rgba(0, 0, 0, 0.80);
+
       .content-text {
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      .video-wrap {
+        max-width: 320px;
+        overflow: hidden;
+      }
+
+      video {
+        bottom: 0;
+        max-width: 320px;
+        height: auto;
       }
     }
 

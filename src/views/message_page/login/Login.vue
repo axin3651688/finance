@@ -22,50 +22,80 @@
         </div>
         <h3>登陆</h3>
         <p class="copy">安徽经邦数据展示客户端</p>
-        <el-form class="input" ref="loginForm" :model="loginUser" :rules="rules">
-          <el-input
-            v-model="loginUser.usename"
-            class="username"
-            placeholder="请输入用户名"
-            prop="usename"
-          ></el-input>
-          <el-input
-            :type="pwdType"
-            v-model="loginUser.password"
-            autocomplete="off"
-            placeholder="请输入密码"
-            prop="password"
-            @keyup.enter.native="submitForm('loginForm')"
-            class="password"
-          ></el-input>
-          <el-checkbox label="记住密码" name="type" class="label"></el-checkbox>
-          <el-checkbox label="自动登陆" name="type" class="label"></el-checkbox>
-          <p @click="forget_password()">忘记密码?</p>
-          <el-button type="primary" @click="submitForm('loginForm')" class="button">登陆</el-button>
-        </el-form>
-        <div class="buttom">
-          <span>注册账号</span>
-          <div class="img">
-            <img src="@/assets/login/qq_selected.svg" alt>
-            <img src="@/assets/login/wechat_unselected.svg" alt>
-            <img src="@/assets/login/weibo_unselected.svg" alt>
-            <img src="@/assets/login/erweima.svg" alt>
+
+        <!--表单-->
+        <div class="login-form" v-show="showWhat === 'form'">
+          <el-form class="input" ref="loginForm" :model="loginUser" :rules="rules">
+            <el-input
+              v-model="loginUser.usename"
+              class="username"
+              placeholder="请输入用户名"
+              prop="usename"
+            ></el-input>
+            <el-input
+              :type="pwdType"
+              v-model="loginUser.password"
+              autocomplete="off"
+              placeholder="请输入密码"
+              prop="password"
+              @keyup.enter.native="submitForm('loginForm')"
+              class="password"
+            ></el-input>
+            <el-checkbox label="记住密码" name="type" class="label"></el-checkbox>
+            <el-checkbox label="自动登陆" name="type" class="label"></el-checkbox>
+            <p @click="forget_password()">忘记密码?</p>
+            <el-button type="primary" @click="submitForm('loginForm')" class="button">登陆</el-button>
+          </el-form>
+          <div class="buttom">
+            <span>注册账号</span>
+            <div class="img">
+              <img src="@/assets/login/qq_selected.svg" alt>
+              <img src="@/assets/login/wechat_unselected.svg" alt>
+              <img src="@/assets/login/weibo_unselected.svg" alt>
+              <img
+                src="@/assets/login/erweima.svg"
+                @click="showQrCode()"
+              >
+            </div>
           </div>
         </div>
+
+        <!--二维码-->
+        <div class="qr-code" v-if="showWhat === 'qr_code'">
+          <div class="code-wrap" v-loading="loading" @click="getQrCode()">
+            <qriously :value="qrUrl" :size="138" v-if="qrUrl"/>
+            <div v-else class="loading-failed">
+              二维码加载失败
+            </div>
+            <div class="success-cover" v-if="scanSuccess">
+              <i class="icon el-icon-circle-check"></i>
+            </div>
+          </div>
+          <h3 class="code-text">点击二维码刷新</h3>
+          <div class="btn-back" @click="closeQrCode()">返 回</div>
+          <!--{{qrUrl.trim()}}-->
+        </div>
+
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { login } from "~api/interface.js";
-import { mapActions } from "vuex";
-import router from "@v/layout/router";
+import {login} from "~api/interface.js";
+import {mapGetters, mapActions} from "vuex";
 import store from "@/store";
+import MyBtn from '@c/message/my_btn/MyBtn.vue'
+import {SCAN_LOGIN_URL} from '~api/message.js'
 
 export default {
   data() {
     return {
+      scanSuccess: false, // 扫码是否成功
+      loading: false, // 加载转圈
+      qrUrl: null, // 登录二维码地址
+      showWhat: 'form', // 显示表单还是二维码
       pwdType: "password",
       loginUser: {
         usename: "",
@@ -96,11 +126,71 @@ export default {
       }
     };
   },
-  methods: {
-    ...mapActions(["GetSideMid"]),
+  components: {
+    MyBtn
+  },
+  computed: {
+    ...mapGetters(['user', 'messageStore']),
+    loginUserId() {
+      return this.user.user.id;
+    },
+    scanStatus() {
+      return this.messageStore.scanStatus
+    }
+  },
+  watch: {
+    scanStatus(val) {
+      debugger;
+      if (!val) return;
+      switch (val.code) {
+        case 10010: // 10010-APP已扫码通知，扫码成功
+          this.scanSuccess = true;
+          break;
+        case 10011: // 10011-APP登录通知，登陆成功,
+          const data = val.data;
+          const token = val.data.authorization;
 
-    // electron 最小化
-    web_minWindows() {
+          if (!Cnbi.isEmpty(token)) {
+            localStorage.setItem("authorization", token);
+            // 用户名记住,方便下次登录
+            localStorage.setItem("usename", this.loginUser.usename);
+            var obj = JSON.stringify(data); //转化为JSON字符串
+            localStorage.setItem("database", obj); //返回{"a":1,"b":2}
+            //    token存储到vuex中
+            store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
+            store.dispatch("setUser", data);
+            // 把用户的状态更新到vuex
+            this.GetSideMid({
+              company: data.company.customerId,
+              companyName: data.company.text
+            });
+            // debugger;
+            //this.initSocket(token);
+            // 页面跳转
+            this.$router.push("/message_page/home");
+
+            // electron
+            if (window.require) {
+              var ipc = window.require("electron").ipcRenderer;
+            }
+            if (window.require) {
+              ipc.send("web_loginSucess", "");
+            }
+          }
+          break;
+      }
+    }
+  },
+  methods: {
+    ...mapActions(["GetSideMid", 'ActionSetMessageStore']),
+
+    // 关闭二维码登录, 清除messageStore.scanStatus
+    closeQrCode() {
+      this.showWhat = 'form';
+      this.ActionSetMessageStore({scanStatus: null})
+    },
+
+    web_minWindows() { // electron 最小化
       if (window.require) {
         var ipc = window.require("electron").ipcRenderer;
       }
@@ -108,7 +198,7 @@ export default {
         ipc.send("web_minWindows", "");
       }
     },
-    web_closeWindows() {
+    web_closeWindows() { // electron 关闭窗口
       if (window.require) {
         var ipc = window.require("electron").ipcRenderer;
       }
@@ -124,233 +214,319 @@ export default {
         this.pwdType = "password";
       }
     },
+
+    // 提交登录表单
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           login(this.loginUser)
             .then(res => {
-              // 获取token
-              // console.log(res);
-              const data = res.data.data;
-              const token = data.authorization;
               // debugger;
-              if (!Cnbi.isEmpty(token)) {
-                localStorage.setItem("authorization", token);
+              const data = res.data.data;
+              const authorization = data.authorization;
+              if (!Cnbi.isEmpty(authorization)) {
+                localStorage.setItem("authorization", authorization);
                 // 用户名记住,方便下次登录
                 localStorage.setItem("usename", this.loginUser.usename);
                 var obj = JSON.stringify(data); //转化为JSON字符串
                 localStorage.setItem("database", obj); //返回{"a":1,"b":2}
-                //    token存储到vuex中
-                store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
+                //    authorization
+                store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(authorization));
                 store.dispatch("setUser", data);
                 // 把用户的状态更新到vuex
-                // alert(data.company.text);
                 this.GetSideMid({
                   company: data.company.customerId,
                   companyName: data.company.text
                 });
-                // debugger;
-                //this.initSocket(token);
+
+                // electron 处理
+                if (window.require) {
+                  var ipc = window.require("electron").ipcRenderer;
+                }
+                if (window.require) {
+                  // ipc.send("web_loginSuccess", "");
+                  ipc.send("web_autoLogin", "");
+                }
+
+                //this.initSocket(authorization);
                 // 页面跳转
                 //  判断加载哪个公司的布局页以加载不同样式
                 data.company.id === 121
                   ? this.$router.push("/message_page/home")
                   : this.$router.push("/message_page/home");
 
-                // todo: electron
-                if (window.require) {
-                  var ipc = window.require("electron").ipcRenderer;
-                }
-                if (window.require) {
-                  ipc.send("web_loginSucess", "");
-                }
               } else {
+                // alert(`没有 authorization`);
                 this.loginUser.usename = "";
                 this.loginUser.password = "";
                 let msg = res.data.msg;
                 console.error(msg);
-                this.$notify.error({
-                  title: "错误",
-                  message: msg
-                });
                 return;
               }
             })
             .catch(res => {
               console.error(res);
-              this.$notify.error({
-                title: "错误",
-                message: "网络请求失败!"
-              });
             });
         }
       });
+    },
+
+    // 显示二维码
+    showQrCode() {
+      this.showWhat = 'qr_code';
+      this.getQrCode();
+    },
+
+    // 获取二维码
+    getQrCode() {
+      let params = {
+        platform: 'pc',
+        device: this.messageStore.token || Cnbi.getDevice()
+      };
+      // debugger;
+      console.log(params);
+      let _this = this;
+      SCAN_LOGIN_URL(params)
+        .then(res => {
+          console.log('获取登录二维码res：', res);
+          if (res.data.code === 200) {
+            this.qrUrl = res.data.data.url;
+            this.ActionSetMessageStore({scanStatus: null})
+            console.log('qrUrl:', this.qrUrl)
+          }
+        })
+        .catch(err => {
+          console.log('获取登录二维码err：', err);
+        });
     }
+
+    // 禁止滑动
+    // disableTouchMove(e) {
+    //   console.log('===disableTouchMove===');
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // }
   },
   mounted() {
     // 禁止滑动
-    document.body.addEventListener(
-      "touchmove",
-      function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      },
-      { passive: false }
-    );
+    // document.body.addEventListener("touchmove", this.disableTouchMove, {passive: false});
+  },
+  beforeDestroy() {
+    // document.body.removeEventListener("touchmove", this.disableTouchMove);
   }
 };
 </script>
 <style>
-.login .el-checkbox__input.is-checked .el-checkbox__label {
-  color: rgba(0, 0, 0, 0.7);
-}
-
-/* .login .el-button primary */
-/* .el-checkbox__input.is-checked .el-checkbox__label{
-
-  } */
+  .login .el-checkbox__input.is-checked .el-checkbox__label {
+    color: rgba(0, 0, 0, 0.7);
+  }
 </style>
 <style scoped lang="scss">
-* {
-  padding: 0;
-  margin: 0;
-}
-.login {
-  width: 700px;
-  height: 420px;
-  overflow: hidden;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  user-select: none;
-  box-sizing: border-box;
-  /*border: 1px solid #cccccc;*/
-  box-shadow: #999 0px 0px 10px;
+  @import "@s/message/index.scss";
 
-  .left {
-    float: left;
-
-    img {
-      width: 300px;
-    }
+  * {
+    padding: 0;
+    margin: 0;
   }
 
-  .right {
-    box-sizing: border-box;
-    width: 400px;
+  .login {
+    width: 700px;
     height: 420px;
-    float: right;
-    position: relative;
-    padding-left: 50px;
-    background: rgba(255, 255, 255, 1);
-    opacity: 1;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    user-select: none;
+    box-sizing: border-box;
+    /*border: 1px solid #cccccc;*/
+    box-shadow: #999 0px 0px 10px;
 
-    .img1 {
-      margin-right: 16px;
-    }
-    .control-btns {
-      padding-right: 50px;
-      display: flex;
-      justify-content: flex-end;
-      .icon-mini,
-      .icon-close {
-        padding: 5px;
-      }
-    }
+    .left {
+      float: left;
 
-    h3 {
-      font-size: 24px;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      line-height: 31px;
-      color: rgba(0, 0, 0, 1);
-      opacity: 1;
-    }
-
-    .copy {
-      font-size: 16px;
-      font-family: Microsoft YaHei;
-      font-weight: 400;
-      line-height: 21px;
-      color: rgba(0, 0, 0, 0.8);
-      opacity: 1;
-    }
-
-    .input {
-      padding-right: 50px;
-
-      .username {
-        margin: 20px 0;
-      }
-
-      .password {
-        margin-bottom: 17px;
-      }
-
-      .label {
-        font-size: 12px;
-        font-family: Microsoft YaHei;
-        font-weight: 400;
-        line-height: 16px;
-        color: rgba(0, 0, 0, 0.7);
-        opacity: 1;
-      }
-
-      p {
-        font-size: 12px;
-        font-family: Microsoft YaHei;
-        font-weight: 400;
-        line-height: 16px;
-        color: rgba(90, 139, 236, 1);
-        opacity: 1;
-        float: right;
-      }
-
-      .button {
+      img {
         width: 300px;
-        height: 40px;
-        margin-top: 17px;
-        background: rgba(57, 119, 234, 1);
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
-        opacity: 1;
-        border-radius: 4px;
+      }
+    }
 
-        span {
-          font-size: 16px;
+    .right {
+      box-sizing: border-box;
+      width: 400px;
+      height: 420px;
+      float: right;
+      position: relative;
+      padding-left: 50px;
+      background: rgba(255, 255, 255, 1);
+      opacity: 1;
+
+      .img1 {
+        margin-right: 8px;
+      }
+
+      .control-btns {
+        padding-right: 3px;
+        padding-top: 2px;
+        display: flex;
+        justify-content: flex-end;
+
+        .icon-mini, .icon-colse {
+          padding: 5px;
+          cursor: pointer;
+        }
+      }
+
+      h3 {
+        font-size: 24px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        line-height: 31px;
+        color: rgba(0, 0, 0, 1);
+        opacity: 1;
+      }
+
+      .copy {
+        font-size: 16px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        line-height: 21px;
+        color: rgba(0, 0, 0, 0.8);
+        opacity: 1;
+      }
+
+      .input {
+        padding-right: 50px;
+
+        .username {
+          margin: 20px 0;
+        }
+
+        .password {
+          margin-bottom: 17px;
+        }
+
+        .label {
+          font-size: 12px;
           font-family: Microsoft YaHei;
-          font-weight: bold;
-          line-height: 21px;
-          color: rgba(255, 255, 255, 1);
+          font-weight: 400;
+          line-height: 16px;
+          color: rgba(0, 0, 0, 0.7);
           opacity: 1;
         }
+
+        p {
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          line-height: 16px;
+          color: rgba(90, 139, 236, 1);
+          opacity: 1;
+          float: right;
+        }
+
+        .button {
+          width: 300px;
+          height: 40px;
+          margin-top: 17px;
+          background: rgba(57, 119, 234, 1);
+          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
+          opacity: 1;
+          border-radius: 4px;
+
+          span {
+            font-size: 16px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            line-height: 21px;
+            color: rgba(255, 255, 255, 1);
+            opacity: 1;
+          }
+        }
       }
-    }
 
-    .buttom {
-      position: absolute;
-      bottom: 25px;
+      .buttom {
+        position: absolute;
+        bottom: 25px;
 
-      span {
-        font-size: 14px;
-        font-family: Microsoft YaHei;
-        font-weight: 400;
-        line-height: 19px;
-        color: rgba(90, 139, 236, 1);
-        opacity: 1;
+        span {
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          line-height: 19px;
+          color: rgba(90, 139, 236, 1);
+          opacity: 1;
+        }
+
+        .img {
+          float: right;
+          margin-left: 96px;
+          cursor: pointer;
+
+          img {
+            margin-right: 20px;
+          }
+        }
       }
 
-      .img {
-        float: right;
-        margin-left: 96px;
+      .qr-code {
+        .code-wrap {
+          position: relative;
+          box-sizing: border-box;
+          width: 140px;
+          height: 140px;
+          margin: 30px auto 10px;
+          border: 1px solid $colorBorder1;
+          cursor: pointer;
 
-        img {
-          margin-right: 20px;
+          canvas {
+            transform: scale(1.2);
+          }
+
+          .loading-failed {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+          }
+
+          .success-cover {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+
+            .icon {
+              color: #ffffff;
+              font-size: 30px;
+            }
+          }
+        }
+
+        .code-text {
+          font-size: 12px;
+          font-weight: 400;
+          text-align: center;
+        }
+
+        .btn-back {
+          @include myBtn($width: 140px, $height: 40px, $borderRadius: 4px, $display: block, $fontSize: 16px)
+          font-weight: bold;
+          margin: 20px auto 0;
         }
       }
     }
   }
-}
+
+
 </style>

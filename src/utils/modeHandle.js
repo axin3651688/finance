@@ -18,7 +18,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-    // e.url = "cnbi/json/source/chart/bar.json";
+    // e.url = "cnbi/json/source/chart/bgck.json";
 
     debugger
     console.log(e.url);

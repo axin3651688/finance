@@ -228,7 +228,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@s/message/variables.scss";
 
   .AddFromFriends {
     display: flex;

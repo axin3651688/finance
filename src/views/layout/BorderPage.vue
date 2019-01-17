@@ -1,13 +1,14 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <leftMenu class="sidebar-container" v-if="isShow()&&flag"/>
+    <OpenDialog/>
+    <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="isShow()&&flag"/>
-       <OpenDialog/>
+      <HeadNav v-if="isShow()"/>
+      <OpenDialog/>
     </div>
   </div>
 </template>
@@ -17,11 +18,6 @@ import ResizeMixin from "./mixin/ResizeHandler";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
-  data() {
-    return {
-      flag: false
-    };
-  },
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
     leftMenu: () => import("./sidebar/Sidebar"),
@@ -30,17 +26,6 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters(["sidebar", "device", "user"]),
-    styleSlect() {
-      if (!Cnbi.isEmpty(this.user)) {
-        this.user.company.id === 121
-          ? import("@/styles/green/index.scss").then(_ => {
-              this.flag = true;
-            })
-          : import("@/styles/black/index.scss").then(_ => {
-              this.flag = true;
-            });
-      }
-    },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -50,13 +35,8 @@ export default {
       };
     }
   },
-  created() {
-    this.styleSlect;
-  },
-
   methods: {
     ...mapActions(["ToggleSideBar"]),
-
     isShow() {
       // debugger;
       if (this.classObj.mobile) {

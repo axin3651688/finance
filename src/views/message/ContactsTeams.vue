@@ -26,7 +26,7 @@
               >
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar" :onerror="avatar_male"/>
+                    <img :src="user.avatar" v-avatar="user.trueName"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -45,7 +45,7 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" :onerror="avatar_male">
+              <img :src="rightUserInfo.user.avatar" v-avatar="rightUserInfo.user.trueName">
             </div>
           </div>
           <div class="text">
@@ -55,23 +55,24 @@
         </div>
         <div class="panel-right-content">
           <ul>
-            <li>
+            <li v-if="rightUserInfo.user.phone">
               <div class="icon icon-phone"></div>
               <p class="info">{{rightUserInfo.user.phone}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.user.email">
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.sex.text">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
-            <li>
+            <li v-if="rightUserInfo.user.sign">
               <div class="icon icon-text"></div>
               <p class="info">{{rightUserInfo.user.sign}}</p>
             </li>
           </ul>
+
         </div>
       </template>
       <el-button
@@ -96,7 +97,6 @@ export default {
   name: 'ContactsTeams',
   data() {
     return {
-      avatar_male: 'this.src="' + require('../../assets/green/avatar_male.png') + '"', // 图片失效，加载默认图片
       activeUser: this.loginUserId, // 当前选中的用户id
       companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象
@@ -115,10 +115,10 @@ export default {
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(receiverId) {
       this.ActionSetMessageStore({
+        targetId: receiverId,
         miniType: 1100, // 1100 单聊
         receiverData: this.rightUserInfo
       });
-      this.$emit('chatWithSingle', receiverId);
     },
 
     // 获取公司列表, 并把公司列表存vuex
@@ -128,7 +128,21 @@ export default {
         console.log('我公司列表：', res.data);
         if (res.data.code === 200) {
           this.companyList = res.data.data;
-          this.ActionSetMessageStore({companyList: this.companyList})
+          this.ActionSetMessageStore({companyList: this.companyList});
+
+          // 当获得公司列表后，默认请求第一个公司第一个员工的信息
+          if (this.companyList.length) {
+            if (this.companyList[0].children.length) {
+              this.getUserInfo(this.companyList[0].children[0].id);
+            }
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '你还没有加入任团队',
+              showClose: true
+            })
+          }
+
         }
       })
     },
@@ -162,32 +176,33 @@ export default {
     }
 
   },
-  mounted() {
-    console.log('当前登录用户:', this.user);
-    this.messageStore.companyList ?
-      this.companyList = this.messageStore.companyList :
-      this.getCompanyList();
-
-    console.log('companyList:', this.companyList);
-    this.getUserInfo(this.companyList[0].children[0].id);
+  created() {
+    this.getCompanyList();
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@s/message/index.scss";
+  @import "@s/message/icons.scss";
 
   .ContactsTeams {
     display: flex;
     height: 100%;
+    /deep/ .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
   }
 
   .panel-left {
+    box-sizing: border-box;
+    width: $sizeNavBarWidth;
     height: 100%;
-    min-width: 300px;
-    max-width: 400px;
     border-right: 1px solid $colorBorder2;
+    /deep/ .el-scrollbar {
+      width: $sizeNavBarWidth;
+    }
 
     /deep/ .el-collapse {
       .el-collapse-item__header.is-active {
@@ -231,14 +246,12 @@ export default {
           li {
             position: relative;
             height: 60px;
-            padding: 0 30px 0 25px;
+            padding: 0 30px 0 30px;
             cursor: pointer;
-            border-left: 5px solid transparent;
             transition: all .3s;
 
             &:hover {
               box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
-              border-right-color: $colorTheme;
             }
 
             .arrow {
@@ -250,13 +263,14 @@ export default {
           }
 
           li.active {
-            border-left-color: $colorTheme;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
           }
 
           figure {
             display: flex;
             align-items: center;
             height: 100%;
+            margin: 0;
             border-top: 1px solid $colorBorder2;
             margin-top: -1px;
 
@@ -300,6 +314,7 @@ export default {
   .panel-right {
     flex: 1;
     padding: 60px 30px 0 30px;
+    background: $colorBgPageGray;
 
     .panel-right-top {
       position: relative;
@@ -380,6 +395,12 @@ export default {
         }
         .icon-text {
           background-image: url($iconTest);
+        }
+        .icon-phone {
+          background-image: url($iconPhone);
+        }
+        .icon-email {
+          background-image: url($iconEmail);
         }
       }
     }

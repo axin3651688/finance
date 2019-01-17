@@ -2,28 +2,42 @@
   <div class="GroupHelper vue-module">
     <div class="top">
       <div class="btn-group">
-        <div class="btn active">未审核 <span class="count">({{messageList.length}})</span></div>
-        <div class="btn">已审核</div>
+        <div :class="['btn', {active: activeBtn === 'unChecked'}]" @click="activeBtn = 'unChecked'">
+          未审核 <span class="count">({{messageListFilter.unChecked.count}})</span>
+        </div>
+        <div :class="['btn', {active: activeBtn === 'checked'}]" @click="activeBtn = 'checked'">
+          已审核 <span class="count">({{messageListFilter.checked.count}})</span>
+        </div>
       </div>
     </div>
     <div class="bottom">
       <el-scrollbar>
         <section>
-          <div class="list-item" v-for="item in messageList" :key="item.code">
+          <div class="list-item" v-for="item in showMessageList" :key="item.code">
+            <!--{{item}}-->
             <div class="item-left">
               <div>
-                <div class="img-box"><img src="" alt=""></div>
+                <div class="img-box"><img :src="item.otherName" v-avatar="item.otherName"></div>
               </div>
               <h3 class="title">{{item.otherName}} 申请加入：{{item.text}}</h3>
-              <span class="datetime">{{item.sendTime}}</span>
+              <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
                 <span>理由：</span>
                 <span>{{item.content}}</span>
               </div>
             </div>
             <div class="item-right">
-              <div class="btns">
-                <el-button type="primary" size="small" class="my-btn my-btn-primary">同意</el-button>
+              <span v-if="item.state === 4">已同意</span>
+              <span v-else-if="item.state === 3">已拒绝</span>
+              <div class="btns" v-else>
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="my-btn my-btn-primary"
+                  @click="clickAgree(item, 4)"
+                >
+                  同意
+                </el-button>
                 <el-button type="primary" size="small" class="my-btn my-btn-default">拒绝</el-button>
               </div>
             </div>
@@ -37,27 +51,54 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import {HELP_GROUP_MSG, JOIN_GROUP, REFUSE_GROUP} from '~api/message.js';
+import {FORMAT_TIME} from 'utils/message.js'
 
 export default {
   name: 'GroupHelper',
   data() {
     return {
+      activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [] // 好友申请消息列表
     }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
-    loginUserId() {return this.user.user.id},
-    // checkNumgers() {
-    //   let checked = 0;
-    //   let unChecked = 0;
-    //   this.messageList.forEach(item => {
-    //
-    //   })
-    // }
+    loginUserId() {
+      return this.user.user.id
+    },
+    messageListFilter() {
+      let obj = {
+        checked: {
+          count: 0,
+          data: []
+        },
+        unChecked: {
+          count: 0,
+          data: []
+        },
+      };
+      this.messageList.forEach(item => {
+        if (item.state === 0) {
+          obj.unChecked.count++;
+          obj.unChecked.data.push(item)
+        } else {
+          obj.checked.count++;
+          obj.checked.data.push(item)
+        }
+      });
+      console.log('messageListFilter:', obj);
+      return obj
+    },
+    showMessageList() {
+      return this.activeBtn === 'checked' ?
+        this.messageListFilter.checked.data :
+        this.messageListFilter.unChecked.data
+    }
   },
-  mounted() {
-    this.getList()
+  filters: {
+    formatTime(time) {
+      return FORMAT_TIME(time)
+    }
   },
   methods: {
     getList() {
@@ -71,41 +112,57 @@ export default {
       })
     },
     clickAgree(item, state) {
-      let params = {
+      debugger;
+      let data = {
         groupId: item.groupId,
         userId: this.loginUserId
       };
-      JOIN_GROUP(params).then(res => {
-        console.log('处理申请消息', res.data.data);
-        if (res.data.code === 200) {
-          this.updateState(item, state)
-        }
-      }).catch(err => {
-        console.log('请求message：', err)
-      })
+      JOIN_GROUP(data)
+        // post
+        .then(res => {
+          console.log('处理申请消息', res.data.data);
+          if (res.data.code === 200) {
+            this.updateState(item, state)
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg,
+              showClose: true
+            })
+          }
+        })
+        .catch(err => {
+          console.log('请求message：', err)
+        })
     },
     updateState(item, state) {
+      debugger;
       let params = {
         code: item.code,
-        state: 3 // 3拒绝，4同意
+        state: state // 3拒绝，4同意
       };
       REFUSE_GROUP(params)
+        // put
         .then(res => {
+          debugger;
           console.log('修改状态', res.data.data);
           if (res.data.code === 200) {
             console.log('修改成功')
           }
         }).catch(err => {
-          console.log('请求message：', err)
-        })
+        console.log('群助手修改状态异常：', err)
+      })
     }
 
-  }
+  },
+  mounted() {
+    this.getList()
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@s/message/index.scss";
 
   .GroupHelper.vue-module {
     display: flex;
@@ -175,6 +232,7 @@ export default {
       .img-box {
         width: 48px;
         height: 48px;
+        overflow: hidden;
         background: $colorTheme;
         margin-right: 20px;
         border-radius: 50%;
@@ -188,6 +246,7 @@ export default {
       .title {
         margin-right: 30px;
         font-size: 16px;
+        font-weight: 400;
         color: $colorText1;
       }
 

@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/green/variables.scss";
+  @import "@s/message/variables.scss";
 
   .vue-module {
     margin: 40px 40px 0 40px;
