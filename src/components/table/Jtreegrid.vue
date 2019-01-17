@@ -20,22 +20,19 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
-import EventMixins from "../mixins/EventMixins";
+// import EventMixins from "../mixins/EventMixins";
 import BiTableColumnTree from "../table/BiTableColumnTree";
 import { apiItemDatas } from "utils/apiItemDatas";
 import { handleOpen } from "utils/index";
 import { findThirdPartData } from "~api/interface";
-// data  columns list
+
 export default {
-  mixins: [EventMixins],
+  // mixins: [EventMixins],
   components: {
     BiTableColumnTree
   },
   data() {
     return {
-      list: [],
-      dialogVisible: false,
-      selectedOptions: [],
       formatData: [],
       nodes: []
     };
@@ -82,11 +79,9 @@ export default {
         debugger;
         findThirdPartData(params)
           .then(res => {
-            debugger;
-
+            // debugger;
             let data = res.data.data;
             console.log(data);
-
             this.findAddData(dat, data);
             this.convertData(this.item.datas);
           })
@@ -97,17 +92,27 @@ export default {
         this.isfold(dat.row);
       }
     },
+    /**
+     * 控制节点的展开和关闭
+     */
+
     isfold(dat) {
       let tempArray = this.item.datas.filter(data => {
         if (data.pid == dat.id && data.nlevel == dat.nlevel + 1) {
           debugger;
           if (data.leaf == 0) {
+            debugger;
+            if (data._expanded == false) {
+              data._isHide = !data._isHide;
+              return true;
+            }
+            data._isHide = !data._isHide;
+            // console.log(data.text);
             this.isfold(data);
-          }
-          if (data.nlevel == dat.nlevel + 1) {
+          } else if (data.nlevel == dat.nlevel + 1) {
+            console.log(data.text);
             data._isHide = !data._isHide;
           }
-
           return true;
         }
       });
