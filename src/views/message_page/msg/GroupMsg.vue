@@ -41,7 +41,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </h3>
-          <p class="text">{{groupMembers.length}}人</p>
+          <!--<p class="text">{{groupMembers.length}}人</p>-->
         </div>
       </div>
       <div class="right">
@@ -611,8 +611,8 @@ export default {
         align-items: center;
 
         .img-box {
-          width: 60px;
-          height: 60px;
+          width: 50px;
+          height: 50px;
           margin-right: 30px;
           overflow: hidden;
           border-radius: 50%;
@@ -630,7 +630,8 @@ export default {
 
         .content {
           .title {
-            font-size: 18px;
+            font-size: 14px;
+            font-weight: bold;
             color: $colorText1;
             min-width: 220px;
 

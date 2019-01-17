@@ -1,73 +1,73 @@
 <template>
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
 
-    <div class="message-top">
-      <div class="avatar-box">
+    <div class="avatar">
+      <div class="img-box">
         <img :src="data.avatar" v-avatar="data.name">
-      </div>
-      <h3 class="user-name">{{data.name}}</h3>
-      <div class="send-time">
-        <span class="time">{{data.sendTime | formatMsgTime}}</span>
-        <!--<div class="status" v-if="data.state !== 2"></div>-->
-        <!--<div class="status">{{data.state}}</div>-->
       </div>
     </div>
 
-    <div class="message-content">
+    <div class="content">
       <!--{{data}}-->
 
-      <!--2图片-->
-      <div v-if="data.type === 2">
-        <!--2&ndash;&gt; {{data}}-->
-        <template v-if="data.file">
-          <a :href="data.file.hdUrl" target="_blank">
-            <div class="img-wrap">
-              <div class="img-box">
-                <img :src="data.file.thumbUrl" :alt="data.content">
-              </div>
-            </div>
-          </a>
-        </template>
-        <span v-else>图片异常···</span>
-      </div>
-
-      <!--3文件-->
-      <div v-else-if="data.type === 3">
-        <template v-if="data.file">
-          <a :href="data.file.hdUrl" target="_blank">
-            <div class="file-wrap">
-              <!--{{data.file}}-->
-              <div class="left">
-                <div class="title">
-                  <span class="text">{{data.file.text+data.file.category}}</span>
+      <div class="content-bubble">
+        <!--2图片-->
+        <div v-if="data.type === 2">
+          <template v-if="data.type === 2 && data.file">
+            <a :href="data.file.hdUrl" target="_blank">
+              <div class="img-wrap">
+                <div class="img-box">
+                  <img :src="data.file.thumbUrl" :alt="data.content">
                 </div>
-                <div class="size">{{data.file.size}}</div>
               </div>
-              <div class="right">
-                <i class="icon el-icon-download"></i>
+            </a>
+          </template>
+          <span v-else>图片异常···</span>
+        </div>
+
+        <!--3文件-->
+        <div v-else-if="data.type === 3">
+          <template v-if="data.file">
+            <a :href="data.file.hdUrl" target="_blank">
+              <div class="file-wrap">
+                <!--{{data.file}}-->
+                <div class="left">
+                  <div class="title">
+                    <span class="text">{{data.file.text+data.file.category}}</span>
+                  </div>
+                  <div class="size">{{data.file.size}}</div>
+                </div>
+                <div class="right">
+                  <i class="icon el-icon-download"></i>
+                </div>
               </div>
-            </div>
-          </a>
-        </template>
-        <span v-else>文件异常···</span>
+            </a>
+          </template>
+          <span v-else>文件异常···</span>
+        </div>
+
+        <!--4语音-->
+        <div v-else-if="data.type === 4">
+          <!--{{data.file}}-->
+          <my-audio-player v-if="data.file" :src="data.file.thumbUrl"></my-audio-player>
+        </div>
+
+        <!--5视频-->
+        <div v-else-if="data.type === 5" class="video-wrap">
+          {{data.file}}
+          <my-video-player v-if="data.file" :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
+        </div>
+
+        <!--1 默认解析表情-->
+        <div class="content-text" v-else="data.type === 1" v-html="parseEmotions(data.content)"></div>
       </div>
 
-      <!--4语音-->
-      <div v-else-if="data.type === 4">
-        <!--{{data.file}}-->
-        <my-audio-player v-if="data.file" :src="data.file.thumbUrl"></my-audio-player>
-      </div>
+    </div>
 
-      <!--5视频-->
-      <div v-else-if="data.type === 5" class="video-wrap">
-        {{data.file}}
-        <my-video-player v-if="data.file" :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
+    <div class="time">
+      <div class="send-time">
+        <span class="time">{{data.sendTime | formatMsgTime}}</span>
       </div>
-
-      <!--1 默认解析表情-->
-      <div class="content-text" v-else="data.type === 1" v-html="parseEmotions(data.content)">
-      </div>
-
     </div>
 
   </div>
@@ -75,8 +75,8 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message';
-import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue';
+import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message'
+import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue'
 import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue'
 import emotion_sprites from '@a/message/data/emotion_sprites.json'
 
@@ -100,7 +100,7 @@ export default {
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
-      debugger;
+      debugger
       return FORMAT_MSG_TIME(publishTime)
     }
   },
@@ -116,7 +116,10 @@ export default {
   /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
   @import "@s/message/emotion_sprites.scss";
 </style>
+
+
 <style lang="scss" scoped>
+  @import "@s/message/index.scss";
   @import "@s/message/variables.scss";
 
   a {
@@ -125,84 +128,48 @@ export default {
   }
 
   .message-box {
+    display: flex;
     box-sizing: border-box;
     width: 100%;
     padding: 10px 20px;
-    /*margin-bottom: 20px;*/
+    margin-bottom: 15px;
     background: #ffffff;
-    /*border-radius: 12px;*/
 
-
-    .message-top {
-      overflow: hidden;
-      margin-bottom: 20px;
-
-      .avatar-box {
-        width: 40px;
-        height: 40px;
-        margin-right: 20px;
-        border-radius: 50%;
-        overflow: hidden;
-        float: left;
-        background: #cccccc;
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
+    .avatar {
+      .img-box {
+        @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
       }
+    }
 
-      .user-name {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 20px;
-        color: $colorText1;
-      }
-
-      .send-time {
+    .content {
+      padding: 0 12px;
+      .content-bubble {
         position: relative;
-        margin-top: 3px;
-        font-size: 14px;
-        font-weight: 400;
+        box-sizing: border-box;
+        padding: 12px;
+        min-height: 40px;
+        min-width: 40px;
         line-height: 20px;
-        color: $colorText4;
-        font-family: $fontFamilyMain;
-
-        .status {
+        font-size: 14px;
+        background-color: $colorThemePrimary;
+        border-radius: 6px;
+        color: $colorTextChatContent;
+        &:before {
+          content: " ";
           position: absolute;
-          left: 215px;
-          top: 0;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          color: #cccccc;
-          /*background: #EF3C3C;*/
+          top: 14px;
+          right: 100%;
+          border: 6px solid transparent;
+          border-right-color: $colorThemePrimary;
         }
       }
     }
 
-    .message-content {
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 20px;
-      color: rgba(0, 0, 0, 0.80);
-
-      .content-text {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .video-wrap {
-        max-width: 320px;
-        overflow: hidden;
-      }
-
-      video {
-        bottom: 0;
-        max-width: 320px;
-        height: auto;
-      }
+    .time {
+      color: $colorTextBlack2;
+      line-height: 44px;
+      min-width: 56px;
+      text-align: center;
     }
 
     .file-wrap {
@@ -272,32 +239,15 @@ export default {
 
   }
 
-  .is-me {
-    .message-top {
-      .avatar-box {
-        float: right;
-        margin-right: 0;
-        margin-left: 20px;
-      }
-
-      .user-name {
-        text-align: right;
-      }
-
-      .send-time {
-        text-align: right;
+  .message-box.is-me {
+    flex-direction: row-reverse;
+    .content-bubble {
+      &:before {
+        right: auto;
+        left: 100% !important;
+        border-right-color: transparent;
+        border-left-color: $colorThemePrimary;
       }
     }
-
-    .message-content {
-      text-align: right;
-    }
-
-  }
-
-  /deep/ .face-img {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
   }
 </style>

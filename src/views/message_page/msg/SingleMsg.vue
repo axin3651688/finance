@@ -362,8 +362,8 @@ export default {
       overflow: hidden;
 
       .img-box {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         overflow: hidden;
         background-color: $colorTheme;
         border-radius: 50%;
@@ -380,11 +380,11 @@ export default {
         float: left;
 
         h3 {
-          font-size: 16px;
-          font-weight: 400;
+          font-size: 14px;
+          font-weight: bold;
 
           span {
-            color: $colorText3;
+            color: $colorTextBlack8;
           }
         }
 
@@ -392,7 +392,7 @@ export default {
           font-size: 14px;
           font-weight: 400;
           margin-top: 8px;
-          color: $colorText2;
+          color: $colorTextBlack8;
           opacity: 1;
         }
       }
@@ -526,7 +526,7 @@ export default {
     .btn {
       display: inline-block;
       line-height: $btnHeight;
-      padding: 0 36px;
+      padding: 0 20px;
       font-size: 14px;
       color: rgba(0, 0, 0, 0.20);
       background: rgba(0, 0, 0, .1);

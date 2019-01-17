@@ -6,13 +6,11 @@
           placeholder="搜索"
           >
           <div slot="suffix" class="icon-zoom img-box">
-            <img src="@ma/icon/zoom.svg" alt="">
+            <img src="@a/message/icon/zoom.svg" alt="">
           </div>
         </el-input>
         <div class="search-bar_right">
-          <div class="img-box">
-            <img src="@ma/icon/group_add.svg" alt="" class="btn-add">
-          </div>
+          <div class="img-box">+</div>
         </div>
       </div>
     </div>
@@ -106,7 +104,7 @@ export default {
     .topbar-left {
       box-sizing: border-box;
       width: $sizeNavBarWidth;
-      border-right: 1px solid $colorBorder1;
+      border-right: 1px solid $colorBorderLayoutDark;
       .search-bar {
         @include flex();
         height: 100%;
@@ -120,7 +118,7 @@ export default {
             border: none;
             border-radius: 6px;
             &::placeholder {
-              color: #666666;
+              color: $colorText5;
             }
           }
           .img-box {
@@ -133,7 +131,14 @@ export default {
           margin-left: 20px;
           cursor: pointer;
           .img-box {
-            //@include imgBox($width:30px,$height:30px);
+            @include imgBox($width:30px,$height:30px,$borderRadius:50%);
+            background-color: $colorThemePrimary;
+            @include flex();
+            align-items: center;
+            justify-content: center;
+            color: $colorText5;
+            font-size: 20px;
+            font-weight: 500;
           }
         }
 

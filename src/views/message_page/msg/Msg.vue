@@ -65,7 +65,7 @@ export default {
         box-sizing: border-box;
         width: $sizeNavBarWidth;
         height: 100%;
-        border-right: 1px solid $colorBorder1;
+        border-right: 1px solid $colorBorderLayoutDark;
         background: rgba(255, 255, 255, 1);
       }
 
@@ -74,7 +74,7 @@ export default {
         position: relative;
         overflow: hidden;
         height: 100%;
-        background: $colorBgPageGray;
+        background: #ffffff;
       }
     }
   }

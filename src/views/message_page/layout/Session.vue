@@ -131,6 +131,9 @@ export default {
           display: inline-block;
           margin-left: 20px;
           width: 80px;
+          color: $colorTextSessionTitle;
+          font-size: 14px;
+          font-weight: 400;
           @include singleEllipsis()
         }
 
@@ -167,10 +170,10 @@ export default {
 
       .list-menu {
         position: absolute;
-        right: 5px;
+        right: 15px;
         top: 50%;
-        height: 20px !important;
-        width: 20px !important;
+        height: 16px !important;
+        width: 16px !important;
         cursor: pointer;
         transform: translateY(-50%);
       }
@@ -182,7 +185,7 @@ export default {
         font-family: $fontFamilyMain;
         font-weight: 400;
         line-height: 16px;
-        color: $colorText2;
+        color: $colorTextSessionContent;
       }
     }
 

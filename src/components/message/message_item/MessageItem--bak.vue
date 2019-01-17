@@ -1,17 +1,20 @@
 <template>
-  <div class="MessageItem message-box">
+  <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
+
     <div class="message-top">
       <div class="avatar-box">
         <img :src="data.avatar" v-avatar="data.name">
       </div>
       <h3 class="user-name">{{data.name}}</h3>
       <div class="send-time">
-        <span class="time">{{data.sendTime| formatMsgTime}}</span>
+        <span class="time">{{data.sendTime | formatMsgTime}}</span>
         <!--<div class="status" v-if="data.state !== 2"></div>-->
         <!--<div class="status">{{data.state}}</div>-->
       </div>
     </div>
+
     <div class="message-content">
+      <!--{{data}}-->
 
       <!--2图片-->
       <div v-if="data.type === 2">
@@ -52,16 +55,13 @@
       <!--4语音-->
       <div v-else-if="data.type === 4">
         <!--{{data.file}}-->
-        <!--<audio :src="data.file.thumbUrl" controls="controls">-->
-        <!--您的浏览器不支持该音频播放。-->
-        <!--</audio>-->
-        <my-audio-player :src="data.file.thumbUrl"></my-audio-player>
+        <my-audio-player v-if="data.file" :src="data.file.thumbUrl"></my-audio-player>
       </div>
 
       <!--5视频-->
       <div v-else-if="data.type === 5" class="video-wrap">
-        <!--{{data.file}}-->
-        <my-video-player :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
+        {{data.file}}
+        <my-video-player v-if="data.file" :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
       </div>
 
       <!--1 默认解析表情-->
@@ -69,15 +69,17 @@
       </div>
 
     </div>
+
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message';
 import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue';
-import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue';
+import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue'
+import emotion_sprites from '@a/message/data/emotion_sprites.json'
 
-const EMOTION_SPRITES = require('@a/message/data/emotion_sprites').data;
 export default {
   name: "MessageItem",
   props: ['data'],
@@ -85,8 +87,20 @@ export default {
     MyAudioPlayer,
     MyVideoPlayer
   },
+  data() {
+    return {
+      EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
+    }
+  },
+  computed: {
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
+    }
+  },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
+      debugger;
       return FORMAT_MSG_TIME(publishTime)
     }
   },
@@ -111,12 +125,13 @@ export default {
   }
 
   .message-box {
+    box-sizing: border-box;
     width: 100%;
     padding: 10px 20px;
-    margin: 10px 40px 20px 0;
+    /*margin-bottom: 20px;*/
     background: #ffffff;
-    box-shadow: 0 2px 20px rgba(8, 69, 81, 0.1);
-    border-radius: 12px;
+    /*border-radius: 12px;*/
+
 
     .message-top {
       overflow: hidden;
@@ -133,6 +148,7 @@ export default {
 
         img {
           width: 100%;
+          height: 100%;
         }
       }
 
@@ -252,6 +268,29 @@ export default {
           max-height: 100%;
         }
       }
+    }
+
+  }
+
+  .is-me {
+    .message-top {
+      .avatar-box {
+        float: right;
+        margin-right: 0;
+        margin-left: 20px;
+      }
+
+      .user-name {
+        text-align: right;
+      }
+
+      .send-time {
+        text-align: right;
+      }
+    }
+
+    .message-content {
+      text-align: right;
     }
 
   }
