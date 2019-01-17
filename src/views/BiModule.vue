@@ -1,16 +1,18 @@
 <template >
   <div v-if="flag ">
-    <bi-item
-      v-if="layout.xtype === 'form'"
-      v-for="(item,index) in items"
-      v-bind:key="item.id"
-      v-bind:index="index"
-      :item="item"
-      :config.sync="config"
-      :datas.sync="datas"
-      v-on:getDatas="generateApiModelDatas"
-      ref="mychild"
-    ></bi-item>
+    <div v-if="layout.xtype === 'form'">
+      <bi-item
+        v-for="(item,index) in items"
+        v-bind:key="item.id"
+        v-bind:index="index"
+        :item="item"
+        :config.sync="config"
+        :datas.sync="datas"
+        v-on:getDatas="generateApiModelDatas"
+        ref="mychild"
+      ></bi-item>
+    </div>
+
     <el-row :gutter="24" v-if="layout.xtype === 'column'">
       <el-col
         v-for="(item,index) in items"
@@ -30,23 +32,20 @@
         ></bi-item>
       </el-col>
     </el-row>
-    <div
-      v-if="layout.xtype === 'border'"
-      v-for="(item,index) in items"
-      v-bind:key="item.id"
-      v-bind:index="index"
-    >
-      <h2>{{layout.xtype}}</h2>
+    <div v-if="layout.xtype === 'border'">
+      <div v-for="(item,index) in items" v-bind:key="item.id" v-bind:index="index">
+        <h2>{{layout.xtype}}</h2>
+      </div>
     </div>
+
     <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
-      <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
         v-bind:key="item.id"
         v-bind:index="index"
         :label="item.text"
         :v-if="item.show"
-        :name="item.tabIndex || index"
+        :name="item.tabIndex||''"
         :closable="item.closable||false"
       >
         <el-row
@@ -99,19 +98,16 @@
         ></bi-item>
       </el-collapse-item>
     </el-collapse>
-    <div
-      v-if="layout.xtype === 'absolute'"
-      v-for="(item,index) in items"
-      v-bind:key="item.id"
-      v-bind:index="index"
-    >
-      <bi-item
-        :item.sync="item"
-        :config.sync="config"
-        :datas.sync="datas"
-        v-on:getDatas="generateApiModelDatas"
-        ref="mychild"
-      ></bi-item>
+    <div v-if="layout.xtype === 'absolute'">
+      <div v-for="(item,index) in items" v-bind:key="item.id" v-bind:index="index">
+        <bi-item
+          :item.sync="item"
+          :config.sync="config"
+          :datas.sync="datas"
+          v-on:getDatas="generateApiModelDatas"
+          ref="mychild"
+        ></bi-item>
+      </div>
     </div>
   </div>
 </template>
@@ -132,6 +128,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
+      showDims: {},
       columns: [],
       datas: [],
       flag: false,
@@ -141,9 +138,7 @@ export default {
       source_id: 0,
       scope: 0,
       token: "",
-      layout: {
-        xtype: "form"
-      },
+      layout: {},
       items: [],
       chartOptions: {},
       debug: 0
@@ -285,6 +280,7 @@ export default {
       }
       for (let key in bean) {
         this.$set(this, key, bean[key]);
+        // this.key = bean[key];
       }
       if (type == 1) {
         //设置页面标题
@@ -295,7 +291,7 @@ export default {
        *
        */
       if (bean.hasOwnProperty("showDims")) {
-        // debugger;
+        debugger;
         this.ShowDims(bean.showDims);
       } else {
         this.ShowDims({
@@ -342,7 +338,7 @@ export default {
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
       if (!api) {
-        api = "cnbi/json/source/chart/zbfx.json";
+        api = "cnbi/json/source/jsnk/zbfx.json";
       }
       if (!api) {
         api = localStorage.module_api_cache;
@@ -385,6 +381,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
+      debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {
@@ -431,7 +428,7 @@ export default {
       debugger;
       try {
         let params = getModuleParams(item, changeDim);
-        console.log(params);
+        // console.log(params);
         // alert(params);
         if (!params) return;
         let config = item.config;
@@ -513,7 +510,8 @@ export default {
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
-        this.$set(this, "flag", true);
+        // this.$set(this, "flag", true);
+        this.flag = true;
         this.setChlidComponent(datas);
       } else {
         $childVue.setItems(item, true);

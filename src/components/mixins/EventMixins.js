@@ -105,12 +105,13 @@ export default {
     textEventHandler() {
 
     },
+    // api: listener.sourceApi,
     openDialog(params, listener) {
       this.ShowDialog({
-        api: listener.sourceApi,
+        data: '这是一段消息',
         isShow: true,
-        tittle: "xxxxxx",
-        width: "80%",
+        tittle: " 江苏农垦集团（母公司）2017年1-5月营业收入与上年同期相比，较大幅度下降的主要原因是：",
+        width: "40%",
         height: "200px"
       });
     },

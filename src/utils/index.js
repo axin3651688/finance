@@ -155,3 +155,20 @@
    }
    return datas;
  }
+
+ /**
+  * 用于记录已经点击的节点
+  * code   需要记录的数
+  * nodes 记录的总的点击, 需要在vue的data里面声明, 调用的时候要用this.nodes,才会在quanju
+  *  */
+ export function handleOpen(code, nodes) {
+   var clickNodeId = "";
+   clickNodeId = "_" + code;
+   for (let index = 0; index < nodes.length; index++) {
+     if (nodes[index] === clickNodeId) {
+       return true;
+     }
+   }
+   nodes.push(clickNodeId);
+   return false;
+ }

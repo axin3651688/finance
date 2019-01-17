@@ -153,21 +153,27 @@
                 padding-top: 0px;
                 padding-bottom: 0px;
                 padding-left: 30px;
-                border-bottom: 1px solid#e5e5e5
+                border-bottom: 1px solid#e5e5e5;
+
+                .dialog-title {
+                    color: #333333;
+
+                    .el-input {
+                        width: 200px;
+                        margin-left: 50px;
+                    }
+                }
             }
 
-            .el-dialog__title {
-                // font-size: 16px;
-                color: #333333;
-            }
 
-            .el-dialog__headerbtn {
-                top: 20px;
-            }
 
-            .el-dialog__headerbtn .el-dialog__close {
-                color: #333333;
-            }
+            // .el-dialog__headerbtn {
+            //     top: 20px;
+            // }
+
+            // .el-dialog__headerbtn .el-dialog__close {
+            //     color: #333333;
+            // }
 
             // 文件夹图标
             .el-tree-node__expand-icon {
@@ -182,7 +188,7 @@
                 padding-top: 8px;
                 padding-left: 60px;
                 padding-bottom: 0px;
-                height: 435px;
+                height: 450px;
 
                 .el-tree {
                     height: 430px;
@@ -192,7 +198,8 @@
             }
 
             .el-dialog__footer {
-                padding: 0 20px;
+                height: 40px;
+                border-top: 1px solid#e5e5e5
             }
 
             .el-tree-node__label {

@@ -1,5 +1,7 @@
 import Node from './node';
-import { getNodeKey } from './util';
+import {
+  getNodeKey
+} from './util';
 
 export default class TreeStore {
   constructor(options) {
@@ -20,9 +22,11 @@ export default class TreeStore {
     });
 
     if (this.lazy && this.load) {
+      debugger
       const loadFn = this.load;
       loadFn(this.root, (data) => {
         this.root.doCreateChildren(data);
+
         this._initDefaultCheckedNodes();
       });
     } else {
@@ -33,7 +37,7 @@ export default class TreeStore {
   filter(value) {
     const filterNodeMethod = this.filterNodeMethod;
     const lazy = this.lazy;
-    const traverse = function(node) {
+    const traverse = function (node) {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
       childNodes.forEach((child) => {
@@ -81,12 +85,16 @@ export default class TreeStore {
 
   insertBefore(data, refData) {
     const refNode = this.getNode(refData);
-    refNode.parent.insertBefore({ data }, refNode);
+    refNode.parent.insertBefore({
+      data
+    }, refNode);
   }
 
   insertAfter(data, refData) {
     const refNode = this.getNode(refData);
-    refNode.parent.insertAfter({ data }, refNode);
+    refNode.parent.insertAfter({
+      data
+    }, refNode);
   }
 
   remove(data) {
@@ -100,7 +108,9 @@ export default class TreeStore {
     const parentNode = parentData ? this.getNode(parentData) : this.root;
 
     if (parentNode) {
-      parentNode.insertChild({ data });
+      parentNode.insertChild({
+        data
+      });
     }
   }
 
@@ -153,7 +163,7 @@ export default class TreeStore {
 
   getCheckedNodes(leafOnly = false, includeHalfChecked = false) {
     const checkedNodes = [];
-    const traverse = function(node) {
+    const traverse = function (node) {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
       childNodes.forEach((child) => {
@@ -176,7 +186,7 @@ export default class TreeStore {
 
   getHalfCheckedNodes() {
     const nodes = [];
-    const traverse = function(node) {
+    const traverse = function (node) {
       const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
       childNodes.forEach((child) => {
@@ -253,7 +263,7 @@ export default class TreeStore {
 
       if (leafOnly) {
         node.setChecked(false, false);
-        const traverse = function(node) {
+        const traverse = function (node) {
           const childNodes = node.childNodes;
           childNodes.forEach((child) => {
             if (!child.isLeaf) {

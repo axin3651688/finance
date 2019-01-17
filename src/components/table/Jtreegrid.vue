@@ -1,8 +1,7 @@
 <template>
   <div>
-    <el-button-group class="toolbar">
+    <el-button-group v-if="item.toolbar && item.toolbar.length > 0 " class="toolbar">
       <el-button
-        v-if="item.toolbar && item.toolbar.length > 0 "
         v-for="btn in item.toolbar"
         v-bind:key="btn.id"
         :style="btn.cellStyle"
@@ -20,8 +19,8 @@
       :cell-style="cellStyle"
       @row-click="onRowClick"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
+      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
@@ -31,6 +30,9 @@
 import treeToArray from "../treegrid/eval";
 import EventMixins from "../mixins/EventMixins";
 import BiTableColumnTree from "../table/BiTableColumnTree";
+import { apiItemDatas } from "utils/apiItemDatas";
+import { handleOpen } from "utils/index";
+import { findThirdPartData } from "~api/interface";
 // data  columns list
 export default {
   mixins: [EventMixins],
@@ -42,7 +44,9 @@ export default {
       list: [],
       dialogVisible: false,
       selectedOptions: [],
-      formatData: []
+      formatData: [],
+      nodes: [],
+      customerId: this.$store.getters.user.company.customerId
     };
   },
   name: "Jtreegrid",
@@ -50,9 +54,15 @@ export default {
 
   created() {
     debugger;
-    console.log("a", this.item);
-    this.array(this.item.datas);
-    this.convertData();
+    // console.log("a", this.item.datas);
+    this.convertData(this.item.datas);
+    let me = this;
+    this.$bus.$on("fetchdata", function(code) {
+      me.fetchData(code);
+    });
+  },
+  beforeDestroy() {
+    this.$bus.off("fetchdata");
   },
   methods: {
     rowClass({ row, rowIndex }) {
@@ -72,15 +82,40 @@ export default {
       }
     },
     /**
+     * 根据sql, params发请求,先加载子公司节点,在这里不加载所有
+     */
+    fetchData(dat) {
+      var flag = handleOpen(dat.row.id, this.nodes);
+      if (flag) return;
+      var params = apiItemDatas(this.item, dat.row.id);
+      debugger;
+      findThirdPartData(params)
+        .then(res => {
+          debugger;
+          let data = res.data.data;
+          this.findAddData(dat, data);
+          this.convertData(this.item.datas);
+        })
+        .catch(res => {
+          console.info(res);
+        });
+    },
+    findAddData(code, data) {
+      //添加元素到指定位置
+      // debugger;
+      data.unshift(code.$index + 1, 0);
+      Array.prototype.splice.apply(this.item.datas, data);
+    },
+    /**
      * 格式化数据源
      */
-    convertData() {
+    convertData(data) {
       //alert(this.item.show)
       let tmp;
-      if (!Array.isArray(this.item.rows)) {
-        tmp = [this.item.rows];
+      if (!Array.isArray(data)) {
+        tmp = [data];
       } else {
-        tmp = this.item.rows;
+        tmp = data;
       }
       const func = this.evalFunc || treeToArray;
       const args = this.evalArgs
@@ -90,7 +125,6 @@ export default {
 
       this.$set(this, "formatData", formatData);
       // console.log(this.formatData);
-      // alert(this.formatData);
       debugger;
     },
 
@@ -102,11 +136,7 @@ export default {
       this.convertData();
     },
     // 点击加载数据在下面做
-    array(datas) {
-      // debugger;
-
-      this.item.rows = datas;
-    },
+    array(datas) {},
     tranformData(data, rootItem) {
       let me = this;
       let children = [];
