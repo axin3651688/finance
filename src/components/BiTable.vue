@@ -18,7 +18,7 @@
       :data.sync="tableDatas"
       border
       :stripe="true"
-      :height="item.height || heights-88"
+      :height="item.height || heights-170"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"

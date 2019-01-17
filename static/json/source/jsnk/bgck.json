@@ -10,6 +10,9 @@
       "xtype": "JtreeGrid",
       "id": "1416001",
       "text": "报告查看",
+      "style":{
+        "height": "812px"
+    },
       "optionColumnClick":function($vue,row){
           let me = this
           console.log(me)

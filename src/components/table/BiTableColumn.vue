@@ -97,14 +97,14 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
+        :content="getCellValues(tmptabledata.datas,col,scope,tmptabledata.config.rows)"
         placement="right"
       >
         <!--    @click="dilogShow(col,scope)" -->
         <span
           v-if="tableData.datas"
           @click="columnClick(col,scope)"
-        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
+        >{{ getCellValues(tmptabledata.datas,col,scope,tmptabledata.config.rows)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -117,7 +117,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="tmptabledata.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -129,7 +129,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="tmptabledata.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -152,7 +152,8 @@ export default {
     return {
       clickRow:{},
       clickRowParams:{},
-      options:[]
+      options:[],
+      tmptabledata:[]
     };
   },
   computed: {
@@ -165,8 +166,11 @@ export default {
     }
   },
   created() {
-    this.options = this.tableData.config.columns[0].menu.list
-    debugger;
+        debugger;
+    this.tmptabledata = this.tableData
+    if(this.tableData.config.columns[0].menu && this.tableData.config.columns[0].menu.length !=0){
+        this.options = this.tableData.config.columns[0].menu.list
+    }
     console.log(this.tableData);
 
     //this.$set(this, "tableData", null);
@@ -209,9 +213,14 @@ export default {
       // }
       // this.$set(this, "tableData1", item);
       // this.$set(this.tableData1, "datas", item.datas);
-      this.$set(this, "tableData", null);
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
+
+      // this.$set(this, "tableData", null);
+      // this.$set(this, "tableData", item);
+      // this.$set(this.tableData, "datas", item.datas);
+
+      this.$set(this, "tmptabledata", null);
+      this.$set(this, "tmptabledata", item);
+      this.$set(this.tmptabledata, "datas", item.datas);
     },
     optionColumnClick(row){
       this.clickRow = row;
