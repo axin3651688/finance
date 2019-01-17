@@ -3,7 +3,7 @@
     <div class="panel-left">
       <el-scrollbar>
         <ul class="sub-item" v-if="friendData">
-          <li :class="{active: activeFriend === friend.id}"
+          <li :class="{active: activeUser === friend.id}"
               v-for="friend in friendData"
               :key="friend.id"
               @click="getUserinfo(friend.id)"
@@ -87,7 +87,6 @@ export default {
     return {
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
-      activeFriend: null, // 当前选中的好友
       friendData: null, // [] 接收一个数组
       rightUserInfoData: null // {} 接收一个对象
     }
@@ -139,7 +138,6 @@ export default {
 
           if (res.data.code === 200) {
             let rightUserInfoData = res.data.data;
-            this.activeFriend = rightUserInfoData.user.id;
             this.rightUserInfoData = rightUserInfoData;
             this.requestedUser[userId] = rightUserInfoData;
             // alert(this.datas)
@@ -195,6 +193,7 @@ export default {
 </script>
 
 
+
 <style lang="scss" scoped>
   @import "@s/message/index.scss";
   @import "@s/message/icons.scss";
@@ -217,13 +216,25 @@ export default {
     ul.sub-item {
       li {
         position: relative;
+        box-sizing: border-box;
         height: 60px;
         padding: 0 15px 0 10px;
         cursor: pointer;
+        border-bottom: 1px solid $colorBorderLayoutLight;
         transition: all .3s;
+        &:after {
+          display: block;
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 4px;
+          transition: background-color .3s;
+        }
 
         &:hover {
-          box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
         }
 
         .arrow {
@@ -238,14 +249,15 @@ export default {
       }
 
       li.active {
-        border-left-color: $colorTheme;
+        &:after {
+          background-color: $colorTheme;
+        }
       }
 
       figure {
         display: flex;
         align-items: center;
         height: 100%;
-        border-bottom: 1px solid $colorBorder2;
 
         .img-box {
           width: 40px;

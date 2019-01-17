@@ -281,13 +281,27 @@ export default {
         ul.sub-item {
           li {
             position: relative;
+            box-sizing: border-box;
             height: 60px;
             padding: 0 10px;
             cursor: pointer;
+            border-bottom: 1px solid $colorBorderLayoutLight;
             transition: all .3s;
 
+            &:after{
+              display: block;
+              content: '';
+              position: absolute;
+              width: 4px;
+              height: 100%;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              transition: all .3s;
+            }
+
             &:hover {
-              box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+              box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
             }
 
             .arrow {
@@ -299,13 +313,8 @@ export default {
           }
 
           li.active {
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
             &:after{
-              position: absolute;
-              width: 4px;
-              height: 100%;
-              right: 0;
-
+              background-color: $colorTheme;
             }
           }
 
@@ -313,7 +322,6 @@ export default {
             display: flex;
             align-items: center;
             height: 100%;
-            border-top: 1px solid $colorBorder2;
             margin-top: -1px;
 
             .img-box {
