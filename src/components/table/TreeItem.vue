@@ -29,6 +29,12 @@ export default {
     return {};
   },
   props: ["prop", "label", "width", "tableData"],
+  mounted() {
+    /*
+     *默认展开树表第一级  mj
+     */
+    this.$bus.emit("fetchdata", { $index: 0, row: { id: 1 } }); //触顶级更新
+  },
   methods: {
     // 图标显示
     iconShow(index, record) {
@@ -52,13 +58,10 @@ export default {
         this.tableData.hasOwnProperty("async") &&
         this.tableData.async == true
       ) {
-        console.log(trIndex);
-
+        // console.log(trIndex);
         // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
         this.$bus.emit("fetchdata", trIndex); //触发    发送数据
       }
-      const record = this.tableData.datas[trIndex.$index];
-      record._expanded = !record._expanded;
     }
   }
 };

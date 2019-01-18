@@ -20,14 +20,11 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
-// import EventMixins from "../mixins/EventMixins";
 import BiTableColumnTree from "../table/BiTableColumnTree";
 import { apiItemDatas } from "utils/apiItemDatas";
 import { handleOpen } from "utils/index";
 import { findThirdPartData } from "~api/interface";
-
 export default {
-  // mixins: [EventMixins],
   components: {
     BiTableColumnTree
   },
@@ -39,16 +36,21 @@ export default {
   },
   name: "Jtreegrid",
   props: ["item"],
-
   created() {
     debugger;
-
     this.convertData(this.item.datas);
     let me = this;
-    this.$bus.$on("fetchdata", function(code) {
-      me.fetchData(code);
+    // 下面接受子级触发事件,初始化不会加载下面
+    this.$bus.$on("fetchdata", function(dat) {
+      // 改变父级的折叠属性
+      console.log(dat);
+
+      let record = me.item.datas[dat.$index];
+      record._expanded = !record._expanded;
+      me.fetchData(dat);
     });
   },
+  mounted() {},
   beforeDestroy() {
     this.$bus.off("fetchdata");
   },
@@ -81,7 +83,7 @@ export default {
           .then(res => {
             // debugger;
             let data = res.data.data;
-            console.log(data);
+            // console.log(data);
             this.findAddData(dat, data);
             this.convertData(this.item.datas);
           })
@@ -95,7 +97,6 @@ export default {
     /**
      * 控制节点的展开和关闭
      */
-
     isfold(dat) {
       let tempArray = this.item.datas.filter(data => {
         if (data.pid == dat.id && data.nlevel == dat.nlevel + 1) {
@@ -110,13 +111,13 @@ export default {
             // console.log(data.text);
             this.isfold(data);
           } else if (data.nlevel == dat.nlevel + 1) {
-            console.log(data.text);
+            // console.log(data.text);
             data._isHide = !data._isHide;
           }
           return true;
         }
       });
-      console.info(tempArray);
+      // console.info(tempArray);
     },
     findAddData(code, data) {
       //添加元素到指定位置
@@ -141,10 +142,9 @@ export default {
         ? Array.concat([tmp, this.expandAll], this.evalArgs)
         : [tmp, this.expandAll];
       let formatData = func.apply(null, args);
-
       this.$set(this, "formatData", formatData);
-      console.log(this.formatData);
-      debugger;
+      // console.log(this.formatData);
+      // debugger;
     },
 
     upData(item) {
@@ -153,8 +153,6 @@ export default {
       this.item = item;
       this.convertData();
     },
-    // 点击加载数据在下面做
-    array(datas) {},
     tranformData(data, rootItem) {
       let me = this;
       let children = [];
@@ -179,7 +177,7 @@ export default {
         }
       }
     },
-
+    // 下面处理行的显影
     showRow(bean) {
       let row = bean.row;
       let style = row._isHide
@@ -190,106 +188,5 @@ export default {
   }
 };
 </script>
-<style rel="stylesheet/css" lang="scss">
-@keyframes treeTableShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes treeTableShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 
-.content {
-  .el-table th > .cell {
-    text-align: center;
-  }
-  .el-input__inner {
-    padding: 0px;
-  }
-  .el-input--suffix .el-input__inner {
-    border: none;
-  }
-  .el-button {
-    padding: 0px;
-    position: relative;
-  }
-  /deep/ .el-input__inner {
-    background: transparent;
-    &::placeholder {
-      color: transparent;
-    }
-  }
-  .el-cascader {
-    background: transparent;
-    height: 27px;
-  }
-
-  .el-cascader .el-icon-arrow-down {
-    display: none;
-  }
-  .el-cascader__label {
-    padding: 0px;
-    background: transparent;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .el-table__body .el-table__row td {
-    padding: 4px 0;
-  }
-}
-</style>
  
-<style scoped>
-#app .containerMain {
-  padding-top: 85px;
-}
-.ms-tree-space {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  width: 18px;
-  height: 14px;
-}
-
-.ms-tree-space::before {
-  content: "";
-}
-.processContainer {
-  width: 100%;
-  height: 100%;
-}
-table td {
-  line-height: 26px;
-}
-.tree-ctrl {
-  position: relative;
-  cursor: pointer;
-  color: #2196f3;
-  margin-left: -18px;
-}
-.el-table td,
-.el-table th {
-  padding: 10px 0;
-}
-img {
-  width: 20px;
-  position: absolute;
-  right: 50%;
-  top: 5px;
-  -moz-transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-}
-</style>
