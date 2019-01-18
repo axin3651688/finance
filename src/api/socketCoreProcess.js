@@ -1,18 +1,9 @@
 import {
-  Message,
-  MessageBox,
-  Notification
-} from 'element-ui'
-import router from '@v/layout/router'
-
-import {
-  login
-} from "../api/interface.js";
-import {
   isArray
-} from 'util';
+} from 'util'
 import cmd1500Handle from './cmd1500Handle'
-import {messagePageProcessSocket} from 'utils/message'
+import {messagePageProcessSocket} from 'utils/message.js' // 独立消息页面message_page的消息自己处理
+import {showNotification} from 'utils/notification.js'  // 消息弹窗
 
 /**
  * 消息核心处理
@@ -20,101 +11,54 @@ import {messagePageProcessSocket} from 'utils/message'
  * date:2018-12-03
  */
 export default function socketCoreProcess(websocket, datas) {
-  let $notify = Notification;
   let parseData = function (data) {
-    messagePageProcessSocket(data); // 独立消息页面message_page的消息自己处理
-    let code = data.code;
-    console.info(data);
-    showNotification(data);
+    let code = data.code
+    console.info(data)
+    showNotification(data) // 消息弹窗
+    messagePageProcessSocket(data) // 独立消息页面message_page的消息自己处理
     // debugger;
     switch (code) {
       case 1001:
-        break;
+        break
       case 1002:
         // 账号重复登录提示及处理
-        console.log(data);
-        console.log('账号在别端登录');
-        break;
+        console.log(data)
+        console.log('账号在别端登录')
+        break
       case 1003:
         // 登录已失效，请重新登录
-        break;
+        break
       case 1004:
-        // 登录已失效，请重新登录
-        break;
+        break
       case 1006:
         // 对方收到消息或读了消息
-        break;
+        break
       case 1100:
         // 单聊
-        break;
+        break
       case 1101:
         // 群聊
-        // debugger;
-        processServerMessage(data);
-        break;
+        break
       case 1500:
         //终端控制处理逻辑 {text:"执行成功"}
-        let sendBean = cmd1500Handle(websocket, data);
+        let sendBean = cmd1500Handle(websocket, data)
         // sendBean.device = data.fromDevice;
         // sendBean.code = 15001; //收到口令回执
         // websocket.send(sendBean);
-        break;
+        break
       case 2000:
-        break;
+        break
 
       default:
     }
-  };
-
-  // let allowNotification = window.Notification;
-  let showNotification = function (data) {
-    // debugger;
-
-    if (!localStorage.authorization) return false; // 如果没有登陆不弹消息提示
-
-    // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，则 return
-    let notificationTypeList = [1100, 1101, 11017, 11016, 11018, 1500, 11021, 1005, 1004];
-    if (notificationTypeList.indexOf(data.code) < 0) return false; // 如果消息不在列表中，则 return
-
-    let bean = data.data;
-    let user = bean.user;
-    // debugger;
-    let who = "自己";
-    if (user) {
-      who = "别人";
-    }
-    var title = "收到消息";
-    $notify.success({
-      title: title,
-      message: data.msg,
-      showClose: true,
-      position: "bottom-right"
-    });
-    // var n = new Notification(title, { // 标题
-    //   body: data.msg || title, // 显示内容
-    //   icon: "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
-    //   lang: 'zh-CN',
-    //   data: {}
-    // });
-    // n.onclick = function (event, msg) {
-    //   event.preventDefault(); // prevent the browser from focusing the
-    //   window.focus();
-    //   //Cnbi.Msg.alert("可传入回调函数执行哦，亲！",4);
-    //   // var $btn = $("#layui-layim-min").parent();// $btn.trigger("click");
-    //   n.close();
-    // }
-    // setTimeout(function () {
-    //   n.close();
-    // }, 6000); // 两秒后关闭通知
-
   }
 
   // debugger;
   if (isArray(datas)) {
     datas.forEach(data => {
-      parseData(data);
-    });
+      parseData(data)
+    })
   } else {
-    parseData(datas);
+    parseData(datas)
   }
 }

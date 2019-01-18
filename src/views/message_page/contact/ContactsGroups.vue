@@ -482,6 +482,7 @@ export default {
         }
 
         .pure-text {
+          padding-right: 20px;
           font-size: 16px;
           line-height: 20px;
           color: $colorText1;

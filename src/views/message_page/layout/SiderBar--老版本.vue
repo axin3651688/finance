@@ -15,23 +15,28 @@
     <div class="siderbar-middle">
       <ul>
         <router-link tag="li" to="/message_page/home" class="nav-item">
-          <div class="nav-item_inner nav-item_icon" title="首页">
-            <img src="@a/message/icon/home_page.svg" class="img-selected">
-            <img src="@a/message/icon/home_page_unselected.svg" class="img-unselected">
+          <div class="nav-item_inner nav-item_text">首页</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="@ma/icon/home_page.svg" class="img-selected">
+            <img src="@ma/icon/home_page_unselected.svg" class="img-unselected">
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
-          <div class="nav-item_inner nav-item_icon" title="消息">
+          <div class="nav-item_inner nav-item_text">消息</div>
+          <div class="nav-item_inner nav-item_icon">
             <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" class="item">
-              <img src="@a/message/icon/message_selected.svg" class="img-selected">
-              <img src="@a/message/icon/message_unselected.svg" class="img-unselected">
+              <img src="@ma/icon/message_selected.svg" class="img-selected">
+              <img src="@ma/icon/message_unselected.svg" class="img-unselected">
             </el-badge>
+            <!--<img src="@ma/icon/message_selected.svg" class="img-selected">-->
+            <!--<img src="@ma/icon/message_unselected.svg" class="img-unselected">-->
           </div>
         </router-link>
         <router-link tag="li" to="/message_page/contact" class="nav-item">
-          <div class="nav-item_inner nav-item_icon" title="通讯录">
-            <img src="@a/message/icon/person_selected.svg" class="img-selected">
-            <img src="@a/message/icon/person_unselected.svg" class="img-unselected">
+          <div class="nav-item_inner nav-item_text">通讯录</div>
+          <div class="nav-item_inner nav-item_icon">
+            <img src="@ma/icon/person_selected.svg" class="img-selected">
+            <img src="@ma/icon/person_unselected.svg" class="img-unselected">
           </div>
         </router-link>
       </ul>
@@ -39,8 +44,9 @@
 
     <div class="sideervar-bottom">
       <div class="nav-item nav-item_quit">
-        <div class="nav-item_inner nav-item_icon" title="退出">
-          <img src="@a/message/icon/quit.svg" class="img-unselected">
+        <div class="nav-item_inner nav-item_text" @click="dialogQuitVisible=true">退出</div>
+        <div class="nav-item_inner nav-item_icon">
+          <img src="@ma/icon/quit.svg" alt="">
         </div>
       </div>
     </div>
@@ -255,11 +261,6 @@ export default {
       .nav-item_inner {
         text-align: center;
         line-height: $navItemHeight;
-        &:hover {
-          .img-unselected {
-            opacity: 1;
-          }
-        }
       }
 
       .nav-item_icon {
@@ -277,8 +278,6 @@ export default {
 
         .img-unselected {
           display: block;
-          opacity: .55;
-          transition: opacity .3s;
         }
 
         .img-selected {
@@ -291,10 +290,26 @@ export default {
         }
       }
 
+      &:hover {
+        .nav-item_icon {
+          background: $colorTheme;
+          color: transparent;
+          width: 4px;
+
+          img {
+            display: none !important;
+          }
+        }
+
+        .nav-item_text {
+          background: rgba(57, 119, 234, 0.2);
+        }
+      }
     }
 
     .nav-item.router-link-active {
       .nav-item_icon {
+        background: $colorTheme;
 
         .img-unselected {
           display: none;
