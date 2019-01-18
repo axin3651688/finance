@@ -1,13 +1,5 @@
 <template>
   <div>
-    <el-button-group v-if="item.toolbar && item.toolbar.length > 0 " class="toolbar">
-      <el-button
-        v-for="btn in item.toolbar"
-        v-bind:key="btn.id"
-        :style="btn.cellStyle"
-        @click="btnClick(btn)"
-      >{{btn.text}}</el-button>
-    </el-button-group>
     <el-table
       :row-style="showRow"
       v-bind="$attrs"
@@ -28,25 +20,21 @@
  
 <script>
 import treeToArray from "../treegrid/eval";
-import EventMixins from "../mixins/EventMixins";
+// import EventMixins from "../mixins/EventMixins";
 import BiTableColumnTree from "../table/BiTableColumnTree";
 import { apiItemDatas } from "utils/apiItemDatas";
 import { handleOpen } from "utils/index";
 import { findThirdPartData } from "~api/interface";
-// data  columns list
+
 export default {
-  mixins: [EventMixins],
+  // mixins: [EventMixins],
   components: {
     BiTableColumnTree
   },
   data() {
     return {
-      list: [],
-      dialogVisible: false,
-      selectedOptions: [],
       formatData: [],
-      nodes: [],
-      customerId: this.$store.getters.user.company.customerId
+      nodes: []
     };
   },
   name: "Jtreegrid",
@@ -54,7 +42,7 @@ export default {
 
   created() {
     debugger;
-    // console.log("a", this.item.datas);
+
     this.convertData(this.item.datas);
     let me = this;
     this.$bus.$on("fetchdata", function(code) {
@@ -69,14 +57,14 @@ export default {
       return "height:100%-64px";
     },
     onRowClick(row, e, column) {
+      // 在底层有列点击,顶层有行点击
       // debugger;
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
-      // this.onCellClickDefault(row, column, e);
     },
     cellStyle(row) {
-      //  debugger
+      // debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -86,19 +74,49 @@ export default {
      */
     fetchData(dat) {
       var flag = handleOpen(dat.row.id, this.nodes);
-      if (flag) return;
-      var params = apiItemDatas(this.item, dat.row.id);
-      debugger;
-      findThirdPartData(params)
-        .then(res => {
+      if (!flag) {
+        var params = apiItemDatas(this.item, dat.row.id);
+        debugger;
+        findThirdPartData(params)
+          .then(res => {
+            // debugger;
+            let data = res.data.data;
+            console.log(data);
+            this.findAddData(dat, data);
+            this.convertData(this.item.datas);
+          })
+          .catch(res => {
+            console.info(res);
+          });
+      } else {
+        this.isfold(dat.row);
+      }
+    },
+    /**
+     * 控制节点的展开和关闭
+     */
+
+    isfold(dat) {
+      let tempArray = this.item.datas.filter(data => {
+        if (data.pid == dat.id && data.nlevel == dat.nlevel + 1) {
           debugger;
-          let data = res.data.data;
-          this.findAddData(dat, data);
-          this.convertData(this.item.datas);
-        })
-        .catch(res => {
-          console.info(res);
-        });
+          if (data.leaf == 0) {
+            debugger;
+            if (data._expanded == false) {
+              data._isHide = !data._isHide;
+              return true;
+            }
+            data._isHide = !data._isHide;
+            // console.log(data.text);
+            this.isfold(data);
+          } else if (data.nlevel == dat.nlevel + 1) {
+            console.log(data.text);
+            data._isHide = !data._isHide;
+          }
+          return true;
+        }
+      });
+      console.info(tempArray);
     },
     findAddData(code, data) {
       //添加元素到指定位置
@@ -106,11 +124,12 @@ export default {
       data.unshift(code.$index + 1, 0);
       Array.prototype.splice.apply(this.item.datas, data);
     },
+
     /**
      * 格式化数据源
      */
     convertData(data) {
-      //alert(this.item.show)
+      debugger;
       let tmp;
       if (!Array.isArray(data)) {
         tmp = [data];
@@ -124,7 +143,7 @@ export default {
       let formatData = func.apply(null, args);
 
       this.$set(this, "formatData", formatData);
-      // console.log(this.formatData);
+      console.log(this.formatData);
       debugger;
     },
 
@@ -132,7 +151,6 @@ export default {
       this.$set(this, "formatData", "");
       this.$set(this, "formatData", null);
       this.item = item;
-
       this.convertData();
     },
     // 点击加载数据在下面做
@@ -162,14 +180,12 @@ export default {
       }
     },
 
-    showRow(row) {
-      const show = row.row.parent
-        ? row.row.parent._expanded && row.row.parent._show
-        : true;
-      row.row._show = show;
-      return show
-        ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
-        : "display:none;";
+    showRow(bean) {
+      let row = bean.row;
+      let style = row._isHide
+        ? "display:none;"
+        : "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;";
+      return style;
     }
   }
 };

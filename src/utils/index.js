@@ -159,7 +159,8 @@
  /**
   * 用于记录已经点击的节点
   * code   需要记录的数
-  * nodes 记录的总的点击, 需要在vue的data里面声明, 调用的时候要用this.nodes,才会在quanju
+  * nodes 记录的总的点击, 需要在vue的data里面声明, 调用的时候要用this.nodes,才会起到全局作用
+  * 如果有记录,返回真
   *  */
  export function handleOpen(code, nodes) {
    var clickNodeId = "";
