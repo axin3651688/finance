@@ -83,6 +83,11 @@
                 rightWidth: 80,
             }
         },
+        watch: {
+            search(val) {
+                this.$refs.tree.filter(val);
+            }
+        },
         computed: {
             ...mapGetters(['user', 'messageStore']),
             loginUserId() {
@@ -117,9 +122,7 @@
             },
             filterNode(value, data) {
                 if (!value) return true;
-                console.log('search', this.search);
-                console.log('filterNode', value);
-                return data.label.indexOf(value) !== -1;
+                return data.text.indexOf(value) !== -1;
             },
             getCompList(key) {
 

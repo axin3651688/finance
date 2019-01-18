@@ -238,6 +238,15 @@ export function SAVE_ROLE_ACCREDIT_OTHER(data) {
         data: data
     })
 }
+// 查询在线用户
+export function ONLINE_USER_LIST(data) {
+    // debugger
+    return request({
+        url: '/api/api/online_user_list',
+        method: 'post',
+        data: data
+    })
+}
 
 
 

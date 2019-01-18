@@ -211,8 +211,7 @@
 
         .main_table {
             margin: 20px 0px 0px 0px;
-            border-radius: 20px 20px 20px 20px;
-            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+            border-radius: 20px 20px 0 0;
 
             /deep/ .gutter {
                 background: rgba(221, 235, 246, 1);
@@ -251,6 +250,10 @@
         }
 
         .page-row {
+            padding: 0 0 20px 0;
+            border-radius: 0px 0px 20px 20px;
+            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+            background: rgba(255, 255, 255, 1);
             display: flex;
             justify-content: center;
 

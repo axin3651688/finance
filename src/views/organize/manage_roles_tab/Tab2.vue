@@ -16,7 +16,7 @@
         </div>
 
         <div class="row-save">
-            <el-button type="primary" @click="clickSave" class="btn-save">保存
+            <el-button type="primary" @click="clickSave" v-show="appData.length>0" class="btn-save">保存
             </el-button>
         </div>
 

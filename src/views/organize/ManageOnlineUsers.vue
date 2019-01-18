@@ -5,33 +5,34 @@
                       class="input-with-select">
             </el-input>
 
-            <div class="online-count"> 当前在线：{{tableData.length}}人</div>
+            <div class="online-count"> 当前在线：{{totalCount}}人</div>
         </div>
 
 
-            <el-table
-                    :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
-                    stripe height="100%" max-height="100%" class="main-table"   :header-cell-style="getHeaderClass"
-                    :cell-style="getRowClass">
-                <el-table-column prop="name" align="center" label="用户名" min-width="20%">
-                    <template slot-scope="scope">
-                        <div class="row-user-an">
-                            <div class="row-user-col">
-                                <img class="row-user-avatar" :src="scope.row.avatar">
-                                <span class="row-user-name">{{ scope.row.name }}</span>
-                            </div>
+        <el-table
+                :data="pageData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase())|| data.aboutCompany.toLowerCase().includes(search.toLowerCase())|| data.role.toLowerCase().includes(search.toLowerCase()))"
+                stripe height="100%" max-height="100%" class="main-table"
+                :header-cell-style="getHeaderClass"
+                :cell-style="getRowClass">
+            <el-table-column prop="name" align="center" label="用户名" min-width="20%">
+                <template slot-scope="scope">
+                    <div class="row-user-an">
+                        <div class="row-user-col">
+                            <img class="row-user-avatar" :src="scope.row.avatar">
+                            <span class="row-user-name">{{ scope.row.userName }}</span>
                         </div>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="aboutCompany" align="center" label="所属公司" min-width="40%">
-                </el-table-column>
-                <el-table-column prop="role" align="center" label="角色" min-width="30%">
-                </el-table-column>
-                <el-table-column prop="time" align="center" label="登录时间" min-width="10%">
-                </el-table-column>
-            </el-table>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="belongCompanyName" align="center" label="所属公司" min-width="40%">
+            </el-table-column>
+            <el-table-column prop="roleNames" align="center" label="角色" min-width="30%">
+            </el-table-column>
+            <el-table-column prop="loginTime" align="center" label="登录时间" min-width="10%">
+            </el-table-column>
+        </el-table>
 
-        <div v-show="tableData.length>pageSize" class="page-row">
+        <div class="page-row">
             <div class="page">
                 <el-pagination
                         @size-change="handleSizeChange"
@@ -40,7 +41,7 @@
                         :page-size="pageSize"
                         background
                         layout="prev, pager, next, total, jumper"
-                        :total="100">
+                        :total="totalCount">
                 </el-pagination>
             </div>
         </div>
@@ -49,20 +50,30 @@
 
 
 <script>
+    import {ONLINE_USER_LIST} from '~api/organize.js';
+    import {mapGetters} from 'vuex'
+
     export default {
         name: 'Todo',
         data() {
             return {
                 search: '',
-                pageSize: 20,
+                pageSize: 10,
                 currentPage: 1,
-                tableData: []
+                pageData: [],
+                totalCount: 0,
             }
         },
         mounted() {
 
         },
-        created(){
+        computed: {
+            ...mapGetters(['user', 'messageStore']),
+            loginUserId() {
+                return this.user.user.id;
+            },
+        },
+        created() {
             this.getTableData()
         },
         methods: {
@@ -93,18 +104,21 @@
                 }
             },
             getTableData() {
-                let tempTableList = [];
-                for (let i = 0; i < 21; i++) {
-                    let temp = {
-                        avatar: 'https://avatars0.githubusercontent.com/u/33865977?s=400&v=4',
-                        time: '2016-05-02',
-                        name: '赵小虎',
-                        aboutCompany: '第'+this.currentPage+'页，合肥经邦集团',
-                        role: '后端研发工程师',
-                    }
-                    tempTableList.push(temp)
+                let params = {
+                    "page": this.currentPage,
+                    "size": this.pageSize,
+                    "userId": this.loginUserId
                 }
-                this.tableData = tempTableList;
+                ONLINE_USER_LIST(params).then(res => {
+                    console.log('请求ONLINE_USER_LIST：', res.data.data)
+                    if (res.data.code === 200) {
+                        this.totalCount = res.data.data.totalElements
+                        this.pageData = res.data.data.data
+                    }
+
+                }).catch(err => {
+                    console.log('请求compList：', err)
+                });
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
@@ -172,8 +186,7 @@
 
         .main-table {
             margin: 20px 0px 0px 0px;
-            border-radius: 20px 20px 20px 20px;
-            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+            border-radius:20px 20px 0 0 ;
 
             /deep/ .gutter {
                 background: rgba(221, 235, 246, 1);
@@ -182,7 +195,7 @@
             .row-user-an {
                 display: flex;
                 flex-direction: row;
-                justify-content: center;
+                justify-content: start;
                 align-items: center;
 
                 .row-user-col {
@@ -210,7 +223,12 @@
             }
 
         }
+
         .page-row {
+            padding: 0 0 20px 0;
+            border-radius: 0px 0px 20px 20px;
+            box-shadow: 0px 10px 20px rgba(8, 69, 81, 0.1);
+            background: rgba(255, 255, 255, 1);
             display: flex;
             justify-content: center;
 
@@ -218,5 +236,6 @@
                 margin: 10px 0 0px 0;
             }
         }
+
     }
 </style>

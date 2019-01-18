@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <el-checkbox :indeterminate="isIndeterminate" v-show="rightList.length>0" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
 
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkedList" @change="handleCheckedChange">
@@ -12,7 +12,7 @@
 
 
         <div class="row-save">
-            <el-button type="primary" @click="updateRight" class="btn-save">保存
+            <el-button type="primary" @click="updateRight" v-show="rightList.length>0" class="btn-save">保存
             </el-button>
         </div>
     </div>
@@ -67,8 +67,7 @@
                     this.preList = JSON.parse(JSON.stringify(res.data.data))
                     let temp = []
                     res.data.data.forEach(right => {
-                        if (right.accredit != 0) {
-                            console.log('right.accredit!=0', right)
+                        if (right.accredit !== 0) {
                             temp.push(right)
                         }
                     })

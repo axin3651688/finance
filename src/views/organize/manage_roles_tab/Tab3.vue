@@ -35,7 +35,7 @@
         </div>
 
         <div class="row-save">
-            <el-button type="primary" @click="clickSave" class="btn-save">保存
+            <el-button type="primary" @click="clickSave" v-show="actionList.length>0|| nodeList.length>0" class="btn-save">保存
             </el-button>
         </div>
     </div>
