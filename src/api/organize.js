@@ -252,7 +252,6 @@ export function ONLINE_USER_LIST(data) {
 // /api/company_user_list
 // 公司成员列表 COMPANY_USER_LIST
 
-// 保存角色的授权公司权限
 export function COMPANY_USER_LIST(data) {
     // debugger
     return request({

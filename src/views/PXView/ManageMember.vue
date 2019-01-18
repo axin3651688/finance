@@ -23,7 +23,7 @@
                         :expand-on-click-node="true">
             <span class="custom-tree-node" slot-scope="{ node, data }">
             <span :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
-            <el-dropdown  @command="handleCommand">
+            <el-dropdown>
 
             <span style="margin-right: 20px" v-show="selectComp.id===data.id"
                   class="el-dropdown-link">
@@ -162,6 +162,11 @@
         },
         methods: {
 
+            filterNode(value, data) {
+                if (!value) return true;
+                return data.text.indexOf(value) !== -1;
+            },
+            
             getCompList(key) {
 
                 FIND_SUB_COMPANY_LIST(this.loginUserId).then(res => {
@@ -225,7 +230,6 @@
         padding-left: 0 !important;
         height: 100vh;
     }
-
     /deep/ .el-tree-node__expand-icon {
         font-size: 16px;
     }
@@ -292,7 +296,6 @@
 
             .custom-tree-node {
                 flex: 1;
-                width: 300px;
                 display: flex;
                 align-items: center;
                 position: relative;
@@ -301,17 +304,16 @@
                 padding-right: 8px;
 
                 .node-text {
-                    width: 360px;
                     overflow: hidden;
                     margin-left: 20px;
                     text-overflow: ellipsis;
                     color: rgba(102, 102, 102, 0.80);
-                    line-height: 30px;
+                    line-height: 60px;
                     white-space: nowrap;
                 }
 
                 .node-text.active {
-                    color: rgba(255, 255, 255, 1);
+                    /*color: rgba(255, 255, 255, 1);*/
                 }
             }
 
