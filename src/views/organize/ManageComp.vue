@@ -19,20 +19,20 @@
                         :filter-node-method="filterNode"
                         ref="tree"
                         :expand-on-click-node="true">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
-            <el-dropdown  @command="handleCommand">
+                        <span :ref="'node'+data.id" class="custom-tree-node" slot-scope="{ node, data }">
+                        <span  :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
+                        <el-dropdown  @command="handleCommand">
 
-            <span style="margin-right: 20px" v-show="selectComp.id===data.id"
-                  class="el-dropdown-link">
-            <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="2">创建子公司</el-dropdown-item>
-            <el-dropdown-item command="3">编辑公司</el-dropdown-item>
-            </el-dropdown-menu>
-            </el-dropdown>
-            </span>
+                        <span style="margin-right: 20px" v-show="selectComp.id===data.id"
+                              class="el-dropdown-link">
+                        <i class="el-icon-more el-icon--right" style="transform: rotate(90deg);"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="2">创建子公司</el-dropdown-item>
+                        <el-dropdown-item command="3">编辑公司</el-dropdown-item>
+                        </el-dropdown-menu>
+                        </el-dropdown>
+                        </span>
                 </el-tree>
             </el-scrollbar>
         </div>
@@ -136,6 +136,7 @@
                             this.selectComp = {
                                 id:res.data.data.id
                             }
+                            console.log('this.refs：', this.$refs)
                         }
                         let temp = []
                         temp.push(res.data.data)

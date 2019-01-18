@@ -388,10 +388,20 @@
                 SAVE_SUB_COMPANY(params).then(res => {
                     console.log('res', res)
                     if (res.data.code === 200) {
-                        alert(res.data.msg)
+                        this.$message({
+                            showClose: true,
+                            message: res.data.msg,
+                            type: 'success'
+                        });
                         this.$emit('compCreated', res.data.data.id);
                         console.log('upload---create', res.data.data.id);
                         this.$refs['createForm'].resetFields();
+                    }else {
+                        this.$message({
+                            showClose: true,
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
                     }
                 })
             }

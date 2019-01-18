@@ -467,38 +467,48 @@
                     userId: this.loginUserId,
                 }
                 let b = false
-                if (hdUrl!=this.preCompInfo.avatar){
+                if (hdUrl!==this.preCompInfo.avatar){
                     params.avatar=  hdUrl
                     b=true
                 }
-                if (this.compForm.text!=this.preCompInfo.text){
+                if (this.compForm.text!==this.preCompInfo.text){
                     params.text=  this.compForm.text
                     b=true
                 }
-                if (this.compForm.indus[1]!=this.preCompInfo.industryId){
+                if (this.compForm.indus[1]!==this.preCompInfo.industryId){
                     params.industryId=  this.compForm.indus[1]
                     b=true
                 }
-                if (this.compForm.note!=this.preCompInfo.note){
+                if (this.compForm.note!==this.preCompInfo.note){
                     params.note=  this.compForm.note
                     b=true
                 }
-                if (this.compForm.range[0]!=this.preCompInfo.rangeId){
+                if (this.compForm.range[0]!==this.preCompInfo.rangeId){
                     params.rangeId=  this.compForm.range[0]
                     b=true
                 }
-                if (this.compForm.area[this.compForm.area.length - 1]!=this.preCompInfo.regionId){
+                if (this.compForm.area[this.compForm.area.length - 1]!==this.preCompInfo.regionId){
                     params.regionId=  this.compForm.area[this.compForm.area.length - 1]
                     b=true
                 }
-                console.log('b', b)
                 console.log('params', params)
                 if (b){
                     EDIT_COMPANY_INFO(params).then(res => {
                         console.log('updateComp', res.data)
                         if (res.data.code === 200) {
+                            this.$message({
+                                showClose: true,
+                                message: res.data.msg,
+                                type: 'success'
+                            });
                             this.$emit('compUpdated', this.selectComp.id);
                             this.getBaseInfo()
+                        }else {
+                            this.$message({
+                                showClose: true,
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
                         }
                     })
                 }else {

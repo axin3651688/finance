@@ -62,6 +62,7 @@
                 currentPage: 1,
                 pageData: [],
                 totalCount: 0,
+
             }
         },
         mounted() {
@@ -77,6 +78,7 @@
             this.getTableData()
         },
         methods: {
+
             //设置表格第一行的颜色
             getHeaderClass({row, column, rowIndex, columnIndex}) {
                 if (rowIndex == 0) {
