@@ -140,8 +140,9 @@ export default {
   data() {
     return {
       clickRow: {},
-      clickRowParams: {}
+      clickRowParams: {},
       //options: []
+      tmptabledata:[]
     };
   },
   computed: {

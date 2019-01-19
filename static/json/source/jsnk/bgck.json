@@ -7,7 +7,6 @@
     },
     "showDims": ["year", "month", "company", "conversion"],
     "items": [{
-<<<<<<< HEAD
       "xtype": "JtreeGrid",
       "id": "1416001",
       "text": "报告查看",
@@ -41,13 +40,6 @@
           "periodCount": 2,
           "compareType": "-1&0",
           "reverse": true
-=======
-        "xtype": "JtreeGrid",
-        "id": "1416001",
-        "text": "报告查看",
-        "style": {
-            "height": "812px"
->>>>>>> bac03eb2f012fc46d4d0823888272dd4971f540f
         },
         "optionColumnClick": function ($vue, row) {
             let me = this

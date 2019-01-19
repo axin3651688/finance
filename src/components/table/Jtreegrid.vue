@@ -110,6 +110,8 @@ export default {
      * 格式化数据源
      */
     convertData(data) {
+      debugger
+      console.log(data)
       //alert(this.item.show)
       let tmp;
       if (!Array.isArray(data)) {
