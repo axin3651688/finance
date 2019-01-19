@@ -4,13 +4,15 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: "",
+       name: "",
+  components: {},
+  props: {},
   data() {
     return {};
   },
-  components: {}
+  create() {},
+  computed() {},
+  methods: {}
 };
 </script>
 
-<style  lang="scss" scoped>
-</style>

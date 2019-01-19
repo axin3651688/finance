@@ -39,7 +39,7 @@
 <script>
 import { login } from "~api/interface.js";
 import { mapActions } from "vuex";
-import router from "@v/layout/router";
+import router from "@/router";
 import store from "@/store";
 import webSocket from "utils/webSocket";
 export default {

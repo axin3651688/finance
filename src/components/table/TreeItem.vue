@@ -7,7 +7,7 @@
         :style="{'margin-left':scope.row.nlevel*16+'px'}"
         @click="toggleExpanded(scope)"
       >
-        <span v-if="iconShow(0,scope.row) ">
+                <span v-if="iconShow(0,scope.row) ">
           <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
           <i v-else class="el-icon-minus"></i>
           <i class="t-icon"></i>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'utils/http'
 import ZkTable from 'vue-table-with-tree-grid'
-import router from './router'
+import router from '@/router'
 import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'

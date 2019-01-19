@@ -139,7 +139,7 @@
         "type": 1
     },
     "layout": {
-        "xtype": "tab"
+        "xtype": "column"
     },
     "items": [
         {
