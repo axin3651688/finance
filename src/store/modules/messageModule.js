@@ -73,7 +73,6 @@ const messageModule = {
         case 'addItem':
           // debugger;
           state.messageStore.sessionList.unshift(dataObj.data);
-          state.messageStore.sessionAllCount++;
           break;
         case 'deleteItem':
           debugger;

@@ -38,16 +38,8 @@ export default {
   },
   computed: {
     ...mapGetters(['messageStore']),
-    /**
-     * 如果有路由参数，则用路由参数，没有则取vuex中的miniType
-     */
     miniType() {
-      let miniType = this.$route.query.miniType
-      if (miniType) {
-        return miniType
-      } else {
-        return this.messageStore.miniType
-      }
+      return this.messageStore.miniType
     }
   },
   methods: {

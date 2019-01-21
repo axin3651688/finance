@@ -227,6 +227,12 @@ export default {
     }
   },
   watch: {
+    groupId(val) {
+      debugger
+      this.getInfo()
+      this.getGroupMsgList()
+    },
+
     //监听服务器推送的消息
     newServerMsg(val) {
       // debugger
@@ -569,7 +575,7 @@ export default {
     }
   },
   mounted() {
-    console.log('文件类型：', FILE_TYPE)
+    // console.log('文件类型：', FILE_TYPE)
     this.getInfo()
     this.getGroupMsgList()
 

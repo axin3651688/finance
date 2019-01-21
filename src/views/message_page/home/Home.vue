@@ -78,7 +78,7 @@ export default {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
 
     cardboxClick(card) {
-      debugger;
+      // debugger;
       console.log('点击了卡片数据-->>', card.text)
       if (window.require) {
         let ipc = window.require('electron').ipcRenderer
@@ -105,8 +105,8 @@ export default {
       }
     },
     contactClick(user) {
+      // debugger
       console.log('点击了联系人-->>', user)
-      debugger
       let sessionItem = {}
       let targetId = '1100_' + user.id + '_' + this.loginUserId
       sessionItem['miniType'] = 1100

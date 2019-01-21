@@ -130,10 +130,6 @@ export default {
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
         this.chatWindowScrollToBottom();
       });
-      // 当目标id 和 发送者id相同时再把消息加入队列
-      if (this.messageStore.targetId === item.senderId) {
-
-      }
     },
 
     /**

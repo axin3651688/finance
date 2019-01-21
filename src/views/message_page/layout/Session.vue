@@ -62,6 +62,7 @@ export default {
 
     // 激活当前item（设置选中状态）
     setItemActive(item) {
+      debugger;
       this.ActionSetMessageStore({
         sessionActiveItem: item,
         miniType: item.miniType
