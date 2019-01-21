@@ -25,7 +25,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import {FIND_ROLE_ACCREDIT_OTHER, SAVE_ROLE_ACCREDIT_OTHER} from '~api/organize.js';
+    import {FIND_ROLE_ACCREDIT_COMPANY, SAVE_ROLE_ACCREDIT_COMPANY} from '~api/organize.js';
 
     export default {
         name: "Tab4",
@@ -74,7 +74,7 @@
                 }
             },
             getFunctionData() {
-                FIND_ROLE_ACCREDIT_OTHER(this.selectRole.id).then(res => {
+                FIND_ROLE_ACCREDIT_COMPANY(this.selectRole.id).then(res => {
                     console.log('FIND_ROLE_ACCREDIT_OTHER：', res.data.data)
                     this.nodeList = [res.data.data]
                     this.preNodeList = JSON.parse(JSON.stringify([res.data.data]))
@@ -153,7 +153,7 @@
                 params.companyList = companyList
                 console.log('clickSave：params', params)
 
-                SAVE_ROLE_ACCREDIT_OTHER(params).then(res => {
+                SAVE_ROLE_ACCREDIT_COMPANY(params).then(res => {
                     if (res.data.code === 200) {
                         this.$message({
                             showClose: true,

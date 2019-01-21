@@ -163,10 +163,10 @@ export function FIND_ROLE_ACCREDIT_FUNCTION(roleId) {
     })
 }
 // 查询角色的应用权限
-export function FIND_ROLE_ACCREDIT_APPS(roleId) {
+export function FIND_ROLE_ACCREDIT_APP(roleId) {
     // debugger
     return request({
-        url: '/api/api/find_role_accredit_apps',
+        url: '/api/api/find_role_accredit_app',
         method: 'get',
         params: {
             'roleId':roleId,
@@ -174,10 +174,10 @@ export function FIND_ROLE_ACCREDIT_APPS(roleId) {
     })
 }
 // 查询角色的授权公司权限
-export function FIND_ROLE_ACCREDIT_OTHER(roleId) {
+export function FIND_ROLE_ACCREDIT_COMPANY(roleId) {
     // debugger
     return request({
-        url: '/api/api/find_role_accredit_other',
+        url: '/api/api/find_role_accredit_company',
         method: 'get',
         params: {
             'roleId':roleId,
@@ -221,19 +221,19 @@ export function SAVE_ROLE_ACCREDIT_FUNCTION(data) {
     })
 }
 //保存角色的应用权限
-export function SAVE_ROLE_ACCREDIT_APPS(data) {
+export function SAVE_ROLE_ACCREDIT_APP(data) {
     // debugger
     return request({
-        url: '/api/api/save_role_accredit_apps',
+        url: '/api/api/save_role_accredit_app',
         method: 'post',
         data: data
     })
 }
 // 保存角色的授权公司权限
-export function SAVE_ROLE_ACCREDIT_OTHER(data) {
+export function SAVE_ROLE_ACCREDIT_COMPANY(data) {
     // debugger
     return request({
-        url: '/api/api/save_role_accredit_other',
+        url: '/api/api/save_role_accredit_company',
         method: 'post',
         data: data
     })

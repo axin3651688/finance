@@ -25,7 +25,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import {FIND_ROLE_ACCREDIT_APPS, SAVE_ROLE_ACCREDIT_APPS} from '~api/organize.js';
+    import {FIND_ROLE_ACCREDIT_APP, SAVE_ROLE_ACCREDIT_APP} from '~api/organize.js';
 
     export default {
         name: "Tab2",
@@ -53,23 +53,23 @@
         },
         methods: {
             getAppData() {
-                FIND_ROLE_ACCREDIT_APPS(this.selectRole.id).then(res => {
-                    console.log('FIND_ROLE_ACCREDIT_APPS：', res.data.data)
+                FIND_ROLE_ACCREDIT_APP(this.selectRole.id).then(res => {
+                    console.log('FIND_ROLE_ACCREDIT_APP：', res.data.data)
                     if (res.data.code === 200) {
                         this.preData = res.data.data
                         this.appData = JSON.parse(JSON.stringify(this.preData))
                     }
 
                 }).catch(err => {
-                    console.log('FIND_ROLE_ACCREDIT_APPS：', err)
+                    console.log('FIND_ROLE_ACCREDIT_APP：', err)
                 });
             },
             clickSave() {
                 let updateList = []
                 for (let i = 0; i < this.appData.length; i++) {
                     for (let j = 0; j < this.preData.length; j++) {
-                        if (this.appData[i].id == this.preData[j].id) {
-                            if (this.appData[i].accredit != this.preData[i].accredit) {
+                        if (this.appData[i].id === this.preData[j].id) {
+                            if (this.appData[i].accredit !== this.preData[i].accredit) {
                                 let temp = {
                                     'accredit': this.appData[i].accredit,
                                     'moduleId': this.appData[i].id
@@ -94,8 +94,8 @@
                     "updateList": updateList,
                     "roleId": this.selectRole.id
                 }
-                SAVE_ROLE_ACCREDIT_APPS(params).then(res => {
-                    console.log('请求SAVE_ROLE_ACCREDIT_APPS：', res.data)
+                SAVE_ROLE_ACCREDIT_APP(params).then(res => {
+                    console.log('请求SAVE_ROLE_ACCREDIT_APP：', res.data)
                     if (res.data.code === 200) {
                         this.getAppData(this.selectRole.id)
                         this.$message({
@@ -105,7 +105,7 @@
                         });
                     }
                 }).catch(err => {
-                    console.log('请求SAVE_ROLE_ACCREDIT_APPS：', err)
+                    console.log('请求SAVE_ROLE_ACCREDIT_APP：', err)
                 });
             },
         }
