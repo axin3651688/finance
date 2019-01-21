@@ -42,7 +42,7 @@
                 <img :src="item.avatar" v-avatar="item.trueName">
               </div>
               <h4 class="item-title">{{item.trueName}}</h4>
-              <div class="item-btn">聊天</div>
+              <div class="item-btn" @click="redirectSingleChat(item)">聊天</div>
             </li>
           </ul>
         </div>
@@ -84,7 +84,7 @@
 
 <script>
 import {SEARCH_MY_CONTACT} from '~api/message.js'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "SearchBar",
@@ -96,7 +96,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id
     }
@@ -135,10 +135,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 关闭搜索结果弹窗
     handleClose(e) {
-      this.show = false
-      this.searchData = null
+      this.show = false       // 关闭弹窗
+      this.searchData = null  // 清除搜索结果
     },
 
     // 判断搜索结果是否为空
@@ -176,10 +177,13 @@ export default {
         })
     },
 
-    // 跳转到好友信息页面
+    /**
+     * 跳转到好友信息页面
+     * @param id: 好友的Id
+     * @param activeName: 通讯录页面要激活的标签
+     */
     redirectContact(id, activeName) {
-      debugger;
-      // this.$router.push('/message_page/contact')
+      this.handleClose() // 先关闭搜索弹窗
       this.$router.push({
         path: '/message_page/contact',
         query: {
@@ -187,6 +191,64 @@ export default {
           activeName: activeName
         }
       })
+    },
+
+    /**
+     * 跳转到好友单聊页面,并设置 sessionActiveItem,然后往 session 列表增加一个条目
+     */
+    redirectSingleChat(item) {
+      this.handleClose() // 先关闭搜索弹窗
+      let sessionItem = {}
+      let targetId = '1100_' + item.id + '_' + this.loginUserId
+      sessionItem['miniType'] = 1100
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = item.id
+      sessionItem['name'] = item.trueName
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = item.avatar
+      sessionItem['originData'] = item
+
+      this.ActionSetMessageStore({
+        sessionActiveItem: sessionItem,
+        miniType: sessionItem.miniType
+      })
+
+      this.$router.push({
+        path: '/message_page/msg',
+        query: {
+          id: item.id,
+          miniType: 1100
+        }
+      })
+
+      this.updateSessionList(sessionItem)     // 更新session边栏
+    },
+
+    /**
+     * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
+     */
+    updateSessionList(sessionItem) {
+      let itemExist = false
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          })
+          break
+        }
+      }
+      if (!itemExist) { // 如果不存在，则进队列
+        let addObj = {
+          type: 'addItem', // 可取'addItem','deleteItem','update'
+          data: sessionItem
+        }
+        this.ActionUpdateSessionList(addObj)
+      }
     }
   }
 }
@@ -258,6 +320,7 @@ export default {
 
   .panel {
     margin-bottom: 10px;
+
     .panel-title {
       @include flex();
       justify-content: space-between;

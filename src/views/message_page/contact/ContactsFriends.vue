@@ -94,7 +94,7 @@ export default {
       console.log('ContactsFriends监听路由：', to, from)
       if (this.activeUser !== to.query.id) {
         this.activeUser = to.query.id
-        this.requestUserInfo()
+        this.requestUserInfo(this.activeUser)
       }
     }
   },
@@ -191,9 +191,17 @@ export default {
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
       })
+      this.updateSessionList(sessionItem)     // 更新session边栏
+      this.$router.push('/message_page/msg')
+    },
+
+    /**
+     * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
+     */
+    updateSessionList(sessionItem) {
       let itemExist = false
       for (let item of this.messageStore.sessionList) {
-        if (item.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
           itemExist = true
           this.ActionUpdateSessionList({
             type: 'update',
@@ -210,7 +218,6 @@ export default {
         }
         this.ActionUpdateSessionList(addObj)
       }
-      this.$router.push('/message_page/msg')
     }
   },
   created() {
