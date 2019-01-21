@@ -1,4 +1,7 @@
-const prame = {
+/*
+*本模块是维度切换需要的所有状态，语音控制状态也主要在本模块。
+*/
+const param = {
   state: {
     command: {
       // year: new Date().getFullYear(),
@@ -96,4 +99,4 @@ const prame = {
     }
   }
 }
-export default prame
+export default param
