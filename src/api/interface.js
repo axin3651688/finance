@@ -24,9 +24,6 @@ export function logout() {
   return request({
     url: '/api/auth/logout',
     method: 'get',
-    // params: {
-    //   Authorization: localStorage.authorization,
-    // }
   })
 }
 
@@ -35,11 +32,6 @@ export function logout() {
  */
 export function getCompanyTree(id, dimName, type, pid) {
   console.log("调用公司树异步请求接口");
-  // return request({
-  //   url: '/get/cube/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
-  //   // url: '/tree/cube/find_dim2/company/0/1',
-  //   method: 'get',
-  // })
   return request({
     url: '/api/api/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
     // url: '/tree/cube/find_dim2/company/0/1',
@@ -68,8 +60,6 @@ export function findThirdPartData(params) {
   // debugger
   if (!params.cubeId) {
     params.cubeId = JSON.parse(localStorage.database).license.id;
-    // 取vuex里面的use里面的id
-    // params.cubeId = this.user.user.license.id
   }
   return request({
     method: "post",
@@ -98,3 +88,17 @@ export function findDesignSource(sourceId, url) {
     }
   })
 }
+
+// /**
+//  * 发消息接口
+//  */
+// export function findSideBar(userId, code) {
+//   return request({
+//     url: '/api/api/find_node',
+//     method: 'get',
+//     params: {
+//       "userId": userId,
+//       "code": code || "10"
+//     }
+//   })
+// }

@@ -188,5 +188,85 @@ export default {
   }
 };
 </script>
+<style rel="stylesheet/css" lang="scss">
+.content {
+  .el-input__inner {
+    padding: 0px;
+  }
+  .el-input--suffix .el-input__inner {
+    border: none;
+  }
+  .el-button {
+    padding: 0px;
+    position: relative;
+  }
+  /deep/ .el-input__inner {
+    background: transparent;
+    &::placeholder {
+      color: transparent;
+    }
+  }
+  .el-cascader {
+    background: transparent;
+    height: 27px;
+  }
+
+  .el-cascader .el-icon-arrow-down {
+    display: none;
+  }
+  .el-cascader__label {
+    padding: 0px;
+    background: transparent;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .el-table__body .el-table__row td {
+    padding: 4px 0;
+  }
+}
+</style>
+ 
+<style scoped>
+.ms-tree-space {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  width: 18px;
+  height: 14px;
+}
+
+.ms-tree-space::before {
+  content: "";
+}
+.processContainer {
+  width: 100%;
+  height: 100%;
+}
+table td {
+  line-height: 26px;
+}
+.tree-ctrl {
+  position: relative;
+  cursor: pointer;
+  color: #2196f3;
+  margin-left: -18px;
+}
+.el-table td,
+.el-table th {
+  padding: 10px 0;
+}
+img {
+  width: 20px;
+  position: absolute;
+  right: 50%;
+  top: 5px;
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+}
+</style>
 
  

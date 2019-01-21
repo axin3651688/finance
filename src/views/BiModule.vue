@@ -37,9 +37,6 @@
         <h2>{{layout.xtype}}</h2>
       </div>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab1'" @tab-remove="removeTab">
-      <Bimodule></Bimodule>
-    </el-tabs>
     <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
       <el-tab-pane
         v-for="(item,index) in items"
