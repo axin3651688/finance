@@ -216,7 +216,7 @@ export default {
       debugger;
       let sessionItem = {};
       let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId;
-      sessionItem['miniType'] = 1100;
+      sessionItem['miniType'] = 1101;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = rightInfo.groupId;
       sessionItem['name'] = rightInfo.text;
@@ -225,27 +225,40 @@ export default {
       sessionItem['sendTime'] = null;
       sessionItem['avatar'] = rightInfo.avatar;
       sessionItem['originData'] = rightInfo;
+
       this.ActionSetMessageStore({
         sessionActiveItem: sessionItem,
         miniType: 1101, // 1101 群聊,
         receiverData: rightInfo
       });
-      let itemExist = false;
-      for (let sessionItem of this.messageStore.sessionList) {
-        if (sessionItem.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
-          itemExist = true;
-          break;
+
+      this._updateSessionList(sessionItem)
+
+      this.$router.push('/message_page/msg')
+    },
+
+    _updateSessionList(sessionItem) {
+      let itemExist = false
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          })
+          break
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        };
-        this.ActionUpdateSessionList(addObj);
+        }
+        this.ActionUpdateSessionList(addObj)
       }
-      this.$router.push('/message_page/msg')
     }
+
   },
   mounted() {
     this.getData()

@@ -12,6 +12,7 @@
     <!--弹出搜索结果-->
     <div class="search-result" v-if="show">
       <template v-if="searchData">
+
         <!--应用-->
         <div class="cards panel" v-if="searchData.cards.length">
           <!--{{searchData.cards}}-->
@@ -55,7 +56,8 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item" v-for="item in searchData.groups">
+            <li class="content-item content-item__group" v-for="item in searchData.groups"
+                @click="redirectGroupChat(item)">
               <div class="img-box item-avatar">
                 <img :src="item.avatar" v-avatar="item.text">
               </div>
@@ -73,6 +75,7 @@
           </div>
           {{searchData.nodes}}
         </div>
+
       </template>
 
       <div class="noSearchData" v-else>
@@ -183,7 +186,7 @@ export default {
      * @param activeName: 通讯录页面要激活的标签
      */
     redirectContact(id, activeName) {
-      this.handleClose() // 先关闭搜索弹窗
+      debugger;
       this.$router.push({
         path: '/message_page/contact',
         query: {
@@ -191,6 +194,7 @@ export default {
           activeName: activeName
         }
       })
+      this.handleClose() // 先关闭搜索弹窗
     },
 
     /**
@@ -210,12 +214,12 @@ export default {
       sessionItem['avatar'] = item.avatar
       sessionItem['originData'] = item
 
-      this.ActionSetMessageStore({
+      this.ActionSetMessageStore({ // vuex 设置
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
       })
 
-      this.$router.push({
+      this.$router.push({ // 路由跳转
         path: '/message_page/msg',
         query: {
           id: item.id,
@@ -223,13 +227,48 @@ export default {
         }
       })
 
-      this.updateSessionList(sessionItem)     // 更新session边栏
+      this._updateSessionList(sessionItem)     // 更新session边栏
+    },
+
+    /**
+     * 跳转到群聊页面
+     */
+    redirectGroupChat(item) {
+      debugger
+      let sessionItem = {}
+      let targetId = '1101_' + this.loginUserId + '_' + item.groupId
+      sessionItem['miniType'] = 1101
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = item.groupId
+      sessionItem['name'] = item.text
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = item.avatar
+      sessionItem['originData'] = item
+
+      this.ActionSetMessageStore({ // vuex 设置
+        sessionActiveItem: sessionItem,
+        miniType: 1101, // 1101 群聊,
+        receiverData: item
+      })
+
+      this.$router.push({ // 路由跳转
+        path: '/message_page/msg',
+        query: {
+          id: item.groupId,
+          miniType: 1101
+        }
+      })
+
+      this._updateSessionList(sessionItem)     // 更新session边栏
+
     },
 
     /**
      * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
      */
-    updateSessionList(sessionItem) {
+    _updateSessionList(sessionItem) {
       let itemExist = false
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
@@ -250,6 +289,7 @@ export default {
         this.ActionUpdateSessionList(addObj)
       }
     }
+
   }
 }
 </script>
@@ -347,6 +387,11 @@ export default {
         line-height: 100%;
         font-size: 14px;
         font-weight: 400;
+        transition: background-color .3s;
+
+        &:hover {
+          background-color: $colorThemePrimary;
+        }
 
         .img-box {
           @include imgBox($width: 30px, $height: 30px, $borderRadius: 50%)
@@ -359,6 +404,8 @@ export default {
         }
 
         .item-title {
+          @include singleEllipsis();
+          max-width: 150px;
           display: inline-block;
           line-height: 30px;
           color: $colorTextBlack6;
@@ -371,6 +418,10 @@ export default {
           color: $colorTextBlack3;
           cursor: pointer;
         }
+      }
+
+      .content-item__group {
+        cursor: pointer;
       }
     }
   }

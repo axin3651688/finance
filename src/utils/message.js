@@ -23,7 +23,6 @@ export function FORMAT_TIME(time) {
  * 格式化时间戳 更具不同的时长返回不同的显示方式
  */
 export function FORMAT_MSG_TIME(publishtime) {
-  debugger;
   let dateTime = new Date(publishtime);
   let Y = dateTime.getFullYear();
   let M = dateTime.getMonth();

@@ -59,6 +59,7 @@ export default {
     parseEmotions(content) {
       return PARSE_EMOTIONS(content)
     },
+
     // 激活当前item（设置选中状态）
     setItemActive(item) {
       this.ActionSetMessageStore({
