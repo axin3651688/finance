@@ -1,0 +1,201 @@
+
+      {
+        "id":"0040",
+        "text":"债务构成情况分析表下钻",
+        "layout":{
+            "xtype":"column"
+         },
+         "show":true,
+        "items":[
+            {
+                "xtype": "bi-table",
+                "id": "zwgcqkbxz",
+                "text": "债务构成情况分析表下钻",
+                "showDims":["year","month","company","conversion"],
+                "weight": 24,
+                "show":true,
+                "style":{
+                    "height": "812px"
+                },
+                "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
+                    config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
+                    let len = option.items.length;
+                    let id = option.items[len-1].id;//获取下钻科目的id
+                    config.sql = config.sql.replace(/:finance/g,id);//全局替换:itemperiod
+                    return params;
+    
+                },
+                "config": {
+                    "sql":"",
+                    "sql1":"SELECT A.DIM_COMPANY id,(CASE WHEN GROUPING_ID(A.DIM_COMPANY,B.SNAME)=3 THEN '总计' ELSE B.SNAME END) GSMC, (CASE WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=1 THEN '小计' ELSE C.SNAME END ) JGMC, D.SNAME RZLX, SUM(NVL(A.FACT_A, 0)) JKBJ,A.SSTARTDATE QSRQ, A.SENDDATE DQRQ, A.FACT_B LL, (CASE WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=1 THEN (CASE WHEN SUM(NVL(A.FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(A.FACT_A,0)*NVL(A.FACT_C,0))*100/SUM(NVL(A.FACT_A,0))),4) END) WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=3 THEN (CASE WHEN SUM(NVL(A.FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(A.FACT_A,0)*NVL(A.FACT_C,0))*100/SUM(NVL(A.FACT_A,0))),4) END) ELSE FACT_C END) ZHCB, A.SREPAYDATE YHKRQ, E.SNAME HKLY, (CASE WHEN A.STATUS='1' THEN '新增' WHEN A.STATUS=-1 THEN '减少' ELSE '' END )XZJS, (CASE WHEN A.CISGUARANTEE='1' THEN '是' ELSE '否' END) SFJTDB, F.SNAME DBFS, A.SNOTE BZ FROM (SELECT * FROM DW_FACTFINANCEDETAIL WHERE DIM_FINANCE = :finance ) A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCOMPANY WHERE (SPCODE LIKE :company||'%' OR SCODE=:company) AND CTYPE='1' AND CISDEL='N') B ON B.SCODE=A.DIM_COMPANY INNER JOIN DW_DIMBANK C ON A.DIM_BANK=C.SCODE INNER JOIN DW_DIMFINANCE D ON A.DIM_FINANCE = D.SCODE INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') F ON A.DIM_GUARANTEE=F.SCODE WHERE :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY ROLLUP((A.DIM_COMPANY),(B.SNAME, C.SNAME, D.SNAME,A.SSTARTDATE, A.SENDDATE, A.FACT_B, A.FACT_C, A.SREPAYDATE, E.SNAME, A.STATUS, A.CISGUARANTEE, F.SNAME, A.SNOTE )) ORDER BY A.DIM_COMPANY  ", //
+                    "_cube": {
+                        "subject": "1005",
+                        "cubeId": 4,
+                        "dim_item": "1001"
+                    },
+                    "mainDim": "finance",
+                    "needDims": [
+                        "year",
+                        "month",
+                        "company","conversion"
+                    ],
+                    "random": {
+                        "min": 100,
+                        "max": 100000
+                    },
+                    "type": 1,
+                
+                     
+                "columns": [
+                    
+                    {
+                        "id": "bz",
+                        "type": "string",
+                        "text": "备注"
+                      },
+                      {
+                        "id": "id",
+                        "type": "string",
+                        "text": "公司编码"
+                      },
+                      {
+                        "id": "gsmc",
+                        "type": "string",
+                        "text": "公司名称",
+                        "width":"300px"
+        
+                      },
+                       {
+                            "id":"jgmc",
+                            "type":"string",
+                            "text":"机构名称",
+                            "width":"300px"
+                        },
+                        {
+                            "id":"rzlx",
+                            "type":"string",
+                            "text":"融资类型",
+                            "width":"240px"
+                        },
+                        {
+                            "id":"jkbj",
+                            "type":"decimal",
+                            "text":"借款本金"
+                        },
+                        {
+                            "id":"qsrq",
+                            "type":"string",
+                            "text":"起始日期"
+                    },
+                      {
+                        "id": "dqrq",
+                        "type": "string",
+                        "text": "到期日期"
+                      },
+                      {
+                        "id": "ll",
+                        "type": "decimal",
+                        "text": "利率（%）",
+                        "conversion":"%"
+                      },
+                      {
+                        "id": "zhcb",
+                        "type": "decimal",
+                        "text": "综合成本（%）",
+                        "conversion":"%"
+                      },
+                      {
+                        "id": "yhkrq",
+                        "type": "string",
+                        "text": "已还款日期"
+                      },
+                      {
+                        "id": "hkly",
+                        "type": "string",
+                        "text": "还款来源"
+                      },
+                      {
+                        "id": "xzjs",
+                        "type": "string",
+                        "text": "新增/减少"
+                      },
+                      {
+                        "id": "sfjtdb",
+                        "type": "string",
+                        "text": "是否集团担保"
+                      },
+                      {
+                        "id": "dbsf",
+                        "type": "string",
+                        "text": "担保方式"
+                      }
+                ],
+                "rows": [
+                    
+                    ]
+                }
+                ,
+          "groupConfig": { "idProperty": "id","textProperty": "gsmc"},//可选
+          "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
+              let data = option.item.datas;
+              let config =  option.item.groupConfig;
+              let rowspan =  option.getCellRowSpan(data,row,config) || 1 ;
+              let index = 0;
+              if(rowIndex != 0){
+                if(data && data.length > 0){
+                  for(let i = 1;i < data.length;i++){
+                    if(data[i-1].id != row.id && data[i].id == row.id){
+                      index = i; 
+                      break;
+                    }
+                  }
+                }
+
+              }
+
+              if (columnIndex === 0 ||columnIndex === 1) {
+                if (rowIndex === index) {
+                  return {
+                    rowspan: rowspan,
+                    colspan: 1
+                  };
+                } else {
+                  return {
+                    rowspan: 0,
+                    colspan: 0
+                  };
+                }
+              }
+             
+          }
+            }
+            
+        ]
+    }
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
