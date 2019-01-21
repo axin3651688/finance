@@ -2,7 +2,7 @@
   <div class="ContactsFriends">
     <div class="panel-left">
       <el-scrollbar>
-        <ul class="sub-item" v-if="friendList">
+        <ul class="sub-item" v-if="activeUser">
           <li :class="{active: activeUser === friend.id}"
               v-for="friend in friendList"
               :key="friend.id"
@@ -102,7 +102,7 @@ export default {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
 
     /**
-     * 请求好友列表
+     * 请求好友列表,好友列表请求成功后设置激活用户（默认显示哪一个用户的信息）
      */
     requestFriendList() {
       requestMyfriends(this.loginUserId).then(res => {
@@ -111,6 +111,7 @@ export default {
         if (res.data.code === 200) {
           if (res.data.data.length) {
             this.friendList = res.data.data
+            this.setActiveUser()
           } else {
             this.$message({
               type: 'warning',
@@ -132,8 +133,9 @@ export default {
       if (id) {
         this.activeUser = id
       } else {
-        this.activeUser = this.friendList[0].id
+        if (this.friendList) this.activeUser = this.friendList[0].id
       }
+      this.requestUserInfo(this.activeUser)
     },
 
     /**
@@ -152,13 +154,12 @@ export default {
      * 请求一个用户的信息
      * @param userId: 用户Id
      */
-    requestUserInfo() {
-      if (!this.activeUser) return false // 如果没有 activeUser 则不往下执行
-      let userInfo = this.checkUserInfo(this.activeUser) // 得到用户信息 或则 null
+    requestUserInfo(userId) {
+      let userInfo = this.checkUserInfo(userId) // 得到用户信息 或则 null
       if (userInfo) {
         this.rightUserInfoData = userInfo
       } else {
-        CONTACT_INFO(this.loginUserId, this.activeUser).then(res => {
+        CONTACT_INFO(this.loginUserId, userId).then(res => {
           console.log('获取一个好友信息-->>', res.data)
           if (res.data.code === 200) {
             let rightUserInfoData = res.data.data
@@ -214,8 +215,6 @@ export default {
   },
   created() {
     this.requestFriendList()          // 请求我的好友列表
-    this.setActiveUser()              // 设置当前要显示的用户
-    this.requestUserInfo()            // 请求一个用户的信息
   }
 }
 </script>

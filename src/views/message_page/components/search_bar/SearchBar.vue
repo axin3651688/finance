@@ -178,6 +178,7 @@ export default {
 
     // 跳转到好友信息页面
     redirectContact(id, activeName) {
+      debugger;
       // this.$router.push('/message_page/contact')
       this.$router.push({
         path: '/message_page/contact',
