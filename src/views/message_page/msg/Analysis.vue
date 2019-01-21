@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import {
   FIND_MODULE_MSG,
   UPDATE_MODULE_STATE_ALL,
@@ -85,6 +86,12 @@ export default {
       messageUnreadList: [] // 订阅消息列表
     }
   },
+  computed: {
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
+    }
+  },
   mounted() {
     this.getUnReadMsg()
   },
@@ -96,7 +103,7 @@ export default {
         page: 1, // 分页加载页码
         size: 20, // 每页20
         state: 2, // state 1未读消息，2已读消息 (左上角的切换)
-        userId: 225 // 当前用户的id
+        userId: this.loginUserId // 当前用户的id
       };
       FIND_MODULE_MSG(params).then(res => {
         console.log('订阅消息', res.data.data);
@@ -111,7 +118,7 @@ export default {
     // 消除左侧红点
     sendReadAll() {
       let params = {
-        userId: 225,
+        userId: this.loginUserId,
         moduleId: 1 // 从session传来的moduleId
       };
       UPDATE_MODULE_STATE_ALL(params).then(res => {
@@ -127,7 +134,7 @@ export default {
     // 消除单条红点
     sendReadSingle() {
       let params = {
-        userId: 225,
+        userId: this.loginUserId,
         moduleId: 52 // 单条消息id
       };
       CHANGE_MODULE_STATE(params).then(res => {

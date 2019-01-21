@@ -4,7 +4,7 @@
     <div class="siderbar-top">
       <relative-pop>
         <div class="login-info" v-if="user.user">
-          <img :src="user.user.avatar" v-avatar="user.user.trueName">
+          <img :src="user.user.avatar" v-avatar="user.user.trueName" :title="user.user.trueName">
         </div>
         <div slot="pop">
           <user-info></user-info>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="sideervar-bottom">
-      <div class="nav-item nav-item_quit">
+      <div class="nav-item nav-item_quit" @click="dialogQuitVisible=true">
         <div class="nav-item_inner nav-item_icon" title="退出">
           <img src="@a/message/icon/quit.svg" class="img-unselected">
         </div>

@@ -11,12 +11,13 @@
           <!--{{item.avatar}}-->
           <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
             <div class="img-box">
-              <img :src="item.avatar" v-avatar="item.name">
+              <!--<img :src="item.avatar" v-avatar="item.name">-->
+              <img :src="item.avatar">
             </div>
           </el-badge>
           <span class="title">{{item.name}}</span>
           <!--{{item.miniType}}-->
-          <span class="publish-time mt" v-if="item.sendTime">{{item.sendTime | formatTime}}</span>
+          <!--<span class="publish-time mt" v-if="item.sendTime">{{item.sendTime | formatTime}}</span>-->
         </div>
         <p v-if="item.content">
           <span v-if="item.miniType===1101">{{item.originData.name}}: </span>

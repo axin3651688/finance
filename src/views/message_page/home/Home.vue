@@ -5,7 +5,8 @@
       <div class="cardItem" v-if="findCardArrs.length">
         <div v-for="card of findCardArrs" :key=card.id>
           <div class="card-box" @click="cardboxClick(card)">
-            <img class="cardImg" :src="card.avatar" v-avatar="card.text"/>
+            <!--<img class="cardImg" :src="card.avatar" v-avatar="card.text"/>-->
+            <img class="cardImg" :src="card.avatar"/>
             <span class="cardTitle">{{card.text}}</span>
           </div>
         </div>
@@ -17,7 +18,8 @@
 
         <div v-for="node of nodeArrs" :key=node.id>
           <div class="node-box" @click="nodeboxClick(node)">
-            <img class="nodeImg" :src="node.avatar" v-avatar="node.text"/>
+            <!--<img class="nodeImg" :src="node.avatar" v-avatar="node.text"/>-->
+            <img class="nodeImg" :src="node.avatar"/>
             <span class="nodeTitle">{{node.text}}</span>
           </div>
         </div>
@@ -29,7 +31,8 @@
 
         <div v-for="contact of latest_contact" :key=contact.id>
           <div class="contact-box" @click="contactClick(contact)">
-            <img class="contactAvatar" :src="contact.avatar" v-avatar="contact.trueName"/>
+            <!--<img class="contactAvatar" :src="contact.avatar" v-avatar="contact.trueName"/>-->
+            <img class="contactAvatar" :src="contact.avatar"/>
 
             <div class="contact-flex">
               <span class="contactName">{{contact.trueName}}</span>
@@ -176,32 +179,18 @@ export default {
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }
-
-    &:after {
-      $afterHeight: 20px;
-      position: absolute;
-      display: block;
-      content: '';
-      height: $afterHeight;
-      width: 100%;
-      background: $colorTheme;
-      top: -$afterHeight;
-      box-shadow: 0px 3px 60px rgba(0, 0, 0, 0.16);
-    }
   }
 
   .cardItem {
 
     display: flex;
     flex-wrap: wrap;
-    // margin-left: 40px;
     margin-top: 30px;
 
 
     .card-box {
-
-      margin-left: 40px;
-      margin-bottom: 30px;
+      margin-left: 30px;
+      margin-bottom: 20px;
       padding: 15px 10px 10px 10px;
       display: flex;
       align-items: center;
@@ -215,8 +204,8 @@ export default {
       }
 
       .cardImg {
-        width: 80px;
-        height: 80px;
+        width: 50px;
+        height: 50px;
         border-radius: 8px;
       }
 
@@ -245,14 +234,14 @@ export default {
   .nodeItem {
 
     display: flex;
-    margin-left: 40px;
+    margin-left: 30px;
     // margin-top: 40px;
     flex-wrap: wrap;
 
     .node-box {
 
       width: 260px;
-      height: 100px;
+      height: 70px;
       margin-right: 60px;
       padding: 0px 0px 0px 10px;
       display: flex;
@@ -267,8 +256,8 @@ export default {
       }
 
       .nodeImg {
-        width: 80px;
-        height: 80px;
+        width: 50px;
+        height: 50px;
         border-radius: 8px;
       }
 
@@ -302,16 +291,14 @@ export default {
   .contactItem {
 
     display: flex;
-    margin-left: 40px;
+    margin-left: 30px;
     flex-wrap: wrap;
     flex-direction: column;
 
     .contact-box {
       width: 260px;
-      height: 100px;
       margin-bottom: 10px;
-      height: 100px;
-      padding: 0px 0px 0px 10px;
+      padding: 10px;
       display: flex;
       align-items: center;
       flex-direction: row;
@@ -324,17 +311,16 @@ export default {
       }
 
       .contactAvatar {
-        width: 80px;
-        height: 80px;
+        width: 50px;
+        height: 50px;
         border-radius: 8px;
       }
 
       .contact-flex {
         box-sizing: border-box;
-        padding: 20px;
-        height: 100px;
         display: flex;
         flex: 1;
+        margin-left: 20px;
         overflow: hidden;
         flex-direction: column;
         justify-content: space-around;
@@ -353,7 +339,7 @@ export default {
           text-overflow: ellipsis;
           white-space: nowrap;
           display: block;
-          font-size: 16px;
+          font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           line-height: 21px;
