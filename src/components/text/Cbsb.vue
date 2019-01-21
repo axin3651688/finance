@@ -20,6 +20,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapGetters } from "vuex";
+import { companyContactList } from "~api/userClientRest";
 export default {
   name: "Cbsb",
   components: {},
@@ -29,11 +31,21 @@ export default {
       textarea: ""
     };
   },
-  create() {
+  created() {
+    this.getMemberList();
     debugger;
   },
-  computed: {},
-  methods: {}
+  computed: {
+    ...mapGetters(["user"])
+  },
+  methods: {
+    getMemberList() {
+      let companyId = this.user.company.id;
+      companyContactList(companyId).then(res => {
+        console.log(res.data.data.normal);
+      });
+    }
+  }
 };
 </script>
 
