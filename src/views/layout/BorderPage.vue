@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ResizeMixin from "./mixin/ResizeHandler";
+import ResizeMixin from "@c/mixins/ResizeHandler";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",

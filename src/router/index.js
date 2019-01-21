@@ -19,13 +19,6 @@ const router = new Router({
           component: () =>
             import('@v/BiModule'),
         },
-        // 列表
-        {
-          path: '/list',
-          name: 'list',
-          component: () =>
-            import('@v/intelligenceReport/List.vue')
-        },
 
         // 消息模块
         {
@@ -117,12 +110,6 @@ const router = new Router({
           name: 'productIntroduction',
           component: () =>
             import('@v/test/eleTreeTable'),
-        }, // 利润表
-        {
-          path: '/profit',
-          name: 'profit',
-          component: () =>
-            import('@v/intelligenceReport/Profit.vue')
         },
 
 
@@ -131,21 +118,6 @@ const router = new Router({
           name: 'Column',
           component: () =>
             import('@v/test/BiColumn.vue')
-        },
-
-
-        // 填报表格
-        {
-          path: '/table',
-          name: 'table',
-          component: () =>
-            import('@v/intelligenceReport/Itable.vue')
-        },
-        {
-          path: '/a',
-          name: 'a',
-          component: () =>
-            import('@v/intelligenceReport/a.vue')
         },
 
         {

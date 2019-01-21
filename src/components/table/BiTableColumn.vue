@@ -57,10 +57,6 @@
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
-        <!-- <span v-if="scope.row.balance!=0">
-            <el-button type="text">{{ scope.row[col.id] }}</el-button>
-        </span>
-        <span v-else>{{ scope.row[col.id] }}</span>-->
       </el-tooltip>
     </template>
   </el-table-column>
@@ -79,7 +75,6 @@
         :content="getCellValues(tableData.datas,col,scope,tableData.config.rows)"
         placement="right"
       >
-        <!--    @click="dilogShow(col,scope)" -->
         <span
           v-if="tableData.datas"
           @click="columnClick(col,scope)"
@@ -129,13 +124,13 @@ export default {
     };
   },
   computed: {
-    isFolder() {
-      return this.col.children && this.col.children.length;
-    },
-    getLevel(level) {
-      // console.info(level);
-      return level + 1;
-    }
+    // isFolder() {
+    //   return this.col.children && this.col.children.length;
+    // },
+    // getLevel(level) {
+    //   // console.info(level);
+    //   return level + 1;
+    // }
   },
   created() {
     // console.log(this.tableData);
@@ -236,11 +231,11 @@ export default {
       // 千分位  保留两位小数
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       return value;
-    },
-
-    itemShow(index, record) {
-      return index === item && record.children && record.children.length > 0;
     }
+
+    // itemShow(index, record) {
+    //   return index === item && record.children && record.children.length > 0;
+    // }
   }
 };
 </script>

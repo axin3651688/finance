@@ -12,7 +12,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Microsoft YaHei, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Arial, sans-serif;
-  margin:0;
+  margin: 0;
 }
 
 label {
@@ -76,4 +76,25 @@ a:hover {
   height: calc(100vh - 64px);
   width: 100%;
   overflow: auto
+}
+
+// treeTable的显示与隐藏动效
+@keyframes treeTableShow {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes treeTableShow {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

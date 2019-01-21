@@ -6,7 +6,7 @@ import {
     MessageBox,
     Notification
 } from 'element-ui'
-import router from '@v/layout/router'
+import router from '@/router'
 import {
     login
 } from "~api/login.js";
@@ -20,7 +20,7 @@ export const webSocket = function (data) {
     // let heartCheck = {
     //   timeout: 30000,
 
-    
+
     //   timeoutObj: null,
     //   serverTimeoutObj: null,
     //   reset: function(){

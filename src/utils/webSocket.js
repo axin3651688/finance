@@ -8,7 +8,7 @@ import {
     MessageBox,
     Notification
 } from 'element-ui'
-import router from '@v/layout/router'
+import router from '@/router'
 
 export default function webSocket(data) {
     // debugger;
@@ -51,7 +51,7 @@ export default function webSocket(data) {
         //     showClose: true,
         //     position: "bottom-right"
         // });
-      //  // TODO: 加心跳检测
+        //  // TODO: 加心跳检测
         // alert('已断开连接')
     };
 
