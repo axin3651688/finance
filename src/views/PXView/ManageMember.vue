@@ -94,14 +94,14 @@
                     <el-table-column label="操作" min-width="20%" align="center">
                         <div slot-scope="scope" class="template_edit">
 
-                            <div class="leftIcon_title">
+                            <div class="leftIcon_title" style="cursor:pointer " @click="changeUserInfoClick(scope.row)">
                                 <img src="@a/user_icon/xiugai_icon.svg">
-                                <span class="itemSpan">编辑</span>
+                                <span class="itemSpan">修改</span>
                             </div>
 
-                            <div class="leftIcon_title1">
+                            <div class="leftIcon_title1" style="cursor:pointer " @click="unableUserClick(scope.row)">
                                 <img src="@a/user_icon/jinyong_icon.svg">
-                                <span class="itemSpan1">删除</span>
+                                <span class="itemSpan1">禁用</span>
                             </div>
 
                         </div>
@@ -382,7 +382,18 @@
                 }
                 this.expandedKey = data
                 this.getCompList(data)
-            }
+            },
+            changeUserInfoClick(row){
+
+                console.log(row.id);
+                debugger
+            },
+
+            unableUserClick(row){
+
+                console.log(row.id);
+                debugger
+            },
         }
     }
 </script>
