@@ -214,7 +214,6 @@ export default {
       return this.user.user.id
     },
     groupId() {
-      debugger
       return this.messageStore.sessionActiveItem.id
     },
     groupOwnerId() {
@@ -230,9 +229,9 @@ export default {
   watch: {
     //监听服务器推送的消息
     newServerMsg(val) {
+      // debugger
       // 如果不是群消息 或 接收群id不是当前窗口,不往下执行
       if (val.code !== 1101 || val.data.receiverId !== this.groupId) return false
-      debugger
       console.log('监听到服务器推送：', val)
       let item = val.data
       item['miniType'] = val.code
@@ -243,9 +242,7 @@ export default {
     },
     serverAck(val) {
       console.log('服务器ACK：', val)
-      debugger
       socket.send(JSON.stringify(val))
-      debugger
     }
   },
   methods: {
@@ -336,7 +333,7 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMsg(fileData) {
-      debugger
+      // debugger
       console.log('要发送的内容是：', this.sendText)
       let pushData = {
         type: 1,
@@ -374,7 +371,6 @@ export default {
 
       console.log('要发送的内容是：', sendData)
       if (!sendData.data.content) {
-        this.sendText = ''
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
@@ -383,6 +379,7 @@ export default {
         return
       }
       socket.deliver(sendData)
+      this.sendText = ''
       // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
@@ -799,7 +796,7 @@ export default {
         padding: 0 20px;
         font-size: 14px;
         color: rgba(0, 0, 0, 0.20);
-        background: rgba(0, 0, 0, .1);
+        background: $colorThemePrimary;
         cursor: pointer;
       }
 

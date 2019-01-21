@@ -54,8 +54,10 @@
 
         <!--5视频-->
         <div v-else-if="data.type === 5" class="video-wrap">
-          {{data.file}}
-          <my-video-player v-if="data.file" :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
+          <!--{{data.file}}-->
+          <div class="video-container">
+            <my-video-player v-if="data.file" :src="data.file.hdUrl" :poster="data.file.thumbUrl"></my-video-player>
+          </div>
         </div>
 
         <!--1 默认解析表情-->
@@ -163,6 +165,10 @@ export default {
           border-right-color: $colorThemePrimary;
         }
       }
+      .video-wrap {
+        min-width: 340px;
+        min-height: 100px;
+      }
     }
 
     .time {
@@ -183,6 +189,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
+      background-color: #ffffff;
 
       .left {
         .title {

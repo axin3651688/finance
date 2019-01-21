@@ -126,7 +126,6 @@ export function MY_GROUP_LIST(userId) {
 
 // 查询订阅消息列表
 export function FIND_MODULE_MSG(data) {
-  console.log('api FIND_MODULE_MSG');
   // debugger
   return request({
     url: '/api/api/find_module_msg',
@@ -366,6 +365,17 @@ export function SCAN_LOGIN_URL(params) {
   // debugger;
   return request({
     url: '/auth/scan_login_url',
+    method: 'get',
+    params: params
+  })
+}
+
+
+// 全局搜索 GET /api/search_my_contact
+export function SEARCH_MY_CONTACT(params) {
+  // debugger;
+  return request({
+    url: '/api/api/search_my_contact',
     method: 'get',
     params: params
   })

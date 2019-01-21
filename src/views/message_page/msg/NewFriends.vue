@@ -184,6 +184,7 @@ export default {
 
 <style lang="scss" scoped>
   @import "@s/message/index.scss";
+  @import "@s/message/variables.scss";
 
   .vue-module {
     display: flex;
@@ -223,10 +224,10 @@ export default {
     .btn {
       display: inline-block;
       line-height: $btnHeight;
-      padding: 0 36px;
+      padding: 0 20px;
       font-size: 14px;
       color: rgba(0, 0, 0, 0.20);
-      background: rgba(0, 0, 0, .1);
+      background: $colorThemePrimary;
       cursor: pointer;
     }
 
@@ -241,7 +242,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding: 16px 30px;
     border-radius: 12px;
     background: #ffffff;
 
@@ -266,7 +266,7 @@ export default {
 
       .title {
         margin-right: 30px;
-        font-size: 16px;
+        font-size: 14px;
         color: $colorText1;
       }
 
@@ -278,9 +278,8 @@ export default {
 
       .text {
         overflow: hidden;
-        height: 41px;
         line-height: 20px;
-        font-size: 16px;
+        font-size: 14px;
       }
     }
 
@@ -292,14 +291,15 @@ export default {
 
   .my-btn {
     border: none;
-    @include myBtn($borderRadius: 8px,$height:32px);
+    @include myBtn($borderRadius: 8px,$height:30px);
   }
 
-  .my-btn + .my-btn {
+  .my-btn+.my-btn {
     margin-left: 20px;
   }
 
   .my-btn-default {
-    background: $colorBgBtnGray;
+    color: $colorTextBlack3;
+    background: $colorThemePrimary;
   }
 </style>

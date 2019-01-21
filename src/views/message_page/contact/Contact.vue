@@ -1,12 +1,12 @@
 <template>
   <div class="MessageContacts">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick" v-if="activeName">
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
           <div class="label-text">团队</div>
         </template>
         <contacts-teams
-          v-if="which_to_show === 'ContactsTeams'"
+          v-if="activeName === 'ContactsTeams'"
           @chatWithSingle="handleChatWithSingle"
         ></contacts-teams>
       </el-tab-pane>
@@ -15,7 +15,7 @@
           <div class="label-text">好友</div>
         </template>
         <contacts-friends
-          v-if="which_to_show === 'ContactsFriends'"
+          v-if="activeName === 'ContactsFriends'"
           @chatWithSingle="handleChatWithSingle"
         ></contacts-friends>
       </el-tab-pane>
@@ -24,7 +24,7 @@
           <div class="label-text">群聊</div>
         </template>
         <contacts-groups
-          v-if="which_to_show === 'ContactsGroups'"
+          v-if="activeName === 'ContactsGroups'"
           @chatWithGroup="handleChatWithGroup"
         >
         </contacts-groups>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex"
 
 export default {
   name: 'MessageContacts',
@@ -46,15 +46,20 @@ export default {
   },
   data() {
     return {
-      which_to_show: 'ContactsTeams',
-      activeName: 'ContactsTeams'
-    };
+      activeName: null
+    }
+  },
+  watch: {
+    $route(to, from) {
+      console.log('Contacts监听路由:',to,from)
+      this.activeName = from.query.activeName
+    }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
-      this.which_to_show = tab.name
+      this.activeName = tab.name
     },
 
     // 开始群聊天
@@ -64,11 +69,24 @@ export default {
 
     // 开始单聊
     handleChatWithSingle(receiverId) {
-      this.$emit('chatWithSingle', receiverId);
+      this.$emit('chatWithSingle', receiverId)
+    },
+
+    /**
+     * 从路由获得当前应该显示哪一个标签（团队、好友、群组）,如果没有路由数据，就默认显示团队
+     */
+    getActiveNameFromRoute(){
+      console.log('路由数据：', this.$route)
+      if (this.$route.query.activeName) {
+        this.activeName = this.$route.query.activeName
+      } else {
+        this.activeName = 'ContactsTeams'
+      }
     }
   },
-  mounted() {
+  created() {
     this.ActionSetMessageStore({routeName: '通讯录'})
+    this.getActiveNameFromRoute()
   }
 }
 </script>
@@ -109,22 +127,24 @@ export default {
 
       .el-tabs__item {
         flex: 1;
-        $tabsItemHeight: 25px;
+        $tabsItemHeight: 30px;
         height: $tabsItemHeight;
         line-height: $tabsItemHeight;
         border: none;
         font-size: 12px;
         color: $colorText3;
+
         .label-text {
           box-sizing: border-box;
           height: 100%;
           text-align: center;
-          border-bottom: 1px solid transparent;
+          border-bottom: 2px solid transparent;
         }
       }
 
       .el-tabs__item.is-active {
         color: $colorTheme;
+
         .label-text {
           border-color: $colorTheme;
         }

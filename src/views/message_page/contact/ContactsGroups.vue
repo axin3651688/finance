@@ -13,7 +13,7 @@
                   <img :src="group.avatar" v-avatar="group.text"/>
                 </div>
               </div>
-              <div class="info">
+              <div class="info" :title="group.text">
                 <span class="info-text">{{group.text}}</span>
                 <!--<span class="info-count">（{{group.count}}人）</span>-->
               </div>
@@ -320,7 +320,7 @@ export default {
           width: 40px;
           height: 40px;
           overflow: hidden;
-          margin-right: 15px;
+          margin-right: 10px;
           border-radius: 8px;
           background: $colorTheme;
 
@@ -339,12 +339,12 @@ export default {
 
           .info-text {
             @include singleEllipsis();
-            width: 134px;
+            width: 105px;
             height: 19px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 400;
             line-height: 20px;
-            color: $colorText2;
+            color: #666666;
           }
 
           p {
@@ -372,9 +372,9 @@ export default {
       }
 
       .img-box {
-        margin-right: 40px;
-        width: 100px;
-        height: 100px;
+        margin-right: 20px;
+        width: 50px;
+        height: 50px;
         overflow: hidden;
         border-radius: 14px;
         background: $colorTheme;
@@ -394,14 +394,14 @@ export default {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          line-height: 40px;
-          font-size: 30px;
+          line-height: 24px;
+          font-size: 16px;
           color: $colorText1;
         }
 
         .text-info {
           height: 24px;
-          font-size: 18px;
+          font-size: 14px;
           color: $colorText3;
         }
       }
@@ -438,7 +438,7 @@ export default {
         height: 24px;
         font-size: 18px;
         line-height: 20px;
-        color: $colorText3;
+        color: $colorTextBlack8;
       }
 
       .content {
@@ -458,11 +458,10 @@ export default {
               .img-box {
                 overflow: hidden;
                 margin-bottom: 10px;
-                width: 60px;
-                height: 60px;
+                width: 44px;
+                height: 44px;
                 border-radius: 50%;
                 background: $colorTheme;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
 
                 img {
                   width: 100%;
@@ -472,10 +471,10 @@ export default {
 
               .info {
                 height: 21px;
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: 400;
                 line-height: 20px;
-                color: $colorText1;
+                color: $colorTextBlack6;
               }
             }
           }
@@ -483,9 +482,9 @@ export default {
 
         .pure-text {
           padding-right: 20px;
-          font-size: 16px;
+          font-size: 14px;
           line-height: 20px;
-          color: $colorText1;
+          color: $colorTextBlack6;
         }
 
         .qr-code {

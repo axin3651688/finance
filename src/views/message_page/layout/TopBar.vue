@@ -1,18 +1,7 @@
 <template>
   <div class="TopBar">
     <div class="topbar-left">
-      <div class="search-bar">
-        <el-input
-          placeholder="搜索"
-          >
-          <div slot="suffix" class="icon-zoom img-box">
-            <img src="@a/message/icon/zoom.svg" alt="">
-          </div>
-        </el-input>
-        <div class="search-bar_right">
-          <div class="img-box">+</div>
-        </div>
-      </div>
+      <search-bar></search-bar>
     </div>
     <!--<div class="topbar-right" @dblclick="web_minWindows()">-->
     <div class="topbar-right">
@@ -34,10 +23,14 @@
 </template>
 
 <script>
+import SearchBar from '@mc/search_bar/SearchBar.vue'
 import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "TopBar",
+  components: {
+    SearchBar
+  },
   data() {
     return {}
   },
@@ -105,44 +98,6 @@ export default {
       box-sizing: border-box;
       width: $sizeNavBarWidth;
       border-right: 1px solid $colorBorderLayoutDark;
-      .search-bar {
-        @include flex();
-        height: 100%;
-        padding: 0 20px 0 10px;
-        align-items: center;
-        /deep/ .el-input {
-          .el-input__inner {
-            height: $sizeInputHeight;
-            line-height: $sizeInputHeight;
-            background: $colorThemePrimary;
-            border: none;
-            border-radius: 6px;
-            &::placeholder {
-              color: $colorText5;
-            }
-          }
-          .img-box {
-            margin-right: 8px;
-            @include imgBox($width:20px,$height:100%)
-          }
-        }
-
-        .search-bar_right {
-          margin-left: 20px;
-          cursor: pointer;
-          .img-box {
-            @include imgBox($width:30px,$height:30px,$borderRadius:50%);
-            background-color: $colorThemePrimary;
-            @include flex();
-            align-items: center;
-            justify-content: center;
-            color: $colorText5;
-            font-size: 20px;
-            font-weight: 500;
-          }
-        }
-
-      }
     }
 
     .topbar-right {

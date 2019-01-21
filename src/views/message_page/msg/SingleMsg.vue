@@ -532,7 +532,7 @@ export default {
       padding: 0 20px;
       font-size: 14px;
       color: rgba(0, 0, 0, 0.20);
-      background: rgba(0, 0, 0, .1);
+      background: $colorThemePrimary;
       cursor: pointer;
     }
 

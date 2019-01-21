@@ -373,9 +373,9 @@ export default {
       margin-bottom: 58px;
 
       .img-box {
-        margin-right: 40px;
-        width: 100px;
-        height: 100px;
+        margin-right: 20px;
+        width: 50px;
+        height: 50px;
         overflow: hidden;
         border-radius: 14px;
         background: $colorTheme;
@@ -388,11 +388,11 @@ export default {
 
       .text {
         font-weight: 400;
-        line-height: 40px;
+        line-height: 24px;
         width: 200px;
 
         .text-title {
-          font-size: 30px;
+          font-size: 16px;
           color: $colorText1;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -400,7 +400,7 @@ export default {
         }
 
         .text-info {
-          font-size: 18px;
+          font-size: 14px;
           color: $colorText3;
           overflow: hidden;
           text-overflow: ellipsis;
