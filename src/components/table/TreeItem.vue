@@ -7,7 +7,7 @@
         :style="{'margin-left':scope.row.nlevel*16+'px'}"
         @click="toggleExpanded(scope)"
       >
-                <span v-if="iconShow(0,scope.row) ">
+        <span v-if="iconShow(0,scope.row) ">
           <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
           <i v-else class="el-icon-minus"></i>
           <i class="t-icon"></i>
@@ -25,10 +25,11 @@
 <script type="text/ecmascript-6">
 export default {
   name: "",
+  props: ["prop", "label", "width", "tableData"],
   data() {
     return {};
   },
-  props: ["prop", "label", "width", "tableData"],
+
   mounted() {
     /*
      *默认展开树表第一级  mj
