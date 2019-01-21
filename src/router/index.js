@@ -9,148 +9,153 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [{
 
-      path: '/',
-      name: '我的工作台',
+    path: '/',
+    name: '我的工作台',
+    component: () =>
+      import('@v/layout/BorderPage'),
+    children: [{
+      path: '/main',
+      name: 'main',
       component: () =>
-        import('@v/layout/BorderPage'),
-      children: [{
-          path: '/main',
-          name: 'main',
-          component: () =>
-            import('@v/BiModule'),
-        },
+        import('@v/BiModule'),
+    },
 
-        // 消息模块
-        {
-          path: '/message',
-          name: 'message',
-          component: () =>
-            import('@v/message/Message.vue')
-        },
-        // 公司
-        {
-          path: '/company',
-          name: 'company',
-          component: () =>
-            import('@v/test/Company.vue')
-        },
-        // 用户
-        {
-          path: '/user',
-          name: 'user',
-          component: () =>
-            import('@v/test/User.vue')
-        },
-        // 角色
-        {
-          path: '/role',
-          name: 'role',
-          component: () =>
-            import('@v/test/Role.vue')
-        }
-      ]
+    // 消息模块
+    {
+      path: '/message',
+      name: 'message',
+      component: () =>
+        import('@v/message/Message.vue')
+    },
+    // 公司
+    {
+      path: '/company',
+      name: 'company',
+      component: () =>
+        import('@v/test/Company.vue')
+    },
+    // 用户
+    {
+      path: '/user',
+      name: 'user',
+      component: () =>
+        import('@v/test/User.vue')
+    },
+    // 角色
+    {
+      path: '/role',
+      name: 'role',
+      component: () =>
+        import('@v/test/Role.vue')
+    }
+    ]
+  },
+
+  {
+    path: '/',
+    name: '各种charts',
+    component: () =>
+      import('@v/layout/BorderPage'),
+    children: [{
+      path: '/BiFunnel',
+      name: 'BiFunnel',
+      component: () =>
+        import('@c/charts/BiFunnel'),
+    }, {
+      path: '/BiRadar',
+      name: 'BiRadar',
+      component: () =>
+        import('@c/charts/BiRadar'),
+    },
+    {
+      path: '/BiPie',
+      name: 'BiPie',
+      component: () =>
+        import('@c/charts/BiPie'),
+    }
+    ]
+  },
+  {
+    path: '/',
+    name: 'test路由',
+    component: () =>
+      import('@v/layout/BorderPage'),
+    children: [{
+      path: '/treeTest',
+      name: 'treeTest',
+      component: () =>
+        import('@v/test/treeTest'),
+    }, {
+      path: '/BiTreemap',
+      name: 'BiTreemap',
+      component: () =>
+        import('@c/charts/BiTreemap')
+
+    },
+    {
+      path: '/father',
+      name: 'father',
+      component: () =>
+        import('@v/test/father'),
+    },
+    {
+      path: '/genarateTree',
+      name: 'genarateTree',
+      component: () =>
+        import('@v/test/genarateTree'),
     },
 
     {
-      path: '/',
-      name: '各种charts',
+      path: '/productIntroduction',
+      name: 'productIntroduction',
       component: () =>
-        import('@v/layout/BorderPage'),
-      children: [{
-          path: '/BiFunnel',
-          name: 'BiFunnel',
-          component: () =>
-            import('@c/charts/BiFunnel'),
-        }, {
-          path: '/BiRadar',
-          name: 'BiRadar',
-          component: () =>
-            import('@c/charts/BiRadar'),
-        },
-        {
-          path: '/BiPie',
-          name: 'BiPie',
-          component: () =>
-            import('@c/charts/BiPie'),
-        }
-      ]
+        import('@v/test/eleTreeTable'),
     },
+
+
     {
-      path: '/',
-      name: 'test路由',
+      path: '/Column',
+      name: 'Column',
       component: () =>
-        import('@v/layout/BorderPage'),
-      children: [{
-          path: '/treeTest',
-          name: 'treeTest',
-          component: () =>
-            import('@v/test/treeTest'),
-        }, {
-          path: '/BiTreemap',
-          name: 'BiTreemap',
-          component: () =>
-            import('@c/charts/BiTreemap')
-
-        },
-        {
-          path: '/father',
-          name: 'father',
-          component: () =>
-            import('@v/test/father'),
-        },
-        {
-          path: '/genarateTree',
-          name: 'genarateTree',
-          component: () =>
-            import('@v/test/genarateTree'),
-        },
-
-        {
-          path: '/productIntroduction',
-          name: 'productIntroduction',
-          component: () =>
-            import('@v/test/eleTreeTable'),
-        },
-
-
-        {
-          path: '/Column',
-          name: 'Column',
-          component: () =>
-            import('@v/test/BiColumn.vue')
-        },
-
-        {
-          path: '/Fill',
-          name: 'Fill',
-          component: () =>
-            import('@v/test/Fill.vue')
-        }, {
-          path: '/TableTest',
-          name: 'TableTest',
-          component: () =>
-            import('@v/test/TableTest.vue')
-        }, {
-          path: '/fu',
-          name: 'fu',
-          component: () =>
-            import('@v/test/fu.vue')
-        },
-
-      ]
+        import('@v/test/BiColumn.vue')
     },
+
     {
-      path: '/Login',
-      name: 'Login',
+      path: '/Fill',
+      name: 'Fill',
       component: () =>
-        import('@v/layout/login/Login'),
-    },
-    {
-      path: '*',
-      name: '/404',
+        import('@v/test/Fill.vue')
+    }, {
+      path: '/TableTest',
+      name: 'TableTest',
       component: () =>
-        import('@v/common/404'),
+        import('@v/test/TableTest.vue')
+    }, {
+      path: '/fu',
+      name: 'fu',
+      component: () =>
+        import('@v/test/fu.vue')
+    }, {
+      path: '/tab',
+      name: 'tab',
+      component: () =>
+        import('@v/test/tab.vue')
     },
+
+    ]
+  },
+  {
+    path: '/Login',
+    name: 'Login',
+    component: () =>
+      import('@v/layout/login/Login'),
+  },
+  {
+    path: '*',
+    name: '/404',
+    component: () =>
+      import('@v/common/404'),
+  },
 
   ]
 })

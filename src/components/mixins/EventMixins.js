@@ -106,11 +106,13 @@ export default {
 
     },
     // api: listener.sourceApi,
-    openDialog(params, listener) {
+    openDialog(params, listener, bb) {
+      debugger
+
       this.ShowDialog({
-        data: '这是一段消息',
+        api: listener.sourceApi,
         isShow: true,
-        tittle: " 江苏农垦集团（母公司）2017年1-5月营业收入与上年同期相比，较大幅度下降的主要原因是：",
+        tittle: bb.label,
         width: "40%",
         height: "200px"
       });
@@ -127,10 +129,10 @@ export default {
       //   module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
       // }
       let module = this.$root.$children[0].$children[0].$children[0].$children[0];//.$children[0].$children[0];
-     // let module = tab.$parent.$parent;
-      if(!module){
+      // let module = tab.$parent.$parent;
+      if (!module) {
         alert("未能获取module对象！");
-        return ;
+        return;
       }
       if (!bb) {
         bb = this.item;

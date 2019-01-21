@@ -1,3 +1,6 @@
+/* 
+*本模块是用户登录时拿到登录的所有信息 
+*/
 const types = {
   SET_IS_AUTNENTIATED: 'SET_IS_AUTNENTIATED', // 是否认证通过
   SET_USER: 'SET_USER', // 用户信息

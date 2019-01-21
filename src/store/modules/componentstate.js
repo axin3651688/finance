@@ -1,5 +1,8 @@
-import Cookies from 'js-cookie'
 
+/*
+*本模块管理组件状态。
+*/
+import Cookies from 'js-cookie'
 const app = {
   state: {
     sidebar: {

@@ -57,9 +57,6 @@ export default {
         this.ToggleSideBar({ opend: false });
       }
       if (e.url.indexOf(".json") > 0 || Cnbi.isEmpty(e.url)) {
-        // this.user.company.id === 121
-        //   ? this.$router.push("/tjsp/module")
-        //   :
         this.$router.push("/main");
         modeHandle(e);
       } else {
