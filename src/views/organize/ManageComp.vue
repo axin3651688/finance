@@ -298,11 +298,9 @@
             width: 100%;
             background: rgba(240, 242, 245, 1);
             height: 100%;
-            display: flex;
-            flex-direction: column;
 
             .edit-container {
-                flex: 1;
+                height: 100%;
             }
         }
     }
