@@ -20,7 +20,7 @@ const app = {
       api: "cnbi/json/source/chart/pie.json"
     },
     showMeluList: {
-      data: [],
+      data: {},
       isShow: false,
       switchStyle: true,
       tittle: "标题",
