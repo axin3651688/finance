@@ -1,13 +1,11 @@
 <template>
   <div class="Cbsb">
     <el-row>
-      <el-col :span="8" v-for="o in listDatas" :key="o.id">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.avatar" class="image">
-          <div style="padding: 14px;">
-            <span>{{o.trueName}}</span>
-          </div>
-        </el-card>
+      <el-col :span="6" v-for="o in listDatas" :key="o.id">
+        <img :src="o.avatar" class="image">
+        <div class="list">
+          <span>{{o.trueName}}</span>
+        </div>
       </el-col>
     </el-row>
     <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
@@ -31,7 +29,6 @@ export default {
   },
   created() {
     console.log(this.companyId);
-
     this.getMemberList();
     debugger;
   },
@@ -50,7 +47,7 @@ export default {
         let data = res.data.data.normal;
         console.log(data);
 
-        this.ShowMeluList = { data: data };
+        this.ShowMeluList({ data: data });
         this.listDatas = data;
       });
     },

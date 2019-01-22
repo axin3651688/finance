@@ -6,7 +6,7 @@
     <div class="pop-content-wrap" :style="styleObj">
       <!-- 动画 -->
       <transition name="slid">
-        <div class="pop-content" v-clickoutside="closePop" v-show="showSide">
+        <div class="pop-content" v-clickoutside="closePop">
           pop-container
           <button @click="closePop">close</button>
         </div>
@@ -73,11 +73,7 @@ export default {
       return obj;
     }
   },
-  data() {
-    return {
-      showSide: false // 是否显示边栏
-    };
-  },
+
   directives: {
     clickoutside: {
       bind(el, binding, vnode) {
@@ -116,9 +112,6 @@ export default {
     closePop() {
       this.ShowMeluList({ isShow: false });
     }
-  },
-  mounted() {
-    this.showSide = true;
   }
 };
 </script>
