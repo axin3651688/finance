@@ -263,4 +263,29 @@ export function COMPANY_USER_LIST(data) {
 
 
 
+// PUT /api/enable_company_user
+// 启用/禁用成员 ENABLE_COMPANY_USER
 
+export function ENABLE_COMPANY_USER(data) {
+    // debugger
+    return request({
+        url: '/api/api/enable_company_user',
+        method: 'put',
+        data: data
+    })
+}
+
+
+// GET /api/find_dept_list
+// 查找部门列表 FIND_DEPT_LIST
+export function FIND_DEPT_LIST(code,companyId) {
+    // debugger
+    return request({
+        url: '/api/api/find_dept_list',
+        method: 'get',
+        params: {
+            'code':code,
+            'companyId':companyId,
+        }
+    })
+}
