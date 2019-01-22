@@ -193,27 +193,15 @@ export default {
   @import "@s/message/icons.scss";
 
   .GroupMembers {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 210;
+    height: 100%;
   }
 
   .right-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 300px;
-    background: #ffffff;
-    box-shadow: -3px 0px 20px rgba(0, 0, 0, 0.16);
-    transition: all .3s;
+    width: 100%;
 
     .bar-header {
       position: relative;

@@ -98,7 +98,9 @@ export default {
   },
   methods: {
     closePop () {
+      console.log('closePop:', this)
       this.$emit('update:showPop', false)
+      alert('closePop')
     }
   },
   mounted () {

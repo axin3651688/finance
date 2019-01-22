@@ -2,7 +2,7 @@
   <div class="GroupMsg vue-module">
     <div class="top">
       <div class="left">
-        <div class="img-box img-box__group" @click="showGroupMembers = true">
+        <div class="img-box img-box__group" @click="showPop = true">
           <img :src="groupInfo.avatar" v-avatar="groupInfo.text">
         </div>
         <div class="content">
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="group-member" @click="showGroupMembers = true">
+        <div class="group-member" @click="showPop = true">
           <div class="icon icon__group-person"></div>
           <span>成员</span>
         </div>
@@ -161,15 +161,20 @@
     </el-dialog>
 
     <!--群成员侧边栏组件-->
-    <group-members
-      v-if="showGroupMembers"
-      @closeGroupMembers="showGroupMembers = false"
-    ></group-members>
+    <!--<group-members-->
+      <!--v-if="showPop"-->
+      <!--@closeGroupMembers="showPop = false"-->
+    <!--&gt;</group-members>-->
+
+    <sidebar-pop :size="300" :showPop.sync="showPop">
+      <group-members></group-members>
+    </sidebar-pop>
 
   </div>
 </template>
 
 <script>
+import SidebarPop from '@c/message/sidebar_pop/SidebarPop'
 import {mapGetters, mapActions} from 'vuex'
 import MessageItem from '@c/message/message_item/MessageItem.vue'
 import emotionSprites from '@a/message/data/emotion_sprites.json'
@@ -188,6 +193,7 @@ export default {
   name: 'GroupMsg',
   components: {
     GroupMembers: () => import('./GroupMembers'),
+    SidebarPop,
     MessageItem
   },
   data() {
@@ -201,7 +207,7 @@ export default {
       groupInfo: {},
       groupMembers: [],
       groupMsgList: [],
-      showGroupMembers: false, // 是否显示群成员组件
+      showPop: true, // 是否显示群成员组件
       showGroupQuitDialog: false, // 退出群弹出
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
@@ -576,6 +582,7 @@ export default {
   },
   mounted() {
     // console.log('文件类型：', FILE_TYPE)
+    console.log('this:', this)
     this.getInfo()
     this.getGroupMsgList()
 
