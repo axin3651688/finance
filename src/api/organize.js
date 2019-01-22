@@ -275,17 +275,52 @@ export function ENABLE_COMPANY_USER(data) {
     })
 }
 
-
-// GET /api/find_dept_list
-// 查找部门列表 FIND_DEPT_LIST
-export function FIND_DEPT_LIST(code,companyId) {
+// GET /api/find_company_structure
+// 查看公司所有部门
+export function FIND_DEPT_LIST(companyId) {
     // debugger
     return request({
-        url: '/api/api/find_dept_list',
+        url: '/api/api/find_company_structure',
         method: 'get',
         params: {
-            'code':code,
             'companyId':companyId,
         }
+    })
+}
+
+
+// GET /api/company_user_info
+// 查询成员信息 COMPANY_USER_INFO
+export function COMPANY_USER_INFO(companyId,targetId) {
+    // debugger
+    return request({
+        url: '/api/api/company_user_info',
+        method: 'get',
+        params: {
+            'companyId':companyId,
+            'targetId':targetId,
+        }
+    })
+}
+
+// PUT /api/edit_contact_info
+// 编辑团队成员 EDIT_CONTACT_INFO
+export function EDIT_CONTACT_INFO(data) {
+    // debugger
+    return request({
+        url: '/api/api/edit_contact_info',
+        method: 'put',
+        data: data
+    })
+}
+
+// POST /api/save_contact
+// 录入成员 SAVE_CONTACT
+export function SAVE_CONTACT(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_contact',
+        method: 'post',
+        data: data
     })
 }

@@ -177,8 +177,18 @@
                                 <img src="@a/user_icon/juese_icon.svg">
                                 <span class="itemSpan">所属角色：</span>
 
-                                <el-select stripe style="width: 300px" v-model="value5" filterable multiple
-                                           placeholder="请选择所属角色">
+                                <!--<el-cascader stripe style="width: 300px"-->
+                                             <!--:show-all-levels="false"-->
+                                             <!--:options="roleList"-->
+                                             <!--v-model="userdata.role"-->
+                                             <!--change-on-select-->
+                                             <!--:props="roleProps"-->
+                                             <!--filterable>-->
+
+                                <!--</el-cascader>-->
+
+                                <el-select stripe style="width: 300px" v-model="userdata.role" filterable multiple
+                                           placeholder="请选择所属角色" >
                                     <el-option
                                             v-for="item in roleList"
                                             :key="item.id"
@@ -215,7 +225,8 @@
                                 <el-cascader stripe style="width: 300px"
                                              :show-all-levels="false"
                                              :options="compList"
-
+                                             v-model="userdata.bycompany"
+                                             change-on-select
                                              :props="compProps"
                                              filterable>
 
@@ -233,6 +244,7 @@
                                 <el-cascader stripe style="width: 300px"
                                              :show-all-levels="false"
                                              :options="departmentList"
+                                             v-model="userdata.department"
                                              change-on-select
                                              @active-item-change="handleItemChange"
                                              :props="departProps"
@@ -244,16 +256,17 @@
                         </el-form-item>
 
 
-                        <el-form-item>
-                            <el-button type="primary" @click="submitForm('userdata')">提交</el-button>
-                        </el-form-item>
+                        <!--<el-form-item>-->
+                            <!--<el-button type="primary" @click="submitForm('userdata')">提交</el-button>-->
+                        <!--</el-form-item>-->
                     </el-form>
 
 
                     <!--@click="dialogFormVisible = false;-->
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="resetForm('userdata')">取 消</el-button>
-                        <el-button type="primary" @click="dialogFormVisible = false">{{dialogSUbTitle}}</el-button>
+
+                        <el-button type="primary" @click="submitForm('userdata')">{{dialogSUbTitle}}</el-button>
                     </div>
                 </el-dialog>
 
@@ -276,6 +289,9 @@
     import {
         ROLE_LIST,
         FIND_DEPT_LIST,
+        COMPANY_USER_INFO,
+        EDIT_CONTACT_INFO,
+        SAVE_CONTACT,
         FIND_COMPANY_TYPE,
         FIND_SUB_COMPANY_LIST,
         SELECT_SCALE, ENABLE_CREATE_SUB_COMPANY, COMPANY_USER_LIST, ENABLE_COMPANY_USER
@@ -342,12 +358,13 @@
                 dialogTableVisible: false,
                 dialogFormVisible: false,
                 userdata: {
+                    userId:'',
                     username: '',
                     phone: '',
                     role: '',
                     email: '',
                     company: '',
-                    department: '',
+                    department: [],
                     bycompany: ''
                 },
                 formLabelWidth: '120px',
@@ -372,6 +389,11 @@
                 expandedKey: 1,
                 compProps: {
                     children: 'children',
+                    label: 'text',
+                    value: 'id',
+                },
+
+                roleProps: {
                     label: 'text',
                     value: 'id',
                 },
@@ -403,15 +425,7 @@
                     label: 'text',
                     value: 'id',
                 },
-                userdata: {
-                    username: '',
-                    phone: '',
-                    role: '',
-                    email: '',
-                    company: '',
-                    department: '',
-                    bycompany: ''
-                },
+
                 rules2: {
                     username: [
 
@@ -482,11 +496,9 @@
             },
             getRowClass({row, column, rowIndex, columnIndex}) {
                 if (rowIndex % 2 == 0) {
-                    console.log('rowIndex%2==0---' + rowIndex)
                     return 'background:rgba(255,255,255,1);' +
                         'height:50px';
                 } else if (rowIndex % 2 == 1) {
-                    console.log('rowIndex%2==1---' + rowIndex)
                     return 'background:rgba(196,215,233,0.15);' +
                         'height:50px';
                 } else {
@@ -632,8 +644,50 @@
                 if (type === 0){
 
                     this.dialogSUbTitle='修改'
+
+
+
+                    COMPANY_USER_INFO(this.selectComp.id,row.userId).then(res => {
+
+                        console.log('COMPANY_USER_INFO：', res.data.data)
+                        if (res.data.code === 200) {
+
+                            this.userdata.username=res.data.data.trueName;
+                            this.userdata.phone=res.data.data.phone;
+
+                            var arss=[];
+                            for (var i = 0; i < res.data.data.roleList.length; i++) {
+                                arss.push(res.data.data.roleList[i].id)
+                            }
+
+                            this.userdata.role=arss;
+                            this.userdata.email=res.data.data.email;
+
+                            this.userdata.company=res.data.data.belongCompany;
+                            this.userdata.department=[res.data.data.deptId];
+                            this.userdata.bycompany=[res.data.data.belongCompany];
+                            this.userdata.userId=res.data.data.userId;
+
+                        } else {
+
+                            this.$message({
+                                showClose: true,
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+
+                        }
+
+                    }).catch(err => {
+                        console.log('禁用失败：')
+                    });
+
+
                 } else {
                     this.dialogSUbTitle='提交'
+
+
+
                 }
 
                 console.log(row.id);
@@ -642,19 +696,21 @@
 
             unableUserClick(row) {
 
+                debugger
                 console.log(row.id);
 
 
                 let params = {
 
 
-                    "companyId": row.id,
+                    "companyId": row.companyId,
                     "enable": 0,
                     "updateUser": this.loginUserId,
                     "userId": row.userId
                 }
                 ENABLE_COMPANY_USER(params).then(res => {
 
+                    debugger
                     console.log(params)
                     console.log('ENABLE_COMPANY_USER：', res.data.data)
                     if (res.data.code === 200) {
@@ -693,9 +749,9 @@
 
             getDepartmentList(code) {
 
-                debugger
 
-                FIND_DEPT_LIST(1, 1).then(res => {
+
+                FIND_DEPT_LIST(code).then(res => {
                     this.departmentList = res.data.data
 
                     console.log('请求departmentList：', res.data.data)
@@ -705,7 +761,7 @@
             },
 
             handleItemChange(val) {
-debugger
+
                 console.log('active item:', val);
                 this.getDepartmentList(this.selectComp.id);
 
@@ -714,10 +770,99 @@ debugger
 
 
             submitForm(formName) {
-                debugger
                 this.$refs[formName].validate((valid) => {
+
                     if (valid) {
-                        alert('submit!');
+
+                        if (this.dialogSUbTitle==='修改') {
+
+                            let params = {
+
+
+                                "belongCompany": this.userdata.bycompany[0],
+                                "companyId": this.userdata.company,
+                                "deptId": this.userdata.department[0],
+                                "email": this.userdata.email,
+                                "phone": this.userdata.phone,
+                                "roles": this.userdata.role.join(','),
+                                "trueName": this.userdata.username,
+                                "updateUser": this.loginUserId,
+                                "userId": this.userdata.userId
+
+                            }
+                            EDIT_CONTACT_INFO(params).then(res => {
+
+                                console.log(params)
+                                console.log('EDIT_CONTACT_INFO：', res)
+                                if (res.data.code === 200) {
+
+
+                                    this.getTableData()
+                                    this.$refs[formName].resetFields();
+                                    this.dialogFormVisible = false;
+                                    this.username_po='';
+                                    this.email_po='';
+                                    this.phone_po='';
+                                } else {
+
+                                    this.$message({
+                                        showClose: true,
+                                        message: res.data.msg,
+                                        type: 'warning'
+                                    });
+
+                                }
+
+                            }).catch(err => {
+                                console.log('禁用失败：')
+                            });
+                        }else {
+
+
+                            let params = {
+
+
+                                "belongCompany": this.userdata.bycompany[0],
+                                "companyId": this.selectComp.id,
+                                "deptId": this.userdata.department[0],
+                                "email": this.userdata.email,
+                                "phone": this.userdata.phone,
+                                "roles": this.userdata.role.join(','),
+                                "trueName": this.userdata.username,
+                                "createUser": this.loginUserId,
+
+                            }
+                            SAVE_CONTACT(params).then(res => {
+
+                                console.log(params)
+                                console.log('SAVE_CONTACT：', res)
+                                if (res.data.code === 200) {
+
+
+                                    this.getTableData()
+                                    this.$refs[formName].resetFields();
+                                    this.dialogFormVisible = false;
+                                    this.username_po='';
+                                    this.email_po='';
+                                    this.phone_po='';
+                                } else {
+
+                                    this.$message({
+                                        showClose: true,
+                                        message: res.data.msg,
+                                        type: 'warning'
+                                    });
+
+                                }
+
+                            }).catch(err => {
+                                console.log('禁用失败：')
+                            });
+                        }
+
+
+
+
                     } else {
                         alert('error submit!');
                         console.log('error submit!!');
