@@ -206,7 +206,7 @@ export default {
     padding: 0px;
     position: relative;
   }
-  /deep/ .el-input__inner {
+  .el-input__inner {
     background: transparent;
     &::placeholder {
       color: transparent;

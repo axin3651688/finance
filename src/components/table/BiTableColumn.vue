@@ -133,8 +133,8 @@ export default {
     // }
   },
   created() {
-    debugger;
-    console.log(this.tableData);
+    // debugger;
+    // console.log(this.tableData);
   },
   mixins: [EventMixins],
   methods: {

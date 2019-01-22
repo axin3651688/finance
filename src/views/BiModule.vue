@@ -140,7 +140,9 @@ export default {
       layout: {},
       items: [],
       chartOptions: {},
-      debug: 0
+      debug: 0,
+
+      xtype: ""
     };
   },
   props: ["dialogData"],

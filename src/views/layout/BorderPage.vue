@@ -1,6 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <OpenDialog/>
+    <OpenMeluList/>
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
@@ -21,7 +22,8 @@ export default {
   components: {
     HeadNav: () => import("./topnav/HeadNav"),
     leftMenu: () => import("./sidebar/Sidebar"),
-    OpenDialog: () => import("@v/layout/dialog/OpenDialog.vue")
+    OpenDialog: () => import("@v/layout/dialog/OpenDialog.vue"),
+    OpenMeluList: () => import("@v/layout/dialog/OpenMeluList.vue")
   },
   mixins: [ResizeMixin],
   computed: {

@@ -235,6 +235,8 @@ BiText
                 //所有的数据都在store里，自己加自己的判断吧
                 return true;//默认显示
             },
+             show: true,  //是否显示
+            async:true   //异步加载节点
             queryDataAfter:function(){}//数据的后置处理
             queryDataBefore:function(){}//数据的前置处理
             xtype: "bi-table",
