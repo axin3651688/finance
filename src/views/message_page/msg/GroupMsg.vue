@@ -247,7 +247,7 @@ export default {
       })
     },
     serverAck(val) {
-      console.log('服务器ACK：', val)
+      // console.log('服务器ACK：', val)
       socket.send(JSON.stringify(val))
     }
   },

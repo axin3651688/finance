@@ -136,8 +136,8 @@ export default {
      * 监听到 ack 后更新消息
      */
     serverAck(val) {
-      debugger;
-      console.log('服务器ACK：', val);
+      // debugger;
+      // console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
     }
 
@@ -227,7 +227,7 @@ export default {
         data.type = pushData.type
       }
 
-      console.log('要添加到聊天窗口的数据是：', data);
+      // console.log('要添加到聊天窗口的数据是：', data);
       debugger;
       this.singleMsgList.push(data);
       this.$nextTick(() => {

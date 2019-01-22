@@ -235,6 +235,7 @@ export default {
      */
     redirectGroupChat(item) {
       debugger
+      this.handleClose() // 先关闭搜索弹窗
       let sessionItem = {}
       let targetId = '1101_' + this.loginUserId + '_' + item.groupId
       sessionItem['miniType'] = 1101
