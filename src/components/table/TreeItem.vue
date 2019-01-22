@@ -34,7 +34,7 @@ export default {
     /*
      *默认展开树表第一级  mj
      */
-    this.$bus.emit("fetchdata", { $index: 0, row: { id: 1 } }); //触顶级更新
+    // this.$bus.emit("fetchdata", { $index: 0, row: { id: 1 } }); //触顶级更新
   },
   methods: {
     // 图标显示
