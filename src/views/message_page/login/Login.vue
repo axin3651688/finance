@@ -171,9 +171,7 @@ export default {
 
             // electron
             if (window.require) {
-              var ipc = window.require("electron").ipcRenderer;
-            }
-            if (window.require) {
+              let ipc = window.require("electron").ipcRenderer;
               ipc.send("web_loginSucess", "");
             }
           }
@@ -192,17 +190,13 @@ export default {
 
     web_minWindows() { // electron 最小化
       if (window.require) {
-        var ipc = window.require("electron").ipcRenderer;
-      }
-      if (window.require) {
+        let ipc = window.require("electron").ipcRenderer;
         ipc.send("web_minWindows", "");
       }
     },
     web_closeWindows() { // electron 关闭窗口
       if (window.require) {
-        var ipc = window.require("electron").ipcRenderer;
-      }
-      if (window.require) {
+        let ipc = window.require("electron").ipcRenderer;
         ipc.send("web_closeWindows", "");
       }
     },
@@ -222,53 +216,44 @@ export default {
           login(this.loginUser)
             .then(res => {
               // debugger;
-              const data = res.data.data;
-              const authorization = data.authorization;
-              if (!Cnbi.isEmpty(authorization)) {
-                localStorage.setItem("authorization", authorization);
-                // 用户名记住,方便下次登录
-                localStorage.setItem("usename", this.loginUser.usename);
-                var obj = JSON.stringify(data); //转化为JSON字符串
-                localStorage.setItem("database", obj); //返回{"a":1,"b":2}
-                //    authorization
-                store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(authorization));
-                store.dispatch("setUser", data);
-                // 把用户的状态更新到vuex
-                this.GetSideMid({
-                  company: data.company.customerId,
-                  companyName: data.company.text
-                });
-
-                // electron 处理
-                if (window.require) {
-                  var ipc = window.require("electron").ipcRenderer;
-                }
-                if (window.require) {
-                  // ipc.send("web_loginSuccess", "");
-                  ipc.send("web_autoLogin", "");
-                }
-
-                //this.initSocket(authorization);
-                // 页面跳转
-                //  判断加载哪个公司的布局页以加载不同样式
-                data.company.id === 121
-                  ? this.$router.push("/message_page/home")
-                  : this.$router.push("/message_page/home");
-
-              } else {
-                // alert(`没有 authorization`);
-                this.loginUser.usename = "";
-                this.loginUser.password = "";
-                let msg = res.data.msg;
-                console.error(msg);
-                return;
-              }
+              this.processLoginResult(res.data.data) // 处理登陆返回的结果
             })
-            .catch(res => {
-              console.error(res);
+            .catch(err => {
+              console.error(err);
             });
         }
       });
+    },
+
+    /**
+     * 处理登陆返回数据
+     */
+    processLoginResult(data){
+      debugger;
+      let authorization = data.authorization;
+      if (!Cnbi.isEmpty(authorization)) {
+        localStorage.setItem("authorization", authorization);
+        localStorage.setItem("usename", this.loginUser.usename); // 用户名记住,方便下次登录
+        let obj = JSON.stringify(data); //转化为JSON字符串
+        localStorage.setItem("database", obj); //返回{"a":1,"b":2}
+        store.dispatch("setIsAutnenticated", true);
+        store.dispatch("setUser", data);
+
+        // 把用户的状态更新到vuex
+        this.GetSideMid({
+          company: data.company.customerId,
+          companyName: data.company.text
+        });
+
+        this.$router.push("/message_page/home");
+
+        // electron 处理
+        if (window.require) {
+          let ipc = window.require("electron").ipcRenderer;
+          ipc.send("web_autoLogin", "");
+        }
+
+      }
     },
 
     // 显示二维码
