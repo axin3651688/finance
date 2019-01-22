@@ -11,7 +11,7 @@
     v-dialogDrag
   >
     <span slot="title" class="dialog-title">
-      <img src="@a/icons/jsnk/laba.svg">
+      <!-- <img src="@a/icons/jsnk/laba.svg"> -->
       <span>{{showDialog.tittle}}</span>
     </span>
     <el-button @click.stop="ShowMeluList({isShow:true})">打开</el-button>
