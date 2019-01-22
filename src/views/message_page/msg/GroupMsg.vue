@@ -2,7 +2,7 @@
   <div class="GroupMsg vue-module">
     <div class="top">
       <div class="left">
-        <div class="img-box img-box__group" @click="showPop = true">
+        <div class="img-box img-box__group" @click="showSidebarPop = true">
           <img :src="groupInfo.avatar" v-avatar="groupInfo.text">
         </div>
         <div class="content">
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="group-member" @click="showPop = true">
+        <div class="group-member" @click="showSidebarPop = true">
           <div class="icon icon__group-person"></div>
           <span>成员</span>
         </div>
@@ -161,13 +161,8 @@
     </el-dialog>
 
     <!--群成员侧边栏组件-->
-    <!--<group-members-->
-      <!--v-if="showPop"-->
-      <!--@closeGroupMembers="showPop = false"-->
-    <!--&gt;</group-members>-->
-
-    <sidebar-pop :size="300" :showPop.sync="showPop">
-      <group-members></group-members>
+    <sidebar-pop :size="300" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop">
+      <group-members @closeGroupMembers="showSidebarPop=false"></group-members>
     </sidebar-pop>
 
   </div>
@@ -207,7 +202,7 @@ export default {
       groupInfo: {},
       groupMembers: [],
       groupMsgList: [],
-      showPop: true, // 是否显示群成员组件
+      showSidebarPop: false, // 是否显示群成员组件
       showGroupQuitDialog: false, // 退出群弹出
       showGroupSettingDialog: false, // 群组设置弹窗
       showFacePop: false, // 弹窗聊天表情
@@ -258,6 +253,9 @@ export default {
     }
   },
   methods: {
+    handleTest() {
+      alert('test ok')
+    },
     ...mapActions(['ActionSetMessageStore']),
 
     // 上传群头像文件
@@ -582,7 +580,6 @@ export default {
   },
   mounted() {
     // console.log('文件类型：', FILE_TYPE)
-    console.log('this:', this)
     this.getInfo()
     this.getGroupMsgList()
 

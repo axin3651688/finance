@@ -15,7 +15,7 @@
 export default {
   name: 'SidebarPop',
   props: {
-    showPop: {
+    showSidebarPop: {
       type: Boolean,
       default: false
     },
@@ -98,9 +98,7 @@ export default {
   },
   methods: {
     closePop () {
-      console.log('closePop:', this)
-      this.$emit('update:showPop', false)
-      alert('closePop')
+      this.$emit('update:showSidebarPop', false)
     }
   },
   mounted () {
