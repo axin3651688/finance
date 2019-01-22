@@ -1,19 +1,12 @@
 <template>
-  <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
-  <el-table-column
+  <!--TreeItem组件单独针对树表前面折叠与展开列-->
+  <TreeItem
     v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid' || tableData.xtype==='JtreeGrid')"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-    fixed="left"
-  >
-    <template slot-scope="scope">
-      <span v-if="iconShow(0,scope.row) " class="tree-ctrl" @click="toggleExpanded(scope)">
-        <i v-if="!scope.row._expanded" class="el-icon-plus">{{scope.row[col.id]}}</i>
-        <i v-else class="el-icon-minus">{{scope.row[col.id]}}</i>
-      </span>
-    </template>
-  </el-table-column>
+    :tableData="tableData"
+  />
   <el-table-column
     v-else-if="col.type== 'template' "
     :prop="col.id"
@@ -61,15 +54,9 @@
     :align="col.align|| 'left'"
     :width="col.width||150"
   >
-    <!-- :align="col.align||'center'" -->
-    <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
-        <!-- <span v-if="scope.row.balance!=0">
-            <el-button type="text">{{ scope.row[col.id] }}</el-button>
-        </span>
-        <span v-else>{{ scope.row[col.id] }}</span>-->
       </el-tooltip>
     </template>
   </el-table-column>
@@ -88,7 +75,6 @@
         :content="getCellValues(tmptabledata.datas,col,scope,tmptabledata.config.rows)"
         placement="right"
       >
-        <!--    @click="dilogShow(col,scope)" -->
         <span
           v-if="tableData.datas"
           @click="columnClick(col,scope)"
@@ -121,56 +107,39 @@
       </el-tooltip>
     </template>
   </el-table-column>
-
-  <!-- <el-table-column v-else-if="!col.type" :prop="col.id" :label="col.text"  :align="col.align|| 'left'">
-    <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span>请定义列{{col.text}}的类型</span>
-      </el-tooltip>
-    </template>
-  </el-table-column>-->
 </template>
 <script>
 import EventMixins from "../mixins/EventMixins";
-
-//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
+import TreeItem from "./TreeItem";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
+  components: {
+    TreeItem
+  },
   data() {
     return {
       clickRow: {},
       clickRowParams: {},
       //options: []
-      tmptabledata:[]
+      tmptabledata:[],
+      clickRowParams: {}
     };
   },
   computed: {
-    isFolder() {
-      return this.col.children && this.col.children.length;
-    },
-    getLevel(level) {
-      // console.info(level);
-      return level + 1;
-    }
+    // isFolder() {
+    //   return this.col.children && this.col.children.length;
+    // },
+    // getLevel(level) {
+    //   // console.info(level);
+    //   return level + 1;
+    // }
   },
   created() {
-    // this.options = this.tableData.config.columns[0].menu.list;
-    //debugger;
-    console.log(this.tableData);
-
-    //this.$set(this, "tableData", null);
+    // console.log(this.tableData);
   },
   mixins: [EventMixins],
   methods: {
-    //   dilogShow(item) {
-    //     debugger
-    //     this.ShowDialog({isShow: true,tittle: '报表查看',width: "80%",height: "500px",api:"cnbi/json/source/chart/bar.json"})
-    // },
-    // ...mapActions(["ShowDialog"]),
-    // rowClass({ row, rowIndex }) {
-    //   return "text-align:center";
-    // },
     columnDropDownClick(items) {
       let menuId = items[0];
       debugger;
@@ -270,47 +239,11 @@ export default {
       // 千分位  保留两位小数
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       return value;
-    },
-    //treeGrid function
-    showRow(row) {
-      const show = row.row.parent;
-      console.log(show)
-        ? row.row.parent._expanded && row.row.parent._show
-        : true;
-      row.row._show = show;
-      return show
-        ? "animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;"
-        : "display:none;";
-    },
-    // 切换下级是否展开
-    toggleExpanded(trIndex) {
-      // debugger;
-
-      if (
-        this.tableData.hasOwnProperty("async") &&
-        this.tableData.async == true
-      ) {
-        // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
-        console.log(trIndex);
-        debugger;
-        this.$bus.emit("fetchdata", trIndex); //触发    发送数据
-      }
-      const record = this.tableData.datas[trIndex.$index];
-      // console.log(record);
-      record._expanded = !record._expanded;
-    },
-    // 图标显示
-    iconShow(index, record) {
-      return (
-        (index === 0 && record.leaf == 0) ||
-        (record.children && record.children.length > 0)
-      );
-      // 为了树表异步加载,修改,上面为天津一次性加载,马军2019.1.7
-      // return index === 0 && record.leaf == 0;
-    },
-    itemShow(index, record) {
-      return index === item && record.children && record.children.length > 0;
     }
+
+    // itemShow(index, record) {
+    //   return index === item && record.children && record.children.length > 0;
+    // }
   }
 };
 </script>
@@ -401,11 +334,5 @@ tbody {
 }
 .ms-tree-space::before {
   content: "";
-}
-.tree-ctrl {
-  position: relative;
-  cursor: pointer;
-  color: #2196f3;
-  margin-left: 18px;
 }
 </style>

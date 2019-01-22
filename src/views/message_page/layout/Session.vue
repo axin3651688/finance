@@ -22,7 +22,6 @@
           <span v-if="item.miniType===1101">{{item.originData.name}}: </span>
           <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
         </p>
-        <div class="right-border"></div>
         <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
       </li>
     </ul>
@@ -98,7 +97,6 @@ export default {
       position: relative;
       overflow: hidden;
       padding: 20px 20px 18px;
-      border-bottom: 1px solid $colorBorder1;
       cursor: pointer;
 
       .avatar-img {
@@ -133,6 +131,9 @@ export default {
           display: inline-block;
           margin-left: 20px;
           width: 80px;
+          color: $colorTextSessionTitle;
+          font-size: 14px;
+          font-weight: 400;
           @include singleEllipsis()
         }
 
@@ -169,10 +170,10 @@ export default {
 
       .list-menu {
         position: absolute;
-        right: 5px;
+        right: 15px;
         top: 50%;
-        height: 20px !important;
-        width: 20px !important;
+        height: 16px !important;
+        width: 16px !important;
         cursor: pointer;
         transform: translateY(-50%);
       }
@@ -184,22 +185,12 @@ export default {
         font-family: $fontFamilyMain;
         font-weight: 400;
         line-height: 16px;
-        color: $colorText2;
-      }
-
-      .right-border {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 6px;
+        color: $colorTextSessionContent;
       }
     }
 
     li.active {
-      .right-border {
-        background-color: $colorTheme;
-      }
+      background: $colorThemePrimary;
     }
   }
 </style>

@@ -118,7 +118,7 @@ export default {
         box-sizing: border-box;
         height: $sizeTopBarHeight;
         background: #ffffff;
-        border-bottom: 1px solid $colorBorder1;
+        border-bottom: 1px solid $colorBorderLayoutLight;
       }
 
       .right-bottom {

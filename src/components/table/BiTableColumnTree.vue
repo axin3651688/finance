@@ -28,7 +28,7 @@ export default {
   created() {
     //alert(JSON.stringify(this.tableData))
     // debugger;
-    console.log(this.tableData);
+    // console.log(this.tableData);
   },
   methods: {
     upData(item) {

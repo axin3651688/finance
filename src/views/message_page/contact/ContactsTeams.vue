@@ -238,25 +238,33 @@ export default {
       }
 
       .el-collapse-item__header {
-        $itemHeaderHeight: 80px;
+        $itemHeaderHeight: 70px;
         height: $itemHeaderHeight;
 
         .item-wrap {
           height: 100%;
+          width: calc(100% - 30px);
           box-sizing: border-box;
-          padding: 15px 30px;
+          padding: 0 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
 
-          h3 {
+          .item-title {
+            @include singleEllipsis();
+            display: block;
             line-height: 21px;
             color: $colorText1;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 400;
           }
 
-          p {
-            margin-top: 10px;
+          .item-info {
+            @include singleEllipsis();
+            margin-top: 5px;
             line-height: 20px;
-            color: $colorText3;
+            font-size: 12px;
+            color: $colorTextBlack6;
           }
         }
 
@@ -273,39 +281,54 @@ export default {
         ul.sub-item {
           li {
             position: relative;
+            box-sizing: border-box;
             height: 60px;
-            padding: 0 30px 0 30px;
+            padding: 0 10px;
             cursor: pointer;
+            border-bottom: 1px solid $colorBorderLayoutLight;
             transition: all .3s;
 
+            &:after{
+              display: block;
+              content: '';
+              position: absolute;
+              width: 4px;
+              height: 100%;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              transition: all .3s;
+            }
+
             &:hover {
-              box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+              box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
             }
 
             .arrow {
               position: absolute;
-              right: 24px;
+              right: 15px;
               top: 50%;
               transform: translateY(-50%);
             }
           }
 
           li.active {
-            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.15);
+            &:after{
+              background-color: $colorTheme;
+            }
           }
 
           figure {
             display: flex;
             align-items: center;
             height: 100%;
-            border-top: 1px solid $colorBorder2;
             margin-top: -1px;
 
             .img-box {
               width: 40px;
               height: 40px;
               overflow: hidden;
-              margin-right: 20px;
+              margin-right: 10px;
               border-radius: 8px;
               background: $colorTheme;
 
@@ -340,8 +363,8 @@ export default {
 
   .panel-right {
     flex: 1;
-    padding: 60px 30px 0 30px;
-    background: $colorBgPageGray;
+    padding: 0 30px;
+    //background: $colorBgPageGray;
 
     .panel-right-top {
       position: relative;

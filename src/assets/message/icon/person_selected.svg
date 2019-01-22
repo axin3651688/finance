@@ -6,11 +6,11 @@
       }
 
       .cls-2 {
-        fill: #f1f1f1;
+        fill: #1890ff;
       }
 
       .cls-3 {
-        fill: #fff;
+        fill: #1890ff;
       }
     </style>
   </defs>

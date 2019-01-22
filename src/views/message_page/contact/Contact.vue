@@ -3,8 +3,7 @@
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
-          团队
-          <i class="splide-line"></i>
+          <div class="label-text">团队</div>
         </template>
         <contacts-teams
           v-if="which_to_show === 'ContactsTeams'"
@@ -13,24 +12,23 @@
       </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
-          好友
-          <i class="splide-line"></i>
+          <div class="label-text">好友</div>
         </template>
         <contacts-friends
           v-if="which_to_show === 'ContactsFriends'"
           @chatWithSingle="handleChatWithSingle"
         ></contacts-friends>
       </el-tab-pane>
-      <el-tab-pane label="群聊" name="ContactsGroups">
+      <el-tab-pane name="ContactsGroups">
+        <template slot="label">
+          <div class="label-text">群聊</div>
+        </template>
         <contacts-groups
           v-if="which_to_show === 'ContactsGroups'"
           @chatWithGroup="handleChatWithGroup"
         >
         </contacts-groups>
       </el-tab-pane>
-
-      <!--阴影-->
-      <div class="inset-shadow"></div>
 
     </el-tabs>
   </div>
@@ -93,63 +91,48 @@ export default {
   /deep/ .el-tabs {
     height: 100%;
     overflow: hidden;
-    /*border-top-left-radius: 12px;*/
-    /*border-top-right-radius: 12px;*/
     background: #ffffff;
 
     .el-tabs__header {
       margin-bottom: 0;
+      border-bottom: none;
 
       .el-tabs__nav {
+        display: flex;
+        box-sizing: border-box;
+        justify-content: space-around;
         border: none;
         border-radius: 0;
         width: $sizeNavBarWidth;
-        overflow: hidden;
+        border-right: 1px solid $colorBorderLayoutDark;
       }
 
       .el-tabs__item {
-        $tabsItemHeight: 50px;
+        flex: 1;
+        $tabsItemHeight: 25px;
         height: $tabsItemHeight;
         line-height: $tabsItemHeight;
-        padding-left: 39px;
-        padding-right: 40px;
         border: none;
+        font-size: 12px;
         color: $colorText3;
-
-        .splide-line {
-          width: 1px;
-          height: 30px;
-          background: $colorBorder2;
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
+        .label-text {
+          box-sizing: border-box;
+          height: 100%;
+          text-align: center;
+          border-bottom: 1px solid transparent;
         }
       }
 
       .el-tabs__item.is-active {
-        color: #ffffff;
-        background: $colorTheme;
-
-        .splide-line {
-          background: transparent;
+        color: $colorTheme;
+        .label-text {
+          border-color: $colorTheme;
         }
       }
     }
 
     .el-tabs__content {
-      height: calc(100% - 50px);
-
-      .inset-shadow {
-        $shadowHeight: 20px;
-        width: 100%;
-        height: $shadowHeight;
-        position: absolute;
-        background: #eee;
-        top: -$shadowHeight;
-        left: 0;
-        box-shadow: 0 10px $shadowHeight $colorShadowGreen;
-      }
+      height: calc(100% - 25px);
     }
 
     .el-tab-pane {
