@@ -21,7 +21,7 @@ const app = {
     },
     showMeluList: {
       data: [],
-      isShow: true,
+      isShow: false,
       switchStyle: true,
       tittle: "标题",
       width: "35%",

@@ -11,7 +11,14 @@
             <p>添加消息接收人</p>
           </div>
           <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input>
-          <div class="useravatar"></div>
+          <div class="useravatar">
+            <ul>
+              <li>
+                <img src="" alt="">
+                <span>11</span>
+              </li>
+            </ul>
+          </div>
           <!-- <button @click="closePop">close</button> -->
         </div>
       </transition>
@@ -211,5 +218,8 @@ export default {
 }
 .useravatar{
   margin-top:25px;
+}
+ul,li{
+  list-style-type: none;
 }
 </style>
