@@ -1,0 +1,21 @@
+{
+    "id": "cbsb",
+    "text": "催报上报",
+    "rows": [],
+    "datas": {},
+    "layout": {
+        "xtype": "column"
+    },
+    "items": [
+        {
+            "xtype": "BiText",
+            "id": "1416001",
+            "text": "催报上报11111",
+            "weight": 12,
+            "show": true,
+            "options": {
+                "type": "Cbsb"
+            }
+        }
+    ]
+}

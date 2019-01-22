@@ -25,10 +25,11 @@
 <script type="text/ecmascript-6">
 export default {
   name: "",
+  props: ["prop", "label", "width", "tableData"],
   data() {
     return {};
   },
-  props: ["prop", "label", "width", "tableData"],
+
   mounted() {
     /*
      *默认展开树表第一级  mj

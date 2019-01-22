@@ -207,8 +207,8 @@ export default {
 }
 
 .content {
-  .el-table th > .cell {
-    text-align: center;
+    .el-table th > .cell {
+      text-align: center;
   }
   .el-input__inner {
     padding: 0px;
@@ -248,9 +248,6 @@ export default {
 </style>
  
 <style scoped>
-#app .containerMain {
-  padding-top: 85px;
-}
 .ms-tree-space {
   position: relative;
   top: 1px;
@@ -262,9 +259,9 @@ export default {
   height: 14px;
 }
 
-/* .ms-tree-space::before {
+.ms-tree-space::before {
   content: "";
-} */
+}
 .processContainer {
   width: 100%;
   height: 100%;
@@ -272,12 +269,12 @@ export default {
 table td {
   line-height: 26px;
 }
-/* .tree-ctrl {
+.tree-ctrl {
   position: relative;
   cursor: pointer;
   color: #2196f3;
   margin-left: -18px;
-} */
+}
 .el-table td,
 .el-table th {
   padding: 10px 0;

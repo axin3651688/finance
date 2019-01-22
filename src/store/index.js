@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
-import componentstate from './modules/componentstate'
+import componentState from './modules/componentstate'
 import user from './modules/user'
-import prame from './modules/prame'
+import param from './modules/param'
 import messageModule from './modules/messageModule'
 
 
@@ -12,9 +12,9 @@ const isDev = process.env.NODE_ENV !== 'production'
 const store = new Vuex.Store({
   strict: isDev,
   modules: {
-    componentstate,
+    componentState,
     user,
-    prame,
+    param,
     messageModule
   },
   getters

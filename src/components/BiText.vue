@@ -1,8 +1,9 @@
 <template>
-  <component v-if="flag" :is="item.options.type" :item="item" class="bgwight"></component>
+  <component :is="item.options.type" :item="item" class="bgwight"></component>
 </template>
 <script>
 export default {
+  name: "BiText",
   props: ["item"],
   data() {
     return {};
@@ -11,7 +12,7 @@ export default {
     debugger;
   },
   components: {
-   
+    Cbsb: () => import("./text/Cbsb.vue")
   }
 };
 </script>

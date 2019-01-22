@@ -37,7 +37,6 @@
         <h2>{{layout.xtype}}</h2>
       </div>
     </div>
-
     <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
       <el-tab-pane
         v-for="(item,index) in items"
@@ -484,7 +483,7 @@ export default {
      */
     queryDataAfter(item, datas, $childVue) {
       debugger;
-      let params = this.$store.state.prame.command;
+      let params = this.$store.state.param.command;
       let unit = params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
