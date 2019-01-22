@@ -37,8 +37,14 @@ export default {
   name: "Jtreegrid",
   props: ["item"],
   created() {
-    debugger;
-    let flag = this.convertData(this.item.datas);
+    let data = this.item.datas;
+    let flag = Cnbi.isEmpty(data);
+    if (!flag) {
+      this.convertData(this.item.datas);
+    } else {
+      console.error("亲！没有请求到数据，再检查下配置吧！");
+    }
+
     let me = this;
     // 下面接受子级触发事件,初始化不会加载下面
     this.$bus.$on("fetchdata", function(dat) {
