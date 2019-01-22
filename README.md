@@ -62,8 +62,14 @@ BiMSAreaLine     面积与线状
 
 
 
++ 维度替换 
+:company       公司
+:period         时间
 
-
+如果异步加载需要在   "queryDataBefore": 中加如下字段
+  params.comId = params.company;
+:comId         需要展开的公司 
+:property      查自身或查自己 其中如果为scode查自己，spcode查子集
 ~~~
 
 + 表 Table  xtype = table
@@ -229,6 +235,8 @@ BiText
                 //所有的数据都在store里，自己加自己的判断吧
                 return true;//默认显示
             },
+             show: true,  //是否显示
+            async:true   //异步加载节点
             queryDataAfter:function(){}//数据的后置处理
             queryDataBefore:function(){}//数据的前置处理
             xtype: "bi-table",

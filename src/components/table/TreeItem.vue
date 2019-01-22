@@ -31,6 +31,8 @@ export default {
   },
 
   mounted() {
+    console.log(this.prop + "11111111111");
+
     /*
      *默认展开树表第一级  mj
      */

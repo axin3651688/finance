@@ -117,8 +117,9 @@ export default {
       let mapArry = data.map(function(data) {
         return data.code;
       });
-      let me = this;
       // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
+      let me = this;
+
       setTimeout(function() {
         mapArry.forEach(element => {
           debugger;
