@@ -38,13 +38,13 @@ export default {
   props: ["item"],
   created() {
     debugger;
-    this.convertData(this.item.datas);
+    let flag = this.convertData(this.item.datas);
     let me = this;
     // 下面接受子级触发事件,初始化不会加载下面
     this.$bus.$on("fetchdata", function(dat) {
       // 改变父级的折叠属性
       console.log(dat);
-
+      debugger;
       let record = me.item.datas[dat.$index];
       record._expanded = !record._expanded;
       me.fetchData(dat);

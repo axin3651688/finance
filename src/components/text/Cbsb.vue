@@ -1,48 +1,72 @@
 <template>
   <div class="page">
-    <span class="demonstration">click 激活</span>
-    <el-dropdown trigger="click">
-      <span class="el-dropdown-link">
-        下拉菜单
-        <i class="el-icon-arrow-down el-icon--right"></i>
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>黄金糕</el-dropdown-item>
-        <el-dropdown-item>狮子头</el-dropdown-item>
-        <el-dropdown-item>螺蛳粉</el-dropdown-item>
-        <el-dropdown-item>双皮奶</el-dropdown-item>
-        <el-dropdown-item>蚵仔煎</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+    <el-select v-model="trueName" placeholder="请选择">
+      <el-option
+        v-for="item of trueNameList"
+        :key="item.id"
+        :label="item.trueName"
+        :value="item.trueName"
+      ></el-option>
+    </el-select>
     <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
-    <el-button type="primary">发 送</el-button>
+    <el-button @click="sendMsg" type="primary">发 送</el-button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { mapGetters } from "vuex";
-import { companyContactList } from "~api/userClientRest";
+import { companyContactList, saveModuleMsg } from "~api/userClientRest";
 export default {
   name: "Cbsb",
   components: {},
   props: {},
   data() {
     return {
-      textarea: ""
+      textarea: "",
+      trueNameList: [],
+      trueName: ""
     };
   },
   created() {
+    console.log(this.companyId);
+
     this.getMemberList();
     debugger;
   },
   computed: {
-    ...mapGetters(["user"])
+    companyId() {
+      return this.$store.getters.user.company.id;
+    }
   },
   methods: {
+    /*   请求下拉框的数据 */
     getMemberList() {
-      let companyId = this.user.company.id;
-      companyContactList(companyId).then(res => {
-        console.log(res.data.data.normal);
+      // debugger;
+      // console.log(this.companyId);
+      companyContactList(this.companyId).then(res => {
+        let data = res.data.data.normal;
+        this.trueNameList = data;
+      });
+    },
+    sendMsg() {
+      console.log(this.trueName);
+      console.log(this.textarea);
+      let datas = {
+        action: 1,
+        companyId: this.companyId,
+        content: this.textarea,
+        fileId: 0,
+        id: 0,
+        moduleId: 0,
+        receiver: "string",
+        receiverId: 0,
+        senderId: 0,
+        seq: 0,
+        type: 0,
+        url: "string"
+      };
+      saveModuleMsg(datas).then(res => {
+        let data = res.data;
       });
     }
   }

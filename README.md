@@ -62,8 +62,14 @@ BiMSAreaLine     面积与线状
 
 
 
++ 维度替换 
+:company       公司
+:period         时间
 
-
+如果异步加载需要在   "queryDataBefore": 中加如下字段
+  params.comId = params.company;
+:comId         需要展开的公司 
+:property      查自身或查自己 其中如果为scode查自己，spcode查子集
 ~~~
 
 + 表 Table  xtype = table

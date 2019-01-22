@@ -15,3 +15,18 @@ export function companyContactList(companyId) {
         }
     })
 }
+/**
+ * 催报消息操作接口
+ *
+ */
+export function saveModuleMsg(datas) {
+    console.log("催报消息操作接口");
+    console.log(datas);
+    // return request({
+    //     url: '/api/api/save_module_msg',
+    //     method: 'post',
+    //     params: {
+    //         moduleMsgDto: datas
+    //     }
+    // })
+}
