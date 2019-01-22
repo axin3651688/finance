@@ -18,6 +18,15 @@ const app = {
       width: "35%",
       height: "1000px",
       api: "cnbi/json/source/chart/pie.json"
+    },
+    showMeluList: {
+      data: {},
+      isShow: false,
+      switchStyle: true,
+      tittle: "标题",
+      width: "35%",
+      height: "1000px",
+      api: "cnbi/json/source/chart/pie.json"
     }
   },
   mutations: {
@@ -38,6 +47,19 @@ const app = {
     },
     TOGGLE_DEVICE: (state, device) => {
       state.device = device
+    },
+    SHOW_MELULIST: (state, data) => {
+      debugger
+      Object.keys(data).forEach(keys => {
+        if (data[keys] !== null || undefined) {
+          state.showMeluList[keys] = data[keys]
+          if (typeof data[keys] == "object") {
+            localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
+          } else {
+            localStorage.setItem([keys] + '_state', data[keys]);
+          }
+        }
+      });
     },
     SHOW_DIALOG: (state, data) => {
       // debugger
@@ -76,6 +98,11 @@ const app = {
       commit
     }, data) => {
       commit('SHOW_DIALOG', data)
+    },
+    ShowMeluList: ({
+      commit
+    }, data) => {
+      commit('SHOW_MELULIST', data)
     },
   }
 }

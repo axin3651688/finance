@@ -133,6 +133,7 @@ export default {
     // }
   },
   created() {
+    // debugger;
     // console.log(this.tableData);
   },
   mixins: [EventMixins],

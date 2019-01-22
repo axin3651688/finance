@@ -1,39 +1,88 @@
 <template>
-  <div class="page">
-    <span class="demonstration">click 激活</span>
-    <el-dropdown trigger="click">
-      <span class="el-dropdown-link">
-        下拉菜单
-        <i class="el-icon-arrow-down el-icon--right"></i>
-      </span>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>黄金糕</el-dropdown-item>
-        <el-dropdown-item>狮子头</el-dropdown-item>
-        <el-dropdown-item>螺蛳粉</el-dropdown-item>
-        <el-dropdown-item>双皮奶</el-dropdown-item>
-        <el-dropdown-item>蚵仔煎</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+  <div class="Cbsb">
+    <el-row>
+      <el-col :span="6" v-for="o in listDatas" :key="o.id">
+        <img :src="o.avatar" class="image">
+        <div class="list">
+          <span>{{o.trueName}}</span>
+        </div>
+      </el-col>
+    </el-row>
     <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
-    <el-button type="primary">发 送</el-button>
+    <el-button @click="sendMsg" type="primary">发 送</el-button>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import { mapActions, mapGetters } from "vuex";
+import { companyContactList, saveModuleMsg } from "~api/userClientRest";
 export default {
   name: "Cbsb",
   components: {},
   props: {},
   data() {
     return {
-      textarea: ""
+      textarea: "",
+      listDatas: [],
+      trueName: ""
     };
   },
-  create() {
+  created() {
+    console.log(this.companyId);
+    this.getMemberList();
     debugger;
   },
-  computed: {},
-  methods: {}
+  computed: {
+    companyId() {
+      return this.$store.getters.user.company.id;
+    }
+  },
+  methods: {
+    ...mapActions(["ShowMeluList"]),
+    /*   请求下拉框的数据 */
+    getMemberList() {
+      // debugger;
+      // console.log(this.companyId);
+      companyContactList(this.companyId).then(res => {
+        let data = res.data.data.normal;
+        console.log(data);
+
+        this.ShowMeluList({ data: data });
+        this.listDatas = data;
+      });
+    },
+    sendMsg() {
+      console.log(this.trueName);
+      console.log(this.textarea);
+      let datas = {
+        action: 1,
+        companyId: this.companyId,
+        content: this.textarea,
+        fileId: 0,
+        id: 0,
+        moduleId: 0,
+        receiver: "string",
+        receiverId: 0,
+        senderId: 0,
+        seq: 0,
+        type: 0,
+        url: "string"
+      };
+      saveModuleMsg(datas).then(res => {
+        let data = res.data;
+      });
+    }
+  }
 };
 </script>
+<style lang="scss" scoped>
+.Cbsb {
+  img {
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+  }
+}
+</style>
+
 

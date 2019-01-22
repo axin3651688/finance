@@ -7,6 +7,7 @@ const getters = {
   device: state => state.componentState.device,
   // dialog显示及隐藏
   showDialog: state => state.componentState.showDialog,
+  showMeluList: state => state.componentState.showMeluList,
   // 用户公司信息
   userCompany: state => state.user.user.company,
   // 点击侧边栏返回的url

@@ -1,5 +1,5 @@
 import request from 'utils/http'
-import store from '@/store'
+
 /**
  * 登录接口
  */

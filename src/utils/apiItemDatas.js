@@ -8,7 +8,8 @@ import {
 
 /**
  * 取数小接口
- * item vue组件对象
+ * @param item     vue组件对象
+ * @param data     点击传过来的code
  */
 export function apiItemDatas(item, data) {
     debugger
