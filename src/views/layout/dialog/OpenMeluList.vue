@@ -7,7 +7,12 @@
       <!-- 动画 -->
       <transition name="slid">
         <div class="pop-content" v-clickoutside="closePop">
-          pop-container
+          <el-col :span="6" v-for="o in listDatas" :key="o.id">
+            <img :src="o.avatar" class="image">
+            <div class="list">
+              <span>{{o.trueName}}</span>
+            </div>
+          </el-col>
           <button @click="closePop">close</button>
         </div>
       </transition>
@@ -42,6 +47,9 @@ export default {
   },
   computed: {
     ...mapGetters(["showMeluList"]),
+    listDatas() {
+      this.showMeluList.data;
+    },
     styleObj() {
       let obj = {};
       switch (this.position) {

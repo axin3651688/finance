@@ -33,7 +33,7 @@ export default {
     BiModule
   },
   computed: {
-    ...mapGetters(["showDialog"])
+    ...mapGetters(["showDialog", "showMeluList"])
   },
   methods: {
     ...mapActions(["ShowDialog", "ShowMeluList"])
