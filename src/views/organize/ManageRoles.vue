@@ -59,6 +59,7 @@
             <el-dialog
                     :visible.sync="createDialogVisible"
                     width="24%"
+                    :before-close="handleClose"
                     center>
                 <el-form :model="formCreate">
                     <el-form-item>
@@ -79,7 +80,7 @@
                       </span>
             </el-dialog>
         </div>
-        <div class="right-col":splitpanes-default="rightWidth" splitpanes-min="60">
+        <div class="right-col" :splitpanes-default="rightWidth" splitpanes-min="60">
             <div class="el-main" v-if="roleList.length>0">
                 <div class="tab-main">
                     <div class="tab-title">
@@ -123,7 +124,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import {ROLE_LIST, SAVE_ROLE, UPDATE_ROLE,DEL_ROLE} from '~api/organize.js';
+    import {ROLE_LIST, SAVE_ROLE, UPDATE_ROLE, DEL_ROLE} from '~api/organize.js';
     import Splitpanes from 'splitpanes'
     import 'splitpanes/dist/splitpanes.css'
 
@@ -208,6 +209,11 @@
                     console.log('请求message：', err)
                 });
             },
+            handleClose() {
+                this.formCreate.name = ''
+                this.formCreate.note = ''
+                this.createDialogVisible = false
+            },
             save(val) {
                 if (!this.formCreate.name || !this.formCreate.note) {
                     this.$message({
@@ -225,7 +231,7 @@
                 }
                 SAVE_ROLE(params).then(res => {
                     console.log('请求SAVE_ROLE：', res.data)
-                    if (val==='back'){
+                    if (val === 'back') {
                         this.createDialogVisible = false
                     }
                     if (res.data.code === 200) {
@@ -269,7 +275,7 @@
                     console.log('请求UPDATE_ROLE：', err)
                 });
             },
-            deleteRole(){
+            deleteRole() {
                 let params = {
                     roleId: this.selectRole.id,
                     userId: this.loginUserId

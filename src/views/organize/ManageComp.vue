@@ -213,6 +213,9 @@
     }
     /deep/.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
         background-color: rgba(24, 144, 255, 1);
+        .node-text.active {
+            color: rgba(255, 255, 255, 1);
+        }
     }
     .default-theme {
         font-family: $fontFamilyMain;
@@ -283,9 +286,7 @@
                     white-space: nowrap;
                 }
 
-                .node-text.active {
-                    /*color: rgba(255, 255, 255, 1);*/
-                }
+
             }
 
 
