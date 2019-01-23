@@ -177,6 +177,9 @@
                     "id": "qtyskej",
                     "text": "其他应收款二级",
                     "show":false,
+                    "style":{
+                        "height": "780px"
+                    },
                     "showFun":function($store){
                         debugger
                         if($store.getters.treeInfo.leaf){

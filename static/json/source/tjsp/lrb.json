@@ -93,6 +93,19 @@
                 console.log(vue);
                 vue.handleDownload(vue);
             }
+        },
+        {
+            "id":"3",
+            "text":"导入",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+            "handler":function(vue,btn){
+                debugger
+                console.log(vue);
+            }
         }
     ],
         "levelProperties":{text:"nlevel"},//加缩进 可选 table

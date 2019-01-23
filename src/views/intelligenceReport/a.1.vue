@@ -13,7 +13,6 @@ import {report} from '@/api/cube.js'
   export default {
     data(){
       return {
-        delid:null,
         heights: document.body.offsetHeight,
         index:'',//  数据的索引
         show:false,
@@ -369,7 +368,7 @@ import {report} from '@/api/cube.js'
         // 控制填报
         // if(this.show==false){
             let arr = this.settings.columns.slice(8,11)
-            console.log("获取到某一列s",arr)
+            // console.log(arr)
             arr.forEach(item=>{
 
             // item['editor'] = false
@@ -409,8 +408,6 @@ import {report} from '@/api/cube.js'
         saveData(){
             var exadata = this.$refs.hotTableComponent.hotInstance.getData()
             console.log(exadata)
-
-             localStorage.setItem("lists",JSON.stringify(exadata)) 
         },
         dist(){
             let  item = {
@@ -486,11 +483,8 @@ import {report} from '@/api/cube.js'
             if(!value){
                 var el = document.createElement('DIV')
                 el.className='flag'
-                el.id='flag'
                 el.innerHTML = '删除'
                 td.appendChild(el)
-                el.style.color = "red"
-                el.style.cursor = "pointer"
                 // console.log(this.$refs.hotTableComponent)
                 Handsontable.dom.addEvent(el, 'click', function (event) {
                     arr.alter("remove_row", row);//删除当前行
@@ -522,6 +516,7 @@ import {report} from '@/api/cube.js'
         padding-top:85px;
     }
     .container{
+     
     }
 </style>
 <style lang="scss"> 
@@ -530,9 +525,9 @@ import {report} from '@/api/cube.js'
             border-bottom-width: 0;
             border-right: 1px solid #ccc;
         }
-        // button{
-        //     margin: 20px 10px 20px 0;
-        // }
+        button{
+            margin: 20px 10px 20px 0;
+        }
         .handsontable .currentRow {
             background-color: #E7E8EF;
         }

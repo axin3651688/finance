@@ -15,6 +15,8 @@
       >
         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
         <i v-else class="el-icon-minus"></i>
+        <!-- <i v-if="!scope.row._expanded" class="el-icon-caret-right" aria-hidden="true"></i>  
+        <i v-if="scope.row._expanded" class="el-icon-caret-bottom" aria-hidden="true"></i>  -->
       </span>
     </template>
   </el-table-column>
@@ -312,32 +314,6 @@ export default {
 }
 .el-table__header-wrapper {
   // overflow-x: scroll;
-}
-.el-table thead {
-  th {
-    .cell {
-      // max-width: 100%;
-      // height: 100%;
-
-      // overflow: hidden;
-      // text-overflow: ellipsis;
-      white-space: nowrap;
-      // background-color: #000;
-    }
-  }
-}
-tbody {
-  .el-table__row {
-    td {
-      .cell {
-        // max-width: 100%;
-        // height: 100%;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-  }
 }
 // 合并表头align=right不起效,
 // 加下面样式 马军 2018/12/24 .el-table td,

@@ -156,7 +156,12 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/a.vue')
         },
-        
+        {
+          path: '/handsontable',
+          name: 't',
+          component: () =>
+            import('@v/intelligenceReport/Handtable.vue')
+        },
 
         {
           path: '/Fill',
