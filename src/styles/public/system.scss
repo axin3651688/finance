@@ -1,0 +1,36 @@
+/**
+*系统设置 分页表格通用样式
+* author: 
+* datetime: 
+
+*/
+
+
+/**
+ * 主要针对 “分页” 进行的样式处理；
+ */
+ .pagination {
+    height: 70px;
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+    padding-top: 21px;
+}
+
+/**
+ * 主要这对了 “表头” 显示浅蓝色背景
+ */
+.has-gutter tr th {
+    background-color: rgb(240, 248, 255);
+}
+/**
+ * 以下两个是针对el-table树表的 “行高” 的，这样写才生效；（百度查找）
+ */
+.el-table__header tr, .el-table__header th {
+    padding: 0;
+    height: 45px;
+}
+.el-table__body tr, .el-table__body td {
+    padding: 0;
+    height: 32px;
+}
