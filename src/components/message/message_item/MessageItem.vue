@@ -102,7 +102,6 @@ export default {
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
-      debugger
       return FORMAT_MSG_TIME(publishTime)
     }
   },

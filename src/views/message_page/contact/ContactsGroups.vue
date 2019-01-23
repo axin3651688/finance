@@ -122,9 +122,9 @@ export default {
     getData() {
       // debugger;
       MY_GROUP_LIST(this.user.user.id).then(res => {
-        console.log('我的群组：', res.data);
+        console.log('我的群组：', res.data)
         if (res.data.code === 200) {
-          this.groupList = res.data.data;
+          this.groupList = res.data.data
 
           // 默认请求第一个群组的信息
           if (this.groupList.length) {
@@ -144,65 +144,69 @@ export default {
     // 检查这个群组的信息是不是已将请求过一次了,如果请求过了则直接返回该群组的信息
     checkGroupInfo(groupId) {
       if (this.requestedGroups.hasOwnProperty(groupId)) {
-        console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId]);
-        return this.requestedGroups[groupId];
+        console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId])
+        return this.requestedGroups[groupId]
       } else return null
     },
 
     // 群id查询群信息，获取群资料
     getInfo(groupId) {
-      this.activeGroupID = groupId;
-      let groupInfo = this.checkGroupInfo(groupId);
+      this.activeGroupID = groupId
+      let groupInfo = this.checkGroupInfo(groupId)
       if (groupInfo) {
-        this.rightUsers = groupInfo.users;
-        this.rightInfo = groupInfo.info;
-        this.rightNotice = groupInfo.rightNotice;
-        this.qrUrl = groupInfo.qrUrl;
+        debugger
+        this.rightUsers = groupInfo.users
+        this.rightInfo = groupInfo.info
+        this.rightNotice = groupInfo.rightNotice
+        this.qrUrl = groupInfo.qrUrl
       } else {
+        this.requestedGroups[groupId] = {}
         GROUP_INFO(groupId).then(res => {
-          console.log('群id查询群信息res:', res);
+          console.log('群id查询群信息res:', res)
           if (res.data.code === 200) {
-            let groupInfo = res.data.data;
-            this.ActionSetMessageStore({
-              groupInfo: groupInfo,
-            });
-            this.rightUsers = groupInfo['users'];
-            this.rightInfo = groupInfo['info'];
-            this.requestedGroups[groupId] = groupInfo;
+            let groupInfo = res.data.data
+            this.ActionSetMessageStore({groupInfo: groupInfo,})
+            this.rightUsers = groupInfo['users']
+            this.rightInfo = groupInfo['info']
+            debugger
+            this.requestedGroups[groupId]['users'] = groupInfo['users']
+            this.requestedGroups[groupId]['info'] = groupInfo['info']
           }
         }).catch(err => {
           console.log('请求message：', err)
-        });
+        })
 
         // 获取群公告   公告图片的字段: rightNotice.url
         FIND_GROUP_NOTICE(groupId, this.user.user.id).then(res => {
-          console.log('群id获取群公告:', res.data.data);
+          console.log('群id获取群公告:', res.data.data)
           if (res.data.code === 200) {
             if (res.data.data.noticeList.length > 0) {
-              this.rightNotice = res.data.data.noticeList[0];
-              this.requestedGroups[groupId]['rightNotice'] = this.rightNotice;
+              let rightNotice = res.data.data.noticeList[0]
+              this.rightNotice = rightNotice
+              this.requestedGroups[groupId]['rightNotice'] = rightNotice
             }
           }
         }).catch(err => {
           console.log('请求message：', err)
-        });
+        })
 
         let params = {
           platform: 'pc',
           type: 'group',
           targetId: groupId
-        };
+        }
         // 获取二维码地址
         SCAN_URL(params).then(res => {
-          console.log('获取二维码的生成地址:', res);
+          console.log('获取二维码的生成地址:', res)
           if (res.data.code === 200) {
-            let qrUrl = this.qrUrlFormat(res.data.data.url);
-            this.qrUrl = qrUrl;
-            this.requestedGroups[groupId]['qrUrl'] = qrUrl;
+            let qrUrl = this.qrUrlFormat(res.data.data.url)
+            this.qrUrl = qrUrl
+            this.requestedGroups[groupId]['qrUrl'] = qrUrl
           }
         }).catch(err => {
           console.log('获取二维码的生成地址err：', err)
         })
+
       }
     },
 
@@ -213,39 +217,52 @@ export default {
 
     // 开始群聊天
     chatWithGroup(rightInfo) {
-      debugger;
-      let sessionItem = {};
-      let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId;
-      sessionItem['miniType'] = 1100;
-      sessionItem['targetId'] = targetId;
-      sessionItem['id'] = rightInfo.groupId;
-      sessionItem['name'] = rightInfo.text;
-      sessionItem['count'] = 0;
-      sessionItem['content'] = null;
-      sessionItem['sendTime'] = null;
-      sessionItem['avatar'] = rightInfo.avatar;
-      sessionItem['originData'] = rightInfo;
+      debugger
+      let sessionItem = {}
+      let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId
+      sessionItem['miniType'] = 1101
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = rightInfo.groupId
+      sessionItem['name'] = rightInfo.text
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = rightInfo.avatar
+      sessionItem['originData'] = rightInfo
+
       this.ActionSetMessageStore({
         sessionActiveItem: sessionItem,
         miniType: 1101, // 1101 群聊,
         receiverData: rightInfo
-      });
-      let itemExist = false;
-      for (let sessionItem of this.messageStore.sessionList) {
-        if (sessionItem.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
-          itemExist = true;
-          break;
+      })
+
+      this._updateSessionList(sessionItem)
+
+      this.$router.push('/message_page/msg')
+    },
+
+    _updateSessionList(sessionItem) {
+      let itemExist = false
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          })
+          break
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        };
-        this.ActionUpdateSessionList(addObj);
+        }
+        this.ActionUpdateSessionList(addObj)
       }
-      this.$router.push('/message_page/msg')
     }
+
   },
   mounted() {
     this.getData()
@@ -281,6 +298,7 @@ export default {
         cursor: pointer;
         border-bottom: 1px solid $colorBorderLayoutLight;
         transition: all .3s;
+
         &:after {
           content: '';
           display: block;

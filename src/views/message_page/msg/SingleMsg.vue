@@ -90,7 +90,7 @@ export default {
       fileData: null,                         // 上传文件成功后返回的文件信息
       fd: null,                               // 上传的文件信息
       msgPaddingList: [],                     // 待发送消息队列
-      activeBtn: 'message',                   // 聊天（消息/文件）默认显示
+      activeBtn: 'message',                   // 聊天（消息/文件）默认显示什么
       receiverName: '',                       // 聊天对象名称
       receiverAvatar: '',                     // 聊天对象头像
       singleMsgList: [],                      // 单聊消息队列
@@ -130,29 +130,14 @@ export default {
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
         this.chatWindowScrollToBottom();
       });
-      // 当目标id 和 发送者id相同时再把消息加入队列
-      if (this.messageStore.targetId === item.senderId) {
-
-      }
     },
 
     /**
      * 监听到 ack 后更新消息
-     * 监听ack消息回执 返回示例：
-     * {
-     *   code: 2000,
-     *   data: {
-     *     id: '1546065114464cnbi',   // <String>
-     *     miniType: 1100,            // <Number>
-     *     sendTime: 1546065114464,   // <Number>
-     *     state: 0,                  // <Number>
-     *   },
-     *   msg: 'ACK即时消息确认报文'
-     * }
      */
     serverAck(val) {
-      debugger;
-      console.log('服务器ACK：', val);
+      // debugger;
+      // console.log('服务器ACK：', val);
       socket.send(JSON.stringify(val));
     }
 
@@ -242,7 +227,7 @@ export default {
         data.type = pushData.type
       }
 
-      console.log('要添加到聊天窗口的数据是：', data);
+      // console.log('要添加到聊天窗口的数据是：', data);
       debugger;
       this.singleMsgList.push(data);
       this.$nextTick(() => {
@@ -326,7 +311,7 @@ export default {
 
   },
   mounted() {
-    console.log('文件类型：', FILE_TYPE);
+    // console.log('文件类型：', FILE_TYPE);
     // ajax请求获取单聊消息内容
     this.findSingleMsg();
 

@@ -7,12 +7,12 @@
       </div>
       <div class="right">
         <template>
-          <new-friends v-if="messageStore.miniType === 11016"></new-friends>
-          <group-helper v-if="messageStore.miniType === 11017"></group-helper>
-          <Todos v-if="messageStore.miniType === 2"></Todos>
-          <single-msg v-if="messageStore.miniType === 1100"></single-msg>
-          <group-msg v-if="messageStore.miniType === 1101"></group-msg>
-          <analysis v-if="messageStore.miniType === 11021"></analysis>
+          <new-friends v-if="miniType === 11016"></new-friends>
+          <group-helper v-if="miniType === 11017"></group-helper>
+          <Todos v-if="miniType === 2"></Todos>
+          <single-msg v-if="miniType === 1100"></single-msg>
+          <group-msg v-if="miniType === 1101"></group-msg>
+          <analysis v-if="miniType === 11021"></analysis>
           <!--<analysis></analysis>-->
           <!--<Todos></Todos>-->
         </template>
@@ -29,7 +29,7 @@ export default {
   name: 'Message',
   components: {
     Session,
-    Todos: () => import('./Todos'),                   // 代办事项
+    Todos: () => import('./Todos'),                 // 代办事项
     Analysis: () => import('./Analysis'),           // 分析助手
     SingleMsg: () => import('./SingleMsg'),         // 单聊消息
     NewFriends: () => import('./NewFriends'),       // 新朋友
@@ -37,13 +37,16 @@ export default {
     GroupMsg: () => import('./GroupMsg')            // 群助手
   },
   computed: {
-    ...mapGetters(['messageStore'])
+    ...mapGetters(['messageStore']),
+    miniType() {
+      return this.messageStore.miniType
+    }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
   },
   mounted() {
-    this.ActionSetMessageStore({routeName: '消息'});
+    this.ActionSetMessageStore({routeName: '消息'})
   }
 }
 </script>

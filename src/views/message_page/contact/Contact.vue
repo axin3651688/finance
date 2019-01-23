@@ -1,6 +1,6 @@
 <template>
   <div class="MessageContacts">
-    <el-tabs v-model="activeName" type="card" @tab-click="handleClick" v-if="activeName">
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
           <div class="label-text">团队</div>
@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      activeName: null
+      activeName: 'ContactsTeams'
     }
   },
   watch: {

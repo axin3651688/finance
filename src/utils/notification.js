@@ -3,13 +3,19 @@
  * date: 2019-01-17
  * description: 在接到服务端 socket 信息后全局弹窗提醒
  */
-
+import store from '@/store'
 import {Notification} from 'element-ui'
 
 export function showNotification(data) {
   const $notify = Notification
   // debugger;
+
   if (!localStorage.authorization) return false // 如果没有登陆不弹消息提示
+
+  // 如果是自己发的群聊信息，不用给自己提示
+  if (data.code === 1101 && data.data.senderId === store.getters.user.user.id) {
+    return false
+  }
 
   // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，则 return
   let notificationTypeList = [1100, 1101, 11017, 11016, 11018, 1500, 11021, 1005, 1004]

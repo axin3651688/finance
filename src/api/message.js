@@ -236,7 +236,6 @@ export function REFUSE_FRIEND(params) {
 
 // 查看群组详细资料
 export function GROUP_INFO(data) {
-  console.log('api GROUP_INFO');
   // debugger
   return request({
     url: '/api/api/group_info',

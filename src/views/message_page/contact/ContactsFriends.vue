@@ -93,8 +93,9 @@ export default {
     $route(to, from) {
       console.log('ContactsFriends监听路由：', to, from)
       if (this.activeUser !== to.query.id) {
+        debugger;
         this.activeUser = to.query.id
-        this.requestUserInfo()
+        this.requestUserInfo(this.activeUser)
       }
     }
   },
@@ -102,7 +103,7 @@ export default {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
 
     /**
-     * 请求好友列表
+     * 请求好友列表,好友列表请求成功后设置激活用户（默认显示哪一个用户的信息）
      */
     requestFriendList() {
       requestMyfriends(this.loginUserId).then(res => {
@@ -111,6 +112,7 @@ export default {
         if (res.data.code === 200) {
           if (res.data.data.length) {
             this.friendList = res.data.data
+            this.setActiveUser(res.data.data[0].id)
           } else {
             this.$message({
               type: 'warning',
@@ -126,13 +128,15 @@ export default {
      * 设置当前要显示的用户
      * 如果路由里有传用户ID，就显示路由上的用户信息，负责显示好友列表第一个用户信息
      */
-    setActiveUser() {
+    setActiveUser(id) {
       debugger
-      let id = this.$route.query.id
-      if (id) {
-        this.activeUser = id
+      let queryId = this.$route.query.id
+      if (queryId) {
+        this.activeUser = queryId
+        this.requestUserInfo(queryId)
       } else {
-        this.activeUser = this.friendList[0].id
+        this.activeUser = id
+        this.requestUserInfo(id)
       }
     },
 
@@ -142,6 +146,7 @@ export default {
      * @returns 如果已经有用户信息，直接返回用户信息，否则返回 null
      */
     checkUserInfo(userId) {
+      if (!userId) return null // 如果没有传递 userId return null
       if (this.requestedUser.hasOwnProperty(userId)) {
         console.log(`已经请求过用户的信息了:${userId}`)
         return this.requestedUser[userId]
@@ -152,17 +157,19 @@ export default {
      * 请求一个用户的信息
      * @param userId: 用户Id
      */
-    requestUserInfo() {
-      if (!this.activeUser) return false // 如果没有 activeUser 则不往下执行
-      let userInfo = this.checkUserInfo(this.activeUser) // 得到用户信息 或则 null
+    requestUserInfo(userId) {
+      debugger;
+      let userInfo = this.checkUserInfo(userId) // 得到用户信息 或则 null
       if (userInfo) {
         this.rightUserInfoData = userInfo
+        this.activeUser = userId
       } else {
-        CONTACT_INFO(this.loginUserId, this.activeUser).then(res => {
+        CONTACT_INFO(this.loginUserId, userId).then(res => {
           console.log('获取一个好友信息-->>', res.data)
           if (res.data.code === 200) {
             let rightUserInfoData = res.data.data
             this.rightUserInfoData = rightUserInfoData
+            this.activeUser = rightUserInfoData.user.id
             this.requestedUser[this.activeUser] = rightUserInfoData
           }
         })
@@ -190,9 +197,17 @@ export default {
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
       })
+      this._updateSessionList(sessionItem)     // 更新session边栏
+      this.$router.push('/message_page/msg')
+    },
+
+    /**
+     * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
+     */
+    _updateSessionList(sessionItem) {
       let itemExist = false
       for (let item of this.messageStore.sessionList) {
-        if (item.targetId === targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
           itemExist = true
           this.ActionUpdateSessionList({
             type: 'update',
@@ -209,13 +224,10 @@ export default {
         }
         this.ActionUpdateSessionList(addObj)
       }
-      this.$router.push('/message_page/msg')
     }
   },
   created() {
     this.requestFriendList()          // 请求我的好友列表
-    this.setActiveUser()              // 设置当前要显示的用户
-    this.requestUserInfo()            // 请求一个用户的信息
   }
 }
 </script>
