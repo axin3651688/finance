@@ -22,13 +22,17 @@
         </div>
       </div>
     </div>
+
+    <!-- 中间聊天显示区-->
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
         <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
       </el-scrollbar>
     </div>
+
+    <!--聊天编辑窗口-->
     <div class="bottom">
-      <message-sender></message-sender>
+      <message-sender @sendMsg="handleSendMsg"></message-sender>
     </div>
   </div>
 </template>
@@ -38,27 +42,18 @@ import {mapGetters} from 'vuex'
 import MessageItem from '@c/message/message_item/MessageItem.vue'
 import MessageSender from '@mc/message_sender/MessageSender.vue'
 import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
-import emotion_sprites from '@a/message/data/emotion_sprites.json'
-import {
-  UPLOAD_FILE,          // 上传文件
-  FIND_SINGLE_MSG       // 查询单聊信息
-} from '~api/message.js'
+import {FIND_SINGLE_MSG} from '~api/message.js'
 
 export default {
   name: 'SingleMsg',
   components: {MessageItem, MessageSender},
   data() {
     return {
-      EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
-      fileData: null,                         // 上传文件成功后返回的文件信息
-      fd: null,                               // 上传的文件信息
       msgPaddingList: [],                     // 待发送消息队列
       activeBtn: 'message',                   // 聊天（消息/文件）默认显示什么
       receiverName: '',                       // 聊天对象名称
       receiverAvatar: '',                     // 聊天对象头像
       singleMsgList: [],                      // 单聊消息队列
-      sendText: '',                           // 发要发送的文本类容
-      showFacePop: false                      // 是否显示聊天表情弹窗
     }
   },
   computed: {
@@ -120,17 +115,17 @@ export default {
     },
 
     // 发送消息
-    handleSendMsg(fileData) {
+    handleSendMsg(sendText, fileData) {
       debugger
       console.log('要发送的文件：', fileData)
       let pushData = {
         type: 1,
-        data: this.sendText
+        data: sendText
       }
       let sendData = {
         code: 1100, // 1100:单聊 1101:群聊
         data: {
-          content: this.sendText.trim(),
+          content: sendText.trim(),
           receiverId: this.receiverId,
           senderId: this.loginUserId,
           type: 1,
@@ -167,7 +162,6 @@ export default {
         })
         return
       }
-      this.sendText = '' // 发完消息后清空输入框
       socket.deliver(sendData)
       this.addMsgToWindow(pushData) // 本地处理把消息推到聊天窗口显示
     },
@@ -206,7 +200,7 @@ export default {
     },
 
     findSingleMsg() {
-      debugger
+      // debugger
       // ajax请求获取单聊消息内容
       FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
         .then(res => {

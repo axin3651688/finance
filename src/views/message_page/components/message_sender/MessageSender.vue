@@ -17,7 +17,7 @@
       </el-upload>
 
       <div class="tool-icon link-icon"></div>
-      <!--<div class="send-btn" @click="handleSendMsg">发 送</div>-->
+      <!--<div class="send-btn" @click="sendMsg">发 送</div>-->
       <transition name="el-zoom-in-bottom">
         <div v-show="showFacePop" class="face-pop">
           <ul>
@@ -36,18 +36,23 @@
                   placeholder="请输入文字，按enter建发送信息"
                   v-model="sendText"
                   ref="textarea"
-                  @keyup.enter="handleSendMsg()"
+                  @keyup.enter.prevent="sendMsg()"
         ></textarea>
     </div>
   </div>
 </template>
 
 <script>
+import emotion_sprites from '@a/message/data/emotion_sprites.json'
+import {UPLOAD_FILE} from '~api/message.js'
+
 export default {
   name: "MessageSender",
-  data () {
+  data() {
     return {
-      sendText: ''
+      sendText: '',
+      showFacePop: false, // 是否弹出聊天表情
+      EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
     }
   },
   methods: {
@@ -58,28 +63,60 @@ export default {
     },
     beforeAvatarUpload(file) {
       console.log('要上传的文件信息：', file)
+      debugger
       let fd = new FormData()
       fd.append('file', file)
       fd.append('userId', this.loginUserId)
       fd.append('size', file.size)
-      this.fd = fd
+      console.log('要上传的文件信息2：', fd)
       this.submitUpload(fd)
       return true
     },
     submitUpload(fd) {
       debugger
-      let _this = this
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
           console.log('上传群文件res', res)
           debugger
-          if (res.data.code === 200) {
-            _this.fileData = res.data.data
-            this.handleSendMsg(res.data.data)
+          if (res.data.code === 200 && res.data.data) {
+            this.sendMsg('', res.data.data)
           }
         })
       }
     },
+
+    // 点击表情，把表情添加到输入框, 同时 focus 输入框, 隐藏表情弹窗
+    addFaceToInput(face) {
+      this.hideFaceIcon()
+      this.sendText += face
+      this.$refs.textarea.focus()
+    },
+
+    // 向父组件触发发送消息
+    sendMsg() {
+      this.$emit('sendMsg', this.sendText)
+      this.sendText = ''
+    },
+
+    // 当点击的不是表情，则隐藏表情弹框
+    hideFaceIcon(e) {
+      // debugger;
+      let elem = e.target || e.srcElement
+      while (elem) { // 循环判断至跟节点，防止点击的是div子元素
+        if (elem.id && elem.id === 'face-icon') {
+          return
+        }// 如果还有别的div不想点击，就加else if判断
+        elem = elem.parentNode
+      }
+      this.showFacePop = false
+    }
+  },
+  mounted() {
+    // 当点击的不是表情，则隐藏表情弹框
+    document.addEventListener('click', this.hideFaceIcon)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>

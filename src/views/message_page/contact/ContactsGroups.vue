@@ -168,7 +168,6 @@ export default {
             this.ActionSetMessageStore({groupInfo: groupInfo,})
             this.rightUsers = groupInfo['users']
             this.rightInfo = groupInfo['info']
-            debugger
             this.requestedGroups[groupId]['users'] = groupInfo['users']
             this.requestedGroups[groupId]['info'] = groupInfo['info']
           }

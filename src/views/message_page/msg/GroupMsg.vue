@@ -16,7 +16,7 @@
                 <el-dropdown-item
                   command="groupSetting"
                   v-if="loginUserId === groupOwnerId"
-                  style="padding-top: 15px;padding-bottom: 12px;">
+                  style="padding: 15px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
                       <img src="../assets/icon/group_set_icon.svg"
@@ -27,7 +27,7 @@
                   </h3>
                   <p style="font-size:14px; line-height: 20px;margin-top: 8px;">管理员对群主名称等相关设置</p>
                 </el-dropdown-item>
-                <el-dropdown-item command="groupQuit" style="padding-top: 15px;padding-bottom: 12px;">
+                <el-dropdown-item command="groupQuit" style="padding: 15px;">
                   <h3 style="display: flex;align-items: center; height: 18px;line-height: 18px;">
                     <div style="width: 18px;height: 18px;margin-right: 10px">
                       <img src="../assets/icon/group_set_tuichu.svg"
@@ -55,6 +55,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 中间聊天显示区-->
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
         <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
@@ -63,44 +65,7 @@
 
     <!--聊天编辑窗口-->
     <div class="bottom">
-      <div class="chat-tool">
-        <span id="face-icon" class="tool-icon face-icon" @click="showFacePop = !showFacePop"></span>
-        <div class="tool-icon file-icon">
-          <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :before-upload="beforeFileUpload"
-          >
-            <div class="tool-icon file-icon">
-              <form action="">
-                <input type="file" name="file" ref="selectFile">
-              </form>
-            </div>
-          </el-upload>
-        </div>
-        <span class="tool-icon link-icon"></span>
-        <transition name="el-zoom-in-bottom">
-          <div v-show="showFacePop" class="face-pop">
-            <ul>
-              <li v-for="face in EMOTION_SPRITES" :key="face.value">
-                <div :class="['face-img', face.className]"
-                     @click="addFaceToInput(face.value)"
-                     :title="face.value"
-                ></div>
-              </li>
-            </ul>
-          </div>
-        </transition>
-      </div>
-      <div class="input-wrap">
-        <textarea class="chat-textarea"
-                  placeholder="请输入文字，按enter建发送信息"
-                  v-model="sendText"
-                  ref="textarea"
-                  @keyup.enter="handleSendMsg()"
-        ></textarea>
-      </div>
+      <message-sender @sendMsg="handleSendMsg"></message-sender>
     </div>
 
     <!--群设置弹窗-->
@@ -169,10 +134,10 @@
 </template>
 
 <script>
-import SidebarPop from '@c/message/sidebar_pop/SidebarPop'
 import {mapGetters, mapActions} from 'vuex'
+import SidebarPop from '@c/message/sidebar_pop/SidebarPop'
 import MessageItem from '@c/message/message_item/MessageItem.vue'
-import emotionSprites from '@a/message/data/emotion_sprites.json'
+import MessageSender from '@mc/message_sender/MessageSender.vue'
 import {
   findGroupMsg,
   GROUP_INFO,
@@ -189,16 +154,15 @@ export default {
   components: {
     GroupMembers: () => import('./GroupMembers'),
     SidebarPop,
-    MessageItem
+    MessageItem,
+    MessageSender
   },
   data() {
     return {
-      fileData: null,                       // 上传文件成功后返回的文件信息
       hdUrl: '', // 群头像
       oldGroupName: '', // 修改前的群名
       imgfd: null, // 要发给服务器的图片信息
       imageUrl: '', // 上传图片时绑定的图
-      EMOTION_SPRITES: emotionSprites.data, // 聊天表情数据
       groupInfo: {},
       groupMembers: [],
       groupMsgList: [],
@@ -284,29 +248,6 @@ export default {
       }
     },
 
-    // 群聊天文件上传
-    beforeFileUpload(file) {
-      console.log(file)
-      let fd = new FormData()
-      fd.append('file', file)
-      fd.append('userId', this.loginUserId)
-      fd.append('size', file.size)
-      this.submitFileUpload(fd)
-      return true
-    },
-    submitFileUpload(fd) {
-      let _this = this
-      if (fd) {
-        UPLOAD_FILE(fd).then(res => {
-          console.log('上传群头像res', res)
-          if (res.data.code === 200) {
-            _this.fileData = res.data.data
-            this.handleSendMsg(res.data.data)
-          }
-        })
-      }
-    },
-
     // 群设置
     clickEditGroup() {
       let newGroupName = this.$refs.groupName.value
@@ -335,24 +276,17 @@ export default {
       })
     },
 
-    // 点击表情，把表情添加到输入框, 同时 focus 输入框
-    addFaceToInput(face) {
-      this.sendText += face
-      this.$refs.textarea.focus()
-    },
-
     // 发送聊天内容,发送完一条消息后要清空输入框
-    handleSendMsg(fileData) {
+    handleSendMsg(sendText, fileData) {
       // debugger
-      console.log('要发送的内容是：', this.sendText)
       let pushData = {
         type: 1,
-        data: this.sendText
+        data: sendText
       }
       let sendData = {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
-          content: this.sendText.trim(),
+          content: sendText.trim(),
           senderId: this.loginUserId,
           receiverId: this.groupId,
           type: 1,
@@ -389,8 +323,6 @@ export default {
         return
       }
       socket.deliver(sendData)
-      this.sendText = ''
-      // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
@@ -563,19 +495,6 @@ export default {
       }).catch(err => {
         console.log('解散群聊异常：', err)
       })
-    },
-
-    // 当点击的不是表情，则隐藏表情弹框
-    hideFaceIcon(e) {
-      // debugger;
-      let elem = e.target || e.srcElement
-      while (elem) { // 循环判断至跟节点，防止点击的是div子元素
-        if (elem.id && elem.id === 'face-icon') {
-          return
-        }// 如果还有别的div不想点击，就加else if判断
-        elem = elem.parentNode
-      }
-      this.showFacePop = false
     }
   },
   mounted() {
@@ -712,66 +631,6 @@ export default {
       padding: 18px 40px 20px;
       background: #ffffff;
       border-top: 1px solid $colorBorderLayoutLight;
-
-      .chat-tool {
-        position: relative;
-        margin-bottom: 18px;
-
-        .tool-icon {
-          display: inline-block;
-          width: 24px;
-          height: 24px;
-          /*border-radius: 50%;*/
-          cursor: pointer;
-          background: #ccc;
-          margin-right: 30px;
-          background-size: 24px 24px;
-
-          form {
-            width: 0;
-            height: 0;
-            display: none;
-          }
-        }
-
-        .face-icon {
-          background: url("../assets/icon/emoji.svg") no-repeat;
-        }
-
-        .file-icon {
-          background: url("../assets/icon/file.svg") no-repeat;
-        }
-
-        .link-icon {
-          background: url("../assets/icon/url.svg") no-repeat;
-        }
-      }
-
-      .input-wrap {
-        width: 100%;
-
-        .chat-textarea {
-          box-sizing: border-box;
-          min-height: 100px;
-          padding: 10px 20px;
-          color: $colorTextBlack6;
-          background: $colorThemePrimary;
-          border-radius: 12px;
-          width: 100%;
-          border: none;
-          outline: 0;
-          resize: none;
-          text-align: left;
-          font-family: $fontFamilyMain;
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 20px;
-
-          &::placeholder {
-            color: $colorTextBlack2;
-          }
-        }
-      }
     }
 
     .comment {
