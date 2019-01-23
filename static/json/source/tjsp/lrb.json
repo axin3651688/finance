@@ -37,43 +37,39 @@
     },
     
     "columns":[
-      {
+        {      
+        "id": "B",
+        "type": "decimal",
+        "width":"170px",
+        "text": "累计数",
+        "sort":5      
+    },{
         "id":"text",
         "type":"string",
         "width":"370px",
         "text":"项目",
+        "sort":1
+    },
+    {
+        "id": "id",
+        "type": "string",
+        "hidden": true,
+        "text": "编码",
         "sort":2
-        },
-        {
-            "id": "id",
-            "type": "string",
-            "hidden": true,
-            "text": "编码",
-            "sort":4
-        },
-        {
-            "id":"index",
-            "type":"index",
-            "align":"center",
-            "width":"60px",
-            "text":"行次",
-            "sort":3
-        },
-        {
-            "id": "A",
-            "type": "decimal",
-            "width":"150px",
-            "text": "当月数",
-            "sort":5
-        },
-        {      
-            "id": "B",
-            "type": "decimal",
-            "width":"170px",
-            "text": "累计数",
-            "sort":1  
-        }
-    ],
+      },{
+        "id":"index",
+        "type":"index",
+        "align":"center",
+        "width":"60px",
+        "text":"行次",
+        "sort":3
+    },{
+        "id": "A",
+        "type": "decimal",
+        "width":"150px",
+        "text": "当月数",
+        "sort":4
+    }],
     "rows":[{
         "id": "1416001",
         "text": "一、营业收入",

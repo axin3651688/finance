@@ -139,9 +139,10 @@ export default {
     }
       */
       convert2HansoneTableColumns(columns){
-
+        console.log(columns)
+        console.log("--------------------------------------------------")
           columns.sort((a,b)=>a.sort-b.sort);
-
+          console.log(columns)
           let newCoulmns = [],colHeaders=[],hiddenColumns = {
              indicators:false
           },hiddenCols = [];
@@ -171,11 +172,12 @@ export default {
       debugger
       this.dropdown = list[index].title
       this.dropdownid = list[index].id
+      // console.log(this.dropdownid)
       findDesignSource(this.dropdownid).then(res=>{
         console.log(res)
         if(res.status===200 && res.data.data.source != null){
           let datas = res.data.data.source
-          let obj = JSON.parse(datas)
+          let obj = eval("("+datas+")");
           console.log(obj)
           let columns = obj.columns || obj.config.columns
           debugger;
