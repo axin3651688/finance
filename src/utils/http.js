@@ -1,14 +1,14 @@
 import axios from 'axios'
 import {Loading} from 'element-ui'
+import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js'
 // import router from '@v/layout/router'
 
 axios.defaults.timeout = 10000
 
-
-
 let loading
 
 /**
+ * 开始加载动画
  * 从本地存储中获取 fullscreenLoading ，判断是否需要全屏加载动画
  * 在不需要全屏加载动画的地方调用 utils/setFullscreenLoading.js 中的方法禁用全屏加载
  * 如：SET_FULLSCREEN_LOADING(false)
@@ -31,8 +31,15 @@ function _startLoading() {
   }
 }
 
+/**
+ * 结束 加载动画
+ * 结束加载动画后要将 fullscreenLoading 设置为默认的 true
+ */
 function _endLoading() {
-  if (loading) loading.close()
+  SET_FULLSCREEN_LOADING(true)
+  if (loading) {
+    loading.close()
+  }
 }
 
 // 请求拦截
