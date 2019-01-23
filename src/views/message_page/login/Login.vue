@@ -25,24 +25,25 @@
 
         <!--表单-->
         <div class="login-form" v-show="showWhat === 'form'">
-          <el-form class="input" ref="loginForm" :model="loginUser" :rules="rules" >
-            <el-form-item prop="name">
+          <el-form ref="loginForm" :model="loginUser" :rules="rules" >
+            <el-form-item prop="usename">
               <el-input
                 v-model="loginUser.usename"
-                class="username"
                 placeholder="请输入用户名"
                 prop="usename"
               ></el-input>
             </el-form-item>
-            <el-input
-              :type="pwdType"
-              v-model="loginUser.password"
-              autocomplete="off"
-              placeholder="请输入密码"
-              prop="password"
-              @keyup.enter.native="submitForm('loginForm')"
-              class="password"
-            ></el-input>
+            <el-form-item prop="password">
+              <el-input
+                :type="pwdType"
+                v-model="loginUser.password"
+                autocomplete="off"
+                placeholder="请输入密码"
+                prop="password"
+                @keyup.enter.native="submitForm('loginForm')"
+              ></el-input>
+            </el-form-item>
+
             <el-checkbox label="记住密码" name="type" class="label"></el-checkbox>
             <el-checkbox label="自动登陆" name="type" class="label"></el-checkbox>
             <p @click="forget_password()">忘记密码?</p>
@@ -109,6 +110,12 @@ export default {
             required: true,
             message: "用户名不能为空",
             trigger: "blur"
+          },
+          {
+            min: 1,
+            max: 30,
+            message: "长度在1到30之间",
+            trigger: "blur"
           }
         ],
         password: [
@@ -118,7 +125,6 @@ export default {
             trigger: "blur"
           },
           {
-            // 需要修改  todo
             min: 1,
             max: 30,
             message: "长度在6到30之间",
@@ -348,18 +354,19 @@ export default {
         font-weight: 400;
         line-height: 21px;
         color: rgba(0, 0, 0, 0.8);
-        opacity: 1;
+        margin-bottom: 22px;
       }
 
-      .input {
+      .login-form {
         padding-right: 50px;
 
-        .username {
-          margin: 20px 0;
+        .el-form-item {
+          margin-bottom: 22px;
         }
 
-        .password {
-          margin-bottom: 17px;
+        /deep/ .el-form-item.is-success .el-input__inner,
+        /deep/ .el-form-item.is-success .el-input__inner:focus{
+          border-color: $colorTheme !important;
         }
 
         .label {
