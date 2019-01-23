@@ -65,7 +65,7 @@
 
         <!--二维码-->
         <div class="qr-code" v-if="showWhat === 'qr_code'">
-          <div class="code-wrap" v-loading="loading" @click="getQrCode()">
+          <div class="code-wrap" v-loading="elLoading" @click="requestQrCode()">
             <qriously :value="qrUrl" :size="138" v-if="qrUrl"/>
             <div v-else class="loading-failed">
               二维码加载失败
@@ -91,12 +91,13 @@ import {mapGetters, mapActions} from "vuex"
 import store from "@/store"
 import MyBtn from '@c/message/my_btn/MyBtn.vue'
 import {SCAN_LOGIN_URL} from '~api/message.js'
+import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js'
 
 export default {
   data() {
     return {
       scanSuccess: false, // 扫码是否成功
-      loading: false, // 加载转圈
+      elLoading: false, // element 加载转圈
       qrUrl: null, // 登录二维码地址
       showWhat: 'form', // 显示表单还是二维码
       pwdType: "password",
@@ -243,18 +244,20 @@ export default {
     // 显示二维码
     showQrCode() {
       this.showWhat = 'qr_code'
-      this.getQrCode()
+      this.requestQrCode()
     },
 
     // 获取二维码
-    getQrCode() {
+    requestQrCode() {
       let params = {
         platform: 'pc',
         device: this.messageStore.token || Cnbi.getDevice()
       }
-      // debugger;
+      SET_FULLSCREEN_LOADING(false) // 设置不需要全屏加载动画
+      this.elLoading = true // 开始 局部加载动画
       SCAN_LOGIN_URL(params)
         .then(res => {
+          this.elLoading = false // 结束 局部加载动画
           console.log('获取登录二维码res：', res)
           if (res.data.code === 200 && res.data.data) {
             this.qrUrl = res.data.data.url
@@ -263,6 +266,7 @@ export default {
           }
         })
         .catch(err => {
+          this.elLoading = false // 结束 局部加载动画
           console.log('获取登录二维码err：', err)
         })
     },

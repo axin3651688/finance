@@ -6,7 +6,6 @@ const messageModule = {
       scanStatus: null, // 扫码登陆信息
       token: null, // socket连接后服务器发的令牌
       serverAck: null, // socket 消息回执
-      // targetId: null, // 接收群id或接收人id
       routeName: '首页', // 路由名字
       newServerMsg: null, // 服务器推送的最新消息
       receiverData: null, // 单聊对象的用户信息
@@ -53,8 +52,7 @@ const messageModule = {
           }
         }
         if (flag) {
-          console.log(`messageStore-传入的${flag}没有在state中定义`);
-          debugger;
+          console.error(`messageStore-传入的${flag}没有在state中定义`)
         }
       }
       // 在本地存储中保留一份，方便查看
@@ -62,7 +60,7 @@ const messageModule = {
         let messageStoreStr = JSON.stringify(state.messageStore);
         localStorage.messageStore = messageStoreStr
       } catch (e) {
-        console.log('设置localStorage.messageStore失败:', e)
+        console.error('设置localStorage.messageStore失败:', e)
       }
     },
 
