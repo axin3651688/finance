@@ -16,9 +16,6 @@
     </span>
     <el-button @click.stop="ShowMeluList({isShow:true})">打开</el-button>
     <BiModule :dialogData="showDialog.api"></BiModule>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="ShowDialog({isShow:false})">关 闭</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>

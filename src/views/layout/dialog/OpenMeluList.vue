@@ -7,9 +7,8 @@
       <!-- 动画 -->
       <transition name="slid">
         <div class="pop-content" v-clickoutside="closePop">
-          <span>111111111111</span>
           <el-col :span="6" v-for="o in listDatas" :key="o.id">
-            <img :src="o.avatar" class="image">
+            <!-- <img :src="o.avatar" class="image"> -->
             <div class="list">
               <span>{{o.trueName}}</span>
             </div>
@@ -49,9 +48,7 @@ export default {
   computed: {
     ...mapGetters(["showMeluList"]),
     listDatas() {
-      console.log(this.showMeluList.data);
-
-      this.showMeluList.data;
+      return this.showMeluList.data;
     },
     styleObj() {
       let obj = {};

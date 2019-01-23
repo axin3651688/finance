@@ -1,15 +1,33 @@
 <template>
   <div class="Cbsb">
-    <el-row>
-      <el-col :span="6" v-for="o in listDatas" :key="o.id">
-        <img :src="o.avatar" class="image">
-        <div class="list">
-          <span>{{o.trueName}}</span>
-        </div>
-      </el-col>
-    </el-row>
-    <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
-    <el-button @click="sendMsg" type="primary">发 送</el-button>
+    <div>选择消息接收人</div>
+    <div class="role_wrapper">
+      <div class="role_list">
+        <span v-for="o in listDatas" :key="o.id" class="role_item">
+          <img :src="o.avatar">
+          <div class="name">{{o.trueName}}</div>
+        </span>
+        <span class="role_item">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
+          >
+          <div class="name">共12人</div>
+        </span>
+      </div>
+      <!-- <i class="chaochu role_item"></i>
+      <div class="name">共12人</div>-->
+    </div>
+
+    <div class="input_title">消息内容</div>
+    <el-input
+      type="textarea"
+      :rows="7"
+      placeholder="请输入内容"
+      class="input"
+      resize="none"
+      v-model="textarea"
+    ></el-input>
+    <el-button @click="sendMsg" type="primary" class="send">发 送</el-button>
   </div>
 </template>
 
@@ -77,10 +95,59 @@ export default {
 </script>
 <style lang="scss" scoped>
 .Cbsb {
+  width: 660px;
+  height: 420px;
+  position: relative;
   img {
     height: 50px;
     width: 50px;
     border-radius: 5px;
+  }
+  .role_wrapper {
+    i {
+      display: inline-block;
+      background-size: 100%;
+    }
+  }
+  .role_list {
+    display: inline-block;
+    padding-top: 20px;
+    width: 400px;
+    height: 115px;
+    overflow: hidden;
+    .role_item {
+      padding: 0 40px 20px 0;
+      display: inline-block;
+
+      .name {
+        color: rgba(0, 0, 0, 0.6);
+        text-align: center;
+        padding-top: 11px;
+      }
+    }
+  }
+  .chaochu {
+    // @extend img;
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg==)
+      no-repeat;
+  }
+  .input_title {
+    padding-bottom: 20px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  .input {
+    border-radius: 12px;
+    width: 620px;
+  }
+  .send {
+    width: 80px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding-right: 20px;
   }
 }
 </style>
