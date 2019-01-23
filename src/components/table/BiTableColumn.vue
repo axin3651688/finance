@@ -123,19 +123,7 @@ export default {
       clickRowParams: {}
     };
   },
-  computed: {
-    // isFolder() {
-    //   return this.col.children && this.col.children.length;
-    // },
-    // getLevel(level) {
-    //   // console.info(level);
-    //   return level + 1;
-    // }
-  },
-  created() {
-    // debugger;
-    // console.log(this.tableData);
-  },
+
   mixins: [EventMixins],
   methods: {
     columnDropDownClick(items) {
@@ -233,10 +221,6 @@ export default {
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       return value;
     }
-
-    // itemShow(index, record) {
-    //   return index === item && record.children && record.children.length > 0;
-    // }
   }
 };
 </script>

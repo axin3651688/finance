@@ -140,7 +140,12 @@ const router = new Router({
       name: 'tab',
       component: () =>
         import('@v/test/tab.vue')
-    },
+    }, {
+      path: '/Jtreegrid',
+      name: 'Jtreegrid',
+      component: () =>
+        import('@v/test/asycTree/Jtreegrid.vue')
+    }
 
     ]
   },

@@ -19,10 +19,9 @@
 </template>
  
 <script>
-import treeToArray from "../treegrid/eval";
 import BiTableColumnTree from "../table/BiTableColumnTree";
 import { apiItemDatas } from "utils/apiItemDatas";
-import { handleOpen } from "utils/index";
+import { handleOpen, convertData, isfold } from "utils/index";
 import { findThirdPartData } from "~api/interface";
 export default {
   components: {
@@ -40,7 +39,9 @@ export default {
     let data = this.item.datas;
     let flag = Cnbi.isEmpty(data);
     if (!flag) {
-      this.convertData(this.item.datas);
+      debugger;
+      this.formatData = convertData(this.item.datas);
+      console.log(this.formatData);
     } else {
       console.error("亲！没有请求到数据，再检查下配置吧！");
     }
@@ -56,7 +57,7 @@ export default {
       me.fetchData(dat);
     });
   },
-  mounted() {},
+
   beforeDestroy() {
     this.$bus.off("fetchdata");
   },
@@ -80,6 +81,7 @@ export default {
     /**
      * 根据sql, params发请求,先加载子公司节点,在这里不加载所有
      */
+
     fetchData(dat) {
       var flag = handleOpen(dat.row.id, this.nodes);
       if (!flag) {
@@ -89,75 +91,23 @@ export default {
           .then(res => {
             // debugger;
             let data = res.data.data;
-            // console.log(data);
-            this.findAddData(dat, data);
-            this.convertData(this.item.datas);
+            //添加元素到指定位置
+            data.unshift(dat.$index + 1, 0);
+            Array.prototype.splice.apply(this.item.datas, data);
+            this.formatData = convertData(this.item.datas);
           })
           .catch(res => {
             console.info(res);
           });
       } else {
-        this.isfold(dat.row);
+        isfold(dat.row, this.formatData, "nlevel");
       }
-    },
-    /**
-     * 控制节点的展开和关闭
-     */
-    isfold(dat) {
-      let tempArray = this.item.datas.filter(data => {
-        if (data.pid == dat.id && data.nlevel == dat.nlevel + 1) {
-          debugger;
-          if (data.leaf == 0) {
-            debugger;
-            if (data._expanded == false) {
-              data._isHide = !data._isHide;
-              return true;
-            }
-            data._isHide = !data._isHide;
-            // console.log(data.text);
-            this.isfold(data);
-          } else if (data.nlevel == dat.nlevel + 1) {
-            // console.log(data.text);
-            data._isHide = !data._isHide;
-          }
-          return true;
-        }
-      });
-      // console.info(tempArray);
-    },
-    findAddData(code, data) {
-      //添加元素到指定位置
-      // debugger;
-      data.unshift(code.$index + 1, 0);
-      Array.prototype.splice.apply(this.item.datas, data);
-    },
-
-    /**
-     * 格式化数据源
-     */
-    convertData(data) {
-      debugger;
-      let tmp;
-      if (!Array.isArray(data)) {
-        tmp = [data];
-      } else {
-        tmp = data;
-      }
-      const func = this.evalFunc || treeToArray;
-      const args = this.evalArgs
-        ? Array.concat([tmp, this.expandAll], this.evalArgs)
-        : [tmp, this.expandAll];
-      let formatData = func.apply(null, args);
-      this.$set(this, "formatData", formatData);
-      // console.log(this.formatData);
-      // debugger;
     },
 
     upData(item) {
       this.$set(this, "formatData", "");
       this.$set(this, "formatData", null);
       this.item = item;
-      this.convertData();
     },
     tranformData(data, rootItem) {
       let me = this;

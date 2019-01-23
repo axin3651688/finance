@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showMeluList.isShow" class="Pop">
+  <div v-if="showMeluList.isShow" class="Pop">
     <!-- 遮罩 -->
     <div class="pop-cloak" v-if="cloak"></div>
     <!-- 侧边栏内容 -->
