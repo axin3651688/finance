@@ -25,13 +25,15 @@
 
         <!--表单-->
         <div class="login-form" v-show="showWhat === 'form'">
-          <el-form class="input" ref="loginForm" :model="loginUser" :rules="rules">
-            <el-input
-              v-model="loginUser.usename"
-              class="username"
-              placeholder="请输入用户名"
-              prop="usename"
-            ></el-input>
+          <el-form class="input" ref="loginForm" :model="loginUser" :rules="rules" >
+            <el-form-item prop="name">
+              <el-input
+                v-model="loginUser.usename"
+                class="username"
+                placeholder="请输入用户名"
+                prop="usename"
+              ></el-input>
+            </el-form-item>
             <el-input
               :type="pwdType"
               v-model="loginUser.password"
@@ -83,9 +85,9 @@
 </template>
 
 <script>
-import {login} from "~api/interface.js";
-import {mapGetters, mapActions} from "vuex";
-import store from "@/store";
+import {login} from "~api/interface.js"
+import {mapGetters, mapActions} from "vuex"
+import store from "@/store"
 import MyBtn from '@c/message/my_btn/MyBtn.vue'
 import {SCAN_LOGIN_URL} from '~api/message.js'
 
@@ -124,7 +126,7 @@ export default {
           }
         ]
       }
-    };
+    }
   },
   components: {
     MyBtn
@@ -132,7 +134,7 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
     },
     scanStatus() {
       return this.messageStore.scanStatus
@@ -140,117 +142,93 @@ export default {
   },
   watch: {
     scanStatus(val) {
-      debugger;
-      if (!val) return;
+      debugger
+      if (!val) return
       switch (val.code) {
         case 10010: // 10010-APP已扫码通知，扫码成功
-          this.scanSuccess = true;
-          break;
+          this.scanSuccess = true
+          break
         case 10011: // 10011-APP登录通知，登陆成功,
-          const data = val.data;
-          const token = val.data.authorization;
-
-          if (!Cnbi.isEmpty(token)) {
-            localStorage.setItem("authorization", token);
-            // 用户名记住,方便下次登录
-            localStorage.setItem("usename", this.loginUser.usename);
-            var obj = JSON.stringify(data); //转化为JSON字符串
-            localStorage.setItem("database", obj); //返回{"a":1,"b":2}
-            //    token存储到vuex中
-            store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
-            store.dispatch("setUser", data);
-            // 把用户的状态更新到vuex
-            this.GetSideMid({
-              company: data.company.customerId,
-              companyName: data.company.text
-            });
-            // debugger;
-            //this.initSocket(token);
-            // 页面跳转
-            this.$router.push("/message_page/home");
-
-            // electron
-            if (window.require) {
-              let ipc = window.require("electron").ipcRenderer;
-              ipc.send("web_loginSucess", "");
-            }
-          }
-          break;
+          this.processLoginResult(val.data) // 处理登陆返回的结果
+          break
       }
     }
   },
   methods: {
     ...mapActions(["GetSideMid", 'ActionSetMessageStore']),
 
-    // 关闭二维码登录, 清除messageStore.scanStatus
-    closeQrCode() {
-      this.showWhat = 'form';
-      this.ActionSetMessageStore({scanStatus: null})
-    },
-
     web_minWindows() { // electron 最小化
       if (window.require) {
-        let ipc = window.require("electron").ipcRenderer;
-        ipc.send("web_minWindows", "");
+        let ipc = window.require("electron").ipcRenderer
+        ipc.send("web_minWindows", "")
       }
     },
     web_closeWindows() { // electron 关闭窗口
       if (window.require) {
-        let ipc = window.require("electron").ipcRenderer;
-        ipc.send("web_closeWindows", "");
+        let ipc = window.require("electron").ipcRenderer
+        ipc.send("web_closeWindows", "")
       }
     },
 
     showPwd() {
       if (this.pwdType === "password") {
-        this.pwdType = "";
+        this.pwdType = ""
       } else {
-        this.pwdType = "password";
+        this.pwdType = "password"
       }
     },
 
-    // 提交登录表单
+    /**
+     * 提交登录表单
+     */
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
+        debugger;
         if (valid) {
           login(this.loginUser)
             .then(res => {
-              // debugger;
-              this.processLoginResult(res.data.data) // 处理登陆返回的结果
+              if (res.data.code === 200 && res.data.data) {
+                this.processLoginResult(res.data.data) // 处理登陆返回的结果
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.data.msg
+                })
+              }
             })
             .catch(err => {
-              console.error(err);
-            });
+              console.error(err)
+            })
         }
-      });
+      })
     },
 
     /**
      * 处理登陆返回数据
      */
-    processLoginResult(data){
-      debugger;
-      let authorization = data.authorization;
+    processLoginResult(data) {
+      // debugger
+      let authorization = data.authorization
       if (!Cnbi.isEmpty(authorization)) {
-        localStorage.setItem("authorization", authorization);
-        localStorage.setItem("usename", this.loginUser.usename); // 用户名记住,方便下次登录
-        let obj = JSON.stringify(data); //转化为JSON字符串
-        localStorage.setItem("database", obj); //返回{"a":1,"b":2}
-        store.dispatch("setIsAutnenticated", true);
-        store.dispatch("setUser", data);
+        localStorage.setItem("authorization", authorization)
+        localStorage.setItem("usename", this.loginUser.usename) // 用户名记住,方便下次登录
+        localStorage.setItem("database", JSON.stringify(data)) //返回{"a":1,"b":2}
+        store.dispatch("setIsAutnenticated", true)
+        store.dispatch("setUser", data)
 
         // 把用户的状态更新到vuex
         this.GetSideMid({
           company: data.company.customerId,
           companyName: data.company.text
-        });
+        })
 
-        this.$router.push("/message_page/home");
+        // 路由跳转
+        this.$router.push("/message_page/home")
 
         // electron 处理
         if (window.require) {
-          let ipc = window.require("electron").ipcRenderer;
-          ipc.send("web_autoLogin", "");
+          let ipc = window.require("electron").ipcRenderer
+          ipc.send("web_autoLogin", "")
         }
 
       }
@@ -258,8 +236,8 @@ export default {
 
     // 显示二维码
     showQrCode() {
-      this.showWhat = 'qr_code';
-      this.getQrCode();
+      this.showWhat = 'qr_code'
+      this.getQrCode()
     },
 
     // 获取二维码
@@ -267,39 +245,31 @@ export default {
       let params = {
         platform: 'pc',
         device: this.messageStore.token || Cnbi.getDevice()
-      };
+      }
       // debugger;
-      console.log(params);
-      let _this = this;
       SCAN_LOGIN_URL(params)
         .then(res => {
-          console.log('获取登录二维码res：', res);
-          if (res.data.code === 200) {
-            this.qrUrl = res.data.data.url;
+          console.log('获取登录二维码res：', res)
+          if (res.data.code === 200 && res.data.data) {
+            this.qrUrl = res.data.data.url
             this.ActionSetMessageStore({scanStatus: null})
             console.log('qrUrl:', this.qrUrl)
           }
         })
         .catch(err => {
-          console.log('获取登录二维码err：', err);
-        });
-    }
+          console.log('获取登录二维码err：', err)
+        })
+    },
 
-    // 禁止滑动
-    // disableTouchMove(e) {
-    //   console.log('===disableTouchMove===');
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // }
-  },
-  mounted() {
-    // 禁止滑动
-    // document.body.addEventListener("touchmove", this.disableTouchMove, {passive: false});
-  },
-  beforeDestroy() {
-    // document.body.removeEventListener("touchmove", this.disableTouchMove);
+    /**
+     * 关闭二维码登录, 清除messageStore.scanStatus
+     */
+    closeQrCode() {
+      this.showWhat = 'form'
+      this.ActionSetMessageStore({scanStatus: null})
+    }
   }
-};
+}
 </script>
 <style>
   .login .el-checkbox__input.is-checked .el-checkbox__label {
