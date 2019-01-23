@@ -1,0 +1,183 @@
+{
+    /**
+     * name : sjz
+     * 因为是sql配的 不利于导入填报  所以弃用  改为cube配置
+     */
+    "id":"0002",
+    "text":"利润表",
+    "layout":{
+        "xtype":"tab"
+    },
+    "showDims": ["year","month","company","conversion"],
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    } ,
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
+    "config":{
+        "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
+        "_cube":{
+            "cubeId":4,
+            "subject":"0002"
+        },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1     
+    },
+    
+    "columns":[{      
+        "id": "B",
+        "type": "decimal",
+        "width":"170px",
+        "text": "累计数"       
+    },{
+        "id": "id",
+        "type": "string",
+        "hidden": true,
+        "text": "编码"
+      },{
+        "id":"text",
+        "type":"string",
+        "width":"370px",
+        "text":"项目"
+    },{
+        "id":"index",
+        "type":"index",
+        "align":"center",
+        "width":"60px",
+        "text":"行次"
+    },{
+        "id": "A",
+        "type": "decimal",
+        "width":"150px",
+        "text": "当月数"
+    }],
+    "rows":[],
+    "items":[{
+        "id":"jlr",
+        "text":"利润表",
+        "xtype":"bi-table",
+        "toolbar":[{
+            "id":"1",
+            "text":"刷新",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+            "handler":function(vue,btn){
+                debugger
+                console.log(vue);
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+            }
+        }
+        , {
+            "id":"2",
+            "text":"导出",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+            "handler":function(vue,btn){
+                debugger
+                console.log(vue);
+                vue.handleDownload(vue);
+            }
+        }
+    ],
+        "levelProperties":{text:"nlevel"},//加缩进 可选 table
+        "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
+            debugger
+            let id = row.id, text = row.text;
+            let datas = this.datas;
+                let data = datas.filter(function(item){
+                        return item.id == row.id;
+                });
+            row = data[0];
+
+            if(this.drillProperties.indexOf(column.property) != -1){
+                if((row.A && row.A!=0) || (row.B && row.B!=0)){
+                    // if(vue.$store.getters.treeInfo.industryId){ //如果公司是1级公司就展示所有子属二级公司；自动展开；
+                        vue.commonHandler(
+                            {
+                                "type":"click",//事件类型
+                                "way":"addTab",//调用的公共方法
+                                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
+                                "handler":($vue,params)=>{//自定义的回调
+                                    console.info(params);
+                                    debugger; 
+                                } 
+                            },
+                            { row: row, column: column, cell: cell, event: event },
+                            { id: id, text: text }
+                        );
+                    // }else{//否则，直接展现子属二级及以下公司
+                    //     vue.commonHandler(
+                    //         {
+                    //             "type":"click",//事件类型
+                    //             "way":"addTab",//调用的公共方法
+                    //             "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
+                    //             "handler":($vue,params)=>{//自定义的回调
+                    //                 console.info(params);
+                    //                 debugger; 
+                    //             } 
+                    //         },
+                    //         { row: row, column: column, cell: cell, event: event },
+                    //         { id: id, text: text }
+                    //     );
+                    // }
+                }
+            }    
+            console.log(this);
+        },
+        "drillProperties":["text"],//有钻取，给蓝色 可选 table
+        "cellStyle":function(row){
+            debugger           
+            let datas = this.datas;
+            let record = datas[row.rowIndex];
+            let css = "padding: 4px 0;";
+            let pro = row.column.property;
+            if (!pro) {
+                return css;
+            }
+            let levelProperties = this.levelProperties;//行缩进
+            let textIndent ="";
+            // let record = row.row;  //获取的行数据        
+            let drillProperties = this.drillProperties;//给那一列赋予蓝色
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {//行缩进处理
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            if (drillProperties.indexOf(pro) != -1) { // 判断给那一列附蓝色；不然一行全是蓝色的
+                if ((record.A && record.A!=0) || (record.B && record.B!=0)) {//判断A、B的值是否存在 and 不能等于0；
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                } else if(record.id=="1416001" || record.id=="1426400" || record.id=="1402100" || record.id=='1403100' || record.id=='1400100'){
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else {//否则不给蓝色：说明无click事件；不做处理；
+                    return css+textIndent;
+                }
+            } else {
+                return css+textIndent;
+            }
+        }      
+    }]
+}

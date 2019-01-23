@@ -26,8 +26,14 @@ export default {
   },
   created(){
     //alert(JSON.stringify(this.tableData))
-   // debugger;
+  //  debugger;
   //  console.log(this.tableData)
+  // let columns = this.item.config.columns
+  //  columns.sort(function(a,b){
+  //    return a.sort - b.sort
+  //  })
+  //  console.log("排序",columns)
+   
   },
   methods: {
     upData(item) {

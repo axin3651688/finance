@@ -23,9 +23,11 @@ export default {
     };
   },
   created() {
-    console.log(this.item);
+    console.log(this.config);
     debugger
-    // console.info(this.item);
+   this.config.columns.sort(function(a,b){
+     return a.sort - b.sort
+   })
   },
   mounted() {
     this.loadItems(this.item);

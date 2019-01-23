@@ -33,6 +33,16 @@ import {report} from '@/api/cube.js'
         //   colHeaders:JSON.parse(localStorage.getItem("title"))||[],
           colHeaders:   ['编码','客商', '余额', '1年以内','1-2年','2-3年','3年以上','客商性质', '是否内部','是否正常'
           ,'非正常分类','债务人状况*','可收回金额*','其中：当年可收回金额*','逾期账款','已形成实质性损失金额',"操作"],
+        //  colHeaders: [
+        //         'ID',
+        //         'Country',
+        //         'Code',
+        //         'Currency',
+        //         'Level',
+        //         'Units',
+        //         'Date',
+        //         'Change'
+        //     ],
           autoWrapRow: true, //自动换行
           contextMenu: {   //自定义右键菜单，可汉化，默认布尔值
             items: {
@@ -83,6 +93,34 @@ import {report} from '@/api/cube.js'
             //  {row: 0, col: 0, rowspan: 2, colspan: 1},  //指定合并，从（1,1）开始行3列3合并成一格
             //  {row: 0, col: 3, rowspan: 2, colspan: 3}
           ],
+        //   nestedHeaders: [
+        //     [
+        //     '编码',
+        //     {
+        //         label: 'D',
+        //         colspan: 2
+        //     },
+        //     {
+        //         label: 'E',
+        //         colspan: 2
+        //     },
+        //     {
+        //         label: 'F',
+        //         colspan: 2
+        //     },
+        //     'H'
+        //     ],
+        //     [
+        //     'ID',
+        //     'I',
+        //     'J',
+        //     'K',
+        //     'L',
+        //     'M',
+        //     'N',
+        //     'O'
+        //     ]
+        // ],
           columns: [],
           // 每个单元格的保存 
           // //row, prop, oldValue, newValue 

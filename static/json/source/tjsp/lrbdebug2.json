@@ -42,13 +42,23 @@
 				"type": 1
 			},
 				"queryDataBefore":function(params,config,$vue){
-					debugger
+					// debugger
 					config.sql = config.sql2;
 					let len = $vue.items.length;
 					let id = $vue.items[len-1].id;
 					config.sql = config.sql.replace(/:itemperiod/g, id);
 					return params;
 
+				},
+				"queryDataAfter":function(data,vue){
+					let datas = [];
+					data.forEach(item => {
+						if((item.dysj && item.dysj!=0) || (item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || 
+						   (item.ljsj && item.ljsj!=0) || (item.sntq1 && item.sntq1!=0) || (item.tbzje1 && item.tbzje1!=0)){
+							datas.push(item);
+						}
+					});
+					return datas;
 				},
 				"columns": [
 					{

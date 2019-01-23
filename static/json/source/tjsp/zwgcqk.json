@@ -3,7 +3,23 @@
     "id":"0039",
     "text":"债务构成情况分析表",
     "showDims":["year","month","company","conversion"],
+    "changeYearBefore": function (newyear, option) {
+        option.closeTabTaget(newyear, option);
+    }, //切换年的回调
+    "changeMonthBefore": function (newmonth, option) {
+        option.closeTabTaget(newmonth, option);
+    }, //切换月份的回调
+    "changeCompanyBefore": function (newcompany, option) {
+        option.closeTabTaget(newcompany, option);
+    }, //切换公司之前的回调
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
     "config":{
+        "sql":" WITH TMP AS(SELECT SCODE,SPCODE,SNAME,NLEVEL,CISLEAF,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_DIMFINANCE A LEFT JOIN (SELECT :company AS DIM_COMPANY,DIM_FINANCE,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_FACTFINANCEDETAIL WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY DIM_FINANCE) B ON B.DIM_FINANCE LIKE A.SCODE||'%' WHERE (SPCODE LIKE '10%' OR SCODE='10') GROUP BY SCODE,SPCODE,SNAME,NLEVEL,CISLEAF), TMP1 AS (SELECT * FROM TMP WHERE NLEVEL=1), TMP2 AS (SELECT * FROM TMP WHERE NLEVEL=2), TMP3 AS (SELECT * FROM TMP WHERE NLEVEL=3), TMP4 AS (SELECT * FROM TMP WHERE NLEVEL=4), TMP0 AS (SELECT SCODE,SNAME,NLEVEL,CISLEAF,NVL(ZHCB,0) AS ZHCB FROM TMP A LEFT JOIN (SELECT DIM_FINANCE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(FACT_A,0)*NVL(FACT_C,0))/SUM(NVL(FACT_A,0))*100),4) END) AS ZHCB FROM DW_FACTFINANCEDETAIL A WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY DIM_FINANCE) B ON A.SCODE=B.DIM_FINANCE), TMP5 AS (SELECT '0' AS FLAG,A.SCODE,SNAME,NLEVEL,CISLEAF,JE,BZ,NVL(ZHCB,0) AS ZHCB FROM (SELECT * FROM TMP0) A INNER JOIN (SELECT SCODE,FACT_A AS JE,0 AS BZ FROM TMP1 UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP1 A INNER JOIN TMP2 B ON A.SCODE=B.SPCODE UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP2 A INNER JOIN TMP3 B ON A.SCODE=B.SPCODE UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP3 A INNER JOIN TMP4 B ON A.SCODE=B.SPCODE) B ON A.SCODE=B.SCODE ORDER BY A.SCODE), TMP6 AS (SELECT (CASE WHEN B.FACT_A IS NULL THEN A.FACT_A ELSE B.FACT_A END) AS FACT_A FROM (SELECT '1' AS FLAG,4.35 AS FACT_A FROM DUAL) A LEFT JOIN (SELECT '1' AS FLAG,FACT_A AS FACT_A FROM DW_FACTAGEANALYSIS_FILL WHERE DIM_PERIOD=:period AND SRATIOTYPE='3' AND DIM_COMPANY=:company) B ON A.FLAG=B.FLAG), TMP7 AS (SELECT (CASE WHEN B.FACT_A IS NULL THEN A.FACT_A ELSE B.FACT_A END) AS FACT_A FROM (SELECT '1' AS FLAG,4.65 AS FACT_A FROM DUAL) A LEFT JOIN (SELECT '1' AS FLAG,FACT_A AS FACT_A FROM DW_FACTAGEANALYSIS_FILL WHERE DIM_PERIOD=:period AND SRATIOTYPE='4' AND DIM_COMPANY=:company) B ON A.FLAG=B.FLAG) SELECT scode as id,SNAME,NLEVEL,CISLEAF,JE,BZ,ZHCB FROM TMP5 UNION ALL SELECT '','二、年化融资成本情况(融资性债务)' AS SNAME,1 AS NLEVEL,'0' AS CISLEAF,0 AS JE,0 AS BZ,0 AS ZHCB FROM DUAL UNION ALL SELECT '',SNAME,2 AS NLEVEL,'0' AS CISLEAF,JE,BZ,0 AS ZHCB FROM (SELECT B.SNAME,A.JE,A.BZ,0 AS ZHCB FROM (SELECT B.FLAG,B.JE,(CASE WHEN A.JE=0 THEN 0 ELSE ROUND(B.JE/A.JE*100,4) END) AS BZ FROM TMP5 A INNER JOIN (SELECT '10' AS FLAG,SUM(NVL((CASE WHEN ZHCB<=(SELECT FACT_A FROM TMP6) THEN NVL(JE,0) END),0)) AS JE FROM TMP5 UNION ALL SELECT '20' AS FLAG,SUM(NVL((CASE WHEN ZHCB>=(SELECT FACT_A FROM TMP6) AND ZHCB<=(SELECT FACT_A FROM TMP7) THEN NVL(JE,0) END),0)) AS JE FROM TMP5 UNION ALL SELECT '30' AS FLAG,SUM(NVL((CASE WHEN ZHCB>=(SELECT FACT_A FROM TMP7) THEN NVL(JE,0) END),0)) AS JE FROM TMP5) B ON A.FLAG=SUBSTR(B.FLAG,2,2) WHERE A.SCODE='10') A INNER JOIN (SELECT '10' AS FLAG,'一年期(≤'||TO_CHAR(FACT_A,'FM0.00')||'%)' AS SNAME FROM TMP6 UNION ALL SELECT '20' AS FLAG,'1-5年('||LISTAGG(SNAME,'-')WITHIN GROUP(ORDER BY SNAME)||')' AS SNAME FROM (SELECT TO_CHAR(FACT_A,'FM0.00')||'%' AS SNAME FROM TMP6 UNION ALL SELECT TO_CHAR(FACT_A,'FM0.00')||'%' AS SNAME FROM TMP7) UNION ALL SELECT '30' AS FLAG,'5年以上(≥'||TO_CHAR(FACT_A,'FM0.00')||'%)' AS SNAME FROM TMP7) B ON A.FLAG=B.FLAG ORDER BY A.FLAG) ",
         "_cube":{
           "subject":"0007",
           "cubeId":4
@@ -31,7 +47,7 @@
         "width":"60px"
       },
       {
-        "id": "xm",
+        "id": "sname",
         "type": "string",
         "text": "项目",
         "width":"260px"
@@ -47,293 +63,8 @@
 
     }
     ],
-    "rows":[{
-        "xh": "1",
-        "xm": "一、债务类型情况",
-        "je": 3456,
-        "bz": 0,
-        "rzcb": 0
-    },{
-        "xh": "2",
-        "xm": "（一）融资性债务",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "3",
-        "xm": "      银行贷款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "4",
-        "xm": "          流动资金贷款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "5",
-        "xm": "          固定资产建设项目贷款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "6",
-        "xm": "          房地产开发贷款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "7",
-        "xm": "      企业债券",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "8",
-        "xm": "      中期票据",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "9",
-        "xm": "      短期融资券",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "10",
-        "xm": "      信托融资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "11",
-        "xm": "      融资租赁",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "12",
-        "xm": "          售后回租",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "13",
-        "xm": "          直租",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "14",
-        "xm": "      保险融资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "15",
-        "xm": "      私募债券",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "16",
-        "xm": "      境外发债",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "17",
-        "xm": "      信用证",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "18",
-        "xm": "          国内信用证",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "19",
-        "xm": "          国际信用证",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "20",
-        "xm": "      应付票据",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "21",
-        "xm": "          银行承兑",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "22",
-        "xm": "          商业承兑",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "23",
-        "xm": "      委托贷款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "24",
-        "xm": "      保函",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "25",
-        "xm": "      保理",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "26",
-        "xm": "      国际贸易融资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "27",
-        "xm": "      内保外贷",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "28",
-        "xm": "      国内非融资性保函",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "29",
-        "xm": "      中短期融资票据",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "30",
-        "xm": "      资产池和票据池",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "31",
-        "xm": "      产业基金",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "32",
-        "xm": "      其他",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "33",
-        "xm": "（二）股权类融资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "34",
-        "xm": "      专项建设基金",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "35",
-        "xm": "      股权融资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "36",
-        "xm": "      其他",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "37",
-        "xm": "（三）非融资性债务",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb":0
-    },{
-        "xh": "38",
-        "xm": "      地方政府债券",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "39",
-        "xm": "      财政借款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 0
-    },{
-        "xh": "40",
-        "xm": "      企业借款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "41",
-        "xm": "      个人集资",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "42",
-        "xm": "      工程占款",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 0
-    },{
-        "xh": "43",
-        "xm": "      其他",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 7655
-    },{
-        "xh": "44",
-        "xm": "二、年化融资成本情况(融资性债务)",
-        "je": 3456,
-        "bz": 0,
-        "rzcb": 0
-    },{
-        "xh": "45",
-        "xm": "一年期",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 0
-    },{
-        "xh": "46",
-        "xm": "1-5年",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 0
-    },{
-        "xh": "47",
-        "xm": "5年以上",
-        "je": 3456,
-        "bz": 2365,
-        "rzcb": 0
-    }
+    "rows":[
   ],
-  "layout":{
-      "xtype":"form"
-   },
   "items":[
      {
       "xtype": "bi-table",
@@ -350,7 +81,7 @@
                "background-color":"#189271"
            },
            "handler":function(vue,btn){
-               console.log(vue);
+               vue.item.updateView("company");
            }
        }, {
            "id":"2",
@@ -363,7 +94,71 @@
                 vue.handleDownload(vue);
            }
        }
-       ]
+       ],
+       "drillProperties":["sname"],//有钻取，给蓝色
+        "levelProperties":{"sname":"nlevel"},//加缩进
+        "cellStyle": function (row) {
+            let datas = this.datas;
+            let record = [];
+            record = datas[row.rowIndex];
+            let css = "padding: 4px 0;";
+            let pro = row.column.property; //列id
+            if (!pro) {
+                return css;
+            }
+            let levelProperties = this.levelProperties;//行缩进
+            let textIndent = "";
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {//行缩进处理
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            let drillProperties = this.drillProperties; //钻取列获取
+            if (drillProperties.indexOf(pro) != -1) { //匹配需要下钻的列
+                if (record.cisleaf && ((record.je && record.je != 0) || (record.bz && record.bz != 0) || (record.rzcb && record.rzcb != 0) )) { //有数据时才显示蓝色，并且可以下钻(合计行不能下钻)
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex].drill = true; //下钻设置
+                    return css;
+                } else {
+                    return css + textIndent;
+                }
+            } else {
+                return css + textIndent;
+            }
+        },
+        "onCellClick": function (row, column, cell, event, option) {
+            let datas = this.datas;
+            let data = datas.filter(function(item){
+                    return item.id == row.id;
+            });
+            row = data[0];
+            let cv = column.property + ""; //下钻行的标识
+            let listener = row._drill || row.drill;
+            if (listener && cv == "sname") {
+                let text = row.sname; //下钻显示的标题
+                let id = row.id;
+
+                option.commonHandler({
+                    "type": "click", //事件类型
+                    "way": "addTab", //调用的公共方法
+                    "sourceApi": "/cnbi/json/source/tjsp/zwgcqkDrill.json", //下钻json路径
+                    "handler": ($vue, params) => { //自定义的回调
+                        console.info(params);
+                        // let pp = {id:params.xxx,xxx};
+                        //  $vue.popop = pp;
+                    }
+                }, {
+                    row: row,
+                    column: column,
+                    cell: cell,
+                    event: event
+                }, {
+                    id: id,
+                    text: text
+                });
+            }
+        }
     }
   ]
   }

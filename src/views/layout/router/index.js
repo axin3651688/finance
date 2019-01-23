@@ -126,7 +126,38 @@ const router = new Router({
           name: 'productIntroduction',
           component: () =>
             import('@v/test/eleTreeTable'),
-        }, // 利润表
+        }, 
+        // {// sjz 专用测试
+        //   path: '/testDebug',
+        //   name: 'testDebug',
+        //   component: () =>
+        //     import('@v/test/testDebug'),
+        // },
+        // {// sjz 专用测试
+        //   path: '/treeTable',
+        //   name: 'treeTable',
+        //   component: () =>
+        //     import('@c/treeTable/treeGrid'),
+        // },
+        // {// sjz 专用测试(用户管理)
+        //   path: '/com',
+        //   name: 'com',
+        //   component: () =>
+        //     import('@c/treeTable/com'),
+        // },
+        {// sjz 专用测试(日志管理)
+          path: '/log',
+          name: 'log',
+          component: () =>
+            import('@v/systemSettings/log')
+        },
+        {// sjz 专用测试(在线用户)
+          path: '/online',
+          name: 'online',
+          component: () =>
+            import('@v/systemSettings/online')
+        },
+        // 利润表
         {
           path: '/profit',
           name: 'profit',
@@ -162,7 +193,12 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/Handtable.vue')
         },
-
+        {
+          path: '/i',
+          name: 'i',
+          component: () =>
+            import('@c/Itable')
+        },
         {
           path: '/Fill',
           name: 'Fill',

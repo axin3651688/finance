@@ -52,7 +52,9 @@ export default {
         this.ToggleSideBar({ opend: false });
       }
       //---------------------   zdk 2019-1-8 21:32:27  没做的页面不显示了，不给点
-       if(e.url.indexOf("api/test") > 0 || e.id=== 351){
+      //  if(e.url.indexOf("api/test") > 0 || e.id=== 351){
+      //---------------------   sjz 2019/1/21 9:53:00  解开限制  
+      if(e.url.indexOf("api/test") > 0 ){
         alert("正在玩命开发中...");
         return ;
           

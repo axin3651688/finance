@@ -52,6 +52,7 @@ export default {
       settings: {
         data:  [],//数据，可以是数据，对象
         startCols: 6,
+        hiddenColumns:[],
         minCols: 5,
         maxCols: 20,
         rowHeaders: true,//行表头
@@ -73,55 +74,98 @@ export default {
     }
   },
   created(){
+    debugger
+    console.log(this.item)
     this.axios.get('/api/template').then((res) => {
       this.list = res.data.data
       // console.log(this.list)
     })
-    this.settings.columns = [     //添加每一列的数据类型和一些配置
-            {
-            type:'numeric',  
-            strict: false ,  //是否严格匹配
-            data:"D",
-            },
-            {
-            data:"id",
-            type: 'text',
-            // readOnly: false  //设置只读
-            hidden:true
-            },
-            {
-            data:"row",
-            type:'text',
-            },
-            {
-            data:"level",
-            type:'numeric'
-            },
-            {
-            data:"text",
-            type:'numeric',
-            },
-            {
-            data:"A",
-            type: 'numeric',
-            // strict: false   //是否严格匹配
-            },
-            {
-            data:"B",
-            type: 'numeric',
-            // strict: false   //是否严格匹配
-            },
-            {
-            data:"C",
-            type: 'numeric', //下拉选择
-            }
-        ]
+    // this.settings.columns = [ 
+    //         {
+    //         type:'numeric',  
+    //         strict: false , 
+    //         data:"D",
+    //         },
+    //         {
+    //         data:"id",
+    //         type: 'text'
+    //         },
+    //         {
+    //         data:"row",
+    //         type:'text'
+    //         },
+    //         {
+    //         data:"level",
+    //         type:'numeric'
+    //         },
+    //         {
+    //         data:"text",
+    //         type:'numeric',
+    //         },
+    //         {
+    //         data:"A",
+    //         type: 'numeric',
+    //         },
+    //         {
+    //         data:"B",
+    //         type: 'numeric',
+    //         },
+    //         {
+    //         data:"C",
+    //         type: 'numeric', 
+    //         }
+    //     ]
   },
   mounted(){
 
   },
 
   methods:{
+
+    getHandsoneTableColType(type){
+        if(type){
+          if(type === "decimal"){
+            return "numeric";
+          }else if(type == "string"){
+            return "text";
+          }
+        }
+        return "text";
+    },
+     /**
+      * hiddenColumns: {
+      columns: [3, 5, 9],
+      indicators: true
+    }
+      */
+      convert2HansoneTableColumns(columns){
+
+          columns.sort((a,b)=>a.sort-b.sort);
+
+          let newCoulmns = [],colHeaders=[],hiddenColumns = {
+             indicators:false
+          },hiddenCols = [];
+          for(let i=0,len = columns.length;i<len;i++){
+            let col = columns[i];
+            if(col.hidden){
+                hiddenColumns.indicators = true;
+                hiddenCols.push(i);
+            }else{
+              newCoulmns.push({
+                   type: this.getHandsoneTableColType(col.type),  
+                   data:col.id,
+              });
+               colHeaders.push(col.text)
+            }
+          }
+          hiddenColumns.columns = hiddenColumns;
+          this.settings.columns = newCoulmns;
+          this.settings.hiddenColumns = hiddenColumns;
+          this.settings.colHeaders = colHeaders;
+          debugger;
+      },
+
+
     // 选择对应的模板
     matching(list,index){
       debugger
@@ -133,12 +177,10 @@ export default {
           let datas = res.data.data.source
           let obj = JSON.parse(datas)
           console.log(obj)
-          let arr = []
-          let item = obj.columns || obj.config.columns
-          item.forEach(i=>{
-            arr.push(i.text)
-          })
-          this.settings.colHeaders = arr
+          let columns = obj.columns || obj.config.columns
+          debugger;
+          this.convert2HansoneTableColumns(columns);
+          //get datas
           this.settings.data = obj.rows || obj.config.rows
         }
       })
