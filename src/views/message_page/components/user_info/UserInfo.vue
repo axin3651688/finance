@@ -1,10 +1,8 @@
 <template>
   <div class="UserInfo" id="UserInfo" v-if="userInfo">
     <div class="top">
-      <div>
-        <div class="img-box">
-          <img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">
-        </div>
+      <div class="img-box">
+        <img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">
       </div>
       <div class="info">
         <h3 class="info-title">
@@ -49,7 +47,7 @@ import {mapGetters} from 'vuex'
 
 export default {
   name: "UserInfo",
-  data () {
+  data() {
     return {
       userInfo: null, // 登陆用户的详细信息
     }
@@ -62,11 +60,11 @@ export default {
   },
   methods: {
     getUserInfo() {
-      let userId = this.user.user.id;
-      let targetId = userId;
+      let userId = this.user.user.id
+      let targetId = userId
       LEFT_USER_INFO(userId, targetId)
         .then(res => {
-          console.log('左边栏获取用户信息res：', res);
+          console.log('左边栏获取用户信息res：', res)
           if (res.data.code === 200) {
             this.userInfo = res.data.data
           } else {
@@ -98,17 +96,13 @@ export default {
     .top {
       @include flex();
       align-items: center;
-      padding: 30px 20px 15px;
-      font-size: 14px;
+      padding: 30px 10px 15px;
       color: $colorText2;
 
-      .img-box {
-        @include imgBox($width: 60px, $height: 60px, $borderRadius: 50%);
-        background: #eee;
-      }
-
       .info {
-        margin-left: 20px;
+        flex: 1;
+        overflow: hidden;
+        margin-left: 10px;
 
         .info-title {
           font-weight: bold;
@@ -130,29 +124,38 @@ export default {
         }
 
         .info-text {
-          margin-top: 10px;
-          width: 220px;
+          margin-top: 5px;
+          font-size: 12px;
           @include singleEllipsis();
         }
       }
+
+      .img-box {
+        @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
+        background: #eee;
+      }
+
+
     }
 
     .middle {
-      padding: 0 20px;
+      padding: 0 10px;
       color: $colorText3;
 
       li {
         @include flex();
         align-items: center;
         margin-top: 15px;
+        font-size: 14px;
       }
 
       .icon {
         @include icon($width: 24px, $height: 24px);
-        margin-right: 20px;
+        margin-right: 10px;
       }
+
       .img-box {
-        @include imgBox($width:24px,$height:24px);
+        @include imgBox($width: 24px, $height: 24px);
       }
 
       .icon__state {
@@ -170,7 +173,7 @@ export default {
 
       .btn {
         @include myBtn($borderRadius: 8px, $height: 36px, $width: 100px);
-        margin: 40px auto;
+        margin: 30px auto;
       }
     }
   }
