@@ -220,8 +220,6 @@ img {
   position: absolute;
   right: 50%;
   top: 5px;
-  -moz-transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
 }
 </style>
 

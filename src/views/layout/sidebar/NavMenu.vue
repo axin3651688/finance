@@ -50,9 +50,18 @@ export default {
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
+
+    /**
+     * @name   :    shownavMenu
+     * @说明   :    此判断是针对url不是json的,让它正常跳转,不是的就调用侧边栏点击加载配置文件。此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
+     * @param  参数名
+     * @param  参数名
+     * @author :    mj
+     * @data   :    2019-01-24
+     */
     shownavMenu(e) {
-      //  此判断是针对url不是json的,让它正常跳转,不是的就调用侧边栏点击加载配置文件。
-      // 此方法是手机屏幕时,点击侧边栏子项,左边自动收缩
+      //
+      //
       if (this.device === "mobile") {
         this.ToggleSideBar({ opend: false });
       }

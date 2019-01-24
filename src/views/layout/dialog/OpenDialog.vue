@@ -25,7 +25,6 @@
 import { mapActions, mapGetters } from "vuex";
 import BiModule from "@v/BiModule.vue";
 export default {
-  created() {},
   components: {
     BiModule
   },

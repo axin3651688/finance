@@ -1,19 +1,45 @@
 <template>
-  <div v-if="showMeluList.isShow" class="Pop">
+  <div v-if="showMeluList.isShow" class="OpenMeluList">
     <!-- 遮罩 -->
-    <div class="pop-cloak" v-if="cloak"></div>
+    <div class="cloak" v-if="cloak"></div>
     <!-- 侧边栏内容 -->
-    <div class="pop-content-wrap" :style="styleObj">
+    <div class="content-wrap">
       <!-- 动画 -->
       <transition name="slid">
-        <div class="pop-content" v-clickoutside="closePop">
-          <el-col :span="6" v-for="o in listDatas" :key="o.id">
-            <!-- <img :src="o.avatar" class="image"> -->
-            <div class="list">
-              <span>{{o.trueName}}</span>
-            </div>
-          </el-col>
-          <button @click="closePop">close</button>
+        <div class="content" v-clickoutside="closePop">
+          <div class="content-message-top">
+            <span>添加消息接收人</span>
+            <!-- <el-checkbox
+              class="checkAll"
+              :indeterminate="isIndeterminate"
+              v-model="checkAll"
+              @change="handleCheckAllChange"
+            >全选</el-checkbox>-->
+            <span class="iconfont close" @click="closePop">&#xe60e;</span>
+          </div>
+          <!-- <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input> -->
+          <el-checkbox-group
+            v-model="checkedCities"
+            @change="handleCheckedCitiesChange"
+            class="content-middle"
+          >
+            <el-checkbox
+              v-for="i of listDatas"
+              :key="i.id"
+              :label="i.trueName"
+              class="checkbox-item"
+            >
+              <div class="useravatar">
+                <div class="row">
+                  {{listDatas.trueName}}
+                  <img :src="i.avatar" alt class="img">
+                  <p>{{i.trueName}}</p>
+                </div>
+              </div>
+            </el-checkbox>
+          </el-checkbox-group>
+
+          <div style="margin: 15px 0;"></div>
         </div>
       </transition>
     </div>
@@ -23,27 +49,21 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "Pop",
+  name: "OpenMeluList",
   props: {
     showPop: {
       type: Boolean,
       default: false
     },
-    position: {
-      // 位置 top\right\bottom\left
-      type: String,
-      default: "right"
-    },
-    size: {
-      // 大小，可以是高，也可以是宽，看是放在上下还是左右
-      type: Number,
-      default: 240
-    },
+
     cloak: {
       // 是否显示遮罩,默认显示
       type: Boolean,
       default: true
     }
+  },
+  mounted() {
+    console.log(this.cities);
   },
   computed: {
     ...mapGetters(["showMeluList"]),
@@ -80,6 +100,17 @@ export default {
       }
       return obj;
     }
+  },
+  data() {
+    return {
+      search: "", //搜索框显示的内容
+      showSide: false, // 是否显示边栏
+      list: [],
+      checkAll: false,
+      checkedCities: [],
+      cities: this.$store.getters.showMeluList.data,
+      isIndeterminate: true
+    };
   },
 
   directives: {
@@ -119,49 +150,18 @@ export default {
     ...mapActions(["ShowMeluList"]),
     closePop() {
       this.ShowMeluList({ isShow: false });
+    },
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.cities.length;
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.slid-enter-active,
-.slid-leave-active {
-  transition: margin 0.26s;
-}
-
-.slid-enter,
-.slid-leave-to {
-  margin-left: 300px;
-  opacity: 0;
-}
-
-.Pop {
-  z-index: 9999;
-}
-.Pop,
-.pop-cloak {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100vh;
-}
-
-.pop-cloak {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.pop-content-wrap {
-  position: absolute;
-}
-
-.pop-content {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.4);
-}
-</style>

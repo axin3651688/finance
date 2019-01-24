@@ -35,6 +35,8 @@ export default {
     return {
       formatData: [],
       nodes: [],
+      baseUrl: "",
+      params: {},
       item: [
         {
           text: "编码",

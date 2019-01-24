@@ -7,8 +7,8 @@ import store from '@/store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import '../../../node_modules/handsontable/dist/handsontable.full.css'
-import "@/styles/black/index.scss"
-// import "@s/green/index.scss"
+import "@/styles/index.scss"
+import '@a/icons/iconfont.css' // icon
 // 挂载全局组件echart
 import VueECharts from '@c/charts/ECharts'
 Vue.component('chart', VueECharts);
