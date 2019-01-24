@@ -324,3 +324,80 @@ export function SAVE_CONTACT(data) {
         data: data
     })
 }
+
+
+
+
+
+
+// /api/save_company_dept
+// 添加部门 SAVE_COMPANY_DEPT
+export function SAVE_COMPANY_DEPT(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_company_dept',
+        method: 'post',
+        data: data
+    })
+}
+//
+// /api/edit_company_dept
+// 更新部门信息 EDIT_COMPANY_DEPT
+export function EDIT_COMPANY_DEPT(data) {
+    // debugger
+    return request({
+        url: '/api/api/edit_company_dept',
+        method: 'put',
+        data: data
+    })
+}
+//
+// /api/del_company_dept
+// 删除部门 DEL_COMPANY_DEPT
+export function DEL_COMPANY_DEPT(data) {
+    // debugger
+    return request({
+        url: '/api/api/del_company_dept',
+        method: 'delete',
+        params: data
+    })
+}
+
+// /api/save_dept_user
+// 批量添加部门成员
+export function SAVE_DEPT_USER(data) {
+    // debugger
+    return request({
+        url: '/api/api/save_dept_user',
+        method: 'post',
+        data: data
+    })
+}
+
+
+// /api/find_dept_list
+// 查找部门列表 FIND_DEPT_LIST
+export function FIND_DEPT_LIST1(companyId,code) {
+    // debugger
+    return request({
+        url: '/api/api/find_dept_list',
+        method: 'get',
+        params: {
+            'companyId':companyId,
+            'code':code,
+        }
+    })
+}
+
+// GET /api/my_contact_list
+// 组织成员通讯 MY_COMPANY_CONTACT_LIST
+export function MY_COMPANY_CONTACT_LIST(companyId,code) {
+    // debugger
+    return request({
+        url: '/api/api/my_contact_list',
+        method: 'get',
+        params: {
+            'companyId':companyId,
+        }
+    })
+}
