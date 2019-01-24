@@ -19,7 +19,7 @@
                         :filter-node-method="filterNode"
                         ref="tree"
                         :expand-on-click-node="true">
-                        <span :ref="'node'+data.id" class="custom-tree-node" slot-scope="{ node, data }">
+                        <span  ref="nodeK" class="custom-tree-node" slot-scope="{ node, data }">
                         <span  :class="['node-text', {active: data.id===selectComp.id}]">{{ node.label }}</span>
                         <el-dropdown  @command="handleCommand">
 
@@ -136,7 +136,7 @@
                             this.selectComp = {
                                 id:res.data.data.id
                             }
-                            console.log('this.refs：', this.$refs)
+                            console.log('this.refs：', this.$refs.tree)
                         }
                         let temp = []
                         temp.push(res.data.data)
@@ -149,6 +149,14 @@
             },
             handleCommand(command) {
                 console.log('handleCommand', command)
+                if(this.selectComp.primaryId!==1){
+                    this.$message({
+                        showClose: true,
+                        message: '无该公司权限',
+                        type: 'warning'
+                    });
+                    return
+                }
                 if (command==2){
                     ENABLE_CREATE_SUB_COMPANY(this.selectComp.id).then(res => {
                         console.log('请求ENABLE_CREATE_SUB_COMPANY：', res.data.data)
