@@ -579,6 +579,10 @@ export default {
     __queryDataAfter(datas) {
       return datas;
     },
+    //name：sjz  不知道怎么删了  加上  注：不是我干的
+    queryDataBefore(datas) {
+      return datas;
+    },
     /**
      * 设置模型数据
      */

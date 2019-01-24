@@ -31,11 +31,11 @@
                 <div class="input-refresh" ref="elememt">
                     <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item label="登录名">
-                            <el-input v-model="searchForm.loginName" placeholder="登录名" disabled clearable ></el-input>
+                            <el-input v-model="searchForm.userName" placeholder="登录名" disabled clearable ></el-input>
                         </el-form-item>
 
                         <el-form-item label="真实姓名">
-                            <el-input v-model="searchForm.userName" placeholder="真实姓名" clearable></el-input>
+                            <el-input v-model="searchForm.trueName" placeholder="真实姓名" clearable></el-input>
                         </el-form-item>
 
                         <el-form-item label="角色">
@@ -65,8 +65,8 @@
         stripe
         >
             <el-table-column type="index" width="60" label="序列" align="center"></el-table-column>
-            <el-table-column prop="loginname" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="userName" label="真实姓名" width="150" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="userName" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="trueName" label="真实姓名" width="150" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="roleNames" label="角色" width="80" header-align="center" align="center" sortable>
                 <!-- <template slot-scope="scope">
                     <span v-if="scope.row.roleNames==='1'">管理员</span>
@@ -74,7 +74,7 @@
                 </template> -->
             </el-table-column>
             <el-table-column prop="belongCompanyName" label="所属公司" width="180" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="ip" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="ipAdress" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="residencetime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="browser" label="浏览器" width="100" header-align="center" align="center" sortable></el-table-column>
@@ -121,7 +121,7 @@ export default {
             isSearchForm: false,
             // 表单输入默认为空
             searchForm:{ 
-                loginName: "",
+                trueName: "",
                 userName: "",
                 roleNames: ""
             },
@@ -191,13 +191,14 @@ export default {
          * 获取的要渲染的数据  发送请求
          */
         requestDataRendering(currentPage,pagesize){
+            debugger
             let me = this;
             // item：传的参数
             let item = {
-                "keyWord": me.searchForm.userName,
+                "keyWord": me.searchForm.trueName,
                 "page": currentPage,
                 "size": pagesize,
-                "userId": 252
+                "userId": me.$store.getters.user.user.id
             };
             // 请求
             onlineRequest(item).then(res => {
@@ -229,7 +230,7 @@ export default {
         handleDelete(){
             // debugger
             let me = this;
-            me.searchForm.loginName = '';
+            me.searchForm.trueName = '';
             me.searchForm.userName = '';
             me.searchForm.roleNames = '';
             me.isSearchForm = false;
@@ -271,9 +272,9 @@ export default {
         handleRefresh(){
             let me =this;
             //初始化表单用户名为空
-            me.searchForm.loginName = '';
-            //初始化表单真名为空
             me.searchForm.userName = '';
+            //初始化表单真名为空
+            me.searchForm.trueName = '';
             //初始化角色为空  前提有值的情况下才生效
             if(me.searchForm.roleNames){me.searchForm.roleNames = '';}
             //初始化表单是否为空 false 默认为空
