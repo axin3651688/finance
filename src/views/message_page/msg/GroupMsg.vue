@@ -193,7 +193,7 @@ export default {
   },
   watch: {
     groupId(val) {
-      debugger
+      // debugger
       this.getInfo()
       this.getGroupMsgList()
     },
@@ -286,7 +286,7 @@ export default {
       let sendData = {
         code: 1101, // 1100:单聊 1101:群聊
         data: {
-          content: sendText.trim(),
+          content: sendText,
           senderId: this.loginUserId,
           receiverId: this.groupId,
           type: 1,
@@ -409,7 +409,7 @@ export default {
 
     // 群id查询群信息
     getInfo() {
-      debugger
+      // debugger
       if (!this.groupId) return
       GROUP_INFO(this.groupId).then(res => {
         console.log('群id查询群信息:', res.data.data)

@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import emotion_sprites from '@a/message/data/emotion_sprites.json'
 import {UPLOAD_FILE} from '~api/message.js'
 
@@ -53,6 +54,12 @@ export default {
       sendText: '',
       showFacePop: false, // 是否弹出聊天表情
       EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
+    }
+  },
+  computed: {
+    ...mapGetters(['user']),
+    loginUserId() {
+      return this.user.user.id
     }
   },
   methods: {
@@ -87,14 +94,14 @@ export default {
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框, 隐藏表情弹窗
     addFaceToInput(face) {
-      this.hideFaceIcon()
       this.sendText += face
       this.$refs.textarea.focus()
+      this.showFacePop = false
     },
 
     // 向父组件触发发送消息
-    sendMsg() {
-      this.$emit('sendMsg', this.sendText)
+    sendMsg(fileData) {
+      this.$emit('sendMsg', this.sendText.trim(), fileData)
       this.sendText = ''
     },
 

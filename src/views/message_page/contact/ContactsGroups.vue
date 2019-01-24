@@ -216,7 +216,7 @@ export default {
 
     // 开始群聊天
     chatWithGroup(rightInfo) {
-      debugger
+      // debugger
       let sessionItem = {}
       let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId
       sessionItem['miniType'] = 1101
