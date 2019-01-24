@@ -86,8 +86,9 @@ export default {
     }
   },
   created() {
+    debugger
     this.upData(this.item);
-    // console.log(this.heights)
+    console.log(this.item)
     // console.log(this.heights-88)
     // console.log(this.upData(this.item))
     //debugger;
@@ -262,7 +263,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-      // debugger
+      debugger
       if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
         return this.item.onCellClick(row, column, cell, event, this);
       }

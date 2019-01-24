@@ -377,12 +377,12 @@ import {report} from '@/api/cube.js'
         // 控制填报
         // if(this.show==false){
           let arr = this.settings.columns.slice(6,11)
-          console.log(arr)
+          // console.log(arr)
           arr.forEach(item=>{
 
             // item['editor'] = false
           })
-          console.log(arr)
+          // console.log(arr)
           // console.log(this.settings.columns)
         // }
 
@@ -398,7 +398,7 @@ import {report} from '@/api/cube.js'
         swapHotData() {
           // 点击获取一列
           let a = this.$refs.hotTableComponent.hotInstance.getDataAtCol(0)
-          console.log(a)
+          // console.log(a)
       //   let a = this.$refs.hotTableComponent.hotInstance.getDataAtCol(1);
       //  let b = this.$refs.hotTableComponent.hotInstance.alter('insert_col',2)
       //  console.log(b)
@@ -418,8 +418,9 @@ import {report} from '@/api/cube.js'
                       ON A.DIM_CUSUPPLIER=B.SCODE`
             }
             report(item).then((res)=>{
+              console.log(res)
                  this.settings.data = res.data.data
-                 console.log(this.settings.data)
+                //  console.log(this.settings.data)
                 //  var a = this.settings.data.slice(6,11)
                 //  console.log("a",a)
                   this.settings.minRows = this.settings.data.length+5
@@ -493,10 +494,10 @@ import {report} from '@/api/cube.js'
             let change = changes[0];
             let record = this.dataDict.filter(item=> item.text === change[3])[0];
             // get edit record
-            console.info(this.$children[0]);
+            // console.info(this.$children[0]);
             let editRecord = this.$children[0]._data.hotInstance.getData()[change[0]];
             let sendData = {nid:editRecord[0],field:change[1],value:record.id};
-            console.log("亲们，去保存这个数据吧：~_~",sendData);
+            // console.log("亲们，去保存这个数据吧：~_~",sendData);
             localStorage.setItem("down",JSON.stringify(sendData))
 
           }

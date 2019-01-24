@@ -80,12 +80,12 @@
       }
     },
     created(){
-        this.axios.get('/apis/Configtest1').then((response) => {
+        this.axios.get('/api/Configtest1').then((response) => {
             this.data = response.data.rows
 
         })
 
-        this.axios.get('/apis/Configtest2').then((response) => {
+        this.axios.get('/api/Configtest2').then((response) => {
             console.log(response)
             this.tableData = response.data.rows
         })

@@ -30,6 +30,8 @@ export default {
 
           } else if (xtype === "form" || xtype === "tree-grid") {
             this.tableEventHandler(listener)
+          }else if (xtype === "column" || xtype === "HandsonTable") {
+            this.tableEventHandler(listener)
           }
         } else {
           console.error("没有为事件对象配制type属性，" + me.item.text);

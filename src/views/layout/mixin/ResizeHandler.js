@@ -3,7 +3,7 @@ import store from '@/store'
 const { body } = document
 // const WIDTH = 1024
 // 小于768的为手机
-const WIDTH = 768
+const WIDTH = 930
 const RATIO = 3
 
 export default {

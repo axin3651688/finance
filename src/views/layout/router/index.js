@@ -127,23 +127,24 @@ const router = new Router({
           component: () =>
             import('@v/test/eleTreeTable'),
         }, 
-        {// sjz 专用测试
-          path: '/testDebug',
-          name: 'testDebug',
-          component: () =>
-            import('@v/test/testDebug'),
-        },{// sjz 专用测试
-          path: '/treeTable',
-          name: 'treeTable',
-          component: () =>
-            import('@c/treeTable/treeGrid'),
-        },
-        {// sjz 专用测试(用户管理)
-          path: '/com',
-          name: 'com',
-          component: () =>
-            import('@c/treeTable/com'),
-        },
+        // {// sjz 专用测试
+        //   path: '/testDebug',
+        //   name: 'testDebug',
+        //   component: () =>
+        //     import('@v/test/testDebug'),
+        // },
+        // {// sjz 专用测试
+        //   path: '/treeTable',
+        //   name: 'treeTable',
+        //   component: () =>
+        //     import('@c/treeTable/treeGrid'),
+        // },
+        // {// sjz 专用测试(用户管理)
+        //   path: '/com',
+        //   name: 'com',
+        //   component: () =>
+        //     import('@c/treeTable/com'),
+        // },
         {// sjz 专用测试(日志管理)
           path: '/log',
           name: 'log',
@@ -186,8 +187,18 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/a.vue')
         },
-        
-
+        {
+          path: '/handsontable',
+          name: 't',
+          component: () =>
+            import('@v/intelligenceReport/Handtable.vue')
+        },
+        {
+          path: '/i',
+          name: 'i',
+          component: () =>
+            import('@c/Itable')
+        },
         {
           path: '/Fill',
           name: 'Fill',

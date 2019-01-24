@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
+    <el-input placeholder="输入关键字进行过滤" v-model="filterText" suffix-icon="el-icon-search"></el-input>
     <el-tree
       :props="props"
       :load="loadNode"
@@ -31,6 +31,7 @@ export default {
     };
   },
   created() {
+    debugger
     this.firstcompany = this.$store.getters.user.company;
     this.id = this.firstcompany.customerId;
     this.licenseId = this.firstcompany.licenseId;
@@ -50,7 +51,7 @@ export default {
   methods: {
     filterNode(value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data.text.indexOf(value) !== -1;
     },
 
     // 异步树节点点击事件
@@ -60,6 +61,7 @@ export default {
     },
     // 异步树叶子节点懒加载逻辑
     loadNode(node, resolve) {
+      debugger
       // 一级节点处理
       console.log(node);
 
@@ -105,3 +107,4 @@ export default {
   }
 };
 </script>
+
