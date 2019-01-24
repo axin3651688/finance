@@ -39,6 +39,7 @@
         <el-table class="main_table"
                   :row-style="showRow"
                   v-bind="$attrs"
+                  border
                   v-show="formatData.length>0"
                   :header-cell-style="getHeaderClass"
                   style="width: 100%"
@@ -50,24 +51,23 @@
                     @fetchData="childEmit"
                     label="      部门名称"
                     prop="text"
-                    width="190"
                     :tableData="formatData"
             />
 
 
             <el-table-column
-                    label="级别" width="190" align="center"
+                    label="级别" min-width="10%" align="center"
                     :formatter="formatlevel">
             </el-table-column>
 
             <el-table-column
-                    label="负责人" width="190" align="center"
+                    label="负责人" min-width="10%"" align="center"
                     prop="ownerName">
             </el-table-column>
 
 
             <el-table-column
-                    label="操作" min-width="55%" align="center"
+                    label="操作" min-width="40%" align="center"
             >
 
                 <div slot-scope="scope" class="template_edit">

@@ -1,6 +1,6 @@
 
   <template >
-  <el-table-column :prop="prop" :label="label" :width="width"  align="left" fixed="left">
+  <el-table-column :prop="prop" :label="label" min-width="10%"  align="left" fixed="left">
     <template slot-scope="scope">
       <div
         class="tree-ctrl"
@@ -8,13 +8,13 @@
         @click="toggleExpanded(scope)"
       >
         <span v-if="iconShow(0,scope.row) ">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-          <i v-else class="el-icon-minus"></i>
-          <i class="t-icon"></i>
+          <i v-if="!scope.row._expanded" class="el-icon-caret-right"></i>
+          <i v-else class="el-icon-caret-bottom"></i>
+          <!--<i class="t-icon"></i>-->
           {{scope.row[prop]}}
         </span>
         <span v-else class="nochild">
-          <i class="leaf-icon"></i>
+          <!--<i class="leaf-icon"></i>-->
           {{scope.row[prop]}}
         </span>
       </div>
