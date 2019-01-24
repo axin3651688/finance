@@ -19,16 +19,7 @@
       <div class="tool-icon link-icon"></div>
       <!--<div class="send-btn" @click="sendMsg">发 送</div>-->
       <transition name="el-zoom-in-bottom">
-        <div v-show="showFacePop" class="face-pop">
-          <ul>
-            <li v-for="face in EMOTION_SPRITES" :key="face.value">
-              <div :class="['face-img', face.className]"
-                   @click="addFaceToInput(face.value)"
-                   :title="face.value"
-              ></div>
-            </li>
-          </ul>
-        </div>
+        <face-icon v-if="showFacePop" :showFacePop.sync="showFacePop" @addFaceToInput="handleAddFaceToInput"></face-icon>
       </transition>
     </div>
     <div class="input-wrap">
@@ -36,7 +27,7 @@
                   placeholder="请输入文字，按enter建发送信息"
                   v-model="sendText"
                   ref="textarea"
-                  @keyup.enter.prevent="sendMsg()"
+                  @keyup.enter.prevent="sendMsg(sendText)"
         ></textarea>
     </div>
   </div>
@@ -44,16 +35,17 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import emotion_sprites from '@a/message/data/emotion_sprites.json'
 import {UPLOAD_FILE} from '~api/message.js'
 
 export default {
   name: "MessageSender",
+  components: {
+    FaceIcon: () => import('./cpn/FaceIcon.vue')
+  },
   data() {
     return {
       sendText: '',
       showFacePop: false, // 是否弹出聊天表情
-      EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
     }
   },
   computed: {
@@ -63,14 +55,13 @@ export default {
     }
   },
   methods: {
-
     // 处理文件上传
     handleAvatarSuccess(res, file) {
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
       console.log('要上传的文件信息：', file)
-      debugger
+      // debugger
       let fd = new FormData()
       fd.append('file', file)
       fd.append('userId', this.loginUserId)
@@ -80,11 +71,10 @@ export default {
       return true
     },
     submitUpload(fd) {
-      debugger
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
           console.log('上传群文件res', res)
-          debugger
+          // debugger
           if (res.data.code === 200 && res.data.data) {
             this.sendMsg('', res.data.data)
           }
@@ -93,37 +83,18 @@ export default {
     },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框, 隐藏表情弹窗
-    addFaceToInput(face) {
+    handleAddFaceToInput(face) {
+      // debugger
       this.sendText += face
-      this.$refs.textarea.focus()
       this.showFacePop = false
+      this.$refs.textarea.focus()
     },
 
     // 向父组件触发发送消息
-    sendMsg(fileData) {
-      this.$emit('sendMsg', this.sendText.trim(), fileData)
+    sendMsg(sendText,fileData) {
+      this.$emit('sendMsg', sendText.trim(), fileData)
       this.sendText = ''
-    },
-
-    // 当点击的不是表情，则隐藏表情弹框
-    hideFaceIcon(e) {
-      // debugger;
-      let elem = e.target || e.srcElement
-      while (elem) { // 循环判断至跟节点，防止点击的是div子元素
-        if (elem.id && elem.id === 'face-icon') {
-          return
-        }// 如果还有别的div不想点击，就加else if判断
-        elem = elem.parentNode
-      }
-      this.showFacePop = false
     }
-  },
-  mounted() {
-    // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', this.hideFaceIcon)
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.hideFaceIcon)
   }
 }
 </script>

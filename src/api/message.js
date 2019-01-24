@@ -1,5 +1,6 @@
 /**
- * get请求用params，post用data
+ * 约定：get请求用params，post用data
+ * 约定：api函数名同一大写
  */
 import request from 'utils/http'
 
@@ -8,7 +9,6 @@ import request from 'utils/http'
 export function UPLOAD_FILE(data) {
   // debugger;
   return request({
-    // url: proxy.file + '/api/file/upload_file',
     url: '/file/upload_file',
     method: 'post',
     data: data
@@ -20,7 +20,6 @@ export function UPLOAD_FILE(data) {
 export function MY_SESSION(userId) {
   // debugger
   return request({
-    // url: proxy.file + '/api/my_session',
     url: '/api/api/my_session',
     method: 'get',
     params: {
@@ -47,19 +46,11 @@ export function FIND_SINGLE_MSG(senderId, receiverId) {
 
 // 获取群聊聊消息
 export function findGroupMsg(data) {
-  // console.log(" api findGroupMsg");
   // debugger
   return request({
     url: '/api/api/find_group_msg',
-    // url: $api + '/api/find_group_msg',
     method: 'post',
     data: data
-    // data: {
-    //   page: 1,
-    //   groupId: 4,
-    //   userId: 225,
-    //   size: 20
-    // }
   })
 }
 

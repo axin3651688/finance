@@ -185,7 +185,6 @@ export default {
       }
 
       // console.log('要添加到聊天窗口的数据是：', data);
-      debugger
       this.singleMsgList.push(data)
       this.$nextTick(() => {
         this.chatWindowScrollToBottom()

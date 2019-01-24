@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/theomessin/vue-qriously
 import {directive} from 'namedavatar/src/vue' // 填充默认头像 https://github.com/joaner/namedavatar
 import '@s/message/normalize.scss' // 统一浏览器样式
+import '@s/message/emotion_sprites.scss' // 全局加载聊天表情样式
 import Bus from "@v/common/bus.js"
 
 Vue.use(Bus)

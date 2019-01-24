@@ -300,8 +300,6 @@ export default {
         sendData.data.content = fileData.text
         sendData.data.fileId = fileData.id
         for (let item of FILE_TYPE) {
-          debugger
-          console.log(item)
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type
             pushData.type = item.type
