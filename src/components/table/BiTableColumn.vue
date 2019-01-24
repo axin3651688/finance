@@ -1,7 +1,7 @@
 <template>
   <!--TreeItem组件单独针对树表前面折叠与展开列-->
   <TreeItem
-    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid' || tableData.xtype==='JtreeGrid')"
+    v-if="col.isTree"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -31,7 +31,6 @@
     :width="col.width"
     type="index"
   />
-  <!-- :align="col.align||'center'" -->
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
   <el-table-column
     v-else-if="col.type === 'number' "
