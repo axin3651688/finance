@@ -113,12 +113,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "@s/message/emotion_sprites.scss";
-</style>
-
-
 <style lang="scss" scoped>
   @import "@s/message/index.scss";
   @import "@s/message/variables.scss";
@@ -144,6 +138,7 @@ export default {
 
     .content {
       padding: 0 12px;
+
       .content-bubble {
         position: relative;
         box-sizing: border-box;
@@ -155,6 +150,7 @@ export default {
         background-color: $colorThemePrimary;
         border-radius: 6px;
         color: $colorTextChatContent;
+
         &:before {
           content: " ";
           position: absolute;
@@ -164,6 +160,7 @@ export default {
           border-right-color: $colorThemePrimary;
         }
       }
+
       .video-wrap {
         min-width: 340px;
         min-height: 100px;
@@ -248,6 +245,7 @@ export default {
 
   .message-box.is-me {
     flex-direction: row-reverse;
+
     .content-bubble {
       &:before {
         right: auto;

@@ -168,7 +168,6 @@ export default {
             this.ActionSetMessageStore({groupInfo: groupInfo,})
             this.rightUsers = groupInfo['users']
             this.rightInfo = groupInfo['info']
-            debugger
             this.requestedGroups[groupId]['users'] = groupInfo['users']
             this.requestedGroups[groupId]['info'] = groupInfo['info']
           }
@@ -217,7 +216,7 @@ export default {
 
     // 开始群聊天
     chatWithGroup(rightInfo) {
-      debugger
+      // debugger
       let sessionItem = {}
       let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId
       sessionItem['miniType'] = 1101

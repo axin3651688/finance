@@ -77,10 +77,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "@s/message/emotion_sprites.scss";
-</style>
 <style lang="scss" scoped>
   @import "~@s/message/index.scss";
 
