@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@handsontable/vue": "^3.1.0",
+    "@riophae/vue-treeselect": "^0.0.38",
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
     "file-saver": "^2.0.0",
