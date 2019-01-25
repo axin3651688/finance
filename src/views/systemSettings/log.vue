@@ -139,16 +139,21 @@ export default {
         }
     },
     created(){
-        // debugger
+        debugger
         let me =this;
-        // 得到表单的高度并赋值
-        me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-        // 计算当前页面的高度 得出表格的高度
-        me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+        if(document.getElementsByClassName('input-refresh').length>0){
+            // 得到表单的高度并赋值
+            me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+            // 计算当前页面的高度 得出表格的高度
+            me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+        } else {
+            me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+        }   
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
     mounted(){
+
         const me = this
         // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
         window.onresize = () => {

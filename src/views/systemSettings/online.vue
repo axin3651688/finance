@@ -61,8 +61,10 @@
         :data="tableData"
         style="width: 100%"
         :height="heights"
+        cell-style="padding:0"
         border
         stripe
+        class="elTable"
         >
             <el-table-column type="index" width="60" label="序列" align="center"></el-table-column>
             <el-table-column prop="userName" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
@@ -144,10 +146,14 @@ export default {
     created(){
         debugger
         let me = this;
-        // 得到表单的高度并赋值
-        me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-        // 计算当前页面的高度 得出表格的高度
-        me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+        if(document.getElementsByClassName('input-refresh').length > 0){
+            // 得到表单的高度并赋值
+            me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+            // 计算当前页面的高度 得出表格的高度
+            me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+        }else{
+            me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
+        }
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
@@ -359,5 +365,4 @@ export default {
     margin-bottom: 10px;
     margin-top: 10px;
 }
-
 </style>

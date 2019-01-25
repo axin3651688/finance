@@ -15,7 +15,7 @@
     :data.sync="formatData"
     border
     stripe
-    :height="item.height || heights-170"
+    :height="heights"
     :cell-style="cellStyle"
     @row-click="onRowClick"
     :style="item.style"
@@ -41,7 +41,9 @@ export default {
   },
   data() {
     return {
-      heights: document.body.offsetHeight,
+      // sjz 加的  自适应需要
+      heights: 0,
+      offsetHeight: document.body.offsetHeight,
       list: [],
       dialogVisible: false,
       selectedOptions: [],
@@ -50,7 +52,7 @@ export default {
   },
   name: "STreeGrid",
   props: ["item"],
-    created() {
+  created() {
     debugger;
     console.log("a", this.item);
     // this.item.rows = this.item.config.rows
@@ -58,10 +60,43 @@ export default {
 
     this.array(this.item.datas);
     this.convertData();
+    //sjz 加的  
+    // 计算当前页面的高度 得出表格的高度
+    this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
   },
   mounted() {
     this.convertData();
     // this.item.options = this.item.items[0].columns
+    // sjz 加的 
+    const me = this
+    // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
+    window.onresize = () => {
+        debugger
+        return (() => {
+            window.offsetHeight = document.body.offsetHeight;
+            me.offsetHeight = window.offsetHeight;
+        })()
+    }
+  },
+  watch:{
+    // sjz 加的
+    // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
+    offsetHeight(val){
+        debugger
+        if(!this.timer){
+            debugger
+            // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
+            this.offsetHeight = val
+            this.timer = true
+            let me = this
+            setTimeout(function(){
+                // 打印offsetHeight变化的值 
+                me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                console.log(me.offsetHeight)
+                me.timer = false
+            },400)
+        }
+    }
   },
   __computed: {
     // 格式化数据源
