@@ -38,92 +38,92 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import MessageItem from '@c/message/message_item/MessageItem.vue'
-import MessageSender from '@mc/message_sender/MessageSender.vue'
-import FILE_TYPE from '@a/message/data/file_type.js' // 可以上传的文件列表
-import {FIND_SINGLE_MSG} from '~api/message.js'
+import {mapGetters}      from 'vuex';
+import MessageItem       from '@c/message/message_item/MessageItem.vue';
+import MessageSender     from '@mc/message_sender/MessageSender.vue';
+import FILE_TYPE         from '@a/message/data/file_type.js'; //可以上传的文件列表
+import {FIND_SINGLE_MSG} from '~api/message.js';
 
 export default {
   name: 'SingleMsg',
   components: {MessageItem, MessageSender},
   data() {
     return {
-      msgPaddingList: [],                     // 待发送消息队列
-      activeBtn: 'message',                   // 聊天（消息/文件）默认显示什么
-      receiverName: '',                       // 聊天对象名称
-      receiverAvatar: '',                     // 聊天对象头像
-      singleMsgList: [],                      // 单聊消息队列
-    }
+      msgPaddingList: [],                     //待发送消息队列
+      activeBtn: 'message',                   //聊天（消息/文件）默认显示什么
+      receiverName: '',                       //聊天对象名称
+      receiverAvatar: '',                     //聊天对象头像
+      singleMsgList: []                      //单聊消息队列
+    };
   },
   computed: {
     ...mapGetters(['user', 'messageStore', 'targetId']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     },
     receiverId() {
-      return this.messageStore.sessionActiveItem.id
+      return this.messageStore.sessionActiveItem.id;
     },
-    newServerMsg() { // 服务器推送的消息
-      return this.messageStore.newServerMsg
+    newServerMsg() { //服务器推送的消息
+      return this.messageStore.newServerMsg;
     },
-    serverAck() { // 服务器推送的 ack回执
-      return this.messageStore.serverAck
+    serverAck() { //服务器推送的 ack回执
+      return this.messageStore.serverAck;
     }
   },
   watch: {
     receiverId(val) {
-      // debugger;
-      this.findSingleMsg()
+      //debugger;
+      this.findSingleMsg();
     },
 
     //监听服务器推送的消息
     newServerMsg(val) {
-      debugger
-      if (val.code !== 1100 || val.data.senderId !== this.receiverId) return false // 如果不是单聊消息或接受对象不是当前窗口就不处理
-      console.log('监听到服务器推送：', val)
-      let item = val.data
-      item['miniType'] = val.code
-      this.singleMsgList.push(item)
-      this.$nextTick(() => { // 把聊天窗口滚动到最底部
-        this.chatWindowScrollToBottom()
-      })
+      debugger;
+      if (val.code !== 1100 || val.data.senderId !== this.receiverId) return false; //如果不是单聊消息或接受对象不是当前窗口就不处理
+      console.log('监听到服务器推送：', val);
+      let item = val.data;
+      item['miniType'] = val.code;
+      this.singleMsgList.push(item);
+      this.$nextTick(() => { //把聊天窗口滚动到最底部
+        this.chatWindowScrollToBottom();
+      });
     },
 
     /**
      * 监听到 ack 后更新消息
      */
     serverAck(val) {
-      // console.log('服务器ACK：', val);
-      debugger
-      socket.send(JSON.stringify(val))
+      //console.log('服务器ACK：', val);
+      debugger;
+      socket.send(JSON.stringify(val));
     }
 
   },
   methods: {
 
-    // 聊天选择文件
+    //聊天选择文件
     selectFile() {
-      this.$refs['selectFile'].click()
+      this.$refs['selectFile'].click();
     },
 
-    // 聊天窗口（消息、文件）切换
+    //聊天窗口（消息、文件）切换
     changeMessage(type) {
       if (this.activeBtn !== type) {
-        this.activeBtn = type
+        this.activeBtn = type;
       }
     },
 
-    // 发送消息
+    //发送消息
     handleSendMsg(sendText, fileData) {
-      debugger
-      console.log('要发送的文件：', fileData)
+      debugger;
+      console.log('要发送的文件：', fileData);
       let pushData = {
         type: 1,
         data: sendText
-      }
+      };
       let sendData = {
-        code: 1100, // 1100:单聊 1101:群聊
+        code: 1100, //1100:单聊 1101:群聊
         data: {
           content: sendText.trim(),
           receiverId: this.receiverId,
@@ -132,41 +132,41 @@ export default {
           fileId: null,
           id: 'cnbift' + new Date().getTime() + new Date().getTime(),
           sendTime: new Date().getTime(),
-          seq: 0,
-        },
-      }
+          seq: 0
+        }
+      };
 
-      if (fileData) { // 如果是发文件，设置文件type，和文件的data
-        sendData.data.content = fileData.text
-        sendData.data.fileId = fileData.id
+      if (fileData) { //如果是发文件，设置文件type，和文件的data
+        sendData.data.content = fileData.text;
+        sendData.data.fileId = fileData.id;
         for (let item of FILE_TYPE) {
-          debugger
-          console.log(item)
+          debugger;
+          console.log(item);
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
-            sendData.data.type = item.type
-            pushData.type = item.type
-            pushData.data = fileData
-            break
+            sendData.data.type = item.type;
+            pushData.type = item.type;
+            pushData.data = fileData;
+            break;
           } else {
-            sendData.data.type = 3 // 暂时处理，没有匹配到都当文件处理
+            sendData.data.type = 3; //暂时处理，没有匹配到都当文件处理
           }
         }
       }
 
-      console.log('要发送的内容是：', sendData)
+      console.log('要发送的内容是：', sendData);
       if (!sendData.data.content) {
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
           showClose: true
-        })
-        return
+        });
+        return;
       }
-      socket.deliver(sendData)
-      this.addMsgToWindow(pushData) // 本地处理把消息推到聊天窗口显示
+      socket.deliver(sendData);
+      this.addMsgToWindow(pushData); //本地处理把消息推到聊天窗口显示
     },
 
-    // 把发送的内容显示到聊天窗口
+    //把发送的内容显示到聊天窗口
     addMsgToWindow(pushData) {
       let data = {
         avatar: this.user.user.avatar,
@@ -175,54 +175,54 @@ export default {
         sendTime: new Date().getTime(),
         type: 1,
         senderId: this.loginUserId
-      }
+      };
       if (pushData.type === 1) {
-        data.content = pushData.data
+        data.content = pushData.data;
       } else {
-        data.content = pushData.data.text
-        data.file = pushData.data
-        data.type = pushData.type
+        data.content = pushData.data.text;
+        data.file = pushData.data;
+        data.type = pushData.type;
       }
 
-      // console.log('要添加到聊天窗口的数据是：', data);
-      this.singleMsgList.push(data)
+      //console.log('要添加到聊天窗口的数据是：', data);
+      this.singleMsgList.push(data);
       this.$nextTick(() => {
-        this.chatWindowScrollToBottom()
-      })
+        this.chatWindowScrollToBottom();
+      });
     },
 
-    // 把聊天窗口滚动到最底部
+    //把聊天窗口滚动到最底部
     chatWindowScrollToBottom() {
-      let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
-      // console.log('找滚动窗口：', chatWindow);
-      chatWindow.scrollTop = chatWindow.scrollHeight
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
+      //console.log('找滚动窗口：', chatWindow);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
     findSingleMsg() {
-      // debugger
-      // ajax请求获取单聊消息内容
+      //debugger
+      //ajax请求获取单聊消息内容
       FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
         .then(res => {
-          console.log('获取单聊信息then：', res)
-          res = res.data
+          console.log('获取单聊信息then：', res);
+          res = res.data;
           if (res.code === 200 && res.data) {
-            this.singleMsgList = res.data.data.reverse()
-            // 消息拿到后 把窗口内容滚到到底部
+            this.singleMsgList = res.data.data.reverse();
+            //消息拿到后 把窗口内容滚到到底部
             this.$nextTick(() => {
-              this.chatWindowScrollToBottom()
-            })
+              this.chatWindowScrollToBottom();
+            });
           }
         }).catch(err => {
-        console.log('获取单聊信息catch：', err)
-      })
+          console.log('获取单聊信息catch：', err);
+        });
     }
 
   },
   mounted() {
-    // console.log('文件类型：', FILE_TYPE);
-    this.findSingleMsg() // ajax请求获取单聊消息内容
+    //console.log('文件类型：', FILE_TYPE);
+    this.findSingleMsg(); //ajax请求获取单聊消息内容
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -347,4 +347,3 @@ export default {
     }
   }
 </style>
-

@@ -19,7 +19,7 @@ import {mapGetters, mapActions} from 'vuex';
 import {MY_SESSION} from '~api/message.js';
 
 export default {
-  name: "MessagePage",
+  name: 'MessagePage',
   components: {
     TopBar: () => import('./layout/TopBar'),
     SiderBar: () => import('./layout/SiderBar')
@@ -36,13 +36,13 @@ export default {
      * 获取session
      */
     getSession() {
-      // debugger;
+      //debugger;
       MY_SESSION(this.loginUserId)
         .then(res => {
           res = res.data;
           if (res.code === 200 && res.data) {
             console.log('message左边栏====', res.data, '===message左边栏');
-            this._initSessionBar(res.data); // 初始化消息左边栏
+            this._initSessionBar(res.data); //初始化消息左边栏
           } else {
             this.$message({
               type: 'error',
@@ -60,13 +60,13 @@ export default {
      * 初始化session边栏, 并放到vuex中
      */
     _initSessionBar(sessionList) {
-      // debugger;
-      let session = [];         // 处理过后的session队列
+      //debugger;
+      let session = [];         //处理过后的session队列
       sessionList.forEach(item => {
         let sessionItem = {};
         let targetId = `${item.miniType}_${item.senderId}_${item.receiverId}`;
         sessionItem['miniType'] = item.miniType;
-        sessionItem['targetId'] = targetId; // 给每个item加一个targetId 作为唯一标识
+        sessionItem['targetId'] = targetId; //给每个item加一个targetId 作为唯一标识
         sessionItem['id'] = item.receiverId;
         sessionItem['name'] = item.name || item.otherName;
         sessionItem['count'] = item.count;
@@ -78,13 +78,13 @@ export default {
       });
       this.ActionSetMessageStore({
         sessionList: session,
-        sessionActiveItem: session[0], // 默认选中第一条
-        miniType: session[0]['miniType'] // 默认第一条的miniType
+        sessionActiveItem: session[0], //默认选中第一条
+        miniType: session[0]['miniType'] //默认第一条的miniType
       });
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',
-        data: session[0] // // 默认选中第一条, 清空消息计数
+        data: session[0] //// 默认选中第一条, 清空消息计数
       });
       console.log('session消息栏处理后:', session);
     }

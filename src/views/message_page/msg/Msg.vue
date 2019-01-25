@@ -22,33 +22,33 @@
 </template>
 
 <script>
-import Session from '../layout/Session.vue'
-import {mapGetters, mapActions} from 'vuex'
+import Session from '../layout/Session.vue';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'Message',
   components: {
     Session,
-    Todos: () => import('./Todos'),                 // 代办事项
-    Analysis: () => import('./Analysis'),           // 分析助手
-    SingleMsg: () => import('./SingleMsg'),         // 单聊消息
-    NewFriends: () => import('./NewFriends'),       // 新朋友
-    GroupHelper: () => import('./GroupHelper'),     // 群助手
-    GroupMsg: () => import('./GroupMsg')            // 群助手
+    Todos: () => import('./Todos'),                 //代办事项
+    Analysis: () => import('./Analysis'),           //分析助手
+    SingleMsg: () => import('./SingleMsg'),         //单聊消息
+    NewFriends: () => import('./NewFriends'),       //新朋友
+    GroupHelper: () => import('./GroupHelper'),     //群助手
+    GroupMsg: () => import('./GroupMsg')            //群助手
   },
   computed: {
     ...mapGetters(['messageStore']),
     miniType() {
-      return this.messageStore.miniType
+      return this.messageStore.miniType;
     }
   },
   methods: {
-    ...mapActions(['ActionSetMessageStore']),
+    ...mapActions(['ActionSetMessageStore'])
   },
   mounted() {
-    this.ActionSetMessageStore({routeName: '消息'})
+    this.ActionSetMessageStore({routeName: '消息'});
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
