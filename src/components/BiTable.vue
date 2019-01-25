@@ -95,9 +95,16 @@ export default {
                 this.offsetHeight = val
                 this.timer = true
                 let me = this
-                setTimeout(function(){
+                setTimeout(function(){  
+                  debugger                
                     // 打印offsetHeight变化的值 
-                    me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                    //me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                    if(me.item.stype == "table"){
+                      me.heights = document.body.offsetHeight - 40 - 64 - 15;
+                    }else{
+                      // 计算当前页面的高度 得出表格的高度
+                      me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                    }
                     console.log(me.offsetHeight)
                     me.timer = false
                 },400)
@@ -115,8 +122,12 @@ export default {
     debugger
     this.upData(this.item);
     console.log(this.item)
-    // 计算当前页面的高度 得出表格的高度
-    this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+    if(this.item.stype == "table"){
+      this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
+    }else{
+      // 计算当前页面的高度 得出表格的高度
+      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+    }  
     // console.log(this.heights-88)
     // console.log(this.upData(this.item))
     //debugger;

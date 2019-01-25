@@ -60,9 +60,14 @@ export default {
 
     this.array(this.item.datas);
     this.convertData();
-    //sjz 加的  
-    // 计算当前页面的高度 得出表格的高度
-    this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+    //sjz 加的 
+    if(this.item.stype == "tree"){ 
+      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 10;
+    }else{
+      // 计算当前页面的高度 得出表格的高度
+      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+    } 
+    
   },
   mounted() {
     this.convertData();
@@ -90,8 +95,12 @@ export default {
             this.timer = true
             let me = this
             setTimeout(function(){
-                // 打印offsetHeight变化的值 
-                me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                // 打印offsetHeight变化的值me.item.id=="zcfzbej" || me.item.id=="lrbej" || me.item.id=="xjllbej"
+                if(me.item.stype == "tree"){ 
+                  me.heights = document.body.offsetHeight - 40 - 64 - 22 - 10 ;
+                }else{
+                  me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40 ;
+                }
                 console.log(me.offsetHeight)
                 me.timer = false
             },400)

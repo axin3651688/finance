@@ -231,7 +231,7 @@
                             let row = vue.item.rows; 
                             for(let i=0; i<row.length; i++){
                                 if(row[i].children.length>0){
-                                    row[i]._expanded = true;
+                                    row[i]._expanded = false;
                                 }
                             }
                         }

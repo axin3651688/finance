@@ -9,6 +9,7 @@
         {
 			"xtype": "STreeGrid",
 			"id": "lrbej",
+			"stype": "tree",
 			"text": "利润表二级",
 			"weight": 24,
 			"style":{
