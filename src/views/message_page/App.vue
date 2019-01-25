@@ -59,8 +59,8 @@ export default {
       }
     },
     initSocket(authorization) {
-      let url = "ws://192.168.2.224:7006/socket.io/";
-      // let url = "ws://192.168.1.118:7006/socket.io/";
+      // let url = "ws://192.168.2.224:7006/socket.io/";
+      let url = "ws://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       } else {
@@ -101,7 +101,7 @@ export default {
     font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
     border: 1px solid #333333;
   }
 </style>

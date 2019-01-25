@@ -94,8 +94,8 @@ export default {
      * 监听到 ack 后更新消息
      */
     serverAck(val) {
-      // debugger;
       // console.log('服务器ACK：', val);
+      debugger
       socket.send(JSON.stringify(val))
     }
 

@@ -278,7 +278,7 @@ export default {
 
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMsg(sendText, fileData) {
-      // debugger
+      debugger
       let pushData = {
         type: 1,
         data: sendText
@@ -321,6 +321,7 @@ export default {
         return
       }
       socket.deliver(sendData)
+      this.addMsgToWindow(pushData) // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
@@ -330,7 +331,8 @@ export default {
         content: '',
         name: this.user.user.trueName,
         sendTime: new Date().getTime(),
-        type: 1
+        type: 1,
+        senderId: this.loginUserId
       }
       if (pushData.type === 1) {
         data.content = pushData.data

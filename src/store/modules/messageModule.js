@@ -2,7 +2,7 @@ const messageModule = {
   state: {
     messageStore: {
       sessionActiveItem: null, // session选中的item
-      sessionList: null, // session消息队列
+      sessionList: [], // session消息队列
       scanStatus: null, // 扫码登陆信息
       token: null, // socket连接后服务器发的令牌
       serverAck: null, // socket 消息回执
@@ -22,7 +22,7 @@ const messageModule = {
       if (dataObj instanceof Object) {
         commit('MutationSetMessageStore', dataObj)
       } else {
-        console.log('设置messageStore传入数据类型有误');
+        console.warn('设置messageStore传入数据类型有误');
         debugger;
       }
     },
@@ -33,7 +33,7 @@ const messageModule = {
       if (dataObj instanceof Object) {
         commit('MutationUpdateSessionList', dataObj)
       } else {
-        console.log('更新messageStore传入数据类型有误');
+        console.warn('更新messageStore传入数据类型有误');
         debugger;
       }
     }

@@ -48,11 +48,11 @@ export default {
               type: 'error',
               message: res.msg,
               showClose: true
-            })
+            });
           }
         })
         .catch(err => {
-          console.log('请求message：', err)
+          console.log('请求message：', err);
         });
     },
 
@@ -68,7 +68,7 @@ export default {
         sessionItem['miniType'] = item.miniType;
         sessionItem['targetId'] = targetId; // 给每个item加一个targetId 作为唯一标识
         sessionItem['id'] = item.receiverId;
-        sessionItem['name'] = item.name;
+        sessionItem['name'] = item.name || item.otherName;
         sessionItem['count'] = item.count;
         sessionItem['content'] = item.content;
         sessionItem['sendTime'] = item.sendTime;
@@ -86,11 +86,11 @@ export default {
         method: 'clearCount',
         data: session[0] // // 默认选中第一条, 清空消息计数
       });
-      console.log('session消息栏处理后:', session)
+      console.log('session消息栏处理后:', session);
     }
   },
   created() {
-    this.getSession()
+    this.getSession();
   }
 };
 </script>
@@ -112,7 +112,7 @@ export default {
     .right {
       flex: 1;
       height: 100%;
-      @include flex($direction:column);
+      @include flex($direction: column);
 
       .right-top {
         box-sizing: border-box;

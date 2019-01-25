@@ -92,6 +92,7 @@ export default {
 
     // 向父组件触发发送消息
     sendMsg(sendText,fileData) {
+      debugger
       this.$emit('sendMsg', sendText.trim(), fileData)
       this.sendText = ''
     }
