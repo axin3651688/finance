@@ -1,7 +1,7 @@
 <template>
   <div v-if="showMeluList.isShow" class="OpenMeluList">
     <!-- 遮罩 -->
-    <div class="cloak" v-if="cloak"></div>
+    <div class="cloak"></div>
     <!-- 侧边栏内容 -->
     <div class="content-wrap">
       <!-- 动画 -->
@@ -9,34 +9,25 @@
         <div class="content" v-clickoutside="closePop">
           <div class="content-message-top">
             <span>添加消息接收人</span>
-            <!-- <el-checkbox
+            <el-checkbox
               class="checkAll"
               :indeterminate="isIndeterminate"
               v-model="checkAll"
               @change="handleCheckAllChange"
-            >全选</el-checkbox>-->
+            >全选</el-checkbox>
             <span class="iconfont close" @click="closePop">&#xe60e;</span>
           </div>
           <!-- <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input> -->
           <el-checkbox-group
-            v-model="checkedCities"
-            @change="handleCheckedCitiesChange"
+            v-model="checkedItem"
+            @change="handleCheckedChange"
             class="content-middle"
+            v-for="i of listDatas"
+            :key="i.id"
           >
-            <el-checkbox
-              v-for="i of listDatas"
-              :key="i.id"
-              :label="i.trueName"
-              class="checkbox-item"
-            >
-              <div class="useravatar">
-                <div class="row">
-                  {{listDatas.trueName}}
-                  <img :src="i.avatar" alt class="img">
-                  <p>{{i.trueName}}</p>
-                </div>
-              </div>
-            </el-checkbox>
+            <img :src="i.avatar" alt class="img">
+            <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
+            <!-- <el-checkbox :label="i.trueName" class="checkbox-item"></el-checkbox> -->
           </el-checkbox-group>
 
           <div style="margin: 15px 0;"></div>
@@ -50,66 +41,25 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "OpenMeluList",
-  props: {
-    showPop: {
-      type: Boolean,
-      default: false
-    },
-
-    cloak: {
-      // 是否显示遮罩,默认显示
-      type: Boolean,
-      default: true
-    }
-  },
-  mounted() {
-    console.log(this.cities);
-  },
   computed: {
     ...mapGetters(["showMeluList"]),
     listDatas() {
       return this.showMeluList.data;
     },
-    styleObj() {
-      let obj = {};
-      switch (this.position) {
-        case "top":
-          obj.top = 0;
-          obj.left = 0;
-          obj.right = 0;
-          obj.height = this.size + "px";
-          break;
-        case "right":
-          obj.top = 0;
-          obj.bottom = 0;
-          obj.right = 0;
-          obj.width = this.size + "px";
-          break;
-        case "bottom":
-          obj.left = 0;
-          obj.bottom = 0;
-          obj.right = 0;
-          obj.height = this.size + "px";
-          break;
-        case "left":
-          obj.left = 0;
-          obj.bottom = 0;
-          obj.top = 0;
-          obj.width = this.size + "px";
-          break;
-      }
-      return obj;
+    listName() {
+      return this.listDatas.map(function(user) {
+        return user.trueName;
+      });
     }
   },
   data() {
     return {
       search: "", //搜索框显示的内容
       showSide: false, // 是否显示边栏
-      list: [],
       checkAll: false,
-      checkedCities: [],
-      cities: this.$store.getters.showMeluList.data,
-      isIndeterminate: true
+      checkedItem: [],
+
+      isIndeterminate: false
     };
   },
 
@@ -152,14 +102,21 @@ export default {
       this.ShowMeluList({ isShow: false });
     },
     handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
+      debugger;
+      this.checkedItem = val ? this.listName : [];
       this.isIndeterminate = false;
+      // console.log(this.checkedItem);
+      this.ShowMeluList({ checkedItem: this.checkedItem });
     },
-    handleCheckedCitiesChange(value) {
+    handleCheckedChange(value) {
+      debugger;
+      console.log(value);
+
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
+      this.checkAll = checkedCount === this.listDatas.length;
       this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
+        checkedCount > 0 && checkedCount < this.listDatas.length;
+      this.ShowMeluList({ checkedItem: value });
     }
   }
 };

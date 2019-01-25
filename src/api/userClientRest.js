@@ -19,14 +19,28 @@ export function companyContactList(companyId) {
  * 催报消息操作接口
  *
  */
-export function saveModuleMsg(datas) {
+export function SAVE_MODULE_MSG(datas) {
     console.log("催报消息操作接口");
-    console.log(datas);
-    // return request({
-    //     url: '/api/api/save_module_msg',
-    //     method: 'post',
-    //     params: {
-    //         moduleMsgDto: datas
-    //     }
-    // })
+    // console.log(datas);
+    debugger
+    return request({
+        url: '/api/api/save_module_msg',
+        method: 'post',
+        data: datas
+    })
+}
+
+export function ACK_MODULE_MSG(data) {
+    console.log("催报消息操作接口");
+    // console.log(data);
+    debugger
+    return request({
+        url: '/api/api/ack_module_msg',
+        method: 'get',
+        params: {
+            code: data,
+            chat: 2000,
+            type: 1102
+        }
+    })
 }

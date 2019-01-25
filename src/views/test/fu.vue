@@ -2,7 +2,7 @@
   <div class="page">
     <table border="1" cellspacing="0" width="600px">
       <tr>
-        <th colspan="3">父亲的数据</th>
+        <th colspan="3" @click="qwe">父亲的数据</th>
       </tr>
       <tr>
         <td>name</td>
@@ -37,6 +37,9 @@ export default {
   },
 
   methods: {
+    qwe() {
+      debugger;
+    },
     childByValue(childValue) {
       this.name = childValue.cname;
       this.age = childValue.cage;

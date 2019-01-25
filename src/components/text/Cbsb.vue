@@ -1,23 +1,24 @@
 <template>
   <div class="Cbsb">
-    <div>选择消息接收人</div>
-    <div class="role_wrapper">
-      <div class="role_list">
-        <span v-for="o in listDatas" :key="o.id" class="role_item">
-          <img :src="o.avatar">
-          <div class="name">{{o.trueName}}</div>
-        </span>
-        <span class="role_item">
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
-          >
-          <div class="name">共12人</div>
-        </span>
-      </div>
-      <!-- <i class="chaochu role_item"></i>
-      <div class="name">共12人</div>-->
-    </div>
-
+    <el-row>选择消息接收人</el-row>
+    <el-row :gutter="20">
+      <el-col :span="3" v-for="o in showDatas" :key="o.id" class="role_list">
+        <img :src="o.avatar">
+        <div class="name">{{o.trueName}}</div>
+      </el-col>
+      <el-col :span="2" v-if="listLength>4">
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
+        >
+        <div class="name">共{{listLength}}人</div>
+      </el-col>
+      <el-col :span="2">
+        <img
+          @click="ShowMeluList({isShow:true})"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
+        >
+      </el-col>
+    </el-row>
     <div class="input_title">消息内容</div>
     <el-input
       type="textarea"
@@ -33,7 +34,11 @@
 
 <script type="text/ecmascript-6">
 import { mapActions, mapGetters } from "vuex";
-import { companyContactList, saveModuleMsg } from "~api/userClientRest";
+import {
+  companyContactList,
+  SAVE_MODULE_MSG,
+  ACK_MODULE_MSG
+} from "~api/userClientRest";
 export default {
   name: "Cbsb",
   components: {},
@@ -42,114 +47,90 @@ export default {
     return {
       textarea: "",
       listDatas: [],
-      trueName: ""
+      userId: this.$store.getters.user.user.id,
+      companyId: this.$store.getters.user.company.id
     };
   },
   created() {
-    console.log(this.companyId);
-    this.getMemberList();
-    debugger;
+    this.getMemberList(this.companyId);
   },
   computed: {
-    companyId() {
-      return this.$store.getters.user.company.id;
+    ...mapGetters(["showMeluList"]),
+    // 选中长度
+    listLength() {
+      return this.showMeluList.checkedItem.length;
+    },
+    // 选中的各位id
+    userIds() {
+      let ids = this.showMeluList.checkedItem.map(function(user) {
+        return user.id;
+      });
+      let b = ids.join(",");
+      return b;
+    },
+    /**
+     * @desc    : 显示头像的数据，最多4个，多余的截取前四个
+     * @returns {Object}
+     * @author  : mj
+     * @data    : 2019-01-25
+     */
+    showDatas() {
+      let a = this.showMeluList.checkedItem;
+      let b = a.length > 3 ? a.slice(0, 4) : a;
+      return b;
     }
   },
   methods: {
     ...mapActions(["ShowMeluList"]),
-    /*   请求下拉框的数据 */
-    getMemberList() {
-      // debugger;
-      // console.log(this.companyId);
-      companyContactList(this.companyId).then(res => {
+    /**
+     * @desc    : 请求下拉框的数据，装到vuex中
+     * @param   {String} 公司ID
+     * @returns {String}
+     * @author  : mj
+     * @data    : 2019-01-25
+     */
+    getMemberList(companyId) {
+      companyContactList(companyId).then(res => {
         let data = res.data.data.normal;
         console.log(data);
-
         this.ShowMeluList({ data: data });
         this.listDatas = data;
       });
     },
+    /**
+     * @desc    : 点击发送催报数据到后台
+     * @param   {String} 参数名
+     * @param   {Object} 参数名
+     * @returns {String}
+     * @author  : mj
+     * @data    : 2019-01-25
+     */
+
     sendMsg() {
-      console.log(this.trueName);
-      console.log(this.textarea);
+      // debugger;
+      // console.log(this.showMeluList.checkedItem);
+      // console.log(this.textarea);
       let datas = {
         action: 1,
         companyId: this.companyId,
         content: this.textarea,
-        fileId: 0,
-        id: 0,
-        moduleId: 0,
-        receiver: "string",
-        receiverId: 0,
-        senderId: 0,
-        seq: 0,
-        type: 0,
-        url: "string"
+        moduleId: 1,
+        receiver: this.userIds,
+        receiverId: 1,
+        senderId: this.userId,
+        type: 1
       };
-      saveModuleMsg(datas).then(res => {
-        let data = res.data;
+      SAVE_MODULE_MSG(datas).then(res => {
+        let data = res.data.data;
+        // console.log(data);
+        ACK_MODULE_MSG(data).then(res => {
+          console.log(res.data.msg);
+        });
       });
     }
   }
 };
 </script>
-<style lang="scss" scoped>
-.Cbsb {
-  width: 660px;
-  height: 420px;
-  position: relative;
-  img {
-    height: 50px;
-    width: 50px;
-    border-radius: 5px;
-  }
-  .role_wrapper {
-    i {
-      display: inline-block;
-      background-size: 100%;
-    }
-  }
-  .role_list {
-    display: inline-block;
-    padding-top: 20px;
-    width: 400px;
-    height: 115px;
-    overflow: hidden;
-    .role_item {
-      padding: 0 40px 20px 0;
-      display: inline-block;
 
-      .name {
-        color: rgba(0, 0, 0, 0.6);
-        text-align: center;
-        padding-top: 11px;
-      }
-    }
-  }
-  .chaochu {
-    // @extend img;
-    height: 50px;
-    width: 50px;
-    border-radius: 5px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg==)
-      no-repeat;
-  }
-  .input_title {
-    padding-bottom: 20px;
-    color: rgba(0, 0, 0, 0.6);
-  }
-  .input {
-    border-radius: 12px;
-    width: 620px;
-  }
-  .send {
-    width: 80px;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding-right: 20px;
-  }
-}
-</style>
 
 

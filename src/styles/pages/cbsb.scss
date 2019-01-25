@@ -1,0 +1,44 @@
+.Cbsb {
+    width: 660px;
+    height: 420px;
+    position: relative;
+
+    img {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+    }
+
+    .role_list {
+        padding-top: 20px;
+        height: 115px;
+
+        .role_item {
+            padding: 0 40px 20px 0;
+
+            .name {
+                color: rgba(0, 0, 0, 0.6);
+                text-align: center;
+                padding-top: 11px;
+            }
+        }
+    }
+
+    .input_title {
+        padding-bottom: 20px;
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .input {
+        border-radius: 12px;
+        width: 620px;
+    }
+
+    .send {
+        width: 80px;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        padding-right: 20px;
+    }
+}

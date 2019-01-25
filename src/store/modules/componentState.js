@@ -1,7 +1,6 @@
-
 /*
-*本模块管理组件状态。
-*/
+ *本模块管理组件状态。
+ */
 import Cookies from 'js-cookie'
 const app = {
   state: {
@@ -20,7 +19,8 @@ const app = {
       api: "cnbi/json/source/chart/pie.json"
     },
     showMeluList: {
-      data: {},
+      data: [],
+      checkedItem: [],
       isShow: false,
       switchStyle: true,
       tittle: "标题",
