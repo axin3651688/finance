@@ -1,228 +1,296 @@
 <template>
-  <div>
-  <button @click="isshow">
-    <div class="anniu">按钮</div>
-    <el-cascader
-    :options="options"
-    v-model="selectedOptions"
-    @change="handleChange">
-  </el-cascader>
-  </button>
+  <div  class="container">
+    <el-button @click="matching" class="button">点击</el-button>
+    <div class="dropdown">匹配报表:</div>
+    <el-dropdown trigger="click" v-if="list.length">
+        <el-button type="text" class="underline">
+            <span class="pleaseoptions">{{dropdown}}</span>
+            <i class="el-icon-arrow-down el-icon_right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item
+            v-for="(item,index) of list"
+            @click.native="matching(list,index)"
+            :key="index"   
+        >{{item.title}}
+        </el-dropdown-item>
+        </el-dropdown-menu>
+    </el-dropdown>
+    <el-button @click="saveData" class="button">保存</el-button>
+    <el-button @click="rowData" v-if="newrow" class="button">新增</el-button>
+    <hot-table  v-if="settings.data.length" :settings="settings" ref="hotTableComponent" :height=" heights-210" class="table"></hot-table>
+    <!-- <BiModule :handsontanleapi="api"></BiModule> -->
   </div>
 </template>
-
 <script>
-  export default {
-    data() {
-      return {
-        options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }],
-        selectedOptions: [],
-        selectedOptions2: []
-      };
-    },
-    methods: {
-      handleChange(value) {
-        console.log(value);
-      },
-      isshow(){
-        console.log(1)
+import {findDesignSource} from "@/api/interface.js"
+// import {ImportExcel} from "@/api/fill.js"
+import { HotTable } from '@handsontable/vue';
+import Handsontable from 'handsontable-pro';
+import {report} from '@/api/cube.js'
+// import BiModule from "@v/BiModule.vue";
+export default {
+  components:{
+            HotTable,
+            // BiModule
+        },
+  // props:{
+  //   item:{}
+  // },
+  props:["item"],
+  data(){
+    return{
+      list:[],
+      // api:'cnbi/json/source/tjsp/bb.json',//空地址
+      dropdown:'请选择',
+      heights: document.body.offsetHeight,
+      newrow:false,//新增按钮的隐藏
+      table:[],
+      del:Function,
+      delid:null,
+      heights: document.body.offsetHeight,
+      index:'',//  数据的索引
+      show:false,
+      flag:false,
+      root: 'test-hot',
+      dataDict:[],
+      settings: {
+        data:  [],//数据，可以是数据，对象
+        startCols: 6,
+        minCols: 5,
+        maxCols: 20,
+        rowHeaders: true,//行表头
+        colHeaders:   [],//表头数据
+        autoWrapRow: true, //自动换行
+        fillHandle: true, //选中拖拽复制 possible values: true, false, "horizontal", "vertical"
+        fixedColumnsLeft: 0,//固定左边列数
+        fixedRowsTop: 0,//固定上边列数
+        mergeCells: [],//合并
+        columns: [],           
+        manualColumnFreeze: true, //手动固定列
+        manualColumnMove: true, //手动移动列
+        manualRowMove: true,   //手动移动行
+        manualColumnResize: true,//手工更改列距
+        manualRowResize: true,//手动更改行距
+        comments: true, //添加注释
+        stretchH: 'none',//根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
       }
     }
-  };
+  },
+  created(){
+    this.axios.get('/api/template').then((res) => {
+      this.list = res.data.data
+      // console.log(this.list)
+    })
+    this.settings.columns = [     //添加每一列的数据类型和一些配置
+            {
+            type:'numeric',  
+            strict: false ,  //是否严格匹配
+            data:"D",
+
+            },
+            {
+            data:"id",
+            type: 'text',
+            // readOnly: false  //设置只读
+            hidden:true
+            },
+            {
+            data:"row",
+            type:'text',
+            },
+            {
+            data:"level",
+            type:'numeric'
+            },
+            {
+            data:"text",
+            type:'numeric',
+            },
+            {
+            data:"A",
+            type: 'numeric',
+            // strict: false   //是否严格匹配
+            },
+            {
+            data:"B",
+            type: 'numeric',
+            // strict: false   //是否严格匹配
+            },
+            {
+            data:"C",
+            type: 'numeric', //下拉选择
+            }
+        ]
+    // debugger
+    // console.log(this.item)
+    // console.log("this",this)
+    // this.del = this.flags
+    // this.table = this.item
+    // if(this.item.length != 0){
+      // console.log("item传来的", this.item)
+      // this.settings.data = this.item
+    // }
+    // let arr = []
+    // this.h.forEach(item=>{
+    //     arr.push(item.text)
+    // })         
+    // this.settings.colHeaders = arr
+    // console.log("arr",this.settings.colHeaders)
+
+    // this.settings.columns = [     //添加每一列的数据类型和一些配置
+    //   // {type: 'numeric'},  //数值
+    // ]
+  },
+  mounted(){
+    // debugger
+    // this.settings.data = this.item
+    // if(this.item.length != 0){
+    //   console.log("item传来的", this.item)
+    //   this.settings.data = this.item
+    // }
+  },
+    //  watch:{
+    //     item:{
+    //       handler(val, oldval) { 
+    //         debugger
+    //         // this.settings.data = val
+    //         this.$set(this.settings, "data", null);
+    //         this.$set(this.settings,"data",val)
+    //         // console.log(this.settings.data)
+    //       },
+    //       immediate: true,
+    //       deep: true,
+    //     }
+    // }
+  methods:{
+    // 选择对应的模板
+    matching(list,index){
+      debugger
+      this.dropdown = list[index].title
+      this.dropdownid = list[index].id
+      findDesignSource(this.dropdownid).then(res=>{
+        console.log(res)
+        let list = res.data.data.source
+        // console.log(list)
+        let obj = JSON.parse(list)
+        console.log(obj)
+        let arr = []
+        obj.columns.forEach(i=>{
+          arr.push(i.text)
+      })
+      // console.log(arr)
+      this.settings.colHeaders = arr
+      this.settings.data = obj.rows || this.item.config.rows
+      // this.del = this.flags
+
+      })
+      // let arr = []
+      // this.item.config.columns.forEach(i=>{
+      //     arr.push(i.text)
+      // })
+      // console.log(this.item)
+      //       this.dropdown = list[index].title
+      //       this.dropdownid = list[index].id
+      //       console.log(this.dropdownid)
+      // this.settings.colHeaders = arr
+      // this.settings.data = this.item.datas || this.item.config.rows
+      // this.del = this.flags
+      
+      // debugger
+      // if (this.item.matching && typeof this.item.matching == "function") {
+      //   return this.item.matching(this);
+      // }
+    },
+    // 点击保存所有数据
+    saveData(){
+      var exadata = this.$refs.hotTableComponent.hotInstance.getData()
+      console.log(exadata)
+      localStorage.setItem("lists",JSON.stringify(exadata)) 
+    },
+    // 点击添加一行
+    rowData(){   
+      this.$refs.hotTableComponent.hotInstance.alter('insert_row', this.index)
+    },
+    // 插入了删除
+    flags(instance, td, row, col, prop, value, cellProperties){
+      let arr = this.$refs.hotTableComponent.hotInstance
+      let list = this.settings.data
+      var code = value;
+      while (td.firstChild) {
+          td.removeChild(td.firstChild);
+      }
+      if(!value){
+        var el = document.createElement('DIV')
+        el.className='flag'
+        el.id='flag'
+        el.innerHTML = '删除'
+        td.appendChild(el)
+        el.style.color = "red"
+        el.style.cursor = "pointer"
+        // console.log(this.$refs.hotTableComponent)
+        Handsontable.dom.addEvent(el, 'click', function (event) {
+            arr.alter("remove_row", row);//删除当前行
+        })
+      }
+    },
+  }
+}
 </script>
-<style>
+<style scoped>
+  .table{
+    margin-top:20px;
+  }
+  .dropdown{
+    display: inline;
+    color: #606266;
+    font-size: 16px;
+  }
+  .underline{
+    border:1px solid #dcdfe6;
+    width: 220px;
+    margin-left:10px;
+    background-color: #f5f7fa;
+  }
+    .pleaseoptions{
+      float: left;
+      margin-left: 20px;
+  }
+  .el-icon_right{
+    float: right;
+    margin-right: 10px;
+  }
 </style>
+<style lang="scss"> 
+    .container{
+        thead tr:last-child th {
+            border-bottom-width: 0;
+            border-right: 1px solid #ccc;
+        }
+        button{
+            margin: 0px 10px 0px 0;
+        }
+        .handsontable .currentRow {
+            background-color: #E7E8EF;
+        }
+
+        .handsontable .currentCol {
+            background-color: #F9F9FB;
+        }
+        .handsontable td.htInvalid {
+            background-color: #fff !important;
+        }
+        .handsontable .htRight{
+            text-align:left;
+        }
+        .handsontable .ht_master tr th{
+            visibility: visible;
+        }
+        .handsontable th{
+            border-right:0px;
+        }
+    }
+</style>
+
+
+

@@ -46,7 +46,7 @@
         v-bind:index="index"
         :label="item.text"
         :v-if="item.show"
-        :name="item.tabIndex || index"
+        :name="item.tabIndex || ''"
         :closable="item.closable||false"
       >
         <el-row
@@ -133,6 +133,7 @@ export default {
       id: 0,
       text: "",
       rows: [],
+      showDims:{},
       columns: [],
       dataUrl: "",
       datas: [],
@@ -153,11 +154,19 @@ export default {
       debug: 0
     };
   },
+  // props: ["handsontanleapi"],
   //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    let bean = getClientParams();
-    this.setScopeDatas(bean);
-    this.loadModule();
+    // let bean = getClientParams();
+    // this.setScopeDatas(bean);
+    // this.loadModule();
+    if (Cnbi.isEmpty(this.handsontanleapi)) {
+      let bean = getClientParams();
+      this.setScopeDatas(bean);
+      this.loadModule();
+    } else {
+      this.loadRemoteSource(this.handsontanleapi);
+    }
   },
 
   mounted() {
@@ -340,6 +349,7 @@ export default {
      * 加载加载模块资源
      */
     loadRemoteSource(api) {
+      debugger
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
       if (!api) {
@@ -359,6 +369,7 @@ export default {
       }
 
       findDesignSource(api).then(res => {
+        debugger
         //
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
@@ -577,6 +588,10 @@ export default {
       //  this.units(datas)
     },
     __queryDataAfter(datas) {
+      return datas;
+    },
+    //name：sjz  不知道怎么删了  加上  注：不是我干的
+    queryDataBefore(datas) {
       return datas;
     },
     /**

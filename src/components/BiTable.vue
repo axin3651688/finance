@@ -19,12 +19,13 @@
       border
       :stripe="true"
       style="width: 100%"
-      :height="item.height || heights-170"
+      :height="heights"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
     >
+      <!-- :height="item.height || heights-170" -->
       <!--  :summary-method="getSummaries"  -->
       <!-- :show-summary="item.showSummary || true"     -->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
@@ -60,7 +61,8 @@ export default {
   props: ["item"],
   data() {
     return {
-      heights: document.body.offsetHeight,
+      heights: 0,
+      offsetHeight:document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,
@@ -80,14 +82,52 @@ export default {
     };
   },
   watch: {
-    heights(newval) {
-      debugger;
-      this.heights = newval;
-    }
+    // heights(newval) {
+    //   debugger;
+    //   this.heights = newval;
+    // }
+    // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
+        offsetHeight(val){
+            debugger
+            if(!this.timer){
+                debugger
+                // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
+                this.offsetHeight = val
+                this.timer = true
+                let me = this
+                setTimeout(function(){  
+                  debugger                
+                    // 打印offsetHeight变化的值 
+                    //me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                    if(me.item.stype == "table"){
+                      me.heights = document.body.offsetHeight - 40 - 64 - 15;
+                    }else{
+                      // 计算当前页面的高度 得出表格的高度
+                      me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+                    }
+                    console.log(me.offsetHeight)
+                    me.timer = false
+                },400)
+            }
+        }
+    
   },
   created() {
+    /**
+     * 页面原始高度：document.body.offsetHeight
+     * 按钮背景高度：40
+     * 导航栏高度：64
+     * 间隙高度：15+7 = 22
+     */
+    debugger
     this.upData(this.item);
-    // console.log(this.heights)
+    console.log(this.item)
+    if(this.item.stype == "table"){
+      this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
+    }else{
+      // 计算当前页面的高度 得出表格的高度
+      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+    }  
     // console.log(this.heights-88)
     // console.log(this.upData(this.item))
     //debugger;
@@ -101,6 +141,16 @@ export default {
     //debugger;
     // this.getTableDataParams();
     this.upData(this.item);
+    const me = this
+        // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
+        window.onresize = () => {
+            debugger
+            return (() => {
+                window.offsetHeight = document.body.offsetHeight;
+                me.offsetHeight = window.offsetHeight;
+                // me.heights = document.body.offsetHeight - 40 - 64 - 22;;
+            })()
+        }
     // this.$nextTick(() => {
     //   debugger;
     //   this.upData(this.item);
@@ -262,7 +312,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-      // debugger
+      debugger
       if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
         return this.item.onCellClick(row, column, cell, event, this);
       }

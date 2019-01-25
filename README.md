@@ -244,6 +244,11 @@ BiText
             onCellClick:"单元格点击事件" //可选 table 
             onRowClick:"树表单元格点击事件"
             options:{}
+            "matching":function(vue){//填报页面匹配到的模板的点击事件
+            debugger
+            let this = me
+            console.log(me)
+            },//填报页面的事件   还需修改
         },
         {
             id: "2",

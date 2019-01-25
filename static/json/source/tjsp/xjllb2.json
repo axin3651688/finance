@@ -1,0 +1,197 @@
+{
+    //sql 配置  弃用  改用cube配置
+    "id":"0003",
+    "text":"现金流量表",
+    "showDims":["year","month","company","conversion"],
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    }
+    ,//切换年的回调
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },//切换月份的回调
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },//切换公司之前的回调
+    
+    "config":{
+       "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD= :comparePeriod ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text1,B.NLEVEL , B.NID as id, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID id_, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
+      "_cube":{
+        "subject":"0002",
+        "cubeId":4
+      },
+      "mainDim":"itemperiod",
+      "needDims":["year","month","company","conversion"],
+      "type":1,
+      "generateVar":{//生成变量rows
+        "periodCount":2,
+         "compareType":"-1&0",
+         "reverse":true
+     }
+    },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
+    "layout": {
+       "xtype": "tab"
+   },
+    "columns":[
+        {
+            "id": "snljje2",
+            "type": "decimal",
+            "text": "上年累计金额"
+        },  {
+            "id": "text1",
+            "type": "string",
+            "text": "项目",
+            "width":"300px"
+        },{
+            "id":"id",
+            "type":"number",
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
+        },{
+            "id": "bnljje1",
+            "type": "decimal",
+            "text": "本年累计金额"
+        }, {
+            "id": "snljje1",
+            "type": "decimal",
+            "text": "上年累计金额"
+        }, {
+            "id": "text2",
+            "type": "string",
+            "text": "项目",
+            "width":"460px"
+        }, {
+            "id":"id_",
+            "type":"number",
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
+        },{
+            "id": "bnljje2",
+            "type": "decimal",
+            "text": "本年累计金额"
+        } ],
+        "rows": [
+    ],
+    "items" : [
+      {
+        "xtype" : "bi-table",
+        "id" : "xjllb",
+        "text" : "现金流量表",
+        "toolbar":[
+            {
+            "id":"1",
+            "text":"刷新",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+            "handler":function(vue,btn){
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+
+                //location.reload();
+            }
+          }
+          , {
+           "id":"2",
+           "text":"导出",
+           "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+           "handler":function(vue,btn){
+               vue.handleDownload(vue);
+           }
+         }
+       ],
+        "drillProperties":["text1","text2"],//有钻取，给蓝色
+        "levelProperties":{"text1":"nlevel","text2":"level_"},//加缩进
+        
+        "cellStyle":function(row) {
+           let datas = this.datas;
+           let record = [];
+           record = datas[row.rowIndex];
+             
+            let css = "padding: 4px 0;";
+            let pro = row.column.property;//列id
+            if (!pro) {
+              return css;
+            }
+            let levelProperties = this.levelProperties;//缩进列获取
+            let textIndent ="";
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            let drillProperties = this.drillProperties;//钻取列获取
+            if (pro.indexOf("text1") != -1) {//第一列项目
+                if((record.bnljje1 && record.bnljje1 != 0) || (record.snljje1 && record.snljje1 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex].drill = true;//下钻设置
+                    return css ;
+                 }else{
+                    //row.row.drill = false;
+                    return css+ textIndent; 
+                 }
+            }else if(pro.indexOf("text2") != -1){//第二列项目
+                if((record.bnljje2 && record.bnljje2 != 0) || (record.snljje2 && record.snljje2 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex]._drill = true;//下钻设置
+                    return css;
+                 }else{
+                   // row.row._drill = false;
+                    return css + textIndent; 
+                 }
+
+            } else {
+              return css+textIndent;
+            }
+          },
+        "onCellClick":function(row, column, cell, event,option){
+            let datas = this.datas;
+            let data = datas.filter(function(item){
+                return item.ascode == row.ascode;
+            });
+            row = data[0];
+            let cv = column.property + "";
+            let listener = false;
+            if(cv == "text1")listener = row.drill;
+            if(cv == "text2")listener = row._drill;
+            if (listener && (cv == "text1" || cv == "text2" )) {
+                let len = cv.length;
+                let text = row[cv];
+                let id = "" ;
+                if(cv == "text1" )id = row.ascode;//下钻的标识
+                if(cv == "text2" )id = row.bscode;//下钻的标识
+                    
+                    option.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                        } 
+                    },
+                    { row: row, column: column, cell: cell, event: event },
+                    { id: id, text: text }
+                    );
+                }
+        }
+        
+      }
+    ]
+  }
