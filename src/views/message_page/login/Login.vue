@@ -80,19 +80,17 @@
           <!--{{qrUrl.trim()}}-->
         </div>
 
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {login} from "~api/interface.js"
-import {mapGetters, mapActions} from "vuex"
-import store from "@/store"
-import MyBtn from '@c/message/my_btn/MyBtn.vue'
-import {SCAN_LOGIN_URL} from '~api/message.js'
-import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js'
+import {login} from '~api/interface.js';
+import {mapGetters, mapActions} from 'vuex';
+import store from '@/store';
+import {SCAN_LOGIN_URL} from '~api/message.js';
+import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js';
 
 export default {
   data() {
@@ -101,88 +99,85 @@ export default {
       elLoading: false, // element 加载转圈
       qrUrl: null, // 登录二维码地址
       showWhat: 'form', // 显示表单还是二维码
-      pwdType: "password",
+      pwdType: 'password',
       loginUser: {
-        usename: "",
-        password: ""
+        usename: '',
+        password: ''
       },
       rules: {
         usename: [
           {
             required: true,
-            message: "用户名不能为空",
-            trigger: "blur"
+            message: '用户名不能为空',
+            trigger: 'blur'
           },
           {
             min: 1,
             max: 30,
-            message: "长度在1到30之间",
-            trigger: "blur"
+            message: '长度在1到30之间',
+            trigger: 'blur'
           }
         ],
         password: [
           {
             required: true,
-            message: "密码不能为空",
-            trigger: "blur"
+            message: '密码不能为空',
+            trigger: 'blur'
           },
           {
             min: 1,
             max: 30,
-            message: "长度在6到30之间",
-            trigger: "blur"
+            message: '长度在6到30之间',
+            trigger: 'blur'
           }
         ]
       }
-    }
-  },
-  components: {
-    MyBtn
+    };
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     },
     scanStatus() {
-      return this.messageStore.scanStatus
+      return this.messageStore.scanStatus;
     }
   },
   watch: {
     scanStatus(val) {
-      debugger
-      if (!val) return
+      debugger;
+      if (!val) return;
       switch (val.code) {
         case 10010: // 10010-APP已扫码通知，扫码成功
-          this.scanSuccess = true
-          break
+          this.scanSuccess = true;
+          break;
         case 10011: // 10011-APP登录通知，登陆成功,
-          this.processLoginResult(val.data) // 处理登陆返回的结果
-          break
+          this.processLoginResult(val.data); // 处理登陆返回的结果
+          break;
       }
     }
   },
   methods: {
-    ...mapActions(["GetSideMid", 'ActionSetMessageStore']),
+    ...mapActions(['GetSideMid', 'ActionSetMessageStore']),
 
     web_minWindows() { // electron 最小化
       if (window.require) {
-        let ipc = window.require("electron").ipcRenderer
-        ipc.send("web_minWindows", "")
+        let ipc = window.require('electron').ipcRenderer;
+        ipc.send('web_minWindows', '');
       }
     },
     web_closeWindows() { // electron 关闭窗口
       if (window.require) {
-        let ipc = window.require("electron").ipcRenderer
-        ipc.send("web_closeWindows", "")
+        let ipc = window.require('electron').ipcRenderer;
+        ipc.send('web_closeWindows', '');
       }
     },
 
     showPwd() {
-      if (this.pwdType === "password") {
-        this.pwdType = ""
+      if (this.pwdType === 'password') {
+        this.pwdType = '';
       } else {
-        this.pwdType = "password"
+        this.pwdType = 'password';
       }
     },
 
@@ -196,19 +191,19 @@ export default {
           login(this.loginUser)
             .then(res => {
               if (res.data.code === 200 && res.data.data) {
-                this.processLoginResult(res.data.data) // 处理登陆返回的结果
+                this.processLoginResult(res.data.data); // 处理登陆返回的结果
               } else {
                 this.$message({
                   type: 'error',
                   message: res.data.msg
-                })
+                });
               }
             })
             .catch(err => {
-              console.error(err)
-            })
+              console.error(err);
+            });
         }
-      })
+      });
     },
 
     /**
@@ -216,36 +211,35 @@ export default {
      */
     processLoginResult(data) {
       // debugger
-      let authorization = data.authorization
+      let authorization = data.authorization;
       if (!Cnbi.isEmpty(authorization)) {
-        localStorage.setItem("authorization", authorization)
-        localStorage.setItem("usename", this.loginUser.usename) // 用户名记住,方便下次登录
-        localStorage.setItem("database", JSON.stringify(data)) //返回{"a":1,"b":2}
-        store.dispatch("setIsAutnenticated", true)
-        store.dispatch("setUser", data)
+        localStorage.setItem('authorization', authorization);
+        localStorage.setItem('usename', this.loginUser.usename); // 用户名记住,方便下次登录
+        localStorage.setItem('database', JSON.stringify(data)); // 返回{"a":1,"b":2}
+        store.dispatch('setIsAutnenticated', true);
+        store.dispatch('setUser', data);
 
         // 把用户的状态更新到vuex
         this.GetSideMid({
           company: data.company.customerId,
           companyName: data.company.text
-        })
+        });
 
         // 路由跳转
-        this.$router.push("/message_page/home")
+        this.$router.push('/message_page/home');
 
         // electron 处理
         if (window.require) {
-          let ipc = window.require("electron").ipcRenderer
-          ipc.send("web_autoLogin", "")
+          let ipc = window.require('electron').ipcRenderer;
+          ipc.send('web_autoLogin', '');
         }
-
       }
     },
 
     // 显示二维码
     showQrCode() {
-      this.showWhat = 'qr_code'
-      this.requestQrCode()
+      this.showWhat = 'qr_code';
+      this.requestQrCode();
     },
 
     // 获取二维码
@@ -253,34 +247,34 @@ export default {
       let params = {
         platform: 'pc',
         device: this.messageStore.token || Cnbi.getDevice()
-      }
-      SET_FULLSCREEN_LOADING(false) // 设置不需要全屏加载动画
-      this.elLoading = true // 开始 局部加载动画
+      };
+      SET_FULLSCREEN_LOADING(false); // 设置不需要全屏加载动画
+      this.elLoading = true; // 开始 局部加载动画
       SCAN_LOGIN_URL(params)
         .then(res => {
-          this.elLoading = false // 结束 局部加载动画
-          console.log('获取登录二维码res：', res)
+          this.elLoading = false; // 结束 局部加载动画
+          console.log('获取登录二维码res：', res);
           if (res.data.code === 200 && res.data.data) {
-            this.qrUrl = res.data.data.url
-            this.ActionSetMessageStore({scanStatus: null})
-            console.log('qrUrl:', this.qrUrl)
+            this.qrUrl = res.data.data.url;
+            this.ActionSetMessageStore({scanStatus: null});
+            console.log('qrUrl:', this.qrUrl);
           }
         })
         .catch(err => {
-          this.elLoading = false // 结束 局部加载动画
-          console.log('获取登录二维码err：', err)
-        })
+          this.elLoading = false; // 结束 局部加载动画
+          console.log('获取登录二维码err：', err);
+        });
     },
 
     /**
      * 关闭二维码登录, 清除messageStore.scanStatus
      */
     closeQrCode() {
-      this.showWhat = 'form'
-      this.ActionSetMessageStore({scanStatus: null})
+      this.showWhat = 'form';
+      this.ActionSetMessageStore({scanStatus: null});
     }
   }
-}
+};
 </script>
 <style>
   .login .el-checkbox__input.is-checked .el-checkbox__label {
@@ -494,6 +488,5 @@ export default {
       }
     }
   }
-
 
 </style>
