@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import {SEARCH_MY_CONTACT} from '~api/message.js'
+import {SEARCH_MY_CONTACT} from '@m_api/message.js'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {

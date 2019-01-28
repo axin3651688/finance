@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {LEFT_USER_INFO} from '~api/message.js'
+import {LEFT_USER_INFO} from '@m_api/message.js'
 import {mapGetters} from 'vuex'
 
 export default {

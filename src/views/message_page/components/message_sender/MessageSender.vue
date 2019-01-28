@@ -35,7 +35,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {UPLOAD_FILE} from '~api/message.js'
+import {UPLOAD_FILE} from '@m_api/message.js'
 
 export default {
   name: "MessageSender",

@@ -30,24 +30,24 @@ const router = new Router({
         {
           path: '/message_page/home', // 消息-通讯录
           name: 'Home',
-          component: () => import('@v/message_page/home/Home.vue'),
+          component: () => import('@mp/home/Home.vue'),
         },
         {
           path: '/message_page/contact', // 消息-通讯录
           name: 'Contact',
-          component: () => import('@v/message_page/contact/Contact.vue'),
+          component: () => import('@mp/contact/Contact.vue'),
         },
         {
           path: '/message_page/msg', // 消息-聊天页面
           name: 'Msg',
-          component: () => import('@v/message_page/msg/Msg.vue'),
+          component: () => import('@mp/msg/Msg.vue')
         }
       ]
     },
     {
       path: '/message_login', // 消息-聊天页面
       name: 'Login',
-      component: () => import('@v/message_page/login/Login.vue'),
+      component: () => import('@mp/login/Login.vue'),
     }
   ]
 })

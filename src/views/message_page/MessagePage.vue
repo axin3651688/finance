@@ -1,7 +1,7 @@
 <template>
   <div class="MessagePage">
     <div class="left">
-      <sider-bar></sider-bar>
+      <side-bar></side-bar>
     </div>
     <div class="right">
       <div class="right-top">
@@ -16,13 +16,13 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import {MY_SESSION} from '~api/message.js';
+import {MY_SESSION} from '@m_api/message.js';
 
 export default {
   name: 'MessagePage',
   components: {
-    TopBar: () => import('./layout/TopBar'),
-    SiderBar: () => import('./layout/SiderBar')
+    TopBar: () => import('@mc/top_bar/TopBar'),
+    SideBar: () => import('@mc/side_bar/SideBar')
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
