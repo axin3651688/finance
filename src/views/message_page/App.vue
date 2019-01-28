@@ -5,18 +5,18 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-import webSocket from "utils/webSocket";
-import {getClientParams} from "utils/index";
-import '@s/message/index.scss' // 全局样式
+import {mapActions} from 'vuex';
+import webSocket from 'utils/webSocket';
+import {getClientParams} from 'utils/index';
+import '@s/message/index.scss'; // 全局样式
 
 export default {
-  name: "",
+  name: '',
   data() {
     return {};
   },
   methods: {
-    ...mapActions(["GetSideMid", "GettRreeInfo"]),
+    ...mapActions(['GetSideMid', 'GettRreeInfo']),
     readLocalStorage() {
       // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
       // alert('readLocalStorage');
@@ -27,18 +27,18 @@ export default {
 
         // token存储到vuex中
         this.$store.dispatch(
-          "setIsAutnenticated",
+          'setIsAutnenticated',
           !Cnbi.isEmpty(localStorage.authorization)
         );
         // 由于localStorage只能存字符串,需转json
-        this.$store.dispatch("setUser", JSON.parse(localStorage.database));
+        this.$store.dispatch('setUser', JSON.parse(localStorage.database));
         // 假如用户是新用户或被清理了缓存,不执行以下语句
         var vd = {};
         Object.keys(localStorage).forEach(keys => {
           var a = localStorage[keys];
-          if (!Cnbi.isEmpty(a) && keys.indexOf("_cache") > -1) {
-            var b = keys.replace("_cache", "");
-            b == "conversion" ? (vd[b] = JSON.parse(a)) : (vd[b] = a);
+          if (!Cnbi.isEmpty(a) && keys.indexOf('_cache') > -1) {
+            var b = keys.replace('_cache', '');
+            b == 'conversion' ? (vd[b] = JSON.parse(a)) : (vd[b] = a);
           }
         });
         this.GetSideMid(vd);
@@ -48,27 +48,26 @@ export default {
 
         // electron 窗口处理
         if (window.require) {
-          var ipc = window.require("electron").ipcRenderer;
+          var ipc = window.require('electron').ipcRenderer;
         }
         if (window.require) {
-          ipc.send("web_autoLogin", "");
+          ipc.send('web_autoLogin', '');
         }
-
       } else {
         // 没有 authorization 没有登陆
       }
     },
     initSocket(authorization) {
-      // let url = "ws://192.168.2.224:7006/socket.io/";
-      let url = "ws://192.168.1.118:7006/socket.io/";
-      if (null != authorization) {
-        url = url + "?Authorization=" + authorization;
+      let url = 'ws://192.168.2.224:7006/socket.io/';
+      // let url = 'ws://192.168.1.139:7006/socket.io/';
+      if (authorization != null) {
+        url = url + '?Authorization=' + authorization;
       } else {
         // url = url + "?device=" + Cnbi.getDevice();
       }
       // debugger;
       webSocket({url: url});
-    },
+    }
   },
   created() {
     // debugger;
@@ -78,7 +77,7 @@ export default {
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;
     if (!authorization) {
-      authorization = localStorage.getItem("authorization");
+      authorization = localStorage.getItem('authorization');
     }
     this.initSocket(authorization);
   }

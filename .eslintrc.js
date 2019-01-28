@@ -2,6 +2,7 @@
  * 配置参考官网：
  * 配置参考官网：http://eslint.cn/docs/rules/
  * 博客：https://blog.csdn.net/hsl0530hsl/article/details/78594973
+ * webStorm-eslint的配置和使用（2018版）：https://blog.csdn.net/qq_29329037/article/details/80100450
  */
 
 module.exports = {
@@ -20,8 +21,8 @@ module.exports = {
     'semi': [2, 'always'], // 语句强制分号结尾
     'quotes': [2, 'single'], //引号类型 `` "" ''
     'object-curly-spacing': [2, 'never'], //大括号内是否允许不必要的空格
-    'no-multi-spaces': [0, {'ignoreEOLComments': true}], //不能用多余的空格, 'ignoreEOLComments' 或略注释前的空格
-    "spaced-comment": [2, 'never'],//注释风格要不要有空格什么的
+    'no-multi-spaces': [2, {ignoreEOLComments: true}], //不能用多余的空格, 'ignoreEOLComments' 或略注释前的空格
+    'spaced-comment': [2, 'always'],//注释风格要不要有空格什么的
   },
   parserOptions: {
     parser: 'babel-eslint'

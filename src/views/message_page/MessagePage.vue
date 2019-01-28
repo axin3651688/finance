@@ -36,13 +36,13 @@ export default {
      * 获取session
      */
     getSession() {
-      //debugger;
+      // debugger;
       MY_SESSION(this.loginUserId)
         .then(res => {
           res = res.data;
           if (res.code === 200 && res.data) {
             console.log('message左边栏====', res.data, '===message左边栏');
-            this._initSessionBar(res.data); //初始化消息左边栏
+            this._initSessionBar(res.data); // 初始化消息左边栏
           } else {
             this.$message({
               type: 'error',
@@ -58,16 +58,19 @@ export default {
 
     /**
      * 初始化session边栏, 并放到vuex中
+     * 如果senderId是当前登陆用户的Id则不必加到sessiong列表
      */
     _initSessionBar(sessionList) {
-      //debugger;
-      let session = [];         //处理过后的session队列
-      sessionList.forEach(item => {
+      // debugger;
+      let session = [];         // 处理过后的session队列
+
+      for (let item of sessionList) {
+        if (item.senderId === this.loginUserId) continue; // 如果发送人是自己，就不必要加入到session列表
         let sessionItem = {};
         let targetId = `${item.miniType}_${item.senderId}_${item.receiverId}`;
         sessionItem['miniType'] = item.miniType;
-        sessionItem['targetId'] = targetId; //给每个item加一个targetId 作为唯一标识
-        sessionItem['id'] = item.receiverId;
+        sessionItem['targetId'] = targetId; // 给每个item加一个targetId 作为唯一标识
+        sessionItem['id'] = item.miniType === 1100 ? item.senderId : item.receiverId; // 此处注意一下消息接受的目标对象
         sessionItem['name'] = item.name || item.otherName;
         sessionItem['count'] = item.count;
         sessionItem['content'] = item.content;
@@ -75,16 +78,17 @@ export default {
         sessionItem['avatar'] = item.avatar;
         sessionItem['originData'] = item;
         session.push(sessionItem);
-      });
+      }
+
       this.ActionSetMessageStore({
         sessionList: session,
-        sessionActiveItem: session[0], //默认选中第一条
-        miniType: session[0]['miniType'] //默认第一条的miniType
+        sessionActiveItem: session[0], // 默认选中第一条
+        miniType: session[0]['miniType'] // 默认第一条的miniType
       });
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',
-        data: session[0] //// 默认选中第一条, 清空消息计数
+        data: session[0] // // 默认选中第一条, 清空消息计数
       });
       console.log('session消息栏处理后:', session);
     }

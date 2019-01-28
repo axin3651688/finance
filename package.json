@@ -19,6 +19,7 @@
     "namedavatar": "^1.0.0",
     "resize-detector": "^0.1.7",
     "vue": "^2.5.17",
+    "vue-avatar": "^2.1.7",
     "vue-qriously": "^1.1.1",
     "vue-router": "^3.0.1",
     "vue-table-with-tree-grid": "^0.2.4",

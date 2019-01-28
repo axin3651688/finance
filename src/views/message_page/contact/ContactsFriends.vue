@@ -11,7 +11,6 @@
             <figure>
               <div class="img-box">
                 <img :src="friend.avatar" v-avatar="friend.trueName"/>
-                <img v-avatar="'Tom Hanks'" width="36"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -67,18 +66,18 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex';
 import {
   requestMyfriends,
   CONTACT_INFO
-} from '~api/message.js'
+} from '~api/message.js';
 
 export default {
   name: 'ContactsFriends',
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     }
   },
   data() {
@@ -87,15 +86,15 @@ export default {
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       friendList: null, // [] 我的好友列表，接收一个数组
       rightUserInfoData: null // {} 接收一个对象
-    }
+    };
   },
   watch: {
     $route(to, from) {
-      console.log('ContactsFriends监听路由：', to, from)
+      console.log('ContactsFriends监听路由：', to, from);
       if (this.activeUser !== to.query.id) {
         debugger;
-        this.activeUser = to.query.id
-        this.requestUserInfo(this.activeUser)
+        this.activeUser = to.query.id;
+        this.requestUserInfo(this.activeUser);
       }
     }
   },
@@ -107,21 +106,21 @@ export default {
      */
     requestFriendList() {
       requestMyfriends(this.loginUserId).then(res => {
-        console.log('获取我的好友列表-->>', res.data)
-        debugger
+        console.log('获取我的好友列表-->>', res.data);
+        debugger;
         if (res.data.code === 200) {
           if (res.data.data.length) {
-            this.friendList = res.data.data
-            this.setActiveUser(res.data.data[0].id)
+            this.friendList = res.data.data;
+            this.setActiveUser(res.data.data[0].id);
           } else {
             this.$message({
               type: 'warning',
               message: '你还没有任何好友',
               showClose: true
-            })
+            });
           }
         }
-      })
+      });
     },
 
     /**
@@ -129,14 +128,14 @@ export default {
      * 如果路由里有传用户ID，就显示路由上的用户信息，负责显示好友列表第一个用户信息
      */
     setActiveUser(id) {
-      debugger
-      let queryId = this.$route.query.id
+      debugger;
+      let queryId = this.$route.query.id;
       if (queryId) {
-        this.activeUser = queryId
-        this.requestUserInfo(queryId)
+        this.activeUser = queryId;
+        this.requestUserInfo(queryId);
       } else {
-        this.activeUser = id
-        this.requestUserInfo(id)
+        this.activeUser = id;
+        this.requestUserInfo(id);
       }
     },
 
@@ -146,11 +145,11 @@ export default {
      * @returns 如果已经有用户信息，直接返回用户信息，否则返回 null
      */
     checkUserInfo(userId) {
-      if (!userId) return null // 如果没有传递 userId return null
+      if (!userId) return null; // 如果没有传递 userId return null
       if (this.requestedUser.hasOwnProperty(userId)) {
-        console.log(`已经请求过用户的信息了:${userId}`)
-        return this.requestedUser[userId]
-      } else return null
+        console.log(`已经请求过用户的信息了:${userId}`);
+        return this.requestedUser[userId];
+      } else return null;
     },
 
     /**
@@ -159,20 +158,20 @@ export default {
      */
     requestUserInfo(userId) {
       debugger;
-      let userInfo = this.checkUserInfo(userId) // 得到用户信息 或则 null
+      let userInfo = this.checkUserInfo(userId); // 得到用户信息 或则 null
       if (userInfo) {
-        this.rightUserInfoData = userInfo
-        this.activeUser = userId
+        this.rightUserInfoData = userInfo;
+        this.activeUser = userId;
       } else {
         CONTACT_INFO(this.loginUserId, userId).then(res => {
-          console.log('获取一个好友信息-->>', res.data)
+          console.log('获取一个好友信息-->>', res.data);
           if (res.data.code === 200) {
-            let rightUserInfoData = res.data.data
-            this.rightUserInfoData = rightUserInfoData
-            this.activeUser = rightUserInfoData.user.id
-            this.requestedUser[this.activeUser] = rightUserInfoData
+            let rightUserInfoData = res.data.data;
+            this.rightUserInfoData = rightUserInfoData;
+            this.activeUser = rightUserInfoData.user.id;
+            this.requestedUser[this.activeUser] = rightUserInfoData;
           }
-        })
+        });
       }
     },
 
@@ -181,57 +180,56 @@ export default {
      * @param rightUserInfoData
      */
     chatWithSingle(rightUserInfoData) {
-      debugger
-      let sessionItem = {}
-      let targetId = '1100_' + rightUserInfoData.user.id + '_' + this.loginUserId
-      sessionItem['miniType'] = 1100
-      sessionItem['targetId'] = targetId
-      sessionItem['id'] = rightUserInfoData.user.id
-      sessionItem['name'] = rightUserInfoData.user.trueName
-      sessionItem['count'] = 0
-      sessionItem['content'] = null
-      sessionItem['sendTime'] = null
-      sessionItem['avatar'] = rightUserInfoData.user.avatar
-      sessionItem['originData'] = rightUserInfoData
+      debugger;
+      let sessionItem = {};
+      let targetId = '1100_' + rightUserInfoData.user.id + '_' + this.loginUserId;
+      sessionItem['miniType'] = 1100;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = rightUserInfoData.user.id;
+      sessionItem['name'] = rightUserInfoData.user.trueName;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = rightUserInfoData.user.avatar;
+      sessionItem['originData'] = rightUserInfoData;
       this.ActionSetMessageStore({
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
-      })
-      this._updateSessionList(sessionItem)     // 更新session边栏
-      this.$router.push('/message_page/msg')
+      });
+      this._updateSessionList(sessionItem);     // 更新session边栏
+      this.$router.push('/message_page/msg');
     },
 
     /**
      * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
      */
     _updateSessionList(sessionItem) {
-      let itemExist = false
+      let itemExist = false;
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
-          itemExist = true
+          itemExist = true;
           this.ActionUpdateSessionList({
             type: 'update',
             method: 'clearCount',
             data: sessionItem
-          })
-          break
+          });
+          break;
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        }
-        this.ActionUpdateSessionList(addObj)
+        };
+        this.ActionUpdateSessionList(addObj);
       }
     }
   },
   created() {
-    this.requestFriendList()          // 请求我的好友列表
+    this.requestFriendList();          // 请求我的好友列表
   }
-}
+};
 </script>
-
 
 <style lang="scss" scoped>
   @import "@s/message/index.scss";
