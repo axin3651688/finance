@@ -1,5 +1,7 @@
 /**
- * 配置参考官网：
+ * author：姜海斌
+ * date: 2019-01-25
+ *
  * 配置参考官网：http://eslint.cn/docs/rules/
  * 博客：https://blog.csdn.net/hsl0530hsl/article/details/78594973
  * webStorm-eslint的配置和使用（2018版）：https://blog.csdn.net/qq_29329037/article/details/80100450

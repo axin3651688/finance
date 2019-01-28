@@ -61,7 +61,7 @@
         </div>
 
         <!--1 默认解析表情-->
-        <div class="content-text" v-else="data.type === 1" v-html="parseEmotions(data.content)"></div>
+        <div class="content-text" v-else v-html="parseEmotions(data.content)"></div>
       </div>
 
     </div>
