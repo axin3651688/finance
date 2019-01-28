@@ -29,7 +29,9 @@
    }
  }
 
- // tooltip 不要外边框
- .el-tooltip__popper .popper__arrow {
-   //  display: none;
+ // 多选框样式
+ .el-checkbox__inner {
+   width: 16px;
+   height: 16px;
+   //  background-color: #fff;
  }

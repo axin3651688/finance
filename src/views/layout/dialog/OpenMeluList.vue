@@ -1,20 +1,36 @@
 <template>
-  <div v-show="showMeluList.isShow" class="Pop">
+  <div v-if="showMeluList.isShow" class="OpenMeluList">
     <!-- 遮罩 -->
-    <div class="pop-cloak" v-if="cloak"></div>
+    <div class="cloak"></div>
     <!-- 侧边栏内容 -->
-    <div class="pop-content-wrap" :style="styleObj">
+    <div class="content-wrap">
       <!-- 动画 -->
       <transition name="slid">
-        <div class="pop-content" v-clickoutside="closePop">
-          <span>111111111111</span>
-          <el-col :span="6" v-for="o in listDatas" :key="o.id">
-            <img :src="o.avatar" class="image">
-            <div class="list">
-              <span>{{o.trueName}}</span>
-            </div>
-          </el-col>
-          <button @click="closePop">close</button>
+        <div class="content" v-clickoutside="closePop">
+          <div class="content-message-top">
+            <span>添加消息接收人</span>
+            <el-checkbox
+              class="checkAll"
+              :indeterminate="isIndeterminate"
+              v-model="checkAll"
+              @change="handleCheckAllChange"
+            >全选</el-checkbox>
+            <span class="iconfont close" @click="closePop">&#xe60e;</span>
+          </div>
+          <!-- <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input> -->
+          <el-checkbox-group
+            v-model="checkedItem"
+            @change="handleCheckedChange"
+            class="content-middle"
+            v-for="i of listDatas"
+            :key="i.id"
+          >
+            <img :src="i.avatar" alt class="img">
+            <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
+            <!-- <el-checkbox :label="i.trueName" class="checkbox-item"></el-checkbox> -->
+          </el-checkbox-group>
+
+          <div style="margin: 15px 0;"></div>
         </div>
       </transition>
     </div>
@@ -24,65 +40,27 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "Pop",
-  props: {
-    showPop: {
-      type: Boolean,
-      default: false
-    },
-    position: {
-      // 位置 top\right\bottom\left
-      type: String,
-      default: "right"
-    },
-    size: {
-      // 大小，可以是高，也可以是宽，看是放在上下还是左右
-      type: Number,
-      default: 240
-    },
-    cloak: {
-      // 是否显示遮罩,默认显示
-      type: Boolean,
-      default: true
-    }
-  },
+  name: "OpenMeluList",
   computed: {
     ...mapGetters(["showMeluList"]),
     listDatas() {
-      console.log(this.showMeluList.data);
-
-      this.showMeluList.data;
+      return this.showMeluList.data;
     },
-    styleObj() {
-      let obj = {};
-      switch (this.position) {
-        case "top":
-          obj.top = 0;
-          obj.left = 0;
-          obj.right = 0;
-          obj.height = this.size + "px";
-          break;
-        case "right":
-          obj.top = 0;
-          obj.bottom = 0;
-          obj.right = 0;
-          obj.width = this.size + "px";
-          break;
-        case "bottom":
-          obj.left = 0;
-          obj.bottom = 0;
-          obj.right = 0;
-          obj.height = this.size + "px";
-          break;
-        case "left":
-          obj.left = 0;
-          obj.bottom = 0;
-          obj.top = 0;
-          obj.width = this.size + "px";
-          break;
-      }
-      return obj;
+    listName() {
+      return this.listDatas.map(function(user) {
+        return user.trueName;
+      });
     }
+  },
+  data() {
+    return {
+      search: "", //搜索框显示的内容
+      showSide: false, // 是否显示边栏
+      checkAll: false,
+      checkedItem: [],
+
+      isIndeterminate: false
+    };
   },
 
   directives: {
@@ -122,49 +100,25 @@ export default {
     ...mapActions(["ShowMeluList"]),
     closePop() {
       this.ShowMeluList({ isShow: false });
+    },
+    handleCheckAllChange(val) {
+      debugger;
+      this.checkedItem = val ? this.listName : [];
+      this.isIndeterminate = false;
+      // console.log(this.checkedItem);
+      this.ShowMeluList({ checkedItem: this.checkedItem });
+    },
+    handleCheckedChange(value) {
+      debugger;
+      console.log(value);
+
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.listDatas.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.listDatas.length;
+      this.ShowMeluList({ checkedItem: value });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.slid-enter-active,
-.slid-leave-active {
-  transition: margin 0.26s;
-}
-
-.slid-enter,
-.slid-leave-to {
-  margin-left: 300px;
-  opacity: 0;
-}
-
-.Pop {
-  z-index: 9999;
-}
-.Pop,
-.pop-cloak {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100vh;
-}
-
-.pop-cloak {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.pop-content-wrap {
-  position: absolute;
-}
-
-.pop-content {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.4);
-}
-</style>

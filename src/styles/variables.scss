@@ -1,31 +1,27 @@
 // 侧边栏大背景颜色
-$menuBg:#189271;
+$menuBg:#001529;
 // 鼠标在项目上的hover颜色
-$menuHover:rgba(1, 57, 29, 0.4);
+$menuHover:#1890ff;
 // 当被激活
-$menuActive:rgba(1, 57, 29, 0.8);
-;
+$menuActive:#1890ff;
 // 项目被激活时字体颜色
 $fontActive:#fff;
 $fontHove:#fff;
 // 侧边宽度
-$sideWidth:280px;
+$sideWidth:256px;
 
 
 /* logo样式调整 */
-$logo_contener_left:36px;
-$logo_contener-height:70px;
-$logo_contener-width: 252px;
-
+$logo_contener-height:64px;
+$logo_contener-width: 200px;
 
 /* 一级目录无子相的 */
-$nochild-margin-left:20px;
-
+$nochild-margin-left:0px;
 
 /* 一级目录 */
 // 侧边栏1级字体默认颜色
-$fontColor1:rgba(0, 0, 0, 0.40);
-$el-submenu-padding-left:20px;
+$el-submenu-padding-left:0px;
+$fontColor1:rgba(159, 167, 174, 1);
 $font-weight1: bold;
 $Icon-font-size: 16px;
 $Icon-margin-right: 8px;
@@ -33,20 +29,18 @@ $__icon-arrow-right: 40px;
 $avatarleft-height:15px;
 $avatarleft-margin-right: 20px;
 
-
-
 /* 二级展开 */
 // 项目展开时触发的所有项目颜色
-$subMenuBg:#189271;
+$subMenuBg:#000c17;
 // 侧边二级字体默认颜色
-$fontColor2:rgba(0, 0, 0, 0.40);
+$fontColor2:rgba(159, 167, 174, 1);
 $font-weight2: bold;
 $font-padding-left:57px;
 
 /* 折叠侧边栏样式 */
 // 折叠宽度
 $min_sideWidth:64px;
-$hideSidebar-logo-padding-left: 0px;
+$hideSidebar-logo-padding-left: 3px;
 $hideSidebar-logo-height: 64px;
 $hideSidebar-logo-width: 88px;
 
@@ -56,9 +50,7 @@ $topHeight:64px;
 $app_contai_padding-top:0px;
 // 内容无  背景
 $nonbugColor:#F0F2F5;
-$infoImg:'~@a/tjsp_info.png';
-
-
+$infoImg:'~@a/infoshow.png';
 /* 顶部栏样式 */
 $top-background: #fff;
 $topcontent-line-height: 64px;
@@ -73,7 +65,7 @@ $colorBgPageGray: #EBECEC; // 页面灰色背景
 $colorBgBtnGray: #A5ACAA; // 灰色按钮
 $colorShadowGreen: rgba(8, 69, 81, 0.1); // 绿色阴影
 
-$colorText1: #000000; // 主要文字颜色，1级黑
+$--colorText1: #000000; // 主要文字颜色，1级黑
 $colorText2: rgba(0, 0, 0, 0.7); // 常规文字颜色，2级黑
 $colorText3: rgba(0, 0, 0, 0.6); // 常规文字颜色，3级黑
 $colorText4: rgba(0, 0, 0, 0.5); // 常规文字颜色，4级黑
@@ -86,10 +78,7 @@ $colorBorder2: #e5e5e5; // 边框颜色，2级黑
 $fontFamilyMain: Microsoft YaHei; // 图题字体，页面中最主要的字体
 
 // 所有icon相关 ***********************
-$iconEmojiUrl: '../../assets/green/emoji.svg'; // 表情
-$iconFileUrl: '../../assets/green/file.svg'; // 文件
-$iconLinkUrl: '../../assets/green/url.svg'; // 链接
-$iconCloseX: '../../assets/green/close.svg'; // 关闭X
-$iconGenderMale: '../../assets/green/gender.svg'; // 性别男
-$iconTest: '../../assets/green/text.svg'; // 文本消息
+$iconEmojiUrl: '../../assets/green/emoji.svg';
+$iconFileUrl: '../../assets/green/file.svg';
+$iconLinkUrl: '../../assets/green/url.svg';
 // 姜海斌抽离出来的变量 end <<=================================================

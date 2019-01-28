@@ -1,7 +1,7 @@
 <template>
   <!--TreeItem组件单独针对树表前面折叠与展开列-->
   <TreeItem
-    v-if="col.isTree  && (tableData.xtype==='tree-grid' || tableData.xtype==='STreeGrid' || tableData.xtype==='JtreeGrid')"
+    v-if="col.isTree"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -31,7 +31,6 @@
     :width="col.width"
     type="index"
   />
-  <!-- :align="col.align||'center'" -->
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
   <el-table-column
     v-else-if="col.type === 'number' "
@@ -123,19 +122,7 @@ export default {
       clickRowParams: {}
     };
   },
-  computed: {
-    // isFolder() {
-    //   return this.col.children && this.col.children.length;
-    // },
-    // getLevel(level) {
-    //   // console.info(level);
-    //   return level + 1;
-    // }
-  },
-  created() {
-    // debugger;
-    // console.log(this.tableData);
-  },
+
   mixins: [EventMixins],
   methods: {
     columnDropDownClick(items) {
@@ -233,10 +220,6 @@ export default {
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       return value;
     }
-
-    // itemShow(index, record) {
-    //   return index === item && record.children && record.children.length > 0;
-    // }
   }
 };
 </script>

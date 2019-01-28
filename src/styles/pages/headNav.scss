@@ -72,9 +72,6 @@
             .iconclass {
                 margin-right: 10px;
                 padding-left: 15px;
-
-                // border-bottom: 2px solid rgb(214, 38, 38);
-
             }
 
             // 下滑线
@@ -165,16 +162,6 @@
                 }
             }
 
-
-
-            // .el-dialog__headerbtn {
-            //     top: 20px;
-            // }
-
-            // .el-dialog__headerbtn .el-dialog__close {
-            //     color: #333333;
-            // }
-
             // 文件夹图标
             .el-tree-node__expand-icon {
                 // border:0;
@@ -227,93 +214,90 @@
                 overflow: auto;
             }
 
-            // 个人信息弹窗
-            .info-dialog {
-                border-radius: 12px;
-                width: 640px;
+        }
 
-                .el-dialog__body {
-                    // position: relative;
-                    display: flex;
-                    padding-top: 0px;
-                    padding-left: 0px;
-                    padding-bottom: 0px;
-                    height: 420px;
-                    border-radius: 12px 0 0 12px;
+    }
 
+    // 个人信息弹窗
+    .info-dialog {
+        border-radius: 12px;
+        width: 640px;
 
+        .el-dialog__body {
+            // position: relative;
+            display: flex;
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-bottom: 0px;
+            height: 420px;
+            border-radius: 12px 0 0 12px;
 
-                    .row-bg {
-                        position: relative;
-                        flex: 1;
-                        margin-right: 30px;
-                        padding-left: 30px;
-                    }
+            .row-bg {
+                position: relative;
+                flex: 1;
+                margin-right: 30px;
+                padding-left: 30px;
+            }
 
-                    .user {
-                        margin-top: 30px;
+            .user {
+                margin-top: 30px;
 
-                        & img {
-                            width: 150px;
-                            height: 150px;
-                            border-radius: 50%;
-                            overflow: hidden;
-                        }
-                    }
-
-                    .img-box {
-                        width: 280px;
-                        height: 420px;
-                        overflow: hidden;
-                        float: left;
-                        background-image: url($infoImg);
-                        // background-repeat: no-repeat;
-                    }
-
-                    .btn-primary {
-                        position: absolute;
-                        right: 40px;
-                        bottom: 30px;
-                        padding: 0;
-                        width: 120px;
-                        height: 40px;
-                        line-height: 40px;
-                        color: #fff;
-                        border: none;
-                        background: $menuHover;
-
-                        border-radius: 12px;
-                        transition: all .3s;
-
-                        &:hover {
-                            box-shadow: 3px 3px 6px rgba(41, 75, 185, 0.3);
-                        }
-                    }
-
-                    .user-item {
-                        padding-top: 30px;
-                        // display: inline-block;
-                        font-size: 16px;
-
-                        .item {
-                            display: flex;
-                            margin-bottom: 20px;
-                        }
-
-                        i {
-                            font-weight: bold;
-                        }
-
-                        span {
-                            margin-left: 30px;
-                        }
-                    }
+                & img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    overflow: hidden;
                 }
             }
 
+            .img-box {
+                width: 280px;
+                height: 420px;
+                overflow: hidden;
+                float: left;
+                background-image: url($infoImg);
+                // background-repeat: no-repeat;
+            }
 
+            .btn-primary {
+                position: absolute;
+                right: 40px;
+                bottom: 30px;
+                padding: 0;
+                width: 120px;
+                height: 40px;
+                line-height: 40px;
+                color: #fff;
+                border: none;
+                background: $menuHover;
+
+                border-radius: 12px;
+                transition: all .3s;
+
+                &:hover {
+                    box-shadow: 3px 3px 6px rgba(41, 75, 185, 0.3);
+                }
+            }
+
+            .user-item {
+                padding-top: 30px;
+                // display: inline-block;
+                font-size: 16px;
+
+                .item {
+                    display: flex;
+                    margin-bottom: 20px;
+                }
+
+                i {
+                    font-weight: bold;
+                }
+
+                span {
+                    margin-left: 30px;
+                }
+            }
         }
-
     }
 
 }

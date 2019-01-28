@@ -8,8 +8,23 @@ import {
 
 /**
  * 取数小接口
- * @param item     vue组件对象
+ * @param item [list of obj] [{},{}]     vue组件对象
  * @param data     点击传过来的code
+ */
+
+/**
+ * @name   :    类型名
+ * @说明   :    参数名
+ * @param  参数名
+ * @param  参数名
+ * @author :    mj
+ * @data   :    2019-01-24
+ */
+
+/**
+ * 
+ * @param {*} item 
+ * @param {*} data 
  */
 export function apiItemDatas(item, data) {
     debugger

@@ -4,7 +4,7 @@
     <template slot-scope="scope">
       <div
         class="tree-ctrl"
-        :style="{'margin-left':scope.row.nlevel*16+'px'}"
+        :style="{'margin-left':scope.row.level*16+'px'}"
         @click="toggleExpanded(scope)"
       >
         <span v-if="iconShow(0,scope.row) ">
@@ -41,18 +41,9 @@ export default {
     iconShow(index, record) {
       return index === 0 && record.leaf == 0;
     },
-
     // 切换下级是否展开
     toggleExpanded(trIndex) {
-      debugger;
-      if (
-        this.tableData.hasOwnProperty("async") &&
-        this.tableData.async == true
-      ) {
-        // console.log(trIndex);
-        // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
-        this.$bus.emit("fetchdata", trIndex); //触发    发送数据
-      }
+      this.$emit("fetchData", trIndex); //触发    发送数据
     }
   }
 };

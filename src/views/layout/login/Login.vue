@@ -11,10 +11,6 @@
         <el-form-item prop="usename">
           <el-input v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <!-- <P>公司</P>
-                  <el-form-item prop="usename">
-                      <el-input v-model="loginUser.usename" placeholder="请选择公司"></el-input>
-        </el-form-item>-->
         <P>密码</P>
         <el-form-item prop="password">
           <!-- 绑定一个keyup事件,实现按回车能模拟点击按钮,触发登陆 -->
@@ -41,7 +37,6 @@ import { login } from "~api/interface.js";
 import { mapActions } from "vuex";
 import router from "@/router";
 import store from "@/store";
-import webSocket from "utils/webSocket";
 export default {
   name: "Login",
   created() {
@@ -159,6 +154,3 @@ export default {
   }
 };
 </script>
-<style lang='scss'>
-@import "~@s/public/login-container.scss";
-</style>
