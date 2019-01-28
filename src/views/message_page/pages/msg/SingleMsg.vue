@@ -39,9 +39,9 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import MessageItem from '@c/message/message_item/MessageItem.vue';
+import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
-import FILE_TYPE from '@a/message/data/file_type.js'; // 可以上传的文件列表
+import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 import {FIND_SINGLE_MSG} from '@m_api/message.js';
 import request from 'utils/http.js';
 
@@ -240,7 +240,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
+  @import "@ms/index.scss";
 
   .SingleMsg {
     display: flex;

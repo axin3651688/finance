@@ -8,7 +8,7 @@
 import {mapActions} from 'vuex';
 import webSocket from 'utils/webSocket';
 import {getClientParams} from 'utils/index';
-import '@s/message/index.scss'; // 全局样式
+import '@ms/index.scss'; // 全局样式
 
 export default {
   name: '',
@@ -94,7 +94,7 @@ export default {
   }
 </style>
 <style lang="scss" scoped>
-  @import "@s/message/variables.scss";
+  @import "@ms/variables.scss";
 
   #app {
     font-family: $fontFamilyMain;

@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
+  @import "@ms/index.scss";
 
   .Message {
     font-family: $fontFamilyMain;

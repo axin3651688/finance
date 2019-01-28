@@ -151,7 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
+  @import "@ms/index.scss";
 
   .vue-module {
     margin: 40px 40px 0 40px;

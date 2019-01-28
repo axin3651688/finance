@@ -31,7 +31,8 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import {FORMAT_MSG_TIME, PARSE_EMOTIONS} from 'utils/message.js';
+import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
+import {FORMAT_MSG_TIME} from 'utils/message.js';
 
 export default {
   name: 'Session',
@@ -77,7 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@s/message/index.scss";
+  @import "~@ms/index.scss";
 
   .Session {
     height: 100%;

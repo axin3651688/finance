@@ -77,10 +77,11 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message';
-import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue';
-import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue';
-import emotionSprites from '@a/message/data/emotion_sprites.json';
+import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
+import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
+import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue';
+import MyAudioPlayer from '@mc/my_audio_player/MyAudioPlayer.vue';
+import emotionSprites from '@ma/data/emotionSprites.json';
 
 export default {
   name: 'MessageItem',
@@ -102,7 +103,7 @@ export default {
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
-      return FORMAT_MSG_TIME(publishTime);
+      return MSG_TIME_FORMAT(publishTime);
     }
   },
   methods: {
@@ -114,8 +115,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/variables.scss";
+  @import "@ms/index.scss";
+  @import "@ms/variables.scss";
 
   a {
     display: inline-block;

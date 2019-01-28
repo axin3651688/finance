@@ -183,8 +183,8 @@ export default {
 
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/variables.scss";
+  @import "@ms/index.scss";
+  @import "@ms/variables.scss";
 
   .vue-module {
     display: flex;

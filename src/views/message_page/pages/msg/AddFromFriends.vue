@@ -195,8 +195,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/variables.scss";
-  @import "@s/message/icons.scss";
+  @import "@ms/variables.scss";
+  @import "@ms/icons.scss";
 
   .AddFromFriends {
     display: flex;

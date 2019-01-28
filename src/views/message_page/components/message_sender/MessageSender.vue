@@ -101,8 +101,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/icons.scss";
+  @import "@ms/index.scss";
+  @import "@ms/icons.scss";
 
   .chat-tool {
     position: relative;

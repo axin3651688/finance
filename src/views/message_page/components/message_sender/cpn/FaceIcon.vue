@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import emotion_sprites from '@a/message/data/emotion_sprites.json'
+import emotion_sprites from '@ma/data/emotionSprites.json'
 
 export default {
   name: "FaceIcon",
@@ -77,8 +77,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/icons.scss";
+  @import "@ms/index.scss";
+  @import "@ms/icons.scss";
 
   .face-pop {
     $facePopHeight: 206px;

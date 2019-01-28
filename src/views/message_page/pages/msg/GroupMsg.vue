@@ -136,7 +136,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import SidebarPop from '@c/message/sidebar_pop/SidebarPop';
-import MessageItem from '@c/message/message_item/MessageItem.vue';
+import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import {
   findGroupMsg,
@@ -146,7 +146,7 @@ import {
   DISSOLU_GROUP,
   UPLOAD_FILE
 } from '@m_api/message.js';
-import FILE_TYPE from '@a/message/data/file_type.js'; // 可以上传的文件列表
+import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 
 export default {
   name: 'GroupMsg',
@@ -511,7 +511,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
+  @import "@ms/index.scss";
 
   .GroupMsg {
     display: flex;

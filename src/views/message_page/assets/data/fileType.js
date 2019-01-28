@@ -1,4 +1,4 @@
-const FILE_TYPE = [
+const FileType = [
   {
     type: 2,
     suffix: 'jpg'
@@ -149,4 +149,4 @@ const FILE_TYPE = [
   }
 ];
 
-export default FILE_TYPE
+export default FileType

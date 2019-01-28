@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/variables.scss";
+  @import "@ms/variables.scss";
 
   .MessageContacts {
     box-sizing: border-box;
