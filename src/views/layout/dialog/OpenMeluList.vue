@@ -6,18 +6,17 @@
     <div class="pop-content-wrap" :style="styleObj">
       <!-- 动画 -->
       <transition name="slid">
-        <div class="pop-content" v-clickoutside="closePop" v-show="showSide">
+        <div class="pop-content" v-clickoutside="closePop" >
           <div class="message">
             <p>添加消息接收人</p>
           </div>
           <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input>
           <div class="useravatar">
-            <ul>
-              <li>
-                <img src="" alt="">
-                <span>11</span>
-              </li>
-            </ul>
+            <div class="row" v-for="i in listDatas" :key="i.id">
+              {{listDatas.trueName}}
+              <img :src="i.avatar" alt="" class="img">
+              <p>{{i.trueName}}</p>
+            </div>
           </div>
           <!-- <button @click="closePop">close</button> -->
         </div>
@@ -53,6 +52,13 @@ export default {
   },
   computed: {
     ...mapGetters(["showMeluList"]),
+    listDatas() {
+    //   this.list = this.showMeluList.data
+    //  return this.showMeluList.data;
+      console.log("bbbb",this.$store.getters.showMeluList.data);
+       return this.$store.getters.showMeluList.data
+      
+    },
     styleObj() {
       let obj = {};
       switch (this.position) {
@@ -87,9 +93,11 @@ export default {
   data() {
     return {
       search:'',//搜索框显示的内容
-      showSide: false // 是否显示边栏
+      showSide: false, // 是否显示边栏
+      list:[]
     };
   },
+
   directives: {
     clickoutside: {
       bind(el, binding, vnode) {
@@ -128,9 +136,6 @@ export default {
     closePop() {
       this.ShowMeluList({ isShow: false });
     }
-  },
-  mounted() {
-    this.showSide = true;
   }
 };
 </script>
@@ -218,6 +223,27 @@ export default {
 }
 .useravatar{
   margin-top:25px;
+  padding:0 20px;
+  .row{
+    height: 50px;
+    position: relative;
+    margin-bottom:10px;
+      .img{
+      width: 50px;
+      height:50px;
+      border-radius:50%;
+    }
+    p{
+      position: absolute;
+      top: 0;
+      left: 70px;
+      font-size:16px;
+      font-family:Microsoft YaHei;
+      font-weight:400;
+      color:rgba(0,0,0,0.80);
+      opacity:1;
+    }
+  }
 }
 ul,li{
   list-style-type: none;
