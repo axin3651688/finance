@@ -34,24 +34,24 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {UPLOAD_FILE} from '@m_api/message.js'
+import {mapGetters} from 'vuex';
+import {UPLOAD_FILE} from '@m_api/message.js';
 
 export default {
-  name: "MessageSender",
+  name: 'MessageSender',
   components: {
     FaceIcon: () => import('./cpn/FaceIcon.vue')
   },
   data() {
     return {
       sendText: '',
-      showFacePop: false, // 是否弹出聊天表情
-    }
+      showFacePop: false // 是否弹出聊天表情
+    };
   },
   computed: {
     ...mapGetters(['user']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     }
   },
   methods: {
@@ -60,44 +60,44 @@ export default {
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      console.log('要上传的文件信息：', file)
+      console.log('要上传的文件信息：', file);
       // debugger
-      let fd = new FormData()
-      fd.append('file', file)
-      fd.append('userId', this.loginUserId)
-      fd.append('size', file.size)
-      console.log('要上传的文件信息2：', fd)
-      this.submitUpload(fd)
-      return true
+      let fd = new FormData();
+      fd.append('file', file);
+      fd.append('userId', this.loginUserId);
+      fd.append('size', file.size);
+      console.log('要上传的文件信息2：', fd);
+      this.submitUpload(fd);
+      return true;
     },
     submitUpload(fd) {
       if (fd) {
         UPLOAD_FILE(fd).then(res => {
-          console.log('上传群文件res', res)
+          console.log('上传群文件res', res);
           // debugger
           if (res.data.code === 200 && res.data.data) {
-            this.sendMsg('', res.data.data)
+            this.sendMsg('', res.data.data);
           }
-        })
+        });
       }
     },
 
     // 点击表情，把表情添加到输入框, 同时 focus 输入框, 隐藏表情弹窗
     handleAddFaceToInput(face) {
       // debugger
-      this.sendText += face
-      this.showFacePop = false
-      this.$refs.textarea.focus()
+      this.sendText += face;
+      this.showFacePop = false;
+      this.$refs.textarea.focus();
     },
 
     // 向父组件触发发送消息
-    sendMsg(sendText,fileData) {
-      debugger
-      this.$emit('sendMsg', sendText.trim(), fileData)
-      this.sendText = ''
+    sendMsg(sendText, fileData) {
+      debugger;
+      this.$emit('sendMsg', sendText.trim(), fileData);
+      this.sendText = '';
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

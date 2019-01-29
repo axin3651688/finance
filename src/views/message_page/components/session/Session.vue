@@ -15,7 +15,7 @@
               <img :src="item.avatar">
             </div>
           </el-badge>
-          <span class="title">{{item.name}}</span>
+          <span class="title" :title="item.name">{{item.name}}</span>
           <!--{{item.miniType}}-->
           <!--<span class="publish-time mt" v-if="item.sendTime">{{item.sendTime | formatTime}}</span>-->
         </div>
@@ -32,7 +32,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {FORMAT_MSG_TIME} from 'utils/message.js';
+import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
 
 export default {
   name: 'Session',
@@ -50,7 +50,7 @@ export default {
   filters: {
     // 格式化时间戳
     formatTime(time) {
-      return FORMAT_MSG_TIME(time);
+      return MSG_TIME_FORMAT(time);
     }
   },
   methods: {
@@ -60,13 +60,17 @@ export default {
       return PARSE_EMOTIONS(content);
     },
 
-    // 激活当前item（设置选中状态）
+    /**
+     * 当session条目被点击时，激活当前item（设置选中状态）
+     */
     setItemActive(item) {
-      debugger;
+      // debugger;
+      // vuex 状态设置
       this.ActionSetMessageStore({
         sessionActiveItem: item,
         miniType: item.miniType
       });
+      // vuex session 列表更行
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',

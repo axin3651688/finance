@@ -26,7 +26,9 @@
     <!-- 中间聊天显示区-->
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
+        <template v-if="singleMsgList.length">
+          <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
+        </template>
       </el-scrollbar>
     </div>
 
@@ -42,8 +44,8 @@ import {mapGetters} from 'vuex';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
-import {FIND_SINGLE_MSG} from '@m_api/message.js';
 import request from 'utils/http.js';
+import {FIND_SINGLE_MSG, UPDATE_CHAT_STATE_TIME} from '@m_api/message.js';
 
 export default {
   name: 'SingleMsg',
@@ -144,7 +146,7 @@ export default {
           type: 1,
           fileId: null,
           id: 'cnbift' + new Date().getTime() + new Date().getTime(),
-          sendTime: new Date().getTime(),
+          // sendTime: new Date().getTime(), //
           seq: 0
         }
       };
@@ -225,10 +227,29 @@ export default {
             this.$nextTick(() => {
               this.chatWindowScrollToBottom();
             });
+            // 请求服务器更新已读消息状态
+            let lastItem = this.singleMsgList[this.singleMsgList.length - 1];
+            this._requestUpdateChatState(lastItem);
           }
         }).catch(err => {
           console.log('获取单聊信息catch：', err);
         });
+    },
+
+    /**
+     * 请求服务器消除未读消息计数
+     */
+    _requestUpdateChatState(lastItem) {
+      debugger;
+      let data = {
+        'endTime': lastItem.sendTime,
+        'id': lastItem.id,
+        'miniType': 1100,
+        'receiverId': lastItem.receiverId,
+        'senderId': lastItem.senderId,
+        'state': 2
+      };
+      UPDATE_CHAT_STATE_TIME(data);
     }
 
   },

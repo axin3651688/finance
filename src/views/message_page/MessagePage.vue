@@ -63,15 +63,17 @@ export default {
     _initSessionBar(sessionList) {
       // debugger;
       let session = [];         // 处理过后的session队列
-
+      let targetIdList = []; // 记录已经添加过的，防止重复
       for (let item of sessionList) {
         if (item.senderId === this.loginUserId) continue; // 如果发送人是自己，就不必要加入到session列表
         let sessionItem = {};
         let targetId = `${item.miniType}_${item.senderId}_${item.receiverId}`;
+        if (targetIdList.indexOf(targetId) > -1) continue; // 如果添加过了就不再添加
+        targetIdList.push(targetId);
         sessionItem['miniType'] = item.miniType;
         sessionItem['targetId'] = targetId; // 给每个item加一个targetId 作为唯一标识
-        sessionItem['id'] = item.miniType === 1100 ? item.senderId : item.receiverId; // 此处注意一下消息接受的目标对象
-        sessionItem['name'] = item.name || item.otherName;
+        sessionItem['id'] = item.miniType === 1101 ? item.receiverId : item.senderId; // 此处注意一下消息接受的目标对象
+        sessionItem['name'] = item.miniType === 1101 ? item.otherName : item.name;
         sessionItem['count'] = item.count;
         sessionItem['content'] = item.content;
         sessionItem['sendTime'] = item.sendTime;

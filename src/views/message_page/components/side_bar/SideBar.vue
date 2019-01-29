@@ -62,17 +62,17 @@
 </template>
 
 <script>
-import RelativePop from '@c/message/relative_pop/RelativePop.vue'
-import {logout} from "~api/interface.js"
-import {mapGetters, mapActions} from "vuex"
+import RelativePop from '@c/message/relative_pop/RelativePop.vue';
+import {logout} from '~api/interface.js';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
-  name: "SiderBar",
+  name: 'SiderBar',
   data() {
     return {
       dialogQuitVisible: false, // 是否显示退出提示弹窗
       showMyInfo: false // 是否显示我的（登录用户的信息）
-    }
+    };
   },
   components: {
     RelativePop,
@@ -82,44 +82,44 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     messageCount() {
-      let count = 0
+      let count = 0;
       if (this.messageStore.sessionList) {
         this.messageStore.sessionList.forEach(sessionItem => {
-          count += sessionItem.count
-        })
+          count += sessionItem.count;
+        });
       }
-      return count
+      return count;
     },
     newServerMsg() { // 服务器推送的消息
-      return this.messageStore.newServerMsg
+      return this.messageStore.newServerMsg;
     },
     serverAck() { // 服务器推送的 ack回执
-      return this.messageStore.serverAck
+      return this.messageStore.serverAck;
     }
   },
   watch: {
-    //监听服务器推送的消息
+    // 监听服务器推送的消息
     newServerMsg(val) {
-      console.log('监听到服务器推送：', val)
-      debugger
-      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`
-      let sessionItem = {}
-      sessionItem['miniType'] = val.code
-      sessionItem['targetId'] = targetId
-      sessionItem['count'] = 1
-      sessionItem['content'] = val.data.content
-      sessionItem['sendTime'] = val.data.sendTime
-      sessionItem['originData'] = val.data
+      console.log('监听到服务器推送：', val);
+      debugger;
+      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
+      let sessionItem = {};
+      sessionItem['miniType'] = val.code;
+      sessionItem['targetId'] = targetId;
+      sessionItem['count'] = 1;
+      sessionItem['content'] = val.data.content;
+      sessionItem['sendTime'] = val.data.sendTime;
+      sessionItem['originData'] = val.data;
       switch (val.code) {
         case 1100: // 单聊
-          sessionItem['name'] = val.data.name
-          sessionItem['avatar'] = val.data.avatar
-          sessionItem['id'] = val.data.senderId
-          break
+          sessionItem['name'] = val.data.name;
+          sessionItem['avatar'] = val.data.avatar;
+          sessionItem['id'] = val.data.senderId;
+          break;
         case 1101: // 群聊
-          sessionItem['name'] = val.data.otherName
-          sessionItem['avatar'] = val.data.otherAvatar
-          sessionItem['id'] = val.data.receiverId
+          sessionItem['name'] = val.data.otherName;
+          sessionItem['avatar'] = val.data.otherAvatar;
+          sessionItem['id'] = val.data.receiverId;
       }
 
       // 如果这条消息的targetId不在sessionList中，这加到队首
@@ -127,53 +127,50 @@ export default {
         if (item.targetId === targetId) { // 在队列
           // 在队列, 并且没有打开聊天窗口，则更新当条消息
           if (targetId === this.messageStore.sessionActiveItem.targetId && this.$route.name.toLowerCase() === 'msg') {
-            return false // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
+            return false; // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
           }
           this.ActionUpdateSessionList({ // 增加一条计数
             type: 'update',
             method: 'addCount',
             data: sessionItem
-          })
-          return false
+          });
+          return false;
         }
       }
       this.ActionUpdateSessionList({
         type: 'addItem',
         data: sessionItem
-      })
-    },
+      });
+    }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     doLogout() {
-      // todo备以后用,先不删
-      localStorage.removeItem("database")
-      this.$store.dispatch("clearCurrentState")
-
-      this.dialogQuitVisible = false
+      this.dialogQuitVisible = false;
       logout()
         .then(res => {
           // 清除token
-          localStorage.removeItem("authorization")
-          this.$router.push("/message_login")
+          localStorage.removeItem('database');
+          localStorage.removeItem('authorization');
+          this.$router.push('/message_login');
+          this.$store.dispatch('clearCurrentState');
 
           // electron 退出处理
           if (window.require) {
-            var ipc = window.require('electron').ipcRenderer
+            var ipc = window.require('electron').ipcRenderer;
           }
           if (window.require) {
-            ipc.send('web_outLogin', '')
+            ipc.send('web_outLogin', '');
           }
-
         })
         .catch(res => {
-          console.error("退出请求失败")
-          localStorage.removeItem("authorization")
-          this.$router.push("/message_login")
-        })
-    },
+          console.error('退出请求失败');
+          localStorage.removeItem('authorization');
+          this.$router.push('/message_login');
+        });
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

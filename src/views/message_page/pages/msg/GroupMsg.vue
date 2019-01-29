@@ -59,7 +59,9 @@
     <!-- 中间聊天显示区-->
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
-        <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
+        <template v-if="groupMsgList.length">
+          <message-item v-for="item in groupMsgList" :key="item.id" :data="item"></message-item>
+        </template>
       </el-scrollbar>
     </div>
 
@@ -138,15 +140,17 @@ import {mapGetters, mapActions} from 'vuex';
 import SidebarPop from '@c/message/sidebar_pop/SidebarPop';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
+import request from 'utils/http.js';
+import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 import {
   findGroupMsg,
   GROUP_INFO,
   QUIT_GROUP,
   EDIT_GROUP,
   DISSOLU_GROUP,
-  UPLOAD_FILE
+  UPLOAD_FILE,
+  UPDATE_GROUPCHAT_STATE
 } from '@m_api/message.js';
-import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 
 export default {
   name: 'GroupMsg',
@@ -275,6 +279,19 @@ export default {
       });
     },
 
+    // POST /api/save_group_msg
+    _httpSend(data) {
+      debugger;
+      request({
+        method: 'post',
+        url: 'api/api/save_group_msg',
+        data: data.data
+      }).then(res => {
+        console.log('_httpSend res:', res);
+        debugger;
+      });
+    },
+
     // 发送聊天内容,发送完一条消息后要清空输入框
     handleSendMsg(sendText, fileData) {
       debugger;
@@ -290,8 +307,8 @@ export default {
           receiverId: this.groupId,
           type: 1,
           fileId: null,
-          id: 'cnbift' + new Date().getTime() + new Date().getTime(),
-          sendTime: new Date().getTime()
+          id: 'cnbift' + new Date().getTime() + new Date().getTime()
+          // sendTime: new Date().getTime()
         }
       };
 
@@ -319,7 +336,9 @@ export default {
         });
         return;
       }
-      socket.deliver(sendData);
+
+      this._httpSend(sendData); // http 发送消息
+      // socket.deliver(sendData); // socket 发送消息
       this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
@@ -439,6 +458,9 @@ export default {
           this.$nextTick(() => {
             this.chatWindowScrollToBottom();
           });
+          // 请求服务器更新已读消息状态
+          let lastItem = this.groupMsgList[this.groupMsgList.length - 1];
+          this._requestUpdateChatState(lastItem);
         }
       }).catch(err => {
         console.log('群消息', err);
@@ -494,6 +516,16 @@ export default {
       }).catch(err => {
         console.log('解散群聊异常：', err);
       });
+    },
+
+    /**
+     * 请求服务器消除未读消息计数
+     */
+    _requestUpdateChatState(lastItem) {
+      debugger;
+      let data = {
+      };
+      UPDATE_GROUPCHAT_STATE(data);
     }
   },
   mounted() {
