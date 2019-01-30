@@ -86,8 +86,9 @@ export default {
       if (val.code !== 1100 || val.data.senderId !== this.receiverId) return false; // 如果不是单聊消息或接受对象不是当前窗口就不处理
       console.log('监听到服务器推送：', val);
       let item = val.data;
+      this._socketUpdateChatState(item); // 收到消息后
       item['miniType'] = val.code;
-      this.singleMsgList.push(item);
+      this.singleMsgList.push(item); // 把消息发到聊天窗口
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
         this.chatWindowScrollToBottom();
       });
@@ -98,8 +99,8 @@ export default {
      */
     serverAck(val) {
       // console.log('服务器ACK：', val);
-      debugger;
-      socket.send(JSON.stringify(val));
+      // debugger;
+      socket.deliver(val);
     }
 
   },
@@ -115,18 +116,6 @@ export default {
       if (this.activeBtn !== type) {
         this.activeBtn = type;
       }
-    },
-
-    _httpSend(data) {
-      debugger;
-      request({
-        method: 'post',
-        url: 'api/api/save_single_msg',
-        data: data.data
-      }).then(res => {
-        console.log('_httpSend res:', res);
-        debugger;
-      });
     },
 
     // 发送消息
@@ -156,7 +145,6 @@ export default {
         sendData.data.fileId = fileData.id;
         for (let item of FILE_TYPE) {
           // debugger;
-          console.log(item);
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type;
             pushData.type = item.type;
@@ -178,17 +166,18 @@ export default {
         return;
       }
       // socket.deliver(sendData);
-      this._httpSend(sendData);
-      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
+      this._httpSend(sendData, pushData);
+      // this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
-    addMsgToWindow(pushData) {
+    addMsgToWindow(pushData, sendTime) {
+      debugger;
       let data = {
         avatar: this.user.user.avatar,
         content: '',
         name: this.user.user.trueName,
-        sendTime: new Date().getTime(),
+        sendTime: sendTime,
         type: 1,
         senderId: this.loginUserId
       };
@@ -214,6 +203,9 @@ export default {
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
+    /**
+     * 查询单聊聊天历史记录
+     */
     findSingleMsg() {
       // debugger
       // ajax请求获取单聊消息内容
@@ -229,7 +221,7 @@ export default {
             });
             // 请求服务器更新已读消息状态
             let lastItem = this.singleMsgList[this.singleMsgList.length - 1];
-            this._requestUpdateChatState(lastItem);
+            this._httpUpdateChatState(lastItem);
           }
         }).catch(err => {
           console.log('获取单聊信息catch：', err);
@@ -237,9 +229,26 @@ export default {
     },
 
     /**
-     * 请求服务器消除未读消息计数
+     * 使用http的方式发送消息
+     * sendData:
      */
-    _requestUpdateChatState(lastItem) {
+    _httpSend(sendData, pushData) {
+      debugger;
+      request({
+        method: 'post',
+        url: 'api/api/save_single_msg',
+        data: sendData.data
+      }).then(res => {
+        console.log('_httpSend res:', res);
+        this.addMsgToWindow(pushData, res.data.data.sendTime); // 本地处理把消息推到聊天窗口显示
+        debugger;
+      });
+    },
+
+    /**
+     * http请求服务器消除未读消息计数
+     */
+    _httpUpdateChatState(lastItem) {
       debugger;
       let data = {
         'endTime': lastItem.sendTime,
@@ -250,6 +259,24 @@ export default {
         'state': 2
       };
       UPDATE_CHAT_STATE_TIME(data);
+    },
+
+    /**
+     * socket请求服务器消除未读消息计数
+     */
+    _socketUpdateChatState(lastItem) {
+      debugger;
+      let data = {
+        code: 1006,
+        data: {
+          'id': lastItem.id,
+          'miniType': 1100,
+          'receiverId': lastItem.receiverId,
+          'senderId': lastItem.senderId,
+          'state': 2
+        }
+      };
+      socket.deliver(data);
     }
 
   },

@@ -63,6 +63,7 @@ export default function webSocket(data) {
   };
 
   websocket.deliver = function (data) {
+    debugger;
     if (socketIsClosed) {
       closeShow();
       return;

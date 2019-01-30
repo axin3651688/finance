@@ -42,6 +42,7 @@ export function messagePageSocketProcess(data) {
       _processLoginExpired(data);
       break;
     case 1006: // 对方收到消息或读了消息
+      debugger;
       console.log('socketCoreProcess: 1006');
       break;
     case 1100: // 单聊

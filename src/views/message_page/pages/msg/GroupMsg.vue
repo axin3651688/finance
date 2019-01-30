@@ -208,6 +208,7 @@ export default {
       if (val.code !== 1101 || val.data.receiverId !== this.groupId) return false;
       console.log('监听到服务器推送：', val);
       let item = val.data;
+      this._requestUpdateChatState(item);
       item['miniType'] = val.code;
       this.groupMsgList.push(item);
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
@@ -280,14 +281,15 @@ export default {
     },
 
     // POST /api/save_group_msg
-    _httpSend(data) {
+    _httpSend(sendData, pushData) {
       debugger;
       request({
         method: 'post',
         url: 'api/api/save_group_msg',
-        data: data.data
+        data: sendData.data
       }).then(res => {
         console.log('_httpSend res:', res);
+        this.addMsgToWindow(pushData, res.data.data.sendTime); // 本地处理把消息推到聊天窗口显示
         debugger;
       });
     },
@@ -337,18 +339,17 @@ export default {
         return;
       }
 
-      this._httpSend(sendData); // http 发送消息
+      this._httpSend(sendData, pushData); // http 发送消息
       // socket.deliver(sendData); // socket 发送消息
-      this.addMsgToWindow(pushData); // 本地处理把消息推到聊天窗口显示
     },
 
     // 把发送的内容显示到聊天窗口
-    addMsgToWindow(pushData) {
+    addMsgToWindow(pushData, sendTime) {
       let data = {
         avatar: this.user.user.avatar,
         content: '',
         name: this.user.user.trueName,
-        sendTime: new Date().getTime(),
+        sendTime: sendTime,
         type: 1,
         senderId: this.loginUserId
       };
@@ -372,7 +373,6 @@ export default {
     chatWindowScrollToBottom() {
       // debugger;
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      // console.log('找滚动窗口：', chatWindow);
       chatWindow.scrollTop = chatWindow.scrollHeight;
     },
 
@@ -524,6 +524,14 @@ export default {
     _requestUpdateChatState(lastItem) {
       debugger;
       let data = {
+        'groupId': lastItem.receiverId,
+        'id': lastItem.id,
+        'miniType': lastItem.miniType,
+        'receiverId': lastItem.receiverId,
+        'sendTime': lastItem.sendTime,
+        'senderId': lastItem.senderId,
+        'state': 2,
+        'userIds': [this.loginUserId]
       };
       UPDATE_GROUPCHAT_STATE(data);
     }

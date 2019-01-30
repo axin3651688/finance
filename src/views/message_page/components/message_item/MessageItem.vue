@@ -28,7 +28,7 @@
         <!--3文件-->
         <div v-else-if="data.type === 3">
           <template v-if="data.file">
-            <a :href="data.file.hdUrl" target="_blank">
+            <a :href="data.file.hdUrl" :download="data.file.text+data.file.category">
               <div class="file-wrap">
                 <!--{{data.file}}-->
                 <div class="left">

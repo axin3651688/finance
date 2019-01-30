@@ -76,7 +76,6 @@ export default {
   },
   components: {
     RelativePop,
-    MyDialog: () => import('@c/message/my_dialog/MyDialog.vue'),
     UserInfo: () => import('@mc/user_info/UserInfo.vue')
   },
   computed: {

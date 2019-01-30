@@ -13,8 +13,6 @@
           <single-msg v-if="miniType === 1100"></single-msg>
           <group-msg v-if="miniType === 1101"></group-msg>
           <analysis v-if="miniType === 11021"></analysis>
-          <!--<analysis></analysis>-->
-          <!--<Todos></Todos>-->
         </template>
       </div>
     </div>
