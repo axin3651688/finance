@@ -13,6 +13,7 @@
           <single-msg v-if="miniType === 1100"></single-msg>
           <group-msg v-if="miniType === 1101"></group-msg>
           <analysis v-if="miniType === 11021"></analysis>
+          <chat v-if="miniType === 233"></chat>
         </template>
       </div>
     </div>
@@ -32,7 +33,8 @@ export default {
     SingleMsg: () => import('./SingleMsg'),         // 单聊消息
     NewFriends: () => import('./NewFriends'),       // 新朋友
     GroupHelper: () => import('./GroupHelper'),     // 群助手
-    GroupMsg: () => import('./GroupMsg')            // 群助手
+    GroupMsg: () => import('./GroupMsg'),           // 群聊天
+    Chat: () => import('./Chat')            // Chat
   },
   computed: {
     ...mapGetters(['messageStore']),

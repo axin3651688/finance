@@ -23,12 +23,14 @@
       </transition>
     </div>
     <div class="input-wrap">
-        <textarea class="chat-textarea"
-                  placeholder="请输入文字，按enter建发送信息"
-                  v-model="sendText"
-                  ref="textarea"
-                  @keyup.enter.prevent="sendMsg(sendText)"
-        ></textarea>
+        <div class="input-wrap__inner">
+          <textarea class="chat-textarea"
+                    placeholder="请输入文字，按enter建发送信息"
+                    v-model="sendText"
+                    ref="textarea"
+                    @keyup.enter.prevent="sendMsg(sendText)"
+          ></textarea>
+        </div>
     </div>
   </div>
 </template>
@@ -104,6 +106,11 @@ export default {
   @import "@ms/index.scss";
   @import "@ms/icons.scss";
 
+  .MessageSender{
+    display: flex;
+    flex-direction: column;
+  }
+
   .chat-tool {
     position: relative;
     margin-bottom: 18px;
@@ -149,10 +156,15 @@ export default {
 
   .input-wrap {
     width: 100%;
+    flex: 1;
+    .input-wrap__inner{
+      height: 100%;
+    }
 
     .chat-textarea {
       box-sizing: border-box;
       min-height: 100px;
+      height: 100%;
       padding: 10px 20px;
       color: $colorTextBlack6;
       background: $colorThemePrimary;

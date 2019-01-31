@@ -8,7 +8,6 @@
 import {mapActions} from 'vuex';
 import webSocket from 'utils/webSocket';
 import {getClientParams} from 'utils/index';
-import '@ms/index.scss'; // 全局样式
 
 export default {
   name: '',

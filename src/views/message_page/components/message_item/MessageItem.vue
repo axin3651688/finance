@@ -138,9 +138,7 @@ export default {
     display: flex;
     box-sizing: border-box;
     width: 100%;
-    padding: 10px 20px;
-    margin-bottom: 15px;
-    background: #ffffff;
+    margin-bottom: 25px;
 
     .avatar {
       .img-box {

@@ -25,6 +25,7 @@
         </p>
         <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
       </li>
+      <li @click="setItemActive({miniType: 233})">test</li>
     </ul>
   </el-scrollbar>
 </template>
