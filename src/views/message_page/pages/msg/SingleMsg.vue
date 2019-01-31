@@ -1,5 +1,6 @@
 <template>
   <div class="SingleMsg">
+    <!--聊天头部-->
     <div class="top">
       <div class="title">
         <div class="img-box">
@@ -27,7 +28,12 @@
     <div class="middle">
       <el-scrollbar style="height: 100%" ref="chatWindow">
         <template v-if="singleMsgList.length">
-          <message-item v-for="item in singleMsgList" :key="item.id" :data="item"></message-item>
+          <message-item
+            v-for="item in singleMsgList"
+            :key="item.id"
+            :data="item"
+            @showImgGallery="handleShowImgGallery"
+          />
         </template>
       </el-scrollbar>
     </div>
@@ -36,11 +42,15 @@
     <div class="bottom">
       <message-sender @sendMsg="handleSendMsg"></message-sender>
     </div>
+
+    <!--图片展示-->
+    <vue-gallery-slideshow :images="imgList" :index="imgIndex" @close="imgIndex = null"/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
+import VueGallerySlideshow from 'vue-gallery-slideshow';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
@@ -49,14 +59,18 @@ import {FIND_SINGLE_MSG, UPDATE_CHAT_STATE_TIME} from '@m_api/message.js';
 
 export default {
   name: 'SingleMsg',
-  components: {MessageItem, MessageSender},
+  components: {MessageItem, MessageSender, VueGallerySlideshow},
   data() {
     return {
       msgPaddingList: [],                     // 待发送消息队列
       activeBtn: 'message',                   // 聊天（消息/文件）默认显示什么
       receiverName: '',                       // 聊天对象名称
       receiverAvatar: '',                     // 聊天对象头像
-      singleMsgList: []                      // 单聊消息队列
+      singleMsgList: [],                      // 单聊消息队列
+      imgList: [
+        'http://192.168.2.214:8000/group2/M00/00/0A/wKgC21xRQtCAbaHiAAAb-goZO7U602.png',
+        'http://192.168.2.214:8000/group1/M00/00/00/wKgC2FvZb4SAb0YKAC2E5VHFHu4227.png'],                            // 聊天图片列表
+      imgIndex: null                          // 展示的图片序号
     };
   },
   computed: {
@@ -228,6 +242,12 @@ export default {
         });
     },
 
+    handleShowImgGallery(imgUrl) {
+      let index = this.imgList.indexOf(imgUrl);
+      this.imgIndex = 0;
+      debugger;
+    },
+
     /**
      * 使用http的方式发送消息
      * sendData:
@@ -249,7 +269,7 @@ export default {
      * http请求服务器消除未读消息计数
      */
     _httpUpdateChatState(lastItem) {
-      debugger;
+      // debugger;
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,

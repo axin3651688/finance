@@ -14,13 +14,11 @@
         <!--2图片-->
         <div v-if="data.type === 2">
           <template v-if="data.type === 2 && data.file">
-            <a :href="data.file.hdUrl" target="_blank">
-              <div class="img-wrap">
-                <div class="img-box">
-                  <img :src="data.file.thumbUrl" :alt="data.content">
-                </div>
+            <div class="img-wrap">
+              <div class="img-box">
+                <img :src="data.file.thumbUrl" :alt="data.content" @click="showImgGallery(data.file.thumbUrl)">
               </div>
-            </a>
+            </div>
           </template>
           <span v-else>图片异常···</span>
         </div>
@@ -28,7 +26,7 @@
         <!--3文件-->
         <div v-else-if="data.type === 3">
           <template v-if="data.file">
-            <a :href="data.file.hdUrl" :download="data.file.text+data.file.category">
+            <a :href="data.file.hdUrl" download="">
               <div class="file-wrap">
                 <!--{{data.file}}-->
                 <div class="left">
@@ -107,8 +105,21 @@ export default {
     }
   },
   methods: {
+    /**
+     * 解析聊天表情
+     * @param content {String}: 聊天的文本内容
+     * @returns {*}
+     */
     parseEmotions(content) {
       return PARSE_EMOTIONS(content);
+    },
+
+    /**
+     * emit父组件展示图片
+     * @param imgUrl {String}: 图片url地址
+     */
+    showImgGallery(imgUrl) {
+      this.$emit('showImgGallery', imgUrl);
     }
   }
 };
@@ -234,6 +245,7 @@ export default {
         width: 100px;
         height: 100px;
         overflow: hidden;
+        cursor: pointer;
 
         img {
           max-width: 100%;
