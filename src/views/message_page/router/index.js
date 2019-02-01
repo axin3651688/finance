@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
   // mode: 'history',
@@ -9,18 +9,18 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/message_page/home',
+      redirect: '/message_page/home'
     },
     {
       path: '*',
       name: '/404',
       component: () =>
-        import('@v/common/404'),
+        import('@v/common/404')
     },
 
     {
       path: '/message_page',
-      redirect: '/message_page/home',
+      redirect: '/message_page/home'
     },
     {
       path: '/message_page',
@@ -28,18 +28,27 @@ const router = new Router({
       component: () => import('@v/message_page/MessagePage.vue'),
       children: [
         {
-          path: '/message_page/home', // 消息-通讯录
+          path: '/message_page/home', // 消息-首页
           name: 'Home',
-          component: () => import('@mp/home/Home.vue'),
+          meta: {
+            title: '首页'
+          },
+          component: () => import('@mp/home/Home.vue')
         },
         {
           path: '/message_page/contact', // 消息-通讯录
           name: 'Contact',
-          component: () => import('@mp/contact/Contact.vue'),
+          meta: {
+            title: '通讯录'
+          },
+          component: () => import('@mp/contact/Contact.vue')
         },
         {
           path: '/message_page/msg', // 消息-聊天页面
           name: 'Msg',
+          meta: {
+            title: '消息'
+          },
           component: () => import('@mp/msg/Msg.vue')
         }
       ]
@@ -47,22 +56,23 @@ const router = new Router({
     {
       path: '/message_login', // 消息-聊天页面
       name: 'Login',
-      component: () => import('@mp/login/Login.vue'),
+      component: () => import('@mp/login/Login.vue')
     }
   ]
-})
+});
 
 /**
  * 路由守卫
  * 如果有验证信息，就直接跳首页，否则跳登陆页
  */
 router.beforeEach((to, from, next) => {
-  let IS_LOGIN = localStorage.authorization ? true : false
+  // let IS_LOGIN = localStorage.authorization ? true : false
+  let IS_LOGIN = !!localStorage.authorization;
   if (IS_LOGIN) {
-    to.path == "/message_login" ? next('/message_page/home') : next()
+    to.path === '/message_login' ? next('/message_page/home') : next();
   } else {
-    to.path == "/message_login" ? next() : next("/message_login")
+    to.path === '/message_login' ? next() : next('/message_login');
   }
-})
+});
 
-export default router
+export default router;

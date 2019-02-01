@@ -223,7 +223,13 @@ export default {
     findSingleMsg() {
       // debugger
       // ajax请求获取单聊消息内容
-      FIND_SINGLE_MSG(this.loginUserId, this.receiverId)
+      let data = {
+        page: 1,
+        receiverId: this.receiverId,
+        senderId: this.loginUserId,
+        size: 30
+      }
+      FIND_SINGLE_MSG(data)
         .then(res => {
           console.log('获取单聊信息then：', res);
           res = res.data;

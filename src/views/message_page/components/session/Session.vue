@@ -25,7 +25,6 @@
         </p>
         <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
       </li>
-      <li @click="setItemActive({miniType: 233})">test</li>
     </ul>
   </el-scrollbar>
 </template>
@@ -100,7 +99,7 @@ export default {
     li {
       position: relative;
       overflow: hidden;
-      padding: 20px 20px 18px;
+      padding: 15px 20px;
       cursor: pointer;
 
       .avatar-img {

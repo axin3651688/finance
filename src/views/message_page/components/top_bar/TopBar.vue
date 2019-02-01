@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import SearchBar from "@mc/search_bar/SearchBar.vue";
-import { mapGetters, mapActions } from "vuex";
+import SearchBar from '@mc/search_bar/SearchBar.vue';
+import {mapGetters} from 'vuex';
 
 export default {
-  name: "TopBar",
+  name: 'TopBar',
   components: {
     SearchBar
   },
@@ -35,46 +35,28 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["messageStore"])
+    ...mapGetters(['messageStore'])
   },
   methods: {
     web_minWindows() {
       // alert('web_minWindows');
       if (window.require) {
-        var ipc = window.require("electron").ipcRenderer;
-      }
-      if (window.require) {
-        ipc.send("web_minWindows", "");
+        let ipc = window.require('electron').ipcRenderer;
+        ipc.send('web_minWindows', '');
       }
     },
     web_fullWindows() {
-      // alert('web_maxWindows');
+      // alert('web_fullWindows');
       if (window.require) {
-        var ipc = window.require("electron").ipcRenderer;
-      }
-      if (window.require) {
-        ipc.send("web_fullWindows", "");
+        let ipc = window.require('electron').ipcRenderer;
+        ipc.send('web_fullWindows', '');
       }
     },
     web_closeWindows() {
       // alert('web_closeWindows');
       if (window.require) {
-        var ipc = window.require("electron").ipcRenderer;
-      }
-      if (window.require) {
-        ipc.send("web_closeWindows", "");
-      }
-    },
-
-    // 根据路由显示不同的标题
-    showTitle() {
-      let routeStr = this.$route.path;
-      switch (routeStr) {
-        case "/message_page/home":
-          this.routeName = routeStr;
-          break;
-        case "":
-          break;
+        let ipc = window.require('electron').ipcRenderer;
+        ipc.send('web_closeWindows', '');
       }
     }
   }

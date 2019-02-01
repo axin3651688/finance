@@ -143,7 +143,7 @@ import MessageSender from '@mc/message_sender/MessageSender.vue';
 import request from 'utils/http.js';
 import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 import {
-  findGroupMsg,
+  FIND_GROUP_MSG,
   GROUP_INFO,
   QUIT_GROUP,
   EDIT_GROUP,
@@ -228,6 +228,7 @@ export default {
 
     // 上传群头像文件
     handleAvatarSuccess(res, file) {
+      // debugger;
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
@@ -449,7 +450,7 @@ export default {
         userId: this.loginUserId,
         size: 20
       };
-      findGroupMsg(data).then(res => {
+      FIND_GROUP_MSG(data).then(res => {
         // debugger;
         console.log('群消息列表：', res.data.data);
         if (res.data.code === 200) {

@@ -26,27 +26,41 @@ export function MY_SESSION(userId) {
   });
 }
 
-// 获取单聊消息
-export function FIND_SINGLE_MSG(senderId, receiverId) {
+// 获取 单聊消息
+export function FIND_SINGLE_MSG(data) {
   // debugger;
-  if (!senderId || !receiverId) return request({}); // 如果没有传参，返回空 request
   return request({
     url: '/api/api/find_single_msg',
     method: 'post',
-    data: {
-      page: 1,
-      receiverId: receiverId,
-      senderId: senderId,
-      size: 30
-    }
+    data: data
   });
 }
 
-// 获取群聊聊消息
-export function findGroupMsg(data) {
+// 获取 群聊聊消息
+export function FIND_GROUP_MSG(data) {
   // debugger
   return request({
     url: '/api/api/find_group_msg',
+    method: 'post',
+    data: data
+  });
+}
+
+// 发送 单聊消息
+export function SAVE_SINGLE_MSG(data) {
+  // debugger;
+  return request({
+    url: '/api/api/save_single_msg',
+    method: 'post',
+    data: data
+  });
+}
+
+// 发送 群聊消息
+export function SAVE_GROUP_MSG(data) {
+  // debugger;
+  return request({
+    url: '/api/api/save_group_msg',
     method: 'post',
     data: data
   });
