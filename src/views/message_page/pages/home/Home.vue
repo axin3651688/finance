@@ -66,7 +66,7 @@ export default {
     return {
       findCardArrs: [],
       nodeArrs: [],
-      latest_contact: [],
+      latest_contact: []
     };
   },
 
@@ -151,8 +151,6 @@ export default {
   },
 
   mounted() {
-    this.ActionSetMessageStore({routeName: '首页'});
-
     FIND_CARD(this.user.user.id).then(res => {
       console.log('获取查询可以添加的卡片数据-->>', res.data);
 

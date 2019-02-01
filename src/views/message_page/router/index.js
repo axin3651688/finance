@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '@/store';
 
 Vue.use(Router);
 
@@ -54,8 +55,11 @@ const router = new Router({
       ]
     },
     {
-      path: '/message_login', // 消息-聊天页面
+      path: '/message_login', // 消息-登陆
       name: 'Login',
+      meta: {
+        title: '登陆'
+      },
       component: () => import('@mp/login/Login.vue')
     }
   ]
@@ -73,6 +77,7 @@ router.beforeEach((to, from, next) => {
   } else {
     to.path === '/message_login' ? next() : next('/message_login');
   }
+  store.dispatch('ActionSetMessageStore', {routeName: to.meta.title});
 });
 
 export default router;

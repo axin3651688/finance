@@ -56,7 +56,6 @@ export default {
     ...mapActions(['ActionSetMessageStore'])
   },
   mounted() {
-    this.ActionSetMessageStore({routeName: '消息'});
   }
 };
 </script>

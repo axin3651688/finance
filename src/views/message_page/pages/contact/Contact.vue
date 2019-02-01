@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex"
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
   name: 'MessageContacts',
@@ -47,48 +47,47 @@ export default {
   data() {
     return {
       activeName: 'ContactsTeams'
-    }
+    };
   },
   watch: {
     $route(to, from) {
-      console.log('Contacts监听路由:',to,from)
-      this.activeName = from.query.activeName
+      console.log('Contacts监听路由:', to, from);
+      this.activeName = from.query.activeName;
     }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
-      this.activeName = tab.name
+      this.activeName = tab.name;
     },
 
     // 开始群聊天
     handleChatWithGroup(groupId) {
-      this.$emit('chatWithGroup', groupId)
+      this.$emit('chatWithGroup', groupId);
     },
 
     // 开始单聊
     handleChatWithSingle(receiverId) {
-      this.$emit('chatWithSingle', receiverId)
+      this.$emit('chatWithSingle', receiverId);
     },
 
     /**
      * 从路由获得当前应该显示哪一个标签（团队、好友、群组）,如果没有路由数据，就默认显示团队
      */
-    getActiveNameFromRoute(){
-      console.log('路由数据：', this.$route)
+    getActiveNameFromRoute() {
+      console.log('路由数据：', this.$route);
       if (this.$route.query.activeName) {
-        this.activeName = this.$route.query.activeName
+        this.activeName = this.$route.query.activeName;
       } else {
-        this.activeName = 'ContactsTeams'
+        this.activeName = 'ContactsTeams';
       }
     }
   },
   created() {
-    this.ActionSetMessageStore({routeName: '通讯录'})
-    this.getActiveNameFromRoute()
+    this.getActiveNameFromRoute();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
