@@ -22,7 +22,14 @@
     </multipane>
 
     <!--聊天头部-->
-    <div class="chat-top" style="color: #ff0000;"> test top</div>
+    <div class="chat-top">
+      <switch-btn-group
+        :value1="'消息'"
+        :value2="'文件'"
+        :defaultValue="'消息'"
+        @switchCase="handleSwitchCase"
+      ></switch-btn-group>
+    </div>
   </div>
 </template>
 
@@ -32,8 +39,8 @@ import {Multipane, MultipaneResizer} from '@mc/vue-multipane';
 import VueGallerySlideshow from 'vue-gallery-slideshow';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
+import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue';
 import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
-import request from 'utils/http.js';
 import {
   FIND_SINGLE_MSG,
   FIND_GROUP_MSG,
@@ -49,7 +56,8 @@ export default {
     MultipaneResizer,
     MessageItem,
     MessageSender,
-    VueGallerySlideshow
+    VueGallerySlideshow,
+    SwitchBtnGroup
   },
   data() {
     return {
@@ -311,6 +319,14 @@ export default {
         }
       };
       socket.deliver(data);
+    },
+
+    /**
+     * 聊天消息和文件切换
+     * @param val
+     */
+    handleSwitchCase(val) {
+      // alert('handleSwitchCase', val);
     }
 
   },
@@ -334,9 +350,9 @@ export default {
 
   .chat-top {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
   }
 
   .chat-middle {

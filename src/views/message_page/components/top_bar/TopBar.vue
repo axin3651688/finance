@@ -5,8 +5,7 @@
     </div>
     <!--<div class="topbar-right" @dblclick="web_minWindows()">-->
     <div class="topbar-right">
-      <h3 class="page-title" v-if="messageStore.routeName">{{messageStore.routeName}}</h3>
-      <h3 class="page-title" v-else>首页</h3>
+      <page-title class="page-title"></page-title>
       <div class="btn-group">
         <div class="btn btn-mini" @click="web_minWindows()">
           <img src="@ma/icon/minimize.svg">
@@ -24,18 +23,16 @@
 
 <script>
 import SearchBar from '@mc/search_bar/SearchBar.vue';
-import {mapGetters} from 'vuex';
+import PageTitle from '@mc/page_title/PageTitle.vue';
 
 export default {
   name: 'TopBar',
   components: {
-    SearchBar
+    SearchBar,
+    PageTitle
   },
   data() {
     return {};
-  },
-  computed: {
-    ...mapGetters(['messageStore'])
   },
   methods: {
     web_minWindows() {
@@ -83,16 +80,11 @@ export default {
 
   .topbar-right {
     position: relative;
-    overflow: hidden;
     flex: 1;
     -webkit-app-region: drag;
 
     .page-title {
       height: 100%;
-      padding: 0 50px;
-      font-size: 18px;
-      color: $colorText3;
-      line-height: $sizeTopBarHeight;
       display: inline-block;
     }
 
@@ -100,6 +92,7 @@ export default {
       @include flex();
       justify-content: space-between;
       float: right;
+      height: 100%;
 
       .btn {
         width: 50px;

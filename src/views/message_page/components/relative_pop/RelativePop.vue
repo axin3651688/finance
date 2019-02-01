@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       showPop: false
-    }
+    };
   },
   props: {
     popClass: {
@@ -35,34 +35,34 @@ export default {
       bind(el, binding, vnode) {
         // 点击不是本身则关闭弹窗
         function documentHandler(e) {
-          if (el.contains(e.target)) return false
-          if (binding.expression) binding.value(e)
+          if (el.contains(e.target)) return false;
+          if (binding.expression) binding.value(e);
         }
 
         // Esc 键关闭弹窗
         function keyboardHandler(e) {
-          if (binding.expression && e.key === 'Escape') binding.value(e)
+          if (binding.expression && e.key === 'Escape') binding.value(e);
         }
 
-        el.__vueClickOutside__ = documentHandler
-        el.__vueKeyboardHandler__ = keyboardHandler
-        document.addEventListener('click', documentHandler)
-        document.addEventListener('keydown', keyboardHandler)
+        el.__vueClickOutside__ = documentHandler;
+        el.__vueKeyboardHandler__ = keyboardHandler;
+        document.addEventListener('click', documentHandler);
+        document.addEventListener('keydown', keyboardHandler);
       },
       unbind(el) {
-        document.removeEventListener('click', el.__vueClickOutside__)
-        document.removeEventListener('keydown', el.__vueKeyboardHandler__)
-        delete el.__vueClickOutside__
-        delete el.__vueKeyboardHandler__
+        document.removeEventListener('click', el.__vueClickOutside__);
+        document.removeEventListener('keydown', el.__vueKeyboardHandler__);
+        delete el.__vueClickOutside__;
+        delete el.__vueKeyboardHandler__;
       }
     }
   },
   methods: {
     handleClose(e) {
-      this.showPop = false
+      this.showPop = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -84,6 +84,8 @@ export default {
 
   .pop-wrap, .icon-close {
     position: absolute;
+    background: #fff;
+    z-index: 9;
   }
 
   .icon-close {

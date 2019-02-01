@@ -137,7 +137,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-import SidebarPop from '@c/message/sidebar_pop/SidebarPop';
+import SidebarPop from '@mc/sidebar_pop/SidebarPop';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import request from 'utils/http.js';
@@ -541,12 +541,6 @@ export default {
     // console.log('文件类型：', FILE_TYPE)
     this.getInfo();
     this.getGroupMsgList();
-
-    // 当点击的不是表情，则隐藏表情弹框
-    document.addEventListener('click', this.hideFaceIcon);
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.hideFaceIcon);
   }
 };
 </script>
