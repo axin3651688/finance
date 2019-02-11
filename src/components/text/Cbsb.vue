@@ -1,22 +1,18 @@
 <template>
   <div class="Cbsb">
-    <el-row>选择消息接收人</el-row>
-    <el-row :gutter="20">
-      <el-col :span="3" v-for="o in showDatas" :key="o.id" class="role_list">
-        <img :src="o.avatar">
+    <el-row class="choice_title">选择消息接收人</el-row>
+    <el-row>
+      <el-col :span="3" v-for="(o,index) in showDatas" :key="o.id" class="role_add">
+        <img @click="deleteData(index)" :src="o.avatar">
+        <i class="iconfont icon-shanchuguanbicha2 item_img"></i>
         <div class="name">{{o.trueName}}</div>
       </el-col>
-      <el-col :span="2" v-if="listLength>4">
-        <img
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
-        >
+      <el-col :span="3" v-if="listLength>4" class="role_add">
+        <i class="iconfont icon-more item_img"></i>
         <div class="name">共{{listLength}}人</div>
       </el-col>
-      <el-col :span="2">
-        <img
-          @click="ShowMeluList({isShow:true})"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkAgMAAAANjH3HAAAACVBMVEVHcEwAAAAAAAAWawmTAAAAA3RSTlMAMhV623REAAAAjklEQVRIx2NgGAWjYBSMApqDFbgkWEMTMMS4FoDIqaEhYE4DksxUkBBTaGgoiBMagZAAigHVMYbCKIQMZ2ioA8gaMMUJlodbDbIbJAOkVMHyKDKqcJkEZJkAnDI4TONElmFFk4E4CsNtEP9wYvEPw1LkMJiKFAYMTA2QcItAcAiGNRRojCbRUTAKRgE2AACrZSvn1k0Z3wAAAABJRU5ErkJggg=="
-        >
+      <el-col :span="3" class="role_add">
+        <i @click="ShowMeluList({isShow:true})" class="iconfont icon-jia item_imgadd"></i>
       </el-col>
     </el-row>
     <div class="input_title">消息内容</div>
@@ -48,7 +44,8 @@ export default {
       textarea: "",
       listDatas: [],
       userId: this.$store.getters.user.user.id,
-      companyId: this.$store.getters.user.company.id
+      companyId: this.$store.getters.user.company.id,
+      imgShow: ""
     };
   },
   created() {
@@ -85,7 +82,6 @@ export default {
     /**
      * @desc    : 请求下拉框的数据，装到vuex中
      * @param   {String} 公司ID
-     * @returns {String}
      * @author  : mj
      * @data    : 2019-01-25
      */
@@ -97,11 +93,13 @@ export default {
         this.listDatas = data;
       });
     },
+    deleteData(index) {
+      // console.log("删除我", index);
+      // 提交删除操作
+      this.ShowMeluList({ deleteData: index });
+    },
     /**
      * @desc    : 点击发送催报数据到后台
-     * @param   {String} 参数名
-     * @param   {Object} 参数名
-     * @returns {String}
      * @author  : mj
      * @data    : 2019-01-25
      */

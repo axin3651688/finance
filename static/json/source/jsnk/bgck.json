@@ -11,189 +11,178 @@
         "company",
         "conversion"
     ],
-    "items": [
-        {
-            "xtype": "JtreeGrid",
-            "id": "1416001",
-            "text": "报告查看",
-            "style": {
-                "height": "812px"
-            },
-            "optionColumnClick": function ($vue, row) {
+    "items": [{
+        "xtype": "JtreeGrid",
+        "id": "1416001",
+        "text": "报告查看",
+        "style": {
+            "height": "812px"
+        },
+        "optionColumnClick": function ($vue, row) {
             return row;
-            },
-            "queryDataBefore": function (params, b) {
-               params.comId = params.company;
+        },
+        "queryDataBefore": function (params, b) {
+            params.comId = params.company;
             params.property = "scode";
             return params;
+        },
+        "show": true,
+        "async": true, //异步加载必须加这个字段
+        "config": {
+            "sql": "SELECT c.cisleaf AS leaf, c.scode AS id, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, c.nlevel AS nlevel, c.spcode AS pid, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where :property = :comId and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = :period ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime",
+            "generateVar": {
+                "periodCount": 2,
+                "compareType": "-1&0",
+                "reverse": true
             },
-            "show": true,
-            "async": true, //异步加载必须加这个字段
-            "config": {
-                "sql": "SELECT c.cisleaf AS leaf, c.scode AS id, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, c.nlevel AS nlevel, c.spcode AS pid, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where :property = :comId and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = :period ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime",
-                "generateVar": {
-                    "periodCount": 2,
-                    "compareType": "-1&0",
-                    "reverse": true
-                },
-                "mainDim": "itempoint",
-                "needDims": [
-                    "year",
-                    "month",
-                    "company",
-                    "conversion"
-                ],
-                "random": {
-                    "min": 100,
-                    "max": 100000
-                },
-                "type": 1,
-                "columns": [
-                    {
-                        "text": "操作",
-                        "width": 130,
-                        "type": "template",
-                        "menu": {
-                            "async": false,
-                            "list": [
-                                {
-                                    "value": "shengcheng",
-                                    "label": "生成",
-                                    "id": "shengcheng",
-                                    "text": "生成",
-                                    "showdilog": true,
-                                    "listeners": [
-                                        {
-                                            "type": "click", //openDialog
-                                            "way": "openDialog",
-                                            "config": {
-                                                "width": 800,
-                                                "height": 750
-                                            },
-                                            "sourceApi": "cnbi/json/source/chart/bar1.json",
-                                            "handler": ($vue, params) => {
+            "mainDim": "itempoint",
+            "needDims": [
+                "year",
+                "month",
+                "company",
+                "conversion"
+            ],
+            "random": {
+                "min": 100,
+                "max": 100000
+            },
+            "type": 1,
+            "columns": [{
+                    "text": "操作",
+                    "width": 130,
+                    "type": "template",
+                    "menu": {
+                        "async": false,
+                        "list": [{
+                                "value": "shengcheng",
+                                "label": "生成",
+                                "id": "shengcheng",
+                                "text": "生成",
+                                "showdilog": true,
+                                "listeners": [{
+                                    "type": "click", //openDialog
+                                    "way": "openDialog",
+                                    "config": {
+                                        "width": 800,
+                                        "height": 750
+                                    },
+                                    "sourceApi": "cnbi/json/source/chart/bar1.json",
+                                    "handler": ($vue, params) => {
 
                                         return params;
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "value": "chakan",
-                                    "label": "查看",
-                                    "listeners": [
-                                        {
-                                            "type": "click",
-                                            "way": "openDialog",
-                                            "config": {
-                                                "width": 800,
-                                                "height": 750
-                                            },
-                                            "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
-                                            "handler": ($vue, params) => {
+                                    }
+                                }]
+                            },
+                            {
+                                "value": "chakan",
+                                "label": "查看",
+                                "listeners": [{
+                                    "type": "click",
+                                    "way": "openDialog",
+                                    "config": {
+                                        "width": 800,
+                                        "height": 750
+                                    },
+                                    "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
+                                    "handler": ($vue, params) => {
                                         return params;
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "value": "shenyue",
-                                    "label": "审阅"
-                                },
-                                {
-                                    "value": "tuihui",
-                                    "label": "退回"
-                                },
-                                {
-                                    "value": "cuibao",
-                                    "label": "催报",
-                                    "listeners": [
-                                        {
-                                            "type": "click",
-                                            "way": "openDialog",
-                                            "config": {
-                                                "width": 800,
-                                                "height": 750
-                                            },
-                                            "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
-                                            "handler": ($vue, params) => {
+                                    }
+                                }]
+                            },
+                            {
+                                "value": "shenyue",
+                                "label": "审阅"
+                            },
+                            {
+                                "value": "tuihui",
+                                "label": "退回"
+                            },
+                            {
+                                "value": "cuibao",
+                                "label": "催报",
+                                "listeners": [{
+                                    "type": "click",
+                                    "way": "openDialog",
+                                    "config": {
+                                        "width": 660, //弹窗的宽高写到这里
+                                        "height": 460
+                                    },
+                                    "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
+                                    "handler": ($vue, params) => {
                                         return params;
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "value": "sqth",
-                                    "label": "申请退回"
-                                },
-                                {
-                                    "value": "daochu",
-                                    "label": "导出",
-                                    "children": [
-                                        {
-                                            "value": "wanzheng",
-                                            "label": "完整"
-                                        },
-                                        {
-                                            "value": "jianyao",
-                                            "label": "简要"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "value": "pingjias",
-                                    "label": "评价"
-                                }
-                            ]
-                        },
-                        "id": "option0"
+                                    }
+                                }]
+                            },
+                            {
+                                "value": "sqth",
+                                "label": "申请退回"
+                            },
+                            {
+                                "value": "daochu",
+                                "label": "导出",
+                                "children": [{
+                                        "value": "wanzheng",
+                                        "label": "完整"
+                                    },
+                                    {
+                                        "value": "jianyao",
+                                        "label": "简要"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "pingjias",
+                                "label": "评价"
+                            }
+                        ]
                     },
-                    {
-                        "text": "单位编码",
-                        "type": "string",
-                        "width": 180,
-                        "id": "id",
-                        "isTree": true
-                    },
-                    {
-                        "text": "单位名称",
-                        "type": "string",
-                        "width": 300,
-                        "id": "title"
-                    },
-                    {
-                        "text": "报告名称",
-                        "type": "string",
-                        "width": 200,
-                        "id": "reportname"
-                    },
-                    {
-                        "text": "上报人",
-                        "width": 180,
-                        "type": "string",
-                        "id": "lockedtruename"
-                    },
-                    {
-                        "text": "角色",
-                        "width": 180,
-                        "type": "string",
-                        "id": "rolename"
-                    },
-                    {
-                        "text": "上报时间",
-                        "width": 180,
-                        "type": "number",
-                        "id": "lockedtime"
-                    },
-                    {
-                        "text": "上报否",
-                        "width": 130,
-                        "type": "string",
-                        "id": "scomcategory"
-                    }
-                ],
-                "rows": []
-            }
+                    "id": "option0"
+                },
+                {
+                    "text": "单位编码",
+                    "type": "string",
+                    "width": 180,
+                    "id": "id",
+                    "isTree": true
+                },
+                {
+                    "text": "单位名称",
+                    "type": "string",
+                    "width": 300,
+                    "id": "title"
+                },
+                {
+                    "text": "报告名称",
+                    "type": "string",
+                    "width": 200,
+                    "id": "reportname"
+                },
+                {
+                    "text": "上报人",
+                    "width": 180,
+                    "type": "string",
+                    "id": "lockedtruename"
+                },
+                {
+                    "text": "角色",
+                    "width": 180,
+                    "type": "string",
+                    "id": "rolename"
+                },
+                {
+                    "text": "上报时间",
+                    "width": 180,
+                    "type": "number",
+                    "id": "lockedtime"
+                },
+                {
+                    "text": "上报否",
+                    "width": 130,
+                    "type": "string",
+                    "id": "scomcategory"
+                }
+            ],
+            "rows": []
         }
-    ]
+    }]
 }

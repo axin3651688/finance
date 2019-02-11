@@ -76,7 +76,6 @@ export default {
         }
 
         function hideDrop(e) {
-          // console.log('按键：', e.key)
           if (binding.expression && e.key === "Escape") {
             // 如果绑定了表达式，并且按键是 Escape 则关闭
             binding.value(e);
@@ -103,7 +102,7 @@ export default {
     },
     handleCheckAllChange(val) {
       debugger;
-      this.checkedItem = val ? this.listName : [];
+      this.checkedItem = val ? this.listDatas : [];
       this.isIndeterminate = false;
       // console.log(this.checkedItem);
       this.ShowMeluList({ checkedItem: this.checkedItem });
@@ -111,7 +110,6 @@ export default {
     handleCheckedChange(value) {
       debugger;
       console.log(value);
-
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.listDatas.length;
       this.isIndeterminate =
