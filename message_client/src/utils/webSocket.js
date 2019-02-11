@@ -1,16 +1,7 @@
-// import {
-//   isJSON
-// } from 'utils';
-import socketCoreProcess from '../api/socketCoreProcess.js';
+import {isJSON} from 'util';
+import socketCoreProcess from './socketCoreProcess.js';
 
-import {
-  Message,
-  MessageBox,
-  Notification
-} from 'element-ui';
-import router from '@/router';
-
-export default function webSocket(data) {
+export default function webSocket (data) {
   // debugger;
   let websocket = null;
   let url = data.url;
@@ -23,6 +14,7 @@ export default function webSocket(data) {
   } else {
     websocket = new SockJS(url);
   }
+
   // 打开连接时
   websocket.onopen = function (evnt) {
     // debugger;
@@ -34,9 +26,9 @@ export default function webSocket(data) {
   // 收到消息时
   websocket.onmessage = function (evnt) {
     let datas = evnt.data;
-    // if (isJSON(datas)) {
-    //   socketCoreProcess(websocket, JSON.parse(datas));
-    // }
+    if (isJSON(datas)) {
+      socketCoreProcess(websocket, JSON.parse(datas));
+    }
     socketCoreProcess(websocket, JSON.parse(datas));
   };
 

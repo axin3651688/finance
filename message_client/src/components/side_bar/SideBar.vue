@@ -63,7 +63,7 @@
 
 <script>
 import RelativePop from '@mc/relative_pop/RelativePop.vue';
-import {logout} from '@m_api/interface.js';
+import {LOGOUT} from '@m_api/message.js';
 import {mapGetters, mapActions} from 'vuex';
 
 export default {
@@ -146,7 +146,7 @@ export default {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     doLogout() {
       this.dialogQuitVisible = false;
-      logout()
+      LOGOUT()
         .then(res => {
           // 清除token
           localStorage.removeItem('database');

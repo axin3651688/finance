@@ -25,7 +25,7 @@
 
         <!--表单-->
         <div class="login-form" v-show="showWhat === 'form'">
-          <el-form ref="loginForm" :model="loginUser" :rules="rules" >
+          <el-form ref="loginForm" :model="loginUser" :rules="rules">
             <el-form-item prop="usename">
               <el-input
                 v-model="loginUser.usename"
@@ -86,10 +86,9 @@
 </template>
 
 <script>
-import {login} from '@m_api/interface.js';
 import {mapGetters, mapActions} from 'vuex';
 import store from '@/store';
-import {SCAN_LOGIN_URL} from '@m_api/message.js';
+import {LOGIN, SCAN_LOGIN_URL} from '@m_api/message.js';
 import {SET_FULLSCREEN_LOADING} from '@mu/setFullscreenLoading.js';
 
 export default {
@@ -188,9 +187,11 @@ export default {
       this.$refs[formName].validate(valid => {
         debugger;
         if (valid) {
-          login(this.loginUser)
+          LOGIN(this.loginUser)
             .then(res => {
               if (res.data.code === 200 && res.data.data) {
+                this.loginUser.usename = '';
+                this.loginUser.password = '';
                 this.processLoginResult(res.data.data); // 处理登陆返回的结果
               } else {
                 this.$message({
