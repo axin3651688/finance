@@ -6,7 +6,7 @@
       }
 
       .cls-2 {
-        fill: #303841;
+        fill: rgba(102,102,102,0.4);
         opacity: 0.502;
       }
     </style>

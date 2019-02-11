@@ -1,5 +1,4 @@
 export function SET_FULLSCREEN_LOADING (val) {
-  debugger
   if (val === undefined) return false
   try {
     if (localStorage.fullscreenLoading) {

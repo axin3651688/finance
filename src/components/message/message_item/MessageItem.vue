@@ -76,14 +76,14 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message'
-import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue'
-import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue'
-import emotion_sprites from '@a/message/data/emotion_sprites.json'
+import {mapGetters} from 'vuex';
+import {PARSE_EMOTIONS, FORMAT_MSG_TIME} from 'utils/message';
+import MyVideoPlayer from '@c/message/my_video_player/MyVideoPlayer.vue';
+import MyAudioPlayer from '@c/message/my_audio_player/MyAudioPlayer.vue';
+import emotionSprites from '@a/message/data/emotion_sprites.json';
 
 export default {
-  name: "MessageItem",
+  name: 'MessageItem',
   props: ['data'],
   components: {
     MyAudioPlayer,
@@ -91,33 +91,27 @@ export default {
   },
   data() {
     return {
-      EMOTION_SPRITES: emotion_sprites.data,  // 聊天表情
-    }
+      EMOTION_SPRITES: emotionSprites.data  // 聊天表情
+    };
   },
   computed: {
     ...mapGetters(['user']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     }
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
-      return FORMAT_MSG_TIME(publishTime)
+      return FORMAT_MSG_TIME(publishTime);
     }
   },
   methods: {
     parseEmotions(content) {
-      return PARSE_EMOTIONS(content)
+      return PARSE_EMOTIONS(content);
     }
   }
-}
+};
 </script>
-
-<style lang="scss">
-  /*这里不使用 scoped 是v-html生成表情能够应用到样式*/
-  @import "@s/message/emotion_sprites.scss";
-</style>
-
 
 <style lang="scss" scoped>
   @import "@s/message/index.scss";
@@ -144,6 +138,7 @@ export default {
 
     .content {
       padding: 0 12px;
+
       .content-bubble {
         position: relative;
         box-sizing: border-box;
@@ -155,6 +150,7 @@ export default {
         background-color: $colorThemePrimary;
         border-radius: 6px;
         color: $colorTextChatContent;
+
         &:before {
           content: " ";
           position: absolute;
@@ -164,6 +160,7 @@ export default {
           border-right-color: $colorThemePrimary;
         }
       }
+
       .video-wrap {
         min-width: 340px;
         min-height: 100px;
@@ -248,6 +245,7 @@ export default {
 
   .message-box.is-me {
     flex-direction: row-reverse;
+
     .content-bubble {
       &:before {
         right: auto;

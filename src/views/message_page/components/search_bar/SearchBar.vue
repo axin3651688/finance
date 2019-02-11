@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import {SEARCH_MY_CONTACT} from '~api/message.js'
+import {SEARCH_MY_CONTACT} from '@m_api/message.js'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
@@ -296,8 +296,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/variables.scss";
+  @import "@ms/index.scss";
+  @import "@ms/variables.scss";
 
   .SearchBar {
     height: 100%;
