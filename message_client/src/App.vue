@@ -6,8 +6,8 @@
 
 <script>
 import {mapActions} from 'vuex';
-import webSocket from 'utils/webSocket';
-import {getClientParams} from 'utils/index';
+import webSocket from '@mu/webSocket';
+import {getClientParams} from '@mu/index';
 
 export default {
   name: '',
