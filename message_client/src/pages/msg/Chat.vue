@@ -192,6 +192,8 @@ export default {
       if (fileData) { // 如果是发文件，设置文件type，和文件的data
         sendData.data.content = fileData.text;
         sendData.data.fileId = fileData.id;
+        sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
+        pushData.type = 3; // 暂时处理，没有匹配到都当文件处理
         for (let item of FILE_TYPE) {
           // debugger;
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
@@ -199,8 +201,6 @@ export default {
             pushData.type = item.type;
             pushData.data = fileData;
             break;
-          } else {
-            sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
           }
         }
       }

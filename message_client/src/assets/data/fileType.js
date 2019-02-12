@@ -149,4 +149,4 @@ const FileType = [
   }
 ];
 
-export default FileType
+export default FileType;

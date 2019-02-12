@@ -1,4 +1,3 @@
-import {isJSON} from 'util';
 import socketCoreProcess from './socketCoreProcess.js';
 
 export default function webSocket (data) {
@@ -26,9 +25,6 @@ export default function webSocket (data) {
   // 收到消息时
   websocket.onmessage = function (evnt) {
     let datas = evnt.data;
-    if (isJSON(datas)) {
-      socketCoreProcess(websocket, JSON.parse(datas));
-    }
     socketCoreProcess(websocket, JSON.parse(datas));
   };
 

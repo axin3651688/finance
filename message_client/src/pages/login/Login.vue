@@ -157,7 +157,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['GetSideMid', 'ActionSetMessageStore']),
+    ...mapActions(['ActionSetMessageStore']),
 
     web_minWindows() { // electron 最小化
       if (window.require) {
@@ -219,12 +219,6 @@ export default {
         localStorage.setItem('database', JSON.stringify(data)); // 返回{"a":1,"b":2}
         store.dispatch('setIsAutnenticated', true);
         store.dispatch('setUser', data);
-
-        // 把用户的状态更新到vuex
-        this.GetSideMid({
-          company: data.company.customerId,
-          companyName: data.company.text
-        });
 
         // 路由跳转
         this.$router.push('/message_page/home');

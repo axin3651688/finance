@@ -15,7 +15,7 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(['GetSideMid', 'GettRreeInfo']),
+    ...mapActions(['GettRreeInfo']),
     readLocalStorage() {
       // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
       // alert('readLocalStorage');
@@ -40,7 +40,6 @@ export default {
             b == 'conversion' ? (vd[b] = JSON.parse(a)) : (vd[b] = a);
           }
         });
-        this.GetSideMid(vd);
         if (!Cnbi.isEmpty(localStorage.treeInfo)) {
           this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
         }
