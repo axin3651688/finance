@@ -27,12 +27,9 @@
             v-for="i of filterData"
             :key="i.id"
           >
-            <!--  -->
             <img :src="i.avatar" alt class="img">
             <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
-            <!-- <el-checkbox :label="i.trueName" class="checkbox-item"></el-checkbox> -->
           </el-checkbox-group>
-
           <div style="margin: 15px 0;"></div>
         </div>
       </transition>

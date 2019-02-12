@@ -2,7 +2,7 @@
  *本模块管理组件状态。
  */
 import Cookies from 'js-cookie'
-const app = {
+export default {
   state: {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus'),
@@ -10,6 +10,7 @@ const app = {
     },
     device: 'desktop',
     showDialog: {
+      params: {},
       data: '这是一段消息',
       isShow: false,
       switchStyle: true,
@@ -118,5 +119,3 @@ const app = {
     },
   }
 }
-
-export default app

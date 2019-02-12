@@ -1,0 +1,20 @@
+{
+    "id": "bgch",
+    "text": "报告撤回",
+    "rows": [],
+    "datas": {},
+    "layout": {
+        "xtype": "column"
+    },
+    "items": [{
+        "class_top": "0px",
+        "xtype": "BiText",
+        "id": "bgch",
+        "text": "报告撤回",
+        "weight": 12,
+        "show": true,
+        "options": {
+            "type": "Bgch"
+        }
+    }]
+}

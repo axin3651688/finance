@@ -56,7 +56,6 @@ export default {
     filterNode(value, data) {
       // console.log(value);
       // console.log(data);
-
       if (!value) return true;
       return data.text.indexOf(value) !== -1;
     },
