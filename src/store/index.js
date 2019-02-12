@@ -4,7 +4,6 @@ import getters from './getters';
 import componentState from './modules/componentState';
 import user from './modules/user';
 import param from './modules/param';
-import messageModule from './modules/messageModule';
 
 Vue.use(Vuex);
 const isDev = process.env.NODE_ENV !== 'production';
@@ -13,8 +12,7 @@ const store = new Vuex.Store({
   modules: {
     componentState,
     user,
-    param,
-    messageModule
+    param
   },
   getters
 });
