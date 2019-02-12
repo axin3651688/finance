@@ -105,7 +105,7 @@ export default {
     textEventHandler() {
 
     },
-    // api: listener.sourceApi,
+    // api: listener.sourceApi,1
     openDialog(params, listener, bb) {
       debugger
 
@@ -113,8 +113,8 @@ export default {
         api: listener.sourceApi,
         isShow: true,
         tittle: bb.label,
-        width: "40%",
-        height: "200px"
+        width: listener.config.width + "px",
+        height: listener.config.height + "px",
       });
     },
     /**
@@ -128,7 +128,7 @@ export default {
       // if (!module.items) {
       //   module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
       // }
-      let module = this.$root.$children[0].$children[0].$children[0].$children[0];//.$children[0].$children[0];
+      let module = this.$root.$children[0].$children[0].$children[0].$children[0]; //.$children[0].$children[0];
       // let module = tab.$parent.$parent;
       if (!module) {
         alert("未能获取module对象！");

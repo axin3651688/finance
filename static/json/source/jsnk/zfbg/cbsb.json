@@ -6,16 +6,15 @@
     "layout": {
         "xtype": "column"
     },
-    "items": [
-        {
-            "xtype": "BiText",
-            "id": "1416001",
-            "text": "催报上报11111",
-            "weight": 12,
-            "show": true,
-            "options": {
-                "type": "Cbsb"
-            }
+    "items": [{
+        "class_top": "0px",
+        "xtype": "BiText",
+        "id": "1416001",
+        "text": "催报上报11111",
+        "weight": 12,
+        "show": true,
+        "options": {
+            "type": "Cbsb"
         }
-    ]
+    }]
 }

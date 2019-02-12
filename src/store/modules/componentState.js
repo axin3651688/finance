@@ -21,6 +21,7 @@ const app = {
     showMeluList: {
       data: [],
       checkedItem: [],
+      deleteData: '',
       isShow: false,
       switchStyle: true,
       tittle: "标题",
@@ -53,6 +54,13 @@ const app = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.showMeluList[keys] = data[keys]
+          if (keys === 'deleteData') {
+            // 由于vuex里面的数据改动全部都必须走mutation,所以只要检测到删除提交,就走这个if判断
+            debugger
+            let index = data.deleteData
+            let checkeData = state.showMeluList.checkedItem
+            checkeData.splice(index, 1);
+          }
           if (typeof data[keys] == "object") {
             localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
           } else {
