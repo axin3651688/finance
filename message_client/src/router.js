@@ -5,8 +5,8 @@ import store from '@/store';
 Vue.use(Router);
 
 const router = new Router({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
@@ -27,7 +27,7 @@ const router = new Router({
           meta: {
             title: '首页'
           },
-          component: () => import('@mp/home/Home.vue')
+          component: () => import('@mv/home/Home.vue')
         },
         {
           path: '/message_page/contact', // 消息-通讯录
@@ -35,7 +35,7 @@ const router = new Router({
           meta: {
             title: '通讯录'
           },
-          component: () => import('@mp/contact/Contact.vue')
+          component: () => import('@mv/contact/Contact.vue')
         },
         {
           path: '/message_page/msg', // 消息-聊天页面
@@ -43,7 +43,7 @@ const router = new Router({
           meta: {
             title: '消息'
           },
-          component: () => import('@mp/msg/Msg.vue')
+          component: () => import('@mv/msg/Msg.vue')
         }
       ]
     },
@@ -53,7 +53,7 @@ const router = new Router({
       meta: {
         title: '登陆'
       },
-      component: () => import('@mp/login/Login.vue')
+      component: () => import('@mv/login/Login.vue')
     }
   ]
 });

@@ -82,15 +82,6 @@ export default {
 };
 </script>
 
-<style>
-  html {
-    overflow: hidden;
-  }
-
-  body {
-    overflow: hidden;
-  }
-</style>
 <style lang="scss" scoped>
   @import "@ms/variables.scss";
 
