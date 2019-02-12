@@ -59,7 +59,11 @@ const app = {
             debugger
             let index = data.deleteData
             let checkeData = state.showMeluList.checkedItem
-            checkeData.splice(index, 1);
+            if (index === "deleteAll") {
+              checkeData.splice(0, checkeData.length);
+            } else {
+              checkeData.splice(index, 1);
+            }
           }
           if (typeof data[keys] == "object") {
             localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));

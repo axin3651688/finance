@@ -9,7 +9,12 @@
         <div class="title">智能财务决策支持系统V5.0</div>
         <P>用户名</P>
         <el-form-item prop="usename">
-          <el-input v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
+          <el-input
+            v-model="loginUser.usename"
+            autofocus
+            @keyup.enter.native="submitForm('loginForm')"
+            placeholder="请输入用户名"
+          ></el-input>
         </el-form-item>
         <P>密码</P>
         <el-form-item prop="password">
@@ -20,8 +25,8 @@
             placeholder="请输入密码"
             @keyup.enter.native="submitForm('loginForm')"
           ></el-input>
-          <!-- <span >&#xe61d;</span> -->
-          <img src="@a/eye.svg" class="show-pwd iconfont" @click="showPwd">
+          <i v-show="pwdType" class="iconfont icon-yanjing-bi show-pwd" @click="showPwd"></i>
+          <i v-show="!pwdType" class="iconfont icon-yanjing show-pwd" @click="showPwd"></i>
         </el-form-item>
 
         <div class="btn_wrapp">
@@ -81,14 +86,11 @@ export default {
       }
     };
   },
+
   methods: {
     ...mapActions(["GetSideMid"]),
     showPwd() {
-      if (this.pwdType === "password") {
-        this.pwdType = "";
-      } else {
-        this.pwdType = "password";
-      }
+      this.pwdType = this.pwdType === "password" ? "" : "password";
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -97,7 +99,6 @@ export default {
             .then(res => {
               debugger;
               // 获取token
-              // console.log(res);
               const data = res.data.data;
               // debugger;
               const token = data.authorization;
@@ -118,8 +119,6 @@ export default {
                   companyName: data.company.text
                 });
                 // debugger;
-                // debugger;
-                //this.initSocket(token);
                 let url = "/main";
                 if (data.company && data.company.id === 121) {
                   url += "?monthCount=13";

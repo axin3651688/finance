@@ -78,7 +78,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["ShowMeluList"]),
+    ...mapActions(["ShowMeluList", "ShowDialog"]),
     /**
      * @desc    : 请求下拉框的数据，装到vuex中
      * @param   {String} 公司ID
@@ -121,9 +121,34 @@ export default {
       SAVE_MODULE_MSG(datas).then(res => {
         let data = res.data.data;
         // console.log(data);
-        ACK_MODULE_MSG(data).then(res => {
-          console.log(res.data.msg);
-        });
+        ACK_MODULE_MSG(data)
+          .then(res => {
+            console.log(res.data.msg);
+            this.$confirm("消息已经发送成功!是否继续发送?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "success"
+            })
+
+              .then(() => {
+                this.$message({
+                  type: "success",
+                  message: "请继续编辑!"
+                });
+                // 清空所有内容
+                this.textarea = "";
+                this.ShowMeluList({ deleteData: "deleteAll" });
+              })
+              .catch(() => {
+                // 清空所有内容
+                this.textarea = "";
+                this.ShowMeluList({ deleteData: "deleteAll" });
+                this.ShowDialog({ isShow: false });
+              });
+          })
+          .catch(res => {
+            console.log("发送失败!", res.data);
+          });
       });
     }
   }

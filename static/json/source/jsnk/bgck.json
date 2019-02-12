@@ -85,7 +85,7 @@
                                     },
                                     "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
                                     "handler": ($vue, params) => {
-                                        return params;
+                                        return params
                                     }
                                 }]
                             },
