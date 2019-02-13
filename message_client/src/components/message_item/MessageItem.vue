@@ -153,9 +153,10 @@ export default {
 
     .content {
       padding: 0 12px;
-      .content-title{
+
+      .content-title {
         font-size: 12px;
-        color: $colorTextBlack6;
+        color: $colorTextBlack5;
         margin-bottom: 8px;
       }
 
@@ -166,7 +167,7 @@ export default {
         min-height: 40px;
         min-width: 40px;
         max-width: 600px;
-        word-wrap : break-word;
+        word-wrap: break-word;
         line-height: 20px;
         font-size: 14px;
         background-color: $colorThemePrimary;
@@ -268,6 +269,10 @@ export default {
 
   .message-box.is-me {
     flex-direction: row-reverse;
+
+    .content-title {
+      text-align: right;
+    }
 
     .content-bubble {
       &:before {

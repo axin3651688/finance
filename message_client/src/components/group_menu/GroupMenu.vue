@@ -311,7 +311,7 @@ export default {
       padding: 10px 0;
       width: 240px;
       top: calc(100% + 10px);
-      left: -71px;
+      left: -40px;
       border-bottom-right-radius: 8px;
       border-bottom-left-radius: 8px;
       overflow: hidden;
