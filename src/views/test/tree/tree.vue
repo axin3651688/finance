@@ -46,9 +46,6 @@ export default {
   },
 
   props: {
-    data: {
-      type: Array
-    },
     emptyText: {
       type: String,
       default() {
@@ -63,7 +60,6 @@ export default {
 
     // 加载所有节点
     defaultExpandAll: Boolean,
-
     expandOnClickNode: {
       type: Boolean,
       default: true
@@ -73,7 +69,6 @@ export default {
       type: Boolean,
       default: true
     },
-    defaultCheckedKeys: Array,
     // 加载默认节点
     defaultExpandedKeys: Array,
     currentNodeKey: [String, Number],
@@ -103,15 +98,6 @@ export default {
   },
 
   computed: {
-    children: {
-      set(value) {
-        this.data = value;
-      },
-      get() {
-        return this.data;
-      }
-    },
-
     treeItemArray() {
       return Array.prototype.slice.call(this.treeItems);
     },
@@ -128,6 +114,9 @@ export default {
 
   watch: {
     defaultExpandedKeys(newVal) {
+      debugger;
+      console.log("我是默认展开的一级", newVal);
+
       this.store.defaultExpandedKeys = newVal;
       this.store.setDefaultExpandedKeys(newVal);
     },
@@ -234,8 +223,6 @@ export default {
     this.isTree = true;
     debugger;
     this.store = new TreeStore({
-      key: this.nodeKey,
-      data: this.data,
       lazy: this.lazy,
       props: this.props,
       load: this.load,
@@ -245,12 +232,12 @@ export default {
       defaultExpandAll: this.defaultExpandAll,
       filterNodeMethod: this.filterNodeMethod
     });
+    console.log(this.defaultExpandedKeys, "默认展开");
 
     this.root = this.store.root;
   },
 
   mounted() {
-    this.initTabIndex();
     this.$el.addEventListener("keydown", this.handleKeydown);
   }
 };
