@@ -41,7 +41,6 @@ export default {
   props: {},
   data() {
     return {
-      textarea: "",
       listDatas: [],
       userId: this.$store.getters.user.user.id,
       companyId: this.$store.getters.user.company.id,
@@ -56,6 +55,12 @@ export default {
     // 选中长度
     listLength() {
       return this.showMeluList.checkedItem.length;
+    },
+    // 默认输入框文字
+    textarea() {
+      let company = this.$store.getters.showDialog.params.title;
+      let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
+      return time + company + "财务分析报告未及时上报，请上报！";
     },
     // 选中的各位id
     userIds() {
@@ -78,7 +83,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["ShowMeluList"]),
+    ...mapActions(["ShowMeluList", "ShowDialog"]),
     /**
      * @desc    : 请求下拉框的数据，装到vuex中
      * @param   {String} 公司ID
@@ -106,8 +111,6 @@ export default {
 
     sendMsg() {
       // debugger;
-      // console.log(this.showMeluList.checkedItem);
-      // console.log(this.textarea);
       let datas = {
         action: 1,
         companyId: this.companyId,
@@ -121,9 +124,31 @@ export default {
       SAVE_MODULE_MSG(datas).then(res => {
         let data = res.data.data;
         // console.log(data);
-        ACK_MODULE_MSG(data).then(res => {
-          console.log(res.data.msg);
-        });
+        ACK_MODULE_MSG(data)
+          .then(res => {
+            console.log(res.data.msg);
+            this.$confirm("消息已经发送成功！是否继续发送？", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "success"
+            })
+              .then(() => {
+                this.$message({
+                  type: "success",
+                  message: "请继续编辑!"
+                });
+                // 清空所有内容
+                this.ShowMeluList({ deleteData: "deleteAll" });
+              })
+              .catch(() => {
+                // 清空所有内容,并关闭弹窗
+                this.ShowMeluList({ deleteData: "deleteAll" });
+                this.ShowDialog({ isShow: false });
+              });
+          })
+          .catch(res => {
+            console.log("发送失败!", res.data);
+          });
       });
     }
   }

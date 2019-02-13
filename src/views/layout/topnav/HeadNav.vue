@@ -14,7 +14,7 @@
       <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false" v-dialogDrag>
         <span slot="title" class="dialog-title">
           <span>选择公司</span>
-          <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+          <el-input placeholder="输入关键字搜索" v-model="filterText"></el-input>
         </span>
         <companyTree @click="getname" :filterText="filterText"/>
         <span slot="footer" class="dialog-footer"></span>
@@ -289,7 +289,4 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-.head-nav {
-}
-</style>
+

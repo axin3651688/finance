@@ -8,8 +8,7 @@
     "showDims": [
         "year",
         "month",
-        "company",
-        "conversion"
+        "company"
     ],
     "items": [{
         "xtype": "JtreeGrid",
@@ -85,7 +84,7 @@
                                     },
                                     "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
                                     "handler": ($vue, params) => {
-                                        return params;
+                                        return params
                                     }
                                 }]
                             },
@@ -95,7 +94,19 @@
                             },
                             {
                                 "value": "tuihui",
-                                "label": "退回"
+                                "label": "退回",
+                                "listeners": [{
+                                    "type": "click",
+                                    "way": "openDialog",
+                                    "config": {
+                                        "width": 660, //弹窗的宽高写到这里
+                                        "height": 460
+                                    },
+                                    "sourceApi": "cnbi/json/source/jsnk/zfbg/bgch.json",
+                                    "handler": ($vue, params) => {
+                                        return params;
+                                    }
+                                }]
                             },
                             {
                                 "value": "cuibao",
@@ -116,6 +127,7 @@
                             {
                                 "value": "sqth",
                                 "label": "申请退回"
+
                             },
                             {
                                 "value": "daochu",

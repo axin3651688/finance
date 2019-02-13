@@ -110,6 +110,7 @@ export default {
       debugger
 
       this.ShowDialog({
+        params: params,
         api: listener.sourceApi,
         isShow: true,
         tittle: bb.label,
@@ -209,7 +210,4 @@ export default {
       }
     }
   }
-
-
-
 }

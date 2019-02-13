@@ -3,26 +3,27 @@
     <tree
       :props="props"
       :load="loadNode"
-      :node-key="text"
       ref="tree2"
-      :default-expanded-keys="['1']"
+      :default-expanded-keys="key"
       highlight-current
       lazy
       accordion
       :expandOnClickNode="false"
       @node-click="handleNodeClick "
       :filter-node-method="filterNode"
-      default-expand-all
     ></tree>
+    <!-- default-expand-all -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { getCompanyTree } from "~api/interface.js";
+import { setTimeout } from "timers";
 export default {
   name: "",
   data() {
     return {
+      key: [],
       props: {
         label: "text",
         children: [],
@@ -48,15 +49,19 @@ export default {
   },
   mounted() {
     debugger;
+    let me = this;
+    setTimeout(() => {
+      me.key = [1];
+    }, 2000);
+
     // console.log(document.getElementsByClassName("el-tree-node__content"));
-    document.getElementsByClassName("el-tree-node__content")[0].click();
+    // document.getElementsByClassName("el-tree-node__content")[0].click();
   },
 
   methods: {
     filterNode(value, data) {
       // console.log(value);
       // console.log(data);
-
       if (!value) return true;
       return data.text.indexOf(value) !== -1;
     },
@@ -115,3 +120,14 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+//css代码
+.el-tree-node__expand-icon {
+  border: 0;
+  /*自定义，必要时用!important*/
+}
+.el-tree-node__expand-icon.expanded {
+  /*自定义，必要时用!important*/
+}
+</style>
+

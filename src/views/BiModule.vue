@@ -223,6 +223,10 @@ export default {
           }
         });
       }
+    },
+    dialogData() {
+      debugger;
+      this.loadRemoteSource(this.dialogData);
     }
   },
 

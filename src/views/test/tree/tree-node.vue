@@ -9,18 +9,11 @@
       'is-current': tree.store.currentNode === node,
       'is-hidden': !node.visible,
       'is-focusable': !node.disabled,
-      'is-checked': !node.disabled && node.checked
     }"
     role="treeitem"
     tabindex="-1"
     :aria-expanded="expanded"
     :aria-disabled="node.disabled"
-    :aria-checked="node.checked"
-    :draggable="tree.draggable"
-    @dragstart.stop="handleDragStart"
-    @dragover.stop="handleDragOver"
-    @dragend.stop="handleDragEnd"
-    @drop.stop="handleDrop"
     ref="node"
   >
     <div
@@ -35,14 +28,7 @@
           tree.iconClass ? tree.iconClass : 'el-icon-caret-right'
         ]"
       ></span>
-      <el-checkbox
-        v-if="showCheckbox"
-        v-model="node.checked"
-        :indeterminate="node.indeterminate"
-        :disabled="!!node.disabled"
-        @click.native.stop
-        @change="handleCheckChange"
-      ></el-checkbox>
+      
       <span v-if="node.loading" class="el-tree-node__loading-icon el-icon-loading"></span>
       <node-content :node="node"></node-content>
     </div>
@@ -69,17 +55,13 @@
 
 <script type="text/jsx">
 import ElCollapseTransition from "element-ui/src/transitions/collapse-transition";
-import ElCheckbox from "element-ui/packages/checkbox";
 import emitter from "element-ui/src/mixins/emitter";
 import { getNodeKey } from "./model/util";
 
 export default {
   name: "ElTreeNode",
-
   componentName: "ElTreeNode",
-
   mixins: [emitter],
-
   props: {
     node: {
       default() {
@@ -96,7 +78,6 @@ export default {
 
   components: {
     ElCollapseTransition,
-    ElCheckbox,
     NodeContent: {
       props: {
         node: {
@@ -129,21 +110,12 @@ export default {
       tree: null,
       expanded: false,
       childNodeRendered: false,
-      showCheckbox: false,
       oldChecked: null,
       oldIndeterminate: null
     };
   },
 
   watch: {
-    "node.indeterminate"(val) {
-      this.handleSelectChange(this.node.checked, val);
-    },
-
-    "node.checked"(val) {
-      this.handleSelectChange(val, this.node.indeterminate);
-    },
-
     "node.expanded"(val) {
       this.$nextTick(() => (this.expanded = val));
       if (val) {
@@ -155,17 +127,6 @@ export default {
   methods: {
     getNodeKey(node) {
       return getNodeKey(this.tree.nodeKey, node.data);
-    },
-
-    handleSelectChange(checked, indeterminate) {
-      if (
-        this.oldChecked !== checked &&
-        this.oldIndeterminate !== indeterminate
-      ) {
-        this.tree.$emit("check-change", this.node.data, checked, indeterminate);
-      }
-      this.oldChecked = checked;
-      this.indeterminate = indeterminate;
     },
 
     handleClick() {
@@ -180,11 +141,7 @@ export default {
       if (this.tree.expandOnClickNode) {
         this.handleExpandIconClick();
       }
-      if (this.tree.checkOnClickNode && !this.node.disabled) {
-        this.handleCheckChange(null, {
-          target: { checked: !this.node.checked }
-        });
-      }
+
       this.tree.$emit("node-click", this.node.data, this.node, this);
     },
 
@@ -216,42 +173,9 @@ export default {
       }
     },
 
-    handleCheckChange(value, ev) {
-      this.node.setChecked(ev.target.checked, !this.tree.checkStrictly);
-      this.$nextTick(() => {
-        const store = this.tree.store;
-        this.tree.$emit("check", this.node.data, {
-          checkedNodes: store.getCheckedNodes(),
-          checkedKeys: store.getCheckedKeys(),
-          halfCheckedNodes: store.getHalfCheckedNodes(),
-          halfCheckedKeys: store.getHalfCheckedKeys()
-        });
-      });
-    },
-
     handleChildNodeExpand(nodeData, node, instance) {
       this.broadcast("ElTreeNode", "tree-node-expand", node);
       this.tree.$emit("node-expand", nodeData, node, instance);
-    },
-
-    handleDragStart(event) {
-      if (!this.tree.draggable) return;
-      this.tree.$emit("tree-node-drag-start", event, this);
-    },
-
-    handleDragOver(event) {
-      if (!this.tree.draggable) return;
-      this.tree.$emit("tree-node-drag-over", event, this);
-      event.preventDefault();
-    },
-
-    handleDrop(event) {
-      event.preventDefault();
-    },
-
-    handleDragEnd(event) {
-      if (!this.tree.draggable) return;
-      this.tree.$emit("tree-node-drag-end", event, this);
     }
   },
 
@@ -275,8 +199,6 @@ export default {
     this.$watch(`node.data.${childrenKey}`, () => {
       this.node.updateChildren();
     });
-
-    this.showCheckbox = tree.showCheckbox;
 
     if (this.node.expanded) {
       this.expanded = true;

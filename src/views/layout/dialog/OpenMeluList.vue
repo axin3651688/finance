@@ -17,19 +17,19 @@
             >全选</el-checkbox>
             <span class="iconfont close" @click="closePop">&#xe60e;</span>
           </div>
-          <!-- <el-input v-model="search" placeholder="搜索人员" suffix-icon="el-icon-search" class="search"></el-input> -->
+          <div class="sheach">
+            <el-input v-model="nameSearch" placeholder="搜索人员" suffix-icon="el-icon-search"></el-input>
+          </div>
           <el-checkbox-group
             v-model="checkedItem"
             @change="handleCheckedChange"
             class="content-middle"
-            v-for="i of listDatas"
+            v-for="i of filterData"
             :key="i.id"
           >
             <img :src="i.avatar" alt class="img">
             <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
-            <!-- <el-checkbox :label="i.trueName" class="checkbox-item"></el-checkbox> -->
           </el-checkbox-group>
-
           <div style="margin: 15px 0;"></div>
         </div>
       </transition>
@@ -47,22 +47,40 @@ export default {
       return this.showMeluList.data;
     },
     listName() {
-      return this.listDatas.map(function(user) {
+      return this.filterData.map(function(user) {
         return user.trueName;
       });
+    },
+    /**
+     * @desc    : 通过输入关键子对人名进行筛选搜索
+     * @returns {Arry}
+     * @author  : mj
+     * @data    : 2019-02-12
+     */
+    filterData: function() {
+      debugger;
+      var items = this.listDatas;
+      var searchRegex = new RegExp(this.nameSearch, "i");
+      var arr = [];
+      for (var i = 0, j = items.length; i < j; i++) {
+        // debugger;
+        if (searchRegex.test(items[i].trueName)) {
+          arr.push(items[i]);
+        }
+      }
+      return arr;
     }
   },
   data() {
     return {
-      search: "", //搜索框显示的内容
+      nameSearch: "", //搜索框显示的内容
       showSide: false, // 是否显示边栏
       checkAll: false,
       checkedItem: [],
-
       isIndeterminate: false
     };
   },
-
+  // 自定义指令
   directives: {
     clickoutside: {
       bind(el, binding, vnode) {
@@ -95,6 +113,8 @@ export default {
       }
     }
   },
+  filters: {},
+
   methods: {
     ...mapActions(["ShowMeluList"]),
     closePop() {

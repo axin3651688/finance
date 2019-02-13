@@ -11,9 +11,11 @@
     }
 
     .name {
+
         color: rgba(0, 0, 0, 0.6);
         text-align: center;
-        width: 50px;
+        width: 60px;
+        left: -50px;
         padding-top: 11px;
     }
 
@@ -28,6 +30,7 @@
         img {
             opacity: 1;
             position: absolute;
+            margin-left: 5px;
             height: 50px;
             width: 50px;
             border-radius: 50%;
@@ -38,8 +41,8 @@
             }
         }
 
-
         .item_img {
+            margin-left: 5px;
             font-size: 50px;
             color: rgba(0, 0, 0, 0.3);
         }
@@ -47,6 +50,19 @@
         .item_imgadd {
             font-size: 40px;
             color: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .role_bgch {
+        height: 125px;
+        padding: 25px 40px 20px 0px;
+
+        img {
+            margin-left: 5px;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.1);
         }
     }
 
