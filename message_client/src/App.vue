@@ -9,6 +9,8 @@ import {mapActions} from 'vuex';
 import webSocket from '@mu/webSocket';
 import {getClientParams} from '@mu/index';
 
+const SETTINGS = require('@/settings'); // 全局变量或配置
+
 export default {
   name: '',
   data() {
@@ -56,14 +58,13 @@ export default {
       }
     },
     initSocket(authorization) {
-      // let url = 'ws://192.168.2.224:7006/socket.io/';
-      let url = 'ws://192.168.1.118:7006/socket.io/';
+      let url = SETTINGS.serverAddress.socket;
+      debugger;
       if (authorization != null) {
         url = url + '?Authorization=' + authorization;
       } else {
         // url = url + "?device=" + Cnbi.getDevice();
       }
-      // debugger;
       webSocket({url: url});
     }
   },

@@ -9,11 +9,11 @@
 
 <script>
 export default {
-  name: "MyDialog",
+  name: 'MyDialog',
   data() {
     return {
       showDialog: false
-    }
+    };
   },
   props: {
     value: {
@@ -28,7 +28,7 @@ export default {
   watch: {
     value(newVal) {
       this.showDialog = newVal;
-    },
+    }
   },
   methods: {
     // 则隐藏弹框
@@ -36,21 +36,20 @@ export default {
       let elem = e.target || e.srcElement;
       while (elem) { // 循环判断至跟节点，防止点击的是div子元素
         if (elem.id && elem.id === 'MyDialog') {
-          return
+          return;
         }// 如果还有别的div不想点击，就加else if判断
-        elem = elem.parentNode
+        elem = elem.parentNode;
       }
-      this.showDialog = false
+      this.showDialog = false;
     }
   },
   mounted() {
-    // todo:点击其他地方隐藏 弹出
-    document.addEventListener('click', this.hidenDialog)
+    document.addEventListener('click', this.hidenDialog);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.hidenDialog)
+    document.removeEventListener('click', this.hidenDialog);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -68,6 +67,7 @@ export default {
       color: $colorText4;
       cursor: pointer;
       transition: all .3s;
+
       &:hover {
         color: $colorTheme;
       }

@@ -35,6 +35,7 @@ export default function webSocket(data) {
 
     // 关闭连接时
     websocket.onclose = function (evnt) {
+      // debugger;
       console.log('  websocket.onclose  ');
       socketIsClosed = true;
       closeShow();
