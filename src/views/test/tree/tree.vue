@@ -41,8 +41,7 @@ export default {
       store: null,
       root: null,
       currentNode: null,
-      treeItems: null,
-      checkboxItems: []
+      treeItems: null
     };
   },
 
@@ -61,7 +60,7 @@ export default {
       default: true
     },
     nodeKey: String,
-    checkStrictly: Boolean,
+
     // 加载所有节点
     defaultExpandAll: Boolean,
 
@@ -69,11 +68,7 @@ export default {
       type: Boolean,
       default: true
     },
-    checkOnClickNode: Boolean,
-    checkDescendants: {
-      type: Boolean,
-      default: false
-    },
+
     autoExpandParent: {
       type: Boolean,
       default: true
@@ -83,16 +78,6 @@ export default {
     defaultExpandedKeys: Array,
     currentNodeKey: [String, Number],
     renderContent: Function,
-    showCheckbox: {
-      type: Boolean,
-      default: false
-    },
-    draggable: {
-      type: Boolean,
-      default: false
-    },
-    allowDrag: Function,
-    allowDrop: Function,
     props: {
       default() {
         return {
@@ -142,10 +127,6 @@ export default {
   },
 
   watch: {
-    defaultCheckedKeys(newVal) {
-      this.store.setDefaultCheckedKey(newVal);
-    },
-
     defaultExpandedKeys(newVal) {
       this.store.defaultExpandedKeys = newVal;
       this.store.setDefaultExpandedKeys(newVal);
@@ -153,16 +134,6 @@ export default {
 
     data(newVal) {
       this.store.setData(newVal);
-    },
-
-    checkboxItems(val) {
-      Array.prototype.forEach.call(val, checkbox => {
-        checkbox.setAttribute("tabindex", -1);
-      });
-    },
-
-    checkStrictly(newVal) {
-      this.store.checkStrictly = newVal;
     }
   },
 
@@ -191,14 +162,6 @@ export default {
       return path.reverse();
     },
 
-    getCheckedNodes(leafOnly, includeHalfChecked) {
-      return this.store.getCheckedNodes(leafOnly, includeHalfChecked);
-    },
-
-    getCheckedKeys(leafOnly) {
-      return this.store.getCheckedKeys(leafOnly);
-    },
-
     getCurrentNode() {
       const currentNode = this.store.getCurrentNode();
       return currentNode ? currentNode.data : null;
@@ -209,30 +172,6 @@ export default {
         throw new Error("[Tree] nodeKey is required in getCurrentKey");
       const currentNode = this.getCurrentNode();
       return currentNode ? currentNode[this.nodeKey] : null;
-    },
-
-    setCheckedNodes(nodes, leafOnly) {
-      if (!this.nodeKey)
-        throw new Error("[Tree] nodeKey is required in setCheckedNodes");
-      this.store.setCheckedNodes(nodes, leafOnly);
-    },
-
-    setCheckedKeys(keys, leafOnly) {
-      if (!this.nodeKey)
-        throw new Error("[Tree] nodeKey is required in setCheckedKeys");
-      this.store.setCheckedKeys(keys, leafOnly);
-    },
-
-    setChecked(data, checked, deep) {
-      this.store.setChecked(data, checked, deep);
-    },
-
-    getHalfCheckedNodes() {
-      return this.store.getHalfCheckedNodes();
-    },
-
-    getHalfCheckedKeys() {
-      return this.store.getHalfCheckedKeys();
     },
 
     setCurrentNode(node) {
@@ -251,22 +190,6 @@ export default {
       return this.store.getNode(data);
     },
 
-    remove(data) {
-      this.store.remove(data);
-    },
-
-    append(data, parentNode) {
-      this.store.append(data, parentNode);
-    },
-
-    insertBefore(data, refNode) {
-      this.store.insertBefore(data, refNode);
-    },
-
-    insertAfter(data, refNode) {
-      this.store.insertAfter(data, refNode);
-    },
-
     handleNodeExpand(nodeData, node, instance) {
       this.broadcast("ElTreeNode", "tree-node-expand", node);
       this.$emit("node-expand", nodeData, node, instance);
@@ -276,21 +199,6 @@ export default {
       if (!this.nodeKey)
         throw new Error("[Tree] nodeKey is required in updateKeyChild");
       this.store.updateChildren(key, data);
-    },
-
-    initTabIndex() {
-      this.treeItems = this.$el.querySelectorAll(
-        ".is-focusable[role=treeitem]"
-      );
-      this.checkboxItems = this.$el.querySelectorAll("input[type=checkbox]");
-      const checkedItem = this.$el.querySelectorAll(
-        ".is-checked[role=treeitem]"
-      );
-      if (checkedItem.length) {
-        checkedItem[0].setAttribute("tabindex", 0);
-        return;
-      }
-      this.treeItems[0] && this.treeItems[0].setAttribute("tabindex", 0);
     },
 
     handleKeydown(ev) {
@@ -319,12 +227,6 @@ export default {
         ev.preventDefault();
         currentItem.click(); // 选中
       }
-      const hasInput = currentItem.querySelector('[type="checkbox"]');
-      if ([13, 32].indexOf(keyCode) > -1 && hasInput) {
-        // space enter选中checkbox
-        ev.preventDefault();
-        hasInput.click();
-      }
     }
   },
 
@@ -338,9 +240,6 @@ export default {
       props: this.props,
       load: this.load,
       currentNodeKey: this.currentNodeKey,
-      checkStrictly: this.checkStrictly,
-      checkDescendants: this.checkDescendants,
-      defaultCheckedKeys: this.defaultCheckedKeys,
       defaultExpandedKeys: this.defaultExpandedKeys,
       autoExpandParent: this.autoExpandParent,
       defaultExpandAll: this.defaultExpandAll,
@@ -353,11 +252,6 @@ export default {
   mounted() {
     this.initTabIndex();
     this.$el.addEventListener("keydown", this.handleKeydown);
-  },
-
-  updated() {
-    this.treeItems = this.$el.querySelectorAll("[role=treeitem]");
-    this.checkboxItems = this.$el.querySelectorAll("input[type=checkbox]");
   }
 };
 </script>

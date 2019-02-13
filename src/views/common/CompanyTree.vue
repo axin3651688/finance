@@ -3,7 +3,6 @@
     <tree
       :props="props"
       :load="loadNode"
-      :node-key="text"
       ref="tree2"
       :default-expanded-keys="['1']"
       highlight-current
