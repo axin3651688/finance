@@ -110,6 +110,7 @@ export default {
     overflow: hidden;
     height: 100vh;
     min-width: 1000px;
+    border: 1px solid #333333;
 
     .left, .right {
       height: 100%;

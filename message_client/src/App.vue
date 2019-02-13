@@ -89,7 +89,5 @@ export default {
     font-family: $fontFamilyMain;
     background: #ffffff;
     overflow: hidden;
-    /*box-sizing: border-box;*/
-    border: 1px solid #333333;
   }
 </style>
