@@ -1,8 +1,5 @@
-import {
-  isArray
-} from 'util';
+import {isArray} from 'util';
 import cmd1500Handle from './cmd1500Handle';
-import {messagePageSocketProcess} from '@mu/socketProcess.js'; // 独立消息页面message_page的消息自己处理
 import {showNotification} from 'utils/notification.js';  // 消息弹窗
 
 /**
@@ -15,7 +12,6 @@ export default function socketCoreProcess(websocket, datas) {
     let code = data.code;
     console.info(data);
     showNotification(data); // 消息弹窗
-    messagePageSocketProcess(data); // 独立消息页面message_page的消息自己处理
     // debugger;
     switch (code) {
       case 1001:

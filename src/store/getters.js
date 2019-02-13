@@ -26,7 +26,7 @@ const getters = {
   companyName: state => state.param.command.companyName,
   // 顶部选中单位名字
   conversion: state => state.param.command.conversion,
-  //顶部公司点击信息大全
+  // 顶部公司点击信息大全
   treeInfo: state => state.param.treeInfo,
   // 侧边栏展开父级id
   openPid: state => state.param.command.openPid,
@@ -37,10 +37,6 @@ const getters = {
 
   action: state => state.param.command.action,
   action2: state => state.param.command.action2,
-  action3: state => state.param.command.action3,
-
-  newServerMsg: state => state.messageModule.newServerMsg, // 服务器推送的消息
-  chatWithUserId: state => state.messageModule.chatWithUserId, // 和谁聊天，单聊
-  messageStore: state => state.messageModule.messageStore // 消息模块的所有数据
-}
-export default getters
+  action3: state => state.param.command.action3
+};
+export default getters;
