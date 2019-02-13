@@ -156,7 +156,7 @@ export default {
       .content-title{
         font-size: 12px;
         color: $colorTextBlack6;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
 
       .content-bubble {

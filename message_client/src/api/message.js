@@ -393,7 +393,7 @@ export function SEND_GROUP_INVITE_MSG (data) {
 export function SCAN_LOGIN_URL (params) {
   // debugger;
   return request({
-    url: '/auth/scan_login_url',
+    url: '/api/auth/scan_login_url',
     method: 'get',
     params: params
   });
