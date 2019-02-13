@@ -9,16 +9,13 @@
     :show-close="true"
     :close-on-press-escape="true"
     v-dialogDrag
+    :before-close="closePop"
   >
     <span slot="title" class="dialog-title">
       <!-- <img src="@a/icons/jsnk/laba.svg"> -->
       <span>{{showDialog.tittle}}</span>
     </span>
-    <el-button @click.stop="ShowMeluList({isShow:true})">打开</el-button>
     <BiModule :dialogData="showDialog.api"></BiModule>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="ShowDialog({isShow:false})">关 闭</el-button>
-    </span>
   </el-dialog>
 </template>
 <script>
@@ -28,7 +25,6 @@
 import { mapActions, mapGetters } from "vuex";
 import BiModule from "@v/BiModule.vue";
 export default {
-  created() {},
   components: {
     BiModule
   },
@@ -36,7 +32,11 @@ export default {
     ...mapGetters(["showDialog", "showMeluList"])
   },
   methods: {
-    ...mapActions(["ShowDialog", "ShowMeluList"])
+    ...mapActions(["ShowDialog"]),
+    closePop() {
+      debugger;
+      this.ShowDialog({ isShow: false });
+    }
   }
 };
 </script>

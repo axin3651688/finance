@@ -1,0 +1,377 @@
+// 这里包含顶部和主体内容的样式
+// 顶部头像下拉部分,由于是挂载到顶层,所以需要到顶层才能修改其属性
+.headlistUp {
+
+    .info {
+        @include topicon;
+        background: url(~@a/topicon/info.png) no-repeat;
+    }
+
+    .about {
+        @include topicon;
+        background: url(~@a/topicon/about.png) no-repeat;
+    }
+
+    .help {
+        @include topicon;
+        background: url(~@a/topicon/help.png) no-repeat;
+    }
+
+    .logout {
+        @include topicon;
+        background: url(~@a/topicon/logout.png) no-repeat;
+    }
+
+    .manage {
+        @include topicon;
+        background: url(~@a/topicon/manage.png) no-repeat;
+    }
+
+    .el-dropdown-menu__item {
+        width: 150px;
+
+    }
+
+    // 头像下拉hover
+    .el-dropdown-menu__item:not(.is-disabled):hover {
+        background-color: #E6F7FF;
+        color: #666666;
+    }
+
+}
+
+.main-container {
+    @include clearfix;
+    height: 100%;
+    min-height: 100%;
+    transition: margin-left .28s;
+    // margin-left: $sideWidth;
+    // 无内容背景
+    background: $nonbugColor;
+
+    .head-nav {
+        position: fixed;
+        top: 0;
+        z-index: 200;
+        left: $sideWidth;
+        right: 0;
+        height: $topHeight;
+        background: $top-background;
+
+        .button {
+            padding: 7px 20px !important;
+        }
+
+        .topcontent {
+            line-height: $topcontent-line-height;
+            height: $topcontent-line-height;
+            float: right;
+            margin-right: $topcontent-margin-right;
+
+            //  放大镜
+            .iconclass {
+                margin-right: 10px;
+                padding-left: 15px;
+            }
+
+            // 下滑线
+            .underline {
+                font-size: 16px;
+                padding-bottom: 5px;
+                border-bottom: 2px solid #F0F2F5;
+                margin-right: 10px;
+                margin-left: 0px;
+                color: $font-clolor
+            }
+
+            .el-button--text {
+                color: #000
+            }
+
+            .shuxian {
+                height: 20px;
+                border-left: 1px solid #999999
+            }
+
+            // 消息提醒
+            .el-badge {
+                .el-badge__content.is-fixed {
+                    top: 24px;
+                    right: 37px;
+                }
+
+                .iconclass {
+                    padding-right: 20px;
+                    padding-left: 20px;
+                }
+            }
+
+            .username {
+                cursor: pointer;
+                margin-right: 5px;
+
+
+                .dropdown {
+                    display: inline-block;
+                    width: auto;
+                    vertical-align: middle;
+                    padding: 0 5px;
+
+                    .avatar {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        vertical-align: middle;
+
+                    }
+
+                    .name {
+                        // line-height: 20px;
+                        // text-align: center;
+                        // font-size: 14px;
+                        padding-left: 10px;
+                    }
+
+                }
+
+                .icon-bottom {
+                    border-bottom: 2px solid rgb(1, 8, 17);
+                }
+            }
+
+            .el-dialog {
+                width: 600px;
+            }
+
+            // 公司选择头部
+            .el-dialog__header {
+                line-height: 56px;
+                height: 56px;
+                padding-top: 0px;
+                padding-bottom: 0px;
+                padding-left: 30px;
+                border-bottom: 1px solid#e5e5e5;
+
+                .dialog-title {
+                    color: #333333;
+
+                    .el-input {
+                        width: 200px;
+                        margin-left: 50px;
+                    }
+                }
+            }
+
+            // 文件夹图标
+            .el-tree-node__expand-icon {
+                // border:0;
+                //    height: 16px;
+                //    width: 16px;
+                font-size: 16px;
+            }
+
+            // 公司选择弹框
+            .el-dialog__body {
+                padding-top: 8px;
+                padding-left: 60px;
+                padding-bottom: 0px;
+                height: 450px;
+
+                .el-tree {
+                    height: 430px;
+
+                    overflow: auto;
+                }
+            }
+
+            .el-dialog__footer {
+                height: 40px;
+                border-top: 1px solid#e5e5e5
+            }
+
+            .el-tree-node__label {
+                font-size: 16px;
+            }
+        }
+
+        .hamburger-container {
+            line-height: 64px;
+            height: 64px;
+            float: left;
+            padding: 0 10px;
+        }
+
+        .el-dialog__wrapper {
+
+            // 个人信息头部
+            .el-dialog__header {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+
+            .el-tree {
+                height: 430px;
+                overflow: auto;
+            }
+
+        }
+
+    }
+
+    // 个人信息弹窗
+    .info-dialog {
+        border-radius: 12px;
+        width: 640px;
+
+        .el-dialog__body {
+            // position: relative;
+            display: flex;
+            padding-top: 0px;
+            padding-left: 0px;
+            padding-bottom: 0px;
+            height: 420px;
+            border-radius: 12px 0 0 12px;
+
+            .row-bg {
+                position: relative;
+                flex: 1;
+                margin-right: 30px;
+                padding-left: 30px;
+            }
+
+            .user {
+                margin-top: 30px;
+
+                & img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+            }
+
+            .img-box {
+                width: 280px;
+                height: 420px;
+                overflow: hidden;
+                float: left;
+                background-image: url($infoImg);
+                // background-repeat: no-repeat;
+            }
+
+            .btn-primary {
+                position: absolute;
+                right: 40px;
+                bottom: 30px;
+                padding: 0;
+                width: 120px;
+                height: 40px;
+                line-height: 40px;
+                color: #fff;
+                border: none;
+                background: $menuHover;
+
+                border-radius: 12px;
+                transition: all .3s;
+
+                &:hover {
+                    box-shadow: 3px 3px 6px rgba(41, 75, 185, 0.3);
+                }
+            }
+
+            .user-item {
+                padding-top: 30px;
+                // display: inline-block;
+                font-size: 16px;
+
+                .item {
+                    display: flex;
+                    margin-bottom: 20px;
+                }
+
+                i {
+                    font-weight: bold;
+                }
+
+                span {
+                    margin-left: 30px;
+                }
+            }
+        }
+    }
+
+}
+
+// 侧边栏隐藏时
+.hideSidebar {
+    .main-container {
+        margin-left: $min_sideWidth;
+
+        .head-nav {
+            left: $min_sideWidth;
+        }
+    }
+}
+
+// 适配手机展示时
+#app {
+    .mobile {
+        .head-nav {
+            left: 0;
+
+            .el-dialog {
+                width: 95%;
+            }
+
+            .el-dialog__body {
+                padding-left: 0px;
+            }
+        }
+
+        .main-container {
+            margin-left: 0px;
+            width: 100%;
+        }
+
+        .containerMain {
+            padding-top: $app_contai_padding-top;
+        }
+    }
+
+    .mobile.openSidebar {
+        .shadow {
+            height: 100%;
+            width: 100%;
+            z-index: 5;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(2, 11, 19, 0.8);
+            transition-duration: 0.3s;
+            transform: translate3d($sideWidth, 0, 0);
+        }
+
+        .main-container {
+            // margin-left: -$sideWidth;
+            // width: 100%;
+        }
+    }
+}
+
+// 下拉框到顶部的距离,这里已经是修改了全局属性
+.el-popper[x-placement^=bottom] {
+    margin-top: 6px;
+}
+
+#app {
+    .containerMain {
+        background: $nonbugColor;
+        padding-left: 24px;
+        // padding-right: 24px;
+        padding-top: 64px;
+        // overflow: auto;
+    }
+
+}

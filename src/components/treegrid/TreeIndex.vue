@@ -10,51 +10,6 @@
         {{ scope.$index }}
       </template>
     </el-table-column>
-    <el-table-column
-      v-for="(column, index) in columns"
-      v-else
-      :key="column.value"
-      :label="column.text"
-      :width="column.width"
-    >
-      <template slot-scope="scope">
-        <span
-          v-for="space in scope.row._level"
-          v-if=" column.text != '操作' && index === 0"
-          :key="space"
-          class="ms-tree-space"
-        />
-        <span
-          v-if="iconShow(index,scope.row) "
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        <span v-if=" column.text != '操作'">{{ scope.row[column.value] }}</span>
-
-        <el-button type="text" v-if="column.text === '操作'" @click="add">
-          <!-- ... -->
-          <img src="@/assets/green/list_menu.svg" alt>
-          <el-cascader :options="options" v-model="selectedOptions" @change="handleChange"></el-cascader>
-
-          <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleChange"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-          </el-dialog>
-        </el-button>
-      </template>
-    </el-table-column>
-    <slot/>
   </el-table>
 </template>
  
@@ -107,6 +62,7 @@ export default {
       return func.apply(null, args);
     }
   },
+
   methods: {
     add() {
       this.axios.get("/api/operating").then(res => {

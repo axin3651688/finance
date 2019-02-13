@@ -12,6 +12,7 @@
     <!--弹出搜索结果-->
     <div class="search-result" v-if="show">
       <template v-if="searchData">
+
         <!--应用-->
         <div class="cards panel" v-if="searchData.cards.length">
           <!--{{searchData.cards}}-->
@@ -42,7 +43,7 @@
                 <img :src="item.avatar" v-avatar="item.trueName">
               </div>
               <h4 class="item-title">{{item.trueName}}</h4>
-              <div class="item-btn">聊天</div>
+              <div class="item-btn" @click="redirectSingleChat(item)">聊天</div>
             </li>
           </ul>
         </div>
@@ -55,7 +56,8 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item" v-for="item in searchData.groups">
+            <li class="content-item content-item__group" v-for="item in searchData.groups"
+                @click="redirectGroupChat(item)">
               <div class="img-box item-avatar">
                 <img :src="item.avatar" v-avatar="item.text">
               </div>
@@ -73,6 +75,7 @@
           </div>
           {{searchData.nodes}}
         </div>
+
       </template>
 
       <div class="noSearchData" v-else>
@@ -83,8 +86,8 @@
 </template>
 
 <script>
-import {SEARCH_MY_CONTACT} from '~api/message.js'
-import {mapGetters} from 'vuex'
+import {SEARCH_MY_CONTACT} from '@m_api/message.js'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: "SearchBar",
@@ -96,7 +99,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id
     }
@@ -135,10 +138,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 关闭搜索结果弹窗
     handleClose(e) {
-      this.show = false
-      this.searchData = null
+      this.show = false       // 关闭弹窗
+      this.searchData = null  // 清除搜索结果
     },
 
     // 判断搜索结果是否为空
@@ -176,9 +180,13 @@ export default {
         })
     },
 
-    // 跳转到好友信息页面
+    /**
+     * 跳转到好友信息页面
+     * @param id: 好友的Id
+     * @param activeName: 通讯录页面要激活的标签
+     */
     redirectContact(id, activeName) {
-      // this.$router.push('/message_page/contact')
+      debugger;
       this.$router.push({
         path: '/message_page/contact',
         query: {
@@ -186,14 +194,110 @@ export default {
           activeName: activeName
         }
       })
+      this.handleClose() // 先关闭搜索弹窗
+    },
+
+    /**
+     * 跳转到好友单聊页面,并设置 sessionActiveItem,然后往 session 列表增加一个条目
+     */
+    redirectSingleChat(item) {
+      this.handleClose() // 先关闭搜索弹窗
+      let sessionItem = {}
+      let targetId = '1100_' + item.id + '_' + this.loginUserId
+      sessionItem['miniType'] = 1100
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = item.id
+      sessionItem['name'] = item.trueName
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = item.avatar
+      sessionItem['originData'] = item
+
+      this.ActionSetMessageStore({ // vuex 设置
+        sessionActiveItem: sessionItem,
+        miniType: sessionItem.miniType
+      })
+
+      this.$router.push({ // 路由跳转
+        path: '/message_page/msg',
+        query: {
+          id: item.id,
+          miniType: 1100
+        }
+      })
+
+      this._updateSessionList(sessionItem)     // 更新session边栏
+    },
+
+    /**
+     * 跳转到群聊页面
+     */
+    redirectGroupChat(item) {
+      debugger
+      this.handleClose() // 先关闭搜索弹窗
+      let sessionItem = {}
+      let targetId = '1101_' + this.loginUserId + '_' + item.groupId
+      sessionItem['miniType'] = 1101
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = item.groupId
+      sessionItem['name'] = item.text
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = item.avatar
+      sessionItem['originData'] = item
+
+      this.ActionSetMessageStore({ // vuex 设置
+        sessionActiveItem: sessionItem,
+        miniType: 1101, // 1101 群聊,
+        receiverData: item
+      })
+
+      this.$router.push({ // 路由跳转
+        path: '/message_page/msg',
+        query: {
+          id: item.groupId,
+          miniType: 1101
+        }
+      })
+
+      this._updateSessionList(sessionItem)     // 更新session边栏
+
+    },
+
+    /**
+     * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
+     */
+    _updateSessionList(sessionItem) {
+      let itemExist = false
+      for (let item of this.messageStore.sessionList) {
+        if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
+          itemExist = true
+          this.ActionUpdateSessionList({
+            type: 'update',
+            method: 'clearCount',
+            data: sessionItem
+          })
+          break
+        }
+      }
+      if (!itemExist) { // 如果不存在，则进队列
+        let addObj = {
+          type: 'addItem', // 可取'addItem','deleteItem','update'
+          data: sessionItem
+        }
+        this.ActionUpdateSessionList(addObj)
+      }
     }
+
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@s/message/index.scss";
-  @import "@s/message/variables.scss";
+  @import "@ms/index.scss";
+  @import "@ms/variables.scss";
 
   .SearchBar {
     height: 100%;
@@ -257,6 +361,7 @@ export default {
 
   .panel {
     margin-bottom: 10px;
+
     .panel-title {
       @include flex();
       justify-content: space-between;
@@ -283,6 +388,11 @@ export default {
         line-height: 100%;
         font-size: 14px;
         font-weight: 400;
+        transition: background-color .3s;
+
+        &:hover {
+          background-color: $colorThemePrimary;
+        }
 
         .img-box {
           @include imgBox($width: 30px, $height: 30px, $borderRadius: 50%)
@@ -295,6 +405,8 @@ export default {
         }
 
         .item-title {
+          @include singleEllipsis();
+          max-width: 150px;
           display: inline-block;
           line-height: 30px;
           color: $colorTextBlack6;
@@ -307,6 +419,10 @@ export default {
           color: $colorTextBlack3;
           cursor: pointer;
         }
+      }
+
+      .content-item__group {
+        cursor: pointer;
       }
     }
   }

@@ -25,13 +25,9 @@ export default {
       return this.col.children && this.col.children.length;
     }
   },
-  created() {
-    //alert(JSON.stringify(this.tableData))
-    // debugger;
-    // console.log(this.tableData);
-  },
+  created() {},
   methods: {
-       upData(item) {
+    upData(item) {
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
       let refs = this.$refs;

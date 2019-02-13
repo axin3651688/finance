@@ -1,4 +1,5 @@
 import store from '@/store'
+import Vue from 'vue'
 import {
   generatePeriod
 } from "./period";
@@ -172,4 +173,62 @@ export function handleOpen(code, nodes) {
   }
   nodes.push(clickNodeId);
   return false;
+}
+
+/**
+* @name   :      给对象添加属性
+* @param  data   需要处理的数据 
+* @author : mj
+* @data   : 2019-01-23
+*/
+export function convertData(data) {
+  let tmp = []
+  if (!Array.isArray(data)) {
+    data = [data];
+  } else {
+    data = data;
+  }
+  Array.from(data).forEach(function (record) {
+    // debugger
+    let _expanded = false
+    if (record._expanded === undefined) {
+      Vue.set(record, '_expanded', _expanded)
+    }
+    let _isHide = false
+    if (record._isHide == undefined) {
+      Vue.set(record, '_isHide', _isHide)
+    }
+    tmp.push(record)
+  })
+  return tmp
+}
+
+/**
+    * @name :  控制节点的展开和关闭
+    * @param  dat         点击行的数据
+    * @param  formatData  整个表的数据
+    * @param  level      层级名称，也可以传比如  "lever"
+    * @author : mj
+    * @data   :  2019-01-23
+    */
+export function isfold(dat, formatData, level) {
+  formatData.filter(data => {
+    if (data.pid == dat.id && data[level] == dat[level] + 1) {
+      debugger;
+      if (data.leaf == 0) {
+        debugger;
+        if (data._expanded == false) {
+          data._isHide = !data._isHide;
+          return true;
+        }
+        data._isHide = !data._isHide;
+        // console.log(data.text);
+        this.isfold(data, formatData, level);
+      } else if (data[level] == dat[level] + 1) {
+        // console.log(data.text);
+        data._isHide = !data._isHide;
+      }
+      return true;
+    }
+  });
 }

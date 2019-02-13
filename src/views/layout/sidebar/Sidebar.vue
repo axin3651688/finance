@@ -104,6 +104,8 @@ export default {
     fetchData(userId, code) {
       findSideBar(userId, code).then(response => {
         let data = response.data.data;
+        // console.log(data);
+
         data.forEach(ele => {
           // console.log(this.nodes);
           if (ele.leaf == 0) {
