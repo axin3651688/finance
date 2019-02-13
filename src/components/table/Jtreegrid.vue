@@ -9,7 +9,6 @@
       stripe
       height="item.height || rowClass"
       :cell-style="cellStyle"
-      @row-click="onRowClick"
     >
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
@@ -65,13 +64,13 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-    onRowClick(row, e, column) {
-      // 在底层有列点击,顶层有行点击
-      // debugger;
-      if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
-        return this.item.onRowClick(row, column, e, this);
-      }
-    },
+    // onRowClick(row, e, column) {
+    //   // 在底层有列点击,顶层有行点击
+    //   // debugger;
+    //   if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
+    //     return this.item.onRowClick(row, column, e, this);
+    //   }
+    // },
     cellStyle(row) {
       // debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
@@ -104,35 +103,12 @@ export default {
       }
     },
 
-    upData(item) {
-      this.$set(this, "formatData", "");
-      this.$set(this, "formatData", null);
-      this.item = item;
-    },
-    tranformData(data, rootItem) {
-      let me = this;
-      let children = [];
-      let dataArr = [];
-      rootItem.children = children;
-      for (let i = 0; i < data.length; i++) {
-        let it = data[i];
-        if (it.gsbm === rootItem.gsbm) {
-          continue;
-        }
-        //满足条件的就塞进去，不满足的塞到另一个新数组中
-        if (rootItem.gsbm == it.pid) {
-          rootItem.children.push(it);
-        } else {
-          dataArr.push(it);
-        }
-      }
-      if (rootItem.children && rootItem.children.length > 0) {
-        for (let i = 0; i < rootItem.children.length; i++) {
-          let tt = rootItem.children[i];
-          me.tranformData(dataArr, tt);
-        }
-      }
-    },
+    // upData(item) {
+    //   this.$set(this, "formatData", "");
+    //   this.$set(this, "formatData", null);
+    //   this.item = item;
+    // },
+
     // 下面处理行的显影
     showRow(bean) {
       let row = bean.row;

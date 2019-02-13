@@ -15,6 +15,7 @@
     fixed="right"
   >
     <template slot-scope="scope">
+      <!-- 智慧报告催报里面的三个点 -->
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if="col.icon" :src="col.icon" alt>
         <img v-else src="@/assets/green/list_menu.svg" alt class="img">
@@ -51,7 +52,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||150"
+    :min-width="col.width||150"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">

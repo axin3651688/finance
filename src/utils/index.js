@@ -12,10 +12,11 @@ export function getClientParams(url) {
   let bean = JSON.parse(
     '{"' +
     decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/==/g, '')
-      .replace(/=/g, '":"') +
+    .replace(/"/g, '\\"')
+    .replace(/&/g, '","')
+    .replace(/==/g, '')
+    .replace(/=/g, '":"')
+    .replace(/:""/g, '') +
     '"}'
   );
   for (let key in bean) {
@@ -176,11 +177,11 @@ export function handleOpen(code, nodes) {
 }
 
 /**
-* @name   :      给对象添加属性
-* @param  data   需要处理的数据 
-* @author : mj
-* @data   : 2019-01-23
-*/
+ * @name   :      给对象添加属性
+ * @param  data   需要处理的数据 
+ * @author : mj
+ * @data   : 2019-01-23
+ */
 export function convertData(data) {
   let tmp = []
   if (!Array.isArray(data)) {
@@ -204,28 +205,27 @@ export function convertData(data) {
 }
 
 /**
-    * @name :  控制节点的展开和关闭
-    * @param  dat         点击行的数据
-    * @param  formatData  整个表的数据
-    * @param  level      层级名称，也可以传比如  "lever"
-    * @author : mj
-    * @data   :  2019-01-23
-    */
+ * @name :  控制节点的展开和关闭
+ * @param  dat         点击行的数据
+ * @param  formatData  整个表的数据
+ * @param  level      层级名称，也可以传比如  "lever"
+ * @author : mj
+ * @data   :  2019-01-23
+ */
 export function isfold(dat, formatData, level) {
   formatData.filter(data => {
     if (data.pid == dat.id && data[level] == dat[level] + 1) {
       debugger;
       if (data.leaf == 0) {
+        // 如果收缩有子节点就递归
         debugger;
         if (data._expanded == false) {
           data._isHide = !data._isHide;
           return true;
         }
         data._isHide = !data._isHide;
-        // console.log(data.text);
-        this.isfold(data, formatData, level);
+        isfold(data, formatData, level);
       } else if (data[level] == dat[level] + 1) {
-        // console.log(data.text);
         data._isHide = !data._isHide;
       }
       return true;
