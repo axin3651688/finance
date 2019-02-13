@@ -122,12 +122,12 @@ export default {
       debugger;
       let postData = {
         page: 1,
-        receiverId: this.receiverId,
-        senderId: this.loginUserId,
         size: 30
       };
       switch (this.miniType) {
         case 1100: // 单聊
+          postData['receiverId'] = this.receiverId;
+          postData['senderId'] = this.loginUserId;
           FIND_SINGLE_MSG(postData)
             .then(res => {
               this._requestMsgHistoryThen(res);
@@ -137,6 +137,8 @@ export default {
             });
           break;
         case 1101: // 群聊
+          postData['groupId'] = this.receiverId;
+          postData['userId'] = this.loginUserId;
           FIND_GROUP_MSG(postData)
             .then(res => {
               this._requestMsgHistoryThen(res);
@@ -164,7 +166,7 @@ export default {
         });
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1];
-        this._httpUpdateChatState(lastItem);
+        if (lastItem) this._httpUpdateChatState(lastItem);
       }
     },
 

@@ -10,6 +10,7 @@
     <div class="content">
       <!--{{data}}-->
 
+      <h6 class="content-title" v-if="isGroup">{{data.name}}</h6>
       <div class="content-bubble">
         <!--2图片-->
         <div v-if="data.type === 2">
@@ -94,9 +95,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id;
+    },
+    isGroup() {
+      return this.messageStore.miniType === 1101;
     }
   },
   filters: {
@@ -136,6 +140,7 @@ export default {
 
   .message-box {
     display: flex;
+    align-items: center;
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
@@ -148,13 +153,20 @@ export default {
 
     .content {
       padding: 0 12px;
+      .content-title{
+        font-size: 12px;
+        color: $colorTextBlack6;
+        margin-bottom: 6px;
+      }
 
       .content-bubble {
         position: relative;
         box-sizing: border-box;
-        padding: 12px;
+        padding: 10px 12px;
         min-height: 40px;
         min-width: 40px;
+        max-width: 600px;
+        word-wrap : break-word;
         line-height: 20px;
         font-size: 14px;
         background-color: $colorThemePrimary;
