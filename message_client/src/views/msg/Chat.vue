@@ -92,9 +92,10 @@ export default {
      * 监听服务器推送的消息
      */
     newServerMsg(val) {
-      debugger;
-      // 如果不是聊天消息，或接受对象不是当前窗口就不处理
-      if ((val.code !== 1100 && val.code !== 1101) || val.data.senderId !== this.receiverId) return false;
+      // debugger;
+      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
+        return false;
+      }
 
       console.log('监听到聊天消息：', val);
       let item = val.data;
@@ -297,7 +298,7 @@ export default {
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,
-        'miniType': 1100,
+        'miniType': this.miniType,
         'receiverId': lastItem.receiverId,
         'senderId': lastItem.senderId,
         'state': 2
@@ -314,7 +315,7 @@ export default {
         code: 1006,
         data: {
           'id': lastItem.id,
-          'miniType': 1100,
+          'miniType': this.miniType,
           'receiverId': lastItem.receiverId,
           'senderId': lastItem.senderId,
           'state': 2

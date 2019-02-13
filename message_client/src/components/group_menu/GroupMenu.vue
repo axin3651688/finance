@@ -16,7 +16,7 @@
             <img class="pop-list__icon" src="@ma/icon/group_set_icon.svg">
             <span class="pop-list__text">退出群组</span>
           </h3>
-          <p class="pop-list__description">退出群主将不再接收消息</p>
+          <p class="pop-list__description">退出群组将不再接收消息</p>
         </li>
       </ul>
     </relative-pop>

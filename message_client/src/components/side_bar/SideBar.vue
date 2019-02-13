@@ -100,7 +100,7 @@ export default {
     // 监听服务器推送的消息
     newServerMsg(val) {
       console.log('监听到服务器推送：', val);
-      debugger;
+      // debugger;
       let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
       let sessionItem = {};
       sessionItem['miniType'] = val.code;
