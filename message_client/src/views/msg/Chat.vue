@@ -73,6 +73,9 @@ export default {
     receiverId() { // 接受对象的id，可以是个人id，也可以是群id
       return this.messageStore.sessionActiveItem.id;
     },
+    activeTargetId() { // 当前激活session的targetId
+      return this.messageStore.sessionActiveItem.targetId;
+    },
     miniType() {
       return this.messageStore.sessionActiveItem.miniType;
     },
@@ -93,8 +96,13 @@ export default {
      * 监听服务器推送的消息
      */
     newServerMsg(val) {
-      // debugger;
+      debugger;
       if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
+        return false;
+      }
+      // TODO：如果接受对象不是当前激活的sessionItem也不处理
+      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
+      if (this.activeTargetId !== targetId) {
         return false;
       }
 
