@@ -30,13 +30,13 @@
         @switchCase="handleSwitchCase"
       ></switch-btn-group>
     </div>
+
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
 import {Multipane, MultipaneResizer} from '@mc/vue-multipane';
-import VueGallerySlideshow from 'vue-gallery-slideshow';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue';
@@ -56,12 +56,13 @@ export default {
     MultipaneResizer,
     MessageItem,
     MessageSender,
-    VueGallerySlideshow,
     SwitchBtnGroup
   },
   data() {
     return {
-      msgList: [] // 历史聊天消息列表
+      msgList: [], // 历史聊天消息列表
+      images: ['http://192.168.2.214:8000/group2/M00/00/0B/wKgC21xigPCATQxEAAUAdHvddI4898.png'],
+      index: null // 图片展示的序号
     };
   },
   computed: {

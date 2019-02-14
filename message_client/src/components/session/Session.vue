@@ -1,6 +1,32 @@
 <template>
   <el-scrollbar class="Session">
     <ul v-if="messageStore.sessionList">
+      <!--<li-->
+        <!--v-for="item in messageStore.sessionList"-->
+        <!--:class="[{active: item.targetId === messageStore.sessionActiveItem.targetId}]"-->
+        <!--:key="item.targetId"-->
+        <!--@click="setItemActive(item)"-->
+      <!--&gt;-->
+          <!--<el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">-->
+            <!--<div class="img-box">-->
+              <!--&lt;!&ndash;<img :src="item.avatar" v-avatar="item.name">&ndash;&gt;-->
+              <!--<img :src="item.avatar">-->
+            <!--</div>-->
+          <!--</el-badge>-->
+
+          <!--<div class="item-right">-->
+            <!--<h6 class="title" :title="item.name">{{item.name}}</h6>-->
+            <!--<p v-if="item.content">-->
+              <!--<span v-if="item.miniType===1101">{{item.originData.name}}：</span>-->
+              <!--<span v-if="item.content" v-html="parseEmotions(item.content)"></span>-->
+            <!--</p>-->
+          <!--</div>-->
+
+
+
+        <!--<img class="list-menu" src="@ma/icon/list_menu.svg" alt="">-->
+      <!--</li>-->
+
       <li
         v-for="item in messageStore.sessionList"
         :class="[{active: item.targetId === messageStore.sessionActiveItem.targetId}]"
