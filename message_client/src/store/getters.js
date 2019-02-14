@@ -6,5 +6,6 @@ const getters = {
   chatWithUserId: state => state.messageModule.chatWithUserId, // 和谁聊天，单聊
   messageStore: state => state.messageModule.messageStore, // 消息模块的所有数据
 
+  imagePreview: state => state.popModule.imagePreview // 图片预览
 };
 export default getters;

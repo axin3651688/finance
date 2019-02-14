@@ -11,21 +11,30 @@
         <router-view></router-view>
       </div>
     </div>
+
+    <!--弹出层-->
+    <div class="top-layout" v-if="imagePreview.hdUrl">
+      <image-preview v-if="imagePreview.hdUrl" :hdUrl="imagePreview.hdUrl"></image-preview>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
+import TopBar from '@mc/top_bar/TopBar';
+import SideBar from '@mc/side_bar/SideBar';
+import ImagePreview from '@mc/image_preview/ImagePreview';
 import {MY_SESSION} from '@m_api/message.js';
 
 export default {
   name: 'MessagePage',
   components: {
-    TopBar: () => import('@mc/top_bar/TopBar'),
-    SideBar: () => import('@mc/side_bar/SideBar')
+    TopBar,
+    SideBar,
+    ImagePreview
   },
   computed: {
-    ...mapGetters(['user', 'messageStore']),
+    ...mapGetters(['user', 'messageStore', 'imagePreview']),
     loginUserId() {
       return this.user.user.id;
     }
@@ -144,5 +153,17 @@ export default {
         flex: 1;
       }
     }
+  }
+
+  .top-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .8);
+    z-index: 10;
   }
 </style>
