@@ -101,7 +101,15 @@ export default {
         return false;
       }
       // TODO：如果接受对象不是当前激活的sessionItem也不处理
-      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
+      let targetId;
+      switch (val.code) {
+        case 1100: // 单聊
+          targetId = val.code + '_' + val.data.senderId;
+          break;
+        case 1101: // 群聊
+          targetId = val.code + '_' + val.data.receiverId;
+          break;
+      }
       if (this.activeTargetId !== targetId) {
         return false;
       }

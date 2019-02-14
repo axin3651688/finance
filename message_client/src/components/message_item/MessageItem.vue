@@ -17,7 +17,7 @@
           <template v-if="data.type === 2 && data.file">
             <div class="img-wrap">
               <div class="img-box">
-                <img :src="data.file.thumbUrl" :alt="data.content" @click="showImgGallery(data.file.thumbUrl)">
+                <img :src="data.file.thumbUrl" :alt="data.content" @click="showBigImage(data.file.thumbUrl)">
               </div>
             </div>
           </template>
@@ -119,11 +119,11 @@ export default {
     },
 
     /**
-     * emit父组件展示图片
+     * 预览大图
      * @param imgUrl {String}: 图片url地址
      */
-    showImgGallery(imgUrl) {
-      this.$emit('showImgGallery', imgUrl);
+    showBigImage(imgUrl) {
+      alert('showBigImage');
     }
   }
 };
