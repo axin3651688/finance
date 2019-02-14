@@ -25,8 +25,8 @@ export function showNotification(data) {
   let msg = data.msg;
   switch (data.code) {
     case 1100: // 单聊消息
-      title = '用户：' + data.data.name;
-      msg = data.data.content;
+      title = '收到好友消息';
+      msg = '消息:' + data.data.content;
       break;
     case 1101: // 群聊消息
       title = '群组：' + data.data.otherName;
