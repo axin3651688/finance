@@ -1,0 +1,5 @@
+//覆盖elementUI默认的样式
+
+/deep/ .el-scrollbar__wrap {
+  overflow-x: hidden;
+}

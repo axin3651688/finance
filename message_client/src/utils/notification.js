@@ -56,9 +56,12 @@ export function showNotification(data) {
   $notify.success({
     title: title,
     message: msg,
+    onClick: _handleClick,
+    icon: 'http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png',
     showClose: true,
     position: 'bottom-right'
   });
+
   // var n = new Notification(title, { // 标题
   //   body: data.msg || title, // 显示内容
   //   icon: "http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png",
@@ -75,4 +78,9 @@ export function showNotification(data) {
   // setTimeout(function () {
   //   n.close();
   // }, 6000); // 两秒后关闭通知
+}
+
+function _handleClick() {
+  // if ()
+  // alert(data);
 }

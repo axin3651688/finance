@@ -4,7 +4,8 @@
     <div class="siderbar-top">
       <relative-pop>
         <div class="login-info" v-if="user.user">
-          <img :src="user.user.avatar" v-avatar="user.user.trueName" :title="user.user.trueName">
+          <img :src="user.user.avatar" :title="user.user.trueName">
+          <!--<img :src="user.user.avatar" v-avatar="user.user.trueName" :title="user.user.trueName">-->
         </div>
         <div slot="pop">
           <user-info></user-info>

@@ -1,56 +1,30 @@
 <template>
   <el-scrollbar class="Session">
     <ul v-if="messageStore.sessionList">
-      <!--<li-->
-        <!--v-for="item in messageStore.sessionList"-->
-        <!--:class="[{active: item.targetId === messageStore.sessionActiveItem.targetId}]"-->
-        <!--:key="item.targetId"-->
-        <!--@click="setItemActive(item)"-->
-      <!--&gt;-->
-          <!--<el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">-->
-            <!--<div class="img-box">-->
-              <!--&lt;!&ndash;<img :src="item.avatar" v-avatar="item.name">&ndash;&gt;-->
-              <!--<img :src="item.avatar">-->
-            <!--</div>-->
-          <!--</el-badge>-->
-
-          <!--<div class="item-right">-->
-            <!--<h6 class="title" :title="item.name">{{item.name}}</h6>-->
-            <!--<p v-if="item.content">-->
-              <!--<span v-if="item.miniType===1101">{{item.originData.name}}：</span>-->
-              <!--<span v-if="item.content" v-html="parseEmotions(item.content)"></span>-->
-            <!--</p>-->
-          <!--</div>-->
-
-
-
-        <!--<img class="list-menu" src="@ma/icon/list_menu.svg" alt="">-->
-      <!--</li>-->
-
       <li
         v-for="item in messageStore.sessionList"
-        :class="[{active: item.targetId === messageStore.sessionActiveItem.targetId}]"
+        :class="['session-item', {active: item.targetId === messageStore.sessionActiveItem.targetId}]"
         :key="item.targetId"
         @click="setItemActive(item)"
       >
-        <div class="top">
-          <!--{{item.avatar}}-->
-          <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
-            <div class="img-box">
-              <!--<img :src="item.avatar" v-avatar="item.name">-->
-              <img :src="item.avatar">
-            </div>
-          </el-badge>
-          <span class="title" :title="item.name">{{item.name}}</span>
-          <!--{{item.miniType}}-->
-          <!--<span class="publish-time mt" v-if="item.sendTime">{{item.sendTime | formatTime}}</span>-->
+        <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
+          <div class="img-box">
+            <!--<img :src="item.avatar" v-avatar="item.name">-->
+            <img :src="item.avatar">
+          </div>
+        </el-badge>
+
+        <div class="session-item__right">
+          <h6 class="session-item__title" :title="item.name">{{item.name}}</h6>
+          <p class="session-item__content" v-if="item.content">
+            <span v-if="item.miniType===1101">{{item.originData.name}}：</span>
+            <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
+          </p>
         </div>
-        <p v-if="item.content">
-          <span v-if="item.miniType===1101">{{item.originData.name}}：</span>
-          <span v-if="item.content" v-html="parseEmotions(item.content)"></span>
-        </p>
+
         <img class="list-menu" src="@ma/icon/list_menu.svg" alt="">
       </li>
+
     </ul>
   </el-scrollbar>
 </template>
@@ -121,105 +95,70 @@ export default {
   ul {
     width: 100%;
     height: 100%;
+  }
 
-    li {
-      position: relative;
+  .session-item {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 15px 12px;
+    cursor: pointer;
+
+    .img-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       overflow: hidden;
-      padding: 15px 20px;
-      cursor: pointer;
+      background: $colorTheme;
 
-      .avatar-img {
-        width: 46px;
-      }
-
-      /deep/ .el-badge {
-        vertical-align: unset;
-      }
-
-      .top {
-        height: 46px;
-        line-height: 46px;
-        padding-right: 10px;
-
-        .img-box {
-          width: 46px;
-          height: 46px;
-          border-radius: 50%;
-          overflow: hidden;
-          background: $colorTheme;
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            float: left;
-          }
-        }
-
-        .title {
-          display: inline-block;
-          margin-left: 20px;
-          width: 80px;
-          color: $colorTextSessionTitle;
-          font-size: 14px;
-          font-weight: 400;
-          @include singleEllipsis()
-        }
-
-        .mt {
-          margin-top: 15px;
-        }
-
-        .count {
-          display: inline-block;
-          $countHeight: 20px;
-          height: $countHeight;
-          line-height: $countHeight;
-          margin-left: 11px;
-          padding: 0 5px;
-          min-width: 20px;
-          text-align: center;
-          border-radius: $countHeight / 2;
-          font-size: 12px;
-          color: #ffffff;
-          background: #F33D3D;
-        }
-
-        .publish-time {
-          float: right;
-          /*width: 50px;*/
-          height: 16px;
-          font-size: 12px;
-          font-family: $fontFamilyMain;
-          font-weight: 400;
-          line-height: 20px;
-          color: $colorText4;
-        }
-      }
-
-      .list-menu {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        height: 16px !important;
-        width: 16px !important;
-        cursor: pointer;
-        transform: translateY(-50%);
-      }
-
-      p {
-        @include singleEllipsis();
-        margin-top: 15px;
-        font-size: 12px;
-        font-family: $fontFamilyMain;
-        font-weight: 400;
-        line-height: 16px;
-        color: $colorTextSessionContent;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        float: left;
       }
     }
+  }
 
-    li.active {
-      background: $colorThemePrimary;
+  .session-item__right {
+    margin-left: 12px;
+    max-width: 120px;
+    flex: 1;
+  }
+
+  .session-item__title {
+    color: $colorTextSessionTitle;
+    font-size: 14px;
+    font-weight: 400;
+    @include singleEllipsis();
+  }
+
+  .session-item__content {
+    @include singleEllipsis();
+    margin-top: 5px;
+    font-size: 12px;
+    color: $colorTextSessionContent;
+  }
+
+  /deep/ .el-badge {
+    vertical-align: unset;
+    .el-badge__content.is-fixed {
+      right: 15px;
     }
+  }
+
+  .list-menu {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    height: 16px !important;
+    width: 16px !important;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .session-item.active {
+    background: $colorThemePrimary;
   }
 </style>
