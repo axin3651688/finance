@@ -89,7 +89,7 @@ import {
   QUIT_GROUP,
   EDIT_GROUP,
   DISSOLU_GROUP,
-  UPLOAD_FILE
+  FILE_UPLOAD
 } from '@m_api/message.js';
 
 export default {
@@ -141,7 +141,7 @@ export default {
     submitUpload(fd) {
       let _this = this;
       if (fd) {
-        UPLOAD_FILE(fd).then(res => {
+        FILE_UPLOAD(fd).then(res => {
           console.log('上传群头像res', res);
           if (res.data.code === 200) {
             _this.hdUrl = res.data.data.hdUrl; // 传递返回的图片地址

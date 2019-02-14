@@ -1,7 +1,6 @@
 {
   "serverAddress": {
     "api": "http://192.168.2.224:8005/",
-    "file": "http://192.168.2.224:8002/api",
     "socket": "ws://192.168.2.224:7006/socket.io/"
   }
 }
