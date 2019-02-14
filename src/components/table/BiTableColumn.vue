@@ -12,14 +12,12 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-    fixed="right"
   >
     <template slot-scope="scope">
       <!-- 智慧报告催报里面的三个点 -->
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if="col.icon" :src="col.icon" alt>
         <img v-else src="@/assets/green/list_menu.svg" alt class="img">
-        <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
         <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
@@ -123,7 +121,12 @@ export default {
       clickRowParams: {}
     };
   },
-
+  watch: {
+    tableData(curVal, oldVal) {
+      debugger;
+      console.log(curVal, oldVal);
+    }
+  },
   mixins: [EventMixins],
   methods: {
     columnDropDownClick(items) {
@@ -154,7 +157,7 @@ export default {
       // }
       // this.$set(this, "tableData1", item);
       // this.$set(this.tableData1, "datas", item.datas);
-      this.$set(this, "tableData", null);
+      // this.$set(this, "tableData", null);
       this.$set(this, "tableData", item);
       this.$set(this.tableData, "datas", item.datas);
     },

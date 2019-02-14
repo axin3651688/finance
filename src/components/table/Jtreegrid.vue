@@ -28,23 +28,12 @@ export default {
   },
   data() {
     return {
-      formatData: [],
       nodes: []
     };
   },
   name: "Jtreegrid",
   props: ["item"],
   created() {
-    let data = this.item.datas;
-    let flag = Cnbi.isEmpty(data);
-    if (!flag) {
-      debugger;
-      this.formatData = convertData(this.item.datas);
-      console.log(this.formatData);
-    } else {
-      console.error("亲！没有请求到数据，再检查下配置吧！");
-    }
-
     let me = this;
     // 下面接受子级触发事件,初始化不会加载下面
     this.$bus.$on("fetchdata", function(dat) {
@@ -55,6 +44,26 @@ export default {
       record._expanded = !record._expanded;
       me.fetchData(dat);
     });
+  },
+  watch: {
+    formatData(newid) {
+      debugger;
+      console.log(newid);
+    }
+  },
+  computed: {
+    data() {
+      return this.item.datas;
+    },
+    formatData() {
+      let flag = Cnbi.isEmpty(this.data);
+      if (!flag) {
+        debugger;
+        return convertData(this.data);
+      } else {
+        console.error("亲！没有请求到数据，再检查下配置吧！");
+      }
+    }
   },
 
   beforeDestroy() {

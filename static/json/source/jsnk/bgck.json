@@ -153,14 +153,14 @@
                 {
                     "text": "单位编码",
                     "type": "string",
-                    "width": 260,
+                    "width": 200,
                     "id": "id",
                     "isTree": true
                 },
                 {
                     "text": "单位名称",
                     "type": "string",
-                    "width": 300,
+                    "width": 250,
                     "id": "title"
                 },
                 {
@@ -183,7 +183,7 @@
                 },
                 {
                     "text": "上报时间",
-                    "width": 250,
+                    "width": 230,
                     "type": "number",
                     "id": "lockedtime"
                 },
