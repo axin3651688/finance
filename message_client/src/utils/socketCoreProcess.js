@@ -22,7 +22,7 @@ export default function socketCoreProcess (websocket, datas) {
       case 1002: // 账号重复登录提示及处理
         console.log('账号在别端登录');
         break;
-      case 1003: // 登录已失效
+      case 1003: // 重新登陆
         _processLoginExpired(data);
         break;
       case 1004:

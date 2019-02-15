@@ -20,6 +20,9 @@ const FileType = [
   }, {
     type: 3,
     suffix: 'csv'
+  },{
+    type: 3,
+    suffix: 'scv'
   }, {
     type: 3,
     suffix: 'doc'

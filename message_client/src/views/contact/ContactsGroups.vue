@@ -143,8 +143,8 @@ export default {
     // 检查这个群组的信息是不是已将请求过一次了,如果请求过了则直接返回该群组的信息
     checkGroupInfo(groupId) {
       if (this.requestedGroups.hasOwnProperty(groupId)) {
-        console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId]);
-        console.log('requestedGroups:', this.requestedGroups);
+        // console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId]);
+        // console.log('requestedGroups:', this.requestedGroups);
         return this.requestedGroups[groupId];
       } else return null;
     },

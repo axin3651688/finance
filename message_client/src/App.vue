@@ -70,8 +70,6 @@ export default {
   },
   created() {
     // debugger;
-
-    // localStorage.removeItem("authorization"); // 暂时先清掉
     this.readLocalStorage();
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;

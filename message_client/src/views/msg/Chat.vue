@@ -116,7 +116,7 @@ export default {
 
       console.log('监听到聊天消息：', val);
       let item = val.data;
-      this._socketUpdateChatState(item); // 收到消息后
+      this._socketUpdateChatState(item); // 收到消息后 todo: 读了之后再发
       item['miniType'] = val.code;
       this.msgList.push(item); // 把消息发到聊天窗口
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
@@ -182,9 +182,13 @@ export default {
         this.$nextTick(() => {
           this._chatWindowScrollToBottom();
         });
+
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1];
-        if (lastItem) this._httpUpdateChatState(lastItem);
+        if (lastItem) {
+          // this._httpUpdateChatState(lastItem);
+          this._socketUpdateChatState(lastItem);
+        }
       }
     },
 
@@ -299,7 +303,6 @@ export default {
 
     /**
      * 把聊天窗口滚动到最底部
-     * @private
      */
     _chatWindowScrollToBottom() {
       debugger;
@@ -324,13 +327,23 @@ export default {
     },
 
     /**
-     * socket请求服务器消除未读消息计数，一次处理一条消息
+     * socket请求服务器，告诉服务器我已经收到消息，但是还没有阅读。发送1006消息给服务器
+     */
+
+    /**
+     * socket请求服务器，
+     */
+
+
+    /**
+     * socket请求服务器消除未读消息计数,发送左后一条消息的时间，会把所有的消息设为已读
      */
     _socketUpdateChatState(lastItem) {
       debugger;
       let data = {
-        code: 1006,
+        code: 10061,
         data: {
+          'endTime': lastItem.sendTime,
           'id': lastItem.id,
           'miniType': this.miniType,
           'receiverId': lastItem.receiverId,
