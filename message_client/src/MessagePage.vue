@@ -129,7 +129,7 @@ export default {
     overflow: hidden;
     height: 100vh;
     min-width: 1000px;
-    border: 1px solid #333333;
+    border: 1px solid $colorBgSideBar;
 
     .left, .right {
       height: 100%;

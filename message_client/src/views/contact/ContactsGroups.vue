@@ -218,7 +218,7 @@ export default {
     chatWithGroup(rightInfo) {
       debugger;
       let sessionItem = {};
-      let targetId = '1101_' + this.loginUserId + '_' + rightInfo.groupId;
+      let targetId = '1101_' + rightInfo.groupId;
       sessionItem['miniType'] = 1101;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = rightInfo.groupId;
