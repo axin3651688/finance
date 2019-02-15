@@ -58,19 +58,34 @@
             
                  
 			"columns": [
-                
-                    {
-                        "id": "wcl",
+                {
+					"type": "string",
+                    "text": "预算数",
+                    "children":[
+                        {
+                        "id": "bnlj",
                         "type": "decimal",
-                        "text": "完成率（%）",
-                        "conversion":"%"
-                    },
-                    {
-                        "id": "gsbm",
-                        "type": "string",
-                        "text": "",
-                        "isTree":true
-                    },
+                        "text": "本年预算"
+                        },
+                        {
+                            "id": "cye",
+                            "type": "decimal",
+                            "text": "差异额"
+                        },
+                        {
+                            "id": "wcl",
+                            "type": "decimal",
+                            "text": "完成率（%）",
+                            "conversion":"%"
+                        }
+                    ]
+				},
+                {
+                    "id": "gsbm",
+                    "type": "string",
+                    "text": "",
+                    "isTree":true
+                },
 				{
 					"id": "scode",
 					"type": "string",
@@ -82,10 +97,10 @@
 					"text": "公司名称",
                     "width":"300px"
                 },
-                // {
-                //     "type": "number",
-                //     "text": "累计数",
-                //     "children":[
+                {
+                    "type": "string",
+                    "text": "累计数",
+                    "children":[
                         {
                             "id": "ljsj",
                             "type": "decimal",
@@ -106,27 +121,8 @@
                             "text": "同比增减率（%）",
                             "conversion":"%"
                         }
-                //     ]
-                // }
-                ,
-                
-				
-				// {
-				// 	"type": "number",
-                //     "text": "预算数",
-                //     "children":[
-                        {
-                        "id": "bnlj",
-                        "type": "decimal",
-                        "text": "本年预算"
-                    },
-                    {
-                        "id": "cye",
-                        "type": "decimal",
-                        "text": "差异额"
-                    }
-                // ]
-				// }
+                    ]
+                }				
 			],
 			"rows": [
 				

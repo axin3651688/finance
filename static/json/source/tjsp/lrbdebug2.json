@@ -63,11 +63,28 @@
 				},
 				"columns": [
 					{
-						"id": "wcl",
-						"type":"decimal",
-						"width": "110",
-						"conversion":"%",
-						"text": "预算完成率（%）"
+						"id":"xx",
+						"type":"string",
+						"text":"预算数",
+						"children":[
+							{
+								"id": "bnys",
+								"type":"decimal",
+								"text": "本年预算"
+							},
+							{
+								"id": "cye",
+								"type":"decimal",
+								"text": "差异额"
+							},
+							{
+								"id": "wcl",
+								"type":"decimal",
+								"width": "110",
+								"conversion":"%",
+								"text": "完成率（%）"
+							}
+						]
 					},
 					{
 						"id": "",
@@ -88,59 +105,63 @@
 						"text": "公司名称"
 					},
 					{
-						"id": "dysj",
-						"type":"decimal",
-						"text": "当月实际"
+						"id":"xx",
+						"type":"string",
+						"text":"当月数",
+						"children":[
+							{
+								"id": "dysj",
+								"type":"decimal",
+								"text": "当月实际"
+							},
+							{
+								"id": "sntq",
+								"type":"decimal",
+								"text": "上年同期"
+							},
+							{
+								"id": "tbzje",
+								"type":"decimal",
+								"text": "同比增减额"
+							},
+							{
+								"id": "tbzjl",
+								"type":"decimal",
+								"width": "110",
+								"conversion":"%",
+								"text": "同比增减率（%）"
+							}
+						]
 					},
 					{
-						"id": "sntq",
-						"type":"decimal",
-						"text": "当月上年同期"
-					},
-					{
-						"id": "tbzje",
-						"type":"decimal",
-						"text": "当月同比增减额"
-					},
-					{
-						"id": "tbzjl",
-						"type":"decimal",
-						"width": "110",
-						"conversion":"%",
-						"text": "当月同比增减率（%）"
-					},
-					{
-						"id": "ljsj",
-						"type":"decimal",
-						"text": "累计实际"
-					},
-					{
-						"id": "sntq1",
-						"type":"decimal",
-						"text": "累计上年同期"
-					},
-					{
-						"id": "tbzje1",
-						"type":"decimal",
-						"text": "累计同比增减额"
-					},
-					{
-						"id": "tbzjl1",
-						"type":"decimal",
-						"width": "110",
-						"conversion":"%",
-						"text": "累计同比增减率（%）"
-					},
-					{
-						"id": "bnys",
-						"type":"decimal",
-						"text": "本年预算"
-					},
-					{
-						"id": "cye",
-						"type":"decimal",
-						"text": "预算差异额"
-					}
+						"id":"xx",
+						"type":"string",
+						"text":"累计数",
+						"children":[
+							{
+								"id": "ljsj",
+								"type":"decimal",
+								"text": "累计实际"
+							},
+							{
+								"id": "sntq1",
+								"type":"decimal",
+								"text": "上年同期"
+							},
+							{
+								"id": "tbzje1",
+								"type":"decimal",
+								"text": "同比增减额"
+							},
+							{
+								"id": "tbzjl1",
+								"type":"decimal",
+								"width": "110",
+								"conversion":"%",
+								"text": "同比增减率（%）"
+							}
+						]
+					}					
 				],
 				"rows": [
 					

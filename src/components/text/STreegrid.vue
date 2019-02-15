@@ -18,7 +18,6 @@
     :height="heights"
     :cell-style="cellStyle"
     @row-click="onRowClick"
-    :style="item.style"
   >
     <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id" v-if="!cc.hidden">
       <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild"/>
@@ -171,7 +170,7 @@ export default {
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
-      this.onCellClickDefault(row, column, e);
+      // this.onCellClickDefault(row, column, e);
     },
     cellStyle(row) {
       //  debugger

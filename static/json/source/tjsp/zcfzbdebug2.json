@@ -63,11 +63,29 @@
 				"type": 1,
 				"columns": [
 					{
-						"id": "cyl",
-						"type": "decimal",
-						"conversion":"%",
-						"text": "差异率（%）"
-					},{
+						"id":"",
+						"type":"string",
+						"text":"预算数",
+						"children":[
+							{
+								"id": "bnys",
+								"type": "decimal",
+								"text": "本年预算"
+							},
+							{
+								"id": "cye",
+								"type": "decimal",
+								"text": "差异额"
+							},
+							{
+								"id": "cyl",
+								"type": "decimal",
+								"conversion":"%",
+								"text": "差异率（%）"
+							}
+						]
+					},
+					{
 						"id": "",
 						"type": "string",
 						"text": "",
@@ -92,42 +110,46 @@
 						"text": "期末余额"
 					},
 					{
-						"id": "zje",
-						"type": "decimal",
-						"text": "增减额"
+						"id":"",
+						"type":"string",
+						"text":"与年初比",
+						"children":[
+							{
+								"id": "zje",
+								"type": "decimal",
+								"text": "增减额"
+							},
+							{
+								"id": "zjl",
+								"type": "decimal",
+								"width": "110",
+								"conversion":"%",
+								"text": "增减率（%）"
+							}
+						]
 					},
 					{
-						"id": "zjl",
-						"type": "decimal",
-						"width": "110",
-						"conversion":"%",
-						"text": "增减率（%）"
-					},
-					{
-						"id": "sntq",
-						"type": "decimal",
-						"text": "上年同期"
-					},
-					{
-						"id": "tbzje",
-						"type": "decimal",
-						"text": "同比增减额"
-					},{
-						"id":"tbzjl",
-						"text":"同比增减率（%）",
-						"width": "110",
-						"type":"decimal",
-						"conversion":"%"
-					},
-					{
-						"id": "bnys",
-						"type": "decimal",
-						"text": "本年预算"
-					},
-					{
-						"id": "cye",
-						"type": "decimal",
-						"text": "差异额"
+						"id":"",
+						"type":"string",
+						"text":"与上年同期比",
+						"children":[
+							{
+								"id": "sntq",
+								"type": "decimal",
+								"text": "上年同期"
+							},
+							{
+								"id": "tbzje",
+								"type": "decimal",
+								"text": "同比增减额"
+							},{
+								"id":"tbzjl",
+								"text":"同比增减率（%）",
+								"width": "110",
+								"type":"decimal",
+								"conversion":"%"
+							}
+						]
 					}
 				],
 				"rows":[]

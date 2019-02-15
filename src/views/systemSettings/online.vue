@@ -80,7 +80,7 @@
             <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="residencetime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="browser" label="浏览器" width="100" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="platform" label="平台" width="100" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="brand" label="平台" width="100" header-align="center" align="center" sortable></el-table-column>
             <el-table-column label="操作" header-align="center" align="center" sortable>
                 <template slot-scope="scope">
                     <el-button type="text" @click="handleOffline(scope.$index, scope.row)">下线</el-button>
@@ -131,7 +131,8 @@ export default {
             // 窗口的原始高度
             offsetHeight: document.body.offsetHeight,
             // form表单的原始高度
-            inputRefresh: 0
+            inputRefresh: 0 ,
+            datatime: ""
             /**
              * 页面原始高度：document.body.offsetHeight
              * 分页背景高度：70
@@ -165,7 +166,7 @@ export default {
         const me = this
         // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
         window.onresize = () => {
-            debugger
+            // debugger
             return (() => {
                 window.offsetHeight = document.body.offsetHeight;
                 me.offsetHeight = window.offsetHeight;
@@ -176,7 +177,7 @@ export default {
     watch:{
         // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
         offsetHeight(val){
-            debugger
+            // debugger
             if(!this.timer){
                 debugger
                 // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
@@ -193,11 +194,12 @@ export default {
         }
     },
     methods:{
+        
         /**
          * 获取的要渲染的数据  发送请求
          */
         requestDataRendering(currentPage,pagesize){
-            debugger
+            // debugger
             let me = this;
             // item：传的参数
             let item = {
@@ -213,8 +215,33 @@ export default {
                 //获取总数据
                 me.totalElements = res.data.data.totalElements;
                 //获取行信息渲染
-                me.tableData = res.data.data.data;
+                // me.tableData = res.data.data.data;
+                let dataTable = res.data.data.data;
+                me.getTimes(dataTable);
             }); 
+        },
+        getTimes(row){
+            debugger
+            let etime, stime, dateBegin, usedTime, days, leave1,leave2,leave3, hours, minutes,seconds ;
+            //var date = new Date();
+            for(let i=0; i<row.length; i++){
+                dateBegin = (row[i].loginTime).replace(/-/g, "/");//转换类型。注：因为程序识别不了‘-’时间格式，必须是‘/’的。
+                etime = Date.parse(new Date(dateBegin));//登录时间转化成毫秒数
+                stime = new Date().getTime(); //得到现在的时间
+                usedTime = stime - etime ;//获得两个时间差（当前时间stime - 登录时间etime）
+                days = Math.floor(usedTime/(24*3600*1000));
+                leave1=usedTime%(24*3600*1000);    //计算天数后剩余的毫秒数
+                hours=Math.floor(leave1/(3600*1000));
+                //计算相差分钟数
+                leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
+                minutes=Math.floor(leave2/(60*1000));
+                //计算相差秒数
+                leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+                seconds=Math.round(leave3/1000)
+                let time = days +"天"+ hours +"时"+ minutes +"分"+ seconds +"秒";
+                row[i].residencetime = time ;
+            }
+            this.tableData = row ;
         },
         /**
          * 分页： pagesize改变时触发 
