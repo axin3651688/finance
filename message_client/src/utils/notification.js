@@ -39,7 +39,8 @@ export function showNotification(data) {
       title = '群助手';
       break;
     case 1500: // 智能语音
-      title = '智能语音';
+      title = '小帮机器人';
+      msg = '接收到指令:' + data.msg;
       break;
     case 11021: // 分析助手
       title = '分析助手';
