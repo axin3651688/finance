@@ -107,7 +107,7 @@ export default {
       // debugger
       console.log('点击了联系人-->>', user);
       let sessionItem = {};
-      let targetId = '1100_' + user.id + '_' + this.loginUserId;
+      let targetId = '1100_' + user.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = user.id;
