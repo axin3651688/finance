@@ -127,7 +127,7 @@ export default {
           debugger;
           me.fetchData(me.userId, element);
         });
-      }, 3000);
+      }, 2000);
     }
   }
 };
