@@ -74,6 +74,7 @@ export default {
     }
   },
   mounted() {
+    debugger;
     this.upData(this.item);
   },
   methods: {
@@ -95,7 +96,9 @@ export default {
      * @data    : 2019-02-15
      */
     setTableDatas(item) {
-      let rows = item.config.rows;
+      let rows = item.config.rows.concat();
+      console.log(rows);
+
       let tempDatas = item.datas;
       if (rows && rows.length > 0) {
         rows.forEach(ele => {
@@ -108,6 +111,8 @@ export default {
           }
         });
       }
+      console.log(rows);
+
       this.$set(this, "tableDatas", rows);
     },
     upData(item) {

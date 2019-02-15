@@ -28,7 +28,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'center'"
-    :width="col.width||80"
+    :width="col.width||70"
     type="index"
   />
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
@@ -65,7 +65,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :width="col.width||150"
+    :width="col.width||160"
   >
     <template slot-scope="scope">
       <el-tooltip

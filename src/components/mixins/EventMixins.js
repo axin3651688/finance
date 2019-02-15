@@ -138,7 +138,7 @@ export default {
       if (!bb) {
         bb = this.item;
       }
-      // debugger;
+      debugger;
       let text = bb.text;
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
