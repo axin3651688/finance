@@ -63,7 +63,7 @@
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
-            <li v-if="rightUserInfo.sex.text">
+            <li v-if="rightUserInfo.sex">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
@@ -74,15 +74,15 @@
           </ul>
 
         </div>
+        <el-button
+          type="primary"
+          size="medium"
+          class="my-btn"
+          @click="chatWithSingle(rightUserInfo)"
+          v-if="activeUser !== loginUserId"
+        >发送信息
+        </el-button>
       </template>
-      <el-button
-        type="primary"
-        size="medium"
-        class="my-btn"
-        @click="chatWithSingle(rightUserInfo)"
-        v-if="activeUser !== loginUserId"
-      >发送信息
-      </el-button>
     </div>
   </div>
 </template>
@@ -181,7 +181,7 @@ export default {
     // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
     checkUserInfo(userId) {
       if (this.requestedUser.hasOwnProperty(userId)) {
-        console.log(`已经请求过用户的信息了:${userId}`);
+        console.log('已经请求过用户的信息了:', this.requestedUser[userId]);
         return this.requestedUser[userId];
       } else return null;
     },

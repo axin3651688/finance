@@ -311,7 +311,7 @@ export default {
     },
 
     /**
-     * http请求服务器消除未读消息计数,发送左后一条消息的时间，会把所有的消息设为已读
+     * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _httpUpdateChatState(lastItem) {
       debugger;
@@ -327,16 +327,7 @@ export default {
     },
 
     /**
-     * socket请求服务器，告诉服务器我已经收到消息，但是还没有阅读。发送1006消息给服务器
-     */
-
-    /**
-     * socket请求服务器，
-     */
-
-
-    /**
-     * socket请求服务器消除未读消息计数,发送左后一条消息的时间，会把所有的消息设为已读
+     * socket请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _socketUpdateChatState(lastItem) {
       debugger;
@@ -353,6 +344,17 @@ export default {
       };
       socket.deliver(data);
     },
+
+    /**
+     * socket请求服务器，告诉服务器我已经收到消息，但是还没有阅读。发送1006消息给服务器
+     */
+
+    /**
+     * socket请求服务器，
+     */
+
+
+
 
     /**
      * 聊天消息和文件切换

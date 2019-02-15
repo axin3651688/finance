@@ -16,9 +16,7 @@ export default function socketCoreProcess (websocket, datas) {
     // debugger;
     switch (code) {
       case 1001: // 与服务器连接成功
-        // 连接成功后会得到 设备号
-        // store.dispatch('ActionSetMessageStore', {device: data.data.token});
-        localStorage.setItem('device', data.data.token);
+        localStorage.setItem('device', data.data.token); // 连接成功后会得到 设备号
         break;
       case 1002: // 账号重复登录提示及处理
         console.log('账号在别端登录');
@@ -67,8 +65,7 @@ export default function socketCoreProcess (websocket, datas) {
  * 1003 处理electron 登录失效后重新登录
  */
 function _processLoginExpired (data) {
-  debugger;
-  // alert('1003====authorization'+JSON.stringify(data.data.authorization));
+  // debugger;
   if (data.data.authorization) {
     // 重登录成功窗口变大
     if (window.require) {

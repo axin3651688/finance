@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" v-if="messageList.length">
       <el-scrollbar>
         <section>
           <div class="list-item" v-for="item in showMessageList" :key="item.id">
