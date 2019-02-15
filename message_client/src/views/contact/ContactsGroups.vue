@@ -66,7 +66,7 @@
                   </ul>
                 </div>
               </section>
-              <section>
+              <section v-if="rightNotice">
                 <h4 class="title">最新公告</h4>
                 <div class="content">
                   <p class="pure-text" v-if="rightNotice.content">{{rightNotice.content}}</p>
@@ -114,7 +114,7 @@ export default {
       groupList: null, // [{},{}] 我的群组列表
       rightUsers: [],
       rightInfo: null, // {},
-      rightNotice: {}
+      rightNotice: null // 最新公告
     };
   },
   methods: {
@@ -136,7 +136,6 @@ export default {
               showClose: true
             });
           }
-
         }
       });
     },
@@ -145,6 +144,7 @@ export default {
     checkGroupInfo(groupId) {
       if (this.requestedGroups.hasOwnProperty(groupId)) {
         console.log(`已经请求过该群组的信息了:${groupId}`, this.requestedGroups[groupId]);
+        console.log('requestedGroups:', this.requestedGroups);
         return this.requestedGroups[groupId];
       } else return null;
     },
@@ -165,7 +165,7 @@ export default {
           console.log('群id查询群信息res:', res);
           if (res.data.code === 200) {
             let groupInfo = res.data.data;
-            this.ActionSetMessageStore({groupInfo: groupInfo,});
+            this.ActionSetMessageStore({groupInfo: groupInfo});
             this.rightUsers = groupInfo['users'];
             this.rightInfo = groupInfo['info'];
             this.requestedGroups[groupId]['users'] = groupInfo['users'];
@@ -178,12 +178,13 @@ export default {
         // 获取群公告   公告图片的字段: rightNotice.url
         FIND_GROUP_NOTICE(groupId, this.user.user.id).then(res => {
           console.log('群id获取群公告:', res.data.data);
-          if (res.data.code === 200) {
+          if (res.data.code === 200 && res.data.data) {
+            let rightNotice = null;
             if (res.data.data.noticeList.length > 0) {
-              let rightNotice = res.data.data.noticeList[0];
-              this.rightNotice = rightNotice;
-              this.requestedGroups[groupId]['rightNotice'] = rightNotice;
+              rightNotice = res.data.data.noticeList[0];
             }
+            this.rightNotice = rightNotice;
+            this.requestedGroups[groupId]['rightNotice'] = rightNotice;
           }
         }).catch(err => {
           console.log('请求message：', err);
@@ -205,7 +206,6 @@ export default {
         }).catch(err => {
           console.log('获取二维码的生成地址err：', err);
         });
-
       }
     },
 
