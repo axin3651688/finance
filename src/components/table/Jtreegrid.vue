@@ -9,10 +9,9 @@
       stripe
       height="item.height || rowClass"
       :cell-style="cellStyle"
-      @row-click="onRowClick"
     >
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
+        <bi-table-column-tree :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
@@ -36,41 +35,40 @@ export default {
   name: "Jtreegrid",
   props: ["item"],
   created() {
-    let data = this.item.datas;
-    let flag = Cnbi.isEmpty(data);
-    if (!flag) {
-      debugger;
-      this.formatData = convertData(this.item.datas);
-      console.log(this.formatData);
-    } else {
-      console.error("亲！没有请求到数据，再检查下配置吧！");
+    this.formatData = convertData(this.item.datas);
+    // 初始化展开第一行
+    this.changeProp({ $index: 0, row: { id: this.companyId } });
+    // bus接收底层传值
+    this.$bus.on("fetchdata", this.changeProp);
+  },
+  computed: {
+    companyId() {
+      return this.$store.getters.company;
     }
-
-    let me = this;
-    // 下面接受子级触发事件,初始化不会加载下面
-    this.$bus.$on("fetchdata", function(dat) {
-      // 改变父级的折叠属性
-      console.log(dat);
-      debugger;
-      let record = me.item.datas[dat.$index];
-      record._expanded = !record._expanded;
-      me.fetchData(dat);
-    });
   },
 
   beforeDestroy() {
     this.$bus.off("fetchdata");
   },
+
   methods: {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-    onRowClick(row, e, column) {
-      // 在底层有列点击,顶层有行点击
-      // debugger;
-      if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
-        return this.item.onRowClick(row, column, e, this);
-      }
+    // onRowClick(row, e, column) {
+    //   // 在底层有列点击,顶层有行点击
+    //   // debugger;
+    //   if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
+    //     return this.item.onRowClick(row, column, e, this);
+    //   }
+    // },
+    changeProp(dat) {
+      // 改变父级的折叠属性
+      console.log(dat);
+      debugger;
+      let record = this.item.datas[dat.$index];
+      record._expanded = !record._expanded;
+      this.fetchData(dat);
     },
     cellStyle(row) {
       // debugger;
@@ -105,34 +103,14 @@ export default {
     },
 
     upData(item) {
-      this.$set(this, "formatData", "");
-      this.$set(this, "formatData", null);
-      this.item = item;
+      // debugger;
+      this.$set(this, "formatData", item.datas);
+      //清空记录
+      this.nodes = [];
+      // 初始化展开第一行.
+      this.changeProp({ $index: 0, row: { id: this.companyId } });
     },
-    tranformData(data, rootItem) {
-      let me = this;
-      let children = [];
-      let dataArr = [];
-      rootItem.children = children;
-      for (let i = 0; i < data.length; i++) {
-        let it = data[i];
-        if (it.gsbm === rootItem.gsbm) {
-          continue;
-        }
-        //满足条件的就塞进去，不满足的塞到另一个新数组中
-        if (rootItem.gsbm == it.pid) {
-          rootItem.children.push(it);
-        } else {
-          dataArr.push(it);
-        }
-      }
-      if (rootItem.children && rootItem.children.length > 0) {
-        for (let i = 0; i < rootItem.children.length; i++) {
-          let tt = rootItem.children[i];
-          me.tranformData(dataArr, tt);
-        }
-      }
-    },
+
     // 下面处理行的显影
     showRow(bean) {
       let row = bean.row;

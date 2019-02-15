@@ -177,6 +177,7 @@ export default {
     },
 
     month(newmonth) {
+      debugger;
       this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
@@ -253,7 +254,6 @@ export default {
      * 设置item是否隐藏或显示
      */
     showSet(items) {
-      // let flag = true;
       items.forEach(item => {
         let funName = item.showFun;
         if (typeof funName == "function") {
@@ -265,10 +265,6 @@ export default {
         if (cc && cc.length > 0) {
           this.showSet(cc);
         }
-        // if (item.show == true && flag) {
-        //   item.tabIndex = "0";
-        //   flag = false;
-        // }
       });
     },
     /**
@@ -393,6 +389,7 @@ export default {
         this.generateApiModelDatas(this, null, "company");
       } else {
         //解决当父亲没有配制config的情况
+        debugger;
         this.flag = true;
       }
       // else {
@@ -515,7 +512,7 @@ export default {
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
-        // this.$set(this, "flag", true);
+        debugger;
         this.flag = true;
         this.setChlidComponent(datas);
       } else {
