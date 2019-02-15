@@ -149,6 +149,9 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
+    &:first-child {
+      margin-top: 60px;
+    }
 
     .avatar {
       .img-box {

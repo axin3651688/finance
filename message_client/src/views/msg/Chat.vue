@@ -100,7 +100,9 @@ export default {
       if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
         return false;
       }
-      // TODO：如果接受对象不是当前激活的sessionItem也不处理
+
+      this._socketUpdateChatState(val.data, 1); // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
+
       let targetId;
       switch (val.code) {
         case 1100: // 单聊
@@ -110,13 +112,14 @@ export default {
           targetId = val.code + '_' + val.data.receiverId;
           break;
       }
-      if (this.activeTargetId !== targetId) {
+      if (this.activeTargetId !== targetId) { // 如果接受对象不是当前激活的sessionItem也不处理
         return false;
       }
 
+      this._socketUpdateChatState(val.data, 2); // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
+
       console.log('监听到聊天消息：', val);
       let item = val.data;
-      this._socketUpdateChatState(item); // 收到消息后 todo: 读了之后再发
       item['miniType'] = val.code;
       this.msgList.push(item); // 把消息发到聊天窗口
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
@@ -186,8 +189,8 @@ export default {
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1];
         if (lastItem) {
-          // this._httpUpdateChatState(lastItem);
-          this._socketUpdateChatState(lastItem);
+          // this._httpClearChatState(lastItem);
+          this._socketClearChatState(lastItem);
         }
       }
     },
@@ -313,7 +316,7 @@ export default {
     /**
      * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
-    _httpUpdateChatState(lastItem) {
+    _httpClearChatState(lastItem) {
       debugger;
       let data = {
         'endTime': lastItem.sendTime,
@@ -329,8 +332,8 @@ export default {
     /**
      * socket请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
-    _socketUpdateChatState(lastItem) {
-      debugger;
+    _socketClearChatState(lastItem) {
+      // debugger;
       let data = {
         code: 10061,
         data: {
@@ -346,15 +349,25 @@ export default {
     },
 
     /**
-     * socket请求服务器，告诉服务器我已经收到消息，但是还没有阅读。发送1006消息给服务器
+     * socket请求服务器，告诉服务器我已经收到消息的状态
+     * state = 1 (我已经收到了，但是还没看)
+     * state = 2 (我已经收到了，也看了)
      */
-
-    /**
-     * socket请求服务器，
-     */
-
-
-
+    _socketUpdateChatState(lastItem, state) {
+      // debugger;
+      let data = {
+        code: 1006,
+        data: {
+          'endTime': lastItem.sendTime,
+          'id': lastItem.id,
+          'miniType': this.miniType,
+          'receiverId': lastItem.receiverId,
+          'senderId': lastItem.senderId,
+          'state': state
+        }
+      };
+      socket.deliver(data);
+    },
 
     /**
      * 聊天消息和文件切换
