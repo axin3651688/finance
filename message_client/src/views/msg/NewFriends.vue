@@ -14,20 +14,23 @@
       <el-scrollbar>
         <section>
           <div class="list-item" v-for="item in showMessageList" :key="item.id">
+            <!--{{item}}-->
             <div class="item-left">
               <div>
                 <div class="img-box"><img :src="item.avatar" v-avatar="item.name"></div>
               </div>
-              <h3 class="title">{{item.name}}申请加你为好友</h3>
+              <h3 class="title" :title="item.name">{{item.name}}</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>
               <div class="text">
-                <span>理由：</span>
+                <span>理由:</span>
                 {{item.content}}
               </div>
             </div>
             <div class="item-right">
               <span v-if="item.state === 4">已同意</span>
               <span v-else-if="item.state === 3">已拒绝</span>
+              <!--如果是我加别人为好友-->
+              <span v-else-if="item.senderId===loginUserId">等待验证</span>
               <div class="btns" v-else>
                 <my-btn class="my-btn" @click="saveFriend(item, 4)">
                   同意
@@ -45,30 +48,30 @@
 </template>
 
 <script>
-import MyBtn from '@mc/my_btn/MyBtn.vue'
-import {mapGetters, mapActions} from 'vuex'
+import MyBtn from '@mc/my_btn/MyBtn.vue';
+import {mapGetters, mapActions} from 'vuex';
 import {
   NEW_FRIEND_LIST,
   SAVE_FRIEND,
   REFUSE_FRIEND
 } from '@m_api/message.js';
-import {FORMAT_TIME} from '@mu/message.js'
+import {FORMAT_TIME} from '@mu/message.js';
 
 export default {
   name: 'NewFriends',
   data() {
     return {
       activeBtn: 'unChecked', // 1已审核 2未审核
-      messageList: [], // 好友申请消息列表
-    }
+      messageList: [] // 好友申请消息列表
+    };
   },
-  components:{
+  components: {
     MyBtn
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     },
     messageListFilter() {
       let obj = {
@@ -79,29 +82,29 @@ export default {
         unChecked: {
           count: 0,
           data: []
-        },
+        }
       };
       this.messageList.forEach(item => {
         if (item.state === 0) {
           obj.unChecked.count++;
-          obj.unChecked.data.push(item)
+          obj.unChecked.data.push(item);
         } else {
           obj.checked.count++;
-          obj.checked.data.push(item)
+          obj.checked.data.push(item);
         }
       });
       console.log('messageListFilter:', obj);
-      return obj
+      return obj;
     },
     showMessageList() {
-      return this.activeBtn === 'checked' ?
-        this.messageListFilter.checked.data :
-        this.messageListFilter.unChecked.data
+      return this.activeBtn === 'checked'
+        ? this.messageListFilter.checked.data
+        : this.messageListFilter.unChecked.data;
     }
   },
   filters: {
     formatTime(time) {
-      return FORMAT_TIME(time)
+      return FORMAT_TIME(time);
     }
   },
   methods: {
@@ -110,11 +113,11 @@ export default {
       NEW_FRIEND_LIST(this.loginUserId).then(res => {
         console.log('好友申请消息', res.data.data);
         if (res.data.code === 200) {
-          this.messageList = res.data.data
+          this.messageList = res.data.data;
         }
       }).catch(err => {
-        console.log('请求取好友申请列表err：', err)
-      })
+        console.log('请求取好友申请列表err：', err);
+      });
     },
 
     saveFriend(item, state) {
@@ -129,17 +132,17 @@ export default {
         debugger;
         console.log('保存', res.data.data);
         if (res.data.code === 200) {
-          this.updateState(item, state)
+          this.updateState(item, state);
         } else {
           this.$message({
             type: 'warning',
             message: res.data.msg,
-            showClose: true,
-          })
+            showClose: true
+          });
         }
       }).catch(err => {
-        console.log('请求message：', err)
-      })
+        console.log('请求message：', err);
+      });
     },
     updateState(item, state) {
       debugger;
@@ -148,7 +151,7 @@ export default {
         state: state // 3拒绝，4同意
       };
       REFUSE_FRIEND(params)
-        // get
+      // get
         .then(res => {
           console.log('修改好友请求状态res:', res.data);
           if (res.data.code === 200) {
@@ -158,29 +161,27 @@ export default {
             this.$message({
               type: 'warning',
               message: res.data.msg,
-              showClose: true,
-            })
+              showClose: true
+            });
           }
         }).catch(err => {
-        console.log('修改好友请求err：', err)
-      })
+        console.log('修改好友请求err：', err);
+      });
     },
 
     // 等待服务器返回好友修改状态后，本地显示处理
     updateMessageList(item, state) {
       debugger;
       let index = this.messageList.indexOf(item);
-      this.messageList[index].state = state
+      this.messageList[index].state = state;
     }
 
   },
   mounted() {
-    this.getList()
+    this.getList();
   }
-}
+};
 </script>
-
-
 
 <style lang="scss" scoped>
   @import "@ms/index.scss";
@@ -265,14 +266,19 @@ export default {
       }
 
       .title {
-        margin-right: 30px;
+        @include singleEllipsis;
+        display: inline-block;
+        width: 80px;
+        margin-right: 20px;
         font-size: 14px;
         color: $colorText1;
       }
 
       .datetime {
-        margin-right: 30px;
-        font-size: 14px;
+        display: inline-block;
+        min-width: 95px;
+        margin-right: 20px;
+        font-size: 12px;
         color: $colorText3;
       }
 
@@ -291,10 +297,10 @@ export default {
 
   .my-btn {
     border: none;
-    @include myBtn($borderRadius: 8px,$height:30px);
+    @include myBtn($borderRadius: 8px, $height: 30px);
   }
 
-  .my-btn+.my-btn {
+  .my-btn + .my-btn {
     margin-left: 20px;
   }
 
