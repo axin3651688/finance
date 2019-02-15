@@ -55,7 +55,7 @@ import {
   SAVE_FRIEND,
   REFUSE_FRIEND
 } from '@m_api/message.js';
-import {FORMAT_TIME} from '@mu/message.js';
+import {FORMAT_TIME} from '@mu/formatTime.js';
 
 export default {
   name: 'NewFriends',
@@ -165,8 +165,8 @@ export default {
             });
           }
         }).catch(err => {
-        console.log('修改好友请求err：', err);
-      });
+          console.log('修改好友请求err：', err);
+        });
     },
 
     // 等待服务器返回好友修改状态后，本地显示处理

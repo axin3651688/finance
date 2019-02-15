@@ -77,7 +77,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
 import {FORMAT_FILE_SIZE} from '@mu/formatFileSize.js';
 import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue';
 import MyAudioPlayer from '@mc/my_audio_player/MyAudioPlayer.vue';
@@ -232,6 +232,7 @@ export default {
         }
 
         .size {
+          font-size: 12px;
           font-family: Arial;
           color: $colorText4;
         }

@@ -26,7 +26,7 @@ export default {
         // alert('有 authorization: ' + localStorage.authorization);
         this.initSocket(localStorage.authorization); // 如果有 authorization，则建立socket连接
 
-        // token存储到vuex中
+        // 登陆令牌 存储到vuex中
         this.$store.dispatch(
           'setIsAutnenticated',
           !Cnbi.isEmpty(localStorage.authorization)

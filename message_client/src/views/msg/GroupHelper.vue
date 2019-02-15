@@ -49,7 +49,7 @@
 import MyBtn from '@mc/my_btn/MyBtn.vue';
 import {mapGetters, mapActions} from 'vuex';
 import {HELP_GROUP_MSG, JOIN_GROUP, REFUSE_GROUP} from '@m_api/message.js';
-import {FORMAT_TIME} from '@mu/message.js';
+import {FORMAT_TIME} from '@mu/formatTime.js';
 
 export default {
   name: 'GroupHelper',
@@ -57,7 +57,7 @@ export default {
     return {
       activeBtn: 'unChecked', // 1已审核 2未审核
       messageList: [] // 好友申请消息列表
-    }
+    };
   },
   components: {
     MyBtn
@@ -65,7 +65,7 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     },
     messageListFilter() {
       let obj = {
@@ -76,29 +76,29 @@ export default {
         unChecked: {
           count: 0,
           data: []
-        },
+        }
       };
       this.messageList.forEach(item => {
         if (item.state === 0) {
           obj.unChecked.count++;
-          obj.unChecked.data.push(item)
+          obj.unChecked.data.push(item);
         } else {
           obj.checked.count++;
-          obj.checked.data.push(item)
+          obj.checked.data.push(item);
         }
       });
       console.log('messageListFilter:', obj);
-      return obj
+      return obj;
     },
     showMessageList() {
-      return this.activeBtn === 'checked' ?
-        this.messageListFilter.checked.data :
-        this.messageListFilter.unChecked.data
+      return this.activeBtn === 'checked'
+        ? this.messageListFilter.checked.data
+        : this.messageListFilter.unChecked.data;
     }
   },
   filters: {
     formatTime(time) {
-      return FORMAT_TIME(time)
+      return FORMAT_TIME(time);
     }
   },
   methods: {
@@ -106,11 +106,11 @@ export default {
       HELP_GROUP_MSG(this.loginUserId).then(res => {
         console.log('群助手>申请消息', res.data.data);
         if (res.data.code === 200) {
-          this.messageList = res.data.data
+          this.messageList = res.data.data;
         }
       }).catch(err => {
-        console.log('请求message：', err)
-      })
+        console.log('请求message：', err);
+      });
     },
     clickAgree(item, state) {
       debugger;
@@ -119,22 +119,22 @@ export default {
         userId: this.loginUserId
       };
       JOIN_GROUP(data)
-        // post
+      // post
         .then(res => {
           console.log('处理申请消息', res.data.data);
           if (res.data.code === 200) {
-            this.updateState(item, state)
+            this.updateState(item, state);
           } else {
             this.$message({
               type: 'error',
               message: res.data.msg,
               showClose: true
-            })
+            });
           }
         })
         .catch(err => {
-          console.log('请求message：', err)
-        })
+          console.log('请求message：', err);
+        });
     },
     updateState(item, state) {
       debugger;
@@ -143,23 +143,23 @@ export default {
         state: state // 3拒绝，4同意
       };
       REFUSE_GROUP(params)
-        // put
+      // put
         .then(res => {
           debugger;
           console.log('修改状态', res.data.data);
           if (res.data.code === 200) {
-            console.log('修改成功')
+            console.log('修改成功');
           }
         }).catch(err => {
-        console.log('群助手修改状态异常：', err)
-      })
+          console.log('群助手修改状态异常：', err);
+        });
     }
 
   },
   mounted() {
-    this.getList()
-  },
-}
+    this.getList();
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -273,7 +273,7 @@ export default {
 
   .my-btn {
     border: none;
-    @include myBtn($borderRadius: 8px,$height:32px);
+    @include myBtn($borderRadius: 8px, $height: 32px);
   }
 
   .my-btn + .my-btn {

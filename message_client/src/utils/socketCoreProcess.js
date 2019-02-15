@@ -16,8 +16,9 @@ export default function socketCoreProcess (websocket, datas) {
     // debugger;
     switch (code) {
       case 1001: // 与服务器连接成功
-        // 连接成功后会得到 token
-        store.dispatch('ActionSetMessageStore', {token: data.data.token});
+        // 连接成功后会得到 设备号
+        // store.dispatch('ActionSetMessageStore', {device: data.data.token});
+        localStorage.setItem('device', data.data.token);
         break;
       case 1002: // 账号重复登录提示及处理
         console.log('账号在别端登录');
@@ -80,7 +81,7 @@ function _processLoginExpired (data) {
     // 清除本地记录的一些数据
     localStorage.removeItem('database');
     store.dispatch('clearCurrentState');
-    localStorage.removeItem('authorization'); // 清token
+    localStorage.removeItem('authorization'); // 清登陆令牌
     router.push('/message_login');
     if (window.require) {
       let ipc = window.require('electron').ipcRenderer;

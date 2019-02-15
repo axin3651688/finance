@@ -150,7 +150,7 @@ export default {
       this.dialogQuitVisible = false;
       LOGOUT()
         .then(res => {
-          // 清除token
+          // 清除登陆数据
           localStorage.removeItem('database');
           localStorage.removeItem('authorization');
           this.$router.push('/message_login');
