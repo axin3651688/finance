@@ -4,6 +4,7 @@
     <div class="siderbar-top">
       <relative-pop>
         <div class="login-info" v-if="user.user">
+          <!--<img :src="user.user.avatar" :title="user.user.trueName">-->
           <img :src="user.user.avatar" v-avatar="user.user.trueName" :title="user.user.trueName">
         </div>
         <div slot="pop">
@@ -100,11 +101,9 @@ export default {
     // 监听服务器推送的消息
     newServerMsg(val) {
       console.log('监听到服务器推送：', val);
-      debugger;
-      let targetId = `${val.code}_${val.data.senderId}_${val.data.receiverId}`;
+      // debugger;
       let sessionItem = {};
       sessionItem['miniType'] = val.code;
-      sessionItem['targetId'] = targetId;
       sessionItem['count'] = 1;
       sessionItem['content'] = val.data.content;
       sessionItem['sendTime'] = val.data.sendTime;
@@ -114,14 +113,17 @@ export default {
           sessionItem['name'] = val.data.name;
           sessionItem['avatar'] = val.data.avatar;
           sessionItem['id'] = val.data.senderId;
+          sessionItem['targetId'] = val.code + '_' + val.data.senderId;
           break;
         case 1101: // 群聊
           sessionItem['name'] = val.data.otherName;
           sessionItem['avatar'] = val.data.otherAvatar;
           sessionItem['id'] = val.data.receiverId;
+          sessionItem['targetId'] = val.code + '_' + val.data.receiverId;
       }
 
       // 如果这条消息的targetId不在sessionList中，这加到队首
+      let targetId = sessionItem['targetId'];
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === targetId) { // 在队列
           // 在队列, 并且没有打开聊天窗口，则更新当条消息

@@ -58,7 +58,7 @@ axios.interceptors.request.use(
 
     // debugger
     if (localStorage.authorization) {
-      // 设置统一请求头 todo 暂时屏蔽
+      // 设置统一请求头
       config.headers.Authorization = localStorage.authorization;
       config.headers.device = Cnbi.getDevice();
     }
@@ -88,9 +88,6 @@ axios.interceptors.response.use(
       console.error('toen失效,请重新登陆!');
       // token过期,清除token
       localStorage.removeItem('authorization');
-      // todo 有bug暂时无法解决
-      // 跳转到登陆页面
-      // router.push("/login");
     }
     return Promise.reject(error);
   });

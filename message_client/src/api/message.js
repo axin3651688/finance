@@ -8,8 +8,7 @@ import request from '@mu/http';
  * 登录接口
  */
 export function LOGIN (loginUser) {
-  console.log('调用登录接口');
-  debugger;
+  // debugger;
   return request({
     url: '/api/auth/login',
     method: 'post',
@@ -24,24 +23,27 @@ export function LOGIN (loginUser) {
  * 登出接口
  */
 export function LOGOUT () {
-  console.log('调用登出接口');
   return request({
     url: '/api/auth/logout',
     method: 'get'
   });
 }
 
-// 上传文件
-export function UPLOAD_FILE (data) {
+/**
+ * 上传文件 POST /api/file_upload
+ */
+export function FILE_UPLOAD (data) {
   // debugger;
   return request({
-    url: '/file/upload_file',
+    url: '/api/api/file_upload',
     method: 'post',
     data: data
   });
 }
 
-// 获取消息左边栏数据
+/**
+ * 获取消息左边栏数据
+ */
 export function MY_SESSION (userId) {
   // debugger
   return request({
@@ -53,7 +55,9 @@ export function MY_SESSION (userId) {
   });
 }
 
-// 获取 单聊消息
+/**
+ * 获取 单聊消息
+ */
 export function FIND_SINGLE_MSG (data) {
   // debugger;
   return request({
@@ -63,7 +67,9 @@ export function FIND_SINGLE_MSG (data) {
   });
 }
 
-// 获取 群聊聊消息
+/**
+ * 获取 群聊聊消息
+ */
 export function FIND_GROUP_MSG (data) {
   // debugger
   return request({
@@ -73,7 +79,9 @@ export function FIND_GROUP_MSG (data) {
   });
 }
 
-// 发送 单聊消息
+/**
+ * 发送 单聊消息
+ */
 export function SAVE_SINGLE_MSG (data) {
   // debugger;
   return request({
@@ -83,7 +91,9 @@ export function SAVE_SINGLE_MSG (data) {
   });
 }
 
-// 发送 群聊消息
+/**
+ * 发送 群聊消息
+ */
 export function SAVE_GROUP_MSG (data) {
   // debugger;
   return request({
@@ -393,7 +403,7 @@ export function SEND_GROUP_INVITE_MSG (data) {
 export function SCAN_LOGIN_URL (params) {
   // debugger;
   return request({
-    url: '/auth/scan_login_url',
+    url: '/api/auth/scan_login_url',
     method: 'get',
     params: params
   });

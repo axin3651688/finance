@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex';
 import {
   SEND_GROUP_INVITE_MSG, // 拉人进群
   requestMyfriends,
   CONTACT_INFO
-} from '@m_api/message.js'
+} from '@m_api/message.js';
 
 // 从好友列表添加成员到群组的类,单例模式
 class AddFromFriends {
@@ -56,50 +56,50 @@ class AddFromFriends {
     if (!AddFromFriends.instance) {
       this.friendList = friendList;
       this.addList = [];
-      AddFromFriends.instance = this
+      AddFromFriends.instance = this;
     }
-    return AddFromFriends.instance
+    return AddFromFriends.instance;
   }
 
   changeFriendState(friend) {
     if (friend.isChecked) {
       // 如果本来是 选中状态 就从 addList 中移除
       let index = this.addList.indexOf(friend);
-      this.addList.splice(index, 1)
+      this.addList.splice(index, 1);
     } else {
       // 如果本来是 未选中状态 就添加到 addList 中
-      this.addList.push(friend)
+      this.addList.push(friend);
     }
     // 最后切换friend的选中状态
-    friend.changeCheckState()
+    friend.changeCheckState();
   }
 
   // 清空addList,同事列表内的成员的激活状态也要取消
   clearAddList() {
     this.addList.forEach(user => {
-      user.changeCheckState()
+      user.changeCheckState();
     });
-    this.addList = []
+    this.addList = [];
   }
 }
 
 // 好友类
 class Friend {
   constructor(obj) {
-    this._init(obj)
+    this._init(obj);
   }
 
   _init(obj) { // 用传进来的对象初始化一个Friend
     // debugger;
     let keys = Object.keys(obj);
     keys.forEach(key => {
-      this[key] = obj[key]
+      this[key] = obj[key];
     });
   }
 
   changeCheckState() { // 切换选择状态
     this.isChecked = !this.isChecked;
-    console.log(`${this.name}的选中状态：${this.isChecked}`)
+    console.log(`${this.name}的选中状态：${this.isChecked}`);
   }
 }
 
@@ -110,23 +110,23 @@ export default {
     return {
       friendList: [],
       addFromFriendsInstance: null // 从好友列表添加好友到群组的类实例，单例模式
-    }
+    };
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     }
   },
   filters: {
     getLength(data) { // 得到一个对象或数组的长度
       let length = 0;
       if (data instanceof Array) {
-        length = data.length
+        length = data.length;
       } else if (data instanceof Object) {
-        length = Object.keys(data).length
+        length = Object.keys(data).length;
       }
-      return length
+      return length;
     }
   },
   methods: {
@@ -138,9 +138,9 @@ export default {
           this.friendList = res.data.data;
           let formatFriendList = this.formatFriendList(this.friendList);
           this.addFromFriendsInstance = new AddFromFriends(formatFriendList); // 实例化一个从好友中添加群组成员的对象
-          console.log('addFromFriendsInstance:', this.addFromFriendsInstance)
+          console.log('addFromFriendsInstance:', this.addFromFriendsInstance);
         }
-      })
+      });
     },
 
     // 将请求回来的好友列表遍历一遍，增加一个 isChecked 字段，用于判断它有没有被选中
@@ -151,16 +151,16 @@ export default {
       friendList.forEach(friend => {
         friend['isChecked'] = false;
         let friendInstance = new Friend(friend); // 用好友信息实例化一个好友实例
-        newList.push(friendInstance)
+        newList.push(friendInstance);
       });
-      return newList
+      return newList;
     },
 
     // 提交添加的群成员
     commitAddMembers() {
       let targets = [];
       this.addFromFriendsInstance.addList.forEach(item => {
-        targets.push(item.id)
+        targets.push(item.id);
       });
       let postData = {
         groupId: this.groupId,
@@ -181,17 +181,15 @@ export default {
           debugger;
         })
         .catch(err => {
-          console.log('添加群成员err:', err)
+          console.log('添加群成员err:', err);
         });
-      console.log('添加群成员到', this.groupId, this.addFromFriendsInstance.addList)
-
+      console.log('添加群成员到', this.groupId, this.addFromFriendsInstance.addList);
     }
   },
   mounted() {
-    // todo: 5添加群成员 from friends
-    this.getFriendList()
+    this.getFriendList();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

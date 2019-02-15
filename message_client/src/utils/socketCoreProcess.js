@@ -66,6 +66,7 @@ export default function socketCoreProcess (websocket, datas) {
  * 1003 处理electron 登录失效后重新登录
  */
 function _processLoginExpired (data) {
+  debugger;
   // alert('1003====authorization'+JSON.stringify(data.data.authorization));
   if (data.data.authorization) {
     // 重登录成功窗口变大
@@ -80,10 +81,9 @@ function _processLoginExpired (data) {
     localStorage.removeItem('database');
     store.dispatch('clearCurrentState');
     localStorage.removeItem('authorization'); // 清token
-
+    router.push('/message_login');
     if (window.require) {
       let ipc = window.require('electron').ipcRenderer;
-      router.push('/message_login');
       ipc.send('web_outLogin', '');
     }
   }

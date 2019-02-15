@@ -86,29 +86,29 @@
 </template>
 
 <script>
-import {SEARCH_MY_CONTACT} from '@m_api/message.js'
-import {mapGetters, mapActions} from 'vuex'
+import {SEARCH_MY_CONTACT} from '@m_api/message.js';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
-  name: "SearchBar",
+  name: 'SearchBar',
   data() {
     return {
       show: false, // 是否显示搜索结果
       keywords: '', // 搜索关键词
       searchData: null // 搜索结果数据
-    }
+    };
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id
+      return this.user.user.id;
     }
   },
   watch: {
     keywords(val) {
       if (!val) {
-        this.handleClose()
-        this.searchData = null
+        this.handleClose();
+        this.searchData = null;
       }
     }
   },
@@ -117,23 +117,23 @@ export default {
       bind(el, binding, vnode) {
         // 点击弹窗外关闭窗口
         function documentHandler(e) {
-          if (el.contains(e.target)) return false
-          if (binding.expression) binding.value(e)
+          if (el.contains(e.target)) return false;
+          if (binding.expression) binding.value(e);
         }
 
         // Escape 关闭窗口
         function keyboardHandler(e) {
-          if (binding.expression && e.key === 'Escape') binding.value(e)
+          if (binding.expression && e.key === 'Escape') binding.value(e);
         }
 
-        el.__vueClickOutside__ = documentHandler
-        el.__vueKeyboardHandler__ = keyboardHandler
-        document.addEventListener('click', documentHandler)
-        document.addEventListener('keydown', keyboardHandler)
+        el.__vueClickOutside__ = documentHandler;
+        el.__vueKeyboardHandler__ = keyboardHandler;
+        document.addEventListener('click', documentHandler);
+        document.addEventListener('keydown', keyboardHandler);
       },
       unbind(el, binding, vnode) {
-        document.removeEventListener('click', el.__vueClickOutside__)
-        document.removeEventListener('keydown', el.__vueKeyboardHandler__)
+        document.removeEventListener('click', el.__vueClickOutside__);
+        document.removeEventListener('keydown', el.__vueKeyboardHandler__);
       }
     }
   },
@@ -141,43 +141,43 @@ export default {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 关闭搜索结果弹窗
     handleClose(e) {
-      this.show = false       // 关闭弹窗
-      this.searchData = null  // 清除搜索结果
+      this.show = false;       // 关闭弹窗
+      this.searchData = null;  // 清除搜索结果
     },
 
     // 判断搜索结果是否为空
     _isNotEmpty(data) {
       for (let item of Object.values(data)) {
-        if (item.length) return true
+        if (item.length) return true;
       }
-      return false
+      return false;
     },
 
     // 执行搜索
     doSearch() {
-      this.show = true
+      this.show = true;
       let params = {
         userId: this.loginUserId,
         keyword: this.keywords
-      }
+      };
       SEARCH_MY_CONTACT(params)
         .then(res => {
-          console.log('搜索res：', res)
-          this.searchData = null // 先清空上次的搜索结果
+          console.log('搜索res：', res);
+          this.searchData = null; // 先清空上次的搜索结果
           if (res.data.code === 200 && res.data.data) {
             // 搜索结果不为空时在赋值
-            if (this._isNotEmpty(res.data.data)) this.searchData = res.data.data
+            if (this._isNotEmpty(res.data.data)) this.searchData = res.data.data;
           } else {
             this.$message({
               type: 'warning',
               message: res.msg,
               showClose: true
-            })
+            });
           }
         })
         .catch(err => {
-          console.log('搜索err：', err)
-        })
+          console.log('搜索err：', err);
+        });
     },
 
     /**
@@ -193,31 +193,31 @@ export default {
           id: id,
           activeName: activeName
         }
-      })
-      this.handleClose() // 先关闭搜索弹窗
+      });
+      this.handleClose(); // 先关闭搜索弹窗
     },
 
     /**
      * 跳转到好友单聊页面,并设置 sessionActiveItem,然后往 session 列表增加一个条目
      */
     redirectSingleChat(item) {
-      this.handleClose() // 先关闭搜索弹窗
-      let sessionItem = {}
-      let targetId = '1100_' + item.id + '_' + this.loginUserId
-      sessionItem['miniType'] = 1100
-      sessionItem['targetId'] = targetId
-      sessionItem['id'] = item.id
-      sessionItem['name'] = item.trueName
-      sessionItem['count'] = 0
-      sessionItem['content'] = null
-      sessionItem['sendTime'] = null
-      sessionItem['avatar'] = item.avatar
-      sessionItem['originData'] = item
+      this.handleClose(); // 先关闭搜索弹窗
+      let sessionItem = {};
+      let targetId = '1100_' + item.id + '_' + this.loginUserId;
+      sessionItem['miniType'] = 1100;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = item.id;
+      sessionItem['name'] = item.trueName;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = item.avatar;
+      sessionItem['originData'] = item;
 
       this.ActionSetMessageStore({ // vuex 设置
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
-      })
+      });
 
       this.$router.push({ // 路由跳转
         path: '/message_page/msg',
@@ -225,34 +225,34 @@ export default {
           id: item.id,
           miniType: 1100
         }
-      })
+      });
 
-      this._updateSessionList(sessionItem)     // 更新session边栏
+      this._updateSessionList(sessionItem);     // 更新session边栏
     },
 
     /**
      * 跳转到群聊页面
      */
     redirectGroupChat(item) {
-      debugger
-      this.handleClose() // 先关闭搜索弹窗
-      let sessionItem = {}
-      let targetId = '1101_' + this.loginUserId + '_' + item.groupId
-      sessionItem['miniType'] = 1101
-      sessionItem['targetId'] = targetId
-      sessionItem['id'] = item.groupId
-      sessionItem['name'] = item.text
-      sessionItem['count'] = 0
-      sessionItem['content'] = null
-      sessionItem['sendTime'] = null
-      sessionItem['avatar'] = item.avatar
-      sessionItem['originData'] = item
+      debugger;
+      this.handleClose(); // 先关闭搜索弹窗
+      let sessionItem = {};
+      let targetId = '1101_' + this.loginUserId + '_' + item.groupId;
+      sessionItem['miniType'] = 1101;
+      sessionItem['targetId'] = targetId;
+      sessionItem['id'] = item.groupId;
+      sessionItem['name'] = item.text;
+      sessionItem['count'] = 0;
+      sessionItem['content'] = null;
+      sessionItem['sendTime'] = null;
+      sessionItem['avatar'] = item.avatar;
+      sessionItem['originData'] = item;
 
       this.ActionSetMessageStore({ // vuex 设置
         sessionActiveItem: sessionItem,
         miniType: 1101, // 1101 群聊,
         receiverData: item
-      })
+      });
 
       this.$router.push({ // 路由跳转
         path: '/message_page/msg',
@@ -260,39 +260,38 @@ export default {
           id: item.groupId,
           miniType: 1101
         }
-      })
+      });
 
-      this._updateSessionList(sessionItem)     // 更新session边栏
-
+      this._updateSessionList(sessionItem);     // 更新session边栏
     },
 
     /**
      * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
      */
     _updateSessionList(sessionItem) {
-      let itemExist = false
+      let itemExist = false;
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
-          itemExist = true
+          itemExist = true;
           this.ActionUpdateSessionList({
             type: 'update',
             method: 'clearCount',
             data: sessionItem
-          })
-          break
+          });
+          break;
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        }
-        this.ActionUpdateSessionList(addObj)
+        };
+        this.ActionUpdateSessionList(addObj);
       }
     }
 
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

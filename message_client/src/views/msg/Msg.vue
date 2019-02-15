@@ -22,8 +22,6 @@
 
           <!--聊天页面-->
           <chat v-if="miniType === 1101 || miniType === 1100"></chat>
-          <!--<single-msg v-if="miniType === 1100"></single-msg>-->
-          <!--<group-msg v-if="miniType === 1101"></group-msg>-->
         </template>
       </div>
     </div>
@@ -37,8 +35,6 @@ import {mapGetters, mapActions} from 'vuex';
 export default {
   name: 'Message',
   components: {
-    // GroupMsg: () => import('./GroupMsg'),           // 群聊天
-    // SingleMsg: () => import('./SingleMsg'),         // 单聊消息
     Session,
     Todos: () => import('./Todos'),                 // 代办事项
     Analysis: () => import('./Analysis'),           // 分析助手

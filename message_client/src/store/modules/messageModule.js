@@ -2,7 +2,7 @@ const messageModule = {
   state: {
     messageStore: {
       sessionActiveItem: null, // session选中的item
-      sessionList: [], // session消息队列
+      sessionList: null, // session消息队列
       scanStatus: null, // 扫码登陆信息
       token: null, // socket连接后服务器发的令牌
       serverAck: null, // socket 消息回执

@@ -30,13 +30,13 @@
         @switchCase="handleSwitchCase"
       ></switch-btn-group>
     </div>
+
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
 import {Multipane, MultipaneResizer} from '@mc/vue-multipane';
-import VueGallerySlideshow from 'vue-gallery-slideshow';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue';
@@ -56,12 +56,13 @@ export default {
     MultipaneResizer,
     MessageItem,
     MessageSender,
-    VueGallerySlideshow,
     SwitchBtnGroup
   },
   data() {
     return {
-      msgList: [] // 历史聊天消息列表
+      msgList: [], // 历史聊天消息列表
+      images: ['http://192.168.2.214:8000/group2/M00/00/0B/wKgC21xigPCATQxEAAUAdHvddI4898.png'],
+      index: null // 图片展示的序号
     };
   },
   computed: {
@@ -71,6 +72,9 @@ export default {
     },
     receiverId() { // 接受对象的id，可以是个人id，也可以是群id
       return this.messageStore.sessionActiveItem.id;
+    },
+    activeTargetId() { // 当前激活session的targetId
+      return this.messageStore.sessionActiveItem.targetId;
     },
     miniType() {
       return this.messageStore.sessionActiveItem.miniType;
@@ -93,8 +97,22 @@ export default {
      */
     newServerMsg(val) {
       debugger;
-      // 如果不是聊天消息，或接受对象不是当前窗口就不处理
-      if ((val.code !== 1100 && val.code !== 1101) || val.data.senderId !== this.receiverId) return false;
+      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
+        return false;
+      }
+      // TODO：如果接受对象不是当前激活的sessionItem也不处理
+      let targetId;
+      switch (val.code) {
+        case 1100: // 单聊
+          targetId = val.code + '_' + val.data.senderId;
+          break;
+        case 1101: // 群聊
+          targetId = val.code + '_' + val.data.receiverId;
+          break;
+      }
+      if (this.activeTargetId !== targetId) {
+        return false;
+      }
 
       console.log('监听到聊天消息：', val);
       let item = val.data;
@@ -297,7 +315,7 @@ export default {
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,
-        'miniType': 1100,
+        'miniType': this.miniType,
         'receiverId': lastItem.receiverId,
         'senderId': lastItem.senderId,
         'state': 2
@@ -314,7 +332,7 @@ export default {
         code: 1006,
         data: {
           'id': lastItem.id,
-          'miniType': 1100,
+          'miniType': this.miniType,
           'receiverId': lastItem.receiverId,
           'senderId': lastItem.senderId,
           'state': 2

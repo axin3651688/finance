@@ -11,21 +11,30 @@
         <router-view></router-view>
       </div>
     </div>
+
+    <!--弹出层-->
+    <div class="top-layout" v-if="imagePreview.hdUrl">
+      <image-preview v-if="imagePreview.hdUrl" :hdUrl="imagePreview.hdUrl"></image-preview>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
+import TopBar from '@mc/top_bar/TopBar';
+import SideBar from '@mc/side_bar/SideBar';
+import ImagePreview from '@mc/image_preview/ImagePreview';
 import {MY_SESSION} from '@m_api/message.js';
 
 export default {
   name: 'MessagePage',
   components: {
-    TopBar: () => import('@mc/top_bar/TopBar'),
-    SideBar: () => import('@mc/side_bar/SideBar')
+    TopBar,
+    SideBar,
+    ImagePreview
   },
   computed: {
-    ...mapGetters(['user', 'messageStore']),
+    ...mapGetters(['user', 'messageStore', 'imagePreview']),
     loginUserId() {
       return this.user.user.id;
     }
@@ -61,13 +70,23 @@ export default {
      * 如果senderId是当前登陆用户的Id则不必加到sessiong列表
      */
     _initSessionBar(sessionList) {
-      // debugger;
+      debugger;
       let session = [];         // 处理过后的session队列
       let targetIdList = []; // 记录已经添加过的，防止重复
       for (let item of sessionList) {
         if (item.senderId === this.loginUserId) continue; // 如果发送人是自己，就不必要加入到session列表
         let sessionItem = {};
-        let targetId = `${item.miniType}_${item.senderId}_${item.receiverId}`;
+
+        let targetId;
+        switch (item.miniType) {
+          case 1100: // 单聊
+            targetId = item.miniType + '_' + item.senderId;
+            break;
+          case 1101: // 群聊
+            targetId = item.miniType + '_' + item.receiverId;
+            break;
+        }
+
         if (targetIdList.indexOf(targetId) > -1) continue; // 如果添加过了就不再添加
         targetIdList.push(targetId);
         sessionItem['miniType'] = item.miniType;
@@ -110,6 +129,7 @@ export default {
     overflow: hidden;
     height: 100vh;
     min-width: 1000px;
+    border: 1px solid #333333;
 
     .left, .right {
       height: 100%;
@@ -133,5 +153,17 @@ export default {
         flex: 1;
       }
     }
+  }
+
+  .top-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .8);
+    z-index: 10;
   }
 </style>

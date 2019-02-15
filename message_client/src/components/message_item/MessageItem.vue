@@ -17,7 +17,7 @@
           <template v-if="data.type === 2 && data.file">
             <div class="img-wrap">
               <div class="img-box">
-                <img :src="data.file.thumbUrl" :alt="data.content" @click="showImgGallery(data.file.thumbUrl)">
+                <img :src="data.file.thumbUrl" :alt="data.content" @click="showImagePreview(data.file.hdUrl)">
               </div>
             </div>
           </template>
@@ -27,7 +27,7 @@
         <!--3文件-->
         <div v-else-if="data.type === 3">
           <template v-if="data.file">
-            <a :href="data.file.hdUrl" download="">
+            <a :href="data.file.hdUrl" :download="data.file.text">
               <div class="file-wrap">
                 <!--{{data.file}}-->
                 <div class="left">
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
 import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
 import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue';
@@ -91,7 +91,9 @@ export default {
   },
   data() {
     return {
-      EMOTION_SPRITES: emotionSprites.data  // 聊天表情
+      EMOTION_SPRITES: emotionSprites.data,  // 聊天表情
+      isShowImagePreview: false, // 是否显示图片预览
+      hdUrl: null // 大图地址
     };
   },
   computed: {
@@ -109,6 +111,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['ActionUpdateImagePreview']),
     /**
      * 解析聊天表情
      * @param content {String}: 聊天的文本内容
@@ -118,12 +121,8 @@ export default {
       return PARSE_EMOTIONS(content);
     },
 
-    /**
-     * emit父组件展示图片
-     * @param imgUrl {String}: 图片url地址
-     */
-    showImgGallery(imgUrl) {
-      this.$emit('showImgGallery', imgUrl);
+    showImagePreview(hdUrl) {
+      this.ActionUpdateImagePreview(hdUrl);
     }
   }
 };
@@ -140,7 +139,7 @@ export default {
 
   .message-box {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
@@ -153,10 +152,11 @@ export default {
 
     .content {
       padding: 0 12px;
-      .content-title{
+
+      .content-title {
         font-size: 12px;
-        color: $colorTextBlack6;
-        margin-bottom: 6px;
+        color: $colorTextBlack5;
+        margin-bottom: 8px;
       }
 
       .content-bubble {
@@ -166,7 +166,7 @@ export default {
         min-height: 40px;
         min-width: 40px;
         max-width: 600px;
-        word-wrap : break-word;
+        word-wrap: break-word;
         line-height: 20px;
         font-size: 14px;
         background-color: $colorThemePrimary;
@@ -176,7 +176,7 @@ export default {
         &:before {
           content: " ";
           position: absolute;
-          top: 14px;
+          top: 10px;
           right: 100%;
           border: 6px solid transparent;
           border-right-color: $colorThemePrimary;
@@ -252,8 +252,8 @@ export default {
 
     .img-wrap {
       .img-box {
-        width: 100px;
-        height: 100px;
+        max-width: 240px;
+        /*max-height: 320px;*/
         overflow: hidden;
         cursor: pointer;
 
@@ -268,6 +268,10 @@ export default {
 
   .message-box.is-me {
     flex-direction: row-reverse;
+
+    .content-title {
+      text-align: right;
+    }
 
     .content-bubble {
       &:before {

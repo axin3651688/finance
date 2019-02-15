@@ -55,6 +55,8 @@ import {
   MY_NODE
 } from '@m_api/messageIndex.js';
 
+const SETTINGS = require('@/settings'); // 全局变量或配置
+
 export default {
   name: 'Home',
 
@@ -88,8 +90,9 @@ export default {
 
     nodeboxClick(node) {
       // debugger
+      let addr = SETTINGS.serverAddress.api;
       let companyId = this.user.company.id;
-      let redirectUrl = 'http://192.168.2.224:8005/auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect;
+      let redirectUrl = addr + 'auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect;
       console.log('redirectUrl-->>', redirectUrl);
       if (window.require) {
         let ipc = window.require('electron').ipcRenderer;

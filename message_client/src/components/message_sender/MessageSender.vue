@@ -37,7 +37,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {UPLOAD_FILE} from '@m_api/message.js';
+import {FILE_UPLOAD} from '@m_api/message.js';
 
 export default {
   name: 'MessageSender',
@@ -74,7 +74,7 @@ export default {
     },
     submitUpload(fd) {
       if (fd) {
-        UPLOAD_FILE(fd).then(res => {
+        FILE_UPLOAD(fd).then(res => {
           console.log('上传群文件res', res);
           // debugger
           if (res.data.code === 200 && res.data.data) {
