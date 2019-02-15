@@ -20,16 +20,18 @@
           <div class="sheach">
             <el-input v-model="nameSearch" placeholder="搜索人员" suffix-icon="el-icon-search"></el-input>
           </div>
-          <el-checkbox-group
-            v-model="checkedItem"
-            @change="handleCheckedChange"
-            class="content-middle"
-            v-for="i of filterData"
-            :key="i.id"
-          >
-            <img :src="i.avatar" alt class="img">
-            <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
-          </el-checkbox-group>
+          <el-scrollbar style="height: 100%">
+            <el-checkbox-group
+              v-model="checkedItem"
+              @change="handleCheckedChange"
+              class="content-middle"
+              v-for="i of filterData"
+              :key="i.id"
+            >
+              <img :onerror="errorUserPhoto" :src="i.avatar" alt class="img">
+              <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
+            </el-checkbox-group>
+          </el-scrollbar>
           <div style="margin: 15px 0;"></div>
         </div>
       </transition>
@@ -39,8 +41,21 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import userPhoto from "@a/avatar.jpg";
+
 export default {
   name: "OpenMeluList",
+  data() {
+    return {
+      nameSearch: "", //搜索框显示的内容
+      showSide: false, // 是否显示边栏
+      checkAll: false,
+      checkedItem: [],
+      isIndeterminate: false,
+      errorUserPhoto: 'this.src="' + userPhoto + '"'
+    };
+  },
+
   computed: {
     ...mapGetters(["showMeluList"]),
     listDatas() {
@@ -71,15 +86,7 @@ export default {
       return arr;
     }
   },
-  data() {
-    return {
-      nameSearch: "", //搜索框显示的内容
-      showSide: false, // 是否显示边栏
-      checkAll: false,
-      checkedItem: [],
-      isIndeterminate: false
-    };
-  },
+
   // 自定义指令
   directives: {
     clickoutside: {

@@ -27,7 +27,8 @@
     v-else-if="col.type === 'index' "
     :prop="col.id"
     :label="col.text"
-    :width="col.width"
+    :align="col.align|| 'center'"
+    :width="col.width||80"
     type="index"
   />
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
@@ -118,14 +119,9 @@ export default {
   data() {
     return {
       clickRow: {},
-      clickRowParams: {}
+      clickRowParams: {},
+      tmd: []
     };
-  },
-  watch: {
-    tableData(curVal, oldVal) {
-      debugger;
-      console.log(curVal, oldVal);
-    }
   },
   mixins: [EventMixins],
   methods: {
@@ -147,20 +143,6 @@ export default {
       }
     },
 
-    upData(item) {
-      debugger;
-      // this.$set(this.tableData, "datas", null);
-      // this.$set(this.tableData, "datas", []);
-      // if(item.datas.length == 0 ){
-      //     item.datas = null;
-      //     item.datas = [];
-      // }
-      // this.$set(this, "tableData1", item);
-      // this.$set(this.tableData1, "datas", item.datas);
-      // this.$set(this, "tableData", null);
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
-    },
     optionColumnClick(row) {
       this.clickRow = row;
       if (

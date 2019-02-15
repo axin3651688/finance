@@ -22,29 +22,9 @@ export default {
       hasConfig: false
     };
   },
-  created() {
-    debugger;
-    console.info(this.datas);
-    console.info(this.config);
-  },
-  computed: {
-    newData() {
-      return this.item.datas;
-    }
-  },
+
   mounted() {
-    console.log(this.item, "222222");
-    console.log(this.newData, "11111111111111111");
     this.loadItems(this.item);
-  },
-  watch: {
-    item(newItem) {
-      debugger;
-      // console.info("-----");
-      //console.info(newItem);
-      this.$set(this, "item", newItem);
-    },
-    deep: true
   },
 
   methods: {

@@ -18,7 +18,7 @@ export default function modeHandle(e) {
         //
         return;
     }
-    // e.url = "cnbi/json/source/jsnk/zfbg/cbsb.json";
+    e.url = "cnbi/json/source/jsnk/zfbb/lrb.json";
 
     debugger
     console.log(e.url);

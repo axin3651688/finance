@@ -11,7 +11,7 @@
       :cell-style="cellStyle"
     >
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
+        <bi-table-column-tree :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
@@ -28,47 +28,29 @@ export default {
   },
   data() {
     return {
+      formatData: [],
       nodes: []
     };
   },
   name: "Jtreegrid",
   props: ["item"],
   created() {
-    let me = this;
-    // 下面接受子级触发事件,初始化不会加载下面
-    this.$bus.$on("fetchdata", function(dat) {
-      // 改变父级的折叠属性
-      console.log(dat);
-      debugger;
-      let record = me.item.datas[dat.$index];
-      record._expanded = !record._expanded;
-      me.fetchData(dat);
-    });
-  },
-  watch: {
-    formatData(newid) {
-      debugger;
-      console.log(newid);
-    }
+    this.formatData = convertData(this.item.datas);
+    // 初始化展开第一行
+    this.changeProp({ $index: 0, row: { id: this.companyId } });
+    // bus接收底层传值
+    this.$bus.on("fetchdata", this.changeProp);
   },
   computed: {
-    data() {
-      return this.item.datas;
-    },
-    formatData() {
-      let flag = Cnbi.isEmpty(this.data);
-      if (!flag) {
-        debugger;
-        return convertData(this.data);
-      } else {
-        console.error("亲！没有请求到数据，再检查下配置吧！");
-      }
+    companyId() {
+      return this.$store.getters.company;
     }
   },
 
   beforeDestroy() {
     this.$bus.off("fetchdata");
   },
+
   methods: {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
@@ -80,6 +62,14 @@ export default {
     //     return this.item.onRowClick(row, column, e, this);
     //   }
     // },
+    changeProp(dat) {
+      // 改变父级的折叠属性
+      console.log(dat);
+      debugger;
+      let record = this.item.datas[dat.$index];
+      record._expanded = !record._expanded;
+      this.fetchData(dat);
+    },
     cellStyle(row) {
       // debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
@@ -112,11 +102,14 @@ export default {
       }
     },
 
-    // upData(item) {
-    //   this.$set(this, "formatData", "");
-    //   this.$set(this, "formatData", null);
-    //   this.item = item;
-    // },
+    upData(item) {
+      // debugger;
+      this.$set(this, "formatData", item.datas);
+      //清空记录
+      this.nodes = [];
+      // 初始化展开第一行.
+      this.changeProp({ $index: 0, row: { id: this.companyId } });
+    },
 
     // 下面处理行的显影
     showRow(bean) {
