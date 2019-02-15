@@ -19,18 +19,19 @@
       <div class="tool-icon link-icon"></div>
       <!--<div class="send-btn" @click="sendMsg">发 送</div>-->
       <transition name="el-zoom-in-bottom">
-        <face-icon v-if="showFacePop" :showFacePop.sync="showFacePop" @addFaceToInput="handleAddFaceToInput"></face-icon>
+        <face-icon v-if="showFacePop" :showFacePop.sync="showFacePop"
+                   @addFaceToInput="handleAddFaceToInput"></face-icon>
       </transition>
     </div>
     <div class="input-wrap">
-        <div class="input-wrap__inner">
+      <div class="input-wrap__inner">
           <textarea class="chat-textarea"
                     placeholder="请输入文字，按enter建发送信息"
                     v-model="sendText"
                     ref="textarea"
                     @keyup.enter.prevent="sendMsg(sendText)"
           ></textarea>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +39,7 @@
 <script>
 import {mapGetters} from 'vuex';
 import {FILE_UPLOAD} from '@m_api/message.js';
+import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
 
 export default {
   name: 'MessageSender',
@@ -62,13 +64,21 @@ export default {
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      console.log('要上传的文件信息：', file);
       // debugger
+      console.log('要上传的文件信息：', file);
+
+      // 判断文件类型是否可以上传，不能上传则跳出程序
+      if (!this._isAllowUpload(file.name)) {
+        this.$alert('不支持此类文件传输！', '上传提示：', {
+          confirmButtonText: '确定'
+        });
+        return false;
+      }
+
       let fd = new FormData();
       fd.append('file', file);
       fd.append('userId', this.loginUserId);
       fd.append('size', file.size);
-      console.log('要上传的文件信息2：', fd);
       this.submitUpload(fd);
       return true;
     },
@@ -97,6 +107,20 @@ export default {
       debugger;
       this.$emit('sendMsg', sendText.trim(), fileData);
       this.sendText = '';
+    },
+
+    /**
+     * 根据文件后缀名判断文件是不是可以上传的类型
+     */
+    _isAllowUpload(filename) {
+      let suffix = filename.replace(/.+\./, '').toLowerCase(); // 获取文件后缀名
+      for (let item of FILE_TYPE) {
+        // debugger;
+        if (suffix === item.suffix.toLowerCase()) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 };
@@ -106,7 +130,7 @@ export default {
   @import "@ms/index.scss";
   @import "@ms/icons.scss";
 
-  .MessageSender{
+  .MessageSender {
     display: flex;
     flex-direction: column;
   }
@@ -157,7 +181,8 @@ export default {
   .input-wrap {
     width: 100%;
     flex: 1;
-    .input-wrap__inner{
+
+    .input-wrap__inner {
       height: 100%;
     }
 

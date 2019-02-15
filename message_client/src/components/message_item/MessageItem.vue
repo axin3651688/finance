@@ -31,7 +31,8 @@
               <!--{{data.file}}-->
               <div class="left">
                 <div class="title">
-                  <span class="text">{{data.file.text+data.file.category}}</span>
+                  <span class="text">{{data.file.text}}</span>
+                  <!--<span class="text">{{data.file.text+data.file.category}}</span>-->
                 </div>
                 <div class="size">{{data.file.size | formatFileSize}}</div>
               </div>
