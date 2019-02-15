@@ -219,9 +219,10 @@ export function JOIN_GROUP (data) {
   });
 }
 
-// 查询新朋友消息通知
+/**
+ * 查询新朋友消息通知
+ */
 export function NEW_FRIEND_LIST (data) {
-  console.log('api NEW_FRIEND_LIST');
   // debugger
   return request({
     url: '/api/api/new_friend_list',

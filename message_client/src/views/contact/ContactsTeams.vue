@@ -117,7 +117,7 @@ export default {
     chatWithSingle(rightUserInfo) {
       // debugger;
       let sessionItem = {};
-      let targetId = '1100_' + rightUserInfo.user.id + '_' + this.loginUserId;
+      let targetId = '1100_' + rightUserInfo.user.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = rightUserInfo.user.id;

@@ -203,7 +203,7 @@ export default {
     redirectSingleChat(item) {
       this.handleClose(); // 先关闭搜索弹窗
       let sessionItem = {};
-      let targetId = '1100_' + item.id + '_' + this.loginUserId;
+      let targetId = '1100_' + item.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = item.id;
@@ -237,7 +237,7 @@ export default {
       debugger;
       this.handleClose(); // 先关闭搜索弹窗
       let sessionItem = {};
-      let targetId = '1101_' + this.loginUserId + '_' + item.groupId;
+      let targetId = '1101_' + item.groupId;
       sessionItem['miniType'] = 1101;
       sessionItem['targetId'] = targetId;
       sessionItem['id'] = item.groupId;

@@ -19,7 +19,7 @@ const FileType = [
     suffix: 'xlsx'
   }, {
     type: 3,
-    suffix: 'scv'
+    suffix: 'csv'
   }, {
     type: 3,
     suffix: 'doc'

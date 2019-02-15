@@ -143,6 +143,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * 监听 手机扫码登陆是服务器返回的状态
+     */
     scanStatus(val) {
       debugger;
       if (!val) return;
@@ -151,7 +154,7 @@ export default {
           this.scanSuccess = true;
           break;
         case 10011: // 10011-APP登录通知，登陆成功,
-          this.processLoginResult(val.data); // 处理登陆返回的结果
+          this._processLoginResult(val.data); // 处理登陆返回的结果
           break;
       }
     }
@@ -192,7 +195,7 @@ export default {
               if (res.data.code === 200 && res.data.data) {
                 this.loginUser.usename = '';
                 this.loginUser.password = '';
-                this.processLoginResult(res.data.data); // 处理登陆返回的结果
+                this._processLoginResult(res.data.data); // 处理登陆返回的结果
               } else {
                 this.$message({
                   type: 'error',
@@ -210,7 +213,7 @@ export default {
     /**
      * 处理登陆返回数据
      */
-    processLoginResult(data) {
+    _processLoginResult(data) {
       debugger;
       let authorization = data.authorization;
       if (!Cnbi.isEmpty(authorization)) {
@@ -237,11 +240,20 @@ export default {
       this.requestQrCode();
     },
 
+    /**
+     * 关闭二维码登录, 清除messageStore.scanStatus
+     */
+    closeQrCode() {
+      this.showWhat = 'form';
+      this.scanSuccess = false;
+      this.ActionSetMessageStore({scanStatus: null});
+    },
+
     // 获取二维码
     requestQrCode() {
       let params = {
         platform: 'pc',
-        device: this.messageStore.token || Cnbi.getDevice()
+        device: this.messageStore.token || Cnbi.getDevice() // socket链接成功后返回的设备号
       };
       SET_FULLSCREEN_LOADING(false); // 设置不需要全屏加载动画
       this.elLoading = true; // 开始 局部加载动画
@@ -259,15 +271,8 @@ export default {
           this.elLoading = false; // 结束 局部加载动画
           console.log('获取登录二维码err：', err);
         });
-    },
-
-    /**
-     * 关闭二维码登录, 清除messageStore.scanStatus
-     */
-    closeQrCode() {
-      this.showWhat = 'form';
-      this.ActionSetMessageStore({scanStatus: null});
     }
+
   }
 };
 </script>
@@ -359,7 +364,7 @@ export default {
         }
 
         /deep/ .el-form-item.is-success .el-input__inner,
-        /deep/ .el-form-item.is-success .el-input__inner:focus{
+        /deep/ .el-form-item.is-success .el-input__inner:focus {
           border-color: $colorTheme !important;
         }
 
