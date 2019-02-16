@@ -142,6 +142,11 @@ const router = new Router({
           name: 'test',
           component: () =>
             import('@v/test/test.vue')
+        }, {
+          path: '/rowSpanAndColSpanHandler',
+          name: 'rowSpanAndColSpanHandler',
+          component: () =>
+            import('@v/test/rowSpanAndColSpanHandler.vue')
         }
 
       ]
