@@ -7,6 +7,20 @@
     :width="col.width||80"
     :tableData="tableData"
   />
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
+  <el-table-column
+    v-else-if="col.type === 'string'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+    :min-width="col.width||150"
+  >
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
   <el-table-column
     v-else-if="col.type== 'template' "
     :prop="col.id"
@@ -36,29 +50,21 @@
     v-else-if="col.type === 'number' "
     :prop="col.id"
     :label="col.text"
-    :align="col.align|| 'left'"
-    :width="col.width||100"
+    :align="col.align|| 'right'"
+    :width="col.width||120"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip
+        class="item"
+        effect="light"
+        :content="String(scope.row[col.id])"
+        placement="right"
+      >
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
-  <el-table-column
-    v-else-if="col.type === 'string'"
-    :prop="col.id"
-    :label="col.text"
-    :align="col.align|| 'left'"
-    :min-width="col.width||150"
-  >
-    <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span>{{scope.row[col.id]}}</span>
-      </el-tooltip>
-    </template>
-  </el-table-column>
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
   <el-table-column
     v-else-if="col.type === 'decimal'"
