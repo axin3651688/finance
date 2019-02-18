@@ -303,7 +303,7 @@ export default {
     margin: auto;
     user-select: none;
     box-sizing: border-box;
-    /*border: 1px solid #cccccc;*/
+    /*border: 1px solid #eee;*/
     box-shadow: #999 0px 0px 10px;
 
     .left {

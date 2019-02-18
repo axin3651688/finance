@@ -47,6 +47,15 @@ export default function socketCoreProcess (websocket, datas) {
         console.log('10011扫码登陆：', data);
         store.dispatch('ActionSetMessageStore', {scanStatus: data});
         break;
+      case 11016: // 新朋友通知
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
+      case 11017: // 群助手通知
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
+      case 11021: // 分析助手
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
       default:
     }
   };

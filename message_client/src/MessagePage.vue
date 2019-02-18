@@ -70,7 +70,7 @@ export default {
      * 如果senderId是当前登陆用户的Id则不必加到sessiong列表
      */
     _initSessionBar(sessionList) {
-      debugger;
+      // debugger;
       let session = [];         // 处理过后的session队列
       let targetIdList = []; // 记录已经添加过的，防止重复
       for (let item of sessionList) {
