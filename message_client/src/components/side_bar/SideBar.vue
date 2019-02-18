@@ -23,7 +23,7 @@
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_icon" title="消息">
-            <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" class="item">
+            <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" :class="{bigger: messageCount > 3}">
               <img src="@ma/icon/message_selected.svg" class="img-selected">
               <img src="@ma/icon/message_unselected.svg" class="img-unselected">
             </el-badge>
@@ -215,7 +215,7 @@ export default {
         }
 
         .login-info {
-          @include imgBox($borderRadius: 50%,$width:30px,$height:30px);
+          @include imgBox($borderRadius: 50%, $width: 30px, $height: 30px);
           background: $colorTheme;
           cursor: pointer;
         }
@@ -253,6 +253,7 @@ export default {
       .nav-item_inner {
         text-align: center;
         line-height: $navItemHeight;
+
         &:hover {
           .img-unselected {
             opacity: 1;
@@ -272,6 +273,16 @@ export default {
         justify-content: center;
         background: $colorBgSideBar;
         transition: all .2s;
+
+        /deep/ .el-badge.bigger {
+          .el-badge__content {
+            right: 16px;
+            height: 16px;
+            line-height: 16px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        }
 
         .img-unselected {
           display: block;
