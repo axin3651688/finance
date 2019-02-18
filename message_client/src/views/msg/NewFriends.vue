@@ -127,15 +127,13 @@ export default {
      * @param state 需要改变的状态（4：同意；3：拒绝）
      */
     saveFriend(item, state) {
-      alert('saveFriend');
-      debugger;
+      // debugger;
       let data = {
-        friendId: item.id,
+        friendId: item.senderId,
         userId: this.loginUserId
       };
       SAVE_FRIEND(data).then(res => {
-        // post
-        debugger;
+        // debugger;
         if (res.data.code === 200) {
           this.updateState(item, state);
         } else {
@@ -150,7 +148,7 @@ export default {
       });
     },
     updateState(item, state) {
-      debugger;
+      // debugger;
       let params = {
         code: item.code,
         state: state // 3拒绝，4同意

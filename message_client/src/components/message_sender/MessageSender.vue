@@ -105,8 +105,17 @@ export default {
     // 向父组件触发发送消息
     sendMsg(sendText, fileData) {
       debugger;
-      this.$emit('sendMsg', sendText.trim(), fileData);
-      this.sendText = '';
+      if (sendText.length <= 501) {
+        this.$emit('sendMsg', sendText.trim(), fileData);
+        this.sendText = '';
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '最大发送500个字符',
+          showClose: true
+        });
+      }
+
     },
 
     /**
