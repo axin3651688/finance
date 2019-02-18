@@ -77,13 +77,13 @@ export default {
         if (item.senderId === this.loginUserId) continue; // 如果发送人是自己，就不必要加入到session列表
         let sessionItem = {};
 
-        let targetId;
+        let targetId = item.miniType + '_';
         switch (item.miniType) {
           case 1100: // 单聊
-            targetId = item.miniType + '_' + item.senderId;
+            targetId += item.senderId;
             break;
           case 1101: // 群聊
-            targetId = item.miniType + '_' + item.receiverId;
+            targetId += item.receiverId;
             break;
         }
 

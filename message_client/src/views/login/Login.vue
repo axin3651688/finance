@@ -188,7 +188,7 @@ export default {
      */
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        debugger;
+        // debugger;
         if (valid) {
           LOGIN(this.loginUser)
             .then(res => {
