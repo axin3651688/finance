@@ -17,7 +17,7 @@ export function showNotification(data) {
     return false;
   }
 
-  // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，则 return
+  // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，不用提示
   let notificationTypeList = [1100, 1101, 11017, 11016, 11018, 1500, 11021, 1004, 1005];
   if (notificationTypeList.indexOf(data.code) < 0) return false; // 如果消息不在列表中，则 return
 
@@ -87,6 +87,10 @@ export function showNotification(data) {
   // }, 6000); // 两秒后关闭通知
 }
 
+/**
+ * 消息提示点击后的操作
+ * @private
+ */
 function _handleClick() {
   // if ()
   // alert(data);

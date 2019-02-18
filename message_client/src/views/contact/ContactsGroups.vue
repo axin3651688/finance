@@ -85,6 +85,7 @@
           </div>
         </div>
       </template>
+      <no-data v-if="showNoData">你还没有加入任何群组</no-data>
     </div>
   </div>
 </template>
@@ -100,6 +101,9 @@ import {
 
 export default {
   name: 'ContactsGroups',
+  components: {
+    NoData: () => import('@mv/common/NoData')
+  },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
@@ -108,6 +112,7 @@ export default {
   },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       qrUrl: null, // 群二维码地址
       activeGroupID: null, // 当前选中的群组id
       requestedGroups: {}, // 已经请求过的群组信息
@@ -130,11 +135,7 @@ export default {
           if (this.groupList.length) {
             this.getInfo(this.groupList[0].groupId);
           } else {
-            this.$message({
-              type: 'warning',
-              message: '你还没有加入任何群组',
-              showClose: true
-            });
+            this.showNoData = true;
           }
         }
       });

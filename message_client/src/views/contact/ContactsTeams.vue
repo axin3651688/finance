@@ -83,6 +83,7 @@
         >发送信息
         </el-button>
       </template>
+      <no-data v-if="showNoData">你还没有加入任何团队</no-data>
     </div>
   </div>
 </template>
@@ -96,8 +97,12 @@ import {
 
 export default {
   name: 'ContactsTeams',
+  components: {
+    NoData: () => import('@mv/common/NoData') // 没有数据是显示的内容
+  },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       activeUser: this.loginUserId, // 当前选中的用户id
       companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象
@@ -166,13 +171,9 @@ export default {
           if (this.companyList.length) {
             if (this.companyList[0].children.length) {
               this.getUserInfo(this.companyList[0].children[0].id);
+            } else {
+              this.showNoData = true;
             }
-          } else {
-            this.$message({
-              type: 'warning',
-              message: '你还没有加入任团队',
-              showClose: true
-            });
           }
         }
       });

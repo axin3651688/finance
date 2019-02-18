@@ -61,6 +61,7 @@
         >发送信息
         </el-button>
       </div>
+      <no-data v-if="showNoData">你还没有好友</no-data>
     </div>
   </div>
 </template>
@@ -74,6 +75,9 @@ import {
 
 export default {
   name: 'ContactsFriends',
+  components: {
+    NoData: () => import('@mv/common/NoData') // 没有数据是显示的内容
+  },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
@@ -82,6 +86,7 @@ export default {
   },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       friendList: null, // [] 我的好友列表，接收一个数组
@@ -170,6 +175,8 @@ export default {
             this.rightUserInfoData = rightUserInfoData;
             this.activeUser = rightUserInfoData.user.id;
             this.requestedUser[this.activeUser] = rightUserInfoData;
+          } else {
+            this.showNoData = true;
           }
         });
       }
