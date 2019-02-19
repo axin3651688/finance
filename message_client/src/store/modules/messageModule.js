@@ -4,7 +4,6 @@ const messageModule = {
       sessionActiveItem: null, // session选中的item
       sessionList: null, // session消息队列
       scanStatus: null, // 扫码登陆信息
-      token: null, // socket连接后服务器发的令牌
       serverAck: null, // socket 消息回执
       routeName: '首页', // 路由名字
       newServerMsg: null, // 服务器推送的最新消息

@@ -2,7 +2,7 @@
 /**
  * 格式化时间戳 返回 年-月-日 时:分
  */
-export function TIME_FORMAT(time) {
+export function FORMAT_TIME(time) {
   let date = new Date(time);
   let Y = date.getFullYear();
   let M = date.getMonth();

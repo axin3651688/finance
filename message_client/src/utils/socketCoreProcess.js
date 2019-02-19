@@ -16,13 +16,12 @@ export default function socketCoreProcess (websocket, datas) {
     // debugger;
     switch (code) {
       case 1001: // 与服务器连接成功
-        // 连接成功后会得到 token
-        store.dispatch('ActionSetMessageStore', {token: data.data.token});
+        localStorage.setItem('device', data.data.token); // 连接成功后会得到 设备号
         break;
       case 1002: // 账号重复登录提示及处理
         console.log('账号在别端登录');
         break;
-      case 1003: // 登录已失效
+      case 1003: // 重新登陆
         _processLoginExpired(data);
         break;
       case 1004:
@@ -48,6 +47,15 @@ export default function socketCoreProcess (websocket, datas) {
         console.log('10011扫码登陆：', data);
         store.dispatch('ActionSetMessageStore', {scanStatus: data});
         break;
+      case 11016: // 新朋友通知
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
+      case 11017: // 群助手通知
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
+      case 11021: // 分析助手
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
+        break;
       default:
     }
   };
@@ -66,8 +74,7 @@ export default function socketCoreProcess (websocket, datas) {
  * 1003 处理electron 登录失效后重新登录
  */
 function _processLoginExpired (data) {
-  debugger;
-  // alert('1003====authorization'+JSON.stringify(data.data.authorization));
+  // debugger;
   if (data.data.authorization) {
     // 重登录成功窗口变大
     if (window.require) {
@@ -80,7 +87,7 @@ function _processLoginExpired (data) {
     // 清除本地记录的一些数据
     localStorage.removeItem('database');
     store.dispatch('clearCurrentState');
-    localStorage.removeItem('authorization'); // 清token
+    localStorage.removeItem('authorization'); // 清登陆令牌
     router.push('/message_login');
     if (window.require) {
       let ipc = window.require('electron').ipcRenderer;

@@ -63,7 +63,7 @@
               <div class="icon icon-email"></div>
               <p class="info">{{rightUserInfo.user.email}}</p>
             </li>
-            <li v-if="rightUserInfo.sex.text">
+            <li v-if="rightUserInfo.sex">
               <div class="icon icon-gender__male"></div>
               <p class="info">{{rightUserInfo.sex.text}}</p>
             </li>
@@ -74,15 +74,16 @@
           </ul>
 
         </div>
+        <el-button
+          type="primary"
+          size="medium"
+          class="my-btn"
+          @click="chatWithSingle(rightUserInfo)"
+          v-if="activeUser !== loginUserId"
+        >发送信息
+        </el-button>
       </template>
-      <el-button
-        type="primary"
-        size="medium"
-        class="my-btn"
-        @click="chatWithSingle(rightUserInfo)"
-        v-if="activeUser !== loginUserId"
-      >发送信息
-      </el-button>
+      <no-data v-if="showNoData">你还没有加入任何团队</no-data>
     </div>
   </div>
 </template>
@@ -96,8 +97,12 @@ import {
 
 export default {
   name: 'ContactsTeams',
+  components: {
+    NoData: () => import('@mv/common/NoData') // 没有数据是显示的内容
+  },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       activeUser: this.loginUserId, // 当前选中的用户id
       companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象
@@ -166,13 +171,9 @@ export default {
           if (this.companyList.length) {
             if (this.companyList[0].children.length) {
               this.getUserInfo(this.companyList[0].children[0].id);
+            } else {
+              this.showNoData = true;
             }
-          } else {
-            this.$message({
-              type: 'warning',
-              message: '你还没有加入任团队',
-              showClose: true
-            });
           }
         }
       });
@@ -181,7 +182,7 @@ export default {
     // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
     checkUserInfo(userId) {
       if (this.requestedUser.hasOwnProperty(userId)) {
-        console.log(`已经请求过用户的信息了:${userId}`);
+        console.log('已经请求过用户的信息了:', this.requestedUser[userId]);
         return this.requestedUser[userId];
       } else return null;
     },

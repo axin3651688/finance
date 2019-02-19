@@ -97,10 +97,15 @@ export default {
      */
     newServerMsg(val) {
       debugger;
-      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
+      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息，不处理
         return false;
       }
-      // TODO：如果接受对象不是当前激活的sessionItem也不处理
+
+      this._socketUpdateChatState(val.data, 1); // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
+      if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
+        return false;
+      }
+
       let targetId;
       switch (val.code) {
         case 1100: // 单聊
@@ -110,13 +115,14 @@ export default {
           targetId = val.code + '_' + val.data.receiverId;
           break;
       }
-      if (this.activeTargetId !== targetId) {
+      if (this.activeTargetId !== targetId) { // 如果接受对象不是当前激活的sessionItem,也不处理
         return false;
       }
 
+      this._socketUpdateChatState(val.data, 2); // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
+
       console.log('监听到聊天消息：', val);
       let item = val.data;
-      this._socketUpdateChatState(item); // 收到消息后
       item['miniType'] = val.code;
       this.msgList.push(item); // 把消息发到聊天窗口
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
@@ -182,9 +188,13 @@ export default {
         this.$nextTick(() => {
           this._chatWindowScrollToBottom();
         });
+
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1];
-        if (lastItem) this._httpUpdateChatState(lastItem);
+        if (lastItem) {
+          // this._httpClearChatState(lastItem);
+          this._socketClearChatState(lastItem);
+        }
       }
     },
 
@@ -215,7 +225,7 @@ export default {
         sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
         pushData.type = 3; // 暂时处理，没有匹配到都当文件处理
         for (let item of FILE_TYPE) {
-          // debugger;
+          debugger;
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type;
             pushData.type = item.type;
@@ -299,7 +309,6 @@ export default {
 
     /**
      * 把聊天窗口滚动到最底部
-     * @private
      */
     _chatWindowScrollToBottom() {
       debugger;
@@ -308,9 +317,9 @@ export default {
     },
 
     /**
-     * http请求服务器消除未读消息计数,发送左后一条消息的时间，会把所有的消息设为已读
+     * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
-    _httpUpdateChatState(lastItem) {
+    _httpClearChatState(lastItem) {
       debugger;
       let data = {
         'endTime': lastItem.sendTime,
@@ -324,18 +333,40 @@ export default {
     },
 
     /**
-     * socket请求服务器消除未读消息计数，一次处理一条消息
+     * socket请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
-    _socketUpdateChatState(lastItem) {
-      debugger;
+    _socketClearChatState(lastItem) {
+      // debugger;
       let data = {
-        code: 1006,
+        code: 10061,
         data: {
+          'endTime': lastItem.sendTime,
           'id': lastItem.id,
           'miniType': this.miniType,
           'receiverId': lastItem.receiverId,
           'senderId': lastItem.senderId,
           'state': 2
+        }
+      };
+      socket.deliver(data);
+    },
+
+    /**
+     * socket请求服务器，告诉服务器我已经收到消息的状态
+     * state = 1 (我已经收到了，但是还没看)
+     * state = 2 (我已经收到了，也看了)
+     */
+    _socketUpdateChatState(lastItem, state) {
+      // debugger;
+      let data = {
+        code: 1006,
+        data: {
+          'endTime': lastItem.sendTime,
+          'id': lastItem.id,
+          'miniType': this.miniType,
+          'receiverId': lastItem.receiverId,
+          'senderId': lastItem.senderId,
+          'state': state
         }
       };
       socket.deliver(data);

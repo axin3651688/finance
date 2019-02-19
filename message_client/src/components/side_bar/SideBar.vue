@@ -23,7 +23,7 @@
         </router-link>
         <router-link tag="li" to="/message_page/msg" class="nav-item">
           <div class="nav-item_inner nav-item_icon" title="消息">
-            <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" class="item">
+            <el-badge :value="messageCount === 0 ? '' : messageCount" :max="99" :class="{bigger: messageCount > 3}">
               <img src="@ma/icon/message_selected.svg" class="img-selected">
               <img src="@ma/icon/message_unselected.svg" class="img-unselected">
             </el-badge>
@@ -101,36 +101,42 @@ export default {
     // 监听服务器推送的消息
     newServerMsg(val) {
       console.log('监听到服务器推送：', val);
-      // debugger;
+      debugger;
       let sessionItem = {};
       sessionItem['miniType'] = val.code;
       sessionItem['count'] = 1;
       sessionItem['content'] = val.data.content;
       sessionItem['sendTime'] = val.data.sendTime;
       sessionItem['originData'] = val.data;
+      sessionItem['name'] = null;
+      sessionItem['avatar'] = null;
+      sessionItem['id'] = null;
+      sessionItem['targetId'] = val.code + '_';
       switch (val.code) {
         case 1100: // 单聊
           sessionItem['name'] = val.data.name;
           sessionItem['avatar'] = val.data.avatar;
           sessionItem['id'] = val.data.senderId;
-          sessionItem['targetId'] = val.code + '_' + val.data.senderId;
+          sessionItem['targetId'] += val.data.senderId;
           break;
         case 1101: // 群聊
           sessionItem['name'] = val.data.otherName;
           sessionItem['avatar'] = val.data.otherAvatar;
           sessionItem['id'] = val.data.receiverId;
-          sessionItem['targetId'] = val.code + '_' + val.data.receiverId;
+          sessionItem['targetId'] += val.data.receiverId;
       }
 
       // 如果这条消息的targetId不在sessionList中，这加到队首
       let targetId = sessionItem['targetId'];
       for (let item of this.messageStore.sessionList) {
-        if (item.targetId === targetId) { // 在队列
-          // 在队列, 并且没有打开聊天窗口，则更新当条消息
+        if (item.targetId === targetId) {
+          // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
           if (targetId === this.messageStore.sessionActiveItem.targetId && this.$route.name.toLowerCase() === 'msg') {
-            return false; // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
+            return false;
           }
-          this.ActionUpdateSessionList({ // 增加一条计数
+
+          // 在队列, 并且没有打开聊天窗口，增加一条计数
+          this.ActionUpdateSessionList({
             type: 'update',
             method: 'addCount',
             data: sessionItem
@@ -150,7 +156,7 @@ export default {
       this.dialogQuitVisible = false;
       LOGOUT()
         .then(res => {
-          // 清除token
+          // 清除登陆数据
           localStorage.removeItem('database');
           localStorage.removeItem('authorization');
           this.$router.push('/message_login');
@@ -215,7 +221,7 @@ export default {
         }
 
         .login-info {
-          @include imgBox($borderRadius: 50%,$width:30px,$height:30px);
+          @include imgBox($borderRadius: 50%, $width: 30px, $height: 30px);
           background: $colorTheme;
           cursor: pointer;
         }
@@ -253,6 +259,7 @@ export default {
       .nav-item_inner {
         text-align: center;
         line-height: $navItemHeight;
+
         &:hover {
           .img-unselected {
             opacity: 1;
@@ -272,6 +279,16 @@ export default {
         justify-content: center;
         background: $colorBgSideBar;
         transition: all .2s;
+
+        /deep/ .el-badge.bigger {
+          .el-badge__content {
+            right: 16px;
+            height: 16px;
+            line-height: 16px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        }
 
         .img-unselected {
           display: block;

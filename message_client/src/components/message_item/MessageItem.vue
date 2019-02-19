@@ -27,20 +27,21 @@
         <!--3文件-->
         <div v-else-if="data.type === 3">
           <template v-if="data.file">
-            <a :href="data.file.hdUrl" :download="data.file.text">
-              <div class="file-wrap">
-                <!--{{data.file}}-->
-                <div class="left">
-                  <div class="title">
-                    <span class="text">{{data.file.text+data.file.category}}</span>
-                  </div>
-                  <div class="size">{{data.file.size}}</div>
+            <div class="file-wrap">
+              <!--{{data.file}}-->
+              <div class="left">
+                <div class="title">
+                  <span class="text">{{data.file.text}}</span>
+                  <!--<span class="text">{{data.file.text+data.file.category}}</span>-->
                 </div>
-                <div class="right">
-                  <i class="icon el-icon-download"></i>
-                </div>
+                <div class="size">{{data.file.size | formatFileSize}}</div>
               </div>
-            </a>
+              <div class="right">
+                <a :href="data.file.hdUrl" :download="data.file.text" target="_blank">
+                  <i class="icon el-icon-download"></i>
+                </a>
+              </div>
+            </div>
           </template>
           <span v-else>文件异常···</span>
         </div>
@@ -77,7 +78,8 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
+import {FORMAT_FILE_SIZE} from '@mu/formatFileSize.js';
 import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue';
 import MyAudioPlayer from '@mc/my_audio_player/MyAudioPlayer.vue';
 import emotionSprites from '@ma/data/emotionSprites.json';
@@ -99,7 +101,9 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      let id;
+      if (this.user) id = this.user.user.id;
+      return id;
     },
     isGroup() {
       return this.messageStore.miniType === 1101;
@@ -108,6 +112,9 @@ export default {
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
       return MSG_TIME_FORMAT(publishTime);
+    },
+    formatFileSize(fileSize) {
+      return FORMAT_FILE_SIZE(fileSize);
     }
   },
   methods: {
@@ -143,6 +150,9 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
+    &:first-child {
+      margin-top: 60px;
+    }
 
     .avatar {
       .img-box {
@@ -206,7 +216,6 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      cursor: pointer;
       background-color: #ffffff;
 
       .left {
@@ -227,6 +236,7 @@ export default {
         }
 
         .size {
+          font-size: 12px;
           font-family: Arial;
           color: $colorText4;
         }

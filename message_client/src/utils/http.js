@@ -84,9 +84,9 @@ axios.interceptors.response.use(
 
     // 获取错误状态码
     const {status} = error.response;
-    if (status == 401) {
+    if (status === 401) {
       console.error('toen失效,请重新登陆!');
-      // token过期,清除token
+      // 登陆令牌过期,清除
       localStorage.removeItem('authorization');
     }
     return Promise.reject(error);

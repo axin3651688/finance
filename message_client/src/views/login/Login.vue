@@ -188,7 +188,7 @@ export default {
      */
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        debugger;
+        // debugger;
         if (valid) {
           LOGIN(this.loginUser)
             .then(res => {
@@ -251,10 +251,12 @@ export default {
 
     // 获取二维码
     requestQrCode() {
+      this.scanSuccess = false;
       let params = {
         platform: 'pc',
-        device: this.messageStore.token || Cnbi.getDevice() // socket链接成功后返回的设备号
+        device: localStorage.device || Cnbi.getDevice() // socket链接成功后返回的设备号
       };
+      console.log('设备号：', localStorage.device);
       SET_FULLSCREEN_LOADING(false); // 设置不需要全屏加载动画
       this.elLoading = true; // 开始 局部加载动画
       SCAN_LOGIN_URL(params)
@@ -301,7 +303,7 @@ export default {
     margin: auto;
     user-select: none;
     box-sizing: border-box;
-    /*border: 1px solid #cccccc;*/
+    /*border: 1px solid #eee;*/
     box-shadow: #999 0px 0px 10px;
 
     .left {
@@ -373,6 +375,7 @@ export default {
           font-family: Microsoft YaHei;
           font-weight: 400;
           line-height: 16px;
+          margin-right: 15px;
           color: rgba(0, 0, 0, 0.7);
           opacity: 1;
         }

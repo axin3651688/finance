@@ -32,7 +32,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/timeFormat.js';
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
 
 export default {
   name: 'Session',
