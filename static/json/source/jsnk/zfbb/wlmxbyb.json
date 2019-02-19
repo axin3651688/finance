@@ -16,8 +16,14 @@
         "columns": [{
                 "id": "text",
                 "type": "string",
-                "with": 400,
+                "fixed": true,
+                "width": 250,
                 "text": "关联单位名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
             }, {
                 "id": "nid",
                 "type": "decimal",
@@ -32,6 +38,7 @@
                 "children": [{
                         "id": "U",
                         "text": "三级企业内部",
+
                         "type": "decimal"
                     },
                     {
@@ -59,13 +66,12 @@
                 "children": [{
                         "id": "Y",
                         "text": "小计",
-                        "with": 400,
                         "type": "decimal"
                     },
                     {
                         "id": "Z",
                         "text": "二级企业子公司与母公司往来",
-                        "with": 200,
+                        "width": 220,
                         "type": "decimal"
                     }
                 ]
@@ -162,7 +168,7 @@
                         "id": "AB",
                         "text": "二级企业子公司与母公司往来",
                         "fit": true,
-                        "with": 400,
+                        "width": 220,
                         "type": "decimal"
                     }
                 ]

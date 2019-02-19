@@ -1,0 +1,114 @@
+{
+    "id": "zycpmlljsbyb",
+    "text": "主要产品毛利率计算表（月报）",
+    "config": {
+        "sql": "select ddi.scode as nid, ddi.sname as text, dfp.fact_a as A, dfp.fact_b as B,dfp.fact_c as C,dfp.fact_d as D, dfp.fact_e as E, dfp.fact_f as F,dfp.fact_g as G, dfp.fact_h as H, dfp.fact_i as I from DW_FactProGroProfit dfp right join dw_dimproductitem ddi on ddi.scode = dfp.dim_productitem and dfp.dim_period = :period and dfp.dim_company = :company order by ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "产品名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "text": "数量"
+            },
+            {
+                "id": "tempa1",
+                "type": "decimal",
+                "text": "营业收入",
+                "children": [{
+                        "id": "B",
+                        "text": "金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "单价",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa2",
+                "type": "decimal",
+                "text": "营业成本",
+                "children": [{
+                        "id": "D",
+                        "text": "金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "E",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa3",
+                "type": "decimal",
+                "text": "销售毛利",
+                "children": [{
+                        "id": "F",
+                        "text": "毛利",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "G",
+                        "text": "毛利率（%）",
+                        "width": 120,
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "H",
+                "type": "decimal",
+
+                "text": "内部销售毛利率（%）"
+
+            }, {
+                "id": "I",
+                "type": "decimal",
+                "text": "期末未实现损益"
+            }
+
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "zycpmlljsbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

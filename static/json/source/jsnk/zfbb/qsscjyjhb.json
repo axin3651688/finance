@@ -18,6 +18,16 @@
         },
         "type": 1,
         "columns": [{
+                "id": "c",
+                "type": "string",
+                "fixed": true,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            }, {
                 "id": "nid",
                 "type": "string",
                 "hidden": true,
@@ -63,10 +73,6 @@
                         "type": "decimal"
                     }
                 ]
-            }, {
-                "id": "c",
-                "type": "string",
-                "text": "项目"
             },
             {
                 "id": "E",

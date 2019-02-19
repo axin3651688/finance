@@ -16,27 +16,22 @@
         "type": 1
     },
     "columns": [{
-            "id": "D",
-            "type": "decimal",
-            "width": 300,
-            "text": "预算累计数"
-        }, {
             "id": "id",
             "type": "string",
             "hidden": true,
             "text": "编码"
         },
         {
-            "id": "row",
-            "type": "index",
-            "width": 80,
-            "text": "行次"
-        },
-        {
             "id": "text",
             "type": "string",
-            "width": 300,
+            "fixed": true,
+            "width": 250,
             "text": "项目"
+        }, {
+
+            "id": "row",
+            "type": "index",
+            "text": "行次"
         },
         {
             "id": "level",
@@ -47,20 +42,22 @@
         {
             "id": "A",
             "type": "decimal",
-            "width": 300,
             "text": "本期数"
         },
         {
             "id": "B",
             "type": "decimal",
-            "width": 300,
             "text": "累计数"
         },
         {
             "id": "C",
             "type": "decimal",
-            "width": 300,
             "text": "预算数"
+        },
+        {
+            "id": "D",
+            "type": "decimal",
+            "text": "预算累计数"
         }
     ],
     "rows": [{

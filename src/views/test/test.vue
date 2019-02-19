@@ -2,24 +2,7 @@
   <div class="page">
     <el-table :data="tableData" border style="width: 100%" highlight-current-row>
       <p v-for="item of columns" :key="item.bb">
-        <el-table-column
-          v-if="item.type=='index'"
-          type="index"
-          :label="item.text"
-          width="80"
-          align="center"
-          fixed
-        />
-        <el-table-column
-          v-else
-          :prop="item.id"
-          :label="item.text"
-          show-overflow-tooltip
-          :width="item.width"
-          align="center"
-        >
-          <bb :item="item"/>
-        </el-table-column>
+        <bb :item="item"/>
       </p>
     </el-table>
   </div>
@@ -84,14 +67,56 @@ export default {
       ],
       columns: [
         { bb: "12", id: "row", type: "index", width: 80, text: "行次" },
-        { bb: "11", id: "id", type: "string", hidden: true, text: "编码" },
-        { bb: "10", id: "D", type: "decimal", width: 300, text: "预算累计数" },
+        {
+          bb: "11",
+          id: "id",
+          type: "string",
+          hidden: true,
+          text: "编码1111111111111"
+        },
+        {
+          bb: "10",
+          id: "D",
+          type: "decimal",
+          width: 300,
+          text: "预算累计数2222222222222222"
+        },
 
-        { bb: "13", id: "text", type: "string", width: 300, text: "项目" },
-        { bb: "14", id: "level", type: "number", hidden: true, text: "级别" },
-        { bb: "15", id: "A", type: "decimal", width: 300, text: "本期数" },
-        { bb: "16", id: "B", type: "decimal", width: 300, text: "累计数" },
-        { bb: "17", id: "C", type: "decimal", width: 300, text: "预算数" }
+        {
+          bb: "13",
+          id: "text",
+          type: "string",
+          width: 300,
+          text: "项目3333333333333333"
+        },
+        {
+          bb: "14",
+          id: "level",
+          type: "number",
+          hidden: true,
+          text: "级别444444444444"
+        },
+        {
+          bb: "15",
+          id: "A",
+          type: "decimal",
+          width: 300,
+          text: "本期数55555555555555555555555"
+        },
+        {
+          bb: "16",
+          id: "B",
+          type: "decimal",
+          width: 300,
+          text: "累计数666666666666666666"
+        },
+        {
+          bb: "17",
+          id: "C",
+          type: "decimal",
+          width: 300,
+          text: "预算数777777777777777777777"
+        }
       ],
 
       tableData: [

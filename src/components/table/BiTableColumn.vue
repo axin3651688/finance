@@ -1,7 +1,18 @@
 <template>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
+  <el-table-column
+    v-if="col.type === 'index' "
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'center'"
+    :width="col.width||70"
+    type="index"
+    fixed
+  />
+
   <!--TreeItem组件单独针对树表前面折叠与展开列-->
   <TreeItem
-    v-if="col.isTree"
+    v-else-if="col.isTree"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
@@ -14,7 +25,9 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :min-width="col.width||150"
+    :fixed="col.fixed|| false"
   >
+    <!-- :fixed="col.fixed|| false" -->
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
@@ -36,22 +49,14 @@
       </el-button>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
-  <el-table-column
-    v-else-if="col.type === 'index' "
-    :prop="col.id"
-    :label="col.text"
-    :align="col.align|| 'center'"
-    :width="col.width||70"
-    type="index"
-  />
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
   <el-table-column
     v-else-if="col.type === 'number' "
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :width="col.width||120"
+    :min-width="col.width||120"
   >
     <template slot-scope="scope">
       <el-tooltip
@@ -60,7 +65,8 @@
         :content="String(scope.row[col.id])"
         placement="right"
       >
-        <span>{{scope.row[col.id]}}</span>
+        <span v-if="col.text==='行次'">{{scope.row.index}}</span>
+        <span v-else>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -71,7 +77,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :width="col.width||160"
+    :min-width="col.width||160"
   >
     <template slot-scope="scope">
       <el-tooltip

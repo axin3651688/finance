@@ -18,28 +18,6 @@
         },
         "type": 1,
         "columns": [{
-                "id": "1009",
-                "type": "decimal",
-                "width": 700,
-                "text": "归属于母公司所有者的净利润",
-                "children": [{
-                        "id": "Y",
-                        "text": "本年数（万元）",
-                        "type": "decimal"
-                    },
-                    {
-                        "id": "Z",
-                        "text": "去年数（万元）",
-                        "type": "decimal"
-                    },
-                    {
-                        "id": "AA",
-                        "text": "增减比例（%）",
-                        "type": "number"
-                    }
-                ]
-            },
-            {
                 "id": "nid",
                 "type": "string",
                 "hidden": true,
@@ -47,8 +25,14 @@
             }, {
                 "id": "text",
                 "type": "string",
+                "fixed": true,
                 "width": 300,
                 "text": "单位名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
             },
             {
                 "id": "1001",
@@ -210,6 +194,27 @@
                     },
                     {
                         "id": "X",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1009",
+                "type": "decimal",
+
+                "text": "归属于母公司所有者的净利润",
+                "children": [{
+                        "id": "Y",
+                        "text": "本年数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Z",
+                        "text": "去年数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AA",
                         "text": "增减比例（%）",
                         "type": "number"
                     }

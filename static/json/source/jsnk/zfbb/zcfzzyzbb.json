@@ -18,27 +18,6 @@
         },
         "type": 1,
         "columns": [{
-                "id": "10016",
-                "type": "decimal",
-                "text": "归属于母公司所有者权益合计",
-                "children": [{
-                        "id": "AT",
-                        "text": "末期数（万元）",
-                        "type": "decimal"
-                    },
-                    {
-                        "id": "AU",
-                        "text": "年初数（万元）",
-                        "type": "decimal"
-                    },
-                    {
-                        "id": "AV",
-                        "text": "增减比例（%）",
-                        "type": "number"
-                    }
-                ]
-            },
-            {
                 "id": "nid",
                 "type": "string",
                 "hidden": true,
@@ -46,8 +25,14 @@
             }, {
                 "id": "text",
                 "type": "string",
+                "fixed": true,
                 "width": 300,
                 "text": "产品名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
             },
             {
                 "id": "1001",
@@ -349,6 +334,26 @@
                     },
                     {
                         "id": "AW",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10016",
+                "type": "decimal",
+                "text": "归属于母公司所有者权益合计",
+                "children": [{
+                        "id": "AT",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AU",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AV",
                         "text": "增减比例（%）",
                         "type": "number"
                     }

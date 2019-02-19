@@ -19,20 +19,6 @@
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
       style="widht:100%;"
     >
-      <!-- <el-table-column
-        v-for="item in item.config.columns"
-        :key="item.id"
-        :prop="item.id"
-        :label="item.text"
-        show-overflow-tooltip
-        :width="item.width"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <span>{{scope.row[item.prop]}}</span>
-          <span>{{scope.row[item.prop]}}</span>
-        </template>
-      </el-table-column>-->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
@@ -130,10 +116,10 @@ export default {
       } else {
         this.$set(this, "tableDatas", tempDatas);
       }
-      console.log(this.item, "1111111111111");
+      // console.log(this.item, "1111111111111");
 
-      console.log(rows);
-      console.log(tempDatas);
+      // console.log(rows);
+      // console.log(tempDatas);
     },
     upData(item) {
       debugger;
@@ -170,7 +156,7 @@ export default {
       }
       let drillProperties = this.item.drillProperties || this.drillProperties;
       if (drillProperties.indexOf(pro) != -1) {
-        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+        let drill = "text-decoration: none;color: #428bca;cursor: pointer";
         css = css + "font-weight:bold;" + textIndent + drill;
         return css;
       } else {

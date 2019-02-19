@@ -1,0 +1,66 @@
+{
+    "id": "ncyszbwcqkbjb",
+    "text": "农场预算指标完成情况表（季报）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, concat(ddi.sname, dfc.fact_d) AS text, dfc.fact_a AS A, dfc.fact_b AS B, dfc.fact_c AS C, dfc.fact_d AS D FROM dw_factcompleterate dfc RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfc.dim_item AND dfc.dim_period = :period AND dfc.dim_company = :company WHERE ddi.stype = '32' ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "width": 200,
+                "fixed": true,
+                "text": "指标名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "text": "本年实际数"
+            },
+            {
+                "id": "B",
+                "type": "decimal",
+                "text": "本年预算数"
+            }, {
+                "id": "C",
+                "type": "decimal",
+                "text": "预算完成率（%）"
+            }, {
+                "id": "D",
+                "type": "string",
+                "text": "简要分析"
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "ncyszbwcqkbjb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}
