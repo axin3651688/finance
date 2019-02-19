@@ -60,102 +60,100 @@
 					"min": 100,
 					"max": 100000
 				},
-				"type": 1,
-				"columns": [
-					{
-						"id":"",
-						"type":"string",
-						"text":"预算数",
-						"children":[
-							{
-								"id": "bnys",
-								"type": "decimal",
-								"text": "本年预算"
-							},
-							{
-								"id": "cye",
-								"type": "decimal",
-								"text": "差异额"
-							},
-							{
-								"id": "cyl",
-								"type": "decimal",
-								"conversion":"%",
-								"text": "差异率（%）"
-							}
-						]
-					},
-					{
-						"id": "",
-						"type": "string",
-						"text": "",
-						"isTree":true
-					},
-					{
-						"id": "gsbm",
-						"type": "string",
-						"width":"120",
-						"text": "编码"
-						// "isTree":true
-					},
-					{
-						"id": "gsmc",
-						"type": "string",
-						"width":"300px",
-						"text": "公司名称"
-					},
-					{
-						"id": "qmye",
-						"type": "decimal",
-						"text": "期末余额"
-					},
-					{
-						"id":"",
-						"type":"string",
-						"text":"与年初比",
-						"children":[
-							{
-								"id": "zje",
-								"type": "decimal",
-								"text": "增减额"
-							},
-							{
-								"id": "zjl",
-								"type": "decimal",
-								"width": "110",
-								"conversion":"%",
-								"text": "增减率（%）"
-							}
-						]
-					},
-					{
-						"id":"",
-						"type":"string",
-						"text":"与上年同期比",
-						"children":[
-							{
-								"id": "sntq",
-								"type": "decimal",
-								"text": "上年同期"
-							},
-							{
-								"id": "tbzje",
-								"type": "decimal",
-								"text": "同比增减额"
-							},{
-								"id":"tbzjl",
-								"text":"同比增减率（%）",
-								"width": "110",
-								"type":"decimal",
-								"conversion":"%"
-							}
-						]
-					}
-				],
-				"rows":[]
-				
-			}
-		
+				"type": 1
+			},
+			"columns": [
+				{
+					"id":"",
+					"type":"string",
+					"text":"预算数",
+					"children":[
+						{
+							"id": "bnys",
+							"type": "decimal",
+							"text": "本年预算"
+						},
+						{
+							"id": "cye",
+							"type": "decimal",
+							"text": "差异额"
+						},
+						{
+							"id": "cyl",
+							"type": "decimal",
+							"conversion":"%",
+							"text": "差异率（%）"
+						}
+					]
+				},
+				{
+					"id": "",
+					"type": "string",
+					"text": "",
+					"isTree":true
+				},
+				{
+					"id": "gsbm",
+					"type": "string",
+					"width":"120",
+					"text": "编码"
+					// "isTree":true
+				},
+				{
+					"id": "gsmc",
+					"type": "string",
+					"width":"300px",
+					"text": "公司名称"
+				},
+				{
+					"id": "qmye",
+					"type": "decimal",
+					"text": "期末余额"
+				},
+				{
+					"id":"",
+					"type":"string",
+					"text":"与年初比",
+					"children":[
+						{
+							"id": "zje",
+							"type": "decimal",
+							"text": "增减额"
+						},
+						{
+							"id": "zjl",
+							"type": "decimal",
+							"width": "110",
+							"conversion":"%",
+							"text": "增减率（%）"
+						}
+					]
+				},
+				{
+					"id":"",
+					"type":"string",
+					"text":"与上年同期比",
+					"children":[
+						{
+							"id": "sntq",
+							"type": "decimal",
+							"text": "上年同期"
+						},
+						{
+							"id": "tbzje",
+							"type": "decimal",
+							"text": "同比增减额"
+						},{
+							"id":"tbzjl",
+							"text":"同比增减率（%）",
+							"width": "110",
+							"type":"decimal",
+							"conversion":"%"
+						}
+					]
+				}
+			],
+			"rows":[]
 		}
 	]
 }
