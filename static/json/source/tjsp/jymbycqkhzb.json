@@ -1,0 +1,293 @@
+{
+    "id": "001405",
+    "text": "经营目标预测情况表（汇总）",
+    "layout": {
+        "xtype": "tab"
+    },
+    "showDims": ["year","month","company","conversion"],
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        debugger
+        option.closeTabTaget(newmonth,option);
+    },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
+    "config": {
+        "_sql": "",
+        "_cube": {
+            "cubeId": 4 ,
+            "subject": "0002"
+        },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1 ,
+        "generateVar":{//生成变量rows
+            "periodCount":2,
+            "compareType":"-1&0",
+            "reverse":true
+        } 
+    },
+    "columns":[
+        {
+            "id": "",
+            "type" : "string",
+            "text" : "权益总计预测完成情况（万元）",
+            "children": [
+                {
+                    "id" : "qyyc",
+                    "type" : "decimal",
+                    "text" : "预测完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "",
+                    "type" : "string",
+                    "text" : "与年初比较",
+                    "children": [
+                        {
+                            "id" : "qyzje",
+                            "type" : "decimal",
+                            "text" : "增减额",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "qyzjl",
+                            "type" : "decimal",
+                            "text" : "增减率%",
+                            "conversion" : "%",
+                            "width": "150px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id" : "gsbm",
+            "type" : "string",
+            "text" : "公司编码",
+            "width": "120px"
+        },
+        {
+            "id" : "gsmc",
+            "type" : "string",
+            "text" : "公司名称",
+            "width": "320px"
+        },
+        {
+            "id": "",
+            "type" : "string",
+            "text" : "营业收入预测完成情况（万元）",
+            "children": [
+                {
+                    "id" : "yykh",
+                    "type" : "decimal",
+                    "text" : "当年年考核目标建议值",
+                    "width": "150px"
+                },
+                {
+                    "id" : "yyyc",
+                    "type" : "decimal",
+                    "text" : "预测完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "yyjd",
+                    "type" : "decimal",
+                    "text" : "完成目标进度",
+                    "width": "150px"
+                },
+                {
+                    "id" : "",
+                    "type" : "string",
+                    "text" : "与上年同期比较",
+                    "children": [
+                        {
+                            "id" : "yysntq",
+                            "type" : "decimal",
+                            "text" : "上年同期完成",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "yyzje",
+                            "type" : "decimal",
+                            "text" : "增减额",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "yyzjl",
+                            "type" : "decimal",
+                            "text" : "增减率%",
+                            "conversion" : "%",
+                            "width": "150px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "利润总额预测完成情况（万元）",
+            "children": [
+                {
+                    "id" : "lrkh",
+                    "type" : "decimal",
+                    "text" : "当年年考核目标建议值",
+                    "width": "150px"
+                },
+                {
+                    "id" : "lryc",
+                    "type" : "decimal",
+                    "text" : "预测完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "lrjd",
+                    "type" : "decimal",
+                    "text" : "完成目标进度",
+                    "width": "150px"
+                },
+                {
+                    "id" : "",
+                    "type" : "string",
+                    "text" : "与上年同期比较",
+                    "children": [
+                        {
+                            "id" : "lrsntq",
+                            "type" : "decimal",
+                            "text" : "上年同期完成",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "lrzje",
+                            "type" : "decimal",
+                            "text" : "增减额",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "lrzjl",
+                            "type" : "decimal",
+                            "text" : "增减率%",
+                            "conversion" : "%",
+                            "width": "150px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "资产总计预测完成情况（万元）",
+            "children": [
+                {
+                    "id" : "zcyc",
+                    "type" : "decimal",
+                    "text" : "预测完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "",
+                    "type" : "string",
+                    "text" : "与年初比较",
+                    "children": [
+                        {
+                            "id" : "zczje",
+                            "type" : "decimal",
+                            "text" : "增减额",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "zczjl",
+                            "type" : "decimal",
+                            "text" : "增减率%",
+                            "conversion" : "%",
+                            "width": "150px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "",
+            "type" : "string",
+            "text" : "负债总计预测完成情况（万元）",
+            "children": [
+                {
+                    "id" : "fzyc",
+                    "type" : "decimal",
+                    "text" : "预测完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "",
+                    "type" : "string",
+                    "text" : "与年初比较",
+                    "children": [
+                        {
+                            "id" : "fzzje",
+                            "type" : "decimal",
+                            "text" : "增减额",
+                            "width": "150px"
+                        },
+                        {
+                            "id" : "fzzjl",
+                            "type" : "decimal",
+                            "text" : "增减率%",
+                            "conversion" : "%",
+                            "width": "150px"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "rows":[],
+    "items":[
+        {
+            "xtype": "bi-table",
+            "id" : "jymbycqkhzb",
+            "stype": "tree",
+            "text" : "经营目标预测情况表（汇总）",
+            "toolbar":[{    
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    let $vue = vue.item.$vue;
+                    $vue.closeTabTaget({}, $vue);
+                    vue.item.updateView("company");
+                }
+            },{
+                "id":"2",
+                "text":"导出",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    vue.handleDownload(vue);
+                }
+            }]
+        }
+    ]
+}
