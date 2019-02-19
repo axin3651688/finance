@@ -97,11 +97,14 @@ export default {
      */
     newServerMsg(val) {
       debugger;
-      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息不处理
+      if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息，不处理
         return false;
       }
 
       this._socketUpdateChatState(val.data, 1); // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
+      if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
+        return false;
+      }
 
       let targetId;
       switch (val.code) {
@@ -112,7 +115,7 @@ export default {
           targetId = val.code + '_' + val.data.receiverId;
           break;
       }
-      if (this.activeTargetId !== targetId) { // 如果接受对象不是当前激活的sessionItem也不处理
+      if (this.activeTargetId !== targetId) { // 如果接受对象不是当前激活的sessionItem,也不处理
         return false;
       }
 
@@ -222,7 +225,7 @@ export default {
         sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
         pushData.type = 3; // 暂时处理，没有匹配到都当文件处理
         for (let item of FILE_TYPE) {
-          // debugger;
+          debugger;
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type;
             pushData.type = item.type;

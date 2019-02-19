@@ -17,7 +17,7 @@
       </el-upload>
 
       <div class="tool-icon link-icon"></div>
-      <!--<div class="send-btn" @click="sendMsg">发 送</div>-->
+      <div class="send-btn" @click="sendMsg(sendText)">发 送</div>
       <transition name="el-zoom-in-bottom">
         <face-icon v-if="showFacePop" :showFacePop.sync="showFacePop"
                    @addFaceToInput="handleAddFaceToInput"></face-icon>
@@ -183,7 +183,11 @@ export default {
 
     .send-btn {
       float: right;
-      @include myBtn($height: 24px, $borderRadius: 4px, $bgColor: $colorBgBtnGray, $bgColorHover: $colorTheme)
+      @include myBtn($height: 24px, $borderRadius: 4px, $bgColor: $colorBgBtnGray, $bgColorHover: $colorTheme);
+      transition: all .3s;
+      &:hover {
+        background-color: $colorTheme;
+      }
     }
   }
 
