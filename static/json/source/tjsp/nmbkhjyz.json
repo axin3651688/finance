@@ -1,0 +1,144 @@
+{
+    "id": "001409",
+    "text": "年目标考核建议值",
+    "layout": {
+        "xtype": "tab"
+    },
+    "showDims": ["year","month","company","conversion"],
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        debugger
+        option.closeTabTaget(newmonth,option);
+    },
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
+        return data;
+    },
+    "config": {
+        "_sql": "",
+        "_cube": {
+            "cubeId": 4 ,
+            "subject": "0002"
+        },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1 ,
+        "generateVar":{//生成变量rows
+            "periodCount":2,
+            "compareType":"-1&0",
+            "reverse":true
+        } 
+    },
+    "columns":[
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "利润总额",
+            "children": [
+                {
+                    "id" : "snsj02",
+                    "type" : "decimal",
+                    "text" : "上年实际完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "bnmb02",
+                    "type" : "decimal",
+                    "text" : "本年目标",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tbzjl02",
+                    "type" : "decimal",
+                    "text" : "同比增减率%",
+                    "conversion":"%",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "gsbm",
+            "type" : "string",
+            "text" : "公司编码",
+            "width": "120px"
+        },
+        {
+            "id" : "gsmc",
+            "type" : "string",
+            "text" : "公司名称",
+            "width": "320px"
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "营业收入",
+            "children": [
+                {
+                    "id" : "snsj01",
+                    "type" : "decimal",
+                    "text" : "上年实际完成",
+                    "width": "150px"
+                },
+                {
+                    "id" : "bnmb01",
+                    "type" : "decimal",
+                    "text" : "本年目标",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tbzjl01",
+                    "type" : "decimal",
+                    "text" : "同比增减率%",
+                    "conversion":"%",
+                    "width": "150px"
+                }
+            ]
+        }
+    ],
+    "rows":[],
+    "items":[
+        {
+            "xtype": "bi-table",
+            "id" : "nmbkhjyz",
+            "stype": "table",
+            "text" : "年目标考核建议值",
+            "toolbar":[{    
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    let $vue = vue.item.$vue;
+                    $vue.closeTabTaget({}, $vue);
+                    vue.item.updateView("company");
+                }
+            },{
+                "id":"2",
+                "text":"导出",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    vue.handleDownload(vue);
+                }
+            }]
+        }
+    ]
+}
