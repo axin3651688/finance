@@ -89,16 +89,12 @@ export function showNotification(data) {
   // }, 6000); // 两秒后关闭通知
 }
 
-<<
-<< << < HEAD
-  ===
-  === =
-  /**
-   * 消息提示点击后的操作
-   * @private
-   */
-  >>>
-  >>> > 97781 cec4aab4f6bb933ec1b411ec697daa38b62
+
+/**
+ * 消息提示点击后的操作
+ * @private
+ */
+
 
 function _handleClick() {
   // if ()
