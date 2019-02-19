@@ -10,21 +10,21 @@
       height="item.height || rowClass"
       :cell-style="cellStyle"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
+      <el-tag v-for="cc in item.config.columns" :key="cc.id">
+        <BiTableColumn :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
 </template>
  
 <script>
-import BiTableColumnTree from "../table/BiTableColumnTree";
+import BiTableColumn from "./BiTableColumn";
 import { apiItemDatas } from "utils/apiItemDatas";
 import { handleOpen, convertData, isfold } from "utils/index";
 import { findThirdPartData } from "~api/interface";
 export default {
   components: {
-    BiTableColumnTree
+    BiTableColumn
   },
   data() {
     return {
@@ -37,7 +37,7 @@ export default {
   created() {
     this.formatData = convertData(this.item.datas);
     // 初始化展开第一行
-    this.changeProp({ $index: 0, row: { id: this.companyId } });
+    // this.changeProp({ $index: 0, row: { id: this.companyId } });
     // bus接收底层传值
     this.$bus.on("fetchdata", this.changeProp);
   },
@@ -87,7 +87,7 @@ export default {
         debugger;
         findThirdPartData(params)
           .then(res => {
-            // debugger;
+            debugger;
             let data = res.data.data;
             //添加元素到指定位置
             data.unshift(dat.$index + 1, 0);
