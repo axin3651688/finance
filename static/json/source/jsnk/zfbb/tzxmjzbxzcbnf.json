@@ -1,0 +1,164 @@
+{
+    "id": "tzxmjzbxzcbnf",
+    "text": "投资项目及资本性支出表（农发）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, dfp.fact_a AS A, dfp.fact_b AS B, dfp.fact_c AS C, dfp.fact_d AS D, dfp.fact_e AS E, dfp.fact_f AS F, dfp.fact_g AS G, dfp.fact_h AS H, dfp.fact_i AS I, dfp.fact_j AS J, dfp.fact_k AS K, dfp.fact_l AS L, dfp.fact_m AS M, dfp.fact_n AS N, dfp.fact_o AS O, dfp.fact_p AS P FROM dw_factinvestmentnf dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '37' ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 250,
+                "text": "投资项目名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "width": 250,
+                "text": "实物量"
+            },
+            {
+                "id": "B",
+                "type": "decimal",
+                "width": 250,
+                "text": "上年末累计完成投资额"
+            },
+            {
+                "id": "SSDAA",
+                "type": "string",
+                "width": 250,
+                "text": "上年末结转项目情况",
+                "children": [{
+                        "id": "C",
+                        "text": "上年末在建工程余额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "ssdsdf",
+                        "text": "项目预计未完成计划",
+                        "type": "decimal",
+                        "children": [{
+                                "id": "D",
+                                "text": "小计",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "E",
+                                "text": "其中：继续实施计划",
+                                "type": "decimal"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "SSDssAA",
+                "type": "string",
+                "width": 250,
+                "text": "本年投资预算",
+                "children": [{
+                        "id": "ssdsdf",
+                        "text": "本年新增投资预算",
+                        "type": "string",
+                        "children": [{
+                                "id": "F",
+                                "text": "合计",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "G",
+                                "text": "自筹",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "H",
+                                "text": "申请财政拨款",
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "I",
+                        "text": "直接购入的固定资产",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "J",
+                        "text": "本年在建工程增加额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "本年预算付款额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "本年转入固定资产预算",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "M",
+                        "text": "本年销售预算",
+                        "type": "decimal"
+                    }
+
+                ]
+            },
+            {
+                "id": "N",
+                "type": "decimal",
+                "text": "预计年末在建工程余额（N=C+J-L-M）"
+            }, {
+                "id": "ssdsSSdf",
+                "text": "年末未完成计划（O=E+F-I-J）",
+                "type": "string",
+                "children": [{
+                        "id": "O",
+                        "text": "小计",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "P",
+                        "text": "其中：继续实施计划",
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "items": [{
+        "id": "tzxmjzbxzcbnf",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

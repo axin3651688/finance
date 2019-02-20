@@ -1,0 +1,76 @@
+{
+    "id": "yfzgxcmxbyb",
+    "text": "应付职工薪酬明细表（月报）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, dfp.fact_a AS A, dfp.fact_b AS B, dfp.fact_c AS C, dfp.fact_d AS D, dfp.fact_e AS E, dfp.fact_f AS F FROM dw_factemppay dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '28' ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "text": "期初余额"
+            },
+            {
+                "id": "B",
+                "type": "decimal",
+                "text": "本期提取"
+            }, {
+                "id": "C",
+                "type": "decimal",
+                "text": "本期发放"
+            },
+            {
+                "id": "D",
+                "type": "decimal",
+                "text": "期末余额"
+            }, {
+                "id": "E",
+                "type": "decimal",
+                "text": "期末职工人数"
+            },
+            {
+                "id": "F",
+                "type": "decimal",
+                "text": "月人均"
+            },
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "yfzgxcmxbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

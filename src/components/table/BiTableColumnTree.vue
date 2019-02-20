@@ -22,6 +22,9 @@ export default {
   },
   computed: {
     isFolder() {
+      console.log("isFolder");
+      console.log(this.col.children && this.col.children.length);
+
       return this.col.children && this.col.children.length;
     }
   }

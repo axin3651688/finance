@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
+    <!-- <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <el-button
         v-for="btn in item.toolbar"
         v-bind:key="btn.id"
         :style="btn.cellStyle"
         @click="btnClick(btn)"
       >{{btn.text}}</el-button>
-    </el-button-group>
+    </el-button-group>-->
     <el-table
       :data.sync="tableDatas"
       border
@@ -53,6 +53,7 @@ export default {
       dialogVisible: false,
       currentPage: 1,
       pagesize: 1,
+
       id: 0,
       text: "",
       rows: [],
@@ -70,6 +71,8 @@ export default {
   watch: {
     heights(newval) {
       debugger;
+      console.log(newval);
+
       this.heights = newval;
     }
   },
@@ -78,17 +81,17 @@ export default {
     this.upData(this.item);
   },
   methods: {
-    btnClick(btn) {
-      btn.handler(this, btn);
-    },
-    //pagesize改变时触发 ---- 分页功能
-    handleSizeChange: function(size) {
-      this.pagesize = size;
-    },
-    //currentPage改变时会触发 --- 分页功能
-    handleCurrentChange: function(currentPage) {
-      this.currentPage = currentPage;
-    },
+    // btnClick(btn) {
+    //   btn.handler(this, btn);
+    // },
+    // //pagesize改变时触发 ---- 分页功能
+    // handleSizeChange: function(size) {
+    //   this.pagesize = size;
+    // },
+    // //currentPage改变时会触发 --- 分页功能
+    // handleCurrentChange: function(currentPage) {
+    //   this.currentPage = currentPage;
+    // },
     /**
      * @desc    : 数据在此做拼接然后传到data里面这样数据才能动态更新
      * @param   {Arry} item  prop传过来的
@@ -97,8 +100,7 @@ export default {
      */
     setTableDatas(item) {
       let rows = item.config.rows.concat();
-      console.log(rows);
-
+      // console.log(rows);
       let tempDatas = item.datas;
       if (rows && rows.length > 0) {
         rows.forEach(ele => {
@@ -110,10 +112,14 @@ export default {
             }
           }
         });
+        this.$set(this, "tableDatas", rows);
+      } else {
+        this.$set(this, "tableDatas", tempDatas);
       }
-      console.log(rows);
+      // console.log(this.item, "1111111111111");
 
-      this.$set(this, "tableDatas", rows);
+      // console.log(rows);
+      // console.log(tempDatas);
     },
     upData(item) {
       debugger;
@@ -150,7 +156,7 @@ export default {
       }
       let drillProperties = this.item.drillProperties || this.drillProperties;
       if (drillProperties.indexOf(pro) != -1) {
-        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
+        let drill = "text-decoration: none;color: #428bca;cursor: pointer";
         css = css + "font-weight:bold;" + textIndent + drill;
         return css;
       } else {

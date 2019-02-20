@@ -3,7 +3,8 @@
     <el-row class="choice_title">选择消息接收人</el-row>
     <el-row>
       <el-col :span="3" v-for="(o,index) in showDatas" :key="o.id" class="role_add">
-        <img @click="deleteData(index)" :src="o.avatar">
+        <img v-if="o.avatar" :onerror="errorUserPhoto" @click="deleteData(index)" :src="o.avatar">
+        <img v-else src="@a/avatar.jpg" class="img">
         <i class="iconfont icon-shanchuguanbicha2 item_img"></i>
         <div class="name">{{o.trueName}}</div>
       </el-col>
@@ -34,7 +35,7 @@ import {
   companyContactList,
   SAVE_MODULE_MSG,
   ACK_MODULE_MSG
-} from "~api/userClientRest";
+} from "~api/interface";
 export default {
   name: "Cbsb",
   components: {},
@@ -44,7 +45,8 @@ export default {
       listDatas: [],
       userId: this.$store.getters.user.user.id,
       companyId: this.$store.getters.user.company.id,
-      imgShow: ""
+      imgShow: "",
+      errorUserPhoto: 'this.src="' + require("@a/avatar.jpg") + '"'
     };
   },
   created() {

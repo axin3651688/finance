@@ -4,7 +4,9 @@
  * description: 在接到服务端 socket 信息后全局弹窗提醒
  */
 import store from '@/store';
-import {Notification} from 'element-ui';
+import {
+  Notification
+} from 'element-ui';
 
 export function showNotification(data) {
   // debugger;
@@ -87,10 +89,13 @@ export function showNotification(data) {
   // }, 6000); // 两秒后关闭通知
 }
 
+
 /**
  * 消息提示点击后的操作
  * @private
  */
+
+
 function _handleClick() {
   // if ()
   // alert(data);

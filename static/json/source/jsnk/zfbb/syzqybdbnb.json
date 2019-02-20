@@ -1,0 +1,209 @@
+{
+    "id": "syzqybdbnb",
+    "text": "所有者权益变动表（年报）",
+    "config": {
+        "sql": "SELECT ddi.sname AS text, ddi.scode AS nid, SUM(CASE WHEN dfp.dim_rights = '1001' THEN dfp.fact_a END) AS A, SUM(CASE WHEN dfp.dim_rights = '1002' THEN dfp.fact_a END) AS B, SUM(CASE WHEN dfp.dim_rights = '1003' THEN dfp.fact_a END) AS C, SUM(CASE WHEN dfp.dim_rights = '1004' THEN dfp.fact_a END) AS D, SUM(CASE WHEN dfp.dim_rights = '1005' THEN dfp.fact_a END) AS E, SUM(CASE WHEN dfp.dim_rights = '1006' THEN dfp.fact_a END) AS F, SUM(CASE WHEN dfp.dim_rights = '1007' THEN dfp.fact_a END) AS G, SUM(CASE WHEN dfp.dim_rights = '1008' THEN dfp.fact_a END) AS H, SUM(CASE WHEN dfp.dim_rights = '1009' THEN dfp.fact_a END) AS I, SUM(CASE WHEN dfp.dim_rights = '1010' THEN dfp.fact_a END) AS J, SUM(CASE WHEN dfp.dim_rights = '1011' THEN dfp.fact_a END) AS K, SUM(CASE WHEN dfp.dim_rights = '1012' THEN dfp.fact_a END) AS L, SUM(CASE WHEN dfp.dim_rights = '1013' THEN dfp.fact_a END) AS M, SUM(CASE WHEN dfp.dim_rights = '1001' THEN dfp.fact_b END) AS N, SUM(CASE WHEN dfp.dim_rights = '1002' THEN dfp.fact_b END) AS O, SUM(CASE WHEN dfp.dim_rights = '1003' THEN dfp.fact_b END) AS P, SUM(CASE WHEN dfp.dim_rights = '1004' THEN dfp.fact_b END) AS Q, SUM(CASE WHEN dfp.dim_rights = '1005' THEN dfp.fact_b END) AS R, SUM(CASE WHEN dfp.dim_rights = '1006' THEN dfp.fact_b END) AS S, SUM(CASE WHEN dfp.dim_rights = '1007' THEN dfp.fact_b END) AS T, SUM(CASE WHEN dfp.dim_rights = '1008' THEN dfp.fact_b END) AS U, SUM(CASE WHEN dfp.dim_rights = '1009' THEN dfp.fact_b END) AS V, SUM(CASE WHEN dfp.dim_rights = '1010' THEN dfp.fact_b END) AS W, SUM(CASE WHEN dfp.dim_rights = '1011' THEN dfp.fact_b END) AS X, SUM(CASE WHEN dfp.dim_rights = '1012' THEN dfp.fact_b END) AS Y, SUM(CASE WHEN dfp.dim_rights = '1013' THEN dfp.fact_b END) AS Z FROM dw_factshareholders dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '34' GROUP BY ddi.scode, ddi.sname ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [
+
+            {
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "width": 390,
+                "fixed": true,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "SSDssAA",
+                "type": "string",
+                "text": "本期数",
+                "children": [{
+                        "id": "ssdsdf",
+                        "text": "归属于母公司所有者权益",
+                        "type": "string",
+                        "children": [{
+                                "id": "A",
+                                "text": "实收资本（股本）",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "B",
+                                "text": "其他权益合计",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "C",
+                                "text": "资本公积",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "D",
+                                "text": "减：库存股",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "E",
+                                "text": "其他综合收益",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "F",
+                                "text": "专项储备",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "G",
+                                "text": "盈余公积",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "H",
+                                "text": "一般风险准备",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "I",
+                                "text": "未分配利润",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "J",
+                                "text": "其他",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "K",
+                                "text": "小计",
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "L",
+                        "text": "少数股东权益",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "M",
+                        "text": "所有者权益合计",
+                        "type": "decimal"
+                    }
+
+                ]
+            },
+            {
+                "id": "SSDssA2",
+                "type": "string",
+                "width": 250,
+                "text": "上年同期数",
+                "children": [{
+                        "id": "ssdsdf",
+                        "text": "归属于母公司所有者权益",
+                        "type": "string",
+                        "children": [{
+                                "id": "N",
+                                "text": "实收资本（股本）",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "O",
+                                "text": "其他权益合计",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "P",
+                                "text": "资本公积",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "Q",
+                                "text": "减：库存股",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "R",
+                                "text": "其他综合收益",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "S",
+                                "text": "专项储备",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "T",
+                                "text": "盈余公积",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "U",
+                                "text": "一般风险准备",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "V",
+                                "text": "未分配利润",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "W",
+                                "text": "其他",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "X",
+                                "text": "小计",
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "Y",
+                        "text": "少数股东权益",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Z",
+                        "text": "所有者权益合计",
+                        "type": "decimal"
+                    }
+
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "items": [{
+        "id": "syzqybdbnb",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

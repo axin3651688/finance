@@ -3,8 +3,9 @@
     <el-row class="choice_title">退回消息人</el-row>
     <el-row>
       <el-col :span="3" class="role_bgch">
-        <img src="http://192.168.2.214:8000/group2/M00/00/01/wKgC21vak8mAWsvYAAahrk5cOek851.jpg">
-        <div class="name">龚佳新</div>
+        <img v-if="useInfo.avatar" :onerror="errorUserPhoto" :src="useInfo.avatar">
+        <img v-else src="@a/avatar.jpg" class="img">
+        <div class="name">{{useInfo.trueName}}</div>
       </el-col>
     </el-row>
     <div class="input_title">消息内容</div>
@@ -23,10 +24,11 @@
 <script type="text/ecmascript-6">
 import { mapActions, mapGetters } from "vuex";
 import {
-  companyContactList,
+  ACK_MODULE_MSG,
   SAVE_MODULE_MSG,
-  ACK_MODULE_MSG
-} from "~api/userClientRest";
+  FIND_USER_ACCOUNT
+} from "~api/interface";
+
 export default {
   name: "Cbsb",
   components: {},
@@ -36,10 +38,15 @@ export default {
       listDatas: [],
       userId: this.$store.getters.user.user.id,
       companyId: this.$store.getters.user.company.id,
-      imgShow: ""
+      imgShow: "",
+      useInfo: {},
+      // lockeduser: this.$store.getters.showDialog.params.lockeduser,
+      errorUserPhoto: 'this.src="' + require("@a/avatar.jpg") + '"'
     };
   },
-
+  created() {
+    this.getUseInfo(this.lockeduser);
+  },
   computed: {
     ...mapGetters(["showMeluList"]),
     // 默认输入框文字
@@ -49,27 +56,41 @@ export default {
       let data = "您的【" + time + company + "】报告存在问题，请重新编辑！";
       return data;
     },
-
-    userIds() {
-      return "397";
-      // 退回消息人id
+    lockeduser() {
+      return this.$store.getters.showDialog.params.lockeduser;
+    }
+  },
+  watch: {
+    lockeduser: function(val) {
+      this.getUseInfo(val);
     }
   },
   methods: {
     ...mapActions(["ShowDialog"]),
     /**
-     * @desc    : 点击发送催报数据到后台
+     * @desc    : 根具变化值返回用户整个信息
+     * @param   {String} 用户名
+     * @returns {Object}
      * @author  : mj
-     * @data    : 2019-01-25
+     * @data    : 2019-02-20
      */
+    getUseInfo(use) {
+      FIND_USER_ACCOUNT(use).then(res => {
+        console.log(res.data.data);
+        this.$set(this, "useInfo", res.data.data);
+      });
+    },
+    /**
+     * @desc    : 点击发送催报数据到后台
+     */
+
     sendMsg() {
-      // debugger;
       let datas = {
-        action: 3,
-        companyId: this.companyId,
-        content: this.textarea,
+        action: 3, //1：催上报，2：上报通知，3：退回通知，4：修改通知
+        companyId: this.companyId, //公司id
+        content: this.textarea, //发送内容
         moduleId: 1,
-        receiver: this.userIds,
+        receiver: this.useInfo.id,
         receiverId: 1,
         senderId: this.userId,
         type: 1
@@ -80,12 +101,24 @@ export default {
         ACK_MODULE_MSG(data)
           .then(res => {
             console.log(res.data.msg);
-            this.$message({
-              showClose: true,
-              message: "恭喜你，消息成功！",
+            this.$confirm("消息已经发送成功！是否继续发送？", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
               type: "success"
-            });
-            this.ShowDialog({ isShow: false });
+            })
+              .then(() => {
+                this.$message({
+                  type: "success",
+                  message: "请继续编辑!"
+                });
+                // 清空所有内容
+                this.ShowMeluList({ deleteData: "deleteAll" });
+              })
+              .catch(() => {
+                // 清空所有内容,并关闭弹窗
+                this.ShowMeluList({ deleteData: "deleteAll" });
+                this.ShowDialog({ isShow: false });
+              });
           })
           .catch(res => {
             console.log("发送失败!", res.data);

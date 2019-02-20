@@ -1,5 +1,5 @@
 {
-    "id": "xj0002",
+    "id": "xjllb",
     "text": "现金流量表",
     "config": {
         "cube": {
@@ -15,9 +15,15 @@
         "type": 1
     },
     "columns": [{
-        "id": "D",
-        "type": "decimal",
-        "text": "预算累计数"
+        "id": "text",
+        "type": "string",
+        "fixed": true,
+        "width": 350,
+        "text": "项目"
+    }, {
+        "id": "row",
+        "type": "index",
+        "text": "行次"
     }, {
         "id": "id",
         "type": "string",
@@ -29,26 +35,25 @@
         "hidden": true,
         "text": "级别"
     }, {
-        "id": "row",
-        "type": "index",
-        "text": "行次"
-    }, {
-        "id": "text",
-        "type": "string",
-        "width": 350,
-        "text": "项目"
-    }, {
         "id": "A",
         "type": "decimal",
+        "width": 250,
         "text": "本期数"
     }, {
         "id": "B",
         "type": "decimal",
+        "width": 250,
         "text": "累计数"
     }, {
         "id": "C",
         "type": "decimal",
+        "width": 250,
         "text": "预算数"
+    }, {
+        "id": "D",
+        "type": "decimal",
+        "width": 250,
+        "text": "预算累计数"
     }],
     "rows": [{
         "id": "161",

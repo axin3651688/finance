@@ -1,0 +1,122 @@
+{
+    "id": "yysrflbnf",
+    "text": "营业收入分类表（农发）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, dfp.fact_a AS A, dfp.fact_b AS B, dfp.fact_c AS C, dfp.fact_d AS D, dfp.fact_e AS E, dfp.fact_f AS F, dfp.fact_g AS G, dfp.fact_h AS H, dfp.fact_i AS I, dfp.fact_j AS J, dfp.fact_k AS K FROM dw_factincomeclassifynf dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '39' AND ddi.scode != '39' ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "收入分类"
+            }, {
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "SSDssAA",
+                "type": "string",
+                "width": 250,
+                "text": "营业收入",
+                "children": [{
+                        "id": "A",
+                        "text": "分（子）公司内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "ssdsdf",
+                        "text": "农发公司内部",
+                        "type": "string",
+                        "children": [{
+                                "id": "B",
+                                "text": "对种业销售",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "C",
+                                "text": "对米业销售",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "D",
+                                "text": "对分公司销售",
+                                "type": "decimal"
+                            },
+                            {
+                                "id": "E",
+                                "text": "小计",
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "F",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "G",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "合计",
+                        "type": "decimal"
+                    }
+
+                ]
+            },
+            {
+                "id": "ssdsSSdf",
+                "text": "其中：子公司下属公司",
+                "type": "string",
+                "children": [{
+                        "id": "I",
+                        "text": "金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "J",
+                        "text": "数量（吨、万只）",
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "K",
+                "text": "分（子）公司内部销售数量（吨、万只）",
+                "width": 280,
+                "type": "decimal"
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "id": "yysrflbnf",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

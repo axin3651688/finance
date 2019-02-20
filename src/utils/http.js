@@ -1,9 +1,13 @@
 import axios from 'axios'
-import {Loading} from 'element-ui'
-import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js'
+import {
+  Loading
+} from 'element-ui'
+import {
+  SET_FULLSCREEN_LOADING
+} from 'utils/setFullscreenLoading.js'
 // import router from '@v/layout/router'
 
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 100000
 
 let loading
 
@@ -15,7 +19,7 @@ let loading
  */
 function _startLoading() {
   let fullscreenLoading = true
-  try{
+  try {
     if (localStorage.fullscreenLoading) {
       fullscreenLoading = JSON.parse(localStorage.fullscreenLoading)
     }
@@ -83,7 +87,9 @@ axios.interceptors.response.use(
     console.error(error)
 
     // 获取错误状态码
-    const {status} = error.response
+    const {
+      status
+    } = error.response
     if (status == 401) {
       console.error("toen失效,请重新登陆!")
       // token过期,清除token
