@@ -62,7 +62,7 @@ export function showNotification(data) {
 
   $notify.success({
     title: title,
-    message: msg,
+    message: _cutStr(msg),
     onClick: _handleClick,
     icon: 'http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png',
     showClose: true,
@@ -94,4 +94,15 @@ export function showNotification(data) {
 function _handleClick() {
   // if ()
   // alert(data);
+}
+
+/**
+ * 字符长度限制
+ * @param string
+ */
+function _cutStr(string) {
+  if (string.length > 30) {
+    string = string.substr(0, 15) + '···';
+  }
+  return string;
 }
