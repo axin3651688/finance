@@ -160,7 +160,7 @@ export default {
       debugger;
       let postData = {
         page: 1,
-        size: 30
+        size: 20
       };
       switch (this.miniType) {
         case 1100: // 单聊
@@ -298,7 +298,13 @@ export default {
      */
     _addMsgToWindow(res, pushData) {
       debugger;
-      if (res.data.code !== 200 || !res.data.data) return false;
+      if (res.data.code !== 200 || !res.data.data) {
+        this.$message({
+          type: 'warning',
+          message: '消息发送失败'
+        });
+        return false;
+      }
       let data = {
         avatar: this.user.user.avatar,
         content: '',
