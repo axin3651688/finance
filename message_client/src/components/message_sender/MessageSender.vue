@@ -105,7 +105,7 @@ export default {
     // 向父组件触发发送消息
     sendMsg(sendText, fileData) {
       debugger;
-      if (sendText.length <= 501) {
+      if (sendText.length <= 500) {
         this.$emit('sendMsg', sendText.trim(), fileData);
         this.sendText = '';
       } else {
