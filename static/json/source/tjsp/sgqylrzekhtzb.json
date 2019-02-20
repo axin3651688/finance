@@ -1,0 +1,198 @@
+{
+    
+        "id": "001412",
+        "text": "市管企业利润总额考核调整表",
+        "layout": {
+            "xtype": "tab"
+        },
+        "showDims": ["year","month","company","conversion"],
+        "changeCompanyBefore":function(newcompany,option){
+            option.closeTabTaget(newcompany,option);
+        },
+        "changeYearBefore":function(newyear,option){
+            option.closeTabTaget(newyear,option);
+        },
+        "changeMonthBefore":function(newmonth,option){
+            debugger
+            option.closeTabTaget(newmonth,option);
+        },
+        "__queryDataAfter":function(data,$vue){//数据的后置处理
+            let me = this;
+            me.items[0].updateView = $vue.updateView;
+            me.items[0].$vue = $vue;
+            return data;
+        },
+        "config": {
+            "_sql": "",
+            "_cube": {
+                "cubeId": 4 ,
+                "subject": "0002"
+            },
+            "mainDim":"itemperiod",
+            "needDims":["year","month","company","conversion"],
+            "random":{"min":1000000,"max":1000000000},
+            "type":1 ,
+            "generateVar":{//生成变量rows
+                "periodCount":2,
+                "compareType":"-1&0",
+                "reverse":true
+            } 
+        },
+        "columns":[
+            {
+                "id" : "gzwhds",
+                "type" : "decimal",
+                "text" : "国资委核定数",
+                "width": "150px" 
+            },
+            {
+                "id" : "xm",
+                "type" : "string",
+                "text" : "项目",
+                "width": "300px"
+            },
+            {
+                "id" : "qysbs",
+                "type" : "decimal",
+                "text" : "企业申报数",
+                "width": "150px"
+            },
+            {
+                "id" : "swssds",
+                "type" : "decimal",
+                "text" : "事务所审定数",
+                "width": "150px"
+            }
+        ],
+        "rows":[
+            {
+                "xm" : "利润总额",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 0
+            },
+            {
+                "xm" : "加：创新收入",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 0
+            },
+            {
+                "xm" : "解决以前年度问题损失",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 4
+            },
+            {
+                "xm" : "承担特定智能损失",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 4
+            },
+            {
+                "xm" : "政策性安置职工损失",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 4
+            },
+            {
+                "xm" : "减：处置优良资产收益",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 0
+            },
+            {
+                "xm" : "公允价值变动损益",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 4
+            },
+            {
+                "xm" : "非经营性政府补贴",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 4
+            },
+            {
+                "xm" : "业绩利润",
+                "qysbs" : 0,
+                "swssds": 0,
+                "gzwhds": 0,
+                "level" : 0
+            }
+        ],
+        "items":[
+            {
+                "xtype": "bi-table",
+                "id" : "sgqylrzekhtzb",
+                "stype": "table",
+                "text" : "市管企业利润总额考核调整表",
+                "toolbar":[{    
+                    "id":"1",
+                    "text":"刷新",
+                    "xtype":"button",
+                    "cellStyle":{
+                        "color":"black",
+                        "background-color":"#189271"
+                    },
+                    "handler":function(vue,btn){
+                        debugger
+                        console.log(vue);
+                        let $vue = vue.item.$vue;
+                        $vue.closeTabTaget({}, $vue);
+                        vue.item.updateView("company");
+                    }
+                },{
+                    "id":"2",
+                    "text":"导出",
+                    "xtype":"button",
+                    "cellStyle":{
+                        "color":"black",
+                        "background-color":"#189271"
+                    },
+                    "handler":function(vue,btn){
+                        debugger
+                        console.log(vue);
+                        vue.handleDownload(vue);
+                    }
+                }],
+                //缩进处理
+                "levelProperties":{xm:"level"},
+                "cellStyle":function(row,col){
+                    // debugger
+                    let pro = row.column.property;
+                    let textIndent ="";
+                    let record = row.row ;
+                    if (!pro) {
+                        return css;
+                    }
+                    let levelProperties = this.levelProperties;
+                    let levelPro = levelProperties[pro];
+                    if (levelPro && record[levelPro]) {
+                        let level = record[levelPro] || 1;
+                        textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+                    }
+                    return textIndent ;
+                } ,
+                //合并单元格
+                "rowSpanAndColSpanHandler": function({row, column, rowIndex,columnIndex},option){
+                    debugger
+                    if (rowIndex === 8) {
+                        if (columnIndex === 1) {
+                          return [1, 2];
+                        } else if (columnIndex === 2) {
+                          return [0, 0];
+                        }
+                    }
+                }
+            }
+        ]
+}
