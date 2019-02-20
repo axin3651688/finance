@@ -3,19 +3,19 @@
     display: flex;
     flex-direction: column;
     // 多余部位背景颜色
-    background-color: $menuBg;
+    // background-color: $menuBg;
     transition: width 0.28s;
     width: $sideWidth !important;
     height: 100%;
     float: left;
     box-sizing: border-box;
     z-index: 6;
-
+    background: linear-gradient(180deg,rgba(159,212,103,1) 0%,rgba(45,176,96,1) 100%);
     // logo样式  
     .logo-contener {
       text-align: center;
       top: 0;
-      background: $menuBg no-repeat;
+      // background: $menuBg no-repeat;
       background-size: 100% 100%;
       z-index: 6;
       height: 64px;
@@ -31,7 +31,8 @@
     /*   保留防止后端需要渲染图标 */
     .el-menu {
       border: none;
-      background-color: $menuBg;
+      // background-color: $menuBg;
+      background-color: transparent;
       height: calc(100% - #{$min_sideWidth});
       // overflow: auto;
       .avatarleft {
@@ -44,7 +45,7 @@
       //  一级没有孩子的
       .el-menu-item {
         // 各二级item的字体
-        background-color: $menuBg;
+        // background-color: $menuBg;
         color: $fontColor2;
         font-weight: $font-weight2;
         margin-left: $nochild-margin-left;
@@ -57,7 +58,8 @@
 
         // 当子菜单栏激活时背景
         &.is-active {
-          background-color: $menuActive;
+          // background-color: $menuActive;
+          background:rgba(0,0,0,0.2);
           color: $fontActive;
         }
       }
@@ -91,7 +93,8 @@
         .el-menu-item {
           // 各二级item的字体
           box-sizing: border-box;
-          background-color: $subMenuBg;
+          // background-color: $subMenuBg;
+          background-color: transparent;
           color: $fontColor2;
           font-weight: $font-weight2;
           padding-left: $font-padding-left;
@@ -108,7 +111,8 @@
 
           // 当子菜单栏激活时背景
           &.is-active {
-            background-color: $menuActive;
+            // background-color: $menuActive;
+            background:rgba(0,0,0,0.2);
             color: $fontActive;
           }
         }

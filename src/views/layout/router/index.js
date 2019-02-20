@@ -224,7 +224,9 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: () =>
-        import('@v/layout/login/Login'),
+        // import('@v/layout/login/Login'),
+        // import('@v/layout/login/LoginNew'),
+        import('@v/layout/login/LoginNew'),
     },
     {
       path: '*',
