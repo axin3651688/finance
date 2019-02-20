@@ -28,7 +28,8 @@
               v-for="i of filterData"
               :key="i.id"
             >
-              <img :onerror="errorUserPhoto" :src="i.avatar" alt class="img">
+              <img v-if="i.avatar" :onerror="logo" :src="i.avatar" class="img">
+              <img v-else src="@a/avatar.jpg" class="img">
               <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
             </el-checkbox-group>
           </el-scrollbar>
@@ -41,7 +42,6 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import userPhoto from "@a/avatar.jpg";
 
 export default {
   name: "OpenMeluList",
@@ -52,7 +52,7 @@ export default {
       checkAll: false,
       checkedItem: [],
       isIndeterminate: false,
-      errorUserPhoto: 'this.src="' + userPhoto + '"'
+      errorUserPhoto: 'this.src="' + require("@a/avatar.jpg") + '"'
     };
   },
 

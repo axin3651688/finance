@@ -133,11 +133,6 @@ const router = new Router({
           component: () =>
             import('@v/test/tab.vue')
         }, {
-          path: '/Jtreegrid',
-          name: 'Jtreegrid',
-          component: () =>
-            import('@v/test/asycTree/Jtreegrid.vue')
-        }, {
           path: '/test',
           name: 'test',
           component: () =>
