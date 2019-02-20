@@ -23,6 +23,7 @@
 
     <!--聊天头部-->
     <div class="chat-top">
+      <i class="group-member" title="群成员" @click.stop="showGroupMembers"></i>
       <switch-btn-group
         :value1="'消息'"
         :value2="'文件'"
@@ -31,16 +32,25 @@
       ></switch-btn-group>
     </div>
 
+    <!--群成员侧边栏组件-->
+    <sidebar-pop :size="300" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop" style="z-index: 20">
+      <group-members @closeGroupMembers="showSidebarPop=false"></group-members>
+    </sidebar-pop>
+
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 import {Multipane, MultipaneResizer} from '@mc/vue-multipane';
 import MessageItem from '@mc/message_item/MessageItem.vue';
 import MessageSender from '@mc/message_sender/MessageSender.vue';
 import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue';
 import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
+
+import GroupMembers from '@mv/msg/GroupMembers';
+import SidebarPop from '@mc/sidebar_pop/SidebarPop';
+
 import {
   FIND_SINGLE_MSG,
   FIND_GROUP_MSG,
@@ -52,6 +62,8 @@ import {
 export default {
   name: 'Chat',
   components: {
+    GroupMembers,
+    SidebarPop,
     Multipane,
     MultipaneResizer,
     MessageItem,
@@ -60,13 +72,14 @@ export default {
   },
   data() {
     return {
+      showSidebarPop: false,
       msgList: [], // 历史聊天消息列表
       images: ['http://192.168.2.214:8000/group2/M00/00/0B/wKgC21xigPCATQxEAAUAdHvddI4898.png'],
       index: null // 图片展示的序号
     };
   },
   computed: {
-    ...mapGetters(['user', 'messageStore', 'targetId']),
+    ...mapGetters(['user', 'messageStore']),
     loginUserId() { // 登陆用户的id
       return this.user.user.id;
     },
@@ -139,6 +152,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['ActionSetPopModuleStore']),
     /**
      * 查询聊天历史记录
      */
@@ -378,8 +392,16 @@ export default {
      */
     handleSwitchCase(val) {
       // alert('handleSwitchCase', val);
-    }
+    },
 
+    /**
+     * 显示群成员
+     */
+    showGroupMembers() {
+      console.log('showGroupMembers');
+      this.showSidebarPop = true;
+      console.log('showGroupMembers2', this.showSidebarPop);
+    }
   },
   mounted() {
     this.requestMsgHistory(); // 请求获取聊天消息内容
@@ -389,6 +411,7 @@ export default {
 
 <style lang="scss" scoped>
   @import "@ms/index.scss";
+  @import "@ms/icons.scss";
 
   .Chat {
     position: relative;
@@ -428,5 +451,15 @@ export default {
       height: 100%;
 
     }
+  }
+
+  .group-member {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+    background: url($iconGroupPerson) 0 2px no-repeat;
+    background-size: 20px 20px;
+    cursor: pointer;
   }
 </style>

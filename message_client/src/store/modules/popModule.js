@@ -5,6 +5,8 @@
  * ================================================
  */
 
+import {SET_STORE} from '../functions.js';
+
 const popModule = {
   state: {
     imagePreview: {
@@ -13,15 +15,20 @@ const popModule = {
   },
 
   actions: {
+    ActionSetPopModuleStore({commit}, dataObj) {
+      commit('MutationSetPopModuleStore', dataObj);
+    },
+
     ActionUpdateImagePreview({commit}, hdUrl) {
-      debugger;
       commit('MutationUpdateImagePreview', hdUrl);
     }
   },
 
   mutations: {
+    MutationSetPopModuleStore(state, dataObj) {
+      SET_STORE(state, dataObj);
+    },
     MutationUpdateImagePreview(state, hdUrl) {
-      debugger;
       state.imagePreview.hdUrl = hdUrl;
     }
   }

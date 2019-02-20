@@ -9,11 +9,13 @@ import {directive} from 'namedavatar/src/vue'; // 填充默认头像 https://git
 import 'element-ui/lib/theme-chalk/index.css';
 import '@ms/reset.scss'; // 统一浏览器样式
 import '@ms/emotion_sprites.scss'; // 全局加载聊天表情样式
+import Bus from './bus.js'; // bus 总线
 
 Vue.config.productionTip = false;
 Vue.directive('avatar', directive);
 Vue.use(ElementUI);
 Vue.use(VueQriously);
+Vue.use(Bus);
 
 Vue.prototype.axios = axios;
 

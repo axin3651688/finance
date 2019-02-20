@@ -16,6 +16,7 @@
     <div class="top-layout" v-if="imagePreview.hdUrl">
       <image-preview v-if="imagePreview.hdUrl" :hdUrl="imagePreview.hdUrl"></image-preview>
     </div>
+
   </div>
 </template>
 
@@ -31,10 +32,10 @@ export default {
   components: {
     TopBar,
     SideBar,
-    ImagePreview
+    ImagePreview,
   },
   computed: {
-    ...mapGetters(['user', 'messageStore', 'imagePreview']),
+    ...mapGetters(['user', 'messageStore', 'imagePreview', 'popModule']),
     loginUserId() {
       return this.user.user.id;
     }
