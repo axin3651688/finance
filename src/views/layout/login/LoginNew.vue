@@ -11,7 +11,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-main>
+    <el-main style="height:100%;">
       <el-row style="height:100%;">
         <el-col :span="15" style="height:100%;">
           <div style="height:100%;padding-left:100px;">
