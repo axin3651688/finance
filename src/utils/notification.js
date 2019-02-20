@@ -4,9 +4,7 @@
  * description: 在接到服务端 socket 信息后全局弹窗提醒
  */
 import store from '@/store';
-import {
-  Notification
-} from 'element-ui';
+import {Notification} from 'element-ui';
 
 export function showNotification(data) {
   // debugger;
@@ -19,7 +17,7 @@ export function showNotification(data) {
     return false;
   }
 
-  // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，不用提示
+  // notificationTypeList 需要消息提示的 code 列表,如果消息不在列表中，则 return
   let notificationTypeList = [1100, 1101, 11017, 11016, 11018, 1500, 11021, 1004, 1005];
   if (notificationTypeList.indexOf(data.code) < 0) return false; // 如果消息不在列表中，则 return
 
@@ -64,7 +62,7 @@ export function showNotification(data) {
 
   $notify.success({
     title: title,
-    message: msg,
+    message: _cutStr(msg),
     onClick: _handleClick,
     icon: 'http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png',
     showClose: true,
@@ -89,14 +87,22 @@ export function showNotification(data) {
   // }, 6000); // 两秒后关闭通知
 }
 
-
 /**
  * 消息提示点击后的操作
  * @private
  */
-
-
 function _handleClick() {
   // if ()
   // alert(data);
+}
+
+/**
+ * 字符长度限制
+ * @param string
+ */
+function _cutStr(string) {
+  if (string.length > 30) {
+    string = string.substr(0, 15) + '···';
+  }
+  return string;
 }
