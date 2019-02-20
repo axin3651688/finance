@@ -5,7 +5,10 @@
         "xtype": "tab"
     },
     "showDims": ["year","month","company","conversion"],
+        // 切换公司时做处理（合并显示，单体隐藏）
     "changeCompanyBefore":function(newcompany,option){
+        debugger
+        this.showSet(this.items); 
         option.closeTabTaget(newcompany,option);
     },
     "changeYearBefore":function(newyear,option){
@@ -229,6 +232,7 @@
             "xtype" : "bi-table",
             "id" : "fhyzb",
             "text" : "分行业指标",
+            "show": true,
             "toolbar":[{    
                 "id":"1",
                 "text":"刷新",
@@ -257,7 +261,15 @@
                     console.log(vue);
                     vue.handleDownload(vue);
                 }
-            }]
+            }],
+            "showFun":function($store){
+                debugger
+                if($store.getters.treeInfo.leaf){
+                    return false ;
+                }else{
+                    return true ;
+                }                       
+            }
         }
     ]
 }

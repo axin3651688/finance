@@ -200,42 +200,105 @@ export default {
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
-      let $cc = this.$refs.mychild,
+      debugger
+      /**
+       * name : sjz 
+       * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
+       * time : 2019/2/18 11:20:22 礼拜一
+       */
+      let $col = [];
+      let $columns = [];
+      // let $datas = [];
+      let tempDatas ;
+      let $cc = this.$refs.mychild ;
+      //应收、预付、其他
+      if((this.id==='66601' || this.id==='66602' || this.id==='66603') && this.items.length != 2){
+        //判断公司是单体还是合并
+        if(this.$store.getters.treeInfo.leaf){//单体
+          //获取列数组
+          $col = this.items[0].children[0].config.columns;
+          //获取行数据
+          tempDatas = this.items[0].children[0].datas ;
+        } else {                              //合并
+          //获取列数组
+          $col = this.items[0].children[1].config.columns;
+          //获取行数据
+          tempDatas = this.items[0].children[1].datas ;
+        }
+      //资产负债表、利润表、现金流量表 二级下钻  
+      } else if(this.items.length == 2){
+        // if(this.items[1].children[0].id==='zcfzbej' || this.items[1].children[0].id==='lrbej' || this.items[1].children[0].id==='xjllbej'){
+        //   //获取‘三张主表’二级列数组
+        //   $col = this.items[1].children[0].columns ;
+        //   //获取‘三张主表’二级行数据
+        //   tempDatas = this.items[1].children[0].datas ;
+        // }
+        //获取二级列数组
+        $col = this.items[1].children[0].columns ;
+        //获取二级行数据
+        tempDatas = this.items[1].children[0].datas ;
+      } else {
+        $col = this.config.columns || this.columns;
         tempDatas = this.datas;
+      }
+
+      // let $col = this.config.columns || this.columns;
+      
+      for(let i=0; i<$col.length; i++){
+        if($col[i].children && $col[i].children.length>0){
+          for(let k=0; k<$col[i].children.length; k++){
+            if($col[i].children[k].children && $col[i].children[k].children.length>0){
+              for(let p=0; p<$col[i].children[k].children.length; p++){
+                $columns.push($col[i].children[k].children[p])
+              }
+            }else{
+              $columns.push($col[i].children[k])
+            }
+          }
+        }else{
+          $columns.push($col[i]);
+        }
+      }
+      /**------------------------------------------- */
+      // let $cc = this.$refs.mychild ;
+      // let tempDatas = this.datas ;
+
       if (tempDatas.length > 0) {
-        this.datas = Math.convertUnit(
+        // this.datas = Math.convertUnit(
+        tempDatas = Math.convertUnit(
           unit.id,
           tempDatas,
-          this.config.columns || this.columns,
-          older.id
-        );
-      }
-      if ($cc) {
-        let ii = 0;
-        $cc.forEach(children => {
-          let cItem = children.item;
-          if (cItem) {
-            if (!children.hasConfig) {
-              children.$set(children.item, "datas", this.datas);
-              children.setItems(children.item, true);
-            } else {
-              let cc = cItem.datas;
-              if (cc.length > 0) {
-                cc = Math.convertUnit(
-                  unit.id,
-                  cc,
-                  cItem.config.columns,
+          // this.config.columns || this.columns,
+          $columns,
                   older.id
                 );
-                children.$set(children.item, "datas", cc);
-                children.setItems(children.item, true);
-              }
             }
+      // if ($cc) {
+      //   let ii = 0;
+      //   $cc.forEach(children => {
+      //     let cItem = children.item;
+      //     if (cItem) {
+      //       if (!children.hasConfig) {
+      //         children.$set(children.item, "datas", this.datas);
+      //         children.setItems(children.item, true);
+      //       } else {
+      //         let cc = cItem.datas;
+      //         if (cc.length > 0) {
+      //           cc = Math.convertUnit(
+      //             unit.id,
+      //             cc,
+      //             cItem.config.columns,
+      //             older.id
+      //           );
+      //           children.$set(children.item, "datas", cc);
+      //           children.setItems(children.item, true);
+      //         }
+      //       }
 
-            ii++;
-          }
-        });
-      }
+      //       ii++;
+      //     }
+      //   });
+      // }
     }
   },
 
