@@ -56,7 +56,8 @@
         left: $sideWidth;
         right: 0;
         height: $topHeight;
-        background: $top-background;
+        // background: $top-background;
+        background:linear-gradient(81deg,rgba(159,212,103,1) 0%,rgba(45,176,96,1) 100%);
 
         .button {
             padding: 7px 20px !important;
