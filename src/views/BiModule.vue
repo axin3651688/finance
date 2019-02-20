@@ -285,6 +285,7 @@ export default {
      */
     setScopeDatas(bean, type) {
       //
+      debugger;
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -501,6 +502,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
+        debugger;
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
