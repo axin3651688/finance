@@ -8,7 +8,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { getcompanyTreee } from "~api/company.js";
+import { getCompanyTree } from "~api/interface.js";
 import tree from "./tree/tree";
 export default {
   name: "",

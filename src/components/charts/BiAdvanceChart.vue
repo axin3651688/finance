@@ -1,5 +1,5 @@
 <template>
-  <charts :options="chartOptions" auto-resize theme="bule"/>
+  <ECharts :options="chartOptions" auto-resize @click="dianji" theme="bule"/>
   <!-- <chart :options="map" auto-resize/> -->
   <!-- @click="item1()" -->
 </template>
@@ -23,13 +23,16 @@ import polar from "./data/polar.js";
 ECharts.registerMap("china", chinaMap);
 import bule from "@s/theme/theme.json";
 ECharts.registerTheme("bule", bule);
+// ECharts.on("click", function(params) {
+//   console.log(params);
+// });
 export default {
   mixins: [EventMixins],
   props: {
     item: {}
   },
   components: {
-    charts: ECharts
+    ECharts
   },
   data() {
     return {
@@ -42,7 +45,13 @@ export default {
     this.upData(this.item);
     // console.log(this.item.options.datas);
   },
+
   methods: {
+    dianji(event, instance, echarts) {
+      console.log(event, instance, echarts);
+
+      console.log("图表点击了");
+    },
     /** 
      *  动态替换配制中的变量 
      *  var third = eval('('+ str +')');
