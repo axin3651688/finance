@@ -297,21 +297,15 @@ export default {
      * @param res: http方式发送消息返回的res
      */
     _addMsgToWindow(res, pushData) {
-      debugger;
-      if (res.data.code !== 200 || !res.data.data) {
-        this.$message({
-          type: 'warning',
-          message: '消息发送失败'
-        });
-        return false;
-      }
+      // debugger;
       let data = {
         avatar: this.user.user.avatar,
         content: '',
         name: this.user.user.trueName,
         sendTime: res.data.data.sendTime,
         type: 1,
-        senderId: this.loginUserId
+        senderId: this.loginUserId,
+        sendSuccess: res.data.code === 200
       };
       if (pushData.type === 1) {
         data.content = pushData.data;
