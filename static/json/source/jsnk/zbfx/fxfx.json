@@ -28,6 +28,18 @@
              "id": "1416001",
              "text": "风险级别占比情况",
              "weight": 12,
+             "listeners": [{
+                 "type": "click",
+                 "way": "addTab",
+                 "sourceApi": "cnbi/json/source/jsnk/zbfx/fxjb.json",
+                 "handler": ($vue, params) => {
+                     let itemBean = {
+                         id: $vue.item.id,
+                         text: $vue.item.text
+                     };
+                     localStorage.item = JSON.stringify(itemBean);
+                 }
+             }],
              "options": {
                  "type": "pie",
                  "drill": {
@@ -54,6 +66,18 @@
              "id": "1403100",
              "text": "风险类别占比情况",
              "weight": 12,
+             "listeners": [{
+                 "type": "click",
+                 "way": "addTab",
+                 "sourceApi": "cnbi/json/source/jsnk/zbfx/fxjb.json",
+                 "handler": ($vue, params) => {
+                     let itemBean = {
+                         id: $vue.item.id,
+                         text: $vue.item.text
+                     };
+                     localStorage.item = JSON.stringify(itemBean);
+                 }
+             }],
              "config": {
                  "sql": "select c.sname as text,c.scode as id,c.cisleaf as leaf,n.ddt_risk,n.yy_risk,n.sc_risk,n.fl_risk ,n.zl_risk,n.cw_risk from dw_dimcompany c left join(select scompany, sum(decode(ntype,'0', counts,0)) ddt_risk, sum(decode(ntype,'1', counts,0)) yy_risk, sum(decode(ntype,'2', counts,0)) sc_risk, sum(decode(ntype,'3', counts,0)) fl_risk, sum(decode(ntype,'4', counts,0)) zl_risk, sum(decode(ntype,'5', counts,0)) cw_risk from( select scompany,ntype , count(nrange) as counts from Sys_RiskRange where scompany in(SELECT SCODE FROM DW_DIMCOMPANY where SCODE in ( select scomcode from SYS_USERCOMPANY where SUSER = 'xuzhao') and spcode = '0' and cisdel = 'N') and speriod = :period group by scompany ,ntype) nwt group by scompany ) n on c.scode = n.scompany where c.scode in (SELECT SCODE FROM DW_DIMCOMPANY where SCODE in ( select scomcode from SYS_USERCOMPANY where SUSER = 'xuzhao' ) and spcode = '0' and cisdel = 'N')",
                  "mainDim": "itemperiod",

@@ -1,0 +1,105 @@
+{
+    "id": "fxlb",
+    "text": "各公司(风险类别)",
+    "xtype": "JtreeGrid",
+    "layout": {
+        "xtype": "form"
+    },
+    "showDims": [
+        "year",
+        "month",
+        "company"
+    ],
+    "items": [{
+        "xtype": "JtreeGrid",
+        "id": "fxlb",
+        "text": "各公司(风险类别)",
+        "style": {
+            "height": "812px"
+        },
+        "optionColumnClick": function ($vue, row) {
+            return row;
+        },
+        "queryDataBefore": function (params, b) {
+            params.comId = params.company;
+            params.property = "scode";
+            return params;
+        },
+        "show": true,
+        "async": true, //异步加载必须加这个字段
+        "config": {
+            "sql": "select c.sname as text,c.scode as id,c.cisleaf as leaf,n.ddt_risk,n.yy_risk,n.sc_risk,n.fl_risk ,n.zl_risk,n.cw_risk from dw_dimcompany c left join(select scompany, sum(decode(ntype,'0', counts,0)) ddt_risk, sum(decode(ntype,'1', counts,0)) yy_risk, sum(decode(ntype,'2', counts,0)) sc_risk, sum(decode(ntype,'3', counts,0)) fl_risk, sum(decode(ntype,'4', counts,0)) zl_risk, sum(decode(ntype,'5', counts,0)) cw_risk from( select scompany,ntype , count(nrange) as counts from Sys_RiskRange where scompany in(SELECT SCODE FROM DW_DIMCOMPANY where SCODE in ( select scomcode from SYS_USERCOMPANY where SUSER = 'xuzhao') and spcode = '0' and cisdel = 'N') and speriod = :period group by scompany ,ntype) nwt group by scompany ) n on c.scode = n.scompany where c.scode in (SELECT SCODE FROM DW_DIMCOMPANY where SCODE in ( select scomcode from SYS_USERCOMPANY where SUSER = 'xuzhao' ) and spcode = '0' and cisdel = 'N')",
+            "generateVar": {
+                "periodCount": 2,
+                "compareType": "-1&0",
+                "reverse": true
+            },
+            "mainDim": "itempoint",
+            "needDims": [
+                "year",
+                "month",
+                "company"
+            ],
+            "random": {
+                "min": 100,
+                "max": 100000
+            },
+            "type": 1,
+            "columns": [{
+                    "text": "单位编码",
+                    "type": "string",
+                    "width": 200,
+                    "id": "id",
+                    "isTree": true
+                },
+                {
+                    "text": "单位名称",
+                    "type": "string",
+                    "width": 250,
+                    "id": "title"
+                },
+                {
+                    "text": "财务",
+                    "type": "number",
+                    "width": 250,
+                    "id": "cw_risk"
+                }, {
+                    "text": "待定",
+                    "width": 250,
+                    "type": "number",
+                    "id": "ddt_risk"
+                },
+                {
+                    "text": "法律",
+                    "width": 250,
+                    "type": "number",
+                    "id": "fl_risk"
+                }, {
+                    "text": "市场",
+                    "width": 250,
+                    "type": "number",
+                    "id": "sc_risk"
+                },
+                {
+                    "text": "运营",
+                    "width": 250,
+                    "type": "number",
+                    "id": "yy_risk"
+                },
+                {
+                    "text": "战略",
+                    "width": 250,
+                    "type": "number",
+                    "id": "zl_risk"
+                },
+                {
+                    "text": "合计",
+                    "width": 250,
+                    "type": "number",
+                    "id": ""
+                }
+            ],
+            "rows": []
+        }
+    }]
+}

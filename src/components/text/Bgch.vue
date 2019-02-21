@@ -9,14 +9,7 @@
       </el-col>
     </el-row>
     <div class="input_title">消息内容</div>
-    <el-input
-      type="textarea"
-      :rows="7"
-      placeholder="请输入内容"
-      class="input"
-      resize="none"
-      v-model="textarea"
-    ></el-input>
+    <el-input type="textarea" :rows="7" class="input" resize="none" v-model="textContent"></el-input>
     <el-button @click="sendMsg" type="primary" class="send">发 送</el-button>
   </div>
 </template>
@@ -40,7 +33,7 @@ export default {
       companyId: this.$store.getters.user.company.id,
       imgShow: "",
       useInfo: {},
-      // lockeduser: this.$store.getters.showDialog.params.lockeduser,
+      textContent: this.textarea(),
       errorUserPhoto: 'this.src="' + require("@a/avatar.jpg") + '"'
     };
   },
@@ -49,13 +42,7 @@ export default {
   },
   computed: {
     ...mapGetters(["showMeluList"]),
-    // 默认输入框文字
-    textarea() {
-      let company = this.$store.getters.showDialog.params.title;
-      let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
-      let data = "您的【" + time + company + "】报告存在问题，请重新编辑！";
-      return data;
-    },
+
     lockeduser() {
       return this.$store.getters.showDialog.params.lockeduser;
     }
@@ -67,6 +54,13 @@ export default {
   },
   methods: {
     ...mapActions(["ShowDialog"]),
+    // 默认输入框文字
+    textarea() {
+      let company = this.$store.getters.showDialog.params.title;
+      let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
+      let data = "您的【" + time + company + "】报告存在问题，请重新编辑！";
+      return data;
+    },
     /**
      * @desc    : 根具变化值返回用户整个信息
      * @param   {String} 用户名
@@ -100,28 +94,14 @@ export default {
         // console.log(data);
         ACK_MODULE_MSG(data)
           .then(res => {
-            console.log(res.data.msg);
-            this.$confirm("消息已经发送成功！是否继续发送？", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
+            this.$message({
+              message: "消息已经发送成功！",
               type: "success"
-            })
-              .then(() => {
-                this.$message({
-                  type: "success",
-                  message: "请继续编辑!"
-                });
-                // 清空所有内容
-                this.ShowMeluList({ deleteData: "deleteAll" });
-              })
-              .catch(() => {
-                // 清空所有内容,并关闭弹窗
-                this.ShowMeluList({ deleteData: "deleteAll" });
-                this.ShowDialog({ isShow: false });
-              });
+            });
+            this.ShowDialog({ isShow: false });
           })
           .catch(res => {
-            console.log("发送失败!", res.data);
+            this.ShowDialog({ isShow: false });
           });
       });
     }

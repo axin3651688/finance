@@ -23,6 +23,7 @@
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
+
     <!-- sjz 分页功能 -->
     <el-pagination
       v-if="item.pagination"

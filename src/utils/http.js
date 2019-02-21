@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {
+  Message,
   Loading
 } from 'element-ui'
 import {
@@ -84,8 +85,8 @@ axios.interceptors.response.use(
   error => {
     // 错误提醒
     _endLoading()
-    console.error(error)
-
+    Message.error(error.response.data);
+    // console.error(error)
     // 获取错误状态码
     const {
       status

@@ -80,7 +80,7 @@
                                 "type": "decimal"
                             }
                         ]
-                    },
+                    }
                 ]
             }
         ],
@@ -124,35 +124,18 @@
                         "hidden": true,
                         "text": "编码"
                     },
-                    {
-                        "id": "tempa",
-                        "type": "decimal",
-                        "text": "本期",
-                        "children": [{
-                                "id": "A",
-                                "text": "户数（户）",
-                                "width": 200,
-                                "type": "number"
-                            },
-                            {
-                                "id": "B",
-                                "text": "占比（%）",
-                                "width": 200,
-                                "type": "number"
-                            },
-                            {
-                                "id": "C",
-                                "text": "金额（万元）",
-                                "width": 250,
-                                "type": "decimal"
-                            }
-                        ]
-                    },
+
                     {
                         "id": "text",
                         "type": "string",
+                        "fixed": true,
                         "width": 250,
                         "text": "项目"
+                    }, {
+
+                        "id": "row",
+                        "type": "index",
+                        "text": "行次"
                     },
                     {
                         "id": "tempa2",
@@ -172,6 +155,30 @@
                             },
                             {
                                 "id": "G",
+                                "text": "金额（万元）",
+                                "width": 250,
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "tempa",
+                        "type": "decimal",
+                        "text": "本期",
+                        "children": [{
+                                "id": "A",
+                                "text": "户数（户）",
+                                "width": 200,
+                                "type": "number"
+                            },
+                            {
+                                "id": "B",
+                                "text": "占比（%）",
+                                "width": 200,
+                                "type": "number"
+                            },
+                            {
+                                "id": "C",
                                 "text": "金额（万元）",
                                 "width": 250,
                                 "type": "decimal"
