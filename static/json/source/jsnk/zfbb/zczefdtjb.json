@@ -83,8 +83,8 @@
                     }
                 ]
             }
-        ],
-        "rows": []
+        ]
+
     },
     "layout": {
         "xtype": "tab"

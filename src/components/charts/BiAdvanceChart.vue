@@ -97,11 +97,11 @@ export default {
       return options;
     },
     upData(item) {
-      // console.log(item);
+      console.log(item);
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
-      // debugger;
+      debugger;
       // console.log(this.item.options.datas);
 
       if (chartType === 1) {
@@ -115,10 +115,24 @@ export default {
          */
         debugger;
         if (subType == "pie") {
-          this.chartOptions.legend.data = this.item.options.datas.map(item => {
-            return item.name;
-          });
-          this.chartOptions.series[0].data = this.item.options.datas;
+          let chartDatas = [],
+            datas = this.item.datas[0];
+          debugger;
+          this.chartOptions.legend.data = this.item.options.getData.columns.map(
+            item => {
+              debugger;
+              Object.keys(datas).forEach(keys => {
+                debugger;
+                if (item.id == keys) {
+                  chartDatas.push({ value: datas[keys], name: item.text });
+                }
+              });
+              return item.text;
+            }
+          );
+          console.log(chartDatas, "11111111111111111111111");
+
+          this.chartOptions.series[0].data = chartDatas;
         } else if (subType == "gauge") {
           // this.chartOptions.series[0].data = [
           //   { value: this.item.options.datas[0].value }

@@ -80,6 +80,7 @@ export default {
   mounted() {
     debugger;
     this.upData(this.item);
+    console.log(this.item);
   },
   methods: {
     // btnClick(btn) {

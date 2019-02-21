@@ -138,10 +138,10 @@ const router = new Router({
           component: () =>
             import('@v/test/test.vue')
         }, {
-          path: '/rowSpanAndColSpanHandler',
-          name: 'rowSpanAndColSpanHandler',
+          path: '/BiColumn',
+          name: 'BiColumn',
           component: () =>
-            import('@v/test/rowSpanAndColSpanHandler.vue')
+            import('@v/test/BiColumn.vue')
         }
 
       ]

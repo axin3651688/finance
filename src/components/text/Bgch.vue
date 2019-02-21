@@ -82,7 +82,7 @@ export default {
       let datas = {
         action: 3, //1：催上报，2：上报通知，3：退回通知，4：修改通知
         companyId: this.companyId, //公司id
-        content: this.textarea, //发送内容
+        content: this.textContent, //发送内容
         moduleId: 1,
         receiver: this.useInfo.id,
         receiverId: 1,

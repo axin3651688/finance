@@ -1,7 +1,8 @@
 <template>
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
+  <!-- v-if="isShow()" -->
   <el-table-column
-    v-if="col.type === 'index' "
+    v-if="col.type === 'index' && isShow() "
     :label="col.text"
     :align="col.align|| 'center'"
     :width="col.width||70"
@@ -121,6 +122,7 @@
 <script>
 import EventMixins from "../mixins/EventMixins";
 import TreeItem from "./TreeItem";
+import { mapGetters } from "vuex";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
@@ -135,7 +137,25 @@ export default {
     };
   },
   mixins: [EventMixins],
+  computed: {
+    ...mapGetters(["sidebar", "device"]),
+    classObj() {
+      return {
+        hideSidebar: !this.sidebar.opened,
+        openSidebar: this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation,
+        mobile: this.device === "mobile"
+      };
+    }
+  },
   methods: {
+    isShow() {
+      // debugger;
+      if (this.classObj.mobile) {
+        return false;
+      }
+      return true;
+    },
     columnDropDownClick(items) {
       let menuId = items[0];
       debugger;

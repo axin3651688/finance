@@ -2,24 +2,8 @@
      "id": "fxfx",
      "text": "风险分析",
      "rows": [],
-
      "datas": {},
 
-     "config": {
-         "sql": "select c.sname as comsname,c.scode as company,c.cisleaf as leaf,n.dd_risk,n.l_risk,n.m_risk,n.h_risk from dw_dimcompany c left join(select scompany, sum(decode(nrange,'0', counts,0)) dd_risk, sum(decode(nrange,'1', counts,0)) l_risk, sum(decode(nrange,'2', counts,0)) m_risk, sum(decode(nrange,'3', counts,0)) h_risk from( select scompany,nrange , count(nrange) as counts from Sys_RiskRange where scompany = :company and speriod =:period group by scompany ,nrange) nwt group by scompany) n on c.scode = n.scompany where c.scode = :company",
-         "mainDim": "itemperiod",
-         "random": {
-             "min": 100,
-             "max": 100000
-         },
-         "needDims": [
-             "year",
-             "month",
-             "company"
-         ],
-         "type": 1
-
-     },
      "layout": {
          "xtype": "column"
      },
@@ -28,6 +12,7 @@
              "id": "1416001",
              "text": "风险级别占比情况",
              "weight": 12,
+
              "listeners": [{
                  "type": "click",
                  "way": "addTab",
@@ -40,25 +25,49 @@
                      localStorage.item = JSON.stringify(itemBean);
                  }
              }],
-             "options": {
-                 "type": "pie",
-                 "drill": {
-
+             "config": {
+                 "sql": "select c.sname as comsname,c.scode as company,c.cisleaf as leaf,n.dd_risk,n.l_risk,n.m_risk,n.h_risk from dw_dimcompany c left join(select scompany, sum(decode(nrange,'0', counts,0)) dd_risk, sum(decode(nrange,'1', counts,0)) l_risk, sum(decode(nrange,'2', counts,0)) m_risk, sum(decode(nrange,'3', counts,0)) h_risk from( select scompany,nrange , count(nrange) as counts from Sys_RiskRange where scompany = :company and speriod =:period group by scompany ,nrange) nwt group by scompany) n on c.scode = n.scompany where c.scode = :company",
+                 "mainDim": "itemperiod",
+                 "random": {
+                     "min": 100,
+                     "max": 100000
                  },
+                 "needDims": [
+                     "year",
+                     "month",
+                     "company"
+                 ],
+                 "type": 1
+             },
+             "options": {
+                 "type": "advancechart",
+                 "subType": "pie",
+                 "drill": {},
                  "getData": {
-                     "type": 4,
+                     "type": 2,
+                     "scope": true,
                      "columns": [{
-                         "id": "待定"
-                     }, {
-                         "id": "高风险"
-                     }, {
-                         "id": "一般风险"
-                     }, {
-                         "id": "中风险"
-                     }],
-
-                     "scope": true
+                             "text": "高风险",
+                             "id": "h_risk"
+                         }, {
+                             "text": "中风险",
+                             "id": "m_risk"
+                         },
+                         {
+                             "text": "一般风险",
+                             "id": "l_risk"
+                         }, {
+                             "text": "待定",
+                             "id": "dd_risk"
+                         }
+                     ]
                  }
+             },
+             "chartOptions": {
+                 "series": [{
+                     "type": "pie",
+                     "data": []
+                 }]
              }
          },
          {
@@ -87,36 +96,41 @@
                      "company"
                  ],
                  "type": 1
-
              },
              "options": {
-                 "type": "pie",
+                 "type": "advancechart",
+                 "subType": "pie",
                  "getData": {
-                     "type": 4,
+                     "type": 2,
                      "columns": [{
-
-                         "id": "财务"
+                         "id": "cw_risk",
+                         "text": "财务"
                      }, {
-
-                         "id": "待定"
+                         "text": "待定",
+                         "id": "ddt_risk"
                      }, {
-
-                         "id": "法律"
+                         "text": "法律",
+                         "id": "fl_risk"
                      }, {
-
-                         "id": "市场"
+                         "text": "市场",
+                         "id": "sc_risk"
                      }, {
-
-                         "id": "运营"
+                         "text": "运营",
+                         "id": "yy_risk"
                      }, {
-
-                         "id": "战略"
+                         "text": "战略",
+                         "id": "zl_risk"
                      }],
 
                      "scope": true
                  }
+             },
+             "chartOptions": {
+                 "series": [{
+                     "type": "pie",
+                     "data": []
+                 }]
              }
          }
-
      ]
  }

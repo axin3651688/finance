@@ -111,7 +111,7 @@ export default {
       let datas = {
         action: 1,
         companyId: this.companyId,
-        content: this.textarea,
+        content: this.textContent,
         moduleId: 1,
         receiver: this.userIds,
         receiverId: 1,

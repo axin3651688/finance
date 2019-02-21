@@ -144,6 +144,10 @@ export default {
       }
       debugger;
       let text = bb.text;
+      if (module.items) {
+        console.log(module.items);
+      } else console.log("module里面没有设置items,下钻失败");
+
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
         module.items.forEach((item, index) => {

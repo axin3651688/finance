@@ -26,7 +26,6 @@
             return params;
         },
         "show": true,
-        "async": true, //异步加载必须加这个字段
         "config": {
             "sql": "SELECT c.cisleaf AS leaf, c.scode AS id, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, c.nlevel AS nlevel, c.spcode AS pid, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where :property = :comId and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = :period ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime",
             "generateVar": {
@@ -62,23 +61,23 @@
                     "text": "高风险",
                     "type": "number",
                     "width": 250,
-                    "id": "reportname"
+                    "id": "h_risk"
                 }, {
                     "text": "中风险",
                     "width": 250,
                     "type": "number",
-                    "id": "lockedtruename"
+                    "id": "m_risk"
                 },
                 {
                     "text": "一般风险",
                     "width": 250,
                     "type": "number",
-                    "id": "lockedtruename"
+                    "id": "l_risk"
                 }, {
                     "text": "待定",
                     "width": 250,
                     "type": "number",
-                    "id": "lockedtruename"
+                    "id": "dd_risk"
                 },
                 {
                     "text": "合计",
