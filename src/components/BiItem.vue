@@ -24,14 +24,14 @@ export default {
   },
   created() {
     console.log(this.config);
-    debugger
+    
   },
   mounted() {
     this.loadItems(this.item);
   },
   watch: {
     item(newItem) {
-      //  debugger;
+      //  ;
       // console.info("-----");
       //console.info(newItem);
       this.$set(this, "item", newItem);
@@ -41,7 +41,7 @@ export default {
 
   methods: {
     loadItems() {
-      // debugger
+      // 
       let config = this.item.config;
       if (config) {
         //config.rows = this.item.rows || config.rows || this.config.rows;

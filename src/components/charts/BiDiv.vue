@@ -45,7 +45,7 @@ export default {
 <style lang='scss' scoped>
     .bidiv{
         background-color:#189271;
-        height:295px;
+        height:294px;
         text-align: center;
     }
     .textStyle {
