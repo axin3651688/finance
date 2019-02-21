@@ -31,7 +31,7 @@
           <li v-for="friend in addFromFriendsInstance.addList" :key="friend.id">
             <div class="img-box">
               <img :src="friend.avatar" v-avatar="friend.trueName">
-              <div class="close-cover" @click="addFromFriendsInstance.changeFriendState(friend)"></div>
+              <div class="close-cover" @click.stop="addFromFriendsInstance.changeFriendState(friend)"></div>
             </div>
             <p class="info">{{friend.trueName}}</p>
           </li>
@@ -254,6 +254,10 @@ export default {
           margin-right: 20px;
           border-radius: 8px;
           background: $colorTheme;
+          img{
+            width: 100%;
+            height: 100%;
+          }
         }
 
         .info {

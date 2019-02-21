@@ -50,7 +50,7 @@
             <li v-for="member in addFromGroupsInstance.addList" :key="member.id">
               <div class="img-box">
                 <img :src="member.avatar" v-avatar="member.trueName">
-                <div class="close-cover" @click="addFromGroupsInstance.changeMemberState(member)"></div>
+                <div class="close-cover" @click.stop="addFromGroupsInstance.changeMemberState(member)"></div>
               </div>
               <p class="info">{{member.trueName}}</p>
             </li>
@@ -361,6 +361,10 @@ export default {
               margin-right: 20px;
               border-radius: 8px;
               background: $colorTheme;
+              img{
+                width: 100%;
+                height: 100%;
+              }
             }
 
             .info {

@@ -1,6 +1,5 @@
 <template>
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
-
     <div class="avatar">
       <div class="img-box" :title="data.name">
         <img :src="data.avatar" v-avatar="data.name">
@@ -69,6 +68,13 @@
     <div class="time">
       <div class="send-time">
         <span class="time">{{data.sendTime | formatMsgTime}}</span>
+        <i class="el-icon-warning icon-send-failed"
+           title="发送失败,点击重新发送"
+           v-if="data.sendSuccess !== undefined && !data.sendSuccess"
+           @click="retrySendMessage"
+        >
+        </i>
+        <!--{{data.sendSuccess}}-->
       </div>
     </div>
 
@@ -128,8 +134,20 @@ export default {
       return PARSE_EMOTIONS(content);
     },
 
+    /**
+     * 显示大图预览
+     * 目前使用的是自己写的弹出层预览大图
+     * @param hdUrl
+     */
     showImagePreview(hdUrl) {
       this.ActionUpdateImagePreview(hdUrl);
+    },
+
+    /**
+     * 消息发送失败后从新发送消息
+     */
+    retrySendMessage() {
+      console.log('重新发送消息，todo');
     }
   }
 };
@@ -138,6 +156,12 @@ export default {
 <style lang="scss" scoped>
   @import "@ms/index.scss";
   @import "@ms/variables.scss";
+
+  .icon-send-failed {
+    color: #f60;
+    padding: 5px;
+    cursor: pointer;
+  }
 
   a {
     display: inline-block;
@@ -150,6 +174,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
+
     &:first-child {
       margin-top: 60px;
     }
