@@ -13,7 +13,7 @@
         <div class="name">共{{listLength}}人</div>
       </el-col>
       <el-col :span="3" class="role_add">
-        <i @click="ShowMeluList({isShow:true})" class="iconfont icon-jia item_imgadd"></i>
+        <i @click.stop="ShowMeluList({isShow:true})" class="iconfont icon-jia item_imgadd"></i>
       </el-col>
     </el-row>
     <div class="input_title">消息内容</div>

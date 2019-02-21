@@ -2,14 +2,12 @@
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-if="col.type === 'index' "
-    :prop="col.id"
     :label="col.text"
     :align="col.align|| 'center'"
     :width="col.width||70"
     type="index"
     fixed
   />
-  
 
   <!--TreeItem组件单独针对树表前面折叠与展开列-->
   <TreeItem

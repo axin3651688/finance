@@ -1,5 +1,8 @@
 <template>
-  <ECharts :options="chartOptions" auto-resize @click="dianji" theme="bule"/>
+  <div @mousedown="mousedown">
+    <ECharts :options="chartOptions" auto-resize theme="bule"/>
+  </div>
+
   <!-- <chart :options="map" auto-resize/> -->
   <!-- @click="item1()" -->
 </template>
@@ -47,7 +50,7 @@ export default {
   },
 
   methods: {
-    dianji(event, instance, echarts) {
+    mousedown(event, instance, echarts) {
       console.log(event, instance, echarts);
 
       console.log("图表点击了");
