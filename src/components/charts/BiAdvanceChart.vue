@@ -2,9 +2,6 @@
   <div @mousedown="mousedown">
     <ECharts :options="chartOptions" auto-resize theme="bule"/>
   </div>
-
-  <!-- <chart :options="map" auto-resize/> -->
-  <!-- @click="item1()" -->
 </template>
 <script type="text/ecmascript-6">
 import ECharts from "./ECharts.vue";

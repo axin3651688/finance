@@ -142,6 +142,10 @@ export default {
       if (!bb) {
         bb = this.item;
       }
+      if (!module.items) {
+        //  let module = this.$root.$children[0].$children[0].$children[0].$children[0];
+        console.log(module.items);
+      }
       debugger;
       let text = bb.text;
       if (module.items) {
