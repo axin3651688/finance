@@ -73,7 +73,7 @@ export function findThirdPartData(params) {
   }
   return request({
     method: "post",
-    url: params.url || "/get/cube/find/",
+    url: params.url || "/api/api/find_cube_map/",
     params: params
   })
 }
