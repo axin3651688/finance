@@ -4,12 +4,12 @@
     <OpenMeluList/>
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
+      <HeadNav v-if="isShow()"/>
+      <MobileHeadNav v-else/>
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="isShow()"/>
-      <MobileHeadNav v-else/>
     </div>
   </div>
 </template>
@@ -61,15 +61,5 @@ export default {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  .img {
-    // background: #000;
-    z-index: 100;
-    width: 20px;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    -moz-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-  }
 }
 </style>
