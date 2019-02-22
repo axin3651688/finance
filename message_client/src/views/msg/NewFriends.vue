@@ -175,8 +175,8 @@ export default {
             });
           }
         }).catch(err => {
-          console.log('修改好友请求err：', err);
-        });
+        console.log('修改好友请求err：', err);
+      });
     },
 
     /**
@@ -266,6 +266,7 @@ export default {
       font-weight: 400;
 
       .img-box {
+        position: relative;
         width: 48px;
         height: 48px;
         overflow: hidden;
@@ -273,7 +274,12 @@ export default {
         margin-right: 20px;
         border-radius: 50%;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 48px;
           height: 48px;
         }
