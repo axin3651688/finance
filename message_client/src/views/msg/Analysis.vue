@@ -33,7 +33,7 @@
               <div class="content-item-label">发送人：</div>
               <div class="content-item-text">{{item.senderName}}</div>
             </div>
-            <el-button type="primary" size="medium" class="my-btn" @click="doReport">去上报</el-button>
+            <el-button type="primary" size="small" class="my-btn" @click="doReport">去上报</el-button>
           </div>
         </div>
 
@@ -104,6 +104,7 @@ export default {
       return this.user.user.id;
     },
     newServerMsg() { // 服务器推送的消息
+      debugger;
       return this.messageStore.newServerMsg;
     }
   },
@@ -114,7 +115,7 @@ export default {
     }
   },
   watch: {
-    messageStore(val) {
+    newServerMsg(val) {
       debugger;
       if (val.code === 11021) {
         this.messageUnreadList.unshift(val.data);
@@ -128,7 +129,7 @@ export default {
         moduleId: 1, // 点击的时候传过来的id (receiverId)
         page: 1, // 分页加载页码
         size: 20, // 每页20
-        state: 1, // state 1未读消息，2已读消息 (左上角的切换)
+        // state: 1, // state 1未读消息，2已读消息 (左上角的切换)
         // userId: this.loginUserId // 当前用户的id
         userId: 539 // 当前用户的id
       };
@@ -136,17 +137,16 @@ export default {
         .then(res => {
           console.log('订阅消息', res.data.data);
           if (res.data.code === 200) {
-            this.messageUnreadList = res.data.data.data;
+            this.messageUnreadList = res.data.data.data.reverse();
+            this._eachRead(this.messageUnreadList);
           }
         })
         .catch(err => {
           console.log('请求message：', err);
         });
-
-      this.sendReadAll();
     },
 
-    // 消除左侧红点
+    // 消除左侧红点 put
     sendReadAll() {
       let params = {
         userId: this.loginUserId,
@@ -166,7 +166,8 @@ export default {
     sendReadSingle(moduleId) {
       let params = {
         userId: this.loginUserId,
-        moduleId: moduleId // 单条消息id
+        moduleId: moduleId, // 单条消息id
+        state: 2 // state 1未读消息，2已读消息
       };
       CHANGE_MODULE_STATE(params).then(res => {
         console.log('消除红点', res.data.data);
@@ -184,6 +185,15 @@ export default {
         type: 'success',
         message: '正在实现中···'
       });
+    },
+
+    // 遍历消息，设置为已读，临时的
+    _eachRead(data) {
+      data.forEach(item => {
+        if (item.state === 1) {
+          this.sendReadSingle(item.id);
+        }
+      });
     }
 
   },
@@ -197,7 +207,6 @@ export default {
   @import "@ms/index.scss";
 
   .Analysis {
-    margin: 40px 40px 0 40px;
     height: 100%;
   }
 
@@ -236,7 +245,7 @@ export default {
     .item-top {
       display: flex;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 0px;
 
       .img-box {
         position: relative;
@@ -285,6 +294,7 @@ export default {
 
     .content {
       padding-right: 100px;
+      padding-left: 60px;
 
       .content-item.first-item {
         display: flex;
