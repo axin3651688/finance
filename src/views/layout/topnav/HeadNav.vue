@@ -178,9 +178,7 @@ export default {
     CompanyTree
   },
   created() {
-    // console.log("vvv",this.user.company.id)
     this.value = this.year + this.month + this.date;
-    console.log(this.value);
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
