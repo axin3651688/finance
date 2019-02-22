@@ -56,6 +56,8 @@ export default {
     debugger;
 
     console.log(this.item);
+    console.log(this.getdDataSource(this.item), "111111111");
+    console.log();
 
     // var obj = JSON.stringify(this.dataSource);
     // console.log(obj);

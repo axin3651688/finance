@@ -527,9 +527,10 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      // debugger
+      debugger;
       findThirdPartData(params)
         .then(res => {
+          debugger;
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {

@@ -1,0 +1,92 @@
+{
+    "id": "fxjb",
+    "text": "各公司(风险级别)",
+    "xtype": "JtreeGrid",
+    "layout": {
+        "xtype": "form"
+    },
+    "showDims": [
+        "year",
+        "month",
+        "company"
+    ],
+    "items": [{
+        "xtype": "JtreeGrid",
+        "id": "fxjb",
+        "text": "各公司(风险级别)",
+        "style": {
+            "height": "812px"
+        },
+        "optionColumnClick": function ($vue, row) {
+            return row;
+        },
+        "queryDataBefore": function (params, b) {
+            params.comId = params.company;
+            params.property = "scode";
+            return params;
+        },
+        "show": true,
+        "config": {
+            "sql": "SELECT c.cisleaf AS leaf, c.scode AS id, cr.nid AS companyReportId, cr.nreport AS report,( CASE WHEN cr.nlocked = '1' THEN to_number(cr.sscore, '99999') END) AS score, cr.nlocked AS locked, cr.nlocked AS index1, c.sname AS title, c.nlevel AS nlevel, c.spcode AS pid, cr.slockedtime AS lockedTime, cr.slockeduser AS lockedUser, (SELECT srolename FROM sys_role WHERE roleid = ( SELECT roleid FROM sys_user WHERE suser = cr.slockeduser ) ) AS rolename, (SELECT struename FROM sys_user WHERE suser = cr.slockeduser ) AS lockedTrueName, (SELECT nsource || '-' || nid FROM sys_source_comment WHERE REGEXP_LIKE ( nid, '(^[+-]?\d{0,}\.?\d{0,}$)' ) AND stitle = TO_CHAR(cr.nid) AND ROWNUM = 1 ) AS topicSource, cr.speriod AS period, ( SELECT sname FROM rpt_webreport WHERE cr.nreport = nid ) reportName FROM rpt_company_report cr RIGHT JOIN dw_dimcompany c ON c.scode = cr.scompany AND c.scode IN (select scode from dw_dimcompany where :property = :comId and cisdel = 'N' ) AND cr.nlocked IN ( 0, 1 ) AND c.ctype != '2' WHERE speriod = :period ORDER BY c.scode, cr.nlocked DESC, cr.slockedtime",
+            "generateVar": {
+                "periodCount": 2,
+                "compareType": "-1&0",
+                "reverse": true
+            },
+            "mainDim": "itempoint",
+            "needDims": [
+                "year",
+                "month",
+                "company"
+            ],
+            "random": {
+                "min": 100,
+                "max": 100000
+            },
+            "type": 1,
+            "columns": [{
+                    "text": "单位编码",
+                    "type": "string",
+                    "width": 200,
+                    "id": "id",
+                    "isTree": true
+                },
+                {
+                    "text": "单位名称",
+                    "type": "string",
+                    "width": 250,
+                    "id": "title"
+                },
+                {
+                    "text": "高风险",
+                    "type": "number",
+                    "width": 250,
+                    "id": "h_risk"
+                }, {
+                    "text": "中风险",
+                    "width": 250,
+                    "type": "number",
+                    "id": "m_risk"
+                },
+                {
+                    "text": "一般风险",
+                    "width": 250,
+                    "type": "number",
+                    "id": "l_risk"
+                }, {
+                    "text": "待定",
+                    "width": 250,
+                    "type": "number",
+                    "id": "dd_risk"
+                },
+                {
+                    "text": "合计",
+                    "width": 250,
+                    "type": "number",
+                    "id": "rolename"
+                }
+            ],
+            "rows": []
+        }
+    }]
+}

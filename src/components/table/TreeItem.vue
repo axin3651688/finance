@@ -39,14 +39,8 @@ export default {
     // 切换下级是否展开
     toggleExpanded(trIndex) {
       debugger;
-      if (
-        this.tableData.hasOwnProperty("async") &&
-        this.tableData.async == true
-      ) {
-        // console.log(trIndex);
-        // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
-        this.$bus.emit("fetchdata", trIndex); //触发    发送数据
-      }
+      // 下面调用JtreeGrid组件,发起异步请求,获取数据  mj
+      this.$bus.emit("fetchdata", trIndex); //触发    发送数据
     }
   }
 };

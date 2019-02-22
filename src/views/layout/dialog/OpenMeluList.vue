@@ -28,7 +28,7 @@
               v-for="i of filterData"
               :key="i.id"
             >
-              <img v-if="i.avatar" :onerror="logo" :src="i.avatar" class="img">
+              <img v-if="i.avatar" :onerror="errorUserPhoto" :src="i.avatar" class="img">
               <img v-else src="@a/avatar.jpg" class="img">
               <el-checkbox :label="i" class="checkbox-item">{{i.trueName}}</el-checkbox>
             </el-checkbox-group>

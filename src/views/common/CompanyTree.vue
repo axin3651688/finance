@@ -34,6 +34,7 @@ export default {
   },
   props: ["filterText"],
   created() {
+    debugger;
     this.firstcompany = this.$store.getters.user.company;
     this.id = this.firstcompany.customerId;
     this.licenseId = this.firstcompany.licenseId;
@@ -76,7 +77,7 @@ export default {
       // 一级节点处理
       // console.log(node);
 
-      // debugger;
+      debugger;
       if (node.level === 0) {
         // debugger;
         resolve([this.firstcompany]);
