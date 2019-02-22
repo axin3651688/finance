@@ -17,7 +17,16 @@
             <!--{{item}}-->
             <div class="item-left">
               <div>
-                <div class="img-box"><img :src="item.avatar" v-avatar="item.name"></div>
+                <div class="img-box">
+                  <avatar
+                    :username="item.name"
+                    :rounded="false"
+                    backgroundColor="transparent"
+                    color="#fff"
+                    size="48"
+                  ></avatar>
+                  <img :src="item.avatar" onerror="this.style.display='none'"/>
+                </div>
               </div>
               <h3 class="title" :title="item.name">{{item.name}}</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>

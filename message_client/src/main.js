@@ -10,6 +10,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import '@ms/reset.scss'; // 统一浏览器样式
 import '@ms/emotion_sprites.scss'; // 全局加载聊天表情样式
 import Bus from './bus.js'; // bus 总线
+import Avatar from 'vue-avatar';
+
+Vue.component('Avatar', Avatar);
 
 Vue.config.productionTip = false;
 Vue.directive('avatar', directive);
@@ -19,8 +22,9 @@ Vue.use(Bus);
 
 Vue.prototype.axios = axios;
 
+
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app');

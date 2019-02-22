@@ -2,7 +2,15 @@
   <div class="UserInfo" id="UserInfo" v-if="userInfo">
     <div class="top">
       <div class="img-box">
-        <img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">
+        <!--<img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">-->
+        <avatar
+          :username="userInfo.user.trueName"
+          :rounded="false"
+          backgroundColor="transparent"
+          color="#fff"
+          size="40"
+        ></avatar>
+        <img :src="userInfo.user.avatar" onerror="this.style.display='none'"/>
       </div>
       <div class="info">
         <h3 class="info-title">
@@ -133,6 +141,10 @@ export default {
       .img-box {
         @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
         background: #eee;
+
+        div {
+          position: absolute;
+        }
       }
 
     }
