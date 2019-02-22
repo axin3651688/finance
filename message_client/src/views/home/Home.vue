@@ -5,7 +5,6 @@
       <div class="cardItem" v-if="findCardArrs.length">
         <div v-for="card of findCardArrs" :key=card.id>
           <div class="card-box" @click="cardboxClick(card)">
-            <!--<img class="cardImg" :src="card.avatar" v-avatar="card.text"/>-->
             <img class="cardImg" :src="card.avatar"/>
             <span class="cardTitle">{{card.text}}</span>
           </div>
@@ -18,7 +17,6 @@
 
         <div v-for="node of nodeArrs" :key=node.id>
           <div class="node-box" @click="nodeboxClick(node)">
-            <!--<img class="nodeImg" :src="node.avatar" v-avatar="node.text"/>-->
             <img class="nodeImg" :src="node.avatar"/>
             <span class="nodeTitle">{{node.text}}</span>
           </div>
@@ -31,9 +29,17 @@
 
         <div v-for="contact of latest_contact" :key=contact.id>
           <div class="contact-box" @click="contactClick(contact)">
-            <!--<img class="contactAvatar" :src="contact.avatar" v-avatar="contact.trueName"/>-->
-            <img class="contactAvatar" :src="contact.avatar"/>
-
+            <!--<img class="contactAvatar" :src="contact.avatar"/>-->
+            <div class="img-box">
+              <avatar
+                :username="contact.trueName"
+                :rounded="false"
+                backgroundColor="transparent"
+                color="#fff"
+                size="50"
+              ></avatar>
+              <img :src="contact.avatar" onerror="this.style.display='none'"/>
+            </div>
             <div class="contact-flex">
               <span class="contactName">{{contact.trueName}}</span>
               <span class="contactdes" v-if="contact.sign">{{contact.sign}}</span>
@@ -189,6 +195,15 @@ export default {
   .Index {
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
+    }
+  }
+
+  /*img-box user-avatar*/
+  .img-box {
+    @include imgBox($width: 50px, $height: 50px, $borderRadius: 8px);
+
+    div {
+      position: absolute;
     }
   }
 

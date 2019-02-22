@@ -10,7 +10,14 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar" v-avatar="friend.trueName"/>
+                <avatar
+                  :username="friend.trueName"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  size="40"
+                ></avatar>
+                <img :src="friend.avatar" onerror="this.style.display='none'"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -26,7 +33,14 @@
       <div v-if="rightUserInfoData">
         <div class="panel-right-top">
           <div class="img-box">
-            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName"/>
+            <avatar
+              :username="rightUserInfoData.user.trueName"
+              :rounded="false"
+              backgroundColor="transparent"
+              color="#fff"
+              size="50"
+            ></avatar>
+            <img :src="rightUserInfoData.user.avatar" onerror="this.style.display='none'"/>
           </div>
           <div class="text">
             <h3 class="text-title" v-if="rightUserInfoData.user.trueName">{{rightUserInfoData.user.trueName}}</h3>
@@ -305,6 +319,7 @@ export default {
         height: 100%;
 
         .img-box {
+          position: relative;
           width: 40px;
           height: 40px;
           overflow: hidden;
@@ -312,7 +327,12 @@ export default {
           border-radius: 8px;
           background: $colorTheme;
 
+          div {
+            position: absolute;
+          }
+
           img {
+            position: absolute;
             width: 100%;
             height: 100%;
           }
@@ -352,6 +372,7 @@ export default {
       margin-bottom: 58px;
 
       .img-box {
+        position: relative;
         margin-right: 20px;
         width: 50px;
         height: 50px;
@@ -359,7 +380,12 @@ export default {
         border-radius: 14px;
         background: $colorTheme;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 100%;
           height: 100%;
         }

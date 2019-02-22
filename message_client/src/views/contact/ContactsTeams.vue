@@ -26,7 +26,14 @@
               >
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar" alt="user.trueName" v-avatar="user.trueName" textColor="#f60">
+                    <avatar
+                      :username="user.trueName"
+                      :rounded="false"
+                      backgroundColor="transparent"
+                      color="#fff"
+                      size="40"
+                    ></avatar>
+                    <img :src="user.avatar" onerror="this.style.display='none'"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -45,7 +52,14 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" v-avatar="rightUserInfo.user.trueName">
+              <avatar
+                :username="rightUserInfo.user.trueName"
+                :rounded="false"
+                backgroundColor="transparent"
+                color="#fff"
+                size="50"
+              ></avatar>
+              <img :src="rightUserInfo.user.avatar" onerror="this.style.display='none'"/>
             </div>
           </div>
           <div class="text">
@@ -327,14 +341,20 @@ export default {
             margin-top: -1px;
 
             .img-box {
+              position: relative;
               width: 40px;
               height: 40px;
               overflow: hidden;
               margin-right: 10px;
               border-radius: 8px;
-              background: $colorBgPageGray;
+              background: $colorTheme;
+
+              div {
+                position: absolute;
+              }
 
               img {
+                position: absolute;
                 width: 100%;
                 height: 100%;
               }
@@ -375,6 +395,7 @@ export default {
       margin-bottom: 58px;
 
       .img-box {
+        position: relative;
         margin-right: 20px;
         width: 50px;
         height: 50px;
@@ -382,7 +403,12 @@ export default {
         border-radius: 14px;
         background: $colorTheme;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 100%;
           height: 100%;
         }

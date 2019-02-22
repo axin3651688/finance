@@ -3,9 +3,15 @@
 
     <div class="siderbar-top">
       <relative-pop>
-        <div class="login-info" v-if="user.user">
-          <!--<img :src="user.user.avatar" :title="user.user.trueName">-->
-          <img :src="user.user.avatar" v-avatar="user.user.trueName" :title="user.user.trueName">
+        <div class="login-info" v-if="user.user" :title="user.user.trueName">
+          <avatar
+            :username="user.user.trueName"
+            :rounded="false"
+            backgroundColor="transparent"
+            color="#fff"
+            size="30"
+          ></avatar>
+          <img :src="user.user.avatar" onerror="this.style.display='none'"/>
         </div>
         <div slot="pop">
           <user-info></user-info>
@@ -224,6 +230,9 @@ export default {
           @include imgBox($borderRadius: 50%, $width: 30px, $height: 30px);
           background: $colorTheme;
           cursor: pointer;
+          div {
+            position: absolute;
+          }
         }
       }
 

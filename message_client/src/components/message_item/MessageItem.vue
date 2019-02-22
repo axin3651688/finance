@@ -200,7 +200,7 @@ export default {
         padding: 10px 12px;
         min-height: 40px;
         min-width: 40px;
-        max-width: 600px;
+        max-width: 580px;
         word-wrap: break-word;
         line-height: 20px;
         font-size: 14px;

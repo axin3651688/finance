@@ -10,7 +10,14 @@
             <figure>
               <div>
                 <div class="img-box">
-                  <img :src="group.avatar" v-avatar="group.text"/>
+                  <avatar
+                    :username="group.text"
+                    :rounded="false"
+                    backgroundColor="transparent"
+                    color="#fff"
+                    size="40"
+                  ></avatar>
+                  <img :src="group.avatar" onerror="this.style.display='none'"/>
                 </div>
               </div>
               <div class="info" :title="group.text">
@@ -29,7 +36,14 @@
           <div class="top-wrap">
             <div>
               <div class="img-box">
-                <img :src="rightInfo.avatar" class="avatar-img" v-avatar="rightInfo.text">
+                <avatar
+                  :username="rightInfo.text"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  size="50"
+                ></avatar>
+                <img :src="rightInfo.avatar" onerror="this.style.display='none'"/>
               </div>
             </div>
             <div class="text">
@@ -57,7 +71,14 @@
                       <figure>
                         <div>
                           <div class="img-box">
-                            <img :src="user.avatar" v-avatar="user.trueName">
+                            <avatar
+                              :username="user.trueName"
+                              :rounded="false"
+                              backgroundColor="transparent"
+                              color="#fff"
+                              size="44"
+                            ></avatar>
+                            <img :src="user.avatar" onerror="this.style.display='none'"/>
                           </div>
                         </div>
                         <span class="info">{{user.trueName}}</span>
@@ -348,6 +369,7 @@ export default {
         height: 100%;
 
         .img-box {
+          position: relative;
           width: 40px;
           height: 40px;
           overflow: hidden;
@@ -355,7 +377,12 @@ export default {
           border-radius: 8px;
           background: $colorTheme;
 
+          div {
+            position: absolute;
+          }
+
           img {
+            position: absolute;
             width: 100%;
             height: 100%;
           }
@@ -403,6 +430,7 @@ export default {
       }
 
       .img-box {
+        position: relative;
         margin-right: 20px;
         width: 50px;
         height: 50px;
@@ -410,7 +438,12 @@ export default {
         border-radius: 14px;
         background: $colorTheme;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 100%;
           height: 100%;
         }
@@ -487,6 +520,7 @@ export default {
               align-items: center;
 
               .img-box {
+                position: relative;
                 overflow: hidden;
                 margin-bottom: 10px;
                 width: 44px;
@@ -494,7 +528,12 @@ export default {
                 border-radius: 50%;
                 background: $colorTheme;
 
+                div {
+                  position: absolute;
+                }
+
                 img {
+                  position: absolute;
                   width: 100%;
                   height: 100%;
                 }
