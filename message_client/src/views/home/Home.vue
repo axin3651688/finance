@@ -96,7 +96,7 @@ export default {
 
     nodeboxClick(node) {
       // debugger
-      let addr = SETTINGS.serverAddress.api;
+      let addr = SETTINGS.serverAddress.api; // 服务器地址
       let companyId = this.user.company.id;
       let redirectUrl = addr + 'auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect;
       console.log('redirectUrl-->>', redirectUrl);

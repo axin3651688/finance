@@ -198,6 +198,7 @@ export default {
       if (res.data.code === 200 && res.data.data.data) {
         console.log('聊天消息：', res.data.data.data);
         this.msgList = res.data.data.data.reverse();
+
         // 消息拿到后 把窗口内容滚到到底部
         this.$nextTick(() => {
           this._chatWindowScrollToBottom();
@@ -275,6 +276,7 @@ export default {
               this._addMsgToWindow(res, pushData); // 本地处理把消息推到聊天窗口显示
             })
             .catch(err => {
+              this._addMsgToWindow('', pushData); // 本地处理把消息推到聊天窗口显示
               console.error(err);
             });
           break;
@@ -284,6 +286,7 @@ export default {
               this._addMsgToWindow(res, pushData); // 本地处理把消息推到聊天窗口显示
             })
             .catch(err => {
+              this._addMsgToWindow('', pushData); // 本地处理把消息推到聊天窗口显示
               console.error(err);
             });
           break;
@@ -302,10 +305,10 @@ export default {
         avatar: this.user.user.avatar,
         content: '',
         name: this.user.user.trueName,
-        sendTime: res.data.data.sendTime,
+        sendTime: res ? res.data.data.sendTime : new Date().getTime(),
         type: 1,
         senderId: this.loginUserId,
-        sendSuccess: res.data.code === 200
+        sendSuccess: !!res && res.data.code === 200 // !!res 判断有没有res，有为true，没有为false
       };
       if (pushData.type === 1) {
         data.content = pushData.data;
