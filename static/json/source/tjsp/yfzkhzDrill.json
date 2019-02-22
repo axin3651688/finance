@@ -60,100 +60,98 @@
         "mainDim":"itemperiod",
         "needDims":["year","month","company"],
         "random":{"min":100,"max":100000},
-        "type":1,
-        "columns":[
-            {
-              "id": "szxssje",
+        "type":1
+      },
+      "columns":[
+          {
+            "id": "szxssje",
+            "type": "decimal",
+            "text": "已形成实质性损失金额"
+          },
+          {
+            "id":"id",
+            "type":"index",
+            "text":"序号",
+            "width":"60px"
+          },
+          {
+            "id": "sk",
+            "type": "string",
+            "text": "客商",
+            "width":"300px"
+          },
+          {
+            "id": "balance",
+            "type": "decimal",
+            "text": "余额"
+          },
+          {
               "type": "decimal",
-              "text": "已形成实质性损失金额"
-            },
-            {
-              "id":"id",
-              "type":"index",
-              "text":"序号",
-              "width":"60px"
-            },
-            {
-              "id": "sk",
-              "type": "string",
-              "text": "客商",
-              "width":"300px"
-            },
-            {
-              "id": "balance",
-              "type": "decimal",
-              "text": "余额"
-            },
-            {
-                "type": "decimal",
-                "text": "账期",
-                "children":[
-                  {
-                      "id":"oneyear",
-                      "type":"decimal",
-                      "text":"1年以内"
-                  },
-                  {
-                      "id":"twoyear",
-                      "type":"decimal",
-                      "text":"1-2年以内"
-                  },
-                  {
-                      "id":"threeyear",
-                      "type":"decimal",
-                      "text":"2-3年以内"
-                  },
-                  {
-                    "id":"fouryear",
+              "text": "账期",
+              "children":[
+                {
+                    "id":"oneyear",
                     "type":"decimal",
-                    "text":"3年以上"
-                }
-            ]
-        },
-            {
-              "id": "skxz",
-              "type": "string",
-              "text": "商客性质*"
-            },
-            {
-              "id": "sfnb",
-              "type": "string",
-              "text": "是否内部*"
-            },
-            {
-              "id": "sfzc",
-              "type": "string",
-              "text": "是否正常*"
-            },
-            {
-              "id": "fzcfl",
-              "type": "string",
-              "text": "非正常分类*"
-            },
-            {
-              "id": "zwrzk",
-              "type": "string",
-              "text": "债务人情况*"
-            },
-            {
-              "id": "kshjk",
-              "type": "decimal",
-              "text": "可收回金额*"
-            },
-            {
-              "id": "dnkhsje",
-              "type": "decimal",
-              "text": "其中:当年可收回金额*"
-            },
-            {
-              "id": "yqzk",
-              "type": "decimal",
-              "text": "逾期账款"
-            }
-          ],
-          "rows":[ ]
-      }
-      
-     
+                    "text":"1年以内"
+                },
+                {
+                    "id":"twoyear",
+                    "type":"decimal",
+                    "text":"1-2年以内"
+                },
+                {
+                    "id":"threeyear",
+                    "type":"decimal",
+                    "text":"2-3年以内"
+                },
+                {
+                  "id":"fouryear",
+                  "type":"decimal",
+                  "text":"3年以上"
+              }
+          ]
+      },
+          {
+            "id": "skxz",
+            "type": "string",
+            "text": "商客性质*"
+          },
+          {
+            "id": "sfnb",
+            "type": "string",
+            "text": "是否内部*"
+          },
+          {
+            "id": "sfzc",
+            "type": "string",
+            "text": "是否正常*"
+          },
+          {
+            "id": "fzcfl",
+            "type": "string",
+            "text": "非正常分类*"
+          },
+          {
+            "id": "zwrzk",
+            "type": "string",
+            "text": "债务人情况*"
+          },
+          {
+            "id": "kshjk",
+            "type": "decimal",
+            "text": "可收回金额*"
+          },
+          {
+            "id": "dnkhsje",
+            "type": "decimal",
+            "text": "其中:当年可收回金额*"
+          },
+          {
+            "id": "yqzk",
+            "type": "decimal",
+            "text": "逾期账款"
+          }
+        ],
+      "rows":[ ]    
     }]
   }

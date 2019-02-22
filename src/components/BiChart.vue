@@ -57,12 +57,29 @@ export default {
       }
     },
     setFlagState() {
-      if (this.item.datas && this.item.datas.length > 0) {
+      if(this.item.watchValue){
+        this.flag = this.judgeValue();
+      }else if (this.item.datas && this.item.datas.length > 0) {
         this.flag = true;
       } else {
         this.flag = false;
       }
+    },
+    judgeValue() {
+      let dataRes = this.item.datas;
+      if(dataRes && dataRes.length > 0){
+        dataRes.forEach(item => {
+          for(let key in item){
+            if(typeof item[key] == "number" && item[key] > 0){
+              this.false = true;
+            }
+          }
+        });
+      }else{
+        this.flag = false;
+      }
     }
+
   },
   watch: {
     // tempData(newName, oldName) {

@@ -44,98 +44,95 @@
                         "min": 100,
                         "max": 100000
                     },
-                    "type": 1,
+                    "type": 1
+                  },
                 
                      
-                "columns": [
-                    
-                    {
-                        "id": "bz",
-                        "type": "string",
-                        "text": "备注"
-                      },
+                  "columns": [
+                      
                       {
-                        "id": "id",
-                        "type": "string",
-                        "text": "公司编码"
-                      },
-                      {
-                        "id": "gsmc",
-                        "type": "string",
-                        "text": "公司名称",
-                        "width":"300px"
-        
-                      },
-                       {
-                            "id":"jgmc",
-                            "type":"string",
-                            "text":"机构名称",
-                            "width":"300px"
+                          "id": "bz",
+                          "type": "string",
+                          "text": "备注"
                         },
                         {
-                            "id":"rzlx",
-                            "type":"string",
-                            "text":"融资类型",
-                            "width":"240px"
+                          "id": "id",
+                          "type": "string",
+                          "text": "公司编码"
                         },
                         {
-                            "id":"jkbj",
-                            "type":"decimal",
-                            "text":"借款本金"
+                          "id": "gsmc",
+                          "type": "string",
+                          "text": "公司名称",
+                          "width":"300px"
+          
                         },
                         {
-                            "id":"qsrq",
-                            "type":"string",
-                            "text":"起始日期"
-                    },
-                      {
-                        "id": "dqrq",
-                        "type": "string",
-                        "text": "到期日期"
+                              "id":"jgmc",
+                              "type":"string",
+                              "text":"机构名称",
+                              "width":"300px"
+                          },
+                          {
+                              "id":"rzlx",
+                              "type":"string",
+                              "text":"融资类型",
+                              "width":"240px"
+                          },
+                          {
+                              "id":"jkbj",
+                              "type":"decimal",
+                              "text":"借款本金"
+                          },
+                          {
+                              "id":"qsrq",
+                              "type":"string",
+                              "text":"起始日期"
                       },
-                      {
-                        "id": "ll",
-                        "type": "decimal",
-                        "text": "利率（%）",
-                        "conversion":"%"
-                      },
-                      {
-                        "id": "zhcb",
-                        "type": "decimal",
-                        "text": "综合成本（%）",
-                        "conversion":"%"
-                      },
-                      {
-                        "id": "yhkrq",
-                        "type": "string",
-                        "text": "已还款日期"
-                      },
-                      {
-                        "id": "hkly",
-                        "type": "string",
-                        "text": "还款来源"
-                      },
-                      {
-                        "id": "xzjs",
-                        "type": "string",
-                        "text": "新增/减少"
-                      },
-                      {
-                        "id": "sfjtdb",
-                        "type": "string",
-                        "text": "是否集团担保"
-                      },
-                      {
-                        "id": "dbsf",
-                        "type": "string",
-                        "text": "担保方式"
-                      }
-                ],
-                "rows": [
-                    
-                    ]
-                }
-                ,
+                        {
+                          "id": "dqrq",
+                          "type": "string",
+                          "text": "到期日期"
+                        },
+                        {
+                          "id": "ll",
+                          "type": "decimal",
+                          "text": "利率（%）",
+                          "conversion":"%"
+                        },
+                        {
+                          "id": "zhcb",
+                          "type": "decimal",
+                          "text": "综合成本（%）",
+                          "conversion":"%"
+                        },
+                        {
+                          "id": "yhkrq",
+                          "type": "string",
+                          "text": "已还款日期"
+                        },
+                        {
+                          "id": "hkly",
+                          "type": "string",
+                          "text": "还款来源"
+                        },
+                        {
+                          "id": "xzjs",
+                          "type": "string",
+                          "text": "新增/减少"
+                        },
+                        {
+                          "id": "sfjtdb",
+                          "type": "string",
+                          "text": "是否集团担保"
+                        },
+                        {
+                          "id": "dbsf",
+                          "type": "string",
+                          "text": "担保方式"
+                        }
+                  ],
+                  "rows": [],
           "groupConfig": { "idProperty": "id","textProperty": "gsmc"},//可选
           "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
               let data = option.item.datas;
