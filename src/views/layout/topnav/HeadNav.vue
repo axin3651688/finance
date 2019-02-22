@@ -4,6 +4,7 @@
       :toggle-click="ToggleSideBar"
       :is-active="sidebar.opened"
       class="hamburger-container"
+      v-if="appHiden"
     />
     <div class="topcontent">
       <span @click="showDilog" v-if="showDims.company">
@@ -75,10 +76,10 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="12">
+      <el-badge :value="12" v-if="appHiden">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
-      <span class="username">
+      <span class="username" v-if="appHiden">
         <!-- 下啦箭头 -->
         <el-dropdown trigger="click" @command="setDialogInfo">
           <span class="dropdown">
@@ -208,7 +209,6 @@ export default {
       }
     }
   },
-  mounted() {},
   computed: {
     ...mapGetters([
       "user",
@@ -220,8 +220,12 @@ export default {
       "companyName",
       "showDims",
       "date",
-      "conversion"
-    ])
+      "conversion",
+      "device"
+    ]),
+    appHiden() {
+      return this.device === "mobile" ? false : true;
+    }
   },
 
   methods: {
