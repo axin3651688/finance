@@ -4,7 +4,9 @@
  * description: 在接到服务端 socket 信息后全局弹窗提醒
  */
 import store from '@/store';
-import {Notification} from 'element-ui';
+import {
+  Notification
+} from 'element-ui';
 
 export function showNotification(data) {
   // debugger;
@@ -44,7 +46,10 @@ export function showNotification(data) {
       break;
     case 1500: // 智能语音
       title = '小帮机器人';
-      msg = '接收到指令:' + data.msg;
+      // 发送指令：打开东
+      debugger
+      let temp = data.msg.replace('发送指令：', '')
+      msg = '接收到指令:' + temp;
       break;
     case 1004: // 上线通知
       title = '上线通知';

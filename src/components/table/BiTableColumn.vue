@@ -44,7 +44,7 @@
       <!-- 智慧报告催报里面的三个点 -->
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if="col.icon" :src="col.icon" alt>
-        <img v-else src="@/assets/green/list_menu.svg" alt class="img">
+        <img v-else src="@a/list_menu.svg" alt class="img">
         <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
@@ -77,7 +77,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :min-width="col.width||160"
+    :min-width="col.width||140"
   >
     <template slot-scope="scope">
       <el-tooltip

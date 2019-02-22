@@ -143,14 +143,12 @@ export default {
         bb = this.item;
       }
       if (!module.items) {
-        //  let module = this.$root.$children[0].$children[0].$children[0].$children[0];
+        let module = this.$root.$children[0].$children[0].$children[0].$children[2];
         console.log(module.items);
       }
       debugger;
       let text = bb.text;
-      if (module.items) {
-        console.log(module.items);
-      } else console.log("module里面没有设置items,下钻失败");
+  
 
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
