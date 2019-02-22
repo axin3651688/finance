@@ -9,8 +9,7 @@
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
       <HeadNav v-if="isShow()"/>
-      <Hamburger v-else class="img"/>
-      <!-- <img v-else src="@a/list_menu.svg" class="img"> -->
+      <MobileHeadNav v-else/>
     </div>
   </div>
 </template>
@@ -24,6 +23,7 @@ export default {
   components: {
     Hamburger: () => import("@v/layout/sidebar/Hamburger"),
     HeadNav: () => import("./topnav/HeadNav"),
+    MobileHeadNav: () => import("./topnav/MobileHeadNav"),
     leftMenu: () => import("./sidebar/Sidebar"),
     OpenDialog: () => import("@v/layout/dialog/OpenDialog.vue"),
     OpenMeluList: () => import("@v/layout/dialog/OpenMeluList.vue")
