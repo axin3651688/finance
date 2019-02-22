@@ -424,10 +424,10 @@ export default {
                 })
 
                 //&& key !="text1" && key !="id" && key !="text"
-                let cc
-                datas.forEach(item=>{
-                    cc = item
-                })
+                // let cc
+                // datas.forEach(item=>{
+                //     cc = item
+                // })
 
                 //测试
                 // let g = /([\u4e00-\u9fa5]+)/ig;
@@ -438,8 +438,7 @@ export default {
                             if(reg.test(values)===true){
                                 let bb = {index:index};
                                 bb[key] = values;
-                                this.tableData.push(bb);
-                                this.tableData.push(obj)
+                                this.tableData.push(bb)
                             }
                             // else{
                             //     this.$message({
@@ -448,33 +447,20 @@ export default {
                             //     });
                             // }
                     }
-                }else{
-                    // && key !="text1" && key !="id" && key !="text" && cc && cc.company != values
-                    if(changen ){
+                }
+                if(this.fixed===0){
+                    if(changen && key !="text1" && key !="id" && key !="text"){
                         changen[key] = values;
                     }else{  
-                        if( key !="text1" && key !="id" && key !="text"){
-                            let bb = {index:index};
-                            bb[key] = values;
-                            console.log("bb",bb)
-                            this.tableData.push(bb);
+                        if(key !="text1" && key !="id" && key !="text"){
+                        let bb = {index:index};
+                        bb[key] = values;
+                        console.log("bb",bb)
+                        this.tableData.push(bb);
                         }
                         
                     }
-                } 
-                // if(this.fixed===0){
-                //     if(changen && key !="text1" && key !="id" && key !="text" && cc && cc.company != values){
-                //         changen[key] = values;
-                //     }else{  
-                //         if(key !="text1" && key !="id" && key !="text" && cc && cc.company != values){
-                //         let bb = {index:index};
-                //         bb[key] = values;
-                //         console.log("bb",bb)
-                //         this.tableData.push(bb);
-                //         }
-                        
-                //     }
-                // }
+                }
             }      
             // this.tableData.push(obj)
             console.info("tableData",this.tableData)
@@ -532,30 +518,29 @@ export default {
         },
         // 设置单元格的只读
         cells(row,columns){
+            debugger
             let cellMeta = {}
-            if(this.fxied===1){
-                if(columns ==0 || columns ==1  || columns ==5  || columns ==4){
+            // if(this.fixed===1){
+            //     if(columns ==0 || columns ==1  || columns ==5  || columns ==4){
+            //         cellMeta.readOnly = true
+            //     }
+            // }
+            // if(this.templateId==3){
+            //         if(row ===0 && columns ===2 || row ===0 &&columns ===3 || row ==0 &&columns ==6 || row ==0 &&columns ==7|| row ==48 &&columns ==2||row ==48 &&columns ==3
+            //         || row ==49 &&columns ==2||row ==49 &&columns ==3 || row ==50 &&columns ==2||row ==50 &&columns ==3 || row ==51 &&columns ==2||row ==51 &&columns ==3
+            //         || row ==52 &&columns ==2||row ==52 &&columns ==3 || row ==53 &&columns ==2||row ==53 &&columns ==3 || row ==54 &&columns ==2||row ==54 &&columns ==3
+            //         || row ==55 &&columns ==2||row ==55 &&columns ==3 || row ==56 &&columns ==2||row ==56 &&columns ==3 || row ==57 &&columns ==2||row ==57 &&columns ==3
+            //         || row ==58 &&columns ==2||row ==58 &&columns ==3 || row ==59 &&columns ==2||row ==59 &&columns ==3 || row ==60 &&columns ==2||row ==60 &&columns ==3
+            //         || row ==61 &&columns ==2||row ==61 &&columns ==3 || row ==62 &&columns ==2||row ==62 &&columns ==3 || row ==63 &&columns ==2||row ==63 &&columns ==3
+            //         || row ==64 &&columns ==2||row ==64 &&columns ==3 || row ==65 &&columns ==2||row ==65 &&columns ==3 || row ==66 &&columns ==2||row ==66 &&columns ==3
+            //         || row ==67 &&columns ==2||row ==67 &&columns ==3 || row ==68 &&columns ==2||row ==68 &&columns ==3 || row ==69 &&columns ==2||row ==69 &&columns ==3
+            //         || row ==70 &&columns ==2||row ==70 &&columns ==3 || row ==71 &&columns ==2||row ==71 &&columns ==3 || row ==72 &&columns ==2||row ==72 &&columns ==3){
+            //             cellMeta.readOnly = true
+            //         }
+            //     }
+           if(this.templateId==8){
+                if(columns ==3 || columns ==5 || columns ==6){
                     cellMeta.readOnly = true
-                }
-                if(this.templateId==3){
-                    if(row ===0 && columns ===2 || row ===0 &&columns ===3 || row ==0 &&columns ==6 || row ==0 &&columns ==7|| row ==48 &&columns ==2||row ==48 &&columns ==3
-                    || row ==49 &&columns ==2||row ==49 &&columns ==3 || row ==50 &&columns ==2||row ==50 &&columns ==3 || row ==51 &&columns ==2||row ==51 &&columns ==3
-                    || row ==52 &&columns ==2||row ==52 &&columns ==3 || row ==53 &&columns ==2||row ==53 &&columns ==3 || row ==54 &&columns ==2||row ==54 &&columns ==3
-                    || row ==55 &&columns ==2||row ==55 &&columns ==3 || row ==56 &&columns ==2||row ==56 &&columns ==3 || row ==57 &&columns ==2||row ==57 &&columns ==3
-                    || row ==58 &&columns ==2||row ==58 &&columns ==3 || row ==59 &&columns ==2||row ==59 &&columns ==3 || row ==60 &&columns ==2||row ==60 &&columns ==3
-                    || row ==61 &&columns ==2||row ==61 &&columns ==3 || row ==62 &&columns ==2||row ==62 &&columns ==3 || row ==63 &&columns ==2||row ==63 &&columns ==3
-                    || row ==64 &&columns ==2||row ==64 &&columns ==3 || row ==65 &&columns ==2||row ==65 &&columns ==3 || row ==66 &&columns ==2||row ==66 &&columns ==3
-                    || row ==67 &&columns ==2||row ==67 &&columns ==3 || row ==68 &&columns ==2||row ==68 &&columns ==3 || row ==69 &&columns ==2||row ==69 &&columns ==3
-                    || row ==70 &&columns ==2||row ==70 &&columns ==3 || row ==71 &&columns ==2||row ==71 &&columns ==3 || row ==72 &&columns ==2||row ==72 &&columns ==3){
-                        cellMeta.readOnly = true
-                    }
-                }
-            }else{
-                // debugger
-                if(this.templateId==8){
-                     if(columns ==7 || columns ==8){
-                        cellMeta.readOnly = true
-                    }
                 }
             }
             // this.settings.data.forEach(item=>{
@@ -796,7 +781,16 @@ export default {
                 console.log("保存",res)
 
                 if (res.data.code === 200) {
+                    this.$message({
+                            message:res.data.msg,
+                            type: 'success'
+                    })
                     this.tableData = []
+                }else{
+                    this.$message({
+                            message:"保存失败",
+                            type: 'success'
+                    })
                 }
             })
 
@@ -890,7 +884,7 @@ export default {
             console.log(title)
             if(titlename[0] != this.dropdown){
                 this.$message({
-                    message:"模板匹配不正确 导入失败",
+                    message:res.data.msg,
                     type: 'error'
                 });   
             }else{
@@ -899,7 +893,7 @@ export default {
                 ImportExcel(this.files).then(res => {
                     debugger
                     console.log('res', res);
-                    if(res.status===200 && res.data.msg=="导入成功"){
+                    if(res.data.code===200){
                         // this.item = res.data.data.items[0].rows
                         // console.log("item的数据",this.item)
                         this.$message({
@@ -1045,14 +1039,16 @@ export default {
                         cancelButtonText: '取消',
                         type: 'warning'
                         }).then(() => {
-                            arr.alter("remove_row", row);//删除当前行
+                             arr.alter("remove_row", row);//删除当前行
                             del(data).then(res=>{
                                 console.log("删除",res)
+                                if(res.data.code===200){
+                                    me.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    });
+                                }
                             })
-                        me.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
                         }).catch(() => {
                         me.$message({
                             type: 'info',
