@@ -40,7 +40,7 @@ export function showNotification(data) {
       break;
     case 11021: // 分析助手
       title = '分析助手';
-      msg = data.data.text;
+      msg = data.data.content;
       break;
     case 1500: // 智能语音
       title = '小帮机器人';
