@@ -23,7 +23,7 @@
                     :rounded="false"
                     backgroundColor="transparent"
                     color="#fff"
-                    size="48"
+                    :size="48"
                   ></avatar>
                   <img :src="item.avatar" onerror="this.style.display='none'"/>
                 </div>

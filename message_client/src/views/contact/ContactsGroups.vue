@@ -15,7 +15,7 @@
                     :rounded="false"
                     backgroundColor="transparent"
                     color="#fff"
-                    size="40"
+                    :size="40"
                   ></avatar>
                   <img :src="group.avatar" onerror="this.style.display='none'"/>
                 </div>
@@ -41,7 +41,7 @@
                   :rounded="false"
                   backgroundColor="transparent"
                   color="#fff"
-                  size="50"
+                  :size="50"
                 ></avatar>
                 <img :src="rightInfo.avatar" onerror="this.style.display='none'"/>
               </div>
@@ -76,7 +76,7 @@
                               :rounded="false"
                               backgroundColor="transparent"
                               color="#fff"
-                              size="44"
+                              :size="44"
                             ></avatar>
                             <img :src="user.avatar" onerror="this.style.display='none'"/>
                           </div>

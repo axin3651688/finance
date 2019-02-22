@@ -44,7 +44,8 @@ export function showNotification(data) {
       break;
     case 1500: // 智能语音
       title = '小帮机器人';
-      msg = '接收到指令:' + data.msg;
+      let temp = data.msg.replace('发送指令：', '');
+      msg = '接收到指令:' + temp;
       break;
     case 1004: // 上线通知
       title = '上线通知';

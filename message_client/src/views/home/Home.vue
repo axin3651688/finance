@@ -36,7 +36,7 @@
                 :rounded="false"
                 backgroundColor="transparent"
                 color="#fff"
-                size="50"
+                :size="50"
               ></avatar>
               <img :src="contact.avatar" onerror="this.style.display='none'"/>
             </div>
