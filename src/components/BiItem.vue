@@ -14,7 +14,7 @@ export default {
     STreeGrid: () => import("./text/STreegrid.vue"),
     BiFlhz: () => import("./BiFlhz"),
     BiButton: () => import("./BiButton"),          
-    HandsonTable: () => import("./HandsonTable")
+    // HandsonTable: () => import("./HandsonTable")
   },
   data() {
     return {

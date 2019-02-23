@@ -57,8 +57,22 @@ const router = new Router({
           name: 'role',
           component: () =>
             import('@v/test/Role.vue')
+        },
+        {
+          path: '/handsontable',
+          name: 'handsontable',
+          component: () => import('@v/intelligenceReport/HTandtable.vue')
+        },
+        {
+          path: '/c',
+          name: 'cx',
+          component: () => import('@v/intelligenceReport/c.vue')
+        },
+        {
+          path: '/i',
+          name: 'iiii',
+          component: () => import('@c/Itable.vue')
         }
-
       ]
     },
 
@@ -101,9 +115,10 @@ const router = new Router({
           name: 'treeTest',
           component: () =>
             import('@v/test/treeTest'),
-        }, {
-          path: '/BiTreemap',
-          name: 'BiTreemap',
+        }, 
+        {
+          path: '/BiTreema',
+          name: 'BiTreema',
           component: () =>
             import('@c/charts/BiTreemap')
 
