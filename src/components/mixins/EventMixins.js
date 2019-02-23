@@ -112,15 +112,26 @@ export default {
     // api: listener.sourceApi,1
     openDialog(params, listener, bb) {
       debugger
+      if (listener.sourceApi !== "cnbi/json/source/jsnk/zbfx/zjl.json") {
+        this.ShowDialog({
+          params: params,
+          api: listener.sourceApi,
+          isShow: true,
+          tittle: bb.label,
+          width: listener.config.width + "px",
+          height: listener.config.height + "px",
+        });
+      } else {
+        this.ShowDialog({
+          params: params,
+          api: listener.sourceApi,
+          isShow: true,
+          tittle: "三河农场（合并）2016年1月营业收入与上年同期相比，较大幅度增长的主要原因是：",
+          width: listener.config.width + "px",
+          height: listener.config.height + "px",
+        });
+      }
 
-      this.ShowDialog({
-        params: params,
-        api: listener.sourceApi,
-        isShow: true,
-        tittle: bb.label,
-        width: listener.config.width + "px",
-        height: listener.config.height + "px",
-      });
     },
     /**
      * 增加到tab的动作 openDialog openWindow
@@ -148,7 +159,7 @@ export default {
       }
       debugger;
       let text = bb.text;
-  
+
 
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {

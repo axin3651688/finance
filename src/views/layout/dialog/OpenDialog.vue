@@ -13,6 +13,7 @@
     class="OpenDialog"
   >
     <span slot="title" class="dialog-title">
+      <!-- <i class="iconfont icon-shanchuguanbicha2 item_img"></i> -->
       <!-- <img src="@a/icons/jsnk/laba.svg"> -->
       <span>{{showDialog.tittle}}</span>
     </span>

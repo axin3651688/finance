@@ -168,9 +168,9 @@ export default {
     columnClick(column, scope) {
       debugger;
       if (column.listeners || column.menu.list[0].listeners[0]) {
-        console.log(column.menu.list[0]);
-        console.log(column.menu.list[0].listeners[0]);
-        this.commonHandler(column.listeners[0]);
+        // console.log(column.menu.list[0]);
+        // console.log(column.menu.list[0].listeners[0]);
+        this.commonHandler(column.listeners[0], column, scope);
       }
     },
 
