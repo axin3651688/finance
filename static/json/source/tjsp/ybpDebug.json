@@ -89,7 +89,6 @@
 					"way":"addTab",
 					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
 					"handler": ($vue,params) =>{
-						debugger;
 						let me = this;
 						let name = params.name;
 						let data;
@@ -171,13 +170,49 @@
 			// "height":400,
 			"show": true,
 			"queryDataBefore":function(params,config,$vue){
-				debugger;
 				let me = this;
 				let itemscode = $vue.$store.itemscode;
 				if(itemscode){
 					params.itemscode = itemscode;
 				}
 				return params;
+			},
+			"listeners":[
+				{
+					"type":"click",
+					"way":"addTab",
+					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
+					"handler": ($vue,params) =>{
+						debugger;
+						let me = this;
+						let name = params.name;
+						let data;
+						if(name){
+							data = $vue.item.datas.filter(function(it,indx){
+								return it.hymc == name;
+							})
+						};
+						$vue.$store.chartData = data;
+						console.log(params);
+					}
+				}
+			],
+			"cellStyle":function(row,that){
+				let me = this;
+				if(row.columnIndex == 0){
+					let css = "color: #428bca;cursor: pointer;";
+					return css;
+				}
+			},
+			"onCellClick":function(row, column, cell, event, option){
+				let me = this;
+				if(cell.cellIndex != 0){
+					return;
+				};
+				let listeners = this.listeners[0];	
+				let params = {name:row.hymc},id = row.id,text = row.hymc;
+				let textObj = {id:id,text:text};
+				option.commonHandler(listeners,params,textObj);
 			},
 			"config": {
 				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,B.SCODE INDSCODE,A.SCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT T.INDSCODE INDSCODE,DECODE(T.DSNAME,NULL,'合计',T.DSNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD =:itemscode AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets ((T.DSNAME,T.INDSCODE),()))",

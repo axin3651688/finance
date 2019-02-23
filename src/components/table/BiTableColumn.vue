@@ -233,7 +233,6 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex,scope) {
-      debugger
       /**
        * name：sjz
        * 功能：点击父级，展现他所有的孩子。 
@@ -261,7 +260,6 @@ export default {
     }
   },
   created() {
-    debugger
     /**
      * name: sjz
      * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部

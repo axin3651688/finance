@@ -99,7 +99,6 @@ export default {
      */
     addTab(params, listener, bb) {
       debugger;
-
       let module = this.$parent.$parent.$parent.$parent.items?this.$parent.$parent.$parent.$parent:this.$parent.$parent.$parent.$parent.$parent.$parent;
       //判断指标分析的穿透
       if(!module.items){

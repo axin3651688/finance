@@ -75,7 +75,7 @@
 	},
 	 "show":true,
    "__queryDataAfter":function(data){
-	   //debugger;		
+	   debugger;		
 	   let me = this;
 	   let columns = me.columns;
 	   let unit = me.unit;
@@ -844,13 +844,13 @@
 				   },
 				   "way":"addTab",
 				   "sourceApi":"/cnbi/json/source/tjsp/zcfzbDebug.json",
-				   "handler": ($vue,params) =>{
-						let selectPeriod = params.name;
-						let data;
-						if(selectPeriod){
-							$vue.$store.selectPeriod = selectPeriod;
-						}
-				   }
+					"handler": ($vue,params) =>{
+							let selectPeriod = params.name;
+							let data;
+							if(selectPeriod){
+								$vue.$store.selectPeriod = selectPeriod;
+							}
+					}
 			   }
 			],
 			"conversionUnit":function(unit){
@@ -975,59 +975,59 @@
 					   "reverse":true
 				   },
 			   "rows": [
-			   {
-					"id": "{year}01",
-					"text": "{year}年1月"
-				}, 
-				{
+					{
+						"id": "{year}01",
+						"text": "{year}年1月"
+					}, 
+					{
 
-					"id": "{year}02",
-					"text": "{year}年2月"
-				},
-				{
+						"id": "{year}02",
+						"text": "{year}年2月"
+					},
+					{
 
-					"id": "{year}03",
-					"text": "{year}年3月"
-				},
-				{
+						"id": "{year}03",
+						"text": "{year}年3月"
+					},
+					{
 
-					"id": "{year}04",
-					"text": "{year}年4月"
-				},
-				{
-					"id": "{year}05",
-					"text": "{year}年5月"
-				},
-				{
-					"id": "{year}06",
-					"text": "{year}年6月"
-				}, {
-					"id": "{year}07",
-					"text": "{year}年7月"
-				}, 
-				{
+						"id": "{year}04",
+						"text": "{year}年4月"
+					},
+					{
+						"id": "{year}05",
+						"text": "{year}年5月"
+					},
+					{
+						"id": "{year}06",
+						"text": "{year}年6月"
+					}, {
+						"id": "{year}07",
+						"text": "{year}年7月"
+					}, 
+					{
 
-					"id": "{year}08",
-					"text": "{year}年8月"
-				},
-				{
+						"id": "{year}08",
+						"text": "{year}年8月"
+					},
+					{
 
-					"id": "{year}09",
-					"text": "{year}年9月"
-				},
-				{
+						"id": "{year}09",
+						"text": "{year}年9月"
+					},
+					{
 
-					"id": "{year}10",
-					"text": "{year}年10月"
-				},
-				{
-					"id": "{year}11",
-					"text": "{year}年11月"
-				},
-				{
-					"id": "{year}12",
-					"text": "{year}年12月"
-				}
+						"id": "{year}10",
+						"text": "{year}年10月"
+					},
+					{
+						"id": "{year}11",
+						"text": "{year}年11月"
+					},
+					{
+						"id": "{year}12",
+						"text": "{year}年12月"
+					}
 				],
 			  "columns": [
 				   {
@@ -1068,14 +1068,18 @@
 			 }
 		   },
 			"listeners":[
-			   {
-				   "type":"click",
-				   "way":"addTab",
-				   "sourceApi":"/cnbi/json/source/tjsp/zcfzbDebug.json",
-				   "handler": ($vue,params) =>{
-					   console.log(params);
-				   }
-			   }
+			   	{
+				   	"type":"click",
+				   	"way":"addTab",
+				   	"sourceApi":"/cnbi/json/source/tjsp/dashRzxzwDrill.json",
+				   	"handler": ($vue,params) =>{
+						let selectPeriod = params.name;
+						let data;
+						if(selectPeriod){
+							$vue.$store.selectPeriod = selectPeriod;
+						}
+					}
+			   	}
 			],
 		   "conversionUnit":function(unit){
 			   let me = this;
@@ -1255,50 +1259,72 @@
 				   }
 			   },
 			   "chartOptions":{
-				   "dd":"this.item.text",
-				   "unitObj":{
-					"mult":10000,
-					"unitName":"万元"
+				   	"dd":"this.item.text",
+				   	"unitObj":{
+						"mult":10000,
+						"unitName":"万元"
 					},
-				   "title": {
-					   "text": "this.item.text",
-					   "x": "center",
-					   "top":10,
-					   "textStyle":{
-						   "fontSize": 16,
-						   "color":"#8796B0"
-					   }
-				   },
-				   "tooltip": {
-					 "trigger": "item",
-					 "formatter": "{b} : {c} ({d}%)"
-				   },
-				   "color":['#1875F0','#1CD1A1'],
-				   "series": [
-					   {
-						   "name": "",
-						   "type": "pie",
-						   "radius": "55%",
-						   "center": ["50%", "50%"],
-						   "data": "this.item.options.datas",
-						   "itemStyle": {
-							   "emphasis": {
-								   "shadowBlur": 10,
-								   "shadowOffsetX": 0,
-								   "shadowColor": "rgba(0, 0, 0, 0.5)"
-							   }
-						   }
-					   }
-				   ] ,
-				   "legend": {
-					//    "orient": "vertical",
-					//    "left": "5%",
-					//    "top": "15%",
-					//    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"	//zdk 注释  2019-1-8 09:25:05  boss 和 ly 说图例要放在下方
-					"bottom": 10,
-					"left": "center",
-					"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
-				   }
+				   	"title": {
+						"text": "this.item.text",
+						"x": "center",
+						"top":10,
+						"textStyle":{
+							"fontSize": 16,
+							"color":"#8796B0"
+						}
+					   },
+					// "graphic": [
+					// 	{ //设置饼状图内部文字
+					// 		"type": "text",
+					// 		"left": "center", //设置偏移量
+					// 		"top": 180,
+					// 		"z": 2,
+					// 		"zlevel": 100,
+					// 		"style": {
+					// 			"text": "文字内容",
+					// 			"x": 100,
+					// 			"y": 100,
+					// 			"textAlign": "center",
+					// 			"fill": "#89D4ED",
+					// 			"width": 200,
+					// 			"height": 200,
+					// 			"textFont": "bold 20px verdana"
+					// 		}
+					// 	}
+					// ],
+				   	"tooltip": {
+						"trigger": "item",
+						"formatter": "{b} : {c} ({d}%)"
+				   	},
+					"color":['#1875F0','#1CD1A1'],
+					"series": [
+					   	{
+						   	"name": "",
+						   	"type": "pie",
+						   	"radius": "55%",
+						   	"center": ["50%", "50%"],
+						   	"data": "this.item.options.datas",
+							"label":{
+								"position":"inside"
+							},
+						   	"itemStyle": {
+							   	"emphasis": {
+								   	"shadowBlur": 10,
+								   	"shadowOffsetX": 0,
+								   	"shadowColor": "rgba(0, 0, 0, 0.5)"
+							   	}
+						   	}
+					   	}
+				   	] ,
+				   	"legend": {
+						//    "orient": "vertical",
+						//    "left": "5%",
+						//    "top": "15%",
+						//    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"	//zdk 注释  2019-1-8 09:25:05  boss 和 ly 说图例要放在下方
+						"bottom": 10,
+						"left": "center",
+						"data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+				   	}
 			   }
 		   },
 		   {
@@ -1463,8 +1489,16 @@
 						"name": "",
 						"type": "pie",
 						"radius": "55%",
+						// "startAngle":180,
 						"center": ["50%", "50%"],
 						"data": "this.item.options.datas",
+						"label":{
+							"position":"inside",
+							"formatter":function(pp,aa,bb){
+								debugger;
+								
+							}
+						},
 						"itemStyle": {
 							"emphasis": {
 								"shadowBlur": 10,
