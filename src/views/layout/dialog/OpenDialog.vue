@@ -47,7 +47,11 @@ export default {
   .dialog-title {
     font-size: 18px;
     font-weight: bold;
+
     color: rgba(15, 109, 217, 1);
+  }
+  .el-dialog__header {
+    margin-right: 20px;
   }
 }
 </style>

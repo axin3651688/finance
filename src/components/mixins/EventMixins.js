@@ -126,7 +126,7 @@ export default {
           params: params,
           api: listener.sourceApi,
           isShow: true,
-          tittle: "三河农场（合并）2016年1月营业收入与上年同期相比，较大幅度增长的主要原因是：",
+          tittle: `${bb.row.text}2016年1月营业收入与上年同期相比，较大幅度增长的主要原因是：`,
           width: listener.config.width + "px",
           height: listener.config.height + "px",
         });
@@ -154,7 +154,7 @@ export default {
         bb = this.item;
       }
       if (!module.items) {
-        let module = this.$root.$children[0].$children[0].$children[0].$children[2];
+        module = this.$root.$children[0].$children[0].$children[0].$children[2];
         console.log(module.items);
       }
       debugger;

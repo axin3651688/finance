@@ -41,7 +41,7 @@ export default {
   padding: 20px 20px;
   font-size: 16px;
   width: 620px;
-  height: 300px;
+  height: 200px;
   border: 1px solid#409EFF;
 }
 </style>

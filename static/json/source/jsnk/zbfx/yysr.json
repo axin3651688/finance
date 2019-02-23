@@ -104,7 +104,7 @@
             "way": "openDialog",
             "config": {
               "width": 660, //弹窗的宽高写到这里
-              "height": 460
+              "height": 800
             },
             "sourceApi": "cnbi/json/source/jsnk/zbfx/zjl.json",
             "handler": ($vue, params) => {
