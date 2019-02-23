@@ -334,7 +334,12 @@
         }
 
         .containerMain {
+            padding-left: 0px;
             padding-top: $app_contai_padding-top;
+
+            .el-row {
+                padding-right: 0px !important;
+            }
         }
     }
 

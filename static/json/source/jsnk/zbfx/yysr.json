@@ -83,16 +83,8 @@
         {
           "text": "增减额",
           "type": "decimal",
-          "id": "zje",
-          "listeners": [{
-            "type": "click",
-            "way": "openDialog",
-            "sourceApi": "cnbi/json/source/jsnk/zbfx/zjl.json",
-            "handler": ($vue, params) => {
-              debugger
-              return params;
-            }
-          }],
+          "id": "zje"
+
         },
         {
           "text": "增减率(%)",

@@ -88,12 +88,16 @@ export default {
      * @data    : 2019-01-25
      */
     getMemberList(companyId) {
-      companyContactList(companyId).then(res => {
-        let data = res.data.data.normal;
-        console.log(data);
-        this.ShowMeluList({ data: data });
-        this.listDatas = data;
-      });
+      // 如果vuex已经有数据,那么将不再发请求,要不然每次点都会发
+      if (this.showMeluList.data.length > 0) {
+        return null;
+      } else
+        companyContactList(companyId).then(res => {
+          let data = res.data.data.normal;
+          console.log(data);
+          this.ShowMeluList({ data: data });
+          this.listDatas = data;
+        });
     },
     deleteData(index) {
       // console.log("删除我", index);
