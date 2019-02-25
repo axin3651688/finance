@@ -161,7 +161,7 @@ const router = new Router({
           path: '/sgyj',
           name: 'sgyj',
           component: () =>
-            import('@v/systemSettings/shiguan')
+            import('@v/systemSettings/cityResults')
         },
         {//EVA表
           path: '/eva',
