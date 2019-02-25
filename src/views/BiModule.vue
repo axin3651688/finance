@@ -200,7 +200,7 @@ export default {
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
-      debugger
+      
       /**
        * name : sjz 
        * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
@@ -348,7 +348,7 @@ export default {
      */
     setScopeDatas(bean, type) {
       //
-      debugger;
+      
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -369,7 +369,7 @@ export default {
        *
        */
       if (bean.hasOwnProperty("showDims")) {
-        // debugger;
+        // 
         this.ShowDims(bean.showDims);
       } else {
         this.ShowDims({
@@ -413,7 +413,7 @@ export default {
      * 加载加载模块资源
      */
     loadRemoteSource(api) {
-      debugger
+      
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
       if (!api) {
@@ -433,7 +433,7 @@ export default {
       }
 
       findDesignSource(api).then(res => {
-        debugger
+        
         //
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
@@ -509,7 +509,7 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      // debugger
+      // 
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -565,12 +565,12 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        debugger;
+        
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
-        // debugger
+        // 
         //在此加了查询数据之前的拦截处理
         if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
           params = item.queryDataBefore(params, config, this);
@@ -618,7 +618,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger;
+      
       let params = this.$store.state.prame.command;
       let unit = params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
@@ -663,7 +663,7 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      // debugger
+      // 
       findThirdPartData(params)
         .then(res => {
           this.queryDataAfter(item, res.data.data, $childVue);

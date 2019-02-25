@@ -21,13 +21,13 @@
                   <img src="@a/loginT/first.jpg" class="first">
                 </div>
                 <div v-if="item == 2" class="first">
-                  <img src="@a/loginT/first.jpg" class="first">
+                  <img src="@a/loginT/two.jpg" class="first">
                 </div>
                 <div v-if="item == 3" class="first">
-                  <img src="@a/loginT/first.jpg" class="first">
+                  <img src="@a/loginT/three.jpg" class="first">
                 </div>
                 <div v-if="item == 4" class="first">
-                  <img src="@a/loginT/first.jpg" class="first">
+                  <img src="@a/loginT/four.jpg" class="first">
                 </div>
                 <!-- <template slot-scope="scope">
                   <div v-if="scope.index == 0" class="first">{{ item }}</div>

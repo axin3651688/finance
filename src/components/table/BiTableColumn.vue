@@ -4,7 +4,7 @@
     v-if="col.isTree  && (tableData.xtype==='tree-grid'|| tableData.xtype==='STreeGrid') "
     :prop="col.id"
     :label="col.text"
-    :width="col.width||80"
+    :min-width="col.width||80"
   >
     <template slot-scope="scope">
       <span
@@ -26,7 +26,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width"
+    :min-width="col.width"
     type="index"
   />
   <!-- :align="col.align||'center'" -->
@@ -36,7 +36,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||100"
+    :min-width="col.width||100"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
@@ -50,7 +50,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||150"
+    :min-width="col.width||150"
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
@@ -164,13 +164,13 @@ export default {
       // this.$set(this, "tableData", item);
       // this.$set(this.tableData, "datas", item.datas);
 
-      // this.$set(this, "tableData", null);
-      // this.$set(this, "tableData", item);
-      // this.$set(this.tableData, "datas", item.datas);
+      this.$set(this, "tableData", null);
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
 
-      this.$set(this, "tmptabledata", null);
-      this.$set(this, "tmptabledata", item);
-      this.$set(this.tmptabledata, "datas", item.datas);
+      // this.$set(this, "tmptabledata", null);
+      // this.$set(this, "tmptabledata", item);
+      // this.$set(this.tmptabledata, "datas", item.datas);
     },
     /**
      * 获取单元格数据
@@ -189,7 +189,7 @@ export default {
         union = true;
         //  debugger
       }
-      //debugger
+      debugger
       if (!row[colId] && !union) {
         let temp = datas.filter(tempRow=>{
           return tempRow.id == rowId;
@@ -233,7 +233,6 @@ export default {
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex,scope) {
-      debugger
       /**
        * name：sjz
        * 功能：点击父级，展现他所有的孩子。 
@@ -261,7 +260,6 @@ export default {
     }
   },
   created() {
-    debugger
     /**
      * name: sjz
      * 说明：默认展开树表。即：一级公司默认展开子属二级公司，子属二级公司默认展开全部

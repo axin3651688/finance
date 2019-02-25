@@ -129,6 +129,7 @@ export default {
   mounted() {},
   methods: {
     upData(item) {
+      debugger;
       if (item) {
         this.item = item;
       }

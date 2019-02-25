@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-input placeholder="输入关键字进行过滤" v-model="filterText" suffix-icon="el-icon-search"></el-input>
+    <!-- :default-expanded-keys="['1']" -->
     <el-tree
       :props="props"
       :load="loadNode"
       node-key="id"
       ref="tree2"
-      :default-expanded-keys="['1']"
+      default-expand-all
       highlight-current
       lazy
       @node-click="handleNodeClick "
@@ -65,18 +66,19 @@ export default {
       // 一级节点处理
       console.log(node);
 
-      // debugger;
+      debugger;
       if (node.level === 0) {
         debugger;
         resolve([this.firstcompany]);
       }
-      if (node.level >= 1) {
-        // 注意！把resolve传到你自己的异步中去
-        this.getIndex(node, resolve);
-      }
+      // if (node.level >= 1) {
+      //   // 注意！把resolve传到你自己的异步中去
+      //   this.getIndex(node, resolve);
+      // }
     },
     // 异步加载叶子节点数据函数
     getIndex(node, resolve) {
+      debugger
       // 由于1级和二级的传值代号不一样一个取customerId,其他取id
       var id = node.level === 1 ? this.id : node.data.id;
       // console.log(id);

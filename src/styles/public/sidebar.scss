@@ -231,7 +231,8 @@
 // 这是手机时水平显示跟App同级必须写最外面
 .el-menu--vertical {
   .el-menu--popup {
-    background-color: $menuBg;
+    // background-color: $menuBg;
+    background: linear-gradient(180deg,rgba(159,212,103,1) 0%,rgba(45,176,96,1) 100%);
     color: $fontActive;
   }
 
@@ -243,5 +244,10 @@
   .el-menu-item:hover {
     background-color: $menuHover;
     color: $fontActive;
+  }
+  //悬浮的以及标题的背景色 2019年2月24日18:56:58 szc
+  .el-submenu__title:hover {
+    background-color: rgba(1, 57, 29, 0.4);
+    color: #fff;
   }
 }
