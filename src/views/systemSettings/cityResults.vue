@@ -383,9 +383,7 @@ export default {
 </script>
 
 <style scoped>
-    .el-table__body-wrapper {
-        /* overflow-x: hidden; */
-    }
+    
 
 /**
  * 主要这对了 “表头” 显示浅蓝色背景

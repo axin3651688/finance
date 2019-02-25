@@ -52,12 +52,12 @@
         <tr>
           <td>利息支出</td>
           <td colspan="2" class="br">
-            <!-- <input v-model="exps.v1436604A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1436604A|NumFormat}}</span>
+            <!-- <input v-model="exps.v142640102A" readonly class="exps"> -->
+            <span class="expsv">{{exps.v142640102A|NumFormat}}</span>
           </td>
           <td class="br">
-            <!-- <input v-model="exps.v1436604A_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1436604A_tz|NumFormat}}</span>
+            <!-- <input v-model="exps.v142640102A_tz" readonly class="exps"> -->
+            <span class="expsv">{{exps.v142640102A_tz|NumFormat}}</span>
           </td>
         </tr>
         <tr>
@@ -319,15 +319,15 @@ export default {
           expression: "净利润 + 研究与开发费 + 利息支出 + 营业外收支净额"
         }
       ],
-      arr:[],
+      ArrData:[],
       exps: {
         v1400100A: 1000, //净利润
 
         v1435301A: 1000, //研究与开发费
         v1435301A_tz: 0, //调整后 研究与开发费 v1435301A*(1-zbcblv)
 
-        v1436604A: 2000, //利息支出
-        v1436604A_tz: 0,
+        v142640102A: 2000, //利息支出
+        v142640102A_tz: 0,
 
         v1416301A: 2000, //营业外收入
         v1416301A_tz: 0,
@@ -356,7 +356,7 @@ export default {
         v1217001B: 0,
         v1217001_tz: 0,
 
-        v1131604A: 0, //在建工程
+        v1131604A: 0, ////营业外收支净额 营业外支出本期金额-营业外收入本期金额
         v1131604B: 0,
         v1131604_tz: 0,
 
@@ -453,9 +453,9 @@ export default {
   },
   mounted() {
     //计算公式 资产总计
-    this.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
+    // this.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
     //表达式公
-    this.setExpressionData();
+    // this.setExpressionData();
   },
   methods: {
     // 导航栏切换触发 注：公司、日期、单位
@@ -465,24 +465,58 @@ export default {
     // 数据请求（唯一）
     tableDataRequest(companyId, yearId, monthId, conversionId){
         debugger
-      let _period, _sql, _sql2, _sql3 ;
+      let _period, _sql, _sql2, items ;
       // 月份处理 1~9 之间 前缀要加 ‘0’
       if(monthId>0 && monthId<10){
           monthId = "0" + monthId ;
       }
       _period = yearId + monthId ; 
-
-      // eva_city_Request().then(res => {
-      //     debugger
-
-      // })
+      for(let i=0; i<2; i++){
+        if(i){
+            _sql2 = ``
+        }else{
+            _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='142640102' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','142640102','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','142640102','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
+        }
+      }      
+      _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'") ;
+      items = {
+          'cubeId': 4,
+          'sql' : _sql
+      }
+      this.eva_city_Request_new(items) ;
+    },
+    // 数据请求
+    eva_city_Request_new(items){
+        debugger
+      let me = this ;
+      eva_city_Request(items).then(res => {
+          debugger
+          if(res.data.code === 200){
+              me.ArrData = res.data.data ;
+              me.ArrData.forEach(item => {
+                debugger
+                item.scode = "v" + item.scode + "A"  ;
+                if(!item.B){
+                  item.B = 0 ;
+                }
+                me.exps[item.scode] = item.B ;
+              }) ;
+              //计算公式 资产总计
+              me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
+              console.log("me.ArrData:", me.ArrData) ;   
+              me.setExpressionData();         
+          }
+      }) ; 
     },
     setExpressionData() {
+      //营业外收支净额 营业外支出本期金额-营业外收入本期金额     
+      this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
+
       //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
       this.exps.yywsrlr =
         this.exps.v1400100A +
         this.exps.v1435301A_tz +
-        this.exps.v1436604A_tz +
+        this.exps.v142640102A_tz +
         this.exps.yywsrje;
 
       //无息流动负债 = 流动负债-短期借款-一年内到期的长期负债
@@ -534,7 +568,7 @@ export default {
         if (item.code === "sl") {
           //调整后数据
           this.updateTzhData(
-            ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
+            ["v1435301A", "v142640102A", "v1416301A", "v1426711A"],
             item.value
           );
           //营业外收支净额 营业外支出本期金额-营业外收入本期金额
