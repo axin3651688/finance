@@ -1479,9 +1479,12 @@
 						"color":"#8796B0"
 					}
 				},
+				// "grid":{
+				// 	"containLabel":true
+				// },
 				"tooltip": {
-				  "trigger": "item",
-				  "formatter": "{b} : {c} ({d}%)"
+					"trigger": "item",
+					"formatter": "{b} : {c} ({d}%)"
 				},
 				"color":['#1875F0','#1CD1A1'],
 				"series": [

@@ -245,4 +245,9 @@
     background-color: $menuHover;
     color: $fontActive;
   }
+  //悬浮的以及标题的背景色 2019年2月24日18:56:58 szc
+  .el-submenu__title:hover {
+    background-color: rgba(1, 57, 29, 0.4);
+    color: #fff;
+  }
 }

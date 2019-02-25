@@ -4,7 +4,7 @@
       <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
       style="background-color: #189271;color: black;"
     </el-button-group>-->
-    <div v-if="item.tableBefore" v-html="titleText">这个有内容</div>
+    <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <el-button
