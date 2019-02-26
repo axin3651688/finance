@@ -73,6 +73,13 @@ const router = new Router({
           name: 'iiii',
           component: () => import('@c/Itable.vue')
         }
+        ,// 角色
+        {
+          path: '/roles',
+          name: 'roles',
+          component: () =>
+            import('@v/test/Role.vue')
+        }
       ]
     },
 

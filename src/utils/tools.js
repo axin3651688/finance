@@ -12,6 +12,14 @@ import { MessageBox } from 'element-ui';
 export default {
     //天津视频 数据源id 
     datasourceId: 4,
+    /**
+     * 设置表格最大高度
+     * @param subHeight 要减去高度
+     */
+    setTableMaxHeight(subHeight) {
+        const height = document.body.offsetHeight - subHeight;
+        return height > 100 ? height : 300;
+    },
 
     /**
      * name: 钟虎

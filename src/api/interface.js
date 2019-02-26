@@ -8,7 +8,10 @@ export function login(loginUser) {
   return request({
     url: '/api/auth/login',
     method: 'post',
+   //url: '/api/api/core_user/login',
+   //method: 'get',
     params: {
+      cubeId:4,
       account: loginUser.usename,
       password: loginUser.password
     }
@@ -22,7 +25,8 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-    url: '/api/auth/logout',
+   // url: '/api/auth/logout',
+    url: '/api/api/core_user/logout',
     method: 'get',
     // params: {
     //   Authorization: localStorage.authorization,

@@ -104,8 +104,9 @@ export default {
               // 获取token
               // console.log(res);
               const data = res.data.data;
+              //data.id = data.nid;
               // debugger;
-              const token = data.authorization;
+              const token = data.token || data.authorization;
               if (!Cnbi.isEmpty(token)) {
                 // console.log(this.loginUser);
                 localStorage.setItem("authorization", token);
@@ -126,7 +127,7 @@ export default {
                 // debugger;
                 //this.initSocket(token);
                 let url = "/main";
-                if (data.company && data.company.id === 121) {
+                if (data.company ) {
                   url += "?monthCount=13";
                   localStorage.module_api_cache =
                     "/cnbi/json/source/tjsp/dash.json";
