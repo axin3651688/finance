@@ -1,0 +1,275 @@
+{
+    "id":"001404",
+    "text": "分行业指标",
+    "layout": {
+        "xtype": "tab"
+    },
+    "showDims": ["year","month","company","conversion"],
+        // 切换公司时做处理（合并显示，单体隐藏）
+    "changeCompanyBefore":function(newcompany,option){
+        debugger
+        this.showSet(this.items); 
+        option.closeTabTaget(newcompany,option);
+    },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        debugger
+        option.closeTabTaget(newmonth,option);
+    },
+    "config": {
+        "_sql": "",
+        "_cube": {
+            "cubeId": 4 ,
+            "subject": "0002"
+        },
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1  
+    },
+    "columns": [
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "所有者权益累计数",
+            "children" : [
+                {
+                    "id" : "bq8",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq8",
+                    "type" : "decimal",
+                    "text" : "上年同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id": "hymc",
+            "type": "string",
+            "width": "230px",
+            "text": "行业名称"
+        },
+        {
+            "id": "",
+            "type" : "string",
+            "text" : "营业收入累计",
+            "children": [
+                {
+                    "id" : "bq1",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq1",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "营业成本累计数",
+            "children": [
+                {
+                    "id" : "bq2",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq2",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "销售费用累计数",
+            "children" : [
+                {
+                    "id" : "bq3",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq3",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "管理费用累计数",
+            "children" : [
+                {
+                    "id" : "bq4",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq4",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "财务费用累计数",
+            "children" : [
+                {
+                    "id" : "bq5",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq5",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "利润总额累计数",
+            "children": [
+                {
+                    "id" : "bq6",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq6",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "资产总额累计数",
+            "children": [
+                {
+                    "id" : "bq7",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "150px"
+                },
+                {
+                    "id" : "tq7",
+                    "type" : "decimal",
+                    "text" : "同期",
+                    "width": "150px"
+                }
+            ]
+        }
+    ],
+    "rows": [
+        {
+            "hymc" : "现代农牧渔业"
+        },
+        {
+            "hymc" : "食品加工业"
+        },
+        {
+            "hymc" : "食品贸易"
+        },
+        {
+            "hymc" : "粮油贸易"
+        },
+        {
+            "hymc" : "冷链仓库"
+        },
+        {
+            "hymc" : "房地产业"
+        },
+        {
+            "hymc" : "商品贸易"
+        },
+        {
+            "hymc" : "钢材贸易"
+        },
+        {
+            "hymc" : "非食品加工业"
+        },
+        {
+            "hymc" : "金融业"
+        },
+        {
+            "hymc" : "服务业"
+        },
+        {
+            "hymc" : "抵消差额"
+        }
+    ],
+    "items":[
+        {
+            "xtype" : "bi-table",
+            "id" : "fhyzb",
+            "text" : "分行业指标",
+            "show": true,
+            "toolbar":[{    
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    let $vue = vue.item.$vue;
+                    $vue.closeTabTaget({}, $vue);
+                    vue.item.updateView("company");
+                }
+            },{
+                "id":"2",
+                "text":"导出",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                "handler":function(vue,btn){
+                    debugger
+                    console.log(vue);
+                    vue.handleDownload(vue);
+                }
+            }],
+            "showFun":function($store){
+                debugger
+                if($store.getters.treeInfo.leaf){
+                    return false ;
+                }else{
+                    return true ;
+                }                       
+            }
+        }
+    ]
+}

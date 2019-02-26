@@ -2,11 +2,12 @@
  * @Author: cnbi.zhh 
  * @Date: 2018-12-11 17:34:38 
  * @Decription: 本项目用到的通用方法 
- * @Last Modified by: cnbi.zhh
- * @Last Modified time: 2018-12-19 20:00:06
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2019-02-21 17:32:43
  */
 //加载工具类 lodash
 let _ = require('lodash');
+const digitsRE = /(\d{3})(?=\d)/g;
 import { MessageBox } from 'element-ui';
 export default {
     //天津视频 数据源id 
@@ -19,6 +20,33 @@ export default {
         const height = document.body.offsetHeight - subHeight;
         return height > 100 ? height : 300;
     },
+
+    /**
+     * name: 钟虎
+     * EVA表的方法
+     */
+    currency(value, currency, decimals) {
+        let valuex = parseFloat(value);
+        if (!isFinite(valuex) || (!valuex && valuex !== 0)) return ''
+        currency = currency != null ? currency : '$'
+        decimals = decimals != null ? decimals : 2
+        let stringified = Math.abs(valuex).toFixed(decimals)
+        let _int = decimals
+            ? stringified.slice(0, -1 - decimals)
+            : stringified
+        let i = _int.length % 3
+        let head = i > 0
+            ? (_int.slice(0, i) + (_int.length > 3 ? ',' : ''))
+            : ''
+        let _float = decimals
+            ? stringified.slice(-1 - decimals)
+            : ''
+        let sign = valuex < 0 ? '-' : ''
+        return sign + currency + head +
+            _int.slice(i).replace(digitsRE, '$1,') +
+            _float
+    },
+
 
     //将父子节点转成数组
     transformToArray(setting, nodes) {

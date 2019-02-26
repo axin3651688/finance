@@ -77,7 +77,7 @@ export function findThirdPartData(params) {
   }
   return request({
     method: "post",
-    url: params.url || "/get/cube/find/",
+    url: params.url || "/api/api/find_cube_map/",
     params: params
   })
 }
@@ -89,7 +89,6 @@ export function findThirdPartData(params) {
 export function findDesignSource(sourceId, url) {
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
   if (isNaN(sourceId)) {
-    debugger
     url = sourceId;
     sourceId = 0;
   }

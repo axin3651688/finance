@@ -57,6 +57,21 @@ const router = new Router({
           name: 'role',
           component: () =>
             import('@v/test/Role.vue')
+        },
+        {
+          path: '/handsontable',
+          name: 'handsontable',
+          component: () => import('@v/intelligenceReport/HTandtable.vue')
+        },
+        {
+          path: '/c',
+          name: 'cx',
+          component: () => import('@v/intelligenceReport/c.vue')
+        },
+        {
+          path: '/i',
+          name: 'iiii',
+          component: () => import('@c/Itable.vue')
         }
         ,// 角色
         {
@@ -65,7 +80,6 @@ const router = new Router({
           component: () =>
             import('@v/test/Roles.vue')
         }
-
       ]
     },
 
@@ -108,9 +122,10 @@ const router = new Router({
           name: 'treeTest',
           component: () =>
             import('@v/test/treeTest'),
-        }, {
-          path: '/BiTreemap',
-          name: 'BiTreemap',
+        }, 
+        {
+          path: '/BiTreema',
+          name: 'BiTreema',
           component: () =>
             import('@c/charts/BiTreemap')
 
@@ -163,6 +178,18 @@ const router = new Router({
           name: 'online',
           component: () =>
             import('@v/systemSettings/online')
+        },
+        {//市管企业经营业绩情况表
+          path: '/sgyj',
+          name: 'sgyj',
+          component: () =>
+            import('@v/systemSettings/cityResults')
+        },
+        {//EVA表
+          path: '/eva',
+          name: 'eva',
+          component: () =>
+            import('@v/systemSettings/EVA')
         },
         // 利润表
         {
@@ -219,7 +246,9 @@ const router = new Router({
       path: '/Login',
       name: 'Login',
       component: () =>
-        import('@v/layout/login/Login'),
+        // import('@v/layout/login/Login'),
+        // import('@v/layout/login/LoginNew'),
+        import('@v/layout/login/LoginNew'),
     },
     {
       path: '*',

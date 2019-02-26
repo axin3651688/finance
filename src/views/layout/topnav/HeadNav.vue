@@ -6,11 +6,12 @@
       class="hamburger-container"
     />
     <div class="topcontent">
-      <span @click="showDilog" v-if="showDims.company">
-        <i class="el-icon-search iconclass"></i>
-        <el-button type="text" class="underline">{{companyName}}</el-button>
-      </span>
-
+        <div style="display:inline-block;">
+            <span @click="showDilog" v-if="showDims.company" style="display:inline-block;">
+                <!-- <i class="el-icon-search iconclass"></i> -->
+                <el-button type="text" class="underline">{{companyName}}</el-button>
+            </span>
+        </div>
       <el-dialog title="选择公司" :visible.sync="dialogVisible" :modal-append-to-body="false">
         <companyTree @click="getname"/>
         <span slot="footer" class="dialog-footer">
@@ -21,7 +22,7 @@
 
       <el-dropdown trigger="click" v-if="showDims.year">
         <el-button type="text">
-          <i class="el-icon-date iconclass shuxian"></i>
+          <!-- <i class="el-icon-date iconclass shuxian"></i> -->
           <span class="underline">
             {{year+"年"}}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -36,7 +37,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-dropdown trigger="click" v-if="showDims.month">
-        <el-button type="text" class="underline">
+        <el-button type="text" class="monthUnderline">
           {{month+"月"}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
@@ -178,9 +179,7 @@ export default {
     CompanyTree
   },
   created() {
-    // console.log("vvv",this.user.company.id)
     this.value = this.year + this.month + this.date;
-    console.log(this.value);
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
       this.$set(this, "yearCount", bean.yearCount);
