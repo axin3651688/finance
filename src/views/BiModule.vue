@@ -540,6 +540,7 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
+      console.log(this)
       console.log(this.config);
       if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);

@@ -10,20 +10,46 @@
 			"xtype": "chart",
 			"height_s":"600px",
 			"id": "231",
-			"text": "公司效果图",
+			"text": "前五公司效果图",
 			"weight": 24,
 			"closable": true,
 			"show":true,
+			"jdugeData":function(item){
+				for(let key in item){
+					if(item[key] && typeof(item[key]) == "number" && item[key] > 0){
+						return true;
+					}
+				}
+				return false;
+			},
 			"queryDataBefore":function(params, config, $vue){
-				debugger;
 				let chartData = $vue.$store.chartData;
 				if(chartData){
 					params.indscode = chartData[0].indscode;
 				}
 				return params;
 			},
+			"queryDataAfter":function(data){
+				let me = this,otherData,flag = false;
+				if(data.length < 6){
+					data = data.filter(function(item,index){
+						return item.gsbm != '999'
+					});
+				}else{
+					otherData = data.filter(function(item,index){
+						return item.gsbm == '999'
+					});
+					flag = me.jdugeData(otherData[0]);
+					if(!flag){
+						data = data.filter(function(item,index){
+							return item.gsbm != '999'
+						});
+					};
+				};
+				return data;
+			},
 			"config": {
-				"sql":"WITH T AS( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE SINDCODE=:indscode AND STYPE<>'R') SELECT HYMC,LJWC FROM( SELECT T.SNAME AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T INNER JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY T.SNAME ) ",
+				"sql":"WITH TMP AS(SELECT A.SCODE AS GSBM,A.SNAME AS GSMC, SUM(CASE WHEN C.DIM_ITEMPERIOD='1416001' THEN NVL(B.FACT_A,0) ELSE NVL(B.FACT_B,0) END) AS BNJY, SUM(CASE WHEN C.DIM_PERIOD=:comparePeriod THEN NVL(C.FACT_B,0) ELSE 0 END) AS LJWC, SUM(CASE WHEN C.DIM_PERIOD=:period THEN NVL(C.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD C ON A.SCODE=C.DIM_COMPANY AND C.DIM_PERIOD IN(:comparePeriod,:period) AND DIM_ITEMPERIOD='1416001' LEFT JOIN DW_FACTTARGETASSESSMENT B ON A.SCODE=B.DIM_COMPANY AND B.DIM_PERIOD =:comparePeriod WHERE A.SINDCODE=:indscode AND A.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY A.SCODE,A.SNAME ORDER BY LJWC DESC), TMP0 AS (SELECT ROWNUM AS XH,GSBM,GSMC,BNJY,LJWC,(CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL,SNLJWC, LJWC-SNLJWC AS TBZJE,(CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM TMP) SELECT GSBM,GSMC,BNJY,LJWC,LJWCL,SNLJWC,TBZJE,TBZJL FROM TMP0 WHERE XH<=5 UNION ALL SELECT '999' AS HYBM,'其他' AS HYMC,NVL(SUM(BNJY),0) AS BNJY,NVL(SUM(LJWC),0) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE NVL(ROUND(SUM(LJWC)/SUM(BNJY)*100,2),0) END) AS LJWCL, NVL(SUM(SNLJWC),0) AS SNLJWC,NVL((SUM(LJWC)-SUM(SNLJWC)),0) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE NVL((ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2)),0) END ) AS TBZJL FROM TMP0 WHERE XH>5",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -51,7 +77,7 @@
 						"text": "同比增减率"
 					},
 					{
-						"id": "hymc",
+						"id": "gsmc",
 						"type": "string",
 						"text": "公司简称"
 					},
@@ -71,7 +97,7 @@
 						"text": "累计完成率"
 					},
 					{
-						"id": "sntq",
+						"id": "snljwc",
 						"type": "number",
 						"text": "上年同期"
 					},
@@ -91,7 +117,7 @@
 					"type": 2,
 					"columns": [
 						{
-							"id": "hymc",
+							"id": "gsmc",
 							 "prop":"name"
 						},
 						{
@@ -124,7 +150,12 @@
                     "type": "pie",
                     "radius": "55%",
                     "center": ["50%", "50%"],
-                    "data": "this.item.options.datas",
+					"data": "this.item.options.datas",
+					"label":{
+						"formatter":function(params){
+							return params.name + "：" + Math.decimalToLocalString(params.value/10000) + "万元 (" + params.percent + "%)";
+						}
+					},
                     "itemStyle": {
                         "emphasis": {
                             "shadowBlur": 10,
@@ -147,19 +178,88 @@
 			"xtype": "bi-table",
 			"id": "8979",
 			"text": "这个也是钻取过来的表",
+			"unit":10000,
 			// "height":300,
 			"weight": 24,
 			"show":true,
+			"jdugeData":function(item){
+				for(let key in item){
+					if(item[key] && typeof(item[key]) == "number" && item[key] > 0){
+						return true;
+					}
+				}
+				return false;
+			},
 			"queryDataBefore":function(params, config, $vue){
-				debugger;
 				let chartData = $vue.$store.chartData;
 				if(chartData){
 					params.indscode = chartData[0].indscode;
 				}
 				return params;
 			},
+			"conversionUnit":function(unit){
+				let me = this;
+				let unitObjs = [
+					{"text":"万元","value":10000},
+					{"text":"千元","value":1000},
+					{"text":"百元","value":100},
+					{"text":"十元","value":10},
+					{"text":"元","value":1}
+				];
+				if(!unit){
+					unit = me.unit;
+				}
+				if(!unit){
+					unit = "元";
+				}
+				for(let i = 0;i < unitObjs.length;i ++){
+					let unitItem = unitObjs[i];
+					if(unitItem.text == unit){
+						return unitItem.value;
+					}
+				}
+				return 1;
+			},
+			"queryDataAfter":function(data){
+				let me = this,otherData,flag;
+				let columns = me.config.columns;
+				let unit = me.unit;
+				if(!unit){
+					unit = 1;
+				}
+				if(data.length < 7){
+					data = data.filter(function(item,index){
+						return item.gsbm != '999'
+					});
+				}else{
+					otherData = data.filter(function(item,index){
+						return item.gsbm == '999'
+					});
+					flag = me.jdugeData(otherData[0]);
+					if(!flag){
+						data = data.filter(function(item,index){
+							return item.gsbm != '999'
+						});
+					};
+				};
+				if(columns && columns.length > 0){
+					for(let i = 0;i < data.length;i ++){
+						let dataItem = data[i];
+						for(let j = 0;j < columns.length;j ++){
+							let columnItem = columns[j];
+							if(columnItem.unit && columnItem.unit == "万元"){
+								let columnId = columnItem.id;
+								if(dataItem[columnId]){
+									dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+								}
+							}
+						}
+					}
+				}
+				return data;
+			},
 			"config": {
-				"sql":"WITH T AS( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE SINDCODE=:indscode AND STYPE<>'R') SELECT HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT DECODE(T.SNAME,NULL,'合计',T.SNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets (T.SNAME,()) )",
+				"sql":"WITH TMP AS(SELECT A.SCODE AS GSBM,A.SNAME AS GSMC, SUM(CASE WHEN C.DIM_ITEMPERIOD='1416001' THEN NVL(B.FACT_A,0) ELSE NVL(B.FACT_B,0) END) AS BNJY, SUM(CASE WHEN C.DIM_PERIOD=:comparePeriod THEN NVL(C.FACT_B,0) ELSE 0 END) AS LJWC, SUM(CASE WHEN C.DIM_PERIOD=:period THEN NVL(C.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD C ON A.SCODE=C.DIM_COMPANY AND C.DIM_PERIOD IN(:comparePeriod,:period) AND DIM_ITEMPERIOD='1416001' LEFT JOIN DW_FACTTARGETASSESSMENT B ON A.SCODE=B.DIM_COMPANY AND B.DIM_PERIOD =:comparePeriod WHERE A.SINDCODE=:indscode AND A.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY A.SCODE,A.SNAME ORDER BY LJWC DESC), TMP0 AS (SELECT ROWNUM AS XH,GSBM,GSMC,BNJY,LJWC,(CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL,SNLJWC, LJWC-SNLJWC AS TBZJE,(CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM TMP) SELECT GSBM,GSMC,BNJY,LJWC,LJWCL,SNLJWC,TBZJE,TBZJL FROM TMP0 WHERE XH<=5 UNION ALL SELECT '999' AS HYBM,'其他' AS HYMC,NVL(SUM(BNJY),0) AS BNJY,NVL(SUM(LJWC),0) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE NVL(ROUND(SUM(LJWC)/SUM(BNJY)*100,2),0) END) AS LJWCL, NVL(SUM(SNLJWC),0) AS SNLJWC,NVL((SUM(LJWC)-SUM(SNLJWC)),0) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE NVL((ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2)),0) END ) AS TBZJL FROM TMP0 WHERE XH>5 UNION ALL SELECT '9999' AS GSBM,'合计' AS GSMC,SUM(BNJY) AS BNJY,SUM(LJWC) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE ROUND(SUM(LJWC)/SUM(BNJY)*100,2) END) AS LJWCL, SUM(SNLJWC) AS SNLJWC,SUM(LJWC)-SUM(SNLJWC) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2) END ) AS TBZJL FROM TMP ",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -188,7 +288,7 @@
 						"text": "同比增减率"
 					},
 					{
-						"id": "hymc",
+						"id": "gsmc",
 						"type": "string",
 						"text": "公司简称",
 						"width":"300px"
@@ -196,12 +296,14 @@
 					{
 						"id": "mbjy",
 						"type": "decimal",
-						"text": "全年考核目标建议值"
+						"text": "全年考核目标建议值",
+						"unit":"万元"
 					},
 					{
 						"id": "ljwc",
 						"type": "decimal",
-						"text": "累计完成值"
+						"text": "累计完成值",
+						"unit":"万元"
 					},
 					{
 						"id": "ljwcl",
@@ -210,14 +312,16 @@
 						
 					},
 					{
-						"id": "sntq",
+						"id": "snljwc",
 						"type": "decimal",
-						"text": "上年同期"
+						"text": "上年同期",
+						"unit":"万元"
 					},
 					{
 						"id": "tbzje",
 						"type": "decimal",
-						"text": "同比增减额"
+						"text": "同比增减额",
+						"unit":"万元"
 					}	
 				],
 				"rows": []

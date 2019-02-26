@@ -25,7 +25,7 @@ export default {
         },
         pageSizes: {
             type: Array,
-            default: () => [10, 25, 50, 100]
+            default: () => [50, 100, 150, 200]
         },
         searchMethod: {
             type: Function,
