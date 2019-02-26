@@ -54,14 +54,12 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapActions} from 'vuex'
 import {
   FIND_CARD,
   LATEST_CONTACT,
   MY_NODE
-} from '@m_api/messageIndex.js';
-
-const SETTINGS = require('@/settings'); // 全局变量或配置
+} from '@m_api/messageIndex.js'
 
 export default {
   name: 'Home',
@@ -75,7 +73,7 @@ export default {
       findCardArrs: [],
       nodeArrs: [],
       latest_contact: []
-    };
+    }
   },
 
   methods: {
@@ -83,77 +81,77 @@ export default {
 
     cardboxClick(card) {
       // debugger;
-      console.log('点击了卡片数据-->>', card.text);
+      console.log('点击了卡片数据-->>', card.text)
       if (window.require) {
-        let ipc = window.require('electron').ipcRenderer;
+        let ipc = window.require('electron').ipcRenderer
         if (card.redirect) {
-          ipc.send('web_openWebUrl', card.redirect);
+          ipc.send('web_openWebUrl', card.redirect)
         }
       } else {
-        if (card.redirect) window.open(card.redirect, '_blank');
+        if (card.redirect) window.open(card.redirect, '_blank')
       }
     },
 
     nodeboxClick(node) {
       // debugger
-      let addr = SETTINGS.serverAddress.api; // 服务器地址
-      let companyId = this.user.company.id;
-      let redirectUrl = addr + 'auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect;
-      console.log('redirectUrl-->>', redirectUrl);
+      let addr = process.env.VUE_APP_API // 服务器地址
+      let companyId = this.user.company.id
+      let redirectUrl = addr + 'auth/auth_url/' + localStorage.authorization + '/?companyId=' + companyId + '&redirectUrl=' + node.redirect
+      console.log('redirectUrl-->>', redirectUrl)
       if (window.require) {
-        let ipc = window.require('electron').ipcRenderer;
+        let ipc = window.require('electron').ipcRenderer
         if (redirectUrl) {
-          ipc.send('web_openWebUrl', redirectUrl);
+          ipc.send('web_openWebUrl', redirectUrl)
         }
       } else {
-        if (redirectUrl) window.open(redirectUrl, '_blank');
+        if (redirectUrl) window.open(redirectUrl, '_blank')
       }
     },
     contactClick(user) {
       // debugger
-      console.log('点击了联系人-->>', user);
-      let sessionItem = {};
-      let targetId = '1100_' + user.id;
-      sessionItem['miniType'] = 1100;
-      sessionItem['targetId'] = targetId;
-      sessionItem['id'] = user.id;
-      sessionItem['name'] = user.trueName;
-      sessionItem['count'] = 0;
-      sessionItem['content'] = null;
-      sessionItem['sendTime'] = null;
-      sessionItem['avatar'] = user.avatar;
-      sessionItem['originData'] = user;
+      console.log('点击了联系人-->>', user)
+      let sessionItem = {}
+      let targetId = '1100_' + user.id
+      sessionItem['miniType'] = 1100
+      sessionItem['targetId'] = targetId
+      sessionItem['id'] = user.id
+      sessionItem['name'] = user.trueName
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = user.avatar
+      sessionItem['originData'] = user
       this.ActionSetMessageStore({
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType,
         receiverData: user
-      });
-      this._updateSessionList(sessionItem);     // 更新session边栏
-      this.$router.push('/message_page/msg');
+      })
+      this._updateSessionList(sessionItem)     // 更新session边栏
+      this.$router.push('/message_page/msg')
     },
 
     /**
      * 更新session边栏，如果已经存在则清空消息计数，不存在则添加一个session条目
      */
     _updateSessionList(sessionItem) {
-      let itemExist = false;
+      let itemExist = false
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === sessionItem.targetId) { // 如果已经在队列中了，跳出遍历，直接跳转
-          itemExist = true;
+          itemExist = true
           this.ActionUpdateSessionList({
             type: 'update',
             method: 'clearCount',
             data: sessionItem
-          });
-          break;
+          })
+          break
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        };
-        this.ActionUpdateSessionList(addObj);
+        }
+        this.ActionUpdateSessionList(addObj)
       }
     }
 
@@ -161,32 +159,32 @@ export default {
 
   mounted() {
     FIND_CARD(this.user.user.id).then(res => {
-      console.log('获取查询可以添加的卡片数据-->>', res.data);
+      console.log('获取查询可以添加的卡片数据-->>', res.data)
 
       if (res.data.code === 200) {
-        this.findCardArrs = res.data.data;
+        this.findCardArrs = res.data.data
       }
-    });
+    })
 
     MY_NODE(this.user.user.id).then(res => {
-      console.log('获取我的节点 MY_NODE -->>', res.data);
+      console.log('获取我的节点 MY_NODE -->>', res.data)
 
       if (res.data.code === 200) {
-        this.nodeArrs = res.data.data;
-        console.log('this.nodeArrs:', this.nodeArrs);
+        this.nodeArrs = res.data.data
+        console.log('this.nodeArrs:', this.nodeArrs)
       }
-    });
+    })
 
     LATEST_CONTACT(this.user.user.id).then(res => {
-      console.log('获取我的常用联系人 -->>', res.data);
+      console.log('获取我的常用联系人 -->>', res.data)
 
       if (res.data.code === 200) {
-        this.latest_contact = res.data.data;
+        this.latest_contact = res.data.data
       }
-    });
+    })
   }
 
-};
+}
 </script>
 
 <style lang="scss" scoped>
