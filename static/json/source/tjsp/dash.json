@@ -1167,12 +1167,12 @@
 					   "scope": true
 				   }
 			   },
-			   "chartListeners":{
+			   	"chartListeners":{
 					"way":"transChartOption",
 					"transChartOption":function(option,that){
 						debugger;
 						let me = this,numFlag = 0;
-						let data = option.series[0].data,dataRes;
+						let data = option.series[0].data,dataRes = [];
 						if(data && data.length > 0){
 							// let FirstData = data[0];
 							// let twoData = data[1];
@@ -1188,12 +1188,12 @@
 										dataRes.push(item);
 									}
 								});
+								option.series[0].data = dataRes;
 							};
-							option.series[0].data = dataRes;
 						};
 						return option;
 					}
-			   },
+			   	},
 			   "chartOptions":{
 				   	"dd":"this.item.text",
 				   	"unitObj":{
@@ -1243,6 +1243,7 @@
 							"label":{
 								"position":"inside",
 								"formatter":function(params){
+									// debugger;
 									return params.name + "：" + params.percent + "%";
 									// if(params.value == 0){
 									// 	return "";
@@ -1407,6 +1408,35 @@
 					"scope": true
 				}
 			},
+			"chartListeners":{
+				"way":"transChartOption",
+				"transChartOption":function(option,that){
+					debugger;
+					let me = this,numFlag = 0;
+					let data = option.series[0].data,dataRes = [],legend = [];
+					if(data && data.length > 0){
+						// let FirstData = data[0];
+						// let twoData = data[1];
+						// if(){}
+						data.forEach(function(item,index){
+							if(item.value == 0){
+								numFlag ++;
+							}
+						});
+						if(numFlag == 1){
+							data.forEach(function(item,index){
+								if(item.value != 0){
+									dataRes.push(item);
+									legend.push(item.name);
+								}
+							});
+							// option.legend.data = legend;
+							option.series[0].data = dataRes;
+						};
+					};
+					return option;
+				}
+		   },
 			"chartOptions":{
 				"dd":"this.item.text",
 				"unitObj":{
@@ -1439,7 +1469,10 @@
 						"center": ["50%", "50%"],
 						"data": "this.item.options.datas",
 						"label":{
-							"position":"inside"
+							"position":"inside",
+							"formatter":function(params){
+								return params.name + "：" + params.percent + "%";
+							},
 						},
 						"itemStyle": {
 							"emphasis": {
