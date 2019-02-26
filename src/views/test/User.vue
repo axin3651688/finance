@@ -978,12 +978,18 @@ export default {
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item){ 
+                  if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                      item.open = true;//展开此节点
+                      _this.expandKeys.push(item.scode);
+                  }
                   item.id = item.scode; 
-                return item.label = item.sname;
+                  item.label =  "("+item.scode+") "+item.sname;
+                  item.sname = item.label;
+                return item;
             });
             _this.comtree = data;
-            data[0].open = true;
-            _this.expandKeys.push(data[0].scode);
+           // data[0].open = true;
+            //_this.expandKeys.push(data[0].scode);
             _this.comtree = tools.transformToeTreeNodes(setting, data);
           }
         }
