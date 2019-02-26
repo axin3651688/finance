@@ -121,6 +121,9 @@
             .el-button--text {
                 // color: #000;
                 color: #fff;
+                //文字过长的样式的设置
+                overflow: hidden;
+                text-overflow: ellipsis;
                 span {
                     span {
                         display: inline-block;

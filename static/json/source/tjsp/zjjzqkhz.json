@@ -20,12 +20,13 @@
       let datas = [];
       me.items[0].updateView = $vue.updateView;
       me.items[0].$vue = $vue;
-      data.forEach((item,index)=>{
-        if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
-            datas.push(item);
-        }
-      });    
-      return datas;
+    //   data.forEach((item,index)=>{
+    //     if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
+    //         datas.push(item);
+    //     }
+    //   });    
+    //   return datas;
+    return data ;
   },
     "showDims": ["year","month","company","conversion"],
     "config":{

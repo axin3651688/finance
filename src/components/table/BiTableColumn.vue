@@ -27,6 +27,7 @@
     :label="col.text"
     :align="col.align|| 'left'"
     :width="col.width"
+    :min-width="col.width"
     type="index"
   />
   <!-- :align="col.align||'center'" -->
@@ -36,7 +37,8 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||100"
+    :min-width="col.width||100"
+    :width="col.width"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
@@ -44,13 +46,16 @@
       </el-tooltip>
     </template>
   </el-table-column>
+
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
   <el-table-column
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||150"
+    :min-width="col.width||150"
+    :width="col.width"
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
