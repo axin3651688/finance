@@ -30,7 +30,7 @@
             <el-table-column prop="srolename" label="角色" width="180" header-align="center"  align ="center" ></el-table-column>
             <el-table-column prop="semail" label="邮箱" width="180" header-align="center"  align ="center" ></el-table-column>
             <el-table-column prop="companyname" label="所属公司" width="180" header-align="center"  align ="center" ></el-table-column>
-            <el-table-column label="操作" header-align="center">
+            <el-table-column label="操作" header-align="center" min-width="350px">
               <template slot-scope="scope">
                 <template v-if="scope.row.cisenabled === 'Y'">
                   <el-button size="mini" @click="handleDisable(scope.$index, scope.row)">禁用</el-button>
