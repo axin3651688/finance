@@ -11,7 +11,7 @@
           <el-button  type="primary" @click="handleSelect">选项</el-button>
         </div>
  </el-row> -->
-
+<div class="input-refresh" ref="elememt">
     <el-form class="user-form-inline">
       <el-form-item class="left">
         <el-button  type="primary" @click="handleAdd('add')">添加角色</el-button>
@@ -21,6 +21,7 @@
         <el-button  type="primary" @click="handleSelect">选项</el-button>
       </el-form-item> -->
     </el-form>
+</div>
 
  
 <el-table
@@ -707,6 +708,13 @@ div.select {
 .el-checkbox{
     margin-left: 30px;
 }
+/* .input-refresh {
+    width: 100%;
+   
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #fff;
+} */
 </style>
 
 
