@@ -385,7 +385,7 @@ export default {
         },
 
         convert2HansoneTableColumns(columns){
-            columns.sort((a,b)=>a.sort-b.sort);
+            // columns.sort((a,b)=>a.sort-b.sort);
             if(this.fixed===false){
                 columns.push({text:"操作",type:"string"})
                 this.rowdata = true

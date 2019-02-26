@@ -58,7 +58,11 @@ export default {
     },
     setFlagState() {
       if(this.item.watchValue){
-        this.flag = this.judgeValue();
+        let jFlag= this.judgeValue();
+        this.flag = jFlag;
+      }else if (this.item.watchConfig) {
+        let itemNames = this.item.watchConfig.itemNames;
+        this.flag = this.showChartOrDiv(itemNames);
       }else if (this.item.datas && this.item.datas.length > 0) {
         this.flag = true;
       } else {
@@ -66,18 +70,44 @@ export default {
       }
     },
     judgeValue() {
-      let dataRes = this.item.datas;
+      let dataRes = this.item.datas,fFlag = false;
       if(dataRes && dataRes.length > 0){
-        dataRes.forEach(item => {
+        for(let i = 0;i < dataRes.length;i ++){
+          let item = dataRes[i];
           for(let key in item){
             if(typeof item[key] == "number" && item[key] > 0){
-              this.false = true;
+              // this.flag = true;
+              // return false;
+              fFlag = true;
+              break;
             }
+          };
+          if(fFlag){
+            return true;
+          }
+        };
+        return false;
+      }else{
+        // this.flag = false;
+        return false;
+      }
+    },
+    showChartOrDiv(itemNames){
+      let me = this,itemFlag = false;
+      let dataRes = this.item.datas;
+      for(let i = 0;i < dataRes.length;i ++){
+        let itemData = dataRes[i];
+        itemNames.forEach(item => {
+          if(typeof itemData[item] == "number" && itemData[item] > 0){
+            itemFlag = true;
+            return itemFlag;
           }
         });
-      }else{
-        this.flag = false;
+        if(itemFlag){
+          return itemFlag;
+        }
       }
+      return itemFlag;
     }
 
   },
