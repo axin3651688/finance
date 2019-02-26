@@ -1,18 +1,20 @@
 <template>
   <div class="userM">
-    <el-form :inline="true" :model="searchForm" class="user-form-inline">
-      <el-form-item>
-        <el-button  type="primary"  @click="handleAdd">添加用户</el-button>
-        <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
-      </el-form-item>
+    <div class="input-refresh" ref="elememt">
+      <el-form :inline="true" :model="searchForm" class="user-form-inline"  >
+        <el-form-item>
+          <el-button  type="primary"  @click="handleAdd">添加用户</el-button>
+          <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+        </el-form-item>
 
-      <el-form-item >
-        <el-input v-model="searchForm.search" placeholder="用户名/真实姓名模糊搜索"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="handleSearchhandleSearch(searchForm.search)"></el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item >
+          <el-input v-model="searchForm.search" placeholder="用户名/真实姓名模糊搜索"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="handleSearchhandleSearch(searchForm.search)"></el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
 
     <el-table
@@ -30,7 +32,7 @@
             <el-table-column prop="srolename" label="角色" width="180" header-align="center"  align ="center" ></el-table-column>
             <el-table-column prop="semail" label="邮箱" width="180" header-align="center"  align ="center" ></el-table-column>
             <el-table-column prop="companyname" label="所属公司" width="180" header-align="center"  align ="center" ></el-table-column>
-            <el-table-column label="操作" header-align="center">
+            <el-table-column label="操作" header-align="center" min-width="350px">
               <template slot-scope="scope">
                 <template v-if="scope.row.cisenabled === 'Y'">
                   <el-button size="mini" @click="handleDisable(scope.$index, scope.row)">禁用</el-button>
@@ -1140,6 +1142,14 @@ export default {
 }
 .companyRight {
    float: right;
+}
+.input-refresh {
+    width: 100%;
+    /* height: 80px; line-height: 80px; */
+    /* max-height: 160px; */
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #fff;
 }
  lable[for='company']  {
     width: 70%;
