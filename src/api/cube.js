@@ -51,7 +51,19 @@ export function onlineRequest(data) {
     data: data
   })
 }
-
+/**
+ * name: sjz
+ * 说明 : 市管企业经营业绩情况表请求接口;
+ *        EVA表的请求接口
+ * time : 2019/2/22 15:55:00
+ */
+export function eva_city_Request(data) {
+  return request({
+    url: '/api/api/find_data?cubeId='+data.cubeId + "&sql="+data.sql,
+    method: 'post'
+    // data: data
+  })
+}
 
 
 

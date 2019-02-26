@@ -1,56 +1,71 @@
 <template>
   <div>
     <el-input placeholder="输入关键字进行过滤" v-model="filterText" suffix-icon="el-icon-search"></el-input>
-    <!-- :default-expanded-keys="['1']" -->
+    <!-- :default-expanded-keys="key" -->
     <el-tree
       :props="props"
       :load="loadNode"
-      node-key="id"
       ref="tree2"
       default-expand-all
       highlight-current
       lazy
+      accordion
+      :expandOnClickNode="false"
       @node-click="handleNodeClick "
       :filter-node-method="filterNode"
     ></el-tree>
+    <!-- default-expand-all -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { getCompanyTree } from "~api/interface.js";
+// import { setTimeout } from "timers";
 export default {
   name: "",
   data() {
     return {
+      key: [],
       props: {
         label: "text",
         children: [],
-        isLeaf: "leaf"
+        isLeaf: "nisleaf"
       },
       firstcompany: [],
       filterText: ""
     };
   },
+  // props: ["filterText"],
   created() {
-    debugger
+    debugger;
     this.firstcompany = this.$store.getters.user.company;
     this.id = this.firstcompany.customerId;
     this.licenseId = this.firstcompany.licenseId;
   },
   watch: {
     filterText(val) {
-      console.log(this.$refs.tree2);
+      // console.log(this.$refs.tree2);
       this.$refs.tree2.filter(val);
     }
   },
+  components: {
+    tree: () => import("@v/test/tree/tree")
+  },
   mounted() {
     debugger;
+    let me = this;
+    setTimeout(() => {
+      me.key = [1];
+    }, 2000);
+
     // console.log(document.getElementsByClassName("el-tree-node__content"));
-    document.getElementsByClassName("el-tree-node__content")[0].click();
+    // document.getElementsByClassName("el-tree-node__content")[0].click();
   },
 
   methods: {
     filterNode(value, data) {
+      // console.log(value);
+      // console.log(data);
       if (!value) return true;
       return data.text.indexOf(value) !== -1;
     },
@@ -62,43 +77,36 @@ export default {
     },
     // 异步树叶子节点懒加载逻辑
     loadNode(node, resolve) {
-      debugger
       // 一级节点处理
-      console.log(node);
+      // console.log(node);
 
       debugger;
       if (node.level === 0) {
-        debugger;
+        // debugger;
         resolve([this.firstcompany]);
       }
-      // if (node.level >= 1) {
-      //   // 注意！把resolve传到你自己的异步中去
-      //   this.getIndex(node, resolve);
-      // }
+      if (node.level >= 1) {
+        // 注意！把resolve传到你自己的异步中去
+        this.getIndex(node, resolve);
+      }
     },
     // 异步加载叶子节点数据函数
     getIndex(node, resolve) {
-      debugger
       // 由于1级和二级的传值代号不一样一个取customerId,其他取id
       var id = node.level === 1 ? this.id : node.data.id;
       // console.log(id);
-      if (!node.data.leaf) {
-        node.leaf = true;
+      if (!node.data.leaf || !node.data.nisleaf) {
         getCompanyTree(this.licenseId, "company", "0", id).then(res => {
           if (res.data.code === 200) {
             var data = res.data.data;
-            debugger;
-            console.log(data);
+            // console.log(res.data);
+            // debugger;
             // 处理节点是否是叶子节点
             data.forEach(et => {
-              if (et.leaf !== 0) {
-                et.leaf = true;
-              } else {
-                et.leaf = false;
-              }
+              // et.leaf = et.leaf == 0 ? false : true;
+              et.nisleaf = et.nisleaf == 0 ? false : true;
             });
-            let data = res.data.data;
-            // console.log(res.data);
+
             resolve(data);
           } else {
             alert("网络请求失败");
@@ -109,4 +117,14 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+//css代码
+.el-tree-node__expand-icon {
+  border: 0;
+  /*自定义，必要时用!important*/
+}
+.el-tree-node__expand-icon.expanded {
+  /*自定义，必要时用!important*/
+}
+</style>
 

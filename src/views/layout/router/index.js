@@ -172,18 +172,18 @@ const router = new Router({
           component: () =>
             import('@v/systemSettings/online')
         },
-        // {//市管企业经营业绩情况表
-        //   path: '/sgyj',
-        //   name: 'sgyj',
-        //   component: () =>
-        //     import('@v/systemSettings/shiguan')
-        // },
-        // {//EVA表
-        //   path: '/eva',
-        //   name: 'eva',
-        //   component: () =>
-        //     import('@v/systemSettings/EVA')
-        // },
+        {//市管企业经营业绩情况表
+          path: '/sgyj',
+          name: 'sgyj',
+          component: () =>
+            import('@v/systemSettings/cityResults')
+        },
+        {//EVA表
+          path: '/eva',
+          name: 'eva',
+          component: () =>
+            import('@v/systemSettings/EVA')
+        },
         // 利润表
         {
           path: '/profit',
