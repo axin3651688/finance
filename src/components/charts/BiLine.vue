@@ -155,7 +155,6 @@ export default {
       //颜色的设置
       if(this.item.options.color){
         this.receive.color = this.item.options.color;
-				
       }
       let me = this;
       me.unit = {};
@@ -180,6 +179,9 @@ export default {
                   break;
                 }
                 if(unitFlag){
+                  if(me.unit[ele.seriesName] == "%"){
+                    ele.data = ele.data * 100;
+                  }
                   value += ele.seriesName + ":" + Math.decimalToLocalString(ele.data)  + me.unit[ele.seriesName] + "<br/>";
                 }else{
                   value += ele.seriesName + ":" + Math.decimalToLocalString(ele.data)  +  "<br/>";  //如果没有unit  那就默认不给单位

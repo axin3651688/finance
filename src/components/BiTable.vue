@@ -4,6 +4,7 @@
       <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
       style="background-color: #189271;color: black;"
     </el-button-group>-->
+    <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <el-button
@@ -79,6 +80,7 @@ export default {
       },
       drillProperties: ["text", "text_"], //有钻取，给蓝色
       levelProperties: { text: "level", text_: "level_" } //加缩进
+      ,titleText:""
     };
   },
   watch: {
@@ -88,15 +90,12 @@ export default {
     // }
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
         offsetHeight(val){
-            debugger
             if(!this.timer){
-                debugger
                 // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
                 this.offsetHeight = val
                 this.timer = true
                 let me = this
-                setTimeout(function(){  
-                  debugger                
+                setTimeout(function(){           
                     // 打印offsetHeight变化的值 
                     //me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
                     if(me.item.stype == "table"){
@@ -119,7 +118,6 @@ export default {
      * 导航栏高度：64
      * 间隙高度：15+7 = 22
      */
-    debugger
     this.upData(this.item);
     console.log(this.item)
     if(this.item.stype == "table"){
@@ -144,7 +142,6 @@ export default {
     const me = this
         // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
         window.onresize = () => {
-            debugger
             return (() => {
                 window.offsetHeight = document.body.offsetHeight;
                 me.offsetHeight = window.offsetHeight;
@@ -237,6 +234,27 @@ export default {
           });
         }
       }
+      //添加表头的内容
+      if(this.item.tableBefore){
+        this.tableBefore();
+      }
+    },
+    //添加在表头要加的内容
+    tableBefore(){
+      let me = this;
+      if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
+        this.titleText = this.item.tableBeforeFun(this,this.titleText);
+      }else {
+        let period = me.$store.selectPeriod;
+        let year = period.substring(0,4);
+        let month = period.substring(4,6);
+        let company = me.$store.getters.companyName;
+        // let unit = "单位：元";
+        let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+        let snStyle = "padding:5px 10px;";
+        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + ")</span></p>";
+        this.titleText = html;
+      }
     },
     rowClass({ row, rowIndex }) {
       // 头部颜色和居中配置,马军2018.12.24
@@ -249,7 +267,6 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -280,7 +297,6 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
-      debugger;
       // console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
@@ -312,7 +328,6 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
-      debugger
       if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
         return this.item.onCellClick(row, column, cell, event, this);
       }
@@ -329,7 +344,6 @@ export default {
     },
 
     getSummaries(param) {
-      debugger;
       const { columns, data } = param;
       const sums = {};
       columns.forEach((column, index) => {
@@ -341,7 +355,6 @@ export default {
         }
         sums[column.property] = datas;
       });
-      debugger;
       return sums;
     },
 

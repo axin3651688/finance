@@ -93,7 +93,6 @@ export default {
       };
     },
     getDataSource(item) {
-      debugger;
       let options = item.chartOptions;
       if (!item.options.unUseDefaultConfig && options) {
         //不使用默认配制
@@ -103,18 +102,12 @@ export default {
     // 图例数据千分位，两位小数处理  zdk 
       // this.setToolTip(options,items);
        options.tooltip = this.getToolTip(options);
-
-     
-
-
       this.evalVaiables(options);
       // console.log(options);
-      debugger;
       return options;
     },
     upData(item) {
       console.log(item);
-
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
       // debugger;
@@ -134,6 +127,14 @@ export default {
             return item.name;
           });
           this.chartOptions.series[0].data = this.item.options.datas;
+          debugger;
+          //echart图的回调函数。此时写在最后是因为暂时是在最后解决问题，可以再别的地方
+          if(this.item.chartListeners){
+            let lisConfig = this.item.chartListeners;
+            if(lisConfig[lisConfig.way] && typeof lisConfig[lisConfig.way] == "function"){
+              lisConfig[lisConfig.way](this.chartOptions,this);
+            };
+          }
         } else if (subType == "gauge") {
           this.chartOptions.series[0].data = [
             { value: this.item.options.datas[0].value }

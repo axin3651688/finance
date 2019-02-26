@@ -9,6 +9,20 @@
       "xtype" : "bi-table",
       "id" : "zcfzb",
       "text" : "资产负债表",
+      "tableBefore":true,
+      "tableBeforeFun":function($vue,params){
+        debugger;
+        let me = this;
+        let period = $vue.$store.selectPeriod;
+        let year = period.substring(0,4);
+        let month = period.substring(4,6);
+        let company = $vue.$store.getters.companyName;
+        // let unit = "单位：元";
+        let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+        let snStyle = "padding:5px 10px;";
+        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + ")</span></p>";
+        return html;
+      },
 	  "queryDataBefore":function(params,config,$vue){
 				debugger;
 				let me = this;
