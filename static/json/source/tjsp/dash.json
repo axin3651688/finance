@@ -75,7 +75,6 @@
 	},
 	 "show":true,
    "__queryDataAfter":function(data){
-	   debugger;		
 	   let me = this;
 	   let columns = me.columns;
 	   let unit = me.unit;
@@ -120,7 +119,6 @@
 					   "way":"addTab",
 					   "sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
 					   "handler": ($vue,params) =>{
-							debugger;
 							let me = this;
 							let itemscode = $vue.item.GItemScode;
 							if(itemscode){
@@ -259,7 +257,6 @@
 			   {
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
-					   debugger
 					   if(!$vue.$store.getters.treeInfo.leaf && $vue.$store.getters.treeInfo.id != "121"){
 						   //params.sourceApi = "cnbi/json/source/tjsp/yszkTwoDebug.json";
 						   params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
@@ -271,7 +268,6 @@
 				   "way":"addTab",
 				   "sourceApi":"/cnbi/json/source/tjsp/yszkTwoDebug.json",
 				   "handler": ($vue,params) =>{
-						debugger;
 						$vue.optionParams = params;
 						let selectPeriod = params.name;
 						let data;
@@ -359,7 +355,6 @@
 			   return 1;
 		   },
 		   "queryDataAfter":function(data){
-			   debugger;
 			   let me = this;
 			   let columns = me.options.getData.columns;
 			   let unit = me.unit;
@@ -531,7 +526,6 @@
 			   return 1;
 		   },
 		   "queryDataAfter":function(data){
-			   debugger;
 			   let me = this;
 			   let columns = me.options.getData.columns;
 			   let unit = me.unit;
@@ -710,7 +704,6 @@
 			   return 1;
 		   },
 		   "queryDataAfter":function(data){
-			   debugger;
 			   let me = this;
 			   let columns = me.options.getData.columns;
 			   let unit = me.unit;
@@ -783,16 +776,16 @@
 			"watchState":true,
 			"weight": 12,
 			   "config": {
-				   "sql":"SELECT :company AS DIM_COMPANY, B.SCODE, NVL((CASE WHEN ZCZE=0 THEN 0 ELSE ROUND(FZZE/ZCZE,4) END),0) AS ZCFZL, NVL(ZCZE,0) AS zcze,NVL(FZZE,0) AS fzze,NVL(QYZE,0) AS qyze FROM(SELECT DIM_PERIOD, SUM(CASE WHEN DIM_ITEMPOINT='1100100' THEN NVL(FACT_B,0) ELSE 0 END) AS ZCZE, SUM(CASE WHEN DIM_ITEMPOINT='1200100' THEN NVL(FACT_B,0) ELSE 0 END) AS FZZE, SUM(CASE WHEN DIM_ITEMPOINT='1300100' THEN NVL(FACT_B,0) ELSE 0 END) AS QYZE FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT IN('1100100','1200100','1300100') AND DIM_PERIOD BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY DIM_PERIOD) A RIGHT JOIN DW_DIMPERIOD B ON B.SCODE=A.DIM_PERIOD WHERE B.SCODE BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period AND CTYPE='4' ORDER BY B.SCODE",
-				   "_cubes": {
-				   "subject": "0002",
-				   "dims":{
-					   "itemperiod":"1416001,1403100,1400111",
-					   "period":0
-				   },
-				   "dimName":"period",
-				   "cubeId": 2
-				},
+				  	"sql":"SELECT :company AS DIM_COMPANY, B.SCODE, NVL((CASE WHEN ZCZE=0 THEN 0 ELSE ROUND(FZZE/ZCZE,4) END),0) AS ZCFZL, NVL(ZCZE,0) AS zcze,NVL(FZZE,0) AS fzze,NVL(QYZE,0) AS qyze FROM(SELECT DIM_PERIOD, SUM(CASE WHEN DIM_ITEMPOINT='1100100' THEN NVL(FACT_B,0) ELSE 0 END) AS ZCZE, SUM(CASE WHEN DIM_ITEMPOINT='1200100' THEN NVL(FACT_B,0) ELSE 0 END) AS FZZE, SUM(CASE WHEN DIM_ITEMPOINT='1300100' THEN NVL(FACT_B,0) ELSE 0 END) AS QYZE FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT IN('1100100','1200100','1300100') AND DIM_PERIOD BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY DIM_PERIOD) A RIGHT JOIN DW_DIMPERIOD B ON B.SCODE=A.DIM_PERIOD WHERE B.SCODE BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period AND CTYPE='4' ORDER BY B.SCODE",
+				   	"_cubes": {
+						"subject": "0002",
+						"dims":{
+							"itemperiod":"1416001,1403100,1400111",
+							"period":0
+						},
+						"dimName":"period",
+						"cubeId": 2
+					},
 				"random": {
 				   "min": 100,
 				   "max": 100000
@@ -807,35 +800,35 @@
 			   },
 			   "rows": [],
 			   "columns": [
-				   {
-					   "id": "scode",
-					   "type": "string",
-					   "text": "编码"
-				   },
-				   {
-					   "id": "zcfzl",
-					   "type": "number",
-					   "text": "资产负债率"
-				   },
-				   {
-					   "id": "zcze",
-					   "type": "number",
-					   "text": "资产总额"
-				   },
-				   {
-					   "id": "fzze",
-					   "type": "number",
-					   "text": "负债总额"
-				   },
-				   {
-					   "id": "qyze",
-					   "type": "number",
-					   "text": "权益总额"
-				   }
+				   	{
+						"id": "scode",
+						"type": "string",
+						"text": "编码"
+				   	},
+				   	{
+						"id": "zcfzl",
+						"type": "number",
+						"text": "资产负债率"
+				   	},
+				   	{
+						"id": "zcze",
+						"type": "number",
+						"text": "资产总额"
+				   	},
+				   	{
+						"id": "fzze",
+						"type": "number",
+						"text": "负债总额"
+				   	},
+				   	{
+						"id": "qyze",
+						"type": "number",
+						"text": "权益总额"
+				   	}
 			   ]
-		   },
+		   	},
 			"listeners":[
-			   {
+			    {
 				   "type":"click",
 				   "clickBefore":function(listeners,$vue,params){
 					   
@@ -851,7 +844,7 @@
 								$vue.$store.selectPeriod = selectPeriod;
 							}
 					}
-			   }
+			    }
 			],
 			"conversionUnit":function(unit){
 			   let me = this;
@@ -877,7 +870,6 @@
 			   return 1;
 		   },
 		   "queryDataAfter":function(data){
-			   debugger;
 			   let me = this;
 			   let columns = me.options.getData.columns;
 			   let unit = me.unit;
@@ -897,7 +889,7 @@
 				   }
 			   }
 			   return data;
-		   },
+		   	},
 			"options": {
 				"type": "line",
 				"getData": {
@@ -948,125 +940,48 @@
 			"unit":"万元",
 			"watchState":true,
 			"weight": 12,
-			  "config": {
-				   "_sql":"",
-				   "cubes": {
-					   "subject": "0002",
-					   "dims":{
-						   "itemperiod":"1416001,1403100,1400111",
-						   "period":0
-					   },
-					   "dimName":"period",
-					   "cubeId": 2
-				   },
-				   "random": {
-					   "min": 100,
-					   "max": 100000
-				   },
-				   "mainDim": "period",
-				   "needDims":["company","year","month"],
-				   "periodCount":12,
-				   "compareType":"0&-1",
-				   "type": 1,
-				   "generateVar":{
-					   "periodCount":12,
-					   "compareType":"0&-1",
-					   "varName":"rows",
-					   "reverse":true
-				   },
-			   "rows": [
+			"config": {
+				"sql":"WITH TMP AS(SELECT SCODE,DIM_PERIOD,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_DIMFINANCE A LEFT JOIN (SELECT (select spcode from DW_DIMCOMPANY where scode = :company) AS DIM_COMPANY,DIM_FINANCE,SUBSTR(SREPAYDATE,1,6) AS DIM_PERIOD,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_FACTFINANCEDETAIL WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY DIM_FINANCE,SREPAYDATE) B ON B.DIM_FINANCE LIKE A.SCODE||'%' WHERE (SPCODE LIKE '10%' OR SCODE='10') GROUP BY SCODE,DIM_PERIOD), TMP0 AS (SELECT SCODE AS XM,A.DIM_PERIOD,FACT_A AS JE,NVL(ZHCB,0) AS ZHCB FROM TMP A LEFT JOIN (SELECT DIM_FINANCE,SUBSTR(SREPAYDATE,1,6) AS DIM_PERIOD, (CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(FACT_A,0)*NVL(FACT_C,0))/SUM(NVL(FACT_A,0)*100)),4) END) AS ZHCB FROM DW_FACTFINANCEDETAIL A WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY DIM_FINANCE,SUBSTR(SREPAYDATE,1,6)) B ON A.SCODE=B.DIM_FINANCE AND A.DIM_PERIOD=B.DIM_PERIOD AND A.DIM_PERIOD BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period) SELECT A.SCODE as period,NVL(JE,0) AS JE,NVL(ZHCB,0) AS ZHCB FROM DW_DIMPERIOD A LEFT JOIN TMP0 B ON A.SCODE=B.DIM_PERIOD AND XM='1001' WHERE A.SCODE BETWEEN TO_CHAR((TO_DATE(:period,'YYYYMM')-INTERVAL '11' MONTH),'YYYYMM') AND :period AND CTYPE='4' ORDER BY A.SCODE",
+				"_cubes": {
+					"subject": "0002",
+					"dims":{
+						"itemperiod":"1416001,1403100,1400111",
+						"period":0
+					},
+					"dimName":"period",
+					"cubeId": 2
+				},
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"mainDim": "period",
+				"needDims":["company","year","month"],
+				"type": 1,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
+			   	"rows": [],
+			  	"columns": [
 					{
-						"id": "{year}01",
-						"text": "{year}年1月"
-					}, 
-					{
-
-						"id": "{year}02",
-						"text": "{year}年2月"
+						"id": "id",
+						"type": "string",
+						"text": "编码"
 					},
 					{
-
-						"id": "{year}03",
-						"text": "{year}年3月"
+						"id": "je",
+						"type": "number",
+						"text": "项目"
 					},
 					{
-
-						"id": "{year}04",
-						"text": "{year}年4月"
-					},
-					{
-						"id": "{year}05",
-						"text": "{year}年5月"
-					},
-					{
-						"id": "{year}06",
-						"text": "{year}年6月"
-					}, {
-						"id": "{year}07",
-						"text": "{year}年7月"
-					}, 
-					{
-
-						"id": "{year}08",
-						"text": "{year}年8月"
-					},
-					{
-
-						"id": "{year}09",
-						"text": "{year}年9月"
-					},
-					{
-
-						"id": "{year}10",
-						"text": "{year}年10月"
-					},
-					{
-						"id": "{year}11",
-						"text": "{year}年11月"
-					},
-					{
-						"id": "{year}12",
-						"text": "{year}年12月"
+						"id": "zhcb",
+						"type": "number",
+						"text": "本期数"
 					}
-				],
-			  "columns": [
-				   {
-					   "id": "id",
-					   "type": "string",
-					   "hidden": true,
-					   "text": "编码"
-				   },
-				   {
-					   "id": "row",
-					   "type": "number",
-					   "text": "行次"
-				   },
-				   {
-					   "id": "text",
-					   "type": "string",
-					   "text": "项目"
-				   },
-				   {
-					   "id": "A",
-					   "type": "decimal",
-					   "text": "本期数"
-				   }
-			   ],
-			"group":{
-			   "id":"itemperiod",
-			   "text":"itemperiod", 
-			   "datas":[
-				   {
-					 "id": "1416001",
-					 "text": "综合融资成本率"
-				   },
-				   {
-					 "id": "1403100",
-					 "text": "融资性债务总额"
-				   }
-			   ]
-			 }
-		   },
+			   	]
+		   	},
 			"listeners":[
 			   	{
 				   	"type":"click",
@@ -1081,31 +996,30 @@
 					}
 			   	}
 			],
-		   "conversionUnit":function(unit){
-			   let me = this;
-			   let unitObjs = [
-				   {"text":"万元","value":10000},
-				   {"text":"千元","value":1000},
-				   {"text":"百元","value":100},
-				   {"text":"十元","value":10},
-				   {"text":"元","value":1}
-			   ];
-			   if(!unit){
-				   unit = me.unit;
-			   }
-			   if(!unit){
-				   unit = "元";
-			   }
-			   for(let i = 0;i < unitObjs.length;i ++){
-				   let unitItem = unitObjs[i];
-				   if(unitItem.text == unit){
-					   return unitItem.value;
-				   }
-			   }
-			   return 1;
-		   },
-		   "queryDataAfter":function(data){
-			   debugger;
+		   	"conversionUnit":function(unit){
+				let me = this;
+				let unitObjs = [
+					{"text":"万元","value":10000},
+					{"text":"千元","value":1000},
+					{"text":"百元","value":100},
+					{"text":"十元","value":10},
+					{"text":"元","value":1}
+				];
+				if(!unit){
+					unit = me.unit;
+				}
+				if(!unit){
+					unit = "元";
+				}
+				for(let i = 0;i < unitObjs.length;i ++){
+					let unitItem = unitObjs[i];
+					if(unitItem.text == unit){
+						return unitItem.value;
+					}
+				}
+				return 1;
+		   	},
+		   	"queryDataAfter":function(data){
 			   let me = this;
 			   let columns = me.options.getData.columns;
 			   let unit = me.unit;
@@ -1125,39 +1039,34 @@
 				   }
 			   }
 			   return data;
-		   },
+		   	},
 			"options": {
 				"type": "line",
 				"getData": {
 					"type": 5,
-					"columns": [{
-						 "id": "id",
-						   "type": "category"
-					},{
-						 "id": "A",
-						 "name":"综合融资成本率",
-						 "group":{
-							  "dim":"itemperiod",
-							  "val":"1416001"
-						   },
-						 "type": "line",
-						 "smooth": false,
-						   "unit":"%"
-					},{
-						 "id": "A",
-						"name":"融资性债务总额",
-						 "group":{
-							  "dim":"itemperiod",
-							  "val":"1403100"
-						   },
-						 "type": "bar",
-						 "smooth": false,
-						   "unit":"万元"
-					}
+					"columns": [
+						{
+							"id": "period",
+							"type": "category"
+						},
+						{
+							"id": "zhcb",
+							"name":"综合融资成本率",
+							"type": "line",
+							"smooth": false,
+							"unit":"%"
+						},
+						{
+							"id": "je",
+							"name":"融资性债务总额",
+							"type": "bar",
+							"smooth": false,
+							"unit":"万元"
+						}
 					]
 					
 				},
-			   "color":['#9a7fd1','#2ec7c9']		//zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
+			   	"color":['#9a7fd1','#2ec7c9']		//zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
 			}
 		},
 		  
@@ -1168,7 +1077,7 @@
 			   "watchState":true,
 			   "weight": 6,
 			   "config": {
-				   "sql":"WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY  AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+				   	"sql":"WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY  AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
 				    "_cubes": {
 					   "subject": "0002",
 					   "dims":{
@@ -1258,6 +1167,33 @@
 					   "scope": true
 				   }
 			   },
+			   "chartListeners":{
+					"way":"transChartOption",
+					"transChartOption":function(option,that){
+						debugger;
+						let me = this,numFlag = 0;
+						let data = option.series[0].data,dataRes;
+						if(data && data.length > 0){
+							// let FirstData = data[0];
+							// let twoData = data[1];
+							// if(){}
+							data.forEach(function(item,index){
+								if(item.value == 0){
+									numFlag ++;
+								}
+							});
+							if(numFlag == 1){
+								data.forEach(function(item,index){
+									if(item.value != 0){
+										dataRes.push(item);
+									}
+								});
+							};
+							option.series[0].data = dataRes;
+						};
+						return option;
+					}
+			   },
 			   "chartOptions":{
 				   	"dd":"this.item.text",
 				   	"unitObj":{
@@ -1272,7 +1208,7 @@
 							"fontSize": 16,
 							"color":"#8796B0"
 						}
-					   },
+					},
 					// "graphic": [
 					// 	{ //设置饼状图内部文字
 					// 		"type": "text",
@@ -1305,7 +1241,15 @@
 						   	"center": ["50%", "50%"],
 						   	"data": "this.item.options.datas",
 							"label":{
-								"position":"inside"
+								"position":"inside",
+								"formatter":function(params){
+									return params.name + "：" + params.percent + "%";
+									// if(params.value == 0){
+									// 	return "";
+									// }else {
+									// 	return params.name + "：" + params.percent + "%";
+									// }
+								},
 							},
 						   	"itemStyle": {
 							   	"emphasis": {
@@ -1410,7 +1354,6 @@
 				return 1;
 			},
 			"queryDataAfter":function(data){
-				debugger;
 				let me = this;
 				let columns = me.options.getData.columns;
 				let unit = me.unit;
@@ -1496,11 +1439,7 @@
 						"center": ["50%", "50%"],
 						"data": "this.item.options.datas",
 						"label":{
-							"position":"inside",
-							"formatter":function(pp,aa,bb){
-								debugger;
-								
-							}
+							"position":"inside"
 						},
 						"itemStyle": {
 							"emphasis": {

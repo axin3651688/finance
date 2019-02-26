@@ -60,18 +60,24 @@ export default {
      * 图形事件处理
      */
     chartEventHandler(listener) {
-      let me = this;
+      let me = this,tabTitleObj = "";
       this.$children[0].chart.on(listener.type, function (params) {
         if(listener.clickBefore && typeof listener.clickBefore == "function"){
           listener = listener.clickBefore(listener,me,params);
-        }
-        // if(!listener){
-        //   return;
-        // }
+        };
+        //处理tab的标题。
+        if(listener && listener.textObj){
+          tabTitleObj = listener.textObj;
+          delete listener.textObj;
+        };
+        //标记chart图的某一个不能钻取。
+        if(listener.drillChartNo){
+          return;
+        };
        /**
         * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
         */
-        me.commonHandler(listener, params);
+        me.commonHandler(listener, params,tabTitleObj);
 
       });
 

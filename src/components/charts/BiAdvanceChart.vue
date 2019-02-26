@@ -93,7 +93,6 @@ export default {
       };
     },
     getDataSource(item) {
-      debugger;
       let options = item.chartOptions;
       if (!item.options.unUseDefaultConfig && options) {
         //不使用默认配制
@@ -108,8 +107,15 @@ export default {
 
 
       this.evalVaiables(options);
-      // console.log(options);
       debugger;
+      //设置一个配置回调函数。
+      if(this.item.chartListeners){
+        let lisConfig = this.item.chartListeners;
+        if(typeof lisConfig[lisConfig.way] == "function"){
+          options = lisConfig[lisConfig.way](options,this);
+        }
+      };
+      // console.log(options);
       return options;
     },
     upData(item) {

@@ -13,8 +13,15 @@
 			
 			"closable": true,
 			"show": true,
+			"jdugeData":function(item){
+				for(let key in item){
+					if(item[key] && typeof(item[key]) == "number" && item[key] > 0){
+						return true;
+					}
+				}
+				return false;
+			},
 			"queryDataBefore":function(params,config,$vue){
-				debugger;
 				let me = this;
 				let itemscode = $vue.$store.itemscode;
 				if(itemscode){
@@ -22,8 +29,28 @@
 				}
 				return params;
 			},
+			"queryDataAfter":function(data){
+				debugger;
+				let me = this,otherData,flag = false;
+				if(data.length < 6){
+					data = data.filter(function(item,index){
+						return item.indscode != '999'
+					});
+				}else{
+					otherData = data.filter(function(item,index){
+						return item.indscode == '999'
+					});
+					flag = me.jdugeData(otherData[0]);
+					if(!flag){
+						data = data.filter(function(item,index){
+							return item.indscode != '999'
+						});
+					};
+				};
+				return data;
+			},
 			"config": {
-				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,A.SCODE,B.SCODE INDSCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,LJWC FROM ( SELECT T.INDSCODE INDSCODE,T.DSNAME AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T INNER JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD =:itemscode AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY T.DSNAME,T.INDSCODE)",
+				"sql":"WITH TMP AS(SELECT A.SINDCODE AS INDSCODE,C.SNAME AS HYMC, SUM(CASE WHEN B.DIM_ITEMPERIOD=:itemscode THEN NVL(D.FACT_A,0) ELSE NVL(D.FACT_B,0) END) AS BNJY, SUM(CASE WHEN B.DIM_PERIOD=:period THEN NVL(B.FACT_B,0) ELSE 0 END) AS LJWC, SUM(CASE WHEN B.DIM_PERIOD=:comparePeriod THEN NVL(B.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD B ON B.DIM_COMPANY=A.SCODE AND B.DIM_PERIOD IN(:period,:comparePeriod) AND DIM_ITEMPERIOD=:itemscode INNER JOIN DW_DIMINDUSTRY C ON A.SINDCODE=C.SCODE LEFT JOIN DW_FACTTARGETASSESSMENT D ON B.DIM_COMPANY=D.DIM_COMPANY AND B.DIM_PERIOD=D.DIM_PERIOD AND D.DIM_PERIOD =:period WHERE A.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY A.SINDCODE,C.SNAME ORDER BY LJWC DESC), TMP0 AS (SELECT ROWNUM AS XH,INDSCODE,HYMC,BNJY,LJWC,(CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL,SNLJWC, LJWC-SNLJWC AS TBZJE,(CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM TMP) SELECT INDSCODE,HYMC,BNJY,LJWC,LJWCL,SNLJWC,TBZJE,TBZJL FROM TMP0 WHERE XH<=5 UNION ALL SELECT '999' AS INDSCODE,'其他' AS HYMC,NVL(SUM(BNJY),0) AS BNJY,NVL(SUM(LJWC),0) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE NVL(ROUND(SUM(LJWC)/SUM(BNJY)*100,2),0) END) AS LJWCL, NVL(SUM(SNLJWC),0) AS SNLJWC,NVL((SUM(LJWC)-SUM(SNLJWC)),0) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE NVL((ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2)),0) END ) AS TBZJL FROM TMP0 WHERE XH>5 ",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -87,6 +114,25 @@
 				{
 					"type":"click",
 					"way":"addTab",
+					"clickBefore":function(listener,$vue,params){
+						let me = this;
+						let id = "",text = params.name;
+						let drillConfigNo = {};
+						if(text == "其他"){
+							debugger;
+							$vue.$notify({
+								title: '提示',
+								message: '这个节点不提供下钻！',
+								type: 'warning'
+							});
+							listener.drillChartNo = true;
+							return listener;
+						}
+						listener.drillChartNo = false;
+						let textObj = {id:id,text:text};
+						listener.textObj = textObj;
+						return listener;
+					},
 					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
 					"handler": ($vue,params) =>{
 						let me = this;
@@ -121,7 +167,7 @@
 					"scope": true
 				}
 			},
-			  "chartOptions": {
+			"chartOptions": {
 				"dd": "this.item.text",
 				"height_s":"400px",
 				"unitObj":{
@@ -142,7 +188,12 @@
                     "type": "pie",
                     "radius": "55%",
                     "center": ["50%", "50%"],
-                    "data": "this.item.options.datas",
+					"data": "this.item.options.datas",
+					"label":{
+						"formatter":function(params){
+							return params.name + "：" + Math.decimalToLocalString(params.value/10000) + "万元 (" + params.percent + "%)";
+						}
+					},
                     "itemStyle": {
                         "emphasis": {
                             "shadowBlur": 10,
@@ -167,8 +218,40 @@
 			"id": "1400111",
 			"text": "这个也是钻取过来的表",
 			"weight": 24,
+			"unit":10000,
 			// "height":400,
 			"show": true,
+			"jdugeData":function(item){
+				for(let key in item){
+					if(item[key] && typeof(item[key]) == "number" && item[key] > 0){
+						return true;
+					}
+				}
+				return false;
+			},
+			"conversionUnit":function(unit){
+				let me = this;
+				let unitObjs = [
+					{"text":"万元","value":10000},
+					{"text":"千元","value":1000},
+					{"text":"百元","value":100},
+					{"text":"十元","value":10},
+					{"text":"元","value":1}
+				];
+				if(!unit){
+					unit = me.unit;
+				}
+				if(!unit){
+					unit = "元";
+				}
+				for(let i = 0;i < unitObjs.length;i ++){
+					let unitItem = unitObjs[i];
+					if(unitItem.text == unit){
+						return unitItem.value;
+					}
+				}
+				return 1;
+			},
 			"queryDataBefore":function(params,config,$vue){
 				let me = this;
 				let itemscode = $vue.$store.itemscode;
@@ -177,13 +260,50 @@
 				}
 				return params;
 			},
+			"queryDataAfter":function(data){
+				let me = this,otherData,flag = false;
+				let columns = me.config.columns;
+				let unit = me.unit;
+				if(!unit){
+					unit = 1;
+				}
+				if(data.length < 7){
+					data = data.filter(function(item,index){
+						return item.indscode != '999'
+					});
+				}else{
+					otherData = data.filter(function(item,index){
+						return item.indscode == '999'
+					});
+					flag = me.jdugeData(otherData[0]);
+					if(!flag){
+						data = data.filter(function(item,index){
+							return item.indscode != '999'
+						});
+					};
+				};
+				if(columns && columns.length > 0){
+					for(let i = 0;i < data.length;i ++){
+						let dataItem = data[i];
+						for(let j = 0;j < columns.length;j ++){
+							let columnItem = columns[j];
+							if(columnItem.unit && columnItem.unit == "万元"){
+								let columnId = columnItem.id;
+								if(dataItem[columnId]){
+									dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+								}
+							}
+						}
+					}
+				}
+				return data;
+			},
 			"listeners":[
 				{
 					"type":"click",
 					"way":"addTab",
 					"sourceApi":"/cnbi/json/source/tjsp/ybpTreeDebug.json",
 					"handler": ($vue,params) =>{
-						debugger;
 						let me = this;
 						let name = params.name;
 						let data;
@@ -199,14 +319,15 @@
 			],
 			"cellStyle":function(row,that){
 				let me = this;
-				if(row.columnIndex == 0){
+				if(row.columnIndex == 0 && row.row.hymc != "合计" && row.row.hymc != "其他"){
 					let css = "color: #428bca;cursor: pointer;";
 					return css;
 				}
 			},
 			"onCellClick":function(row, column, cell, event, option){
+				debugger;
 				let me = this;
-				if(cell.cellIndex != 0){
+				if(cell.cellIndex != 0 || cell.innerText == "合计" || cell.innerText == "其他"){
 					return;
 				};
 				let listeners = this.listeners[0];	
@@ -215,7 +336,7 @@
 				option.commonHandler(listeners,params,textObj);
 			},
 			"config": {
-				"sql":"WITH T AS(SELECT B.SNAME AS DSNAME,B.SCODE INDSCODE,A.SCODE FROM DW_DIMCOMPANY A LEFT JOIN DW_DIMINDUSTRY B ON A.SINDCODE=B.SCODE where A.cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' START WITH A.SCODE=:company CONNECT BY PRIOR A.SCODE=A.SPCODE) SELECT INDSCODE,HYMC,MBJY,LJWC,LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT T.INDSCODE INDSCODE,DECODE(T.DSNAME,NULL,'合计',T.DSNAME) AS HYMC,0 AS MBJY,SUM(T1.FACT_B) AS LJWC,0 AS LJWCL,SUM(T1.SNTQ) AS SNTQ, SUM((T1.FACT_B-T1.SNTQ)) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY,DIM_PERIOD,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD =:itemscode AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY(dim_company,dim_period))T1 ON T.SCODE=T1.DIM_COMPANY GROUP BY GROUPING sets ((T.DSNAME,T.INDSCODE),()))",
+				"sql":"WITH TMP AS(SELECT A.SINDCODE AS INDSCODE,C.SNAME AS HYMC, SUM(CASE WHEN B.DIM_ITEMPERIOD=:itemscode THEN NVL(D.FACT_A,0) ELSE NVL(D.FACT_B,0) END) AS BNJY, SUM(CASE WHEN B.DIM_PERIOD=:period THEN NVL(B.FACT_B,0) ELSE 0 END) AS LJWC, SUM(CASE WHEN B.DIM_PERIOD=:comparePeriod THEN NVL(B.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD B ON B.DIM_COMPANY=A.SCODE AND B.DIM_PERIOD IN(:period,:comparePeriod) AND DIM_ITEMPERIOD=:itemscode INNER JOIN DW_DIMINDUSTRY C ON A.SINDCODE=C.SCODE LEFT JOIN DW_FACTTARGETASSESSMENT D ON B.DIM_COMPANY=D.DIM_COMPANY AND B.DIM_PERIOD=D.DIM_PERIOD AND D.DIM_PERIOD =:period WHERE A.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) GROUP BY A.SINDCODE,C.SNAME ORDER BY LJWC DESC), TMP0 AS (SELECT ROWNUM AS XH,INDSCODE,HYMC,BNJY,LJWC,(CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL,SNLJWC, LJWC-SNLJWC AS TBZJE,(CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM TMP) SELECT INDSCODE,HYMC,BNJY,LJWC,LJWCL,SNLJWC,TBZJE,TBZJL FROM TMP0 WHERE XH<=5 UNION ALL SELECT '999' AS INDSCODE,'其他' AS HYMC,NVL(SUM(BNJY),0) AS BNJY,NVL(SUM(LJWC),0) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE NVL(ROUND(SUM(LJWC)/SUM(BNJY)*100,2),0) END) AS LJWCL, NVL(SUM(SNLJWC),0) AS SNLJWC,NVL((SUM(LJWC)-SUM(SNLJWC)),0) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE NVL((ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2)),0) END ) AS TBZJL FROM TMP0 WHERE XH>5 UNION ALL SELECT '9999' AS INDSCODE,'合计' AS HYMC,SUM(BNJY) AS BNJY,SUM(LJWC) AS LJWC,(CASE WHEN SUM(BNJY)=0 THEN 0 ELSE ROUND(SUM(LJWC)/SUM(BNJY)*100,2) END) AS LJWCL, SUM(SNLJWC) AS SNLJWC,SUM(LJWC)-SUM(SNLJWC) AS TBZJE,(CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2) END ) AS TBZJL FROM TMP ",
 				"_cube": {
 					"subject": "0001",
 					"cubeId": 4
@@ -251,12 +372,14 @@
 					{
 						"id": "mbjy",
 						"type": "decimal",
-						"text": "全年考核目标建议值"
+						"text": "全年考核目标建议值",
+						"unit":"万元"
 					},
 					{
 						"id": "ljwc",
 						"type": "decimal",
-						"text": "累计完成"
+						"text": "累计完成",
+						"unit":"万元"
 					},
 					{
 						"id": "ljwcl",
@@ -266,12 +389,14 @@
 					{
 						"id": "sntq",
 						"type": "decimal",
-						"text": "上年同期"
+						"text": "上年同期",
+						"unit":"万元"
 					},
 					{
 						"id": "tbzje",
 						"type": "decimal",
-						"text": "同比增减额"
+						"text": "同比增减额",
+						"unit":"万元"
 					}	
 				],
 				"rows": []

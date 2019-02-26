@@ -189,7 +189,6 @@ export default {
         union = true;
         //  debugger
       }
-      debugger
       if (!row[colId] && !union) {
         let temp = datas.filter(tempRow=>{
           return tempRow.id == rowId;
