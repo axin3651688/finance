@@ -9,7 +9,7 @@
             :rounded="false"
             backgroundColor="transparent"
             color="#fff"
-            size="30"
+            :size="30"
           ></avatar>
           <img :src="user.user.avatar" onerror="this.style.display='none'"/>
         </div>

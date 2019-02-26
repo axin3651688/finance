@@ -1,6 +1,6 @@
 /**
  * 约定：get请求用params，post用data
- * 约定：api函数名同一大写
+ * 约定：api函数名同一大写,下划线连接
  */
 import request from '@mu/http';
 

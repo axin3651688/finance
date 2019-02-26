@@ -15,7 +15,7 @@
                   :rounded="false"
                   backgroundColor="transparent"
                   color="#fff"
-                  size="40"
+                  :size="40"
                 ></avatar>
                 <img :src="friend.avatar" onerror="this.style.display='none'"/>
               </div>
@@ -38,7 +38,7 @@
               :rounded="false"
               backgroundColor="transparent"
               color="#fff"
-              size="50"
+              :size="50"
             ></avatar>
             <img :src="rightUserInfoData.user.avatar" onerror="this.style.display='none'"/>
           </div>
