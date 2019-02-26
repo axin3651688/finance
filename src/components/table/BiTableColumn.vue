@@ -26,7 +26,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :min-width="col.width"
+    :width="col.width"
     type="index"
   />
   <!-- :align="col.align||'center'" -->
@@ -36,7 +36,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :min-width="col.width||100"
+    :width="col.width||100"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
@@ -50,7 +50,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :min-width="col.width||150"
+    :width="col.width||150"
   >
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->

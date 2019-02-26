@@ -499,7 +499,7 @@ export default {
         },
         // 设置单元格的只读
         cells(row,columns,prop){
-            // console.log("row,columns,prop",row,columns,prop)
+            console.log("row,columns,prop",row,columns,prop)
            
             let cellMeta = {}
             if(this.fixed===1){
@@ -747,6 +747,7 @@ export default {
                 me.columns = res.data.data.columns
                 me.settings.data = res.data.data.rows
                 me.convert2HansoneTableColumns(columns);
+                console.log("me.settings.data",me.settings.data)
             })
         },
         handleClick(tab, event) {
