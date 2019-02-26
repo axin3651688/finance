@@ -78,7 +78,7 @@ const router = new Router({
           path: '/roles',
           name: 'roles',
           component: () =>
-            import('@v/test/Roles.vue')
+            import('@v/test/Role.vue')
         }
       ]
     },
