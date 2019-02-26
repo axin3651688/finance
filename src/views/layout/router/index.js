@@ -58,6 +58,13 @@ const router = new Router({
           component: () =>
             import('@v/test/Role.vue')
         }
+        ,// 角色
+        {
+          path: '/roles',
+          name: 'roles',
+          component: () =>
+            import('@v/test/Roles.vue')
+        }
 
       ]
     },
