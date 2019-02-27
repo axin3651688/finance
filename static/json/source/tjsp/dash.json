@@ -675,14 +675,14 @@
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
 					   if(!$vue.$store.getters.treeInfo.nisleaf){
-						   params.sourceApi = "cnbi/json/source/tjsp/qtysk.json";
+						   params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
 						   return params;
 					   }
-					   params.sourceApi = "cnbi/json/source/tjsp/qtysk.json";
+					   params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
 					   return params;
 				   },
 				   "way":"addTab",
-				   "sourceApi":"/cnbi/json/source/tjsp/qtysk.json",
+				   "sourceApi":"/cnbi/json/source/tjsp/dashQtyskDrill.json",
 				   "handler": ($vue,params) =>{
 						let selectPeriod = params.name;
 						if(selectPeriod){
