@@ -54,7 +54,6 @@ export default {
   name: "STreeGrid",
   props: ["item"],
   created() {
-    debugger;
     console.log("a", this.item);
     // this.item.rows = this.item.config.rows
     //  this.item.rows = this.item.datas
@@ -77,7 +76,6 @@ export default {
     const me = this
     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
     window.onresize = () => {
-        debugger
         return (() => {
             window.offsetHeight = document.body.offsetHeight;
             me.offsetHeight = window.offsetHeight;
@@ -88,9 +86,7 @@ export default {
     // sjz 加的
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
     offsetHeight(val){
-        debugger
         if(!this.timer){
-            debugger
             // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
             this.offsetHeight = val
             this.timer = true
@@ -168,7 +164,6 @@ export default {
       return "height:100%-64px";
     },
     onRowClick(row, e, column) {
-      debugger
       if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
         return this.item.onRowClick(row, column, e, this);
       }
@@ -204,7 +199,6 @@ export default {
      * 格式化数据源
      */
     convertData() {
-      debugger
       let tmp;
       if (!Array.isArray(this.item.datas)) {
         tmp = [this.item.datas];
@@ -217,24 +211,24 @@ export default {
         : [tmp, this.expandAll];
       let formatData = func.apply(null, args);
       this.$set(this, "formatData", tmp);
-    },
-
-    upData(item) {
-      debugger
-      this.$set(this, "formatData", "");
-      //  this.$set(this, "formatData", formatData);
-      this.$set(this, "formatData", null);
-      this.item = item;
-      debugger;
-      // sjz 调用一下递归生成树表类型
-      this.array(this.item.datas)
-      this.convertData();
       if(this.item.tableBefore){
         this.tableBefore();
       }
     },
+
+    upData(item) {
+      this.$set(this, "formatData", "");
+      //  this.$set(this, "formatData", formatData);
+      this.$set(this, "formatData", null);
+      this.item = item;
+      // sjz 调用一下递归生成树表类型
+      this.array(this.item.datas)
+      this.convertData();
+      // if(this.item.tableBefore){
+      //   this.tableBefore();
+      // }
+    },
     tableBefore(){
-      debugger;
       let me = this;
       if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
         this.titleText = this.item.tableBeforeFun(this,this.titleText);
@@ -253,7 +247,6 @@ export default {
       }
     },
     array(datas) {
-      debugger;
       let data = datas;
       // console.log("w",data)
       let arr = [];
@@ -337,7 +330,6 @@ export default {
     },
     // 图标显示
     iconShow(index, record) {
-      debugger
       return index === 0 && record.children && record.children.length > 0;
     },
     itemShow(index, record) {

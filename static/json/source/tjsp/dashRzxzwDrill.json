@@ -67,9 +67,9 @@
             ],
             "rows":[]
         },
-        "drillProperties":["sname"],//有钻取，给蓝色
+        // "drillProperties":["sname"],//有钻取，给蓝色
         "levelProperties":{"sname":"nlevel"},//加缩进
-        "cellStyle": function (row) {
+        "__cellStyle": function (row) {
             let datas = this.datas;
             let record = [];
             record = datas[row.rowIndex];
@@ -99,7 +99,7 @@
                 return css + textIndent;
             }
         },
-        "onCellClick": function (row, column, cell, event, option) {
+        "__onCellClick": function (row, column, cell, event, option) {
             let datas = this.datas;
             let data = datas.filter(function(item){
                     return item.id == row.id;
