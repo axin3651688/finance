@@ -506,10 +506,12 @@ export default {
         // datas.month =  date.getMonth()-1;
         //判断是不是钻取的年月。
         // let selectPeriod = this.$store.selectPeriod;
+        // debugger;
         // if(selectPeriod){
         //   datas.year = selectPeriod.substring(0,4);
         //   datas.month = selectPeriod.substring(4) - 0 + "";
-        // }
+        // };
+        // delete this.$store.selectPeriod;
         datas.month =
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
