@@ -428,7 +428,7 @@
 		},
 		{
 			"xtype": "chart",
-			"id": "lrb3",
+			"id": "lrb3001",
 			"text": "预付账款（万元/%）",
 			"unit":"万元",
 			"watchState":true,
@@ -600,7 +600,7 @@
 		
 	   ,{
 			"xtype": "chart",
-			"id": "lrb3",
+			"id": "lrb3002",
 			"text": "其他应收款（万元/%）",
 			"unit":"万元",
 			"watchState":true,
@@ -777,7 +777,7 @@
 		
 		,{
 			"xtype": "chart",
-			"id": "lrb3",
+			"id": "lrb3003",
 			"text": "资产、负债、权益（万元/%）",
 			"unit":"万元",
 			"watchState":true,
@@ -943,7 +943,7 @@
 		
 		,{
 			"xtype": "chart",
-			"id": "lrb3",
+			"id": "lrb3004",
 			"text": "融资性债务（万元/%）",
 			"unit":"万元",
 			"watchState":true,
