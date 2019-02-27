@@ -638,12 +638,12 @@ export default {
         if(item.conversion){
           itemUnit = item.conversion;
         }
-        // else {
-        //   itemUnit = {
-        //     id:1,
-        //     text:"元"
-        //   }
-        // }
+        else {
+          itemUnit = {
+            id:1,
+            text:"元"
+          }
+        }
       };
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
