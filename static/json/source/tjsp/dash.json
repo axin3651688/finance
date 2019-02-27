@@ -687,6 +687,9 @@
 						let selectPeriod = params.name;
 						if(selectPeriod){
 							$vue.$store.selectPeriod = selectPeriod;
+							// $vue.$store.qtyszk = {
+							// 	selectPeriod:selectPeriod
+							// };
 						}
 				   }
 			   }
@@ -854,6 +857,7 @@
 							let data;
 							if(selectPeriod){
 								$vue.$store.selectPeriod = selectPeriod;
+								// $vue.$store.zcfzqy = {selectPeriod:selectPeriod};
 							}
 					}
 			    }
