@@ -117,6 +117,10 @@
 				},
 				"show":true,
 				"GItemScode":"1416001",
+				"conversion":{
+					"id":1,
+					"text":"元"
+				},
 				"listeners":[
 				   	{
 						"type":"click",
