@@ -460,8 +460,20 @@ export default {
   },
   methods: {
     // 导航栏切换触发 注：公司、日期、单位
-    getData(varx, value){
-        debugger
+    getData(vax, value){
+        // debugger
+        let me = this ;
+        if(vax === 'year') {
+            me.yearId = me.$store.getters[vax] ;
+        } else if(vax === 'month') {
+            me.monthId = me.$store.getters[vax] ;
+        } else if(vax === 'company') {
+            me.companyId = me.$store.getters[vax] ;
+        } else {
+            me.conversionId = me.$store.getters[vax] ;
+        }
+        // 重新发送请求数据
+        me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
     },
     // 数据请求（唯一）
     tableDataRequest(companyId, yearId, monthId, conversionId){
@@ -480,7 +492,6 @@ export default {
         }else{
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='142640102' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','142640102','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','142640102','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
         }
-        debugger
         _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
         items = {
             'cubeId': 4,
@@ -496,11 +507,20 @@ export default {
         // debugger
       let me = this ;
       eva_city_Request(items).then(res => {
-          debugger
+          // debugger
           if(res.data.code === 200){
               
             if(me.ArrData.length>0){
-                me.ArrData2 = res.data.data ;
+              me.ArrData2 = res.data.data ;
+                // 单位的改变 元 、 千元 、 万元 、 亿元         
+                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
+                  let newId = me.conversionId.id ;
+                  me.ArrData2.forEach(items => {
+                    debugger
+                    items.A = items.A / newId ;
+                    items.B = items.B / newId ;
+                  })
+                }
                 me.ArrData2.forEach(item => {
                   // debugger
                   item.scodea = "v" + item.scode + "A"  ;
@@ -512,7 +532,7 @@ export default {
                 }) ;
                 me.ArrData2.forEach(ress => {
                   me.vars.forEach(recc => {
-                    debugger
+                    // debugger
                     if(ress.scode=="4101" && recc.code == "zbhfyqc"){
                         recc.value = ress.A ;
                         recc.display_num = ress.A ;
@@ -524,6 +544,15 @@ export default {
                 })
             }else{
                 me.ArrData = res.data.data ;
+                // 单位的改变 元 、 千元 、 万元 、 亿元         
+                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
+                  let newId = me.conversionId.id ;
+                  me.ArrData.forEach(items => {
+                    debugger
+                    // items.B = Math.decimalToLocalString(items.B / newId) ;
+                    items.B = items.B / newId ;
+                  })
+                }
                 me.ArrData.forEach(item => {
                 // debugger
                 item.scode = "v" + item.scode + "A"  ;
@@ -577,7 +606,7 @@ export default {
         this.exps.znhfy_tz;
       // 税后净利润 =  税后净营业利润-资本占用×资本成本率
       this.exps.shjlr =
-        this.exps.yywsrlr - this.exps.zbzyje * this.vars[1].value;
+        this.exps.yywsrlr - this.exps.zbzyje * this.vars[1].value;     
     },
     updatePjsData(arr, code) {
       arr.forEach(element => {
