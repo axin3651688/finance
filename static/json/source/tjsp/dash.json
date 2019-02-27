@@ -318,22 +318,22 @@
 				   },
 				   {
 					   "id": "safe",
-					   "type": "decimal",
+					   "type": "number",
 					   "text": "安全值"
 				   },
 				   {
 					   "id": "prompt",
-					   "type": "decimal",
+					   "type": "number",
 					   "text": "预警值"
 				   },
 				   {
 					   "id": "zjl",
-					   "type": "decimal",
+					   "type": "number",
 					   "text": "与年初相比增减率"
 				   },
 				   {
 					   "id": "ye",
-					   "type": "decimal",
+					   "type": "number",
 					   "text": "本年累计"
 				   }
 			   ]
@@ -466,22 +466,22 @@
 					   },
 					   {
 						   "id": "safe",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "安全值"
 					   },
 					   {
 						   "id": "prompt",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "预警值"
 					   },
 					   {
 						   "id": "zjl",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "与年初相比增减率"
 					   },
 					   {
 						   "id": "ye",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "本年累计"
 					   }
 				   ]
@@ -638,22 +638,22 @@
 					   },
 					   {
 						   "id": "safe",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "安全值"
 					   },
 					   {
 						   "id": "prompt",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "预警值"
 					   },
 					   {
 						   "id": "zjl",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "与年初相比增减率"
 					   },
 					   {
 						   "id": "ye",
-						   "type": "decimal",
+						   "type": "number",
 						   "text": "本年累计"
 					   }
 				   ]
