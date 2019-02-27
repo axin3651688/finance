@@ -1,7 +1,6 @@
 <template>
-  <div @mousedown="mousedown">
-    <ECharts :options="chartOptions" v-if="isShow" auto-resize theme="bule"/>
-    <!-- <div v-else :style="{'height':divHeight,'line-height':divHeight}" class="nodata">暂无数据</div> -->
+  <div @mousedown="mousedown" class="BiAdvanceChart">
+    <ECharts :options="chartOptions" auto-resize v-if="isShow" theme="bule"/>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -28,7 +27,7 @@ ECharts.registerTheme("bule", bule);
 //   console.log(params);
 // });
 export default {
-  mixins: [EventMixins],
+  // mixins: [EventMixins],
   props: {
     item: {}
   },
@@ -38,24 +37,18 @@ export default {
   data() {
     return {
       chartOptions: this.getDataSource(this.item),
-      map
+      map,
+      isShow: true
     };
   },
-  created() {},
-  mounted() {
+  created() {
     console.log(this.item.datas[0]);
-
-    console.log(Cnbi.isEmpty(this.item.datas[0]));
-
-    if (Cnbi.isEmpty(this.item.datas[0])) {
-      this.isShow = false;
-    } else this.upData(this.item);
+  },
+  mounted() {
+    // this.upData(this.item);
+    // console.log(this.item.options.datas);
   },
   computed: {
-    isShow() {
-      let flag = Cnbi.isEmpty(this.item.datas[0]);
-      return flag;
-    },
     divHeight() {
       return this.chartOptions.height_s ? this.chartOptions.height_s : "294px";
     }
@@ -110,6 +103,7 @@ export default {
     },
     upData(item) {
       // console.log(item);
+      console.log(this.item.datas[0], 55555555555555555);
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
@@ -121,6 +115,7 @@ export default {
          * 就是一个值数据的图形  dataRange   value
          */
         this.chartOptions.series[0].data = this.item.options.datas; // [{ value: item.options.datas, name: "完成率" }];
+        console.log(this.item.options.datas);
       } else if (chartType === 2) {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
@@ -142,6 +137,8 @@ export default {
               return item.text;
             }
           );
+          console.log(chartDatas, "11111111111111111111111");
+
           this.chartOptions.series[0].data = chartDatas;
         } else if (subType == "gauge") {
           // this.chartOptions.series[0].data = [
@@ -224,3 +221,12 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.BiAdvanceChart {
+  .nodata {
+    text-align: center;
+    font-size: 30px;
+  }
+}
+</style>
+
