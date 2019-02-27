@@ -5,6 +5,7 @@
     :style="item.style"   
     json里起作用，调滚动条x轴的 
   -->
+  <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
 <el-button-group  class="toolbar" >
     <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
   </el-button-group>
@@ -47,6 +48,7 @@ export default {
       dialogVisible: false,
       selectedOptions: [],
       formatData: [],
+      titleText:""
     };
   },
   name: "STreeGrid",
@@ -227,6 +229,28 @@ export default {
       // sjz 调用一下递归生成树表类型
       this.array(this.item.datas)
       this.convertData();
+      if(this.item.tableBefore){
+        this.tableBefore();
+      }
+    },
+    tableBefore(){
+      debugger;
+      let me = this;
+      if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
+        this.titleText = this.item.tableBeforeFun(this,this.titleText);
+      }else {
+        let period = me.$store.selectPeriod;
+        let year = period.substring(0,4);
+        let month = period.substring(4,6);
+        let company = me.$store.getters.companyName;
+        // let unit = "单位：元";
+        let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+        let snStyle = "padding:5px 10px;";
+        let currentUnit = "元";
+        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + 
+        "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
+        this.titleText = html;
+      }
     },
     array(datas) {
       debugger;
