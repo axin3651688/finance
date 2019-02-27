@@ -39,9 +39,18 @@
                 },
                 
                 "queryDataBefore":function(params,config,$vue){
+                    debugger;
                     let me = this;
                     let selectPeriod = $vue.$store.selectPeriod;
                     if(selectPeriod){
+                        let year = selectPeriod.substring(0,4);
+                        let month = selectPeriod.substring(4,6);
+                        if(year){
+                            params.year = year;
+                        }
+                        if(month){
+                            params.month = month;
+                        }
                         params.period = selectPeriod;
                     }
                     return params;
@@ -195,6 +204,14 @@
                     //是不是穿透的
                     let selectPeriod = $vue.$store.selectPeriod;
                     if(selectPeriod){
+                        let year = selectPeriod.substring(0,4);
+                        let month = selectPeriod.substring(4,6);
+                        if(year){
+                            params.year = year;
+                        }
+                        if(month){
+                            params.month = month;
+                        }
                         params.period = selectPeriod;
                     }
                     return params;

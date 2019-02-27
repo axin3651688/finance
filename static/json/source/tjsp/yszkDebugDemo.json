@@ -295,19 +295,24 @@
 		// 	}
 		// ],
 			"queryDataBefore":function(params,config,$vue){
-				debugger
+				debugger;
+				let me = this;
 				let selectPeriod = $vue.$store.selectPeriod;
 				if(selectPeriod){
+					let year = selectPeriod.substring(0,4);
+					let month = selectPeriod.substring(4,6);
+					if(year){
+						params.year = year;
+					}
+					if(month){
+						params.month = month;
+					}
 					params.period = selectPeriod;
-				};
-				if(params.company=='1001'){
-					config.sql = config.sql1;
-				}else{
-					config.sql = config.sql2;
 				}
 				return params;
 			},
 			"queryDataAfter":function(data, $vue){
+				debugger;
 				data.forEach(item => {
 					if(item.riskrange == "SAFE"){
 						item.riskrange = "安全" ;
