@@ -635,16 +635,23 @@ export default {
         //如果不显示单位切换，此处可以在json中配置自己想要的单位格式，如果没有配置就默认为：1 ，元
         if(item.conversion){
           itemUnit = item.conversion;
-        }else {
-          itemUnit = {
-            id:1,
-            text:"元"
-          }
         }
+        // else {
+        //   itemUnit = {
+        //     id:1,
+        //     text:"元"
+        //   }
+        // }
       };
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
-        datas = Math.convertUnit(unit.id, datas, item.config.columns);
+        let resColumns = [];
+        if(item.config.tableHeads){
+          let columns = item.config.columns;
+          this.transColumnsOfChildren(resColumns,columns);
+
+        }
+        datas = Math.convertUnit(unit.id, datas, (resColumns && resColumns.length > 0? resColumns:item.config.columns));
       }
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
@@ -674,6 +681,17 @@ export default {
       }
       //  this.units(datas)
     },
+    transColumnsOfChildren(resColumns,columns){
+      let me = this;
+      columns.forEach(item => {
+        if(item.children){
+          let childColums = item.children;
+          this.transColumnsOfChildren(resColumns,childColums);
+        }else {
+          resColumns.push(item);
+        }
+      });
+    },
     __queryDataAfter(datas) {
       return datas;
     },
@@ -699,7 +717,7 @@ export default {
     },
     tabClick(tab,event){
       debugger;
-      
+
     },
     getActiveTabName(item) {
       return item.id;

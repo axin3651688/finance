@@ -295,7 +295,7 @@
 		// 	}
 		// ],
 			"queryDataBefore":function(params,config,$vue){
-				// debugger
+				debugger
 				let selectPeriod = $vue.$store.selectPeriod;
 				if(selectPeriod){
 					params.period = selectPeriod;
@@ -340,7 +340,7 @@
 				"needDims":["year","month","company","conversion"],
 				"random":{"min":100,"max":100000},
 				"type":1,          
-				
+				"tableHeads":true,
 				"columns": [
 					{
 						"text": "已形成实质性损失金额",
