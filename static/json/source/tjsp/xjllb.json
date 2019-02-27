@@ -101,6 +101,7 @@
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1,
+        "tableHeads":true,
         "generateVar":{//生成变量rows
             "periodCount":2,
             "compareType":"-1&0",
