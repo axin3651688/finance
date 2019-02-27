@@ -252,7 +252,9 @@ export default {
         // let unit = "单位：元";
         let pStyle = "height:30px;line-height:30px;font-weight:bold;";
         let snStyle = "padding:5px 10px;";
-        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + ")</span></p>";
+        let currentUnit = "元";
+        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + 
+        "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
         this.titleText = html;
       }
     },
