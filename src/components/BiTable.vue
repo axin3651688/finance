@@ -234,6 +234,7 @@ export default {
           });
         }
       }
+      debugger;
       //添加表头的内容
       if(this.item.tableBefore){
         this.tableBefore();
@@ -241,6 +242,7 @@ export default {
     },
     //添加在表头要加的内容
     tableBefore(){
+      debugger;
       let me = this;
       if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
         this.titleText = this.item.tableBeforeFun(this,this.titleText);
