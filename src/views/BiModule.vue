@@ -643,6 +643,13 @@ export default {
         //   }
         // }
       };
+      /**
+       * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
+       */
+      if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
+        //
+        datas = item.__queryDataAfter(datas,this);
+      }
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         let resColumns = [];
@@ -656,10 +663,10 @@ export default {
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
-      if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
-        //
-        datas = item.__queryDataAfter(datas,this);
-      }
+      // if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
+      //   //
+      //   datas = item.__queryDataAfter(datas,this);
+      // }
       //
       //在此加了查询数据之后的拦截处理
       else if (
