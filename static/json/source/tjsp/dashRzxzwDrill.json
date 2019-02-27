@@ -1,0 +1,151 @@
+
+{
+    "id":"0039",
+    "text":"债务构成情况分析表",
+    "layout": {
+		"xtype":"column"
+	},
+    "items":[
+        {
+        "xtype": "bi-table",
+        "id":"zwgc",
+        "text":"债务构成情况分析表",
+        "tableBefore":true,
+        "queryDataBefore":function(params,config,$vue){
+            let me = this;
+            let selectPeriod = $vue.$store.selectPeriod;
+            if(selectPeriod){
+                let year = selectPeriod.substring(0,4);
+                let month = selectPeriod.substring(4,6);
+                if(year){
+                    params.year = year;
+                }
+                if(month){
+                    params.month = month;
+                }
+                params.period = selectPeriod;
+            }
+            return params;
+        },
+        "config":{
+            "sql":" WITH TMP AS(SELECT SCODE,SPCODE,SNAME,NLEVEL,CISLEAF,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_DIMFINANCE A LEFT JOIN (SELECT :company AS DIM_COMPANY,DIM_FINANCE,SUM(NVL(FACT_A,0)) AS FACT_A FROM DW_FACTFINANCEDETAIL WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY DIM_FINANCE) B ON B.DIM_FINANCE LIKE A.SCODE||'%' WHERE (SPCODE LIKE '10%' OR SCODE='10') GROUP BY SCODE,SPCODE,SNAME,NLEVEL,CISLEAF), TMP1 AS (SELECT * FROM TMP WHERE NLEVEL=1), TMP2 AS (SELECT * FROM TMP WHERE NLEVEL=2), TMP3 AS (SELECT * FROM TMP WHERE NLEVEL=3), TMP4 AS (SELECT * FROM TMP WHERE NLEVEL=4), TMP0 AS (SELECT SCODE,SNAME,NLEVEL,CISLEAF,NVL(ZHCB,0) AS ZHCB FROM TMP A LEFT JOIN (SELECT DIM_FINANCE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(FACT_A,0)*NVL(FACT_C,0))/SUM(NVL(FACT_A,0))*100),4) END) AS ZHCB FROM DW_FACTFINANCEDETAIL A WHERE DIM_COMPANY IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY DIM_FINANCE) B ON A.SCODE=B.DIM_FINANCE), TMP5 AS (SELECT '0' AS FLAG,A.SCODE,SNAME,NLEVEL,CISLEAF,JE,BZ,NVL(ZHCB,0) AS ZHCB FROM (SELECT * FROM TMP0) A INNER JOIN (SELECT SCODE,FACT_A AS JE,0 AS BZ FROM TMP1 UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP1 A INNER JOIN TMP2 B ON A.SCODE=B.SPCODE UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP2 A INNER JOIN TMP3 B ON A.SCODE=B.SPCODE UNION ALL SELECT B.SCODE,B.FACT_A AS JE,(CASE WHEN A.FACT_A=0 THEN 0 ELSE ROUND(B.FACT_A/A.FACT_A,4) END) AS BZ FROM TMP3 A INNER JOIN TMP4 B ON A.SCODE=B.SPCODE) B ON A.SCODE=B.SCODE ORDER BY A.SCODE), TMP6 AS (SELECT (CASE WHEN B.FACT_A IS NULL THEN A.FACT_A ELSE B.FACT_A END) AS FACT_A FROM (SELECT '1' AS FLAG,4.35 AS FACT_A FROM DUAL) A LEFT JOIN (SELECT '1' AS FLAG,FACT_A AS FACT_A FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_PERIOD=:period AND SRATIOTYPE='3' AND DIM_COMPANY=:company) B ON A.FLAG=B.FLAG), TMP7 AS (SELECT (CASE WHEN B.FACT_A IS NULL THEN A.FACT_A ELSE B.FACT_A END) AS FACT_A FROM (SELECT '1' AS FLAG,4.65 AS FACT_A FROM DUAL) A LEFT JOIN (SELECT '1' AS FLAG,FACT_A AS FACT_A FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_PERIOD=:period AND SRATIOTYPE='4' AND DIM_COMPANY=:company) B ON A.FLAG=B.FLAG) SELECT scode as id,SNAME,NLEVEL,CISLEAF,JE,BZ,ZHCB FROM TMP5 UNION ALL SELECT '','二、年化融资成本情况(融资性债务)' AS SNAME,1 AS NLEVEL,'0' AS CISLEAF,0 AS JE,0 AS BZ,0 AS ZHCB FROM DUAL UNION ALL SELECT '',SNAME,2 AS NLEVEL,'0' AS CISLEAF,JE,BZ,0 AS ZHCB FROM (SELECT B.SNAME,A.JE,A.BZ,0 AS ZHCB FROM (SELECT B.FLAG,B.JE,(CASE WHEN A.JE=0 THEN 0 ELSE ROUND(B.JE/A.JE*100,4) END) AS BZ FROM TMP5 A INNER JOIN (SELECT '10' AS FLAG,SUM(NVL((CASE WHEN ZHCB<=(SELECT FACT_A FROM TMP6) THEN NVL(JE,0) END),0)) AS JE FROM TMP5 UNION ALL SELECT '20' AS FLAG,SUM(NVL((CASE WHEN ZHCB>=(SELECT FACT_A FROM TMP6) AND ZHCB<=(SELECT FACT_A FROM TMP7) THEN NVL(JE,0) END),0)) AS JE FROM TMP5 UNION ALL SELECT '30' AS FLAG,SUM(NVL((CASE WHEN ZHCB>=(SELECT FACT_A FROM TMP7) THEN NVL(JE,0) END),0)) AS JE FROM TMP5) B ON A.FLAG=SUBSTR(B.FLAG,2,2) WHERE A.SCODE='10') A INNER JOIN (SELECT '10' AS FLAG,'一年期(≤'||TO_CHAR(FACT_A,'FM0.00')||'%)' AS SNAME FROM TMP6 UNION ALL SELECT '20' AS FLAG,'1-5年('||LISTAGG(SNAME,'-')WITHIN GROUP(ORDER BY SNAME)||')' AS SNAME FROM (SELECT TO_CHAR(FACT_A,'FM0.00')||'%' AS SNAME FROM TMP6 UNION ALL SELECT TO_CHAR(FACT_A,'FM0.00')||'%' AS SNAME FROM TMP7) UNION ALL SELECT '30' AS FLAG,'5年以上(≥'||TO_CHAR(FACT_A,'FM0.00')||'%)' AS SNAME FROM TMP7) B ON A.FLAG=B.FLAG ORDER BY A.FLAG) ",
+            "_cube":{
+                "subject":"0007",
+                "cubeId":4
+            },
+            "mainDim":"itemperiod",
+            "needDims":["year","month","company","conversion"],
+            "random":{"min":100,"max":100000},
+            "type":1,
+            "columns":[
+                {
+                    "id": "rzcb",
+                    "type": "decimal",
+                    "text": "加权平均融资成本"
+                },
+                {
+                    "id": "xh",
+                    "type": "index",
+                    "text": "序号",
+                    "width":"60px"
+                },
+                {
+                    "id": "sname",
+                    "type": "string",
+                    "text": "项目",
+                    "width":"260px"
+                }, {
+                    "id": "je",
+                    "type": "decimal",
+                    "text": "金额"
+                }, {
+                    "id": "bz",
+                    "type": "decimal",
+                    "text": "比重（%）",
+                    "conversion":"%"
+                }
+            ],
+            "rows":[]
+        },
+        "drillProperties":["sname"],//有钻取，给蓝色
+        "levelProperties":{"sname":"nlevel"},//加缩进
+        "cellStyle": function (row) {
+            let datas = this.datas;
+            let record = [];
+            record = datas[row.rowIndex];
+            let css = "padding: 4px 0;";
+            let pro = row.column.property; //列id
+            if (!pro) {
+                return css;
+            }
+            let levelProperties = this.levelProperties;//行缩进
+            let textIndent = "";
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {//行缩进处理
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            let drillProperties = this.drillProperties; //钻取列获取
+            if (drillProperties.indexOf(pro) != -1) { //匹配需要下钻的列
+                if (record.cisleaf && ((record.je && record.je != 0) || (record.bz && record.bz != 0) || (record.rzcb && record.rzcb != 0) )) { //有数据时才显示蓝色，并且可以下钻(合计行不能下钻)
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex].drill = true; //下钻设置
+                    return css;
+                } else {
+                    return css + textIndent;
+                }
+            } else {
+                return css + textIndent;
+            }
+        },
+        "onCellClick": function (row, column, cell, event, option) {
+            let datas = this.datas;
+            let data = datas.filter(function(item){
+                    return item.id == row.id;
+            });
+            row = data[0];
+            let cv = column.property + ""; //下钻行的标识
+            let listener = row._drill || row.drill;
+            if (listener && cv == "sname") {
+                let text = row.sname; //下钻显示的标题
+                let id = row.id;
+
+                option.commonHandler({
+                    "type": "click", //事件类型
+                    "way": "addTab", //调用的公共方法
+                    "sourceApi": "/cnbi/json/source/tjsp/zwgcqkDrill.json", //下钻json路径
+                    "handler": ($vue, params) => { //自定义的回调
+                        console.info(params);
+                        // let pp = {id:params.xxx,xxx};
+                        //  $vue.popop = pp; 
+                    }
+                }, {
+                    row: row,
+                    column: column,
+                    cell: cell,
+                    event: event
+                }, {
+                    id: id,
+                    text: text
+                });
+            }
+        }
+    }
+    ]
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
