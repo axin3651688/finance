@@ -319,7 +319,8 @@ export default {
           expression: "净利润 + 研究与开发费 + 利息支出 + 营业外收支净额"
         }
       ],
-      ArrData:[],
+      ArrData: [],
+      ArrData2:[],
       exps: {
         v1400100A: 1000, //净利润
 
@@ -405,14 +406,14 @@ export default {
         {
           code: "zbhfyqc",
           value: 0,
-          display_num: 0, //用来显示的值
+          display_num: 0, //用来显示的值 A
           text: "资本化费用期初余额",
           wclass: "width:300px"
         },
         {
           code: "zbhfyqm",
           value: 0,
-          display_num: 0, //用来显示的值
+          display_num: 0, //用来显示的值 B
           text: "资本化费用期末余额",
           wclass: "width:300px"
         }
@@ -464,44 +465,75 @@ export default {
     },
     // 数据请求（唯一）
     tableDataRequest(companyId, yearId, monthId, conversionId){
-        debugger
-      let _period, _sql, _sql2, items ;
+        // debugger
+      let _period, _year, _sql, _sql2, items ;
       // 月份处理 1~9 之间 前缀要加 ‘0’
       if(monthId>0 && monthId<10){
           monthId = "0" + monthId ;
       }
-      _period = yearId + monthId ; 
+      _period = yearId + monthId ;
+      _year = yearId - 1 + "12"; 
       for(let i=0; i<2; i++){
         if(i){
-            _sql2 = ``
+            // _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT '99' AS SCODE,'资本化费用' AS SNAME,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
+            _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT T3.SCODE,T3.SNAME,T2.QCYE AS A,T2.QMYE AS B FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '4101%') T3 LEFT JOIN (SELECT '4101' AS SCODE,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )T2 ON T3.SCODE =T2.SCODE )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
         }else{
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='142640102' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','142640102','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','142640102','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
         }
+        debugger
+        _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+        items = {
+            'cubeId': 4,
+            'sql' : encodeURI(_sql)
+        }
+        this.ArrData = [] ;
+        this.ArrData2= [] ;
+        this.eva_city_Request_new(items) ;
       }      
-      _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'") ;
-      items = {
-          'cubeId': 4,
-          'sql' : _sql
-      }
-      this.eva_city_Request_new(items) ;
     },
     // 数据请求
     eva_city_Request_new(items){
-        debugger
+        // debugger
       let me = this ;
       eva_city_Request(items).then(res => {
           debugger
           if(res.data.code === 200){
-              me.ArrData = res.data.data ;
-              me.ArrData.forEach(item => {
-                debugger
+              
+            if(me.ArrData.length>0){
+                me.ArrData2 = res.data.data ;
+                me.ArrData2.forEach(item => {
+                  // debugger
+                  item.scodea = "v" + item.scode + "A"  ;
+                  item.scodeb = "v" + item.scode + "B"  ;
+                  if(!item.A){ item.A = 0 ; }
+                  if(!item.B){ item.B = 0 ; }
+                  me.exps[item.scodea] = item.A ;
+                  me.exps[item.scodeb] = item.B ;
+                }) ;
+                me.ArrData2.forEach(ress => {
+                  me.vars.forEach(recc => {
+                    debugger
+                    if(ress.scode=="4101" && recc.code == "zbhfyqc"){
+                        recc.value = ress.A ;
+                        recc.display_num = ress.A ;
+                    }else if(ress.scode=="4101" && recc.code == "zbhfyqm"){
+                        recc.value = ress.B ;
+                        recc.display_num = ress.B ;
+                    }
+                  })
+                })
+            }else{
+                me.ArrData = res.data.data ;
+                me.ArrData.forEach(item => {
+                // debugger
                 item.scode = "v" + item.scode + "A"  ;
                 if(!item.B){
                   item.B = 0 ;
                 }
                 me.exps[item.scode] = item.B ;
               }) ;
-              //计算公式 资产总计
+            }              
+            //计算公式 资产总计
               me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
               console.log("me.ArrData:", me.ArrData) ;   
               me.setExpressionData();         
@@ -509,9 +541,14 @@ export default {
       }) ; 
     },
     setExpressionData() {
+      // debugger
       //营业外收支净额 营业外支出本期金额-营业外收入本期金额     
       this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
-
+      //资产负债率 = 负债合计期末余额/资产合计期末余额 *100
+      this.exps.zcfzlv = (this.exps.v1200100B / this.exps.v1100100B) * 100;
+      if (!this.exps.zcfzlv) {
+        this.exps.zcfzlv = 0;
+      }
       //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
       this.exps.yywsrlr =
         this.exps.v1400100A +
@@ -528,12 +565,7 @@ export default {
         this.exps.v1210100_tz - this.exps.v1212001_tz - this.exps.v1217001_tz;
 
       //资本化费用调整数
-      this.exps.znhfy_tz = (this.vars[2].value + this.vars[3].value) / 2;
-      //资产负债率 = 负债合计期末余额/资产合计期末余额 *100
-      this.exps.zcfzlv = (this.exps.v1200100B / this.exps.v1100100B) * 100;
-      if (this.exps.zcfzlv != 0) {
-        this.exps.zcfzlv = 0;
-      }
+      this.exps.znhfy_tz = (this.vars[2].value + this.vars[3].value) / 2
 
       //资本占用金额 = 资产总额 - 无息流动负债 - 在建工程 - 工程物资 - 专项应付款 + 资本化费用
       this.exps.zbzyje =

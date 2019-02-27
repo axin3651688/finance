@@ -25,7 +25,7 @@
         "_sql": "",
         "_cube": {
             "cubeId": 4 ,
-            "subject": "0002"
+            "subject": "1007"
         },
         "mainDim":"itemperiod",
         "needDims":["year","month","company","conversion"],
@@ -44,13 +44,13 @@
             "text" : "上年同期数",
             "children": [
                 {
-                    "id" : "dys",
+                    "id" : "A",
                     "type" : "decimal",
                     "text" : "当月数",
                     "width": "150px"
                 },
                 {
-                    "id" : "snlj",
+                    "id" : "B_",
                     "type" : "decimal",
                     "text" : "上年累计",
                     "width": "150px"
@@ -76,13 +76,13 @@
             "text" : "本期数",
             "children": [
                 {
-                    "id" : "bys",
+                    "id" : "A",
                     "type" : "decimal",
                     "text" : "本月数",
                     "width": "150px"
                 },
                 {
-                    "id" : "bnlj",
+                    "id" : "B",
                     "type" : "decimal",
                     "text" : "本年累计",
                     "width": "150px"
@@ -92,80 +92,80 @@
     ],
     "rows": [
         { 
-            "xm" : "一、人员、工资指示", "row" : 1,"bys" : 0,"bnlj" : 0,"dys" : 0, "snlj" : 0 , "level" : 0
+            "xm" : "一、人员、工资指示", "row" : 1,"A" : 0,"B" : 0,"A" : 0, "B_" : 0 , "level" : 0
         },
         {
-            "xm" : "1、职工人数（不含劳务派遣）（人）", "row" : 2,"bys" : 0,"bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 2
+            "xm" : "1、职工人数（不含劳务派遣）（人）", "row" : 2,"A" : 0,"B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
         },
         {
-            "xm" : "其中：在岗职工人数（人）", "row" : 3, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 4
+            "xm" : "其中：在岗职工人数（人）", "row" : 3, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
         },
         {
-            "xm" : "2、从业人员人数", "row" : 4, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 2
+            "xm" : "2、从业人员人数", "row" : 4, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
         },
         {
-            "xm" : "3、职工薪酬（不含劳务派遣）", "row" : 5, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 2
+            "xm" : "3、职工薪酬（不含劳务派遣）", "row" : 5, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
         },
         {
-            "xm" : "其中：职工工资总额", "row" : 6, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 4
+            "xm" : "其中：职工工资总额", "row" : 6, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
         },
         {
-            "xm" : "福利费用", "row" : 7, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "福利费用", "row" : 7, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "社会保险费用", "row" : 8, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "社会保险费用", "row" : 8, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "二、税收指示", "row" : 9, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 0
+            "xm" : "二、税收指示", "row" : 9, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
         },
         {
-            "xm" : "1、应交税金总额", "row" : 10, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 2
+            "xm" : "1、应交税金总额", "row" : 10, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
         },
         {
-            "xm" : "其中：增值税", "row" : 11, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 4
+            "xm" : "其中：增值税", "row" : 11, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
         },
         {
-            "xm" : "消费税", "row" : 12, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "消费税", "row" : 12, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "企业所得税", "row" : 13, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "企业所得税", "row" : 13, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "关税", "row" : 14, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "关税", "row" : 14, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "个人所得税", "row" : 15, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "个人所得税", "row" : 15, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "2、已交税金总额", "row" : 16, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 2
+            "xm" : "2、已交税金总额", "row" : 16, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
         },
         {
-            "xm" : "其中：增值税", "row" : 17, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 4
+            "xm" : "其中：增值税", "row" : 17, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
         },
         {
-            "xm" : "消费税", "row" : 18, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "消费税", "row" : 18, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "企业所得税", "row" : 19, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "企业所得税", "row" : 19, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "关税", "row" : 20, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "关税", "row" : 20, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "个人所得税", "row" : 21, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 6
+            "xm" : "个人所得税", "row" : 21, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
         },
         {
-            "xm" : "三、增加值", "row" : 22, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 0
+            "xm" : "三、增加值", "row" : 22, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
         },
         {
-            "xm" : "其中：本期计提折旧额", "row" : 23, "bys" : 0, "bnlj" : 0, "dys" : 0, "snlj" : 0 , "level" : 4
+            "xm" : "其中：本期计提折旧额", "row" : 23, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
         }
     ],
     "items": [
         {
             "xtype": "bi-table",
             "id" : "jbqkb",
-            "stype": "table",
+            "stype": "tree",
             "text" : "基本情况表",
             "toolbar":[{    
                 "id":"1",

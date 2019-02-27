@@ -37,7 +37,7 @@
                     "width":6,
                     "showFun":function($store){
                         debugger
-                        if($store.getters.treeInfo.leaf){
+                        if($store.getters.treeInfo.leaf && $store.getters.treeInfo.id != "121"){
                             return true ;
                         }else{
                             return false ;
