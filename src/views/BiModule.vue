@@ -200,7 +200,7 @@ export default {
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
-      
+      debugger
       /**
        * name : sjz 
        * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
@@ -214,7 +214,7 @@ export default {
       //应收、预付、其他
       if((this.id==='66601' || this.id==='66602' || this.id==='66603') && this.items.length != 2){
         //判断公司是单体还是合并
-        if(this.$store.getters.treeInfo.leaf){//单体
+        if(this.$store.getters.treeInfo.nisleaf){//单体
           //获取列数组
           $col = this.items[0].children[0].config.columns;
           //获取行数据
@@ -457,6 +457,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
+      debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {
