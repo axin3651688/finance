@@ -98,7 +98,7 @@
 						"text": "累计完成率"
 					},
 					{
-						"id": "sntq",
+						"id": "snljwc",
 						"type": "decimal",
 						"text": "上年同期"
 					},
@@ -387,7 +387,7 @@
 						"text": "累计完成率"
 					},
 					{
-						"id": "sntq",
+						"id": "snljwc",
 						"type": "decimal",
 						"text": "上年同期",
 						"unit":"万元"
