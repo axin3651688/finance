@@ -184,7 +184,7 @@
                 } ,
                 //合并单元格
                 "rowSpanAndColSpanHandler": function({row, column, rowIndex,columnIndex},option){
-                    debugger
+                    // debugger
                     if (rowIndex === 8) {
                         if (columnIndex === 1) {
                           return [1, 2];

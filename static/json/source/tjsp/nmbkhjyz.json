@@ -1,24 +1,16 @@
 {
-    "id": "001409",
+    "id": "0014253678",
     "text": "年目标考核建议值",
     "layout": {
         "xtype": "tab"
     },
     "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(newcompany,option){
-        option.closeTabTaget(newcompany,option);
-    },
-    "changeYearBefore":function(newyear,option){
-        option.closeTabTaget(newyear,option);
-    },
-    "changeMonthBefore":function(newmonth,option){
-        debugger
-        option.closeTabTaget(newmonth,option);
-    },
     "queryDataBefore": function(params,config,$vue){
         debugger
-        let yearBefore = params.year - 1 ;
-        config.sql = config.sql2.replace(/:yearBefore/g,"'"+yearBefore+"'") ;
+        if($vue.id == "0014253678"){
+            let yearBefore = params.year - 1 ;
+            config.sql = config.sql2.replace(/:yearBefore/g,"'"+yearBefore+"'") ;
+        }
         return params ;
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理

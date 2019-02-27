@@ -37,7 +37,7 @@
                     "width":6,
                     "showFun":function($store){
                         debugger
-                        if($store.getters.treeInfo.leaf){
+                        if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
                             return true ;
                         }else{
                             return false ;
@@ -199,7 +199,7 @@
                     "show":false,
                     "showFun":function($store){
                         debugger
-                        if($store.getters.treeInfo.leaf){
+                        if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
                             return false ;
                         }else{
                             return true ;
@@ -207,16 +207,17 @@
                     },
                     "queryDataBefore":function(params,config,$vue){
                         debugger
-                        if(params.company=='1001'){
-                            config.sql = config.sql1;
-                        }else{
-                            config.sql = config.sql2;
-                        }
+                        // if(params.company=='1001'){
+                        //     config.sql = config.sql2;
+                        // }else{
+                        //     config.sql = config.sql1;
+                        // }
+                        config.sql = config.sql1 ;
 						//是不是穿透的
-						let selectPeriod = $vue.$store.selectPeriod;
-						if(selectPeriod){
-							params.period = selectPeriod;
-						}
+						// let selectPeriod = $vue.$store.selectPeriod;
+						// if(selectPeriod){
+						// 	params.period = selectPeriod;
+						// }
                         return params;
                     },
                     "queryDataAfter":function(data, $vue){
