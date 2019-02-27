@@ -207,12 +207,12 @@
                     },
                     "queryDataBefore":function(params,config,$vue){
                         debugger
-                        // if(params.company=='1001'){
-                        //     config.sql = config.sql2;
-                        // }else{
-                        //     config.sql = config.sql1;
-                        // }
-                        config.sql = config.sql1 ;
+                        if(params.company=='1001'){
+                            config.sql = config.sql2;
+                        }else{
+                            config.sql = config.sql1;
+                        }
+                        // config.sql = config.sql1 ;
 						//是不是穿透的
 						// let selectPeriod = $vue.$store.selectPeriod;
 						// if(selectPeriod){
