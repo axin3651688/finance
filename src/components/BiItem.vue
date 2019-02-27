@@ -27,7 +27,11 @@ export default {
     
   },
   mounted() {
+    // if(this.item.show){
+    //    this.loadItems(this.item);
+    // }
     this.loadItems(this.item);
+   
   },
   watch: {
     item(newItem) {

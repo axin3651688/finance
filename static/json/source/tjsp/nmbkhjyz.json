@@ -109,6 +109,7 @@
             "id" : "nmbkhjyz",
             "stype": "table",
             "text" : "年目标考核建议值",
+            
             "toolbar":[{    
                 "id":"1",
                 "text":"刷新",
