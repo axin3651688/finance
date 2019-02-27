@@ -84,6 +84,7 @@
                         "needDims":["year","month","company","conversion"],
                         "random":{"min":100,"max":100000},
                         "type":1, 
+                        "tableHeads":true,
                         "columns":[
                         {
                             "id": "sjssje",
@@ -243,7 +244,7 @@
                         "needDims":["year","month","company","conversion"],
                         "random":{"min":100,"max":100000},
                         "type":1,          
-                        
+                        "tableHeads":true,
                         "layout":{
                             "xtype":"tab",
                             "ctype":"button"
