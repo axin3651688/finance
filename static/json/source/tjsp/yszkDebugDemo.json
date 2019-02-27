@@ -14,6 +14,14 @@
 			"show":false,
 			"width":6,
 			"tableBefore":true,
+			"queryDataBefore":function(params,config,$vue){
+				let me = this;
+				let selectPeriod = $vue.$store.selectPeriod;
+				if(selectPeriod){
+					params.period = selectPeriod;
+				}
+				return params;
+			},
 			"tableBeforeFun":function($vue,params){
 				debugger;
 				let me = this;
@@ -283,6 +291,10 @@
 		// ],
 			"queryDataBefore":function(params,config,$vue){
 				// debugger
+				let selectPeriod = $vue.$store.selectPeriod;
+				if(selectPeriod){
+					params.period = selectPeriod;
+				};
 				if(params.company=='1001'){
 					config.sql = config.sql1;
 				}else{

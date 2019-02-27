@@ -623,11 +623,19 @@ export default {
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
+      let itemUnit;
       if(!showDims.conversion){
-        params.conversion.id = 1;
-        params.conversion.text = "元";
+        //如果不显示单位切换，此处可以在json中配置自己想要的单位格式，如果没有配置就默认为：1 ，元
+        if(item.conversion){
+          itemUnit = item.conversion;
+        }else {
+          itemUnit = {
+            id:1,
+            text:"元"
+          }
+        }
       };
-      let unit = params.conversion;
+      let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
       }
