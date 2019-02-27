@@ -310,7 +310,7 @@ export default {
     },
 
     //获取当前公司树选择的节点
-    currentNode() {
+    currentNode() {debugger
       return this.$refs.comtree.getCurrentNode();
     },
 
@@ -360,11 +360,21 @@ export default {
               }
             }
           };
+          debugger;
+
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
-            data[0].open = true;
-            _this.expandKeys.push(data[0].scode);
+            data = data.filter(function(item){
+                  if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                      item.open = true;//展开此节点
+                      _this.expandKeys.push(item.scode);
+                  }
+                  item.sname = "("+item.scode+")"+item.sname;//拼写公司编码+公司名称
+                  return item;
+            });
+            //data[0].open = true;
+           // _this.expandKeys.push(data[0].scode);
             _this.treedata = tools.transformToeTreeNodes(setting, data);
           }
         }
@@ -575,7 +585,7 @@ export default {
     handClick(snode, node, el) {
       // console.log(this.form, snode, node);
       // debugger;
-      this.form.sname = snode.sname;
+      this.form.sname = snode.sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
       this.form.nlevel = snode.level;

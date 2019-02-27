@@ -619,8 +619,13 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      
       let params = this.$store.state.prame.command;
+      //判断当是不是存在单位的切换问题。conversion
+      let showDims = this.$store.state.prame.showDims;
+      if(!showDims.conversion){
+        params.conversion.id = 1;
+        params.conversion.text = "元";
+      };
       let unit = params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         datas = Math.convertUnit(unit.id, datas, item.config.columns);
