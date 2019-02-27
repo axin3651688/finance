@@ -17,13 +17,24 @@
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         debugger
+        data.forEach(res => {
+            if(res.scode == "31" || res.scode == "30"){
+                res.bqdys = 0 ;
+                res.bqljs = 0 ;
+                res.sndys = 0 ;
+                res.snljs = 0 ;
+            }else if(res.scode=="3001" || res.scode=="3002" || res.scode=="300101"){
+                res.bqdys = 0 ; 
+                res.sndys = 0 ; 
+            }
+        })
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
     },
     "config": {
-        "_sql": "",
+        "sql": "SELECT SCODE,(CASE WHEN SCODE IN ('3001','3002','3003','3101','3102') THEN '2' WHEN SCODE IN ('300101','300301','310101','310201','3201') THEN '4' WHEN SCODE IN ('30','31','32') THEN '0' ELSE '6' END) AS EVEL, SNAME,BQDYS,BQLJS,D.FACT_A AS SNDYS,D.FACT_B AS SNLJS FROM (SELECT A.SCODE AS SCODE,A.SNAME AS SNAME,B.FACT_A AS BQDYS,B.FACT_B AS BQLJS FROM (SELECT SCODE,SNAME,DIM_ITEMREPORT FROM DW_DIMITEM WHERE SCODE LIKE '3%' AND SCODE<>'3' AND DIM_ITEMREPORT='1007') A LEFT JOIN (SELECT SUBJECT,DIM_ITEM,FACT_A,FACT_B FROM DW_FACTBASICSITUATION WHERE DIM_COMPANY = :company AND DIM_PERIOD=:period) B ON A.SCODE = B.DIM_ITEM ORDER BY A.SCODE) C LEFT JOIN (SELECT FACT_A,FACT_B,DIM_ITEM FROM DW_FACTBASICSITUATION WHERE DIM_COMPANY = :company AND DIM_PERIOD=:comparePeriod) D ON C.SCODE = D.DIM_ITEM ",
         "cube": {
             "cubeId": 4 ,
             "subject": "1007"
@@ -39,146 +50,134 @@
         } 
     },
     "columns": [
-        // {
-        //     "id" : "",
-        //     "type" : "string",
-        //     "text" : "上年同期数",
-        //     "children": [
-                // {
-                //     "id" : "A_",
-                //     "type" : "decimal",
-                //     "text" : "当月数",
-                //     "width": "150px"
-                // },
-                // {
-                //     "id" : "B_",
-                //     "type" : "decimal",
-                //     "text" : "上年累计",
-                //     "width": "150px"
-                // }
-        //     ]
-        // },
         {
-            "id": "id" ,
-            "type": "string",
-            "text": "编码",
-            "hidden":false
+            "id" : "",
+            "type" : "string",
+            "text" : "上年同期数",
+            "children": [
+                {
+                    "id" : "sndys",
+                    "type" : "decimal",
+                    "text" : "当月数",
+                    "width": "150px"
+                },
+                {
+                    "id" : "snljs",
+                    "type" : "decimal",
+                    "text" : "上年累计",
+                    "width": "150px"
+                }
+            ]
         },
         {
-            "id" : "text",
+            "id": "scode" ,
+            "type": "string",
+            "text": "编码",
+            "hidden":true
+        },
+        {
+            "id" : "sname",
             "type" : "string",
             "text" : "项目",
             "width": "320px"
         },
         {
             "id" : "row",
-            "type" : "number",
+            "type" : "index",
             "text" : "行次",
             "align": "center",
             "width": "60px"
         },
-        // {
-        //     "id" : "",
-        //     "type" : "string",
-        //     "text" : "本期数",
-        //     "children": [
-        //         {
-        //             "id" : "A",
-        //             "type" : "decimal",
-        //             "text" : "本月数",
-        //             "width": "150px"
-        //         },
-        //         {
-        //             "id" : "B",
-        //             "type" : "decimal",
-        //             "text" : "本年累计",
-        //             "width": "150px"
-        //         }
-        //     ]
-        // }
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "本期数",
+            "children": [
                 {
-                    "id" : "A",
+                    "id" : "bqdys",
                     "type" : "decimal",
                     "text" : "本月数",
                     "width": "150px"
                 },
                 {
-                    "id" : "B",
+                    "id" : "bqljs",
                     "type" : "decimal",
                     "text" : "本年累计",
                     "width": "150px"
                 }
+            ]
+        }              
     ],
     "rows": [
-        { 
-            "id": "30","text" : "一、人员、工资指示", "row" : 1,"A" : 0,"B" : 0,"A_" : 0, "B_" : 0 , "level" : 0
-        },
-        {
-            "id": "3001","text" : "1、职工人数（不含劳务派遣）（人）", "row" : 2,"A" : 0,"B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        },
-        {
-            "id": "300101","text" : "其中：在岗职工人数（人）", "row" : 3, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        },
-        {
-            "id": "3002","text" : "2、从业人员人数", "row" : 4, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        },
-        {
-            "id": "3003","text" : "3、职工薪酬（不含劳务派遣）", "row" : 5, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        },
-        {
-            "id": "300301","text" : "其中：职工工资总额", "row" : 6, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        },
-        {
-            "id": "300302","text" : "福利费用", "row" : 7, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "300303","text" : "社会保险费用", "row" : 8, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "31","text" : "二、税收指示", "row" : 9, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
-        },
-        {
-            "id": "3101","text" : "1、应交税金总额", "row" : 10, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        },
-        {
-            "id": "310101","text" : "其中：增值税", "row" : 11, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        },
-        {
-            "id": "310102","text" : "消费税", "row" : 12, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310103","text" : "企业所得税", "row" : 13, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310104","text" : "关税", "row" : 14, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310105","text" : "个人所得税", "row" : 15, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "3102","text" : "2、已交税金总额", "row" : 16, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        },
-        {
-            "id": "310201","text" : "其中：增值税", "row" : 17, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        },
-        {
-            "id": "310202","text" : "消费税", "row" : 18, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310203","text" : "企业所得税", "row" : 19, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310204","text" : "关税", "row" : 20, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "310205","text" : "个人所得税", "row" : 21, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        },
-        {
-            "id": "32","text" : "三、增加值", "row" : 22, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
-        },
-        {
-            "id": "3201","text" : "其中：本期计提折旧额", "row" : 23, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        }
+        // { 
+        //     "id": "30","text" : "一、人员、工资指示", "row" : 1,"A" : 0,"B" : 0,"A_" : 0, "B_" : 0 , "level" : 0
+        // },
+        // {
+        //     "id": "3001","text" : "1、职工人数（不含劳务派遣）（人）", "row" : 2,"A" : 0,"B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
+        // },
+        // {
+        //     "id": "300101","text" : "其中：在岗职工人数（人）", "row" : 3, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
+        // },
+        // {
+        //     "id": "3002","text" : "2、从业人员人数", "row" : 4, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
+        // },
+        // {
+        //     "id": "3003","text" : "3、职工薪酬（不含劳务派遣）", "row" : 5, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
+        // },
+        // {
+        //     "id": "300301","text" : "其中：职工工资总额", "row" : 6, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
+        // },
+        // {
+        //     "id": "300302","text" : "福利费用", "row" : 7, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "300303","text" : "社会保险费用", "row" : 8, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "31","text" : "二、税收指示", "row" : 9, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
+        // },
+        // {
+        //     "id": "3101","text" : "1、应交税金总额", "row" : 10, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
+        // },
+        // {
+        //     "id": "310101","text" : "其中：增值税", "row" : 11, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
+        // },
+        // {
+        //     "id": "310102","text" : "消费税", "row" : 12, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310103","text" : "企业所得税", "row" : 13, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310104","text" : "关税", "row" : 14, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310105","text" : "个人所得税", "row" : 15, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "3102","text" : "2、已交税金总额", "row" : 16, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
+        // },
+        // {
+        //     "id": "310201","text" : "其中：增值税", "row" : 17, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
+        // },
+        // {
+        //     "id": "310202","text" : "消费税", "row" : 18, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310203","text" : "企业所得税", "row" : 19, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310204","text" : "关税", "row" : 20, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "310205","text" : "个人所得税", "row" : 21, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
+        // },
+        // {
+        //     "id": "32","text" : "三、增加值", "row" : 22, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
+        // },
+        // {
+        //     "id": "3201","text" : "其中：本期计提折旧额", "row" : 23, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
+        // }
     ],
     "items": [
         {
@@ -215,7 +214,7 @@
                     vue.handleDownload(vue);
                 }
             }],
-            "levelProperties":{xm:"level"},
+            "levelProperties":{sname:"evel"},
             "cellStyle":function(row,col){
                 // debugger
                 let pro = row.column.property;

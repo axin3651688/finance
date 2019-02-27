@@ -27,7 +27,10 @@ export default {
     
   },
   mounted() {
-    this.loadItems(this.item);
+    if(this.item.show){
+       this.loadItems(this.item);
+    }
+   
   },
   watch: {
     item(newItem) {
