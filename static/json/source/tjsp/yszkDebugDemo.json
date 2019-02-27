@@ -310,6 +310,11 @@
 					}
 					params.period = selectPeriod;
 				}
+				if(params.company=='1001'){
+					config.sql = config.sql1;
+				}else{
+					config.sql = config.sql2;
+				}
 				return params;
 			},
 			"queryDataAfter":function(data, $vue){
