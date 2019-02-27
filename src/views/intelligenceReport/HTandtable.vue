@@ -28,6 +28,7 @@
                     <el-button  class="button">审阅</el-button>
                     <el-button  class="button">上报</el-button>
                 </div>
+                <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
                 <hot-table  v-if="settings.data && settings.data.length>0" :settings="settings" ref="hotTableComponent" :height=" heights" class="table"></hot-table>
                 <!-- <BiModule v-show="show"></BiModule> -->
             </el-tab-pane>
@@ -93,6 +94,7 @@ import {ImportExcel,Inquire,save,download,del} from "@/api/fill.js"
 import BiModule from "@v/BiModule.vue";
 import { log } from 'util';
 import { constants } from 'fs';
+import { setTimeout } from 'timers';
 export default {
     components:{
         HotTable,
@@ -119,7 +121,6 @@ export default {
             files:null,
             dropdown:'请选择',
             heights: document.body.offsetHeight-360,
-            // offsetHeight:document.body.offsetHeight,
             subject:null,//匹配模板的subject
             dropdownid:null, //匹配的id
             checked:false,//复选框的状态
@@ -141,6 +142,7 @@ export default {
             show:false,
             flag:false,
             root: 'test-hot',
+            // newSettings: null,
             settings: {
                 data:  [],//数据，可以是数据，对象
                 startCols: 6,
@@ -169,20 +171,6 @@ export default {
         }
     },
     watch: {
-        heights(val){
-            debugger
-            console.log(val)
-            if(!this.timer){
-                this.heights = val
-                this.timer = true
-                let me = this
-                // console.log("me.heights",me.heights)
-                setTimeout(function(){               
-                    me.heights = document.body.offsetHeight - 360;
-                    me.timer = false
-                },400)
-            }
-        },
         templateId(val){
             this.tableData = []
         },
@@ -360,7 +348,12 @@ export default {
         // console.log(this.datas)
     },
     mounted(){
+        window.addEventListener('resize', this.resizeTable)
         this.settings.afterChange = this.afterChange
+        // this.newSettings.afterChange = this.afterChange
+    },
+    beforeDestroy(){
+        window.removeEventListener('resize', this.resizeTable)
     },
     computed: {
         ...mapGetters([
@@ -371,20 +364,23 @@ export default {
         ])
     },
     methods: {
-        readOnlys(instance, td, row, col, prop, value, cellProperties){
-            return false
-            // let columns = this.settings.columns
-            // let cc
-            // columns.forEach(item=>{
-            //     cc = item
-            // })
-            // let datas = this.settings.data
-            // datas.forEach(item=>{
-            //     if(cc && item.isinside == "1"){
-            //         cc.renderer = true
-            //     }
-            // })
+        resizeTable(){
+            this.heights = document.body.offsetHeight-360
         },
+        // readOnlys(instance, td, row, col, prop, value, cellProperties){
+        //     return false
+        //     // let columns = this.settings.columns
+        //     // let cc
+        //     // columns.forEach(item=>{
+        //     //     cc = item
+        //     // })
+        //     // let datas = this.settings.data
+        //     // datas.forEach(item=>{
+        //     //     if(cc && item.isinside == "1"){
+        //     //         cc.renderer = true
+        //     //     }
+        //     // })
+        // },
         getDropDownSource(id){
             let array = this.dataDict.filter(item=>item.pid === id); 
             let source = [];
@@ -403,12 +399,14 @@ export default {
             let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/
             let indexs
             let value
+            let oldValues
             let modify
             let datas = this.settings.data
             let row
             if(changes && changes.length>0){
                 index = changes[0][0]
                 key = changes[0][1]
+                oldValues = changes[0][2]
                 values = changes[0][3]
                 obj[key] = values
                 obj['index'] = index
@@ -425,7 +423,6 @@ export default {
                 // console.log("datas",arr)
                 for(var i=0;i<arr.length-1;i++){
                     row = datas[i]
-                    debugger
                     if(row.cusuppliername && row.cusuppliername !=null && row.cusuppliername == values){
                         this.$message({
                             type: 'error',
@@ -484,6 +481,9 @@ export default {
                         // console.log("1",modify.id)
                         value['id'] = modify.id
                         value['nid'] = modify.nid
+                        if(value['nid']==null){
+                            value['nid'] = 0
+                        }
                     }else if(value.A_ ||value.B_ || value.C_|| value.D_ || value.E_ || value.F_){
                         // console.log("2",modify.id_)
                         value['id_'] = modify.id_
@@ -497,10 +497,28 @@ export default {
                 }
             })
         },
+
+       reRenderCell(row,columns){
+          if(this.fixed==0 && this.templateId == 4){
+                if(columns > 8 ){//isinside
+                    let record = this.settings.data[row];
+                    if(record.isinside === "是" || record.isinside == 1){//8
+                        return true;
+                    }
+                }
+                if(columns > 9 ){//isnature isnormal
+                    let record = this.settings.data[row];
+                    if(record.isnormal === "是" || record.isnormal == 1){//9
+                      return true;
+                    }
+                }
+            
+          }
+           return false;
+       },
+
         // 设置单元格的只读
         cells(row,columns,prop){
-            console.log("row,columns,prop",row,columns,prop)
-           
             let cellMeta = {}
             if(this.fixed===1){
                 if(columns ==0 || columns ==1  || columns ==5  || columns ==4){
@@ -520,29 +538,21 @@ export default {
                         cellMeta.readOnly = true
                 }
             }
+            if(this.templateId==2){
+               if(row ===28 && columns ===6 || row ===28 &&columns ===7){
+                   cellMeta.readOnly = true
+               } 
+            }
            if(this.templateId==8){
                 if(columns ==1 || columns ==3 || columns ==4){
                     cellMeta.readOnly = true
                 }
             }
             if(this.templateId==4){
-                let datas = this.settings.data
-                let rows
-                // datas.forEach(item=>{
-                //     rows = item
-                //     if( rows.isinside=="1" || rows.isinside=="是"){
-                //     debugger
-                //         if( row ===0 && columns ==6 || row ===1 && columns ==6 || row ===2&& columns ==6 || row ===3&& columns ==6){
-                //             cellMeta.readOnly = true
-                //         }
-                //     }
-                // })
-                // console.log("rows",rows)
-                // cellMeta.readOnly = true
-                // if( columns ==3){
-                //     cellMeta.readOnly = true
-                // }
+                cellMeta.readOnly = this.reRenderCell(row,columns);
+                //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
             }
+
             return cellMeta
         },
         getHandsoneTableColType(type){
@@ -567,7 +577,7 @@ export default {
                 td.appendChild(flagElement);
             }
         },
-        convert2HansoneTableColumns(columns){
+        convert2HansoneTableColumns(columns, rows){
             debugger
             let me = this
             if(this.fixed===0){
@@ -639,12 +649,34 @@ export default {
             this.settings.columns = newCoulmns;
             this.settings.cells = this.cells
             this.settings.colHeaders = colHeaders;
+            this.settings.data = rows
+
+            // this.newSettings = null
+            // this.newSettings = this.settings
+
+
+            //有待修复
+             me.settings.data = [];
+            setTimeout(()=>{
+                me.settings.data = rows;
+            },100)
+            
         },
         //点击保存数据
         saveData(){
             debugger
             // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
             // console.log(exadata)
+                // console.log("this.tableDatabbbbbb",this.tableData)
+            // var a
+            // this.tableData.forEach(item=>{
+            //     //isinside
+            //     a = item
+            // })
+            // if(a.isinside=="是" || a.isinside==1){
+            //     a.scontenta = null
+            // }
+            // console.log("this.tableDataaaaaaa",this.tableData)
             let objs = {
                 "cubeId":this.cubeId,
                 dims:{
@@ -694,6 +726,7 @@ export default {
                                 type: 'success'
                         })
                         me.tableData = []
+                        console.log("sasa",me.settings.data)
                     }else{
                         me.$message({
                                 message:"保存失败",
@@ -702,6 +735,8 @@ export default {
                     }
                 })
             }
+            // this.inquire(this.datas)
+            // console.log("dadada",this.settings.data)
         },
         // 点击添加一行
         rowData(){   
@@ -744,10 +779,16 @@ export default {
                 debugger
                 console.log("查询",res)
                 let columns = res.data.data.columns
-                me.columns = res.data.data.columns
-                me.settings.data = res.data.data.rows
-                me.convert2HansoneTableColumns(columns);
-                console.log("me.settings.data",me.settings.data)
+                let rows = res.data.data.rows
+                // me.columns = res.data.data.columns
+                // me.settings = res.data.data.rows
+                // console.log("me.settings.data1",me.settings)
+                // me.$set(me.settings, "data",null)
+                // console.log("me.settings.data--",me.settings)
+                // me.$set(me.settings, "data",res.data.data.rows)
+                me.convert2HansoneTableColumns(columns, rows);
+
+                // console.log("me.settings.data2",me.settings)
             })
         },
         handleClick(tab, event) {
@@ -829,9 +870,9 @@ export default {
             this.uploadfile.append("subject",this.subject)
             this.uploadfile.append("fixed",this.fixed)
             this.files = this.uploadfile
-            console.log(list)
-            console.log(this.fixed)
-            console.log("uu",this.uploadfile)
+            // console.log(list)
+            // console.log(this.fixed)
+            // console.log("uu",this.uploadfile)
         },
         // 取消
         cancel(){
@@ -889,6 +930,12 @@ export default {
                 el.id='flag'
                 el.innerHTML = '删除'
                 td.appendChild(el)
+                if(this.templateId==8){
+                    let dd = document.getElementsByTagName("td")[5]
+                    if(dd && dd !="undefined"){
+                        dd.innerText = ""
+                    }
+                }
                 el.style.color = "red"
                 el.style.cursor = "pointer"
                 let me = this
@@ -926,7 +973,7 @@ export default {
                     
                     // console.log( me.tableData)
                     debugger
-                    if(nid!=undefined){
+                    if(nid!=0){
                         let data = {
                         // company:me.company,
                         // period:me.years,
@@ -939,8 +986,8 @@ export default {
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
-                            console.log(arr)
-                            // arr.alter("remove_row", row);//删除当前行
+                            // console.log(arr)
+                            arr.alter("remove_row", row);//删除当前行
                             del(data).then(res=>{
                                 console.log("删除",res)
                                 if(res.data.code===200){
@@ -1067,6 +1114,7 @@ export default {
         }
         .handsontable .htDimmed {
             background-color: #ccc;
+            background-color: #fff;
         }
         .handsontable td.htInvalid {
             background-color: transparent !important;
