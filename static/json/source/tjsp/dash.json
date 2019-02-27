@@ -670,7 +670,7 @@
 			   {
 				   "type":"click",
 				   "clickBefore":function(params,$vue){
-					   if(!$vue.$store.getters.treeInfo.leaf){
+					   if(!$vue.$store.getters.treeInfo.nisleaf){
 						   params.sourceApi = "cnbi/json/source/tjsp/qtysk.json";
 						   return params;
 					   }
