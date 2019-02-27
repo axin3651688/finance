@@ -38,7 +38,7 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab" @tab-click="tabClick">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
@@ -626,6 +626,7 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      debugger;
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
@@ -695,6 +696,10 @@ export default {
     },
     handleTabClick(tab, event) {
       console.log(tab, event);
+    },
+    tabClick(tab,event){
+      debugger;
+      
     },
     getActiveTabName(item) {
       return item.id;
