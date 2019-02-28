@@ -36,6 +36,7 @@
 					"company",
 					"conversion"
 				],
+				"tableHeads":true,
 				"random": {
 					"min": 100,
 					"max": 100000
