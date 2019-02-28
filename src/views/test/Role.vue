@@ -34,9 +34,9 @@
       <el-table-column prop="sroledesc" label="角色描述" width="300" header-align="center" align ="center"></el-table-column>
       <el-table-column label="操作" header-align="center" min-width="260px">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" >修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-          <el-button size="mini" @click="handleDark(scope.$index, scope.row)">模块授权</el-button>
+          <el-button size="mini" type="primary" @click="handleDark(scope.$index, scope.row)">模块授权</el-button>
         </template>
       </el-table-column>
 </el-table>
@@ -141,15 +141,15 @@
     <el-dialog
       :title="title + '角色'"
       :visible.sync="dialogRoleFormVisible"
-      width="30%"
+      width="450px"
       @close="closeDilog('roleForm')"
     >
       <el-form :model="roleForm" :rules="rules" ref="roleForm" :label-width="formLabelWidth">
         <el-form-item label="角色名称" prop="srolename">
-          <el-input v-model="roleForm.srolename" autocomplete="off"></el-input>
+          <el-input v-model="roleForm.srolename" autocomplete="off" style="width:300px"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" prop="sroledesc">
-          <el-input type="textarea" v-model="roleForm.sroledesc"></el-input>
+          <el-input type="textarea" v-model="roleForm.sroledesc" style="width:300px"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -648,7 +648,7 @@ export default {
             url: "a/sys/role/remove",
             method: "get",
             params: {
-              roleid: row.roleId
+              roleid: row.roleid
             }
           }).then(result => {
             if (result.status == 200) {
