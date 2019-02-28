@@ -638,12 +638,12 @@ export default {
         if(item.conversion){
           itemUnit = item.conversion;
         }
-        // else {
-        //   itemUnit = {
-        //     id:1,
-        //     text:"元"
-        //   }
-        // }
+        else {
+          itemUnit = {
+            id:1,
+            text:"元"
+          }
+        }
       };
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
