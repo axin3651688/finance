@@ -18,6 +18,7 @@
 			"style":{
 				"height": "812px"
 			},
+			
 			"queryDataBefore":function(a,b,c){
 				debugger
 				// var pointItem = c.$store.pointItem;
@@ -49,6 +50,7 @@
 					"compareType":"-1&0",
 					"reverse":true
 				},
+				"tableHeads":true,
 				"mainDim": "itemperiod",
 				"needDims": [
 					"year",
