@@ -1,6 +1,7 @@
 <template>
   <div @mousedown="mousedown">
-    <ECharts :options="chartOptions" v-if="isShow" auto-resize theme="bule"/>
+    <!-- v-if="isShow" -->
+    <ECharts :options="chartOptions" auto-resize theme="bule"/>
     <!-- <div v-else :style="{'height':divHeight,'line-height':divHeight}" class="nodata">暂无数据</div> -->
   </div>
 </template>
