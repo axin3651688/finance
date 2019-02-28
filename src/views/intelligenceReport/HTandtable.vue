@@ -664,17 +664,46 @@ export default {
         },
         //点击保存数据
         saveData(){
-            debugger
+            // debugger
             // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
             // console.log(exadata)
                 // console.log("this.tableDatabbbbbb",this.tableData)
             // var a
-            // this.tableData.forEach(item=>{
-            //     //isinside
-            //     a = item
-            // })
+            this.tableData.forEach(item=>{
+                //isinside
+                // a = item 
+                let keys = Object.keys(item)
+                let flag = false
+                for(let key of keys) {
+                    // debugger
+                    if (key === 'isinside' && (item.isinside=="是" || item.isinside==1)){
+                        debugger
+                        flag = true
+                        continue
+                    }
+                    if (flag) {
+                        item.scontentb = null
+                        item.scontenta = null
+                        item.isnormal = null
+                        item.E = null
+                        item.F = null
+                        item.G = null
+                        item.H = null
+                    }
+                }
+
+                // keys.forEach(key => {
+                //     let flag = false
+                //     if (item[key] === 'isinside' && (item.isinside=="是" || item.isinside==1)) flag = true
+                //     if (flag) {
+                //         item[key] = null
+                //     }
+                // })
+
+            })
             // if(a.isinside=="是" || a.isinside==1){
             //     a.scontenta = null
+            //     a
             // }
             // console.log("this.tableDataaaaaaa",this.tableData)
             let objs = {
@@ -716,25 +745,25 @@ export default {
                 return tmp
             }
             var result = res(arr);
-            if(result.length===0){
-                save(objs).then(res=>{
-                    console.log("保存",res)
+            // if(result.length===0){
+            //     save(objs).then(res=>{
+            //         console.log("保存",res)
 
-                    if (res.data.code === 200) {
-                        me.$message({
-                                message:res.data.msg,
-                                type: 'success'
-                        })
-                        me.tableData = []
-                        console.log("sasa",me.settings.data)
-                    }else{
-                        me.$message({
-                                message:"保存失败",
-                                type: 'error'
-                        })
-                    }
-                })
-            }
+            //         if (res.data.code === 200) {
+            //             me.$message({
+            //                     message:res.data.msg,
+            //                     type: 'success'
+            //             })
+            //             me.tableData = []
+            //             console.log("sasa",me.settings.data)
+            //         }else{
+            //             me.$message({
+            //                     message:"保存失败",
+            //                     type: 'error'
+            //             })
+            //         }
+            //     })
+            // }
             // this.inquire(this.datas)
             // console.log("dadada",this.settings.data)
         },

@@ -9,7 +9,9 @@
         <div style="display:inline-block;">
             <span @click="showDilog" v-if="showDims.company" style="display:inline-block;">
                 <!-- <i class="el-icon-search iconclass"></i> -->
-                <el-button type="text" class="underline">{{companyName}}</el-button>
+                <el-tooltip :content="companyName" placement="bottom" effect="light">
+                  <el-button type="text" class="underline">{{companyName}}</el-button>
+                </el-tooltip>
             </span>
         </div>
       <el-dialog title="选择公司" :visible.sync="dialogVisible" :modal-append-to-body="false">

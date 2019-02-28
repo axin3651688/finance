@@ -109,6 +109,7 @@ export default {
     },
 
     handleOpen(key, code) {
+      // debugger;
       let userId = this.userId;
       var clickNodeId = "";
       clickNodeId = userId + "_" + code[0];

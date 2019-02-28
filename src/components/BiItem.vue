@@ -27,7 +27,7 @@ export default {
     
   },
   mounted() {
-    this.loadItems(this.item);
+      this.loadItems(this.item);
   },
   watch: {
     item(newItem) {
@@ -41,7 +41,11 @@ export default {
 
   methods: {
     loadItems() {
-      // 
+      if(!this.item.show){
+        return ;
+      }else{
+        
+      }
       let config = this.item.config;
       if (config) {
         //config.rows = this.item.rows || config.rows || this.config.rows;

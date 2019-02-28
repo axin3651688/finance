@@ -25,7 +25,7 @@
         "_sql": "",
         "_cube": {
             "cubeId": 4 ,
-            "subject": "0002"
+            "subject": "1006"
         },
         "mainDim":"itemperiod",
         "needDims":["year","month","company","conversion"],
@@ -44,7 +44,7 @@
             "text" : "权益总计预测完成情况（万元）",
             "children": [
                 {
-                    "id" : "qyyc",
+                    "id" : "m27",
                     "type" : "decimal",
                     "text" : "预测完成",
                     "width": "150px"
@@ -55,13 +55,13 @@
                     "text" : "与年初比较",
                     "children": [
                         {
-                            "id" : "qyzje",
+                            "id" : "m28",
                             "type" : "decimal",
                             "text" : "增减额",
                             "width": "150px"
                         },
                         {
-                            "id" : "qyzjl",
+                            "id" : "m29",
                             "type" : "decimal",
                             "text" : "增减率%",
                             "conversion" : "%",
@@ -70,6 +70,12 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
         },
         {
             "id" : "hymc",
@@ -83,19 +89,19 @@
             "text" : "营业收入预测完成情况（万元）",
             "children": [
                 {
-                    "id" : "yykh",
+                    "id" : "m1",
                     "type" : "decimal",
                     "text" : "当年年考核目标建议值",
                     "width": "150px"
                 },
                 {
-                    "id" : "yyyc",
+                    "id" : "m2",
                     "type" : "decimal",
                     "text" : "预测完成",
                     "width": "150px"
                 },
                 {
-                    "id" : "yyjd",
+                    "id" : "m3",
                     "type" : "decimal",
                     "text" : "完成目标进度",
                     "width": "150px"
@@ -106,19 +112,19 @@
                     "text" : "与上年同期比较",
                     "children": [
                         {
-                            "id" : "yysntq",
+                            "id" : "m4",
                             "type" : "decimal",
                             "text" : "上年同期完成",
                             "width": "150px"
                         },
                         {
-                            "id" : "yyzje",
+                            "id" : "m5",
                             "type" : "decimal",
                             "text" : "增减额",
                             "width": "150px"
                         },
                         {
-                            "id" : "yyzjl",
+                            "id" : "m6",
                             "type" : "decimal",
                             "text" : "增减率%",
                             "conversion" : "%",
@@ -134,19 +140,19 @@
             "text" : "利润总额预测完成情况（万元）",
             "children": [
                 {
-                    "id" : "lrkh",
+                    "id" : "m11",
                     "type" : "decimal",
                     "text" : "当年年考核目标建议值",
                     "width": "150px"
                 },
                 {
-                    "id" : "lryc",
+                    "id" : "m12",
                     "type" : "decimal",
                     "text" : "预测完成",
                     "width": "150px"
                 },
                 {
-                    "id" : "lrjd",
+                    "id" : "m13",
                     "type" : "decimal",
                     "text" : "完成目标进度",
                     "width": "150px"
@@ -157,19 +163,19 @@
                     "text" : "与上年同期比较",
                     "children": [
                         {
-                            "id" : "lrsntq",
+                            "id" : "m14",
                             "type" : "decimal",
                             "text" : "上年同期完成",
                             "width": "150px"
                         },
                         {
-                            "id" : "lrzje",
+                            "id" : "m15",
                             "type" : "decimal",
                             "text" : "增减额",
                             "width": "150px"
                         },
                         {
-                            "id" : "lrzjl",
+                            "id" : "m16",
                             "type" : "decimal",
                             "text" : "增减率%",
                             "conversion" : "%",
@@ -185,7 +191,7 @@
             "text" : "资产总计预测完成情况（万元）",
             "children": [
                 {
-                    "id" : "zcyc",
+                    "id" : "m7",
                     "type" : "decimal",
                     "text" : "预测完成",
                     "width": "150px"
@@ -196,13 +202,13 @@
                     "text" : "与年初比较",
                     "children": [
                         {
-                            "id" : "zczje",
+                            "id" : "m8",
                             "type" : "decimal",
                             "text" : "增减额",
                             "width": "150px"
                         },
                         {
-                            "id" : "zczjl",
+                            "id" : "m9",
                             "type" : "decimal",
                             "text" : "增减率%",
                             "conversion" : "%",
@@ -218,7 +224,7 @@
             "text" : "负债总计预测完成情况（万元）",
             "children": [
                 {
-                    "id" : "fzyc",
+                    "id" : "m17",
                     "type" : "decimal",
                     "text" : "预测完成",
                     "width": "150px"
@@ -229,13 +235,13 @@
                     "text" : "与年初比较",
                     "children": [
                         {
-                            "id" : "fzzje",
+                            "id" : "m18",
                             "type" : "decimal",
                             "text" : "增减额",
                             "width": "150px"
                         },
                         {
-                            "id" : "fzzjl",
+                            "id" : "m19",
                             "type" : "decimal",
                             "text" : "增减率%",
                             "conversion" : "%",
