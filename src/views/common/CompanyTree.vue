@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tree
+    <el-tree
       :props="props"
       :load="loadNode"
       ref="tree2"
@@ -11,8 +11,8 @@
       :expandOnClickNode="false"
       @node-click="handleNodeClick "
       :filter-node-method="filterNode"
-    ></tree>
-    <!-- default-expand-all -->
+      default-expand-all
+    ></el-tree>
   </div>
 </template>
 
@@ -92,25 +92,17 @@ export default {
       // 由于1级和二级的传值代号不一样一个取customerId,其他取id
       var id = node.level === 1 ? this.id : node.data.id;
       // console.log(id);
-      if (!node.data.leaf) {
-        node.leaf = true;
+      if (!node.data.leaf || !node.data.nisleaf) {
         getCompanyTree(this.licenseId, "company", "0", id).then(res => {
           if (res.data.code === 200) {
             var data = res.data.data;
+            // console.log(res.data);
             // debugger;
-            // console.log(data);
             // 处理节点是否是叶子节点
             data.forEach(et => {
-              if (et.leaf !== 0) {
-                et.leaf = true;
-              } else {
-                et.leaf = false;
-                // debugger;
-                // getCompanyTree(this.licenseId, "company", "0", et.id);
-              }
+              et.leaf = et.leaf == 0 ? false : true;
             });
-            let data = res.data.data;
-            // console.log(res.data);
+
             resolve(data);
           } else {
             alert("网络请求失败");

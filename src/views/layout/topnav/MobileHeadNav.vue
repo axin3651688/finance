@@ -1,15 +1,10 @@
 <template>
-  <header class="head-nav">
-    <hamburger
-      :toggle-click="ToggleSideBar"
-      :is-active="sidebar.opened"
-      class="hamburger-container"
-    />
+  <div class="MobileHeadNav">
     <div class="topcontent">
-      <span @click="showDilog" v-if="showDims.company">
-        <i class="el-icon-search iconclass"></i>
+      <div @click="showDilog" v-if="showDims.company">
+        <span class="title">公司选择:</span>
         <el-button type="text" class="underline">{{companyName}}</el-button>
-      </span>
+      </div>
 
       <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false" v-dialogDrag>
         <span slot="title" class="dialog-title">
@@ -19,36 +14,38 @@
         <companyTree @click="getname" :filterText="filterText"/>
         <span slot="footer" class="dialog-footer"></span>
       </el-dialog>
-
-      <el-dropdown trigger="click" v-if="showDims.year">
-        <el-button type="text">
-          <i class="el-icon-date iconclass shuxian"></i>
-          <span class="underline">
-            {{year+"年"}}
+      <div>
+        <el-dropdown trigger="click" v-if="showDims.year">
+          <el-button type="text">
+            <span class="title">日期选择:</span>
+            <span class="underline">
+              {{year+"年"}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="(item,index) of years"
+              :key="index"
+              @click.native="GetSideMid({year:item.substring(0, 4)})"
+            >{{item}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dropdown trigger="click" v-if="showDims.month">
+          <el-button type="text" class="underline">
+            {{month+"月"}}
             <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
-            v-for="(item,index) of years"
-            :key="index"
-            @click.native="GetSideMid({year:item.substring(0, 4)})"
-          >{{item}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-dropdown trigger="click" v-if="showDims.month">
-        <el-button type="text" class="underline">
-          {{month+"月"}}
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
-            v-for="(item,index) of months"
-            :key="index"
-            @click.native="GetSideMid({month:item.substr(0, item.length - 1)})"
-          >{{item}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="(item,index) of months"
+              :key="index"
+              @click.native="GetSideMid({month:item.substr(0, item.length - 1)})"
+            >{{item}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+
       <!--  -->
       <!-- 日  日历 -->
       <el-date-picker
@@ -74,72 +71,9 @@
           >{{item.text}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- 消息提醒 -->
-      <el-badge :value="12">
-        <i class="el-icon-bell iconclass"></i>
-      </el-badge>
-      <span class="username">
-        <!-- 下啦箭头 -->
-        <el-dropdown trigger="click" @command="setDialogInfo">
-          <span class="dropdown">
-            <img :src="user.user.avatar" alt class="avatar">
-            <span class="name">{{user.user.trueName}}</span>
-            <i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown" class="headlistUp">
-            <el-dropdown-item command="info">
-              <i class="info"></i>
-              <span @sayhidden="sayhidden">个人信息</span>
-            </el-dropdown-item>
-            <el-dropdown-item command="info">
-              <i class="manage"></i>
-              <span>管理互动</span>
-            </el-dropdown-item>
-            <el-dropdown-item command="info">
-              <i class="about"></i>
-              <span>关于软件</span>
-            </el-dropdown-item>
-            <el-dropdown-item command="info" class="icon-bottom">
-              <i class="help"></i>
-              <span>帮助</span>
-            </el-dropdown-item>
-            <el-dropdown-item command="logout">
-              <i class="logout"></i>
-              <span>退出</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </span>
     </div>
-    <el-dialog
-      custom-class="info-dialog"
-      :visible.sync="isShow"
-      v-if="isShow"
-      :modal-append-to-body="false"
-    >
-      <div class="img-box"></div>
-      <el-row class="row-bg">
-        <div class="user">
-          <img :src="user.user.avatar" class="avatar">
-        </div>
-        <div class="user-item">
-          <div class="item">
-            <i>姓名:</i>
-            <span>{{user.user.trueName}}</span>
-          </div>
-          <div class="item">
-            <i>邮箱:</i>
-            <span>{{user.user.email}}</span>
-          </div>
-          <div class="item">
-            <i>电话:</i>
-            <span>{{user.user.phone}}</span>
-          </div>
-        </div>
-      </el-row>
-      <el-button @click="isShow = false" class="btn-primary">关闭</el-button>
-    </el-dialog>
-  </header>
+    <!-- <i class="iconfont icon-liebiao1 img" @click.stop="openHead"></i> -->
+  </div>
 </template>
 
 <script>
@@ -152,6 +86,7 @@ export default {
   name: "Headnav",
   data() {
     return {
+      flag: "",
       companyId: "",
       companyName_cache: "",
       treeInfo: {},
@@ -225,6 +160,9 @@ export default {
   },
 
   methods: {
+    openHead() {
+      this.flag = !this.flag;
+    },
     // 日期
     logTimeChange(val) {
       this.y = val.slice(0, 4);
@@ -289,4 +227,6 @@ export default {
   }
 };
 </script>
+
+
 
