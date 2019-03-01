@@ -1,18 +1,11 @@
 // message 页面获取消息列表
-import request from '@mu/http';
+import request from '@mu/http'
 
-// // 移除团队成员
-// export function DEL_GROUP_USER(data) {
-//   debugger;
-//   return request({
-//     url: '/api/api/del_group_user',
-//     method: 'post',
-//     data: data
-//   })
-// }
-
-// GET /api/find_card
-// 查询可以添加的卡片数据 FIND_CARD
+/**
+ * 查询可以添加的卡片数据 FIND_CARD 方滔滔
+ * GET /api/find_card
+ * 模块数据操作接口 : Module Client Rest
+ */
 export function FIND_CARD(userId) {
   // debugger
   return request({
@@ -21,11 +14,14 @@ export function FIND_CARD(userId) {
     params: {
       userId: userId
     }
-  });
+  })
 }
 
-//   GET /api/my_node
-// 我的节点 MY_NODE
+/**
+ * 我的节点 MY_NODE 方滔滔
+ * GET /api/my_node
+ * 模块数据操作接口 : Module Client Rest
+ */
 export function MY_NODE(userId) {
   // debugger
   return request({
@@ -34,11 +30,14 @@ export function MY_NODE(userId) {
     params: {
       userId: userId
     }
-  });
+  })
 }
 
-//   /api/latest_contact
-// 常用联系人 LATEST_CONTACT
+/**
+ * 常用联系人 LATEST_CONTACT 龚佳新
+ * GET /api/latest_contact
+ * 首页我的数据操作接口 : Index Client Rest
+ */
 export function LATEST_CONTACT(userId) {
   // debugger
   return request({
@@ -47,5 +46,5 @@ export function LATEST_CONTACT(userId) {
     params: {
       userId: userId
     }
-  });
+  })
 }
