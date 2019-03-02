@@ -4,6 +4,7 @@ import getters from './getters';
 import componentState from './modules/componentState';
 import user from './modules/user';
 import param from './modules/param';
+import saveInlocal from './saveInlocal';
 
 Vue.use(Vuex);
 const isDev = process.env.NODE_ENV !== 'production';
@@ -14,7 +15,8 @@ const store = new Vuex.Store({
     user,
     param
   },
-  getters
+  getters,
+  plugins: [saveInlocal]
 });
 
 export default store;
