@@ -1,7 +1,7 @@
-import store from '@/store'; // vuex
-import router from '@/router';
-import {isArray} from 'util';
-import {showNotification} from '@mu/notification.js';  // 消息弹窗
+import store from '@/store' // vuex
+import router from '@/router'
+import {isArray} from 'util'
+import {showNotification} from '@mu/notification.js'  // 消息弹窗
 
 /**
  * 消息核心处理
@@ -10,63 +10,64 @@ import {showNotification} from '@mu/notification.js';  // 消息弹窗
  */
 export default function socketCoreProcess (websocket, datas) {
   let parseData = function (data) {
-    let code = data.code;
-    console.info(data);
-    showNotification(data); // 消息弹窗
+    console.info(data)
+    let code = data.code
+    showNotification(data) // 消息弹窗
     // debugger;
     switch (code) {
       case 1001: // 与服务器连接成功
-        localStorage.setItem('device', data.data.token); // 连接成功后会得到 设备号
-        break;
+        console.info('1001:', data.msg)
+        localStorage.setItem('device', data.data.token) // 连接成功后会得到 设备号
+        break
       case 1002: // 账号重复登录提示及处理
-        console.log('账号在别端登录');
-        break;
+        console.log('账号在别端登录')
+        break
       case 1003: // 重新登陆
-        _processLoginExpired(data);
-        break;
+        _processLoginExpired(data)
+        break
       case 1004:
-        break;
+        break
       case 1006:// 对方收到消息或读了消息
-        break;
+        break
       case 1100: // 单聊
-        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data})
+        break
       case 1101: // 群聊
-        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data})
+        break
       case 1500: // 终端控制处理逻辑 {text:"执行成功"}
-        break;
+        break
       case 2000: // 消息 ack 回执
-        store.dispatch('ActionSetMessageStore', {serverAck: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {serverAck: data})
+        break
       case 10010: // 10010-APP已扫码通知，扫码成功
-        console.log('10010扫码成功：', data);
-        store.dispatch('ActionSetMessageStore', {scanStatus: data});
-        break;
+        console.log('10010扫码成功：', data)
+        store.dispatch('ActionSetMessageStore', {scanStatus: data})
+        break
       case 10011: // 10011-APP登录通知，登陆成功
-        console.log('10011扫码登陆：', data);
-        store.dispatch('ActionSetMessageStore', {scanStatus: data});
-        break;
+        console.log('10011扫码登陆：', data)
+        store.dispatch('ActionSetMessageStore', {scanStatus: data})
+        break
       case 11016: // 新朋友通知
-        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data})
+        break
       case 11017: // 群助手通知
-        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data})
+        break
       case 11021: // 分析助手
-        store.dispatch('ActionSetMessageStore', {newServerMsg: data});
-        break;
+        store.dispatch('ActionSetMessageStore', {newServerMsg: data})
+        break
       default:
     }
-  };
+  }
 
   // debugger;
   if (isArray(datas)) {
     datas.forEach(data => {
-      parseData(data);
-    });
+      parseData(data)
+    })
   } else {
-    parseData(datas);
+    parseData(datas)
   }
 }
 
@@ -78,20 +79,20 @@ function _processLoginExpired (data) {
   if (data.data.authorization) {
     // 重登录成功窗口变大
     if (window.require) {
-      let ipc = window.require('electron').ipcRenderer;
-      ipc.send('web_autoLogin', '');
+      let ipc = window.require('electron').ipcRenderer
+      ipc.send('web_autoLogin', '')
     }
   } else {
     // 登陆失败 electron 退出处理
     // debugger;
     // 清除本地记录的一些数据
-    localStorage.removeItem('database');
-    store.dispatch('clearCurrentState');
-    localStorage.removeItem('authorization'); // 清登陆令牌
-    router.push('/message_login');
+    localStorage.removeItem('database')
+    store.dispatch('clearCurrentState')
+    localStorage.removeItem('authorization') // 清登陆令牌
+    router.push('/message_login')
     if (window.require) {
-      let ipc = window.require('electron').ipcRenderer;
-      ipc.send('web_outLogin', '');
+      let ipc = window.require('electron').ipcRenderer
+      ipc.send('web_outLogin', '')
     }
   }
 }

@@ -63,6 +63,7 @@ export default {
       } else {
         // url = url + "?device=" + Cnbi.getDevice();
       }
+      console.log('app创建时的webSocket——url：', url)
       webSocket({url: url})
     }
   },
