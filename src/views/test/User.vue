@@ -35,16 +35,16 @@
             <el-table-column label="操作" header-align="center" min-width="350px">
               <template slot-scope="scope">
                 <template v-if="scope.row.cisenabled === 'Y'">
-                  <el-button size="mini" @click="handleDisable(scope.$index, scope.row)">禁用</el-button>
+                  <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
                 </template>
                 <template v-else >
-                  <el-button size="mini" @click="handleAble(scope.$index, scope.row)">启用</el-button>
+                  <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="primary">启用</el-button>
                 </template>
                 
-                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-                <el-button size="mini" @click="handleEditPassword(scope.$index, scope.row)">修改密码</el-button>
+                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary">修改</el-button>
+                <el-button size="mini" @click="handleEditPassword(scope.$index, scope.row)" type="primary">修改密码</el-button>
                 <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
-                <el-button size="mini" @click="handleAuthorizeCompany(scope.$index, scope.row)">公司授权</el-button>
+                <el-button size="mini" @click="handleAuthorizeCompany(scope.$index, scope.row)" type="primary">公司授权</el-button>
               </template>
             </el-table-column>
   </el-table>
@@ -65,36 +65,36 @@
 
     <el-dialog title="新增用户" 
       :visible.sync="dialogAddUserVisible"
-      width="30%"
+      width="450px"
       max-height = "60%"
       @close="closeDilog('addUserForm')"
     >
       <el-form :inline="true" label-width="80px" :model="addUserForm" ref='addUserForm' :rules="rules" class="user-form-inline" id="addUser" >
         <el-form-item label="用户名" prop="suser"  >
-          <el-input v-model="addUserForm.suser" placeholder="请填写用户名" ></el-input>
+          <el-input v-model="addUserForm.suser" placeholder="请填写用户名"  style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="真实姓名" prop="struename">
-          <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名"></el-input>
+          <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="密码" prop="spassword">
-          <el-input type="password" v-model.lazy="addUserForm.spassword"  placeholder="请填写密码"></el-input>
+          <el-input type="password" v-model.lazy="addUserForm.spassword"  placeholder="请填写密码" style="width:300px"></el-input>
         </el-form-item>
         
 
         <el-form-item label="确认密码" prop="spassword2">
-          <el-input type="password" v-model.lazy="addUserForm.spassword2" placeholder="请填写确认密码"></el-input>
+          <el-input type="password" v-model.lazy="addUserForm.spassword2" placeholder="请填写确认密码" style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="性别" prop="csex">
-          <el-select v-model="addUserForm.csex" placeholder="性别">
+          <el-select v-model="addUserForm.csex" placeholder="性别" style="width:300px">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="roleid">
-          <el-select v-model="addUserForm.roleid" placeholder="角色">
+          <el-select v-model="addUserForm.roleid" placeholder="角色" style="width:300px">
             <el-option
               v-for="item in rolesData"
               :key="item.roleId"
@@ -109,17 +109,17 @@
               v-model="addUserForm.company"
               :options="comtree"
               placeholder="请选择所属公司"
-              size="70"
+               style="width:300px"
               />
             <!-- <pre class="result">{{ value }}</pre> -->
         </el-form-item>
 
         <el-form-item label="联系电话" prop="sphone">
-          <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话"></el-input>
+          <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="邮箱" prop="semail">
-          <el-input v-model="addUserForm.semail" placeholder="请填写邮箱"></el-input>
+          <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
         </el-form-item>
         
         <!-- <el-form-item label="QQ">
@@ -138,27 +138,27 @@
 
     <el-dialog title="修改用户" 
       :visible.sync="dialogEditUserVisible"
-      width="30%"
+      width="450px"
       max-height = "60%"
       @close="closeDilog('editUserForm')"
     >
       <el-form :inline="true" label-width="80px" :model="editUserForm"  ref='editUserForm' :rules="rules" class="user-form-inline">
-        <el-form-item label="用户名" prop="suser" >
-          <el-input v-model="editUserForm.suser" placeholder="请填写用户名" ></el-input>
+        <el-form-item label="用户名" prop="suser" :gutter="20">
+          <el-input type="text" v-model="editUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="真实姓名" prop="struename">
-          <el-input v-model="editUserForm.struename" placeholder="请填写真实姓名"></el-input>
+          <el-input v-model="editUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
         </el-form-item>
         
         <el-form-item label="性别" prop="csex">
-          <el-select v-model="editUserForm.csex" placeholder="性别">
+          <el-select v-model="editUserForm.csex" placeholder="性别"  style="width:300px">
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="roleid">
-          <el-select v-model="editUserForm.roleid" placeholder="角色">
+          <el-select v-model="editUserForm.roleid" placeholder="角色"  style="width:300px">
             <el-option
               v-for="item in rolesData"
               :key="item.roleId"
@@ -174,16 +174,17 @@
               v-model="editUserForm.company"
               :searchable="true"
               placeholder="请选择所属公司"
+               style="width:300px"
               />
             <!-- <pre class="result">{{ value }}</pre> -->
         </el-form-item>
 
         <el-form-item label="联系电话" prop="sphone">
-          <el-input v-model="editUserForm.sphone" placeholder="请填写联系电话"></el-input>
+          <el-input v-model="editUserForm.sphone" placeholder="请填写联系电话"  style="width:300px"></el-input>
         </el-form-item>
 
         <el-form-item label="邮箱" prop="semail">
-          <el-input v-model="editUserForm.semail" placeholder="请填写邮箱"></el-input>
+          <el-input v-model="editUserForm.semail" placeholder="请填写邮箱"  style="width:300px"></el-input>
         </el-form-item>
 
         <!-- <el-form-item label="QQ">
@@ -204,17 +205,17 @@
       title="修改密码"
       data = scope.row
       :visible.sync="dialogEditPasswordVisible"
-      width="30%"
+      width="450px"
       @close="closeDilog('editPasswordForm')"
     >
           <el-form :model="editPasswordForm" status-icon :rules="rulepwd" ref="editPasswordForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="密码" prop="spassword">
-          <el-input type="password" v-model="editPasswordForm.spassword" autocomplete="off"></el-input>
+          <el-input type="password" v-model="editPasswordForm.spassword" autocomplete="off" style="width:280px"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="spassword2">
-          <el-input type="password" v-model="editPasswordForm.spassword2" autocomplete="off"></el-input>
+          <el-input type="password" v-model="editPasswordForm.spassword2" autocomplete="off" style="width:280px"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="text-align: right;" >
           <el-button type="primary" @click="submitEditPasswordForm('editPasswordForm')">提交</el-button>
           <el-button @click="resetForm('editPasswordForm')">重置</el-button>
         </el-form-item>
