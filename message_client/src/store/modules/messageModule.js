@@ -1,6 +1,7 @@
 const messageModule = {
   state: {
     messageStore: {
+      socketOffLine: true, // 用户socket连接状态
       sessionActiveItem: null, // session选中的item
       sessionList: null, // session消息队列
       scanStatus: null, // 扫码登陆信息

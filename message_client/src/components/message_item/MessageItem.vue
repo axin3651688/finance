@@ -1,7 +1,7 @@
 <template>
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
     <div class="avatar">
-      <div class="img-box" :title="data.name">
+      <div :title="data.name" :class="['img-box', {'off-line':socketOffLine}]">
         <img :src="data.avatar" v-avatar="data.name">
       </div>
     </div>
@@ -82,13 +82,13 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
-import {FORMAT_FILE_SIZE} from '@mu/formatFileSize.js';
-import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue';
-import MyAudioPlayer from '@mc/my_audio_player/MyAudioPlayer.vue';
-import emotionSprites from '@ma/data/emotionSprites.json';
+import {mapGetters, mapActions} from 'vuex'
+import {PARSE_EMOTIONS} from '@mu/parseEmotions.js'
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js'
+import {FORMAT_FILE_SIZE} from '@mu/formatFileSize.js'
+import MyVideoPlayer from '@mc/my_video_player/MyVideoPlayer.vue'
+import MyAudioPlayer from '@mc/my_audio_player/MyAudioPlayer.vue'
+import emotionSprites from '@ma/data/emotionSprites.json'
 
 export default {
   name: 'MessageItem',
@@ -102,25 +102,28 @@ export default {
       EMOTION_SPRITES: emotionSprites.data,  // 聊天表情
       isShowImagePreview: false, // 是否显示图片预览
       hdUrl: null // 大图地址
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      let id;
-      if (this.user) id = this.user.user.id;
-      return id;
+      let id
+      if (this.user) id = this.user.user.id
+      return id
     },
     isGroup() {
-      return this.messageStore.miniType === 1101;
-    }
+      return this.messageStore.miniType === 1101
+    },
+    socketOffLine() { // socket连接转态
+      return this.messageStore.socketOffLine
+    },
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
-      return MSG_TIME_FORMAT(publishTime);
+      return MSG_TIME_FORMAT(publishTime)
     },
     formatFileSize(fileSize) {
-      return FORMAT_FILE_SIZE(fileSize);
+      return FORMAT_FILE_SIZE(fileSize)
     }
   },
   methods: {
@@ -131,7 +134,7 @@ export default {
      * @returns {*}
      */
     parseEmotions(content) {
-      return PARSE_EMOTIONS(content);
+      return PARSE_EMOTIONS(content)
     },
 
     /**
@@ -140,17 +143,17 @@ export default {
      * @param hdUrl
      */
     showImagePreview(hdUrl) {
-      this.ActionUpdateImagePreview(hdUrl);
+      this.ActionUpdateImagePreview(hdUrl)
     },
 
     /**
      * 消息发送失败后从新发送消息
      */
     retrySendMessage() {
-      console.log('重新发送消息，todo');
+      console.log('重新发送消息，todo')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -174,6 +177,12 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
+
+    .off-line {
+      img {
+        filter: grayscale(100%);
+      }
+    }
 
     &:first-child {
       margin-top: 60px;
