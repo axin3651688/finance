@@ -1,6 +1,6 @@
 {
     
-        "id": "001412",
+        "id": "1314520",
         "text": "市管企业利润总额考核调整表",
         "layout": {
             "xtype": "tab"
@@ -17,117 +17,130 @@
             option.closeTabTaget(newmonth,option);
         },
         "__queryDataAfter":function(data,$vue){//数据的后置处理
-            let me = this;
-            me.items[0].updateView = $vue.updateView;
-            me.items[0].$vue = $vue;
+            debugger
+
+            // let me = this;
+            // me.items[0].updateView = $vue.updateView;
+            // me.items[0].$vue = $vue;
             return data;
         },
         "config": {
-            "_sql": "",
+            "sql": "WITH TMP1 AS( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE='1' CONNECT BY PRIOR SCODE = SPCODE), T1 AS( SELECT ROOT_SCODE,SCODE FROM TMP1 WHERE ROOT_SCODE IN( SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE ) ) SELECT T1.SCODE, CASE WHEN T1.SCODE IN ('220201','220202','220203','220301','220302') THEN '4' ELSE '0' END AS EVEL, T1.SNAME,SUM(NVL(FACT_A,0)) FACTA,SUM(NVL(FACT_B,0)) FACTB,SUM(NVL(FACT_C,0)) FACTC FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '22%' AND SCODE NOT IN ('2204')) T1 LEFT JOIN (SELECT DIM_COMPANY,DIM_ITEM,FACT_A ,FACT_B ,FACT_C FROM DW_FACTASSESSADJUST WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM T1)) T2 ON T1.SCODE = T2.DIM_ITEM GROUP BY T1.SCODE,T1.SNAME UNION ALL SELECT '2204' AS SCODE,'0' AS EVEL,'业绩利润' AS SNAME,(SUM(FACT_QA)-SUM(FACT_SA)) AS QYSB,(SUM(FACT_QB)-SUM(FACT_SB)) AS SWSSD,(SUM(FACT_QC)-SUM(FACT_SC)) AS GZWHD FROM ( SELECT SUM(NVL(FACT_A,0)) FACT_QA,SUM(NVL(FACT_B,0)) FACT_QB,SUM(NVL(FACT_C,0)) FACT_QC,0 AS FACT_SA,0 AS FACT_SB,0 AS FACT_SC FROM DW_FACTASSESSADJUST WHERE DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:period AND DIM_ITEM IN ('2201','2202','220201','220202','220203') UNION ALL SELECT 0 AS FACT_QA,0 AS FACT_QB,0 AS FACT_QC,SUM(NVL(FACT_A,0)) FACT_SA,SUM(NVL(FACT_B,0)) FACT_SB,SUM(NVL(FACT_C,0)) FACT_SC FROM DW_FACTASSESSADJUST WHERE DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:period AND DIM_ITEM IN ('2203','220301','220302') ) order by scode",
             "_cube": {
                 "cubeId": 4 ,
-                "subject": "0002"
+                "subject": "1004"
             },
-            "mainDim":"itemperiod",
+            "mainDim":"item",
+            "dimName":"item",//行项目的Id 
             "needDims":["year","month","company","conversion"],
             "random":{"min":1000000,"max":1000000000},
-            "type":1 ,
-            "generateVar":{//生成变量rows
-                "periodCount":2,
-                "compareType":"-1&0",
-                "reverse":true
-            } 
+            "type":1 
         },
         "columns":[
             {
-                "id" : "gzwhds",
+                "id" : "factc",
                 "type" : "decimal",
                 "text" : "国资委核定数",
                 "width": "150px" 
             },
             {
-                "id" : "xm",
+                "id" : "id",
+                "type" : "string",
+                "text" : "编码",
+                "hidden":true
+            },
+            {
+                "id" : "sname",
                 "type" : "string",
                 "text" : "项目",
                 "width": "300px"
             },
             {
-                "id" : "qysbs",
+                "id" : "facta",
                 "type" : "decimal",
                 "text" : "企业申报数",
                 "width": "150px"
             },
             {
-                "id" : "swssds",
+                "id" : "factc",
                 "type" : "decimal",
                 "text" : "事务所审定数",
                 "width": "150px"
             }
         ],
         "rows":[
-            {
-                "xm" : "利润总额",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 0
-            },
-            {
-                "xm" : "加：创新收入",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 0
-            },
-            {
-                "xm" : "解决以前年度问题损失",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 4
-            },
-            {
-                "xm" : "承担特定智能损失",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 4
-            },
-            {
-                "xm" : "政策性安置职工损失",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 4
-            },
-            {
-                "xm" : "减：处置优良资产收益",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 0
-            },
-            {
-                "xm" : "公允价值变动损益",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 4
-            },
-            {
-                "xm" : "非经营性政府补贴",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 4
-            },
-            {
-                "xm" : "业绩利润",
-                "qysbs" : 0,
-                "swssds": 0,
-                "gzwhds": 0,
-                "level" : 0
-            }
+            // {
+            //     "id": "2201",
+            //     "sname" : "利润总额",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 0
+            // },
+            // {
+            //     "id": "2202",
+            //     "sname" : "加：创新收入",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 0
+            // },
+            // {
+            //     "id": "220201",
+            //     "sname" : "解决以前年度问题损失",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 4
+            // },
+            // {
+            //     "id": "220202",
+            //     "sname" : "承担特定智能损失",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 4
+            // },
+            // {
+            //     "id": "220203",
+            //     "sname" : "政策性安置职工损失",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 4
+            // },
+            // {
+            //     "id": "2203",
+            //     "sname" : "减：处置优良资产收益",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 0
+            // },
+            // {
+            //     "id": "220301",
+            //     "sname" : "公允价值变动损益",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 4
+            // },
+            // {
+            //     "id": "220302",
+            //     "sname" : "非经营性政府补贴",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 4
+            // },
+            // {
+            //     "id": "2204",
+            //     "sname" : "业绩利润",
+            //     "A" : 0,
+            //     "B": 0,
+            //     "C": 0,
+            //     "level" : 0
+            // }
         ],
         "items":[
             {
@@ -165,7 +178,7 @@
                     }
                 }],
                 //缩进处理
-                "levelProperties":{xm:"level"},
+                "levelProperties":{sname:"evel"},
                 "cellStyle":function(row,col){
                     // debugger
                     let pro = row.column.property;
@@ -183,16 +196,16 @@
                     return textIndent ;
                 } ,
                 //合并单元格
-                "rowSpanAndColSpanHandler": function({row, column, rowIndex,columnIndex},option){
-                    // debugger
-                    if (rowIndex === 8) {
-                        if (columnIndex === 1) {
-                          return [1, 2];
-                        } else if (columnIndex === 2) {
-                          return [0, 0];
-                        }
-                    }
-                }
+                // "rowSpanAndColSpanHandler": function({row, column, rowIndex,columnIndex},option){
+                //     // debugger
+                //     if (rowIndex === 8) {
+                //         if (columnIndex === 1) {
+                //           return [1, 2];
+                //         } else if (columnIndex === 2) {
+                //           return [0, 0];
+                //         }
+                //     }
+                // }
             }
         ]
 }

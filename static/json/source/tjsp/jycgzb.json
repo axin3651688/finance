@@ -23,7 +23,7 @@
     },
     "queryDataBefore":function(params,config,option){
         debugger
-        if(option.id == "001402"){
+        if(option.id === "001402"){
             let sq ;
             config.sql = config.sql2 ;
             if(params.month - 1 >0 && params.month - 1 < 10){
