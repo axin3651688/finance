@@ -68,11 +68,11 @@
         }, {
             "id": "twoyear",
             "type": "decimal",
-            "text": "1-2年"
+            "text": "1-2年以内"
         }, {
             "id": "threeyear",
             "type": "decimal",
-            "text": "2-3年"
+            "text": "2-3年以内"
         },
         {
             "id": "fouryear",

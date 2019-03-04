@@ -123,7 +123,7 @@ import Vue from "vue";
 export default {
   created() {
     this.findNodes();
-    this.findDim();
+    //this.findDim();
   },
   data() {
     return {
@@ -245,7 +245,7 @@ export default {
       //scodeDisabled
       scodeDisabled: false,
       //addDisabled
-      addDisabled: false
+      addDisabled: true
     };
   },
   watch: {
@@ -310,7 +310,7 @@ export default {
     },
 
     //获取当前公司树选择的节点
-    currentNode() {debugger
+    currentNode() {
       return this.$refs.comtree.getCurrentNode();
     },
 
@@ -360,7 +360,6 @@ export default {
               }
             }
           };
-          debugger;
 
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
@@ -584,7 +583,6 @@ export default {
      *  */
     handClick(snode, node, el) {
       // console.log(this.form, snode, node);
-      // debugger;
       this.form.sname = snode.sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
