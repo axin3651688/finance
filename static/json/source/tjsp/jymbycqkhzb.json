@@ -22,7 +22,7 @@
         return data;
     },
     "config": {
-        "_sql": "",
+        "sql": 12,
         "_cube": {
             "cubeId": 4 ,
             "subject": "0002"
@@ -47,7 +47,7 @@
                     "id" : "qyyc",
                     "type" : "decimal",
                     "text" : "预测完成",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "",
@@ -58,7 +58,7 @@
                             "id" : "qyzje",
                             "type" : "decimal",
                             "text" : "增减额",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "qyzjl",
@@ -81,7 +81,7 @@
             "id" : "gsmc",
             "type" : "string",
             "text" : "公司名称",
-            "width": "320px"
+            "width": "360px"
         },
         {
             "id": "",
@@ -92,19 +92,19 @@
                     "id" : "yykh",
                     "type" : "decimal",
                     "text" : "当年年考核目标建议值",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "yyyc",
                     "type" : "decimal",
                     "text" : "预测完成",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "yyjd",
                     "type" : "decimal",
                     "text" : "完成目标进度",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "",
@@ -115,13 +115,13 @@
                             "id" : "yysntq",
                             "type" : "decimal",
                             "text" : "上年同期完成",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "yyzje",
                             "type" : "decimal",
                             "text" : "增减额",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "yyzjl",
@@ -143,19 +143,19 @@
                     "id" : "lrkh",
                     "type" : "decimal",
                     "text" : "当年年考核目标建议值",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "lryc",
                     "type" : "decimal",
                     "text" : "预测完成",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "lrjd",
                     "type" : "decimal",
                     "text" : "完成目标进度",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "",
@@ -166,13 +166,13 @@
                             "id" : "lrsntq",
                             "type" : "decimal",
                             "text" : "上年同期完成",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "lrzje",
                             "type" : "decimal",
                             "text" : "增减额",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "lrzjl",
@@ -194,7 +194,7 @@
                     "id" : "zcyc",
                     "type" : "decimal",
                     "text" : "预测完成",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "",
@@ -205,7 +205,7 @@
                             "id" : "zczje",
                             "type" : "decimal",
                             "text" : "增减额",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "zczjl",
@@ -227,7 +227,7 @@
                     "id" : "fzyc",
                     "type" : "decimal",
                     "text" : "预测完成",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "",
@@ -238,7 +238,7 @@
                             "id" : "fzzje",
                             "type" : "decimal",
                             "text" : "增减额",
-                            "width": "150px"
+                            "width": "170px"
                         },
                         {
                             "id" : "fzzjl",

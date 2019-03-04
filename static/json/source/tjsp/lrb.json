@@ -13,9 +13,14 @@
         option.closeTabTaget(newyear,option);
     },
     "changeMonthBefore":function(newmonth,option){
-        // debugger
+        debugger
         // option.cellStyle(this.items[0]);
         option.closeTabTaget(newmonth,option);
+    },
+    "changeConversionBefore":function(newconversion, option){
+        // debugger
+        option.closeTabTaget(newconversion,option);
+        // option.updateView("conversion");
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         debugger
@@ -322,7 +327,7 @@
         }],
         //单元格点击事件
         "onCellClick":function(row, column, cell, event,vue){
-            debugger
+            // debugger
             let id = row.id, text = row.text;
             let datas = this.datas;
                 let data = datas.filter(function(item){
@@ -352,7 +357,7 @@
         //有钻取，给蓝色 可选 tAble
         "drillProperties":["text"],
         "cellStyle":function(row){
-            debugger           
+            // debugger           
             let datas = this.datas ;
             if(datas && datas.length>0){
                 let data = datas.filter(function(item){

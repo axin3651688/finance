@@ -60,6 +60,7 @@
         "mainDim":"itemperiod",
         "needDims":["year","month","company"],
         "random":{"min":100,"max":100000},
+        "tableHeads":true,
         "type":1
       },
       "columns":[

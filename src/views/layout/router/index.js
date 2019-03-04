@@ -191,6 +191,12 @@ const router = new Router({
           component: () =>
             import('@v/systemSettings/EVA')
         },
+        {//数据抽取
+          path: '/extradata',
+          name: 'extradata',
+          component: () =>
+            import('@v/systemSettings/Extradata')
+        },
         // 利润表
         {
           path: '/profit',
@@ -221,7 +227,7 @@ const router = new Router({
           component: () =>
             import('@v/intelligenceReport/a.vue')
         },
-        {
+        {// 数据填报
           path: '/handsontable',
           name: 't',
           component: () =>

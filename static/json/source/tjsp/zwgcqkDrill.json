@@ -19,10 +19,11 @@
                     "height": "812px"
                 },
                 "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
+                  debugger
                     config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
                     let len = option.items.length;
                     let id = option.items[len-1].id;//获取下钻科目的id
-                    config.sql = config.sql.replace(/:finance/g,id);//全局替换:itemperiod
+                    config.sql = config.sql.replace(/:finance/g,"'"+id+"'");//全局替换:itemperiod
                     return params;
     
                 },

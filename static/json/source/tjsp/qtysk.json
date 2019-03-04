@@ -15,6 +15,10 @@
     "changeMonthBefore":function(newmonth,option){
         option.closeTabTaget(newmonth,option);
     },
+    "changeConversionBefore":function(newconversion, option){
+        // debugger
+        option.closeTabTaget(newconversion,option);
+    },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -211,7 +215,7 @@
                     "queryDataAfter":function(data, $vue){
                         debugger
                         data.forEach(item => {
-                            debugger
+                            // debugger
                             if(item.riskrange == "SAFE"){
                                 item.riskrange = "安全" ;
                             }else if(item.riskrange == "DANGER"){
