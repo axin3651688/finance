@@ -3,7 +3,11 @@
 
     <div class="siderbar-top">
       <relative-pop>
-        <div class="login-info" v-if="user.user" :title="user.user.trueName">
+        <div
+          :class="['login-info', {'off-line':socketOffLine}]"
+          v-if="user.user"
+          :title="userTitle"
+        >
           <avatar
             :username="user.user.trueName"
             :rounded="false"
@@ -69,9 +73,9 @@
 </template>
 
 <script>
-import RelativePop from '@mc/relative_pop/RelativePop.vue';
-import {LOGOUT} from '@m_api/message.js';
-import {mapGetters, mapActions} from 'vuex';
+import RelativePop from '@mc/relative_pop/RelativePop.vue'
+import {LOGOUT} from '@m_api/message.js'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
   name: 'SiderBar',
@@ -79,7 +83,7 @@ export default {
     return {
       dialogQuitVisible: false, // 是否显示退出提示弹窗
       showMyInfo: false // 是否显示我的（登录用户的信息）
-    };
+    }
   },
   components: {
     RelativePop,
@@ -88,57 +92,64 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     messageCount() {
-      let count = 0;
+      let count = 0
       if (this.messageStore.sessionList) {
         this.messageStore.sessionList.forEach(sessionItem => {
-          count += sessionItem.count;
-        });
+          count += sessionItem.count
+        })
       }
-      return count;
+      return count
     },
     newServerMsg() { // 服务器推送的消息
-      return this.messageStore.newServerMsg;
+      return this.messageStore.newServerMsg
     },
     serverAck() { // 服务器推送的 ack回执
-      return this.messageStore.serverAck;
+      return this.messageStore.serverAck
+    },
+    socketOffLine() { // socket连接转态
+      return this.messageStore.socketOffLine
+    },
+    userTitle() {
+      let str = this.socketOffLine ? '-离线' : '-在线'
+      return this.user.user.trueName + str
     }
   },
   watch: {
     // 监听服务器推送的消息
     newServerMsg(val) {
-      console.log('监听到服务器推送：', val);
-      debugger;
-      let sessionItem = {};
-      sessionItem['miniType'] = val.code;
-      sessionItem['count'] = 1;
-      sessionItem['content'] = val.data.content;
-      sessionItem['sendTime'] = val.data.sendTime;
-      sessionItem['originData'] = val.data;
-      sessionItem['name'] = null;
-      sessionItem['avatar'] = null;
-      sessionItem['id'] = null;
-      sessionItem['targetId'] = val.code + '_';
+      console.log('监听到服务器推送：', val)
+      debugger
+      let sessionItem = {}
+      sessionItem['miniType'] = val.code
+      sessionItem['count'] = 1
+      sessionItem['content'] = val.data.content
+      sessionItem['sendTime'] = val.data.sendTime
+      sessionItem['originData'] = val.data
+      sessionItem['name'] = null
+      sessionItem['avatar'] = null
+      sessionItem['id'] = null
+      sessionItem['targetId'] = val.code + '_'
       switch (val.code) {
         case 1100: // 单聊
-          sessionItem['name'] = val.data.name;
-          sessionItem['avatar'] = val.data.avatar;
-          sessionItem['id'] = val.data.senderId;
-          sessionItem['targetId'] += val.data.senderId;
-          break;
+          sessionItem['name'] = val.data.name
+          sessionItem['avatar'] = val.data.avatar
+          sessionItem['id'] = val.data.senderId
+          sessionItem['targetId'] += val.data.senderId
+          break
         case 1101: // 群聊
-          sessionItem['name'] = val.data.otherName;
-          sessionItem['avatar'] = val.data.otherAvatar;
-          sessionItem['id'] = val.data.receiverId;
-          sessionItem['targetId'] += val.data.receiverId;
+          sessionItem['name'] = val.data.otherName
+          sessionItem['avatar'] = val.data.otherAvatar
+          sessionItem['id'] = val.data.receiverId
+          sessionItem['targetId'] += val.data.receiverId
       }
 
       // 如果这条消息的targetId不在sessionList中，这加到队首
-      let targetId = sessionItem['targetId'];
+      let targetId = sessionItem['targetId']
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === targetId) {
           // 收到的消息来自当前聊天对象并且是聊天页面，不需增加计数
           if (targetId === this.messageStore.sessionActiveItem.targetId && this.$route.name.toLowerCase() === 'msg') {
-            return false;
+            return false
           }
 
           // 在队列, 并且没有打开聊天窗口，增加一条计数
@@ -146,44 +157,44 @@ export default {
             type: 'update',
             method: 'addCount',
             data: sessionItem
-          });
-          return false;
+          })
+          return false
         }
       }
       this.ActionUpdateSessionList({
         type: 'addItem',
         data: sessionItem
-      });
+      })
     }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     doLogout() {
-      this.dialogQuitVisible = false;
+      this.dialogQuitVisible = false
       LOGOUT()
         .then(res => {
           // 清除登陆数据
-          localStorage.removeItem('database');
-          localStorage.removeItem('authorization');
-          this.$router.push('/message_login');
-          this.$store.dispatch('clearCurrentState');
+          localStorage.removeItem('database')
+          localStorage.removeItem('authorization')
+          this.$router.push('/message_login')
+          this.$store.dispatch('clearCurrentState')
 
           // electron 退出处理
           if (window.require) {
-            var ipc = window.require('electron').ipcRenderer;
+            var ipc = window.require('electron').ipcRenderer
           }
           if (window.require) {
-            ipc.send('web_outLogin', '');
+            ipc.send('web_outLogin', '')
           }
         })
         .catch(res => {
-          console.error('退出请求失败');
-          localStorage.removeItem('authorization');
-          this.$router.push('/message_login');
-        });
+          console.error('退出请求失败')
+          localStorage.removeItem('authorization')
+          this.$router.push('/message_login')
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -230,10 +241,12 @@ export default {
           @include imgBox($borderRadius: 50%, $width: 30px, $height: 30px);
           background: $colorTheme;
           cursor: pointer;
+
           div {
             position: absolute;
           }
         }
+
       }
 
     }

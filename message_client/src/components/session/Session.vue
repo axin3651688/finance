@@ -8,7 +8,7 @@
         @click="setItemActive(item)"
       >
         <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
-          <div class="img-box">
+          <div :class="['img-box', {'off-line':socketOffLine}]">
             <avatar
               :username="item.name"
               :rounded="false"
@@ -51,6 +51,9 @@ export default {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id;
+    },
+    socketOffLine() { // socket连接转态
+      return this.messageStore.socketOffLine
     }
   },
   filters: {

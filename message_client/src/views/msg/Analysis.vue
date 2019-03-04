@@ -130,8 +130,7 @@ export default {
         page: 1, // 分页加载页码
         size: 20, // 每页20
         // state: 1, // state 1未读消息，2已读消息 (左上角的切换)
-        // userId: this.loginUserId // 当前用户的id
-        userId: 539 // 当前用户的id
+        userId: this.loginUserId // 当前用户的id
       };
       FIND_MODULE_MSG(data)
         .then(res => {

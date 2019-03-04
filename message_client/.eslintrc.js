@@ -20,7 +20,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'space-before-function-paren': [0, 'always'], //函数定义时括号前面要不要有空格
-    'semi': ['error', 'always'], // 语句强制分号结尾
+    'semi': ['error', 'never'], // 语句强制分号结尾
     'quotes': ['error', 'single'], //引号类型 `` "" ''
     'object-curly-spacing': ['error', 'never'], //大括号内是否允许不必要的空格
     'no-multi-spaces': ['error', {ignoreEOLComments: true}], //不能用多余的空格, 'ignoreEOLComments' 或略注释前的空格
