@@ -116,7 +116,7 @@ export default {
     },
     socketOffLine() { // socket连接转态
       return this.messageStore.socketOffLine
-    },
+    }
   },
   filters: {
     formatMsgTime(publishTime) { // 格式化时间戳(消息、聊天专用)
@@ -177,12 +177,6 @@ export default {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 25px;
-
-    .off-line {
-      img {
-        filter: grayscale(100%);
-      }
-    }
 
     &:first-child {
       margin-top: 60px;

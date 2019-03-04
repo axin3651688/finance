@@ -247,11 +247,6 @@ export default {
           }
         }
 
-        .off-line {
-          img {
-            filter: grayscale(100%);
-          }
-        }
       }
 
     }
