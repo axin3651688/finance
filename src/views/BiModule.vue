@@ -772,10 +772,6 @@ export default {
      * 切换公司、日期、关闭打开的tab页的操作。
      */
     closeTabTaget(params, $vue) {
-<<<<<<< HEAD
-=======
-      // debugger
->>>>>>> 1925770a10ea3f79e2009b8d4b2ec3f9bf5061e0
       let me = this;
       let tabs = $vue.items;
       let tabName = $vue.activeTabName;
