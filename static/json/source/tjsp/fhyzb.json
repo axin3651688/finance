@@ -18,6 +18,10 @@
         debugger
         option.closeTabTaget(newmonth,option);
     },
+    "__queryDataAfter":function(data,$store){
+        debugger
+
+    },
     "config": {
         "_sql": "",
         "_cube": {
@@ -27,6 +31,7 @@
         "mainDim":"itemperiod",
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
+        "tableHeads":true,
         "type":1  
     },
     "columns": [
@@ -261,15 +266,15 @@
                     console.log(vue);
                     vue.handleDownload(vue);
                 }
-            }],
-            "showFun":function($store){
-                debugger
-                if($store.getters.treeInfo.leaf){
-                    return false ;
-                }else{
-                    return true ;
-                }                       
-            }
+            }]
+            // "showFun":function($store){
+            //     debugger
+            //     if($store.getters.treeInfo.leaf){
+            //         return false ;
+            //     }else{
+            //         return true ;
+            //     }                       
+            // }
         }
     ]
 }

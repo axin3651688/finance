@@ -27,7 +27,8 @@ export default {
     
   },
   mounted() {
-      this.loadItems(this.item);
+    this.loadItems(this.item);
+   
   },
   watch: {
     item(newItem) {

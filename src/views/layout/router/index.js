@@ -66,7 +66,7 @@ const router = new Router({
         {
           path: '/c',
           name: 'cx',
-          component: () => import('@v/intelligenceReport/c.vue')
+          component: () => import('@v/intelligenceReport/a.1.vue')
         },
         {
           path: '/i',

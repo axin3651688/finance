@@ -23,14 +23,21 @@
     },
     "queryDataBefore":function(params,config,option){
         debugger
-        let sq ;
-        config.sql = config.sql2 ;
-        if(params.month - 1 != 0){
-            sq = params.year + (params.month - 1) ;
-        }else{
-            sq = params.year - 1 + "12" ;
+        if(option.id == "001402"){
+            let sq ;
+            config.sql = config.sql2 ;
+            if(params.month - 1 >0 && params.month - 1 < 10){
+                params.month = "0" + (params.month - 1) ;
+            }else{
+                params.month = "0" ;
+            }
+            if(params.month != 0){
+                sq = params.year + params.month  ;
+            }else{
+                sq = params.year - 1 + "12" ;
+            }
+            config.sql = config.sql.replace(/:periodMonth/g,"'"+sq+"'");//全局替换:itemperiod
         }
-        config.sql = config.sql.replace(/:periodMonth/g,"'"+sq+"'");//全局替换:itemperiod
         return params;
     },
     "config": {
@@ -44,6 +51,7 @@
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1 ,
+        "tableHeads":true,
         "generateVar":{
             "periodCount":2,
             "compareType":"-1&0",

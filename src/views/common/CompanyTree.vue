@@ -6,10 +6,10 @@
       :props="props"
       :load="loadNode"
       ref="tree2"
-      default-expand-all
       highlight-current
+      default-expand-all
       lazy
-      accordion
+      accordion = "true"
       :expandOnClickNode="false"
       @node-click="handleNodeClick "
       :filter-node-method="filterNode"
@@ -72,6 +72,7 @@ export default {
 
     // 异步树节点点击事件
     handleNodeClick(data) {
+      debugger;
       // 把子组件的点击选择传回父组件
       this.$emit("click", data);
     },

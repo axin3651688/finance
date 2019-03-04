@@ -38,7 +38,7 @@
     >
       <h2>{{layout.xtype}}</h2>
     </div>
-    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab">
+    <el-tabs v-if="layout.xtype === 'tab'" v-model="activeTabName" @tab-remove="removeTab" @tab-click="tabClick">
       <!--start @tab-click="handleTabClick"  -->
       <el-tab-pane
         v-for="(item,index) in items"
@@ -198,9 +198,15 @@ export default {
       console.log("改变", newId);
       this.updateView("company");
     },
+    //切换单位
+ 
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
-      
+      debugger
+
+      this.updateView("conversion");
+      this.changeConversionBefore(unit, this);
+      console.log("改变", unit);
       /**
        * name : sjz 
        * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
@@ -214,7 +220,7 @@ export default {
       //应收、预付、其他
       if((this.id==='66601' || this.id==='66602' || this.id==='66603') && this.items.length != 2){
         //判断公司是单体还是合并
-        if(this.$store.getters.treeInfo.leaf){//单体
+        if(this.$store.getters.treeInfo.nisleaf){//单体
           //获取列数组
           $col = this.items[0].children[0].config.columns;
           //获取行数据
@@ -324,6 +330,9 @@ export default {
     /**
      * 设置item是否隐藏或显示
      */
+
+    changeConversionBefore() {},
+
     showSet(items) {
       // let flag = true;
       items.forEach(item => {
@@ -457,6 +466,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
+      debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {
@@ -503,6 +513,14 @@ export default {
         // let date = new Date();
         // datas.year =  date.getFullYear();
         // datas.month =  date.getMonth()-1;
+        //判断是不是钻取的年月。
+        // let selectPeriod = this.$store.selectPeriod;
+        // debugger;
+        // if(selectPeriod){
+        //   datas.year = selectPeriod.substring(0,4);
+        //   datas.month = selectPeriod.substring(4) - 0 + "";
+        // };
+        // delete this.$store.selectPeriod;
         datas.month =
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
@@ -619,17 +637,23 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
+      debugger;
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
+      let itemUnit;
       if(!showDims.conversion){
-        params.conversion.id = 1;
-        params.conversion.text = "元";
+        //如果不显示单位切换，此处可以在json中配置自己想要的单位格式，如果没有配置就默认为：1 ，元
+        if(item.conversion){
+          itemUnit = item.conversion;
+        }
+        else {
+          itemUnit = {
+            id:1,
+            text:"元"
+          }
+        }
       };
-      let unit = params.conversion;
-      if (unit && unit.id > 1 && datas && datas.length > 0 ) {
-        datas = Math.convertUnit(unit.id, datas, item.config.columns);
-      }
       /**
        * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
        */
@@ -637,6 +661,23 @@ export default {
         //
         datas = item.__queryDataAfter(datas,this);
       }
+      let unit = itemUnit? itemUnit:params.conversion;
+      if (unit && unit.id > 1 && datas && datas.length > 0 ) {
+        let resColumns = [];
+        if(item.config.tableHeads){
+          let columns = item.config.columns;
+          this.transColumnsOfChildren(resColumns,columns);
+
+        }
+        datas = Math.convertUnit(unit.id, datas, (resColumns && resColumns.length > 0? resColumns:item.config.columns));
+      }
+      /**
+       * 在此处加了最外层的查询成功的拦截 szc 2018-12-26 11:49:17
+       */
+      // if (item.__queryDataAfter && typeof item.__queryDataAfter == "function") {
+      //   //
+      //   datas = item.__queryDataAfter(datas,this);
+      // }
       //
       //在此加了查询数据之后的拦截处理
       else if (
@@ -657,6 +698,17 @@ export default {
         $childVue.setItems(item, true);
       }
       //  this.units(datas)
+    },
+    transColumnsOfChildren(resColumns,columns){
+      let me = this;
+      columns.forEach(item => {
+        if(item.children){
+          let childColums = item.children;
+          this.transColumnsOfChildren(resColumns,childColums);
+        }else {
+          resColumns.push(item);
+        }
+      });
     },
     __queryDataAfter(datas) {
       return datas;
@@ -680,6 +732,10 @@ export default {
     },
     handleTabClick(tab, event) {
       console.log(tab, event);
+    },
+    tabClick(tab,event){
+      debugger;
+
     },
     getActiveTabName(item) {
       return item.id;

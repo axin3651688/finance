@@ -1,20 +1,10 @@
 {
-    "id": "001410",
+    "id": "0014100101",
     "text": "经营目标完成情况表",
     "layout": {
         "xtype": "tab"
     },
     "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(newcompany,option){
-        option.closeTabTaget(newcompany,option);
-    },
-    "changeYearBefore":function(newyear,option){
-        option.closeTabTaget(newyear,option);
-    },
-    "changeMonthBefore":function(newmonth,option){
-        debugger
-        option.closeTabTaget(newmonth,option);
-    },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -31,6 +21,7 @@
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1 ,
+        "tableHeads":true,
         "generateVar":{//生成变量rows
             "periodCount":2,
             "compareType":"-1&0",

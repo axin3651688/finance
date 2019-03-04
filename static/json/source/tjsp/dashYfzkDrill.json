@@ -1,0 +1,471 @@
+
+
+    {
+        
+        "layout":{
+            "xtype":"column"
+        },
+        "text":"预付账款",
+        "id":"66602",
+        "children":[
+            {
+                "xtype": "bi-table",
+                "id":"yfzk",
+                "text":"预付账款",
+                "show":false,
+                "width":6,
+                "tableBefore":true,
+                "tableBeforeFun":function($vue,params){
+                    debugger;
+                    let me = this;
+                    let period = $vue.$store.selectPeriod;
+                    let year = period.substring(0,4);
+                    let month = period.substring(4,6);
+                    let company = $vue.$store.getters.companyName;
+                    // let unit = "单位：元";
+                    let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+                    let snStyle = "padding:5px 10px;";
+                    let currentUnit = "元";
+                    let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
+                    return html;
+                },
+                "showFun":function($store){
+                    debugger
+                    if($store.getters.treeInfo.nisleaf){
+                        return true ;
+                    }else{
+                        return false ;
+                    }                        
+                },
+                
+                "queryDataBefore":function(params,config,$vue){
+                    debugger;
+                    let me = this;
+                    let selectPeriod = $vue.$store.selectPeriod;
+                    if(selectPeriod){
+                        let year = selectPeriod.substring(0,4);
+                        let month = selectPeriod.substring(4,6);
+                        if(year){
+                            params.year = year;
+                        }
+                        if(month){
+                            params.month = month;
+                        }
+                        params.period = selectPeriod;
+                    }
+                    return params;
+                },
+                "config":{          
+                    "sql":"SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,(CASE WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB,(CASE WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC,D.SNAME AS FZCFL,E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1002') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMSUPPLIER WHERE SCOMCODE IN('1001',:company)) B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ",
+                    // "sql2":"SELECT NID,DIM_CUSUPPLIER as sk,FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, ISNATURE AS SKXZ, ISINSIDE AS SFNB, ISNORMAL AS SFZC, SCONTENTA AS FZCFL, SCONTENTB AS ZWRK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM(SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE,ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB, FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS A WHERE A.DIM_COMPANY=:company AND A.DIM_PERIOD=:period AND A.DIM_ITEM='1002') A INNER JOIN (SELECT SCODE FROM DW_DIMSUPPLIER WHERE SCOMCODE IN ('1001',:company)) B ON A.DIM_CUSUPPLIER=B.SCODE",
+                    "cube":{
+                        "subject":"",
+                        "cubeId":4
+                    },        
+                    "mainDim":"itemperiod",
+                    "needDims":["year","month","company","conversion"],
+                    "random":{"min":100,"max":100000},
+                    "type":1, 
+                    "tableHeads":true,
+                    "columns":[
+                    {
+                        "id": "sjssje",
+                        "type": "decimal",
+                        "text": "已形成实质性损失金额"
+                    },
+                    {
+                        "id":"id",
+                        "type":"index",
+                        "width":"60",
+                        "text":"序号"
+                    },
+                    {
+                        "id": "sk",
+                        "type": "string",
+                        "width":"330",
+                        "text": "供应商"
+                    },
+                    {
+                        "id": "zq",
+                        "type": "string",
+                        "text": "账期",
+                        "children":[
+                            {
+                                "id": "balance",
+                                "type": "decimal",
+                                "text": "余额"
+                            },
+                            {
+                                "id":"oneyear",
+                                "type":"decimal",
+                                "text":"1年以内"
+                            },
+                            {
+                                "id":"twoyear",
+                                "type":"decimal",
+                                "text":"1-2年以内"
+                            },
+                            {
+                                "id":"threeyear",
+                                "type":"decimal",
+                                "text":"2-3年以内"
+                            },
+                            {
+                                "id":"fouryear",
+                                "type":"decimal",
+                                "text":"3年以上"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "skxz",
+                        "type": "string",
+                        "align": "center",
+                        "text": "商客性质*"
+                    },
+                    {
+                        "id": "sfnb",
+                        "type": "string",
+                        "align": "center",
+                        "text": "是否内部*"
+                    },
+                    {
+                        "id": "sfzc",
+                        "type": "string",
+                        "align": "center",
+                        "text": "是否正常*"
+                    },
+                    {
+                        "id": "fzcfl",
+                        "type": "decimal",
+                        "text": "非正常分类*"
+                    },
+                    {
+                        "id": "zwrqk",
+                        "type": "decimal",
+                        "text": "债务人情况*"
+                    },
+                    {
+                        "id": "kshjk",
+                        "type": "decimal",
+                        "text": "可收回金额*"
+                    },
+                    {
+                        "id": "dykshje",
+                        "type": "decimal",
+                        "text": "其中:当年可收回金额*"
+                    },
+                    {
+                        "id": "yqzk",
+                        "type": "decimal",
+                        "text": "逾期账款"
+                    }
+                    ],
+                    "rows":[ ]
+                    
+                }
+            },
+            {
+                "xtype": "STreeGrid",
+                "id": "yfzkej",
+                "text": "预付账款二级",
+                "style":{
+                    "height": "780px"
+                },
+                "show":false,
+                "tableBefore":true,
+                "_tableBeforeFun":function($vue,params){
+                    debugger;
+                    let me = this;
+                    let period = $vue.$store.selectPeriod;
+                    let year = period.substring(0,4);
+                    let month = period.substring(4,6);
+                    let company = $vue.$store.getters.companyName;
+                    // let unit = "单位：元"; 
+                    let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+                    let snStyle = "padding:5px 10px;";
+                    let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + ")</span></p>";
+                    return html;
+                },
+                "showFun":function($store){
+                    debugger
+                    if($store.getters.treeInfo.nisleaf){
+                        return false ;
+                    }else{
+                        return true ;
+                    }                       
+                },
+                "queryDataBefore":function(params,config,$vue){
+                    debugger
+                    if(params.company=='1001'){
+                        config.sql = config.sql1;
+                    }else{
+                        config.sql = config.sql2;
+                    }
+                    //是不是穿透的
+                    let selectPeriod = $vue.$store.selectPeriod;
+                    if(selectPeriod){
+                        let year = selectPeriod.substring(0,4);
+                        let month = selectPeriod.substring(4,6);
+                        if(year){
+                            params.year = year;
+                        }
+                        if(month){
+                            params.month = month;
+                        }
+                        params.period = selectPeriod;
+                    }
+                    return params;
+                },
+                "queryDataAfter":function(data, $vue){
+                    debugger
+                    data.forEach(item => {
+                        debugger
+                        if(item.riskrange == "SAFE"){
+                            item.riskrange = "安全" ;
+                        }else if(item.riskrange == "DANGER"){
+                            item.riskrange = "警告" ;
+                        }else if(item.riskrange == "PROMPT" ){
+                            item.riskrange = "预警" ;
+                        }else{
+                            item.riskrange = "错误！不在范围之内！" ;
+                        }
+                    });
+                    return data ;
+                },
+                "config":{
+                    // "sql1":" WITH NOWYEAR AS(SELECT DIM_COMPANY, ISINSIDE, ISNORMAL, FACT_BALANCE, SCONTENTA, FACT_A, FACT_B, FACT_C, FACT_D, FACT_E, FACT_F, FACT_G, FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SPCODE = '1001' AND CISDEL='N') AND DIM_ITEM='1002' AND ISINSIDE IS NOT NULL), LASTYEAR AS (SELECT DIM_COMPANY, ISINSIDE, ISNORMAL, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D FROM DW_FACTAGEANALYSIS WHERE DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SPCODE = '1001' AND CISDEL='N') AND DIM_ITEM='1002' AND ISINSIDE IS NOT NULL), AQBL AS (SELECT FACT_A A FROM (SELECT FACT_A, DIM_PERIOD FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_COMPANY = :company AND SRATIOTYPE = '1' AND DIM_PERIOD <= :period ORDER BY DIM_PERIOD DESC) WHERE ROWNUM = 1), YJBL AS (SELECT FACT_A A FROM (SELECT FACT_A, DIM_PERIOD FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_COMPANY = :company AND SRATIOTYPE = '2' AND DIM_PERIOD <= :period ORDER BY DIM_PERIOD DESC ) WHERE ROWNUM = 1 ) SELECT CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN Q.DIM_COMPANY ELSE Q.DIM_COMPANY ||Q.ISINSIDE END GSBM , CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN Q.DIM_COMPANY ELSE '' END scode , CASE WHEN Q.ISINSIDE='0' THEN Q.GSMC WHEN Q.ISINSIDE='0_合计' THEN '总计' ELSE '' END gsmc , CASE WHEN Q.ISINSIDE='0'or Q.ISINSIDE='0_合计' THEN '外部' WHEN Q.ISINSIDE='1' OR Q.ISINSIDE='1_合计' THEN '内部' WHEN Q.ISINSIDE<>'0' AND Q.ISINSIDE<>'1' AND Q.ISINSIDE<>'0_合计' AND Q.ISINSIDE<>'1_合计' THEN '合计' ELSE Q.ISINSIDE END KJ, CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN '' ELSE Q.DIM_COMPANY END AS PID, Q.YE, Q.ZJE, Q.ZJL, Q.RISKRANGE, W.ZCJE, E.FFF1, E.FFF2, E.FFF3, E.FFF4, E.FFF5, E.FFF6, E.FFF7, R.WWW1, R.WWW2, R.WWW3, R.WWW4 FROM (SELECT (CASE WHEN GROUPING(A.DIM_COMPANY)=1 THEN '9' ELSE A.DIM_COMPANY END) AS DIM_COMPANY,C.SNAME AS GSMC, (CASE WHEN GROUPING(A.ISINSIDE)=1 AND GROUPING(A.DIM_COMPANY)=0 THEN A.DIM_COMPANY||'_小计' WHEN GROUPING_ID(A.DIM_COMPANY,A.ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(A.ISINSIDE)=0 AND GROUPING(A.DIM_COMPANY)=1 THEN A.ISINSIDE||'_合计' ELSE A.ISINSIDE END) AS ISINSIDE, NVL(SUM(A.FACT_BALANCE),0) AS YE, (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0)) AS ZJE, (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE ROUND((NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0),2) END) AS ZJL, (CASE WHEN (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0) END) <= NVL( (SELECT A FROM AQBL),0 ) THEN 'SAFE' WHEN (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0) END)>=NVL( (SELECT A FROM YJBL),0) THEN 'DANGER' ELSE 'PROMPT' END ) AS RISKRANGE, (NVL(SUM(A.FACT_A),0)) AS FACT_A,(NVL(SUM(A.FACT_B),0)) AS FACT_B,(NVL(SUM(A.FACT_C),0)) AS FACT_C,(NVL(SUM(A.FACT_D),0)) AS FACT_D FROM NOWYEAR A LEFT JOIN LASTYEAR B ON A.DIM_COMPANY=B.DIM_COMPANY AND A.ISINSIDE=B.ISINSIDE INNER JOIN DW_DIMCOMPANY C ON A.DIM_COMPANY=C.SCODE GROUP BY GROUPING SETS ((A.DIM_COMPANY, C.SNAME, A.ISINSIDE), (A.DIM_COMPANY, C.SNAME), A.ISINSIDE, NULL)) Q LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM(NVL(FACT_BALANCE,0)) AS ZCJE FROM NOWYEAR WHERE ISNORMAL='1' AND ISINSIDE='0' GROUP BY GROUPING SETS ((DIM_COMPANY, ISINSIDE), DIM_COMPANY, ISINSIDE, NULL)) W ON Q.DIM_COMPANY=W.DIM_COMPANY AND Q.ISINSIDE=W.ISINSIDE LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM((CASE WHEN SCONTENTA='1101' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF1, SUM((CASE WHEN SCONTENTA='1102' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF2, SUM((CASE WHEN SCONTENTA='1103' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF3, SUM((CASE WHEN SCONTENTA='1104' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF4, SUM((CASE WHEN SCONTENTA='1105' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF5, SUM((CASE WHEN SCONTENTA='1106' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF6, SUM((CASE WHEN SCONTENTA='1107' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF7 FROM NOWYEAR WHERE ISNORMAL='0' AND ISINSIDE='0' GROUP BY GROUPING SETS ( (DIM_COMPANY, ISINSIDE), DIM_COMPANY, NULL)) E ON Q.DIM_COMPANY=E.DIM_COMPANY AND Q.ISINSIDE=E.ISINSIDE LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM(NVL(FACT_E,0)) AS WWW1, SUM(NVL(FACT_F,0)) AS WWW2,SUM(NVL(FACT_G,0)) AS WWW3,SUM(NVL(FACT_H,0)) AS WWW4 FROM NOWYEAR WHERE ISINSIDE='0' GROUP BY GROUPING SETS ((DIM_COMPANY, ISINSIDE), DIM_COMPANY, NULL)) R ON Q.DIM_COMPANY=R.DIM_COMPANY AND Q.ISINSIDE=R.ISINSIDE ORDER BY Q.DIM_COMPANY,Q.ISINSIDE",
+                    // "sql2":"WITH NOWYEAR AS(SELECT DIM_COMPANY, ISINSIDE, ISNORMAL, FACT_BALANCE, SCONTENTA, FACT_A, FACT_B, FACT_C, FACT_D, FACT_E, FACT_F, FACT_G, FACT_H FROM (SELECT SCODE AS DIM_COMPANY,ISINSIDE,ISNORMAL,SCONTENTA,SUM(NVL(FACT_BALANCE,0)) AS FACT_BALANCE ,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B,SUM(NVL(FACT_C,0)) AS FACT_C, SUM(NVL(FACT_D,0)) AS FACT_D,SUM(NVL(FACT_E,0)) AS FACT_E,SUM(NVL(FACT_F,0)) AS FACT_F,SUM(NVL(FACT_G,0)) AS FACT_G,SUM(NVL(FACT_H,0)) AS FACT_H FROM DW_FACTAGEANALYSIS A INNER JOIN DW_DIMCOMPANY B ON DIM_COMPANY LIKE SCODE||'%' WHERE DIM_PERIOD=:period AND DIM_ITEM='1002' AND ISINSIDE IS NOT NULL AND CISDEL = 'N' GROUP BY SCODE,ISINSIDE,ISNORMAL,SCONTENTA) WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SPCODE LIKE :company||'%')), LASTYEAR AS (SELECT DIM_COMPANY, ISINSIDE, ISNORMAL, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D FROM (SELECT SCODE AS DIM_COMPANY,ISINSIDE,ISNORMAL,SCONTENTA,SUM(NVL(FACT_BALANCE,0)) AS FACT_BALANCE ,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B,SUM(NVL(FACT_C,0)) AS FACT_C, SUM(NVL(FACT_D,0)) AS FACT_D,SUM(NVL(FACT_E,0)) AS FACT_E,SUM(NVL(FACT_F,0)) AS FACT_F,SUM(NVL(FACT_G,0)) AS FACT_G,SUM(NVL(FACT_H,0)) AS FACT_H FROM DW_FACTAGEANALYSIS A INNER JOIN DW_DIMCOMPANY B ON DIM_COMPANY LIKE SCODE||'%' WHERE DIM_PERIOD=:comparePeriod AND DIM_ITEM='1002' AND ISINSIDE IS NOT NULL AND CISDEL = 'N' GROUP BY SCODE,ISINSIDE,ISNORMAL,SCONTENTA) WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SPCODE LIKE :company||'%')), AQBL AS (SELECT FACT_A A FROM (SELECT FACT_A, DIM_PERIOD FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_COMPANY = :company AND SRATIOTYPE = '1' AND DIM_PERIOD <= :period ORDER BY DIM_PERIOD DESC) WHERE ROWNUM = 1), YJBL AS (SELECT FACT_A A FROM (SELECT FACT_A, DIM_PERIOD FROM DW_FACTAGEANALYSIS_PERCENT WHERE DIM_COMPANY = :company AND SRATIOTYPE = '2' AND DIM_PERIOD <= :period ORDER BY DIM_PERIOD DESC) WHERE ROWNUM = 1 ) SELECT CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN Q.DIM_COMPANY ELSE '' END scode , CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN Q.DIM_COMPANY ELSE Q.DIM_COMPANY || Q.ISINSIDE END gsbm , CASE WHEN Q.ISINSIDE='0' THEN Q.GSMC WHEN Q.ISINSIDE='0_合计' THEN '总计' ELSE '' END gsmc , CASE WHEN Q.ISINSIDE='0'or Q.ISINSIDE='0_合计' THEN '外部' WHEN Q.ISINSIDE='1' OR Q.ISINSIDE='1_合计' THEN '内部' WHEN Q.ISINSIDE<>'0' AND Q.ISINSIDE<>'1' AND Q.ISINSIDE<>'0_合计' AND Q.ISINSIDE<>'1_合计' THEN '合计' ELSE Q.ISINSIDE END KJ, CASE WHEN Q.ISINSIDE='0' OR Q.ISINSIDE='0_合计' THEN null ELSE Q.DIM_COMPANY END AS pid,Q.YE,Q.ZJE,Q.ZJL,Q.RISKRANGE,W.ZCJE,E.FFF1,E.FFF2,E.FFF3,E.FFF4,E.FFF5,E.FFF6,E.FFF7, R.WWW1,R.WWW2,R.WWW3,R.WWW4 FROM (SELECT (CASE WHEN GROUPING(A.DIM_COMPANY)=1 THEN '9' ELSE A.DIM_COMPANY END) AS DIM_COMPANY,C.SNAME AS GSMC, (CASE WHEN GROUPING(A.ISINSIDE)=1 AND GROUPING(A.DIM_COMPANY)=0 THEN A.DIM_COMPANY||'_小计' WHEN GROUPING_ID(A.DIM_COMPANY,A.ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(A.ISINSIDE)=0 AND GROUPING(A.DIM_COMPANY)=1 THEN A.ISINSIDE||'_合计' ELSE A.ISINSIDE END) AS ISINSIDE, NVL(SUM(A.FACT_BALANCE),0) AS YE, (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0)) AS ZJE, (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE ROUND((NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0),2) END) AS ZJL, (CASE WHEN (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0) END) <= NVL( (SELECT A FROM AQBL),0 ) THEN 'SAFE' WHEN (CASE WHEN NVL(SUM(B.FACT_BALANCE),0)=0 THEN 0 ELSE (NVL(SUM(A.FACT_BALANCE),0)-NVL(SUM(B.FACT_BALANCE),0))/NVL(SUM(B.FACT_BALANCE),0) END)>=NVL( (SELECT A FROM YJBL),0) THEN 'DANGER' ELSE 'PROMPT' END ) AS RISKRANGE, (NVL(SUM(A.FACT_A),0)) AS FACT_A,(NVL(SUM(A.FACT_B),0)) AS FACT_B,(NVL(SUM(A.FACT_C),0)) AS FACT_C,(NVL(SUM(A.FACT_D),0)) AS FACT_D FROM NOWYEAR A LEFT JOIN LASTYEAR B ON A.DIM_COMPANY=B.DIM_COMPANY AND A.ISINSIDE=B.ISINSIDE INNER JOIN DW_DIMCOMPANY C ON A.DIM_COMPANY=C.SCODE GROUP BY GROUPING SETS ((A.DIM_COMPANY, C.SNAME, A.ISINSIDE), (A.DIM_COMPANY, C.SNAME), A.ISINSIDE, NULL)) Q LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM(NVL(FACT_BALANCE,0)) AS ZCJE FROM NOWYEAR WHERE ISNORMAL='1' AND ISINSIDE='0' GROUP BY GROUPING SETS ((DIM_COMPANY, ISINSIDE), DIM_COMPANY, ISINSIDE, NULL)) W ON Q.DIM_COMPANY=W.DIM_COMPANY AND Q.ISINSIDE=W.ISINSIDE LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM((CASE WHEN SCONTENTA='1101' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF1, SUM((CASE WHEN SCONTENTA='1102' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF2, SUM((CASE WHEN SCONTENTA='1103' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF3, SUM((CASE WHEN SCONTENTA='1104' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF4, SUM((CASE WHEN SCONTENTA='1105' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF5, SUM((CASE WHEN SCONTENTA='1106' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF6, SUM((CASE WHEN SCONTENTA='1107' THEN NVL(FACT_BALANCE,0) ELSE 0 END)) AS FFF7 FROM NOWYEAR WHERE ISNORMAL='0' AND ISINSIDE='0' GROUP BY GROUPING SETS ( (DIM_COMPANY, ISINSIDE), DIM_COMPANY, NULL)) E ON Q.DIM_COMPANY=E.DIM_COMPANY AND Q.ISINSIDE=E.ISINSIDE LEFT JOIN (SELECT (CASE WHEN GROUPING(DIM_COMPANY)=1 THEN '9' ELSE DIM_COMPANY END) AS DIM_COMPANY, (CASE WHEN GROUPING_ID(DIM_COMPANY,ISINSIDE)=3 THEN '999_合计' WHEN GROUPING(DIM_COMPANY)=0 AND GROUPING(ISINSIDE)=1 THEN DIM_COMPANY||'_小计' ELSE ISINSIDE END) AS ISINSIDE, SUM(NVL(FACT_E,0)) AS WWW1, SUM(NVL(FACT_F,0)) AS WWW2,SUM(NVL(FACT_G,0)) AS WWW3,SUM(NVL(FACT_H,0)) AS WWW4 FROM NOWYEAR WHERE ISINSIDE='0' GROUP BY GROUPING SETS ((DIM_COMPANY, ISINSIDE), DIM_COMPANY, NULL)) R ON Q.DIM_COMPANY=R.DIM_COMPANY AND Q.ISINSIDE=R.ISINSIDE ORDER BY Q.DIM_COMPANY,Q.ISINSIDE",
+                    "sql1": 10, //1级
+                    "sql2": 6,  //2级
+                    "sql":"",
+                    "_cube":{
+                        "subject":"",
+                        "cubeId":4
+                    }, 
+                    "generateVar":{
+                        "periodCount":2,
+                        "compareType":"-1&0",
+                        "reverse":true
+                    },        
+                    "mainDim":"itemperiod",
+                    "needDims":["year","month","company","conversion"],
+                    "random":{"min":100,"max":100000},
+                    "type":1,          
+                    
+                    "layout":{
+                    "xtype":"tab",
+                    "ctype":"button"
+                    },
+                    "columns": [
+                        {
+                            "text": "已形成实质性损失金额",
+                            "type":"decimal",
+                            "id": "www4"
+                        }, 
+                        {
+                            "text": "",
+                            "type":"string",
+                            "id": "",
+                            "isTree":true
+                        },   
+                    {
+                        "text": "公司编码",
+                        "type":"string",
+                        "id": "scode"                          
+                    },
+                    {
+                        "text": "公司名称",
+                        "width":"275",
+                        "type":"string",
+                        "id": "gsmc"
+                    },
+                    {
+                        "text": "口径",
+                        "type":"string",
+                        "id": "kj"
+                    },
+                    {
+                        "text": "余额",
+                        "type":"decimal",
+                        "id": "ye"
+                    },
+                    {
+                        "text": "与年初相比增减额",
+                        "type":"decimal",
+                        "id": "zje"
+                    },
+                    {
+                        "text": "与年初相比增减率（%）",
+                        "type":"decimal",
+                        "conversion":"%",
+                        "id": "zjl"
+                    },
+                    {
+                        "text": "预警等级",
+                        "type":"string",
+                        "id": "riskrange"
+                    },
+                    {
+                        "id":"",
+                        "type":"string",
+                        "text":"账期",
+                        "children":[
+                            {
+                                "text": "1年以内",
+                                "type":"decimal",
+                                "id": "oneYear"
+                            },
+                            {
+                                "text": "1-2年",
+                                "type":"decimal",
+                                "id": "twoYear"
+                            },
+                            {
+                                "text": "2-3年",
+                                "type":"decimal",
+                                "id": "threeYear"
+                            },
+                            {
+                                "text": "3年以上",
+                                "type":"decimal",
+                                "id": "allYear"
+                            }
+                        ]
+                    },                               
+                    {
+                        "text": "正常金额",
+                        "type":"decimal",
+                        "id": "zcje"
+                    },
+                    {
+                        "id":"",
+                        "type":"string",
+                        "text":"非正常金额",
+                        "children":[
+                            {
+                                "text": "向系统外出借资金",
+                                "type":"decimal",
+                                "id": "fff1"
+                            },
+                            {
+                                "text": "成本费用挂账",
+                                "type":"decimal",
+                                "id": "fff2"
+                            },
+                            {
+                                "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+                                "type":"decimal",
+                                "id": "fff3"
+                            },
+                            {
+                                "text": "为其他企业代偿金融机构的贷款",
+                                "type":"decimal",
+                                "id": "fff4"
+                            },
+                            {
+                                "text": "长期挂账、未及时清理",
+                                "type":"decimal",
+                                "id": "fff5"
+                            },
+                            {
+                                "text": "核算不规范",
+                                "type":"decimal",
+                                "id": "fff6"
+                            },
+                            {
+                                "text": "其他",
+                                "type":"decimal",
+                                "id": "fff7"
+                            }
+                        ]
+                    },                               
+                    {
+                        "text": "可收回金额",
+                        "type":"decimal",
+                        "id": "www1"
+                    },
+                    {
+                        "text": "其中：当年可收回金额",
+                        "type":"decimal",
+                        "id": "www2"
+                    },
+                    {
+                        "text": "逾期账款",
+                        "type":"decimal",
+                        "id": "www3"
+                    }],
+                    "rows":[ ]
+                },
+                "__drillProperties":["riskrange","gsmc"],
+                "__onRowClick":function(row, column, e,$this){
+                    debugger
+                    let id = row.gsbm, text = row.gsmc;
+                    if(this.drillProperties[1].indexOf(column.property) != -1){
+                        if(row.gsmc != "" && row.gsmc != undefined){
+                            $this.commonHandler(
+                                {
+                                    "type":"click",//事件类型
+                                    "way":"addTab",//调用的公共方法
+                                    "sourceApi":"/cnbi/json/source/tjsp/yfzkmxb.json",
+                                    "handler":($vue,params)=>{//自定义的回调
+                                        console.info(params);
+                                        debugger; 
+                                    } 
+                                },
+                                { row: row, column: column, e: e },
+                                { id: id, text: text }
+                            );
+                        }    
+                    }    
+                },
+                "__cellStyle":function(row,obj){
+                    debugger
+                    // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
+                    //   let pro = obj.item.config.columns[row.columnIndex].id ; 
+                  
+                        let css = "padding: 4px 0;";
+                        // let pro = obj.item.config.columns;
+                        // let pro = "";
+                        let pro = row.column.property;
+                        if (!pro) {
+                            return css;
+                        }
+                        
+                        let textIndent ="";
+                        
+                        let record = row.row;  
+                        let drillProperties = this.drillProperties;
+                        if(drillProperties.indexOf(pro) != -1){
+                            if(record.riskrange && record.riskrange=="安全" && pro!="gsmc"){                                   
+                                let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;text-align: center;";
+                                css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            }else if(record.riskrange && record.riskrange=="警告" && pro!="gsmc"){
+                                let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
+                                css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            }else if(record.riskrange && record.riskrange=="预警" && pro!="gsmc"){
+                                let drill = "text-decoration: none;color: #FF9900;font-weight: bold;cursor: pointer;text-align: center;";
+                                css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            }else if(pro == "gsmc" && record.gsmc!="总计"){
+                                let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
+                                css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            }else{
+                                return css+textIndent;
+                            }
+                        }else{
+                            return css+textIndent;
+                        }
+                    }
+           
+                // }                  
+
+            }
+        ]
+    }
+
+
+

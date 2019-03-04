@@ -20,7 +20,8 @@
         // let unit = "单位：元";
         let pStyle = "height:30px;line-height:30px;font-weight:bold;";
         let snStyle = "padding:5px 10px;";
-        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + ")</span></p>";
+        let currentUnit = "元";
+        let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
         return html;
       },
 	  "queryDataBefore":function(params,config,$vue){
@@ -1098,10 +1099,10 @@
     "B_":0
   }
 ],
-      "drillProperties":["text1","text2"],//有钻取，给蓝色
+      // "drillProperties":["text1","text2"],//有钻取，给蓝色
 
       "levelProperties":{text1:"level",text2:"level2"},//加缩进 可选 table
-      "cellStyle":function(row) {
+      "__cellStyle":function(row) {
           // debugger 
              let datas = this.datas;
              if(datas && datas.length>0){
@@ -1249,44 +1250,45 @@
               return css+textIndent;
             }
         // }    
-      },
-    "onCellClick":function(row, column, cell, event,option){
-        // debugger
-        let cv = column.property + "",
-        len = cv.length;
-        let text = row[cv];
-        let id = "" ;
-        if(cv == "text1" )id = row.id;//下钻的标识
-        if(cv == "text2" )id = row.id_;//下钻的标识
-        // let datas = this.datas;
-        //         let data = datas.filter(function(item){
-        //                 return item.id_ == row.id_;
-        //         });
-        // row = data[0];
+      }
+      // ,
+    // "onCellClick":function(row, column, cell, event,option){
+    //     // debugger
+    //     let cv = column.property + "",
+    //     len = cv.length;
+    //     let text = row[cv];
+    //     let id = "" ;
+    //     if(cv == "text1" )id = row.id;//下钻的标识
+    //     if(cv == "text2" )id = row.id_;//下钻的标识
+    //     // let datas = this.datas;
+    //     //         let data = datas.filter(function(item){
+    //     //                 return item.id_ == row.id_;
+    //     //         });
+    //     // row = data[0];
 
-        if( this.drillProperties.indexOf(column.property) != -1 ){
-          if((row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
+    //     if( this.drillProperties.indexOf(column.property) != -1 ){
+    //       if((row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
   
-                  option.commonHandler(
-                  {
-                      "type":"click",//事件类型
-                      "way":"addTab",//调用的公共方法
-                      "sourceApi":"/cnbi/json/source/tjsp/zcfzbdebug2.json",
-                      "handler":($vue,params)=>{//自定义的回调
-                          console.info(params);
-                          debugger; 
-                      } 
-                  },
-                  { row: row, column: column, cell: cell, event: event },
-                  { id: id, text: text }
-                  );
+    //               option.commonHandler(
+    //               {
+    //                   "type":"click",//事件类型
+    //                   "way":"addTab",//调用的公共方法
+    //                   "sourceApi":"/cnbi/json/source/tjsp/zcfzbdebug2.json",
+    //                   "handler":($vue,params)=>{//自定义的回调
+    //                       console.info(params);
+    //                       debugger; 
+    //                   } 
+    //               },
+    //               { row: row, column: column, cell: cell, event: event },
+    //               { id: id, text: text }
+    //               );
               
                   
               
-          }    
-        }
+    //       }    
+    //     }
         
-      }
+    //   }
     }
   ]
 }

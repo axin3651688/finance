@@ -5,16 +5,6 @@
         "xtype": "tab"
     },
     "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(newcompany,option){ 
-        option.closeTabTaget(newcompany,option);
-    },
-    "changeYearBefore":function(newyear,option){
-        option.closeTabTaget(newyear,option);
-    },
-    "changeMonthBefore":function(newmonth,option){
-        debugger
-        option.closeTabTaget(newmonth,option);
-    },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -23,7 +13,7 @@
     },
     "config": {
         "sql": "WITH TT AS( SELECT SCODE,spcode, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' and CISDEL='N' and SPCODE like :company||'%' or scode=:company), T1 as (select fact_b, DIM_ITEMPERIOD, DIM_COMPANY, F.SNAME, dim_period from DW_FACTFINANCEPERIOD E RIGHT JOIN TT F ON E.DIM_COMPANY=F.SCODE where DIM_PERIOD in (:comparePeriod, :period) ), T2 AS ( select T1.DIM_COMPANY, T1.SNAME, fact_b YYCB_BN, YYLR_BN, YYSR_BN, XSFY_BN, CWFY_BN, GLFY_BN, YYCB_SN, YYLR_SN, YYSR_SN, XSFY_SN, CWFY_SN, GLFY_SN from T1 LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_BN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:period) AA ON T1.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_BN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) BB ON BB.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_BN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:period) CC ON BB.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_BN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:period) DD ON DD.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B GLFY_BN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:period) EE ON DD.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, fact_b YYCB_SN from T1 where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:comparePeriod) FF ON FF.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_SN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:comparePeriod) HH ON FF.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_SN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) II ON II.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_SN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:comparePeriod) JJ ON II.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_SN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:comparePeriod) KK ON KK.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME,FACT_B GLFY_SN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:comparePeriod) LL ON KK.DIM_COMPANY=LL.DIM_COMPANY where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:period ) SELECT DIM_COMPANY GSBM, SNAME GSMC, sum(nvl(YYCB_BN,0)) YYCB_BN,sum(nvl(YYCB_SN,0)) YYCB_SN,CASE WHEN sum(nvl(YYCB_SN,0))=0 THEN 0 ELSE ROUND((sum(nvl(YYCB_BN,0))-sum(nvl(YYCB_SN,0)))/sum(nvl(YYCB_SN,0)),4) END ZJL, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_BN,0))/sum(nvl(YYSR_BN,0)),4) END MLL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_SN,0))/sum(nvl(YYSR_SN,0)),4) END MLL_SN, sum(nvl(XSFY_BN,0)) XSFY_BN,sum(nvl(XSFY_SN,0)) XSFY_SN, sum(nvl(CWFY_BN,0)) CWFY_BN, sum(nvl(CWFY_SN,0)) CWFY_SN,sum(nvl(GLFY_BN,0)) GLFY_BN, sum(nvl(GLFY_SN,0)) GLFY_SN, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_BN,0))+sum(nvl(CWFY_BN,0))+sum(nvl(GLFY_BN,0)))/sum(nvl(YYSR_BN,0))),4) END FYL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_SN,0))+sum(nvl(CWFY_SN,0))+sum(nvl(GLFY_SN,0)))/sum(nvl(YYSR_SN,0))),4) END FYL_SN FROM T2 group by DIM_COMPANY, SNAME order by DIM_COMPANY ",
-        "cube": {
+        "_cube": {
             "cubeId": 4 ,
             "subject": "0002"
         },
@@ -31,6 +21,7 @@
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1 ,
+        "tableHeads":true,
         "generateVar":{//生成变量rows
             "periodCount":2,
             "compareType":"-1&0",
