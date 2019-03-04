@@ -7,18 +7,18 @@ import {
 
 import store from '@/store'
 export default function modeHandle(e) {
-    // if (!e.sourceId && !e.url) {
-    //     let msg = "未定义[" + e.text + e.id + "]模块的标识！";
-    //     console.error(msg);
-    //     // debugger
-    //     Notification.error({
-    //         title: "错误",
-    //         message: msg
-    //     });
-    //     //
-    //     return;
-    // }
-    e.url = "cnbi/json/source/jsnk/zbfx.json";
+    if (!e.sourceId && !e.url) {
+        let msg = "未定义[" + e.text + e.id + "]模块的标识！";
+        console.error(msg);
+        // debugger
+        Notification.error({
+            title: "错误",
+            message: msg
+        });
+        //
+        return;
+    }
+    // e.url = "cnbi/json/source/jsnk/zbfx.json";
     // e.url = "cnbi/json/source/jsnk/zfbb/zczefdtjb.json";
 
     debugger
