@@ -243,6 +243,7 @@ export default {
       let targetId = '1101_' + rightInfo.groupId;
       sessionItem['miniType'] = 1101;
       sessionItem['targetId'] = targetId;
+      sessionItem['online'] = true // 默认每个用户是在线状态
       sessionItem['id'] = rightInfo.groupId;
       sessionItem['name'] = rightInfo.text;
       sessionItem['count'] = 0;

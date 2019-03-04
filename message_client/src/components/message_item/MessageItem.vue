@@ -1,13 +1,13 @@
 <template>
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
     <div class="avatar">
-      <div :title="data.name" :class="['img-box', {'off-line':socketOffLine}]">
+      <div :title="data.name" :class="['img-box', {'off-line':!online}]">
         <img :src="data.avatar" v-avatar="data.name">
       </div>
     </div>
 
     <div class="content">
-      <!--{{data}}-->
+      {{data}}
 
       <h6 class="content-title" v-if="isGroup">{{data.name}}</h6>
       <div class="content-bubble">
@@ -114,8 +114,16 @@ export default {
     isGroup() {
       return this.messageStore.miniType === 1101
     },
-    socketOffLine() { // socket连接转态
-      return this.messageStore.socketOffLine
+    online() { // 对方是否在线
+      let targetId = '1100_' + this.data.senderId
+      let sessionList = this.messageStore.sessionList
+      for (let index in sessionList) {
+        if (sessionList[index].targetId === targetId) {
+          debugger
+          return sessionList[index].online
+        }
+      }
+      return true
     }
   },
   filters: {

@@ -25,7 +25,19 @@ export default function socketCoreProcess (websocket, datas) {
       case 1003: // 重新登陆
         _processLoginExpired(data)
         break
-      case 1004:
+      case 1004: // 上线通知
+        debugger
+        store.commit('MutationUpdateSessionOnlineState', {
+          targetId: '1100_' + data.data.user.id,
+          online: true
+        })
+        break
+      case 1005: // 下线通知
+        debugger
+        store.commit('MutationUpdateSessionOnlineState', {
+          targetId: '1100_' + data.data.user.id,
+          online: false
+        })
         break
       case 1006:// 对方收到消息或读了消息
         break

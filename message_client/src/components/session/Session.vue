@@ -8,7 +8,7 @@
         @click="setItemActive(item)"
       >
         <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
-          <div :class="['img-box', {'off-line':socketOffLine}]">
+          <div :class="['img-box', {'off-line':!item.online}]">
             <avatar
               :username="item.name"
               :rounded="false"

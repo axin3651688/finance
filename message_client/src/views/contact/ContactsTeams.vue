@@ -139,6 +139,7 @@ export default {
       let targetId = '1100_' + rightUserInfo.user.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
+      sessionItem['online'] = true // 默认每个用户是在线状态
       sessionItem['id'] = rightUserInfo.user.id;
       sessionItem['name'] = rightUserInfo.user.trueName;
       sessionItem['count'] = 0;

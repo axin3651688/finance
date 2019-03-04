@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import TopBar from '@mc/top_bar/TopBar';
-import SideBar from '@mc/side_bar/SideBar';
-import ImagePreview from '@mc/image_preview/ImagePreview';
-import {MY_SESSION} from '@m_api/message.js';
+import {mapGetters, mapActions} from 'vuex'
+import TopBar from '@mc/top_bar/TopBar'
+import SideBar from '@mc/side_bar/SideBar'
+import ImagePreview from '@mc/image_preview/ImagePreview'
+import {MY_SESSION} from '@m_api/message.js'
 
 export default {
   name: 'MessagePage',
@@ -37,7 +37,7 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore', 'imagePreview', 'popModule']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
     }
   },
   methods: {
@@ -49,21 +49,21 @@ export default {
       // debugger;
       MY_SESSION(this.loginUserId)
         .then(res => {
-          res = res.data;
+          res = res.data
           if (res.code === 200 && res.data) {
-            console.log('message左边栏====', res.data, '===message左边栏');
-            this._initSessionBar(res.data); // 初始化消息左边栏
+            console.log('message左边栏====', res.data, '===message左边栏')
+            this._initSessionBar(res.data) // 初始化消息左边栏
           } else {
             this.$message({
               type: 'error',
               message: res.msg,
               showClose: true
-            });
+            })
           }
         })
         .catch(err => {
-          console.log('请求message：', err);
-        });
+          console.log('请求message：', err)
+        })
     },
 
     /**
@@ -72,53 +72,54 @@ export default {
      */
     _initSessionBar(sessionList) {
       // debugger;
-      let session = [];         // 处理过后的session队列
-      let targetIdList = []; // 记录已经添加过的，防止重复
+      let session = []         // 处理过后的session队列
+      let targetIdList = [] // 记录已经添加过的，防止重复
       for (let item of sessionList) {
-        if (item.senderId === this.loginUserId) continue; // 如果发送人是自己，就不必要加入到session列表
-        let sessionItem = {};
+        if (item.senderId === this.loginUserId) continue // 如果发送人是自己，就不必要加入到session列表
+        let sessionItem = {}
 
-        let targetId = item.miniType + '_';
+        let targetId = item.miniType + '_'
         switch (item.miniType) {
           case 1100: // 单聊
-            targetId += item.senderId;
-            break;
+            targetId += item.senderId
+            break
           case 1101: // 群聊
-            targetId += item.receiverId;
-            break;
+            targetId += item.receiverId
+            break
         }
 
-        if (targetIdList.indexOf(targetId) > -1) continue; // 如果添加过了就不再添加
-        targetIdList.push(targetId);
-        sessionItem['miniType'] = item.miniType;
-        sessionItem['targetId'] = targetId; // 给每个item加一个targetId 作为唯一标识
-        sessionItem['id'] = item.miniType === 1101 ? item.receiverId : item.senderId; // 此处注意一下消息接受的目标对象
-        sessionItem['name'] = item.miniType === 1101 ? item.otherName : item.name;
-        sessionItem['count'] = item.count;
-        sessionItem['content'] = item.content;
-        sessionItem['sendTime'] = item.sendTime;
-        sessionItem['avatar'] = item.avatar;
-        sessionItem['originData'] = item;
-        session.push(sessionItem);
+        if (targetIdList.indexOf(targetId) > -1) continue // 如果添加过了就不再添加
+        targetIdList.push(targetId)
+        sessionItem['miniType'] = item.miniType
+        sessionItem['targetId'] = targetId // 给每个item加一个targetId 作为唯一标识
+        sessionItem['online'] = true // 默认每个用户是在线状态 TODO：在线状态
+        sessionItem['id'] = item.miniType === 1101 ? item.receiverId : item.senderId // 此处注意一下消息接受的目标对象
+        sessionItem['name'] = item.miniType === 1101 ? item.otherName : item.name
+        sessionItem['count'] = item.count
+        sessionItem['content'] = item.content
+        sessionItem['sendTime'] = item.sendTime
+        sessionItem['avatar'] = item.avatar
+        sessionItem['originData'] = item
+        session.push(sessionItem)
       }
 
       this.ActionSetMessageStore({
         sessionList: session,
         sessionActiveItem: session[0], // 默认选中第一条
         miniType: session[0]['miniType'] // 默认第一条的miniType
-      });
+      })
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',
         data: session[0] // // 默认选中第一条, 清空消息计数
-      });
-      console.log('session消息栏处理后:', session);
+      })
+      console.log('session消息栏处理后:', session)
     }
   },
   created() {
-    this.getSession();
+    this.getSession()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
