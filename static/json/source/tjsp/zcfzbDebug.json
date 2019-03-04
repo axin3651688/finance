@@ -10,6 +10,7 @@
       "id" : "zcfzb",
       "text" : "资产负债表",
       "tableBefore":true,
+      "extendDrillPeriod":true,
       "tableBeforeFun":function($vue,params){
         debugger;
         let me = this;
@@ -1250,8 +1251,7 @@
               return css+textIndent;
             }
         // }    
-      }
-      ,
+      },
     "onCellClick":function(row, column, cell, event,option){
         // debugger
         let cv = column.property + "",

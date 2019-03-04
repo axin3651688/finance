@@ -7,6 +7,7 @@
       :load="loadNode"
       ref="tree2"
       highlight-current
+      default-expand-all
       lazy
       accordion = "true"
       :expandOnClickNode="false"

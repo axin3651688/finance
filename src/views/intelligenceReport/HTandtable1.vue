@@ -86,7 +86,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item
               v-for="(item,index) of list"
-              @click.native="importDropdownMenu(list,index)"
+              @click.native="EtemplateDownload(list,index)"
               :key="index"
             >{{item.title}}</el-dropdown-item>
           </el-dropdown-menu>
@@ -105,7 +105,7 @@
 import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
-import {importExcel,inquire,save,download,del,financingDown,mechanism} from "@/api/fill.js";
+import {ImportExcel,Inquire,save,download,del,financingDown,mechanism} from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
   components: {
@@ -115,7 +115,6 @@ export default {
   // props:["item"],
   data() {
     return {
-      rows:[],//存储请求返回回来的数据
       selectedOptions: [],
       financingOptions: [],
       dialogVisible: false,
@@ -199,7 +198,7 @@ export default {
         let newyear = period.replace(year, val);
         this.datas.period = newyear;
         console.log(this.datas);
-        this.reportData(this.datas);
+        this.inquire(this.datas);
       }
     },
     month(val) {
@@ -214,7 +213,7 @@ export default {
         }
         this.datas.period = date;
         // console.log("ss",this.datas)
-        this.reportData(this.datas);
+        this.inquire(this.datas);
       }
     },
     company(val) {
@@ -224,7 +223,7 @@ export default {
         let newcompany = company.replace(company, val);
         this.datas.company = newcompany;
         console.log(this.datas);
-        this.reportData(this.datas);
+        this.inquire(this.datas);
       }
     }
   },
@@ -460,7 +459,6 @@ export default {
     });
     // window.addEventListener('resize', this.resizeTable)
     this.settings.afterChange = this.afterChange;
-    //融资情况明细表的下拉数据 机构名称
     mechanism().then(res => {
       this.mechanismdown = res.data.data;
     });
@@ -472,7 +470,7 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
-    //根据是否金融机构判断机构名称是下拉数据还是直接填写 
+    //机构名称下拉数据
     mechanismdownData(row,columns) {
       let source = [];
       this.mechanismdown.forEach(item => {
@@ -488,16 +486,17 @@ export default {
     resizeTable() {
       this.heights = document.body.offsetHeight - 360;
     },
-    //融资页面的下拉数据  除机构名称
+    //融资页面的下拉过滤
     financingOptionsData(id) {
+      //  let array = this.financingOptions.filter(item=>item.pid === id);
       let array = this.financing.filter(item => item.pid === id);
+
       let source = [];
       array.forEach(element => {
         source.push(element.text);
       });
       return source;
     },
-    //应收账款分析表  表格里面下拉的数据
     getDropDownSource(id) {
       let array = this.dataDict.filter(item => item.pid === id);
       let source = [];
@@ -633,7 +632,7 @@ export default {
         }
       });
     },
-    //应收账款分析表 判断是否控制填报
+
     reRenderCell(row, columns) {
       if (this.fixed == 0 && this.templateId == 4) {
         if (columns > 7) {
@@ -656,7 +655,7 @@ export default {
       return false;
     },
 
-    // 设置单元格的只读和下拉方法
+    // 设置单元格的只读
     cells(row, columns, prop) {
       let cellMeta = {};
       if (this.fixed === 1) {
@@ -715,7 +714,6 @@ export default {
 
       return cellMeta;
     },
-    //请求查询回来的数据的类型
     getHandsoneTableColType(type) {
       if (type) {
         if (type === "decimal") {
@@ -726,7 +724,6 @@ export default {
       }
       return "text";
     },
-    // 判断是decimal类型的加上千分两位小数显示
     decimalDefaultRenderer(instance,td,row,col,prop,value,cellProperties) {
       while (td.firstChild) {
         td.removeChild(td.firstChild);
@@ -738,8 +735,7 @@ export default {
         td.appendChild(flagElement);
       }
     },
-    //把请求回来的数据生成表格给需要操作的列添加方法
-    convertHansoneTableColumns(columns, rows) {
+    convert2HansoneTableColumns(columns, rows) {
       debugger
       let me = this;
       if (this.fixed === 0) {
@@ -968,7 +964,6 @@ export default {
     rowData() {
       this.$refs.hotTableComponent.hotInstance.alter("insert_row", this.index);
     },
-    //填报页面下拉获取要传递的数据
     matching(list, index, item) {
       let date;
       if (this.month < 10) {
@@ -978,7 +973,7 @@ export default {
       }
       this.years = date;
       this.reportHeader = list[index].title;
-      this.dropdownid = list[index].sourceId;
+      // this.dropdownid = list[index].sourceId;
       this.fixed = list[index].fixed;
       this.subject = list[index].subject;
       this.templateId = list[index].templateId;
@@ -995,14 +990,14 @@ export default {
         fixed: this.fixed
       };
       this.datas = excelUploadParaDto;
-      this.reportData(this.datas);
+      this.inquire(this.datas);
     },
     //请求获取填报页面
-    reportData(datas) {
+    inquire(datas) {
       console.log("请求", datas);
       console.log("传递的data", this.datas);
       let me = this;
-      inquire(this.datas).then(res => {
+      Inquire(this.datas).then(res => {
         console.log("查询", res);
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
@@ -1012,15 +1007,12 @@ export default {
         // me.$set(me.settings, "data",null)
         // console.log("me.settings.data--",me.settings)
         // me.$set(me.settings, "data",res.data.data.rows)
-        this.rows = res.data.data.rows
-        me.convertHansoneTableColumns(columns, rows);
+        me.convert2HansoneTableColumns(columns, rows);
       });
     },
-    //tab栏的切换
     handleClick(tab, event) {
-      //console.log(tab, event);
+      //     console.log(tab, event);
     },
-    //表格的导入
     beforeAvatarUpload(file) {
       let date;
       if (this.month < 10) {
@@ -1036,8 +1028,8 @@ export default {
       fd.append("period", this.years);
       fd.append("user", this.user.user.username);
       fd.append("company", this.company);
-
-      // console.log(this.dropdownid)
+      debugger
+      console.log(this.dropdownid)
       if( this.dropdownid){
         fd.append("templateId", this.dropdownid);
       }
@@ -1051,7 +1043,7 @@ export default {
       this.files = fd;
       return true;
     },
-    // 表格的导入匹配并发送请求
+    // 表格的导入
     submitUpload(file) {
       // debugger
       var regExp = /([\u4e00-\u9fa5]+)/gi;
@@ -1066,7 +1058,7 @@ export default {
       } else {
         // this.$message("模板匹配 没有数据")
         console.log(titlename[0]);
-        importExcel(this.files).then(res => {
+        ImportExcel(this.files).then(res => {
           console.log("res", res);
           if (res.data.code === 200) {
             // this.item = res.data.data.items[0].rows
@@ -1084,13 +1076,19 @@ export default {
         });
       }
     },
-    //导入按钮的点击事件
     uploadFiles() {
       debugger
       this.submitUpload(this.uploadfile);
     },
-    // 点击导入的下拉菜单获取对应的数据  
-    importDropdownMenu(list, index) {
+    templateDownload() {
+      this.isShow = true;
+      this.axios.get("/api/template").then(res => {
+        console.log(res);
+        this.list = res.data.data;
+      });
+    },
+    // 点击菜单获取对应菜单的数据
+    EtemplateDownload(list, index) {
       debugger;
       this.importHeader = list[index].title;
       this.dropdownid = list[index].templateId;
@@ -1104,19 +1102,11 @@ export default {
         console.log("要传递的上传文件的数据", this.files);
       }
     },
-    //模板下载弹框页面的请求
-    templateDownload() {
-      this.isShow = true;
-      this.axios.get("/api/template").then(res => {
-        console.log(res);
-        this.list = res.data.data;
-      });
-    },
-    // 弹框的取消
+    // 取消
     cancel() {
       this.isShow = false;
     },
-    // 弹框的确定 模板下载
+    // 确定 模板的下载
     Download() {
       this.isShow = false;
       if (this.templateId != null) {
@@ -1191,7 +1181,7 @@ export default {
           // arr.alter("remove_row", row);//删除当前行
           // console.log(me.tableData)
           // console.log(me.settings.data)
-          // me.reportData(me.datas)
+          // me.inquire(me.datas)
           let tabledata = me.tableData;
           let datas = me.settings.data;
           let nid;
@@ -1251,7 +1241,6 @@ export default {
         });
       }
     },
-    //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
       if (!value) {
         return;
@@ -1270,7 +1259,7 @@ export default {
       }
       td.innerHTML = text;
     },
-    //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
+    //融资页面的其他数据  把编码转成文字
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
       if (!value) {
         return;

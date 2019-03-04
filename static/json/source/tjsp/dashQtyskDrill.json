@@ -511,8 +511,8 @@
                         }
                     }
                 ],
-                    "__drillProperties":["riskrange","gsmc"],
-                    "__onRowClick":function(row, column, e,$this){
+                    "drillProperties":["riskrange","gsmc"],
+                    "onRowClick":function(row, column, e,$this){
                         // debugger
                         let id = row.gsbm, text = row.gsmc;
                         if(this.drillProperties[1].indexOf(column.property) != -1){
@@ -533,7 +533,7 @@
                             }    
                         }    
                     },
-                    "__cellStyle":function(row,obj){
+                    "cellStyle":function(row,obj){
                         // debugger
                         // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
                         //     let pro = obj.item.config.columns[row.columnIndex].id ; 

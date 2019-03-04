@@ -186,12 +186,22 @@ export default {
           resData.show = true;
           //加一个属性，表示是钻取的，方便刷新的时候过滤掉
           resData.from = "isDrill";
+          //绑定选择的日期。
+          if(this.$store.selectPeriod){
+            resData.curTabPeriod = this.$store.selectPeriod;
+          }
           module.items[action](resData);
           module.activeTabName = resData.text;
           //钻取穿透过来的也要有show属性判断，可以封装成上面的格式传进来，此时采用最后一个传法。
           if (resData) {
             let moduleItem = module.items[module.items.length-1];
             module.showSet([moduleItem]);
+          }
+          //把添加的tab页，放在$vue的对象中。以便切换的时候来用。
+          if(this.$store.public){
+            this.$store.public.tabModule = module;
+          }else {
+            this.$store.public = {tabModule:module};
           }
         });
         return;
