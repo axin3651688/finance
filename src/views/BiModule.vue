@@ -160,6 +160,9 @@ export default {
     // let bean = getClientParams();
     // this.setScopeDatas(bean);
     // this.loadModule();
+    debugger;
+    //添加第一次this状态。
+    // this.$store.start_$vue = JSON.stringify(this);
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -177,12 +180,15 @@ export default {
   },
   watch: {
     module_api(newid) {
+      // let $vueNew = parse(this.$store.start_$vue);
+      //改变url路径的时候，删除管理驾驶舱添加的属性。
+      this.$store.selectPeriod? delete this.$store.selectPeriod:"";
+      this.$store.public? delete this.$store.public:"";
       this.changeMonduleBefore(newid);
       this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
       this.loadModuleAfter(localStorage.module);
     },
-
     year(newyear) {
       this.changeYearBefore(newyear, this);
       this.updateView("year");
@@ -200,6 +206,8 @@ export default {
     },
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
+      // this.updateView("conversion");
+      // this.changeConversionBefore(unit,this);
       debugger
       /**
        * name : sjz 
@@ -324,6 +332,7 @@ export default {
     /**
      * 设置item是否隐藏或显示
      */
+     changeConversionBefore() {},
     showSet(items) {
       // let flag = true;
       items.forEach(item => {
@@ -500,18 +509,28 @@ export default {
         }
         datas[element] = val;
       });
+      debugger;
       if (datas.year && datas.month) {
         // let date = new Date();
         // datas.year =  date.getFullYear();
         // datas.month =  date.getMonth()-1;
-        //判断是不是钻取的年月。
-        // let selectPeriod = this.$store.selectPeriod;
-        // debugger;
-        // if(selectPeriod){
-        //   datas.year = selectPeriod.substring(0,4);
-        //   datas.month = selectPeriod.substring(4) - 0 + "";
-        // };
-        // delete this.$store.selectPeriod;
+        //判断是不是钻取的tab页的年月。管理驾驶舱的直接可以用
+        let currentApi = this.api;
+        let compareApiArr = ["/cnbi/json/source/tjsp/dash.json"];
+        //为什么设不进去。item.rootParams
+        if((compareApiArr.indexOf(currentApi)) || item.extendDrillPeriod){
+          let publicConfig = this.$store.public;
+          let selectPeriod = this.$store.selectPeriod;
+          debugger;
+          if(publicConfig && publicConfig.curTabPeriod){
+            datas.year = publicConfig.curTabPeriod.year;
+            datas.month = publicConfig.curTabPeriod.month;
+          }else if(selectPeriod){
+            datas.year = selectPeriod.substring(0,4);
+            datas.month = selectPeriod.substring(4) - 0 + "";
+          }
+        }
+          // delete this.$store.selectPeriod;
         datas.month =
           datas.month - 0 < 10 ? "0" + datas.month : "" + datas.month;
         datas.period = datas.year + "" + datas.month;
@@ -725,8 +744,28 @@ export default {
       console.log(tab, event);
     },
     tabClick(tab,event){
-      debugger;
-
+      let me = this,clickTabIndex = tab.index;
+      let moduleTab = this.$store.public.tabModule.items;
+      if(moduleTab && moduleTab.length > 0){
+        let itemTab = moduleTab[clickTabIndex];
+        let params = this.$store.state.prame.command,curTabPeriod;
+        if(itemTab.curTabPeriod){
+          curTabPeriod = itemTab.curTabPeriod;
+          this.$store.public.curTabPeriod = {
+            year:curTabPeriod.substring(0,4),
+            month:curTabPeriod.substring(4),
+            period:curTabPeriod,
+            selectTabIndex:clickTabIndex
+          }
+        }else {
+          this.$store.public.curTabPeriod = {
+            year:params.year,
+            month:params.month,
+            period:params.year + (params.month>9? params.month:"0" + params.month),
+            selectTabIndex:clickTabIndex
+          }
+        }
+      }
     },
     getActiveTabName(item) {
       return item.id;
