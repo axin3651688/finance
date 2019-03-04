@@ -17,7 +17,6 @@ export default function modeHandle(e) {
             title: "错误",
             message: msg
         });
-        //
         return;
     }
     // e.url = "cnbi/json/source/tjsp/aa.json";

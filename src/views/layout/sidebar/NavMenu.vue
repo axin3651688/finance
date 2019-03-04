@@ -65,6 +65,8 @@ export default {
         //   ? this.$router.push("/tjsp/module")
         //   :
         this.$router.push("/main");
+        //添加切换日志管理组件之后的不能切回url
+        this.$store.public? this.$store.public.url = e.url:this.$store.public = {url:e.url};
         modeHandle(e);
       }else{
         this.$router.push({ path: e.url });
