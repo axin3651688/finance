@@ -7,7 +7,7 @@
     </div>
 
     <div class="content">
-      {{data}}
+      <!--{{data}}-->
 
       <h6 class="content-title" v-if="isGroup">{{data.name}}</h6>
       <div class="content-bubble">
