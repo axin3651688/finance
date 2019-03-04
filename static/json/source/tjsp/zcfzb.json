@@ -17,6 +17,19 @@
   // option.cellStyle(this.items[0]);
   option.closeTabTaget(newmonth,option);
 },
+<<<<<<< HEAD
+"changeConversionBefor":function(newval,option){
+  debugger
+  // option.cellStyle(this.items[0]);
+  option.closeTabTaget(newval,option);
+},
+
+=======
+"changeConversionBefore":function(newconversion, option){
+  debugger
+  option.closeTabTaget(newconversion,option);
+},
+>>>>>>> a90637f9b9dfde61f2cb11ec526306d43277e6c0
 "__queryDataAfter":function(data,$vue){
   debugger
   let me = this;

@@ -7,7 +7,7 @@
     "showDims": ["year","month","company","conversion"],
     "queryDataBefore": function(params,config,$vue){
         debugger
-        if($vue.id == "0014253678"){
+        if($vue.id === "0014253678"){
             let yearBefore = params.year - 1 ;
             config.sql = config.sql2.replace(/:yearBefore/g,"'"+yearBefore+"'") ;
         }

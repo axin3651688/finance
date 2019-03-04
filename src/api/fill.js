@@ -8,33 +8,8 @@ export function fill() {
     })
 }
 
-// export function ImportExcel(data) {
-//     return request({
-//         url: '/get/api/excel/upload_excel2json/?noTitle=1',
-//         method: 'post',   
-//         data:data,
-
-//     })
-// }
-
-// export function ImportExcel(data) {
-//     return request({
-//         url: '/exl/excel/upload_excel2json/?subject=0002',
-//         method: 'post',   
-//         data:data
-
-//     })
-// }
-
-// export function save(data) {
-//     return request({
-//         url: '/api/api/update_precalc',
-//         method: 'post',   
-//         data:data
-//     })
-// }
-
-export function ImportExcel(data) {
+//excel导入
+export function importExcel(data) {
     return request({
         url: '/exl/upload_excel',
         method: 'post',   
@@ -43,7 +18,8 @@ export function ImportExcel(data) {
     })
 }
 
-export function Inquire(data) {
+//数据查询
+export function inquire(data) {
     return request({
         url: '/exl/find_fill_data',
         method: 'post', 
@@ -75,5 +51,21 @@ export function del(data) {
         method: 'delete',   
         data:data
     })
+}  
+
+//融资情况明细表的下拉数据 
+export function financingDown(data) {
+    return request({
+        url: "/exl/find_options?scode="+data,
+        method: 'get',   
+        data:data
+    })
 }
 
+//融资情况明细表的下拉数据 机构名称
+export function mechanism() {
+    return request({
+        url: "/exl//find_banks",
+        method: 'get',   
+    })
+}

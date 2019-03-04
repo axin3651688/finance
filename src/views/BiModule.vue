@@ -204,72 +204,51 @@ export default {
       console.log("改变", newId);
       this.updateView("company");
     },
+    //切换单位
+ 
     // //循环当前组件的孩子，动态给datas调用切换单位的方法即可
     conversion(unit, older) {
       // this.updateView("conversion");
       // this.changeConversionBefore(unit,this);
       debugger
+      this.changeConversionBefore(unit, this);
+      this.updateView("conversion");
       /**
        * name : sjz 
        * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
        * time : 2019/2/18 11:20:22 礼拜一
        */
-      let $col = [];
-      let $columns = [];
-      // let $datas = [];
-      let tempDatas ;
-      let $cc = this.$refs.mychild ;
-      //应收、预付、其他
-      if((this.id==='66601' || this.id==='66602' || this.id==='66603') && this.items.length != 2){
-        //判断公司是单体还是合并
-        if(this.$store.getters.treeInfo.nisleaf){//单体
-          //获取列数组
-          $col = this.items[0].children[0].config.columns;
-          //获取行数据
-          tempDatas = this.items[0].children[0].datas ;
-        } else {                              //合并
-          //获取列数组
-          $col = this.items[0].children[1].config.columns;
-          //获取行数据
-          tempDatas = this.items[0].children[1].datas ;
-        }
-      //资产负债表、利润表、现金流量表 二级下钻  
-      } else if(this.items.length == 2){
-        // if(this.items[1].children[0].id==='zcfzbej' || this.items[1].children[0].id==='lrbej' || this.items[1].children[0].id==='xjllbej'){
-        //   //获取‘三张主表’二级列数组
-        //   $col = this.items[1].children[0].columns ;
-        //   //获取‘三张主表’二级行数据
-        //   tempDatas = this.items[1].children[0].datas ;
-        // }
-        //获取二级列数组
-        $col = this.items[1].children[0].columns ;
-        //获取二级行数据
-        tempDatas = this.items[1].children[0].datas ;
-      } else {
-        $col = this.config.columns || this.columns;
-        tempDatas = this.datas;
+      let oneTable, twoTable ; 
+      let resColumns = [], $rows = [], $cols = [] ;
+      /**
+       * sjz 
+       * 说明 ： 因为应收、预付、其他三张表比较特殊，一张json配置了两个表格，所以这样处理，大牛可以再次优化
+       */
+      if(this.id=='66601' || this.id=='66602' || this.id=='66603'){
+          oneTable = this.items[0].children[0].config.tableHeads ;
+          twoTable = this.items[0].children[1].config.tableHeads ;
+      }else if(this.config.tableHeads){             // 多级表头判断
+          $cols = this.columns ;
+          // 多级表头处理 
+          this.transColumnsOfChildren(resColumns,$cols) ;  
       }
-
-      // let $col = this.config.columns || this.columns;
       
-      for(let i=0; i<$col.length; i++){
-        if($col[i].children && $col[i].children.length>0){
-          for(let k=0; k<$col[i].children.length; k++){
-            if($col[i].children[k].children && $col[i].children[k].children.length>0){
-              for(let p=0; p<$col[i].children[k].children.length; p++){
-                $columns.push($col[i].children[k].children[p])
-              }
-            }else{
-              $columns.push($col[i].children[k])
-            }
+      if(oneTable || twoTable){
+          if(this.$store.getters.treeInfo.nisleaf){ // 单体
+              $cols = this.items[0].children[0].config.columns ;
+              $rows = this.items[0].children[0].datas ;
+          }else{                                    // 合并
+              $cols = this.items[0].children[1].config.columns ;
+              $rows = this.items[0].children[1].datas ;
           }
-        }else{
-          $columns.push($col[i]);
-        }
+          // 多级表头处理      
+          this.transColumnsOfChildren(resColumns,$cols) ;          
       }
+      
       /**------------------------------------------- */
-      // let $cc = this.$refs.mychild ;
-      // let tempDatas = this.datas ;
+      let $cc = this.$refs.mychild ;
+      let tempDatas = ($rows && $rows.length>0)? $rows : this.datas ; //行
+      let $column = (resColumns && resColumns.length>0)?resColumns : (this.config.columns || this.columns) ;//列
 
       if (tempDatas.length > 0) {
         // this.datas = Math.convertUnit(
@@ -277,7 +256,7 @@ export default {
           unit.id,
           tempDatas,
           // this.config.columns || this.columns,
-          $columns,
+          $column,
                   older.id
                 );
             }
@@ -330,9 +309,15 @@ export default {
      */
     changeCompanyBefore() {},
     /**
+     * 更新单位之前调用的方法
+     */
+    changeConversionBefore() {},
+    /**
      * 设置item是否隐藏或显示
      */
-     changeConversionBefore() {},
+
+    changeConversionBefore() {},
+
     showSet(items) {
       // let flag = true;
       items.forEach(item => {
@@ -671,11 +656,15 @@ export default {
         //
         datas = item.__queryDataAfter(datas,this);
       }
+      // if($childVue){
+      //     item.config.columns = item.items[0].children[0].config.columns ;
+      // }
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         let resColumns = [];
-        if(item.config.tableHeads){
+        if(item.config.tableHeads || $childVue){
           let columns = item.config.columns;
+        
           this.transColumnsOfChildren(resColumns,columns);
 
         }
@@ -794,6 +783,7 @@ export default {
      * 切换公司、日期、关闭打开的tab页的操作。
      */
     closeTabTaget(params, $vue) {
+      debugger
       let me = this;
       let tabs = $vue.items;
       let tabName = $vue.activeTabName;
