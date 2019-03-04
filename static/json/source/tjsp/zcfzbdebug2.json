@@ -21,7 +21,7 @@
 			
 			"queryDataBefore":function(a,b,c){
 				debugger
-				// var pointItem = c.$store.pointItem;
+				// var pointItem = c.$store.pointItem;				
 				b.sql = b.sql2;
 				let len = c.items.length;
 				let id = c.items[len-1].id;

@@ -108,7 +108,7 @@
         {
             "xtype": "bi-table",
             "id" : "nmbkhjyz",
-            "stype": "table",
+            "stype": "tree",
             "text" : "年目标考核建议值",
             
             "toolbar":[{    

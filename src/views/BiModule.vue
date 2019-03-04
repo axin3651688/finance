@@ -216,55 +216,28 @@ export default {
     conversion(unit, older) {
       // this.updateView("conversion");
       // this.changeConversionBefore(unit,this);
+      /**
+       * sjz
+       * 单位切换调用关闭tab页，重新请求数据方法。
+       */
       this.changeConversionBefore(unit, this);
       this.updateView("conversion");
-      /**
-       * name : sjz 
-       * 功能 : 适用于多级表头的单位切换（注：1级拓展==这里最高只有3级）
-       * time : 2019/2/18 11:20:22 礼拜一
-       */
-      let oneTable, twoTable ; 
-      let resColumns = [], $rows = [], $cols = [] ;
-      /**
-       * sjz 
-       * 说明 ： 因为应收、预付、其他三张表比较特殊，一张json配置了两个表格，所以这样处理，大牛可以再次优化
-       */
-      if(this.id=='66601' || this.id=='66602' || this.id=='66603'){
-          oneTable = this.items[0].children[0].config.tableHeads ;
-          twoTable = this.items[0].children[1].config.tableHeads ;
-      }else if(this.config.tableHeads){             // 多级表头判断
-          $cols = this.columns ;
-          // 多级表头处理 
-          this.transColumnsOfChildren(resColumns,$cols) ;  
-      }
-      
-      if(oneTable || twoTable){
-          if(this.$store.getters.treeInfo.nisleaf){ // 单体
-              $cols = this.items[0].children[0].config.columns ;
-              $rows = this.items[0].children[0].datas ;
-          }else{                                    // 合并
-              $cols = this.items[0].children[1].config.columns ;
-              $rows = this.items[0].children[1].datas ;
-          }
-          // 多级表头处理      
-          this.transColumnsOfChildren(resColumns,$cols) ;          
-      }
       
       /**------------------------------------------- */
-      let $cc = this.$refs.mychild ;
-      let tempDatas = ($rows && $rows.length>0)? $rows : this.datas ; //行
-      let $column = (resColumns && resColumns.length>0)?resColumns : (this.config.columns || this.columns) ;//列
+      // let $cc = this.$refs.mychild ;
+      // let tempDatas = ($rows && $rows.length>0)? $rows : this.datas ; //行
+      // let $column = (resColumns && resColumns.length>0)?resColumns : (this.config.columns || this.columns) ;//列
 
-      if (tempDatas.length > 0) {
-        // this.datas = Math.convertUnit(
-        tempDatas = Math.convertUnit(
-          unit.id,
-          tempDatas,
-          // this.config.columns || this.columns,
-          $column,
-                  older.id
-                );
-            }
+      // if (tempDatas.length > 0) {
+      //   // this.datas = Math.convertUnit(
+      //   tempDatas = Math.convertUnit(
+      //     unit.id,
+      //     tempDatas,
+      //     // this.config.columns || this.columns,
+      //     $column,
+      //             older.id
+      //           );
+      //       }
       // if ($cc) {
       //   let ii = 0;
       //   $cc.forEach(children => {
@@ -670,8 +643,15 @@ export default {
       // }
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
+        /**
+         * sjz
+         * 再次调用数据之后的处理方法，先处理数据中变量的替换再次换算单位
+         */
+        if ( item.queryDataAfter && typeof item.queryDataAfter == "function" && !item.correctWrongConfig ){
+          datas = item.queryDataAfter(datas);
+        }
         let resColumns = [];
-        if(item.config.tableHeads || $childVue){
+        if(item.config.tableHeads){
           let columns = item.config.columns;
         
           this.transColumnsOfChildren(resColumns,columns);
@@ -792,6 +772,10 @@ export default {
      * 切换公司、日期、关闭打开的tab页的操作。
      */
     closeTabTaget(params, $vue) {
+<<<<<<< HEAD
+=======
+      // debugger
+>>>>>>> 1925770a10ea3f79e2009b8d4b2ec3f9bf5061e0
       let me = this;
       let tabs = $vue.items;
       let tabName = $vue.activeTabName;

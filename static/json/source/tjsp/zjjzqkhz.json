@@ -137,7 +137,7 @@
     }
   ],
       "onRowClick":function(row,e,col,$vue){
-          debugger
+          // debugger
           let id = row.scode, text = row.sname ;
           if(this.drillProperties.indexOf(e.property) != -1){
             if(row.jzhs && row.jzhs>0){  
@@ -163,7 +163,7 @@
 
         // let a = obj.item.config.columns;
         
-        debugger
+        // debugger
         // for(row.columnIndex; row.columnIndex<obj.item.config.columns.length; row.columnIndex++){
         //     let pro = obj.item.config.columns[row.columnIndex].id ; 
         

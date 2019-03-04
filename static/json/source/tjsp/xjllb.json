@@ -17,6 +17,10 @@
         // option.cellStyle(this.items[0]);
         option.closeTabTaget(newmonth,option);
     },
+    "changeConversionBefore":function(newconversion, option){
+        // debugger
+        option.closeTabTaget(newconversion,option);
+    },
     "queryDataBefore":function(a,b,c){
         // debugger
         var me = this;
