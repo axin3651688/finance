@@ -503,13 +503,13 @@ export default {
         let currentApi = this.api;
         let compareApiArr = ["/cnbi/json/source/tjsp/dash.json"];
         //为什么设不进去。item.rootParams
-        if((compareApiArr.indexOf(currentApi)) || item.extendDrillPeriod){
+        if(compareApiArr.indexOf(currentApi) != -1 || item.extendDrillPeriod){
           let publicConfig = this.$store.public;
           let selectPeriod = this.$store.selectPeriod;
           debugger;
           if(publicConfig && publicConfig.curTabPeriod){
             datas.year = publicConfig.curTabPeriod.year;
-            datas.month = publicConfig.curTabPeriod.month;
+            datas.month = publicConfig.curTabPeriod.month - 0 + "";
           }else if(selectPeriod){
             datas.year = selectPeriod.substring(0,4);
             datas.month = selectPeriod.substring(4) - 0 + "";

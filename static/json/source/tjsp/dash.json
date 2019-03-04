@@ -1,6 +1,6 @@
 {
 	"id": 1,
-	"text": "指标分析",
+	"text": "指标分析配置",
 	"rows": [],
 	"rootParams":{
 		"rootItem":"Y"
@@ -103,7 +103,7 @@
 			   	"xtype": "column"
 		   	},
 			"id": "888",
-			"text": "指标分析01",
+			"text": "指标分析",
 		   
 			"children":[
 				{
