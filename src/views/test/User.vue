@@ -38,7 +38,7 @@
                   <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
                 </template>
                 <template v-else >
-                  <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="primary">启用</el-button>
+                  <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="success">启用</el-button>
                 </template>
                 
                 <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary">修改</el-button>
@@ -197,7 +197,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitEditUserForm('editUserForm')">确 定</el-button>
-        <el-button @click="dialogAddUserVisible = false">取 消</el-button>
+        <el-button @click="dialogEditUserVisible = false">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -212,10 +212,10 @@
         <el-form-item label="密码" prop="spassword">
           <el-input type="password" v-model="editPasswordForm.spassword" autocomplete="off" style="width:280px"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="spassword2">
+        <el-form-item label="确认密码" prop="spassword2" style="margin-top:25px">
           <el-input type="password" v-model="editPasswordForm.spassword2" autocomplete="off" style="width:280px"></el-input>
         </el-form-item>
-        <el-form-item style="text-align: right;" >
+        <el-form-item style="text-align: right;margin-top:20px" >
           <el-button type="primary" @click="submitEditPasswordForm('editPasswordForm')">提交</el-button>
           <el-button @click="resetForm('editPasswordForm')">重置</el-button>
         </el-form-item>
@@ -282,6 +282,7 @@
 <script>
 import request from "utils/http";
 import tools from "utils/tools";
+import { mapGetters} from "vuex";
 import {isValiatePhone} from "utils/validate";
 import {isValiateUsername} from "utils/validate";
 import {isValiatePw} from "utils/validate";
@@ -298,16 +299,28 @@ export default {
   components: {
     Treeselect 
   },
-  
+  /**
+   * 三个间隔    10*3
+   * 查询背景    60*1
+   * 分页背景    70*1
+   * 导航栏高度  64*1
+   */
   created() {
+    debugger
         let me =this;
         if(document.getElementsByClassName('input-refresh').length>0){
             // 得到表单的高度并赋值
             me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            // 计算当前页面的高度 得出表格的高度
-            me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+            if (me.inputRefresh == 0) {
+                me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+            } else {
+                // 计算当前页面的高度 得出表格的高度
+                me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+            }
+            
         } else {
             me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+            
         }   
         // 跳转到请求数据方法
         me.fetchRemoteData(me.currentPage,me.pagesize);
@@ -320,6 +333,7 @@ export default {
      let _this = this;
      var validatePass = (rule, value, callback) => {
         if (value === '') {
+          debugger
           callback(new Error('请输入密码'));
         }else if (!isValiatePw(value)) {
           callback(new Error("请输入有效的密码"));
@@ -356,6 +370,12 @@ export default {
         //默认展开节点
         expandKeys: [],
         companyAuthorizationForm:[],
+        // 窗口的原始高度
+            offsetHeight: document.body.offsetHeight,
+        // form表单的原始高度
+            inputRefresh: 0,
+        // 表格初始化高度为 0 等待计算赋值
+            heights: 0,    
 
       searchForm: {},
       addUserForm:{
@@ -535,7 +555,10 @@ export default {
         },400);
       }
     },
-
+    //切换公司
+    company(newV) {debugger
+      this.getData('company',newV);
+    },
     //监听修改表单变化
     "form.suser": {
       handler(nowVal, oldV) {
@@ -578,6 +601,23 @@ export default {
         this.watchField("company", nowVal);
       },
       deep: true
+    },
+    // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
+    offsetHeight(val){
+      debugger
+      if(!this.timer){
+          debugger
+          // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
+          this.offsetHeight = val
+          this.timer = true
+          let me = this
+          setTimeout(function(){
+              // 打印offsetHeight变化的值
+              me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+              console.log(me.offsetHeight)
+              me.timer = false
+          },300)
+      }
     }
   },
   mounted() {
@@ -592,8 +632,37 @@ export default {
     // };
     // this.maxHeight = tools.setTableMaxHeight(subHeight);
     // this.$refs.userTable.fetchData();
+    // const me = this
+    // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
+    window.onresize = () => {
+        // debugger
+        return (() => {
+            window.offsetHeight = document.body.offsetHeight;
+            this.offsetHeight = window.offsetHeight;
+            this.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+        })()
+    }
+  },
+  computed: {
+    ...mapGetters([ "company"])
   },
   methods: {
+    // 切换公司时触发
+    getData(vax, value){
+        // debugger
+        let me = this ;
+        // if(vax === 'year') {
+        //     me.yearId = me.$store.getters[vax] ;
+        // } else if(vax === 'month') {
+        //     me.monthId = me.$store.getters[vax] ;
+        // } else if(vax === 'company') {
+            me.companyId = me.$store.getters[vax] ;
+        // } else {
+        //     me.conversionId = me.$store.getters[vax] ;
+        // }
+        // 重新发送请求数据
+        me.findAll(this.currentPage, this.pagesize);
+    },
     /**
      * @value 字符串的长度（可以是汉字）
      */
@@ -831,6 +900,13 @@ export default {
       this.opt = tools.opt[0];
       this.editPasswordForm.suser = row.suser;
       
+    },
+    /**
+     * @description 修改密码重置按钮 zb
+     */
+    resetForm(editPasswordForm){
+      debugger
+      this.$refs[editPasswordForm].resetFields();
     },
    /**
      * @description 用户启用
@@ -1140,9 +1216,9 @@ export default {
 };
 </script>
 <style scoped>
-.userM {
+/* .userM {
   margin-top: 10px;
-}
+} */
 
 .info {
   cursor: pointer;
@@ -1155,8 +1231,13 @@ export default {
     /* height: 80px; line-height: 80px; */
     /* max-height: 160px; */
     text-align: center;
+    margin-top: 10px;
     margin-bottom: 10px;
     background-color: #fff;
+}
+.el-form-item{
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
  lable[for='company']  {
     width: 70%;

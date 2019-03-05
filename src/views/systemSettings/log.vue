@@ -144,8 +144,12 @@ export default {
         if(document.getElementsByClassName('input-refresh').length>0){
             // 得到表单的高度并赋值
             me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            // 计算当前页面的高度 得出表格的高度
-            me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+            if(me.inputRefresh == 0) {
+                me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+            } else {
+                // 计算当前页面的高度 得出表格的高度
+                me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+            }
         } else {
             me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
         }   

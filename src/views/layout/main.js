@@ -14,6 +14,7 @@ import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/the
 // import "@s/green/index.scss" //cxy
 import Blob from '@/excel/Blob.js'
 import Export2Excel from '@/excel/Export2Excel.js'
+import { Script } from 'vm';
 Vue.use(ZkTable)
 Vue.config.productionTip = false
 Vue.use(ElementUI);
