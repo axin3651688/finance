@@ -210,13 +210,14 @@ export default {
         }
     },
     created(){
-        // debugger
+        debugger
         // 窗口的高度
         let offsetHeight = document.body.offsetHeight ;
         /**
          * 第三张表的高度(heightx) = 
          *      窗口高度(offsetHeight) - 前两张表的高度(this.heights * 2) - 顶部距离20 - 空白距离82 ;
          */
+        // this.heights = 103 ;
         this.heightx = 
                 offsetHeight - (this.heights * 2) - 20 - 82 ; 
         // 获得默认的公司、日期、单位
