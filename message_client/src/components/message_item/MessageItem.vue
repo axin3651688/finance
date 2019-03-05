@@ -119,7 +119,6 @@ export default {
       let sessionList = this.messageStore.sessionList
       for (let index in sessionList) {
         if (sessionList[index].targetId === targetId) {
-          debugger
           return sessionList[index].online
         }
       }

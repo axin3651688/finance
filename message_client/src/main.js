@@ -12,10 +12,9 @@ import '@ms/emotion_sprites.scss' // 全局加载聊天表情样式
 import Bus from './bus.js' // bus 总线
 import Avatar from 'vue-avatar'
 
-Vue.component('Avatar', Avatar)
-
 Vue.config.productionTip = false
 Vue.directive('avatar', directive)
+Vue.component('Avatar', Avatar)
 Vue.use(ElementUI)
 Vue.use(VueQriously)
 Vue.use(Bus)

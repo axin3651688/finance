@@ -4,6 +4,13 @@
       <!-- 中间聊天显示区-->
       <div class="chat-middle">
         <el-scrollbar style="height: 100%" ref="chatWindow">
+          <infinite-loading
+            @infinite="infiniteHandler"
+            direction="top"
+            force-use-infinite-wrapper=".el-scrollbar__wrap">
+            <div slot="no-more">No more message</div>
+            <div slot="no-results">No results message</div>
+          </infinite-loading>
           <template v-if="msgList.length">
             <message-item
               v-for="item in msgList"
@@ -11,6 +18,7 @@
               :data="item"
             />
           </template>
+
         </el-scrollbar>
       </div>
 
@@ -41,15 +49,15 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import {Multipane, MultipaneResizer} from '@mc/vue-multipane';
-import MessageItem from '@mc/message_item/MessageItem.vue';
-import MessageSender from '@mc/message_sender/MessageSender.vue';
-import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue';
-import FILE_TYPE from '@ma/data/fileType.js'; // 可以上传的文件列表
-
-import GroupMembers from '@mv/msg/GroupMembers';
-import SidebarPop from '@mc/sidebar_pop/SidebarPop';
+import {mapGetters, mapActions} from 'vuex'
+import {Multipane, MultipaneResizer} from '@mc/vue-multipane'
+import MessageItem from '@mc/message_item/MessageItem.vue'
+import MessageSender from '@mc/message_sender/MessageSender.vue'
+import SwitchBtnGroup from '@mc/switch_btn_group/SwitchBtnGroup.vue'
+import FILE_TYPE from '@ma/data/fileType.js' // 可以上传的文件列表
+import GroupMembers from '@mv/msg/GroupMembers'
+import SidebarPop from '@mc/sidebar_pop/SidebarPop'
+import InfiniteLoading from 'vue-infinite-loading'
 
 import {
   FIND_SINGLE_MSG,
@@ -57,7 +65,7 @@ import {
   UPDATE_CHAT_STATE_TIME,
   SAVE_SINGLE_MSG,
   SAVE_GROUP_MSG
-} from '@m_api/message.js';
+} from '@m_api/message.js'
 
 export default {
   name: 'Chat',
@@ -68,79 +76,83 @@ export default {
     MultipaneResizer,
     MessageItem,
     MessageSender,
-    SwitchBtnGroup
+    SwitchBtnGroup,
+    InfiniteLoading
   },
   data() {
     return {
+      infiniteHandlerState: null,
+      page: 1,
       showSidebarPop: false,
       msgList: [], // 历史聊天消息列表
       images: ['http://192.168.2.214:8000/group2/M00/00/0B/wKgC21xigPCATQxEAAUAdHvddI4898.png'],
       index: null // 图片展示的序号
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() { // 登陆用户的id
-      return this.user.user.id;
+      return this.user.user.id
     },
     receiverId() { // 接受对象的id，可以是个人id，也可以是群id
-      return this.messageStore.sessionActiveItem.id;
+      return this.messageStore.sessionActiveItem.id
     },
     activeTargetId() { // 当前激活session的targetId
-      return this.messageStore.sessionActiveItem.targetId;
+      return this.messageStore.sessionActiveItem.targetId
     },
     miniType() {
-      return this.messageStore.sessionActiveItem.miniType;
+      return this.messageStore.sessionActiveItem.miniType
     },
     newServerMsg() { // 服务器推送的消息
-      return this.messageStore.newServerMsg;
+      return this.messageStore.newServerMsg
     },
     serverAck() { // 服务器推送的 ack回执
-      return this.messageStore.serverAck;
+      return this.messageStore.serverAck
     }
   },
   watch: {
     receiverId(val) {
       // debugger;
-      this.requestMsgHistory();
+      this.page = 1
+      this.msgList = []
     },
 
     /**
      * 监听服务器推送的消息
      */
     newServerMsg(val) {
-      debugger;
+      debugger
       if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息，不处理
-        return false;
+        return false
       }
 
-      this._socketUpdateChatState(val.data, 1); // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
+      this._socketUpdateChatState(val.data, 1) // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
       if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
-        return false;
+        return false
       }
 
-      let targetId;
+      let targetId
       switch (val.code) {
         case 1100: // 单聊
-          targetId = val.code + '_' + val.data.senderId;
-          break;
+          targetId = val.code + '_' + val.data.senderId
+          break
         case 1101: // 群聊
-          targetId = val.code + '_' + val.data.receiverId;
-          break;
+          targetId = val.code + '_' + val.data.receiverId
+          break
       }
       if (this.activeTargetId !== targetId) { // 如果接受对象不是当前激活的sessionItem,也不处理
-        return false;
+        return false
       }
 
-      this._socketUpdateChatState(val.data, 2); // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
+      this._socketUpdateChatState(val.data, 2) // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
 
-      console.log('监听到聊天消息：', val);
-      let item = val.data;
-      item['miniType'] = val.code;
-      this.msgList.push(item); // 把消息发到聊天窗口
+      console.log('监听到聊天消息：', val)
+      let item = val.data
+      item['miniType'] = val.code
+      this.msgList.push(item) // 把消息发到聊天窗口
       this.$nextTick(() => { // 把聊天窗口滚动到最底部
-        this._chatWindowScrollToBottom();
-      });
+        this._chatWindowScrollToBottom()
+      })
     },
 
     /**
@@ -148,43 +160,50 @@ export default {
      */
     serverAck(val) {
       // debugger;
-      socket.deliver(val);
+      socket.deliver(val)
     }
   },
   methods: {
     ...mapActions(['ActionSetPopModuleStore']),
+    // 无限加载聊天信息
+    infiniteHandler($state) {
+      this.infiniteHandlerState = $state
+      console.log('++++++0', this.page)
+      this.requestMsgHistory()
+    },
+
     /**
      * 查询聊天历史记录
      */
     requestMsgHistory() {
-      debugger;
+      debugger
       let postData = {
-        page: 1,
-        size: 10
-      };
+        page: this.page,
+        size: 12
+      }
       switch (this.miniType) {
         case 1100: // 单聊
-          postData['receiverId'] = this.receiverId;
-          postData['senderId'] = this.loginUserId;
+          postData['receiverId'] = this.receiverId
+          postData['senderId'] = this.loginUserId
           FIND_SINGLE_MSG(postData)
             .then(res => {
-              this._requestMsgHistoryThen(res);
+              this._requestMsgHistoryThen(res)
             })
             .catch(err => {
-              console.error(err);
-            });
-          break;
+              console.error(err)
+            })
+          break
         case 1101: // 群聊
-          postData['groupId'] = this.receiverId;
-          postData['userId'] = this.loginUserId;
+          postData['groupId'] = this.receiverId
+          postData['userId'] = this.loginUserId
           FIND_GROUP_MSG(postData)
             .then(res => {
-              this._requestMsgHistoryThen(res);
+              this._requestMsgHistoryThen(res)
             })
             .catch(err => {
-              console.error(err);
-            });
-          break;
+              console.error(err)
+            })
+          break
       }
     },
 
@@ -194,22 +213,29 @@ export default {
      * @private
      */
     _requestMsgHistoryThen(res) {
-      debugger;
+      // debugger
       if (res.data.code === 200 && res.data.data.data) {
-        console.log('聊天消息：', res.data.data.data);
-        this.msgList = res.data.data.data.reverse();
+        console.log('聊天消息：', res.data.data.data)
+        // this.msgList = res.data.data.data.reverse()
+        this.msgList.unshift(...res.data.data.data.reverse())
 
         // 消息拿到后 把窗口内容滚到到底部
-        this.$nextTick(() => {
-          this._chatWindowScrollToBottom();
-        });
+        if (this.page === 1) {
+          this.$nextTick(() => {
+            this._chatWindowScrollToBottom()
+          })
+        }
+        this.page++
+        this.infiniteHandlerState.loaded()
 
         // 请求服务器更新已读消息状态
-        let lastItem = this.msgList[this.msgList.length - 1];
+        let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
           // this._httpClearChatState(lastItem);
-          this._socketClearChatState(lastItem);
+          this._socketClearChatState(lastItem)
         }
+      } else {
+        this.infiniteHandlerState.complete()
       }
     },
 
@@ -217,11 +243,11 @@ export default {
      * 发送消息
      */
     handleSendMsg(sendText, fileData) {
-      debugger;
+      debugger
       let pushData = {
         type: 1,
         data: sendText
-      };
+      }
       let sendData = {
         code: 1100, // 1100:单聊 1101:群聊
         data: {
@@ -232,35 +258,35 @@ export default {
           fileId: null,
           id: 'cnbift' + new Date().getTime() + new Date().getTime()
         }
-      };
+      }
 
       if (fileData) { // 如果是发文件，设置文件type，和文件的data
-        sendData.data.content = fileData.text;
-        sendData.data.fileId = fileData.id;
-        sendData.data.type = 3; // 暂时处理，没有匹配到都当文件处理
-        pushData.type = 3; // 暂时处理，没有匹配到都当文件处理
+        sendData.data.content = fileData.text
+        sendData.data.fileId = fileData.id
+        sendData.data.type = 3 // 暂时处理，没有匹配到都当文件处理
+        pushData.type = 3 // 暂时处理，没有匹配到都当文件处理
         for (let item of FILE_TYPE) {
-          debugger;
+          debugger
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
-            sendData.data.type = item.type;
-            pushData.type = item.type;
-            pushData.data = fileData;
-            break;
+            sendData.data.type = item.type
+            pushData.type = item.type
+            pushData.data = fileData
+            break
           }
         }
       }
 
-      console.log('要发送的内容是：', sendData);
+      console.log('要发送的内容是：', sendData)
       if (!sendData.data.content) {
         this.$message({
           type: 'warning',
           message: '发送内容不能为空',
           showClose: true
-        });
-        return false;
+        })
+        return false
       }
       // socket.deliver(sendData); // socket 方式发送消息
-      this._httpSend(sendData, pushData); // http 方式发送消息
+      this._httpSend(sendData, pushData) // http 方式发送消息
     },
 
     /**
@@ -268,28 +294,28 @@ export default {
      * sendData:
      */
     _httpSend(sendData, pushData) {
-      debugger;
+      debugger
       switch (this.miniType) {
         case 1100: // 单聊
           SAVE_SINGLE_MSG(sendData.data)
             .then(res => {
-              this._addMsgToWindow(res, pushData); // 本地处理把消息推到聊天窗口显示
+              this._addMsgToWindow(res, pushData) // 本地处理把消息推到聊天窗口显示
             })
             .catch(err => {
-              this._addMsgToWindow('', pushData); // 本地处理把消息推到聊天窗口显示
-              console.error(err);
-            });
-          break;
+              this._addMsgToWindow('', pushData) // 本地处理把消息推到聊天窗口显示
+              console.error(err)
+            })
+          break
         case 1101: // 群聊
           SAVE_GROUP_MSG(sendData.data)
             .then(res => {
-              this._addMsgToWindow(res, pushData); // 本地处理把消息推到聊天窗口显示
+              this._addMsgToWindow(res, pushData) // 本地处理把消息推到聊天窗口显示
             })
             .catch(err => {
-              this._addMsgToWindow('', pushData); // 本地处理把消息推到聊天窗口显示
-              console.error(err);
-            });
-          break;
+              this._addMsgToWindow('', pushData) // 本地处理把消息推到聊天窗口显示
+              console.error(err)
+            })
+          break
       }
     },
 
@@ -309,35 +335,35 @@ export default {
         type: 1,
         senderId: this.loginUserId,
         sendSuccess: !!res && res.data.code === 200 // !!res 判断有没有res，有为true，没有为false
-      };
+      }
       if (pushData.type === 1) {
-        data.content = pushData.data;
+        data.content = pushData.data
       } else {
-        data.content = pushData.data.text;
-        data.file = pushData.data;
-        data.type = pushData.type;
+        data.content = pushData.data.text
+        data.file = pushData.data
+        data.type = pushData.type
       }
 
-      this.msgList.push(data);
+      this.msgList.push(data)
       this.$nextTick(() => {
-        this._chatWindowScrollToBottom();
-      });
+        this._chatWindowScrollToBottom()
+      })
     },
 
     /**
      * 把聊天窗口滚动到最底部
      */
     _chatWindowScrollToBottom() {
-      debugger;
-      let chatWindow = this.$refs.chatWindow.$el.childNodes[0];
-      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight;
+      debugger
+      let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
+      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight
     },
 
     /**
      * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _httpClearChatState(lastItem) {
-      debugger;
+      debugger
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,
@@ -345,8 +371,8 @@ export default {
         'receiverId': lastItem.receiverId,
         'senderId': lastItem.senderId,
         'state': 2
-      };
-      UPDATE_CHAT_STATE_TIME(data);
+      }
+      UPDATE_CHAT_STATE_TIME(data)
     },
 
     /**
@@ -364,8 +390,8 @@ export default {
           'senderId': lastItem.senderId,
           'state': 2
         }
-      };
-      socket.deliver(data);
+      }
+      socket.deliver(data)
     },
 
     /**
@@ -385,8 +411,8 @@ export default {
           'senderId': lastItem.senderId,
           'state': state
         }
-      };
-      socket.deliver(data);
+      }
+      socket.deliver(data)
     },
 
     /**
@@ -401,15 +427,16 @@ export default {
      * 显示群成员
      */
     showGroupMembers() {
-      console.log('showGroupMembers');
-      this.showSidebarPop = true;
-      console.log('showGroupMembers2', this.showSidebarPop);
+      console.log('showGroupMembers')
+      this.showSidebarPop = true
+      console.log('showGroupMembers2', this.showSidebarPop)
     }
+
   },
   mounted() {
-    this.requestMsgHistory(); // 请求获取聊天消息内容
+    // this.requestMsgHistory() // 请求获取聊天消息内容
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
