@@ -450,7 +450,9 @@ export default {
         pid: "1800"
       }
     ];
-    this.axios.get("/api/template").then(res => {
+    debugger;
+    this.axios.get("cnbi/template.json").then(res => {
+      debugger;
       this.list = res.data.data;
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
@@ -1192,6 +1194,7 @@ export default {
     },
     //模板下载弹框页面的请求
     templateDownload() {
+      debugger;
       this.isShow = true;
       this.axios.get("/api/template").then(res => {
         console.log(res);
