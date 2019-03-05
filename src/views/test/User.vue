@@ -432,7 +432,7 @@ export default {
                   //验证是否同名
                   // setTimeout(() => {
                   request({
-                    url: "/a/sys/user/validate",
+                    url: "/zjb/sys/user/validate",
                     method: "get",
                     params: {
                       username: value
@@ -683,7 +683,7 @@ export default {
             const _this = this;
             let addUserForm = _this.addUserForm;
             request({
-              url: "/a/sys/user/add",
+              url: "/zjb/sys/user/add",
               method: "post",
               data:{
                 "suser":addUserForm.suser,
@@ -748,7 +748,7 @@ export default {
             const _this = this;
             let editUserForm = _this.editUserForm;
             request({
-              url: "/a/sys/user/update",
+              url: "/zjb/sys/user/update",
               method: "post",
               data:{
                 "suser":editUserForm.suser,
@@ -807,7 +807,7 @@ export default {
             const _this = this;
             let editPasswordForm = _this.editPasswordForm;
             request({
-              url: "/a/sys/user/update_pwd",
+              url: "/zjb/sys/user/update_pwd",
               method: "post",
               params:{
                 "suser":editPasswordForm.suser,
@@ -914,7 +914,7 @@ export default {
     handleAble(index, row) { 
       const _this = this;
         request({
-          url: "/a/sys/user/enabled",
+          url: "/zjb/sys/user/enabled",
           method: "get",
           params:{
             "suser":row.suser
@@ -944,7 +944,7 @@ export default {
     handleDisable(index, row) { 
       const _this = this;
         request({
-          url: "/a/sys/user/remove",
+          url: "/zjb/sys/user/remove",
           method: "get",
           params:{
             "suser":row.suser
@@ -1033,7 +1033,7 @@ export default {
       //var getters = _this.$store.getters;
       //请求数据
       request({
-        url: "/a/sys/dimcompany/query_all",
+        url: "/zjb/sys/dimcompany/query_all",
         method: "get"
       }).then(result => { 
         if (result.status == 200 && result.data.code == 200) {
@@ -1080,7 +1080,7 @@ export default {
       //var getters = _this.$store.getters;
       //请求数据
       request({
-        url: "/a/sys/role/findAll",
+        url: "/zjb/sys/role/findAll",
         method: "get"
       }).then(result => { 
         let data = result.data.data;
@@ -1101,7 +1101,7 @@ export default {
       var getters = _this.$store.getters;
       request({
         // url: "/api/api/my_contact_list",
-        url:'/a/sys/user/query_comid',
+        url:'/zjb/sys/user/query_comid',
         method: "get",
         params: {
           companyId: getters.company,
@@ -1136,7 +1136,7 @@ export default {
         var getters = _this.$store.getters;
         request({
           // url: "/api/api/my_contact_list",
-          url:'/a/sys/user/query_blur',
+          url:'/zjb/sys/user/query_blur',
           method: "get",
           params: {
             str: search,
@@ -1185,7 +1185,7 @@ export default {
         let companys = _this.$refs.comtree.getCheckedKeys();
         let _companys = companys.toString();
         request({
-          url: "/a/sys/user/authorize_com",
+          url: "/zjb/sys/user/authorize_com",
           method: "get",
           params:{
             "suser":companyAuthorizationForm.suser,

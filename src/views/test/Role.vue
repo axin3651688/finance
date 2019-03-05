@@ -302,7 +302,7 @@ export default {
       //getters 数据
       var getters = _this.$store.getters;
       request({
-        url: "a/sys/role/query_roleid",
+        url: "/zjb/sys/role/query_roleid",
         method: "get",
         params:{
             roleid:roleId
@@ -453,7 +453,7 @@ export default {
           if (_this.opt.url === "save") {
             obj.companyId = getters.userCompany.id;
             request({
-              url: "a/sys/role/save",
+              url: "/zjb/sys/role/save",
               method: "post",
               params: {
                 srolename: obj.srolename,
@@ -493,7 +493,7 @@ export default {
             } else { 
               obj.roleId = _this.activeRole.id;
               request({
-                url: "a/sys/role/update",
+                url: "/zjb/sys/role/update",
                 method: "post",
                 data: {
                   roleid: obj.roleId,
@@ -645,7 +645,7 @@ export default {
           //getters 数据
           var getters = _this.$store.getters;
           request({
-            url: "a/sys/role/remove",
+            url: "/zjb/sys/role/remove",
             method: "get",
             params: {
               roleid: row.roleid
@@ -675,7 +675,7 @@ export default {
       //getters 数据
       var getters = _this.$store.getters;
       request({
-        url: "a/sys/role/query_page",
+        url: "/zjb/sys/role/query_page",
         method: "get",
         params: {
           pageNum: pageNum,
