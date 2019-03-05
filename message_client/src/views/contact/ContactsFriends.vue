@@ -109,7 +109,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log('ContactsFriends监听路由：', to, from);
+      // console.log('ContactsFriends监听路由：', to, from);
       if (this.activeUser !== to.query.id) {
         debugger;
         this.activeUser = to.query.id;

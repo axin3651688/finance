@@ -160,7 +160,7 @@ export default {
       debugger;
       let postData = {
         page: 1,
-        size: 20
+        size: 10
       };
       switch (this.miniType) {
         case 1100: // 单聊

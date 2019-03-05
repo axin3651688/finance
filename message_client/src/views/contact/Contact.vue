@@ -60,7 +60,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log('Contacts监听路由:', to, from)
+      // console.log('Contacts监听路由:', to, from)
       this.activeName = from.query.activeName
     }
   },
