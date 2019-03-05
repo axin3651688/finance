@@ -160,9 +160,15 @@ export default {
     // let bean = getClientParams();
     // this.setScopeDatas(bean);
     // this.loadModule();
-    debugger;
     //添加第一次this状态。
     // this.$store.start_$vue = JSON.stringify(this);
+    //因为切换另一个组件时，会出现问题，日志的组件，所以要动态改变这个状态。
+    // if(this.$store.public && this.$store.public.url){
+    //   let newUrl = this.$store.public.url;
+    //   if(this.module_api != newUrl){
+    //     this.module_api = newUrl;
+    //   }
+    // }
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -351,9 +357,17 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
+      debugger;
       this.debug = 1; //临时的动作
       if (this.module_api) {
-        this.api = this.module_api;
+        if(this.$store.public && this.$store.public.url){
+          let newUrl = this.$store.public.url;
+          if(this.module_api != newUrl){
+            this.api = newUrl;
+            delete this.$store.public.url;
+          }
+        }
+        // this.api = this.module_api;
       }
       //临时测试用
       if (this.source_id) {
@@ -397,7 +411,6 @@ export default {
       }
 
       findDesignSource(api).then(res => {
-        
         //
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
@@ -421,7 +434,6 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {
@@ -476,7 +488,6 @@ export default {
         if(compareApiArr.indexOf(currentApi) != -1 || item.extendDrillPeriod){
           let publicConfig = this.$store.public;
           let selectPeriod = this.$store.selectPeriod;
-          debugger;
           if(publicConfig && publicConfig.curTabPeriod){
             datas.year = publicConfig.curTabPeriod.year;
             datas.month = publicConfig.curTabPeriod.month - 0 + "";
@@ -602,7 +613,6 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger;
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
@@ -760,7 +770,6 @@ export default {
      * 切换公司、日期、关闭打开的tab页的操作。
      */
     closeTabTaget(params, $vue) {
-      // debugger
       let me = this;
       let tabs = $vue.items;
       let tabName = $vue.activeTabName;

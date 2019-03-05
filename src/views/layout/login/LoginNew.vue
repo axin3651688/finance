@@ -155,14 +155,15 @@ export default {
   },
   methods: {
     ...mapActions(["GetSideMid"]),
-    showPwd() {
-      if (this.pwdType === "password") {
-        this.pwdType = "";
-      } else {
-        this.pwdType = "password";
-      }
-    },
+    // showPwd() {
+    //   if (this.pwdType === "password") {
+    //     this.pwdType = "";
+    //   } else {
+    //     this.pwdType = "password";
+    //   }
+    // },
     submitForm(formName) {
+      debugger;
       this.$refs[formName].validate(valid => {
         if (valid) {
           login(this.loginUser)
