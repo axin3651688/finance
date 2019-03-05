@@ -1,6 +1,6 @@
 /*
-*本模块是维度切换需要的所有状态，语音控制状态也主要在本模块。
-*/
+ *本模块是维度切换需要的所有状态，语音控制状态也主要在本模块。
+ */
 const param = {
   state: {
     command: {
@@ -49,11 +49,11 @@ const param = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.command[keys] = data[keys]
-          if (typeof data[keys] == "object") {
-            localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
-          } else {
-            localStorage.setItem([keys] + '_cache', data[keys]);
-          }
+          // if (typeof data[keys] == "object") {
+          //   localStorage.setItem([keys] + '_cache', JSON.stringify(data[keys]));
+          // } else {
+          //   localStorage.setItem([keys] + '_cache', data[keys]);
+          // }
         }
       });
     },

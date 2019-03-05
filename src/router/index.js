@@ -73,10 +73,10 @@ const router = new Router({
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
-          path: '/treeTest',
-          name: 'treeTest',
+          path: '/Btransition',
+          name: 'Btransition',
           component: () =>
-            import('@v/test/treeTest'),
+            import('@v/test/Btransition'),
         }
 
       ]

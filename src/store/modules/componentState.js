@@ -66,11 +66,11 @@ export default {
               checkeData.splice(index, 1);
             }
           }
-          if (typeof data[keys] == "object") {
-            localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
-          } else {
-            localStorage.setItem([keys] + '_state', data[keys]);
-          }
+          // if (typeof data[keys] == "object") {
+          //   localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
+          // } else {
+          //   localStorage.setItem([keys] + '_state', data[keys]);
+          // }
         }
       });
     },
@@ -79,11 +79,11 @@ export default {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.showDialog[keys] = data[keys]
-          if (typeof data[keys] == "object") {
-            localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
-          } else {
-            localStorage.setItem([keys] + '_state', data[keys]);
-          }
+          // if (typeof data[keys] == "object") {
+          //   localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
+          // } else {
+          //   localStorage.setItem([keys] + '_state', data[keys]);
+          // }
         }
       });
     },

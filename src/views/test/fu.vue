@@ -19,7 +19,7 @@
         </td>
       </tr>
     </table>
-    <son :fn="name" :fa="age" @childbyvalue="childByValue"></son>
+    <son :fn="name" :fa.sync="age" @childbyvalue="childByValue"></son>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       name: "father",
-      age: 20
+      age: ["23"]
     };
   },
   components: {
@@ -50,7 +50,7 @@ export default {
     debugger;
 
     this.$bus.$on("sonbyvalue", function(val) {
-      //获取页面中数据  绑定
+      //获取页面中数据  绑定1
       that.name = val.cname;
       that.age = val.cage;
     });
