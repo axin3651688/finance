@@ -455,7 +455,6 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
-    // console.log(this.datas)
   },
   mounted() {
     let data = 10;
@@ -464,7 +463,7 @@ export default {
       this.financingOptions = res.data.data;
       console.log("下拉", this.financingOptions);
     });
-    // window.addEventListener('resize', this.resizeTable)
+    window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
     //融资情况明细表的下拉数据 机构名称
     mechanism().then(res => {
@@ -573,6 +572,7 @@ export default {
           return tmp;
         }
         // var result = res(arr);
+        debugger;
         let changeRecord = this.tableData.filter(record => {
           return record.index === index && record.colId === key;
         })[0];
@@ -581,17 +581,23 @@ export default {
         })[0];
 
         if (this.fixed === 1) {
-          if (changeRecord && reg.test(values) === true) {
+          debugger;
+          if (
+            (changeRecord && reg.test(values) === true) ||
+            (changeRecord && reg.test(values) == "")
+          ) {
             changeRecord[key] = values;
           } else {
-            if (reg.test(values) === true) {
+            if (reg.test(values) === true || reg.test(values) == "") {
               let bb = { index: index };
+              // bb[index] = index;
               bb[key] = values;
               this.tableData.push(bb);
             }
           }
         }
         if (this.fixed === 0) {
+          debugger;
           //  this.columns[0]["id"] != this.columns[0].id
           if (changen) {
             changen[key] = values;
@@ -602,11 +608,9 @@ export default {
               this.tableData.push(bb);
             }
           } else {
-            // if(this.columns[0]["id"] != this.columns[0].id){
             let bb = { index: index };
             bb[key] = values;
             this.tableData.push(bb);
-            // }
           }
           // })
         }
@@ -618,19 +622,26 @@ export default {
       });
       datas.forEach((item, i) => {
         modify = item;
+        debugger;
         if (i === indexs) {
-          console.log("value", value);
           if (
             value.A ||
+            value.A == "" ||
             value.B ||
+            value.B == "" ||
             value.C ||
+            value.C == "" ||
             value.D ||
+            value.D == "" ||
             value.E ||
+            value.E == "" ||
             value.F ||
+            value.F == "" ||
             value.G ||
-            value.H
+            value.G == "" ||
+            value.H ||
+            value.H == ""
           ) {
-            // console.log("1",modify.id)
             value["id"] = modify.id;
             value["nid"] = modify.nid;
             if (value["nid"] == null) {
@@ -638,15 +649,23 @@ export default {
             }
           } else if (
             value.A_ ||
+            value.A_ == "" ||
             value.B_ ||
+            value.B_ == "" ||
             value.C_ ||
+            value.C_ == "" ||
             value.D_ ||
+            value.D_ == "" ||
             value.E_ ||
-            value.F_
+            value.E_ == "" ||
+            value.F_ ||
+            value.F_ == ""
           ) {
             // console.log("2",modify.id_)
             value["id_"] = modify.id_;
           } else {
+            // value["id"] = modify.id;
+            // value["id_"] = modify.id_;
             value["nid"] = modify.nid;
             if (value["nid"] == null) {
               value["nid"] = 0;
@@ -654,6 +673,7 @@ export default {
           }
         }
       });
+      console.log("value", value);
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
@@ -1133,6 +1153,9 @@ export default {
         importExcel(this.files).then(res => {
           console.log("res", res);
           if (res.data.code === 200) {
+            this.subject = null;
+            this.fixed = null;
+            this.templateId = null;
             // console.log("item的数据",this.item)
             this.$message({
               message: "模板匹配 导入成功",
@@ -1150,7 +1173,7 @@ export default {
     //导入按钮的点击事件调用导入
     uploadFiles() {
       debugger;
-      this.submitUpload(this.uploadfile);
+      this.submitUpload(this.files);
     },
     // 点击导入的下拉菜单获取对应的数据
     importDropdownMenu(list, index) {
