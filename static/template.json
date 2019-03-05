@@ -1,0 +1,76 @@
+{
+    "id":"0005",
+    "text":"模板下载",
+    "config":{
+        "cube":{
+          "cubeId":4
+        },
+        
+        "mainDim":"itemperiod",
+        "needDims":["year","month","company"],
+        "random":{"min":100,"max":100000},
+        "type":1
+          
+     },
+    "data":[
+        {
+            "subject":"0001",
+            "sourceId":"4",
+            "templateId":"3",
+            "title":"资产负债表",
+            "fixed":1
+            
+        },
+        {
+            "subject":"0002",
+            "sourceId":"2",
+            "templateId":"1",
+            "title":"利润表",
+            "fixed":1
+            
+        },
+        {
+            "subject":"0002",
+            "sourceId":"3",
+            "templateId":"2",
+            "title":"现金流量表",
+            "fixed":1
+        },
+        {
+            "sourceId":"1",
+            "title":"应收账款分析表",
+            "fixed":0,
+            "templateId":"4",
+            "subject":"1001"
+            
+        },
+        {
+            "subject":"1001",
+            "templateId":"5",
+            "sourceId":"5",
+            "title":"预付账款分析表",
+            "fixed":0
+        },
+        {
+            "subject":"1001",
+            "templateId":"6",
+            "sourceId":"6",
+            "title":"其他应收账款分析表",
+            "fixed":0
+        },
+        {
+            "subject":"1002",
+            "templateId":"7",
+            "sourceId":"7",
+            "title":"融资情况明细表",
+            "fixed":0
+        },
+        {
+            "subject":"1003",
+            "templateId":"8",
+            "sourceId":"8",
+            "title":"资金集中情况表",
+            "fixed":0
+        }
+    ]
+}
