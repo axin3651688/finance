@@ -11,6 +11,7 @@ const messageModule = {
       receiverData: null, // 单聊对象的用户信息
       groupInfo: null, // obj: 群信息
       companyList: null, // [{}.{}] 公司（团队）列表
+      groupList: null, // [{}.{}] 通讯录我的群聊列表
       miniType: null // 设置消息类型 11016:新朋友、11017:群助手、11021:分析助手
     }
   },

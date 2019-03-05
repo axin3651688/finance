@@ -8,7 +8,9 @@
         <top-bar></top-bar>
       </div>
       <div class="right-bottom">
-        <router-view></router-view>
+        <keep-alive include="Contact,Home">
+          <router-view></router-view>
+        </keep-alive>
       </div>
     </div>
 

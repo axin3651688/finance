@@ -5,29 +5,35 @@
         <template slot="label">
           <div class="label-text">好友</div>
         </template>
-        <contacts-friends
-          v-if="activeName === 'ContactsFriends'"
-          @chatWithSingle="handleChatWithSingle"
-        ></contacts-friends>
+        <keep-alive>
+          <contacts-friends
+            v-if="activeName === 'ContactsFriends'"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts-friends>
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane name="ContactsTeams">
         <template slot="label">
           <div class="label-text">团队</div>
         </template>
-        <contacts-teams
-          v-if="activeName === 'ContactsTeams'"
-          @chatWithSingle="handleChatWithSingle"
-        ></contacts-teams>
+        <keep-alive>
+          <contacts-teams
+            v-if="activeName === 'ContactsTeams'"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts-teams>
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane name="ContactsGroups">
         <template slot="label">
           <div class="label-text">群聊</div>
         </template>
-        <contacts-groups
-          v-if="activeName === 'ContactsGroups'"
-          @chatWithGroup="handleChatWithGroup"
-        >
-        </contacts-groups>
+        <keep-alive>
+          <contacts-groups
+            v-if="activeName === 'ContactsGroups'"
+            @chatWithGroup="handleChatWithGroup"
+          >
+          </contacts-groups>
+        </keep-alive>
       </el-tab-pane>
 
     </el-tabs>
@@ -35,14 +41,17 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
+import ContactsTeams from './ContactsTeams.vue'
+import ContactsFriends from './ContactsFriends.vue'
+import ContactsGroups from './ContactsGroups.vue'
 
 export default {
   name: 'MessageContacts',
   components: {
-    ContactsTeams: () => import('./ContactsTeams.vue'),
-    ContactsFriends: () => import('./ContactsFriends.vue'),
-    ContactsGroups: () => import('./ContactsGroups.vue')
+    ContactsTeams,
+    ContactsFriends,
+    ContactsGroups
   },
   data() {
     return {
