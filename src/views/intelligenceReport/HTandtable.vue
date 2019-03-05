@@ -60,7 +60,7 @@
             v-for="item of list"
             :key="item.id"
             class="checkbox"
-            @change="test($event, item)"
+            @change="select($event, item)"
           >{{item.title}}</el-checkbox>
           <!-- </el-checkbox-group> -->
           <span slot="footer" class="dialog-footer">
@@ -105,17 +105,23 @@
 import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
-import {importExcel,inquire,save,download,del,financingDown,mechanism} from "@/api/fill.js";
+import {
+  importExcel,
+  inquire,
+  save,
+  download,
+  del,
+  financingDown,
+  mechanism
+} from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
   components: {
     HotTable
     // BiModule
   },
-  // props:["item"],
   data() {
     return {
-      rows:[],//存储请求返回回来的数据
       selectedOptions: [],
       financingOptions: [],
       dialogVisible: false,
@@ -134,7 +140,7 @@ export default {
       years: null, //年月的拼接
       row: [],
       // options:"这是导入页面给的填报模板",
-      files: null,
+      files: null, //excel导入需要传递的参数
       reportHeader: "请选择", //填报匹配的名称
       importHeader: "请选择", //导入匹配的名称
       heights: document.body.offsetHeight - 360,
@@ -142,22 +148,22 @@ export default {
       dropdownid: null, //匹配的id
       checked: false, //复选框的状态
       activeName2: "second", //tab默认显示
-      isShow: false,
+      isShow: false, //下载模板弹框的显示和隐藏
       excelname: "加载文件名称 不可编辑",
       // imgfd:null,
       uploadfile: null, //存储下拉匹配文件下载要传递的参数
       edit: true, //不可编辑
-      list: [],
+      list: [], //存储的下拉匹配模板的数据
       form: {
         region: ""
       },
       newrow: false, //新增按钮的隐藏
       table: [],
-      del: Function,
+      // del: Function,
       delid: null,
       index: "", //  数据的索引
-      show: false,
-      flag: false,
+      // show: false,
+      // flag: false,
       root: "test-hot",
       // newSettings: null,
       settings: {
@@ -223,7 +229,7 @@ export default {
         let company = this.datas.company;
         let newcompany = company.replace(company, val);
         this.datas.company = newcompany;
-        console.log(this.datas);
+        // console.log(this.datas);
         this.reportData(this.datas);
       }
     }
@@ -456,7 +462,7 @@ export default {
     //融资情况明细表除机构名称下拉数据
     financingDown(data).then(res => {
       this.financingOptions = res.data.data;
-      // console.log("下拉",res)
+      console.log("下拉", this.financingOptions);
     });
     // window.addEventListener('resize', this.resizeTable)
     this.settings.afterChange = this.afterChange;
@@ -472,17 +478,17 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
-    //根据是否金融机构判断机构名称是下拉数据还是直接填写 
-    mechanismdownData(row,columns) {
+    //根据是否金融机构判断机构名称是下拉数据还是直接填写
+    mechanismdownData(row, columns) {
       let source = [];
       this.mechanismdown.forEach(item => {
         source.push(item.text);
       });
-          let record = this.settings.data[row];
-          if (record.cismenu === "否" || record.cismenu == 0) {
-            // debugger
-            return ;
-          }
+      let record = this.settings.data[row];
+      if (record.cismenu === "否" || record.cismenu == 0) {
+        // debugger
+        return;
+      }
       return source;
     },
     resizeTable() {
@@ -614,14 +620,30 @@ export default {
         modify = item;
         if (i === indexs) {
           console.log("value", value);
-          if (value.A ||value.B ||value.C ||value.D ||value.E ||value.F ||value.G ||value.H) {
+          if (
+            value.A ||
+            value.B ||
+            value.C ||
+            value.D ||
+            value.E ||
+            value.F ||
+            value.G ||
+            value.H
+          ) {
             // console.log("1",modify.id)
             value["id"] = modify.id;
             value["nid"] = modify.nid;
             if (value["nid"] == null) {
               value["nid"] = 0;
             }
-          } else if (value.A_ ||value.B_ ||value.C_ ||value.D_ ||value.E_ ||value.F_) {
+          } else if (
+            value.A_ ||
+            value.B_ ||
+            value.C_ ||
+            value.D_ ||
+            value.E_ ||
+            value.F_
+          ) {
             // console.log("2",modify.id_)
             value["id_"] = modify.id_;
           } else {
@@ -637,7 +659,7 @@ export default {
     reRenderCell(row, columns) {
       if (this.fixed == 0 && this.templateId == 4) {
         if (columns > 7) {
-        //  debugger
+          //  debugger
           let record = this.settings.data[row];
           if (record.isinside === "是" || record.isinside == 1) {
             //8
@@ -665,25 +687,63 @@ export default {
         }
       }
       if (this.templateId == 3) {
-        if ((row === 0 && columns === 2) ||(row === 0 && columns === 3) ||(row == 0 && columns == 6) ||
-          (row == 0 && columns == 7) ||(row == 48 && columns == 2) ||(row == 48 && columns == 3) ||
-          (row == 49 && columns == 2) ||(row == 49 && columns == 3) ||(row == 50 && columns == 2) ||
-          (row == 50 && columns == 3) ||(row == 51 && columns == 2) ||(row == 51 && columns == 3) ||
-          (row == 52 && columns == 2) ||(row == 52 && columns == 3) ||(row == 53 && columns == 2) ||
-          (row == 53 && columns == 3) ||(row == 54 && columns == 2) ||(row == 54 && columns == 3) ||
-          (row == 55 && columns == 2) ||(row == 55 && columns == 3) ||(row == 56 && columns == 2) ||
-          (row == 56 && columns == 3) ||(row == 57 && columns == 2) ||(row == 57 && columns == 3) ||
-          (row == 58 && columns == 2) ||(row == 58 && columns == 3) ||(row == 59 && columns == 2) ||
-          (row == 59 && columns == 3) ||(row == 60 && columns == 2) ||(row == 60 && columns == 3) ||
-          (row == 61 && columns == 2) ||(row == 61 && columns == 3) ||(row == 62 && columns == 2) ||
-          (row == 62 && columns == 3) ||(row == 63 && columns == 2) ||(row == 63 && columns == 3) ||
-          (row == 64 && columns == 2) ||(row == 64 && columns == 3) ||(row == 65 && columns == 2) ||
-          (row == 65 && columns == 3) ||(row == 66 && columns == 2) ||(row == 66 && columns == 3) ||
-          (row == 67 && columns == 2) ||(row == 67 && columns == 3) ||(row == 68 && columns == 2) ||
-          (row == 68 && columns == 3) ||(row == 69 && columns == 2) ||(row == 69 && columns == 3) ||
-          (row == 70 && columns == 2) ||(row == 70 && columns == 3) ||(row == 71 && columns == 2) ||
-          (row == 71 && columns == 3) ||(row == 72 && columns == 2) ||(row == 72 && columns == 3)) {
-              cellMeta.readOnly = true;
+        if (
+          (row === 0 && columns === 2) ||
+          (row === 0 && columns === 3) ||
+          (row == 0 && columns == 6) ||
+          (row == 0 && columns == 7) ||
+          (row == 48 && columns == 2) ||
+          (row == 48 && columns == 3) ||
+          (row == 49 && columns == 2) ||
+          (row == 49 && columns == 3) ||
+          (row == 50 && columns == 2) ||
+          (row == 50 && columns == 3) ||
+          (row == 51 && columns == 2) ||
+          (row == 51 && columns == 3) ||
+          (row == 52 && columns == 2) ||
+          (row == 52 && columns == 3) ||
+          (row == 53 && columns == 2) ||
+          (row == 53 && columns == 3) ||
+          (row == 54 && columns == 2) ||
+          (row == 54 && columns == 3) ||
+          (row == 55 && columns == 2) ||
+          (row == 55 && columns == 3) ||
+          (row == 56 && columns == 2) ||
+          (row == 56 && columns == 3) ||
+          (row == 57 && columns == 2) ||
+          (row == 57 && columns == 3) ||
+          (row == 58 && columns == 2) ||
+          (row == 58 && columns == 3) ||
+          (row == 59 && columns == 2) ||
+          (row == 59 && columns == 3) ||
+          (row == 60 && columns == 2) ||
+          (row == 60 && columns == 3) ||
+          (row == 61 && columns == 2) ||
+          (row == 61 && columns == 3) ||
+          (row == 62 && columns == 2) ||
+          (row == 62 && columns == 3) ||
+          (row == 63 && columns == 2) ||
+          (row == 63 && columns == 3) ||
+          (row == 64 && columns == 2) ||
+          (row == 64 && columns == 3) ||
+          (row == 65 && columns == 2) ||
+          (row == 65 && columns == 3) ||
+          (row == 66 && columns == 2) ||
+          (row == 66 && columns == 3) ||
+          (row == 67 && columns == 2) ||
+          (row == 67 && columns == 3) ||
+          (row == 68 && columns == 2) ||
+          (row == 68 && columns == 3) ||
+          (row == 69 && columns == 2) ||
+          (row == 69 && columns == 3) ||
+          (row == 70 && columns == 2) ||
+          (row == 70 && columns == 3) ||
+          (row == 71 && columns == 2) ||
+          (row == 71 && columns == 3) ||
+          (row == 72 && columns == 2) ||
+          (row == 72 && columns == 3)
+        ) {
+          cellMeta.readOnly = true;
         }
       }
       if (this.templateId == 2) {
@@ -708,6 +768,10 @@ export default {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
         }
+        // if (columns == 2) {
+        //   cellMeta.source = this.typeOfFinancing();
+        //   cellMeta.type = "dropdown";
+        // }
         if (columns == 12) {
           cellMeta.readOnly = true;
         }
@@ -727,7 +791,15 @@ export default {
       return "text";
     },
     // 判断是decimal类型的加上千分两位小数显示
-    decimalDefaultRenderer(instance,td,row,col,prop,value,cellProperties) {
+    decimalDefaultRenderer(
+      instance,
+      td,
+      row,
+      col,
+      prop,
+      value,
+      cellProperties
+    ) {
       while (td.firstChild) {
         td.removeChild(td.firstChild);
       }
@@ -740,7 +812,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows) {
-      debugger
+      debugger;
       let me = this;
       if (this.fixed === 0) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -798,7 +870,7 @@ export default {
               cc.source = this.financingOptionsData("20");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
-            }else if (col.id === "repaysource") {
+            } else if (col.id === "repaysource") {
               cc.source = this.financingOptionsData("21");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
@@ -816,6 +888,9 @@ export default {
               cc.source = this.financingOptionsData("1800");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
+            } else if (col.id === "finance") {
+              cc.source = this.typeOfFinancing();
+              cc.type = "dropdown";
             }
           }
           newCoulmns.push(cc);
@@ -829,22 +904,22 @@ export default {
       //有待修复
       me.settings.data = [];
       setTimeout(() => {
-      var p = /(\d{4})(\d{2})(\d{2})/
-      let newarr = []
-      rows.forEach(item=>{
-        if(item.senddate){
-            var b = item.senddate.replace(p,"$1/$2/$3")
-            item.senddate = b
-        }
-        if(item.srepaydate){
-            var d = item.srepaydate.replace(p,"$1/$2/$3")
-            item.srepaydate = d
-        }
-        if(item.sstartdate){
-            var g = item.sstartdate.replace(p,"$1/$2/$3")
-            item.sstartdate = g
-        }
-    })
+        var p = /(\d{4})(\d{2})(\d{2})/;
+        let newarr = [];
+        rows.forEach(item => {
+          if (item.senddate) {
+            var b = item.senddate.replace(p, "$1/$2/$3");
+            item.senddate = b;
+          }
+          if (item.srepaydate) {
+            var d = item.srepaydate.replace(p, "$1/$2/$3");
+            item.srepaydate = d;
+          }
+          if (item.sstartdate) {
+            var g = item.sstartdate.replace(p, "$1/$2/$3");
+            item.sstartdate = g;
+          }
+        });
         me.settings.data = rows;
       }, 100);
     },
@@ -899,10 +974,8 @@ export default {
       });
       // if (this.templateId == 7) {
       //   this.tableData.forEach(item => {
-      //     console.log(item);
       //     // if(item.senddate || item.srepaydate || item.sstartdate){
       //     //     return (item.sstartdate.replace(/\//g,""))
-      //     //     // return item.senddate.replace(/\//g,"") || item.srepaydate.replace(/\//g,"") || item.sstartdate.replace(/\//g,"")
       //     // }
       //   });
       // }
@@ -984,10 +1057,6 @@ export default {
       this.templateId = list[index].templateId;
       this.api = item.url;
       let excelUploadParaDto = {
-        // "company": "1001",
-        // "period": "201806",
-        // "subject": "0001",
-        // "templateId":"3"
         company: this.company,
         period: this.years,
         subject: this.subject,
@@ -999,8 +1068,8 @@ export default {
     },
     //请求获取填报页面
     reportData(datas) {
-      console.log("请求", datas);
-      console.log("传递的data", this.datas);
+      // console.log("请求", datas);
+      // console.log("传递的data", this.datas);
       let me = this;
       inquire(this.datas).then(res => {
         console.log("查询", res);
@@ -1008,11 +1077,8 @@ export default {
         let rows = res.data.data.rows;
         me.columns = res.data.data.columns;
         // me.settings = res.data.data.rows
-        // console.log("me.settings.data1",me.settings)
         // me.$set(me.settings, "data",null)
-        // console.log("me.settings.data--",me.settings)
         // me.$set(me.settings, "data",res.data.data.rows)
-        this.rows = res.data.data.rows
         me.convertHansoneTableColumns(columns, rows);
       });
     },
@@ -1020,7 +1086,7 @@ export default {
     handleClick(tab, event) {
       //console.log(tab, event);
     },
-    //表格的导入
+    //表格的导入需要传递的参数
     beforeAvatarUpload(file) {
       let date;
       if (this.month < 10) {
@@ -1036,22 +1102,21 @@ export default {
       fd.append("period", this.years);
       fd.append("user", this.user.user.username);
       fd.append("company", this.company);
-
       // console.log(this.dropdownid)
-      if( this.dropdownid){
+      if (this.dropdownid) {
         fd.append("templateId", this.dropdownid);
       }
-      if(this.subject){
+      if (this.subject) {
         fd.append("subject", this.subject);
       }
-      if(this.fixed){
+      if (this.fixed) {
         fd.append("fixed", this.fixed);
       }
       this.uploadfile = fd;
       this.files = fd;
       return true;
     },
-    // 表格的导入匹配并发送请求
+    // 表格的导入
     submitUpload(file) {
       // debugger
       var regExp = /([\u4e00-\u9fa5]+)/gi;
@@ -1064,12 +1129,10 @@ export default {
           type: "error"
         });
       } else {
-        // this.$message("模板匹配 没有数据")
         console.log(titlename[0]);
         importExcel(this.files).then(res => {
           console.log("res", res);
           if (res.data.code === 200) {
-            // this.item = res.data.data.items[0].rows
             // console.log("item的数据",this.item)
             this.$message({
               message: "模板匹配 导入成功",
@@ -1084,19 +1147,19 @@ export default {
         });
       }
     },
-    //导入按钮的点击事件
+    //导入按钮的点击事件调用导入
     uploadFiles() {
-      debugger
+      debugger;
       this.submitUpload(this.uploadfile);
     },
-    // 点击导入的下拉菜单获取对应的数据  
+    // 点击导入的下拉菜单获取对应的数据
     importDropdownMenu(list, index) {
       debugger;
       this.importHeader = list[index].title;
       this.dropdownid = list[index].templateId;
       this.subject = list[index].subject;
       this.fixed = list[index].fixed;
-      if(this.uploadfile){
+      if (this.uploadfile) {
         this.uploadfile.append("templateId", this.dropdownid);
         this.uploadfile.append("subject", this.subject);
         this.uploadfile.append("fixed", this.fixed);
@@ -1112,7 +1175,7 @@ export default {
         this.list = res.data.data;
       });
     },
-    // 弹框的取消
+    // 下载模板弹框的取消
     cancel() {
       this.isShow = false;
     },
@@ -1123,7 +1186,6 @@ export default {
         download(this.templateId).then(res => {
           console.log("模板的下载", res);
           const content = res.data;
-          // application/vnd.ms-excel  application/x-www-form-urlencoded;charset=UTF-8
           const blob = new Blob([content], {
             type: "application/vnd.ms-excel"
           });
@@ -1150,9 +1212,9 @@ export default {
       }
     },
     //模板下载选择的表格
-    test(val, item) {
-      console.log("option:", val);
-      console.log("option data:", item);
+    select(val, item) {
+      // console.log("option:", val);
+      // console.log("option data:", item);
       this.templateId = item.templateId;
       this.title = item.title;
     },
@@ -1189,17 +1251,12 @@ export default {
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
           // arr.alter("remove_row", row);//删除当前行
-          // console.log(me.tableData)
-          // console.log(me.settings.data)
-          // me.reportData(me.datas)
           let tabledata = me.tableData;
           let datas = me.settings.data;
           let nid;
-          // console.log("dadada",datas)
           datas.forEach((item, index) => {
             if (index === row) {
               nid = item.nid;
-              // console.log(item)
             }
           });
           //新增行的数据删除
@@ -1225,7 +1282,6 @@ export default {
               type: "warning"
             })
               .then(() => {
-                // console.log(arr)
                 arr.alter("remove_row", row); //删除当前行
                 del(data).then(res => {
                   console.log("删除", res);
@@ -1288,6 +1344,14 @@ export default {
         text = datas.length > 0 ? datas[0].text : value;
       }
       td.innerHTML = text;
+    },
+    //融资页面单元格融资类型下拉
+    typeOfFinancing() {
+      let source = [];
+      this.financingOptions.forEach(item => {
+        source.push(item.text);
+      });
+      return source;
     }
   }
 };
