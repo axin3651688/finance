@@ -45,13 +45,13 @@
                     "id" : "syzqy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "syzqytq",
                     "type" : "decimal",
                     "text" : "上年同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -70,13 +70,13 @@
                     "id" : "yysr",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "yysrtq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -89,13 +89,13 @@
                     "id" : "yycb",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "yycbtq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -108,13 +108,13 @@
                     "id" : "xsfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "xsfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -127,13 +127,13 @@
                     "id" : "glfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "glfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -146,13 +146,13 @@
                     "id" : "cwfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "cwfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -165,13 +165,13 @@
                     "id" : "lrze",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "lrzetq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         },
@@ -184,13 +184,13 @@
                     "id" : "zcze",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "150px"
+                    "width": "170px"
                 },
                 {
                     "id" : "zczetq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "150px"
+                    "width": "170px"
                 }
             ]
         }

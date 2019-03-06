@@ -41,12 +41,12 @@
         "children":[{
             "id": "zcfzl_b",
             "type": "decimal",
-            "width":"150px",
+            "width":"130px",
             "text": "本期"
         },{
             "id": "zcfzl_a",
             "type": "decimal",
-            "width":"150px",
+            "width":"130px",
             "text": "期初"
         }]
     },    
@@ -73,12 +73,12 @@
                 "children":[{
                     "id": "zcze_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "zcze_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -88,12 +88,12 @@
                 "children":[{
                     "id": "hbzj_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "hbzj_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -103,12 +103,12 @@
                 "children":[{
                     "id": "ch_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "ch_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -118,12 +118,12 @@
                 "children":[{
                     "id": "yszk_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "yszk_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             }
@@ -140,12 +140,12 @@
                 "children":[{
                     "id": "fzze_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "fzze_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -155,12 +155,12 @@
                 "children":[{
                     "id": "dqjk_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "dqjk_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -170,12 +170,12 @@
                 "children":[{
                     "id": "yfzk_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "yfzk_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             },{
@@ -185,12 +185,12 @@
                 "children":[{
                     "id": "cqjk_b",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "本期"
                 },{
                     "id": "cqjk_a",
                     "type": "decimal",
-                    "width":"150px",
+                    "width":"170px",
                     "text": "期初"
                 }]
             }
@@ -203,12 +203,12 @@
         "children":[{
             "id": "syzqy_b",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "本期"
         },{
             "id": "syzqy_a",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "期初"
         }]
     }],
