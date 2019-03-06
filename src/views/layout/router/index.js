@@ -180,10 +180,16 @@ const router = new Router({
             import('@v/systemSettings/online')
         },
         {//市管企业经营业绩情况表
+          path: '/sg',
+          name: 'sg',
+          component: () =>
+            import('@v/systemSettings/cityResults')
+        },
+        {//市管企业经营业绩情况表（2）
           path: '/sgyj',
           name: 'sgyj',
           component: () =>
-            import('@v/systemSettings/cityResults')
+            import('@v/systemSettings/cityResults2')
         },
         {//EVA表
           path: '/eva',

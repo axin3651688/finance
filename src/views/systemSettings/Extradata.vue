@@ -98,12 +98,13 @@ export default {
   data() {
     return {
       filterText: "",
-      expandKeys: [],
       props: {
-        label: "text",
+        label: "sname",
         children: "children"
       },
       treedata: [],
+      //默认展开节点
+      expandKeys: [],
       contextMenuVisible: false,
       //右键 选中的节点
       contextMenuActive: null,
@@ -160,6 +161,7 @@ export default {
   },
 
   methods: {
+    // 抽取数据 按钮
     extraing(formName) {
       let _this = this;
       //获取选中公司
@@ -279,7 +281,7 @@ export default {
      * @description 节点点击事件
      */
     handleClick(node, nodeTarget, el) {
-      if (node.ctype !== "1") {
+      if (node.stype !== "1") {
         return false;
       }
       this.$refs.comtree.setChecked(node, !nodeTarget.checked, true);
@@ -291,7 +293,7 @@ export default {
     handleContextMenu(event, node, nodeTarget, el) {
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
-      if (node.ctype === "1") {
+      if (node.stype === "1") {
         return false;
       }
 
@@ -321,27 +323,32 @@ export default {
       return this.$refs.comtree.getCurrentNode();
     },
 
-    //请求节点数据
+    // 请求节点数据
     findNodes() {
+      debugger
       const _this = this;
       var getters = _this.$store.getters;
       //请求数据
       request({
-        url: "/tjsp/company/findAll",
-        method: "get",
-        params: {
-          scode: "1001" //getters.companyId ? getters.companyId :
-        }
+        // url: "/tjsp/company/findAll",
+        url: "/exl/sys/dimcompany/query_all",
+        method: "get"
+        // params: {
+        //   scode: "1001" //getters.companyId ? getters.companyId :
+        // }
       }).then(result => {
         if (result.status == 200 && result.data.code == 200) {
+          debugger
           //封装树对象数据
           const setting = {
             data: {
               simpleData: {
+                enable: true,
                 idKey: "scode",
                 pIdKey: "spcode"
               },
               key: {
+                name:"scode",
                 children: "children"
               }
             }
@@ -349,18 +356,25 @@ export default {
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
-            _this.expandKeys.push(data[0].scode);
-            data.forEach(element => {
-              if (element.ctype !== "1") {
-                element.disabled = true;
-              }
+            // _this.expandKeys.push(data[0].scode);
+            // data.forEach(element => {
+            //   if (element.stype !== "1" && !element.sindcode) {
+            //     element.disabled = true;
+            //   }
+            // });
+            data = data.filter(function(item){
+                  if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                      item.open = true;//展开此节点
+                      _this.expandKeys.push(item.scode);
+                  }
+                  item.sname = "("+item.scode+")"+item.sname;//拼写公司编码+公司名称
+                  return item;
             });
             _this.treedata = tools.transformToeTreeNodes(setting, data);
           }
         }
       });
     },
-
     //过滤节点
     filterNode(value, data) {
       if (!value) return true;
