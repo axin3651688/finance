@@ -1,5 +1,5 @@
 <template>
-  <div class="navMenu">
+  <div class="navMenu" :class="state? '':navLevel">
     <label v-for="navMenu in navMenus" :key="navMenu.code">
       <!--只有一级菜单-->
       <!-- :disabled="disabled"  -->
@@ -14,7 +14,7 @@
         >
           <!--图标-->
           <!-- <router-link :to="navMenu.url"> -->
-          <img :src="navMenu.avatar" v-if="navMenu.level===2" class="avatarleft fa-margin iconfont">
+          <img :src="navMenu.avatar" v-if="navMenu.level===2 && state" class="avatarleft fa-margin iconfont">
           <!--标题-->
           <span slot="title" class="eachItem">{{navMenu.text}}</span>
           <!-- </router-link> -->
@@ -23,7 +23,7 @@
       <!--有多级菜单-->
       <el-submenu v-if="navMenu.leaf==0" :key="navMenu.code" :data="navMenu" :index="navMenu.code">
         <template slot="title">
-          <img :src="navMenu.avatar" v-if="navMenu.level===2" class="avatarleft fa-margin iconfont">
+          <img :src="navMenu.avatar" v-if="navMenu.level===2 && state" class="avatarleft fa-margin iconfont">
           <span>{{navMenu.text}}</span>
         </template>
         <!--递归组件，把遍历的值传回子组件，完成递归调用-->
@@ -38,9 +38,14 @@ import { mapGetters, mapActions } from "vuex";
 import modeHandle from "utils/modeHandle";
 export default {
   name: "NavMenu", //使用递归组件必须要有
-  props: ["navMenus"], // 传入子组件的数据
+  props: ["navMenus","state"], // 传入子组件的数据
   computed: {
     ...mapGetters(["device", "user"])
+  },
+  data() {
+    return {
+      navLevel:"navLevel"
+    }
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
@@ -75,4 +80,12 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .navLevel {
+    margin-left: -20px;
+  }
+  /* li {
+    padding-left: 0px !important;
+  } */
+</style>
 
