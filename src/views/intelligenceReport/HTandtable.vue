@@ -190,6 +190,11 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function
+        // ,
+        // afterGetCellMeta: Function,
+        // setDataAtCell: Function
+        // ,
+        // getDataAtRow: Function
       }
     };
   },
@@ -513,8 +518,52 @@ export default {
       });
       return source;
     },
+    changeAddOrReduce(changes) {
+      // debugger;
+      let me = this,rowIndex,arr = ["sstartdate","srepaydate"],name,rowData;
+      if(changes && changes.length > 0){
+        rowIndex = changes[0][0];
+        name = changes[0][1];
+        if(arr.indexOf(name) != -1){
+          debugger;
+          rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(rowIndex);
+          if(rowData && rowData.length > 0){
+            this.handleStateOfPeriod(rowData,rowIndex);
+          }
+        }
+      }
+    },
+    handleStateOfPeriod (rowData,rowIndex) {
+      // debugger;
+      let me = this,startIndex = 4,repaymentIndex = 10,month = this.$store.getters.month;
+      let startPeriod = rowData[startIndex],repaymentPeriod = rowData[repaymentIndex];
+      let arrStart,arrRepayment,stateStr = "";
+      if(startPeriod){
+        arrStart = startPeriod.split("/");
+      }
+      if(repaymentPeriod){
+        arrRepayment = repaymentPeriod.split("/");
+      }
+      if(arrStart && arrRepayment){
+        if(arrStart[1] - 0 == month && arrRepayment[1] - 0 != month ){
+          stateStr = "新增";
+        }else if(arrStart[1] - 0 != month && arrRepayment[1] - 0 == month){
+          stateStr = "减少";
+        }else {
+          stateStr = "";
+        }
+      }else if(arrStart && !arrRepayment && arrStart[1] - 0 == month){
+        stateStr = "新增";
+      }else if (arrRepayment && arrRepayment[1] - 0 == month && !arrStart) {
+        stateStr = "减少";
+      }else {
+        stateStr = "";
+      }
+      this.$refs.hotTableComponent.hotInstance.setDataAtCell(rowIndex,12,stateStr);
+    },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
+      debugger;
       let obj = {};
       let index;
       let key;
@@ -526,6 +575,10 @@ export default {
       let modify;
       let datas = this.settings.data;
       let row;
+      //融资的新增与减少的判断
+      if(this.templateId == "7"){
+        this.changeAddOrReduce(changes);
+      }
       if (changes && changes.length > 0) {
         index = changes[0][0];
         key = changes[0][1];
@@ -701,7 +754,8 @@ export default {
     },
 
     // 设置单元格的只读和下拉方法
-    cells(row, columns, prop) {
+    cells(row, columns, prop, params,pp) {
+      // debugger;
       let cellMeta = {};
       if (this.fixed === 1) {
         if (columns == 0 || columns == 1 || columns == 5 || columns == 4) {
@@ -794,10 +848,10 @@ export default {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
         }
-        // if (columns == 2) {
-        //   cellMeta.source = this.typeOfFinancing();
-        //   cellMeta.type = "dropdown";
-        // }
+        if (columns == 2) {
+          cellMeta.selectOptions = this.typeOfFinancing();
+          cellMeta.editor = "select";
+        }
         if (columns == 12) {
           cellMeta.readOnly = true;
         }
@@ -925,6 +979,11 @@ export default {
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
+      //
+      // this.settings.afterGetCellMeta = this.afterGetCellMeta;
+      // this.settings.setDataAtCell = this.setDataAtCell;
+      // this.settings.afterChange = this.afterCellChange;
+      // this.settings.setDataAtCell = this.setDataAtCell;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
       //有待修复
@@ -948,6 +1007,22 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    afterGetCellMeta (row,col,params,pp,dd) {
+      // debugger;
+      let me = this;
+    },
+    afterCellChange (row, col, params) {
+      debugger;
+      let me = this,rowData;
+      if(row[0][1] != "sstartdate"){
+        return;
+      }else {
+        rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(row[0][0]);
+      }
+    },
+    setDataAtCell () {
+      debugger;
     },
     //点击保存数据
     saveData() {
