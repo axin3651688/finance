@@ -8,7 +8,7 @@ import {showNotification} from '@mu/notification.js'  // 消息弹窗
  * author:gjx
  * date:2018-12-03
  */
-export default function socketCoreProcess (websocket, datas) {
+export default function socketCoreProcess(websocket, datas) {
   let parseData = function (data) {
     console.info(data)
     let code = data.code
@@ -19,8 +19,8 @@ export default function socketCoreProcess (websocket, datas) {
         console.info('1001:', data.msg)
         localStorage.setItem('device', data.data.token) // 连接成功后会得到 设备号
         break
-      case 1002: // 账号重复登录提示及处理
-        console.log('账号在别端登录')
+      case 1002: // 账号在别端登录
+        _processOtherDeviceLogin()
         break
       case 1003: // 重新登陆
         _processLoginExpired(data)
@@ -86,7 +86,7 @@ export default function socketCoreProcess (websocket, datas) {
 /**
  * 1003 处理electron 登录失效后重新登录
  */
-function _processLoginExpired (data) {
+function _processLoginExpired(data) {
   // debugger;
   if (data.data.authorization) {
     // 重登录成功窗口变大
@@ -108,3 +108,17 @@ function _processLoginExpired (data) {
     }
   }
 }
+
+/**
+ * 1002 处理账号在其他设备登录
+ * 如果在其它设备登录，则本设备下线
+ */
+function _processOtherDeviceLogin() {
+  console.log('账号在其它设备登录')
+  alert('账号在其它设备登录')
+  localStorage.removeItem('database')
+  store.dispatch('clearCurrentState')
+  localStorage.removeItem('authorization') // 清登陆令牌
+  router.push('/message_login')
+}
+

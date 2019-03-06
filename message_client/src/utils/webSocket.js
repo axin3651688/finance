@@ -67,7 +67,7 @@ export default function webSocket(data) {
       timer = setInterval(function () {
         initSocket()
         console.log('socket尝试重连······', timer)
-      }, 2000)
+      }, 3000)
     }
   }
 
@@ -75,7 +75,7 @@ export default function webSocket(data) {
 }
 
 /**
- * 当用户socket断开连接时，把用户的头像置灰
+ * 当用户socket断开连接时，把用户的头像置灰，上线时恢复
  * true：在线，false：离线
  */
 function updateUserSocketOffLine(val) {

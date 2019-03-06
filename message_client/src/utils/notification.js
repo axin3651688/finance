@@ -50,13 +50,15 @@ export function showNotification(data) {
     case 1004: // 上线通知
       title = '上线通知'
       if (data.data.user.id === store.getters.user.user.id) {
-        msg = '你刚刚在' + msg.replace('云智囊 for', '')
+        // msg = '你刚刚在' + msg.replace('云智囊 for', '')
+        msg = msg.replace('云智囊 for', '')
       }
       break
     case 1005: // 下线通知
       title = '下线通知'
       if (data.data.user.id === store.getters.user.user.id) {
-        msg = '你刚刚从' + msg.replace('云智囊 for', '')
+        // msg = '你刚刚从' + msg.replace('云智囊 for', '')
+        msg = msg.replace('云智囊 for', '')
       }
       break
   }
