@@ -338,7 +338,7 @@ export default {
       var getters = _this.$store.getters;
       //请求数据
       request({
-        url: "/a/sys/dimcompany/query_all",
+        url: "/zjb/sys/dimcompany/query_all",
         method: "get"
         // params: {
         //   //scode: "1001" //getters.companyId ? getters.companyId :
@@ -411,7 +411,7 @@ export default {
         })
         .then(() => {
           request({
-            url: "/a/sys/dimcompany/remove",
+            url: "/zjb/sys/dimcompany/remove",
             method: "post",
             data: {
               scodes:_this.form.scode
@@ -480,7 +480,7 @@ export default {
           _this.activeForm = {};
 
           request({
-                    url: "/a/sys/dimcompany/" + _this.opt.url ,
+                    url: "/zjb/sys/dimcompany/" + _this.opt.url ,
                     method: "post",
                     data: {
                      // projectDimDto:{
