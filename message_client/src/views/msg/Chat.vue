@@ -31,7 +31,7 @@
 
     <!--聊天头部-->
     <div class="chat-top">
-      <i class="group-member" title="群成员" @click.stop="showGroupMembers"></i>
+      <i class="group-member" title="群成员" @click.stop="showGroupMembers" v-if="miniType===1101"></i>
       <switch-btn-group
         :value1="'消息'"
         :value2="'文件'"
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 import {Multipane, MultipaneResizer} from '@mc/vue-multipane'
 import MessageItem from '@mc/message_item/MessageItem.vue'
 import MessageSender from '@mc/message_sender/MessageSender.vue'
@@ -115,6 +115,7 @@ export default {
       // debugger;
       this.page = 1
       this.msgList = []
+      this.infiniteHandlerState.reset()
     },
 
     /**
@@ -135,6 +136,8 @@ export default {
       switch (val.code) {
         case 1100: // 单聊
           targetId = val.code + '_' + val.data.senderId
+          // 只要收到对方消息，就把对方设置为在线
+          this.MutationUpdateSessionOnlineState({targetId, online: true})
           break
         case 1101: // 群聊
           targetId = val.code + '_' + val.data.receiverId
@@ -165,10 +168,11 @@ export default {
   },
   methods: {
     ...mapActions(['ActionSetPopModuleStore']),
+    ...mapMutations(['MutationUpdateSessionOnlineState']),
     // 无限加载聊天信息
     infiniteHandler($state) {
       this.infiniteHandlerState = $state
-      console.log('++++++0', this.page)
+      console.log('page:', this.page)
       this.requestMsgHistory()
     },
 
@@ -216,6 +220,9 @@ export default {
       // debugger
       if (res.data.code === 200 && res.data.data.data) {
         console.log('聊天消息：', res.data.data.data)
+        if (!res.data.data.data.length) {
+          return this.infiniteHandlerState.complete() // 如果没有消息了，就结束加载
+        }
         // this.msgList = res.data.data.data.reverse()
         this.msgList.unshift(...res.data.data.data.reverse())
 

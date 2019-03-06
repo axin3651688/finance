@@ -2,7 +2,14 @@
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
     <div class="avatar">
       <div :title="data.name" :class="['img-box', {'off-line':!online}]">
-        <img :src="data.avatar" v-avatar="data.name">
+        <avatar
+          :username="data.name"
+          :rounded="false"
+          backgroundColor="transparent"
+          color="#fff"
+          :size="40"
+        ></avatar>
+        <img :src="data.avatar" onerror="this.style.display='none'"/>
       </div>
     </div>
 
@@ -193,6 +200,9 @@ export default {
       .img-box {
         @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
       }
+      div {
+        position: absolute;
+      }
     }
 
     .content {
@@ -297,12 +307,14 @@ export default {
 
     .img-wrap {
       .img-box {
+        position: relative;
         max-width: 240px;
         /*max-height: 320px;*/
         overflow: hidden;
         cursor: pointer;
 
         img {
+          position: absolute;
           max-width: 100%;
           max-height: 100%;
         }

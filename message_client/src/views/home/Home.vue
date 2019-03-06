@@ -17,7 +17,16 @@
 
         <div v-for="node of nodeArrs" :key=node.id>
           <div class="node-box" @click="nodeboxClick(node)">
-            <img class="nodeImg" :src="node.avatar"/>
+            <div class="img-box">
+              <avatar
+                :username="node.text"
+                :rounded="false"
+                backgroundColor="transparent"
+                color="#fff"
+                :size="50"
+              ></avatar>
+              <img :src="node.avatar" onerror="this.style.display='none'"/>
+            </div>
             <span class="nodeTitle">{{node.text}}</span>
           </div>
         </div>

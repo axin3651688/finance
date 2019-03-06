@@ -27,7 +27,7 @@ export default function socketCoreProcess (websocket, datas) {
         break
       case 1004: // 上线通知
         debugger
-        store.commit('MutationUpdateSessionOnlineState', {
+        store.commit('MutationUpdateSessionOnlineState', { // 收到对方上线后更新在线状态
           targetId: '1100_' + data.data.user.id,
           online: true
         })

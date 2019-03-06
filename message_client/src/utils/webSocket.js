@@ -67,7 +67,7 @@ export default function webSocket(data) {
       timer = setInterval(function () {
         initSocket()
         console.log('socket尝试重连······', timer)
-      }, 3000)
+      }, 2000)
     }
   }
 
