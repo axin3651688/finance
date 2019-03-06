@@ -18,7 +18,7 @@
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
-        <nav-menu :navMenus="leftMenus" v-if="flagSide"/>
+        <nav-menu :navMenus="leftMenus" :state="isCollapse" v-if="flagSide"/>
         <!-- 模拟链接 -->
         <!--
         <el-submenu index="123">

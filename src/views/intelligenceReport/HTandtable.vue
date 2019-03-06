@@ -760,6 +760,10 @@ export default {
         if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
           cellMeta.readOnly = true;
         }
+        //资金集中度的填写限制
+        if(row != 0 && (columns == 0 || columns == 2)){
+          cellMeta.readOnly = false;
+        }
       }
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
@@ -927,7 +931,7 @@ export default {
     },
     //点击保存数据
     saveData() {
-      // debugger
+      debugger
       // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
       // console.log(exadata)
       this.tableData.forEach(item => {
@@ -1070,6 +1074,7 @@ export default {
     },
     //请求获取填报页面
     reportData(datas) {
+      debugger;
       // console.log("请求", datas);
       // console.log("传递的data", this.datas);
       let me = this;
