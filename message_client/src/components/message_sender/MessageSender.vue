@@ -67,7 +67,7 @@ export default {
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      // debugger
+      debugger
       console.log('要上传的文件信息：', file)
 
       // 判断文件类型是否可以上传，不能上传则跳出程序
@@ -139,7 +139,37 @@ export default {
         }
       }
       return false
+    },
+
+    // 获取粘贴板上的图片
+
+    _setPasteImg() {
+      let _this = this
+      let inputWindow = this.$refs.textarea
+      inputWindow.addEventListener('paste', function (event) {
+        console.log('paste:', event)
+        if (event.clipboardData || event.originalEvent) {
+          let clipboardData = (event.clipboardData || event.originalEvent.clipboardData)
+          if (clipboardData.items) {
+            let blob
+            for (let i = 0; i < clipboardData.items.length; i++) {
+              if (clipboardData.items[i].type.indexOf('image') !== -1) {
+                blob = clipboardData.items[i].getAsFile()
+                console.log('blob', blob)
+                let fd = new FormData()
+                fd.append('file', blob)
+                fd.append('userId', _this.loginUserId)
+                fd.append('size', blob.size)
+                _this.submitUpload(fd)
+              }
+            }
+          }
+        }
+      })
     }
+  },
+  mounted() {
+    this._setPasteImg()
   }
 }
 </script>

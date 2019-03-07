@@ -108,14 +108,28 @@ export default {
     },
     serverAck() { // 服务器推送的 ack回执
       return this.messageStore.serverAck
+    },
+    socketOffLine() { // 自己的socket连接转态
+      return this.messageStore.socketOffLine
     }
   },
   watch: {
+    /**
+     * 当自己的socket重连成功后，重新加载当前聊天对象的聊天内容
+     */
+    socketOffLine(val) {
+      if (!val) {
+        this._resetChat()
+        // this.requestMsgHistory()
+      }
+    },
+
+    /**
+     * 当聊天对象发生改变时，重置聊天相关的内容
+     */
     receiverId(val) {
       // debugger;
-      this.page = 1
-      this.msgList = []
-      this.infiniteHandlerState.reset()
+      this._resetChat()
     },
 
     /**
@@ -169,11 +183,23 @@ export default {
   methods: {
     ...mapActions(['ActionSetPopModuleStore']),
     ...mapMutations(['MutationUpdateSessionOnlineState']),
-    // 无限加载聊天信息
+
+    /**
+     * 无限加载聊天信息
+     */
     infiniteHandler($state) {
       this.infiniteHandlerState = $state
       console.log('page:', this.page)
       this.requestMsgHistory()
+    },
+
+    /**
+     * 重置聊天相关的内容
+     */
+    _resetChat() {
+      this.page = 1 // 重置请求的消息页码
+      this.msgList = [] // 重置消息队列
+      this.infiniteHandlerState.reset() // 重置无限加载
     },
 
     /**
@@ -238,7 +264,7 @@ export default {
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
-          // this._httpClearChatState(lastItem);
+          this._httpClearChatState(lastItem)
           this._socketClearChatState(lastItem)
         }
       } else {
@@ -363,7 +389,7 @@ export default {
     _chatWindowScrollToBottom() {
       debugger
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
-      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight
+      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight + 999
     },
 
     /**

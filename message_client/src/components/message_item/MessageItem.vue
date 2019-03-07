@@ -1,5 +1,6 @@
 <template>
   <div class="MessageItem message-box" :class="{'is-me': data.senderId === loginUserId}">
+    <!--{{data}}-->
     <div class="avatar">
       <div :title="data.name" :class="['img-box', {'off-line':!online}]">
         <avatar
@@ -14,7 +15,6 @@
     </div>
 
     <div class="content">
-      <!--{{data}}-->
 
       <h6 class="content-title" v-if="isGroup">{{data.name}}</h6>
       <div class="content-bubble">
@@ -307,14 +307,12 @@ export default {
 
     .img-wrap {
       .img-box {
-        position: relative;
         max-width: 240px;
         /*max-height: 320px;*/
         overflow: hidden;
         cursor: pointer;
 
         img {
-          position: absolute;
           max-width: 100%;
           max-height: 100%;
         }

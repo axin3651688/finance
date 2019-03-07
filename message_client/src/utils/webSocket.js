@@ -36,9 +36,8 @@ export default function webSocket(data) {
     }
 
     // 关闭连接时
-    websocket.onclose = function (evnt) {
-      // debugger;
-      console.log('  websocket.onclose  ')
+    websocket.onclose = function (e) {
+      console.log('websocket 断开: ', e)
       socketIsClosed = true
       updateUserSocketOffLine(true) // 设置socket是否离线
       closeShow()
@@ -75,7 +74,7 @@ export default function webSocket(data) {
 }
 
 /**
- * 当用户socket断开连接时，把用户的头像置灰，上线时恢复
+ * 当用户（自己）socket断开连接时，把用户的头像置灰，上线时恢复
  * true：在线，false：离线
  */
 function updateUserSocketOffLine(val) {
