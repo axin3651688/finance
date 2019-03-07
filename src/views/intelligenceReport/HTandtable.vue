@@ -189,7 +189,8 @@ export default {
         comments: true, //添加注释
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
-        cells: Function
+        cells: Function,
+        beforeChange:Function
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -575,6 +576,7 @@ export default {
       let modify;
       let datas = this.settings.data;
       let row;
+      // return
       //融资的新增与减少的判断
       if(this.templateId == "7"){
         this.changeAddOrReduce(changes);
@@ -849,8 +851,8 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
-          cellMeta.selectOptions = this.typeOfFinancing();
-          cellMeta.editor = "select";
+          cellMeta.source = this.typeOfFinancing();
+          cellMeta.type = "dropdown";
         }
         if (columns == 12) {
           cellMeta.readOnly = true;
@@ -984,6 +986,7 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
+      this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
       //有待修复
@@ -1007,6 +1010,18 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    beforeChange (changes, params) {
+      debugger;
+      let me = this;
+      //融资的处理
+      // if(this.templateId == "7"){
+      //   if(changes && changes.length > 0 && changes[0][2]){
+      //     changes[0][2] = changes[0][2].replace("&nbsp","");
+      //   }
+      // }
+      
+      // changes.push("不行");
     },
     afterGetCellMeta (row,col,params,pp,dd) {
       // debugger;
@@ -1356,6 +1371,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
+          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1453,9 +1469,17 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
+      // debugger;
       let source = [];
+      let str = "";
       this.financingOptions.forEach(item => {
         source.push(item.text);
+        // if(item.isleaf == "1"){
+        //   str = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        //   source.push(str + item.text);
+        // }else {
+        //   source.push(item.text);
+        // }
       });
       return source;
     }
