@@ -536,7 +536,8 @@ export default {
     },
     handleStateOfPeriod (rowData,rowIndex) {
       // debugger;
-      let me = this,startIndex = 4,repaymentIndex = 10,month = this.$store.getters.month;
+      let me = this,startIndex = 4,repaymentIndex = 10,month = this.$store.getters.month,
+          year = this.$store.getters.year;
       let startPeriod = rowData[startIndex],repaymentPeriod = rowData[repaymentIndex];
       let arrStart,arrRepayment,stateStr = "";
       if(startPeriod){
@@ -545,17 +546,18 @@ export default {
       if(repaymentPeriod){
         arrRepayment = repaymentPeriod.split("/");
       }
+      //两个日期都存在
       if(arrStart && arrRepayment){
-        if(arrStart[1] - 0 == month && arrRepayment[1] - 0 != month ){
+        if(arrStart[0] == year && arrStart[1] - 0 == month && arrRepayment[1] - 0 != month ){
           stateStr = "新增";
-        }else if(arrStart[1] - 0 != month && arrRepayment[1] - 0 == month){
+        }else if(arrStart[1] - 0 != month && arrRepayment[0] == year && arrRepayment[1] - 0 == month){
           stateStr = "减少";
         }else {
           stateStr = "";
         }
-      }else if(arrStart && !arrRepayment && arrStart[1] - 0 == month){
+      }else if(arrStart && arrStart[0] == year && !arrRepayment && arrStart[1] - 0 == month){
         stateStr = "新增";
-      }else if (arrRepayment && arrRepayment[1] - 0 == month && !arrStart) {
+      }else if (arrRepayment && arrRepayment[0] == year && arrRepayment[1] - 0 == month && !arrStart) {
         stateStr = "减少";
       }else {
         stateStr = "";
@@ -1144,6 +1146,8 @@ export default {
               type: "success"
             });
             me.tableData = [];
+            //保存成功之后
+            // this.afterSaveData();
           } else {
             me.$message({
               message: "保存失败",
@@ -1153,12 +1157,38 @@ export default {
         });
       }
     },
+    afterSaveData () {
+      debugger;
+      let me = this;
+      let curParams = this.$store.curParams,strSign = "success";
+      if(curParams){
+        this.afterSaveReportData(curParams);
+      }
+    },
+    afterSaveReportData(datas) {
+      debugger;
+      // console.log("请求", datas);
+      // console.log("传递的data", this.datas);
+      let me = this;
+      inquire(this.datas).then(res => {
+        console.log("查询", res);
+        // let columns = res.data.data.columns;
+        let rows = res.data.data.rows;
+        me.settings.data = rows;
+        // me.columns = res.data.data.columns;
+        // // me.settings = res.data.data.rows
+        // // me.$set(me.settings, "data",null)
+        // // me.$set(me.settings, "data",res.data.data.rows)
+        // me.convertHansoneTableColumns(columns, rows);
+      });
+    },
     // 点击添加一行
     rowData() {
       this.$refs.hotTableComponent.hotInstance.alter("insert_row", this.index);
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1180,6 +1210,8 @@ export default {
         fixed: this.fixed
       };
       this.datas = excelUploadParaDto;
+      //当前的参数保存在大对象里
+      this.$store.curParams = this.datas;
       this.reportData(this.datas);
     },
     //请求获取填报页面
@@ -1402,8 +1434,7 @@ export default {
               confirmButtonText: "确定",
               cancelButtonText: "取消",
               type: "warning"
-            })
-              .then(() => {
+            }).then(() => {
                 arr.alter("remove_row", row); //删除当前行
                 del(data).then(res => {
                   console.log("删除", res);
@@ -1414,8 +1445,7 @@ export default {
                     });
                   }
                 });
-              })
-              .catch(() => {
+              }).catch(() => {
                 me.$message({
                   type: "info",
                   message: "已取消删除"
