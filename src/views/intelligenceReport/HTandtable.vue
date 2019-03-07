@@ -1295,19 +1295,23 @@ export default {
       console.log("this.years", this.years);
       let fd = new FormData();
       fd.append("file", file);
+      debugger;
       fd.append("period", this.years);
       fd.append("user", this.user.user.username);
       fd.append("company", this.company);
       // console.log(this.dropdownid)
-      if (this.dropdownid) {
-        fd.append("templateId", this.dropdownid);
-      }
-      if (this.subject) {
-        fd.append("subject", this.subject);
-      }
-      if (this.fixed) {
-        fd.append("fixed", this.fixed);
-      }
+      // if (this.dropdownid) {
+      //   fd.append("templateId", this.dropdownid);
+      //   console.log("templateId", this.dropdownid);
+      // }
+      // if (this.subject) {
+      //   fd.append("subject", this.subject);
+      //   console.log("subject", this.subject);
+      // }
+      // if (this.fixed) {
+      //   fd.append("fixed", this.fixed);
+      //   console.log("fixed", this.fixed);
+      // }
       this.uploadfile = fd;
       this.files = fd;
       return true;
@@ -1315,6 +1319,7 @@ export default {
     // 表格的导入
     submitUpload(file) {
       debugger;
+      let me = this;
       var regExp = /([\u4e00-\u9fa5]+)/gi;
       var title = this.excelname; //[\u4e00-\u9fa5]
       var titlename = title.match(regExp);
@@ -1326,14 +1331,17 @@ export default {
           type: "error"
         });
       } else {
-        console.log(titlename[0]);
-        importExcel(this.files).then(res => {
+        // console.log(titlename[0]);
+        importExcel(me.files).then(res => {
           console.log("res", res);
+          console.log("数据", me.subject, me.fixed, me.templateId);
+          console.log("this.files", this.files);
+          debugger;
           if (res.data.code === 200) {
-            this.subject = null;
-            this.fixed = null;
-            this.templateId = null;
-            // console.log("item的数据",this.item)
+            me.subject = null;
+            me.fixed = null;
+            me.templateId = null;
+            console.log("item的数据", me.subject, me.fixed, me.templateId);
             this.$message({
               message: "模板匹配 导入成功",
               type: "success"
@@ -1359,13 +1367,12 @@ export default {
       this.dropdownid = list[index].templateId;
       this.subject = list[index].subject;
       this.fixed = list[index].fixed;
-      if (this.uploadfile) {
-        this.uploadfile.append("templateId", this.dropdownid);
-        this.uploadfile.append("subject", this.subject);
-        this.uploadfile.append("fixed", this.fixed);
-        this.files = this.uploadfile;
-        console.log("要传递的上传文件的数据", this.files);
-      }
+      // if (this.uploadfile) {
+      this.uploadfile.append("templateId", this.dropdownid);
+      this.uploadfile.append("subject", this.subject);
+      this.uploadfile.append("fixed", this.fixed);
+      this.files = this.uploadfile;
+      // }
     },
     //模板下载弹框页面的请求
     templateDownload() {
@@ -1414,8 +1421,8 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      // console.log("option:", val);
-      // console.log("option data:", item);
+      console.log("option:", val);
+      console.log("option data:", item);
       this.templateId = item.templateId;
       this.title = item.title;
     },
