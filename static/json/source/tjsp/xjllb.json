@@ -1,790 +1,201 @@
 {
+    //sql 配置  弃用  改用cube配置
+    // 注：暂时启用
     "id":"0003",
     "text":"现金流量表",
-    "layout": {
-        "xtype": "tab"
-    },
-    "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(newcompany,option){
-        // this.showSet(this.items[0].children); 
-        option.closeTabTaget(newcompany,option);
-    },
+    "showDims":["year","month","company","conversion"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
-    },
+    }
+    ,//切换年的回调
     "changeMonthBefore":function(newmonth,option){
-        debugger
-        // option.cellStyle(this.items[0]);
         option.closeTabTaget(newmonth,option);
+    },//切换月份的回调
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },//切换公司之前的回调
+    
+    "config":{
+       "sql":"WITH T1 AS( SELECT A.SCODE, A.SNAME, A.NLEVEL,row_number() over(ORDER BY A.SSORTBY) NID FROM DW_DIMITEMPERIOD A WHERE PROPERTY3='16') , T2 AS(SELECT E.SCODE, E.SNAME,E.NLEVEL, E.NID, D.FACT_B FACT_0, F.FACT_B FACT_1 FROM T1 E LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period ) D ON E.SCODE=D.DIM_ITEMPERIOD LEFT JOIN ( SELECT DIM_ITEMPERIOD, FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY=:company AND DIM_PERIOD= :comparePeriod ) F ON E.SCODE=F.DIM_ITEMPERIOD) SELECT B.SCODE ascode, B.SNAME text1,B.NLEVEL , B.NID as id, B.FACT_0 BNLJJE1, B.FACT_1 SNLJJE1, C.SCODE bscode, C.SNAME text2, C.NLEVEL level_, C.NID id_, C.FACT_0 BNLJJE2, C.FACT_1 SNLJJE2 FROM (SELECT SCODE, SNAME, NLEVEL, NID, FACT_0, FACT_1 FROM T2 WHERE NID<30) B LEFT JOIN T2 C ON B.NID+29 = C.NID ORDER BY B.NID", 
+      "_cube":{
+        "subject":"0002",
+        "cubeId":4
+      },
+      "mainDim":"itemperiod",
+      "needDims":["year","month","company","conversion"],
+      "type":1,
+      "generateVar":{//生成变量rows
+        "periodCount":2,
+         "compareType":"-1&0",
+         "reverse":true
+     }
     },
-    "changeConversionBefore":function(newconversion, option){
-        // debugger
-        option.closeTabTaget(newconversion,option);
-    },
-    "queryDataBefore":function(a,b,c){
-        // debugger
-        var me = this;
-        if(me.id === "0003"){
-            a.period = a.comparePeriod + "," + a.period;
-            a.periodCount = b.generateVar.periodCount;
-            delete a.year;
-            delete a.month;
-        }    
-        return a; 
-    },
-    "__queryDataAfter":function(data,$vue){
-        // debugger
+    "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
-        let rows = this.rows;
-        // 获取年、月。因为返回的数据类型是字母+日期的，所以需要处理
-        let year = $vue.year;
-        let month = $vue.month;
-        // 处理月份 小于两位数的前置+0
-        if(month<10){
-            month = "0" + month;
-        }
-        // 获取当前日期
-        let period = year + month ;
-        // 获取上年同期
-        let comparePeriod = (year - 1) + month;
-        // 数据里的当前和上年
-        let bntq = "B$" + period ;
-        let sntq = "B$" + comparePeriod;
-        
-        rows.forEach(item => {
-            data.forEach(datas => {
-                if(item.id == datas.id){
-                    datas.B = datas[bntq] ;
-                    datas.A = datas[sntq] ; 
-                }
-                if(item.id_ == datas.id){
-                    datas.bnlj = datas[bntq] ;
-                    datas.snlj = datas[sntq] ; 
-                }
-                if(item.id_ == ""){
-                    item.bnlj = 0;
-                    item.snlj = 0;
-                }
-            })
-        });
-
-        // for(let i=0;i<data.length;i++){
-            
-        //     rows = rows.filter(function(item){
-        //         if(data[i].id == item.id ){
-        //             // debugger
-        //             let datas = data[i];
-        //             // let arr = datas[bntq];
-        //             // let err = datas[sntq];
-        //             if(datas[sntq]){ item.A = datas[sntq] ; datas.A = datas[sntq]} else{datas.A=0} 
-        //             if(datas[bntq]){ item.B = datas[bntq] ; datas.B = datas[bntq]} else{datas.B=0}                 
-        //         }
-        //         return item;
-        //     }) ;
-        //     rows = rows.filter(function(item){
-        //         if(data[i].id == item.id_){
-        //         // debugger
-        //             let datad = data[i];
-        //             if(datad[sntq]){item.A_=datad[sntq];datad.A_ = datad[sntq] }else{datad.A_=0} 
-        //             if(datad[bntq]){item.B_=datad[bntq];datad.B_ = datad[bntq] }else{datad.B_=0} 
-        //         }
-        //         return item;
-        //     }) 
-        // }
-        console.log('返回的数据：'+data);
         return data;
     },
-    "config":{
-        "cube":{
-            "subject":"0002",
-            "cubeId":4
-        },
-        "mainDim":"itemperiod",
-        "needDims":["year","month","company","conversion"],
-        "random":{"min":100,"max":100000},
-        "type":1,
-        "generateVar":{//生成变量rows
-            "periodCount":2,
-            "compareType":"-1&0",
-            // "varName":"rows",
-            "reverse":true
-        },
-    },
+    "layout": {
+       "xtype": "tab"
+   },
     "columns":[
         {
-            "id": "snlj",
+            "id": "snljje2",
             "type": "decimal",
-            "text": "上年累计金额",
-            "subfix":"_",
-            "width":"150px"
-        },
-        {
-            "id": "id",
-            "type": "string",
-            "hidden": true,
-            "text": "编码"
-        },
-        {
+            "text": "上年累计金额"
+        },  {
             "id": "text1",
             "type": "string",
             "text": "项目",
-            "width":"400px"
-        },
-        {
-            "id": "row",
-            "type": "string",
-            "align":"center",
-            "text": "行次",
-            "width":"50px"
-        },    
-        {
-            "id": "B",
+            "width":"360px"
+        },{
+            "id":"id",
+            "type":"number",
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
+        },{
+            "id": "bnljje1",
             "type": "decimal",
-            "text": "本年累计金额",
-            "width":"150px"
-        },
-        {
-            "id": "A",
+            "width": "170px",
+            "text": "本年累计金额"
+        }, {
+            "id": "snljje1",
             "type": "decimal",
-            "text": "上年累计金额",
-            "width":"150px"
-        },     
-        {
-            "id": "id_",
-            "type": "string",
-            "subfix":"_",
-            "hidden": true,
-            "text": "编码"
-        },
-        {
+            "width": "170px",
+            "text": "上年累计金额"
+        }, {
             "id": "text2",
             "type": "string",
             "text": "项目",
-            "subfix":"_",
-            "width":"420px"
-        },
-        {
-            "id": "row2",
-            "type": "string",
-            "align":"center",
-            "text": "行次",
-            "width":"60px"
-        },
-        {
-            "id": "bnlj",
+            "width":"450px"
+        }, {
+            "id":"id_",
+            "type":"number",
+            "text":"行次",
+            "width":"60px",
+            "align":"center"
+        },{
+            "id": "bnljje2",
             "type": "decimal",
-            "subfix":"_",
-            "text": "本年累计金额",
-            "width":"150px"
-        }
-    ],
-    "rows":[
-        {
-            "id": "161",
-            // "ignore":true,
-            "text1": "一、经营活动产生的现金流量：",
-            "row": "1",
-            "A": 0,
-            "B": 0,
-            "id_": "1621003",
-            "text2": "处置固定资产、无形资产和其他长期资产所收回的现金净额",
-            "level2": 2.5,
-            "row2": "30",
-            "snlj": 0,
-            "bnlj": 0        
-        },{
-            "id": "1611001",
-            "text1": "销售商品、提供劳务收到的现金",
-            "level":2.5,
-            "row": "2",
-            "A":0,
-            "B":0,
-            "id_": "1621005",
-            "text2": "处置子公司及其他营业单位收回的现金净额",
-            "row2": "31",
-            "level2":2.5,
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611101",
-            "text1": "△客户存款和同业存放款项净增加额",
-            "level":2,
-            "row": "3",
-            "A":0,
-            "B":0,
-            "id_": "1621004",
-            "text2": "收到其他与投资活动有关的现金",
-            "row2": "32",
-            "snlj":0,
-            "level2":2.5,
-            "bnlj":0
-        },{
-            "id": "1611102",
-            "text1": "△向中央银行借款净增加额",
-            "level":2,
-            "row": "4",
-            "A":0,
-            "B":0,
-            "id_": "1621100",
-            "text2": "投资活动现金流入小计",
-            "row2": "33",
-            "level2":2.5,
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611103",
-            "text1": "△向其他金融机构拆入资金净增加额",
-            "level":2,
-            "row": "5",
-            "A":0,
-            "B":0,
-            "id_": "1622001",
-            "text2": "购建固定资产、无形资产和其他长期资产所支付的现金",
-            "level2":2.5,
-            "row2": "34",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611104",
-            "text1": "△收到原保险合同保费取得的现金",
-            "level":2,
-            "row": "6",
-            "A":0,
-            "B":0,
-            "id_": "1622002",
-            "text2": "投资支付的现金",
-            "row2": "35",
-            "level2":2.5,
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611105",
-            "text1": "△收到再保险业务现金净额",
-            "level":2,
-            "row": "7",
-            "A":0,
-            "B":0,
-            "id_": "1622101",
-            "text2": "△质押贷款净增加额",
-            "level2":2,
-            "row2": "36",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611106",
-            "text1": "△保户储金及投资款净增加额",
-            "level":2,
-            "row": "8",
-            "A":0,
-            "B":0,
-            "id_": "1622005",
-            "text2": "取得子公司及其他营业单位支付的现金净额",
-            "level2":2.5,
-            "row2": "37",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611107",
-            "text1": "△处置交易性金融资产净增加额",
-            "level":2,
-            "row": "9",
-            "A":0,
-            "B":0,
-            "id_": "1622003",
-            "text2": "支付其他与投资活动有关的现金",
-            "level2":2.5,
-            "row2": "38",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611108",
-            "text1": "△收取利息、手续费及佣金的现金",
-            "level":2,
-            "row": "10",
-            "A":0,
-            "B":0,
-            "id_": "1622100",
-            "text2": "投资活动现金流出小计",
-            "level2":0,
-            "row2": "39",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611109",
-            "text1": "△拆入资金净增加额",
-            "level":2,
-            "row": "11",
-            "A":0,
-            "B":0,
-            "id_": "1620100",
-            "text2": "投资活动产生的现金流量净额",
-            "level2":0,
-            "row2": "40",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611110",
-            "text1": "△回购业务资金净增加额",
-            "level":2,
-            "row": "12",
-            "A":0,
-            "B":0,
-            "id_": "163",
-            "text2": "三、筹资活动产生的现金流量：",
-            "level2":0,
-            "row2": "41",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611002",
-            "text1": "收到的税费返还",
-            "level":2.5,
-            "row": "13",
-            "A":0,
-            "B":0,
-            "id_": "1631001",
-            "text2": "吸收投资收到的现金",
-            "level2":2.5,
-            "row2": "42",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611003",
-            "text1": "收到其他与经营活动有关的现金",
-            "level":2.5,
-            "row": "14",
-            "A":0,
-            "B":0,
-            "id_": "1631101",
-            "text2": "其中：子公司吸收少数股东投资收到的现金",
-            "level2":4,
-            "row2": "43",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1611100",
-            "text1": "经营活动现金流入小计",
-            "level":0,
-            "row": "15",
-            "A":0,
-            "B":0,
-            "id_": "1631002",
-            "text2": "取得借款所收到的现金",
-            "level2":2.5,
-            "row2": "44",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612001",
-            "text1": "购买商品、接收劳务支付的现金",
-            "level":2.5,
-            "row": "16",
-            "A":0,
-            "B":0,
-            "id_": "1631102",
-            "text2": "△发行债券收到的现金",
-            "row2": "45",
-            "level2":2,
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612101",
-            "text1": "△客户贷款及垫款净增加额",
-            "level":2,
-            "row": "17",
-            "A":0,
-            "B":0,
-            "id_": "1631003",
-            "text2": "收到其他与筹资活动有关的现金",
-            "level2":2.5,
-            "row2": "46",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612102",
-            "text1": "△存放中央银行和同业款项净增加额",
-            "level":2,
-            "row": "18",
-            "A":0,
-            "B":0,
-            "id_": "1631100",
-            "text2": "筹资活动现金流入小计",
-            "level2":0,
-            "row2": "47",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612103",
-            "text1": "△支付原保险合同赔付款项的现金",
-            "level":2,
-            "row": "19",
-            "A":0,
-            "B":0,
-            "id_": "1632001",
-            "text2": "偿还债务所支付的现金",
-            "level2":2.5,
-            "row2": "48",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612104",
-            "text1": "△支付利息、手续费及佣金的现金",
-            "level":2,
-            "row": "20",
-            "A":0,
-            "B":0,
-            "id_": "1632002",
-            "text2": "分配股利、利润或偿付利息所支付的现金",
-            "level2":2.5,
-            "row2": "49",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612105",
-            "text1": "△支付保单红利的现金",
-            "level":2,
-            "row": "21",
-            "A":0,
-            "B":0,
-            "id_": "1632102",
-            "text2": "其中：子公司支付给少数股东的股利、利润",
-            "level2":4.5,
-            "row2": "50",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612002",
-            "text1": "支付给职工以及为职工支付的现金",
-            "level":2.5,
-            "row": "22",
-            "A":0,
-            "B":0,
-            "id_": "1632003",
-            "text2": "支付其他与筹资活动有关的现金",
-            "level2":2.5,
-            "row2": "51",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612003",
-            "text1": "支付的各项税费",
-            "level":2.5,
-            "row": "23",
-            "A":0,
-            "B":0,
-            "id_": "1632100",
-            "text2": "筹资活动现金流出小计",
-            "level2":0,
-            "row2": "52",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612004",
-            "text1": "支付其他与经营活动有关的现金",
-            "row": "24",
-            "level":2.5,
-            "A":0,
-            "B":0,
-            "id_": "1630100",
-            "text2": "筹资活动产生的现金流量净额",
-            "level2":0,
-            "row2": "53",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1612100",
-            "text1": "经营活动现金流出小计",
-            "row": "25",
-            "level":0,
-            "A":0,
-            "B":0,
-            "id_": "1640100",
-            "text2": "四、汇率变动对现金及现金等价物的影响",
-            "level2":0,
-            "row2": "54",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1610100",
-            "text1": "经营活动产生的现金流量净额",
-            "row": "26",
-            "level":0,
-            "A":0,
-            "B":0,
-            "id_": "1600100",
-            "text2": "五、现金及现金等价物净增加额",
-            "level2":0,
-            "row2": "55",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "162",
-            "text1": "二、投资活动产生的现金流量：",
-            "row": "27",
-            "level":0,
-            "A":0,
-            "B":0,
-            "id_": "1600200",
-            "text2": "加：期初现金及现金等价物余额",
-            "level2":2.5,
-            "row2": "56",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1621001",
-            "text1": "收回投资收到的现金",
-            "row": "28",
-            "level":2.5,
-            "A":0,
-            "B":0,
-            "id_": "1600300",
-            "text2": "六、期末现金及现金等价物余额",
-            "level2":0,
-            "row2": "57",
-            "snlj":0,
-            "bnlj":0
-        },{
-            "id": "1621002",
-            "text1": "取得投资收益收到的现金",
-            "row": "29",
-            "level":2.5,
-            "A":0,
-            "B":0,
-            "id_": "0010101",
-            "text2": "",
-            "level2":0,
-            "row2": "",
-            "snlj":0,
-            "bnlj":0
-        }
+            "width": "170px",
+            "text": "本年累计金额"
+        } ],
+        "rows": [
     ],
     "items" : [
-        {
-            "xtype" : "bi-table",
-            "id" : "xjllb",
-            "text" : "现金流量表",
-            "toolbar":[{    
-                "id":"1",
-                "text":"刷新",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    "background-color":"#189271"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    let $vue = vue.item.$vue;
-                    $vue.closeTabTaget({}, $vue);
-                    vue.item.updateView("company");
-                }
-            },{
-                "id":"2",
-                "text":"导出",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    "background-color":"#189271"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    vue.handleDownload(vue);
-                }
-            }],
-            "drillProperties":["text1","text2"],//有钻取，给蓝色 
-            "levelProperties":{text1:"level",text2:"level2"},//加缩进 可选 table
-            "cellStyle":function(row) {
-            // debugger 
-                let datas = this.datas;
-                if(datas && datas.length>0){
-                    let data = datas.filter(function(item){
-                      return item.id == row.row.id || item.id == row.row.id_;
-    
-                    });
-                    if(data.length == 0){
-                        row.row.A = 0;
-                        row.row.B = 0;
-                        row.row.snlj = 0;
-                        row.row.bnlj = 0;
-    
-                    }else if(data.length == 1){
-                      if(data[0].id == row.row.id){
-                            if(data[0].A || data[0].A == 0){
-                                row.row.A = data[0].A;
-                            }else{
-                                row.row.A = 0;
-                            }
-                            if(data[0].B || data[0].B == 0){
-                                row.row.B = data[0].B;
-                            }else{
-                                row.row.B = 0;
-                            }
-                            row.row.snlj = 0;
-                            row.row.bnlj = 0;
-    
-                        }else{
-                            if(data[0].snlj || data[0].snlj == 0){
-                                row.row.snlj = data[0].snlj;
-                            }else{
-                                row.row.snlj = 0;
-                            }
-                            if(data[0].bnlj || data[0].bnlj == 0){
-                                row.row.bnlj = data[0].bnlj;
-                            }else{
-                                row.row.bnlj = 0;
-                            }
-                            row.row.A = 0;
-                            row.row.B = 0;   
-                        }    
-                    }else{
-                        if(data[0].id == row.row.id){
-                            if(data[0].A || data[0].A == 0){
-                                row.row.A = data[0].A;
-                            }else{
-                                row.row.A = 0;
-                            }
-                            if(data[0].B || data[0].B == 0){
-                                row.row.B = data[0].B;
-                            }else{
-                                row.row.B = 0;
-                            }
-                            if(data[1].snlj || data[1].snlj == 0){
-                                row.row.snlj = data[1].snlj;
-                            }else{
-                                row.row.snlj = 0;
-                            }
-                            if(data[1].bnlj || data[1].bnlj == 0){
-                                row.row.bnlj = data[1].bnlj;
-                            }else{
-                                row.row.bnlj = 0;
-                            }
-    
-                        }else{
-                            if(data[0].snlj || data[0].snlj == 0){
-                                row.row.snlj = data[0].snlj;
-                            }else{
-                                row.row.snlj = 0;
-                            }
-                            if(data[0].bnlj || data[0].bnlj == 0){
-                                row.row.bnlj = data[0].bnlj;
-                            }else{
-                                row.row.bnlj = 0;
-                            }
-                            if(data[1].A || data[1].A == 0){
-                                row.row.A = data[1].A;
-                            }else{
-                                row.row.A = 0;
-                            }
-                            if(data[1].B || data[1].B == 0){
-                                row.row.B = data[1].B;
-                            }else{
-                                row.row.B = 0;
-                            }
-    
-                        }
-    
-                    }
-                  
-                }else{
-                    row.row.A = 0;
-                    row.row.B = 0;
-                    row.row.snlj = 0;
-                    row.row.bnlj = 0;
-                }
-                let css = "padding: 4px 0;";
-                let pro = row.column.property;//列id
-                if (!pro) {
-                    return css;
-                }
-                let levelProperties = this.levelProperties;//缩进列获取
-                let textIndent ="";
-                let record = row.row;
-                let levelPro = levelProperties[pro];
-                if (levelPro && row.row[levelPro]) {
-                    let level = row.row[levelPro] || 1;
-                    textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
-                }
-                let drillProperties = this.drillProperties;//钻取列获取
-                if (pro.indexOf("text1") != -1) {//第一列项目
-                    if((record.A && record.A != 0) || (record.B && record.B != 0) ){//有数据时才显示蓝色，并且可以下钻
-                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        record.drill = true;//下钻设置
-                        return css ;
-                    }
-                    // else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
-                    //     let drill = "text-decoration: none;color: black;";
-                    //     css = css + "font-weight:bold;" + textIndent + drill;
-                    //     return css;
-                    // }
-                    else{
-                        return css+ textIndent; 
-                    }
-                }else if(pro.indexOf("text2") != -1){//第二列项目
-                    if((record.snlj && record.snlj != 0) || (record.bnlj && record.bnlj != 0) ){//有数据时才显示蓝色，并且可以下钻
-                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        record._drill = true;//下钻设置
-                        return css;
-                    }
-                    // else if(!record.A_ && !record.B_ && (record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100")){
-                    //     let drill = "text-decoration: none;color: black;";
-                    //     css = css + "font-weight:bold;" + textIndent + drill;
-                    //     return css;
-                    // }
-                    else{
-                        return css + textIndent; 
-                    }
-                }else {
-                    return css+textIndent;
-                }    
+      {
+        "xtype" : "bi-table",
+        "id" : "xjllb",
+        "text" : "现金流量表",
+        "toolbar":[
+            {
+            "id":"1",
+            "text":"刷新",
+            "xtype":"button",
+            "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
             },
-            "onCellClick":function(row, column, cell, event,option){
-                debugger
-                let cv = column.property + "",
-                len = cv.length;
+            "handler":function(vue,btn){
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+
+                //location.reload();
+            }
+          }
+          , {
+           "id":"2",
+           "text":"导出",
+           "cellStyle":{
+                "color":"black",
+                "background-color":"#189271"
+            },
+           "handler":function(vue,btn){
+               vue.handleDownload(vue);
+           }
+         }
+       ],
+        "drillProperties":["text1","text2"],//有钻取，给蓝色
+        "levelProperties":{"text1":"nlevel","text2":"level_"},//加缩进
+        
+        "cellStyle":function(row) {
+           let datas = this.datas;
+           let record = [];
+           record = datas[row.rowIndex];
+             
+            let css = "padding: 4px 0;";
+            let pro = row.column.property;//列id
+            if (!pro) {
+              return css;
+            }
+            let levelProperties = this.levelProperties;//缩进列获取
+            let textIndent ="";
+            let levelPro = levelProperties[pro];
+            if (levelPro && record[levelPro]) {
+                let level = record[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            let drillProperties = this.drillProperties;//钻取列获取
+            if (pro.indexOf("text1") != -1) {//第一列项目
+                if((record.bnljje1 && record.bnljje1 != 0) || (record.snljje1 && record.snljje1 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex].drill = true;//下钻设置
+                    return css ;
+                 }else{
+                    //row.row.drill = false;
+                    return css+ textIndent; 
+                 }
+            }else if(pro.indexOf("text2") != -1){//第二列项目
+                if((record.bnljje2 && record.bnljje2 != 0) || (record.snljje2 && record.snljje2 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    datas[row.rowIndex]._drill = true;//下钻设置
+                    return css;
+                 }else{
+                   // row.row._drill = false;
+                    return css + textIndent; 
+                 }
+
+            } else {
+              return css+textIndent;
+            }
+          },
+        "onCellClick":function(row, column, cell, event,option){
+            let datas = this.datas;
+            let data = datas.filter(function(item){
+                return item.ascode == row.ascode;
+            });
+            row = data[0];
+            let cv = column.property + "";
+            let listener = false;
+            if(cv == "text1")listener = row.drill;
+            if(cv == "text2")listener = row._drill;
+            if (listener && (cv == "text1" || cv == "text2" )) {
+                let len = cv.length;
                 let text = row[cv];
                 let id = "" ;
-                if(cv == "text1" )id = row.id;//下钻的标识
-                if(cv == "text2" )id = row.id_;//下钻的标识
-                if( this.drillProperties[0].indexOf(cv) != -1 ){
-                    if((row.A && row.A!=0) || (row.B && row.B!=0)){    
-                            option.commonHandler(
-                            {
-                                "type":"click",//事件类型
-                                "way":"addTab",//调用的公共方法
-                                "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",
-                                "handler":($vue,params)=>{//自定义的回调
-                                    console.info(params);
-                                    debugger; 
-                                } 
-                            },
-                            { row: row, column: column, cell: cell, event: event },
-                            { id: id, text: text }
-                            );                  
-                    }    
-                } 
-                if(this.drillProperties[1].indexOf(cv) != -1){
-                    if((row.snlj && row.snlj!=0) || (row.bnlj && row.bnlj!=0)){    
-                        option.commonHandler(
-                        {
-                            "type":"click",//事件类型
-                            "way":"addTab",//调用的公共方法
-                            "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",
-                            "handler":($vue,params)=>{//自定义的回调
-                                console.info(params);
-                                debugger; 
-                            } 
-                        },
-                        { row: row, column: column, cell: cell, event: event },
-                        { id: id, text: text }
-                        );                  
-                    }    
-                }                           
-            }
+                if(cv == "text1" )id = row.ascode;//下钻的标识
+                if(cv == "text2" )id = row.bscode;//下钻的标识
+                    
+                    option.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/drillXjllb.json",//孙子成
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                        } 
+                    },
+                    { row: row, column: column, cell: cell, event: event },
+                    { id: id, text: text }
+                    );
+                }
         }
+        
+      }
     ]
-}
+  }
