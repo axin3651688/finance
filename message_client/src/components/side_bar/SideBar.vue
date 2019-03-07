@@ -173,25 +173,30 @@ export default {
       this.dialogQuitVisible = false
       LOGOUT()
         .then(res => {
-          // 清除登陆数据
-          localStorage.removeItem('database')
-          localStorage.removeItem('authorization')
-          this.$router.push('/message_login')
-          this.$store.dispatch('clearCurrentState')
+          console.log('退出登录', res)
+          this._processLogout()
+        })
+        .catch(err => {
+          console.log('退出登录', err)
+          this._processLogout()
+        })
+    },
 
-          // electron 退出处理
-          if (window.require) {
-            var ipc = window.require('electron').ipcRenderer
-          }
-          if (window.require) {
-            ipc.send('web_outLogin', '')
-          }
-        })
-        .catch(res => {
-          console.error('退出请求失败')
-          localStorage.removeItem('authorization')
-          this.$router.push('/message_login')
-        })
+    /**
+     * 退出登录后的处理
+     */
+    _processLogout() {
+      // 清除登陆数据
+      localStorage.removeItem('database')
+      localStorage.removeItem('authorization')
+      this.$router.push('/message_login')
+      this.$store.dispatch('clearCurrentState')
+
+      // electron 退出处理
+      if (window.require) {
+        var ipc = window.require('electron').ipcRenderer
+        ipc.send('web_outLogin', '')
+      }
     }
   }
 }
