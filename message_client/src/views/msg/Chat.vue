@@ -265,7 +265,7 @@ export default {
         // 请求服务器更新已读消息状态
         let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
-          this._httpClearChatState(lastItem)
+          // this._httpClearChatState(lastItem)
           this._socketClearChatState(lastItem)
         }
       } else {
@@ -398,6 +398,8 @@ export default {
      */
     _httpClearChatState(lastItem) {
       // debugger
+      if (this.page > 1) return false // 如果不是第一页，就不要发送
+      if (lastItem.state === 2) return false // 如果最后一条消息是已读的，也不要发送
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,
@@ -414,6 +416,8 @@ export default {
      */
     _socketClearChatState(lastItem) {
       // debugger;
+      if (this.page > 1) return false // 如果不是第一页，就不要发送
+      if (lastItem.state === 2) return false // 如果最后一条消息是已读的，也不要发送
       let data = {
         code: 10061,
         data: {
