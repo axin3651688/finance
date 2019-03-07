@@ -18,6 +18,7 @@
               :data="item"
             />
           </template>
+          <div style="height: 240px"></div>
 
         </el-scrollbar>
       </div>
@@ -120,7 +121,6 @@ export default {
     socketOffLine(val) {
       if (!val) {
         this._resetChat()
-        // this.requestMsgHistory()
       }
     },
 
@@ -389,7 +389,7 @@ export default {
     _chatWindowScrollToBottom() {
       debugger
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
-      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight + 999
+      if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight
     },
 
     /**

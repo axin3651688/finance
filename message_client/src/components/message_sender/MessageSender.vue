@@ -17,7 +17,7 @@
       </el-upload>
 
       <div class="tool-icon link-icon"></div>
-      <div class="send-btn" @click="sendMsg(sendText)">发 送</div>
+      <div class="send-btn" @click="sendMsg(sendText, null, true)">发 送</div>
       <transition name="el-zoom-in-bottom">
         <face-icon v-if="showFacePop" :showFacePop.sync="showFacePop"
                    @addFaceToInput="handleAddFaceToInput"></face-icon>
@@ -29,7 +29,7 @@
                     placeholder="请输入文字，按enter建发送信息"
                     v-model="sendText"
                     ref="textarea"
-                    @keyup.enter.prevent="sendMsg(sendText)"
+                    @keyup.enter.prevent="sendMsg(sendText, null, true)"
           ></textarea>
       </div>
     </div>
@@ -91,7 +91,7 @@ export default {
           console.log('上传群文件res', res)
           // debugger
           if (res.data.code === 200 && res.data.data) {
-            this.sendMsg('', res.data.data)
+            this.sendMsg('', res.data.data, false)
           }
         })
       }
@@ -106,7 +106,7 @@ export default {
     },
 
     // 向父组件触发发送消息
-    sendMsg(sendText, fileData) {
+    sendMsg(sendText, fileData, clearSendText) {
       debugger
       if (this.socketOffLine) { // socket断开不让发消息
         return this.$message({
@@ -117,7 +117,9 @@ export default {
       }
       if (sendText.length <= 500) { // 发送不能大于500字符
         this.$emit('sendMsg', sendText.trim(), fileData)
-        this.sendText = ''
+        if (clearSendText) {
+          this.sendText = ''
+        }
       } else {
         this.$message({
           type: 'warning',
