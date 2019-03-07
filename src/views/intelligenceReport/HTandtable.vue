@@ -190,7 +190,8 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function,
-        beforeChange: Function
+        beforeChange: Function,
+        getCellEditor: Function
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -885,6 +886,7 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
+          // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
         }
@@ -1031,7 +1033,8 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
-      this.settings.beforeChange = this.beforeChange;
+      
+      // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
       //有待修复
@@ -1056,9 +1059,17 @@ export default {
         me.settings.data = rows;
       }, 100);
     },
-    beforeChange(changes, params) {
+    getCellEditor (row,col) {
       debugger;
       let me = this;
+    },
+    beforeChange(changes, params) {
+      // debugger;
+      let me = this;
+      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
+      // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
+      // this.settings.getCellEditor = this.getCellEditor;
+      // this.getCellEditor();
       //融资的处理
       // if(this.templateId == "7"){
       //   if(changes && changes.length > 0 && changes[0][2]){
@@ -1219,14 +1230,14 @@ export default {
       let me = this;
       inquire(this.datas).then(res => {
         console.log("查询", res);
-        // let columns = res.data.data.columns;
+        let columns = res.data.data.columns;
         let rows = res.data.data.rows;
-        me.settings.data = rows;
+        // me.settings.data = rows;
         // me.columns = res.data.data.columns;
         // // me.settings = res.data.data.rows
         // // me.$set(me.settings, "data",null)
         // // me.$set(me.settings, "data",res.data.data.rows)
-        // me.convertHansoneTableColumns(columns, rows);
+        me.convertHansoneTableColumns(columns, rows);
       });
     },
     // 点击添加一行
@@ -1284,6 +1295,7 @@ export default {
     },
     //表格的导入需要传递的参数
     beforeAvatarUpload(file) {
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1305,7 +1317,7 @@ export default {
       if (this.subject) {
         fd.append("subject", this.subject);
       }
-      if (this.fixed) {
+      if (this.fixed != null) {
         fd.append("fixed", this.fixed);
       }
       this.uploadfile = fd;
@@ -1361,7 +1373,8 @@ export default {
       this.fixed = list[index].fixed;
       if (this.uploadfile) {
         this.uploadfile.append("templateId", this.dropdownid);
-        this.uploadfile.append("subject", this.subject);
+        // this.uploadfile.append("subject", this.subject);
+        this.uploadfile.set("subject", this.subject);
         this.uploadfile.append("fixed", this.fixed);
         this.files = this.uploadfile;
         console.log("要传递的上传文件的数据", this.files);
