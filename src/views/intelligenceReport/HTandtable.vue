@@ -189,7 +189,8 @@ export default {
         comments: true, //添加注释
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
-        cells: Function
+        cells: Function,
+        beforeChange: Function
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -468,7 +469,7 @@ export default {
     //融资情况明细表除机构名称下拉数据
     financingDown(data).then(res => {
       this.financingOptions = res.data.data;
-      console.log("下拉", this.financingOptions);
+      // console.log("下拉", this.financingOptions);
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
@@ -520,46 +521,82 @@ export default {
     },
     changeAddOrReduce(changes) {
       // debugger;
-      let me = this,rowIndex,arr = ["sstartdate","srepaydate"],name,rowData;
-      if(changes && changes.length > 0){
+      let me = this,
+        rowIndex,
+        arr = ["sstartdate", "srepaydate"],
+        name,
+        rowData;
+      if (changes && changes.length > 0) {
         rowIndex = changes[0][0];
         name = changes[0][1];
-        if(arr.indexOf(name) != -1){
+        if (arr.indexOf(name) != -1) {
           debugger;
-          rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(rowIndex);
-          if(rowData && rowData.length > 0){
-            this.handleStateOfPeriod(rowData,rowIndex);
+          rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+            rowIndex
+          );
+          if (rowData && rowData.length > 0) {
+            this.handleStateOfPeriod(rowData, rowIndex);
           }
         }
       }
     },
-    handleStateOfPeriod (rowData,rowIndex) {
+    handleStateOfPeriod(rowData, rowIndex) {
       // debugger;
-      let me = this,startIndex = 4,repaymentIndex = 10,month = this.$store.getters.month;
-      let startPeriod = rowData[startIndex],repaymentPeriod = rowData[repaymentIndex];
-      let arrStart,arrRepayment,stateStr = "";
-      if(startPeriod){
+      let me = this,
+        startIndex = 4,
+        repaymentIndex = 10,
+        month = this.$store.getters.month,
+        year = this.$store.getters.year;
+      let startPeriod = rowData[startIndex],
+        repaymentPeriod = rowData[repaymentIndex];
+      let arrStart,
+        arrRepayment,
+        stateStr = "";
+      if (startPeriod) {
         arrStart = startPeriod.split("/");
       }
-      if(repaymentPeriod){
+      if (repaymentPeriod) {
         arrRepayment = repaymentPeriod.split("/");
       }
-      if(arrStart && arrRepayment){
-        if(arrStart[1] - 0 == month && arrRepayment[1] - 0 != month ){
+      //两个日期都存在
+      if (arrStart && arrRepayment) {
+        if (
+          arrStart[0] == year &&
+          arrStart[1] - 0 == month &&
+          arrRepayment[1] - 0 != month
+        ) {
           stateStr = "新增";
-        }else if(arrStart[1] - 0 != month && arrRepayment[1] - 0 == month){
+        } else if (
+          arrStart[1] - 0 != month &&
+          arrRepayment[0] == year &&
+          arrRepayment[1] - 0 == month
+        ) {
           stateStr = "减少";
-        }else {
+        } else {
           stateStr = "";
         }
-      }else if(arrStart && !arrRepayment && arrStart[1] - 0 == month){
+      } else if (
+        arrStart &&
+        arrStart[0] == year &&
+        !arrRepayment &&
+        arrStart[1] - 0 == month
+      ) {
         stateStr = "新增";
-      }else if (arrRepayment && arrRepayment[1] - 0 == month && !arrStart) {
+      } else if (
+        arrRepayment &&
+        arrRepayment[0] == year &&
+        arrRepayment[1] - 0 == month &&
+        !arrStart
+      ) {
         stateStr = "减少";
-      }else {
+      } else {
         stateStr = "";
       }
-      this.$refs.hotTableComponent.hotInstance.setDataAtCell(rowIndex,12,stateStr);
+      this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+        rowIndex,
+        12,
+        stateStr
+      );
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
@@ -575,8 +612,9 @@ export default {
       let modify;
       let datas = this.settings.data;
       let row;
+      // return
       //融资的新增与减少的判断
-      if(this.templateId == "7"){
+      if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
       }
       if (changes && changes.length > 0) {
@@ -589,6 +627,10 @@ export default {
         obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
+        if (values == "") {
+          values = 0;
+        }
+        // console.log("oldValuesoldValues", values);
         let x;
         let arr = datas.filter(record => {
           x = record;
@@ -626,8 +668,6 @@ export default {
           });
           return tmp;
         }
-        // var result = res(arr);
-        debugger;
         let changeRecord = this.tableData.filter(record => {
           return record.index === index && record.colId === key;
         })[0];
@@ -636,7 +676,6 @@ export default {
         })[0];
 
         if (this.fixed === 1) {
-          debugger;
           if (
             (changeRecord && reg.test(values) === true) ||
             (changeRecord && reg.test(values) == "")
@@ -645,15 +684,12 @@ export default {
           } else {
             if (reg.test(values) === true || reg.test(values) == "") {
               let bb = { index: index };
-              // bb[index] = index;
               bb[key] = values;
               this.tableData.push(bb);
             }
           }
         }
         if (this.fixed === 0) {
-          debugger;
-          //  this.columns[0]["id"] != this.columns[0].id
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
@@ -663,9 +699,11 @@ export default {
               this.tableData.push(bb);
             }
           } else {
-            let bb = { index: index };
-            bb[key] = values;
-            this.tableData.push(bb);
+            if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
+              let bb = { index: index };
+              bb[key] = values;
+              this.tableData.push(bb);
+            }
           }
           // })
         }
@@ -677,7 +715,6 @@ export default {
       });
       datas.forEach((item, i) => {
         modify = item;
-        debugger;
         if (i === indexs) {
           if (
             value.A ||
@@ -728,7 +765,6 @@ export default {
           }
         }
       });
-      console.log("value", value);
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
@@ -754,7 +790,7 @@ export default {
     },
 
     // 设置单元格的只读和下拉方法
-    cells(row, columns, prop, params,pp) {
+    cells(row, columns, prop, params, pp) {
       // debugger;
       let cellMeta = {};
       if (this.fixed === 1) {
@@ -835,7 +871,7 @@ export default {
           cellMeta.readOnly = true;
         }
         //资金集中度的填写限制
-        if(row != 0 && (columns == 0 || columns == 2)){
+        if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         }
       }
@@ -849,14 +885,25 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
-          cellMeta.selectOptions = this.typeOfFinancing();
-          cellMeta.editor = "select";
+          cellMeta.source = this.typeOfFinancing();
+          cellMeta.type = "dropdown";
         }
         if (columns == 12) {
           cellMeta.readOnly = true;
         }
       }
-
+      if (this.templateId == 8) {
+        if (columns == 1 || columns == 3 || columns == 4) {
+          cellMeta.readOnly = true;
+        }
+        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
+          cellMeta.readOnly = true;
+        }
+        //资金集中度的填写限制
+        if (row != 0 && (columns == 0 || columns == 2)) {
+          cellMeta.readOnly = false;
+        }
+      }
       return cellMeta;
     },
     //请求查询回来的数据的类型
@@ -984,6 +1031,7 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
+      this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
       //有待修复
@@ -1008,25 +1056,40 @@ export default {
         me.settings.data = rows;
       }, 100);
     },
-    afterGetCellMeta (row,col,params,pp,dd) {
+    beforeChange(changes, params) {
+      debugger;
+      let me = this;
+      //融资的处理
+      // if(this.templateId == "7"){
+      //   if(changes && changes.length > 0 && changes[0][2]){
+      //     changes[0][2] = changes[0][2].replace("&nbsp","");
+      //   }
+      // }
+
+      // changes.push("不行");
+    },
+    afterGetCellMeta(row, col, params, pp, dd) {
       // debugger;
       let me = this;
     },
-    afterCellChange (row, col, params) {
+    afterCellChange(row, col, params) {
       debugger;
-      let me = this,rowData;
-      if(row[0][1] != "sstartdate"){
+      let me = this,
+        rowData;
+      if (row[0][1] != "sstartdate") {
         return;
-      }else {
-        rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(row[0][0]);
+      } else {
+        rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+          row[0][0]
+        );
       }
     },
-    setDataAtCell () {
+    setDataAtCell() {
       debugger;
     },
     //点击保存数据
     saveData() {
-      debugger
+      debugger;
       // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
       // console.log(exadata)
       this.tableData.forEach(item => {
@@ -1121,14 +1184,16 @@ export default {
       var result = res(arr);
       if (result.length === 0) {
         save(objs).then(res => {
-          console.log("保存", res);
-
+          // console.log("保存", res);
+          this.reportData(this.datas);
           if (res.data.code === 200) {
             me.$message({
               message: res.data.msg,
               type: "success"
             });
             me.tableData = [];
+            //保存成功之后
+            // this.afterSaveData();
           } else {
             me.$message({
               message: "保存失败",
@@ -1138,12 +1203,39 @@ export default {
         });
       }
     },
+    afterSaveData() {
+      debugger;
+      let me = this;
+      let curParams = this.$store.curParams,
+        strSign = "success";
+      if (curParams) {
+        this.afterSaveReportData(curParams);
+      }
+    },
+    afterSaveReportData(datas) {
+      debugger;
+      // console.log("请求", datas);
+      // console.log("传递的data", this.datas);
+      let me = this;
+      inquire(this.datas).then(res => {
+        console.log("查询", res);
+        // let columns = res.data.data.columns;
+        let rows = res.data.data.rows;
+        me.settings.data = rows;
+        // me.columns = res.data.data.columns;
+        // // me.settings = res.data.data.rows
+        // // me.$set(me.settings, "data",null)
+        // // me.$set(me.settings, "data",res.data.data.rows)
+        // me.convertHansoneTableColumns(columns, rows);
+      });
+    },
     // 点击添加一行
     rowData() {
       this.$refs.hotTableComponent.hotInstance.alter("insert_row", this.index);
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1165,6 +1257,8 @@ export default {
         fixed: this.fixed
       };
       this.datas = excelUploadParaDto;
+      //当前的参数保存在大对象里
+      this.$store.curParams = this.datas;
       this.reportData(this.datas);
     },
     //请求获取填报页面
@@ -1178,9 +1272,9 @@ export default {
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
         me.columns = res.data.data.columns;
-        // me.settings = res.data.data.rows
+        // me.settings = res.data.data.rows;
         // me.$set(me.settings, "data",null)
-        // me.$set(me.settings, "data",res.data.data.rows)
+        // me.$set(me.settings, "data", res.data.data.rows);
         me.convertHansoneTableColumns(columns, rows);
       });
     },
@@ -1220,14 +1314,15 @@ export default {
     },
     // 表格的导入
     submitUpload(file) {
-      // debugger
+      debugger;
       var regExp = /([\u4e00-\u9fa5]+)/gi;
       var title = this.excelname; //[\u4e00-\u9fa5]
       var titlename = title.match(regExp);
       console.log(title);
       if (titlename[0] != this.importHeader) {
+        debugger;
         this.$message({
-          message: res.data.msg,
+          message: "模板名字不匹配",
           type: "error"
         });
       } else {
@@ -1356,6 +1451,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
+          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1387,11 +1483,14 @@ export default {
               cancelButtonText: "取消",
               type: "warning"
             })
+
               .then(() => {
-                arr.alter("remove_row", row); //删除当前行
+                debugger;
+                // arr.alter("remove_row", row); //删除当前行
                 del(data).then(res => {
                   console.log("删除", res);
                   if (res.data.code === 200) {
+                    me.reportData(me.datas);
                     me.$message({
                       type: "success",
                       message: "删除成功!"
@@ -1453,9 +1552,17 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
+      // debugger;
       let source = [];
+      let str = "";
       this.financingOptions.forEach(item => {
         source.push(item.text);
+        // if(item.isleaf == "1"){
+        //   str = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        //   source.push(str + item.text);
+        // }else {
+        //   source.push(item.text);
+        // }
       });
       return source;
     }
