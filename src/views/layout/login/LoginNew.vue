@@ -2,12 +2,12 @@
   <el-container class="containerT">
     <el-header class="headerT">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="9">
           <div style="height:100%;width:100%;text-align:left;padding-left:100px;">
             <img src="@a/loginT/topLogo.svg" class="first">
           </div>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="15">
         </el-col>
       </el-row>
     </el-header>

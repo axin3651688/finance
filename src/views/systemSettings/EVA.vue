@@ -423,6 +423,8 @@ export default {
       monthId: "",       // 默认的月份
       conversionId: "",  // 默认的单位
       conversionNid: 1,  // 单位 元 id
+
+      num : -1
     };
   },
   created(){
@@ -461,7 +463,7 @@ export default {
   methods: {
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
-        // debugger
+        debugger
         let me = this ;
         if(vax === 'year') {
             me.yearId = me.$store.getters[vax] ;
@@ -472,6 +474,9 @@ export default {
         } else {
             me.conversionId = me.$store.getters[vax] ;
         }
+        // me.num = -1 ;
+        me.ArrData = [] ;
+        me.ArrData2= [] ;
         // 重新发送请求数据
         me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
     },
@@ -489,29 +494,69 @@ export default {
         if(i){
             // _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT '99' AS SCODE,'资本化费用' AS SNAME,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT T3.SCODE,T3.SNAME,T2.QCYE AS A,T2.QMYE AS B FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '4101%') T3 LEFT JOIN (SELECT '4101' AS SCODE,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )T2 ON T3.SCODE =T2.SCODE )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
+            _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+            items = {
+                'cubeId': 4,
+                'sql' : encodeURI(_sql)
+            }
+            this.eva_city_Request_second(items) ;
         }else{
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='142640102' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','142640102','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','142640102','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
+            _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+            items = {
+                'cubeId': 4,
+                'sql' : encodeURI(_sql)
+            }
+            this.eva_city_Request_first(items) ;
         }
-        _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
-        items = {
-            'cubeId': 4,
-            'sql' : encodeURI(_sql)
-        }
-        this.ArrData = [] ;
-        this.ArrData2= [] ;
-        this.eva_city_Request_new(items) ;
+        // _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+        // items = {
+        //     'cubeId': 4,
+        //     'sql' : encodeURI(_sql)
+        // }
+        // this.eva_city_Request_first(items) ;
       }      
     },
     // 数据请求
-    eva_city_Request_new(items){
+    eva_city_Request_first(items){
         // debugger
       let me = this ;
       eva_city_Request(items).then(res => {
-          // debugger
+          debugger
           if(res.data.code === 200){
-              
-            if(me.ArrData.length>0){
-              me.ArrData2 = res.data.data ;
+                me.ArrData = res.data.data ;
+                // 单位的改变 元 、 千元 、 万元 、 亿元         
+                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
+                    let newId = me.conversionId.id ;
+                    me.ArrData.forEach(items => {
+                      debugger
+                      // items.B = Math.decimalToLocalString(items.B / newId) ;
+                      items.B = items.B / newId ;
+                    })
+                }
+                me.ArrData.forEach(item => {
+                  // debugger
+                  item.scode = "v" + item.scode + "A"  ;
+                  if(!item.B){
+                    item.B = 0 ;
+                  }
+                  me.exps[item.scode] = item.B ;
+              }) ;
+            }              
+            //计算公式 资产总计
+              me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
+              console.log("me.ArrData:", me.ArrData) ;   
+              me.setExpressionData();         
+          
+      }) ; 
+    },
+    // 2.0
+    eva_city_Request_second(items){
+        let me = this ;
+        eva_city_Request(items).then(res => {
+          debugger
+            if(res.data.code === 200){
+                me.ArrData2 = res.data.data ;
                 // 单位的改变 元 、 千元 、 万元 、 亿元         
                 if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
                   let newId = me.conversionId.id ;
@@ -541,33 +586,13 @@ export default {
                         recc.display_num = ress.B ;
                     }
                   })
-                })
-            }else{
-                me.ArrData = res.data.data ;
-                // 单位的改变 元 、 千元 、 万元 、 亿元         
-                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
-                  let newId = me.conversionId.id ;
-                  me.ArrData.forEach(items => {
-                    debugger
-                    // items.B = Math.decimalToLocalString(items.B / newId) ;
-                    items.B = items.B / newId ;
-                  })
-                }
-                me.ArrData.forEach(item => {
-                // debugger
-                item.scode = "v" + item.scode + "A"  ;
-                if(!item.B){
-                  item.B = 0 ;
-                }
-                me.exps[item.scode] = item.B ;
-              }) ;
-            }              
-            //计算公式 资产总计
+                });
+              //计算公式 资产总计
               me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
               console.log("me.ArrData:", me.ArrData) ;   
-              me.setExpressionData();         
-          }
-      }) ; 
+              me.setExpressionData();        
+            }
+        })
     },
     setExpressionData() {
       // debugger

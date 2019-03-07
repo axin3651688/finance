@@ -65,12 +65,12 @@
         "children":[{
             "id": "dys02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "本期"
         },{
             "id": "tqs02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同期"
         }]
     },{
@@ -90,22 +90,22 @@
         "children":[{
             "id": "qnmb01",
             "type": "decimal",
-            "width":"120px",
+            "width":"170px",
             "text": "全年目标"
         },{
             "id": "ljsj01",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "本期"
         },{
             "id": "sntq01",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同期"
         },{
             "id": "tbzje01",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同比增减额"
         },{
             "id": "tbzjl01",
@@ -127,22 +127,22 @@
         "children":[{
             "id": "qnmb02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "全年目标"
         },{
             "id": "ljsj02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "本期"
         },{
             "id": "sntq02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同期"
         },{
             "id": "tbzje02",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同比增减额"
         },{
             "id": "tbzjl02",
@@ -164,12 +164,12 @@
         "children":[{
             "id": "dys01",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "本期"
         },{
             "id": "tqs01",
             "type": "decimal",
-            "width":"150px",
+            "width":"170px",
             "text": "同期"
         }]
     }],
