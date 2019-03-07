@@ -65,7 +65,7 @@ export function financingDown(data) {
 //融资情况明细表的下拉数据 机构名称
 export function mechanism() {
     return request({
-        url: "/exl//find_banks",
+        url: "/exl/find_banks",
         method: 'get',   
     })
 }
