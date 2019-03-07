@@ -18,7 +18,7 @@
               :data="item"
             />
           </template>
-          <div style="height: 240px"></div>
+          <div style="height: 30px"></div>
 
         </el-scrollbar>
       </div>
@@ -136,11 +136,11 @@ export default {
      * 监听服务器推送的消息
      */
     newServerMsg(val) {
-      debugger
       if (val.code !== 1100 && val.code !== 1101) { // 如果不是聊天消息，不处理
         return false
       }
 
+      debugger
       this._socketUpdateChatState(val.data, 1) // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
       if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
         return false
@@ -161,6 +161,7 @@ export default {
         return false
       }
 
+      debugger
       this._socketUpdateChatState(val.data, 2) // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
 
       console.log('监听到聊天消息：', val)
@@ -206,7 +207,7 @@ export default {
      * 查询聊天历史记录
      */
     requestMsgHistory() {
-      debugger
+      // debugger
       let postData = {
         page: this.page,
         size: 12
@@ -276,7 +277,7 @@ export default {
      * 发送消息
      */
     handleSendMsg(sendText, fileData) {
-      debugger
+      // debugger
       let pushData = {
         type: 1,
         data: sendText
@@ -299,7 +300,7 @@ export default {
         sendData.data.type = 3 // 暂时处理，没有匹配到都当文件处理
         pushData.type = 3 // 暂时处理，没有匹配到都当文件处理
         for (let item of FILE_TYPE) {
-          debugger
+          // debugger
           if (fileData.category.toLowerCase() === item.suffix.toLowerCase()) {
             sendData.data.type = item.type
             pushData.type = item.type
@@ -327,7 +328,7 @@ export default {
      * sendData:
      */
     _httpSend(sendData, pushData) {
-      debugger
+      // debugger
       switch (this.miniType) {
         case 1100: // 单聊
           SAVE_SINGLE_MSG(sendData.data)
@@ -387,7 +388,7 @@ export default {
      * 把聊天窗口滚动到最底部
      */
     _chatWindowScrollToBottom() {
-      debugger
+      // debugger
       let chatWindow = this.$refs.chatWindow.$el.childNodes[0]
       if (chatWindow) chatWindow.scrollTop = chatWindow.scrollHeight
     },
@@ -396,7 +397,7 @@ export default {
      * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _httpClearChatState(lastItem) {
-      debugger
+      // debugger
       let data = {
         'endTime': lastItem.sendTime,
         'id': lastItem.id,

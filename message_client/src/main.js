@@ -12,6 +12,12 @@ import '@ms/emotion_sprites.scss' // 全局加载聊天表情样式
 import Bus from './bus.js' // bus 总线
 import Avatar from 'vue-avatar'
 
+import VueCordovaDevice from 'vue-cordova-device'
+import VueCordova from 'vue-cordova'
+
+Vue.use(VueCordovaDevice)
+Vue.use(VueCordova)
+
 Vue.config.productionTip = false
 Vue.directive('avatar', directive)
 Vue.component('Avatar', Avatar)
@@ -21,8 +27,12 @@ Vue.use(Bus)
 
 Vue.prototype.axios = axios
 
-new Vue({
+let $vue = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+console.log('Vue==', $vue)
+console.log('Vue.cordova==', Vue.cordova)
+console.log('Vue.cordova.device=====', Vue.cordova.device)

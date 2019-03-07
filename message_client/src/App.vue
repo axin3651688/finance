@@ -57,7 +57,7 @@ export default {
     },
     initSocket(authorization) {
       let url = process.env.VUE_APP_SOCKET
-      // debugger;
+      debugger;
       if (authorization != null) {
         url = url + '?Authorization=' + authorization
       } else {
@@ -68,6 +68,7 @@ export default {
     }
   },
   created() {
+    // console.log('cordova.device========2', this);
     // debugger;
     this.readLocalStorage()
     let bean = getClientParams()
