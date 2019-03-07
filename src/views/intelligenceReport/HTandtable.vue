@@ -463,7 +463,7 @@ export default {
     //融资情况明细表除机构名称下拉数据
     financingDown(data).then(res => {
       this.financingOptions = res.data.data;
-      console.log("下拉", this.financingOptions);
+      // console.log("下拉", this.financingOptions);
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
@@ -515,6 +515,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
+      debugger;
       let obj = {};
       let index;
       let key;
@@ -536,6 +537,10 @@ export default {
         obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
+        if (values == "") {
+          values = 0;
+        }
+        // console.log("oldValuesoldValues", values);
         let x;
         let arr = datas.filter(record => {
           x = record;
@@ -573,8 +578,6 @@ export default {
           });
           return tmp;
         }
-        // var result = res(arr);
-        debugger;
         let changeRecord = this.tableData.filter(record => {
           return record.index === index && record.colId === key;
         })[0];
@@ -583,7 +586,6 @@ export default {
         })[0];
 
         if (this.fixed === 1) {
-          debugger;
           if (
             (changeRecord && reg.test(values) === true) ||
             (changeRecord && reg.test(values) == "")
@@ -592,15 +594,12 @@ export default {
           } else {
             if (reg.test(values) === true || reg.test(values) == "") {
               let bb = { index: index };
-              // bb[index] = index;
               bb[key] = values;
               this.tableData.push(bb);
             }
           }
         }
         if (this.fixed === 0) {
-          debugger;
-          //  this.columns[0]["id"] != this.columns[0].id
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
@@ -610,9 +609,11 @@ export default {
               this.tableData.push(bb);
             }
           } else {
-            let bb = { index: index };
-            bb[key] = values;
-            this.tableData.push(bb);
+            if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
+              let bb = { index: index };
+              bb[key] = values;
+              this.tableData.push(bb);
+            }
           }
           // })
         }
@@ -624,7 +625,6 @@ export default {
       });
       datas.forEach((item, i) => {
         modify = item;
-        debugger;
         if (i === indexs) {
           if (
             value.A ||
@@ -675,7 +675,6 @@ export default {
           }
         }
       });
-      console.log("value", value);
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
@@ -773,14 +772,7 @@ export default {
           cellMeta.readOnly = true;
         }
       }
-      if (this.templateId == 8) {
-        if (columns == 1 || columns == 3 || columns == 4) {
-          cellMeta.readOnly = true;
-        }
-        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-          cellMeta.readOnly = true;
-        }
-      }
+
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
@@ -798,7 +790,18 @@ export default {
           cellMeta.readOnly = true;
         }
       }
-
+      if (this.templateId == 8) {
+        if (columns == 1 || columns == 3 || columns == 4) {
+          cellMeta.readOnly = true;
+        }
+        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
+          cellMeta.readOnly = true;
+        }
+        //资金集中度的填写限制
+        if (row != 0 && (columns == 0 || columns == 2)) {
+          cellMeta.readOnly = false;
+        }
+      }
       return cellMeta;
     },
     //请求查询回来的数据的类型
@@ -1042,8 +1045,8 @@ export default {
       var result = res(arr);
       if (result.length === 0) {
         save(objs).then(res => {
-          console.log("保存", res);
-
+          // console.log("保存", res);
+          this.reportData(this.datas);
           if (res.data.code === 200) {
             me.$message({
               message: res.data.msg,
@@ -1098,9 +1101,9 @@ export default {
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
         me.columns = res.data.data.columns;
-        // me.settings = res.data.data.rows
+        // me.settings = res.data.data.rows;
         // me.$set(me.settings, "data",null)
-        // me.$set(me.settings, "data",res.data.data.rows)
+        // me.$set(me.settings, "data", res.data.data.rows);
         me.convertHansoneTableColumns(columns, rows);
       });
     },
@@ -1140,14 +1143,15 @@ export default {
     },
     // 表格的导入
     submitUpload(file) {
-      // debugger
+      debugger;
       var regExp = /([\u4e00-\u9fa5]+)/gi;
       var title = this.excelname; //[\u4e00-\u9fa5]
       var titlename = title.match(regExp);
       console.log(title);
       if (titlename[0] != this.importHeader) {
+        debugger;
         this.$message({
-          message: res.data.msg,
+          message: "模板名字不匹配",
           type: "error"
         });
       } else {
@@ -1307,11 +1311,15 @@ export default {
               cancelButtonText: "取消",
               type: "warning"
             })
+
               .then(() => {
-                arr.alter("remove_row", row); //删除当前行
+                debugger;
+                // arr.alter("remove_row", row); //删除当前行
+
                 del(data).then(res => {
                   console.log("删除", res);
                   if (res.data.code === 200) {
+                    me.reportData(me.datas);
                     me.$message({
                       type: "success",
                       message: "删除成功!"
