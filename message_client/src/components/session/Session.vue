@@ -44,6 +44,7 @@ export default {
   name: 'Session',
   data() {
     return {
+      isRequestBack: true,
       SessionBarInstance: null // 消息session实例对象
     }
   },
@@ -62,6 +63,11 @@ export default {
       return MSG_TIME_FORMAT(time)
     }
   },
+  created() {
+    this.$bus.on('requestBack', () => { // 当请求的聊天消息返回时，吧返回状态设置为true
+      this.isRequestBack = true
+    })
+  },
   methods: {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 解析表情
@@ -73,8 +79,14 @@ export default {
      * 当session条目被点击时，激活当前item（设置选中状态）
      */
     setItemActive(item) {
-      // debugger;
-      // vuex 状态设置
+      // == 以下代码作用：当点击聊天的session时，当请求的消息没有返回时，禁止切换到其他的聊天窗口
+      let isChatSession = item.miniType === 1101 || item.miniType === 1100 // 是不是聊天项
+      if (isChatSession) { // 如果是聊天项，在聊天内容没有返回前，不能切换
+        if (!this.isRequestBack) return false
+        this.isRequestBack = false
+      }
+      // == 以上代码作用：当点击聊天的session时，当请求的消息没有返回时，禁止切换到其他的聊天窗口
+
       this.ActionSetMessageStore({
         sessionActiveItem: item,
         miniType: item.miniType
