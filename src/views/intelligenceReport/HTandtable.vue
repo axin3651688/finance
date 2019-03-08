@@ -189,14 +189,9 @@ export default {
         comments: true, //添加注释
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
-        cells: Function,
-        beforeChange: Function,
-        getCellEditor: Function
-        // ,
-        // afterGetCellMeta: Function,
-        // setDataAtCell: Function
-        // ,
-        // getDataAtRow: Function
+        cells: Function
+        //beforeChange: Function,
+        // getCellEditor: Function
       }
     };
   },
@@ -609,7 +604,6 @@ export default {
       let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/;
       let indexs;
       let value;
-      let oldValues;
       let modify;
       let datas = this.settings.data;
       let row;
@@ -621,24 +615,21 @@ export default {
       if (changes && changes.length > 0) {
         index = changes[0][0];
         key = changes[0][1];
-        oldValues = changes[0][2];
         values = changes[0][3];
         obj[key] = values;
         obj["index"] = index;
-        obj["colId"] = key;
+        // obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
         if (values == "") {
           values = 0;
         }
-        // console.log("oldValuesoldValues", values);
         let x;
         let arr = datas.filter(record => {
           x = record;
           return record.cusuppliername != null;
         });
         // console.log(x)
-        console.log("this.tableData", this.tableData);
         // console.log("datas",arr)
         // for(var i=0;i<arr.length-1;i++){
         //     row = datas[i]
@@ -669,23 +660,29 @@ export default {
           });
           return tmp;
         }
+        let aa;
         let changeRecord = this.tableData.filter(record => {
+          aa = record;
+
           return record.index === index && record.colId === key;
         })[0];
+        console.log("record", aa);
+        console.log("changeRecord", changeRecord);
         let changen = this.tableData.filter(record => {
           return record.index === index;
         })[0];
 
         if (this.fixed === 1) {
-          if (
-            (changeRecord && reg.test(values) === true) ||
-            (changeRecord && reg.test(values) == "")
-          ) {
-            changeRecord[key] = values;
+          if (changeRecord) {
+            //|| reg.test(values) == ""
+            if (reg.test(values) === true) {
+              changeRecord[key] = values;
+            }
           } else {
-            if (reg.test(values) === true || reg.test(values) == "") {
+            if (reg.test(values) === true) {
               let bb = { index: index };
               bb[key] = values;
+              bb["colId"] = key;
               this.tableData.push(bb);
             }
           }
@@ -766,6 +763,7 @@ export default {
           }
         }
       });
+      console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
