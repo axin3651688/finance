@@ -32,7 +32,7 @@ export default {
   components: {
     TopBar,
     SideBar,
-    ImagePreview,
+    ImagePreview
   },
   computed: {
     ...mapGetters(['user', 'messageStore', 'imagePreview', 'popModule']),

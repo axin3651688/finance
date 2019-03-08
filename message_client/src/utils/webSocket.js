@@ -20,6 +20,7 @@ export default function webSocket(data) {
     // 打开连接时
     websocket.onopen = function (evnt) {
       console.log('  websocket.onopen  ')
+      console.log('open-timer:', timer)
       updateUserSocketOffLine(false) // 设置socket是否离线
       window.socket = websocket
       socketIsClosed = false
@@ -50,7 +51,7 @@ export default function webSocket(data) {
 
     // socket 发送消息
     websocket.deliver = function (data) {
-      console.log('  websocket.deliver  ')
+      console.log('websocket.deliver:', data)
       if (socketIsClosed) {
         return closeShow()
       }
@@ -62,6 +63,7 @@ export default function webSocket(data) {
 
   let closeShow = function () {
     // debugger;
+    console.log('close-timer:', timer)
     if (!timer) {
       timer = setInterval(function () {
         initSocket()

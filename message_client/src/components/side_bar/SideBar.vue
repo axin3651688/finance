@@ -129,6 +129,7 @@ export default {
       sessionItem['avatar'] = null
       sessionItem['id'] = null
       sessionItem['targetId'] = val.code + '_'
+      sessionItem['online'] = true // 默认每个用户是在线状态
       switch (val.code) {
         case 1100: // 单聊
           sessionItem['name'] = val.data.name
