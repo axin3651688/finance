@@ -189,9 +189,11 @@ export default {
         comments: true, //添加注释
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
-        cells: Function,
-        // beforeChange: Function,
-        // getCellEditor: Function
+        cells: Function
+        // ,
+        // beforeChange: Function
+        // ,
+        // getCellEditor: Function//获取编辑器
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -457,7 +459,6 @@ export default {
         pid: "1800"
       }
     ];
-    debugger;
     this.axios.get("cnbi/template.json").then(res => {
       debugger;
       this.list = res.data.data;
@@ -619,6 +620,7 @@ export default {
         this.changeAddOrReduce(changes);
       }
       if (changes && changes.length > 0) {
+        debugger;
         index = changes[0][0];
         key = changes[0][1];
         oldValues = changes[0][2];
@@ -628,7 +630,8 @@ export default {
         obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
-        if (values == "") {
+        //融资的status可以传过去 空字符串 ""
+        if (values == "" && key != "status" && this.templateId != "7") {
           values = 0;
         }
         // console.log("oldValuesoldValues", values);
@@ -864,18 +867,6 @@ export default {
           cellMeta.readOnly = true;
         }
       }
-      if (this.templateId == 8) {
-        if (columns == 1 || columns == 3 || columns == 4) {
-          cellMeta.readOnly = true;
-        }
-        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-          cellMeta.readOnly = true;
-        }
-        //资金集中度的填写限制
-        if (row != 0 && (columns == 0 || columns == 2)) {
-          cellMeta.readOnly = false;
-        }
-      }
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
@@ -895,15 +886,18 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        if (columns == 1 || columns == 3 || columns == 4) {
-          cellMeta.readOnly = true;
-        }
-        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-          cellMeta.readOnly = true;
-        }
+        debugger;
+        // if (columns == 1 || columns == 3 || columns == 4) {
+        //   cellMeta.readOnly = true;
+        // }
+        // if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
+        //   cellMeta.readOnly = true;
+        // }
         //资金集中度的填写限制
         if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
+        }else {
+          cellMeta.readOnly = true;
         }
       }
       return cellMeta;
@@ -1317,6 +1311,7 @@ export default {
       if (this.subject) {
         fd.append("subject", this.subject);
       }
+      //这个地方存在为 0 的情况，所以改成这样。
       if (this.fixed != null) {
         fd.append("fixed", this.fixed);
       }
