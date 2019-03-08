@@ -1,6 +1,6 @@
 {
     "id": "0014100101",
-    "text": "经营目标完成情况表",
+    "text": "集团月度经营目标完成情况表",
     "layout": {
         "xtype": "tab"
     },
@@ -140,7 +140,7 @@
             "xtype": "bi-table",
             "id" : "jymbwcqkb",
             "stype": "tree",
-            "text" : "经营目标完成情况表",
+            "text" : "集团月度经营目标完成情况表",
             "toolbar":[{    
                 "id":"1",
                 "text":"刷新",

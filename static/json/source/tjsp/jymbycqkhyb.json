@@ -1,6 +1,6 @@
 {
     "id": "001406",
-    "text": "经营目标预测情况表（行业）",
+    "text": "集团经营目标预测分析情况表",
     "layout": {
         "xtype": "tab"
     },
@@ -310,7 +310,7 @@
             "xtype": "bi-table",
             "id" : "jymbycqkhyb",
             "stype": "tree",
-            "text" : "经营目标预测情况表（行业）",
+            "text" : "集团经营目标预测分析情况表",
             "toolbar":[{    
                 "id":"1",
                 "text":"刷新",
