@@ -190,8 +190,15 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function
-        //beforeChange: Function,
-        // getCellEditor: Function
+        // ,
+        // beforeChange: Function
+        // ,
+        // getCellEditor: Function//获取编辑器
+        // ,
+        // afterGetCellMeta: Function,
+        // setDataAtCell: Function
+        // ,
+        // getDataAtRow: Function
       }
     };
   },
@@ -452,7 +459,6 @@ export default {
         pid: "1800"
       }
     ];
-    debugger;
     this.axios.get("cnbi/template.json").then(res => {
       debugger;
       this.list = res.data.data;
@@ -621,7 +627,8 @@ export default {
         // obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
-        if (values == "") {
+        //融资的status可以传过去 空字符串 ""
+        if (values == "" && key != "status" && this.templateId != "7") {
           values = 0;
         }
         let x;
@@ -643,6 +650,7 @@ export default {
 
         let me = this;
         function res(arr) {
+          debugger;
           var tmp = [];
           var copy = [];
           arr.forEach(item => {
@@ -660,14 +668,10 @@ export default {
           });
           return tmp;
         }
-        let aa;
+        var result = res(arr);
         let changeRecord = this.tableData.filter(record => {
-          aa = record;
-
           return record.index === index && record.colId === key;
         })[0];
-        console.log("record", aa);
-        console.log("changeRecord", changeRecord);
         let changen = this.tableData.filter(record => {
           return record.index === index;
         })[0];
@@ -862,18 +866,6 @@ export default {
           cellMeta.readOnly = true;
         }
       }
-      if (this.templateId == 8) {
-        if (columns == 1 || columns == 3 || columns == 4) {
-          cellMeta.readOnly = true;
-        }
-        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-          cellMeta.readOnly = true;
-        }
-        //资金集中度的填写限制
-        if (row != 0 && (columns == 0 || columns == 2)) {
-          cellMeta.readOnly = false;
-        }
-      }
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
@@ -893,15 +885,18 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        if (columns == 1 || columns == 3 || columns == 4) {
-          cellMeta.readOnly = true;
-        }
-        if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-          cellMeta.readOnly = true;
-        }
+        debugger;
+        // if (columns == 1 || columns == 3 || columns == 4) {
+        //   cellMeta.readOnly = true;
+        // }
+        // if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
+        //   cellMeta.readOnly = true;
+        // }
         //资金集中度的填写限制
         if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
+        } else {
+          cellMeta.readOnly = true;
         }
       }
       return cellMeta;
@@ -1171,6 +1166,7 @@ export default {
         x = record;
         return record.cusuppliername != null;
       });
+
       function res(arr) {
         var tmp = [];
         var copy = [];
@@ -1315,6 +1311,7 @@ export default {
       if (this.subject) {
         fd.set("subject", this.subject);
       }
+      //这个地方存在为 0 的情况，所以改成这样。
       if (this.fixed != null) {
         fd.set("fixed", this.fixed);
       }
@@ -1324,14 +1321,12 @@ export default {
     },
     // 表格的导入
     submitUpload(file) {
-      debugger;
       let me = this;
       var regExp = /([\u4e00-\u9fa5]+)/gi;
       var title = this.excelname; //[\u4e00-\u9fa5]
       var titlename = title.match(regExp);
       console.log(title);
       if (titlename[0] != this.importHeader) {
-        debugger;
         this.$message({
           message: "模板名字不匹配",
           type: "error"
@@ -1339,15 +1334,10 @@ export default {
       } else {
         // console.log(titlename[0]);
         importExcel(me.files).then(res => {
-          console.log("res", res);
-          console.log("数据", me.subject, me.fixed, me.templateId);
-          console.log("this.files", this.files);
-          debugger;
           if (res.data.code === 200) {
             me.subject = null;
             me.fixed = null;
             me.templateId = null;
-            console.log("item的数据", me.subject, me.fixed, me.templateId);
             this.$message({
               message: "模板匹配 导入成功",
               type: "success"
