@@ -190,7 +190,8 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function,
-        beforeChange: Function
+        beforeChange: Function,
+        getCellEditor: Function
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -885,6 +886,7 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
+          // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
         }
@@ -1029,9 +1031,9 @@ export default {
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
       // this.settings.setDataAtCell = this.setDataAtCell;
-      // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
-      this.settings.beforeChange = this.beforeChange;
+
+      // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
       //有待修复
@@ -1056,9 +1058,17 @@ export default {
         me.settings.data = rows;
       }, 100);
     },
-    beforeChange(changes, params) {
+    getCellEditor(row, col) {
       debugger;
       let me = this;
+    },
+    beforeChange(changes, params) {
+      // debugger;
+      let me = this;
+      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
+      // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
+      // this.settings.getCellEditor = this.getCellEditor;
+      // this.getCellEditor();
       //融资的处理
       // if(this.templateId == "7"){
       //   if(changes && changes.length > 0 && changes[0][2]){
@@ -1219,14 +1229,14 @@ export default {
       let me = this;
       inquire(this.datas).then(res => {
         console.log("查询", res);
-        // let columns = res.data.data.columns;
+        let columns = res.data.data.columns;
         let rows = res.data.data.rows;
-        me.settings.data = rows;
+        // me.settings.data = rows;
         // me.columns = res.data.data.columns;
         // // me.settings = res.data.data.rows
         // // me.$set(me.settings, "data",null)
         // // me.$set(me.settings, "data",res.data.data.rows)
-        // me.convertHansoneTableColumns(columns, rows);
+        me.convertHansoneTableColumns(columns, rows);
       });
     },
     // 点击添加一行
@@ -1284,6 +1294,7 @@ export default {
     },
     //表格的导入需要传递的参数
     beforeAvatarUpload(file) {
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1294,24 +1305,21 @@ export default {
       this.excelname = file.name;
       console.log("this.years", this.years);
       let fd = new FormData();
-      fd.append("file", file);
+      fd.set("file", file);
       debugger;
-      fd.append("period", this.years);
-      fd.append("user", this.user.user.username);
-      fd.append("company", this.company);
+      fd.set("period", this.years);
+      fd.set("user", this.user.user.username);
+      fd.set("company", this.company);
       // console.log(this.dropdownid)
-      // if (this.dropdownid) {
-      //   fd.append("templateId", this.dropdownid);
-      //   console.log("templateId", this.dropdownid);
-      // }
-      // if (this.subject) {
-      //   fd.append("subject", this.subject);
-      //   console.log("subject", this.subject);
-      // }
-      // if (this.fixed) {
-      //   fd.append("fixed", this.fixed);
-      //   console.log("fixed", this.fixed);
-      // }
+      if (this.dropdownid) {
+        fd.set("templateId", this.dropdownid);
+      }
+      if (this.subject) {
+        fd.set("subject", this.subject);
+      }
+      if (this.fixed != null) {
+        fd.set("fixed", this.fixed);
+      }
       this.uploadfile = fd;
       this.files = fd;
       return true;
@@ -1367,12 +1375,14 @@ export default {
       this.dropdownid = list[index].templateId;
       this.subject = list[index].subject;
       this.fixed = list[index].fixed;
-      // if (this.uploadfile) {
-      this.uploadfile.append("templateId", this.dropdownid);
-      this.uploadfile.append("subject", this.subject);
-      this.uploadfile.append("fixed", this.fixed);
-      this.files = this.uploadfile;
-      // }
+      if (this.uploadfile) {
+        this.uploadfile.set("templateId", this.dropdownid);
+        // this.uploadfile.append("subject", this.subject);
+        this.uploadfile.set("subject", this.subject);
+        this.uploadfile.set("fixed", this.fixed);
+        this.files = this.uploadfile;
+        console.log("要传递的上传文件的数据", this.files);
+      }
     },
     //模板下载弹框页面的请求
     templateDownload() {

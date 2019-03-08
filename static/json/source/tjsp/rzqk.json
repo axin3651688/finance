@@ -16,7 +16,7 @@
           "subject":"0007",
           "cubeId":4
         },
-        
+        "cubeId":4,
         "mainDim":"itemperiod",
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
