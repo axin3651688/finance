@@ -190,8 +190,8 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function,
-        beforeChange: Function,
-        getCellEditor: Function
+        // beforeChange: Function,
+        // getCellEditor: Function
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
