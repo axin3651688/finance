@@ -98,7 +98,7 @@ export default {
         sessionItem['count'] = item.count
         sessionItem['content'] = item.content
         sessionItem['sendTime'] = item.sendTime
-        sessionItem['avatar'] = item.avatar
+        sessionItem['avatar'] = item.miniType === 1101 ? item.otherAvatar : item.avatar // 此处注意一下消息接受的目标对象
         sessionItem['originData'] = item
         session.push(sessionItem)
       }

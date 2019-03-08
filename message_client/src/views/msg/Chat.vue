@@ -259,15 +259,16 @@ export default {
             this._chatWindowScrollToBottom()
           })
         }
-        this.page++
-        this.infiniteHandlerState.loaded()
 
         // 请求服务器更新已读消息状态
+        debugger
         let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
-          // this._httpClearChatState(lastItem)
+          this._httpClearChatState(lastItem)
           this._socketClearChatState(lastItem)
         }
+        this.page++
+        this.infiniteHandlerState.loaded()
       } else {
         this.infiniteHandlerState.complete()
       }
@@ -397,7 +398,7 @@ export default {
      * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _httpClearChatState(lastItem) {
-      // debugger
+      debugger
       if (this.page > 1) return false // 如果不是第一页，就不要发送
       if (lastItem.state === 2) return false // 如果最后一条消息是已读的，也不要发送
       let data = {
