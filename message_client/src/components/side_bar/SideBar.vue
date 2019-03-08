@@ -119,7 +119,7 @@ export default {
     newServerMsg(val) {
       console.log('监听到服务器推送：', val)
       if (val.data.senderId === this.loginUserId) return false // 如果收到的消息是自己发送的，不处理
-      debugger
+      // debugger
       let sessionItem = {}
       sessionItem['miniType'] = val.code
       sessionItem['count'] = 1

@@ -140,7 +140,6 @@ export default {
         return false
       }
 
-      debugger
       this._socketUpdateChatState(val.data, 1) // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
       if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
         return false
@@ -161,7 +160,6 @@ export default {
         return false
       }
 
-      debugger
       this._socketUpdateChatState(val.data, 2) // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
 
       console.log('监听到聊天消息：', val)
@@ -198,9 +196,10 @@ export default {
      * 重置聊天相关的内容
      */
     _resetChat() {
+      debugger
+      this.infiniteHandlerState.reset() // 重置无限加载
       this.page = 1 // 重置请求的消息页码
       this.msgList = [] // 重置消息队列
-      this.infiniteHandlerState.reset() // 重置无限加载
     },
 
     /**
@@ -261,7 +260,7 @@ export default {
         }
 
         // 请求服务器更新已读消息状态
-        debugger
+        // debugger
         let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
           this._httpClearChatState(lastItem)
@@ -398,7 +397,7 @@ export default {
      * http请求服务器消除未读消息计数,发送最后一条消息的时间，会把所有的消息设为已读
      */
     _httpClearChatState(lastItem) {
-      debugger
+      // debugger
       if (this.page > 1) return false // 如果不是第一页，就不要发送
       if (lastItem.state === 2) return false // 如果最后一条消息是已读的，也不要发送
       let data = {

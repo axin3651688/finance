@@ -36,21 +36,21 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
+import {mapGetters, mapActions} from 'vuex'
+import {PARSE_EMOTIONS} from '@mu/parseEmotions.js'
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js'
 
 export default {
   name: 'Session',
   data() {
     return {
       SessionBarInstance: null // 消息session实例对象
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
     },
     socketOffLine() { // socket连接转态
       return this.messageStore.socketOffLine
@@ -59,14 +59,14 @@ export default {
   filters: {
     // 格式化时间戳
     formatTime(time) {
-      return MSG_TIME_FORMAT(time);
+      return MSG_TIME_FORMAT(time)
     }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 解析表情
     parseEmotions(content) {
-      return PARSE_EMOTIONS(content);
+      return PARSE_EMOTIONS(content)
     },
 
     /**
@@ -78,16 +78,16 @@ export default {
       this.ActionSetMessageStore({
         sessionActiveItem: item,
         miniType: item.miniType
-      });
+      })
       // vuex session 列表更行
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',
         data: item
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -117,6 +117,7 @@ export default {
     .img-box {
       @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
       background: $colorTheme;
+
       div {
         position: absolute;
       }
