@@ -459,7 +459,6 @@ export default {
         pid: "1800"
       }
     ];
-    debugger;
     this.axios.get("cnbi/template.json").then(res => {
       debugger;
       this.list = res.data.data;
