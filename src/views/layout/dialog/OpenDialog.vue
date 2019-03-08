@@ -10,6 +10,7 @@
     :close-on-press-escape="true"
     v-dialogDrag
     :before-close="closePop"
+    class="OpenDialog"
   >
     <span slot="title" class="dialog-title">
       <!-- <img src="@a/icons/jsnk/laba.svg"> -->
@@ -40,12 +41,12 @@ export default {
   }
 };
 </script>
-<style  lang='scss' scoped>
-.dialog-title {
-  font-size: 18px;
-  img {
-    height: 18px;
-    padding-right: 10px;
+<style  lang='scss' >
+.OpenDialog {
+  .dialog-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(15, 109, 217, 1);
   }
 }
 </style>

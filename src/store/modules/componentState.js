@@ -2,7 +2,7 @@
  *本模块管理组件状态。
  */
 import Cookies from 'js-cookie'
-const app = {
+export default {
   state: {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus'),
@@ -10,6 +10,7 @@ const app = {
     },
     device: 'desktop',
     showDialog: {
+      params: {},
       data: '这是一段消息',
       isShow: false,
       switchStyle: true,
@@ -21,6 +22,7 @@ const app = {
     showMeluList: {
       data: [],
       checkedItem: [],
+      deleteData: '',
       isShow: false,
       switchStyle: true,
       tittle: "标题",
@@ -53,6 +55,17 @@ const app = {
       Object.keys(data).forEach(keys => {
         if (data[keys] !== null || undefined) {
           state.showMeluList[keys] = data[keys]
+          if (keys === 'deleteData') {
+            // 由于vuex里面的数据改动全部都必须走mutation,所以只要检测到删除提交,就走这个if判断
+            debugger
+            let index = data.deleteData
+            let checkeData = state.showMeluList.checkedItem
+            if (index === "deleteAll") {
+              checkeData.splice(0, checkeData.length);
+            } else {
+              checkeData.splice(index, 1);
+            }
+          }
           if (typeof data[keys] == "object") {
             localStorage.setItem([keys] + '_state', JSON.stringify(data[keys]));
           } else {
@@ -106,5 +119,3 @@ const app = {
     },
   }
 }
-
-export default app

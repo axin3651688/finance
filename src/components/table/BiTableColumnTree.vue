@@ -24,22 +24,6 @@ export default {
     isFolder() {
       return this.col.children && this.col.children.length;
     }
-  },
-  created() {},
-  methods: {
-    upData(item) {
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
-      let refs = this.$refs;
-
-      if (refs) {
-        if (refs.tcol) {
-          if (refs.tcol.upData) {
-            refs.tcol.upData(item);
-          }
-        }
-      }
-    }
   }
 };
 </script>

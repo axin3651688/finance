@@ -12,13 +12,12 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-    fixed="right"
   >
     <template slot-scope="scope">
+      <!-- 智慧报告催报里面的三个点 -->
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if="col.icon" :src="col.icon" alt>
         <img v-else src="@/assets/green/list_menu.svg" alt class="img">
-        <!--  @change="dilogShow"  @changess="columnClick(col,scope)"-->
         <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
@@ -28,7 +27,8 @@
     v-else-if="col.type === 'index' "
     :prop="col.id"
     :label="col.text"
-    :width="col.width"
+    :align="col.align|| 'center'"
+    :width="col.width||70"
     type="index"
   />
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
@@ -51,7 +51,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
-    :width="col.width||150"
+    :min-width="col.width||150"
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
@@ -65,7 +65,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :width="col.width||150"
+    :width="col.width||160"
   >
     <template slot-scope="scope">
       <el-tooltip
@@ -120,12 +120,9 @@ export default {
     return {
       clickRow: {},
       clickRowParams: {},
-      //options: []
-      // tmptabledata:[],
-      clickRowParams: {}
+      tmd: []
     };
   },
-
   mixins: [EventMixins],
   methods: {
     columnDropDownClick(items) {
@@ -146,25 +143,6 @@ export default {
       }
     },
 
-    upData(item) {
-      debugger;
-      // this.$set(this.tableData, "datas", null);
-      // this.$set(this.tableData, "datas", []);
-      // if(item.datas.length == 0 ){
-      //     item.datas = null;
-      //     item.datas = [];
-      // }
-      // this.$set(this, "tableData1", item);
-      // this.$set(this.tableData1, "datas", item.datas);
-
-      this.$set(this, "tableData", null);
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
-
-      // this.$set(this, "tmptabledata", null);
-      // this.$set(this, "tmptabledata", item);
-      // this.$set(this.tmptabledata, "datas", item.datas);
-    },
     optionColumnClick(row) {
       this.clickRow = row;
       if (

@@ -118,13 +118,6 @@ export default class TreeStore {
     const defaultCheckedKeys = this.defaultCheckedKeys || [];
     const nodesMap = this.nodesMap;
 
-    defaultCheckedKeys.forEach((checkedKey) => {
-      const node = nodesMap[checkedKey];
-
-      if (node) {
-        node.setChecked(true, !this.checkStrictly);
-      }
-    });
   }
 
   _initDefaultCheckedNode(node) {
@@ -135,12 +128,6 @@ export default class TreeStore {
     }
   }
 
-  setDefaultCheckedKey(newVal) {
-    if (newVal !== this.defaultCheckedKeys) {
-      this.defaultCheckedKeys = newVal;
-      this._initDefaultCheckedNodes();
-    }
-  }
 
   registerNode(node) {
     const key = this.key;
@@ -161,51 +148,8 @@ export default class TreeStore {
     delete this.nodesMap[node.key];
   }
 
-  getCheckedNodes(leafOnly = false, includeHalfChecked = false) {
-    const checkedNodes = [];
-    const traverse = function (node) {
-      const childNodes = node.root ? node.root.childNodes : node.childNodes;
 
-      childNodes.forEach((child) => {
-        if ((child.checked || (includeHalfChecked && child.indeterminate)) && (!leafOnly || (leafOnly && child.isLeaf))) {
-          checkedNodes.push(child.data);
-        }
 
-        traverse(child);
-      });
-    };
-
-    traverse(this);
-
-    return checkedNodes;
-  }
-
-  getCheckedKeys(leafOnly = false) {
-    return this.getCheckedNodes(leafOnly).map((data) => (data || {})[this.key]);
-  }
-
-  getHalfCheckedNodes() {
-    const nodes = [];
-    const traverse = function (node) {
-      const childNodes = node.root ? node.root.childNodes : node.childNodes;
-
-      childNodes.forEach((child) => {
-        if (child.indeterminate) {
-          nodes.push(child.data);
-        }
-
-        traverse(child);
-      });
-    };
-
-    traverse(this);
-
-    return nodes;
-  }
-
-  getHalfCheckedKeys() {
-    return this.getHalfCheckedNodes().map((data) => (data || {})[this.key]);
-  }
 
   _getAllNodes() {
     const allNodes = [];
@@ -233,71 +177,6 @@ export default class TreeStore {
     }
   }
 
-  _setCheckedKeys(key, leafOnly = false, checkedKeys) {
-    const allNodes = this._getAllNodes().sort((a, b) => b.level - a.level);
-    const cache = Object.create(null);
-    const keys = Object.keys(checkedKeys);
-    allNodes.forEach(node => node.setChecked(false, false));
-    for (let i = 0, j = allNodes.length; i < j; i++) {
-      const node = allNodes[i];
-      const nodeKey = node.data[key].toString();
-      let checked = keys.indexOf(nodeKey) > -1;
-      if (!checked) {
-        if (node.checked && !cache[nodeKey]) {
-          node.setChecked(false, false);
-        }
-        continue;
-      }
-
-      let parent = node.parent;
-      while (parent && parent.level > 0) {
-        cache[parent.data[key]] = true;
-        parent = parent.parent;
-      }
-
-      if (node.isLeaf || this.checkStrictly) {
-        node.setChecked(true, false);
-        continue;
-      }
-      node.setChecked(true, true);
-
-      if (leafOnly) {
-        node.setChecked(false, false);
-        const traverse = function (node) {
-          const childNodes = node.childNodes;
-          childNodes.forEach((child) => {
-            if (!child.isLeaf) {
-              child.setChecked(false, false);
-            }
-            traverse(child);
-          });
-        };
-        traverse(node);
-      }
-    }
-  }
-
-  setCheckedNodes(array, leafOnly = false) {
-    const key = this.key;
-    const checkedKeys = {};
-    array.forEach((item) => {
-      checkedKeys[(item || {})[key]] = true;
-    });
-
-    this._setCheckedKeys(key, leafOnly, checkedKeys);
-  }
-
-  setCheckedKeys(keys, leafOnly = false) {
-    this.defaultCheckedKeys = keys;
-    const key = this.key;
-    const checkedKeys = {};
-    keys.forEach((key) => {
-      checkedKeys[key] = true;
-    });
-
-    this._setCheckedKeys(key, leafOnly, checkedKeys);
-  }
-
   setDefaultExpandedKeys(keys) {
     keys = keys || [];
     this.defaultExpandedKeys = keys;
@@ -308,13 +187,6 @@ export default class TreeStore {
     });
   }
 
-  setChecked(data, checked, deep) {
-    const node = this.getNode(data);
-
-    if (node) {
-      node.setChecked(!!checked, deep);
-    }
-  }
 
   getCurrentNode() {
     return this.currentNode;

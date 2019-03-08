@@ -19,14 +19,6 @@ const router = new Router({
       component: () =>
         import('@v/BiModule'),
     },
-
-    // 消息模块
-    {
-      path: '/message',
-      name: 'message',
-      component: () =>
-        import('@v/message/Message.vue')
-    },
     // 公司
     {
       path: '/company',

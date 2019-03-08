@@ -45,7 +45,8 @@
                 .close {
                     margin: 22px 0;
                     float: right;
-                    font-size: 18px;
+                    font-size: 20px;
+                    color: #1890FF
                 }
 
 
@@ -68,25 +69,55 @@
         }
     }
 
-    .el-input {
-        width: 220px;
-        line-height: 40px;
+    .sheach {
+        margin: 20px 20px;
 
-        &__inner {
+        .el-input {
+            background: rgba(242, 242, 242, 1) !important;
             width: 260px;
-            height: 40px;
-            background: rgba(242, 242, 242, 1);
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            opacity: 1;
+            padding-left: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
             border-radius: 8px;
-            margin-top: 20px;
+
+            &__inner {
+                // padding: 20px 20px;
+                width: 220px;
+                height: 40px;
+            }
+
+            &__icon {
+                font-size: 20px;
+            }
         }
 
-        &__suffix {
-            top: 10px;
-            left: 230px;
+        input::input-placeholder {
+            color: rgba(0, 0, 0, 0.40) !important;
+
         }
+
+        input::-webkit-input-placeholder,
+        textarea::-webkit-input-placeholder {
+            color: rgba(0, 0, 0, 0.40) !important;
+        }
+
+        input:-moz-placeholder,
+        textarea:-moz-placeholder {
+            color: rgba(0, 0, 0, 0.40) !important;
+        }
+
+        input::-moz-placeholder,
+        textarea::-moz-placeholder {
+            color: rgba(0, 0, 0, 0.40) !important;
+        }
+
+        input:-ms-input-placeholder,
+        textarea:-ms-input-placeholder {
+            color: #b8c4ce !important;
+        }
+
+
     }
+
 
     .slid-enter-active,
     .slid-leave-active {
@@ -97,10 +128,6 @@
     .slid-leave-to {
         margin-left: 300px;
         opacity: 0;
-    }
-
-    .search {
-        padding: 0 20px;
     }
 
     .content-middle {
@@ -120,9 +147,6 @@
     }
 
     .checkbox-item {
-
-
-
         .el-checkbox__label {
             position: absolute;
             left: 20px;
