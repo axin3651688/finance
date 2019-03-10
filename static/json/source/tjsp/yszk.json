@@ -6,7 +6,10 @@
     },
     "showDims": ["year","month","company","conversion"],
     "changeCompanyBefore":function(newcompany,option){
+        debugger;
         this.showSet(this.items[0].children); 
+        // this.showSet_new(this.items[0].children); 
+        // this.items[0].updateView = option.updateView;
         option.closeTabTaget(newcompany,option);
     },
     "changeYearBefore":function(newyear,option){
@@ -20,6 +23,7 @@
         option.closeTabTaget(newconversion,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
+        debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         return data;
@@ -40,11 +44,12 @@
                     "show":false,
                     "width":6,
                     "showFun":function($store){
-                        debugger
+                        // debugger
                         if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf ){
                             return true ;
                         }else{
                             return false ;
+                            // return true ;
                         }                        
                     },
                     "toolbar":[{
@@ -196,19 +201,22 @@
                     },
                     "show":false,
                     "showFun":function($store){
-                        debugger
+                        // debugger
                         if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
                             return false ;
+                            // return true ;
                         }else{
                             return true ;
                         }                       
                     },
                     "queryDataBefore":function(params,config,$vue){
                         debugger
-                        if(params.company=='1001'){
-                            config.sql = config.sql1;
-                        }else{
-                            config.sql = config.sql2;
+                        if(!config.sql){
+                            if(params.company=='1001'){
+                                config.sql = config.sql1;//9
+                            }else{
+                                config.sql = config.sql2;//7
+                            }
                         }
                         // config.sql = config.sql1;
 						//是不是穿透的

@@ -118,7 +118,11 @@ export default {
      * 导航栏高度：64
      * 间隙高度：15+7 = 22
      */
-    this.upData(this.item);
+    debugger
+    if(this.item.show){
+      this.upData(this.item);
+    }
+    // this.upData(this.item);
     console.log(this.item)
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
