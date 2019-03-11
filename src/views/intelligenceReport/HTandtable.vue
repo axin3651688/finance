@@ -191,9 +191,10 @@ export default {
         afterChange: Function,
         cells: Function
         // ,
-        // beforeChange: Function
-        // ,
         // getCellEditor: Function//获取编辑器
+        // ,
+        // beforeChange: Function
+        
         // ,
         // afterGetCellMeta: Function,
         // setDataAtCell: Function
@@ -877,7 +878,9 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
+          // debugger;
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
+          // this.getCellEditor = this.settings.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
         }
@@ -1012,6 +1015,9 @@ export default {
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } else if (col.id === "finance") {
+              // cc.renderer = this.contentOfFinance;
+              // cc.readOnly = true;
+              // cc.editor = this.contentEditor;
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
             }
@@ -1022,12 +1028,13 @@ export default {
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
+      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
-      
+      // this.settings.getCellEditor = this.getCellEditor;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
@@ -1052,6 +1059,36 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    contentEditor (aa,bb,cc,dd,ee,ff,gg,hh) {
+      debugger;
+      let me = this;
+    },
+    contentOfFinance (instance, td, row, col, prop, value, cellProperties) {
+      debugger;
+      let me = this;
+      if (!false) {
+        let el = document.createElement("DIV");
+        // el.className = "flag";
+        // el.id = "flag";
+        el.innerHTML = value;
+        td.appendChild(el);
+        el.style.color = "red";
+        el.style.cursor = "pointer";
+        Handsontable.dom.addEvent(el, "dblclick", function(event) {
+          debugger;
+          let $select = document.createElement("SELECT");
+          let $option = document.createElement("option");
+          let $option2 = document.createElement("option");
+          $option.text = "hello";
+          $option2.text = "hi";
+          $select.add($option);
+          $select.add($option2);
+          $select.style.float = "right";
+          $select.style.position = ""
+          td.appendChild($select);
+        });
+      }
     },
     getCellEditor (row,col) {
       debugger;
@@ -1429,6 +1466,7 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
+      debugger;
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;

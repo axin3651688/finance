@@ -122,7 +122,6 @@ import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
-
 export default {
   name: "BiModule",
   components: {
