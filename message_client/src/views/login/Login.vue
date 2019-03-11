@@ -190,7 +190,7 @@ export default {
       this.$refs[formName].validate(valid => {
         // debugger;
         if (valid) {
-          if (!window.currentDevice) { // 如果没有获取到设备号，不能登录
+          if (!localStorage.device) { // 如果没有获取到设备号，不能登录
             // alert('未能正确获取设备号')
             this.$alert('未能正确获取设备号', '警告', {
               confirmButtonText: '确定'

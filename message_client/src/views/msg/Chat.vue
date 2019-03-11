@@ -265,16 +265,31 @@ export default {
 
         // 请求服务器更新已读消息状态
         // debugger
-        let lastItem = this.msgList[this.msgList.length - 1]
+        let lastItem = this._getLastOtherMsg(this.msgList)
         if (lastItem) {
           this._httpClearChatState(lastItem)
           this._socketClearChatState(lastItem)
         }
+
         this.page++
         this.infiniteHandlerState.loaded()
       } else {
         this.infiniteHandlerState.complete()
       }
+    },
+
+    /**
+     * 获取最后一条对方发的消息
+     */
+    _getLastOtherMsg(msgList) {
+      for (let item of msgList) {
+        console.log(item)
+        if (item.senderId === this.loginUserId && item.state !== 2) {
+          console.log('last item:', item)
+          return item
+        }
+      }
+      return null
     },
 
     /**

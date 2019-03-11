@@ -60,11 +60,10 @@ axios.interceptors.request.use(
     if (localStorage.authorization) {
       // 设置统一请求头
       config.headers.Authorization = localStorage.authorization
-
     }
-    if (window.currentDevice) {
-      console.log('正确获取设备号：', window.currentDevice)
-      config.headers.device = window.currentDevice
+    if (localStorage.device) {
+      // console.log('正确获取设备号：', window.currentDevice)
+      config.headers.device = localStorage.device
     } else {
       console.error('未能正确获取设备号')
     }
