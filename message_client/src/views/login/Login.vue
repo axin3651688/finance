@@ -86,10 +86,10 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import store from '@/store';
-import {LOGIN, SCAN_LOGIN_URL} from '@m_api/message.js';
-import {SET_FULLSCREEN_LOADING} from '@mu/setFullscreenLoading.js';
+import {mapGetters, mapActions} from 'vuex'
+import store from '@/store'
+import {LOGIN, SCAN_LOGIN_URL} from '@m_api/message.js'
+import {SET_FULLSCREEN_LOADING} from '@mu/setFullscreenLoading.js'
 
 export default {
   data() {
@@ -131,15 +131,15 @@ export default {
           }
         ]
       }
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
     },
     scanStatus() {
-      return this.messageStore.scanStatus;
+      return this.messageStore.scanStatus
     }
   },
   watch: {
@@ -147,15 +147,15 @@ export default {
      * 监听 手机扫码登陆是服务器返回的状态
      */
     scanStatus(val) {
-      debugger;
-      if (!val) return;
+      debugger
+      if (!val) return
       switch (val.code) {
         case 10010: // 10010-APP已扫码通知，扫码成功
-          this.scanSuccess = true;
-          break;
+          this.scanSuccess = true
+          break
         case 10011: // 10011-APP登录通知，登陆成功,
-          this._processLoginResult(val.data); // 处理登陆返回的结果
-          break;
+          this._processLoginResult(val.data) // 处理登陆返回的结果
+          break
       }
     }
   },
@@ -164,22 +164,22 @@ export default {
 
     web_minWindows() { // electron 最小化
       if (window.require) {
-        let ipc = window.require('electron').ipcRenderer;
-        ipc.send('web_minWindows', '');
+        let ipc = window.require('electron').ipcRenderer
+        ipc.send('web_minWindows', '')
       }
     },
     web_closeWindows() { // electron 关闭窗口
       if (window.require) {
-        let ipc = window.require('electron').ipcRenderer;
-        ipc.send('web_closeWindows', '');
+        let ipc = window.require('electron').ipcRenderer
+        ipc.send('web_closeWindows', '')
       }
     },
 
     showPwd() {
       if (this.pwdType === 'password') {
-        this.pwdType = '';
+        this.pwdType = ''
       } else {
-        this.pwdType = 'password';
+        this.pwdType = 'password'
       }
     },
 
@@ -190,93 +190,100 @@ export default {
       this.$refs[formName].validate(valid => {
         // debugger;
         if (valid) {
+          if (!window.currentDevice) { // 如果没有获取到设备号，不能登录
+            // alert('未能正确获取设备号')
+            this.$alert('未能正确获取设备号', '警告', {
+              confirmButtonText: '确定'
+            })
+            return false
+          }
           LOGIN(this.loginUser)
             .then(res => {
               if (res.data.code === 200 && res.data.data) {
-                this.loginUser.usename = '';
-                this.loginUser.password = '';
-                this._processLoginResult(res.data.data); // 处理登陆返回的结果
+                this.loginUser.usename = ''
+                this.loginUser.password = ''
+                this._processLoginResult(res.data.data) // 处理登陆返回的结果
               } else {
                 this.$message({
                   type: 'error',
                   message: res.data.msg
-                });
+                })
               }
             })
             .catch(err => {
-              console.error(err);
-            });
+              console.error(err)
+            })
         }
-      });
+      })
     },
 
     /**
      * 处理登陆返回数据
      */
     _processLoginResult(data) {
-      debugger;
-      let authorization = data.authorization;
+      debugger
+      let authorization = data.authorization
       if (!Cnbi.isEmpty(authorization)) {
-        localStorage.setItem('authorization', authorization);
-        localStorage.setItem('usename', this.loginUser.usename); // 用户名记住,方便下次登录
-        localStorage.setItem('database', JSON.stringify(data)); // 返回{"a":1,"b":2}
-        store.dispatch('setIsAutnenticated', true);
-        store.dispatch('setUser', data);
+        localStorage.setItem('authorization', authorization)
+        localStorage.setItem('usename', this.loginUser.usename) // 用户名记住,方便下次登录
+        localStorage.setItem('database', JSON.stringify(data)) // 返回{"a":1,"b":2}
+        store.dispatch('setIsAutnenticated', true)
+        store.dispatch('setUser', data)
 
         // 路由跳转
-        this.$router.push('/message_page/home');
+        this.$router.push('/message_page/home')
 
         // electron 处理
         if (window.require) {
-          let ipc = window.require('electron').ipcRenderer;
-          ipc.send('web_autoLogin', '');
+          let ipc = window.require('electron').ipcRenderer
+          ipc.send('web_autoLogin', '')
         }
       }
     },
 
     // 显示二维码
     showQrCode() {
-      this.showWhat = 'qr_code';
-      this.requestQrCode();
+      this.showWhat = 'qr_code'
+      this.requestQrCode()
     },
 
     /**
      * 关闭二维码登录, 清除messageStore.scanStatus
      */
     closeQrCode() {
-      this.showWhat = 'form';
-      this.scanSuccess = false;
-      this.ActionSetMessageStore({scanStatus: null});
+      this.showWhat = 'form'
+      this.scanSuccess = false
+      this.ActionSetMessageStore({scanStatus: null})
     },
 
     // 获取二维码
     requestQrCode() {
-      this.scanSuccess = false;
+      this.scanSuccess = false
       let params = {
         platform: 'pc',
         device: localStorage.device || Cnbi.getDevice() // socket链接成功后返回的设备号
-      };
-      console.log('设备号：', localStorage.device);
-      SET_FULLSCREEN_LOADING(false); // 设置不需要全屏加载动画
-      this.elLoading = true; // 开始 局部加载动画
+      }
+      console.log('设备号：', localStorage.device)
+      SET_FULLSCREEN_LOADING(false) // 设置不需要全屏加载动画
+      this.elLoading = true // 开始 局部加载动画
       SCAN_LOGIN_URL(params)
         .then(res => {
-          this.elLoading = false; // 结束 局部加载动画
-          console.log('获取登录二维码res：', res);
+          this.elLoading = false // 结束 局部加载动画
+          console.log('获取登录二维码res：', res)
           if (res.data.code === 200 && res.data.data) {
-            this.qrUrl = res.data.data.url;
-            this.ActionSetMessageStore({scanStatus: null});
-            console.log('qrUrl:', this.qrUrl);
+            this.qrUrl = res.data.data.url
+            this.ActionSetMessageStore({scanStatus: null})
+            console.log('qrUrl:', this.qrUrl)
           }
         })
         .catch(err => {
-          this.elLoading = false; // 结束 局部加载动画
-          console.log('获取登录二维码err：', err);
-        });
+          this.elLoading = false // 结束 局部加载动画
+          console.log('获取登录二维码err：', err)
+        })
     }
 
   }
-};
+}
 </script>
 <style>
   .login .el-checkbox__input.is-checked .el-checkbox__label {

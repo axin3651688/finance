@@ -11,6 +11,7 @@ import '@ms/reset.scss' // 统一浏览器样式
 import '@ms/emotion_sprites.scss' // 全局加载聊天表情样式
 import Bus from './bus.js' // bus 总线
 import Avatar from 'vue-avatar'
+import 'fingerprintjs2'
 
 Vue.config.productionTip = false
 Vue.directive('avatar', directive)

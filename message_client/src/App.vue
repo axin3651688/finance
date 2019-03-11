@@ -16,18 +16,18 @@ export default {
   },
   methods: {
     ...mapActions(['GettRreeInfo']),
-    readLocalStorage() {
+    readLocalStorage(authorization) {
       // 为了避免刷新丢失用户数据,需要程序每次进来时获取一下状态
       // alert('readLocalStorage');
-      if (localStorage.authorization) {
+      if (authorization) {
         // 有 authorization 已经登陆的
-        // alert('有 authorization: ' + localStorage.authorization);
-        this.initSocket(localStorage.authorization) // 如果有 authorization，则建立socket连接
+        // alert('有 authorization: ' + authorization);
+        this.initSocket(authorization) // 如果有 authorization，则建立socket连接
 
         // 登陆令牌 存储到vuex中
         this.$store.dispatch(
           'setIsAutnenticated',
-          !Cnbi.isEmpty(localStorage.authorization)
+          !Cnbi.isEmpty(authorization)
         )
         // 由于localStorage只能存字符串,需转json
         this.$store.dispatch('setUser', JSON.parse(localStorage.database))
@@ -55,27 +55,46 @@ export default {
         // 没有 authorization 没有登陆
       }
     },
-    initSocket(authorization) {
+    initSocket(authorization, device) {
       let url = process.env.VUE_APP_SOCKET
       if (authorization != null) {
         url = url + '?Authorization=' + authorization
-      } else {
-        // url = url + "?device=" + Cnbi.getDevice();
+      } else if (device) {
+        url = url + '?device=' + device
       }
       console.log('app创建时的webSocket——url：', url)
       webSocket({url: url})
+    },
+
+    /**
+     * 获取浏览器指纹
+     */
+    initSocketBefore() {
+      let _this = this
+      new Fingerprint2().get(function (result, components) {
+        console.log('result2:', result) // a hash, representing your device fingerprint
+        console.log('components2:', components) // an array of FP components
+        _this.initSocket(null, result)
+        window.currentDevice = result
+      })
     }
   },
   created() {
-    // console.log('cordova.device========2', this);
-    // debugger;
-    this.readLocalStorage()
+    // new Fingerprint2().get(function (result, components) {
+    //   console.log('result2:', result) //a hash, representing your device fingerprint
+    //   console.log('components2:', components) // an array of FP components
+    // })
     let bean = getClientParams()
     let authorization = bean.authorization || bean.tikct || bean.token
     if (!authorization) {
       authorization = localStorage.getItem('authorization')
     }
-    this.initSocket(authorization)
+    if (authorization) {
+      this.readLocalStorage(authorization)
+    } else {
+      this.initSocketBefore()
+    }
+
   }
 }
 </script>

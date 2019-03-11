@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "fingerprintjs2": "^2.0.6",
     "namedavatar": "^1.0.0",
     "vue": "^2.5.22",
     "vue-avatar": "^2.1.7",
