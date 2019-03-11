@@ -44,13 +44,21 @@
                     "show":false,
                     "width":6,
                     "showFun":function($store){
-                        // debugger
-                        if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf ){
-                            return true ;
+                        debugger
+                        if($store.getters.treeInfo.customerId=="1001" || $store.getters.treeInfo.id=="1001"){
+                            return false ; 
                         }else{
-                            return false ;
-                            // return true ;
-                        }                        
+                            if($store.getters.treeInfo.nisleaf){
+                                return true ; 
+                            }else {
+                                return false ; 
+                            }
+                        }
+                        // if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf ){
+                        //     return true ;
+                        // }else{
+                        //     return false ;
+                        // }                        
                     },
                     "toolbar":[{
                         "id":"1",
@@ -201,22 +209,30 @@
                     },
                     "show":false,
                     "showFun":function($store){
-                        // debugger
-                        if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
-                            return false ;
-                            // return true ;
+                        debugger
+                        if($store.getters.treeInfo.customerId=="1001" || $store.getters.treeInfo.id=="1001"){
+                            return true ; 
                         }else{
-                            return true ;
-                        }                       
+                            if($store.getters.treeInfo.nisleaf){
+                                return false ; 
+                            }else {
+                                return true ; 
+                            }
+                        }
+                        // if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
+                        //     return false ;
+                        // }else{
+                        //     return true ;
+                        // }                       
                     },
                     "queryDataBefore":function(params,config,$vue){
                         debugger
-                        if(!config.sql){
+                        // if(!config.sql){
                             if(params.company=='1001'){
                                 config.sql = config.sql1;//9
                             }else{
                                 config.sql = config.sql2;//7
-                            }
+                            // }
                         }
                         // config.sql = config.sql1;
 						//是不是穿透的
