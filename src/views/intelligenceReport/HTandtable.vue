@@ -1369,22 +1369,49 @@ export default {
         });
       } else {
         // console.log(titlename[0]);
-        importExcel(me.files).then(res => {
-          if (res.data.code === 200) {
-            me.subject = null;
-            me.fixed = null;
-            me.templateId = null;
-            this.$message({
-              message: "模板匹配 导入成功",
-              type: "success"
-            });
-          } else {
-            this.$message({
-              message: res.data.msg,
-              type: "error"
-            });
-          }
+        this.$confirm('此操作将覆盖以前的数据内容, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          importExcel(me.files).then(res => {
+            if (res.data.code === 200) {
+              me.subject = null;
+              me.fixed = null;
+              me.templateId = null;
+              this.$message({
+                message: "模板匹配 导入成功",
+                type: "success"
+              });
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "error"
+              });
+            }
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已撤回导入！'
+          });          
         });
+        // importExcel(me.files).then(res => {
+        //   if (res.data.code === 200) {
+        //     me.subject = null;
+        //     me.fixed = null;
+        //     me.templateId = null;
+        //     this.$message({
+        //       message: "模板匹配 导入成功",
+        //       type: "success"
+        //     });
+        //   } else {
+        //     this.$message({
+        //       message: res.data.msg,
+        //       type: "error"
+        //     });
+        //   }
+        // });
       }
     },
     //导入按钮的点击事件调用导入
