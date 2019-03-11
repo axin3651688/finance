@@ -14,6 +14,7 @@
           :filter-node-method="filterNode"
           :default-expanded-keys="expandKeys"
           :show-checkbox="true"
+          :highlight-current="true"
           ref="comtree"
           @node-click="handleClick"
           @node-contextmenu="handleContextMenu"
@@ -159,7 +160,13 @@ export default {
       }
     };
   },
-
+  watch: {
+    //监听公司树筛选
+    filterText(val) {
+      debugger
+      this.$refs.comtree.filter(val);
+    }
+  },
   methods: {
     // 抽取数据 按钮
     extraing(formName) {
@@ -184,12 +191,12 @@ export default {
                 type: "warning"
               })
               .then(() => {
-                axios({
-                  url: "tjsp/extradata/import",
-                  method: "post",
-                  data: {
+                debugger
+                let datas = {
+                    vartype: _this.form.vartype,
                     varnature: _.join(_this.form.nature, ","),
-                    varcompany: "'" + _.join(coms, "','") + "'",
+                    // varcompany: "'" + _.join(coms, "','") + "'",
+                    varcompany: _.join(coms, "','"),
                     varyear: _this.form.startperiod.substring(0, 4),
                     orgmonth:
                       _.replace(_this.form.startperiod, /-/g, "").substring(
@@ -201,17 +208,38 @@ export default {
                         4,
                         6
                       ) - 0
-                  },
+                }
+                axios({
+                  url: "/tps/extradata/import",
+                  method: "post",
+                  data: datas,
+                  // data: {
+                  //   vartype: _this.form.vartype,
+                  //   varnature: _.join(_this.form.nature, ","),
+                  //   varcompany: "'" + _.join(coms, "','") + "'",
+                  //   varyear: _this.form.startperiod.substring(0, 4),
+                  //   orgmonth:
+                  //     _.replace(_this.form.startperiod, /-/g, "").substring(
+                  //       4,
+                  //       6
+                  //     ) - 0,
+                  //   endmonth:
+                  //     _.replace(_this.form.endperiod, /-/g, "").substring(
+                  //       4,
+                  //       6
+                  //     ) - 0
+                  // },
                   headers: {
                     "X-Requested-With": "XMLHttpRequest",
                     "Content-Type": "application/json; charset=UTF-8"
                   }
                 }).then(result => {
                   if (result.status == 200) {
-                    if (result.data.data) {
+                    // debugger
+                    if (result.data) {
                       this.$message({
                         type: "success",
-                        message: "loading"
+                        message: result.data.msg
                       });
                     }
                   }
@@ -325,7 +353,7 @@ export default {
 
     // 请求节点数据
     findNodes() {
-      debugger
+      // debugger
       const _this = this;
       var getters = _this.$store.getters;
       //请求数据
@@ -338,7 +366,7 @@ export default {
         // }
       }).then(result => {
         if (result.status == 200 && result.data.code == 200) {
-          debugger
+          // debugger
           //封装树对象数据
           const setting = {
             data: {
@@ -377,8 +405,9 @@ export default {
     },
     //过滤节点
     filterNode(value, data) {
+      // debugger
       if (!value) return true;
-      return data.text.indexOf(value) !== -1;
+      return data.sname.indexOf(value) !== -1;
     }
   }
 };

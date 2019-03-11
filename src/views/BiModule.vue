@@ -545,7 +545,8 @@ export default {
         let $cc = this.$refs.mychild;
         $cc.forEach(children => {
           let ii = children.item;
-          if (ii && ii.config && children.hasConfig) {
+          // 加了个ii.show
+          if (ii && ii.config && (children.hasConfig || ii.show)) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }
