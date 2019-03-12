@@ -22,9 +22,9 @@
                             <el-input v-model="searchForm.username" placeholder="用户名称" clearable ></el-input>
                         </el-form-item>
 
-                        <el-form-item label="真实姓名">
+                        <!-- <el-form-item label="真实姓名">
                             <el-input v-model="searchForm.truename" placeholder="真实姓名" disabled clearable></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <el-form-item label="类型">
                             <el-select v-model="searchForm.stype" placeholder="类型" clearable>

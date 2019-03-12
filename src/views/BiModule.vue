@@ -122,7 +122,6 @@ import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
-
 export default {
   name: "BiModule",
   components: {
@@ -546,7 +545,8 @@ export default {
         let $cc = this.$refs.mychild;
         $cc.forEach(children => {
           let ii = children.item;
-          if (ii && ii.config && children.hasConfig) {
+          // 加了个ii.show
+          if (ii && ii.config && (children.hasConfig || ii.show)) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }

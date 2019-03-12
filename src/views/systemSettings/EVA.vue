@@ -1,281 +1,288 @@
 <template>
-  <div style="margin-top:5px;">
-    <!-- v-model="item.value" -->
-    <el-input
-      v-for="(item ,key) in vars"
-      :key="key"
-      :placeholder="item.text"
-      @input="handleClick(item)"
-      v-model="item.display_num"
-      :style="item.wclass"
-      clearable
-    >
-      <template slot="prepend">{{item.text}}</template>
-    </el-input>
+  <div >
+    <!-- style="margin-top:5px;" -->
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="经济增加值（EVA）计算表" name="first" :style="tabHeight">
+        <!-- v-model="item.value" -->
+        <div>
+          <el-input
+            v-for="(item ,key) in vars"
+            :key="key"
+            :placeholder="item.text"
+            @input="handleClick(item)"
+            v-model="item.display_num"
+            :style="item.wclass"
+            clearable
+          >
+            <template slot="prepend">{{item.text}}</template>
+          </el-input>
 
-    <table class="table table-bordered table-striped" style="margin-top:5px;">
-      <thead>
-        <tr>
-          <td style="width:180px">
-            <i class="el-icon-info"></i>
-          </td>
-          <td style="width:230px">项 目</td>
-          <td colspan="2" style="width:400px">本期金额</td>
-          <td style="width:200px">调整后</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="7" class="bd">税后净营业利润</td>
-          <td>净利润</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.v1400100A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1400100A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1400100A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1400100A|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>研究与开发费</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.v1435301A" readonly class="exps">
-            -->
-            <span class="expsv">{{exps.v1435301A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1435301A_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1435301A_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>利息支出</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.v142640102A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v142640102A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v142640102A_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v142640102A_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>营业外收支净额</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.yywsrje" readonly class="exps"> -->
-            <span class="expsv">{{exps.yywsrje|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.yywsrje_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.yywsrje_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>其中：营业外收入</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.v1416301A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1416301A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1416301A_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1416301A_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="textIndent">营业外支出</td>
-          <td colspan="2" class="br">
-            <!-- <input v-model="exps.v1426711A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1426711A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1426711A_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1426711A_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" class="bd">税后净营业利润</td>
-          <td class="br">
-            <!-- <input v-model="exps.yywsrlr" readonly class="exps"> -->
-            <span class="expsv">{{exps.yywsrlr|NumFormat}}</span>
-          </td>
-        </tr>
+          <table class="table table-bordered table-striped" style="margin-top:5px;">
+            <thead>
+              <tr>
+                <td style="width:180px">
+                  <i class="el-icon-info"></i>
+                </td>
+                <td style="width:230px">项 目</td>
+                <td colspan="2" style="width:400px">本期金额</td>
+                <td style="width:200px">调整后</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="7" class="bd">税后净营业利润</td>
+                <td>净利润</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.v1400100A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1400100A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1400100A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1400100A|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>研究与开发费</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.v1435301A" readonly class="exps">
+                  -->
+                  <span class="expsv">{{exps.v1435301A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1435301A_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1435301A_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>利息支出</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.v142640102A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v142640102A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v142640102A_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v142640102A_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>营业外收支净额</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.yywsrje" readonly class="exps"> -->
+                  <span class="expsv">{{exps.yywsrje|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.yywsrje_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.yywsrje_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>其中：营业外收入</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.v1416301A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1416301A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1416301A_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1416301A_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="textIndent">营业外支出</td>
+                <td colspan="2" class="br">
+                  <!-- <input v-model="exps.v1426711A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1426711A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1426711A_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1426711A_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="bd">税后净营业利润</td>
+                <td class="br">
+                  <!-- <input v-model="exps.yywsrlr" readonly class="exps"> -->
+                  <span class="expsv">{{exps.yywsrlr|NumFormat}}</span>
+                </td>
+              </tr>
 
-        <tr>
-          <td rowspan="11" class="bd">资本占用</td>
-          <td class="bc">项目</td>
-          <td class="bc">期初余额</td>
-          <td class="bc">期末余额</td>
-          <td class="bc">调整后</td>
-        </tr>
-        <tr>
-          <td>资产总额</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1100100A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1100100A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1100100B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1100100B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input :value="exps.v1100100_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1100100_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>无息流动负债</td>
-          <td class="br">
-            <!-- <input :value="exps.wxldfzA" readonly class="exps"> -->
-            <span class="expsv">{{exps.wxldfzA|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input :value="exps.wxldfzB" readonly class="exps"> -->
-            <span class="expsv">{{exps.wxldfzB|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input :value="exps.wxldfz_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.wxldfz_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>其中： 流动负债</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1210100A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1210100A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1210100B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1210100B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1210100_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1210100_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="textIndent">短期借款</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1212001A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1212001A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1212001B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1212001B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1212001_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1212001_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="textIndent">一年内到期的长期负债</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1217001A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1217001A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1217001B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1217001B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1217001_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1217001_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>在建工程</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131604A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131604A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131604B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131604B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131604_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131604_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>工程物资</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131605A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131605A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131605B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131605B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1131605_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1131605_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>专项应付款</td>
-          <td class="br">
-            <!-- <input v-model="exps.v1222711A" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1222711A|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1222711B" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1222711B|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.v1222711_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.v1222711_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td>资本化费用</td>
-          <td class="br">
-            <!-- <input :value="vars[2].value" readonly class="exps"> -->
-            <span class="expsv">{{vars[2].value|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input :value="vars[3].value" readonly class="exps"> -->
-            <span class="expsv">{{vars[3].value|NumFormat}}</span>
-          </td>
-          <td class="br">
-            <!-- <input v-model="exps.znhfy_tz" readonly class="exps"> -->
-            <span class="expsv">{{exps.znhfy_tz|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" class="bd">资本占用金额</td>
-          <td class="br">
-            <!-- <input v-model="exps.zbzyje" readonly class="exps"> -->
-            <span class="expsv">{{exps.zbzyje|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td rowspan="2"></td>
-          <td colspan="3" class="bd">资产负债率(%)</td>
-          <td class="br">
-            <!-- <input v-model="exps.zcfzlv" readonly class="exps"> -->
-            <span class="expsv">{{exps.zcfzlv|NumFormat}}</span>
-          </td>
-        </tr>
+              <tr>
+                <td rowspan="11" class="bd">资本占用</td>
+                <td class="bc">项目</td>
+                <td class="bc">期初余额</td>
+                <td class="bc">期末余额</td>
+                <td class="bc">调整后</td>
+              </tr>
+              <tr>
+                <td>资产总额</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1100100A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1100100A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1100100B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1100100B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input :value="exps.v1100100_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1100100_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>无息流动负债</td>
+                <td class="br">
+                  <!-- <input :value="exps.wxldfzA" readonly class="exps"> -->
+                  <span class="expsv">{{exps.wxldfzA|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input :value="exps.wxldfzB" readonly class="exps"> -->
+                  <span class="expsv">{{exps.wxldfzB|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input :value="exps.wxldfz_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.wxldfz_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>其中： 流动负债</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1210100A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1210100A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1210100B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1210100B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1210100_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1210100_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="textIndent">短期借款</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1212001A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1212001A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1212001B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1212001B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1212001_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1212001_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="textIndent">一年内到期的长期负债</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1217001A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1217001A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1217001B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1217001B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1217001_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1217001_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>在建工程</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131604A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131604A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131604B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131604B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131604_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131604_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>工程物资</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131605A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131605A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131605B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131605B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1131605_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1131605_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>专项应付款</td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1222711A" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1222711A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1222711B" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1222711B|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.v1222711_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.v1222711_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>资本化费用</td>
+                <td class="br">
+                  <!-- <input :value="vars[2].value" readonly class="exps"> -->
+                  <span class="expsv">{{vars[2].value|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input :value="vars[3].value" readonly class="exps"> -->
+                  <span class="expsv">{{vars[3].value|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <!-- <input v-model="exps.znhfy_tz" readonly class="exps"> -->
+                  <span class="expsv">{{exps.znhfy_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="bd">资本占用金额</td>
+                <td class="br">
+                  <!-- <input v-model="exps.zbzyje" readonly class="exps"> -->
+                  <span class="expsv">{{exps.zbzyje|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2"></td>
+                <td colspan="3" class="bd">资产负债率(%)</td>
+                <td class="br">
+                  <!-- <input v-model="exps.zcfzlv" readonly class="exps"> -->
+                  <span class="expsv">{{exps.zcfzlv|NumFormat}}</span>
+                </td>
+              </tr>
 
-        <tr>
-          <td colspan="3" class="bd">资本成本率(%)</td>
-          <td class="br">
-            <!-- <input :value="vars[1].value" readonly class="exps"> -->
-            <span class="expsv">{{vars[1].value|NumFormat}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="bd">EVA</td>
-          <td colspan="3" class="bd">税后净营业利润-资本占用×资本成本率</td>
-          <td class="br">
-            <!-- <input v-model="exps.shjlr" readonly class="exps"> -->
-            <span class="expsv">{{exps.shjlr|NumFormat}}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              <tr>
+                <td colspan="3" class="bd">资本成本率(%)</td>
+                <td class="br">
+                  <!-- <input :value="vars[1].value" readonly class="exps"> -->
+                  <span class="expsv">{{vars[1].value|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="bd">EVA</td>
+                <td colspan="3" class="bd">税后净营业利润-资本占用×资本成本率</td>
+                <td class="br">
+                  <!-- <input v-model="exps.shjlr" readonly class="exps"> -->
+                  <span class="expsv">{{exps.shjlr|NumFormat}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
@@ -293,6 +300,8 @@ export default {
   name: "Eva",
   data() {
     return {
+      // tab页展示默认第一
+      activeName: "first",
       gridData: [
         {
           sname: "营业外收支净额",
@@ -423,6 +432,8 @@ export default {
       monthId: "",       // 默认的月份
       conversionId: "",  // 默认的单位
       conversionNid: 1,  // 单位 元 id
+
+      num : -1
     };
   },
   created(){
@@ -461,7 +472,7 @@ export default {
   methods: {
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
-        // debugger
+        debugger
         let me = this ;
         if(vax === 'year') {
             me.yearId = me.$store.getters[vax] ;
@@ -472,6 +483,9 @@ export default {
         } else {
             me.conversionId = me.$store.getters[vax] ;
         }
+        // me.num = -1 ;
+        me.ArrData = [] ;
+        me.ArrData2= [] ;
         // 重新发送请求数据
         me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
     },
@@ -489,29 +503,69 @@ export default {
         if(i){
             // _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT '99' AS SCODE,'资本化费用' AS SNAME,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT T3.SCODE,T3.SNAME,T2.QCYE AS A,T2.QMYE AS B FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '4101%') T3 LEFT JOIN (SELECT '4101' AS SCODE,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )T2 ON T3.SCODE =T2.SCODE )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
+            _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+            items = {
+                'cubeId': 4,
+                'sql' : encodeURI(_sql)
+            }
+            this.eva_city_Request_second(items) ;
         }else{
             _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='142640102' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','142640102','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','142640102','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
+            _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+            items = {
+                'cubeId': 4,
+                'sql' : encodeURI(_sql)
+            }
+            this.eva_city_Request_first(items) ;
         }
-        _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
-        items = {
-            'cubeId': 4,
-            'sql' : encodeURI(_sql)
-        }
-        this.ArrData = [] ;
-        this.ArrData2= [] ;
-        this.eva_city_Request_new(items) ;
+        // _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
+        // items = {
+        //     'cubeId': 4,
+        //     'sql' : encodeURI(_sql)
+        // }
+        // this.eva_city_Request_first(items) ;
       }      
     },
     // 数据请求
-    eva_city_Request_new(items){
+    eva_city_Request_first(items){
         // debugger
       let me = this ;
       eva_city_Request(items).then(res => {
-          // debugger
+          debugger
           if(res.data.code === 200){
-              
-            if(me.ArrData.length>0){
-              me.ArrData2 = res.data.data ;
+                me.ArrData = res.data.data ;
+                // 单位的改变 元 、 千元 、 万元 、 亿元         
+                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
+                    let newId = me.conversionId.id ;
+                    me.ArrData.forEach(items => {
+                      debugger
+                      // items.B = Math.decimalToLocalString(items.B / newId) ;
+                      items.B = items.B / newId ;
+                    })
+                }
+                me.ArrData.forEach(item => {
+                  // debugger
+                  item.scode = "v" + item.scode + "A"  ;
+                  if(!item.B){
+                    item.B = 0 ;
+                  }
+                  me.exps[item.scode] = item.B ;
+              }) ;
+            }              
+            //计算公式 资产总计
+              me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
+              console.log("me.ArrData:", me.ArrData) ;   
+              me.setExpressionData();         
+          
+      }) ; 
+    },
+    // 2.0
+    eva_city_Request_second(items){
+        let me = this ;
+        eva_city_Request(items).then(res => {
+          debugger
+            if(res.data.code === 200){
+                me.ArrData2 = res.data.data ;
                 // 单位的改变 元 、 千元 、 万元 、 亿元         
                 if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
                   let newId = me.conversionId.id ;
@@ -541,33 +595,13 @@ export default {
                         recc.display_num = ress.B ;
                     }
                   })
-                })
-            }else{
-                me.ArrData = res.data.data ;
-                // 单位的改变 元 、 千元 、 万元 、 亿元         
-                if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
-                  let newId = me.conversionId.id ;
-                  me.ArrData.forEach(items => {
-                    debugger
-                    // items.B = Math.decimalToLocalString(items.B / newId) ;
-                    items.B = items.B / newId ;
-                  })
-                }
-                me.ArrData.forEach(item => {
-                // debugger
-                item.scode = "v" + item.scode + "A"  ;
-                if(!item.B){
-                  item.B = 0 ;
-                }
-                me.exps[item.scode] = item.B ;
-              }) ;
-            }              
-            //计算公式 资产总计
+                });
+              //计算公式 资产总计
               me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
               console.log("me.ArrData:", me.ArrData) ;   
-              me.setExpressionData();         
-          }
-      }) ; 
+              me.setExpressionData();        
+            }
+        })
     },
     setExpressionData() {
       // debugger
