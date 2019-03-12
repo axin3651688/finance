@@ -52,7 +52,7 @@
                 {
                     "id" : "lrmb",
                     "type" : "decimal",
-                    "text" : "本年目标",
+                    "text" : "本年目标考核值",
                     "width": "150px"
                 },
                 {
@@ -90,7 +90,7 @@
                 {
                     "id" : "yemb",
                     "type" : "decimal",
-                    "text" : "本年目标",
+                    "text" : "本年目标考核值",
                     "width": "150px"
                 },
                 {
