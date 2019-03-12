@@ -10,7 +10,14 @@
           >
             <figure>
               <div class="img-box">
-                <img :src="friend.avatar" v-avatar="friend.trueName"/>
+                <avatar
+                  :username="friend.trueName"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  :size="40"
+                ></avatar>
+                <img :src="friend.avatar" onerror="this.style.display='none'"/>
               </div>
               <div class="info">
                 <h3 v-if="friend.trueName">{{friend.trueName}}</h3>
@@ -26,7 +33,14 @@
       <div v-if="rightUserInfoData">
         <div class="panel-right-top">
           <div class="img-box">
-            <img :src="rightUserInfoData.user.avatar" v-avatar="rightUserInfoData.user.trueName"/>
+            <avatar
+              :username="rightUserInfoData.user.trueName"
+              :rounded="false"
+              backgroundColor="transparent"
+              color="#fff"
+              :size="50"
+            ></avatar>
+            <img :src="rightUserInfoData.user.avatar" onerror="this.style.display='none'"/>
           </div>
           <div class="text">
             <h3 class="text-title" v-if="rightUserInfoData.user.trueName">{{rightUserInfoData.user.trueName}}</h3>
@@ -61,6 +75,7 @@
         >发送信息
         </el-button>
       </div>
+      <no-data v-if="showNoData">你还没有好友</no-data>
     </div>
   </div>
 </template>
@@ -74,6 +89,9 @@ import {
 
 export default {
   name: 'ContactsFriends',
+  components: {
+    NoData: () => import('@mv/common/NoData') // 没有数据是显示的内容
+  },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
@@ -82,6 +100,7 @@ export default {
   },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       activeUser: null, // 当前选中的用户id
       requestedUser: {}, // 已经请求过详细信息用户的用户信息
       friendList: null, // [] 我的好友列表，接收一个数组
@@ -90,7 +109,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log('ContactsFriends监听路由：', to, from);
+      // console.log('ContactsFriends监听路由：', to, from);
       if (this.activeUser !== to.query.id) {
         debugger;
         this.activeUser = to.query.id;
@@ -170,6 +189,8 @@ export default {
             this.rightUserInfoData = rightUserInfoData;
             this.activeUser = rightUserInfoData.user.id;
             this.requestedUser[this.activeUser] = rightUserInfoData;
+          } else {
+            this.showNoData = true;
           }
         });
       }
@@ -185,6 +206,7 @@ export default {
       let targetId = '1100_' + rightUserInfoData.user.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
+      sessionItem['online'] = true // 默认每个用户是在线状态
       sessionItem['id'] = rightUserInfoData.user.id;
       sessionItem['name'] = rightUserInfoData.user.trueName;
       sessionItem['count'] = 0;
@@ -298,6 +320,7 @@ export default {
         height: 100%;
 
         .img-box {
+          position: relative;
           width: 40px;
           height: 40px;
           overflow: hidden;
@@ -305,7 +328,12 @@ export default {
           border-radius: 8px;
           background: $colorTheme;
 
+          div {
+            position: absolute;
+          }
+
           img {
+            position: absolute;
             width: 100%;
             height: 100%;
           }
@@ -345,6 +373,7 @@ export default {
       margin-bottom: 58px;
 
       .img-box {
+        position: relative;
         margin-right: 20px;
         width: 50px;
         height: 50px;
@@ -352,7 +381,12 @@ export default {
         border-radius: 14px;
         background: $colorTheme;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 100%;
           height: 100%;
         }

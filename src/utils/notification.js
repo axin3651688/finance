@@ -38,23 +38,24 @@ export function showNotification(data) {
     case 11017: // 群助手
       title = '群助手';
       break;
-    case 1500: // 智能语音
-      title = '小帮机器人';
-      msg = '接收到指令:' + data.msg;
-      break;
     case 11021: // 分析助手
       title = '分析助手';
       msg = data.data.text;
       break;
+    case 1500: // 智能语音
+      title = '小帮机器人';
+      let temp = data.msg.replace('发送指令：', '');
+      msg = '接收到指令:' + temp;
+      break;
     case 1004: // 上线通知
       title = '上线通知';
-      if (data.data.user.id = store.getters.user.user.id) {
+      if (data.data.user.id === store.getters.user.user.id) {
         msg = '你刚刚在' + msg.replace('云智囊 for', '');
       }
       break;
     case 1005: // 下线通知
       title = '下线通知';
-      if (data.data.user.id = store.getters.user.user.id) {
+      if (data.data.user.id === store.getters.user.user.id) {
         msg = '你刚刚从' + msg.replace('云智囊 for', '');
       }
       break;
@@ -62,7 +63,7 @@ export function showNotification(data) {
 
   $notify.success({
     title: title,
-    message: msg,
+    message: _cutStr(msg),
     onClick: _handleClick,
     icon: 'http://jiaxin365.cn/images/cloud/biimg/daiban_iconweb.png',
     showClose: true,
@@ -87,7 +88,22 @@ export function showNotification(data) {
   // }, 6000); // 两秒后关闭通知
 }
 
+/**
+ * 消息提示点击后的操作
+ * @private
+ */
 function _handleClick() {
   // if ()
   // alert(data);
+}
+
+/**
+ * 字符长度限制
+ * @param string
+ */
+function _cutStr(string) {
+  if (string.length > 30) {
+    string = string.substr(0, 15) + '···';
+  }
+  return string;
 }

@@ -13,10 +13,11 @@
     class="OpenDialog"
   >
     <span slot="title" class="dialog-title">
+      <!-- <i class="iconfont icon-shanchuguanbicha2 item_img"></i> -->
       <!-- <img src="@a/icons/jsnk/laba.svg"> -->
       <span>{{showDialog.tittle}}</span>
     </span>
-    <BiModule :dialogData="showDialog.api"></BiModule>
+    <BiModule v-if="showDialog.isShow" :dialogData="showDialog.api"></BiModule>
   </el-dialog>
 </template>
 <script>
@@ -30,7 +31,10 @@ export default {
     BiModule
   },
   computed: {
-    ...mapGetters(["showDialog", "showMeluList"])
+    ...mapGetters(["showDialog", "showMeluList"]),
+    target() {
+      return this.showDialog.api;
+    }
   },
   methods: {
     ...mapActions(["ShowDialog"]),
@@ -46,7 +50,11 @@ export default {
   .dialog-title {
     font-size: 18px;
     font-weight: bold;
+
     color: rgba(15, 109, 217, 1);
+  }
+  .el-dialog__header {
+    margin-right: 20px;
   }
 }
 </style>

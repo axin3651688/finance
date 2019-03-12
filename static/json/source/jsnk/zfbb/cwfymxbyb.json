@@ -1,0 +1,75 @@
+{
+    "id": "cwfymxbyb",
+    "text": "财务费用明细表（月报）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, dfp.fact_a AS A, dfp.fact_b AS B, dfp.fact_c AS C, dfp.fact_d AS D, dfp.fact_e AS E, dfp.fact_f AS F FROM dw_factdetailfees dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '27' ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 250,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "text": "本月"
+            },
+            {
+                "id": "B",
+                "type": "decimal",
+                "text": "上年同期"
+            }, {
+                "id": "C",
+                "type": "decimal",
+                "text": "变动比率"
+            },
+            {
+                "id": "D",
+                "type": "decimal",
+                "text": "本期累计"
+            }, {
+                "id": "E",
+                "type": "decimal",
+                "text": "上年同期累计"
+            }, {
+                "id": "F",
+                "type": "decimal",
+                "text": "累计数变动比例"
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "cwfymxbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

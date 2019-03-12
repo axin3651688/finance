@@ -1,0 +1,372 @@
+{
+    "id": "zcfzzyzbb",
+    "text": "资产负债主要指标表",
+    "config": {
+        "sql": "select t1.text, t1.nid, t1.sort, sum(decode(t1.item, '1100100', t1.qm)) as A, sum(decode(t1.item, '1100100', t1.qc)) as B, sum(decode(t1.item, '1100100', t1.zjl)) as C, sum(decode(t1.item, '1110100', t1.qm)) as D, sum(decode(t1.item, '1110100', t1.qc)) as E, sum(decode(t1.item, '1110100', t1.zjl)) as F, sum(decode(t1.item, '1111001', t1.qm)) as G, sum(decode(t1.item, '1111001', t1.qc)) as H, sum(decode(t1.item, '1111001', t1.zjl)) as I, sum(decode(t1.item, '1111122', t1.qm)) as J, sum(decode(t1.item, '1111122', t1.qc)) as K, sum(decode(t1.item, '1111122', t1.zjl)) as L, sum(decode(t1.item, '1111221', t1.qm)) as M, sum(decode(t1.item, '1111221', t1.qc)) as N, sum(decode(t1.item, '1111221', t1.zjl)) as O, sum(decode(t1.item, '1111123', t1.qm)) as P, sum(decode(t1.item, '1111123', t1.qc)) as Q, sum(decode(t1.item, '1111123', t1.zjl)) as R, sum(decode(t1.item, '1111401', t1.qm)) as S, sum(decode(t1.item, '1111401', t1.qc)) as T, sum(decode(t1.item, '1111401', t1.zjl)) as U, sum(decode(t1.item, '1120100', t1.qm)) as V, sum(decode(t1.item, '1120100', t1.qc)) as W, sum(decode(t1.item, '1120100', t1.zjl)) as X, sum(decode(t1.item, '1121511', t1.qm)) as Y, sum(decode(t1.item, '1121511', t1.qc)) as Z, sum(decode(t1.item, '1121511', t1.zjl)) as AA, sum(decode(t1.item, '1131600', t1.qm)) as AB, sum(decode(t1.item, '1131600', t1.qc)) as AC, sum(decode(t1.item, '1131600', t1.zjl)) as AD, sum(decode(t1.item, '1210100', t1.qm)) as AE, sum(decode(t1.item, '1210100', t1.qc)) as AF, sum(decode(t1.item, '1210100', t1.zjl)) as AG, sum(decode(t1.item, '1212001', t1.qm)) as AH, sum(decode(t1.item, '1212001', t1.qc)) as AI, sum(decode(t1.item, '1212001', t1.zjl)) as AJ, sum(decode(t1.item, '1220100', t1.qm)) as AK, sum(decode(t1.item, '1220100', t1.qc)) as AL, sum(decode(t1.item, '1220100', t1.zjl)) as AM, sum(decode(t1.item, '1222501', t1.qm)) as AN, sum(decode(t1.item, '1222501', t1.qc)) as AO, sum(decode(t1.item, '1222501', t1.zjl)) as AP, sum(decode(t1.item, '1200100', t1.qm)) as AQ, sum(decode(t1.item, '1200100', t1.qc)) as AR, sum(decode(t1.item, '1200100', t1.zjl)) as AW, sum(decode(t1.item, '1311009', t1.qm)) as AT, sum(decode(t1.item, '1311009', t1.qc)) as AU, sum(decode(t1.item, '1311009', t1.zjl)) as AV from( select ddi.scode as nid, ddi.sfullname as text, ddi.property4 as sort, dim_itempoint as item, fact_b/1 as qm, fact_a/1 as qc, case when fact_a = 0 then 0 else round(((fact_b - fact_a)/abs(fact_a))*100,2) end as zjl from dw_factfinancepoint right join dw_dimcompany ddi on dim_company = ddi.scode and dim_period = :period and dim_itempoint in ('1100100', '1110100','1111001', '1111122','1111221','1111123','1111401','1120100','1121511','1131600','1210100','1212001','1220100','1222501','1200100','1311009') where ddi.scode in(select scode from dw_dimcompany where property4 between '0' and '6' and scode in (select scomcode from SYS_USERCOMPANY where SUSER = 'admin')) and ddi.cisdel = 'N' and ddi.scode <> '1') t1 group by t1.text,t1.sort,t1.nid order by t1.sort, t1.nid",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            }, {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 300,
+                "text": "产品名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "1001",
+                "type": "decimal",
+                "text": "资产总计",
+                "children": [{
+                        "id": "A",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1002",
+                "type": "decimal",
+                "text": "流动资产总计",
+                "children": [{
+                        "id": "D",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "E",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1003",
+                "type": "decimal",
+                "text": "货币资金",
+                "children": [{
+                        "id": "G",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "I",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1004",
+                "type": "decimal",
+                "text": "应收账款",
+                "children": [{
+                        "id": "J",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1005",
+                "type": "decimal",
+                "text": "其他应收款",
+                "children": [{
+                        "id": "M",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "O",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1006",
+                "type": "decimal",
+                "text": "预付账款",
+                "children": [{
+                        "id": "P",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Q",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "R",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1007",
+                "type": "decimal",
+                "text": "存货",
+                "children": [{
+                        "id": "S",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "T",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "U",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1008",
+                "type": "decimal",
+                "text": "非流动资产总计",
+                "children": [{
+                        "id": "V",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "W",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "X",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1009",
+                "type": "decimal",
+                "text": "长期投权投资",
+                "children": [{
+                        "id": "Y",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Z",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AA",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10010",
+                "type": "decimal",
+                "text": "固定资产",
+                "children": [{
+                        "id": "AB",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AC",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AD",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10011",
+                "type": "decimal",
+                "text": "流动负债合计",
+                "children": [{
+                        "id": "AE",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AF",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AG",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10012",
+                "type": "decimal",
+                "text": "短期借款",
+                "children": [{
+                        "id": "AH",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AI",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AJ",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10013",
+                "type": "decimal",
+                "text": "非流动负债合计",
+                "children": [{
+                        "id": "AK",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AL",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AM",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10014",
+                "type": "decimal",
+                "text": "长期借款",
+                "children": [{
+                        "id": "AN",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AO",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AP",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10015",
+                "type": "decimal",
+                "text": "负债合计",
+                "children": [{
+                        "id": "AQ",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AR",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AW",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "10016",
+                "type": "decimal",
+                "text": "归属于母公司所有者权益合计",
+                "children": [{
+                        "id": "AT",
+                        "text": "末期数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AU",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AV",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "id": "zcfzzyzbb",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

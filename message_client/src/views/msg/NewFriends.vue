@@ -17,7 +17,16 @@
             <!--{{item}}-->
             <div class="item-left">
               <div>
-                <div class="img-box"><img :src="item.avatar" v-avatar="item.name"></div>
+                <div class="img-box">
+                  <avatar
+                    :username="item.name"
+                    :rounded="false"
+                    backgroundColor="transparent"
+                    color="#fff"
+                    :size="48"
+                  ></avatar>
+                  <img :src="item.avatar" onerror="this.style.display='none'"/>
+                </div>
               </div>
               <h3 class="title" :title="item.name">{{item.name}}</h3>
               <span class="datetime">{{item.sendTime | formatTime}}</span>
@@ -32,10 +41,10 @@
               <!--如果是我加别人为好友-->
               <span v-else-if="item.senderId===loginUserId">等待验证</span>
               <div class="btns" v-else>
-                <my-btn class="my-btn" @click="saveFriend(item, 4)">
+                <my-btn class="my-btn" @click.native="saveFriend(item, 4)">
                   同意
                 </my-btn>
-                <my-btn class="my-btn my-btn-default" @click="updateState(item, 3)">
+                <my-btn class="my-btn my-btn-default" @click.native="updateState(item, 3)">
                   拒绝
                 </my-btn>
               </div>
@@ -120,17 +129,20 @@ export default {
       });
     },
 
+    /**
+     * 点同意，先保存saveFriend()，再修改状态，点拒绝直接改状态,
+     * 点同意 查询是否是好友，如果是好友，直接执行修改状态，不保存数据
+     * @param item 消息条目完整数据
+     * @param state 需要改变的状态（4：同意；3：拒绝）
+     */
     saveFriend(item, state) {
-      // 点同意，先保存，再修改状态，点拒绝直接改状态
-      debugger;
+      // debugger;
       let data = {
-        friendId: item.id,
+        friendId: item.senderId,
         userId: this.loginUserId
       };
       SAVE_FRIEND(data).then(res => {
-        // post
-        debugger;
-        console.log('保存', res.data.data);
+        // debugger;
         if (res.data.code === 200) {
           this.updateState(item, state);
         } else {
@@ -141,22 +153,20 @@ export default {
           });
         }
       }).catch(err => {
-        console.log('请求message：', err);
+        console.log(err);
       });
     },
     updateState(item, state) {
-      debugger;
+      // debugger;
       let params = {
         code: item.code,
         state: state // 3拒绝，4同意
       };
       REFUSE_FRIEND(params)
-      // get
         .then(res => {
-          console.log('修改好友请求状态res:', res.data);
           if (res.data.code === 200) {
             console.log('修改好友请求成功');
-            this.updateMessageList(item, state); // 更新本地页面显示
+            this._updateMessageList(item, state); // 更新本地页面显示
           } else {
             this.$message({
               type: 'warning',
@@ -165,12 +175,16 @@ export default {
             });
           }
         }).catch(err => {
-          console.log('修改好友请求err：', err);
-        });
+        console.log('修改好友请求err：', err);
+      });
     },
 
-    // 等待服务器返回好友修改状态后，本地显示处理
-    updateMessageList(item, state) {
+    /**
+     * 等待服务器返回好友修改状态后，本地显示处理
+     * @param item 消息条目完整数据
+     * @param state 需要改变的状态（4：同意；3：拒绝）
+     */
+    _updateMessageList(item, state) {
       debugger;
       let index = this.messageList.indexOf(item);
       this.messageList[index].state = state;
@@ -252,6 +266,7 @@ export default {
       font-weight: 400;
 
       .img-box {
+        position: relative;
         width: 48px;
         height: 48px;
         overflow: hidden;
@@ -259,7 +274,12 @@ export default {
         margin-right: 20px;
         border-radius: 50%;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 48px;
           height: 48px;
         }

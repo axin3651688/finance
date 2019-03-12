@@ -3,7 +3,8 @@
     <el-row class="choice_title">选择消息接收人</el-row>
     <el-row>
       <el-col :span="3" v-for="(o,index) in showDatas" :key="o.id" class="role_add">
-        <img @click="deleteData(index)" :src="o.avatar">
+        <img v-if="o.avatar" :onerror="errorUserPhoto" @click="deleteData(index)" :src="o.avatar">
+        <img v-else src="@a/avatar.jpg" class="img">
         <i class="iconfont icon-shanchuguanbicha2 item_img"></i>
         <div class="name">{{o.trueName}}</div>
       </el-col>
@@ -12,18 +13,11 @@
         <div class="name">共{{listLength}}人</div>
       </el-col>
       <el-col :span="3" class="role_add">
-        <i @click="ShowMeluList({isShow:true})" class="iconfont icon-jia item_imgadd"></i>
+        <i @click.stop="ShowMeluList({isShow:true})" class="iconfont icon-jia item_imgadd"></i>
       </el-col>
     </el-row>
     <div class="input_title">消息内容</div>
-    <el-input
-      type="textarea"
-      :rows="7"
-      placeholder="请输入内容"
-      class="input"
-      resize="none"
-      v-model="textarea"
-    ></el-input>
+    <el-input type="textarea" :rows="7" class="input" resize="none" v-model="textContent"></el-input>
     <el-button @click="sendMsg" type="primary" class="send">发 送</el-button>
   </div>
 </template>
@@ -34,7 +28,7 @@ import {
   companyContactList,
   SAVE_MODULE_MSG,
   ACK_MODULE_MSG
-} from "~api/userClientRest";
+} from "~api/interface";
 export default {
   name: "Cbsb",
   components: {},
@@ -44,7 +38,9 @@ export default {
       listDatas: [],
       userId: this.$store.getters.user.user.id,
       companyId: this.$store.getters.user.company.id,
-      imgShow: ""
+      imgShow: "",
+      textContent: this.textarea(),
+      errorUserPhoto: 'this.src="' + require("@a/avatar.jpg") + '"'
     };
   },
   created() {
@@ -56,12 +52,7 @@ export default {
     listLength() {
       return this.showMeluList.checkedItem.length;
     },
-    // 默认输入框文字
-    textarea() {
-      let company = this.$store.getters.showDialog.params.title;
-      let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
-      return time + company + "财务分析报告未及时上报，请上报！";
-    },
+
     // 选中的各位id
     userIds() {
       let ids = this.showMeluList.checkedItem.map(function(user) {
@@ -83,6 +74,12 @@ export default {
     }
   },
   methods: {
+    // 默认输入框文字
+    textarea() {
+      let company = this.$store.getters.showDialog.params.title;
+      let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
+      return time + company + "财务分析报告未及时上报，请上报！";
+    },
     ...mapActions(["ShowMeluList", "ShowDialog"]),
     /**
      * @desc    : 请求下拉框的数据，装到vuex中
@@ -91,12 +88,16 @@ export default {
      * @data    : 2019-01-25
      */
     getMemberList(companyId) {
-      companyContactList(companyId).then(res => {
-        let data = res.data.data.normal;
-        console.log(data);
-        this.ShowMeluList({ data: data });
-        this.listDatas = data;
-      });
+      // 如果vuex已经有数据,那么将不再发请求,要不然每次点都会发
+      if (this.showMeluList.data.length > 0) {
+        return null;
+      } else
+        companyContactList(companyId).then(res => {
+          let data = res.data.data.normal;
+          console.log(data);
+          this.ShowMeluList({ data: data });
+          this.listDatas = data;
+        });
     },
     deleteData(index) {
       // console.log("删除我", index);
@@ -114,7 +115,7 @@ export default {
       let datas = {
         action: 1,
         companyId: this.companyId,
-        content: this.textarea,
+        content: this.textContent,
         moduleId: 1,
         receiver: this.userIds,
         receiverId: 1,
@@ -127,27 +128,18 @@ export default {
         ACK_MODULE_MSG(data)
           .then(res => {
             console.log(res.data.msg);
-            this.$confirm("消息已经发送成功！是否继续发送？", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
+            this.$message({
+              message: "消息已经发送成功！",
               type: "success"
-            })
-              .then(() => {
-                this.$message({
-                  type: "success",
-                  message: "请继续编辑!"
-                });
-                // 清空所有内容
-                this.ShowMeluList({ deleteData: "deleteAll" });
-              })
-              .catch(() => {
-                // 清空所有内容,并关闭弹窗
-                this.ShowMeluList({ deleteData: "deleteAll" });
-                this.ShowDialog({ isShow: false });
-              });
+            });
+            // 清空所有内容,并关闭弹窗
+            this.ShowMeluList({ deleteData: "deleteAll" });
+            this.ShowDialog({ isShow: false });
           })
           .catch(res => {
-            console.log("发送失败!", res.data);
+            // 清空所有内容,并关闭弹窗
+            this.ShowMeluList({ deleteData: "deleteAll" });
+            this.ShowDialog({ isShow: false });
           });
       });
     }

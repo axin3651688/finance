@@ -5,16 +5,14 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-import webSocket from '@mu/webSocket';
-import {getClientParams} from '@mu/index';
-
-const SETTINGS = require('@/settings'); // 全局变量或配置
+import {mapActions} from 'vuex'
+import webSocket from '@mu/webSocket'
+import {getClientParams} from '@mu/index'
 
 export default {
   name: '',
   data() {
-    return {};
+    return {}
   },
   methods: {
     ...mapActions(['GettRreeInfo']),
@@ -24,61 +22,62 @@ export default {
       if (localStorage.authorization) {
         // 有 authorization 已经登陆的
         // alert('有 authorization: ' + localStorage.authorization);
-        this.initSocket(localStorage.authorization); // 如果有 authorization，则建立socket连接
+        this.initSocket(localStorage.authorization) // 如果有 authorization，则建立socket连接
 
         // 登陆令牌 存储到vuex中
         this.$store.dispatch(
           'setIsAutnenticated',
           !Cnbi.isEmpty(localStorage.authorization)
-        );
+        )
         // 由于localStorage只能存字符串,需转json
-        this.$store.dispatch('setUser', JSON.parse(localStorage.database));
+        this.$store.dispatch('setUser', JSON.parse(localStorage.database))
         // 假如用户是新用户或被清理了缓存,不执行以下语句
-        var vd = {};
+        var vd = {}
         Object.keys(localStorage).forEach(keys => {
-          var a = localStorage[keys];
+          var a = localStorage[keys]
           if (!Cnbi.isEmpty(a) && keys.indexOf('_cache') > -1) {
-            var b = keys.replace('_cache', '');
-            b == 'conversion' ? (vd[b] = JSON.parse(a)) : (vd[b] = a);
+            var b = keys.replace('_cache', '')
+            b === 'conversion' ? (vd[b] = JSON.parse(a)) : (vd[b] = a)
           }
-        });
+        })
         if (!Cnbi.isEmpty(localStorage.treeInfo)) {
-          this.GettRreeInfo(JSON.parse(localStorage.treeInfo));
+          this.GettRreeInfo(JSON.parse(localStorage.treeInfo))
         }
 
         // electron 窗口处理
         if (window.require) {
-          var ipc = window.require('electron').ipcRenderer;
+          var ipc = window.require('electron').ipcRenderer
         }
         if (window.require) {
-          ipc.send('web_autoLogin', '');
+          ipc.send('web_autoLogin', '')
         }
       } else {
         // 没有 authorization 没有登陆
       }
     },
     initSocket(authorization) {
-      let url = SETTINGS.serverAddress.socket;
-      debugger;
+      let url = process.env.VUE_APP_SOCKET
       if (authorization != null) {
-        url = url + '?Authorization=' + authorization;
+        url = url + '?Authorization=' + authorization
       } else {
         // url = url + "?device=" + Cnbi.getDevice();
       }
-      webSocket({url: url});
+      console.log('app创建时的webSocket——url：', url)
+      webSocket({url: url})
     }
   },
   created() {
+    // console.log('cordova.device========2', this);
     // debugger;
-    this.readLocalStorage();
-    let bean = getClientParams();
-    let authorization = bean.authorization || bean.tikct || bean.token;
+    this.readLocalStorage()
+    let bean = getClientParams()
+    let authorization = bean.authorization || bean.tikct || bean.token
     if (!authorization) {
-      authorization = localStorage.getItem('authorization');
+      authorization = localStorage.getItem('authorization')
     }
-    this.initSocket(authorization);
+    this.initSocket(authorization)
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,10 @@
 <template>
   <div class="search-bar" v-clickoutside="handleClose">
     <el-input placeholder="搜索" v-model="keywords" clearable @keyup.enter.native="doSearch">
-      <div slot="suffix" class="icon-zoom img-box">
-        <img src="@ma/icon/zoom.svg">
-      </div>
+      <!--<div slot="suffix" class="icon-zoom img-box">-->
+        <!--<img src="@ma/icon/zoom.svg">-->
+      <!--</div>-->
+      <div slot="suffix" class="el-icon-search" style="margin-top: 7px;">      </div>
     </el-input>
     <div class="search-bar_right" @click="doSearch">
       <div class="img-box">+</div>
@@ -38,9 +39,16 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item" v-for="item in searchData.contacts">
+            <li class="content-item" v-for="item in searchData.contacts" :key="item.id">
               <div class="img-box item-avatar" @click="redirectContact(item.id, 'ContactsFriends')">
-                <img :src="item.avatar" v-avatar="item.trueName">
+                <avatar
+                  :username="item.trueName"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  :size="30"
+                ></avatar>
+                <img :src="item.avatar" onerror="this.style.display='none'"/>
               </div>
               <h4 class="item-title">{{item.trueName}}</h4>
               <div class="item-btn" @click="redirectSingleChat(item)">聊天</div>
@@ -56,10 +64,17 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item content-item__group" v-for="item in searchData.groups"
+            <li class="content-item content-item__group" v-for="item in searchData.groups" :key=item.id
                 @click="redirectGroupChat(item)">
               <div class="img-box item-avatar">
-                <img :src="item.avatar" v-avatar="item.text">
+                <avatar
+                  :username="item.text"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  :size="30"
+                ></avatar>
+                <img :src="item.avatar" onerror="this.style.display='none'"/>
               </div>
               <h4 class="item-title">{{item.text}}</h4>
             </li>
@@ -206,6 +221,7 @@ export default {
       let targetId = '1100_' + item.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
+      sessionItem['online'] = true // 默认每个用户是在线状态
       sessionItem['id'] = item.id;
       sessionItem['name'] = item.trueName;
       sessionItem['count'] = 0;
@@ -395,6 +411,9 @@ export default {
 
         .img-box {
           @include imgBox($width: 30px, $height: 30px, $borderRadius: 50%)
+          div{
+            position: absolute;
+          }
         }
 
         .item-avatar {

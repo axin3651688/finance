@@ -1,0 +1,168 @@
+{
+    "id": "yysrflbyb",
+    "text": "营业收入分类表（月报）",
+    "config": {
+        "sql": "select ddi.scode as nid, ddi.sname as text, sum(case when dfp.dim_department = '1001' then dfp.fact_a end) as A, sum(case when dfp.dim_department = '1001' then dfp.fact_b end) as B, sum(case when dfp.dim_department = '1001' then dfp.fact_c end) as C, sum(case when dfp.dim_department = '1001' then dfp.fact_d end) as D, sum(case when dfp.dim_department = '1002' then dfp.fact_a end) as E, sum(case when dfp.dim_department = '1002' then dfp.fact_b end) as F, sum(case when dfp.dim_department = '1002' then dfp.fact_c end) as G, sum(case when dfp.dim_department = '1002' then dfp.fact_d end) as H, sum(case when dfp.dim_department = '1003' then dfp.fact_a end) as I, sum(case when dfp.dim_department = '1003' then dfp.fact_b end) as J, sum(case when dfp.dim_department = '1003' then dfp.fact_c end) as K, sum(case when dfp.dim_department = '1003' then dfp.fact_d end) as L, sum(case when dfp.dim_department = '1004' then dfp.fact_a end) as M, sum(case when dfp.dim_department = '1004' then dfp.fact_b end) as N, sum(case when dfp.dim_department = '1004' then dfp.fact_c end) as O, sum(case when dfp.dim_department = '1004' then dfp.fact_d end) as P, sum(case when dfp.dim_department = '1005' then dfp.fact_a end) as Q, sum(case when dfp.dim_department = '1005' then dfp.fact_b end) as R, sum(case when dfp.dim_department = '1005' then dfp.fact_c end) as S, sum(case when dfp.dim_department = '1005' then dfp.fact_d end) as T from DW_FactIncomeClassify dfp right join dw_dimproductitem ddi on ddi.scode = dfp.dim_productitem and dfp.dim_period = :period and dfp.dim_company = :company group by ddi.scode, ddi.sname order by ddi.scode",
+        "cube": {
+            "cubeId": 7
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "收入分类"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "tempa1",
+                "type": "decimal",
+                "text": "三级企业内部",
+                "children": [{
+                        "id": "A",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "销售金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "单价",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "D",
+                        "text": "销售成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa2",
+                "type": "decimal",
+                "text": "二级企业内部",
+                "children": [{
+                        "id": "E",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "销售金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "G",
+                        "text": "单价",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "销售成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa3",
+                "type": "decimal",
+                "text": "农垦集团内部",
+                "children": [{
+                        "id": "I",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "J",
+                        "text": "销售金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "单价",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "销售成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa4",
+                "type": "decimal",
+                "text": "农垦集团外部",
+                "children": [{
+                        "id": "M",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "销售金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "O",
+                        "text": "单价",
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "tempa5",
+                "type": "decimal",
+                "text": "合计",
+                "children": [{
+                        "id": "Q",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "R",
+                        "text": "销售金额",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "S",
+                        "text": "单价",
+                        "type": "decimal"
+                    }
+                ]
+            }
+
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "yysrflbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

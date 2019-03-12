@@ -54,7 +54,7 @@ axios.interceptors.request.use(
     // }
 
     // 加载动画
-    _startLoading();
+    // _startLoading();
 
     // debugger
     if (localStorage.authorization) {
@@ -73,7 +73,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     // 结束加载动画
-    _endLoading();
+    // _endLoading();
     return response;
   },
 

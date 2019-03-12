@@ -24,6 +24,7 @@ export default {
     };
   },
   created() {
+    debugger;
     this.upData();
   },
   methods: {
@@ -46,6 +47,7 @@ export default {
       this.$set(this, "item", this.item);
       this.$set(this.item.options, "datas", tempData);
       let children = this.$children;
+      debugger;
       if (from && children && children.length > 0 && children[0].upData) {
         children[0].upData(this.item);
       }
@@ -55,6 +57,7 @@ export default {
       }
     },
     setFlagState() {
+      debugger;
       if (this.item.datas && this.item.datas.length > 0) {
         this.flag = true;
       } else {
@@ -63,11 +66,6 @@ export default {
     }
   },
   watch: {
-    // tempData(newName, oldName) {
-    //   console.log(newName);
-    //    this.item.options.datas = this.tempData;
-    //   console.log("111111");
-    // }
     flag: function(val) {
       return this.flag;
     },

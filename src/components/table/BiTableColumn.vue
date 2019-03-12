@@ -1,12 +1,39 @@
 <template>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
+  <!-- v-if="isShow()" -->
+  <el-table-column
+    v-if="col.type === 'index' && isShow() "
+    :label="col.text"
+    :align="col.align|| 'center'"
+    :width="col.width||70"
+    type="index"
+    fixed
+  />
+
   <!--TreeItem组件单独针对树表前面折叠与展开列-->
   <TreeItem
-    v-if="col.isTree"
+    v-else-if="col.isTree"
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
     :tableData="tableData"
   />
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
+  <el-table-column
+    v-else-if="col.type === 'string'"
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+    :min-width="col.width||150"
+    :fixed="col.fixed|| false"
+  >
+    <!-- :fixed="col.fixed|| false" -->
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
+      </el-tooltip>
+    </template>
+  </el-table-column>
   <el-table-column
     v-else-if="col.type== 'template' "
     :prop="col.id"
@@ -17,55 +44,40 @@
       <!-- 智慧报告催报里面的三个点 -->
       <el-button @click="optionColumnClick(scope.row)" type="text" size="small">
         <img v-if="col.icon" :src="col.icon" alt>
-        <img v-else src="@/assets/green/list_menu.svg" alt class="img">
+        <img v-else src="@a/list_menu.svg" alt class="img">
         <el-cascader :options="col.menu.list" @change="columnDropDownClick"></el-cascader>
       </el-button>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
-  <el-table-column
-    v-else-if="col.type === 'index' "
-    :prop="col.id"
-    :label="col.text"
-    :align="col.align|| 'center'"
-    :width="col.width||70"
-    type="index"
-  />
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  number类型的数据-->
   <el-table-column
     v-else-if="col.type === 'number' "
     :prop="col.id"
     :label="col.text"
-    :align="col.align|| 'left'"
-    :width="col.width||100"
+    :align="col.align|| 'right'"
+    :min-width="col.width||120"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span>{{scope.row[col.id]}}</span>
+      <el-tooltip
+        class="item"
+        effect="light"
+        :content="String(scope.row[col.id])"
+        placement="right"
+      >
+        <span v-if="col.text==='行次'">{{scope.row.index}}</span>
+        <span v-else>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
-  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
-  <el-table-column
-    v-else-if="col.type === 'string'"
-    :prop="col.id"
-    :label="col.text"
-    :align="col.align|| 'left'"
-    :min-width="col.width||150"
-  >
-    <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span>{{scope.row[col.id]}}</span>
-      </el-tooltip>
-    </template>
-  </el-table-column>
+
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  decimal类型的数据    :cell-style = "rowClass"-->
   <el-table-column
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :width="col.width||160"
+    :min-width="col.width||140"
   >
     <template slot-scope="scope">
       <el-tooltip
@@ -110,6 +122,7 @@
 <script>
 import EventMixins from "../mixins/EventMixins";
 import TreeItem from "./TreeItem";
+import { mapGetters } from "vuex";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
@@ -124,7 +137,25 @@ export default {
     };
   },
   mixins: [EventMixins],
+  computed: {
+    ...mapGetters(["sidebar", "device"]),
+    classObj() {
+      return {
+        hideSidebar: !this.sidebar.opened,
+        openSidebar: this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation,
+        mobile: this.device === "mobile"
+      };
+    }
+  },
   methods: {
+    isShow() {
+      // debugger;
+      if (this.classObj.mobile) {
+        return false;
+      }
+      return true;
+    },
     columnDropDownClick(items) {
       let menuId = items[0];
       debugger;
@@ -137,9 +168,9 @@ export default {
     columnClick(column, scope) {
       debugger;
       if (column.listeners || column.menu.list[0].listeners[0]) {
-        console.log(column.menu.list[0]);
-        console.log(column.menu.list[0].listeners[0]);
-        this.commonHandler(column.listeners[0]);
+        // console.log(column.menu.list[0]);
+        // console.log(column.menu.list[0].listeners[0]);
+        this.commonHandler(column.listeners[0], column, scope);
       }
     },
 

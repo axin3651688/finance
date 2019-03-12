@@ -14,6 +14,23 @@ export default function pie() {
             top: "10%",
             data: []
         },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {
+                    show: true
+                },
+
+                dataView: {
+                    show: true,
+                    readOnly: false
+                },
+
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
         series: [{
             name: "风险级别",
             type: "pie",

@@ -8,9 +8,15 @@
         @click="setItemActive(item)"
       >
         <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
-          <div class="img-box">
-            <img :src="item.avatar" v-avatar="item.name">
-            <!--<img :src="item.avatar">-->
+          <div :class="['img-box', {'off-line':!item.online}]">
+            <avatar
+              :username="item.name"
+              :rounded="false"
+              backgroundColor="transparent"
+              color="#fff"
+              :size="40"
+            ></avatar>
+            <img :src="item.avatar" onerror="this.style.display='none'"/>
           </div>
         </el-badge>
 
@@ -30,55 +36,70 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import {PARSE_EMOTIONS} from '@mu/parseEmotions.js';
-import {MSG_TIME_FORMAT} from '@mu/formatTime.js';
+import {mapGetters, mapActions} from 'vuex'
+import {PARSE_EMOTIONS} from '@mu/parseEmotions.js'
+import {MSG_TIME_FORMAT} from '@mu/formatTime.js'
 
 export default {
   name: 'Session',
   data() {
     return {
+      isRequestBack: true,
       SessionBarInstance: null // 消息session实例对象
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
-      return this.user.user.id;
+      return this.user.user.id
+    },
+    socketOffLine() { // socket连接转态
+      return this.messageStore.socketOffLine
     }
   },
   filters: {
     // 格式化时间戳
     formatTime(time) {
-      return MSG_TIME_FORMAT(time);
+      return MSG_TIME_FORMAT(time)
     }
+  },
+  created() {
+    this.$bus.on('requestBack', () => { // 当请求的聊天消息返回时，吧返回状态设置为true
+      this.isRequestBack = true
+    })
   },
   methods: {
     ...mapActions(['ActionSetMessageStore', 'ActionUpdateSessionList']),
     // 解析表情
     parseEmotions(content) {
-      return PARSE_EMOTIONS(content);
+      return PARSE_EMOTIONS(content)
     },
 
     /**
      * 当session条目被点击时，激活当前item（设置选中状态）
      */
     setItemActive(item) {
-      // debugger;
-      // vuex 状态设置
+      // == 以下代码作用：当点击聊天的session时，当请求的消息没有返回时，禁止切换到其他的聊天窗口
+      let isChatSession = item.miniType === 1101 || item.miniType === 1100 // 是不是聊天项
+      if (isChatSession) { // 如果是聊天项，在聊天内容没有返回前，不能切换
+        if (!this.isRequestBack) return false
+        this.isRequestBack = false
+      }
+      // == 以上代码作用：当点击聊天的session时，当请求的消息没有返回时，禁止切换到其他的聊天窗口
+
       this.ActionSetMessageStore({
         sessionActiveItem: item,
         miniType: item.miniType
-      });
+      })
       // vuex session 列表更行
       this.ActionUpdateSessionList({
         type: 'update',
         method: 'clearCount',
         data: item
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -106,17 +127,11 @@ export default {
     cursor: pointer;
 
     .img-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
+      @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
       background: $colorTheme;
 
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        float: left;
+      div {
+        position: absolute;
       }
     }
   }
@@ -143,6 +158,7 @@ export default {
 
   /deep/ .el-badge {
     vertical-align: unset;
+
     .el-badge__content.is-fixed {
       right: 15px;
     }

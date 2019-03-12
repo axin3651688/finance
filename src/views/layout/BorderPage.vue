@@ -4,23 +4,26 @@
     <OpenMeluList/>
     <leftMenu class="sidebar-container" v-if="isShow()"/>
     <div class="main-container">
+      <HeadNav v-if="isShow()"/>
+      <MobileHeadNav v-else/>
       <div @click="ToggleSideBar({opend:false})" class="shadow"></div>
       <el-scrollbar style="height: 100%">
         <router-view class="containerMain"></router-view>
       </el-scrollbar>
-      <HeadNav v-if="isShow()"/>
-      <OpenDialog/>
     </div>
   </div>
 </template>
 
 <script>
 import ResizeMixin from "@c/mixins/ResizeHandler";
+
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "BorderPage",
   components: {
+    Hamburger: () => import("@v/layout/sidebar/Hamburger"),
     HeadNav: () => import("./topnav/HeadNav"),
+    MobileHeadNav: () => import("./topnav/MobileHeadNav"),
     leftMenu: () => import("./sidebar/Sidebar"),
     OpenDialog: () => import("@v/layout/dialog/OpenDialog.vue"),
     OpenMeluList: () => import("@v/layout/dialog/OpenMeluList.vue")

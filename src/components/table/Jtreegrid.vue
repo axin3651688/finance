@@ -10,21 +10,21 @@
       height="item.height || rowClass"
       :cell-style="cellStyle"
     >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
+      <el-tag v-for="cc in item.config.columns" :key="cc.id">
+        <BiTableColumn :col="cc" :tableData="item" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table>
   </div>
 </template>
  
 <script>
-import BiTableColumnTree from "../table/BiTableColumnTree";
+import BiTableColumn from "./BiTableColumn";
 import { apiItemDatas } from "utils/apiItemDatas";
 import { handleOpen, convertData, isfold } from "utils/index";
 import { findThirdPartData } from "~api/interface";
 export default {
   components: {
-    BiTableColumnTree
+    BiTableColumn
   },
   data() {
     return {
@@ -35,6 +35,8 @@ export default {
   name: "Jtreegrid",
   props: ["item"],
   created() {
+    console.log(this.item.datas);
+    //额外添加属性,该属性不需要后台给
     this.formatData = convertData(this.item.datas);
     // 初始化展开第一行
     this.changeProp({ $index: 0, row: { id: this.companyId } });
@@ -55,13 +57,7 @@ export default {
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
-    // onRowClick(row, e, column) {
-    //   // 在底层有列点击,顶层有行点击
-    //   // debugger;
-    //   if (this.item.onRowClick && typeof this.item.onRowClick == "function") {
-    //     return this.item.onRowClick(row, column, e, this);
-    //   }
-    // },
+
     changeProp(dat) {
       // 改变父级的折叠属性
       console.log(dat);
@@ -87,7 +83,7 @@ export default {
         debugger;
         findThirdPartData(params)
           .then(res => {
-            // debugger;
+            debugger;
             let data = res.data.data;
             //添加元素到指定位置
             data.unshift(dat.$index + 1, 0);
@@ -161,44 +157,6 @@ export default {
 }
 </style>
  
-<style scoped>
-.ms-tree-space {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  width: 18px;
-  height: 14px;
-}
 
-.ms-tree-space::before {
-  content: "";
-}
-.processContainer {
-  width: 100%;
-  height: 100%;
-}
-table td {
-  line-height: 26px;
-}
-.tree-ctrl {
-  position: relative;
-  cursor: pointer;
-  color: #2196f3;
-  margin-left: -18px;
-}
-.el-table td,
-.el-table th {
-  padding: 10px 0;
-}
-img {
-  width: 20px;
-  position: absolute;
-  right: 50%;
-  top: 5px;
-}
-</style>
 
  

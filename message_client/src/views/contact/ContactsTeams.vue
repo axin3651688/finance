@@ -26,7 +26,14 @@
               >
                 <figure>
                   <div class="img-box">
-                    <img :src="user.avatar" alt="user.trueName" v-avatar="user.trueName" textColor="#f60">
+                    <avatar
+                      :username="user.trueName"
+                      :rounded="false"
+                      backgroundColor="transparent"
+                      color="#fff"
+                      :size="40"
+                    ></avatar>
+                    <img :src="user.avatar" onerror="this.style.display='none'"/>
                   </div>
                   <div class="info">
                     <h3>{{user.trueName}}</h3>
@@ -45,7 +52,14 @@
         <div class="panel-right-top">
           <div>
             <div class="img-box">
-              <img :src="rightUserInfo.user.avatar" v-avatar="rightUserInfo.user.trueName">
+              <avatar
+                :username="rightUserInfo.user.trueName"
+                :rounded="false"
+                backgroundColor="transparent"
+                color="#fff"
+                :size="50"
+              ></avatar>
+              <img :src="rightUserInfo.user.avatar" onerror="this.style.display='none'"/>
             </div>
           </div>
           <div class="text">
@@ -83,31 +97,36 @@
         >发送信息
         </el-button>
       </template>
+      <no-data v-if="showNoData">你还没有加入任何团队</no-data>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapActions} from 'vuex'
 import {
   ALL_COMPANY_CONTACT_LIST,
   CONTACT_INFO
-} from '@m_api/message.js';
+} from '@m_api/message.js'
 
 export default {
   name: 'ContactsTeams',
+  components: {
+    NoData: () => import('@mv/common/NoData') // 没有数据是显示的内容
+  },
   data() {
     return {
+      showNoData: false, // 是否显示没有数据的提示内容
       activeUser: this.loginUserId, // 当前选中的用户id
       companyList: null, // [] 接收一个数组
       rightUserInfo: null, // 接收一个对象
       requestedUser: {} // 已经请求过详细信息用户的用户信息
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'messageStore']), // vuex中保存的登陆用户数据
     loginUserId() { // 当前登录用户的Id
-      return this.user.user.id;
+      return this.user.user.id
     }
   },
   methods: {
@@ -116,101 +135,103 @@ export default {
     // 和某某单聊, 要切换到单聊窗口
     chatWithSingle(rightUserInfo) {
       // debugger;
-      let sessionItem = {};
-      let targetId = '1100_' + rightUserInfo.user.id;
-      sessionItem['miniType'] = 1100;
-      sessionItem['targetId'] = targetId;
-      sessionItem['id'] = rightUserInfo.user.id;
-      sessionItem['name'] = rightUserInfo.user.trueName;
-      sessionItem['count'] = 0;
-      sessionItem['content'] = null;
-      sessionItem['sendTime'] = null;
-      sessionItem['avatar'] = rightUserInfo.user.avatar;
-      sessionItem['originData'] = rightUserInfo;
+      let sessionItem = {}
+      let targetId = '1100_' + rightUserInfo.user.id
+      sessionItem['miniType'] = 1100
+      sessionItem['targetId'] = targetId
+      sessionItem['online'] = true // 默认每个用户是在线状态
+      sessionItem['id'] = rightUserInfo.user.id
+      sessionItem['name'] = rightUserInfo.user.trueName
+      sessionItem['count'] = 0
+      sessionItem['content'] = null
+      sessionItem['sendTime'] = null
+      sessionItem['avatar'] = rightUserInfo.user.avatar
+      sessionItem['originData'] = rightUserInfo
       this.ActionSetMessageStore({
         sessionActiveItem: sessionItem,
         miniType: sessionItem.miniType
-      });
-      let itemExist = false;
+      })
+      let itemExist = false
       for (let item of this.messageStore.sessionList) {
         if (item.targetId === targetId) { // 如果已经在队列中了，清除消息计数
-          itemExist = true;
+          itemExist = true
           this.ActionUpdateSessionList({
             type: 'update',
             method: 'clearCount',
             data: sessionItem
-          });
-          break;
+          })
+          break
         }
       }
       if (!itemExist) { // 如果不存在，则进队列
         let addObj = {
           type: 'addItem', // 可取'addItem','deleteItem','update'
           data: sessionItem
-        };
-        this.ActionUpdateSessionList(addObj);
+        }
+        this.ActionUpdateSessionList(addObj)
       }
-      this.$router.push('/message_page/msg');
+      this.$router.push('/message_page/msg')
     },
 
     // 获取公司列表, 并把公司列表存vuex
     getCompanyList() {
       // debugger;
+      if (this.messageStore.companyList) { // 如果vuex中有数据，就不请求了
+        this.companyList = this.messageStore.companyList
+        return true
+      }
+
       ALL_COMPANY_CONTACT_LIST(this.loginUserId).then(res => {
-        console.log('我公司列表：', res.data);
+        console.log('我公司列表：', res.data)
         if (res.data.code === 200) {
-          this.companyList = res.data.data;
-          this.ActionSetMessageStore({companyList: this.companyList});
+          this.companyList = res.data.data
+          this.ActionSetMessageStore({companyList: this.companyList})
 
           // 当获得公司列表后，默认请求第一个公司第一个员工的信息
           if (this.companyList.length) {
             if (this.companyList[0].children.length) {
-              this.getUserInfo(this.companyList[0].children[0].id);
+              this.getUserInfo(this.companyList[0].children[0].id)
+            } else {
+              this.showNoData = true
             }
-          } else {
-            this.$message({
-              type: 'warning',
-              message: '你还没有加入任团队',
-              showClose: true
-            });
           }
         }
-      });
+      })
     },
 
     // 检查这个用户是不是已将请求过一次了,如果请求过了则直接返回该用户的信息
     checkUserInfo(userId) {
       if (this.requestedUser.hasOwnProperty(userId)) {
-        console.log('已经请求过用户的信息了:', this.requestedUser[userId]);
-        return this.requestedUser[userId];
-      } else return null;
+        console.log('已经请求过用户的信息了:', this.requestedUser[userId])
+        return this.requestedUser[userId]
+      } else return null
     },
 
     // 查看个人资料,如果这个用户已经请求过一次了就不在发送请求
     getUserInfo(userId) {
-      this.activeUser = userId;
-      let userInfo = this.checkUserInfo(userId);
+      this.activeUser = userId
+      let userInfo = this.checkUserInfo(userId)
       if (userInfo) {
-        this.rightUserInfo = userInfo;
+        this.rightUserInfo = userInfo
       } else {
         CONTACT_INFO(this.loginUserId, userId).then(res => {
-          console.log('查询个人资料', res.data.data);
+          console.log('查询个人资料', res.data.data)
           if (res.data.code === 200) {
-            let userInfo = res.data.data;
-            this.rightUserInfo = userInfo;
-            this.requestedUser[userId] = userInfo;
+            let userInfo = res.data.data
+            this.rightUserInfo = userInfo
+            this.requestedUser[userId] = userInfo
           }
         }).catch(err => {
-          console.log('查询个人资料', err);
-        });
+          console.log('查询个人资料', err)
+        })
       }
     }
 
   },
   created() {
-    this.getCompanyList();
+    this.getCompanyList()
   }
-};
+}
 
 </script>
 
@@ -326,14 +347,20 @@ export default {
             margin-top: -1px;
 
             .img-box {
+              position: relative;
               width: 40px;
               height: 40px;
               overflow: hidden;
               margin-right: 10px;
               border-radius: 8px;
-              background: $colorBgPageGray;
+              background: $colorTheme;
+
+              div {
+                position: absolute;
+              }
 
               img {
+                position: absolute;
                 width: 100%;
                 height: 100%;
               }
@@ -374,6 +401,7 @@ export default {
       margin-bottom: 58px;
 
       .img-box {
+        position: relative;
         margin-right: 20px;
         width: 50px;
         height: 50px;
@@ -381,7 +409,12 @@ export default {
         border-radius: 14px;
         background: $colorTheme;
 
+        div {
+          position: absolute;
+        }
+
         img {
+          position: absolute;
           width: 100%;
           height: 100%;
         }
