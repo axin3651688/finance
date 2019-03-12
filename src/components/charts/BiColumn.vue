@@ -1,7 +1,11 @@
 <template>
 <div>
-  <chart :options="options" auto-resize/>
-  <s-modal :dialogVisible.sync="dialogVisible" :vueChart="vueChart" :plateSelect="plateSelect"></s-modal>
+  <div>
+    <chart :options="options" auto-resize/>
+    <div class="smodal">
+      <s-modal :dialogVisible.sync="dialogVisible" :vueChart="vueChart" :plateSelect="plateSelect"></s-modal>
+    </div>
+  </div>
 </div>
 </template>
 <script>
