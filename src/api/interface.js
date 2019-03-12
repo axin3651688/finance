@@ -39,10 +39,13 @@ export function logout() {
 /**
  * 一次性全部加载公司树。 szc 2019-3-12 11:16:47
  */
-export function getCompanyTree() {
+export function getCompanyTree(user) {
   return request({
-    url: '/zjb/sys/dimcompany/query_all',
+    url: '/zjb/sys/dimcompany/query_user',
     method: 'get',
+    params: {
+      "user": user
+    }
   })
 }
 /**
