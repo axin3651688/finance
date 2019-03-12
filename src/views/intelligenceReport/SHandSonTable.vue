@@ -611,6 +611,7 @@ export default {
       let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/;
       let indexs;
       let value;
+      let oldValues;
       let modify;
       let datas = this.settings.data;
       let row;
@@ -620,24 +621,28 @@ export default {
         this.changeAddOrReduce(changes);
       }
       if (changes && changes.length > 0) {
+        debugger;
         index = changes[0][0];
         key = changes[0][1];
+        oldValues = changes[0][2];
         values = changes[0][3];
         obj[key] = values;
         obj["index"] = index;
-        // obj["colId"] = key;
+        obj["colId"] = key;
         obj["row"] = values;
         this.values = values;
         //融资的status可以传过去 空字符串 ""
         if (values == "" && key != "status" && this.templateId != "7") {
           values = 0;
         }
+        // console.log("oldValuesoldValues", values);
         let x;
         let arr = datas.filter(record => {
           x = record;
           return record.cusuppliername != null;
         });
         // console.log(x)
+        console.log("this.tableData", this.tableData);
         // console.log("datas",arr)
         // for(var i=0;i<arr.length-1;i++){
         //     row = datas[i]
@@ -651,7 +656,6 @@ export default {
 
         let me = this;
         function res(arr) {
-          debugger;
           var tmp = [];
           var copy = [];
           arr.forEach(item => {
@@ -669,7 +673,6 @@ export default {
           });
           return tmp;
         }
-        var result = res(arr);
         let changeRecord = this.tableData.filter(record => {
           return record.index === index && record.colId === key;
         })[0];
@@ -678,16 +681,15 @@ export default {
         })[0];
 
         if (this.fixed === 1) {
-          if (changeRecord) {
-            //|| reg.test(values) == ""
-            if (reg.test(values) === true) {
-              changeRecord[key] = values;
-            }
+          if (
+            (changeRecord && reg.test(values) === true) ||
+            (changeRecord && reg.test(values) == "")
+          ) {
+            changeRecord[key] = values;
           } else {
-            if (reg.test(values) === true) {
+            if (reg.test(values) === true || reg.test(values) == "") {
               let bb = { index: index };
               bb[key] = values;
-              bb["colId"] = key;
               this.tableData.push(bb);
             }
           }
@@ -768,7 +770,6 @@ export default {
           }
         }
       });
-      console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
@@ -873,10 +874,12 @@ export default {
       }
       if (this.templateId == 7) {
         if (columns == 1) {
+            // cellMeta.readOnly = true;
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
+            // cellMeta.readOnly = true;
           // debugger;
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           // this.getCellEditor = this.settings.getCellEditor(row,columns);
@@ -898,7 +901,7 @@ export default {
         //资金集中度的填写限制
         if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
-        } else {
+        }else {
           cellMeta.readOnly = true;
         }
       }
@@ -1014,8 +1017,8 @@ export default {
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } else if (col.id === "finance") {
-              // cc.renderer = this.contentOfFinance;
-              // cc.readOnly = true;
+            //   cc.renderer = this.contentOfFinance;
+            //   cc.readOnly = true;
               // cc.editor = this.contentEditor;
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
@@ -1031,7 +1034,9 @@ export default {
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
       // this.settings.setDataAtCell = this.setDataAtCell;
+      // this.settings.afterChange = this.afterCellChange;
       // this.settings.setDataAtCell = this.setDataAtCell;
+      // this.settings.getCellEditor = this.getCellEditor;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
@@ -1063,8 +1068,8 @@ export default {
     },
     contentOfFinance (instance, td, row, col, prop, value, cellProperties) {
       debugger;
-      let me = this;
-      if (!false) {
+      let me = this,childNode = td.childNodes;
+      if (!false && childNode && childNode.length == 0) {
         let el = document.createElement("DIV");
         // el.className = "flag";
         // el.id = "flag";
@@ -1074,6 +1079,7 @@ export default {
         el.style.cursor = "pointer";
         Handsontable.dom.addEvent(el, "dblclick", function(event) {
           debugger;
+          let $parent = td.parentNode;
           let $select = document.createElement("SELECT");
           let $option = document.createElement("option");
           let $option2 = document.createElement("option");
@@ -1083,7 +1089,7 @@ export default {
           $select.add($option2);
           $select.style.float = "right";
           $select.style.position = ""
-          td.appendChild($select);
+          $parent.appendChild($select);
         });
       }
     },
@@ -1202,7 +1208,6 @@ export default {
         x = record;
         return record.cusuppliername != null;
       });
-
       function res(arr) {
         var tmp = [];
         var copy = [];
@@ -1335,21 +1340,20 @@ export default {
       this.excelname = file.name;
       console.log("this.years", this.years);
       let fd = new FormData();
-      fd.set("file", file);
-      debugger;
-      fd.set("period", this.years);
-      fd.set("user", this.user.user.username);
-      fd.set("company", this.company);
+      fd.append("file", file);
+      fd.append("period", this.years);
+      fd.append("user", this.user.user.username);
+      fd.append("company", this.company);
       // console.log(this.dropdownid)
       if (this.dropdownid) {
-        fd.set("templateId", this.dropdownid);
+        fd.append("templateId", this.dropdownid);
       }
       if (this.subject) {
-        fd.set("subject", this.subject);
+        fd.append("subject", this.subject);
       }
       //这个地方存在为 0 的情况，所以改成这样。
       if (this.fixed != null) {
-        fd.set("fixed", this.fixed);
+        fd.append("fixed", this.fixed);
       }
       this.uploadfile = fd;
       this.files = fd;
@@ -1357,61 +1361,37 @@ export default {
     },
     // 表格的导入
     submitUpload(file) {
-      let me = this;
+      debugger;
       var regExp = /([\u4e00-\u9fa5]+)/gi;
       var title = this.excelname; //[\u4e00-\u9fa5]
       var titlename = title.match(regExp);
       console.log(title);
       if (titlename[0] != this.importHeader) {
+        debugger;
         this.$message({
           message: "模板名字不匹配",
           type: "error"
         });
       } else {
-        // console.log(titlename[0]);
-        this.$confirm('此操作将覆盖以前的数据内容, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          importExcel(me.files).then(res => {
-            if (res.data.code === 200) {
-              me.subject = null;
-              me.fixed = null;
-              me.templateId = null;
-              this.$message({
-                message: "模板匹配 导入成功",
-                type: "success"
-              });
-            } else {
-              this.$message({
-                message: res.data.msg,
-                type: "error"
-              });
-            }
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已撤回导入！'
-          });          
+        console.log(titlename[0]);
+        importExcel(this.files).then(res => {
+          console.log("res", res);
+          if (res.data.code === 200) {
+            this.subject = null;
+            this.fixed = null;
+            this.templateId = null;
+            // console.log("item的数据",this.item)
+            this.$message({
+              message: "模板匹配 导入成功",
+              type: "success"
+            });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "error"
+            });
+          }
         });
-        // importExcel(me.files).then(res => {
-        //   if (res.data.code === 200) {
-        //     me.subject = null;
-        //     me.fixed = null;
-        //     me.templateId = null;
-        //     this.$message({
-        //       message: "模板匹配 导入成功",
-        //       type: "success"
-        //     });
-        //   } else {
-        //     this.$message({
-        //       message: res.data.msg,
-        //       type: "error"
-        //     });
-        //   }
-        // });
       }
     },
     //导入按钮的点击事件调用导入
@@ -1427,10 +1407,10 @@ export default {
       this.subject = list[index].subject;
       this.fixed = list[index].fixed;
       if (this.uploadfile) {
-        this.uploadfile.set("templateId", this.dropdownid);
+        this.uploadfile.append("templateId", this.dropdownid);
         // this.uploadfile.append("subject", this.subject);
         this.uploadfile.set("subject", this.subject);
-        this.uploadfile.set("fixed", this.fixed);
+        this.uploadfile.append("fixed", this.fixed);
         this.files = this.uploadfile;
         console.log("要传递的上传文件的数据", this.files);
       }
@@ -1482,8 +1462,8 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      console.log("option:", val);
-      console.log("option data:", item);
+      // console.log("option:", val);
+      // console.log("option data:", item);
       this.templateId = item.templateId;
       this.title = item.title;
     },

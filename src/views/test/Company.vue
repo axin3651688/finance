@@ -13,10 +13,10 @@
           class="filter-tree"
           :filter-node-method="filterNode"
           :highlight-current="true"
+          :expand-on-click-node="false"
           :default-expanded-keys="expandKeys"
           ref="comtree"
           @node-click="handClick"
-          
         ></el-tree>
       </el-col>
       <!--公司表单-->
@@ -118,19 +118,19 @@
  */
 import request from "utils/http";
 import tools from "utils/tools";
-import axios from 'axios';
+import axios from "axios";
 import Vue from "vue";
 export default {
   created() {
     this.findNodes();
-    //this.findDim();
+    this.findDim();
   },
   data() {
     return {
       filterText: "",
       // rootNode: "1001",
       props: {
-        label: "sname",
+        label: "codename",
         children: "children"
       },
       treedata: [],
@@ -162,7 +162,7 @@ export default {
         nlevel: "", //级次
         ssrccode: "", //EAS公司源编码
         cisdel: "" //是否删除
-       // text: ""
+        // text: ""
       },
       //表单验证
       rules: {
@@ -170,7 +170,7 @@ export default {
           { required: true, message: "必填项" },
           {
             validator: (rule, value, callback) => {
-              const reg = /[0-9]+/;
+              const reg = /^[0-9]+$/;
               if (!reg.test(value)) {
                 callback(new Error("必须为数字"));
               } else {
@@ -180,7 +180,7 @@ export default {
                   //验证是否同名
                   // setTimeout(() => {
                   request({
-                    url: "/a/dimcompany/validate",
+                    url: "zjb/sys/dimcompany/validate",
                     method: "get",
                     params: {
                       scode: value
@@ -318,7 +318,7 @@ export default {
     findDim() {
       const _this = this;
       request({
-        url: "/get/cube/find_dim" + tools.datasourceId + "/INDUSTRY/company",
+        url: "zjb/dict/query/INDUSTRY",
         method: "get"
       }).then(result => {
         if (result.status == 200) {
@@ -344,7 +344,7 @@ export default {
         //   //scode: "1001" //getters.companyId ? getters.companyId :
         // }
       }).then(result => {
-        console.log(result)
+        console.log(result);
         if (result.status == 200 && result.data.code == 200) {
           //封装树对象数据
           const setting = {
@@ -355,7 +355,7 @@ export default {
                 pIdKey: "spcode"
               },
               key: {
-                name:"scode",
+                name: "scode",
                 children: "children"
               }
             }
@@ -364,16 +364,17 @@ export default {
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
-            data = data.filter(function(item){
-                  if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
-                      item.open = true;//展开此节点
-                      _this.expandKeys.push(item.scode);
-                  }
-                  item.sname = "("+item.scode+")"+item.sname;//拼写公司编码+公司名称
-                  return item;
+            data = data.filter(function(item) {
+              if (item.scode == "1001") {
+                //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                item.open = true; //展开此节点
+                _this.expandKeys.push(item.scode);
+              }
+              item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
+              return item;
             });
             //data[0].open = true;
-           // _this.expandKeys.push(data[0].scode);
+            // _this.expandKeys.push(data[0].scode);
             _this.treedata = tools.transformToeTreeNodes(setting, data);
           }
         }
@@ -393,7 +394,7 @@ export default {
       this.form.property1 = "";
       this.form.npercent = 0;
       this.form.ssrccode = "";
-      this.form.nlevel = this.form.nlevel+1;
+      this.form.nlevel = this.form.nlevel + 1;
       //处理添加
       this.opt = tools.opt[0];
       this.scodeDisabled = false;
@@ -403,8 +404,16 @@ export default {
     remove(formName) {
       var _this = this;
       var cur = _this.currentNode();
+      if (!cur) {
+        _this.$message({
+          type: "warning",
+          message: "请选择帐套，再做操作"
+        });
+        return false;
+      }
       _this.opt = tools.opt[2];
-      _this.$confirm("此操作将永久删除该公司, 是否继续?", "提示", {
+      _this
+        .$confirm("此操作将永久删除该公司, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -412,20 +421,21 @@ export default {
         .then(() => {
           request({
             url: "/zjb/sys/dimcompany/remove",
-            method: "post",
-            data: {
-              scodes:_this.form.scode
+            method: "get",
+            params: {
+              scodes: _this.form.scode
             }
           }).then(result => {
             if (result.status == 200) {
-              if (result.data.data) {
-                //重新加载
-                _this.findNodes();
-                this.$message({
-                  type: "success",
-                  message: "删除成功!"
-                });
-              }
+              this.forbidden = true;
+
+              this.activeForm = {};
+              //重新加载
+              _this.findNodes();
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
             }
           });
         })
@@ -441,7 +451,14 @@ export default {
       //console.log("表单变化：", this.activeForm);
       //比对变化
       var cur = _this.currentNode();
-      let form = _this.form;//右侧form表单中的参数  zb
+      if (!cur) {
+        _this.$message({
+          type: "warning",
+          message: "请选择帐套，再做操作"
+        });
+        return false;
+      }
+      let form = _this.form; //右侧form表单中的参数  zb
       var wformArr = _this.wformArr;
 
       if (_this.opt && _this.opt.url !== "save") {
@@ -452,7 +469,7 @@ export default {
         });
       }
       if (_this.opt && _this.opt.url === "save") {
-          _this.opt.url = "add";
+        _this.opt.url = "add";
       }
       if (_this.currentNode() && _.isEmpty(this.activeForm)) {
         _this.$message({
@@ -463,109 +480,109 @@ export default {
       }
 
       //验证
-      _this.$refs[formName].validate(valid => {
-        if (valid) {
-          //保存操作
-          var obj = _.cloneDeep(_this.activeForm);
-          if (_this.opt && _this.opt.url === "add") {
-            obj.spcode = _this.form.spcode ? _this.form.spcode : "-1";
-          }
-          //修改操作
-          else {
-            _this.opt = tools.opt[1];
-            //自身编码
-            obj.scode = _this.form.scode;
-          }
-          // console.log("参数对象：", obj);
-          _this.activeForm = {};
+      _this.$refs[formName].validate(
+        valid => {
+          if (valid) {
+            //保存操作
+            var obj = _.cloneDeep(_this.activeForm);
+            if (_this.opt && _this.opt.url === "add") {
+              obj.spcode = _this.form.spcode ? _this.form.spcode : "-1";
+            }
+            //修改操作
+            else {
+              _this.opt = tools.opt[1];
+              //自身编码
+              obj.scode = _this.form.scode;
+            }
+            // console.log("参数对象：", obj);
+            _this.activeForm = {};
 
-          request({
-                    url: "/zjb/sys/dimcompany/" + _this.opt.url ,
-                    method: "post",
-                    data: {
-                     // projectDimDto:{
-                        "scode": form.scode,//公司编码
-                        "sname": form.sname,//公司名称
-                        "spcode": form.spcode,//上级公司编码
-                        "sindcode": form.sindcode, //行业
-                        "property1": form.property1, //重点单位
-                        "npercent": form.npercent, //集团合计持股比例
-                        // cisleaf: "", //是否叶子节点
-                        "nlevel": form.nlevel, //级次
-                        "ssrccode": form.ssrccode, //EAS公司源编码
-                        "cisdel": form.cisdel //是否删除
-                     // }
-                    }
-                  }).then(result => {
-                  // resolve(response.data);
-                    this.forbidden = true;
-                    this.scodeDisabled = false;
-                    this.addDisabled = true;
-                    if (result.status == 200) {
-                      if (result.data.code === 0) {
-                        _this.$message.error(result.data.msg);
-                      } else {
-                        _this.$message({
-                          type: "success",
-                          message: result.data.data
-                        });
-                        //重新加载
-                        _this.findNodes();
-                      }
-                    } else {
-                      _this.$message.error(result.statusText);
-                    }
-                });
+            request({
+              url: "/zjb/sys/dimcompany/" + _this.opt.url,
+              method: "post",
+              data: {
+                // projectDimDto:{
+                scode: form.scode, //公司编码
+                sname: form.sname, //公司名称
+                spcode: form.spcode, //上级公司编码
+                sindcode: form.sindcode, //行业
+                property1: form.property1, //重点单位
+                npercent: form.npercent === -1 ? -1 : form.npercent / 100, //集团合计持股比例
+                // cisleaf: "", //是否叶子节点
+                nlevel: form.nlevel, //级次
+                ssrccode: form.ssrccode, //EAS公司源编码
+                cisdel: form.cisdel //是否删除
+                // }
+              }
+            }).then(result => {
+              // resolve(response.data);
+              this.forbidden = true;
+              this.scodeDisabled = false;
+              this.addDisabled = true;
+              if (result.status == 200) {
+                if (result.data.code === 0) {
+                  _this.$message.error(result.data.msg);
+                } else {
+                  _this.$message({
+                    type: "success",
+                    message: result.data.msg
+                  });
+                  //重新加载
+                  _this.findNodes();
+                }
+              } else {
+                _this.$message.error(result.statusText);
+              }
+            });
 
-        //   axios.post("/api/api/" + _this.opt.url +"_dim_project?cubeId="+4+"&dim=company",{
-             
-        //         "id": form.id,//公司编码
-        //         "text": form.text,//公司名称
-        //         "pid": form.pid,//上级公司编码
-        //         "dataMap":{
-        //           "sindcode": form.sindcode, //行业
-        //           "property1": form.property1, //重点单位
-        //           "npercent": form.npercent, //集团合计持股比例
-        //           // cisleaf: "", //是否叶子节点
-        //           "nlevel": form.nlevel, //级次
-        //           "ssrccode": form.ssrccode, //EAS公司源编码
-        //           "cisdel": form.cisdel //是否删除
-        //         }              
-            
-        //   },{
-        // headers: {
-        //     'Content-Type': 'application/json; charset=UTF-8'
-        // }})
-        //   .then(result => {
-        //     // resolve(response.data);
-        //     this.forbidden = true;
-        //     this.scodeDisabled = false;
-        //     this.addDisabled = true;
-        //     if (result.status == 200) {
-        //       if (result.data.code === 0) {
-        //         _this.$message.error(result.data.msg);
-        //       } else {
-        //         _this.$message({
-        //           type: "success",
-        //           message: result.data.data
-        //         });
-        //         //重新加载
-        //         _this.findNodes();
-        //       }
-        //     } else {
-        //       _this.$message.error(result.statusText);
-        //     }
-        //   });
-        } else {
-          _this.$message.error("数据未验证通过");
-          return false;
+            //   axios.post("/api/api/" + _this.opt.url +"_dim_project?cubeId="+4+"&dim=company",{
+
+            //         "id": form.id,//公司编码
+            //         "text": form.text,//公司名称
+            //         "pid": form.pid,//上级公司编码
+            //         "dataMap":{
+            //           "sindcode": form.sindcode, //行业
+            //           "property1": form.property1, //重点单位
+            //           "npercent": form.npercent, //集团合计持股比例
+            //           // cisleaf: "", //是否叶子节点
+            //           "nlevel": form.nlevel, //级次
+            //           "ssrccode": form.ssrccode, //EAS公司源编码
+            //           "cisdel": form.cisdel //是否删除
+            //         }
+
+            //   },{
+            // headers: {
+            //     'Content-Type': 'application/json; charset=UTF-8'
+            // }})
+            //   .then(result => {
+            //     // resolve(response.data);
+            //     this.forbidden = true;
+            //     this.scodeDisabled = false;
+            //     this.addDisabled = true;
+            //     if (result.status == 200) {
+            //       if (result.data.code === 0) {
+            //         _this.$message.error(result.data.msg);
+            //       } else {
+            //         _this.$message({
+            //           type: "success",
+            //           message: result.data.data
+            //         });
+            //         //重新加载
+            //         _this.findNodes();
+            //       }
+            //     } else {
+            //       _this.$message.error(result.statusText);
+            //     }
+            //   });
+          } else {
+            _this.$message.error("数据未验证通过");
+            return false;
+          }
+        },
+        err => {
+          reject(err);
         }
-          },err => {
-            reject(err)
-          })
-
-            
-      
+      );
     },
 
     //过滤节点
@@ -583,7 +600,7 @@ export default {
      *  */
     handClick(snode, node, el) {
       // console.log(this.form, snode, node);
-      this.form.sname = snode.sfullname;
+      this.form.sname = snode.sname; //sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
       this.form.nlevel = snode.level;
@@ -594,7 +611,7 @@ export default {
       this.form.npercent = snode.npercent;
       this.form.property1 = snode.property1;
       if (this.form.npercent - 0 !== -1) {
-        this.form.npercent = this.form.npercent;
+        this.form.npercent = this.form.npercent * 100;
       }
       //根节点
       if (this.form.nlevel - 0 === 1) {
@@ -603,7 +620,7 @@ export default {
       //默认为修改状态
       this.opt = tools.opt[1];
       //表单可编辑状态
-      // this.forbidden = false;
+      this.forbidden = false;
       this.scodeDisabled = true;
       this.activeForm = {};
       this.addDisabled = false;

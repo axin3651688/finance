@@ -47,7 +47,14 @@
           </div>
         </el-col>
         <el-col :span="7" class="rightContent">
-          <el-form label-position="right" label-width="80px" :model="loginUser" ref="loginForm" class="login-form formContent">
+          <el-form 
+          label-position="right" 
+          label-width="80px" 
+          :rules="rules" 
+          :model="loginUser" 
+          ref="loginForm" 
+          class="login-form formContent" 
+          hide-required-asterisk="true">
             <el-form-item prop="usename">
               <label slot="label" class="form-label">用户名</label>
               <el-input  v-model="loginUser.usename" placeholder="请输入用户名"></el-input>

@@ -77,7 +77,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="12">
+      <el-badge :value="0">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
       <span class="username">
