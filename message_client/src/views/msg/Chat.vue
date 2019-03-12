@@ -82,6 +82,7 @@ export default {
   },
   data() {
     return {
+      canSend: true, // 发送间隔时间
       infiniteHandlerState: null,
       page: 1,
       showSidebarPop: false,
@@ -346,6 +347,7 @@ export default {
      * sendData:
      */
     _httpSend(sendData, pushData) {
+      this.canSend = false
       // debugger
       switch (this.miniType) {
         case 1100: // 单聊
@@ -378,6 +380,7 @@ export default {
      * @param res: http方式发送消息返回的res
      */
     _addMsgToWindow(res, pushData) {
+      // this.canSend = true
       // debugger;
       let data = {
         avatar: this.user.user.avatar,
