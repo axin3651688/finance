@@ -1,5 +1,8 @@
 import request from 'utils/http'
 import store from '@/store'
+
+//全局修改  cubeId , 这里写了其他地方都没得用！ zdk 2019年3月12日 09:26:42
+let cubeId = 8;
 /**
  * 登录接口
  */
@@ -11,7 +14,7 @@ export function login(loginUser) {
    //url: '/api/api/core_user/login',
    //method: 'get',
     params: {
-      cubeId:4,
+      cubeId:cubeId,
       account: loginUser.usename,
       password: loginUser.password
     }
@@ -45,7 +48,7 @@ export function getCompanyTree(id, dimName, type, pid) {
   //   method: 'get',
   // })
   return request({
-    url: '/api/api/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,
+    url: '/api/api/find_dim' + cubeId + '/' + dimName + '/' + type + '/' + pid,
     // url: '/tree/cube/find_dim2/company/0/1',
     method: 'get',
   })
@@ -70,11 +73,12 @@ export function findSideBar(userId, code) {
  */
 export function findThirdPartData(params) {
   // debugger
-  if (!params.cubeId) {
-    params.cubeId = JSON.parse(localStorage.database).license.id;
-    // 取vuex里面的use里面的id
-    // params.cubeId = this.user.user.license.id
-  }
+  // if (!params.cubeId) {
+  //   params.cubeId = JSON.parse(localStorage.database).license.id;
+  //   // 取vuex里面的use里面的id
+  //   // params.cubeId = this.user.user.license.id
+  // }
+  params.cubeId = cubeId;
   return request({
     method: "post",
     url: params.url || "/api/api/find_cube_map/",

@@ -362,3 +362,5 @@ listeners:[
         #1CD1A1 （淡青色）
         #1875F0 （蓝色）
         
+## 注意：cubeId全局修改
+    src\api\interface.js 中加了 let cubeId = 8 ，这里修改了其他地方配cubeId 都没效
