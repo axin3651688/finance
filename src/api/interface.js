@@ -44,7 +44,7 @@ export function getCompanyTree(user) {
     url: '/zjb/sys/dimcompany/query_user',
     method: 'get',
     params: {
-      "user": user
+      "suser": user.username
     }
   })
 }
