@@ -107,6 +107,7 @@ export default {
       return options;
     },
     upData(item) {
+      debugger;
       console.log(item);
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;

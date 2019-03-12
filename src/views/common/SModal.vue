@@ -3,7 +3,7 @@
     title="信息"
     width="30%"
     :plateSelect.sync="plateSelect"
-    :visible.sync="plateSelect.dialogVisible"
+    :visible.sync="plateSelect.showDialog"
     >
     <div slot="header">
         <span class="titleContent">信息</span>
@@ -25,18 +25,15 @@ export default {
     props: ["dialogVisible","vueChart","plateSelect"],
     data() {
         return {
-            dialogVisible:plateSelect.dialogVisible
+            dialogVisible:plateSelect.showDialog
         }
     },
     created() {
-        debugger;
     },
     mounted() {
-        debugger;
     },
     methods: {
         plateHandle (done) {
-            debugger;
             let me = this;
             let $vueChart = this.vueChart.content;
             me = $vueChart;
@@ -55,10 +52,9 @@ export default {
                 console.log("没有设置回调函数，你真的不想干点什么了吗：", listener);
             }
 
-            this.plateSelect.dialogVisible = false;
+            this.plateSelect.showDialog = false;
         },
         companyHandle () {
-            debugger;
             let me = this;
             let $vueChart = this.vueChart.content;
             me = $vueChart;
@@ -76,7 +72,7 @@ export default {
             } else {
                 console.log("没有设置回调函数，你真的不想干点什么了吗：", listener);
             }
-            this.plateSelect.dialogVisible = false;
+            this.plateSelect.showDialog = false;
         }
     }
 }
