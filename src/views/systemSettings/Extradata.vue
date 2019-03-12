@@ -2,7 +2,7 @@
   <div class="extradata">
     <el-row :gutter="24">
       <!--公司树-->
-      <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8">
+      <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8" class="leftmenu">
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
         </el-input>
@@ -319,6 +319,7 @@ export default {
      *@description  右键菜单
      */
     handleContextMenu(event, node, nodeTarget, el) {
+      debugger
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
       if (node.stype === "1") {
@@ -333,7 +334,8 @@ export default {
       let leftmenu = document.querySelector(".leftmenu");
       let contextmenu = document.querySelector("#rMenu");
       contextmenu.style.top = y + "px";
-      contextmenu.style.left = x - leftmenu.offsetWidth + "px";
+      // contextmenu.style.left = x - leftmenu.offsetWidth + "px";
+      contextmenu.style.left = x - 0 + "px";
       this.contextMenuActive = nodeTarget;
       //其它地方绑定事件隐藏 右键菜单
       // document.onmousedown = _event => {
@@ -394,6 +396,9 @@ export default {
                   if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
                       item.open = true;//展开此节点
                       _this.expandKeys.push(item.scode);
+                  }
+                  if (item.stype !== "1" && !item.sindcode) {
+                    item.disabled = true;
                   }
                   item.sname = "("+item.scode+")"+item.sname;//拼写公司编码+公司名称
                   return item;
