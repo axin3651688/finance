@@ -78,6 +78,7 @@
 	},
 	"show":true,
    	"__queryDataAfter":function(data){
+		   debugger;
 		let me = this;
 		let columns = me.columns;
 		let unit = me.unit;
@@ -112,6 +113,7 @@
 					"text": "营业收入目标完成率（%）",
 					"weight": 6,
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					// "watchValue":true,
 					"watchConfig":{
 						"itemNames":["bnlj","bnmb","wcl"]
@@ -216,6 +218,7 @@
 					"text": "利润总额目标完成率（%）",
 					"weight": 6,
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"watchConfig":{
 						"itemNames":["bnlj","bnmb","wcl"]
 					},
@@ -257,6 +260,7 @@
 					"id": "14001112",
 					"text": "营业收入（万元）",
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"weight": 6,
 					"listeners":[
 					{
@@ -305,6 +309,7 @@
 					"xtype": "chart",
 					"id": "1400111",
 					"text": "利润总额（万元）",
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"watchState":true,
 					"weight": 6,
 					"listeners":[

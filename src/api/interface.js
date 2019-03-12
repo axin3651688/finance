@@ -36,11 +36,19 @@ export function logout() {
     // }
   })
 }
-
 /**
- * 公司树异步请求接口
+ * 一次性全部加载公司树。 szc 2019-3-12 11:16:47
  */
-export function getCompanyTree(id, dimName, type, pid) {
+export function getCompanyTree() {
+  return request({
+    url: '/zjb/sys/dimcompany/query_all',
+    method: 'get',
+  })
+}
+/**
+ * 公司树异步请求接口 以前的惰性加载请求公司树
+ */
+export function getCompanyTree_old(id, dimName, type, pid) {
   console.log("调用公司树异步请求接口");
   // return request({
   //   url: '/get/cube/find_dim' + id + '/' + dimName + '/' + type + '/' + pid,

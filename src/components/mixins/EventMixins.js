@@ -51,7 +51,7 @@ export default {
       if(listener[listener.way + "Before"]){
         flag = listener[listener.way + "Before"](me,params,listener,bb);
         if(flag){
-          this.plateSelect = {dialogVisible:true};
+          this.plateSelect = {showDialog:true};
           this.$store.modalParams = {
             listener:listener,
             params:params,

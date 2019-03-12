@@ -139,7 +139,6 @@ export default {
     //     }
     //   });
     // }
-    debugger;
     this.upData(this.item);
   },
   mounted() {},
@@ -149,7 +148,7 @@ export default {
         this.item = item;
       }
       // debugger;
-      let companyId = this.$store.getters.treeInfo.id;
+      let companyId = this.$store.getters.treeInfo.scode;
       if (companyId == "121") {
         let fixedFirst = 0;
         let color = [
