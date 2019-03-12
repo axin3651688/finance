@@ -283,7 +283,6 @@ export default {
      */
     _getLastOtherMsg(msgList) {
       for (let item of msgList) {
-        console.log(item)
         if (item.senderId === this.loginUserId && item.state !== 2) {
           console.log('last item:', item)
           return item
