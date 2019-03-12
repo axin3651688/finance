@@ -339,11 +339,8 @@ export default {
       let username = this.$store.state.user.user.user.username;
       //请求数据
       request({
-        url: "/zjb/sys/dimcompany/query_user",
-        method: "get",
-        params: {
-          "suser":username
-        }
+        url: "/zjb/sys/dimcompany/query_all",
+        method: "get"
       }).then(result => {
         console.log(result);
         if (result.status == 200 && result.data.code == 200) {
