@@ -164,42 +164,39 @@ export default {
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
     mounted(){
-        // window.onresize=function(){
-        //     debugger
-        //     this.heights = document.body.offsetHeight - 70 - 60 - 40 - 64 - 40
-        // }
-        const me = this
+        // 设置表格高度（自适应）
+        this.setTableScollHeight();
+        // const me = this
         // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-        window.onresize = () => {
-            // debugger
-            return (() => {
-                window.offsetHeight = document.body.offsetHeight;
-                me.offsetHeight = window.offsetHeight;
-                me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            })()
-        }
+        // window.onresize = () => {
+        //     // debugger
+        //     return (() => {
+        //         window.offsetHeight = document.body.offsetHeight;
+        //         me.offsetHeight = window.offsetHeight;
+        //         me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+        //     })()
+        // }
     },
     watch:{
-        // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-        offsetHeight(val){
-            // debugger
-            if(!this.timer){
-                debugger
-                // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-                this.offsetHeight = val
-                this.timer = true
-                let me = this
-                setTimeout(function(){
-                    // 打印offsetHeight变化的值
-                    me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-                    console.log(me.offsetHeight)
-                    me.timer = false
-                },400)
-            }
-        }
+        
     },
     methods:{
-        
+        // 页面自适应
+        setTableScollHeight(){
+            this.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40 ;
+            const me = this ;
+            window.onresize = function temp(){
+                debugger
+                // 得到表单的高度并赋值
+                me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+                // 计算当前页面的高度 得出表格的高度
+                if(me.inputRefresh>0){
+                    me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+                }else{
+                    me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
+                }             
+            };
+        },
         /**
          * 获取的要渲染的数据  发送请求
          */

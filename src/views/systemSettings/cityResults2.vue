@@ -16,7 +16,7 @@
                         <tr class="tr1">
                             <!-- <th rowspan="3" class="heightx" style="width:150px;">资产状况</th> -->
                             <th colspan="3" class="heights" style="width:450px;">资产总额</th>
-                            <th colspan="3" class="heights" style="width:450px;">所有者权益</th>
+                            <th colspan="3" class="heights" style="width:450px;">所有者权益总额</th>
                             <th colspan="4" class="heights" style="width:600px;">资产负债率（%）</th>
                         </tr>
                         <tr class="tr2">

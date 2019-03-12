@@ -356,7 +356,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
-      debugger;
+      
       this.debug = 1; //临时的动作
       if (this.module_api) {
         if(this.$store.public && this.$store.public.url){
@@ -475,7 +475,7 @@ export default {
         }
         datas[element] = val;
       });
-      debugger;
+      
       if (datas.year && datas.month) {
         // let date = new Date();
         // datas.year =  date.getFullYear();
@@ -533,6 +533,7 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
+      
       console.log(this)
       console.log(this.config);
       if (this.config) {
@@ -546,7 +547,8 @@ export default {
         $cc.forEach(children => {
           let ii = children.item;
           // 加了个ii.show
-          if (ii && ii.config && (children.hasConfig || ii.show)) {
+          //添加一个extendConfig判断用来过滤掉是继承来的config的元素，不然数据会出现错误,dash中 szc 2019年3月12日14:53:19
+          if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }
