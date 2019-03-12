@@ -7,6 +7,7 @@
           <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
         </el-input>
         <el-tree
+          :style="contentStyleObj"
           :data="treedata"
           node-key="scode"
           :props="props"
@@ -15,6 +16,7 @@
           :default-expanded-keys="expandKeys"
           :show-checkbox="true"
           :highlight-current="true"
+          :expand-on-click-node="false"
           ref="comtree"
           @node-click="handleClick"
           @node-contextmenu="handleContextMenu"
@@ -62,12 +64,12 @@
               <el-checkbox label="YS" name="nature" border>预算</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="是否覆盖数据" prop="vartype" v-model="form.vartype">
+          <!-- <el-form-item label="是否覆盖数据" prop="vartype" v-model="form.vartype">
             <el-radio-group v-model="form.vartype">
               <el-radio border label="Y">是</el-radio>
               <el-radio border label="N">否</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item>
             <el-button type="primary" @click="extraing('form')">抽取数据</el-button>
           </el-form-item>
@@ -98,6 +100,10 @@ export default {
   },
   data() {
     return {
+      contentStyleObj: {
+        height: 500,
+        overflow: "auto"
+      },
       filterText: "",
       props: {
         label: "sname",
@@ -148,14 +154,14 @@ export default {
             }
           }
         ],
-        nature: [{ required: true, message: "必选项" }],
-        vartype: [{ required: true, message: "必选项" }]
+        nature: [{ required: true, message: "必选项" }]
+        // ,vartype: [{ required: true, message: "必选项" }]
       },
       form: {
         startperiod: nowDate,
         endperiod: nowDate,
         //是否覆盖数据 Y是覆盖  N 不覆盖
-        vartype: "Y",
+        // vartype: "Y",
         nature: ["EAS"]
       }
     };
@@ -163,11 +169,25 @@ export default {
   watch: {
     //监听公司树筛选
     filterText(val) {
-      debugger
+      // debugger;
       this.$refs.comtree.filter(val);
     }
   },
+  mounted() {
+    this.setTreeHeight();
+  },
   methods: {
+    setTreeHeight() {
+      this.contentStyleObj.height = `${document.documentElement.clientHeight -
+        124}px`;
+      // 然后监听window的resize事件．在浏览器窗口变化时高度．
+      const that = this;
+      window.onresize = function temp() {
+        that.contentStyleObj.height = `${document.documentElement.clientHeight -
+          124}px`;
+      };
+    },
+
     // 抽取数据 按钮
     extraing(formName) {
       let _this = this;
@@ -180,37 +200,35 @@ export default {
           if (valid) {
             // console.log(coms, _this.form);
             //处理参数数据
-            let text =
-              _this.form.vartype === "Y"
-                ? "勾选了覆盖数据"
-                : "修改的数据将保留";
+            // let text =
+            //   _this.form.vartype === "Y"
+            //     ? "勾选了覆盖数据"
+            //     : "修改的数据将保留";
+            //text +
             _this
-              .$confirm(text + ", 是否继续?", "提示", {
+              .$confirm("是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
               })
               .then(() => {
-                debugger
                 let datas = {
-                    vartype: _this.form.vartype,
-                    varnature: _.join(_this.form.nature, ","),
-                    // varcompany: "'" + _.join(coms, "','") + "'",
-                    varcompany: _.join(coms, "','"),
-                    varyear: _this.form.startperiod.substring(0, 4),
-                    orgmonth:
-                      _.replace(_this.form.startperiod, /-/g, "").substring(
-                        4,
-                        6
-                      ) - 0,
-                    endmonth:
-                      _.replace(_this.form.endperiod, /-/g, "").substring(
-                        4,
-                        6
-                      ) - 0
-                }
+                  // vartype: _this.form.vartype,
+                  varnature: _.join(_this.form.nature, ","),
+                  // varcompany: "'" + _.join(coms, "','") + "'",
+                  varcompany: _.join(coms, "','"),
+                  varyear: _this.form.startperiod.substring(0, 4),
+                  orgmonth:
+                    _.replace(_this.form.startperiod, /-/g, "").substring(
+                      4,
+                      6
+                    ) - 0,
+                  endmonth:
+                    _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
+                    0
+                };
                 axios({
-                  url: "/tps/extradata/import",
+                  url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
                   // data: {
@@ -310,6 +328,7 @@ export default {
      */
     handleClick(node, nodeTarget, el) {
       if (node.stype !== "1") {
+        this.$refs.comtree.setChecked(node, false, false);
         return false;
       }
       this.$refs.comtree.setChecked(node, !nodeTarget.checked, true);
@@ -319,21 +338,23 @@ export default {
      *@description  右键菜单
      */
     handleContextMenu(event, node, nodeTarget, el) {
+      // debugger
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
       if (node.stype === "1") {
         return false;
       }
-
+      // debugger;
       this.contextMenuVisible = true;
       //
       var x = event.clientX + document.body.scrollLeft;
       var y = event.clientY + document.body.scrollTop;
 
-      let leftmenu = document.querySelector(".leftmenu");
+      let leftmenu = document.querySelector(".sidebar-container");
       let contextmenu = document.querySelector("#rMenu");
       contextmenu.style.top = y + "px";
       contextmenu.style.left = x - leftmenu.offsetWidth + "px";
+      // contextmenu.style.left = x - 0 + "px";
       this.contextMenuActive = nodeTarget;
       //其它地方绑定事件隐藏 右键菜单
       // document.onmousedown = _event => {
@@ -355,11 +376,11 @@ export default {
     findNodes() {
       // debugger
       const _this = this;
-      var getters = _this.$store.getters;
+      // var getters = _this.$store.getters;
       //请求数据
       request({
         // url: "/tjsp/company/findAll",
-        url: "/exl/sys/dimcompany/query_all",
+        url: "/zjb/sys/dimcompany/query_all",
         method: "get"
         // params: {
         //   scode: "1001" //getters.companyId ? getters.companyId :
@@ -376,7 +397,7 @@ export default {
                 pIdKey: "spcode"
               },
               key: {
-                name:"scode",
+                name: "scode",
                 children: "children"
               }
             }
@@ -390,13 +411,18 @@ export default {
             //     element.disabled = true;
             //   }
             // });
-            data = data.filter(function(item){
-                  if(item.scode == "1001"){//因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
-                      item.open = true;//展开此节点
-                      _this.expandKeys.push(item.scode);
-                  }
-                  item.sname = "("+item.scode+")"+item.sname;//拼写公司编码+公司名称
-                  return item;
+            data = data.filter(function(item) {
+              if (item.scode == "1001") {
+                //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                item.open = true; //展开此节点
+                _this.expandKeys.push(item.scode);
+              }
+              // && !item.sindcode
+              if (item.stype !== "1") {
+                item.disabled = true;
+              }
+              item.sname = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
+              return item;
             });
             _this.treedata = tools.transformToeTreeNodes(setting, data);
           }
@@ -412,6 +438,29 @@ export default {
   }
 };
 </script>
+<style>
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: #f5f5f5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
+  border-radius: 1px;
+  background-color: #f5f5f5;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
+  background-color: #9fd467;
+}
+</style>
+
 <style scoped>
 .extradata {
   margin-top: 10px;
