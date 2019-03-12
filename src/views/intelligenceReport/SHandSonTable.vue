@@ -1,0 +1,1737 @@
+<template>
+  <div class="shuju">
+    <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+      <!-- 手工填报页面 -->
+      <el-tab-pane label="手工填报" name="second">
+        <div class="manually_report">
+          <div class="dropdown">匹配报表:</div>
+          <el-dropdown trigger="click" v-if="list.length">
+            <el-button type="text" class="underline">
+              <span class="pleaseoptions">{{reportHeader}}</span>
+              <i class="el-icon-arrow-down el-icon_right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="(item,index) of list"
+                @click.native="matching(list,index,item)"
+                :key="index"
+              >{{item.title}}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <div class="left">
+            <el-button @click="saveData" class="button">保存</el-button>
+            <el-button @click="rowData" class="button" v-show="rowdata">新增</el-button>
+          </div>
+        </div>
+        <div class="right">
+          <el-button class="button">审阅</el-button>
+          <el-button class="button">上报</el-button>
+        </div>
+        <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
+        <hot-table
+          v-if="settings.data && settings.data.length>0"
+          :settings="settings"
+          ref="hotTableComponent"
+          :height=" heights"
+          class="table"
+        ></hot-table>
+        <!-- <BiModule v-show="show"></BiModule> -->
+        <!-- <el-dialog
+                title="提示"
+                :visible.sync="dialogVisible"
+                width="30%"
+        >-->
+        <!-- <span>这是一段信息</span> -->
+        <!-- <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>-->
+        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader>  -->
+        <!-- </el-dialog> -->
+        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader> -->
+      </el-tab-pane>
+      <!-- 模板的下载与导入 -->
+      <el-tab-pane label="Excel导入" name="first">
+        <el-button size="small" type="primary" @click="templateDownload" class="template">模板下载</el-button>
+        <el-dialog title="模板操作" :visible.sync="isShow" width="30%">
+          <!-- <span>这是一段信息</span> -->
+          <!-- <el-checkbox-group v-model="checked"> -->
+          <el-checkbox
+            v-for="item of list"
+            :key="item.id"
+            class="checkbox"
+            @change="select($event, item)"
+          >{{item.title}}</el-checkbox>
+          <!-- </el-checkbox-group> -->
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="Download">确 定</el-button>
+          </span>
+        </el-dialog>
+        <el-upload
+          class="upload-demo upload"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :before-upload="beforeAvatarUpload"
+        >
+          <el-button size="small" type="primary">文件选择</el-button>
+          <div slot="tip" class="el-upload__tip"></div>
+        </el-upload>
+        <div class="dropdown">匹配报表:</div>
+        <el-dropdown trigger="click" v-if="list.length" class="options">
+          <el-button type="text" class="underline">
+            <span class="pleaseoptions">{{importHeader}}</span>
+            <i class="el-icon-arrow-down el-icon_right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="(item,index) of list"
+              @click.native="importDropdownMenu(list,index)"
+              :key="index"
+            >{{item.title}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="文件名称:" class="button">
+            <el-input v-model="excelname" class="input" :disabled="edit"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button class="button" @click="uploadFiles">导入</el-button>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+<script>
+import { mapGetters } from "vuex";
+import { HotTable } from "@handsontable/vue";
+import Handsontable from "handsontable-pro";
+import {
+  importExcel,
+  inquire,
+  save,
+  download,
+  del,
+  financingDown,
+  mechanism
+} from "@/api/fill.js";
+// import BiModule from "@v/BiModule.vue";
+export default {
+  components: {
+    HotTable
+    // BiModule
+  },
+  data() {
+    return {
+      selectedOptions: [],
+      financingOptions: [],
+      dialogVisible: false,
+      values: null, //填报的数据
+      datas: null, //存储查询要传递的数据
+      columns: [], //存储请求返回回来的列
+      dataDict: [], //应收下拉的数据
+      financing: [], //融资下拉的其他数据
+      mechanismdown: [], //融资下拉的机构名称数据
+      cubeId: null, //天津食品的id
+      title: null, //下载模板的名称
+      tableData: [],
+      rowdata: false, //新增行按钮的默认显示状态
+      fixed: null, //是不是三张主表
+      templateId: null, //模板的id
+      years: null, //年月的拼接
+      row: [],
+      // options:"这是导入页面给的填报模板",
+      files: null, //excel导入需要传递的参数
+      reportHeader: "请选择", //填报匹配的名称
+      importHeader: "请选择", //导入匹配的名称
+      heights: document.body.offsetHeight - 360,
+      subject: null, //匹配模板的subject
+      dropdownid: null, //匹配的id
+      checked: false, //复选框的状态
+      activeName2: "second", //tab默认显示
+      isShow: false, //下载模板弹框的显示和隐藏
+      excelname: "加载文件名称 不可编辑",
+      // imgfd:null,
+      uploadfile: null, //存储下拉匹配文件下载要传递的参数
+      edit: true, //不可编辑
+      list: [], //存储的下拉匹配模板的数据
+      form: {
+        region: ""
+      },
+      newrow: false, //新增按钮的隐藏
+      table: [],
+      // del: Function,
+      delid: null,
+      index: "", //  数据的索引
+      // show: false,
+      // flag: false,
+      root: "test-hot",
+      // newSettings: null,
+      settings: {
+        data: [], //数据，可以是数据，对象
+        startCols: 6,
+        hiddenColumns: [],
+        minCols: 5,
+        maxCols: 20,
+        rowHeaders: true, //行表头
+        colHeaders: [], //表头数据
+        // nestedHeaders: [],//多表头
+        autoWrapRow: true, //自动换行
+        fillHandle: false, //选中拖拽复制  true, false
+        fixedColumnsLeft: 0, //固定左边列数
+        fixedRowsTop: 0, //固定上边列数
+        mergeCells: [], //合并
+        columns: [],
+        manualColumnFreeze: true, //手动固定列
+        manualColumnMove: true, //手动移动列
+        manualRowMove: true, //手动移动行
+        manualColumnResize: true, //手工更改列距
+        manualRowResize: true, //手动更改行距
+        comments: true, //添加注释
+        stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
+        afterChange: Function,
+        cells: Function
+        // ,
+        // getCellEditor: Function//获取编辑器
+        // ,
+        // beforeChange: Function
+        
+        // ,
+        // afterGetCellMeta: Function,
+        // setDataAtCell: Function
+        // ,
+        // getDataAtRow: Function
+      }
+    };
+  },
+  watch: {
+    templateId(val) {
+      this.tableData = [];
+    },
+    year(val) {
+      if (this.activeName2 == "second") {
+        this.tableData = [];
+        let period = this.datas.period;
+        let year = period.substring(0, 4);
+        let newyear = period.replace(year, val);
+        this.datas.period = newyear;
+        console.log(this.datas);
+        this.reportData(this.datas);
+      }
+    },
+    month(val) {
+      if (this.activeName2 == "second") {
+        this.tableData = [];
+        let period = this.datas.period;
+        let date;
+        if (this.month < 10) {
+          date = this.year + "0" + val;
+        } else {
+          date = this.year + val;
+        }
+        this.datas.period = date;
+        // console.log("ss",this.datas)
+        this.reportData(this.datas);
+      }
+    },
+    company(val) {
+      if (this.activeName2 == "second") {
+        this.tableData = [];
+        let company = this.datas.company;
+        let newcompany = company.replace(company, val);
+        this.datas.company = newcompany;
+        // console.log(this.datas);
+        this.reportData(this.datas);
+      }
+    }
+  },
+  created() {
+    this.financing = [
+      {
+        id: "20",
+        text: "担保方式"
+      },
+      {
+        id: "2001",
+        text: "抵押",
+        pid: "20"
+      },
+      {
+        id: "2002",
+        text: "质押",
+        pid: "20"
+      },
+      {
+        id: "2003",
+        text: "保证",
+        pid: "20"
+      },
+      {
+        id: "2004",
+        text: "留置",
+        pid: "20"
+      },
+      {
+        id: "2005",
+        text: "定金",
+        pid: "20"
+      },
+      {
+        id: "21",
+        text: "还款来源"
+      },
+      {
+        id: "2101",
+        text: "自有资金",
+        pid: "21"
+      },
+      {
+        id: "2102",
+        text: "集团借款",
+        pid: "21"
+      },
+      {
+        id: "2103",
+        text: "借新还旧",
+        pid: "21"
+      },
+      {
+        id: "1700",
+        text: "是否金融机构"
+      },
+      {
+        id: "1",
+        text: "是",
+        pid: "1700"
+      },
+      {
+        id: "0",
+        text: "否",
+        pid: "1700"
+      },
+      {
+        id: "1800",
+        text: "是否集团担保"
+      },
+      {
+        id: "1",
+        text: "是",
+        pid: "1800"
+      },
+      {
+        id: "0",
+        text: "否",
+        pid: "1800"
+      }
+    ];
+    this.dataDict = [
+      {
+        id: "1400",
+        text: "客商性质"
+      },
+      {
+        id: "1001",
+        text: "国有",
+        pid: "1400"
+      },
+      {
+        id: "1002",
+        text: "民营",
+        pid: "1400"
+      },
+      {
+        id: "1003",
+        text: "个体",
+        pid: "1400"
+      },
+      {
+        id: "1004",
+        text: "外资",
+        pid: "1400"
+      },
+      {
+        id: "1005",
+        text: "合资",
+        pid: "1400"
+      },
+      {
+        id: "1006",
+        text: "集体",
+        pid: "1400"
+      },
+      {
+        id: "1007",
+        text: "个人",
+        pid: "1400"
+      },
+      {
+        id: "1500",
+        text: "非正常分类"
+      },
+      {
+        id: "150006",
+        text: "核算不规范",
+        pid: "1500"
+      },
+      {
+        id: "150007",
+        text: "其他",
+        pid: "1500"
+      },
+      {
+        id: "150001",
+        text: "向系统外出借资金",
+        pid: "1500"
+      },
+      {
+        id: "150002",
+        text: "成本费用挂账",
+        pid: "1500"
+      },
+      {
+        id: "150004",
+        text: "为其他企业代偿金融机构的贷款",
+        pid: "1500"
+      },
+      {
+        id: "150005",
+        text: "长期挂账、未及时清理",
+        pid: "1500"
+      },
+      {
+        id: "150003",
+        text: "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+        pid: "1500"
+      },
+      {
+        id: "1600",
+        text: "债务人状况"
+      },
+      {
+        id: "160001",
+        text: "债务人经营困难",
+        pid: "1600"
+      },
+      {
+        id: "160002",
+        text: "债务人改制或退出",
+        pid: "1600"
+      },
+      {
+        id: "160003",
+        text: "债务人停业",
+        pid: "1600"
+      },
+      {
+        id: "160004",
+        text: "债务人失踪",
+        pid: "1600"
+      },
+      {
+        id: "160005",
+        text: "超过诉讼时效",
+        pid: "1600"
+      },
+      {
+        id: "1700",
+        text: "是否内部"
+      },
+      {
+        id: "1",
+        text: "是",
+        pid: "1700"
+      },
+      {
+        id: "0",
+        text: "否",
+        pid: "1700"
+      },
+      {
+        id: "1800",
+        text: "是否正常"
+      },
+      {
+        id: "1",
+        text: "是",
+        pid: "1800"
+      },
+      {
+        id: "0",
+        text: "否",
+        pid: "1800"
+      }
+    ];
+    this.axios.get("cnbi/template.json").then(res => {
+      debugger;
+      this.list = res.data.data;
+      // console.log(res)
+      this.cubeId = res.data.config.cube.cubeId;
+    });
+  },
+  mounted() {
+    let data = 10;
+    //融资情况明细表除机构名称下拉数据
+    financingDown(data).then(res => {
+      this.financingOptions = res.data.data;
+      // console.log("下拉", this.financingOptions);
+    });
+    window.addEventListener("resize", this.resizeTable);
+    this.settings.afterChange = this.afterChange;
+    //融资情况明细表的下拉数据 机构名称
+    mechanism().then(res => {
+      this.mechanismdown = res.data.data;
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.resizeTable);
+  },
+  computed: {
+    ...mapGetters(["user", "year", "month", "company"])
+  },
+  methods: {
+    //根据是否金融机构判断机构名称是下拉数据还是直接填写
+    mechanismdownData(row, columns) {
+      let source = [];
+      this.mechanismdown.forEach(item => {
+        source.push(item.text);
+      });
+      let record = this.settings.data[row];
+      if (record.cismenu === "否" || record.cismenu == 0) {
+        // debugger
+        return;
+      }
+      return source;
+    },
+    resizeTable() {
+      this.heights = document.body.offsetHeight - 360;
+    },
+    //融资页面的下拉数据  除机构名称
+    financingOptionsData(id) {
+      let array = this.financing.filter(item => item.pid === id);
+      let source = [];
+      array.forEach(element => {
+        source.push(element.text);
+      });
+      return source;
+    },
+    //应收账款分析表  表格里面下拉的数据
+    getDropDownSource(id) {
+      let array = this.dataDict.filter(item => item.pid === id);
+      let source = [];
+      array.forEach(element => {
+        source.push(element.text);
+      });
+      return source;
+    },
+    changeAddOrReduce(changes) {
+      // debugger;
+      let me = this,
+        rowIndex,
+        arr = ["sstartdate", "srepaydate"],
+        name,
+        rowData;
+      if (changes && changes.length > 0) {
+        rowIndex = changes[0][0];
+        name = changes[0][1];
+        if (arr.indexOf(name) != -1) {
+          debugger;
+          rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+            rowIndex
+          );
+          if (rowData && rowData.length > 0) {
+            this.handleStateOfPeriod(rowData, rowIndex);
+          }
+        }
+      }
+    },
+    handleStateOfPeriod(rowData, rowIndex) {
+      // debugger;
+      let me = this,
+        startIndex = 4,
+        repaymentIndex = 10,
+        month = this.$store.getters.month,
+        year = this.$store.getters.year;
+      let startPeriod = rowData[startIndex],
+        repaymentPeriod = rowData[repaymentIndex];
+      let arrStart,
+        arrRepayment,
+        stateStr = "";
+      if (startPeriod) {
+        arrStart = startPeriod.split("/");
+      }
+      if (repaymentPeriod) {
+        arrRepayment = repaymentPeriod.split("/");
+      }
+      //两个日期都存在
+      if (arrStart && arrRepayment) {
+        if (
+          arrStart[0] == year &&
+          arrStart[1] - 0 == month &&
+          arrRepayment[1] - 0 != month
+        ) {
+          stateStr = "新增";
+        } else if (
+          arrStart[1] - 0 != month &&
+          arrRepayment[0] == year &&
+          arrRepayment[1] - 0 == month
+        ) {
+          stateStr = "减少";
+        } else {
+          stateStr = "";
+        }
+      } else if (
+        arrStart &&
+        arrStart[0] == year &&
+        !arrRepayment &&
+        arrStart[1] - 0 == month
+      ) {
+        stateStr = "新增";
+      } else if (
+        arrRepayment &&
+        arrRepayment[0] == year &&
+        arrRepayment[1] - 0 == month &&
+        !arrStart
+      ) {
+        stateStr = "减少";
+      } else {
+        stateStr = "";
+      }
+      this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+        rowIndex,
+        12,
+        stateStr
+      );
+    },
+    //修改的数据[行，列，老值，新值]
+    afterChange(changes, source) {
+      debugger;
+      let obj = {};
+      let index;
+      let key;
+      let values;
+      let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/;
+      let indexs;
+      let value;
+      let oldValues;
+      let modify;
+      let datas = this.settings.data;
+      let row;
+      // return
+      //融资的新增与减少的判断
+      if (this.templateId == "7") {
+        this.changeAddOrReduce(changes);
+      }
+      if (changes && changes.length > 0) {
+        debugger;
+        index = changes[0][0];
+        key = changes[0][1];
+        oldValues = changes[0][2];
+        values = changes[0][3];
+        obj[key] = values;
+        obj["index"] = index;
+        obj["colId"] = key;
+        obj["row"] = values;
+        this.values = values;
+        //融资的status可以传过去 空字符串 ""
+        if (values == "" && key != "status" && this.templateId != "7") {
+          values = 0;
+        }
+        // console.log("oldValuesoldValues", values);
+        let x;
+        let arr = datas.filter(record => {
+          x = record;
+          return record.cusuppliername != null;
+        });
+        // console.log(x)
+        console.log("this.tableData", this.tableData);
+        // console.log("datas",arr)
+        // for(var i=0;i<arr.length-1;i++){
+        //     row = datas[i]
+        //     if(row.cusuppliername && row.cusuppliername !=null && row.cusuppliername == values){
+        //         this.$message({
+        //             type: 'error',
+        //             message: '商客名称重复，请重新输入'
+        //         })
+        //     }
+        // }
+
+        let me = this;
+        function res(arr) {
+          var tmp = [];
+          var copy = [];
+          arr.forEach(item => {
+            if (copy.indexOf(item.cusuppliername) === -1) {
+              copy.push(item.cusuppliername);
+            } else {
+              if (tmp.indexOf(item.cusuppliername) === -1) {
+                me.$message({
+                  type: "error",
+                  message: "商客名称重复，请重新输入"
+                });
+                tmp.push(item.cusuppliername);
+              }
+            }
+          });
+          return tmp;
+        }
+        let changeRecord = this.tableData.filter(record => {
+          return record.index === index && record.colId === key;
+        })[0];
+        let changen = this.tableData.filter(record => {
+          return record.index === index;
+        })[0];
+
+        if (this.fixed === 1) {
+          if (
+            (changeRecord && reg.test(values) === true) ||
+            (changeRecord && reg.test(values) == "")
+          ) {
+            changeRecord[key] = values;
+          } else {
+            if (reg.test(values) === true || reg.test(values) == "") {
+              let bb = { index: index };
+              bb[key] = values;
+              this.tableData.push(bb);
+            }
+          }
+        }
+        if (this.fixed === 0) {
+          if (changen) {
+            changen[key] = values;
+          } else if (this.templateId == 8) {
+            if (index != 0) {
+              let bb = { index: index };
+              bb[key] = values;
+              this.tableData.push(bb);
+            }
+          } else {
+            if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
+              let bb = { index: index };
+              bb[key] = values;
+              this.tableData.push(bb);
+            }
+          }
+          // })
+        }
+      }
+      // localStorage.setItem("saveData",JSON.stringify(this.tableData))
+      this.tableData.forEach(e => {
+        indexs = e.index;
+        value = e;
+      });
+      datas.forEach((item, i) => {
+        modify = item;
+        if (i === indexs) {
+          if (
+            value.A ||
+            value.A == "" ||
+            value.B ||
+            value.B == "" ||
+            value.C ||
+            value.C == "" ||
+            value.D ||
+            value.D == "" ||
+            value.E ||
+            value.E == "" ||
+            value.F ||
+            value.F == "" ||
+            value.G ||
+            value.G == "" ||
+            value.H ||
+            value.H == ""
+          ) {
+            value["id"] = modify.id;
+            value["nid"] = modify.nid;
+            if (value["nid"] == null) {
+              value["nid"] = 0;
+            }
+          } else if (
+            value.A_ ||
+            value.A_ == "" ||
+            value.B_ ||
+            value.B_ == "" ||
+            value.C_ ||
+            value.C_ == "" ||
+            value.D_ ||
+            value.D_ == "" ||
+            value.E_ ||
+            value.E_ == "" ||
+            value.F_ ||
+            value.F_ == ""
+          ) {
+            // console.log("2",modify.id_)
+            value["id_"] = modify.id_;
+          } else {
+            // value["id"] = modify.id;
+            // value["id_"] = modify.id_;
+            value["nid"] = modify.nid;
+            if (value["nid"] == null) {
+              value["nid"] = 0;
+            }
+          }
+        }
+      });
+    },
+    //应收账款分析表 判断是否控制填报
+    reRenderCell(row, columns) {
+      if (this.fixed == 0 && this.templateId == 4) {
+        if (columns > 7) {
+          //  debugger
+          let record = this.settings.data[row];
+          if (record.isinside === "是" || record.isinside == 1) {
+            //8
+            return true;
+          }
+        }
+        if (columns > 8) {
+          //isnature isnormal
+          let record = this.settings.data[row];
+          if (record.isnormal === "是" || record.isnormal == 1) {
+            //9
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+
+    // 设置单元格的只读和下拉方法
+    cells(row, columns, prop, params, pp) {
+      // debugger;
+      let cellMeta = {};
+      if (this.fixed === 1) {
+        if (columns == 0 || columns == 1 || columns == 5 || columns == 4) {
+          cellMeta.readOnly = true;
+        }
+      }
+      if (this.templateId == 3) {
+        if (
+          (row === 0 && columns === 2) ||
+          (row === 0 && columns === 3) ||
+          (row == 0 && columns == 6) ||
+          (row == 0 && columns == 7) ||
+          (row == 48 && columns == 2) ||
+          (row == 48 && columns == 3) ||
+          (row == 49 && columns == 2) ||
+          (row == 49 && columns == 3) ||
+          (row == 50 && columns == 2) ||
+          (row == 50 && columns == 3) ||
+          (row == 51 && columns == 2) ||
+          (row == 51 && columns == 3) ||
+          (row == 52 && columns == 2) ||
+          (row == 52 && columns == 3) ||
+          (row == 53 && columns == 2) ||
+          (row == 53 && columns == 3) ||
+          (row == 54 && columns == 2) ||
+          (row == 54 && columns == 3) ||
+          (row == 55 && columns == 2) ||
+          (row == 55 && columns == 3) ||
+          (row == 56 && columns == 2) ||
+          (row == 56 && columns == 3) ||
+          (row == 57 && columns == 2) ||
+          (row == 57 && columns == 3) ||
+          (row == 58 && columns == 2) ||
+          (row == 58 && columns == 3) ||
+          (row == 59 && columns == 2) ||
+          (row == 59 && columns == 3) ||
+          (row == 60 && columns == 2) ||
+          (row == 60 && columns == 3) ||
+          (row == 61 && columns == 2) ||
+          (row == 61 && columns == 3) ||
+          (row == 62 && columns == 2) ||
+          (row == 62 && columns == 3) ||
+          (row == 63 && columns == 2) ||
+          (row == 63 && columns == 3) ||
+          (row == 64 && columns == 2) ||
+          (row == 64 && columns == 3) ||
+          (row == 65 && columns == 2) ||
+          (row == 65 && columns == 3) ||
+          (row == 66 && columns == 2) ||
+          (row == 66 && columns == 3) ||
+          (row == 67 && columns == 2) ||
+          (row == 67 && columns == 3) ||
+          (row == 68 && columns == 2) ||
+          (row == 68 && columns == 3) ||
+          (row == 69 && columns == 2) ||
+          (row == 69 && columns == 3) ||
+          (row == 70 && columns == 2) ||
+          (row == 70 && columns == 3) ||
+          (row == 71 && columns == 2) ||
+          (row == 71 && columns == 3) ||
+          (row == 72 && columns == 2) ||
+          (row == 72 && columns == 3)
+        ) {
+          cellMeta.readOnly = true;
+        }
+      }
+      if (this.templateId == 2) {
+        if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
+          cellMeta.readOnly = true;
+        }
+      }
+      if (this.templateId == 4) {
+        cellMeta.readOnly = this.reRenderCell(row, columns);
+        //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
+      }
+      if (this.templateId == 7) {
+        if (columns == 1) {
+            // cellMeta.readOnly = true;
+          cellMeta.source = this.mechanismdownData(row, columns);
+          cellMeta.type = "dropdown";
+        }
+        if (columns == 2) {
+            // cellMeta.readOnly = true;
+          // debugger;
+          // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
+          // this.getCellEditor = this.settings.getCellEditor(row,columns);
+          cellMeta.source = this.typeOfFinancing();
+          cellMeta.type = "dropdown";
+        }
+        if (columns == 12) {
+          cellMeta.readOnly = true;
+        }
+      }
+      if (this.templateId == 8) {
+        debugger;
+        // if (columns == 1 || columns == 3 || columns == 4) {
+        //   cellMeta.readOnly = true;
+        // }
+        // if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
+        //   cellMeta.readOnly = true;
+        // }
+        //资金集中度的填写限制
+        if (row != 0 && (columns == 0 || columns == 2)) {
+          cellMeta.readOnly = false;
+        }else {
+          cellMeta.readOnly = true;
+        }
+      }
+      return cellMeta;
+    },
+    //请求查询回来的数据的类型
+    getHandsoneTableColType(type) {
+      if (type) {
+        if (type === "decimal") {
+          return "numeric";
+        } else if (type == "string") {
+          return "text";
+        }
+      }
+      return "text";
+    },
+    // 判断是decimal类型的加上千分两位小数显示
+    decimalDefaultRenderer(
+      instance,
+      td,
+      row,
+      col,
+      prop,
+      value,
+      cellProperties
+    ) {
+      while (td.firstChild) {
+        td.removeChild(td.firstChild);
+      }
+      var flagElement = document.createElement("DIV");
+      flagElement.style.textAlign = "right";
+      if (value != null && !isNaN(value)) {
+        flagElement.innerText = Math.decimalToLocalString(value);
+        td.appendChild(flagElement);
+      }
+    },
+    //把请求回来的数据生成表格给需要操作的列添加方法
+    convertHansoneTableColumns(columns, rows) {
+      debugger;
+      let me = this;
+      if (this.fixed === 0) {
+        columns.push({ id: "caozuo", text: "操作", type: "string" });
+        this.rowdata = true;
+      }
+      let newCoulmns = [],
+        colHeaders = [],
+        hiddenColumns = {
+          indicators: false
+        },
+        hiddenCols = [];
+      for (let i = 0, len = columns.length; i < len; i++) {
+        let col = columns[i];
+        if (col.hidden) {
+          hiddenColumns.indicators = true;
+          hiddenCols.push(i);
+        } else {
+          let cc = {
+            type: this.getHandsoneTableColType(col.type),
+            data: col.id
+          };
+          if (col.renderer || cc.source) {
+            cc.renderer = col.renderer;
+            cc.source = col.source;
+          } else {
+            if (col.type === "decimal") {
+              cc.renderer = this.decimalDefaultRenderer;
+            } else if (col.id === "caozuo") {
+              cc.renderer = this.flags;
+              cc.readOnly = true;
+            } else if (col.id === "isnature") {
+              cc.source = this.getDropDownSource("1400");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "isinside") {
+              cc.source = this.getDropDownSource("1700");
+              cc.renderer = this.flagrenderer;
+              cc.type = "autocomplete";
+              cc.readOnly = false;
+            } else if (col.id === "isnormal") {
+              cc.source = this.getDropDownSource("1800");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontenta") {
+              cc.source = this.getDropDownSource("1500");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontentb") {
+              cc.source = this.getDropDownSource("1600");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+            } else if (col.id === "guarantee") {
+              cc.source = this.financingOptionsData("20");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "repaysource") {
+              cc.source = this.financingOptionsData("21");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "sstartdate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "senddate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "srepaydate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "cismenu") {
+              cc.source = this.financingOptionsData("1700");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "cisguarantee") {
+              cc.source = this.financingOptionsData("1800");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "finance") {
+            //   cc.renderer = this.contentOfFinance;
+            //   cc.readOnly = true;
+              // cc.editor = this.contentEditor;
+              cc.source = this.typeOfFinancing();
+              cc.type = "dropdown";
+            }
+          }
+          newCoulmns.push(cc);
+          colHeaders.push(col.text);
+        }
+      }
+      this.settings.columns = newCoulmns;
+      this.settings.cells = this.cells;
+      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
+      //
+      // this.settings.afterGetCellMeta = this.afterGetCellMeta;
+      // this.settings.setDataAtCell = this.setDataAtCell;
+      // this.settings.afterChange = this.afterCellChange;
+      // this.settings.setDataAtCell = this.setDataAtCell;
+      // this.settings.getCellEditor = this.getCellEditor;
+      // this.settings.beforeChange = this.beforeChange;
+      this.settings.colHeaders = colHeaders;
+      this.settings.data = rows;
+      //有待修复
+      me.settings.data = [];
+      setTimeout(() => {
+        var p = /(\d{4})(\d{2})(\d{2})/;
+        let newarr = [];
+        rows.forEach(item => {
+          if (item.senddate) {
+            var b = item.senddate.replace(p, "$1/$2/$3");
+            item.senddate = b;
+          }
+          if (item.srepaydate) {
+            var d = item.srepaydate.replace(p, "$1/$2/$3");
+            item.srepaydate = d;
+          }
+          if (item.sstartdate) {
+            var g = item.sstartdate.replace(p, "$1/$2/$3");
+            item.sstartdate = g;
+          }
+        });
+        me.settings.data = rows;
+      }, 100);
+    },
+    contentEditor (aa,bb,cc,dd,ee,ff,gg,hh) {
+      debugger;
+      let me = this;
+    },
+    contentOfFinance (instance, td, row, col, prop, value, cellProperties) {
+      debugger;
+      let me = this,childNode = td.childNodes;
+      if (!false && childNode && childNode.length == 0) {
+        let el = document.createElement("DIV");
+        // el.className = "flag";
+        // el.id = "flag";
+        el.innerHTML = value;
+        td.appendChild(el);
+        el.style.color = "red";
+        el.style.cursor = "pointer";
+        Handsontable.dom.addEvent(el, "dblclick", function(event) {
+          debugger;
+          let $parent = td.parentNode;
+          let $select = document.createElement("SELECT");
+          let $option = document.createElement("option");
+          let $option2 = document.createElement("option");
+          $option.text = "hello";
+          $option2.text = "hi";
+          $select.add($option);
+          $select.add($option2);
+          $select.style.float = "right";
+          $select.style.position = ""
+          $parent.appendChild($select);
+        });
+      }
+    },
+    getCellEditor (row,col) {
+      debugger;
+      let me = this;
+    },
+    beforeChange(changes, params) {
+      // debugger;
+      let me = this;
+      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
+      // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
+      // this.settings.getCellEditor = this.getCellEditor;
+      // this.getCellEditor();
+      //融资的处理
+      // if(this.templateId == "7"){
+      //   if(changes && changes.length > 0 && changes[0][2]){
+      //     changes[0][2] = changes[0][2].replace("&nbsp","");
+      //   }
+      // }
+
+      // changes.push("不行");
+    },
+    afterGetCellMeta(row, col, params, pp, dd) {
+      // debugger;
+      let me = this;
+    },
+    afterCellChange(row, col, params) {
+      debugger;
+      let me = this,
+        rowData;
+      if (row[0][1] != "sstartdate") {
+        return;
+      } else {
+        rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+          row[0][0]
+        );
+      }
+    },
+    setDataAtCell() {
+      debugger;
+    },
+    //点击保存数据
+    saveData() {
+      debugger;
+      // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
+      // console.log(exadata)
+      this.tableData.forEach(item => {
+        //isinside
+        // a = item
+        let keys = Object.keys(item);
+        let flag = false;
+        for (let key of keys) {
+          // debugger
+          if (item.isinside == "是") {
+            if (
+              key === "isinside" &&
+              (item.isinside == "是" || item.isinside == 1)
+            ) {
+              flag = true;
+              continue;
+            }
+            if (flag) {
+              item.scontentb = null;
+              item.scontenta = null;
+              item.isnormal = null;
+              item.E = null;
+              item.F = null;
+              item.G = null;
+              item.H = null;
+            }
+          } else if (item.isnormal == "是") {
+            if (
+              key === "isnormal" &&
+              (item.isinside == "否" || item.isinside == 1) &&
+              (item.isnormal == "是" || item.isnormal == 1)
+            ) {
+              flag = true;
+              continue;
+            }
+            if (flag) {
+              item.scontentb = null;
+              item.scontenta = null;
+              item.E = null;
+              item.F = null;
+              item.G = null;
+              item.H = null;
+            }
+          }
+        }
+      });
+      // if (this.templateId == 7) {
+      //   this.tableData.forEach(item => {
+      //     // if(item.senddate || item.srepaydate || item.sstartdate){
+      //     //     return (item.sstartdate.replace(/\//g,""))
+      //     // }
+      //   });
+      // }
+      let objs = {
+        cubeId: this.cubeId,
+        dims: {
+          company: this.company,
+          period: this.years
+        },
+        subject: this.subject,
+        templateId: this.templateId,
+        rows: this.tableData,
+        fixed: this.fixed,
+        user: this.user.user.username
+      };
+      console.log(objs);
+      let newtabledata = this.settings.data;
+      let x;
+      let me = this;
+      let arr = newtabledata.filter(record => {
+        x = record;
+        return record.cusuppliername != null;
+      });
+      function res(arr) {
+        var tmp = [];
+        var copy = [];
+        arr.forEach(item => {
+          if (copy.indexOf(item.cusuppliername) === -1) {
+            copy.push(item.cusuppliername);
+          } else {
+            if (tmp.indexOf(item.cusuppliername) === -1) {
+              me.$message({
+                type: "error",
+                message: "商客名称重复,不可以保存，请更改"
+              });
+              tmp.push(item.cusuppliername);
+            }
+          }
+        });
+        return tmp;
+      }
+      var result = res(arr);
+      if (result.length === 0) {
+        save(objs).then(res => {
+          // console.log("保存", res);
+          this.reportData(this.datas);
+          if (res.data.code === 200) {
+            me.$message({
+              message: res.data.msg,
+              type: "success"
+            });
+            me.tableData = [];
+            //保存成功之后
+            // this.afterSaveData();
+          } else {
+            me.$message({
+              message: "保存失败",
+              type: "error"
+            });
+          }
+        });
+      }
+    },
+    afterSaveData() {
+      debugger;
+      let me = this;
+      let curParams = this.$store.curParams,
+        strSign = "success";
+      if (curParams) {
+        this.afterSaveReportData(curParams);
+      }
+    },
+    afterSaveReportData(datas) {
+      debugger;
+      // console.log("请求", datas);
+      // console.log("传递的data", this.datas);
+      let me = this;
+      inquire(this.datas).then(res => {
+        console.log("查询", res);
+        let columns = res.data.data.columns;
+        let rows = res.data.data.rows;
+        // me.settings.data = rows;
+        // me.columns = res.data.data.columns;
+        // // me.settings = res.data.data.rows
+        // // me.$set(me.settings, "data",null)
+        // // me.$set(me.settings, "data",res.data.data.rows)
+        me.convertHansoneTableColumns(columns, rows);
+      });
+    },
+    // 点击添加一行
+    rowData() {
+      this.$refs.hotTableComponent.hotInstance.alter("insert_row", this.index);
+    },
+    //填报页面下拉获取要传递的数据
+    matching(list, index, item) {
+      debugger;
+      let date;
+      if (this.month < 10) {
+        date = this.year + "0" + this.month;
+      } else {
+        date = this.year + this.month;
+      }
+      this.years = date;
+      this.reportHeader = list[index].title;
+      this.dropdownid = list[index].sourceId;
+      this.fixed = list[index].fixed;
+      this.subject = list[index].subject;
+      this.templateId = list[index].templateId;
+      this.api = item.url;
+      let excelUploadParaDto = {
+        company: this.company,
+        period: this.years,
+        subject: this.subject,
+        templateId: this.templateId,
+        fixed: this.fixed
+      };
+      this.datas = excelUploadParaDto;
+      //当前的参数保存在大对象里
+      this.$store.curParams = this.datas;
+      this.reportData(this.datas);
+    },
+    //请求获取填报页面
+    reportData(datas) {
+      debugger;
+      // console.log("请求", datas);
+      // console.log("传递的data", this.datas);
+      let me = this;
+      inquire(this.datas).then(res => {
+        console.log("查询", res);
+        let columns = res.data.data.columns;
+        let rows = res.data.data.rows;
+        me.columns = res.data.data.columns;
+        // me.settings = res.data.data.rows;
+        // me.$set(me.settings, "data",null)
+        // me.$set(me.settings, "data", res.data.data.rows);
+        me.convertHansoneTableColumns(columns, rows);
+      });
+    },
+    //tab栏的切换
+    handleClick(tab, event) {
+      //console.log(tab, event);
+    },
+    //表格的导入需要传递的参数
+    beforeAvatarUpload(file) {
+      debugger;
+      let date;
+      if (this.month < 10) {
+        date = this.year + "0" + this.month;
+      } else {
+        date = this.year + this.month;
+      }
+      this.years = date;
+      this.excelname = file.name;
+      console.log("this.years", this.years);
+      let fd = new FormData();
+      fd.append("file", file);
+      fd.append("period", this.years);
+      fd.append("user", this.user.user.username);
+      fd.append("company", this.company);
+      // console.log(this.dropdownid)
+      if (this.dropdownid) {
+        fd.append("templateId", this.dropdownid);
+      }
+      if (this.subject) {
+        fd.append("subject", this.subject);
+      }
+      //这个地方存在为 0 的情况，所以改成这样。
+      if (this.fixed != null) {
+        fd.append("fixed", this.fixed);
+      }
+      this.uploadfile = fd;
+      this.files = fd;
+      return true;
+    },
+    // 表格的导入
+    submitUpload(file) {
+      debugger;
+      var regExp = /([\u4e00-\u9fa5]+)/gi;
+      var title = this.excelname; //[\u4e00-\u9fa5]
+      var titlename = title.match(regExp);
+      console.log(title);
+      if (titlename[0] != this.importHeader) {
+        debugger;
+        this.$message({
+          message: "模板名字不匹配",
+          type: "error"
+        });
+      } else {
+        console.log(titlename[0]);
+        importExcel(this.files).then(res => {
+          console.log("res", res);
+          if (res.data.code === 200) {
+            this.subject = null;
+            this.fixed = null;
+            this.templateId = null;
+            // console.log("item的数据",this.item)
+            this.$message({
+              message: "模板匹配 导入成功",
+              type: "success"
+            });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "error"
+            });
+          }
+        });
+      }
+    },
+    //导入按钮的点击事件调用导入
+    uploadFiles() {
+      debugger;
+      this.submitUpload(this.files);
+    },
+    // 点击导入的下拉菜单获取对应的数据
+    importDropdownMenu(list, index) {
+      debugger;
+      this.importHeader = list[index].title;
+      this.dropdownid = list[index].templateId;
+      this.subject = list[index].subject;
+      this.fixed = list[index].fixed;
+      if (this.uploadfile) {
+        this.uploadfile.append("templateId", this.dropdownid);
+        // this.uploadfile.append("subject", this.subject);
+        this.uploadfile.set("subject", this.subject);
+        this.uploadfile.append("fixed", this.fixed);
+        this.files = this.uploadfile;
+        console.log("要传递的上传文件的数据", this.files);
+      }
+    },
+    //模板下载弹框页面的请求
+    templateDownload() {
+      debugger;
+      this.isShow = true;
+      this.axios.get("/api/template").then(res => {
+        console.log(res);
+        this.list = res.data.data;
+      });
+    },
+    // 下载模板弹框的取消
+    cancel() {
+      this.isShow = false;
+    },
+    // 弹框的确定 模板下载
+    Download() {
+      this.isShow = false;
+      if (this.templateId != null) {
+        download(this.templateId).then(res => {
+          console.log("模板的下载", res);
+          const content = res.data;
+          const blob = new Blob([content], {
+            type: "application/vnd.ms-excel"
+          });
+          // console.log(blob)
+          let str = res.headers["content-disposition"];
+          let index = str.lastIndexOf(".");
+          let h = str.substring(index + 1, str.length);
+          const fileName = this.title + "." + h;
+          if ("download" in document.createElement("a")) {
+            // 非IE下载
+            const elink = document.createElement("a");
+            elink.download = fileName;
+            elink.style.display = "none";
+            elink.href = URL.createObjectURL(blob);
+            document.body.appendChild(elink);
+            elink.click();
+            URL.revokeObjectURL(elink.href); // 释放URL 对象
+            document.body.removeChild(elink);
+          } else {
+            // IE10+下载
+            navigator.msSaveBlob(blob, fileName);
+          }
+        });
+      }
+    },
+    //模板下载选择的表格
+    select(val, item) {
+      // console.log("option:", val);
+      // console.log("option data:", item);
+      this.templateId = item.templateId;
+      this.title = item.title;
+    },
+    //插入了删除
+    flags(instance, td, row, col, prop, value, cellProperties) {
+      debugger;
+      let arr = this.$refs.hotTableComponent.hotInstance;
+      // console.log("arr",arr)
+      let list = this.settings.data;
+      var code = value;
+      while (td.firstChild) {
+        td.removeChild(td.firstChild);
+      }
+      if (!value) {
+        var el = document.createElement("DIV");
+        el.className = "flag";
+        el.id = "flag";
+        el.innerHTML = "删除";
+        td.appendChild(el);
+        if (this.templateId == 8) {
+          let dd = document.getElementsByTagName("td")[5];
+          if (dd && dd != "undefined") {
+            dd.innerText = "";
+          }
+        }
+        el.style.color = "red";
+        el.style.cursor = "pointer";
+        let me = this;
+        let date;
+        if (this.month < 10) {
+          date = this.year + "0" + this.month;
+        } else {
+          date = this.year + this.month;
+        }
+        this.years = date;
+        Handsontable.dom.addEvent(el, "click", function(event) {
+          debugger;
+          // arr.alter("remove_row", row);//删除当前行
+          let tabledata = me.tableData;
+          let datas = me.settings.data;
+          let nid;
+          datas.forEach((item, index) => {
+            if (index === row) {
+              nid = item.nid;
+            }
+          });
+          //新增行的数据删除
+          let rows;
+          me.tableData.forEach((item, index) => {
+            if (item.index === row) {
+              rows = item;
+              console.log(rows);
+            }
+          });
+          let a = me.tableData;
+          if (nid != 0) {
+            let data = {
+              // company:me.company,
+              // period:me.years,
+              nid: nid,
+              templateId: me.templateId
+            };
+            console.log("ee", row, data);
+            me.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+
+              .then(() => {
+                debugger;
+                // arr.alter("remove_row", row); //删除当前行
+                del(data).then(res => {
+                  console.log("删除", res);
+                  if (res.data.code === 200) {
+                    me.reportData(me.datas);
+                    me.$message({
+                      type: "success",
+                      message: "删除成功!"
+                    });
+                  }
+                });
+              })
+              .catch(() => {
+                me.$message({
+                  type: "info",
+                  message: "已取消删除"
+                });
+              });
+          } else {
+            a.splice(a.indexOf(rows), 1);
+            arr.alter("remove_row", row); //删除当前行
+            console.log("删除后的数组", me.tableData);
+          }
+        });
+      }
+    },
+    //应收账款分析表单元格下拉 把编码转成文字
+    flagrenderer(instance, td, row, col, prop, value, cellProperties) {
+      if (!value) {
+        return;
+      }
+      if (/[\u4e00-\u9fa5]/.test(value)) {
+        td.innerHTML = value;
+        return;
+      }
+      let text = value;
+      let datas = this.dataDict.filter(item => item.id === value);
+      if (datas.length == 0) {
+        td.innerHTML = "";
+        return;
+      } else {
+        text = datas.length > 0 ? datas[0].text : value;
+      }
+      td.innerHTML = text;
+    },
+    //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
+    financingrenderer(instance, td, row, col, prop, value, cellProperties) {
+      if (!value) {
+        return;
+      }
+      if (/[\u4e00-\u9fa5]/.test(value)) {
+        td.innerHTML = value;
+        return;
+      }
+      let text = value;
+      let datas = this.financing.filter(item => item.id === value);
+      if (datas.length == 0) {
+        td.innerHTML = "";
+        return;
+      } else {
+        text = datas.length > 0 ? datas[0].text : value;
+      }
+      td.innerHTML = text;
+    },
+    //融资页面单元格融资类型下拉
+    typeOfFinancing() {
+      // debugger;
+      let source = [];
+      let str = "";
+      this.financingOptions.forEach(item => {
+        source.push(item.text);
+        // if(item.isleaf == "1"){
+        //   str = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        //   source.push(str + item.text);
+        // }else {
+        //   source.push(item.text);
+        // }
+      });
+      return source;
+    }
+  }
+};
+</script>
+<style scoped >
+.manually_report {
+  padding: 20px 10px;
+  background-color: #ccc;
+}
+.table {
+  margin-top: 70px;
+  height: 100%;
+}
+.button,
+.options {
+  margin-top: 20px;
+}
+.template {
+  float: left;
+  margin-right: 20px;
+}
+.input {
+  width: 220px;
+}
+.checkbox {
+  display: block;
+  color: #606266;
+  font-size: 24px;
+}
+.dropdown {
+  display: inline;
+  color: #606266;
+  font-size: 16px;
+}
+.underline {
+  border: 1px solid #dcdfe6;
+  width: 220px;
+  margin-left: 10px;
+  background-color: #f5f7fa;
+}
+.pleaseoptions {
+  float: left;
+  margin-left: 20px;
+}
+.el-icon_right {
+  float: right;
+  margin-right: 10px;
+}
+.right {
+  float: right;
+  margin-right: 100px;
+}
+.left {
+}
+</style>
+<style lang="scss">
+.shuju {
+  .el-checkbox + .el-checkbox {
+    margin-left: 0px;
+  }
+  .el-dialog__body {
+    padding: 10px 20px 30px 20px;
+  }
+  .el-button--text {
+    color: #606266;
+  }
+  .el-form-item__label {
+    text-align: left;
+  }
+  label {
+    font-weight: normal;
+    font-size: 16px;
+  }
+  .el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+    background-color: #ccc;
+  }
+  .el-tabs__item:hover,
+  .el-tabs__item.is-active {
+    font-weight: bold;
+  }
+  .handsontable .htDimmed {
+    // background-color: #ccc;
+    background-color: #fff;
+    color: #222;
+  }
+  .handsontable td.htInvalid {
+    background-color: transparent !important;
+  }
+
+  //   .el-input__inner {
+  //     padding: 0px;
+  //   }
+  //   .el-input--suffix .el-input__inner {
+  //     border: none;
+  //   }
+  //   .el-input__inner {
+  //     background: transparent;
+  //     &::placeholder {
+  //       color: transparent;
+  //     }
+  //   }
+  //   .el-cascader {
+  //     background: transparent;
+  //     height: 27px;
+  //   }
+
+  //   .el-cascader .el-icon-arrow-down {
+  //     display: none;
+  //   }
+  //   .el-cascader__label {
+  //     padding: 0px;
+  //     background: transparent;
+  //     opacity: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+  //   .el-table__body .el-table__row td {
+  //     padding: 4px 0;
+  //   }
+}
+</style>
