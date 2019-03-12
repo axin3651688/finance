@@ -579,6 +579,13 @@
 	"items": [{
 		"xtype": "bi-table",
 		"id": "zcfzb",
-		"text": "资产负债表"
+		"text": "资产负债表",
+		"config":{
+			"conditions":{
+				"city":[1,2,3],
+				 "employee":">50 & <56 "
+
+			}
+		}
 	}]
 }
