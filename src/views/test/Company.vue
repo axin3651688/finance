@@ -336,13 +336,14 @@ export default {
     findNodes() {
       const _this = this;
       var getters = _this.$store.getters;
+      let username = this.$store.state.user.user.user.username;
       //请求数据
       request({
-        url: "/zjb/sys/dimcompany/query_all",
-        method: "get"
-        // params: {
-        //   //scode: "1001" //getters.companyId ? getters.companyId :
-        // }
+        url: "/zjb/sys/dimcompany/query_user",
+        method: "get",
+        params: {
+          "suser":username
+        }
       }).then(result => {
         console.log(result);
         if (result.status == 200 && result.data.code == 200) {
@@ -364,6 +365,8 @@ export default {
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
+            //找到根节点。
+            // let roots = this.parseRootOfTree(data);
             data = data.filter(function(item) {
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
@@ -380,7 +383,11 @@ export default {
         }
       });
     },
+    parseRootOfTree (data) {
+      debugger;
+      let me = this;
 
+    },
     /**
      * @description 处理添加功能
      * 注意问题：当前选中公司的状态，后台处理

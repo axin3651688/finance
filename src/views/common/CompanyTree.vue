@@ -70,7 +70,9 @@ export default {
   methods: {
     findNodes () {
       let me = this;
-      getCompanyTree().then(res => {
+      debugger;
+      let user = this.$store.state.user.user.user;
+      getCompanyTree(user).then(res => {
         if (res.status == 200 && res.data.code == 200) {
           //封装树对象数据
           let setting = this.setting;
