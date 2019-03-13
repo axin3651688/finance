@@ -59,6 +59,10 @@ export default {
     ...mapActions(["ToggleSideBar"]),
     shownavMenu(e) {
       debugger;
+      let flag = this.lookNodeOfCompany(e);
+      if(!flag){
+        return;
+      }
       if (this.device === "mobile") {
         this.ToggleSideBar({ opend: false });
       } else if (e.url.indexOf(".json") > 0 || Cnbi.isEmpty(e.url)) {
@@ -70,6 +74,42 @@ export default {
       } else {
         this.$router.push({ path: e.url });
       }
+    },
+    lookNodeOfCompany(e) {
+      let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
+          userCompany = this.$store.getters.userCompany;
+      let flag = true;
+      let arrUrl = ["/sgyj","/cnbi/json/source/tjsp/xsqydkdbqk.json","/cnbi/json/source/tjsp/xsqydydkqk.json"],contiFlag = false;
+      for(let i = 0;i < arrUrl.length;i ++){
+        let item = arrUrl[i];
+        if(e.url == item){
+          contiFlag = true;
+          break;
+        }
+      }
+      if(!contiFlag){
+        return flag;
+      }
+      if(companyId == treeInfo.scode){
+        if(treeInfo.spcode != 0){
+          me.$message({
+            showClose: true,
+            message: '此公司没有查看此报表的权限！',
+            type: 'warning'
+          });
+          flag = false;
+          return flag;
+        }
+      }else if(companyId == userCompany.customerId && companyId != "1001"){
+        me.$message({
+          showClose: true,
+          message: '此公司没有查看此报表的权限！',
+          type: 'warning'
+        });
+        flag = false;
+        return flag;
+      }
+      return flag;
     }
   }
 };
