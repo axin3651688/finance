@@ -359,3 +359,17 @@ listeners:[
 
 #指标分析右边距(BiModule 51行)
 默认不传为24px,如果需要修改其他值,在item下面加"class_pr":"36px"
+
+
+
+
+
+{
+    cubeId:2,//用户的数据源权限Id,由用户登录后给定=license.id,再商定    //sql/cube/defined/random  四选
+    sql:,//sql语句优先级最高
+    type:1
+    rows:[],//行项目,必选项目
+    columns:[]//列项目,必选项目
+    mainDim：""//主维度，决定rows行项目里配制的是什么维度
+    needDims:["year","month","company"]//所依赖可变化的维度：只有当config依赖的属性变了，数据才会变，视图才会跟着变！
+}
