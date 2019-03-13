@@ -52,7 +52,6 @@ export default function modeHandle(e) {
     //         }
     //     }
     // }
-    debugger
     findDesignSource(e.sourceId, e.url)
         .then(response => {
 
@@ -72,7 +71,6 @@ export default function modeHandle(e) {
 
         })
         .catch(response => {
-            debugger
             console.error("数据请求失败");
         });
 }
