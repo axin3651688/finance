@@ -10,6 +10,7 @@ export function login(loginUser) {
   console.log("调用登录接口");
   return request({
     url: '/api/auth/login',
+    // url: '/api/zjb/login',
     method: 'post',
    //url: '/api/api/core_user/login',
    //method: 'get',
