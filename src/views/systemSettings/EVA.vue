@@ -584,8 +584,8 @@ export default {
                   item.scodeb = "v" + item.scode + "B"  ;
                   if(!item.A){ item.A = 0 ; }
                   if(!item.B){ item.B = 0 ; }
-                  me.exps[item.scodea] = item.B ;
-                  me.exps[item.scodeb] = item.A ;
+                  me.exps[item.scodea] = item.A ;
+                  me.exps[item.scodeb] = item.B ;
                 }) ;
                 me.ArrData2.forEach(ress => {
                   me.vars.forEach(recc => {
