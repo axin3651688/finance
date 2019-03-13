@@ -5,7 +5,7 @@
     "xtype": "tab"
 },
 "showDims": ["year","month","company","conversion"],
-"monthConfig":{
+"monthConfig":{//显示13审计月
   "id":"month",
   "value":13
 },

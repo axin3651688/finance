@@ -11,6 +11,8 @@
             :placeholder="item.text"
             @change="handleClick(item)"
             @keyup.enter.native="handleClick(item)"
+            onblur=""
+            onfocus=""
             v-model="item.display_num"
             :style="item.wclass"
             clearable
@@ -471,6 +473,9 @@ export default {
     // this.setExpressionData();
   },
   methods: {
+    focus(item){
+      debugger
+    },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
         debugger
@@ -665,21 +670,23 @@ export default {
           item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
         }
         
-        //税率
-        if (item.code === "sl") {
-          //调整后数据
-          this.updateTzhData(
-            ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
-            item.value
-          );
-          //营业外收支净额 营业外支出本期金额-营业外收入本期金额
-          this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
-          this.updateTzhData(["yywsrje"], item.value);
-        }
-        this.setExpressionData();
+          //税率
+          if (item.code === "sl") {
+            //调整后数据
+            this.updateTzhData(
+              ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
+              item.value
+            );
+            //营业外收支净额 营业外支出本期金额-营业外收入本期金额
+            this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
+            this.updateTzhData(["yywsrje"], item.value);
+          }
+          this.setExpressionData();
 
-        //格式化数据
-        item.display_num = tools.currency(item.value, "", 2);
+          //格式化数据
+        if(item.value!=""){  
+          item.display_num = tools.currency(item.value, "", 2);
+        }
       });
     }
   }
