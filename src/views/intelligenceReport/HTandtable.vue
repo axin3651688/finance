@@ -1,5 +1,7 @@
 <template>
-  <div class="shuju">
+<div>
+  <SBiDiv v-if="divShow" :dataDiv="divContent"></SBiDiv>
+  <div v-else-if="fillShow" class="shuju">
     <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
       <!-- 手工填报页面 -->
       <el-tab-pane label="手工填报" name="second">
@@ -100,28 +102,35 @@
       </el-tab-pane>
     </el-tabs>
   </div>
+</div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
+import SBiDiv from "@c/SBiDiv";
 import {
-  importExcel,
-  inquire,
-  save,
-  download,
-  del,
-  financingDown,
-  mechanism
+    importExcel,
+    inquire,
+    save,
+    download,
+    del,
+    financingDown,
+    mechanism
 } from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
   components: {
-    HotTable
+    HotTable,
+    SBiDiv
     // BiModule
   },
   data() {
     return {
+      //控制显示区域块
+      divShow:false,
+      fillShow:true,
+      divContent:{},
       selectedOptions: [],
       financingOptions: [],
       dialogVisible: false,
@@ -234,6 +243,14 @@ export default {
       }
     },
     company(val) {
+      
+      //判断不是合并公司才给填报
+      let flag = this.rightOfLeafCompany();
+      if(!flag){
+        return;
+      }
+      this.divShow = false;
+      this.fillShow = true;
       if (this.activeName2 == "second") {
         this.tableData = [];
         let company = this.datas.company;
@@ -461,7 +478,7 @@ export default {
       }
     ];
     this.axios.get("cnbi/template.json").then(res => {
-      debugger;
+      
       this.list = res.data.data;
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
@@ -480,6 +497,12 @@ export default {
     mechanism().then(res => {
       this.mechanismdown = res.data.data;
     });
+    //合并公司没有填报的权限
+    let flag = this.rightOfLeafCompany();
+    if(flag){
+      this.divShow = false;
+      this.fillShow = true;
+    }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.resizeTable);
@@ -488,6 +511,30 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
+    rightOfLeafCompany() {
+      let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
+          userCompany = this.$store.getters.userCompany;
+      let flag = true,html = "<p>此公司无填报权限！</p>";
+      if(companyId == treeInfo.scode){
+        if(treeInfo.nisleaf == 0){
+          this.divShow = true;
+          this.fillShow = false;
+          this.divContent = {htmlContent:html};
+          flag = false;
+          return flag;
+        }
+      }else if(companyId == userCompany.customerId && userCompany.nisleaf == 0){
+        this.divShow = true;
+        this.fillShow = false;
+        this.divContent = {htmlContent:html};
+        flag = false;
+        return flag;
+      }else{
+        this.divShow = false;
+        this.fillShow = true;
+      }
+      return flag;
+    },
     //根据是否金融机构判断机构名称是下拉数据还是直接填写
     mechanismdownData(row, columns) {
       let source = [];
@@ -523,7 +570,7 @@ export default {
       return source;
     },
     changeAddOrReduce(changes) {
-      // debugger;
+      // 
       let me = this,
         rowIndex,
         arr = ["sstartdate", "srepaydate"],
@@ -533,7 +580,7 @@ export default {
         rowIndex = changes[0][0];
         name = changes[0][1];
         if (arr.indexOf(name) != -1) {
-          debugger;
+          
           rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
             rowIndex
           );
@@ -544,7 +591,7 @@ export default {
       }
     },
     handleStateOfPeriod(rowData, rowIndex) {
-      // debugger;
+      // 
       let me = this,
         startIndex = 4,
         repaymentIndex = 10,
@@ -603,7 +650,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      debugger;
+      
       let obj = {};
       let index;
       let key;
@@ -651,7 +698,7 @@ export default {
 
         let me = this;
         function res(arr) {
-          debugger;
+          
           var tmp = [];
           var copy = [];
           arr.forEach(item => {
@@ -795,7 +842,7 @@ export default {
 
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
-      // debugger;
+      // 
       let cellMeta = {};
       if (this.fixed === 1) {
         if (columns == 0 || columns == 1 || columns == 5 || columns == 4) {
@@ -877,7 +924,7 @@ export default {
           cellMeta.type = "dropdown";
         }
         if (columns == 2) {
-          // debugger;
+          // 
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           // this.getCellEditor = this.settings.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
@@ -888,7 +935,7 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        debugger;
+        
         // if (columns == 1 || columns == 3 || columns == 4) {
         //   cellMeta.readOnly = true;
         // }
@@ -937,7 +984,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows) {
-      debugger;
+      
       let me = this;
       if (this.fixed === 0) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1014,6 +1061,8 @@ export default {
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } else if (col.id === "finance") {
+              // cc.validator = "numeric";
+              // cc.validator = this.financeValidator;
               // cc.renderer = this.contentOfFinance;
               // cc.readOnly = true;
               // cc.editor = this.contentEditor;
@@ -1057,12 +1106,17 @@ export default {
         me.settings.data = rows;
       }, 100);
     },
-    contentEditor (aa,bb,cc,dd,ee,ff,gg,hh) {
+    financeValidator(instance, td, row, col, prop, value, cellProperties) {
       debugger;
+      let me = this;
+
+    },
+    contentEditor (aa,bb,cc,dd,ee,ff,gg,hh) {
+      
       let me = this;
     },
     contentOfFinance (instance, td, row, col, prop, value, cellProperties) {
-      debugger;
+      
       let me = this;
       if (!false) {
         let el = document.createElement("DIV");
@@ -1073,7 +1127,7 @@ export default {
         el.style.color = "red";
         el.style.cursor = "pointer";
         Handsontable.dom.addEvent(el, "dblclick", function(event) {
-          debugger;
+          
           let $select = document.createElement("SELECT");
           let $option = document.createElement("option");
           let $option2 = document.createElement("option");
@@ -1088,11 +1142,11 @@ export default {
       }
     },
     getCellEditor (row,col) {
-      debugger;
+      
       let me = this;
     },
     beforeChange(changes, params) {
-      // debugger;
+      // 
       let me = this;
       // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
       // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
@@ -1108,11 +1162,11 @@ export default {
       // changes.push("不行");
     },
     afterGetCellMeta(row, col, params, pp, dd) {
-      // debugger;
+      // 
       let me = this;
     },
     afterCellChange(row, col, params) {
-      debugger;
+      
       let me = this,
         rowData;
       if (row[0][1] != "sstartdate") {
@@ -1124,13 +1178,12 @@ export default {
       }
     },
     setDataAtCell() {
-      debugger;
+      
     },
     //点击保存数据
     saveData() {
-      debugger;
-      // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
-      // console.log(exadata)
+      
+      let that = this;
       this.tableData.forEach(item => {
         //isinside
         // a = item
@@ -1172,6 +1225,10 @@ export default {
               item.G = null;
               item.H = null;
             }
+          }
+          //融资的传递的参数的替换financingOptions
+          if(that.templateId == "7" && key == "finance" && item){
+            that.parseTypeOfFinance(key,item);
           }
         }
       });
@@ -1243,8 +1300,32 @@ export default {
         });
       }
     },
+    /**
+     * 转换融资的 融资类型的转换
+     */
+    parseTypeOfFinance(key,itemOut) {
+      
+      let me = this;
+      let financingOptions = this.financingOptions;
+      if(financingOptions && financingOptions.length > 0){
+        for(let i = 0;i < financingOptions.length;i ++){
+          let item = financingOptions[i];
+          if(itemOut[key] == item.text){
+            itemOut[key] = item.id;
+            break;
+          }
+
+        }
+        // financingOptions.forEach(item => {
+        //   if(itemOut[key] == item.text){
+        //     itemOut[key] = item.id;
+        //     return;
+        //   }
+        // });
+      } 
+    },
     afterSaveData() {
-      debugger;
+      
       let me = this;
       let curParams = this.$store.curParams,
         strSign = "success";
@@ -1253,7 +1334,7 @@ export default {
       }
     },
     afterSaveReportData(datas) {
-      debugger;
+      
       // console.log("请求", datas);
       // console.log("传递的data", this.datas);
       let me = this;
@@ -1275,7 +1356,7 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      debugger;
+      
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1303,7 +1384,7 @@ export default {
     },
     //请求获取填报页面
     reportData(datas) {
-      debugger;
+      
       // console.log("请求", datas);
       // console.log("传递的data", this.datas);
       let me = this;
@@ -1315,8 +1396,30 @@ export default {
         // me.settings = res.data.data.rows;
         // me.$set(me.settings, "data",null)
         // me.$set(me.settings, "data", res.data.data.rows);
+        if(this.templateId == "7" && rows && rows.length > 0){
+          this.parseNameOfFinance(rows);
+        }
         me.convertHansoneTableColumns(columns, rows);
       });
+    },
+    /**
+     * 转换融资类型作为名字
+     */
+    parseNameOfFinance(rows) {
+      let me = this,key = "finance";
+      let financingOptions = this.financingOptions;
+      if(financingOptions && financingOptions.length > 0){
+        for(let i = 0;i < rows.length;i ++){
+          let rowItem = rows[i];
+          for(let j = 0;j < financingOptions.length;j ++){
+            let item = financingOptions[j];
+            if(rowItem[key] == item.id){
+              rowItem[key] = item.text;
+              break;
+            }
+          }
+        }
+      }
     },
     //tab栏的切换
     handleClick(tab, event) {
@@ -1324,7 +1427,7 @@ export default {
     },
     //表格的导入需要传递的参数
     beforeAvatarUpload(file) {
-      debugger;
+      
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1336,7 +1439,7 @@ export default {
       console.log("this.years", this.years);
       let fd = new FormData();
       fd.set("file", file);
-      debugger;
+      
       fd.set("period", this.years);
       fd.set("user", this.user.user.username);
       fd.set("company", this.company);
@@ -1416,12 +1519,12 @@ export default {
     },
     //导入按钮的点击事件调用导入
     uploadFiles() {
-      debugger;
+      
       this.submitUpload(this.files);
     },
     // 点击导入的下拉菜单获取对应的数据
     importDropdownMenu(list, index) {
-      debugger;
+      
       this.importHeader = list[index].title;
       this.dropdownid = list[index].templateId;
       this.subject = list[index].subject;
@@ -1437,7 +1540,7 @@ export default {
     },
     //模板下载弹框页面的请求
     templateDownload() {
-      debugger;
+      
       this.isShow = true;
       this.axios.get("/api/template").then(res => {
         console.log(res);
@@ -1489,7 +1592,7 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      debugger;
+      
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
@@ -1520,7 +1623,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          debugger;
+          
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1554,7 +1657,7 @@ export default {
             })
 
               .then(() => {
-                debugger;
+                
                 // arr.alter("remove_row", row); //删除当前行
                 del(data).then(res => {
                   console.log("删除", res);
@@ -1621,7 +1724,7 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
-      // debugger;
+      // 
       let source = [];
       let str = "";
       this.financingOptions.forEach(item => {
