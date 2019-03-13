@@ -104,15 +104,17 @@
           "xtype": "bi-table",
           "id":"xsqydydkqk",
           "text":"下属企业抵押贷款情况表",
+          "divContent":"Y",
           "toolbar":[
             {
-               "id":"1",
-               "text":"刷新",
-               "xtype":"button",
-               "cellStyle":{
-                   "color":"black",
-                   "background-color":"#189271"
-               },
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    "background-color":"#189271"
+                },
+                
                "handler":function(vue,btn){
                 vue.item.updateView("company");
                }

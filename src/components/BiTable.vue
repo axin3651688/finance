@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <!-- <el-button-group>
-      <el-button type="success" v-if="item.toolbar && item.toolbar.length > 0 ">{{btn.text}}</el-button>
-      style="background-color: #189271;color: black;"
-    </el-button-group>-->
+<div>
+  <div v-if="divShow" class="divContent" v-html="divContent"></div>
+  <div v-else-if="tableShow">
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
@@ -45,6 +43,7 @@
       :total="item.datas.length"
     ></el-pagination>
   </div>
+</div>
 </template>
 <script>
 //   :span-method="rowSpanAndColSpanHandler"
@@ -78,8 +77,12 @@ export default {
         textProperty: "groupName"
       },
       drillProperties: ["text", "text_"], //有钻取，给蓝色
-      levelProperties: { text: "level", text_: "level_" } //加缩进
-      ,titleText:""
+      levelProperties: { text: "level", text_: "level_" }, //加缩进
+      titleText:"",
+      tableShow: true,
+      divContent:"",
+      divShow:false
+
     };
   },
   watch: {
@@ -230,6 +233,7 @@ export default {
       return this.tableDatas;
     },
     upData(item) {
+      debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       this.setTableDatas(item);
@@ -250,7 +254,23 @@ export default {
           });
         }
       }
-      debugger;
+      //自定义要显示的内容。
+      if(this.item.divContent){
+        if(this.item.customDivCotent && typeof this.item.customDivCotent == "function"){
+          let divContent = this.item.customDivCotent(this);
+        }else {
+          if(this.$store.getters.company != "1001"){
+            this.divShow = true;
+            this.tableShow = false;
+            let html = "<div>此公司没有查看此报表的权限！</div>";
+            this.divContent = html; 
+          }else {
+            this.divShow = false;
+            this.tableShow = true;
+          }
+        }
+      }
+      
       //添加表头的内容
       if(this.item.tableBefore){
         this.tableBefore();
@@ -588,5 +608,14 @@ table th.gutter {
 }
 .el-scrollbar__thumb {
     display: none;
+}
+/* 自定义显示的内容的样式 */
+.divContent {
+    text-align: center;
+    font-weight: bold;
+    /* height: 300px; */
+    line-height: 60px;
+    font-size: 20px;
+    background-color: #ddd;
 }
 </style>
