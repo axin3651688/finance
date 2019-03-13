@@ -7,8 +7,7 @@
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
-      <el-button
-        v-if="item.toolbar && item.toolbar.length > 0 "
+      <el-button       
         v-for="btn in item.toolbar"
         v-bind:key="btn.id"
         :style="btn.cellStyle"
@@ -62,7 +61,7 @@ export default {
   props: ["item"],
   data() {
     return {
-      heights: 0,
+      heights: 500,
       offsetHeight:document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
@@ -89,26 +88,26 @@ export default {
     //   this.heights = newval;
     // }
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-        offsetHeight(val){
-            if(!this.timer){
-                // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-                this.offsetHeight = val
-                this.timer = true
-                let me = this
-                setTimeout(function(){           
-                    // 打印offsetHeight变化的值 
-                    //me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
-                    if(me.item.stype == "table"){
-                      me.heights = document.body.offsetHeight - 40 - 64 - 15;
-                    }else{
-                      // 计算当前页面的高度 得出表格的高度
-                      me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
-                    }
-                    console.log(me.offsetHeight)
-                    me.timer = false
-                },400)
-            }
-        }
+        // offsetHeight(val){
+        //     if(!this.timer){
+        //         // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
+        //         this.offsetHeight = val
+        //         this.timer = true
+        //         let me = this
+        //         setTimeout(function(){           
+        //             // 打印offsetHeight变化的值 
+        //             //me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+        //             if(me.item.stype == "table"){
+        //               me.heights = document.body.offsetHeight - 40 - 64 - 15;
+        //             }else{
+        //               // 计算当前页面的高度 得出表格的高度
+        //               me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+        //             }
+        //             console.log(me.offsetHeight)
+        //             me.timer = false
+        //         },400)
+        //     }
+        // }
     
   },
   created() {
@@ -118,7 +117,11 @@ export default {
      * 导航栏高度：64
      * 间隙高度：15+7 = 22
      */
-    this.upData(this.item);
+    debugger
+    if(this.item.show){
+      this.upData(this.item);
+    }
+    // this.upData(this.item);
     console.log(this.item)
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
@@ -139,15 +142,18 @@ export default {
     //debugger;
     // this.getTableDataParams();
     this.upData(this.item);
-    const me = this
-        // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-        window.onresize = () => {
-            return (() => {
-                window.offsetHeight = document.body.offsetHeight;
-                me.offsetHeight = window.offsetHeight;
-                // me.heights = document.body.offsetHeight - 40 - 64 - 22;;
-            })()
-        }
+
+    // 设置表格高度（自适应）
+      this.setTableScollHeight();
+    // const me = this
+    //     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
+    //     window.onresize = () => {
+    //         return (() => {
+    //             window.offsetHeight = document.body.offsetHeight;
+    //             me.offsetHeight = window.offsetHeight;
+    //             // me.heights = document.body.offsetHeight - 40 - 64 - 22;;
+    //         })()
+    //     }
     // this.$nextTick(() => {
     //   debugger;
     //   this.upData(this.item);
@@ -156,6 +162,16 @@ export default {
   },
 
   methods: {
+    // / 页面大小改变时触发  主要用来自适应页面的布局的 
+    setTableScollHeight(){
+      debugger
+        debugger
+        this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+        const me = this ;
+        window.onresize = function temp(){
+            me.heights = document.documentElement.clientHeight - 22 - 40- 40 - 64 ;
+        };
+    },
     handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/Export2Excel').then(excel => {

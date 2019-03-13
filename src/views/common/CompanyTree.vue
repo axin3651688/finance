@@ -3,15 +3,16 @@
     <el-input placeholder="输入关键字进行过滤" v-model="filterText" suffix-icon="el-icon-search"></el-input>
     <!-- :default-expanded-keys="key" -->
     <el-tree
+      :data="navtreedata"
+      node-key="scode"
       :props="props"
-      :load="loadNode"
-      ref="tree2"
-      highlight-current
-      lazy
-      accordion = "true"
-      :expandOnClickNode="false"
-      @node-click="handleNodeClick"
+      class="filter-tree"
       :filter-node-method="filterNode"
+      :highlight-current="true"
+      :expand-on-click-node="false"
+      :default-expanded-keys="expandKeys"
+      @node-click="handleNodeClick"
+      ref="navcomtree"
     ></el-tree>
     <!-- default-expand-all -->
   </div>
@@ -19,100 +20,102 @@
 
 <script type="text/ecmascript-6">
 import { getCompanyTree } from "~api/interface.js";
+import tools from "utils/tools";
 // import { setTimeout } from "timers";
 export default {
   name: "",
   data() {
     return {
-      key: [],
+      filterText:"",
+      navtreedata:[],
+      expandKeys: [],
       props: {
-        label: "text",
-        children: [],
-        isLeaf: "nisleaf"
+        label: "codename",
+        children: "children"
       },
-      firstcompany: [],
-      filterText: ""
+      setting: {
+        data: {
+          simpleData: {
+            enable: true,
+            idKey: "scode",
+            pIdKey: "spcode"
+          },
+          key: {
+            name: "scode",
+            children: "children"
+          }
+        }
+      }
     };
   },
   // props: ["filterText"],
   created() {
-    debugger;
-    this.firstcompany = this.$store.getters.user.company;
-    this.id = this.firstcompany.customerId;
-    this.licenseId = this.firstcompany.licenseId;
+    this.findNodes();
   },
   watch: {
     filterText(val) {
-      // console.log(this.$refs.tree2);
-      this.$refs.tree2.filter(val);
-    }
+      this.$refs.navcomtree.filter(val);
+    },
   },
   components: {
     tree: () => import("@v/test/tree/tree")
   },
   mounted() {
-    debugger;
-    let me = this;
-    setTimeout(() => {
-      me.key = [1];
-    }, 2000);
-
-    // console.log(document.getElementsByClassName("el-tree-node__content"));
-    // document.getElementsByClassName("el-tree-node__content")[0].click();
+    // debugger;
+    // let me = this;
+    // setTimeout(() => {
+    //   me.key = [1];
+    // }, 2000);
   },
-
   methods: {
-    filterNode(value, data) {
-      // console.log(value);
-      // console.log(data);
-      if (!value) return true;
-      return data.text.indexOf(value) !== -1;
+    findNodes () {
+      let me = this;
+      let user = this.$store.state.user.user.user;
+      getCompanyTree(user).then(res => {
+        if (res.status == 200 && res.data.code == 200) {
+          //封装树对象数据
+          let setting = me.setting;
+          var data = res.data.data;
+          if (Array.isArray(data) && data.length > 0) {
+            data = me.filterDataOfEmpty(data);
+            data = tools.sortByKey(data, "scode");
+            data = data.filter(function(item) {
+              debugger;
+              if (item.scode == "1001") {
+                //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                item.open = true; //展开此节点
+                me.expandKeys.push(item.scode);
+              }
+              item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
+              return item;
+            });
+            me.navtreedata = tools.transformToeTreeNodes(setting, data);
+          }
+        } else {
+          alert("网络请求失败");
+        }
+      });
     },
-
-    // 异步树节点点击事件
-    handleNodeClick(data) {
+    /**
+     * 过滤掉为空的
+     */
+    filterDataOfEmpty(data){
       debugger;
+      let me = this;
+      data = data.filter(item => {
+        return item;
+      });
+      return data;
+
+    },
+    //过滤节点
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.sname.indexOf(value) !== -1;
+    },
+    handleNodeClick(data) {
       // 把子组件的点击选择传回父组件
       this.$emit("click", data);
-    },
-    // 异步树叶子节点懒加载逻辑
-    loadNode(node, resolve) {
-      // 一级节点处理
-      // console.log(node);
-
-      debugger;
-      if (node.level === 0) {
-        // debugger;
-        resolve([this.firstcompany]);
-      }
-      if (node.level >= 1) {
-        // 注意！把resolve传到你自己的异步中去
-        this.getIndex(node, resolve);
-      }
-    },
-    // 异步加载叶子节点数据函数
-    getIndex(node, resolve) {
-      // 由于1级和二级的传值代号不一样一个取customerId,其他取id
-      var id = node.level === 1 ? this.id : node.data.id;
-      // console.log(id);
-      if (!node.data.leaf || !node.data.nisleaf) {
-        getCompanyTree(this.licenseId, "company", "0", id).then(res => {
-          if (res.data.code === 200) {
-            var data = res.data.data;
-            // console.log(res.data);
-            // debugger;
-            // 处理节点是否是叶子节点
-            data.forEach(et => {
-              // et.leaf = et.leaf == 0 ? false : true;
-              et.nisleaf = et.nisleaf == 0 ? false : true;
-            });
-
-            resolve(data);
-          } else {
-            alert("网络请求失败");
-          }
-        });
-      } else return resolve([]);
     }
   }
 };

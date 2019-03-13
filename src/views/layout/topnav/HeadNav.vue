@@ -38,7 +38,7 @@
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown trigger="click" v-if="showDims.month">
+      <el-dropdown trigger="click" v-if="showDims.month" @visible-change="dropChange">
         <el-button type="text" class="monthUnderline">
           {{month+"月"}}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -77,7 +77,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="12">
+      <el-badge :value="0">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
       <span class="username">
@@ -191,8 +191,14 @@ export default {
     for (let i = year; i > year - this.yearCount; i--) {
       this.years.push(i + "年");
     }
+    debugger;
     if (bean.monthCount && bean.monthCount > 0) {
       this.$set(this, "monthCount", bean.monthCount);
+    }
+    //用来区分配置的月的个数的显示。
+    if(this.$store.monthConfig && this.$store.monthConfig.value){
+      let monthConfig = this.$store.monthConfig,monthValue = monthConfig.value;
+      this.$set(this, "monthCount", monthValue);
     }
     this.months = [];
     for (let i = 1; i <= this.monthCount; i++) {
@@ -222,8 +228,50 @@ export default {
       "conversion"
     ])
   },
+  // watch: {
+  //   monthCount () {
+  //     debugger;
+  //     let me = this;
 
+  //   }
+  // },
   methods: {
+    //隐藏与显示的回调
+    dropChange (flag,dd) {
+      debugger;
+      let me = this,monthConfig = this.$store.monthConfig;
+      if(flag){
+        this.changeBecauseOfNode();
+      }
+    },
+    changeBecauseOfNode(){
+      debugger;
+      let me = this;
+      let bean = getClientParams();
+      if (bean.monthCount && bean.monthCount > 0) {
+        this.$set(this, "monthCount", bean.monthCount);
+      }
+      //用来区分配置的月的个数的显示。
+      if(this.$store.monthConfig && this.$store.monthConfig.value){
+        let monthConfig = this.$store.monthConfig,monthValue = monthConfig.value;
+        this.$set(this, "monthCount", monthValue);
+      }else {
+        //设置一个默认的月份
+        this.$set(this, "monthCount", 12);
+      }
+      this.months = [];
+      for (let i = 1; i <= this.monthCount; i++) {
+        if (this.monthCount == 4) {
+          this.months.push(i + "季度");
+        } else if (this.monthCount >= 12) {
+          if (i <= 13) {
+            this.months.push(i + "月");
+          } else if (i < 17) {
+            this.months.push(this.monthCount + 1 - i + "季度");
+          }
+        }
+      }
+    },
     // 日期
     logTimeChange(val) {
       this.y = val.slice(0, 4);
@@ -253,11 +301,14 @@ export default {
       }
     },
     getname(e) {
+      debugger;
       console.log("a:", e);
       this.treeInfo = e;
-      this.companyId = typeof e.id == "string" ? e.id : e.customerId;
+      // this.companyId = typeof e.id == "string" ? e.id : e.customerId;
+      this.companyId = typeof e.scode == "string" ? e.scode : "";
       // console.log(this.companyId);
-      this.companyName_cache = e.text;
+      // this.companyName_cache = e.text;codename
+      this.companyName_cache = e.codename;
     },
     showDilog() {
       this.dialogVisible = true;
@@ -281,6 +332,7 @@ export default {
     },
     // 公司点击确定事件
     handleQoose() {
+      debugger;
       //   点击确定,把子组件选择的id,neme存到Vuex中
       this.GetSideMid({
         company: this.companyId,

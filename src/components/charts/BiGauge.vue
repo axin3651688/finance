@@ -1,11 +1,18 @@
 <template>
-  <chart :options="receive" auto-resize/>
+  <div>
+    <chart :options="receive" auto-resize/>
+    <div class="smodal">
+      <s-modal :dialogVisible.sync="dialogVisible" :vueChart="vueChart" :plateSelect="plateSelect"></s-modal>
+    </div>
+  </div>
 </template>
 
 <script>
 import EventMixins from "../mixins/EventMixins";
+import SModal from "@v/common/SModal";
 export default {
   mixins: [EventMixins],
+  components: {SModal},
   props: {
     item: {
       type: Object,
@@ -25,6 +32,14 @@ export default {
   // },
   data() {
     return {
+      dialogVisible:false,
+      vueChart:{
+        content:this
+      },
+      plateSelect: {
+        // id:"company",
+        // data:""
+      },
       receive: {
         title: {
           // 	padding:[410,0,0,0],    //标题相对于容器边距
@@ -133,7 +148,7 @@ export default {
         this.item = item;
       }
       // debugger;
-      let companyId = this.$store.getters.treeInfo.id;
+      let companyId = this.$store.getters.treeInfo.scode;
       if (companyId == "121") {
         let fixedFirst = 0;
         let color = [

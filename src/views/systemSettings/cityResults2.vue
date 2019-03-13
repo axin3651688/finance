@@ -1,9 +1,9 @@
 <template>
     <div id="sg" style="height:100%;width:100%;overflow: auto;">
 
-        <div style="width:1586px;">
+        <div style="width:1586px;" :style="contenStyleObj">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="市管企业经营业绩情况表" name="first" :style="tabHeight">
+                <el-tab-pane label="市管企业经营业绩情况表" name="first" >
                     <table class="table2" style="float:left;">
                         <tr class="tr0">
                             <th class="heightx" style="height:98px;line-height: 98px;">资产状况</th>
@@ -16,7 +16,7 @@
                         <tr class="tr1">
                             <!-- <th rowspan="3" class="heightx" style="width:150px;">资产状况</th> -->
                             <th colspan="3" class="heights" style="width:450px;">资产总额</th>
-                            <th colspan="3" class="heights" style="width:450px;">所有者权益</th>
+                            <th colspan="3" class="heights" style="width:450px;">所有者权益总额</th>
                             <th colspan="4" class="heights" style="width:600px;">资产负债率（%）</th>
                         </tr>
                         <tr class="tr2">
@@ -152,7 +152,10 @@ export default {
             // tab页展示默认第一
             activeName: "first",
             // tab默认高度
-            tabHeight: "300px",
+            contenStyleObj: {
+                height: "500px"
+            },
+            // tabHeight: "300px",
             // 窗口的原始高度
             offsetHeight: document.body.offsetHeight,
             /**
@@ -178,16 +181,9 @@ export default {
         this.tableDataRequest(this.companyId, this.yearId, this.monthId, this.conversionId) ;  
     },
     mounted(){
-        const me = this
-        // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-        window.onresize = () => {
-            // debugger
-            return (() => {
-                window.offsetHeight = document.body.offsetHeight;
-                me.offsetHeight = window.offsetHeight;
-                // me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            })()
-        }
+        debugger
+        // 设置表格高度（自适应）
+        this.setTableScollHeight();
     },
     watch: {
         // 切换年时触发
@@ -205,29 +201,23 @@ export default {
         // 切换单位时触发（元、千元、万元、亿元）
         conversion(newV) {
             this.getData('conversion',newV) ;
-        },
-        // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-        offsetHeight(val){
-            // debugger
-            if(!this.timer){
-                debugger
-                // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-                this.offsetHeight = val
-                this.timer = true
-                let me = this
-                setTimeout(function(){
-                    // 打印offsetHeight变化的值
-                    me.tabHeight = (document.body.offsetHeight - 40 - 64 - 40) + "px" ;
-                    console.log(me.offsetHeight)
-                    me.timer = false
-                },400)
-            }
         }
     },
     computed: {
         ...mapGetters(["year", "month", "company", "conversion"])
     },
     methods: {
+        setTableScollHeight(){
+            debugger
+            // document.body.offsetHeight
+            // this.contenStyleObj.height = `${document.documentElement.clientHeight - 200}px` ;
+            this.contenStyleObj.height = document.documentElement.clientHeight - 40 - 40 + "px" ;
+            const me = this ;
+            window.onresize = function temp(){
+                // me.contenStyleObj.height = `${document.documentElement.clientHeight - 200}px` ;
+                me.contenStyleObj.height = document.documentElement.clientHeight - 40 - 40 + "px" ;
+            };
+        },
         // 切换维度时触发
         getData(vax, value){
             // debugger

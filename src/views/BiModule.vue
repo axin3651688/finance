@@ -122,7 +122,6 @@ import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
-
 export default {
   name: "BiModule",
   components: {
@@ -151,7 +150,8 @@ export default {
         { xtype: "bi-chart", id: "text", text: "图形测试" }
       ],
       chartOptions: {},
-      debug: 0
+      debug: 0,
+      monthConfig:{}
     };
   },
   // props: ["handsontanleapi"],
@@ -169,6 +169,7 @@ export default {
     //     this.module_api = newUrl;
     //   }
     // }
+    debugger;
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -201,6 +202,7 @@ export default {
     },
 
     month(newmonth) {
+      debugger;
       this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
@@ -314,11 +316,21 @@ export default {
       });
     },
     /**
+     * 删除以前的对象、标记，用来标识的配置。
+     */
+    deleteConfigOfOld(bean){
+      let me = this,arrOld = ["monthConfig"];
+      arrOld.forEach(item => {
+        if(!bean[item] && me[item] && typeof(me[item]) == "object"){
+          me[item] = {};
+        }
+      });
+    },
+    /**
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
       //
-      
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -327,6 +339,8 @@ export default {
       if (bean.items) {
         this.showSet(bean.items);
       }
+      //删除以前的用来特殊标识的对象或标记
+      this.deleteConfigOfOld(bean);
       for (let key in bean) {
         this.$set(this, key, bean[key]);
       }
@@ -420,6 +434,7 @@ export default {
         }
         this.loadModuleAfter(source);
       });
+      debugger;
     },
     /**
      * 纠正错误的配制项目,
@@ -441,6 +456,14 @@ export default {
       } else {
         //解决当父亲没有配制config的情况
         this.flag = true;
+      }
+      debugger;
+      //用来标记月份用的。
+      if(this.monthConfig){
+        let monthConfig = this.monthConfig;
+        this.$store.monthConfig = monthConfig;
+      }else {
+        this.$store.monthConfig? delete this.$store.monthConfig:"";
       }
       // else {
       //   this.datas = this.datas;
@@ -476,7 +499,7 @@ export default {
         }
         datas[element] = val;
       });
-      debugger;
+      
       if (datas.year && datas.month) {
         // let date = new Date();
         // datas.year =  date.getFullYear();
@@ -534,6 +557,7 @@ export default {
      * 更新vuex属性过来更新组件数据的
      */
     updateView(changeDim) {
+      
       console.log(this)
       console.log(this.config);
       if (this.config) {
@@ -546,7 +570,9 @@ export default {
         let $cc = this.$refs.mychild;
         $cc.forEach(children => {
           let ii = children.item;
-          if (ii && ii.config && children.hasConfig) {
+          // 加了个ii.show
+          //添加一个extendConfig判断用来过滤掉是继承来的config的元素，不然数据会出现错误,dash中 szc 2019年3月12日14:53:19
+          if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }

@@ -1,16 +1,33 @@
 <template>
-  <chart :options="options" auto-resize/>
+<div>
+  <div>
+    <chart :options="options" auto-resize/>
+    <div class="smodal">
+      <s-modal :dialogVisible.sync="dialogVisible" :vueChart="vueChart" :plateSelect="plateSelect"></s-modal>
+    </div>
+  </div>
+</div>
 </template>
 <script>
 import EventMixins from "../mixins/EventMixins";
+import SModal from "@v/common/SModal";
 export default {
   mixins: [EventMixins],
+  components: {SModal},
   props: {
     item: {}
   },
 
   data() {
     return {
+      dialogVisible:false,
+      vueChart:{
+        content:this
+      },
+      plateSelect: {
+        // id:"company",
+        // data:""
+      },
       options: {
         title: {
           text: this.item.text,

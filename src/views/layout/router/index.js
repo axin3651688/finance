@@ -9,7 +9,8 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [{
       path: '/',
-      redirect: '/message',
+      // redirect: '/message',
+      redirect: '/login'
     },
     {
       path: '/',
@@ -62,6 +63,11 @@ const router = new Router({
           path: '/handsontable',
           name: 'handsontable',
           component: () => import('@v/intelligenceReport/HTandtable.vue')
+        },
+        {
+          path: '/fillTable',
+          name: 'fillTable',
+          component: () => import('@v/intelligenceReport/SHandSonTable.vue')
         },
         {
           path: '/c',

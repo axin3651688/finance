@@ -1,6 +1,6 @@
 {
 	"id": 1,
-	"text": "指标分析配置",
+	"text": "智慧驾驶舱",
 	"rows": [],
 	"rootParams":{
 		"rootItem":"Y"
@@ -78,6 +78,7 @@
 	},
 	"show":true,
    	"__queryDataAfter":function(data){
+		   debugger;
 		let me = this;
 		let columns = me.columns;
 		let unit = me.unit;
@@ -112,6 +113,7 @@
 					"text": "营业收入目标完成率（%）",
 					"weight": 6,
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					// "watchValue":true,
 					"watchConfig":{
 						"itemNames":["bnlj","bnmb","wcl"]
@@ -127,13 +129,78 @@
 						{
 							"type":"click",
 							"way":"addTab",
+							"addTabBefore": ($vue,params,listener,bb) => {
+								debugger;
+								let me = this,flag = true;
+								let itemscode = $vue.item.GItemScode;
+								if(itemscode){
+									$vue.$store.itemscode = itemscode;
+								}
+								// $vue.$confirm('选择板块/公司进行下钻？', '提示', {
+									
+								// 	confirmButtonText: '公司',
+								// 	// confirmButtonText: '确定2',
+								// 	cancelButtonText: '板块',
+								// 	distinguishCancelAndClose:true,
+								// 	type: 'warning'
+								// 	// ,
+								// 	// beforeClose:function(action, instance, done){
+								// 	// 	debugger;
+								// 	// 	$vue[listener.way](params, listener, bb);
+								// 	// }
+								// }).then(() => {
+
+								// 	let api = "/cnbi/json/source/tjsp/dashDrillCompany.json";
+								// 	if(listener.sourceApi){
+								// 		listener.sourceApi = api;
+								// 	}
+								// 	if (listener.way && $vue[listener.way]) {
+								// 		$vue[listener.way](params, listener, bb);
+								// 	}
+								// 	// $vue.$message({
+								// 	//   	type: 'success',
+								// 	//   	message: '删除成功!'
+								// 	// });
+								// }).catch((e) => {
+								// 	//取消时的回调，此时设置成别的钻取
+								// 	if(e == "cancel"){
+								// 		$vue[listener.way](params, listener, bb);
+								// 	}else if(e == "close"){
+								// 		console.log("关闭弹框：",e);
+								// 	}else{
+								// 		console.log(e);
+								// 		$vue.$message({
+								// 			type: 'info',
+								// 			message: '出错了，请联系运维人员！'
+								// 		});      
+								// 	}
+									    
+								// });
+								return flag;
+							},
 							"sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
 							"handler": ($vue,params) =>{
-									let me = this;
-									let itemscode = $vue.item.GItemScode;
-									if(itemscode){
-										$vue.$store.itemscode = itemscode;
-									}
+								debugger;
+								// $vue.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+								// 	confirmButtonText: '确定',
+								// 	cancelButtonText: '取消',
+								// 	type: 'warning'
+								// }).then(() => {
+								// 	$vue.$message({
+								// 	  	type: 'success',
+								// 	  	message: '删除成功!'
+								// 	});
+								// }).catch(() => {
+								// 	$vue.$message({
+								// 	  	type: 'info',
+								// 	  	message: '已取消删除'
+								// 	});          
+								// });
+								let me = this;
+								let itemscode = $vue.item.GItemScode;
+								if(itemscode){
+									$vue.$store.itemscode = itemscode;
+								}
 							}
 						}
 					],
@@ -151,6 +218,7 @@
 					"text": "利润总额目标完成率（%）",
 					"weight": 6,
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"watchConfig":{
 						"itemNames":["bnlj","bnmb","wcl"]
 					},
@@ -159,6 +227,15 @@
 						{
 							"type":"click",
 							"way":"addTab",
+							"addTabBefore": ($vue,params,listener,bb) => {
+								debugger;
+								let me = this,flag = true;
+								let itemscode = $vue.item.GItemScode;
+								if(itemscode){
+									$vue.$store.itemscode = itemscode;
+								}
+								return flag;
+							},
 							"sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
 							"handler": ($vue,params) =>{
 									let me = this;
@@ -183,11 +260,21 @@
 					"id": "14001112",
 					"text": "营业收入（万元）",
 					"watchState":true,
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"weight": 6,
 					"listeners":[
 					{
 						"type":"click",
 						"way":"addTab",
+						"addTabBefore": ($vue,params,listener,bb) => {
+							debugger;
+							let me = this,flag = true;
+							let itemscode = $vue.item.GItemScode;
+							if(itemscode){
+								$vue.$store.itemscode = itemscode;
+							}
+							return flag;
+						},
 						"sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
 						"handler": ($vue,params) =>{
 								let me = this;
@@ -222,21 +309,31 @@
 					"xtype": "chart",
 					"id": "1400111",
 					"text": "利润总额（万元）",
+					"extendConfig":"p",//继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
 					"watchState":true,
 					"weight": 6,
 					"listeners":[
-					{
-						"type":"click",
-						"way":"addTab",
-						"sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
-						"handler": ($vue,params) =>{
-								let me = this;
+						{
+							"type":"click",
+							"way":"addTab",
+							"addTabBefore": ($vue,params,listener,bb) => {
+								debugger;
+								let me = this,flag = true;
 								let itemscode = $vue.item.GItemScode;
 								if(itemscode){
 									$vue.$store.itemscode = itemscode;
 								}
+								return flag;
+							},
+							"sourceApi":"/cnbi/json/source/tjsp/ybpDebug.json",
+							"handler": ($vue,params) =>{
+									let me = this;
+									let itemscode = $vue.item.GItemScode;
+									if(itemscode){
+										$vue.$store.itemscode = itemscode;
+									}
+							}
 						}
-					}
 					],
 					"GItemScode":"1403100",
 					"options": {

@@ -1,0 +1,167 @@
+{
+    "id":"0022",
+	"text":"二级穿透",
+	"layout":{
+		"xtype":"column"
+	},
+	"showDims": ["year","month","company","conversion"],
+    "children":[
+        {
+			"xtype": "bi-table",
+			"id": "8979",
+			"text": "这个也是钻取过来的表",
+			"unit":10000,
+			// "height":300,
+			"weight": 24,
+			"show":true,
+			"jdugeData":function(item){
+				for(let key in item){
+					if(item[key] && typeof(item[key]) == "number" && item[key] > 0){
+						return true;
+					}
+				}
+				return false;
+			},
+			"queryDataBefore":function(params, config, $vue){
+				let chartData = $vue.$store.chartData;
+				let itemscode = $vue.$store.itemscode;
+				if(chartData){
+					params.indscode = chartData[0].indscode;
+				};
+				if(itemscode){
+					params.itemscode = itemscode;
+				};
+				return params;
+			},
+			"conversionUnit":function(unit){
+				let me = this;
+				let unitObjs = [
+					{"text":"万元","value":10000},
+					{"text":"千元","value":1000},
+					{"text":"百元","value":100},
+					{"text":"十元","value":10},
+					{"text":"元","value":1}
+				];
+				if(!unit){
+					unit = me.unit;
+				}
+				if(!unit){
+					unit = "元";
+				}
+				for(let i = 0;i < unitObjs.length;i ++){
+					let unitItem = unitObjs[i];
+					if(unitItem.text == unit){
+						return unitItem.value;
+					}
+				}
+				return 1;
+			},
+			"queryDataAfter":function(data){
+				let me = this,otherData,flag;
+				let columns = me.config.columns;
+				let unit = me.unit;
+				if(!unit){
+					unit = 1;
+				}
+				if(data.length < 7){
+					data = data.filter(function(item,index){
+						return item.gsbm != '999'
+					});
+				}else{
+					otherData = data.filter(function(item,index){
+						return item.gsbm == '999'
+					});
+					flag = me.jdugeData(otherData[0]);
+					if(!flag){
+						data = data.filter(function(item,index){
+							return item.gsbm != '999'
+						});
+					};
+				};
+				if(columns && columns.length > 0){
+					for(let i = 0;i < data.length;i ++){
+						let dataItem = data[i];
+						for(let j = 0;j < columns.length;j ++){
+							let columnItem = columns[j];
+							if(columnItem.unit && columnItem.unit == "万元"){
+								let columnId = columnItem.id;
+								if(dataItem[columnId]){
+									dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
+								}
+							}
+						}
+					}
+				}
+				return data;
+			},
+			"config": {
+                "sql":"WITH T AS(SELECT SCODE,SNAME FROM DW_DIMCOMPANY where cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE), TT AS( SELECT NVL(SCODE,'999999') as GSBM,NVL(SNAME,'合计')AS GSMC , SUM(FACT_A) AS MBJY,SUM(NVL(T1.FACT_B,0)) AS LJWC,SUM(NVL(T1.SNTQ,0)) AS SNTQ, SUM((NVL(T1.FACT_B,0)-NVL(T1.SNTQ,0))) AS TBZJE FROM T inner JOIN (SELECT DIM_COMPANY ,SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) FACT_B, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END)SNTQ FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD =:itemscode AND DIM_PERIOD IN(:period,:comparePeriod) GROUP BY (DIM_COMPANY) )T1 ON T.SCODE=T1.DIM_COMPANY LEFT JOIN (SELECT DIM_COMPANY, SUM(DECODE(:itemscode,:itemscode,FACT_A,FACT_B)) AS FACT_A FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD = :period GROUP BY DIM_COMPANY ) T2 ON T.SCODE = T2.DIM_COMPANY GROUP BY GROUPING sets ((SNAME,SCODE),())) SELECT GSBM,GSMC,MBJY,LJWC,ROUND(DECODE(MBJY,0,0,LJWC/MBJY),4) AS LJWCL,SNTQ,TBZJE,ROUND(DECODE(SNTQ,0,0,TBZJE/SNTQ),4) AS TBZJL FROM( SELECT GSBM,GSMC,MBJY,LJWC,SNTQ,TBZJE FROM TT) ORDER BY GSBM",
+                "_cube": {
+					"subject": "0001",
+					"cubeId": 4
+				},
+				"mainDim": "itempoint",
+				"needDims": [
+					"year",
+					"month",
+					"company"
+				],
+				"random": {
+					"min": 100,
+					"max": 100000
+				},
+				"type": 1,
+				"show":true,
+				"generateVar":{
+					"periodCount":2,
+					"compareType":"-1&0",
+					"reverse":true
+				},
+				"columns": [
+					{
+						"id": "tbzjl",
+						"type": "decimal",
+						"text": "同比增减率"
+					},
+					{
+						"id": "gsmc",
+						"type": "string",
+						"text": "公司简称",
+						"width":"300px"
+					},
+					{
+						"id": "mbjy",
+						"type": "decimal",
+						"text": "全年考核目标建议值",
+						"unit":"万元"
+					},
+					{
+						"id": "ljwc",
+						"type": "decimal",
+						"text": "累计完成值",
+						"unit":"万元"
+					},
+					{
+						"id": "ljwcl",
+						"type": "decimal",
+						"text": "累计完成率"
+						
+					},
+					{
+						"id": "sntq",
+						"type": "decimal",
+						"text": "上年同期",
+						"unit":"万元"
+					},
+					{
+						"id": "tbzje",
+						"type": "decimal",
+						"text": "同比增减额",
+						"unit":"万元"
+					}	
+				],
+				"rows": []
+			}
+		}
+    ]
+}

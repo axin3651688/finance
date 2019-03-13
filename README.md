@@ -229,6 +229,7 @@ BiText
                 //所有的数据都在store里，自己加自己的判断吧
                 return true;//默认显示
             },
+            extendConfig:"p",//内容可以随意，暂时没有用到内容的判断，但是配置要有，作用是 刷新的时候继续使用父元素的config，不配就单独拦截处理。
             queryDataAfter:function(){}//数据的后置处理
             queryDataBefore:function(){}//数据的前置处理
             xtype: "bi-table",
@@ -293,6 +294,7 @@ listeners:[
   {
     "type":"click",//事件类型
     "way":"addTab",//调用的公共方法
+    way + "Before":() => {},//way：就是上面的way配置，配置的是什么就是什么的拼接，此时是"addTab"。作用：生成tab的回调
     "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",//孙子成
     "location":"before",//默认往后面,下边加，before就是往前面=tab，上边加=form
     "handler":($vue,params)=>{//自定义的回调
@@ -362,3 +364,5 @@ listeners:[
         #1CD1A1 （淡青色）
         #1875F0 （蓝色）
         
+## 注意：cubeId全局修改
+    src\api\interface.js 中加了 let cubeId = 8 ，这里修改了其他地方配cubeId 都没效

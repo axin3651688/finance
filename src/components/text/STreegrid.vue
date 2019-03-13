@@ -441,3 +441,8 @@ img {
   -webkit-transform: rotate(-90deg);
 }
 </style>
+<style>
+.el-table--scrollable-x .el-table__body-wrapper{
+  overflow: auto;
+}
+</style>

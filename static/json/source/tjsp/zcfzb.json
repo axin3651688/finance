@@ -5,6 +5,10 @@
     "xtype": "tab"
 },
 "showDims": ["year","month","company","conversion"],
+"monthConfig":{//显示13审计月
+  "id":"month",
+  "value":13
+},
 "changeCompanyBefore":function(newcompany,option){
   // this.showSet(this.items[0].children); 
   option.closeTabTaget(newcompany,option);
@@ -1300,17 +1304,15 @@
         len = cv.length;
         let text = row[cv];
         let id = "" ;
+        let listener = false ; 
         if(cv == "text1" )id = row.id;//下钻的标识
         if(cv == "text2" )id = row.id_;//下钻的标识
-        // let datas = this.datas;
-        //         let data = datas.filter(function(item){
-        //                 return item.id_ == row.id_;
-        //         });
-        // row = data[0];
-
+        // drill||_drill 是否下钻的标识
+        if(cv == "text1")listener = row.drill; 
+        if(cv == "text2")listener = row._drill;
         if( this.drillProperties.indexOf(column.property) != -1 ){
-          if((row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
-  
+          // if(listener && (row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
+            if(listener && (cv == "text1" || cv == "text2" )){
                   option.commonHandler(
                   {
                       "type":"click",//事件类型

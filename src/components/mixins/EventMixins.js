@@ -46,6 +46,20 @@ export default {
      */
     commonHandler(listener, params, bb) {
       let me = this;
+      //添加tab之前的回调，在之前你想干啥，写在这里。
+      let flag = false;
+      if(listener[listener.way + "Before"]){
+        flag = listener[listener.way + "Before"](me,params,listener,bb);
+        if(flag){
+          this.plateSelect = {showDialog:true};
+          this.$store.modalParams = {
+            listener:listener,
+            params:params,
+            bb:bb
+          }
+          return;
+        }
+      }
       if (listener.way && me[listener.way]) {
         me[listener.way](params, listener, bb);
       }
