@@ -31,10 +31,10 @@
                 <div class="input-refresh" ref="elememt">
                     <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item label="登录名">
-                            <el-input v-model="searchForm.userName" placeholder="登录名" disabled clearable ></el-input>
+                            <el-input v-model="searchForm.userName" placeholder="模糊查询" clearable ></el-input>
                         </el-form-item>
 
-                        <el-form-item label="真实姓名">
+                        <!-- <el-form-item label="真实姓名">
                             <el-input v-model="searchForm.trueName" placeholder="真实姓名" clearable></el-input>
                         </el-form-item>
 
@@ -43,7 +43,7 @@
                                 <el-option label="管理员" value="1"></el-option>
                                 <el-option label="普通成员" value="0"></el-option>
                             </el-select>
-                        </el-form-item>
+                        </el-form-item> -->
                     
                         <el-form-item>
                             <el-button type="text" @click="handleDelete">清除</el-button>
@@ -223,26 +223,26 @@ export default {
             }); 
         },
         getTimes(row){
-            debugger
-            let etime, stime, dateBegin, usedTime, days, leave1,leave2,leave3, hours, minutes,seconds ;
-            //var date = new Date();
-            for(let i=0; i<row.length; i++){
-                dateBegin = (row[i].loginTime).replace(/-/g, "/");//转换类型。注：因为程序识别不了‘-’时间格式，必须是‘/’的。
-                etime = Date.parse(new Date(dateBegin));//登录时间转化成毫秒数
-                stime = new Date().getTime(); //得到现在的时间
-                usedTime = stime - etime ;//获得两个时间差（当前时间stime - 登录时间etime）
-                days = Math.floor(usedTime/(24*3600*1000));
-                leave1=usedTime%(24*3600*1000);    //计算天数后剩余的毫秒数
-                hours=Math.floor(leave1/(3600*1000));
-                //计算相差分钟数
-                leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
-                minutes=Math.floor(leave2/(60*1000));
-                //计算相差秒数
-                leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
-                seconds=Math.round(leave3/1000)
-                let time = days +"天"+ hours +"时"+ minutes +"分"+ seconds +"秒";
-                row[i].residencetime = time ;
-            }
+            // debugger
+            // let etime, stime, dateBegin, usedTime, days, leave1,leave2,leave3, hours, minutes,seconds ;
+            // //var date = new Date();
+            // for(let i=0; i<row.length; i++){
+            //     dateBegin = (row[i].loginTime).replace(/-/g, "/");//转换类型。注：因为程序识别不了‘-’时间格式，必须是‘/’的。
+            //     etime = Date.parse(new Date(dateBegin));//登录时间转化成毫秒数
+            //     stime = new Date().getTime(); //得到现在的时间
+            //     usedTime = stime - etime ;//获得两个时间差（当前时间stime - 登录时间etime）
+            //     days = Math.floor(usedTime/(24*3600*1000));
+            //     leave1=usedTime%(24*3600*1000);    //计算天数后剩余的毫秒数
+            //     hours=Math.floor(leave1/(3600*1000));
+            //     //计算相差分钟数
+            //     leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
+            //     minutes=Math.floor(leave2/(60*1000));
+            //     //计算相差秒数
+            //     leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+            //     seconds=Math.round(leave3/1000)
+            //     let time = days +"天"+ hours +"时"+ minutes +"分"+ seconds +"秒";
+            //     row[i].residencetime = time ;
+            // }
             this.tableData = row ;
         },
         /**
