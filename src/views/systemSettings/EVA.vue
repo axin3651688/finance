@@ -555,8 +555,10 @@ export default {
             }              
             //计算公式 资产总计
               // me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
+              
               console.log("me.ArrData:", me.ArrData) ;   
-              me.setExpressionData();         
+              me.setExpressionData();
+              me.handleClick(me.vars[0]) ;         
           
       }) ; 
     },
@@ -658,8 +660,11 @@ export default {
       this.$nextTick(() => {
         debugger;
         item.value = item.display_num;
-        //输入数字
-        item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
+        if(typeof item.value === "string"){
+          //输入数字
+          item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
+        }
+        
         //税率
         if (item.code === "sl") {
           //调整后数据
