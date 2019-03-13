@@ -28,6 +28,7 @@
     :data="rolesData"
     border
     stripe
+    :height ="heights"
     >
       <el-table-column type="index" label="序号" width="80" header-align="center" align ="center" ></el-table-column>
       <el-table-column prop="srolename" label="角色名称" width="240" header-align="center" align ="center"></el-table-column>
@@ -60,7 +61,7 @@
       @close="closeDilog('roleDark')"
       >
       
-      <template ref="roleDark">
+    
         <!-- <el-row>
           <el-tooltip class="item" effect="dark" content="授权" placement="top-start">
             <el-button icon="iconfont icon-pression" circle @click="handleMenuPermiss"></el-button>
@@ -85,55 +86,21 @@
           :is-fold="props.isFold"
           :expand-type="props.expandType"
           :selection-type="props.selectionType"
+          @checkbox-click="handleSelectionChange"
           max-height="500px"
           border
         >
          <template slot="rights" slot-scope="scope">
-           <el-checkbox-group v-model="scope.row.rightsVal" @change="handleCheckedRightsChange(scope.row,right)">
-               <el-checkbox v-for="right in scope.row.rights" :label="right" :key="right">{{right}}</el-checkbox>
-             <!-- <template v-if="scope.row.nadd === 0 || scope.row.nadd === 1"  >
-                <el-checkbox :value="scope.row.nadd">新增</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.ndel === 0 || scope.row.ndel === 1">
-                <el-checkbox :value="scope.row.ndel" >删除</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nupdate === 0 || scope.row.nupdate === 1">
-                <el-checkbox :value="scope.row.nupdate" >修改</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nexp === 0 || scope.row.nexp === 1">
-                <el-checkbox :value="scope.row.nexp" >导出</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nimp === 0 || scope.row.nimp === 1">
-                <el-checkbox :value="scope.row.nimp" >导入</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nfill === 0 || scope.row.nfill === 1">
-                <el-checkbox :value="scope.row.nfill" >填报</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nrep === 0 || scope.row.nrep === 1">
-                <el-checkbox :value="scope.row.nrep" >上报</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nper === 0 || scope.row.nper === 1">
-                <el-checkbox :value="scope.row.nper" >授权</el-checkbox>
-             </template>
-
-             <template v-if="scope.row.nwarn === 0 || scope.row.nwarn === 1">
-                <el-checkbox :value="scope.row.nwarn" >预警</el-checkbox>
-             </template> -->
-          
+           <el-checkbox-group v-model="scope.row.rightsVal" >
+               <el-checkbox v-for="right in scope.row.rights" :label="right" :key="right" @change="handleCheckedRightsChange(scope.row,right)">{{right}}</el-checkbox>
+           
           </el-checkbox-group>
         </template>
         </zk-table>
-        </template>
+       
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitAddUserForm('addUserForm')">确 定</el-button>
-          <el-button @click="dialogAddUserVisible = false">取 消</el-button>
+          <el-button @click="dialogRoleDarkVisible = false">取 消</el-button>
         </div>
       </el-dialog>
 
@@ -205,12 +172,16 @@ export default {
 //     components: {
 //     ExTable
 //   },
-  created() {},
+  created() {
+    this.heights = document.documentElement.clientHeight-217;
+  },
 
   data() {
     return {
-      right:["新增","修改"],
-
+      right:[],
+      //rightAll:["",];
+      rightDatas:[],//模块授权修改权限后的数据
+      rightAllDatas:[],//模块授权原始数据
       pageNum: 1,
       // 分页---默认每页100行数据
       pageSize: 10,
@@ -263,18 +234,18 @@ export default {
         showHeader: true,
         showSummary: false,
         showRowHover: true,
-        showIndex: false,
+        showIndex: true,
         treeType: true,
-        isFold: false,
+        isFold: true,
         expandType: false,
         selectionType: true
       },
       checkedPremiss: [],
-      authData: [ ],
+      authData: [ ],//模块授权生成树表的数据
       columns: [
         {
           label: "菜单列表",
-          prop: "sname",
+          prop: "menusname",
           width: "200px"
           // headerAlign: "center"
         },
@@ -285,15 +256,137 @@ export default {
           width: "300px",
           template:"rights"
         }
-      ]
+      ],
+      heights:0
     };
   },
   mounted() { 
     //加载角色列表
     this.findAll(this.pageNum,this.pageSize);
-    
+    //设置表格高度（自适应）
+    this.setTableScollHeight();
   },
   methods: {
+    /**
+     * 设置表格高度
+     */
+    setTableScollHeight(){
+        this.heights = document.documentElement.clientHeight-217;
+        const me = this;
+        window.onresize = function temp(){
+            me.heights = document.documentElement.clientHeight-217;
+        }
+    },
+
+    /**
+     * 菜单列表取消选中设置
+     */
+    changeSelectDatas(changeDatas,row){
+        if(changeDatas && changeDatas.length > 0){
+          for(let i = 0;i <changeDatas.length;i++){
+                if(changeDatas[i].id == row.id){
+                    changeDatas[i].rightsVal = [];
+                    changeDatas[i].nadd2 = 0;
+                    changeDatas[i].ndel2 = 0;
+                    changeDatas[i].nupdate2 = 0;
+                    changeDatas[i].nexp2 = 0;
+                    changeDatas[i].nimp2 = 0; 
+                    changeDatas[i].nfill2 = 0;
+                    changeDatas[i].nrep2 = 0;
+                    changeDatas[i].nper2 = 0;
+                    changeDatas[i].nwarn2 = 0; 
+                    changeDatas[i].scode2 = null; 
+                } 
+           }
+        }
+    },
+    /**
+     * 菜单列表选中设置
+     */
+    changeSelectScodes(changeDatas,row){
+        if(changeDatas && changeDatas.length > 0){
+          for(let i = 0;i <changeDatas.length;i++){
+                if(changeDatas[i].id == row.id){ 
+                    changeDatas[i].scode2 = changeDatas[i].scode; 
+                } 
+           }
+        }
+    },
+    /**
+     * 
+     */
+    handleSelectionChange(rowIndex,changeDatas){
+      let _this = this;
+      let row = rowIndex.row;
+      if(row._isChecked){
+        _this.changeSelectDatas(changeDatas,row);
+          if(row.children && row.children){
+            for(let j = 0;j < row.children.length;j++){
+              _this.changeSelectDatas(changeDatas,row.children[j]);
+
+              if(row.children[j].children && row.children[j].children.length > 0){
+                  for(let k = 0;k < row.children[j].children.length;k++){
+                    _this.changeSelectDatas(changeDatas,row.children[j].children[k]);
+
+                    if(row.children[j].children[k].children && row.children[j].children[k].children.length > 0){
+                        for(let l = 0;l < row.children[j].children[k].children.length;l++){
+                           _this.changeSelectDatas(changeDatas,row.children[j].children[k].children[l]);
+
+                           if(row.children[j].children[k].children[l].children && row.children[j].children[k].children[l].children.length > 0){
+                               for(let m = 0;m < row.children[j].children[k].children[l].children.length;m++){
+
+                                    _this.changeSelectDatas(changeDatas,row.children[j].children[k].children[l].children[m]);
+                               }
+                           }
+                        }
+                    }
+                  }
+              }
+            }
+
+          }
+        }else{
+          _this.changeSelectScodes(changeDatas,row);
+          if(row.children && row.children){
+            for(let j = 0;j < row.children.length;j++){
+              _this.changeSelectScodes(changeDatas,row.children[j]);
+
+              if(row.children[j].children && row.children[j].children.length > 0){
+                  for(let k = 0;k < row.children[j].children.length;k++){
+                    _this.changeSelectScodes(changeDatas,row.children[j].children[k]);
+
+                    if(row.children[j].children[k].children && row.children[j].children[k].children.length > 0){
+                        for(let l = 0;l < row.children[j].children[k].children.length;l++){
+                           _this.changeSelectScodes(changeDatas,row.children[j].children[k].children[l]);
+
+                           if(row.children[j].children[k].children[l].children && row.children[j].children[k].children[l].children.length > 0){
+                               for(let m = 0;m < row.children[j].children[k].children[l].children.length;m++){
+
+                                    _this.changeSelectScodes(changeDatas,row.children[j].children[k].children[l].children[m]);
+                               }
+                           }
+                        }
+                    }
+                  }
+              }
+            }
+
+          }
+
+        }
+        // row.rightsVal = [];
+        // row.nadd2 = 0;
+        // row.ndel2 = 0;
+        // row.nupdate2 = 0;
+        // row.nexp2 = 0;
+        // row.nimp2 = 0; 
+        // row.nfill2 = 0;
+        // row.nrep2 = 0;
+        // row.nper2 = 0;
+        // row.nwarn2 = 0; 
+        _this.rightDatas = changeDatas;
+      
+    },
     /**
      * @description 查询当前用户的菜单
      */
@@ -302,10 +395,12 @@ export default {
       //getters 数据
       var getters = _this.$store.getters;
       request({
-        url: "/zjb/sys/role/query_roleid",
+        url: "/zjb/sys/menupermission/query_full_permission",
         method: "get",
         params:{
-            roleid:roleId
+            roleId:roleId,
+            //currentRoleId:getters.user.role.id
+            currentRoleId:2
         }
       }).then(result => { 
       if (result.status == 200 && result.data.code == 200) {
@@ -330,67 +425,75 @@ export default {
             data = data.filter(function(item){ 
                   item.rights = [];
                   item.rightsVal = [];
-                  if((item.nadd || item.nadd === 0) && item.nadd != -1){
+                  if(item.nadd && item.nadd === 1){
                     item.rights.push("新增");
-                    if(item.nadd === 1){
+                    if(item.nadd2 === 1){
                         item.rightsVal.push("新增");
                     }
                   }
-                  if((item.ndel || item.ndel === 0) && item.ndel != -1){
+                  if(item.ndel && item.ndel === 1 ){
                     item.rights.push("删除");
-                    if(item.ndel === 1){
+                    if(item.ndel2 === 1){
                         item.rightsVal.push("删除");
                     }
                   }
-                  if((item.nupdate || item.nupdate === 0) && item.nupdate != -1){
+                  if(item.nupdate && item.nupdate === 1){
                     item.rights.push("修改");
-                    if(item.nupdate != 1){
+                    if(item.nupdate2 === 1){
                         item.rightsVal.push("修改");
                     }
                   }
-                  if((item.nexp || item.nexp === 0) && item.nexp != -1){
+                  if(item.nexp && item.nexp === 1){
                     item.rights.push("导出");
-                    if(item.nexp === 1){
+                    if(item.nexp2 === 1){
                         item.rightsVal.push("导出");
                     }
                   }
-                  if((item.nimp || item.nimp === 0) && item.nimp != -1 ){
+                  if(item.nimp && item.nimp === 1){
                     item.rights.push("导入");
-                    if(item.nimp === 1){
+                    if(item.nimp2 === 1){
                         item.rightsVal.push("导入");
                     }
                   }
-                  if((item.nfill || item.nfill === 0) && item.nfill != -1 ){
+                  if(item.nfill && item.nfill === 1){
                     item.rights.push("填报");
-                    if(item.nfill === 1){
+                    if(item.nfill2 === 1){
                         item.rightsVal.push("填报");
                     }
                   }
-                  if((item.nrep || item.nrep === 0) && item.nrep != -1){
+                  if(item.nrep && item.nrep === 1){
                     item.rights.push("上报");
-                    if(item.nrep === 1){
+                    if(item.nrep2 === 1){
                         item.rightsVal.push("上报");
                     }
                   }
-                  if((item.nper || item.nper === 0) && item.nper != -1){
+                  if(item.nper && item.nper === 1){
                     item.rights.push("授权");
-                    if(item.nper === 1){
+                    if(item.nper2 === 1){
                         item.rightsVal.push("授权");
                     }
                   }
-                  if((item.nwarn || item.nwarn === 0) && item.nwarn != -1 ){
+                  if(item.nwarn && item.nwarn === 1 ){
                     item.rights.push("预警");
-                    if(item.nwarn === 1){
+                    if(item.nwarn2 === 1){
                         item.rightsVal.push("预警");
                     }
                   }
+                  if(item.scode && item.scode2){
+                        item._isChecked = true;
+                  }else{
+                        item._isChecked = false;
+                  }
                   item.id = item.scode; 
-                return item.label = item.sname;
+                return item.label = item.menusname;
             });
-            _this.authData = data;
+             _this.authData = data;
+            _this.rightAllDatas= JSON.parse(JSON.stringify(data));
+            _this.rightDatas = data;
             //data[0].open = true;
            // _this.expandKeys.push(data[0].scode);
             _this.authData = tools.transformToeTreeNodes(setting, data);
+
           }
         }
         // if (result.status == 200) {
@@ -402,11 +505,175 @@ export default {
     },
 
     handleCheckedRightsChange(row,val){ 
+       var me = this;
+       let rightDatas = me.rightDatas;
+       if(val == "新增"){
+         if(row.nadd2 ===1){
+           row.nadd2 = 0;
+         }else{
+            row.nadd2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+       }else if(val == "删除"){
+         if(row.ndel2 ===1){
+           row.ndel2 = 0;
+         }else{
+            row.ndel2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "修改"){
+         if(row.nupdate2 ===1){
+           row.nupdate2 = 0;
+         }else{
+            row.nupdate2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "导出"){
+         if(row.nexp2 ===1){
+           row.nexp2 = 0;
+         }else{
+            row.nexp2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "导入"){
+         if(row.nimp2 ===1){
+           row.nimp2 = 0;
+         }else{
+            row.nimp2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "填报"){
+         if(row.nfill2 ===1){
+           row.nfill2 = 0;
+         }else{
+            row.nfill2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "上报"){
+         if(row.nrep2 ===1){
+           row.nrep2 = 0;
+         }else{
+            row.nrep2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else if(val == "授权"){
+         if(row.nper2 ===1){
+           row.nper2 = 0;
+         }else{
+            row.nper2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }else {
+         if(row.nwarn2 ===1){
+           row.nwarn2 = 0;
+         }else{
+            row.nwarn2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
+
+       }
+        if(rightDatas && rightDatas.length > 0){
+          for(let i = 0;i < rightDatas.length;i++){
+              if(rightDatas[i].id == row.id){
+                rightDatas[i] = row;
+                break;
+              }
+          }
+          
+        }
+    },
+/**
+ * 授权
+ */
+    submitAddUserForm(){
+      let _this = this;
+      let rightDatas = _this.rightDatas;
+      let authData = _this.rightAllDatas;
+      let changeDatas = [];
+      if(authData && rightDatas && rightDatas.length>0 && authData.length>0){
+         for(let i = 0;i< rightDatas.length;i++){
+            let data = authData.filter(function(item){
+              if(rightDatas[i].id == item.id){              
+                  if(rightDatas[i].nadd2  != item.nadd2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].nupdate2  != item.nupdate2
+                   || rightDatas[i].nexp2  != item.nexp2 || rightDatas[i].nimp2  != item.nimp2 || rightDatas[i].nfill2  != item.nfill2 || rightDatas[i].nrep2  != item.nrep2
+                    || rightDatas[i].nper2  != item.nper2 || rightDatas[i].nwarn2  != item.nwarn2 || rightDatas[i].scode2  != item.scode2){
+                      return item;
+
+                  }
+              }
+
+            });
+            if(data.length >0 ){
+                changeDatas.push(data);
+            }
+          //  for(let j = 0;j<authData.length;j++){
+          //     if(rightDatas[i].id == authData[j].id){
+          //        if()
+          //     }
+          //  }
+
+         }
+      }
+      if(changeDatas.length >0){
+        let data = [];
+        if(rightDatas.length>0){
+            for(let i =0;i<rightDatas.length;i++){
+              if(rightDatas[i].scode2){
+                var obj = {             
+                    nadd: rightDatas[i].nadd2,
+                    ndel: rightDatas[i].ndel2,
+                    nexp: rightDatas[i].nexp2,
+                    nfill:rightDatas[i].nfill2,
+                    nimp: rightDatas[i].nimp2,
+                    nper: rightDatas[i].nper2,
+                    nrep: rightDatas[i].nrep2,
+                    nupdate: rightDatas[i].nupdate2,
+                    nwarn: rightDatas[i].nwarn2,
+                    roleid: rightDatas[i].roleid2,
+                    scode: rightDatas[i].scode2 
+                }
+                data.push(obj);
+
+              }
+              
+            }
+        }
+        request({
+          url: "/zjb/sys/menupermission/permission",
+          method: "post",
+          data: data
+        }).then(result => { 
+          if (result.status == 200) {
+              _this.dialogRoleDarkVisible = false;
+              if (result.data.code == 200) {
+                this.$message({
+                  type: "success",
+                  message: result.data.msg
+                });
+              }
+            } else {
+              tools.showMes(result.data.msg, "error");
+            }
+        });
+
+      }else{
+         this.$message({
+                  type: "warning",
+                  message: "未做修改"
+                });
+      }
+      
 
     },
 
     handleCheckedPermissChange(value, event) {
-       ;
       console.log(this.checkedPremiss);
     },
 
@@ -574,6 +841,7 @@ export default {
     handleDark(index,row) { 
       this.title = tools.opt[0].srolename;
       this.dialogRoleDarkVisible = true;
+      this.rightDatas = [];
       this.opt = tools.opt[0];
       //加载菜单列表
       this.findMenu(row.roleid);
@@ -652,7 +920,7 @@ export default {
             }
           }).then(result => {
             if (result.status == 200) {
-              if (result.data.data) {
+              if (result.data.code == 200) {
                 _this.findAll(_this.pageNum,_this.pageSize);
                 this.$message({
                   type: "success",
