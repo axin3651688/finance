@@ -598,6 +598,10 @@ export default {
 .el-scrollbar__bar.is-horizontal > div {
   height: 0;
 }
+/*sjz加的*/
+.el-table__body-wrapper{
+  overflow: auto;
+} 
 /* 数字靠右 */
 /* .el-table td.is-center {
   text-align: right;
@@ -617,5 +621,6 @@ table th.gutter {
     line-height: 60px;
     font-size: 20px;
     background-color: #ddd;
+    color: red;
 }
 </style>
