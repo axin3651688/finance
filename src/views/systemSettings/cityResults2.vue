@@ -236,10 +236,12 @@ export default {
             debugger
             let me = this ;
             // 判断公司是否为集团公司
-            if(value=='1001'){
+            if(vax=="company"){
+                if(value=='1001'){
                 me.isShow = false;
-            }else{
-                me.isShow = true ;
+                }else{
+                    me.isShow = true ;
+                }
             }
             me.num = -1 ;
             me.tableData = [],me.tableData2=[],me.first=[],me.second=[] ;
