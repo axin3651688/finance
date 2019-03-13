@@ -1,5 +1,7 @@
 <template>
-  <div class="shuju">
+<div>
+  <SBiDiv v-if="divShow" :dataDiv="divContent"></SBiDiv>
+  <div v-else-if="fillShow" class="shuju">
     <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
       <!-- 手工填报页面 -->
       <el-tab-pane label="手工填报" name="second">
@@ -100,28 +102,35 @@
       </el-tab-pane>
     </el-tabs>
   </div>
+</div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
+import SBiDiv from "@c/SBiDiv";
 import {
-  importExcel,
-  inquire,
-  save,
-  download,
-  del,
-  financingDown,
-  mechanism
+    importExcel,
+    inquire,
+    save,
+    download,
+    del,
+    financingDown,
+    mechanism
 } from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
   components: {
-    HotTable
+    HotTable,
+    SBiDiv
     // BiModule
   },
   data() {
     return {
+      //控制显示区域块
+      divShow:false,
+      fillShow:true,
+      divContent:{},
       selectedOptions: [],
       financingOptions: [],
       dialogVisible: false,
@@ -234,6 +243,14 @@ export default {
       }
     },
     company(val) {
+      debugger;
+      //判断不是合并公司才给填报
+      let flag = this.rightOfLeafCompany();
+      if(!flag){
+        return;
+      }
+      this.divShow = false;
+      this.fillShow = true;
       if (this.activeName2 == "second") {
         this.tableData = [];
         let company = this.datas.company;
@@ -480,6 +497,12 @@ export default {
     mechanism().then(res => {
       this.mechanismdown = res.data.data;
     });
+    //合并公司没有填报的权限
+    let flag = this.rightOfLeafCompany();
+    if(flag){
+      this.divShow = false;
+      this.fillShow = true;
+    }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.resizeTable);
@@ -488,6 +511,30 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
+    rightOfLeafCompany() {
+      let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
+          userCompany = this.$store.getters.userCompany;
+      let flag = true,html = "<p>此公司无填报权限！</p>";
+      if(companyId == treeInfo.scode){
+        if(treeInfo.nisleaf == 0){
+          this.divShow = true;
+          this.fillShow = false;
+          this.divContent = {htmlContent:html};
+          flag = false;
+          return flag;
+        }
+      }else if(companyId == userCompany.customerId && userCompany.nisleaf == 0){
+        this.divShow = true;
+        this.fillShow = false;
+        this.divContent = {htmlContent:html};
+        flag = false;
+        return flag;
+      }else{
+        this.divShow = false;
+        this.fillShow = true;
+      }
+      return flag;
+    },
     //根据是否金融机构判断机构名称是下拉数据还是直接填写
     mechanismdownData(row, columns) {
       let source = [];
@@ -1129,8 +1176,7 @@ export default {
     //点击保存数据
     saveData() {
       debugger;
-      // var exadata = this.$refs.hotTableComponent.hotInstance.getData()
-      // console.log(exadata)
+      let that = this;
       this.tableData.forEach(item => {
         //isinside
         // a = item
@@ -1172,6 +1218,10 @@ export default {
               item.G = null;
               item.H = null;
             }
+          }
+          //融资的传递的参数的替换financingOptions
+          if(that.templateId == "7" && key == "finance" && item){
+            that.parseTypeOfFinance(key,item);
           }
         }
       });
@@ -1242,6 +1292,30 @@ export default {
           }
         });
       }
+    },
+    /**
+     * 转换融资的 融资类型的转换
+     */
+    parseTypeOfFinance(key,itemOut) {
+      debugger;
+      let me = this;
+      let financingOptions = this.financingOptions;
+      if(financingOptions && financingOptions.length > 0){
+        for(let i = 0;i < financingOptions.length;i ++){
+          let item = financingOptions[i];
+          if(itemOut[key] == item.text){
+            itemOut[key] = item.id;
+            break;
+          }
+
+        }
+        // financingOptions.forEach(item => {
+        //   if(itemOut[key] == item.text){
+        //     itemOut[key] = item.id;
+        //     return;
+        //   }
+        // });
+      } 
     },
     afterSaveData() {
       debugger;
@@ -1315,8 +1389,30 @@ export default {
         // me.settings = res.data.data.rows;
         // me.$set(me.settings, "data",null)
         // me.$set(me.settings, "data", res.data.data.rows);
+        if(this.templateId == "7" && rows && rows.length > 0){
+          this.parseNameOfFinance(rows);
+        }
         me.convertHansoneTableColumns(columns, rows);
       });
+    },
+    /**
+     * 转换融资类型作为名字
+     */
+    parseNameOfFinance(rows) {
+      let me = this,key = "finance";
+      let financingOptions = this.financingOptions;
+      if(financingOptions && financingOptions.length > 0){
+        for(let i = 0;i < rows.length;i ++){
+          let rowItem = rows[i];
+          for(let j = 0;j < financingOptions.length;j ++){
+            let item = financingOptions[j];
+            if(rowItem[key] == item.id){
+              rowItem[key] = item.text;
+              break;
+            }
+          }
+        }
+      }
     },
     //tab栏的切换
     handleClick(tab, event) {
