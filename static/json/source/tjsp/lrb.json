@@ -5,6 +5,10 @@
         "xtype":"tab"
     },
     "showDims": ["year","month","company","conversion"],
+    "monthConfig":{
+        "id":"month",
+        "value":13
+    },     
     "changeCompanyBefore":function(newcompany,option){
         // this.showSet(this.items[0].children); 
         option.closeTabTaget(newcompany,option);
