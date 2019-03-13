@@ -399,8 +399,8 @@ export default {
         method: "get",
         params:{
             roleId:roleId,
-            //currentRoleId:getters.user.role.id
-            currentRoleId:2
+            currentRoleId:getters.user.role.id
+            //currentRoleId:2
         }
       }).then(result => { 
       if (result.status == 200 && result.data.code == 200) {
