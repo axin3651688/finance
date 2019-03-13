@@ -70,16 +70,17 @@ export default {
   methods: {
     findNodes () {
       let me = this;
-      debugger;
       let user = this.$store.state.user.user.user;
-      getCompanyTree().then(res => {
+      getCompanyTree(user).then(res => {
         if (res.status == 200 && res.data.code == 200) {
           //封装树对象数据
-          let setting = this.setting;
+          let setting = me.setting;
           var data = res.data.data;
           if (Array.isArray(data) && data.length > 0) {
+            data = me.filterDataOfEmpty(data);
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
+              debugger;
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
                 item.open = true; //展开此节点
@@ -94,6 +95,18 @@ export default {
           alert("网络请求失败");
         }
       });
+    },
+    /**
+     * 过滤掉为空的
+     */
+    filterDataOfEmpty(data){
+      debugger;
+      let me = this;
+      data = data.filter(item => {
+        return item;
+      });
+      return data;
+
     },
     //过滤节点
     filterNode(value, data) {
