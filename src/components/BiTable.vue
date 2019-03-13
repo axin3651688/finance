@@ -621,5 +621,6 @@ table th.gutter {
     line-height: 60px;
     font-size: 20px;
     background-color: #ddd;
+    color: red;
 }
 </style>
