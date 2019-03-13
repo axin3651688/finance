@@ -96,7 +96,7 @@
                     "id": "gsmc",
                     "type": "string",
                     "text": "公司名称",
-                    "width":"300px"
+                    "width":"360px"
                 },
                 {
                     "type": "string",
