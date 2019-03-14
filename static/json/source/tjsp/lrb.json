@@ -1,301 +1,132 @@
 {
+    /**
+     * name : sjz
+     * 因为是sql配的 不利于导入填报  所以弃用  改为cube配置
+     * 重新启用（表样更换）
+     */
     "id":"0002",
     "text":"利润表",
     "layout":{
         "xtype":"tab"
     },
-    "showDims": ["year","month","company","conversion"],
     "monthConfig":{
         "id":"month",
         "value":13
-    },     
-    "changeCompanyBefore":function(newcompany,option){
-        // this.showSet(this.items[0].children); 
-        option.closeTabTaget(newcompany,option);
-    },
+    }, 
+    "showDims": ["year","month","company","conversion"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
-    },
+    } ,
     "changeMonthBefore":function(newmonth,option){
-        debugger
-        // option.cellStyle(this.items[0]);
         option.closeTabTaget(newmonth,option);
     },
-    "changeConversionBefore":function(newconversion, option){
-        // debugger
-        option.closeTabTaget(newconversion,option);
-        // option.updateView("conversion");
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
-        debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
     },
     "config":{
-        // "sql":"select SCODE As id, SNAME As text, SSORTBY, NLEVEL,FACT_A As A, FACT_B As b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period And DIM_COMPANY =:compAny)A right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' And PROPERTY3='14') b on A.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
-        "cube":{
+        "sql": "WITH T1 AS( SELECT DIM_ITEMPERIOD, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) DYSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_A ELSE 0 END) DYSSNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) LJSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) LJSSNTQ FROM DW_FACTFINANCEPERIOD where DIM_PERIOD IN(:comparePeriod,:period)and DIM_COMPANY=:company and SUBJECT='0002' GROUP BY DIM_ITEMPERIOD) SELECT B.SCODE,B.SNAME, NVL(DYSBN,0) DYSBN, NVL(DYSSNTQ,0) DYSSNTQ, (NVL(DYSBN,0)-NVL(DYSSNTQ,0)) DYSTBZJE, ROUND(CASE WHEN NVL(DYSSNTQ,0)='0' THEN 0 ELSE (NVL(DYSBN,0)-NVL(DYSSNTQ,0))*100/NVL(DYSSNTQ,0) END ,4) DYSTBZJL, NVL(LJSBN,0) LJSBN, NVL(LJSSNTQ,0) LJSSNTQ, (NVL(LJSBN,0)-NVL(LJSSNTQ,0)) LJSTBZJE, ROUND(CASE WHEN NVL(LJSSNTQ,0)='0' THEN 0 ELSE (NVL(LJSBN,0)-NVL(LJSSNTQ,0))*100/NVL(LJSSNTQ,0) END ,4) LJSTBZJL FROM T1 A RIGHT JOIN (SELECT SCODE, SNAME, SSORTBY FROM DW_DIMITEMPERIOD WHERE PROPERTY3='14')B ON A.DIM_ITEMPERIOD=B.SCODE ORDER BY B.SSORTBY",
+        // "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
+        "_cube":{
             "cubeId":4,
             "subject":"0002"
         },
         "mainDim":"itemperiod",
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
-        "type":1     
+        "type":1 ,
+        "generateVar":{
+            "periodCount":2,
+             "compareType":"-1&0",
+             "reverse":true
+        }    
     },
     
     "columns":[
-        {      
-        "id": "B",
-        "type": "decimal",
-        "width":"170px",
-        "text": "累计数",
-        "sort":5      
-    },{
-        "id":"text",
-        "type":"string",
-        "width":"370px",
-        "text":"项目",
-        "sort":1
-    },
-    {
-        "id": "id",
-        "type": "string",
-        "hidden": true,
-        "text": "编码",
-        "sort":2
-      },{
-        "id":"index",
-        "type":"index",
-        "align":"center",
-        "width":"60px",
-        "text":"行次",
-        "sort":3
-    },{
-        "id": "A",
-        "type": "decimal",
-        "width":"150px",
-        "text": "当月数",
-        "sort":4
-    }],
-    "rows":[{
-        "id": "1416001",
-        "text": "一、营业收入",
-        "A": 0,
-        "B": 0,
-        "level": 0
-    },{
-        "id": "1426400",
-        "text": "二、营业总成本",
-        "A": 0,
-        "B": 0,
-        "level": 0
-    },{
-        "id": "1426401",
-        "text": "其中：营业成本",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1426405",
-        "text": "税金及附加",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1436601",
-        "text": "销售费用",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1436602",
-        "text": "管理费用",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1435301",
-        "text": "其中：研究与开发费",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1435302",
-        "text": "党建工作经费",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1436603",
-        "text": "财务费用",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1436604",
-        "text": "其中：利息支出 ",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1436605",
-        "text": "利息收入",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1436606",
-        "text": "汇兑净损失（净收益以“-”号填列） ",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1436701",
-        "text": "资产减值损失",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1436705",
-        "text": "其他",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1416101",
-        "text": "加：公允价值变动收益（损失以“-”号填列）",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1416111",
-        "text": "投资收益（损失以“-”号填列）",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1416112",
-        "text": "其中：对联营企业和合营企业的投资收益",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1416121",
-        "text": "资产处置收益（损失以“-”号填写）",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1416131",
-        "text": "其他收益",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1402100",
-        "text": "三、营业利润（亏损以“－”号填列）",
-        "A": 0,
-        "B": 0,
-        "level": 0
-    },{
-        "id": "1416301",
-        "text": "加：营业外收入",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1416302",
-        "text": "其中：非流动资产处置利得",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1416303",
-        "text": "非货币性资产交换利得",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1416304",
-        "text": "政府补助",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1416305",
-        "text": "债务重组利得",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1426711",
-        "text": "减：营业外支出",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1426712",
-        "text": "其中：非流动资产处置损失",
-        "A": 0,
-        "B": 0,
-        "level": 4.5
-    },{
-        "id": "1426713",
-        "text": "非货币性资产交换损失",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1426714",
-        "text": "债务重组损失",
-        "A": 0,
-        "B": 0,
-        "level": 6.5
-    },{
-        "id": "1403100",
-        "text": "四、利润总额（亏损总额以“－”号填列）",
-        "A": 0,
-        "B": 0,
-        "level": 0
-    },{
-        "id": "1426801",
-        "text": "减：所得税费用",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1400100",
-        "text": "五、净利润（净亏损以“－”号填列）",
-        "A": 0,
-        "B": 0,
-        "level": 0
-    },{
-        "id": "1400200",
-        "text": "归属于母公司所有者的净利润",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1400300",
-        "text": "*少数股东损益",
-        "A": 0,
-        "B": 0,
-        "level": 2
-    },{
-        "id": "1400400",
-        "text": "持续经营损益",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    },{
-        "id": "1400500",
-        "text": "终止经营损益",
-        "A": 0,
-        "B": 0,
-        "level": 2.5
-    }],
+        {
+            "id": "",
+            "type": "string",
+            "text": "累计数",
+            "children":[
+                {
+                    "id": "ljsbn",
+                    "type": "decimal",
+                    "text": "本年",
+                    "width": "170px"
+                },
+                {
+                    "id": "ljssntq",
+                    "type": "decimal",
+                    "text": "上年同期",
+                    "width": "170px"
+                },
+                {
+                    "id": "ljstbzje",
+                    "type": "decimal",
+                    "text": "同比增减额",
+                    "width": "170px"
+                },
+                {
+                    "id":"ljstbzjl",
+                    "type": "decimal",
+                    "text": "同比增减率（%）",
+                    "conversion": "%",
+                    "width": "130px"
+                }
+            ]
+        },
+        {
+            "id": "sname",
+            "type": "string",
+            "width": "370px",
+            "text": "项目"
+        },
+        {
+            "id": "row",
+            "type": "index",
+            "text": "行次",
+            "align": "center",
+            "width": "60px"
+        },
+        {
+            "id": "",
+            "type": "string",
+            "text": "当月数",
+            "children":[
+                {
+                    "id": "dysbn",
+                    "type": "decimal",
+                    "text": "本年",
+                    "width": "170px"
+                },
+                {
+                    "id": "dyssntq",
+                    "type": "decimal",
+                    "text": "上年同期",
+                    "width": "170px"
+                },
+                {
+                    "id": "dystbzje",
+                    "type": "decimal",
+                    "text": "同比增减额",
+                    "width": "170px"
+                },
+                {
+                    "id":"dystbzjl",
+                    "type": "decimal",
+                    "text": "同比增减率（%）",
+                    "conversion": "%",
+                    "width": "130px"
+                }
+            ]
+        }
+    ],
+    "rows":[],
     "items":[{
         "id":"jlr",
         "text":"利润表",
@@ -313,9 +144,10 @@
                 console.log(vue);
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
-                vue.item.updateView("compAny");
+                vue.item.updateView("company");
             }
-        },{
+        }
+        , {
             "id":"2",
             "text":"导出",
             "xtype":"button",
@@ -328,112 +160,59 @@
                 console.log(vue);
                 vue.handleDownload(vue);
             }
-        }],
-        //单元格点击事件
-        "onCellClick":function(row, column, cell, event,vue){
-            // debugger
+        }
+    ],
+        
+        "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
+            debugger
             let id = row.id, text = row.text;
             let datas = this.datas;
                 let data = datas.filter(function(item){
                         return item.id == row.id;
                 });
             row = data[0];
+
             if(this.drillProperties.indexOf(column.property) != -1){
                 if((row.A && row.A!=0) || (row.B && row.B!=0)){
-                    vue.commonHandler(
-                        {
-                            "type":"click",//事件类型
-                            "way":"addTab",//调用的公共方法
-                            "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
-                            "handler":($vue,params)=>{//自定义的回调
-                                console.info(params);
-                                debugger; 
-                            } 
-                        },
-                        { row: row, column: column, cell: cell, event: event },
-                        { id: id, text: text }
-                    );
+                        vue.commonHandler(
+                            {
+                                "type":"click",//事件类型
+                                "way":"addTab",//调用的公共方法
+                                "sourceApi":"/cnbi/json/source/tjsp/lrbdebug2.json",
+                                "handler":($vue,params)=>{//自定义的回调
+                                    console.info(params);
+                                    debugger; 
+                                } 
+                            },
+                            { row: row, column: column, cell: cell, event: event },
+                            { id: id, text: text }
+                        );
                 }
-            }
+            }    
+            console.log(this);
         },
-        //加缩进 可选 table
-        "levelProperties":{text:"level"},
-        //有钻取，给蓝色 可选 tAble
-        "drillProperties":["text"],
+        "levelProperties":{sname:"nlevel"},//加缩进 可选 table
+        "drillProperties":["sname"],//有钻取，给蓝色 可选 table
         "cellStyle":function(row){
-            // debugger           
-            let datas = this.datas ;
-            if(datas && datas.length>0){
-                let data = datas.filter(function(item){
-                  return item.id == row.row.id ;
-
-                });
-                if(data.length == 0){
-                  row.row.A = 0;
-                  row.row.B = 0;
-                }else if(data.length == 1){
-                  if(data[0].id == row.row.id){
-                      if(data[0].A || data[0].A == 0){
-                        row.row.A = data[0].A;
-                      }else{
-                        row.row.A = 0;
-                      }
-                      if(data[0].B || data[0].B == 0){
-                        row.row.B = data[0].B;
-                      }else{
-                        row.row.B = 0;
-                      }
-                  }
-                }else{
-                  if(data[0].id == row.row.id){
-                    if(data[0].A || data[0].A == 0){
-                      row.row.A = data[0].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[0].B || data[0].B == 0){
-                      row.row.B = data[0].B;
-                    }else{
-                      row.row.B = 0;
-                    }                   
-                }else{
-                    if(data[1].A || data[1].A == 0){
-                      row.row.A = data[1].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[1].B || data[1].B == 0){
-                      row.row.B = data[1].B;
-                    }else{
-                      row.row.B = 0;
-                    }
-
-                }
-
-                }
-              
-            }else{
-                  row.row.A = 0;
-                  row.row.B = 0;
-                  row.row.A_ = 0;
-                  row.row.B_ = 0;
-            }
-            
-            let record = row.row ;
+            debugger           
+            let datas = this.datas;
+            let record = datas[row.rowIndex];
             let css = "padding: 4px 0;";
             let pro = row.column.property;
-            let textIndent ="";
             if (!pro) {
                 return css;
             }
-            let levelProperties = this.levelProperties;
+            let levelProperties = this.levelProperties;//行缩进
+            let textIndent ="";
+            // let record = row.row;  //获取的行数据        
+            let drillProperties = this.drillProperties;//给那一列赋予蓝色
             let levelPro = levelProperties[pro];
-            if (levelPro && record[levelPro]) {
+            if (levelPro && record[levelPro]) {//行缩进处理
                 let level = record[levelPro] || 1;
                 textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
             }
-            if (this.drillProperties.indexOf(pro) != -1) {
-                if ((record.A && record.A!=0) || (record.B && record.B!=0)) {
+            if (drillProperties.indexOf(pro) != -1) { // 判断给那一列附蓝色；不然一行全是蓝色的
+                if ((record.A && record.A!=0) || (record.B && record.B!=0)) {//判断A、B的值是否存在 and 不能等于0；
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
@@ -441,10 +220,10 @@
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else {
+                }else {//否则不给蓝色：说明无click事件；不做处理；
                     return css+textIndent;
                 }
-            }else{
+            } else {
                 return css+textIndent;
             }
         }      

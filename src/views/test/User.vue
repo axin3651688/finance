@@ -322,16 +322,18 @@
         <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText">
               <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
         </el-input>-->
-        <el-tree
-          :data="comtree"
+         <el-tree
+          :data="companysTree"
           show-checkbox
-          node-key="scode"
-          :props="props"
+          node-key="id"
+          :props="defaultProps"
           class="filter-tree"
           :highlight-current="true"
           :default-expanded-keys="expandKeys"
-          ref="comtree"
+          :default-checked-keys="showNodes"
+          ref="companysTree"
         ></el-tree>
+
       </el-form>
       <!-- </el-col> -->
       <!-- <el-form :inline="true" label-width="80px" :model="addUserForm"  class="user-form-inline">
@@ -405,6 +407,8 @@ export default {
     me.getCompany();
     //获取角色信息
     me.getRoles();
+
+    //
   },
   data() {
     let _this = this;
@@ -442,6 +446,10 @@ export default {
         label: "sname",
         children: "children"
       },
+      defaultProps:{
+        label: "scomname",
+        children: "children"
+      },
       // 分页---默认第一页
       currentPage: 1,
       // 分页---默认每页100行数据
@@ -451,6 +459,7 @@ export default {
       comtree: [],
       //默认展开节点
       expandKeys: [],
+      companysTree:[],
       companyAuthorizationForm: {},
       // 窗口的原始高度
       offsetHeight: document.body.offsetHeight,
@@ -459,6 +468,7 @@ export default {
       // 表格初始化高度为 0 等待计算赋值
       heights: 0,
 
+      showNodes:[],//选中的节点（公司授权）
       searchForm: {},
       addUserForm: {
         suser: "",
@@ -1069,6 +1079,65 @@ export default {
       this.dialogCompanyAuthorizationVisible = true;
       this.opt = tools.opt[0];
       this.companyAuthorizationForm.suser = row.suser;
+      this.showNodes =[];//清空节点的选中（公司授权）
+      this.getUserCompany(row.suser);//根据当前用户获取公司权限
+    },
+    getUserCompany(suser){
+        var _this = this;
+      //getters 数据
+      var getters = _this.$store.getters;
+      let user=getters.user.user.username;
+      request({
+        url: "/zjb/sys/menupermission/query_companys_permission",
+        method: "get",
+        params:{
+            userId:suser,
+            currentUserId:getters.user.user.username
+            //currentUserId:"zb"
+        }
+      }).then(result => { 
+      if (result.status == 200 && result.data.code == 200) {
+          //封装树对象数据
+          const setting = {
+            data: {
+              simpleData: {
+                enable: true,
+                idKey: "scomcode",
+                pIdKey: "spcode"
+              },
+              key: {
+                name:"scomcode",
+                children: "children"
+              }
+            }
+          };
+          var data = result.data.data;
+          if (Array.isArray(data) && data.length > 0) {
+            data = tools.sortByKey(data, "scomcode");
+            data = data.filter(function(item) {
+               if(item.scomcode == item.scomcode2){
+                    _this.showNodes.push(item.scomcode);
+               }
+               
+              // if (item.scode == "1001") {
+              //   //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+              //   item.open = true; //展开此节点
+              //   _this.expandKeys.push(item.scode);
+              // }
+              item.id = item.scomcode;
+              item.label =  item.scomname;
+             // item.sname = item.label;
+              return item;
+            });
+            data[0].open = true;
+            _this.expandKeys.push(data[0].scomcode);
+            _this.companysTree = tools.transformToeTreeNodes(setting, data);
+          }
+
+
+        }
+
+      });
     },
     /**
      * @description 打开弹出层
@@ -1272,15 +1341,27 @@ export default {
 
     submitCompanyAuthorizationForm(companyAuthorizationForm) {
       let _this = this;
-      let companys = _this.$refs.comtree.getCheckedKeys();
-      let _companys = companys.toString();
-      request({
-        url: "/zjb/sys/user/authorize_com",
-        method: "get",
-        params: {
-          suser: companyAuthorizationForm.suser,
-          scodes: _companys
+      let suser = companyAuthorizationForm.suser;
+      let companys = _this.$refs.companysTree.getCheckedKeys();
+      let _companys = [];
+      if(companys && companys.length > 0){
+        for(let i =0;i<companys.length;i++){
+          let obj = {
+            scomcode: companys[i],
+            suser: suser,
+            usercompanyid: null
+          }
+          _companys.push(obj);
         }
+        
+      }
+
+
+     // let _companys = companys.toString();
+      request({
+        url: "/zjb/sys/usercompany/grantcompanys",
+        method: "post",
+        data:_companys
       }).then(result => {
         if (result.status == 200) {
           if (result.data.code === 0) {
