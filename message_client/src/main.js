@@ -23,7 +23,7 @@ Vue.prototype.axios = axios
 
 /** ==> electron相关 */
 // var devInnerHeight = 1080.0 // 开发时的InnerHeight
-// var devDevicePixelRatio = 1.0// 开发时的devicepixelratio
+// var devDevicePixelRatio = 1.0 // 开发时的devicepixelratio
 // var devScaleFactor = 1.3 // 开发时的ScaleFactor
 // var scaleFactor = require('electron').screen.getPrimaryDisplay().scaleFactor
 // var zoomFactor = (window.innerHeight / devInnerHeight) * (window.devicePixelRatio / devDevicePixelRatio) * (devScaleFactor / scaleFactor)

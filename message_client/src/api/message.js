@@ -1,4 +1,17 @@
 /**
+ * 刘琦(464823519)  9:48:30
+ @姜海斌 post  /api/find_group_file
+
+ 查看群文件 FIND_GROUP_FILE 李宁
+
+ /api/find_group_img
+
+ 查看群相册 FIND_GROUP_IMG 李宁
+
+ 2.224服务上有这个接口
+ */
+
+/**
  * 约定：get请求用params，post用data
  * 约定：api函数名同一大写,下划线连接
  */

@@ -152,7 +152,6 @@ export default {
     },
 
     // 获取粘贴板上的图片
-
     _setPasteImg() {
       let _this = this
       let inputWindow = this.$refs.textarea
