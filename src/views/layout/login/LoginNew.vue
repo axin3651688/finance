@@ -194,7 +194,8 @@ export default {
                 // 把用户的状态更新到vuex
                 // alert(data.company.text);
                 this.GetSideMid({
-                  company: data.company.customerId,
+                  // company: data.company.customerId,
+                  company: data.company.id,
                   companyName: data.company.text
                 });
                 // debugger;

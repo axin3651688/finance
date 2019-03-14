@@ -1,5 +1,5 @@
 <template>
-  <div class="navMenu" :class="state? '':navLevel">
+  <div class="navMenu" :class="state && rootLevel? '':navLevel">
     <label v-for="navMenu in navMenus" :key="navMenu.code">
       <!--只有一级菜单-->
       <!-- :disabled="disabled"  -->
@@ -16,7 +16,7 @@
           <!-- <router-link :to="navMenu.url"> -->
           <img
             :src="navMenu.avatar"
-            v-if="navMenu.level===2 && state"
+            v-if="navMenu.level===1 && state"
             class="avatarleft fa-margin iconfont"
           >
           <!--标题-->
@@ -29,7 +29,7 @@
         <template slot="title">
           <img
             :src="navMenu.avatar"
-            v-if="navMenu.level===2 && state"
+            v-if="navMenu.level===1 && state"
             class="avatarleft fa-margin iconfont"
           >
           <span>{{navMenu.text}}</span>
@@ -46,7 +46,7 @@ import { mapGetters, mapActions } from "vuex";
 import modeHandle from "utils/modeHandle";
 export default {
   name: "NavMenu", //使用递归组件必须要有
-  props: ["navMenus", "state"], // 传入子组件的数据
+  props: ["navMenus", "state","rootLevel"], // 传入子组件的数据
   computed: {
     ...mapGetters(["device", "user"])
   },
@@ -57,8 +57,11 @@ export default {
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
+    classHandle () {
+      
+    },
     shownavMenu(e) {
-      debugger;
+      
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;
@@ -115,8 +118,12 @@ export default {
 };
 </script>
 <style scoped>
+/* :class="state? navLevelHide:navLevel" */
 .navLevel {
   margin-left: -20px;
+}
+.navLevelHide {
+  margin-left: 20px;
 }
 </style>
 

@@ -30,15 +30,19 @@ export default {
   computed: {
     ...mapGetters(["sidebar", "device", "user"]),
     styleSlect() {
-      if (!Cnbi.isEmpty(this.user)) {
-        this.user.company.id === 121
-          ? import("@/styles/green/index.scss").then(_ => {
+      import("@/styles/green/index.scss").then(_ => {
               this.flag = true;
             })
-          : import("@/styles/black/index.scss").then(_ => {
-              this.flag = true;
-            });
-      }
+      // if (!Cnbi.isEmpty(this.user)) {
+      //   debugger;
+      //   this.user.company.id === 121
+      //     ? import("@/styles/green/index.scss").then(_ => {
+      //         this.flag = true;
+      //       })
+      //     : import("@/styles/black/index.scss").then(_ => {
+      //         this.flag = true;
+      //       });
+      // }
     },
     classObj() {
       return {

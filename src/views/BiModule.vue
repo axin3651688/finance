@@ -169,7 +169,7 @@ export default {
     //     this.module_api = newUrl;
     //   }
     // }
-    debugger;
+    
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -202,7 +202,7 @@ export default {
     },
 
     month(newmonth) {
-      debugger;
+      
       this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
@@ -371,7 +371,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
-      debugger;
+      
       this.debug = 1; //临时的动作
       if (this.module_api) {
         if(this.$store.public && this.$store.public.url){
@@ -434,7 +434,7 @@ export default {
         }
         this.loadModuleAfter(source);
       });
-      debugger;
+      
     },
     /**
      * 纠正错误的配制项目,
@@ -457,7 +457,7 @@ export default {
         //解决当父亲没有配制config的情况
         this.flag = true;
       }
-      debugger;
+      
       //用来标记月份用的。
       if(this.monthConfig){
         let monthConfig = this.monthConfig;
