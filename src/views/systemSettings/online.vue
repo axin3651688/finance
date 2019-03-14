@@ -205,10 +205,10 @@ export default {
             let me = this;
             // item：传的参数
             let item = {
-                "keyWord": me.searchForm.trueName,
-                "page": currentPage,
-                "size": pagesize,
-                "userId": me.$store.getters.user.user.id
+                // "keyWord": me.searchForm.trueName,
+                "pageNum": currentPage,
+                "pageSize": pagesize,
+                // "userId": me.$store.getters.user.user.id
             };
             // 请求
             onlineRequest(item).then(res => {
