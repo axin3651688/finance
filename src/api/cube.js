@@ -34,9 +34,12 @@ export function report(item) {
  */
 export function dataRequest(data) {
   return request({
-    url: '/api/api/find_sys_log?cubeId=7',
-    method: 'post',
-    data:data
+    // url: '/api/api/find_sys_log?cubeId=7',
+    // method: 'post',
+    // data:data
+    url: '/zjb/sys/log/queryall_page',
+    method: 'get',
+    params: data
   })
 }
 /**

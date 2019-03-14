@@ -6,7 +6,7 @@
             function: 模拟专用测试，日志管理界面
          -->
         <!-- 查询刷新 -->
-        <el-row :gutter="10">
+        <!-- <el-row :gutter="10"> -->
             <!-- 
                 响应式布局：
                 1. xs <768px 响应式栅格数或者栅格属性对象
@@ -15,36 +15,36 @@
                 4. lg ≥1200 响应式栅格数或者栅格属性对象
                 注：全局最大为24
              -->
-            <el-col :xs="12" :md="24">
+            <!-- <el-col :xs="12" :md="24"> -->
                 <div class="input-refresh">
-                    <el-form :inline="true" :model="searchForm" class="user-form-inline">
+                    <!-- <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item label="用户名称">
                             <el-input v-model="searchForm.username" placeholder="用户名称" clearable ></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <!-- <el-form-item label="真实姓名">
                             <el-input v-model="searchForm.truename" placeholder="真实姓名" disabled clearable></el-input>
                         </el-form-item> -->
 
-                        <el-form-item label="类型">
+                        <!-- <el-form-item label="类型">
                             <el-select v-model="searchForm.stype" placeholder="类型" clearable>
                                 <el-option label="其他" value="3"></el-option>
                                 <el-option label="退出" value="2"></el-option>
                                 <el-option label="登录" value="1"></el-option>
                                 <el-option label="查询" value="0"></el-option>
                             </el-select>
-                        </el-form-item>
+                        </el-form-item> -->
 
-                        <el-form-item>
+                        <!-- <el-form-item>
                             <el-button type="text" @click="handleDelete">清除</el-button>
                             <el-button type="primary"  @click="handleSearch" icon="el-icon-search" ></el-button>
-                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button> -->
                             <!-- <el-button type="primary" style="height:40px;padding-top:0"><i class="el-icon-search">搜索</i></el-button> -->
-                        </el-form-item>
-                    </el-form>
+                        <!-- </el-form-item> -->
+                    <!-- </el-form> -->
                 </div>
-            </el-col>
-        </el-row>         
+            <!-- </el-col> -->
+        <!-- </el-row>          -->
 
         <!-- 表格展现 :cell-style="cellStyle"height="720"-->
         <el-table
@@ -54,9 +54,9 @@
         border
         stripe
         >
-            <el-table-column prop="R" width="75" label="序列" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column prop="row_id" width="75" label="序列" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="suser" label="用户名称" width="120" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="truename" label="真实姓名" width="120" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column prop="struename" label="真实姓名" width="120" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="ntype" label="类型" width="80" header-align="center" align ="center" sortable>
                 <template slot-scope="scope">
                     <span v-if="scope.row.ntype===0">查询</span>
@@ -72,7 +72,7 @@
             </el-table-column>
             <el-table-column prop="soperatetime" label="操作时间" width="200" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="sbroswer" label="浏览器" width="100" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="shostip" label="主机IP" width="180" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column prop="shostname" label="主机IP" width="180" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="scontent" label="内容" header-align="center" align ="left" sortable></el-table-column>
         </el-table>
 
@@ -141,54 +141,47 @@ export default {
     created(){
         debugger
         let me =this;
-        if(document.getElementsByClassName('input-refresh').length>0){
-            // 得到表单的高度并赋值
-            me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            if(me.inputRefresh == 0) {
-                me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
-            } else {
-                // 计算当前页面的高度 得出表格的高度
-                me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
-            }
-        } else {
-            me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
-        }   
+        // if(document.getElementsByClassName('input-refresh').length>0){
+        //     // 得到表单的高度并赋值
+        //     me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+        //     if(me.inputRefresh == 0) {
+        //         me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+        //     } else {
+        //         // 计算当前页面的高度 得出表格的高度
+        //         me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
+        //     }
+        // } else {
+        //     me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
+        // } 
+        this.heights = document.body.offsetHeight - 154 ;  
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
     mounted(){
-
-        const me = this
-        // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-        window.onresize = () => {
-            debugger
-            return (() => {
-                window.offsetHeight = document.body.offsetHeight;
-                me.offsetHeight = window.offsetHeight;
-                me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            })()
-        }
+        // 设置表格高度（自适应）
+        this.setTableScollHeight();
     },
     watch:{
-        // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-        offsetHeight(val){
-            debugger
-            if(!this.timer){
-                debugger
-                // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-                this.offsetHeight = val
-                this.timer = true
-                let me = this
-                setTimeout(function(){
-                    // 打印offsetHeight变化的值
-                    me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
-                    console.log(me.offsetHeight)
-                    me.timer = false
-                },300)
-            }
-        }
+        
     },
     methods:{
+        // 页面自适应
+        setTableScollHeight(){
+            this.heights = document.body.offsetHeight - 154 ;
+            const me = this ;
+            window.onresize = function temp(){
+                debugger
+                // // 得到表单的高度并赋值
+                // me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+                // // 计算当前页面的高度 得出表格的高度
+                // if(me.inputRefresh>0){
+                //     me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+                // }else{
+                //     me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
+                // } 
+                me.heights = document.body.offsetHeight - 154 ;            
+            };
+        },
         /**
          * 获取的要渲染的数据  发送请求
          */
@@ -197,17 +190,18 @@ export default {
             let me = this;
             // item：传的参数
             let item = {
-                "page": currentPage,
+                // "page": currentPage,
+                "pageNum": currentPage,
                 "pageSize": pagesize,
-                "type":me.searchForm.stype,
-                "username": me.searchForm.username
+                // "type":me.searchForm.stype,
+                // "username": me.searchForm.username
             };
             dataRequest(item).then(res => {
                 // debugger
                 //获取总数据
-                me.allNum = res.data.data.allNum;
+                me.allNum = res.data.data.total;
                 //获取行信息渲染
-                me.tableData = res.data.data.pageData;
+                me.tableData = res.data.data.datas;
             }); 
         },
         /**
