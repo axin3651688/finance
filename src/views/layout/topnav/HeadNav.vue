@@ -191,7 +191,6 @@ export default {
     for (let i = year; i > year - this.yearCount; i--) {
       this.years.push(i + "年");
     }
-    debugger;
     if (bean.monthCount && bean.monthCount > 0) {
       this.$set(this, "monthCount", bean.monthCount);
     }
