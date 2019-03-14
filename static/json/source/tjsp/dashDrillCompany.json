@@ -88,6 +88,11 @@
 								if(dataItem[columnId]){
 									dataItem[columnId] = dataItem[columnId]/(unit? unit:10000);
 								}
+							}else if(columnItem.unit && columnItem.unit == "%"){
+								let columnId = columnItem.id;
+								if(dataItem[columnId]){
+									dataItem[columnId] = dataItem[columnId]*100;
+								}
 							}
 						}
 					}
@@ -121,7 +126,8 @@
 					{
 						"id": "tbzjl",
 						"type": "decimal",
-						"text": "同比增减率"
+						"text": "同比增减率(%)",
+						"unit":"%"
 					},
 					{
 						"id": "gsmc",
@@ -144,8 +150,8 @@
 					{
 						"id": "ljwcl",
 						"type": "decimal",
-						"text": "累计完成率"
-						
+						"text": "累计完成率(%)",
+						"unit":"%"
 					},
 					{
 						"id": "sntq",
