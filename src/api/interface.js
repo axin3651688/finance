@@ -103,7 +103,7 @@ export function findThirdPartData(params) {
   params.cubeId = cubeId;
   return request({
     method: "post",
-    url: params.url || "/api/api/find_cube_map/",
+    url: params.url || "/zjb/zjb/find_cube_map/",
     params: params
   })
 }
@@ -113,7 +113,7 @@ export function findThirdPartData(params) {
  * 2：否则从url中直接加载
  */
 export function findDesignSource(sourceId, url) {
-  debugger;
+  // debugger;
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
   // if (isNaN(sourceId)) {
   //   url = sourceId;
@@ -123,7 +123,7 @@ export function findDesignSource(sourceId, url) {
     url = sourceId;
     sourceId = undefined;
   }
-  let api = sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
+  let api = sourceId ? "/zjb/zjb/find_design_source?id=" + sourceId : url;
   return request({
     url: api,
     method: 'get',
@@ -133,7 +133,7 @@ export function findDesignSource(sourceId, url) {
   })
 }
 export function findDesignSource_old(sourceId, url) {
-  debugger;
+  // debugger;
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
   // if (isNaN(sourceId)) {
   //   url = sourceId;
