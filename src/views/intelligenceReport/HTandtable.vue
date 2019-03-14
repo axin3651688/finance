@@ -515,7 +515,8 @@ export default {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
       let flag = true,html = "<p>此公司无填报权限！</p>";
-      if(companyId == treeInfo.scode){
+      //第一次登陆的时候有事treeInfo可能会是id
+      if(companyId == treeInfo.scode || companyId == treeInfo.id){
         if(treeInfo.nisleaf == 0){
           this.divShow = true;
           this.fillShow = false;
@@ -523,7 +524,7 @@ export default {
           flag = false;
           return flag;
         }
-      }else if(companyId == userCompany.customerId && userCompany.nisleaf == 0){
+      }else if((companyId == userCompany.customerId || companyId == userCompany.id) && userCompany.nisleaf == 0){
         this.divShow = true;
         this.fillShow = false;
         this.divContent = {htmlContent:html};
@@ -1542,7 +1543,7 @@ export default {
     templateDownload() {
       
       this.isShow = true;
-      this.axios.get("/api/template").then(res => {
+      this.axios.get("/cnbi/template.json").then(res => {
         console.log(res);
         this.list = res.data.data;
       });
@@ -1561,10 +1562,11 @@ export default {
           const blob = new Blob([content], {
             type: "application/vnd.ms-excel"
           });
-          // console.log(blob)
-          let str = res.headers["content-disposition"];
-          let index = str.lastIndexOf(".");
-          let h = str.substring(index + 1, str.length);
+          // // console.log(blob)
+          // let str = res.headers["content-disposition"];
+          // let index = str.lastIndexOf(".");
+          // let h = str.substring(index + 1, str.length);
+          let h = "xls";
           const fileName = this.title + "." + h;
           if ("download" in document.createElement("a")) {
             // 非IE下载

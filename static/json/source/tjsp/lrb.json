@@ -23,6 +23,10 @@
     "changeCompanyBefore":function(newcompany,option){
         option.closeTabTaget(newcompany,option);
     },
+    "changeConversionBefore":function(newconversion, option){
+        debugger
+        option.closeTabTaget(newconversion,option);
+    },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -40,6 +44,7 @@
         "needDims":["year","month","company","conversion"],
         "random":{"min":100,"max":100000},
         "type":1 ,
+        "tableHeads":true,
         "generateVar":{
             "periodCount":2,
              "compareType":"-1&0",
