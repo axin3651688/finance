@@ -3,10 +3,12 @@ import {
     Message,
     Loading
 } from 'element-ui';
+import store from '@/store';
 // import router from '@v/layout/router'
 
 let loading;
 axios.defaults.timeout = 10000;
+// request.defaults.headers.common['Authentication'] = store.state.user.authorization;
 
 function startLodading() {
     loading = Loading.service({
@@ -31,10 +33,13 @@ axios.interceptors.request.use(config => {
     // }
     // 加载动画
     startLodading();
-    // debugger
+    debugger
     if (localStorage.authorization) {
         // 设置统一请求头 todo 暂时屏蔽
         config.headers.Authorization = localStorage.authorization;
+    }
+    if(localStorage.authorization){
+        config.headers.Authentication = localStorage.authorization;
     }
     return config;
 }, error => {
