@@ -7,15 +7,24 @@
   },
   "showDims": ["year","month","company","conversion"],
   "__queryDataAfter":function(data,$vue){//数据的后置处理
-    // debugger
+    debugger
     let me = this;
-    let datas = [];
+    let datas = [];//有数据的
+    let datax = [];//没有数据的
     me.items[0].updateView = $vue.updateView;
     data.forEach((item,index)=>{
       if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
         datas.push(item);
+      }else{
+        datax.push(item)
       }
     });
+    if(datax.length>0){
+      datax.forEach(item => {
+        debugger
+        datas.push(item);
+      });
+    }
     return datas;
     // return data ;
 },
@@ -139,12 +148,16 @@
      "handler":function(vue,btn){
         debugger
         console.log(vue);
-        let row = vue.item.rows; 
-        for(let i=0; i<row.length; i++){
-          if(row[i].children.length>0){
-            row[i]._expanded = true;
+        let row = vue.item.rows;
+        if(row.length){
+          for(let i=0; i<row.length; i++){
+            if(row[i].children.length>0){
+              row[i]._expanded = true;
+            }
           }
-        }
+        }else{
+          row._expanded = true ;
+        }         
      }
   }
   ,{
@@ -158,12 +171,16 @@
      "handler":function(vue,btn){
         debugger
         console.log(vue);
-        let row = vue.item.rows; 
-        for(let i=0; i<row.length; i++){
-          if(row[i].children.length>0){
-            row[i]._expanded = false;
+        let row = vue.item.rows;
+        if(row.length){
+          for(let i=0; i<row.length; i++){
+            if(row[i].children.length>0){
+              row[i]._expanded = false;
+            }
           }
-        }
+        } else {
+          row._expanded = false ;
+        }        
      }
   }
 ]

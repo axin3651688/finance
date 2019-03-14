@@ -108,6 +108,7 @@ export default {
               // debugger;
               const token = data.token || data.authorization;
               if (!Cnbi.isEmpty(token)) {
+                debugger;
                 // console.log(this.loginUser);
                 localStorage.setItem("authorization", token);
                 // 用户名记住,方便下次登录
@@ -120,7 +121,7 @@ export default {
                 // 把用户的状态更新到vuex
                 // alert(data.company.text);
                 this.GetSideMid({
-                  company: data.company.customerId,
+                  company: data.company.id,
                   companyName: data.company.text
                 });
                 // debugger;

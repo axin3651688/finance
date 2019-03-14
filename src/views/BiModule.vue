@@ -150,7 +150,8 @@ export default {
         { xtype: "bi-chart", id: "text", text: "图形测试" }
       ],
       chartOptions: {},
-      debug: 0
+      debug: 0,
+      monthConfig:{}
     };
   },
   // props: ["handsontanleapi"],
@@ -168,6 +169,7 @@ export default {
     //     this.module_api = newUrl;
     //   }
     // }
+    debugger;
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -200,6 +202,7 @@ export default {
     },
 
     month(newmonth) {
+      debugger;
       this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
@@ -313,11 +316,21 @@ export default {
       });
     },
     /**
+     * 删除以前的对象、标记，用来标识的配置。
+     */
+    deleteConfigOfOld(bean){
+      let me = this,arrOld = ["monthConfig"];
+      arrOld.forEach(item => {
+        if(!bean[item] && me[item] && typeof(me[item]) == "object"){
+          me[item] = {};
+        }
+      });
+    },
+    /**
      * 动态设置参数至本组件
      */
     setScopeDatas(bean, type) {
       //
-      
       if (type == 1 && !bean.id) {
         //bean = bean.replace(/[\r\n]/g, "");去除空格换行的
         //如果是缓存或是字符串的情况
@@ -326,6 +339,8 @@ export default {
       if (bean.items) {
         this.showSet(bean.items);
       }
+      //删除以前的用来特殊标识的对象或标记
+      this.deleteConfigOfOld(bean);
       for (let key in bean) {
         this.$set(this, key, bean[key]);
       }
@@ -356,7 +371,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
-      
+      debugger;
       this.debug = 1; //临时的动作
       if (this.module_api) {
         if(this.$store.public && this.$store.public.url){
@@ -419,6 +434,7 @@ export default {
         }
         this.loadModuleAfter(source);
       });
+      debugger;
     },
     /**
      * 纠正错误的配制项目,
@@ -440,6 +456,14 @@ export default {
       } else {
         //解决当父亲没有配制config的情况
         this.flag = true;
+      }
+      debugger;
+      //用来标记月份用的。
+      if(this.monthConfig){
+        let monthConfig = this.monthConfig;
+        this.$store.monthConfig = monthConfig;
+      }else {
+        this.$store.monthConfig? delete this.$store.monthConfig:"";
       }
       // else {
       //   this.datas = this.datas;

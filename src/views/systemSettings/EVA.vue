@@ -11,6 +11,8 @@
             :placeholder="item.text"
             @change="handleClick(item)"
             @keyup.enter.native="handleClick(item)"
+            onblur=""
+            onfocus=""
             v-model="item.display_num"
             :style="item.wclass"
             clearable
@@ -471,6 +473,9 @@ export default {
     // this.setExpressionData();
   },
   methods: {
+    focus(item){
+      debugger
+    },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
         debugger
@@ -503,7 +508,7 @@ export default {
       for(let i=0; i<2; i++){
         if(i){
             // _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT '99' AS SCODE,'资本化费用' AS SNAME,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
-            _sql3 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_A,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_A,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT T3.SCODE,T3.SNAME,T2.QCYE AS A,T2.QMYE AS B FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '4101%') T3 LEFT JOIN (SELECT '4101' AS SCODE,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )T2 ON T3.SCODE =T2.SCODE )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
+            _sql3 = `WITH T AS(SELECT CASE WHEN SCODE ='1100100' THEN '资产总额' WHEN SCODE='1210100' THEN '其中： 流动负债' WHEN SCODE ='1212001'THEN ' 短期借款' WHEN SCODE ='1131604' THEN '在建工程' WHEN SCODE ='1131605' THEN '工程物资' WHEN SCODE='1222711' THEN '专项应付款' WHEN SCODE ='1217001' THEN ' 一年内到期的长期负债' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPOINT WHERE SCODE IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100')) SELECT SCODE, SNAME,A,B FROM( SELECT T.SCODE,T.SNAME,T1.QCYE AS A,T1.QMYE AS B FROM T LEFT JOIN (SELECT DIM_ITEMPOINT, SUM(CASE WHEN DIM_PERIOD =:sn THEN NVL(FACT_B,0) ELSE 0 END) AS QCYE, SUM(CASE WHEN DIM_PERIOD =:period THEN NVL(FACT_B,0) ELSE 0 END) AS QMYE FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY =:company AND DIM_PERIOD IN (:period,:sn) AND DIM_ITEMPOINT IN ('1100100','1131604','1131605','1222711','1217001','1210100','1212001','1200100') GROUP BY DIM_ITEMPOINT)T1 ON T.SCODE =T1.DIM_ITEMPOINT UNION ALL SELECT T3.SCODE,T3.SNAME,T2.QCYE AS A,T2.QMYE AS B FROM (SELECT SCODE,SNAME FROM DW_DIMITEM WHERE SCODE LIKE '4101%') T3 LEFT JOIN (SELECT '4101' AS SCODE,FACT_A AS QCYE,FACT_B AS QMYE FROM DW_FACTEVACALCULATE WHERE DIM_COMPANY =:company AND DIM_PERIOD=:period )T2 ON T3.SCODE =T2.SCODE )ORDER BY DECODE (SNAME,'资产总额',1,'其中： 流动负债',2,' 短期借款',3,' 一年内到期的长期负债',4,'在建工程',5,'工程物资',6,'专项应付款',7)`;
             _sql = _sql3.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'").replace(/:sn/g,"'"+_year+"'") ;
             items = {
                 'cubeId': 4,
@@ -584,8 +589,8 @@ export default {
                   item.scodeb = "v" + item.scode + "B"  ;
                   if(!item.A){ item.A = 0 ; }
                   if(!item.B){ item.B = 0 ; }
-                  me.exps[item.scodea] = item.B ;
-                  me.exps[item.scodeb] = item.A ;
+                  me.exps[item.scodea] = item.A ;
+                  me.exps[item.scodeb] = item.B ;
                 }) ;
                 me.ArrData2.forEach(ress => {
                   me.vars.forEach(recc => {
@@ -665,21 +670,23 @@ export default {
           item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
         }
         
-        //税率
-        if (item.code === "sl") {
-          //调整后数据
-          this.updateTzhData(
-            ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
-            item.value
-          );
-          //营业外收支净额 营业外支出本期金额-营业外收入本期金额
-          this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
-          this.updateTzhData(["yywsrje"], item.value);
-        }
-        this.setExpressionData();
+          //税率
+          if (item.code === "sl") {
+            //调整后数据
+            this.updateTzhData(
+              ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
+              item.value
+            );
+            //营业外收支净额 营业外支出本期金额-营业外收入本期金额
+            this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
+            this.updateTzhData(["yywsrje"], item.value);
+          }
+          this.setExpressionData();
 
-        //格式化数据
-        item.display_num = tools.currency(item.value, "", 2);
+          //格式化数据
+        if(item.value!=""){  
+          item.display_num = tools.currency(item.value, "", 2);
+        }
       });
     }
   }

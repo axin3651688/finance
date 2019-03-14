@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="logo-contener">
-      <img :src="user.company.avatar">
+      <!-- <img :src="user.company.avatar"> -->
+      <img src="http://jiaxin365.cn/images/tjsp.svg">
     </div>
     <el-scrollbar style="flex:1;">
       <el-menu
@@ -44,7 +45,9 @@ import NavMenu from "./NavMenu.vue";
 export default {
   name: "Leftmenu",
   created() {
-    findSideBar(this.userId).then(response => {
+    debugger
+    let num = 247;
+    findSideBar(num).then(response => {
       let data = response.data.data;
       this.leftMenus = data;
       this.auotoAdd(data);

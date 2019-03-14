@@ -2,17 +2,17 @@ import request from 'utils/http'
 import store from '@/store'
 
 //全局修改  cubeId , 这里写了其他地方都没得用！ zdk 2019年3月12日 09:26:42
-let cubeId = 8;
+let cubeId = 4;
 /**
  * 登录接口
  */
 export function login(loginUser) {
   console.log("调用登录接口");
   return request({
-    url: '/api/auth/login',
-    method: 'post',
-   //url: '/api/api/core_user/login',
-   //method: 'get',
+    // url: '/api/auth/login',
+    url: '/zdk/sys/loginM/login',
+    // method: 'post',
+   method: 'get',
     params: {
       cubeId:cubeId,
       account: loginUser.usename,
@@ -28,8 +28,8 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-   // url: '/api/auth/logout',
-    url: '/api/api/core_user/logout',
+    url:'/zjb/sys/loginM/logout',
+    // url: '/api/api/core_user/logout',
     method: 'get',
     // params: {
     //   Authorization: localStorage.authorization,
@@ -39,7 +39,7 @@ export function logout() {
 /**
  * 一次性全部加载公司树。 szc 2019-3-12 11:16:47
  */
-export function getCompanyTree() {
+export function getCompanyTree_old() {
   return request({
     url: '/zjb/sys/dimcompany/query_all',
     method: 'get'
@@ -49,13 +49,13 @@ export function getCompanyTree() {
  * 按照用户查询能用的公司
  * @param {*} user 
  */
-export function getCompanyTree_old(user) {
+export function getCompanyTree(user) {
   return request({
-    url: '/zjb/sys/dimcompany/query_user',
-    method: 'get',
-    params: {
-      "suser": user.username
-    }
+    url: '/zjb/sys/dimcompany/query_user?suser='+user,
+    method: 'get'
+    // params: {
+    //   "suser": user.username
+    // }
   })
 }
 /**
@@ -84,7 +84,7 @@ export function findSideBar(userId, code) {
     method: 'get',
     params: {
       "userId": userId,
-      "code": code || "10"
+      "code": code || "0"
     }
   })
 }

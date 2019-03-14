@@ -46,7 +46,7 @@ export function dataRequest(data) {
  */
 export function onlineRequest(data) {
   return request({
-    url: '/api/api/online_user_list',
+    url: '/zjb/zjb/online_user_list',
     method: 'post',
     data: data
   })
