@@ -14,7 +14,8 @@
         class="leftmemu"
         unique-opened
       >
-      <div class="username" v-if="user.company.id === 121">
+      <!-- v-if="user.company.id === 121" -->
+      <div class="username" v-if="true">
           <img :src="user.user.avatar" alt/>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
@@ -45,8 +46,8 @@ import NavMenu from "./NavMenu.vue";
 export default {
   name: "Leftmenu",
   created() {
-    debugger
-    let num = 247;
+    // let num = 247;
+    let num = this.$store.getters.user.user.roleId;
     findSideBar(num).then(response => {
       let data = response.data.data;
       this.leftMenus = data;
@@ -61,7 +62,8 @@ export default {
     return {
       openeds: [],
       active: "",
-      userId: this.$store.getters.user.user.id,
+      // userId: this.$store.getters.user.user.id,
+      userId: this.$store.getters.user.user.roleId,
       leftMenus: [],
       nodes: [],
       clickNodeId: "",
@@ -75,6 +77,7 @@ export default {
   computed: {
     ...mapGetters(["sidebar", "user", "openPid", "activeId"]),
     isCollapse() {
+      debugger;
       return !this.sidebar.opened;
     },
     flagSide() {
@@ -83,7 +86,7 @@ export default {
   },
   watch: {
     openPid(newid) {
-    //   debugger;
+    //   
     //   console.log(newid);
       this.handleOpen(this.openPid, [newid + ""]);
       this.openeds = [newid + ""];
@@ -112,7 +115,7 @@ export default {
     },
 
     handleOpen(key, code) {
-      // debugger;
+      
       let userId = this.userId;
       var clickNodeId = "";
       clickNodeId = userId + "_" + code[0];
@@ -149,6 +152,7 @@ export default {
       });
     },
     auotoAdd(data) {
+      
       let mapArry = data.map(function(data) {
         return data.code;
       });
@@ -156,7 +160,7 @@ export default {
       // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
       setTimeout(function() {
         mapArry.forEach(element => {
-          me.handleOpen(this.openPid, [element + ""]);
+          me.handleOpen(me.openPid, [element + ""]);
         });
       }, 600);
     }

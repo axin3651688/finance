@@ -10,7 +10,7 @@ export function login(loginUser) {
   console.log("调用登录接口");
   return request({
     // url: '/api/auth/login',
-    url: '/zdk/sys/loginM/login',
+    url: '/zjb/sys/loginM/login',
     // method: 'post',
    method: 'get',
     params: {
@@ -28,7 +28,8 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-    url:'/zjb/sys/loginM/logout',
+    url: '/zjb/sys/loginM/logout',
+    // url:'/zdk/zjb/logout',
     // url: '/api/api/core_user/logout',
     method: 'get',
     // params: {
@@ -80,11 +81,11 @@ export function getCompanyTree_old_old(id, dimName, type, pid) {
  */
 export function findSideBar(userId, code) {
   return request({
-    url: '/api/api/find_node',
+    url: '/zjb/sys/menus/query_menus',
     method: 'get',
     params: {
-      "userId": userId,
-      "code": code || "0"
+      "roleId": userId,
+      "spcode": code || "0"
     }
   })
 }
@@ -112,11 +113,32 @@ export function findThirdPartData(params) {
  * 2：否则从url中直接加载
  */
 export function findDesignSource(sourceId, url) {
+  debugger;
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
-  if (isNaN(sourceId)) {
+  // if (isNaN(sourceId)) {
+  //   url = sourceId;
+  //   sourceId = 0;
+  // }
+  if(sourceId){
     url = sourceId;
-    sourceId = 0;
+    sourceId = undefined;
   }
+  let api = sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
+  return request({
+    url: api,
+    method: 'get',
+    params: {
+      id: sourceId || 0
+    }
+  })
+}
+export function findDesignSource_old(sourceId, url) {
+  debugger;
+  //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
+  // if (isNaN(sourceId)) {
+  //   url = sourceId;
+  //   sourceId = 0;
+  // }
   let api = sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
   return request({
     url: api,

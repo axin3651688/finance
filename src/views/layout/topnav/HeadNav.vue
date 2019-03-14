@@ -301,7 +301,6 @@ export default {
       }
     },
     getname(e) {
-      debugger;
       console.log("a:", e);
       this.treeInfo = e;
       // this.companyId = typeof e.id == "string" ? e.id : e.customerId;
@@ -332,7 +331,6 @@ export default {
     },
     // 公司点击确定事件
     handleQoose() {
-      debugger;
       //   点击确定,把子组件选择的id,neme存到Vuex中
       this.GetSideMid({
         company: this.companyId,

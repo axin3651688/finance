@@ -35,7 +35,7 @@
           <span>{{navMenu.text}}</span>
         </template>
         <!--递归组件，把遍历的值传回子组件，完成递归调用-->
-        <nav-menu :navMenus="navMenu.children"></nav-menu>
+        <nav-menu :navMenus="navMenu.children" :state="toState"></nav-menu>
       </el-submenu>
     </label>
   </div>
@@ -46,19 +46,27 @@ import { mapGetters, mapActions } from "vuex";
 import modeHandle from "utils/modeHandle";
 export default {
   name: "NavMenu", //使用递归组件必须要有
-  props: ["navMenus", "state"], // 传入子组件的数据
+  props: ["navMenus", "state","rootLevel"], // 传入子组件的数据
   computed: {
     ...mapGetters(["device", "user"])
   },
   data() {
     return {
-      navLevel: "navLevel"
+      navLevel: "navLevel",
+      toState: this.state
     };
+  },
+  created() {
+    debugger;
+    let me = this;
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
+    classHandle () {
+      
+    },
     shownavMenu(e) {
-      debugger;
+      
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;
@@ -115,8 +123,12 @@ export default {
 };
 </script>
 <style scoped>
+/* :class="state? navLevelHide:navLevel" */
 .navLevel {
   margin-left: -20px;
+}
+.navLevelHide {
+  margin-left: 20px;
 }
 </style>
 
