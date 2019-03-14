@@ -661,14 +661,18 @@ export default {
               
             }
         }
+        let pramer = {
+            currentRoleId:currentRoleId,  
+            roleId:roleId,
+            menuPermissions: data
+          };
+        //  pramer = JSON.parse(JSON.stringify(pramer));
+        pramer = JSON.stringify(pramer);
         request({
           url: "/zjb/sys/menupermission/permission",
           method: "post",
-          data: {
-            roleId:roleId,
-            currentRoleId:currentRoleId,
-            menuPermission: data
-          }
+          headers	:{'Content-Type': 'application/json'},
+          data: pramer
         }).then(result => { 
           if (result.status == 200) {
               _this.dialogRoleDarkVisible = false;
