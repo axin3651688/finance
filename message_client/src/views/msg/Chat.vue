@@ -219,11 +219,9 @@ export default {
           postData['senderId'] = this.loginUserId
           FIND_SINGLE_MSG(postData)
             .then(res => {
-              this.$bus.emit('requestBack')
               this._requestMsgHistoryThen(res)
             })
             .catch(err => {
-              this.$bus.emit('requestBack')
               console.error(err)
             })
           break
@@ -232,11 +230,9 @@ export default {
           postData['userId'] = this.loginUserId
           FIND_GROUP_MSG(postData)
             .then(res => {
-              this.$bus.emit('requestBack')
               this._requestMsgHistoryThen(res)
             })
             .catch(err => {
-              this.$bus.emit('requestBack')
               console.error(err)
             })
           break
