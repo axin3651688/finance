@@ -57,7 +57,6 @@ export default {
     };
   },
   created() {
-    debugger;
     let me = this;
   },
   methods: {
@@ -66,7 +65,6 @@ export default {
       
     },
     shownavMenu(e) {
-      
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;
