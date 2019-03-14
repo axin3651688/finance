@@ -7,9 +7,10 @@ import {
   SET_FULLSCREEN_LOADING
 } from '@mu/setFullscreenLoading.js'
 // import router from '@v/layout/router'
-import packageConfig from "../../package.json"
+import packageConfig from '../../package.json'
+
 axios.defaults.timeout = 100000
-let loading;
+let loading
 
 /**
  * 开始加载动画
@@ -29,7 +30,7 @@ function _startLoading() {
   if (fullscreenLoading) {
     loading = Loading.service({
       lock: true,
-      text: "拼命加载中...",
+      text: '拼命加载中...',
       background: 'rgba(0,0,0,0)'
     })
   }
@@ -65,15 +66,15 @@ axios.interceptors.request.use(
       // 设置统一请求头 todo 暂时屏蔽
       config.headers.Authorization = localStorage.authorization
     }
-    if(!localStorage.device){
-      console.error("没有获取到正确的设备信息！");
-    }else{
-      config.headers.device = localStorage.device;//Cnbi.getDevice()
+    if (!localStorage.device) {
+      console.error('没有获取到正确的设备信息！')
+    } else {
+      config.headers.device = localStorage.device // Cnbi.getDevice()
     }
-    
+
     debugger
-    config.headers.version = packageConfig.version;
-    console.log("---master---headers-----",config.headers);
+    config.headers.version = packageConfig.version
+    console.log('---master---headers-----', config.headers)
     return config
   },
 
@@ -92,14 +93,14 @@ axios.interceptors.response.use(
   error => {
     // 错误提醒
     _endLoading()
-    Message.error(error.response.data);
+    Message.error(error.response.data)
     // console.error(error)
     // 获取错误状态码
     const {
       status
     } = error.response
     if (status == 401) {
-      console.error("toen失效,请重新登陆!")
+      console.error('toen失效,请重新登陆!')
       // token过期,清除token
       localStorage.removeItem('authorization')
       // todo 有bug暂时无法解决
@@ -108,6 +109,5 @@ axios.interceptors.response.use(
     }
     return Promise.reject(error)
   })
-
 
 export default axios

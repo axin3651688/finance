@@ -59,6 +59,7 @@ import FILE_TYPE from '@ma/data/fileType.js' // 可以上传的文件列表
 import GroupMembers from '@mv/msg/GroupMembers'
 import SidebarPop from '@mc/sidebar_pop/SidebarPop'
 import InfiniteLoading from 'vue-infinite-loading'
+import {SET_FULLSCREEN_LOADING} from '@mu/setFullscreenLoading.js'
 
 import {
   FIND_SINGLE_MSG,
@@ -207,6 +208,7 @@ export default {
      */
     requestMsgHistory() {
       // debugger
+      SET_FULLSCREEN_LOADING(false) // 禁用全屏加载动画
       let postData = {
         page: this.page,
         size: 10
@@ -333,6 +335,7 @@ export default {
      */
     _httpSend(sendData, pushData) {
       // debugger
+      SET_FULLSCREEN_LOADING(false) // 禁用全屏加载动画
       switch (this.miniType) {
         case 1100: // 单聊
           SAVE_SINGLE_MSG(sendData.data)

@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      canSend: true, // 限制发送频率
       sendText: '',
       showFacePop: false // 是否弹出聊天表情
     }
@@ -107,7 +108,14 @@ export default {
 
     // 向父组件触发发送消息
     sendMsg(sendText, fileData, clearSendText) {
-      debugger
+      // debugger
+      if (!this.canSend) {
+        console.log('发送太快')
+        this.$message({type: 'warning', message: '您发送的太快了，歇会吧！', showClose: true})
+        this.sendText = this.sendText.trim()
+        return false
+      }
+      this.canSend = false
       if (this.socketOffLine) { // socket断开不让发消息
         return this.$message({
           type: 'warning',
@@ -172,6 +180,9 @@ export default {
   },
   mounted() {
     this._setPasteImg()
+    setInterval(() => { // 限制发送频率
+      this.canSend = true
+    }, 1000)
   }
 }
 </script>
