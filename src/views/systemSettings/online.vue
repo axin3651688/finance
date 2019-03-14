@@ -75,7 +75,7 @@
                     <span v-else>普通成员</span>
                 </template> -->
             </el-table-column>
-            <el-table-column prop="belongCompanyName" label="所属公司" width="180" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="user_companyName" label="所属公司" width="280" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="hostName" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="stayTime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>

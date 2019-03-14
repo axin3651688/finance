@@ -52,7 +52,7 @@ export function onlineRequest(data) {
     // url: '/zjb/zjb/online_user_list',
     // method: 'post',
     // data: data
-    url: '/fq/online/onlineuser',
+    url: '/zjb/online/onlineuser',
     method: 'get',
     params: data
   })
