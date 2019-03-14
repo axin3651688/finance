@@ -58,6 +58,7 @@
       title="模块授权"
       :visible.sync="dialogRoleDarkVisible"
       width="50%"
+      custom-class="authModule"
       @close="closeDilog('roleDark')"
       >
       
@@ -195,6 +196,7 @@ export default {
       checked1: '1',
       checked2: '1',
       checked3: '1',
+      selectRoleId:"",
 
       //当前选中的菜单节点 -1代表没有选择
       activeRole: {
@@ -234,7 +236,7 @@ export default {
         showHeader: true,
         showSummary: false,
         showRowHover: true,
-        showIndex: true,
+        showIndex: false,
         treeType: true,
         isFold: true,
         expandType: false,
@@ -276,6 +278,16 @@ export default {
         window.onresize = function temp(){
             me.heights = document.documentElement.clientHeight-217;
         }
+    },
+    /**
+     * 设置模块授权中全选
+     */
+    setSelectAll(){
+      let _this = this;
+      let label = document.querySelector(".authModule .el-dialog__body label");
+      label.innerHTML = "";
+      //.getSelection(".authModule .el-dialog__body label");
+
     },
 
     /**
@@ -493,8 +505,9 @@ export default {
             //data[0].open = true;
            // _this.expandKeys.push(data[0].scode);
             _this.authData = tools.transformToeTreeNodes(setting, data);
-
+            
           }
+          _this.setSelectAll();
         }
         // if (result.status == 200) {
         //   if (_.isArray(result.data.data)) {
@@ -594,6 +607,9 @@ export default {
  */
     submitAddUserForm(){
       let _this = this;
+      var getters = _this.$store.getters;
+      let roleId = _this.selectRoleId;
+      let currentRoleId = getters.user.role.id;
       let rightDatas = _this.rightDatas;
       let authData = _this.rightAllDatas;
       let changeDatas = [];
@@ -645,10 +661,18 @@ export default {
               
             }
         }
+        let pramer = {
+            currentRoleId:currentRoleId,  
+            roleId:roleId,
+            menuPermissions: data
+          };
+        //  pramer = JSON.parse(JSON.stringify(pramer));
+        pramer = JSON.stringify(pramer);
         request({
           url: "/zjb/sys/menupermission/permission",
           method: "post",
-          data: data
+          headers	:{'Content-Type': 'application/json'},
+          data: pramer
         }).then(result => { 
           if (result.status == 200) {
               _this.dialogRoleDarkVisible = false;
@@ -843,6 +867,7 @@ export default {
       this.dialogRoleDarkVisible = true;
       this.rightDatas = [];
       this.opt = tools.opt[0];
+      this.selectRoleId = row.roleid;
       //加载菜单列表
       this.findMenu(row.roleid);
     },

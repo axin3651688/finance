@@ -54,7 +54,7 @@ export function onlineRequest(data) {
     // data: data
     url: '/zjb/online/onlineuser',
     method: 'get',
-    data: data
+    params: data
   })
 }
 /**
