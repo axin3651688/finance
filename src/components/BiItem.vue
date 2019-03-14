@@ -13,7 +13,8 @@ export default {
     TreeGrid: () => import("./treegrid/TreeGrid.vue"),
     STreeGrid: () => import("./text/STreegrid.vue"),
     BiFlhz: () => import("./BiFlhz"),
-    BiButton: () => import("./BiButton"),          
+    BiButton: () => import("./BiButton"),
+    // SBiDiv: () => import("./SBiDiv"),          
     // HandsonTable: () => import("./HandsonTable")
   },
   data() {

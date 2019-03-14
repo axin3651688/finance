@@ -228,7 +228,7 @@ export default {
                     0
                 };
                 axios({
-                  url: "/tjsp/extradata/import",
+                  url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
                   // data: {
@@ -438,7 +438,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar {
   width: 2px;

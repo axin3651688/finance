@@ -216,6 +216,10 @@ BiText
     text:"",//名字
     config:`config`  //为可选项
     layout:`layout`  //为可选项，不配制的话，默认为form
+    monthConfig:{//控制显示几个月的。下面的配置显示13个月
+        id:"month",
+        value":13
+    },
     changeModuleBefore:funcntion(){},//改变模块之前的调用，
     changeYearBefore:funcntion(){},//切换年的回调
     changeMonthBefore:funcntion(){},//切换月份的回调

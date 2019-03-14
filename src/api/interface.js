@@ -9,11 +9,10 @@ let cubeId = 4;
 export function login(loginUser) {
   console.log("调用登录接口");
   return request({
-    url: '/api/auth/login',
-    // url: '/api/zjb/login',
-    method: 'post',
-   //url: '/api/api/core_user/login',
-   //method: 'get',
+    // url: '/api/auth/login',
+    url: '/zdk/sys/loginM/login',
+    // method: 'post',
+   method: 'get',
     params: {
       cubeId:cubeId,
       account: loginUser.usename,
@@ -29,8 +28,8 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-   // url: '/api/auth/logout',
-    url: '/api/api/core_user/logout',
+    url:'/zjb/sys/loginM/logout',
+    // url: '/api/api/core_user/logout',
     method: 'get',
     // params: {
     //   Authorization: localStorage.authorization,
@@ -52,11 +51,11 @@ export function getCompanyTree_old() {
  */
 export function getCompanyTree(user) {
   return request({
-    url: '/zjb/sys/dimcompany/query_user',
-    method: 'get',
-    params: {
-      "suser": user.username
-    }
+    url: '/zjb/sys/dimcompany/query_user?suser='+user,
+    method: 'get'
+    // params: {
+    //   "suser": user.username
+    // }
   })
 }
 /**
@@ -85,7 +84,7 @@ export function findSideBar(userId, code) {
     method: 'get',
     params: {
       "userId": userId,
-      "code": code || "10"
+      "code": code || "0"
     }
   })
 }

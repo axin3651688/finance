@@ -4,91 +4,98 @@
         <div style="width:1586px;" :style="contenStyleObj">
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="市管企业经营业绩情况表" name="first" >
-                    <table class="table2" style="float:left;">
-                        <tr class="tr0">
-                            <th class="heightx" style="height:98px;line-height: 98px;">资产状况</th>
-                        </tr>
-                        <tr class="tr0">
-                            <th class="heightx" style="height:197px;line-height:197px;">效益状况</th>
-                        </tr>
-                    </table>
-                    <table class="table">
-                        <tr class="tr1">
-                            <!-- <th rowspan="3" class="heightx" style="width:150px;">资产状况</th> -->
-                            <th colspan="3" class="heights" style="width:450px;">资产总额</th>
-                            <th colspan="3" class="heights" style="width:450px;">所有者权益总额</th>
-                            <th colspan="4" class="heights" style="width:600px;">资产负债率（%）</th>
-                        </tr>
-                        <tr class="tr2">
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th colspan="2" style="width:300px">同比增长（%）</th>                       
-                        </tr>
-                        <tr class="tr3">
-                            <!-- <td>{{ getCellValue(exps.factza) }}</td> -->
-                            <td>{{ exps.factza }}</td>
-                            <td>{{ exps.zhbzz }}</td>
-                            <td>{{ exps.ztbzz }}</td>
-                            <td>{{ exps.factsa }}</td>
-                            <td>{{ exps.shbzz }}</td>
-                            <td>{{ exps.stbzz }}</td>
-                            <td>{{ exps.factba }}</td>
-                            <td>{{ exps.zlhbzz }}</td>
-                            <td colspan="2">{{ exps.zltbzz }}</td>
-                        </tr>
-                        <tr class="tr1">
-                            <!-- <th rowspan="6" class="heightx" style="width:150px;line-height:32px">效益状况</th> -->
-                            <th colspan="5" class="heights" style="width:750px;">营业收入</th>
-                            <th colspan="5" class="heights" style="width:750px;">利润总额</th>
-                        </tr>
-                        <tr class="tr2">
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本年累计</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本年累计</th>
-                            <th style="width:150px">同比增长（%）</th>
-                        </tr>
-                        <tr class="tr3">
-                            <td>{{ expx.srbqdys }}</td>
-                            <td>{{ expx.srhbzz }}</td>
-                            <td>{{ expx.srtbzz }}</td>
-                            <td>{{ expx.srbqljs }}</td>
-                            <td>{{ expx.srtbljzz }}</td>
-                            <td>{{ expx.lrbqdys }}</td>
-                            <td>{{ expx.lrhbzz }}</td>
-                            <td>{{ expx.lrtbzz }}</td>
-                            <td>{{ expx.lrbqljs }}</td>
-                            <td>{{ expx.lrtbljzz }}</td>
-                        </tr>
-                        <tr class="tr1">
-                            <th colspan="5" class="heights" style="width:750px;">成本费用利润率（%）</th>
-                        </tr>
-                        <tr class="tr2">
-                            <th style="width:150px">本月末</th>
-                            <th style="width:150px">环比增长（%）</th>
-                            <th style="width:150px">同比增长（%）</th>
-                            <th style="width:150px">本年累计</th>
-                            <th style="width:150px">同比增长（%）</th>
-                        </tr>
-                        <tr class="tr3">
-                            <td>{{ expx.cblbys }}</td>
-                            <td>{{ expx.cblrhbzz }}</td>
-                            <td>{{ expx.cblrtbzz }}</td>
-                            <td>{{ expx.cblj }}</td>
-                            <td>{{ expx.cblrtbljzz }}</td>
-                        </tr>
-                    </table>
+                    <div v-if="isShow">
+                        <div class="isShow">
+                            <span>此公司没有查看此报表的权限！</span>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <table class="table2" style="float:left;">
+                            <tr class="tr0">
+                                <th class="heightx" style="height:98px;line-height: 98px;">资产状况</th>
+                            </tr>
+                            <tr class="tr0">
+                                <th class="heightx" style="height:197px;line-height:197px;">效益状况</th>
+                            </tr>
+                        </table>
+                        <table class="table">
+                            <tr class="tr1">
+                                <!-- <th rowspan="3" class="heightx" style="width:150px;">资产状况</th> -->
+                                <th colspan="3" class="heights" style="width:450px;">资产总额</th>
+                                <th colspan="3" class="heights" style="width:450px;">所有者权益总额</th>
+                                <th colspan="4" class="heights" style="width:600px;">资产负债率（%）</th>
+                            </tr>
+                            <tr class="tr2">
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th colspan="2" style="width:300px">同比增长（%）</th>                       
+                            </tr>
+                            <tr class="tr3">
+                                <!-- <td>{{ getCellValue(exps.factza) }}</td> -->
+                                <td>{{ exps.factza }}</td>
+                                <td>{{ exps.zhbzz }}</td>
+                                <td>{{ exps.ztbzz }}</td>
+                                <td>{{ exps.factsa }}</td>
+                                <td>{{ exps.shbzz }}</td>
+                                <td>{{ exps.stbzz }}</td>
+                                <td>{{ exps.factba }}</td>
+                                <td>{{ exps.zlhbzz }}</td>
+                                <td colspan="2">{{ exps.zltbzz }}</td>
+                            </tr>
+                            <tr class="tr1">
+                                <!-- <th rowspan="6" class="heightx" style="width:150px;line-height:32px">效益状况</th> -->
+                                <th colspan="5" class="heights" style="width:750px;">营业收入</th>
+                                <th colspan="5" class="heights" style="width:750px;">利润总额</th>
+                            </tr>
+                            <tr class="tr2">
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本年累计</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本年累计</th>
+                                <th style="width:150px">同比增长（%）</th>
+                            </tr>
+                            <tr class="tr3">
+                                <td>{{ expx.srbqdys }}</td>
+                                <td>{{ expx.srhbzz }}</td>
+                                <td>{{ expx.srtbzz }}</td>
+                                <td>{{ expx.srbqljs }}</td>
+                                <td>{{ expx.srtbljzz }}</td>
+                                <td>{{ expx.lrbqdys }}</td>
+                                <td>{{ expx.lrhbzz }}</td>
+                                <td>{{ expx.lrtbzz }}</td>
+                                <td>{{ expx.lrbqljs }}</td>
+                                <td>{{ expx.lrtbljzz }}</td>
+                            </tr>
+                            <tr class="tr1">
+                                <th colspan="5" class="heights" style="width:750px;">成本费用利润率（%）</th>
+                            </tr>
+                            <tr class="tr2">
+                                <th style="width:150px">本月末</th>
+                                <th style="width:150px">环比增长（%）</th>
+                                <th style="width:150px">同比增长（%）</th>
+                                <th style="width:150px">本年累计</th>
+                                <th style="width:150px">同比增长（%）</th>
+                            </tr>
+                            <tr class="tr3">
+                                <td>{{ expx.cblbys }}</td>
+                                <td>{{ expx.cblrhbzz }}</td>
+                                <td>{{ expx.cblrtbzz }}</td>
+                                <td>{{ expx.cblj }}</td>
+                                <td>{{ expx.cblrtbljzz }}</td>
+                            </tr>
+                        </table>
+                    </div>                   
                 </el-tab-pane>
             </el-tabs>
             <!-- font-weight: bolder; -->
@@ -104,7 +111,7 @@ export default {
         return {
             tableData: [],
             tableData2:[],
-
+            isShow: true ,
             exps: {
             // 资产总额                 
                 factza: 0 ,
@@ -177,6 +184,12 @@ export default {
         this.yearId = this.$store.getters.year ;
         this.monthId = this.$store.getters.month ;
         this.conversionId = this.$store.getters.conversion ;
+        // 判断公司是否为集团公司
+        if(this.companyId=='1001'){
+            this.isShow = false;
+        }else{
+            this.isShow = true ;
+        }
         // 表格的数据请求(唯一请求)
         this.tableDataRequest(this.companyId, this.yearId, this.monthId, this.conversionId) ;  
     },
@@ -220,8 +233,16 @@ export default {
         },
         // 切换维度时触发
         getData(vax, value){
-            // debugger
+            debugger
             let me = this ;
+            // 判断公司是否为集团公司
+            if(vax=="company"){
+                if(value=='1001'){
+                me.isShow = false;
+                }else{
+                    me.isShow = true ;
+                }
+            }
             me.num = -1 ;
             me.tableData = [],me.tableData2=[],me.first=[],me.second=[] ;
             if(vax === 'year') {
@@ -512,6 +533,18 @@ export default {
 }
 </script>
 <style scoped>
+    /* 暂无权限样式设置 */
+    .isShow{
+        height: 80px;
+        width:100%;
+        background-color: #ddd;
+        text-align: center;
+        line-height: 80px;
+        font-size: 20px;
+        font-weight: bold;
+        /* color: maroon; */
+        color: red;
+    }
     .table {
         margin-top: 20px;
     }

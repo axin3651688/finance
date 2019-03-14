@@ -113,6 +113,7 @@
           "xtype": "bi-table",
           "id":"xsqydkdbqk",
           "text":"下属企业贷款担保情况表",
+          "divContent":"Y",
           "toolbar":[
             {
                "id":"1",
