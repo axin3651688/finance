@@ -54,7 +54,6 @@ export default function modeHandle(e) {
     // }
     findDesignSource(e.sourceId, e.url)
         .then(response => {
-            debugger;
             let bean = response.data;
             if (bean.data && bean.data.source) {
                 //数据库来的

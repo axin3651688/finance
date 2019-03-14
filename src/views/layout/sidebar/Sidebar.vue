@@ -77,7 +77,6 @@ export default {
   computed: {
     ...mapGetters(["sidebar", "user", "openPid", "activeId"]),
     isCollapse() {
-      debugger;
       return !this.sidebar.opened;
     },
     flagSide() {
