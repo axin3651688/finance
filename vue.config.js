@@ -61,7 +61,7 @@ let proxyObj = { // 配置跨域
         }
     },
     '/exl': {
-        target: 'http://192.168.2.41:9001',
+        target: 'http://192.168.1.114:9011',
         // target: 'http://192.168.2.6:9001',
         ws: true,
         changOrigin: true,
