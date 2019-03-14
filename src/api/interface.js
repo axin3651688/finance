@@ -28,7 +28,8 @@ export function login(loginUser) {
 export function logout() {
   console.log("调用登出接口");
   return request({
-    url:'/zdk/zjb/logout',
+    url: '/zjb/sys/loginM/logout',
+    // url:'/zdk/zjb/logout',
     // url: '/api/api/core_user/logout',
     method: 'get',
     // params: {

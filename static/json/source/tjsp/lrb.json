@@ -30,7 +30,7 @@
         return data;
     },
     "config":{
-        "sql": "WITH T1 AS( SELECT DIM_ITEMPERIOD, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) DYSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_A ELSE 0 END) DYSSNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) LJSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) LJSSNTQ FROM DW_FACTFINANCEPERIOD where DIM_PERIOD IN(:comparePeriod,:period)and DIM_COMPANY=:company and SUBJECT='0002' GROUP BY DIM_ITEMPERIOD) SELECT B.SCODE,B.SNAME, NVL(DYSBN,0) DYSBN, NVL(DYSSNTQ,0) DYSSNTQ, (NVL(DYSBN,0)-NVL(DYSSNTQ,0)) DYSTBZJE, ROUND(CASE WHEN NVL(DYSSNTQ,0)='0' THEN 0 ELSE (NVL(DYSBN,0)-NVL(DYSSNTQ,0))*100/NVL(DYSSNTQ,0) END ,4) DYSTBZJL, NVL(LJSBN,0) LJSBN, NVL(LJSSNTQ,0) LJSSNTQ, (NVL(LJSBN,0)-NVL(LJSSNTQ,0)) LJSTBZJE, ROUND(CASE WHEN NVL(LJSSNTQ,0)='0' THEN 0 ELSE (NVL(LJSBN,0)-NVL(LJSSNTQ,0))*100/NVL(LJSSNTQ,0) END ,4) LJSTBZJL FROM T1 A RIGHT JOIN (SELECT SCODE, SNAME, SSORTBY FROM DW_DIMITEMPERIOD WHERE PROPERTY3='14')B ON A.DIM_ITEMPERIOD=B.SCODE ORDER BY B.SSORTBY",
+        "sql": "WITH T1 AS( SELECT DIM_ITEMPERIOD, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) DYSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_A ELSE 0 END) DYSSNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) LJSBN, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) LJSSNTQ FROM DW_FACTFINANCEPERIOD where DIM_PERIOD IN(:comparePeriod,:period)and DIM_COMPANY=:company and SUBJECT='0002' GROUP BY DIM_ITEMPERIOD) SELECT b.scode, CASE WHEN B.SCODE IN('1416001','1426400','1402100','1403100','1400100') THEN '0' WHEN B.SCODE IN('1426401','1416101','1416301','1426711','1426801','1400200','1400400','1400500') THEN '2.5' WHEN B.SCODE IN('1400300') THEN '2' WHEN B.SCODE IN('1435302','1436605','1436606','1416303','1416304','1416305','1426713','1426714') THEN '6.5' ELSE '4.5' END nlevel, B.SNAME, NVL(DYSBN,0) DYSBN, NVL(DYSSNTQ,0) DYSSNTQ, (NVL(DYSBN,0)-NVL(DYSSNTQ,0)) DYSTBZJE, ROUND(CASE WHEN NVL(DYSSNTQ,0)='0' THEN 0 ELSE (NVL(DYSBN,0)-NVL(DYSSNTQ,0))*100/NVL(DYSSNTQ,0) END ,4) DYSTBZJL, NVL(LJSBN,0) LJSBN, NVL(LJSSNTQ,0) LJSSNTQ, (NVL(LJSBN,0)-NVL(LJSSNTQ,0)) LJSTBZJE, ROUND(CASE WHEN NVL(LJSSNTQ,0)='0' THEN 0 ELSE (NVL(LJSBN,0)-NVL(LJSSNTQ,0))*100/NVL(LJSSNTQ,0) END ,4) LJSTBZJL FROM T1 A RIGHT JOIN (SELECT SCODE, SNAME, SSORTBY FROM DW_DIMITEMPERIOD WHERE PROPERTY3='14')B ON A.DIM_ITEMPERIOD=B.SCODE ORDER BY B.SSORTBY,b.scode ",
         // "sql":"select SCODE as id, SNAME as text, SSORTBY, NLEVEL,FACT_A as a, FACT_B as b from( SELECT FACT_A, FACT_B, DIM_ITEMPERIOD FROM DW_FACTFINANCEPERIOD where DIM_PERIOD=:period and DIM_COMPANY =:company)a right join(SELECT SCODE, SNAME, SSORTBY, NLEVEL FROM DW_DIMITEMPERIOD where stype='14' and PROPERTY3='14') b on a.DIM_ITEMPERIOD=b.SCODE order by SSORTBY",
         "_cube":{
             "cubeId":4,
@@ -165,15 +165,16 @@
         
         "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
             debugger
-            let id = row.id, text = row.text;
+            let id = row.scode, text = row.sname;
             let datas = this.datas;
                 let data = datas.filter(function(item){
-                        return item.id == row.id;
+                        return item.scode == row.scode;
                 });
-            row = data[0];
+            let record = data[0];
 
             if(this.drillProperties.indexOf(column.property) != -1){
-                if((row.A && row.A!=0) || (row.B && row.B!=0)){
+                if((record.dysbn && record.dysbn!=0) || (record.dyssntq && record.dyssntq!=0) || 
+                   (record.ljsbn && record.ljsbn!=0) || (record.ljssntq && record.ljssntq!=0)){
                         vue.commonHandler(
                             {
                                 "type":"click",//事件类型
@@ -212,11 +213,12 @@
                 textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
             }
             if (drillProperties.indexOf(pro) != -1) { // 判断给那一列附蓝色；不然一行全是蓝色的
-                if ((record.A && record.A!=0) || (record.B && record.B!=0)) {//判断A、B的值是否存在 and 不能等于0；
+                if ((record.dysbn && record.dysbn!=0) || (record.dyssntq && record.dyssntq!=0) || 
+                    (record.ljsbn && record.ljsbn!=0) || (record.ljssntq && record.ljssntq!=0)) {//判断A、B的值是否存在 and 不能等于0；
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                } else if(record.id=="1416001" || record.id=="1426400" || record.id=="1402100" || record.id=='1403100' || record.id=='1400100'){
+                } else if(record.scode=="1416001" || record.scode=="1426400" || record.scode=="1402100" || record.scode=='1403100' || record.scode=='1400100'){
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
