@@ -50,6 +50,10 @@ export default {
     let num = this.$store.getters.user.user.roleId;
     findSideBar(num).then(response => {
       let data = response.data.data;
+      //排序 这个本是sql来处理的，但是没有，所以在此加一个自己的排序。
+      if(data && data.length > 0 && data[1].sort){
+        this.sortBySsort(data,"sort");
+      }
       this.leftMenus = data;
       this.auotoAdd(data);
     });
@@ -112,7 +116,13 @@ export default {
         }
       });
     },
-
+    sortBySsort(array, key) {
+      return array.sort((a, b) => {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    },
     handleOpen(key, code) {
       
       let userId = this.userId;
@@ -151,7 +161,6 @@ export default {
       });
     },
     auotoAdd(data) {
-      
       let mapArry = data.map(function(data) {
         return data.code;
       });

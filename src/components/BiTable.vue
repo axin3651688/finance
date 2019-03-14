@@ -337,6 +337,7 @@ export default {
      * 单元格单击默认事件
      */
     onCellClickDefault(row, column, cell, event) {
+      debugger;
       // console.log(this)
       let listener = row._drill || row.drill;
       if (listener) {
@@ -368,6 +369,7 @@ export default {
      * 单元格单击事件
      */
     onCellClick(row, column, cell, event) {
+      debugger;
       if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
         return this.item.onCellClick(row, column, cell, event, this);
       }
