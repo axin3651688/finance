@@ -450,6 +450,7 @@ export default {
         label: "scomname",
         children: "children"
       },
+      selectUser:"",
       // 分页---默认第一页
       currentPage: 1,
       // 分页---默认每页100行数据
@@ -1080,19 +1081,20 @@ export default {
       this.opt = tools.opt[0];
       this.companyAuthorizationForm.suser = row.suser;
       this.showNodes =[];//清空节点的选中（公司授权）
+      this.selectUser = row.suser;
       this.getUserCompany(row.suser);//根据当前用户获取公司权限
     },
     getUserCompany(suser){
         var _this = this;
       //getters 数据
-      var getters = _this.$store.getters;
-      let user=getters.user.user.username;
+      let getters = _this.$store.getters;
+      let user=getters.user.user.userName;
       request({
         url: "/zjb/sys/menupermission/query_companys_permission",
         method: "get",
         params:{
             userId:suser,
-            currentUserId:getters.user.user.username
+            currentUserId:user
             //currentUserId:"zb"
         }
       }).then(result => { 
@@ -1155,7 +1157,7 @@ export default {
     handleInfo(index, row) {
       var _this = this;
       //getters 数据
-      var getters = _this.$store.getters;
+      let getters = _this.$store.getters;
       request({
         url: "/api/api/role_list",
         method: "get",
@@ -1260,7 +1262,7 @@ export default {
     findAll(currentPage, pageSize, pagination) {
       var _this = this;
       //getters 数据
-      var getters = _this.$store.getters;
+      let getters = _this.$store.getters;
       request({
         // url: "/api/api/my_contact_list",
         url: "/zjb/sys/user/query_comid",
@@ -1293,7 +1295,7 @@ export default {
       var _this = this;
       //getters 数据
       if (search) {
-        var getters = _this.$store.getters;
+        let getters = _this.$store.getters;
         request({
           // url: "/api/api/my_contact_list",
           url: "/zjb/sys/user/query_blur",
@@ -1341,7 +1343,10 @@ export default {
 
     submitCompanyAuthorizationForm(companyAuthorizationForm) {
       let _this = this;
+      let getters = _this.$store.getters;
       let suser = companyAuthorizationForm.suser;
+      let userId = _this.selectUser;
+      let currentUserId = getters.user.user.userName;
       let companys = _this.$refs.companysTree.getCheckedKeys();
       let _companys = [];
       if(companys && companys.length > 0){
@@ -1361,7 +1366,10 @@ export default {
       request({
         url: "/zjb/sys/usercompany/grantcompanys",
         method: "post",
-        data:_companys
+        data:{
+          userId:userId,
+          currentUserId:currentUserId,
+          data:_companys}
       }).then(result => {
         if (result.status == 200) {
           if (result.data.code === 0) {
