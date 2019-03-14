@@ -118,6 +118,7 @@
                     "id" : "yysrwcmb",
                     "type" : "decimal",
                     "text" : "完成目标进度",
+                    "conversion" : "%",
                     "width": "170px"
                 },
                 {
@@ -169,6 +170,7 @@
                     "id" : "lrzewcmb",
                     "type" : "decimal",
                     "text" : "完成目标进度",
+                    "conversion" : "%",
                     "width": "170px"
                 },
                 {

@@ -2,12 +2,17 @@
     /**
      * name : sjz
      * 因为是sql配的 不利于导入填报  所以弃用  改为cube配置
+     * 重新启用（表样更换）
      */
     "id":"0002",
     "text":"利润表",
     "layout":{
         "xtype":"tab"
     },
+    "monthConfig":{
+        "id":"month",
+        "value":13
+    }, 
     "showDims": ["year","month","company","conversion"],
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);

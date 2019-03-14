@@ -10,9 +10,9 @@ export function login(loginUser) {
   console.log("调用登录接口");
   return request({
     // url: '/api/auth/login',
-    url: '/zdk/sys/loginM/login',
-    // method: 'post',
-   method: 'get',
+    url: '/zdk/zjb/login',
+    method: 'post',
+  //  method: 'get',
     params: {
       cubeId:cubeId,
       account: loginUser.usename,
