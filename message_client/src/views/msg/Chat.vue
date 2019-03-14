@@ -42,7 +42,7 @@
     </div>
 
     <!--群成员侧边栏组件-->
-    <sidebar-pop :size="300" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop" style="z-index: 20">
+    <sidebar-pop :size="240" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop" style="z-index: 20">
       <group-members @closeGroupMembers="showSidebarPop=false"></group-members>
     </sidebar-pop>
 
