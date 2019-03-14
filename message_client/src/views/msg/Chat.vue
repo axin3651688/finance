@@ -117,12 +117,15 @@ export default {
   },
   watch: {
     /**
-     * 当自己的socket重连成功后，重新加载当前聊天对象的聊天内容
+     * 当自己的socket重连成功后，重新加载当前聊天对象的聊天内容，10秒内重连不频发请求
      */
     socketOffLine(val) {
-      if (!val) {
-        this._resetChat()
-      }
+      if (this.timer) clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        if (!val) {
+          this._resetChat()
+        }
+      }, 10000)
     },
 
     /**
