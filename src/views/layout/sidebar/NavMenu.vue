@@ -1,5 +1,5 @@
 <template>
-  <div class="navMenu" :class="state && rootLevel? '':navLevel">
+  <div class="navMenu" :class="state? '':navLevel">
     <label v-for="navMenu in navMenus" :key="navMenu.code">
       <!--只有一级菜单-->
       <!-- :disabled="disabled"  -->
@@ -16,7 +16,7 @@
           <!-- <router-link :to="navMenu.url"> -->
           <img
             :src="navMenu.avatar"
-            v-if="navMenu.level===1 && state"
+            v-if="navMenu.level===2 && state"
             class="avatarleft fa-margin iconfont"
           >
           <!--标题-->
@@ -29,13 +29,13 @@
         <template slot="title">
           <img
             :src="navMenu.avatar"
-            v-if="navMenu.level===1 && state"
+            v-if="navMenu.level===2 && state"
             class="avatarleft fa-margin iconfont"
           >
           <span>{{navMenu.text}}</span>
         </template>
         <!--递归组件，把遍历的值传回子组件，完成递归调用-->
-        <nav-menu :navMenus="navMenu.children"></nav-menu>
+        <nav-menu :navMenus="navMenu.children" :state="toState"></nav-menu>
       </el-submenu>
     </label>
   </div>
@@ -52,8 +52,13 @@ export default {
   },
   data() {
     return {
-      navLevel: "navLevel"
+      navLevel: "navLevel",
+      toState: this.state
     };
+  },
+  created() {
+    debugger;
+    let me = this;
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),

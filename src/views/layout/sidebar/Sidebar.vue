@@ -20,7 +20,7 @@
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
-        <nav-menu :navMenus="leftMenus" :state="isCollapse" :rootLevel="0" v-if="flagSide"/>
+        <nav-menu :navMenus="leftMenus" :state="isCollapse" v-if="flagSide"/>
         <!-- 模拟链接 -->
         <!--
         <el-submenu index="123">
@@ -77,6 +77,7 @@ export default {
   computed: {
     ...mapGetters(["sidebar", "user", "openPid", "activeId"]),
     isCollapse() {
+      debugger;
       return !this.sidebar.opened;
     },
     flagSide() {
