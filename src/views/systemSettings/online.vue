@@ -29,10 +29,10 @@
              -->
             <el-col :xs="12" :md="24">
                 <div class="input-refresh" ref="elememt">
-                    <el-form :inline="true" :model="searchForm" class="user-form-inline">
+                    <!-- <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item label="登录名">
                             <el-input v-model="searchForm.userName" placeholder="模糊查询" clearable ></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <!-- <el-form-item label="真实姓名">
                             <el-input v-model="searchForm.trueName" placeholder="真实姓名" clearable></el-input>
@@ -45,13 +45,13 @@
                             </el-select>
                         </el-form-item> -->
                     
-                        <el-form-item>
+                        <!-- <el-form-item>
                             <el-button type="text" @click="handleDelete">清除</el-button>
                             <el-button type="primary"  @click="handleSearch" icon="el-icon-search" ></el-button>
-                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button> -->
                             <!-- <el-button type="primary" style="height:40px;padding-top:0"><i class="el-icon-search">搜索</i></el-button> -->
-                        </el-form-item>
-                    </el-form>
+                        <!-- </el-form-item> -->
+                    <!-- </el-form> -->
                 </div>
             </el-col>
         </el-row>     
@@ -67,25 +67,25 @@
         class="elTable"
         >
             <el-table-column type="index" width="60" label="序列" align="center"></el-table-column>
-            <el-table-column prop="userName" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="trueName" label="真实姓名" width="150" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="roleNames" label="角色" width="80" header-align="center" align="center" sortable>
+            <el-table-column prop="user_userName" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="user_trueName" label="真实姓名" width="150" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="user_roleName" label="角色" width="80" header-align="center" align="center" sortable>
                 <!-- <template slot-scope="scope">
                     <span v-if="scope.row.roleNames==='1'">管理员</span>
                     <span v-else>普通成员</span>
                 </template> -->
             </el-table-column>
             <el-table-column prop="belongCompanyName" label="所属公司" width="180" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="ipAdress" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="hostName" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
             <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="residencetime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="browser" label="浏览器" width="100" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="brand" label="平台" width="100" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column label="操作" header-align="center" align="center" sortable>
+            <el-table-column prop="stayTime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="platform_scode" label="浏览器" width="100" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="platform_sname" label="平台" width="" header-align="center" align="center" sortable></el-table-column>
+            <!-- <el-table-column label="操作" header-align="center" align="center" sortable>
                 <template slot-scope="scope">
                     <el-button type="text" @click="handleOffline(scope.$index, scope.row)">下线</el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
 
         <!-- 分页 -->
@@ -147,35 +147,26 @@ export default {
     created(){
         debugger
         let me = this;
-        if(document.getElementsByClassName('input-refresh').length > 0){
-            // 得到表单的高度并赋值
-            me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-            if (me.inputRefresh == 0) {
-                me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
-            } else {
-                // 计算当前页面的高度 得出表格的高度
-                me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-            }
+        // if(document.getElementsByClassName('input-refresh').length > 0){
+        //     // 得到表单的高度并赋值
+        //     me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+        //     if (me.inputRefresh == 0) {
+        //         me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
+        //     } else {
+        //         // 计算当前页面的高度 得出表格的高度
+        //         me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+        //     }
             
-        }else{
-            me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
-        }
+        // }else{
+        //     me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
+        // }
+        me.heights = document.body.offsetHeight - 70 - 40 - 64 - 40;
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
     mounted(){
         // 设置表格高度（自适应）
         this.setTableScollHeight();
-        // const me = this
-        // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-        // window.onresize = () => {
-        //     // debugger
-        //     return (() => {
-        //         window.offsetHeight = document.body.offsetHeight;
-        //         me.offsetHeight = window.offsetHeight;
-        //         me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-        //     })()
-        // }
     },
     watch:{
         
@@ -183,18 +174,19 @@ export default {
     methods:{
         // 页面自适应
         setTableScollHeight(){
-            this.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40 ;
+            this.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;
             const me = this ;
             window.onresize = function temp(){
                 debugger
                 // 得到表单的高度并赋值
-                me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-                // 计算当前页面的高度 得出表格的高度
-                if(me.inputRefresh>0){
-                    me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-                }else{
-                    me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
-                }             
+                // me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
+                // // 计算当前页面的高度 得出表格的高度
+                // if(me.inputRefresh>0){
+                //     me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
+                // }else{
+                //     me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
+                // } 
+                me.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;            
             };
         },
         /**
@@ -212,17 +204,18 @@ export default {
             };
             // 请求
             onlineRequest(item).then(res => {
-                // debugger
+                debugger
                 // me.person = res.data.data.totalElements;
                 //获取总数据
-                me.totalElements = res.data.data.totalElements;
+                me.totalElements = res.data.data.total ;
                 //获取行信息渲染
                 // me.tableData = res.data.data.data;
-                let dataTable = res.data.data.data;
+                let dataTable = res.data.data.datas;
                 me.getTimes(dataTable);
             }); 
         },
         getTimes(row){
+            debugger
             // debugger
             // let etime, stime, dateBegin, usedTime, days, leave1,leave2,leave3, hours, minutes,seconds ;
             // //var date = new Date();
