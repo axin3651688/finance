@@ -58,10 +58,10 @@
             ></el-date-picker>
           </el-form-item>
 
-          <el-form-item label="性质" prop="nature">
-            <el-checkbox-group v-model="form.nature">
-              <el-checkbox label="EAS" name="nature" border>EAS</el-checkbox>
-              <el-checkbox label="YS" name="nature" border>预算</el-checkbox>
+          <el-form-item label="性质" prop="vartype">
+            <el-checkbox-group v-model="form.vartype">
+              <el-checkbox label="EAS"  border>EAS</el-checkbox>
+              <el-checkbox label="YS"  border>预算</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <!-- <el-form-item label="是否覆盖数据" prop="vartype" v-model="form.vartype">
@@ -154,15 +154,15 @@ export default {
             }
           }
         ],
-        nature: [{ required: true, message: "必选项" }]
-        // ,vartype: [{ required: true, message: "必选项" }]
+        // nature: [{ required: true, message: "必选项" }]
+        vartype: [{ required: true, message: "必选项" }]
       },
       form: {
         startperiod: nowDate,
         endperiod: nowDate,
         //是否覆盖数据 Y是覆盖  N 不覆盖
         // vartype: "Y",
-        nature: ["EAS"]
+        vartype: ["EAS"]
       }
     };
   },
@@ -190,11 +190,13 @@ export default {
 
     // 抽取数据 按钮
     extraing(formName) {
+    
       let _this = this;
       //获取选中公司
       let comtree = _this.$refs.comtree;
       let coms = comtree.getCheckedKeys();
       if (_.isArray(coms) && coms.length > 0) {
+        debugger
         //验证
         _this.$refs[formName].validate(valid => {
           if (valid) {
@@ -213,8 +215,8 @@ export default {
               })
               .then(() => {
                 let datas = {
-                  // vartype: _this.form.vartype,
-                  varnature: _.join(_this.form.nature, ","),
+                   vartype: _this.form.vartype.join(","),
+                  // varnature: _.join(_this.form.nature, ","),
                   // varcompany: "'" + _.join(coms, "','") + "'",
                   varcompany: _.join(coms, "','"),
                   varyear: _this.form.startperiod.substring(0, 4),
