@@ -537,15 +537,16 @@
                 ],
                     "drillProperties":["riskrange","gsmc"],
                     "onRowClick":function(row, column, e,$this){
-                        // debugger
+                        debugger
                         let id = row.gsbm, text = row.gsmc;
                         if(this.drillProperties[1].indexOf(column.property) != -1){
                             if(row.gsmc != "" && row.gsmc != undefined){
-                                $this.commonHandler(
+                                if(this.config.sql == 9){ //一级公司下钻
+                                    $this.commonHandler(
                                     {
                                         "type":"click",//事件类型
                                         "way":"addTab",//调用的公共方法
-                                        "sourceApi":"/cnbi/json/source/tjsp/yfzkmxb.json",
+                                        "sourceApi":"/cnbi/json/source/tjsp/yszkej.json",
                                         "handler":($vue,params)=>{//自定义的回调
                                             console.info(params);
                                             debugger; 
@@ -553,7 +554,22 @@
                                     },
                                     { row: row, column: column, e: e },
                                     { id: id, text: text }
-                                );
+                                    );
+                                }else{
+                                    $this.commonHandler(
+                                    {
+                                        "type":"click",//事件类型
+                                        "way":"addTab",//调用的公共方法
+                                        "sourceApi":"/cnbi/json/source/tjsp/yszkmxb.json",
+                                        "handler":($vue,params)=>{//自定义的回调
+                                            console.info(params);
+                                            debugger; 
+                                        } 
+                                    },
+                                    { row: row, column: column, e: e },
+                                    { id: id, text: text }
+                                    );
+                                }
                             }    
                         }    
                     },

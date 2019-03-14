@@ -612,7 +612,7 @@ export default {
         })
     },
     setExpressionData() {
-      // debugger
+      debugger
       //营业外收支净额 营业外支出本期金额-营业外收入本期金额     
       this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
       //资产负债率 = 负债合计期末余额/资产合计期末余额 *100
@@ -625,7 +625,7 @@ export default {
         this.exps.v1400100A +
         this.exps.v1435301A_tz +
         this.exps.v1436604A_tz +
-        this.exps.yywsrje;
+        this.exps.yywsrje_tz;
 
       //无息流动负债 = 流动负债-短期借款-一年内到期的长期负债
       this.exps.wxldfzA =
@@ -646,9 +646,9 @@ export default {
         this.exps.v1131605_tz -
         this.exps.v1222711_tz +
         this.exps.znhfy_tz;
-      // 税后净利润 =  税后净营业利润-资本占用×资本成本率
+      // 无息流动负债 =  税后净营业利润-资本占用×资本成本率
       this.exps.shjlr =
-        this.exps.yywsrlr - this.exps.zbzyje * this.vars[1].value;     
+        this.exps.wxldfz_tz - (this.exps.zbzyje * (this.vars[1].value / 100));     
     },
     updatePjsData(arr, code) {
       arr.forEach(element => {
@@ -658,6 +658,7 @@ export default {
     },
     updateTzhData(arr, newV) {
       arr.forEach(element => {
+        debugger
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
     },
