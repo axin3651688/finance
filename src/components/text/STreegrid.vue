@@ -73,36 +73,38 @@ export default {
     this.convertData();
     // this.item.options = this.item.items[0].columns
     // sjz 加的 
-    const me = this
+    // 设置表格高度（自适应）
+      this.setTableScollHeight();
+    // const me = this
     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-    window.onresize = () => {
-        return (() => {
-            window.offsetHeight = document.body.offsetHeight;
-            me.offsetHeight = window.offsetHeight;
-        })()
-    }
+    // window.onresize = () => {
+    //     return (() => {
+    //         window.offsetHeight = document.body.offsetHeight;
+    //         me.offsetHeight = window.offsetHeight;
+    //     })()
+    // }
   },
   watch:{
     // sjz 加的
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-    offsetHeight(val){
-        if(!this.timer){
-            // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-            this.offsetHeight = val
-            this.timer = true
-            let me = this
-            setTimeout(function(){
-                // 打印offsetHeight变化的值me.item.id=="zcfzbej" || me.item.id=="lrbej" || me.item.id=="xjllbej"
-                if(me.item.stype == "tree"){ 
-                  me.heights = document.body.offsetHeight - 40 - 64 - 22 - 10 ;
-                }else{
-                  me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40 ;
-                }
-                console.log(me.offsetHeight)
-                me.timer = false
-            },400)
-        }
-    }
+    // offsetHeight(val){
+    //     if(!this.timer){
+    //         // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
+    //         this.offsetHeight = val
+    //         this.timer = true
+    //         let me = this
+    //         setTimeout(function(){
+    //             // 打印offsetHeight变化的值me.item.id=="zcfzbej" || me.item.id=="lrbej" || me.item.id=="xjllbej"
+    //             if(me.item.stype == "tree"){ 
+    //               me.heights = document.body.offsetHeight - 40 - 64 - 22 - 10 ;
+    //             }else{
+    //               me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40 ;
+    //             }
+    //             console.log(me.offsetHeight)
+    //             me.timer = false
+    //         },400)
+    //     }
+    // }
   },
   __computed: {
     // 格式化数据源
@@ -122,7 +124,16 @@ export default {
     }
   },
   methods: {
-    
+    // / 页面大小改变时触发  主要用来自适应页面的布局的 
+    setTableScollHeight(){
+      debugger
+        debugger
+        this.heights = document.body.offsetHeight - 40 - 64 - 22 - 10;
+        const me = this ;
+        window.onresize = function temp(){
+            me.heights = document.body.offsetHeight - 40 - 64 - 22 - 10;
+        };
+    },
     handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/Export2Excel').then(excel => {

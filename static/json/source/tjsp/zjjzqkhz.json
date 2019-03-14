@@ -28,9 +28,11 @@
             datax.push(item); 
         }
       }); 
-      datax.forEach(item => {
+      if(datax.length>0){
+        datax.forEach(item => {
             datas.push(item);  
-      });   
+        });
+      }   
       return datas;
     // return data ;
   },

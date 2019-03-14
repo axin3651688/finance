@@ -69,9 +69,14 @@ export default {
   },
   methods: {
     findNodes () {
+      debugger
       let me = this;
-      let user = this.$store.state.user.user.user;
-      getCompanyTree(user).then(res => {
+      let suser = this.$store.state.user.user.user.userName;
+      // let item = {
+      //   "suser": suser
+      // }
+      getCompanyTree(suser).then(res => {
+        debugger
         if (res.status == 200 && res.data.code == 200) {
           //封装树对象数据
           let setting = me.setting;

@@ -4,6 +4,10 @@
     "id":"0003",
     "text":"现金流量表",
     "showDims":["year","month","company","conversion"],
+    "monthConfig":{
+        "id":"month",
+        "value":13
+    },      
     "changeYearBefore":function(newyear,option){
         option.closeTabTaget(newyear,option);
     }

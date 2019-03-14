@@ -19,10 +19,12 @@
         datax.push(item)
       }
     });
-    datax.forEach(item => {
+    if(datax.length>0){
+      datax.forEach(item => {
         debugger
         datas.push(item);
-    });
+      });
+    }
     return datas;
     // return data ;
 },
