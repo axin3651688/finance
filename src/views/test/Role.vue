@@ -34,7 +34,7 @@
       <el-table-column prop="srolename" label="角色名称" width="240" header-align="center" align ="center"></el-table-column>
       <el-table-column prop="sroledesc" label="角色描述" width="300" header-align="center" align ="center"></el-table-column>
       <el-table-column label="操作" header-align="center" min-width="260px">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.roleid != 2">
           <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" >修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
           <el-button size="mini" type="primary" @click="handleDark(scope.$index, scope.row)">模块授权</el-button>
