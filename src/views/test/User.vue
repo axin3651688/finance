@@ -1360,16 +1360,20 @@ export default {
         }
         
       }
-
+      debugger;
+      let pramer = {
+            suser:userId,
+            currentSuser:currentUserId,
+            userCompanys: _companys
+          };
+        pramer = JSON.stringify(pramer);
 
      // let _companys = companys.toString();
       request({
         url: "/zjb/sys/usercompany/grantcompanys",
         method: "post",
-        data:{
-          userId:userId,
-          currentUserId:currentUserId,
-          data:_companys}
+        headers	:{'Content-Type': 'application/json'},
+        data: pramer
       }).then(result => {
         if (result.status == 200) {
           if (result.data.code === 0) {
