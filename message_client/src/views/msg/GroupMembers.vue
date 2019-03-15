@@ -295,8 +295,8 @@ export default {
           .img-box {
             position: relative;
             overflow: hidden;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             margin-right: 20px;
             border-radius: 50%;
             background: $colorTheme;
