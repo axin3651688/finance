@@ -22,7 +22,7 @@
           </el-dropdown>
           <div class="left">
             <el-button @click="saveData" class="button">保存</el-button>
-            <el-button @click="rowData" class="button" v-show="rowdata">新增</el-button>
+            <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
         </div>
         <div class="right">
@@ -134,6 +134,7 @@ export default {
       selectedOptions: [],
       financingOptions: [],
       dialogVisible: false,
+      showAddButton: false,//新增按钮的显示与否
       values: null, //填报的数据
       datas: null, //存储查询要传递的数据
       columns: [], //存储请求返回回来的列
@@ -1381,7 +1382,25 @@ export default {
       this.datas = excelUploadParaDto;
       //当前的参数保存在大对象里
       this.$store.curParams = this.datas;
+      debugger;
+      //按钮新增的显示与否
+      this.showOrHideOfButtonForAdd(index,item);
       this.reportData(this.datas);
+    },
+    /**
+     * 控制按钮显示与否
+     */
+    showOrHideOfButtonForAdd(index,item) {
+      let me = this;
+      let arr = ['0','1','2','3','4','5','6'],flag = true;
+      for(let i = 0;i < arr.length;i ++){
+        let arrItem = arr[i];
+        if(arrItem == item.templateId){
+          flag = false;
+          break;
+        }
+      }
+      this.showAddButton = flag;
     },
     //请求获取填报页面
     reportData(datas) {
@@ -1562,11 +1581,11 @@ export default {
           const blob = new Blob([content], {
             type: "application/vnd.ms-excel"
           });
-          // // console.log(blob)
-          // let str = res.headers["content-disposition"];
-          // let index = str.lastIndexOf(".");
-          // let h = str.substring(index + 1, str.length);
-          let h = "xls";
+          // console.log(blob)
+          let str = res.headers["content-disposition"];
+          let index = str.lastIndexOf(".");
+          let h = str.substring(index + 1, str.length);
+          // let h = "xls";
           const fileName = this.title + "." + h;
           if ("download" in document.createElement("a")) {
             // 非IE下载

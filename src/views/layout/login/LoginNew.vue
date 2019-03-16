@@ -178,6 +178,13 @@ export default {
               debugger;
               // 获取token
               // console.log(res);
+              if(res.data && res.data.code == 0){
+                this.$notify.error({
+                  title: "错误",
+                  message: res.data.msg
+                });
+                return;
+              }
               const data = res.data.data;
               // debugger;
               const token = data.authorization;

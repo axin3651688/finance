@@ -2,11 +2,11 @@ import request from 'utils/http'
 import { id } from 'postcss-selector-parser';
 
 export function findCube(params) {
-  return request({
-    url: '/api/cube/find/',
-    method: 'post',
-    params: params
-  })
+    return request({
+        url: '/api/cube/find/',
+        method: 'post',
+        params: params
+    })
 }
 
 // 填报页面
@@ -20,11 +20,11 @@ export function findCube(params) {
 
 
 export function report(item) {
-  return request({
-    url: '/get/cube/find_sql/',
-    method: 'get',
-    params:item
-  })
+    return request({
+        url: '/get/cube/find_sql/',
+        method: 'get',
+        params: item
+    })
 }
 /**
  * name: sjz
@@ -33,14 +33,14 @@ export function report(item) {
  * @param {*} data 
  */
 export function dataRequest(data) {
-  return request({
-    // url: '/api/api/find_sys_log?cubeId=7',
-    // method: 'post',
-    // data:data
-    url: '/zjb/sys/log/queryall_page',
-    method: 'get',
-    params: data
-  })
+    return request({
+        // url: '/api/api/find_sys_log?cubeId=7',
+        // method: 'post',
+        // data:data
+        url: '/zjb/sys/log/queryall_page',
+        method: 'get',
+        params: data
+    })
 }
 /**
  * name: sjz
@@ -48,14 +48,14 @@ export function dataRequest(data) {
  * time: 2019/1/18 16:54:00
  */
 export function onlineRequest(data) {
-  return request({
-    // url: '/zjb/zjb/online_user_list',
-    // method: 'post',
-    // data: data
-    url: '/zjb/online/onlineuser',
-    method: 'get',
-    params: data
-  })
+    return request({
+        // url: '/zjb/zjb/online_user_list',
+        // method: 'post',
+        // data: data
+        url: '/zjb/online/onlineuser',
+        method: 'get',
+        params: data
+    })
 }
 /**
  * name: sjz
@@ -64,12 +64,11 @@ export function onlineRequest(data) {
  * time : 2019/2/22 15:55:00
  */
 export function eva_city_Request(data) {
-  return request({
-    url: '/api/api/find_data?cubeId='+data.cubeId + "&sql="+data.sql,
-    method: 'post'
-    // data: data
-  })
+    return request({
+        // url: '/api/api/find_data?cubeId='+data.cubeId + "&sql="+data.sql,
+        // method: 'post'
+        // data: data
+        url: '/zjb/zjb/find_data?cubeId=' + data.cubeId + "&sql=" + data.sql,
+        method: 'get'
+    })
 }
-
-
-

@@ -2,20 +2,20 @@
     "id": "0005",
     "text": "应收账款分类汇总",
     "showDims": ["year", "month", "company", "conversion"],
-    "changeYearBefore": function (newyear, option) {
+    "changeYearBefore": function(newyear, option) {
         option.closeTabTaget(newyear, option);
     }, //切换年的回调
-    "changeMonthBefore": function (newmonth, option) {
+    "changeMonthBefore": function(newmonth, option) {
         option.closeTabTaget(newmonth, option);
     }, //切换月份的回调
-    "changeCompanyBefore": function (newcompany, option) {
+    "changeCompanyBefore": function(newcompany, option) {
         option.closeTabTaget(newcompany, option);
     }, //切换公司之前的回调
-    "changeConversionBefore":function(newconversion, option){
+    "changeConversionBefore": function(newconversion, option) {
         // debugger
-        option.closeTabTaget(newconversion,option);
+        option.closeTabTaget(newconversion, option);
     },
-    "__queryDataAfter":function(data,$vue){//数据的后置处理
+    "__queryDataAfter": function(data, $vue) { //数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
         // me.items[0].$vue = $vue;
@@ -43,7 +43,7 @@
             "text": "已形成实质性损失金额"
         },
         {
-            "id": "", 
+            "id": "",
             "hidden": true
         },
         {
@@ -55,12 +55,12 @@
             "id": "xm2",
             "type": "string",
             "text": "",
-            "width":"340px"
+            "width": "340px"
         }, {
             "id": "hs",
             "type": "number",
             "text": "户数",
-            "align":"center"
+            "align": "center"
         }, {
             "id": "ye",
             "type": "decimal",
@@ -112,31 +112,30 @@
                 "color": "black",
                 "background-color": "#189271"
             },
-            "handler": function (vue, btn) {
+            "handler": function(vue, btn) {
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
                 vue.item.updateView("company");
             }
-        }
-        , {
+        }, {
             "id": "2",
             "text": "导出",
             "cellStyle": {
                 "color": "black",
                 "background-color": "#189271"
             },
-            "handler": function (vue, btn) {
+            "handler": function(vue, btn) {
                 vue.handleDownload(vue);
             }
-        }
-    ],
+        }],
         "drillProperties": ["hs"], //有钻取，给蓝色
 
-        "cellStyle": function (row) {
+        "cellStyle": function(row) {
             let datas = this.datas;
             let record = [];
             record = datas[row.rowIndex];
             let css = "padding: 4px 0;";
+            let center = " text-align: center;";
             let pro = row.column.property; //列id
             if (!pro) {
                 return css;
@@ -153,13 +152,18 @@
                     return css + textIndent;
                 }
             } else {
-                return css + textIndent;
+                if (record.xm1 && record.xm1 == "合计" && 　row.columnIndex == 0) {
+                    return css + center + textIndent;
+                } else {
+                    return css + textIndent;
+                }
+
             }
         },
-        "onCellClick": function (row, column, cell, event, option) {
+        "onCellClick": function(row, column, cell, event, option) {
             let datas = this.datas;
-            let data = datas.filter(function(item){
-                    return item.id == row.id;
+            let data = datas.filter(function(item) {
+                return item.id == row.id;
             });
             row = data[0];
             let cv = column.property + ""; //下钻行的标识
@@ -188,7 +192,7 @@
                 });
             }
         },
-        "rowSpanAndColSpanHandler": function ({
+        "rowSpanAndColSpanHandler": function({
             row,
             column,
             rowIndex,

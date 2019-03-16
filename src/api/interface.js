@@ -3,6 +3,7 @@ import store from '@/store'
 
 //全局修改  cubeId , 这里写了其他地方都没得用！ zdk 2019年3月12日 09:26:42
 let cubeId = 4;
+// let cubeId = 8;
 /**
  * 登录接口
  */

@@ -29,10 +29,10 @@
              -->
             <el-col :xs="12" :md="24">
                 <div class="input-refresh" ref="elememt">
-                    <el-form :inline="true" :model="searchForm" class="user-form-inline">
+                    <!-- <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item label="模糊查询">
                             <el-input v-model="searchForm.schfilter" placeholder="模糊查询" clearable ></el-input>
-                        </el-form-item>
+                        </el-form-item> -->
 
                         <!-- <el-form-item label="真实姓名">
                             <el-input v-model="searchForm.trueName" placeholder="真实姓名" clearable></el-input>
@@ -45,13 +45,13 @@
                             </el-select>
                         </el-form-item> -->
                     
-                        <el-form-item>
+                        <!-- <el-form-item> -->
                             <!-- <el-button type="text" @click="handleDelete">清除</el-button> -->
-                            <el-button type="primary"  @click="handleSearch" icon="el-icon-search" ></el-button>
-                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+                            <!-- <el-button type="primary"  @click="handleSearch" icon="el-icon-search" ></el-button>
+                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button> -->
                             <!-- <el-button type="primary" style="height:40px;padding-top:0"><i class="el-icon-search">搜索</i></el-button> -->
-                        </el-form-item>
-                    </el-form>
+                        <!-- </el-form-item> -->
+                    <!-- </el-form> -->
                 </div>
             </el-col>
         </el-row>     
@@ -161,7 +161,7 @@ export default {
         // }else{
         //     me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
         // }
-        me.heights = document.body.offsetHeight - 70 - 40 - 64 - 40 -60;
+        me.heights = document.body.offsetHeight - 70 - 40 - 64 - 40 ;
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
@@ -178,7 +178,7 @@ export default {
     methods:{
         // 页面自适应
         setTableScollHeight(){
-            this.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 -60;
+            this.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;
             const me = this ;
             window.onresize = function temp(){
                 debugger
@@ -190,7 +190,7 @@ export default {
                 // }else{
                 //     me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
                 // } 
-                me.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 -60;            
+                me.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;            
             };
         },
         /**
