@@ -1581,11 +1581,11 @@ export default {
           const blob = new Blob([content], {
             type: "application/vnd.ms-excel"
           });
-          // // console.log(blob)
-          // let str = res.headers["content-disposition"];
-          // let index = str.lastIndexOf(".");
-          // let h = str.substring(index + 1, str.length);
-          let h = "xls";
+          // console.log(blob)
+          let str = res.headers["content-disposition"];
+          let index = str.lastIndexOf(".");
+          let h = str.substring(index + 1, str.length);
+          // let h = "xls";
           const fileName = this.title + "." + h;
           if ("download" in document.createElement("a")) {
             // 非IE下载

@@ -949,7 +949,7 @@ export default {
                 _this.findAll(_this.pageNum,_this.pageSize);
                 this.$message({
                   type: "success",
-                  message: "删除成功!"
+                  message: result.data.msg
                 });
               }
             }

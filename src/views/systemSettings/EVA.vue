@@ -404,28 +404,28 @@ export default {
         {
           code: "sl",
           value: 0,
-          display_num: 0, //用来显示的值
+          display_num: "", //用来显示的值
           text: "税率(%)",
           wclass: "width:180px;"
         },
         {
           code: "zbcblv",
           value: 0,
-          display_num: 0, //用来显示的值
+          display_num: "", //用来显示的值
           text: "资本成本率(%)",
           wclass: "width:230px"
         },
         {
           code: "zbhfyqc",
           value: 0,
-          display_num: 0, //用来显示的值 A
+          display_num: "", //用来显示的值 A
           text: "资本化费用期初余额",
           wclass: "width:300px"
         },
         {
           code: "zbhfyqm",
           value: 0,
-          display_num: 0, //用来显示的值 B
+          display_num: "", //用来显示的值 B
           text: "资本化费用期末余额",
           wclass: "width:300px"
         }
@@ -634,6 +634,13 @@ export default {
         this.exps.v1210100B - this.exps.v1212001B - this.exps.v1217001B;
       this.exps.wxldfz_tz =
         this.exps.v1210100_tz - this.exps.v1212001_tz - this.exps.v1217001_tz;
+
+      if(this.vars[2].value == 0){ 
+          this.vars[2].display_num = '' ;
+      }
+      if(this.vars[3].value == 0){ 
+          this.vars[3].display_num = '' ;
+      }
 
       //资本化费用调整数
       this.exps.znhfy_tz = (this.vars[2].value + this.vars[3].value) / 2
