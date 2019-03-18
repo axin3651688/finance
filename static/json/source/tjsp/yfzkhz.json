@@ -112,7 +112,8 @@
             "xtype": "button",
             "cellStyle": {
                 "color": "black",
-                "background-color": "#189271"
+                // "background-color": "#189271"
+                "background-color":"#fff"
             },
             "handler": function(vue, btn) {
                 let $vue = vue.item.$vue;
@@ -124,7 +125,8 @@
             "text": "导出",
             "cellStyle": {
                 "color": "black",
-                "background-color": "#189271"
+                // "background-color": "#189271"
+                "background-color":"#fff"
             },
             "handler": function(vue, btn) {
                 vue.handleDownload(vue);

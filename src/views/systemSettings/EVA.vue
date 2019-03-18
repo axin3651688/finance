@@ -275,7 +275,7 @@
               </tr>
               <tr>
                 <td class="bd">EVA</td>
-                <td colspan="3" class="bd">税后净营业利润-资本占用×资本成本率</td>
+                <td colspan="3" class="bd">无息流动负债-资本占用×资本成本率</td>
                 <td class="br">
                   <!-- <input v-model="exps.shjlr" readonly class="exps"> -->
                   <span class="expsv">{{exps.shjlr|NumFormat}}</span>
