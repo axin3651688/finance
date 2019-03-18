@@ -1,0 +1,253 @@
+{
+    "id":"114447702",
+    "layout":{
+        "xtype":"column"
+    },
+    "showDims": ["year","month","company","conversion"],
+    "children":[
+        {
+        "id":"",
+        "text":"",
+        "stype": "table",
+        "xtype":"bi-table",
+        "weight": 24,
+        "show":true,
+        "queryDataBefore":function(params,$items,$this){
+            debugger
+            // $items.sql = $items.sql2;
+            let len = $this.items.length;
+            let id = $this.items[len-1].id;
+            params.company = id ;
+            // $items.sql = $items.sql.replace(/:company/g, "'"+id+"'");
+            return params;
+        },
+        "queryDataAfter":function(data,$this){
+            debugger
+            data.forEach(item => {
+                // debugger
+                if(item.riskrange == "SAFE"){
+                    item.riskrange = "安全" ;
+                }else if(item.riskrange == "DANGER"){
+                    item.riskrange = "警告" ;
+                }else if(item.riskrange == "PROMPT" ){
+                    item.riskrange = "预警" ;
+                }else{
+                    item.riskrange = "错误！不在范围之内！" ;
+                }
+            });
+            return data ;
+        },
+        "config":{
+            "sql":6,
+            "_sql2":"",
+            "_cube":{
+                "subject":"",
+                "cubeId":4
+            },
+            "generateVar":{
+                "periodCount":2,
+                "compareType":"-1&0",
+                "reverse":true
+            },         
+            "mainDim":"itemperiod",
+            "needDims":["year","month","company","conversion"],
+            "random":{"min":100,"max":100000},
+            "tableHeads":true,
+            "type":1,
+            "columns": [
+                {
+                    "text": "已形成实质性损失金额",
+                    "type":"decimal",
+                    "id": "www4"
+                },
+                {
+                    "text": "公司编码",
+                    "type":"string",
+                    "id": "scode"
+                },
+                {
+                    "text": "公司名称",
+                    "type":"string",
+                    "width":"275",
+                    "id": "gsmc"
+                },
+                {
+                    "text": "口径",
+                    "type":"string",
+                    "id": "kj"
+                },
+                {
+                    "text": "余额",
+                    "type":"decimal",
+                    "id": "ye"
+                },
+                {
+                    "text": "与年初相比增减额",
+                    "type":"decimal",
+                    "id": "zje"
+                },
+                {
+                    "text": "与年初相比增减率（%）",
+                    "type":"decimal",
+                    "conversion":"%",
+                    "id": "zjl"
+                },
+                {
+                    "text": "预警等级",
+                    "type":"string",
+                    "id": "riskrange"
+                },
+                {
+                    "id":"",
+                    "type":"string",
+                    "text":"账期",
+                    "children":[
+                        {
+                            "text": "1年以内",
+                            "type":"decimal",
+                            "id": "oneYear"
+                        },
+                        {
+                            "text": "1-2年",
+                            "type":"decimal",
+                            "id": "twoYear"
+                        },
+                        {
+                            "text": "2-3年",
+                            "type":"decimal",
+                            "id": "threeYear"
+                        },
+                        {
+                            "text": "3年以上",
+                            "type":"decimal",
+                            "id": "allYear"
+                        }
+                    ]
+                },
+                {
+                    "text": "正常余额",
+                    "type":"decimal",
+                    "id": "zcje"
+                },
+                {
+                    "id":"",
+                    "type":"string",
+                    "text":"非正常金额",
+                    "children":[
+                        {
+                            "text": "向系统外出借资金",
+                            "type":"decimal",
+                            "id": "fff1"
+                        },
+                        {
+                            "text": "成本费用挂账",
+                            "type":"decimal",
+                            "id": "fff2"
+                        },
+                        {
+                            "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+                            "type":"decimal",
+                            "id": "fff3"
+                        },
+                        {
+                            "text": "为其他企业代偿金融机构的贷款",
+                            "type":"decimal",
+                            "id": "fff4"
+                        },
+                        {
+                            "text": "长期挂账、未及时清理",
+                            "type":"decimal",
+                            "id": "fff5"
+                        },
+                        {
+                            "text": "核算不规范",
+                            "type":"decimal",
+                            "id": "fff6"
+                        },
+                        {
+                            "text": "其他",
+                            "type":"decimal",
+                            "id": "fff7"
+                        }
+                    ]
+                },
+                {
+                    "text": "可收回金额",
+                    "type":"decimal",
+                    "id": "www1"
+                },
+                {
+                    "text": "其中：当年可收回金额",
+                    "type":"decimal",
+                    "id": "www2"
+                },
+                {
+                    "text": "逾期账款",
+                    "type":"decimal",
+                    "id": "www3"
+                }
+            ],
+            "rows":[ ] 
+        },
+        "drillProperties":["riskrange","gsmc"],
+        "onCellClick":function(row, column, cell,event,$this){
+            debugger
+            let id = row.gsbm, text = row.gsmc;
+            if(this.drillProperties[1].indexOf(column.property) != -1){
+                if(row.gsmc != "" && row.gsmc != undefined){
+                    
+                    $this.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/qtyskmxb.json",
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                            debugger; 
+                        } 
+                    },
+                    { row: row, column: column, cell: cell,event: event },
+                    { id: id, text: text }
+                    );
+                }                    
+            }    
+        },
+        "cellStyle":function(row,obj){
+            let css = "padding: 4px 0;";
+            let pro = row.column.property;
+            if (!pro) {
+                return css;
+            }
+            
+            let textIndent ="";
+            
+            let record = row.row;  
+            let drillProperties = this.drillProperties;
+            if(drillProperties.indexOf(pro) != -1){
+                if(record.riskrange && record.riskrange=="安全" && pro!="gsmc"){
+                    
+                    let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;text-align: center;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else if(record.riskrange && record.riskrange=="警告" && pro!="gsmc"){
+                    let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else if(record.riskrange && record.riskrange=="预警" && pro!="gsmc"){
+                    let drill = "text-decoration: none;color: #FF9900;font-weight: bold;cursor: pointer;text-align: center;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else if(pro == "gsmc" && record.gsmc!="总计"){
+                    let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                }else{
+                    return css+textIndent;
+                }
+            }else{
+                return css+textIndent;
+            } 
+        }
+        }
+    ]
+}

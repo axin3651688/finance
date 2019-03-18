@@ -73,7 +73,7 @@
             <el-table-column prop="soperatetime" label="操作时间" width="200" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="sbroswer" label="浏览器" width="100" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="shostname" label="主机IP" width="180" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="scontent" label="内容" header-align="center" align ="left" sortable></el-table-column>
+            <el-table-column prop="scontent" label="内容" header-align="center" width="600" show-overflow-tooltip align ="left" sortable></el-table-column>
         </el-table>
 
         <!-- 分页 -->
