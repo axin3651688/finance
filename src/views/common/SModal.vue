@@ -55,6 +55,7 @@ export default {
             this.plateSelect.showDialog = false;
         },
         companyHandle () {
+            // debugger;
             let me = this;
             let $vueChart = this.vueChart.content;
             me = $vueChart;
@@ -65,7 +66,17 @@ export default {
                 modalParams.listener.sourceApi = api;
             }
             if (modalParams.listener.way && me[modalParams.listener.way]) {
-                me[modalParams.listener.way](modalParams.params, modalParams.listener, modalParams.bb);
+                // if (me.item.customTabName && me.item.customTabName.way == "joint" && text) {
+                //     text = this.parseNameOfTab(text, me.item.customTabName);
+                // }
+                let text;
+                // if(me.item.customTabName && !modalParams.bb){
+                //     text = me.item.customTabName? this.parseNameOfTab(me.item.text,me.item.customTabName):modalParams.bb;
+                // }
+                if(me.item.customTabName){
+                    text = me.item.customTabName? me.item.customTabName:modalParams.bb;
+                }
+                me[modalParams.listener.way](modalParams.params, modalParams.listener, text);
             }
             if (modalParams.listener.handler) {
                 modalParams.listener.handler(me, modalParams.params);
@@ -73,6 +84,23 @@ export default {
                 console.log("没有设置回调函数，你真的不想干点什么了吗：", listener);
             }
             this.plateSelect.showDialog = false;
+        },
+        /**
+         * tab页的自定义名字。
+         */
+        parseNameOfTab(text, customs) {
+            debugger;
+            let me = this;
+            if (customs.position == "before") {
+                text = customs.text + text;
+
+            } else if (customs.position == "after") {
+                text = text + customs.text;
+            } else {
+                console.log("名称有可能已重复了，程序有可能已经报错！");
+                text = text;
+            }
+            return text;
         }
     }
 }

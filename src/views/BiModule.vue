@@ -56,7 +56,7 @@
         >
           <el-col
             v-for="(item1,index1) in item.children"
-            v-bind:key="item1.id"
+            v-bind:key="item1.id + index1"
             v-bind:index="index1"
             :lg="item1.weight"
             :sm="item1.weight*2"

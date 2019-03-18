@@ -122,6 +122,11 @@
                         "id": 1,
                         "text": "元"
                     },
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "listeners": [{
                         "type": "click",
                         "way": "addTab",
@@ -133,6 +138,12 @@
                             if (itemscode) {
                                 $vue.$store.itemscode = itemscode;
                             }
+                            //处理bb钻取的民称。
+                            // bb = {
+                            //         "way": "joint",
+                            //         "position": "before",
+                            //         "text": "公司"
+                            //     }
                             // $vue.$confirm('选择板块/公司进行下钻？', '提示', {
 
                             // 	confirmButtonText: '公司',
@@ -218,6 +229,11 @@
                     "watchConfig": {
                         "itemNames": ["bnlj", "bnmb", "wcl"]
                     },
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "show": true,
                     "listeners": [{
                         "type": "click",
@@ -255,6 +271,11 @@
                     "id": "14001112",
                     "text": "营业收入（万元）",
                     "watchState": true,
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "extendConfig": "p", //继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
                     "weight": 6,
                     "listeners": [{
@@ -330,6 +351,11 @@
                         }
                     }],
                     "GItemScode": "1403100",
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "options": {
                         "type": "column",
                         "getData": {
