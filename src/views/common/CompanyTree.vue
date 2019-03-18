@@ -116,7 +116,7 @@ export default {
     //过滤节点
     filterNode(value, data) {
       if (!value) return true;
-      return data.sname.indexOf(value) !== -1;
+      return data.sname.indexOf(value) !== -1 || data.scode.indexOf(value) !== -1;
     },
     handleNodeClick(data) {
       // 把子组件的点击选择传回父组件

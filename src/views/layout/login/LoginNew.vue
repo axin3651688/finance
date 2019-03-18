@@ -54,7 +54,7 @@
           :model="loginUser" 
           ref="loginForm" 
           class="login-form formContent" 
-          hide-required-asterisk="true">
+          :hide-required-asterisk="true">
             <el-form-item prop="usename">
               <label slot="label" class="form-label">用户名</label>
               <el-input  v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
@@ -178,7 +178,7 @@ export default {
               debugger;
               // 获取token
               // console.log(res);
-              if(res.data && res.data.code == 0){
+              if(res.data && res.data.code != 200){
                 this.$notify.error({
                   title: "错误",
                   message: res.data.msg

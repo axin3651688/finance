@@ -64,7 +64,7 @@
       ></el-date-picker>
       <!-- 单位 -->
       <el-dropdown trigger="click" v-if="showDims.conversion">
-        <el-button type="text" class="underline">
+        <el-button type="text" class="monthUnderline">
           {{conversion.text}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
