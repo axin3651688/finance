@@ -215,6 +215,7 @@ export default {
   },
   watch: {
     templateId(val) {
+      debugger;
       this.tableData = [];
     },
     year(val) {
@@ -515,7 +516,7 @@ export default {
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
-      let flag = true,html = "<p>此公司无填报权限！</p>";
+      let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
       //第一次登陆的时候有事treeInfo可能会是id
       if(companyId == treeInfo.scode || companyId == treeInfo.id){
         if(treeInfo.nisleaf == 0){
@@ -652,7 +653,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      
+      debugger;
       let obj = {};
       let index;
       let key;
@@ -1184,7 +1185,7 @@ export default {
     },
     //点击保存数据
     saveData() {
-      
+      debugger;
       let that = this;
       this.tableData.forEach(item => {
         //isinside
@@ -1613,7 +1614,7 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      
+      debugger;
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
@@ -1644,7 +1645,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          
+          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1663,6 +1664,14 @@ export default {
             }
           });
           let a = me.tableData;
+          //融资情况表加一个删除的判断。针对保存之后会刷新来加的。
+          let rzFlag = false;
+          if(me.templateId == "7" && nid == null){
+            rzFlag = me.deleteHandle(nid,row);
+            if(rzFlag){
+              return;
+            }
+          }
           if (nid != 0) {
             let data = {
               // company:me.company,
@@ -1704,6 +1713,19 @@ export default {
           }
         });
       }
+    },
+    /**
+     * 融资情况表填报的删除处理。
+     */
+    deleteHandle (nid,row) {
+      let me = this,arrData = this.settings.data;
+      let arrItem,flag = true;
+      //暂时没有任何提示直接删除没有保存的数据。
+      arrItem = arrData.filter((item,index) => {
+        return index == row;
+      });
+      let $hot = this.$refs.hotTableComponent.hotInstance.alter("remove_row", row);
+      return flag;
     },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
