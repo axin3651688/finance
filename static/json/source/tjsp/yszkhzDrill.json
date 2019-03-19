@@ -66,6 +66,7 @@
           {
             "id": "szxssje",
             "type": "decimal",
+            "width": "180px",
             "text": "已形成实质性损失金额"
           },
           {
@@ -78,6 +79,7 @@
             "id": "sk",
             "type": "string",
             "text": "客商",
+            "fixed":true,
             "width":"300px"
           },
           {
@@ -144,6 +146,7 @@
           {
             "id": "dnkhsje",
             "type": "decimal",
+            "width": "180px",
             "text": "其中:当年可收回金额*"
           },
           {
