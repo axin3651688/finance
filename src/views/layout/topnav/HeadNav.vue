@@ -84,7 +84,7 @@
         <!-- 下啦箭头 -->
         <el-dropdown trigger="click" @command="setDialogInfo">
           <span class="dropdown">
-            <img :src="avarUrl" alt class="avatar">
+            <img :src="user.user.avatar" alt class="avatar">
             <span class="name">{{user.user.trueName}}</span>
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
@@ -120,16 +120,19 @@
       :modal-append-to-body="false"
     >
       <div class="img-box"></div>
-      <el-row class="row-bg">
+      <el-row class="row-bg" style="text-align:center">
         <div class="user">
+          <!-- :http-request="uploadAvar" -->
           <el-upload
             class="avatar-uploader"
-            :action="avarUrl"
+            action="avar/upload/avar"
+            :data="{suser:'szc'}"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="true" :src="avarUrl" class="avatar">
+            <img v-if="true" :src="user.user.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <div v-if="true" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div>
           </el-upload>
           <!-- <img :src="user.user.avatar" class="avatar"> -->
         </div>
@@ -148,7 +151,7 @@
           </div>
         </div>
       </el-row>
-      <el-button @click="isShow = false" class="btn-primary">关闭</el-button>
+      <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
   </header>
 </template>
@@ -163,7 +166,7 @@ export default {
   name: "Headnav",
   data() {
     return {
-      avarurl:"",
+      // avarUrl:"",
       companyId: "",
       companyName_cache: "",
       treeInfo: {},
@@ -192,8 +195,8 @@ export default {
   },
   created() {
     //头像图片显示。
-    let userCng = this.$store.getters.user.user;
-    this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
+    // let userCng = this.$store.getters.user.user;
+    // this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
     this.value = this.year + this.month + this.date;
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
@@ -250,17 +253,26 @@ export default {
   methods: {
    
     handleAvatarSuccess (e) {
-      // debugger;
-      // this.avarurl = "avar/upload/avar/szc";
+      if(e && e.data.code == 200){
+        //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
+        let database = JSON.parse(localStorage.database);
+        database.user.avatar = e.data.data;
+        this.$store.dispatch("setUser", database);
+        // let userCurrent = this.$store.state.user.user.user;
+        // userCurrent.avatar = e.data.data;
+        // this.$store.dispatch("setUser", userCurrent);
+        // this.$store.state.user.user.user.avatar = e.data.data;
+      }else{
+        this.$message.error('上传头像出错！');
+      }
     },
     beforeAvatarUpload(file){
       let me = this;
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 1;
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传头像图片大小不能超过1MB!');
       }
       return isLt2M;
-      // debugger;
 
     },
     //隐藏与显示的回调
@@ -272,7 +284,6 @@ export default {
       }
     },
     changeBecauseOfNode(){
-      debugger;
       let me = this;
       let bean = getClientParams();
       if (bean.monthCount && bean.monthCount > 0) {

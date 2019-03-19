@@ -17,7 +17,7 @@
       <!-- v-if="user.company.id === 121" -->
       <div class="username" v-if="true">
           <!-- <img :src="user.user.avatar" alt/> -->
-          <img :src="avarUrl" alt/>
+          <img :src="user.user.avatar" alt/>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>

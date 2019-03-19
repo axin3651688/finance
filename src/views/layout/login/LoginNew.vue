@@ -194,7 +194,7 @@ export default {
                 // 用户名记住,方便下次登录
                 localStorage.setItem("usename", this.loginUser.usename);
                 //此处添加一个头像图片的地址。
-                data.user.avarUrl = "avar/upload/avar/" + data.user.userName;
+                // data.user.avarUrl = "avar/upload/avar/" + data.user.userName;
                 var obj = JSON.stringify(data); //转化为JSON字符串
                 localStorage.setItem("database", obj); //返回{"a":1,"b":2}
                 //    token存储到vuex中

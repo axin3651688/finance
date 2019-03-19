@@ -5,7 +5,9 @@ const types = {
 const user = {
     state: {
         isAutnenticated: false, // 是否认证
-        user: {}, // 存储用户信息
+        user: {
+            avatar: ''
+        }, // 存储用户信息
     },
 
     mutations: {
@@ -15,6 +17,9 @@ const user = {
             else
                 state.isAutnenticated = false
         },
+        // setAvatar(state, avatar){
+
+        // },
         [types.SET_USER](state, user) {
             if (user)
                 state.user = user
