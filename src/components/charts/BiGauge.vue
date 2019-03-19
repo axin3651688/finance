@@ -169,6 +169,10 @@ export default {
         this.receive.series[0].splitNumber = 8;
       }
       this.receive.series[0].data[0].value = item.options.datas; //.toLocaleString();
+      //最小刻度是负数的时候,设置开始的刻度是最小值。
+      if(item.options.datas < 0){
+        this.setMinScaleOfGange(item.options.datas);
+      }
       let GItemScoded = item.GItemScode;
       let tempData = {};
       if (GItemScoded) {
@@ -192,6 +196,13 @@ export default {
           Math.decimalToLocalString((0)) + "万元" +
           "<br/> 本年目标:" +
           Math.decimalToLocalString((0)) + "万元";
+      }
+    },
+    setMinScaleOfGange(value){
+      let me = this;
+      let series = this.receive.series[0],min = series.min;
+      if(value < 0){
+        series.min = parseInt(value)-1;
       }
     }
   }

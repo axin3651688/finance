@@ -169,7 +169,6 @@ export default {
     //     this.module_api = newUrl;
     //   }
     // }
-    
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);

@@ -16,7 +16,8 @@
       >
       <!-- v-if="user.company.id === 121" -->
       <div class="username" v-if="true">
-          <img :src="user.user.avatar" alt/>
+          <!-- <img :src="user.user.avatar" alt/> -->
+          <img :src="avarUrl" alt/>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
@@ -47,6 +48,9 @@ export default {
   name: "Leftmenu",
   created() {
     // let num = 247;
+    //头像图片的地址。
+    let userCng = this.$store.getters.user.user;
+    this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
     let num = this.$store.getters.user.user.roleId;
     findSideBar(num).then(response => {
       let data = response.data.data;
@@ -64,6 +68,8 @@ export default {
 
   data() {
     return {
+      //头像的地址
+      avarUrl:"",
       openeds: [],
       active: "",
       // userId: this.$store.getters.user.user.id,
