@@ -98,13 +98,15 @@
 					"id": "gsbm",
 					"type": "string",
 					"width":"120",
+					"fixed":true,
 					"text": "编码"
 					// "isTree":true
 				},
 				{
 					"id": "gsmc",
 					"type": "string",
-					"width":"300px",
+					"width":"330px",
+					"fixed":true,
 					"text": "公司名称"
 				},
 				{
@@ -148,7 +150,7 @@
 						},{
 							"id":"tbzjl",
 							"text":"同比增减率（%）",
-							"width": "110",
+							"width": "150px",
 							"type":"decimal",
 							"conversion":"%"
 						}
