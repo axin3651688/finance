@@ -47,6 +47,7 @@
                 "id": "m13",
                 "type": "decimal",
                 "width":"150px",
+                "conversion":"%",
                 "text": "完成目标进度%"
             },{
                 "id": "",
@@ -107,6 +108,7 @@
                 "id": "m3",
                 "type": "decimal",
                 "width":"150px",
+                "conversion":"%",
                 "text": "完成目标进度%"
             },{
                 "id": "",
