@@ -83,11 +83,13 @@
         "id": "gsbm",
         "type": "string",
         "width":"120px",
+        "fixed":true,
         "text": "公司编码"
     },{
         "id": "gsmc",
         "type": "string",
         "width":"320px",
+        "fixed":true,
         "text": "公司名称"
     },{
         "id": "",
@@ -122,7 +124,7 @@
         },{
             "id": "wcl01",
             "type": "decimal",
-            "width":"120px",
+            "width":"130px",
             "conversion":"%",
             "text": "累计完成进度(%)"
         }]
@@ -159,7 +161,7 @@
         },{
             "id": "wcl02",
             "type": "decimal",
-            "width":"120px",
+            "width":"130px",
             "conversion":"%",
             "text": "累计完成进度(%)"
         }]

@@ -40,12 +40,14 @@
       {
         "id": "jrjg",
         "type": "string",
+        "fixed":true,
         "text": "是否金融机构*"
       },
 {
         "id": "jrjgmc",
         "type": "string",
         "text": "机构名称",
+        "fixed":true,
         "width":"300px"
       },	  {
         "id": "rzlx",

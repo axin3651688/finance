@@ -54,6 +54,7 @@
       {
         "id": "sname",
         "type": "string",
+        "fixed": true,
         "text": "项目",
         "width":"260px"
       }, {

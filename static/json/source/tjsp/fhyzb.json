@@ -61,6 +61,7 @@
             "id": "inname",
             "type": "string",
             "width": "230px",
+            "fixed":true,
             "text": "行业名称"
         },
         {

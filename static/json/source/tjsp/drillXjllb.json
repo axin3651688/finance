@@ -90,12 +90,14 @@
                 {
                     "id": "scode",
                     "type": "string",
+                    "fixed":true,
                     "text": "公司编码"
                 },
                 {
                     "id": "gsmc",
                     "type": "string",
                     "text": "公司名称",
+                    "fixed":true,
                     "width":"360px"
                 },
                 {
@@ -119,6 +121,7 @@
                         {
                             "id": "tbzjl",
                             "type": "decimal",
+                            "width": "150px",
                             "text": "同比增减率（%）",
                             "conversion":"%"
                         }
