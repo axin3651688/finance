@@ -485,6 +485,7 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
+    debugger;
   },
   mounted() {
     let data = 10;
@@ -653,7 +654,6 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      debugger;
       let obj = {};
       let index;
       let key;
@@ -664,6 +664,10 @@ export default {
       let modify;
       let datas = this.settings.data;
       let row;
+      //判断没有值没有改变直接返回。
+      if(changes && changes[0][2] && changes[0][3] &&　changes[0][2] === changes[0][3]){
+        return;
+      }
       // return
       //融资的新增与减少的判断
       if (this.templateId == "7") {
@@ -734,6 +738,7 @@ export default {
               changeRecord[key] = values;
             }
           } else {
+            debugger;
             if (reg.test(values) === true) {
               let bb = { index: index };
               bb[key] = values;
@@ -746,12 +751,14 @@ export default {
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
+            debugger;
             if (index != 0) {
               let bb = { index: index };
               bb[key] = values;
               this.tableData.push(bb);
             }
           } else {
+            debugger;
             if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
               let bb = { index: index };
               bb[key] = values;
@@ -761,6 +768,7 @@ export default {
           // })
         }
       }
+      debugger;
       // localStorage.setItem("saveData",JSON.stringify(this.tableData))
       this.tableData.forEach(e => {
         indexs = e.index;
@@ -1360,7 +1368,7 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;

@@ -38,7 +38,6 @@ export default {
           "setIsAutnenticated",
           !Cnbi.isEmpty(localStorage.authorization)
         );
-        debugger;
         // 由于localStorage只能存字符串,需转json
         // this.$store.dispatch("setUser", JSON.parse(localStorage.database));
         this.$store.dispatch("setUser", JSON.parse(localStorage.database));
