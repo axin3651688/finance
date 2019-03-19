@@ -1252,7 +1252,7 @@ export default {
         templateId: this.templateId,
         rows: this.tableData,
         fixed: this.fixed,
-        user: this.user.user.username
+        user: this.user.user.userName
       };
       console.log(objs);
       let newtabledata = this.settings.data;
@@ -1287,6 +1287,7 @@ export default {
           // console.log("保存", res);
           this.reportData(this.datas);
           if (res.data.code === 200) {
+            debugger
             me.$message({
               message: res.data.msg,
               type: "success"
