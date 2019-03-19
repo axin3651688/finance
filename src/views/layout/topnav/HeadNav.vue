@@ -84,7 +84,7 @@
         <!-- 下啦箭头 -->
         <el-dropdown trigger="click" @command="setDialogInfo">
           <span class="dropdown">
-            <img :src="user.user.avatar" alt class="avatar">
+            <img :src="avarUrl" alt class="avatar">
             <span class="name">{{user.user.trueName}}</span>
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
@@ -124,11 +124,11 @@
         <div class="user">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="avarUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="true" :src="user.user.avatar" class="avatar">
+            <img v-if="true" :src="avarUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <!-- <img :src="user.user.avatar" class="avatar"> -->
@@ -163,6 +163,7 @@ export default {
   name: "Headnav",
   data() {
     return {
+      avarurl:"",
       companyId: "",
       companyName_cache: "",
       treeInfo: {},
@@ -190,6 +191,9 @@ export default {
     CompanyTree
   },
   created() {
+    //头像图片显示。
+    let userCng = this.$store.getters.user.user;
+    this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
     this.value = this.year + this.month + this.date;
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
@@ -244,11 +248,20 @@ export default {
   //   }
   // },
   methods: {
-    handleAvatarSuccess () {
-      debugger;
+   
+    handleAvatarSuccess (e) {
+      // debugger;
+      // this.avarurl = "avar/upload/avar/szc";
     },
-    beforeAvatarUpload(){
-      debugger;
+    beforeAvatarUpload(file){
+      let me = this;
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isLt2M;
+      // debugger;
+
     },
     //隐藏与显示的回调
     dropChange (flag,dd) {

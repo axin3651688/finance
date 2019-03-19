@@ -107,7 +107,6 @@ export default {
       return options;
     },
     upData(item) {
-      debugger;
       console.log(item);
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
@@ -128,7 +127,6 @@ export default {
             return item.name;
           });
           this.chartOptions.series[0].data = this.item.options.datas;
-          debugger;
           //echart图的回调函数。此时写在最后是因为暂时是在最后解决问题，可以再别的地方
           if(this.item.chartListeners){
             let lisConfig = this.item.chartListeners;

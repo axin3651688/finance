@@ -15,7 +15,6 @@ export default {
     };
   },
   created() {
-    //debugger;
     this.readLocalStorage();
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;
