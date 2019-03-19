@@ -92,6 +92,7 @@
             "id": "asname",
             "type": "string",
             "text": "行业名称",
+            "fixed": true,
             "width": "360px"
         },
         {

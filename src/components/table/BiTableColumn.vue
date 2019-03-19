@@ -2,8 +2,10 @@
   <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
     v-if="col.isTree  && (tableData.xtype==='tree-grid'|| tableData.xtype==='STreeGrid') "
+    fixed
     :prop="col.id"
     :label="col.text"
+    :width="col.width || 120"
     :min-width="col.width||80"
   >
     <template slot-scope="scope">
@@ -23,6 +25,7 @@
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
+    fixed
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
@@ -50,7 +53,7 @@
 
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
   <el-table-column
-    v-else-if="col.type === 'string'"
+    v-else-if="col.type === 'string' && !col.fixed"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
@@ -66,6 +69,22 @@
             <el-button type="text">{{ scope.row[col.id] }}</el-button>
         </span>
         <span v-else>{{ scope.row[col.id] }}</span>-->
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据  固定列-->
+  <el-table-column
+    v-else-if="col.type === 'string' && col.fixed"
+    fixed
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+    :min-width="col.width||150"
+    :width="col.width"
+  >
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
   </el-table-column>

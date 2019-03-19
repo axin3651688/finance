@@ -122,6 +122,7 @@
                         "columns": [{
                                 "id": "sjssje",
                                 "type": "decimal",
+                                "width": "180px",
                                 "text": "已形成实质性损失金额"
                             },
                             {
@@ -134,6 +135,7 @@
                                 "id": "sk",
                                 "type": "string",
                                 "width": "330",
+                                "fixed": true,
                                 "text": "客商"
                             },
                             {
@@ -203,6 +205,7 @@
                             {
                                 "id": "dykshje",
                                 "type": "decimal",
+                                "width": "180px",
                                 "text": "其中:当年可收回金额*"
                             },
                             {
@@ -306,6 +309,7 @@
                         "columns": [{
                                 "text": "已形成实质性损失金额",
                                 "type": "decimal",
+                                "width": "180px",
                                 "id": "www4"
                             },
                             {
@@ -317,12 +321,14 @@
                             {
                                 "text": "公司编码",
                                 "type": "string",
+                                "fixed": true,
                                 "id": "scode"
                             },
                             {
                                 "text": "公司名称",
                                 "width": "275",
                                 "type": "string",
+                                "fixed": true,
                                 "id": "gsmc"
                             },
                             {
@@ -344,6 +350,7 @@
                                 "text": "与年初相比增减率（%）",
                                 "type": "decimal",
                                 "conversion": "%",
+                                "width": "180px",
                                 "id": "zjl"
                             },
                             {
@@ -399,16 +406,19 @@
                                     {
                                         "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
                                         "type": "decimal",
+                                        "width": "330px",
                                         "id": "fff3"
                                     },
                                     {
                                         "text": "为其他企业代偿金融机构的贷款",
                                         "type": "decimal",
+                                        "width": "230px",
                                         "id": "fff4"
                                     },
                                     {
                                         "text": "长期挂账、未及时清理",
                                         "type": "decimal",
+                                        "width": "180px",
                                         "id": "fff5"
                                     },
                                     {
@@ -431,6 +441,7 @@
                             {
                                 "text": "其中：当年可收回金额",
                                 "type": "decimal",
+                                "width": "180px",
                                 "id": "www2"
                             },
                             {

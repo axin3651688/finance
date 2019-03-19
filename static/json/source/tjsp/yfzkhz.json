@@ -41,6 +41,7 @@
     "columns": [{
             "id": "www4",
             "type": "decimal",
+            "width": "180px",
             "text": "已形成实质性损失金额"
         },
         {
@@ -51,12 +52,14 @@
         {
             "id": "xm1",
             "type": "string",
+            "fixed": true,
             "text": "项目"
         },
         {
             "id": "xm2",
             "type": "string",
             "text": "",
+            "fixed": true,
             "width": "340px"
         }, {
             "id": "hs",
@@ -91,6 +94,7 @@
         }, {
             "id": "www2",
             "type": "decimal",
+            "width": "180px",
             "text": "其中：当年可收回金额"
         }, {
             "id": "www3",

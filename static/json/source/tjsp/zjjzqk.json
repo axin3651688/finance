@@ -67,11 +67,14 @@
         "text": "",
         "type":"",
         "id": "",
+        // "width":"120",
         "isTree":true
     },
     {
       "text": "公司编码",
       "type":"string",
+      "width":"180",
+      "fixed": true,
       "id": "scode"//,
       // "isTree":true
     },
@@ -79,6 +82,7 @@
         "text": "公司名称",
         "type":"string",
         "width":"280",
+        "fixed": true,
         "id": "sname"
       },
       {

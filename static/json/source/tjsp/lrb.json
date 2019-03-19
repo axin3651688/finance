@@ -81,7 +81,7 @@
                     "type": "decimal",
                     "text": "同比增减率（%）",
                     "conversion": "%",
-                    "width": "130px"
+                    "width": "150px"
                 }
             ]
         },
@@ -89,6 +89,7 @@
             "id": "sname",
             "type": "string",
             "width": "370px",
+            "fixed": true,
             "text": "项目"
         },
         {
@@ -126,7 +127,7 @@
                     "type": "decimal",
                     "text": "同比增减率（%）",
                     "conversion": "%",
-                    "width": "130px"
+                    "width": "150px"
                 }
             ]
         }

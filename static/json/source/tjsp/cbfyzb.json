@@ -54,11 +54,13 @@
             "id": "gsbm",
             "type": "string",
             "width": "120px",
+            "fixed":true,
             "text": "公司编码"
         },
         {
             "id": "gsmc",
             "type": "string",
+            "fixed":true,
             "width": "320px",
             "text": "公司名称"
         },
