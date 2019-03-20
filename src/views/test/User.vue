@@ -92,7 +92,31 @@
       width="480px"
       max-height="60%"
       @close="closeDilog('addUserForm')"
-    >
+    > 
+      <div>
+        <label class="el-form-item__label" style="width: 100px;margin-top:20px;">上传图片</label>
+        <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+        <div class="uploadHead" style="display:inline-block;margin-top:20px;">
+          <el-upload
+            class="upload-demo"
+            action="avar/upload/avar"
+            :auto-upload="false"
+            :show-file-list="false"
+            :data="{suser:addUserForm.suser}"
+            :on-success="handleAvatarSuccess"
+            :on-change="changeFile"
+            :before-upload="beforeAvatarUpload"
+            ref="uploadPhoto"
+            >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+          </el-upload>
+        </div>
+        <div class="showUploadHead">
+          <img class="imgClass" v-if="true" :src="addPhotoUrl">
+        </div>
+      </div>
+      
       <el-form
         :inline="true"
         label-width="100px"
@@ -184,6 +208,29 @@
       max-height="60%"
       @close="closeDilog('editUserForm')"
     >
+      <div>
+        <label class="el-form-item__label" style="width: 100px;margin-top:20px;">修改头像</label>
+        <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+        <div class="uploadHead" style="display:inline-block;margin-top:20px;">
+          <el-upload
+            class="upload-demo"
+            action="avar/upload/avar"
+            :auto-upload="false"
+            :show-file-list="false"
+            :data="{suser:editUserForm.suser}"
+            :on-success="handleAvatarSuccess"
+            :on-change="changeFile"
+            :before-upload="beforeAvatarUpload"
+            ref="editPhoto"
+            >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+          </el-upload>
+        </div>
+        <div class="showUploadHead">
+          <img class="imgClass" v-if="true" :src="editPhotoUrl">
+        </div>
+      </div>
       <el-form
         :inline="true"
         label-width="100px"
@@ -377,6 +424,11 @@ export default {
   components: {
     Treeselect
   },
+  computed: {
+    ...mapGetters([
+      "user","company"
+    ])
+  },
   /**
    * 三个间隔    10*3
    * 查询背景    60*1
@@ -442,6 +494,10 @@ export default {
       }
     };
     return {
+      //修改用户的图片。
+      editPhotoUrl:"",
+      //新增用户时的图片地址
+      addPhotoUrl:"",
       props: {
         label: "sname",
         children: "children"
@@ -500,7 +556,8 @@ export default {
         cisenabled: "Y",
         cauthorize: "Y",
         semail: "",
-        company: ""
+        company: "",
+        avatar:""
       },
       userdata: [],
       maxHeight: 600,
@@ -754,10 +811,63 @@ export default {
       })();
     };
   },
-  computed: {
-    ...mapGetters(["company"])
-  },
   methods: {
+    /**
+     * 文件改变时的回调。
+     */
+    changeFile (file,fileList) {
+      let me = this,photoUrl = "";
+      let imgFile = file.raw;
+      if(this.dialogAddUserVisible){
+        photoUrl = 'addPhotoUrl';
+      }else if(this.dialogEditUserVisible){
+        photoUrl = 'editPhotoUrl';
+      }
+      //上传头像预览
+      let fr = new FileReader();
+      fr.onload = function (e) {
+          me[photoUrl] = fr.result;
+      };
+      fr.readAsDataURL(imgFile);
+    },
+    /**
+     * 上传头像之前的拦截方法。
+     */
+    beforeAvatarUpload (res,file) {
+      // debugger;
+      // let me = this;
+      // var imgFile = res;
+      // var fr = new FileReader();
+      // fr.onload = function () {
+      //     me.addPhotoUrl = fr.result;
+      // };
+      // fr.readAsDataURL(imgFile);
+      // let me = this;
+    },
+    /**
+     * 上传头像成功之后的回调
+     */
+    handleAvatarSuccess (file) {
+      let me = this;
+      if(file && file.data.code == 200){
+        if(me.editUserForm.suser === this.user.user.userName){
+          //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
+          let database = JSON.parse(localStorage.database);
+          database.user.avatar = file.data.data;
+          //重新给缓存存储新的地址对象。这个地方主要是刷新的时候用的。
+          let obj = JSON.stringify(database); //转化为JSON字符串
+          localStorage.setItem("database", obj); //返回{"a":1,"b":2}
+          this.$store.dispatch("setUser", database);
+        }else {
+          //这个方法调了两遍，可以优化，暂时这样。
+          this.findAll(me.currentPage,me.pagesize);
+        } 
+        //修改成功之后，用户名置空，防止新增的时候上面的判断也有时成立。
+        this.editUserForm.suser = "";
+      }else{
+        this.$message.error('上传头像出错！');
+      }
+    },
     closeDilog(dialog) {
       console.log("close..." + dialog);
     },
@@ -794,6 +904,8 @@ export default {
      * @addUserForm 新增用户表单数据
      */
     submitAddUserForm(formName) {
+      //上传图片的请求。
+      // this.submitPhotoOfAdd();
       this.$refs[formName].validate(valid => {
         if (valid) {
           const _this = this;
@@ -831,6 +943,8 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
+                // //上传图片的请求。
+                _this.submitPhotoOfAdd();
                 //重新加载
                 _this.dialogAddUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
@@ -852,7 +966,19 @@ export default {
         }
       });
     },
-
+    /**
+     * 新增用户时，上传图片的请求
+     */
+    submitPhotoOfAdd () {
+      let me = this,$refId = "";
+      if(this.dialogEditUserVisible){
+        $refId = "editPhoto"
+      }else if (this.dialogAddUserVisible) {
+        $refId = "uploadPhoto";
+      }
+      let $upload = this.$refs[$refId];
+      $upload.submit();
+    },
     /**
      * @addUserForm 修改用户表单数据
      */
@@ -885,6 +1011,8 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
+                //修改图片的请求。
+                _this.submitPhotoOfAdd();
                 //重新加载
                 _this.dialogEditUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
@@ -991,6 +1119,9 @@ export default {
       this.editUserForm.sphone = row.sphone;
       this.editUserForm.semail = row.semail;
       this.editUserForm.company = row.company;
+      this.editUserForm.avatar = row.avatar;
+      //修改头像图片
+      this.editPhotoUrl = row.avatar;
     },
     /**
      * @description 刷新
@@ -1360,7 +1491,6 @@ export default {
         }
         
       }
-      debugger;
       let pramer = {
             suser:userId,
             currentSuser:currentUserId,
@@ -1424,7 +1554,50 @@ lable[for="company"] {
   width: 70%;
 }
 </style>
-
+<style lang="scss" scoped>
+  .showUploadHead {
+    float: right;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    top: -20px;
+    right: 55px;
+    position: relative;
+  }
+  //图片的样式
+  .imgClass {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .uploadHead {
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+  }
+  
+</style>
 
 
 
