@@ -27,8 +27,10 @@
         </div>
         <div class="right">
           <el-button class="button">审阅</el-button>
-          <el-button class="button">上报</el-button>
+          <el-button class="button" @click="reportHandle">上报</el-button>
         </div>
+        <!-- 上报的人员modal -->
+        <SRModal v-if="true" :modalConfig.sync="modalConfig"></SRModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
         <hot-table
           v-if="settings.data && settings.data.length>0"
@@ -109,6 +111,7 @@ import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
 import SBiDiv from "@c/SBiDiv";
+import SRModal from "@v/intelligenceReport/SRModal";
 import {
     importExcel,
     inquire,
@@ -122,11 +125,14 @@ import {
 export default {
   components: {
     HotTable,
-    SBiDiv
+    SBiDiv,
+    SRModal
     // BiModule
   },
   data() {
     return {
+      //上报人员的modal框的显示。
+      modalConfig:{},
       //控制显示区域块
       divShow:false,
       fillShow:true,
@@ -514,6 +520,50 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
+    /**
+     * 上报的处理按钮。
+     */
+    reportHandle () {
+      debugger;
+      let me = this;
+      this.modalConfig = {
+        title:"上报人员",
+        dialogVisible:true,
+        type:"tree",
+        id:'id',
+        title: "上报人员",
+        datas: [
+          {
+            id: 1,
+            label: '一级 1'
+          }, {
+            id: 2,
+            label: '一级 2',
+            children: [{
+              id: 5,
+              label: '二级 2-1'
+            }, {
+              id: 6,
+              label: '二级 2-2'
+            }]
+          }, {
+            id: 3,
+            label: '一级 3',
+            children: [{
+              id: 7,
+              label: '二级 3-1'
+            }, {
+              id: 8,
+              label: '二级 3-2'
+            }]
+          }
+        ],
+        props:{
+          label: "label",
+          children: "children"
+        }
+      }
+    },
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
@@ -1193,8 +1243,15 @@ export default {
     },
     //点击保存数据
     saveData() {
-      debugger;
       let that = this;
+      //判断是不是有改动。
+      if(this.tableData && this.tableData.length == 0){
+        this.$message({
+          message: '没有改动！',
+          type: 'warning'
+        });
+        return;
+      }
       this.tableData.forEach(item => {
         //isinside
         // a = item
