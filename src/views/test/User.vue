@@ -214,7 +214,7 @@
         <div class="uploadHead" style="display:inline-block;margin-top:20px;">
           <el-upload
             class="upload-demo"
-            action="avar/upload/avar"
+            action="/zjb/upload/avar"
             :auto-upload="false"
             :show-file-list="false"
             :data="{suser:editUserForm.suser}"
