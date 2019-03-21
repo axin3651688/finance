@@ -1,6 +1,6 @@
 {
     "id": "0014253678",
-    "text": "年目标考核建议值",
+    "text": "集团年度目标考核建议值",
     "layout": {
         "xtype": "tab"
     },
@@ -111,7 +111,7 @@
             "xtype": "bi-table",
             "id" : "nmbkhjyz",
             "stype": "tree",
-            "text" : "年目标考核建议值",
+            "text" : "集团年度目标考核建议值",
             
             "toolbar":[{    
                 "id":"1",
