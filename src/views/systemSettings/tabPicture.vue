@@ -157,6 +157,7 @@ export default {
             let d = datas.filter(ele=>{
                 return (ele.name - 0) === (key - 0)
             })
+            debugger
             this["imageUrl" + key] = d && d.length == 1 ? d[0].content  : '';
         },
         // （1）自适应高度方法
