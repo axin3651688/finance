@@ -121,6 +121,7 @@ export default {
     //每次打开获取一下原来的用户名
     this.loginUser.usename = localStorage.getItem("usename");
     // sjz 轮播图图片切换方法
+    debugger
     this.initCarousels();
   },
 
