@@ -65,6 +65,7 @@ export default {
       
     },
     shownavMenu(e) {
+      debugger;
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;

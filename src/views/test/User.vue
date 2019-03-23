@@ -44,11 +44,11 @@
       <el-table-column
         prop="companyname"
         label="所属公司"
-        width="250"
+        width="280"
         header-align="center"
         align="center"
       ></el-table-column>
-      <el-table-column label="操作" header-align="center" min-width="350px">
+      <el-table-column label="操作" header-align="center" min-width="350px" fixed="right">
         <template slot-scope="scope">
           <template v-if="scope.row.cisenabled === 'Y'">
             <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
@@ -816,6 +816,13 @@ export default {
      * 文件改变时的回调。
      */
     changeFile (file,fileList) {
+      debugger;
+      //限制上传的图片的大小。
+      // let sizePhoto = file.size / 1024 / 1024 < 1;
+      // if(!sizePhoto && file.status == "ready"){
+      //   this.$message.error('上传头像图片大小不能超过1MB!');
+      //   return;
+      // }
       let me = this,photoUrl = "";
       let imgFile = file.raw;
       if(this.dialogAddUserVisible){
@@ -834,6 +841,11 @@ export default {
      * 上传头像之前的拦截方法。
      */
     beforeAvatarUpload (res,file) {
+      // const isLt2M = res.size / 1024 / 1024 < 1;
+      // // if (!isLt2M) {
+        
+      // // }
+      // return isLt2M;
       // debugger;
       // let me = this;
       // var imgFile = res;
@@ -1011,9 +1023,11 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
+                debugger;
                 //修改图片的请求。
                 _this.submitPhotoOfAdd();
                 //重新加载
+                debugger;
                 _this.dialogEditUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
               }

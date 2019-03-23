@@ -307,7 +307,7 @@
                             "type": 2,
                             "columns": [{
                                 "id": "bnlj",
-                                "name": "本期"
+                                "_name": "本期"
                             }, {
                                 "id": "sntq"
                             }],

@@ -4,146 +4,141 @@
     "layout": {
         "xtype": "tab"
     },
-    "showDims": ["year","month","company","conversion"],
-    "queryDataBefore": function(params,config,$vue){
+    "showDims": ["year", "month", "company", "conversion"],
+    "queryDataBefore": function(params, config, $vue) {
         debugger
-        if($vue.id === "0014253678"){
-            let yearBefore = params.year - 1 ;
-            config.sql = config.sql2.replace(/:yearBefore/g,"'"+yearBefore+"'") ;
+        if ($vue.id === "0014253678") {
+            let yearBefore = params.year - 1;
+            config.sql = config.sql2.replace(/:yearBefore/g, "'" + yearBefore + "'");
         }
-        return params ;
+        return params;
     },
-    "__queryDataAfter":function(data,$vue){//数据的后置处理
+    "__queryDataAfter": function(data, $vue) { //数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
     },
     "config": {
-        "sql":"",
+        "sql": "",
         "sql2": "WITH T1 AS( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE='1' START WITH SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY START WITH SCODE = :company CONNECT BY PRIOR SCODE = SPCODE) CONNECT BY PRIOR SCODE = SPCODE ) SELECT T6.ROOT_SCODE AS GSBM,T6.SNAME AS GSMC,A AS YEWC,B AS YEMB,ROUND(DECODE(B,0,0,(B-A)/A),4)*100 AS YETBZJL,C AS LRWC,D AS LRMB,LRTBZJL FROM ( SELECT ROOT_SCODE,SNAME,SUM(FACT_B) A, SUM(YEKHMB) B FROM ( SELECT T1.ROOT_SCODE,SUM(NVL(T2.FACT_B,0)) AS fact_b,SUM(NVL(T3.YEKHMB,0)) AS YEKHMB FROM T1 LEFT JOIN (SELECT DIM_COMPANY,DECODE(JS,1,B2,B1) AS FACT_B FROM( SELECT A.DIM_COMPANY, B1, B2,NVL(JS,0) AS JS FROM( (SELECT DIM_COMPANY,SUM(DECODE(DIM_PERIOD,:yearBefore||'12',FACT_B,0)) AS B1,SUM(DECODE(DIM_PERIOD,:yearBefore||'13',FACT_B,0)) AS B2 FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD IN (:yearBefore||'12',:yearBefore||'13') GROUP BY DIM_COMPANY)A LEFT JOIN (SELECT DIM_COMPANY,COUNT(DIM_PERIOD) AS JS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1416001' AND DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:yearBefore||'13' GROUP BY DIM_COMPANY)B ON A.DIM_COMPANY=B.DIM_COMPANY) )) T2 ON T1.SCODE = T2.DIM_COMPANY LEFT JOIN (SELECT DIM_COMPANY,SUM(NVL(FACT_A,0)) AS YEKHMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:period GROUP BY DIM_COMPANY) T3 ON T1.SCODE = T3.DIM_COMPANY GROUP BY T1.ROOT_SCODE )T4 INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCOMPANY) TNAME ON T4.ROOT_SCODE = TNAME.SCODE GROUP BY ROOT_SCODE,SNAME ) T6 LEFT JOIN ( SELECT ROOT_SCODE,SNAME,C,D,ROUND(DECODE(D,0,0,(D-C)/C),4)*100 AS LRTBZJL FROM ( SELECT ROOT_SCODE,SNAME,SUM(FACT_B) C, SUM(YEKHMB) D FROM ( SELECT T1.ROOT_SCODE,T2.FACT_B,T3.YEKHMB FROM T1 LEFT JOIN (SELECT DIM_COMPANY,DECODE(JS,1,B2,B1) AS FACT_B FROM( SELECT A.DIM_COMPANY, B1, B2,NVL(JS,0) AS JS FROM( (SELECT DIM_COMPANY,SUM(DECODE(DIM_PERIOD,:yearBefore||'12',FACT_B,0)) AS B1,SUM(DECODE(DIM_PERIOD,:yearBefore||'13',FACT_B,0)) AS B2 FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1403100' AND DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD IN (:yearBefore||'12',:yearBefore||'13') GROUP BY DIM_COMPANY)A LEFT JOIN (SELECT DIM_COMPANY,COUNT(DIM_PERIOD) AS JS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD ='1403100' AND DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:yearBefore||'13' GROUP BY DIM_COMPANY)B ON A.DIM_COMPANY=B.DIM_COMPANY) ))T2 ON T1.SCODE = T2.DIM_COMPANY LEFT JOIN (SELECT DIM_COMPANY,SUM(NVL(FACT_B,0)) AS YEKHMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_COMPANY IN (SELECT SCODE FROM T1) AND DIM_PERIOD=:period GROUP BY DIM_COMPANY) T3 ON T1.SCODE = T3.DIM_COMPANY )T4 INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCOMPANY) TNAME ON T4.ROOT_SCODE = TNAME.SCODE GROUP BY ROOT_SCODE,SNAME ) ) T5 ON T6.ROOT_SCODE = T5.ROOT_SCODE order by T5.ROOT_SCODE",
         "cube": {
-            "cubeId": 4 ,
+            "cubeId": 4,
             "subject": "1005"
         },
-        "mainDim":"itemperiod",
-        "needDims":["year","month","company","conversion"],
-        "random":{"min":100,"max":100000},
-        "type":1 ,
-        "tableHeads":true,
-        "generateVar":{//生成变量rows
-            "periodCount":2,
-            "compareType":"-1&0",
-            "reverse":true
-        } 
+        "mainDim": "itemperiod",
+        "needDims": ["year", "month", "company", "conversion"],
+        "random": { "min": 100, "max": 100000 },
+        "type": 1,
+        "tableHeads": true,
+        "generateVar": { //生成变量rows
+            "periodCount": 2,
+            "compareType": "-1&0",
+            "reverse": true
+        }
     },
-    "columns":[
-        {
-            "id" : "",
-            "type" : "string",
-            "text" : "利润总额",
-            "children": [
-                {
-                    "id" : "lrwc",
-                    "type" : "decimal",
-                    "text" : "上年实际完成",
+    "columns": [{
+            "id": "",
+            "type": "string",
+            "text": "利润总额",
+            "children": [{
+                    "id": "lrwc",
+                    "type": "decimal",
+                    "text": "上年实际完成",
                     "width": "150px"
                 },
                 {
-                    "id" : "lrmb",
-                    "type" : "decimal",
-                    "text" : "本年目标考核值",
+                    "id": "lrmb",
+                    "type": "decimal",
+                    "text": "本年目标考核值",
                     "width": "150px"
                 },
                 {
-                    "id" : "lrtbzjl",
-                    "type" : "decimal",
-                    "text" : "同比增减率%",
-                    "conversion":"%",
+                    "id": "lrtbzjl",
+                    "type": "decimal",
+                    "text": "同比增减率%",
+                    "conversion": "%",
                     "width": "150px"
                 }
             ]
         },
         {
-            "id" : "gsbm",
-            "type" : "string",
-            "text" : "公司编码",
+            "id": "gsbm",
+            "type": "string",
+            "text": "公司编码",
             "fixed": true,
             "width": "120px"
         },
         {
-            "id" : "gsmc",
-            "type" : "string",
-            "text" : "公司名称",
+            "id": "gsmc",
+            "type": "string",
+            "text": "公司名称",
             "fixed": true,
             "width": "320px"
         },
         {
-            "id" : "",
-            "type" : "string",
-            "text" : "营业收入",
-            "children": [
-                {
-                    "id" : "yewc",
-                    "type" : "decimal",
-                    "text" : "上年实际完成",
+            "id": "",
+            "type": "string",
+            "text": "营业收入",
+            "children": [{
+                    "id": "yewc",
+                    "type": "decimal",
+                    "text": "上年实际完成",
                     "width": "150px"
                 },
                 {
-                    "id" : "yemb",
-                    "type" : "decimal",
-                    "text" : "本年目标考核值",
+                    "id": "yemb",
+                    "type": "decimal",
+                    "text": "本年目标考核值",
                     "width": "150px"
                 },
                 {
-                    "id" : "yetbzjl",
-                    "type" : "decimal",
-                    "text" : "同比增减率%",
-                    "conversion":"%",
+                    "id": "yetbzjl",
+                    "type": "decimal",
+                    "text": "同比增减率%",
+                    "conversion": "%",
                     "width": "150px"
                 }
             ]
         }
     ],
-    "rows":[],
-    "items":[
-        {
-            "xtype": "bi-table",
-            "id" : "nmbkhjyz",
-            "stype": "tree",
-            "text" : "年目标考核建议值",
-            
-            "toolbar":[{    
-                "id":"1",
-                "text":"刷新",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    // "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    let $vue = vue.item.$vue;
-                    $vue.closeTabTaget({}, $vue);
-                    vue.item.updateView("company");
-                }
-            },{
-                "id":"2",
-                "text":"导出",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    // "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    vue.handleDownload(vue);
-                }
-            }]
-        }
-    ]
+    "rows": [],
+    "items": [{
+        "xtype": "bi-table",
+        "id": "nmbkhjyz",
+        "stype": "tree",
+        "text": "年目标考核建议值",
+
+        "toolbar": [{
+            "id": "1",
+            "text": "刷新",
+            "xtype": "button",
+            "cellStyle": {
+                "color": "black",
+                // "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                debugger
+                console.log(vue);
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+            }
+        }, {
+            "id": "2",
+            "text": "导出",
+            "xtype": "button",
+            "cellStyle": {
+                "color": "black",
+                // "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                debugger
+                console.log(vue);
+                vue.handleDownload(vue);
+            }
+        }]
+    }]
 }
