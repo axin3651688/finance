@@ -1145,6 +1145,7 @@ export default {
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
+      rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
       setTimeout(() => {
