@@ -21,13 +21,13 @@
                   <img src="@a/loginT/first.jpg" class="first">
                 </div>
                 <div v-if="item == 2" class="first">
-                  <img src="@a/loginT/two.jpg" class="first">
+                  <img :src="imageUrl2" class="first">
                 </div>
                 <div v-if="item == 3" class="first">
-                  <img src="@a/loginT/three.jpg" class="first">
+                  <img :src="imageUrl3" class="first">
                 </div>
                 <div v-if="item == 4" class="first">
-                  <img src="@a/loginT/four.jpg" class="first">
+                  <img :src="imageUrl4" class="first">
                 </div>
                 <!-- <template slot-scope="scope">
                   <div v-if="scope.index == 0" class="first">{{ item }}</div>
@@ -109,6 +109,7 @@ import { mapActions } from "vuex";
 import router from "@v/layout/router";
 import store from "@/store";
 import webSocket from "utils/webSocket";
+import { UploadShow } from '~api/cube';
 export default {
   name: "Login",
   created() {
@@ -119,10 +120,16 @@ export default {
     }
     //每次打开获取一下原来的用户名
     this.loginUser.usename = localStorage.getItem("usename");
+    // sjz 轮播图图片切换方法
+    debugger
+    this.initCarousels();
   },
 
   data() {
     return {
+      imageUrl2 : '',　
+      imageUrl3 : '',
+      imageUrl4 : '',
       pwdType: "password",
       loginUser: {
         usename: "",
@@ -162,6 +169,29 @@ export default {
         this.pwdType = "password";
       }
     },
+    // sjz
+    initCarousels(){
+      // 走马灯轮播请求
+      UploadShow().then(ress => {
+        debugger
+          if(ress.data.code == 200){
+            let datas = ress.data.data;
+            if(datas.length > 0 ){
+              [2,3,4].forEach(element => {
+                  this.setCarousel(datas,element);
+              });                 
+            }
+          }
+      })
+    },
+    //sjz 
+    setCarousel(datas,key){
+      let d = datas.filter(ele=>{
+          return (ele.name - 0) === (key - 0) ;
+      })
+      this["imageUrl" + key] = d && d.length == 1 ? d[0].content  : '';
+    },
+
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

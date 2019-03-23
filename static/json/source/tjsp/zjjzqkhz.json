@@ -63,12 +63,15 @@
       },{
           "text": "公司编码",
           "type":"string",
+          "fixed": true,
+          "width":"120",
           "id": "id"
       },
       {
           "text": "公司名称",
           "type":"string",
-          "width":"310",
+          "width":"360",
+          "fixed": true,
           "id": "sname"
         },
         {

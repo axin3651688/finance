@@ -62,7 +62,7 @@
     {
         "id": "gsmc",
         "type": "string",
-        "width":"320px",
+        "width":"360px",
         "fixed":true,
         "text": "公司名称"
     },{

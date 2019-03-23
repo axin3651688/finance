@@ -72,3 +72,16 @@ export function eva_city_Request(data) {
         method: 'get'
     })
 }
+/**
+ * name : sjz
+ * 说明 ：图片编辑管理的走马灯显示接口
+ * 文件 ：systemSettings/tabPicture.vue
+ * time : 2019/3/20 17:32:32
+ */
+export function UploadShow() {
+    return request({
+        url: '/zjb/upload/find?show=1',
+        method: 'get'
+        // params: data
+    })
+}
