@@ -54,9 +54,9 @@
         border
         stripe
         >
-            <el-table-column prop="row_id" width="75" label="序列" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="suser" label="用户名称" width="120" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="struename" label="真实姓名" width="120" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column fixed prop="row_id" width="75" label="序列" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column fixed prop="suser" label="用户名称" width="120" header-align="center" align ="center" sortable></el-table-column>
+            <el-table-column fixed prop="struename" label="真实姓名" width="120" header-align="center" align ="center" sortable></el-table-column>
             <el-table-column prop="ntype" label="类型" width="80" header-align="center" align ="center" sortable>
                 <template slot-scope="scope">
                     <span v-if="scope.row.ntype===0">查询</span>
@@ -324,4 +324,9 @@ export default {
     text-align: center;
 } */
 
+</style>
+<style>
+.el-table th{
+    background-color: rgb(240, 248, 255);
+}
 </style>
