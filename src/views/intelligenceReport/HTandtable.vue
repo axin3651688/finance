@@ -1047,7 +1047,7 @@ export default {
     convertHansoneTableColumns(columns, rows) {
       
       let me = this;
-      if (this.fixed === 0) {
+      if (this.fixed === 0 && this.templateId != "9") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
       }
@@ -1145,6 +1145,7 @@ export default {
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
       this.settings.data = rows;
+      rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
       setTimeout(() => {
@@ -1476,6 +1477,7 @@ export default {
       // console.log("传递的data", this.datas);
       let me = this;
       inquire(this.datas).then(res => {
+        debugger;
         console.log("查询", res);
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;

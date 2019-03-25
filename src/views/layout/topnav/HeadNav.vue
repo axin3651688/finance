@@ -123,7 +123,7 @@
       <el-row class="row-bg" style="text-align:center">
         <div class="user">
           <!-- :http-request="uploadAvar" -->
-          <el-upload
+          <!-- <el-upload
             class="avatar-uploader"
             action="avar/upload/avar"
             :data="{suser:'szc'}"
@@ -133,8 +133,8 @@
             <img v-if="true" :src="user.user.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             <!-- <div v-if="true" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
-          </el-upload>
-          <!-- <img :src="user.user.avatar" class="avatar"> -->
+          <!--</el-upload> -->
+          <img :src="user.user.avatar" class="avatar">
         </div>
         <div class="user-item">
           <div class="item">
