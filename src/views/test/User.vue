@@ -255,8 +255,8 @@
 
         <el-form-item label="性别" prop="csex">
           <el-select v-model="editUserForm.csex" placeholder="性别" style="width:300px">
-            <el-option label="男" value="1"></el-option>
-            <el-option label="女" value="0"></el-option>
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="roleid">
@@ -1419,9 +1419,16 @@ export default {
         }
       }).then(result => {
         if (result.status == 200) {
-          const data = result.data.data;
-          _this.userdata = data.datas;
-          _this.allNum = data.total;
+          if(result.data.data){
+            const data = result.data.data;
+            _this.userdata = data.datas;
+            _this.allNum = data.total;
+          }else{
+            _this.userdata = [];
+            _this.allNum = 0;
+          }
+
+          
         }
       });
     },
