@@ -61,26 +61,25 @@
         :data="tableData"
         style="width: 100%"
         :height="heights"
-        cell-style="padding:0"
         border
         stripe
         class="elTable"
         >
-            <el-table-column type="index" width="60" label="序列" align="center"></el-table-column>
-            <el-table-column prop="user_userName" label="用户名称" width="150" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="user_trueName" label="真实姓名" width="150" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="user_roleName" label="角色" width="80" header-align="center" align="center" sortable>
+            <el-table-column fixed type="index" width="60" label="序列" align="center"></el-table-column>
+            <el-table-column fixed prop="user_userName" label="用户名称" width="150" header-align="center" align="center" ></el-table-column>
+            <el-table-column fixed prop="user_trueName" label="真实姓名" width="150" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="user_roleName" label="角色" width="80" header-align="center" align="center" >
                 <!-- <template slot-scope="scope">
                     <span v-if="scope.row.roleNames==='1'">管理员</span>
                     <span v-else>普通成员</span>
                 </template> -->
             </el-table-column>
-            <el-table-column prop="user_companyName" label="所属公司" width="280" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="hostName" label="主机IP" width="180" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="stayTime" label="停留时间" width="200" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="platform_scode" label="浏览器" width="100" header-align="center" align="center" sortable></el-table-column>
-            <el-table-column prop="platform_sname" label="平台" width="" header-align="center" align="center" sortable></el-table-column>
+            <el-table-column prop="user_companyName" label="所属公司" width="280" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="hostName" label="主机IP" width="180" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="loginTime" label="登录时间" width="200" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="stayTime" label="停留时间" width="200" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="platform_scode" label="浏览器" width="100" header-align="center" align="center" ></el-table-column>
+            <el-table-column prop="platform_sname" label="平台" width="" header-align="center" align="center" ></el-table-column>
             <!-- <el-table-column label="操作" header-align="center" align="center" sortable>
                 <template slot-scope="scope">
                     <el-button type="text" @click="handleOffline(scope.$index, scope.row)">下线</el-button>
@@ -209,13 +208,18 @@ export default {
             // 请求
             onlineRequest(item).then(res => {
                 debugger
-                // me.person = res.data.data.totalElements;
-                //获取总数据
-                me.totalElements = res.data.data.total ;
-                //获取行信息渲染
-                // me.tableData = res.data.data.data;
-                let dataTable = res.data.data.datas;
-                me.getTimes(dataTable);
+                    // me.person = res.data.data.totalElements;
+                    //获取行信息渲染
+                    // me.tableData = res.data.data.data;
+                    if(res.data.data){
+                        let dataTable = res.data.data.datas;
+                        //获取总数据
+                        me.totalElements = res.data.data.total ;
+                        me.getTimes(dataTable);   
+                    }else{
+                        this.$message(res.data.msg);
+                    }
+                                
             }); 
         },
         getTimes(row){
@@ -400,5 +404,10 @@ export default {
 .el-form-item{
     margin-bottom: 10px;
     margin-top: 10px;
+}
+</style>
+<style>
+.el-table th{
+    background-color: rgb(240, 248, 255);
 }
 </style>

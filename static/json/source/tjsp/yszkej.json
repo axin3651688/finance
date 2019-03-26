@@ -7,8 +7,8 @@
     "children":[
         {
         "id":"",
-        "text":"",
-        "stype": "tree",
+        "text":"应收账款一级汇总下钻",
+        "stype": "table",
         "xtype":"bi-table",
         "weight": 24,
         "show":true,
