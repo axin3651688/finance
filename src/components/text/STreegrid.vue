@@ -6,9 +6,25 @@
     json里起作用，调滚动条x轴的 
   -->
   <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
-<el-button-group  class="toolbar" >
+  <el-button-group  class="toolbar" >
     <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
   </el-button-group>
+  <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 -->
+    <el-input 
+    v-if="item.proportion && item.proportion.length>0" 
+    v-for="see in item.proportion" 
+    :key="see.id" 
+    :placeholder="see.placeholder" 
+    v-model="see.input3" 
+    :style="see.cellStyle"
+    @change="seeChange(see)">
+      <template slot="prepend">
+        {{ see.text }}
+        <i :class="see.icon" style="marginLeft: 10px;"></i>
+      </template>
+      <template slot="append">%</template>
+    </el-input>
+    
   <el-table
     :row-style="showRow"
     v-bind="$attrs"
@@ -43,6 +59,7 @@ export default {
     return {
       // sjz 加的  自适应需要
       heights: 0,
+      // input3: "",
       offsetHeight: document.body.offsetHeight,
       list: [],
       dialogVisible: false,
@@ -170,7 +187,11 @@ export default {
     },
     btnClick(btn){
         btn.handler(this,btn);
-     },
+    },
+    // sjz 比例触发
+    seeChange(see){
+        see.handler(this,see);
+    },
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },

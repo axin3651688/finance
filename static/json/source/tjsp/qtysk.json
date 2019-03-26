@@ -508,33 +508,38 @@
                                 vue.handleDownload(vue);
                             }
                         }
-                        // ,{
-                        //     "id":"5",
-                        //     "text":"安全比例",
-                        //     "xtype":"button",
-                        //     "cellStyle":{
-                        //         "color":"black",
-                        //         //"background-color":"#189271"
-                        //          "background-color":"#fff"
-                        //     },
-                        //     "handler":function(vue,btn){
-                        //         debugger
-                        //         console.log(vue);
-                        //     }
-                        // },{
-                        //     "id":"6",
-                        //     "text":"预警比例",
-                        //     "xtype":"button",
-                        //     "cellStyle":{
-                        //         "color":"black",
-                        //         //"background-color":"#189271"
-                        //          "background-color":"#fff"
-                        //     },
-                        //     "handler":function(vue,btn){
-                        //         debugger
-                        //         console.log(vue);
-                        //     }
-                        // }
+                    ],
+                    proportion:[
+                        {
+                            "id": "1",
+                            "text": "安全比例",
+                            "placeholder": "请输入安全比例%",
+                            "cellStyle": {
+                                "width": "330px"
+                            },
+                            "input3": "",
+                            "icon": "el-icon-arrow-left",
+                            "handler": function(vue, btn) {
+                                debugger
+                                console.log(vue);
+                                
+                            }
+                        },
+                        {
+                            "id": "2",
+                            "text": "预警比例",
+                            "placeholder": "请输入预警比例%",
+                            "cellStyle": {
+                                "width": "330px"
+                            },
+                            "input3": "",
+                            "icon": "el-icon-arrow-right",
+                            "handler": function(vue, btn) {
+                                debugger
+                                console.log(vue);
+                                
+                            }
+                        }
                     ],
                     "drillProperties": ["riskrange", "gsmc"],
                     "onRowClick": function(row, column, e, $this) {
