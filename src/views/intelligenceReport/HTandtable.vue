@@ -1185,12 +1185,20 @@ export default {
           }
           newCoulmns.push(cc);
           colHeaders.push(col.text);
+          // if(me.templateId != 9 || (me.templateId == 9 && cc && cc.data != "item")){
+          //   newCoulmns.push(cc);
+          //   colHeaders.push(col.text);
+          // }
+          
         }
       }
       //基本情况表不显示编码。过滤掉
       if(this.templateId == 9 && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {
           return item.data != "item";
+        });
+        colHeaders = colHeaders.filter(item => {
+          return item != "项目编码";
         });
       }
       this.settings.columns = newCoulmns;
