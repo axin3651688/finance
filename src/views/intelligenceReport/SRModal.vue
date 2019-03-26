@@ -2,6 +2,7 @@
     <el-dialog
     :title="modalConfig.title||'上报人员'"
     :modalConfig.sync="modalConfig"
+    modalConfig.checkbox
     width="30%"
     :visible.sync="modalConfig.dialogVisible"
     >
@@ -12,6 +13,7 @@
             :node-key="modalConfig.id"
             :props="modalConfig.props || props"
             class="filter-tree"
+            :show-checkbox="modalConfig.checkbox"
             :filter-node-method="filterNode"
             :highlight-current="true"
             :expand-on-click-node="false"

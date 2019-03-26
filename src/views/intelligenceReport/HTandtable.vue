@@ -119,7 +119,8 @@ import {
     download,
     del,
     financingDown,
-    mechanism
+    mechanism,
+    queryUserByCompany
 } from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
@@ -189,8 +190,8 @@ export default {
         minCols: 5,
         maxCols: 20,
         rowHeaders: true, //行表头
-        colHeaders: [], //表头数据
-        // nestedHeaders: [],//多表头
+        colHeaders: true, //表头数据
+        nestedHeaders: [],//多表头
         autoWrapRow: true, //自动换行
         fillHandle: false, //选中拖拽复制  true, false
         fixedColumnsLeft: 0, //固定左边列数
@@ -529,6 +530,7 @@ export default {
       this.modalConfig = {
         title:"上报人员",
         dialogVisible:true,
+        checkbox:true,
         type:"tree",
         id:'id',
         title: "上报人员",
@@ -563,6 +565,36 @@ export default {
           children: "children"
         }
       }
+      this.modalConfig.datas = this.queryUserByCompany();
+    },
+    /**
+     * 查询当前公司下的用户。
+     */
+    queryUserByCompany(){
+      debugger;
+      let me = this,companyId = this.$store.getters.company,userData = [];
+      let params = {companyId:companyId};
+      queryUserByCompany(params).then(res => {
+        if(res.data.code == 200){
+          //转换成对应的格式。
+          userData = me.parseTypeOfTree(res.data.data);
+          me.modalConfig.datas = userData;
+          // return userData;
+        }else {
+          this.$message.error('用户信息查询失败！');
+        }
+      });
+      // return userData;
+    },
+    parseTypeOfTree (data) {
+      debugger;
+      let me = this;
+      data.forEach(item => {
+        if(item){
+          item.label = item.suser;
+        }
+      });
+      return data;
     },
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
@@ -996,20 +1028,28 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        
-        // if (columns == 1 || columns == 3 || columns == 4) {
-        //   cellMeta.readOnly = true;
-        // }
-        // if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-        //   cellMeta.readOnly = true;
-        // }
         //资金集中度的填写限制
         if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
         }
+      }else if(this.templateId == 9){
+        //基本情况表的判断只读的列
+        if(columns == 0){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
+      }else if (this.templateId == 12) {
+        //市管企业利润总额考核调整表。
+        if(columns == 0){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
       }
+      
       return cellMeta;
     },
     //请求查询回来的数据的类型
@@ -1044,7 +1084,7 @@ export default {
       }
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
-    convertHansoneTableColumns(columns, rows) {
+    convertHansoneTableColumns(columns, rows,res) {
       
       let me = this;
       if (this.fixed === 0 && this.templateId != "9") {
@@ -1137,6 +1177,7 @@ export default {
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
+      debugger;
       // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
@@ -1144,6 +1185,9 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
+      // this.settings.colHeaders = true;
+      // this.settings.rowHeaders = true;
+      // this.settings.nestedHeaders = res.data.data.columnsShow;
       this.settings.data = rows;
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
@@ -1460,7 +1504,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','4','5','6'],flag = true;
+      let arr = ['0','1','2','3','4','5','6','9'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
@@ -1488,7 +1532,7 @@ export default {
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
         }
-        me.convertHansoneTableColumns(columns, rows);
+        me.convertHansoneTableColumns(columns, rows,res);
       });
     },
     /**
@@ -1884,7 +1928,7 @@ export default {
 }
 .underline {
   border: 1px solid #dcdfe6;
-  width: 220px;
+  width: 240px;
   margin-left: 10px;
   background-color: #f5f7fa;
 }
