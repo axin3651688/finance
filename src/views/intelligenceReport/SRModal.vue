@@ -81,6 +81,8 @@ export default {
         confirmHandle () {
             debugger;
             let me = this;
+            let nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
+            debugger;
         }
     }
 }

@@ -532,7 +532,7 @@ export default {
         dialogVisible:true,
         checkbox:true,
         type:"tree",
-        id:'id',
+        id:'userReport',
         title: "上报人员",
         datas: [
           {
@@ -1816,7 +1816,7 @@ export default {
           let a = me.tableData;
           //融资情况表加一个删除的判断。针对保存之后会刷新来加的。
           let rzFlag = false;
-          if(me.templateId == "7" && nid == null){
+          if((me.templateId == "7" || me.templateId == "8") && nid == null){
             rzFlag = me.deleteHandle(nid,row);
             if(rzFlag){
               return;
