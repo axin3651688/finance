@@ -769,23 +769,11 @@ export default {
         if (values == "" && key != "status" && this.templateId != "7") {
           values = 0;
         }
-        let x;
+        // let x;
         let arr = datas.filter(record => {
-          x = record;
+          // x = record;
           return record.cusuppliername != null;
         });
-        // console.log(x)
-        // console.log("datas",arr)
-        // for(var i=0;i<arr.length-1;i++){
-        //     row = datas[i]
-        //     if(row.cusuppliername && row.cusuppliername !=null && row.cusuppliername == values){
-        //         this.$message({
-        //             type: 'error',
-        //             message: '商客名称重复，请重新输入'
-        //         })
-        //     }
-        // }
-
         let me = this;
         function res(arr) {
           
@@ -831,10 +819,6 @@ export default {
           }
         }
         if (this.fixed === 0) {
-          //加一个基本情况表的item编码
-          // if(){
-
-          // }
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
@@ -846,7 +830,8 @@ export default {
             }
           } else if(this.templateId == 9) {
             //添加一个基本情况表的item编码。
-            let bb = { index: index,item: x.item };
+            let changeRow = datas[index];
+            let bb = { index: index,item: changeRow.item };
             bb[key] = values;
             this.tableData.push(bb);
           }else {
