@@ -755,6 +755,7 @@ export default {
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
       }
+      debugger;
       if (changes && changes.length > 0) {
         index = changes[0][0];
         key = changes[0][1];
@@ -830,6 +831,10 @@ export default {
           }
         }
         if (this.fixed === 0) {
+          //加一个基本情况表的item编码
+          // if(){
+
+          // }
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
@@ -839,7 +844,12 @@ export default {
               bb[key] = values;
               this.tableData.push(bb);
             }
-          } else {
+          } else if(this.templateId == 9) {
+            //添加一个基本情况表的item编码。
+            let bb = { index: index,item: x.item };
+            bb[key] = values;
+            this.tableData.push(bb);
+          }else {
             debugger;
             if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
               let bb = { index: index };
@@ -908,6 +918,7 @@ export default {
           }
         }
       });
+      
       console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
@@ -1175,6 +1186,12 @@ export default {
           newCoulmns.push(cc);
           colHeaders.push(col.text);
         }
+      }
+      //基本情况表不显示编码。过滤掉
+      if(this.templateId == 9 && newCoulmns && newCoulmns.length > 0){
+        newCoulmns = newCoulmns.filter(item => {
+          return item.data != "item";
+        });
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;

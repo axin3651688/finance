@@ -28,6 +28,7 @@
     </el-dialog>
 </template>
 <script>
+
 export default {
     name: "SRModal",
     props: ['modalConfig'],
