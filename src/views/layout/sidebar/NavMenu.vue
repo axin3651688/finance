@@ -66,6 +66,8 @@ export default {
     },
     shownavMenu(e) {
       debugger;
+      //在此加一个页面上面的title。2019年3月26日11:47:15 szc
+      document.title = e.text;
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;

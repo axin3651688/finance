@@ -1036,7 +1036,7 @@ export default {
         }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
-        if(columns == 0){
+        if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2)){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1154,6 +1154,7 @@ export default {
             } else if (col.id === "srepaydate") {
               (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
             } else if (col.id === "cismenu") {
+              debugger;
               cc.source = this.financingOptionsData("1700");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
@@ -1188,6 +1189,16 @@ export default {
       // this.settings.colHeaders = true;
       // this.settings.rowHeaders = true;
       // this.settings.nestedHeaders = res.data.data.columnsShow;
+      //新加一个装换成相应的数字显示成文字处理。
+      if(this.templateId == 7 && rows && rows.length > 0){
+        let itemNames = [//guarantee repaysource
+          {"text":"cismenu","type":"single"},
+          {"text":"cisguarantee","type":"single"},
+          {"text":"guarantee","type":"MSeries","root":"financing"},
+          {"text":"repaysource","type":"MSeries","root":"financing"}
+        ];
+        this.parseNumberToString(itemNames,rows);
+      }
       this.settings.data = rows;
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
@@ -1211,6 +1222,34 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    /**
+     * 有些查询出来的是 1 or 0 or 别的， 在此转换成要显示的字符串。
+     * 2019年3月26日10:41:04 szc
+     */
+    parseNumberToString(itemNames,rows) {
+      let me = this;
+      if(itemNames && itemNames.length > 0){
+        for(let i = 0; i < itemNames.length;i ++){
+          let item = itemNames[i];
+          if(item.type == "single"){
+            rows.forEach(tt => {
+              tt[item.text] == 1? tt[item.text] = "是":tt[item.text] = "否";
+            });
+          }
+          if(item.type == "MSeries"){
+            for(let j = 0; j < rows.length;j ++){
+              let rowItem = rows[j];
+              let filItem = me[item.root].filter(filIt => {
+                return filIt.id == rowItem[item.text];
+              });
+              if(filItem && filItem.length > 0){
+                rowItem[item.text] = filItem[0].text;
+              }
+            }
+          }
+        }
+      }
     },
     financeValidator(instance, td, row, col, prop, value, cellProperties) {
       debugger;
@@ -1494,7 +1533,6 @@ export default {
       this.datas = excelUploadParaDto;
       //当前的参数保存在大对象里
       this.$store.curParams = this.datas;
-      debugger;
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
       this.reportData(this.datas);
@@ -1504,7 +1542,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','4','5','6','9'],flag = true;
+      let arr = ['0','1','2','3','9'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
@@ -1860,6 +1898,7 @@ export default {
     },
     //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
+      debugger;
       if (!value) {
         return;
       }
