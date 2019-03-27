@@ -315,7 +315,7 @@
                             {
                                 "text": "公司名称",
                                 "type": "string",
-                                "width": "330px",
+                                "width": "360px",
                                 "fixed": true,
                                 "id": "gsmc"
                             },
