@@ -93,108 +93,110 @@
       max-height="60%"
       @close="closeDilog('addUserForm')"
     > 
-      <div>
-        <label class="el-form-item__label" style="width: 100px;margin-top:20px;">上传图片</label>
-        <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
-        <div class="uploadHead" style="display:inline-block;margin-top:20px;">
-          <el-upload
-            class="upload-demo"
-            action="avar/upload/avar"
-            :auto-upload="false"
-            :show-file-list="false"
-            :data="{suser:addUserForm.suser}"
-            :on-success="handleAvatarSuccess"
-            :on-change="changeFile"
-            :before-upload="beforeAvatarUpload"
-            ref="uploadPhoto"
-            >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-          </el-upload>
+      <div class="dialog-body">
+        <div>
+          <label class="el-form-item__label" style="width: 100px;margin-top:40px;">上传图片</label>
+          <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+          <div class="uploadHead" style="display:inline-block;margin-top:40px;">
+            <el-upload
+              class="upload-demo"
+              action="avar/upload/avar"
+              :auto-upload="false"
+              :show-file-list="false"
+              :data="{suser:addUserForm.suser}"
+              :on-success="handleAvatarSuccess"
+              :on-change="changeFile"
+              :before-upload="beforeAvatarUpload"
+              ref="uploadPhoto"
+              >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            </el-upload>
+          </div>
+          <div class="showUploadHead">
+            <img class="imgClass" v-if="true" :src="addPhotoUrl">
+          </div>
         </div>
-        <div class="showUploadHead">
-          <img class="imgClass" v-if="true" :src="addPhotoUrl">
-        </div>
+        
+        <el-form
+          :inline="true"
+          label-width="100px"
+          :model="addUserForm"
+          ref="addUserForm"
+          :rules="rules"
+          class="user-form-inline"
+          id="addUser"
+        >
+          <el-form-item label="用户名" prop="suser">
+            <el-input v-model="addUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
+          </el-form-item>
+
+          <el-form-item label="真实姓名" prop="struename">
+            <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
+          </el-form-item>
+
+          <el-form-item label="密码" prop="spassword">
+            <el-input
+              type="password"
+              v-model.lazy="addUserForm.spassword"
+              placeholder="请填写密码"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="确认密码" prop="spassword2">
+            <el-input
+              type="password"
+              v-model.lazy="addUserForm.spassword2"
+              placeholder="请填写确认密码"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="性别" prop="csex">
+            <el-select v-model="addUserForm.csex" placeholder="性别" style="width:300px">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="角色" prop="roleid">
+            <el-select v-model="addUserForm.roleid" placeholder="角色" style="width:300px">
+              <el-option
+                v-for="item in rolesData"
+                :key="item.roleid"
+                :label="item.srolename"
+                :value="item.roleid"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="所属公司" prop="company">
+            <treeselect
+              class="companyRight"
+              v-model="addUserForm.company"
+              :options="comtree"
+              placeholder="请选择所属公司"
+              style="width:300px"
+            />
+            <!-- <pre class="result">{{ value }}</pre> -->
+          </el-form-item>
+
+          <el-form-item label="联系电话" prop="sphone">
+            <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
+          </el-form-item>
+
+          <el-form-item label="邮箱" prop="semail">
+            <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
+          </el-form-item>
+
+          <!-- <el-form-item label="QQ">
+            <el-input v-model="addUserForm.phone" placeholder="请填写QQ"></el-input>
+          </el-form-item>-->
+          <!-- <el-form-item label="微信">
+            <el-input v-model="addUserForm.phone" placeholder="请填写微信"></el-input>
+          </el-form-item>-->
+        </el-form>
       </div>
-      
-      <el-form
-        :inline="true"
-        label-width="100px"
-        :model="addUserForm"
-        ref="addUserForm"
-        :rules="rules"
-        class="user-form-inline"
-        id="addUser"
-      >
-        <el-form-item label="用户名" prop="suser">
-          <el-input v-model="addUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
-        </el-form-item>
-
-        <el-form-item label="真实姓名" prop="struename">
-          <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
-        </el-form-item>
-
-        <el-form-item label="密码" prop="spassword">
-          <el-input
-            type="password"
-            v-model.lazy="addUserForm.spassword"
-            placeholder="请填写密码"
-            style="width:300px"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="确认密码" prop="spassword2">
-          <el-input
-            type="password"
-            v-model.lazy="addUserForm.spassword2"
-            placeholder="请填写确认密码"
-            style="width:300px"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="性别" prop="csex">
-          <el-select v-model="addUserForm.csex" placeholder="性别" style="width:300px">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="角色" prop="roleid">
-          <el-select v-model="addUserForm.roleid" placeholder="角色" style="width:300px">
-            <el-option
-              v-for="item in rolesData"
-              :key="item.roleid"
-              :label="item.srolename"
-              :value="item.roleid"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="所属公司" prop="company">
-          <treeselect
-            class="companyRight"
-            v-model="addUserForm.company"
-            :options="comtree"
-            placeholder="请选择所属公司"
-            style="width:300px"
-          />
-          <!-- <pre class="result">{{ value }}</pre> -->
-        </el-form-item>
-
-        <el-form-item label="联系电话" prop="sphone">
-          <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
-        </el-form-item>
-
-        <el-form-item label="邮箱" prop="semail">
-          <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
-        </el-form-item>
-
-        <!-- <el-form-item label="QQ">
-          <el-input v-model="addUserForm.phone" placeholder="请填写QQ"></el-input>
-        </el-form-item>-->
-        <!-- <el-form-item label="微信">
-          <el-input v-model="addUserForm.phone" placeholder="请填写微信"></el-input>
-        </el-form-item>-->
-      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitAddUserForm('addUserForm')">确 定</el-button>
         <el-button @click="dialogAddUserVisible = false">取 消</el-button>
@@ -1579,9 +1581,9 @@ lable[for="company"] {
   .showUploadHead {
     float: right;
     display: inline-block;
-    height: 100px;
+    height: 130px;
     width: 100px;
-    top: -20px;
+    // top: -20px;
     right: 55px;
     position: relative;
   }
@@ -1616,6 +1618,11 @@ lable[for="company"] {
       height: 178px;
       display: block;
     }
+  }
+  //新增用户的样式调整 2019年3月27日10:54:51 szc
+  .dialog-body {
+    max-height: 400px;
+    overflow: auto;
   }
   
 </style>
