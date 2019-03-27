@@ -2,7 +2,7 @@
     <div id="sg" style="height:100%;width:100%;overflow: auto;">
 
         <div style="width:1586px;" :style="contenStyleObj">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tabs v-model="activeName">
                 <el-tab-pane label="市管企业经营业绩情况表" name="first" >
                     <div v-if="isShow">
                         <div class="isShow">
@@ -37,8 +37,8 @@
                                 <th colspan="2" style="width:300px">同比增长（%）</th>                       
                             </tr>
                             <tr class="tr3">
-                                <!-- <td>{{ getCellValue(exps.factza) }}</td> -->
-                                <td>{{ exps.factza }}</td>
+                                <!-- <td>{{ getCellValue(exps.factzb) }}</td> -->
+                                <td>{{ exps.factzb }}</td>
                                 <td>{{ exps.zhbzz }}</td>
                                 <td>{{ exps.ztbzz }}</td>
                                 <td>{{ exps.factsa }}</td>
@@ -114,7 +114,7 @@ export default {
             isShow: true ,
             exps: {
             // 资产总额                 
-                factza: 0 ,
+                factzb: 0 ,
                 zhbzz : 0 ,     // %
                 ztbzz : 0 ,     // %
             // 所有者权益    
@@ -281,7 +281,8 @@ export default {
                     }
                     this.cityResults_second(items) ;
                 }else{
-                    sql2 = `WITH T1 AS( SELECT :company AS SCODE,FACTZA,ZSQTQ,ZSNTQ,ROUND(DECODE(ZSQTQ,0,0,(FACTZA-ZSQTQ)/ZSQTQ),4) AS ZHBZZ, ROUND(DECODE(ZSNTQ,0,0,(FACTZA-ZSNTQ)/ZSNTQ),4) AS ZTBZZ FROM( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTZA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS ZSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS ZSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1100100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company) ), T3 AS( SELECT :company AS SSCODE, FACTSA,SSQTQ,SSNTQ,ROUND(DECODE(SSQTQ,0,0,(FACTSA-SSNTQ)/SSQTQ),4) AS SHBZZ, ROUND(DECODE(SSNTQ,0,0,(FACTSA-SSNTQ)/SSNTQ),4) AS STBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTSA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS SSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS SSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1300100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ), T2 AS ( SELECT :company AS SCODE, FACTFA, FSQTQ,FSNTQ , ROUND(DECODE(FSQTQ,0,0,(FACTFA-FSQTQ)/FSQTQ),4) AS FHBZZ, ROUND(DECODE(FSNTQ,0,0,(FACTFA-FSNTQ)/FSNTQ),4) AS FTBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTFA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS FSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS FSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1200100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ) SELECT '资产状况' as sname, T.FACTZA,T.ZHBZZ,T.ZTBZZ,T3.FACTSA,T3.SHBZZ,T3.STBZZ ,T4.FACTBA,T4.ZLHBZZ,T4.ZLTBZZ FROM T1 T LEFT JOIN T3 ON T.SCODE = T3.SSCODE LEFT JOIN ( SELECT SCODE,FACTBA,FACTBA-FACTSQA AS ZLHBZZ,FACTBA-FACTSNA AS ZLTBZZ FROM( SELECT T1.SCODE,ROUND(DECODE(T1.FACTZA,0,0,T2.FACTFA/T1.FACTZA),4) AS FACTBA, ROUND(DECODE(T1.FACTZA,0,0,T2.FSQTQ/T1.FACTZA),4) AS FACTSQA, ROUND(DECODE(T1.FACTZA,0,0,T2.FSNTQ/T1.FACTZA),4) AS FACTSNA FROM T1 LEFT JOIN T2 ON T1.SCODE = T2.SCODE ) ) T4 ON T.SCODE = T4.SCODE`
+                    // sql2 = `WITH T1 AS( SELECT :company AS SCODE,factzb,ZSQTQ,ZSNTQ,ROUND(DECODE(ZSQTQ,0,0,(factzb-ZSQTQ)/ZSQTQ),4) AS ZHBZZ, ROUND(DECODE(ZSNTQ,0,0,(factzb-ZSNTQ)/ZSNTQ),4) AS ZTBZZ FROM( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS factzb, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS ZSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS ZSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1100100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company) ), T3 AS( SELECT :company AS SSCODE, FACTSA,SSQTQ,SSNTQ,ROUND(DECODE(SSQTQ,0,0,(FACTSA-SSNTQ)/SSQTQ),4) AS SHBZZ, ROUND(DECODE(SSNTQ,0,0,(FACTSA-SSNTQ)/SSNTQ),4) AS STBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTSA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS SSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS SSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1300100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ), T2 AS ( SELECT :company AS SCODE, FACTFA, FSQTQ,FSNTQ , ROUND(DECODE(FSQTQ,0,0,(FACTFA-FSQTQ)/FSQTQ),4) AS FHBZZ, ROUND(DECODE(FSNTQ,0,0,(FACTFA-FSNTQ)/FSNTQ),4) AS FTBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTFA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS FSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS FSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1200100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ) SELECT '资产状况' as sname, T.factzb,T.ZHBZZ,T.ZTBZZ,T3.FACTSA,T3.SHBZZ,T3.STBZZ ,T4.FACTBA,T4.ZLHBZZ,T4.ZLTBZZ FROM T1 T LEFT JOIN T3 ON T.SCODE = T3.SSCODE LEFT JOIN ( SELECT SCODE,FACTBA,FACTBA-FACTSQA AS ZLHBZZ,FACTBA-FACTSNA AS ZLTBZZ FROM( SELECT T1.SCODE,ROUND(DECODE(T1.factzb,0,0,T2.FACTFA/T1.factzb),4) AS FACTBA, ROUND(DECODE(T1.factzb,0,0,T2.FSQTQ/T1.factzb),4) AS FACTSQA, ROUND(DECODE(T1.factzb,0,0,T2.FSNTQ/T1.factzb),4) AS FACTSNA FROM T1 LEFT JOIN T2 ON T1.SCODE = T2.SCODE ) ) T4 ON T.SCODE = T4.SCODE`
+                    sql2 = `WITH T1 AS( SELECT :company AS SCODE, FACTZB, ZSQTQ, ZSNTQ, ROUND(DECODE(ZSQTQ,0,0,(FACTZB-ZSQTQ)/ZSQTQ),4) AS ZHBZZ, ROUND(DECODE(ZSNTQ,0,0,(FACTZB-ZSNTQ)/ZSNTQ),4) AS ZTBZZ FROM ( SELECT SUM( CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_B,0) ELSE 0 END) AS FACTZB, SUM( CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_B,0) ELSE 0 END) AS ZSQTQ, SUM( CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_B,0) ELSE 0 END) AS ZSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1100100' AND DIM_PERIOD IN (:period, :sq, :comparePeriod) AND DIM_COMPANY=:company)) , T3 AS ( SELECT :company AS SSCODE, FACTSA, SSQTQ, SSNTQ, ROUND(DECODE(SSQTQ,0,0,(FACTSA-SSQTQ)/SSQTQ),4) AS SHBZZ, ROUND(DECODE(SSNTQ,0,0,(FACTSA-SSNTQ)/SSNTQ),4) AS STBZZ FROM ( SELECT SUM( CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_B,0) ELSE 0 END) AS FACTSA, SUM( CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_B,0) ELSE 0 END) AS SSQTQ, SUM( CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_B,0) ELSE 0 END) AS SSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1300100' AND DIM_PERIOD IN (:period, :sq, :comparePeriod) AND DIM_COMPANY=:company) ) , T2 AS ( SELECT :company AS SCODE, FACTFA, FSQTQ, FSNTQ , ROUND(DECODE(FSQTQ,0,0,(FACTFA-FSQTQ)/FSQTQ),4) AS FHBZZ, ROUND(DECODE(FSNTQ,0,0,(FACTFA-FSNTQ)/FSNTQ),4) AS FTBZZ FROM ( SELECT SUM( CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_B,0) ELSE 0 END) AS FACTFA, SUM( CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_B,0) ELSE 0 END) AS FSQTQ, SUM( CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_B,0) ELSE 0 END) AS FSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1200100' AND DIM_PERIOD IN (:period, :sq, :comparePeriod) AND DIM_COMPANY=:company ) ) SELECT '资产状况' AS sname, T.FACTZB, T.ZHBZZ, T.ZTBZZ, T3.FACTSA, T3.SHBZZ, T3.STBZZ , T4.FACTBA, T4.ZLHBZZ, T4.ZLTBZZ FROM T1 T LEFT JOIN T3 ON T.SCODE = T3.SSCODE LEFT JOIN ( SELECT SCODE, FACTBA, FACTBA-FACTSQA AS ZLHBZZ, FACTBA-FACTSNA AS ZLTBZZ FROM ( SELECT T1.SCODE, ROUND(DECODE(T1.FACTZB,0,0,T2.FACTFA/T1.FACTZB),4) AS FACTBA, ROUND(DECODE(T1.FACTZB,0,0,T2.FSQTQ/T1.FACTZB),4) AS FACTSQA, ROUND(DECODE(T1.FACTZB,0,0,T2.FSNTQ/T1.FACTZB),4) AS FACTSNA FROM T1 LEFT JOIN T2 ON T1.SCODE = T2.SCODE ) ) T4 ON T.SCODE = T4.SCODE`,
                     sql1 = sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+bq+"'").replace(/:comparePeriod/g,"'"+sntq+"'").replace(/:sq/g,"'"+sq+"'") ;  
                     items = {
                         'cubeId': 4,
@@ -290,7 +291,7 @@ export default {
                     this.cityResults_first(items) ;
                 }
             
-            // sql2 = `WITH T1 AS( SELECT :company AS SCODE,FACTZA,ZSQTQ,ZSNTQ,ROUND(DECODE(ZSQTQ,0,0,(FACTZA-ZSQTQ)/ZSQTQ),4) AS ZHBZZ, ROUND(DECODE(ZSNTQ,0,0,(FACTZA-ZSNTQ)/ZSNTQ),4) AS ZTBZZ FROM( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTZA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS ZSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS ZSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1100100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company) ), T3 AS( SELECT :company AS SSCODE, FACTSA,SSQTQ,SSNTQ,ROUND(DECODE(SSQTQ,0,0,(FACTSA-SSNTQ)/SSQTQ),4) AS SHBZZ, ROUND(DECODE(SSNTQ,0,0,(FACTSA-SSNTQ)/SSNTQ),4) AS STBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTSA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS SSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS SSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1300100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ), T2 AS ( SELECT :company AS SCODE, FACTFA, FSQTQ,FSNTQ , ROUND(DECODE(FSQTQ,0,0,(FACTFA-FSQTQ)/FSQTQ),4) AS FHBZZ, ROUND(DECODE(FSNTQ,0,0,(FACTFA-FSNTQ)/FSNTQ),4) AS FTBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTFA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS FSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS FSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1200100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ) SELECT '资产状况' as sname, T.FACTZA,T.ZHBZZ,T.ZTBZZ,T3.FACTSA,T3.SHBZZ,T3.STBZZ ,T4.FACTBA,T4.ZLHBZZ,T4.ZLTBZZ FROM T1 T LEFT JOIN T3 ON T.SCODE = T3.SSCODE LEFT JOIN ( SELECT SCODE,FACTBA,FACTBA-FACTSQA AS ZLHBZZ,FACTBA-FACTSNA AS ZLTBZZ FROM( SELECT T1.SCODE,ROUND(DECODE(T1.FACTZA,0,0,T2.FACTFA/T1.FACTZA),4) AS FACTBA, ROUND(DECODE(T1.FACTZA,0,0,T2.FSQTQ/T1.FACTZA),4) AS FACTSQA, ROUND(DECODE(T1.FACTZA,0,0,T2.FSNTQ/T1.FACTZA),4) AS FACTSNA FROM T1 LEFT JOIN T2 ON T1.SCODE = T2.SCODE ) ) T4 ON T.SCODE = T4.SCODE` 
+            // sql2 = `WITH T1 AS( SELECT :company AS SCODE,factzb,ZSQTQ,ZSNTQ,ROUND(DECODE(ZSQTQ,0,0,(factzb-ZSQTQ)/ZSQTQ),4) AS ZHBZZ, ROUND(DECODE(ZSNTQ,0,0,(factzb-ZSNTQ)/ZSNTQ),4) AS ZTBZZ FROM( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS factzb, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS ZSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS ZSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1100100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company) ), T3 AS( SELECT :company AS SSCODE, FACTSA,SSQTQ,SSNTQ,ROUND(DECODE(SSQTQ,0,0,(FACTSA-SSNTQ)/SSQTQ),4) AS SHBZZ, ROUND(DECODE(SSNTQ,0,0,(FACTSA-SSNTQ)/SSNTQ),4) AS STBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTSA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS SSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS SSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1300100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ), T2 AS ( SELECT :company AS SCODE, FACTFA, FSQTQ,FSNTQ , ROUND(DECODE(FSQTQ,0,0,(FACTFA-FSQTQ)/FSQTQ),4) AS FHBZZ, ROUND(DECODE(FSNTQ,0,0,(FACTFA-FSNTQ)/FSNTQ),4) AS FTBZZ FROM ( SELECT SUM(CASE WHEN DIM_PERIOD=:period THEN NVL(FACT_A,0) ELSE 0 END) AS FACTFA, SUM(CASE WHEN DIM_PERIOD=:sq THEN NVL(FACT_A,0) ELSE 0 END) AS FSQTQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN NVL(FACT_A,0) ELSE 0 END) AS FSNTQ FROM DW_FACTFINANCEPOINT WHERE DIM_ITEMPOINT ='1200100' AND DIM_PERIOD IN (:period,:sq,:comparePeriod) AND DIM_COMPANY=:company ) ) SELECT '资产状况' as sname, T.factzb,T.ZHBZZ,T.ZTBZZ,T3.FACTSA,T3.SHBZZ,T3.STBZZ ,T4.FACTBA,T4.ZLHBZZ,T4.ZLTBZZ FROM T1 T LEFT JOIN T3 ON T.SCODE = T3.SSCODE LEFT JOIN ( SELECT SCODE,FACTBA,FACTBA-FACTSQA AS ZLHBZZ,FACTBA-FACTSNA AS ZLTBZZ FROM( SELECT T1.SCODE,ROUND(DECODE(T1.factzb,0,0,T2.FACTFA/T1.factzb),4) AS FACTBA, ROUND(DECODE(T1.factzb,0,0,T2.FSQTQ/T1.factzb),4) AS FACTSQA, ROUND(DECODE(T1.factzb,0,0,T2.FSNTQ/T1.factzb),4) AS FACTSNA FROM T1 LEFT JOIN T2 ON T1.SCODE = T2.SCODE ) ) T4 ON T.SCODE = T4.SCODE` 
             // 全局替换
                 // sql1 = sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+bq+"'").replace(/:comparePeriod/g,"'"+sntq+"'").replace(/:sq/g,"'"+sq+"'") ;  
                 // items = {
@@ -305,7 +306,7 @@ export default {
         cityResults_first(items){
             let me = this ;
             eva_city_Request(items).then(res => {
-                debugger
+                // debugger
                 if(res.data.code === 200){
                     // me.num ++ ; 
                     // me.tableData = [] ;
@@ -338,7 +339,7 @@ export default {
         },
         // 单位切换
         dataProcessing_first(tableData){
-            debugger
+            // debugger
             let me = this ; 
             let newId = me.conversionId.id ;           
                 
@@ -348,10 +349,10 @@ export default {
             // let tableData2= tableData[1] ; // 效益
             if(newId > me.conversionNid){ 
             // 资产总额   
-                if(tableData.factza && tableData.factza>0){
-                    tableData.factza = Math.decimalToLocalString((tableData.factza)/newId) ;
+                if(tableData.factzb && tableData.factzb>0){
+                    tableData.factzb = Math.decimalToLocalString((tableData.factzb)/newId) ;
                 }else{
-                    tableData.factza = '--' ;
+                    tableData.factzb = '--' ;
                 }
             // 所有者权益    
                 if(tableData.factsa && tableData.factsa>0){
@@ -362,10 +363,10 @@ export default {
                 
             }else{
             // 资产总额    
-                if(tableData.factza && tableData.factza>0){
-                    tableData.factza = Math.decimalToLocalString(tableData.factza) ;
+                if(tableData.factzb && tableData.factzb>0){
+                    tableData.factzb = Math.decimalToLocalString(tableData.factzb) ;
                 }else{
-                    tableData.factza = '--' ;
+                    tableData.factzb = '--' ;
                 }
                 
             // 所有者权益    
@@ -492,7 +493,7 @@ export default {
                 tableData2.lrhbzz = '--' ;
             }
             if(tableData2.lrtbzz && tableData2.lrtbzz>0){
-                tableData2.srtbzz = Math.decimalToLocalString((tableData2.lrtbzz)*100) + "%" ;
+                tableData2.lrtbzz = Math.decimalToLocalString((tableData2.lrtbzz)*100) + "%" ;
             }else{
                 tableData2.lrtbzz = '--' ;
             }
