@@ -44,7 +44,7 @@
     :width="col.width"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>

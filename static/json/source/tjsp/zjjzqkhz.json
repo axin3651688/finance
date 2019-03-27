@@ -59,6 +59,7 @@
           "text": "",
           "type":"string",
           "id": "",
+          "width":"120",
           "isTree":true
       },{
           "text": "公司编码",
