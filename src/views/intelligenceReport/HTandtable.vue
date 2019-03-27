@@ -1039,6 +1039,13 @@ export default {
         }else {
           cellMeta.readOnly = false;
         }
+      }else if (this.templateId == 10) {
+        //集团年度目标考核建议值。
+        if(columns != 1 && columns != 4){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
       }else if (this.templateId == 12) {
         //市管企业利润总额考核调整表。
         if(columns == 0){
