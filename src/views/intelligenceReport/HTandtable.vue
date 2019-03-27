@@ -836,6 +836,12 @@ export default {
             let bb = { index: index,item: changeRow.item };
             bb[key] = values;
             this.tableData.push(bb);
+          }else if(this.templateId == 12) {
+            //添加一个基本情况表的item编码。
+            let changeRow = datas[index];
+            let bb = { index: index,item: changeRow.item };
+            bb[key] = values;
+            this.tableData.push(bb);
           }else {
             debugger;
             if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
@@ -1189,8 +1195,8 @@ export default {
           
         }
       }
-      //基本情况表不显示编码。过滤掉
-      if(this.templateId == 9 && newCoulmns && newCoulmns.length > 0){
+      //基本情况表、市管企业不显示编码。过滤掉
+      if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {
           return item.data != "item";
         });
