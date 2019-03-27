@@ -557,7 +557,8 @@ export default {
         /* height: 32px;
         line-height: 32px;
         font-size: 14px; */
-        color: #909399 ;
+        /* color: #909399 ; */
+        color: #606266;
     }
     .heights {
         height: 32px;
@@ -567,7 +568,10 @@ export default {
     .heightx {
         /* height: 99px; */
         width: 146px;
-        color: black;
+        color: #606266;
+        font-size: 14px;
+        font-weight: bold;
+        /* color: black; */
         /* line-height: 99px; */
         /* color: #909399 ; */
     }
@@ -575,7 +579,8 @@ export default {
         height: 32px;
         line-height: 32px;
         font-size: 14px;
-        color: #909399 ;
+        color: #606266;
+        /* color: #909399 ; */
     }
     .tr3 td {
         height: 32px;
