@@ -30,27 +30,40 @@
   let me = this;
   me.items[0].updateView = $vue.updateView;
   me.items[0].$vue = $vue;
-   let rows = this.rows;
-   for(let i=0;i<data.length;i++){
-       rows = rows.filter(function(item){
-           if(data[i].id == item.id ){
-             // debugger
-               if(data[i].A)item.A=data[i].A;
-               if(data[i].B)item.B=data[i].B;
+  let rows = this.rows;
+  data.forEach(res => {
+      rows.forEach(item => {
+          if(res.id == item.id){
+              item.A = res.A ; 
+              item.B = res.B ; 
+          }
+          if(res.id == item.id_){
+              item.A_ = res.A ; 
+              item.B_ = res.B ; 
+          }
+      });
+  });
+  //  for(let i=0;i<data.length;i++){
+  //      rows = rows.filter(function(item){
+  //          if(data[i].id == item.id ){
+  //            debugger
+  //              if(data[i].A)item.A=data[i].A;
+  //              if(data[i].B)item.B=data[i].B;
                
-           }
-           return item;
-       }) ;
-       rows = rows.filter(function(item){
-           if(data[i].id == item.id_){
-             // debugger
-               if(data[i].A)item.A_=data[i].A;
-               if(data[i].B)item.B_=data[i].B;
-           }
-           return item;
-       }) 
-   }
-   return data;
+  //          }
+  //          return item;
+  //      }) ;
+  //      rows = rows.filter(function(item){
+  //          if(data[i].id == item.id_){
+  //            // debugger
+  //              if(data[i].A)item.A_=data[i].A;
+  //              if(data[i].B)item.B_=data[i].B;
+  //          }
+  //          return item;
+  //      }) 
+  //  }
+  //  return data;
+  return data;
 },
 "config":{
     "cube":{
@@ -1157,7 +1170,6 @@
              if(datas && datas.length>0){
                 let data = datas.filter(function(item){
                   return item.id == row.row.id || item.id == row.row.id_;
-
                 });
                 if(data.length == 0){
                   row.row.A = 0;

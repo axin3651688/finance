@@ -648,6 +648,7 @@ export default {
     },
     //应收账款分析表  表格里面下拉的数据
     getDropDownSource(id) {
+      // debugger
       let array = this.dataDict.filter(item => item.pid === id);
       let source = [];
       array.forEach(element => {
@@ -736,6 +737,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
+      debugger
       let obj = {};
       let index;
       let key;
@@ -1112,7 +1114,7 @@ export default {
             } else if (col.id === "caozuo") {
               cc.renderer = this.flags;
               cc.readOnly = true;
-            } else if (col.id === "isnature") {
+            } else if (col.id === "isnature") {// 客商性质
               cc.source = this.getDropDownSource("1400");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
@@ -1122,17 +1124,19 @@ export default {
               // cc.type = "autocomplete";
               cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "isnormal") {
+              console.log(rows);
+            } else if (col.id === "isnormal") {// 是否正常
+              debugger
               cc.source = this.getDropDownSource("1800");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "scontenta") {
+            } else if (col.id === "scontenta") {// 非正常分类
               cc.source = this.getDropDownSource("1500");
               // cc.renderer = this.flagrenderer
               cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "scontentb") {
+            } else if (col.id === "scontentb") {// 债务人状况
               cc.source = this.getDropDownSource("1600");
               // cc.renderer = this.flagrenderer
               cc.type = "dropdown";
@@ -1896,6 +1900,7 @@ export default {
     },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
+      debugger
       if (!value) {
         return;
       }
