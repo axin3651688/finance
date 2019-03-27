@@ -305,10 +305,13 @@ export default {
   height:20% !important;
   text-align: center;
 }
-.el-form-item__label {
-  font-size: 16px;
-  color: #5A5A5A;
+.formContent {
+  .el-form-item__label {
+    font-size: 16px;
+    color: #5A5A5A;
+  }
 }
+
 .el-carousel__item {
   border-radius: 70px;
 }

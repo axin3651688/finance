@@ -1116,10 +1116,11 @@ export default {
               cc.source = this.getDropDownSource("1400");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
-            } else if (col.id === "isinside") {
+            } else if (col.id === "isinside") {//isinside
               cc.source = this.getDropDownSource("1700");
               cc.renderer = this.flagrenderer;
-              cc.type = "autocomplete";
+              // cc.type = "autocomplete";
+              cc.type = "dropdown";
               cc.readOnly = false;
             } else if (col.id === "isnormal") {
               cc.source = this.getDropDownSource("1800");
@@ -1206,6 +1207,12 @@ export default {
           {"text":"cisguarantee","type":"single"},
           {"text":"guarantee","type":"MSeries","root":"financing"},
           {"text":"repaysource","type":"MSeries","root":"financing"}
+        ];
+        this.parseNumberToString(itemNames,rows);
+      }else if(this.templateId == 4 && rows && rows.length > 0) {
+        let itemNames = [//guarantee repaysource
+          {"text":"isinside","type":"single"},
+          {"text":"isnature","type":"MSeries","root":"dataDict"}
         ];
         this.parseNumberToString(itemNames,rows);
       }
