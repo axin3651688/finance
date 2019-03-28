@@ -136,6 +136,7 @@
   * 获取公式单元格数据
   */
  function fomularParser(datas, formular, rows) {
+     debugger;
      let val = 0;
      try {
          let setObj = new Set(formular.match(/(\w+)\$(\d+)|(\w\d+)\$(\d+)/g, ""));

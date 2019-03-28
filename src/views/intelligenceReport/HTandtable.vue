@@ -920,7 +920,7 @@ export default {
         if (columns > 7) {
           //  debugger
           let record = this.settings.data[row];
-          if (record.isinside === "是" || record.isinside == 1) {
+          if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
             //8
             return true;
           }
@@ -1098,7 +1098,7 @@ export default {
     convertHansoneTableColumns(columns, rows,res) {
       
       let me = this;
-      if (this.fixed === 0 && this.templateId != "9") {
+      if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
       }
@@ -1227,8 +1227,9 @@ export default {
         ];
         this.parseNumberToString(itemNames,rows);
       }else if(this.templateId == 4 && rows && rows.length > 0) {
-        let itemNames = [//guarantee repaysource
+        let itemNames = [//guarantee repaysource isnormal
           {"text":"isinside","type":"single"},
+          {"text":"isnormal","type":"single"},
           {"text":"isnature","type":"MSeries","root":"dataDict"}
         ];
         this.parseNumberToString(itemNames,rows);
@@ -1268,7 +1269,7 @@ export default {
           let item = itemNames[i];
           if(item.type == "single"){
             rows.forEach(tt => {
-              tt[item.text] == 1? tt[item.text] = "是":tt[item.text] = "否";
+              tt[item.text] && tt[item.text] == 1? tt[item.text] = "是":(tt[item.text] == 0? tt[item.text] = "否":"");
             });
           }
           if(item.type == "MSeries"){
@@ -1576,7 +1577,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','9'],flag = true;
+      let arr = ['0','1','2','3','9','12'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){

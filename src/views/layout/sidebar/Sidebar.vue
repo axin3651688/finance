@@ -13,6 +13,7 @@
         :default-active="active"
         class="leftmemu"
         unique-opened
+        ref="leftMenu"
       >
       <!-- v-if="user.company.id === 121" -->
       <div class="username" v-if="true">
@@ -62,6 +63,17 @@ export default {
       this.auotoAdd(data);
     });
   },
+  mounted() {
+    //缓存中的侧边栏的内容。
+    let siderState = JSON.parse(localStorage.siderState);
+    if(siderState){
+      document.title = siderState.text;
+      this.openeds = [siderState.pid + ""];
+      this.active = siderState.code;
+      // this.$refs.leftMenu.open(siderState.pid);
+      // this.handleOpen(siderState.code,[siderState.pid + ""])
+    }
+  },
   components: {
     NavMenu
   },
@@ -94,13 +106,15 @@ export default {
     }
   },
   watch: {
-    openPid(newid) {
-    //   
-    //   console.log(newid);
-      this.handleOpen(this.openPid, [newid + ""]);
-      this.openeds = [newid + ""];
-    },
+    // openPid(newid) {
+    //   debugger;
+    // //   
+    // //   console.log(newid);
+    //   this.handleOpen(this.openPid, [newid + ""]);
+    //   // this.openeds = [newid + ""];
+    // },
     activeId(newid) {
+      debugger;
       this.active = newid + "";
     }
   },
@@ -130,7 +144,7 @@ export default {
       })
     },
     handleOpen(key, code) {
-      
+      debugger;
       let userId = this.userId;
       var clickNodeId = "";
       clickNodeId = userId + "_" + code[0];
@@ -148,6 +162,25 @@ export default {
         // console.log(code);
         this.fetchData(userId, code, this.leftMenus);
         // console.log(this.leftMenus);
+      }else {
+        // this.openNodeOfBefore();
+      }
+
+    },
+    /**
+     * 菜单节点收起的回调。
+     */
+    handleClose (index,indexPath) {
+      let me = this;
+    },
+    /**
+     * 展开之前的菜单节点 2019年3月28日11:01:14 szc
+     */
+    openNodeOfBefore () {
+      let siderState = JSON.parse(localStorage.siderState);
+      if(siderState){
+        this.openeds = [siderState.pid + ""];
+        this.active = siderState.code;
       }
     },
     /**
@@ -157,6 +190,7 @@ export default {
      */
     fetchData(userId, code) {
       findSideBar(userId, code[0]).then(response => {
+        debugger;
         let data = response.data.data;
         data.forEach(ele => {
           if (ele.leaf == 0) {

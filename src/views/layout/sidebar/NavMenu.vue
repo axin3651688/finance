@@ -58,6 +58,20 @@ export default {
   },
   created() {
     let me = this;
+    console.log(this.navMenus);
+
+  },
+  /**
+   * 组件生成之后的回调
+   */
+  mounted() {
+    // debugger;
+    // //缓存中的侧边栏的内容。
+    // let siderState = JSON.parse(localStorage.siderState);
+    // if(siderState){
+    //   this.$refs.leftMenu.open(siderState.pid);
+    //   // this.handleOpen(siderState.code,[siderState.pid + ""])
+    // }
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
@@ -68,6 +82,12 @@ export default {
       debugger;
       //在此加一个页面上面的title。2019年3月26日11:47:15 szc
       document.title = e.text;
+      // //把地址传到vuex对象中监听。此时没有什么作用，在此注释掉。
+      // let siderState = {openPid:e.pid};
+      // this.$store.dispatch("setSiderState", siderState);
+      //在此把点击的节点放到缓存中。
+      let siderState = JSON.stringify(e);
+      localStorage.setItem("siderState",siderState);
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;

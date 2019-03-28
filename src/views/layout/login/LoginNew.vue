@@ -246,6 +246,14 @@ export default {
                 //默认加载第一个管理驾驶舱
                 localStorage.module_api_cache =
                     "/cnbi/json/source/tjsp/dash.json";
+                //初次登陆默认是管理驾驶舱。
+                let siderState = {
+                  code:"1",
+                  pid:"0",
+                  level:2,
+                  leaf:1
+                };
+                localStorage.setItem("siderState",JSON.stringify(siderState));
                 // if (data.company && data.company.id === 121) {
                 //   url += "?monthCount=13";
                 //   localStorage.module_api_cache =

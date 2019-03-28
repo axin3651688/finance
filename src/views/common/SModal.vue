@@ -25,10 +25,12 @@ export default {
     props: ["dialogVisible","vueChart","plateSelect"],
     data() {
         return {
-            dialogVisible:plateSelect.showDialog
+            // dialogVisible:this.plateSelect.showDialog||false
         }
     },
     created() {
+        debugger;
+        let me = this;
     },
     mounted() {
     },

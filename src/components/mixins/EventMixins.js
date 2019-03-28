@@ -18,8 +18,8 @@ import {
 export default {
     mounted() {
         let me = this;
-        let xtype = me.item.xtype;
-        if (me.item.listeners) {
+        let xtype = me.item && me.item.xtype;
+        if (me.item && me.item.listeners) {
             me.item.listeners.forEach(listener => {
                 if (listener.type) {
                     if (xtype === "chart" || xtype === "bi-chart") {
