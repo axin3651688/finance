@@ -920,7 +920,7 @@ export default {
         if (columns > 7) {
           //  debugger
           let record = this.settings.data[row];
-          if (record.isinside === "是" || record.isinside == 1) {
+          if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
             //8
             return true;
           }
@@ -1098,7 +1098,7 @@ export default {
     convertHansoneTableColumns(columns, rows,res) {
       
       let me = this;
-      if (this.fixed === 0 && this.templateId != "9") {
+      if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
       }
@@ -1577,7 +1577,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','9'],flag = true;
+      let arr = ['0','1','2','3','9','12'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
