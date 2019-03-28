@@ -26,7 +26,7 @@
       <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="16">
         <el-alert
           title="温馨提示"
-          description="非单户公司不能选择，暂不支持不能跨年选择"
+          description="非单户公司不能选择，暂不支持跨年选择"
           type="warning"
           show-icon
           :closable="false"
