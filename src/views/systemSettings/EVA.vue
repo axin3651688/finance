@@ -735,6 +735,11 @@ export default {
           // 读取localStorage里的majun的信息（注：必须转化，因为localStorage只能存字符串形式的）
           let cc = JSON.parse(localStorage.getItem("majun"));
           
+        }else{
+          // 清除localStorage里的名为 "majun" 的缓存信息  
+          localStorage.removeItem("majun"); 
+          // 把存储的信息塞到名为 "majun" 的字段里  
+          localStorage.setItem("majun", JSON.stringify(this.vars)) ;
         }
       });
     }
