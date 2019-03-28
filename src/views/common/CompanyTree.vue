@@ -116,11 +116,18 @@ export default {
     //过滤节点
     filterNode(value, data) {
       if (!value) return true;
-      return data.sname.indexOf(value) !== -1;
+      return data.sname.indexOf(value) !== -1 || data.scode.indexOf(value) !== -1;
     },
     handleNodeClick(data) {
+      let me = this;
+      //给当前点击的节点设置样式。
+      // me.setStyleOfCurrentClick();
       // 把子组件的点击选择传回父组件
       this.$emit("click", data);
+    },
+    setStyleOfCurrentClick () {
+      debugger;
+      let me = this;
     }
   }
 };
@@ -134,5 +141,9 @@ export default {
 .el-tree-node__expand-icon.expanded {
   /*自定义，必要时用!important*/
 }
+.is-current>.el-tree-node__content {
+    background-color: #ddd !important;
+  }
+// }
 </style>
 

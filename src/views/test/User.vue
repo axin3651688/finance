@@ -44,11 +44,11 @@
       <el-table-column
         prop="companyname"
         label="所属公司"
-        width="250"
+        width="280"
         header-align="center"
         align="center"
       ></el-table-column>
-      <el-table-column label="操作" header-align="center" min-width="350px">
+      <el-table-column label="操作" header-align="center" min-width="350px" fixed="right">
         <template slot-scope="scope">
           <template v-if="scope.row.cisenabled === 'Y'">
             <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
@@ -92,85 +92,111 @@
       width="480px"
       max-height="60%"
       @close="closeDilog('addUserForm')"
-    >
-      <el-form
-        :inline="true"
-        label-width="100px"
-        :model="addUserForm"
-        ref="addUserForm"
-        :rules="rules"
-        class="user-form-inline"
-        id="addUser"
-      >
-        <el-form-item label="用户名" prop="suser">
-          <el-input v-model="addUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
-        </el-form-item>
+    > 
+      <div class="dialog-body">
+        <div>
+          <label class="el-form-item__label" style="width: 100px;margin-top:40px;">上传图片</label>
+          <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+          <div class="uploadHead" style="display:inline-block;margin-top:40px;">
+            <el-upload
+              class="upload-demo"
+              action="avar/upload/avar"
+              :auto-upload="false"
+              :show-file-list="false"
+              :data="{suser:addUserForm.suser}"
+              :on-success="handleAvatarSuccess"
+              :on-change="changeFile"
+              :before-upload="beforeAvatarUpload"
+              ref="uploadPhoto"
+              >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            </el-upload>
+          </div>
+          <div class="showUploadHead">
+            <img class="imgClass" v-if="true" :src="addPhotoUrl">
+          </div>
+        </div>
+        
+        <el-form
+          :inline="true"
+          label-width="100px"
+          :model="addUserForm"
+          ref="addUserForm"
+          :rules="rules"
+          class="user-form-inline"
+          id="addUser"
+        >
+          <el-form-item label="用户名" prop="suser">
+            <el-input v-model="addUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
+          </el-form-item>
 
-        <el-form-item label="真实姓名" prop="struename">
-          <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
-        </el-form-item>
+          <el-form-item label="真实姓名" prop="struename">
+            <el-input v-model="addUserForm.struename" placeholder="请填写真实姓名" style="width:300px"></el-input>
+          </el-form-item>
 
-        <el-form-item label="密码" prop="spassword">
-          <el-input
-            type="password"
-            v-model.lazy="addUserForm.spassword"
-            placeholder="请填写密码"
-            style="width:300px"
-          ></el-input>
-        </el-form-item>
+          <el-form-item label="密码" prop="spassword">
+            <el-input
+              type="password"
+              v-model.lazy="addUserForm.spassword"
+              placeholder="请填写密码"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
 
-        <el-form-item label="确认密码" prop="spassword2">
-          <el-input
-            type="password"
-            v-model.lazy="addUserForm.spassword2"
-            placeholder="请填写确认密码"
-            style="width:300px"
-          ></el-input>
-        </el-form-item>
+          <el-form-item label="确认密码" prop="spassword2">
+            <el-input
+              type="password"
+              v-model.lazy="addUserForm.spassword2"
+              placeholder="请填写确认密码"
+              style="width:300px"
+            ></el-input>
+          </el-form-item>
 
-        <el-form-item label="性别" prop="csex">
-          <el-select v-model="addUserForm.csex" placeholder="性别" style="width:300px">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="角色" prop="roleid">
-          <el-select v-model="addUserForm.roleid" placeholder="角色" style="width:300px">
-            <el-option
-              v-for="item in rolesData"
-              :key="item.roleid"
-              :label="item.srolename"
-              :value="item.roleid"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+          <el-form-item label="性别" prop="csex">
+            <el-select v-model="addUserForm.csex" placeholder="性别" style="width:300px">
+              <el-option label="男" value="男"></el-option>
+              <el-option label="女" value="女"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="角色" prop="roleid">
+            <el-select v-model="addUserForm.roleid" placeholder="角色" style="width:300px">
+              <el-option
+                v-for="item in rolesData"
+                :key="item.roleid"
+                :label="item.srolename"
+                :value="item.roleid"
+              ></el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item label="所属公司" prop="company">
-          <treeselect
-            class="companyRight"
-            v-model="addUserForm.company"
-            :options="comtree"
-            placeholder="请选择所属公司"
-            style="width:300px"
-          />
-          <!-- <pre class="result">{{ value }}</pre> -->
-        </el-form-item>
+          <el-form-item label="所属公司" prop="company">
+            <treeselect
+              class="companyRight"
+              v-model="addUserForm.company"
+              :options="comtree"
+              placeholder="请选择所属公司"
+              style="width:300px"
+            />
+            <!-- <pre class="result">{{ value }}</pre> -->
+          </el-form-item>
 
-        <el-form-item label="联系电话" prop="sphone">
-          <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
-        </el-form-item>
+          <el-form-item label="联系电话" prop="sphone">
+            <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
+          </el-form-item>
 
-        <el-form-item label="邮箱" prop="semail">
-          <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
-        </el-form-item>
+          <el-form-item label="邮箱" prop="semail">
+            <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
+          </el-form-item>
 
-        <!-- <el-form-item label="QQ">
-          <el-input v-model="addUserForm.phone" placeholder="请填写QQ"></el-input>
-        </el-form-item>-->
-        <!-- <el-form-item label="微信">
-          <el-input v-model="addUserForm.phone" placeholder="请填写微信"></el-input>
-        </el-form-item>-->
-      </el-form>
+          <!-- <el-form-item label="QQ">
+            <el-input v-model="addUserForm.phone" placeholder="请填写QQ"></el-input>
+          </el-form-item>-->
+          <!-- <el-form-item label="微信">
+            <el-input v-model="addUserForm.phone" placeholder="请填写微信"></el-input>
+          </el-form-item>-->
+        </el-form>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitAddUserForm('addUserForm')">确 定</el-button>
         <el-button @click="dialogAddUserVisible = false">取 消</el-button>
@@ -184,6 +210,29 @@
       max-height="60%"
       @close="closeDilog('editUserForm')"
     >
+      <div>
+        <label class="el-form-item__label" style="width: 100px;margin-top:20px;">修改头像</label>
+        <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+        <div class="uploadHead" style="display:inline-block;margin-top:20px;">
+          <el-upload
+            class="upload-demo"
+            action="/zjb/upload/avar"
+            :auto-upload="false"
+            :show-file-list="false"
+            :data="{suser:editUserForm.suser}"
+            :on-success="handleAvatarSuccess"
+            :on-change="changeFile"
+            :before-upload="beforeAvatarUpload"
+            ref="editPhoto"
+            >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+          </el-upload>
+        </div>
+        <div class="showUploadHead">
+          <img class="imgClass" v-if="true" :src="editPhotoUrl">
+        </div>
+      </div>
       <el-form
         :inline="true"
         label-width="100px"
@@ -208,8 +257,8 @@
 
         <el-form-item label="性别" prop="csex">
           <el-select v-model="editUserForm.csex" placeholder="性别" style="width:300px">
-            <el-option label="男" value="1"></el-option>
-            <el-option label="女" value="0"></el-option>
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="roleid">
@@ -377,6 +426,11 @@ export default {
   components: {
     Treeselect
   },
+  computed: {
+    ...mapGetters([
+      "user","company"
+    ])
+  },
   /**
    * 三个间隔    10*3
    * 查询背景    60*1
@@ -442,6 +496,10 @@ export default {
       }
     };
     return {
+      //修改用户的图片。
+      editPhotoUrl:"",
+      //新增用户时的图片地址
+      addPhotoUrl:"",
       props: {
         label: "sname",
         children: "children"
@@ -500,7 +558,8 @@ export default {
         cisenabled: "Y",
         cauthorize: "Y",
         semail: "",
-        company: ""
+        company: "",
+        avatar:""
       },
       userdata: [],
       maxHeight: 600,
@@ -754,10 +813,75 @@ export default {
       })();
     };
   },
-  computed: {
-    ...mapGetters(["company"])
-  },
   methods: {
+    /**
+     * 文件改变时的回调。
+     */
+    changeFile (file,fileList) {
+      debugger;
+      //限制上传的图片的大小。
+      // let sizePhoto = file.size / 1024 / 1024 < 1;
+      // if(!sizePhoto && file.status == "ready"){
+      //   this.$message.error('上传头像图片大小不能超过1MB!');
+      //   return;
+      // }
+      let me = this,photoUrl = "";
+      let imgFile = file.raw;
+      if(this.dialogAddUserVisible){
+        photoUrl = 'addPhotoUrl';
+      }else if(this.dialogEditUserVisible){
+        photoUrl = 'editPhotoUrl';
+      }
+      //上传头像预览
+      let fr = new FileReader();
+      fr.onload = function (e) {
+          me[photoUrl] = fr.result;
+      };
+      fr.readAsDataURL(imgFile);
+    },
+    /**
+     * 上传头像之前的拦截方法。
+     */
+    beforeAvatarUpload (res,file) {
+      // const isLt2M = res.size / 1024 / 1024 < 1;
+      // // if (!isLt2M) {
+        
+      // // }
+      // return isLt2M;
+      // debugger;
+      // let me = this;
+      // var imgFile = res;
+      // var fr = new FileReader();
+      // fr.onload = function () {
+      //     me.addPhotoUrl = fr.result;
+      // };
+      // fr.readAsDataURL(imgFile);
+      // let me = this;
+    },
+    /**
+     * 上传头像成功之后的回调
+     */
+    handleAvatarSuccess (file) {
+      let me = this;
+      if(file && file.data.code == 200){
+        if(me.editUserForm.suser === this.user.user.userName){
+          //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
+          let database = JSON.parse(localStorage.database);
+          database.user.avatar = file.data.data;
+          //重新给缓存存储新的地址对象。这个地方主要是刷新的时候用的。
+          let obj = JSON.stringify(database); //转化为JSON字符串
+          localStorage.setItem("database", obj); //返回{"a":1,"b":2}
+          this.$store.dispatch("setUser", database);
+        }else {
+          //这个方法调了两遍，可以优化，暂时这样。
+          this.findAll(me.currentPage,me.pagesize);
+        } 
+        //修改成功之后，用户名置空，防止新增的时候上面的判断也有时成立。
+        this.editUserForm.suser = "";
+      }else{
+        this.$message.error('上传头像出错！');
+      }
+    },
     closeDilog(dialog) {
       console.log("close..." + dialog);
     },
@@ -794,6 +918,8 @@ export default {
      * @addUserForm 新增用户表单数据
      */
     submitAddUserForm(formName) {
+      //上传图片的请求。
+      // this.submitPhotoOfAdd();
       this.$refs[formName].validate(valid => {
         if (valid) {
           const _this = this;
@@ -831,6 +957,8 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
+                // //上传图片的请求。
+                _this.submitPhotoOfAdd();
                 //重新加载
                 _this.dialogAddUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
@@ -852,7 +980,19 @@ export default {
         }
       });
     },
-
+    /**
+     * 新增用户时，上传图片的请求
+     */
+    submitPhotoOfAdd () {
+      let me = this,$refId = "";
+      if(this.dialogEditUserVisible){
+        $refId = "editPhoto"
+      }else if (this.dialogAddUserVisible) {
+        $refId = "uploadPhoto";
+      }
+      let $upload = this.$refs[$refId];
+      $upload.submit();
+    },
     /**
      * @addUserForm 修改用户表单数据
      */
@@ -885,7 +1025,11 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
+                debugger;
+                //修改图片的请求。
+                _this.submitPhotoOfAdd();
                 //重新加载
+                debugger;
                 _this.dialogEditUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
               }
@@ -991,6 +1135,9 @@ export default {
       this.editUserForm.sphone = row.sphone;
       this.editUserForm.semail = row.semail;
       this.editUserForm.company = row.company;
+      this.editUserForm.avatar = row.avatar;
+      //修改头像图片
+      this.editPhotoUrl = row.avatar;
     },
     /**
      * @description 刷新
@@ -1274,9 +1421,16 @@ export default {
         }
       }).then(result => {
         if (result.status == 200) {
-          const data = result.data.data;
-          _this.userdata = data.datas;
-          _this.allNum = data.total;
+          if(result.data.data){
+            const data = result.data.data;
+            _this.userdata = data.datas;
+            _this.allNum = data.total;
+          }else{
+            _this.userdata = [];
+            _this.allNum = 0;
+          }
+
+          
         }
       });
     },
@@ -1360,7 +1514,6 @@ export default {
         }
         
       }
-      debugger;
       let pramer = {
             suser:userId,
             currentSuser:currentUserId,
@@ -1424,7 +1577,55 @@ lable[for="company"] {
   width: 70%;
 }
 </style>
-
+<style lang="scss" scoped>
+  .showUploadHead {
+    float: right;
+    display: inline-block;
+    height: 130px;
+    width: 100px;
+    // top: -20px;
+    right: 55px;
+    position: relative;
+  }
+  //图片的样式
+  .imgClass {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .uploadHead {
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+  }
+  //新增用户的样式调整 2019年3月27日10:54:51 szc
+  .dialog-body {
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+</style>
 
 
 

@@ -49,6 +49,25 @@
         return params;
 
     },
+    "queryDataAfter": function(data,$vue){
+      let datas = [] ;
+      let datax = [] ;
+      data.forEach(item => {
+          if((item.balance && item.balance!=0) || (item.oneyear && item.oneyear!=0) || 
+              (item.twoyear && item.twoyear!=0) || (item.threeyear && item.threeyear!=0) ||
+              (item.fouryear && item.fouryear!=0)){
+                  datas.push(item) ; 
+          }else{
+                  datax.push(item);
+          }
+      });
+      if(datax.length>0){
+          datax.forEach(item => {
+              datas.push(item);
+          })
+      }
+      return datas ;
+    },
       "config":{
         "sql":"",
         "sql1":"WITH COM AS( SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE = :company OR SPCODE LIKE :company||'%') AND CISDEL='N' /*AND CISLEAF = '1'*/) SELECT NID,SK, BALANCE, ONEYEAR, TWOYEAR,THREEYEAR, FOURYEAR, SKXZ,(CASE WHEN SFNB='1' THEN '是' WHEN SFNB='0' THEN '否' ELSE null END) AS SFNB, (CASE WHEN SFZC='1' THEN '是' WHEN SFZC='0' THEN '否' ELSE null END) AS SFZC,FZCFLTEXT AS FZCFL,ZWRZKTEXT AS ZWRZK, KHSJE, DNKHSJE,YQZK, SZXSSJE FROM (SELECT NID,B.SNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,ISINSIDE AS SFNB,ISNORMAL AS SFZC,D.SCODE FZCFL,D.SNAME AS FZCFLTEXT,E.SCODE AS ZWRZK, E.SNAME AS ZWRZKTEXT, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM (SELECT NID,DIM_CUSUPPLIER,DIM_COMPANY,DIM_ITEM,FACT_BALANCE,FACT_A,FACT_B,FACT_C,FACT_D,ISNATURE, ISINSIDE,ISNORMAL,SCONTENTA,SCONTENTB,FACT_E,FACT_F,FACT_G,FACT_H FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY IN (SELECT SCODE FROM COM) AND DIM_PERIOD=:period AND DIM_ITEM='1003') A INNER JOIN (SELECT SCODE,SNAME FROM DW_DIMCUSTOMER WHERE SCOMCODE IN ('1001',:company)) B ON A.DIM_CUSUPPLIER=B.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ) ",
@@ -66,6 +85,7 @@
           {
             "id": "szxssje",
             "type": "decimal",
+            "width": "180px",
             "text": "已形成实质性损失金额"
           },
           {
@@ -78,6 +98,7 @@
             "id": "sk",
             "type": "string",
             "text": "客商",
+            "fixed":true,
             "width":"300px"
           },
           {
@@ -144,6 +165,7 @@
           {
             "id": "dnkhsje",
             "type": "decimal",
+            "width": "180px",
             "text": "其中:当年可收回金额*"
           },
           {

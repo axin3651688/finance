@@ -64,7 +64,7 @@
       ></el-date-picker>
       <!-- 单位 -->
       <el-dropdown trigger="click" v-if="showDims.conversion">
-        <el-button type="text" class="underline">
+        <el-button type="text" class="monthUnderline">
           {{conversion.text}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
@@ -120,8 +120,20 @@
       :modal-append-to-body="false"
     >
       <div class="img-box"></div>
-      <el-row class="row-bg">
+      <el-row class="row-bg" style="text-align:center">
         <div class="user">
+          <!-- :http-request="uploadAvar" -->
+          <!-- <el-upload
+            class="avatar-uploader"
+            action="avar/upload/avar"
+            :data="{suser:'szc'}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="true" :src="user.user.avatar" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <!-- <div v-if="true" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
+          <!--</el-upload> -->
           <img :src="user.user.avatar" class="avatar">
         </div>
         <div class="user-item">
@@ -139,7 +151,7 @@
           </div>
         </div>
       </el-row>
-      <el-button @click="isShow = false" class="btn-primary">关闭</el-button>
+      <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
   </header>
 </template>
@@ -154,6 +166,7 @@ export default {
   name: "Headnav",
   data() {
     return {
+      // avarUrl:"",
       companyId: "",
       companyName_cache: "",
       treeInfo: {},
@@ -181,6 +194,9 @@ export default {
     CompanyTree
   },
   created() {
+    //头像图片显示。
+    // let userCng = this.$store.getters.user.user;
+    // this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
     this.value = this.year + this.month + this.date;
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
@@ -235,6 +251,30 @@ export default {
   //   }
   // },
   methods: {
+   
+    handleAvatarSuccess (e) {
+      if(e && e.data.code == 200){
+        //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
+        let database = JSON.parse(localStorage.database);
+        database.user.avatar = e.data.data;
+        this.$store.dispatch("setUser", database);
+        // let userCurrent = this.$store.state.user.user.user;
+        // userCurrent.avatar = e.data.data;
+        // this.$store.dispatch("setUser", userCurrent);
+        // this.$store.state.user.user.user.avatar = e.data.data;
+      }else{
+        this.$message.error('上传头像出错！');
+      }
+    },
+    beforeAvatarUpload(file){
+      let me = this;
+      const isLt2M = file.size / 1024 / 1024 < 1;
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过1MB!');
+      }
+      return isLt2M;
+
+    },
     //隐藏与显示的回调
     dropChange (flag,dd) {
       debugger;
@@ -244,7 +284,6 @@ export default {
       }
     },
     changeBecauseOfNode(){
-      debugger;
       let me = this;
       let bean = getClientParams();
       if (bean.monthCount && bean.monthCount > 0) {
@@ -347,4 +386,32 @@ export default {
 <style lang="scss">
 .head-nav {
 }
+</style>
+<style lang="scss" scoped>
+  .user {
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
+  }
+  
 </style>

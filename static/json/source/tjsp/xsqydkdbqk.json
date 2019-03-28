@@ -40,12 +40,14 @@
               {
                 "id": "id",
                 "type": "string",
+                // "fixed": true,
                 "text": "公司编码"
               },
               {
                 "id": "gsmc",
                 "type": "string",
                 "text": "公司名称",
+                // "fixed": true,
                 "width":"300px"
 
               },
@@ -53,6 +55,7 @@
                     "id":"yhmc",
                     "type":"string",
                     "text":"机构名称",
+                    // "fixed": true,
                     "width":"300px"
                 },
                 {

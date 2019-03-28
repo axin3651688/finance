@@ -2,8 +2,10 @@
   <!-- 公司编码 这个是可变的  统一用xtype判断 xtype="" isTree设置是true -->
   <el-table-column
     v-if="col.isTree  && (tableData.xtype==='tree-grid'|| tableData.xtype==='STreeGrid') "
+    fixed
     :prop="col.id"
     :label="col.text"
+    :width="col.width || 120"
     :min-width="col.width||80"
   >
     <template slot-scope="scope">
@@ -23,6 +25,7 @@
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  自动序列rownumber==>index类型的数据-->
   <el-table-column
     v-else-if="col.type === 'index' "
+    fixed
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
@@ -41,7 +44,7 @@
     :width="col.width"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.index]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
@@ -50,7 +53,7 @@
 
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据-->
   <el-table-column
-    v-else-if="col.type === 'string'"
+    v-else-if="col.type === 'string' && !col.fixed"
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'left'"
@@ -66,6 +69,22 @@
             <el-button type="text">{{ scope.row[col.id] }}</el-button>
         </span>
         <span v-else>{{ scope.row[col.id] }}</span>-->
+      </el-tooltip>
+    </template>
+  </el-table-column>
+  <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据  固定列-->
+  <el-table-column
+    v-else-if="col.type === 'string' && col.fixed"
+    fixed
+    :prop="col.id"
+    :label="col.text"
+    :align="col.align|| 'left'"
+    :min-width="col.width||150"
+    :width="col.width"
+  >
+    <template slot-scope="scope">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+        <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -241,19 +260,36 @@ export default {
        * name：sjz
        * 功能：点击父级，展现他所有的孩子。 
        */
+      debugger
+      let me = this ;
+      // let companyId = me.$store.getters.treeInfo.scode ;
+      // let nlevel = me.$store.getters.treeInfo.nlevel ;
       let rows = scope.row;
-      rows._expanded = !rows._expanded ;
-      for(let i=0;i<rows.children.length;i++){
-        if(rows.children.length>0){
-          rows.children[i]._expanded = true;
-          for(let o=0;o<rows.children[i].children.length;o++){
-            rows.children[i].children[o]._expanded = true;
+      // rows._expanded = !rows._expanded ;
+      // if(scope.row.gsbm == '1001'){
+        rows._expanded = !rows._expanded ;
+      // }else{
+        for(let i=0;i<rows.children.length;i++){
+          if(rows.children.length>0){
+            rows.children[i]._expanded = true;
+            for(let o=0;o<rows.children[i].children.length;o++){
+              rows.children[i].children[o]._expanded = true;
+            }
           }
-        }
+        // }
       }
+
+      // for(let i=0;i<rows.children.length;i++){
+      //   if(rows.children.length>0){
+      //     rows.children[i]._expanded = true;
+      //     for(let o=0;o<rows.children[i].children.length;o++){
+      //       rows.children[i].children[o]._expanded = true;
+      //     }
+      //   }
+      // }
       // let record = this.tableData.datas[trIndex];
       // record._expanded = !record._expanded;
-      console.log(record);
+      // console.log(record);
     },
     // 图标显示
     iconShow(index, record) {
@@ -273,7 +309,7 @@ export default {
       let level = this.$store.getters.treeInfo.level;//获取公司等级
       let len = this.tableData.datas;//获取数据长度
       let id = this.$parent.tableData.id;//获取下钻表的id名称
-      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej'){ //判断是否为三张主表的下钻，如果不是，不做一下操作。
+      if(id=='zcfzbej' || id=='lrbej' || id=='xjllbej' || id=='zjjzqkhz'){ //判断是否为三张主表的下钻，如果不是，不做一下操作。
         if(xtype == 'STreeGrid' || xtype == 'STreeGrid'){//判断类型
             if(companyId=='1001'){//判断公司id为总集团公司              
                   const record = this.tableData.datas[0];

@@ -77,7 +77,7 @@
     },
     "show": true,
     "__queryDataAfter": function(data) {
-        debugger;
+
         let me = this;
         let columns = me.columns;
         let unit = me.unit;
@@ -122,17 +122,28 @@
                         "id": 1,
                         "text": "元"
                     },
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "listeners": [{
                         "type": "click",
                         "way": "addTab",
                         "addTabBefore": ($vue, params, listener, bb) => {
-                            debugger;
+
                             let me = this,
                                 flag = true;
                             let itemscode = $vue.item.GItemScode;
                             if (itemscode) {
                                 $vue.$store.itemscode = itemscode;
                             }
+                            //处理bb钻取的民称。
+                            // bb = {
+                            //         "way": "joint",
+                            //         "position": "before",
+                            //         "text": "公司"
+                            //     }
                             // $vue.$confirm('选择板块/公司进行下钻？', '提示', {
 
                             // 	confirmButtonText: '公司',
@@ -142,7 +153,7 @@
                             // 	type: 'warning'
                             // 	// ,
                             // 	// beforeClose:function(action, instance, done){
-                            // 	// 	debugger;
+                            // 	// 	
                             // 	// 	$vue[listener.way](params, listener, bb);
                             // 	// }
                             // }).then(() => {
@@ -177,7 +188,7 @@
                         },
                         "sourceApi": "/cnbi/json/source/tjsp/ybpDebug.json",
                         "handler": ($vue, params) => {
-                            debugger;
+
                             // $vue.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                             // 	confirmButtonText: '确定',
                             // 	cancelButtonText: '取消',
@@ -218,12 +229,17 @@
                     "watchConfig": {
                         "itemNames": ["bnlj", "bnmb", "wcl"]
                     },
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "show": true,
                     "listeners": [{
                         "type": "click",
                         "way": "addTab",
                         "addTabBefore": ($vue, params, listener, bb) => {
-                            debugger;
+
                             let me = this,
                                 flag = true;
                             let itemscode = $vue.item.GItemScode;
@@ -255,13 +271,18 @@
                     "id": "14001112",
                     "text": "营业收入（万元）",
                     "watchState": true,
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "extendConfig": "p", //继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
                     "weight": 6,
                     "listeners": [{
                         "type": "click",
                         "way": "addTab",
                         "addTabBefore": ($vue, params, listener, bb) => {
-                            debugger;
+
                             let me = this,
                                 flag = true;
                             let itemscode = $vue.item.GItemScode;
@@ -286,7 +307,7 @@
                             "type": 2,
                             "columns": [{
                                 "id": "bnlj",
-                                "name": "本期"
+                                "_name": "本期"
                             }, {
                                 "id": "sntq"
                             }],
@@ -311,7 +332,6 @@
                         "type": "click",
                         "way": "addTab",
                         "addTabBefore": ($vue, params, listener, bb) => {
-                            debugger;
                             let me = this,
                                 flag = true;
                             let itemscode = $vue.item.GItemScode;
@@ -330,6 +350,11 @@
                         }
                     }],
                     "GItemScode": "1403100",
+                    "customTabName": {
+                        "way": "joint",
+                        "position": "before",
+                        "text": "公司"
+                    },
                     "options": {
                         "type": "column",
                         "getData": {
@@ -1250,7 +1275,7 @@
                     "chartListeners": {
                         "way": "transChartOption",
                         "transChartOption": function(option, that) {
-                            debugger;
+
                             let me = this,
                                 numFlag = 0;
                             let data = option.series[0].data,
@@ -1324,7 +1349,7 @@
                             "label": {
                                 "position": "inside",
                                 "formatter": function(params) {
-                                    // debugger;
+                                    // 
                                     return params.name + "：" + params.percent + "%";
                                     // if(params.value == 0){
                                     // 	return "";
@@ -1487,7 +1512,7 @@
                     "chartListeners": {
                         "way": "transChartOption",
                         "transChartOption": function(option, that) {
-                            debugger;
+
                             let me = this,
                                 numFlag = 0;
                             let data = option.series[0].data,

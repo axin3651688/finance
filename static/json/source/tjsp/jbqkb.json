@@ -80,6 +80,7 @@
             "id" : "sname",
             "type" : "string",
             "text" : "项目",
+            "fixed": true,
             "width": "320px"
         },
         {

@@ -15,7 +15,6 @@ export default {
     };
   },
   created() {
-    //debugger;
     this.readLocalStorage();
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;
@@ -40,6 +39,7 @@ export default {
           !Cnbi.isEmpty(localStorage.authorization)
         );
         // 由于localStorage只能存字符串,需转json
+        // this.$store.dispatch("setUser", JSON.parse(localStorage.database));
         this.$store.dispatch("setUser", JSON.parse(localStorage.database));
         // 假如用户是新用户或被清理了缓存,不执行以下语句
         var vd = {};

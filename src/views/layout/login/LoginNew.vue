@@ -21,13 +21,13 @@
                   <img src="@a/loginT/first.jpg" class="first">
                 </div>
                 <div v-if="item == 2" class="first">
-                  <img src="@a/loginT/two.jpg" class="first">
+                  <img :src="imageUrl2" class="first">
                 </div>
                 <div v-if="item == 3" class="first">
-                  <img src="@a/loginT/three.jpg" class="first">
+                  <img :src="imageUrl3" class="first">
                 </div>
                 <div v-if="item == 4" class="first">
-                  <img src="@a/loginT/four.jpg" class="first">
+                  <img :src="imageUrl4" class="first">
                 </div>
                 <!-- <template slot-scope="scope">
                   <div v-if="scope.index == 0" class="first">{{ item }}</div>
@@ -54,7 +54,7 @@
           :model="loginUser" 
           ref="loginForm" 
           class="login-form formContent" 
-          hide-required-asterisk="true">
+          :hide-required-asterisk="true">
             <el-form-item prop="usename">
               <label slot="label" class="form-label">用户名</label>
               <el-input  v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
@@ -116,6 +116,7 @@ import { mapActions } from "vuex";
 import router from "@v/layout/router";
 import store from "@/store";
 import webSocket from "utils/webSocket";
+import { UploadShow } from '~api/cube';
 export default {
   name: "Login",
   created() {
@@ -126,10 +127,15 @@ export default {
     }
     //每次打开获取一下原来的用户名
     this.loginUser.usename = localStorage.getItem("usename");
+    // 轮播图图片切换
+    this.initCarousels();
   },
 
   data() {
     return {
+      imageUrl2 : '',　
+      imageUrl3 : '',
+      imageUrl4 : '',
       pwdType: "password",
       loginUser: {
         usename: "",
@@ -169,6 +175,30 @@ export default {
     //     this.pwdType = "password";
     //   }
     // },
+    // sjz 初始化轮播图 
+    initCarousels(){
+      // 走马灯轮播请求
+      UploadShow().then(ress => {
+        debugger
+          if(ress.data.code == 200){
+            let datas = ress.data.data;
+            if(datas.length > 0 ){
+              [2,3,4].forEach(element => {
+                  this.setCarousel(datas,element);
+              });                 
+            }
+          }
+      })
+    },
+    //sjz 
+    setCarousel(datas,key){
+      let d = datas.filter(ele=>{
+          return (ele.name - 0) === (key - 0) ;
+      })
+      debugger
+      this["imageUrl" + key] = d && d.length == 1 ? d[0].content  : '';
+    },
+
     submitForm(formName) {
       debugger;
       this.$refs[formName].validate(valid => {
@@ -178,7 +208,7 @@ export default {
               debugger;
               // 获取token
               // console.log(res);
-              if(res.data && res.data.code == 0){
+              if(res.data && res.data.code != 200){
                 this.$notify.error({
                   title: "错误",
                   message: res.data.msg
@@ -193,10 +223,14 @@ export default {
                 localStorage.setItem("authorization", token);
                 // 用户名记住,方便下次登录
                 localStorage.setItem("usename", this.loginUser.usename);
+                //此处添加一个头像图片的地址。
+                // data.user.avarUrl = "avar/upload/avar/" + data.user.userName;
                 var obj = JSON.stringify(data); //转化为JSON字符串
                 localStorage.setItem("database", obj); //返回{"a":1,"b":2}
                 //    token存储到vuex中
                 store.dispatch("setIsAutnenticated", !Cnbi.isEmpty(token));
+                //此处添加一个头像图片的地址。
+                // data.user.avarUrl = "avar/upload/avar/" + data.user.userName;
                 store.dispatch("setUser", data);
                 // 把用户的状态更新到vuex
                 // alert(data.company.text);
@@ -271,10 +305,13 @@ export default {
   height:20% !important;
   text-align: center;
 }
-.el-form-item__label {
-  font-size: 16px;
-  color: #5A5A5A;
+.formContent {
+  .el-form-item__label {
+    font-size: 16px;
+    color: #5A5A5A;
+  }
 }
+
 .el-carousel__item {
   border-radius: 70px;
 }

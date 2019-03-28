@@ -8,7 +8,7 @@
         {
         "id":"",
         "text":"",
-        "stype": "table",
+        "stype": "tree",
         "xtype":"bi-table",
         "weight": 24,
         "show":true,
@@ -34,6 +34,9 @@
                 }else{
                     item.riskrange = "错误！不在范围之内！" ;
                 }
+                if(item.scode == '9'){
+                    item.scode = '' ;
+                }
             });
             return data ;
         },
@@ -58,22 +61,26 @@
                 {
                     "text": "已形成实质性损失金额",
                     "type":"decimal",
+                    "width":"180",
                     "id": "www4"
                 },
                 {
                     "text": "公司编码",
+                    "fixed":true,
                     "type":"string",
                     "id": "scode"
                 },
                 {
                     "text": "公司名称",
                     "type":"string",
-                    "width":"275",
+                    "fixed":true,
+                    "width":"330",
                     "id": "gsmc"
                 },
                 {
                     "text": "口径",
                     "type":"string",
+                    "fixed":true,
                     "id": "kj"
                 },
                 {
@@ -89,6 +96,7 @@
                 {
                     "text": "与年初相比增减率（%）",
                     "type":"decimal",
+                    "width":"180",
                     "conversion":"%",
                     "id": "zjl"
                 },
@@ -146,16 +154,19 @@
                         },
                         {
                             "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+                            "width": "330",
                             "type":"decimal",
                             "id": "fff3"
                         },
                         {
                             "text": "为其他企业代偿金融机构的贷款",
+                            "width":"230",
                             "type":"decimal",
                             "id": "fff4"
                         },
                         {
                             "text": "长期挂账、未及时清理",
+                            "width":"180",
                             "type":"decimal",
                             "id": "fff5"
                         },
@@ -178,6 +189,7 @@
                 },
                 {
                     "text": "其中：当年可收回金额",
+                    "width":"180",
                     "type":"decimal",
                     "id": "www2"
                 },

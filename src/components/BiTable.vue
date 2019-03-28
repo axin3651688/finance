@@ -60,6 +60,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      input3: '',
       heights: 500,
       offsetHeight:document.body.offsetHeight,
       flag: true,
@@ -587,7 +588,7 @@ export default {
 </script>
 <style >
 .toolbar {
-  margin: 2px 0 5px 0;
+  margin: 3px 0 5px 0;
 }
 .el-table {
   background-color: transparent !important;

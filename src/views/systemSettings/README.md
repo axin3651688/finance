@@ -1,6 +1,12 @@
 # systemSettings---系统设置
   + log --- 日志管理
   + online --- 在线用户
+  + EVA --- eva表
+  + cityResults2 --- 市管企业经营业绩情况表
+  + cityResults --- 市管企业经营业绩情况表（旧的，弃用）
+  + dimension --- 维度管理
+    - tabPicture --- 图片编辑管理
+    - tabIndustry -- 行业板块管理
 
 # 接口
   - 路径：src/api/cube.js
@@ -99,3 +105,21 @@ watch:{
     }
 } 
 ~~~ 
+~~~
+4. 自适应高度方法（推荐）
+mounted(){
+    // （1）自适应高度
+    this.setTableScollHeight() ;
+},
+methods: {
+    // （1）自适应高度方法
+    setTableScollHeight(res){
+        // debugger
+        this.styles.height = document.body.offsetHeight - 40 - 64 - 32 + "px" ;
+        const me = this ;
+        window.onresize = function temp(){
+            me.styles.height = document.body.offsetHeight - 40 - 64 - 32 + "px" ;
+        }
+    }
+}
+~~~

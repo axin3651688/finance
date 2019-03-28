@@ -36,7 +36,7 @@
             "children":[{
                 "id": "m11",
                 "type": "decimal",
-                "width":"150px",
+                "width":"180px",
                 "text": "当年年考核目标建议值"
             },{
                 "id": "m12",
@@ -47,6 +47,7 @@
                 "id": "m13",
                 "type": "decimal",
                 "width":"150px",
+                "conversion":"%",
                 "text": "完成目标进度%"
             },{
                 "id": "",
@@ -79,12 +80,14 @@
             "id": "gsbm",
             "type": "string",
             "width":"120px",
+            "fixed": true,
             "text": "公司编码"
         },
         {
             "id": "gsmc",
             "type": "string",
             "width":"320px",
+            "fixed": true,
             "text": "公司名称"
         },
         {
@@ -94,7 +97,7 @@
             "children":[{
                 "id": "m1",
                 "type": "decimal",
-                "width":"150px",
+                "width":"180px",
                 "text": "当年年考核目标建议值"
             },{
                 "id": "m2",
@@ -105,6 +108,7 @@
                 "id": "m3",
                 "type": "decimal",
                 "width":"150px",
+                "conversion":"%",
                 "text": "完成目标进度%"
             },{
                 "id": "",

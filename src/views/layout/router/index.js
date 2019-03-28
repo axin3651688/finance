@@ -203,6 +203,12 @@ const router = new Router({
           component: () =>
             import('@v/systemSettings/EVA')
         },
+        {// 维度管理
+          path: '/dimension',
+          name: 'dimension',
+          component: () =>
+            import('@v/systemSettings/dimension')
+        },
         {//数据抽取
           path: '/extradata',
           name: 'extradata',

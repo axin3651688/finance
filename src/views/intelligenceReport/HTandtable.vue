@@ -27,8 +27,10 @@
         </div>
         <div class="right">
           <el-button class="button">审阅</el-button>
-          <el-button class="button">上报</el-button>
+          <el-button class="button" @click="reportHandle">上报</el-button>
         </div>
+        <!-- 上报的人员modal -->
+        <SRModal v-if="true" :modalConfig.sync="modalConfig"></SRModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
         <hot-table
           v-if="settings.data && settings.data.length>0"
@@ -109,6 +111,7 @@ import { mapGetters } from "vuex";
 import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
 import SBiDiv from "@c/SBiDiv";
+import SRModal from "@v/intelligenceReport/SRModal";
 import {
     importExcel,
     inquire,
@@ -116,17 +119,21 @@ import {
     download,
     del,
     financingDown,
-    mechanism
+    mechanism,
+    queryUserByCompany
 } from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
   components: {
     HotTable,
-    SBiDiv
+    SBiDiv,
+    SRModal
     // BiModule
   },
   data() {
     return {
+      //上报人员的modal框的显示。
+      modalConfig:{},
       //控制显示区域块
       divShow:false,
       fillShow:true,
@@ -183,8 +190,8 @@ export default {
         minCols: 5,
         maxCols: 20,
         rowHeaders: true, //行表头
-        colHeaders: [], //表头数据
-        // nestedHeaders: [],//多表头
+        colHeaders: true, //表头数据
+        nestedHeaders: [],//多表头
         autoWrapRow: true, //自动换行
         fillHandle: false, //选中拖拽复制  true, false
         fixedColumnsLeft: 0, //固定左边列数
@@ -215,6 +222,7 @@ export default {
   },
   watch: {
     templateId(val) {
+      debugger;
       this.tableData = [];
     },
     year(val) {
@@ -484,6 +492,7 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
+    debugger;
   },
   mounted() {
     let data = 10;
@@ -512,10 +521,85 @@ export default {
     ...mapGetters(["user", "year", "month", "company"])
   },
   methods: {
+    /**
+     * 上报的处理按钮。
+     */
+    reportHandle () {
+      debugger;
+      let me = this;
+      this.modalConfig = {
+        title:"上报人员",
+        dialogVisible:true,
+        checkbox:true,
+        type:"tree",
+        id:'userReport',
+        title: "上报人员",
+        datas: [
+          {
+            id: 1,
+            label: '一级 1'
+          }, {
+            id: 2,
+            label: '一级 2',
+            children: [{
+              id: 5,
+              label: '二级 2-1'
+            }, {
+              id: 6,
+              label: '二级 2-2'
+            }]
+          }, {
+            id: 3,
+            label: '一级 3',
+            children: [{
+              id: 7,
+              label: '二级 3-1'
+            }, {
+              id: 8,
+              label: '二级 3-2'
+            }]
+          }
+        ],
+        props:{
+          label: "label",
+          children: "children"
+        }
+      }
+      this.modalConfig.datas = this.queryUserByCompany();
+    },
+    /**
+     * 查询当前公司下的用户。
+     */
+    queryUserByCompany(){
+      debugger;
+      let me = this,companyId = this.$store.getters.company,userData = [];
+      let params = {companyId:companyId};
+      queryUserByCompany(params).then(res => {
+        if(res.data.code == 200){
+          //转换成对应的格式。
+          userData = me.parseTypeOfTree(res.data.data);
+          me.modalConfig.datas = userData;
+          // return userData;
+        }else {
+          this.$message.error('用户信息查询失败！');
+        }
+      });
+      // return userData;
+    },
+    parseTypeOfTree (data) {
+      debugger;
+      let me = this;
+      data.forEach(item => {
+        if(item){
+          item.label = item.suser;
+        }
+      });
+      return data;
+    },
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
-      let flag = true,html = "<p>此公司无填报权限！</p>";
+      let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
       //第一次登陆的时候有事treeInfo可能会是id
       if(companyId == treeInfo.scode || companyId == treeInfo.id){
         if(treeInfo.nisleaf == 0){
@@ -564,6 +648,7 @@ export default {
     },
     //应收账款分析表  表格里面下拉的数据
     getDropDownSource(id) {
+      // debugger
       let array = this.dataDict.filter(item => item.pid === id);
       let source = [];
       array.forEach(element => {
@@ -652,7 +737,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      
+      debugger
       let obj = {};
       let index;
       let key;
@@ -663,11 +748,16 @@ export default {
       let modify;
       let datas = this.settings.data;
       let row;
+      //判断没有值没有改变直接返回。
+      if(changes && changes[0][2] && changes[0][3] &&　changes[0][2] === changes[0][3]){
+        return;
+      }
       // return
       //融资的新增与减少的判断
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
       }
+      debugger;
       if (changes && changes.length > 0) {
         index = changes[0][0];
         key = changes[0][1];
@@ -681,23 +771,11 @@ export default {
         if (values == "" && key != "status" && this.templateId != "7") {
           values = 0;
         }
-        let x;
+        // let x;
         let arr = datas.filter(record => {
-          x = record;
+          // x = record;
           return record.cusuppliername != null;
         });
-        // console.log(x)
-        // console.log("datas",arr)
-        // for(var i=0;i<arr.length-1;i++){
-        //     row = datas[i]
-        //     if(row.cusuppliername && row.cusuppliername !=null && row.cusuppliername == values){
-        //         this.$message({
-        //             type: 'error',
-        //             message: '商客名称重复，请重新输入'
-        //         })
-        //     }
-        // }
-
         let me = this;
         function res(arr) {
           
@@ -733,6 +811,7 @@ export default {
               changeRecord[key] = values;
             }
           } else {
+            debugger;
             if (reg.test(values) === true) {
               let bb = { index: index };
               bb[key] = values;
@@ -745,12 +824,26 @@ export default {
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
+            debugger;
             if (index != 0) {
               let bb = { index: index };
               bb[key] = values;
               this.tableData.push(bb);
             }
-          } else {
+          } else if(this.templateId == 9) {
+            //添加一个基本情况表的item编码。
+            let changeRow = datas[index];
+            let bb = { index: index,item: changeRow.item };
+            bb[key] = values;
+            this.tableData.push(bb);
+          }else if(this.templateId == 12) {
+            //添加一个基本情况表的item编码。
+            let changeRow = datas[index];
+            let bb = { index: index,item: changeRow.item };
+            bb[key] = values;
+            this.tableData.push(bb);
+          }else {
+            debugger;
             if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
               let bb = { index: index };
               bb[key] = values;
@@ -760,6 +853,7 @@ export default {
           // })
         }
       }
+      debugger;
       // localStorage.setItem("saveData",JSON.stringify(this.tableData))
       this.tableData.forEach(e => {
         indexs = e.index;
@@ -817,6 +911,7 @@ export default {
           }
         }
       });
+      
       console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
@@ -937,20 +1032,35 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        
-        // if (columns == 1 || columns == 3 || columns == 4) {
-        //   cellMeta.readOnly = true;
-        // }
-        // if ((row === 0 && columns === 0) || (row === 0 && columns === 2)) {
-        //   cellMeta.readOnly = true;
-        // }
         //资金集中度的填写限制
         if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
         }
+      }else if(this.templateId == 9){
+        //基本情况表的判断只读的列
+        if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2)){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
+      }else if (this.templateId == 10) {
+        //集团年度目标考核建议值。
+        if(columns != 1 && columns != 4){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
+      }else if (this.templateId == 12) {
+        //市管企业利润总额考核调整表。
+        if(columns == 0){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
       }
+      
       return cellMeta;
     },
     //请求查询回来的数据的类型
@@ -985,10 +1095,10 @@ export default {
       }
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
-    convertHansoneTableColumns(columns, rows) {
+    convertHansoneTableColumns(columns, rows,res) {
       
       let me = this;
-      if (this.fixed === 0) {
+      if (this.fixed === 0 && this.templateId != "9") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
       }
@@ -1017,26 +1127,29 @@ export default {
             } else if (col.id === "caozuo") {
               cc.renderer = this.flags;
               cc.readOnly = true;
-            } else if (col.id === "isnature") {
+            } else if (col.id === "isnature") {// 客商性质
               cc.source = this.getDropDownSource("1400");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
-            } else if (col.id === "isinside") {
+            } else if (col.id === "isinside") {//isinside
               cc.source = this.getDropDownSource("1700");
               cc.renderer = this.flagrenderer;
-              cc.type = "autocomplete";
+              // cc.type = "autocomplete";
+              cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "isnormal") {
+              console.log(rows);
+            } else if (col.id === "isnormal") {// 是否正常
+              debugger
               cc.source = this.getDropDownSource("1800");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "scontenta") {
+            } else if (col.id === "scontenta") {// 非正常分类
               cc.source = this.getDropDownSource("1500");
               // cc.renderer = this.flagrenderer
               cc.type = "dropdown";
               cc.readOnly = false;
-            } else if (col.id === "scontentb") {
+            } else if (col.id === "scontentb") {// 债务人状况
               cc.source = this.getDropDownSource("1600");
               // cc.renderer = this.flagrenderer
               cc.type = "dropdown";
@@ -1055,6 +1168,7 @@ export default {
             } else if (col.id === "srepaydate") {
               (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
             } else if (col.id === "cismenu") {
+              debugger;
               cc.source = this.financingOptionsData("1700");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
@@ -1074,10 +1188,25 @@ export default {
           }
           newCoulmns.push(cc);
           colHeaders.push(col.text);
+          // if(me.templateId != 9 || (me.templateId == 9 && cc && cc.data != "item")){
+          //   newCoulmns.push(cc);
+          //   colHeaders.push(col.text);
+          // }
+          
         }
+      }
+      //基本情况表、市管企业不显示编码。过滤掉
+      if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
+        newCoulmns = newCoulmns.filter(item => {
+          return item.data != "item";
+        });
+        colHeaders = colHeaders.filter(item => {
+          return item != "项目编码";
+        });
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
+      debugger;
       // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
@@ -1085,7 +1214,27 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
+      // this.settings.colHeaders = true;
+      // this.settings.rowHeaders = true;
+      // this.settings.nestedHeaders = res.data.data.columnsShow;
+      //新加一个装换成相应的数字显示成文字处理。
+      if(this.templateId == 7 && rows && rows.length > 0){
+        let itemNames = [//guarantee repaysource
+          {"text":"cismenu","type":"single"},
+          {"text":"cisguarantee","type":"single"},
+          {"text":"guarantee","type":"MSeries","root":"financing"},
+          {"text":"repaysource","type":"MSeries","root":"financing"}
+        ];
+        this.parseNumberToString(itemNames,rows);
+      }else if(this.templateId == 4 && rows && rows.length > 0) {
+        let itemNames = [//guarantee repaysource
+          {"text":"isinside","type":"single"},
+          {"text":"isnature","type":"MSeries","root":"dataDict"}
+        ];
+        this.parseNumberToString(itemNames,rows);
+      }
       this.settings.data = rows;
+      rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
       setTimeout(() => {
@@ -1107,6 +1256,34 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    /**
+     * 有些查询出来的是 1 or 0 or 别的， 在此转换成要显示的字符串。
+     * 2019年3月26日10:41:04 szc
+     */
+    parseNumberToString(itemNames,rows) {
+      let me = this;
+      if(itemNames && itemNames.length > 0){
+        for(let i = 0; i < itemNames.length;i ++){
+          let item = itemNames[i];
+          if(item.type == "single"){
+            rows.forEach(tt => {
+              tt[item.text] == 1? tt[item.text] = "是":tt[item.text] = "否";
+            });
+          }
+          if(item.type == "MSeries"){
+            for(let j = 0; j < rows.length;j ++){
+              let rowItem = rows[j];
+              let filItem = me[item.root].filter(filIt => {
+                return filIt.id == rowItem[item.text];
+              });
+              if(filItem && filItem.length > 0){
+                rowItem[item.text] = filItem[0].text;
+              }
+            }
+          }
+        }
+      }
     },
     financeValidator(instance, td, row, col, prop, value, cellProperties) {
       debugger;
@@ -1184,15 +1361,22 @@ export default {
     },
     //点击保存数据
     saveData() {
-      
       let that = this;
+      //判断是不是有改动。
+      if(this.tableData && this.tableData.length == 0){
+        this.$message({
+          message: '没有改动！',
+          type: 'warning'
+        });
+        return;
+      }
       this.tableData.forEach(item => {
         //isinside
         // a = item
         let keys = Object.keys(item);
         let flag = false;
         for (let key of keys) {
-          // debugger
+          debugger
           if (item.isinside == "是") {
             if (
               key === "isinside" &&
@@ -1251,7 +1435,7 @@ export default {
         templateId: this.templateId,
         rows: this.tableData,
         fixed: this.fixed,
-        user: this.user.user.username
+        user: this.user.user.userName
       };
       console.log(objs);
       let newtabledata = this.settings.data;
@@ -1286,6 +1470,7 @@ export default {
           // console.log("保存", res);
           this.reportData(this.datas);
           if (res.data.code === 200) {
+            debugger
             me.$message({
               message: res.data.msg,
               type: "success"
@@ -1358,7 +1543,7 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1382,7 +1567,6 @@ export default {
       this.datas = excelUploadParaDto;
       //当前的参数保存在大对象里
       this.$store.curParams = this.datas;
-      debugger;
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
       this.reportData(this.datas);
@@ -1392,7 +1576,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','4','5','6'],flag = true;
+      let arr = ['0','1','2','3','9'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
@@ -1409,6 +1593,7 @@ export default {
       // console.log("传递的data", this.datas);
       let me = this;
       inquire(this.datas).then(res => {
+        debugger;
         console.log("查询", res);
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
@@ -1419,7 +1604,7 @@ export default {
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
         }
-        me.convertHansoneTableColumns(columns, rows);
+        me.convertHansoneTableColumns(columns, rows,res);
       });
     },
     /**
@@ -1613,7 +1798,7 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      
+      debugger;
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
@@ -1644,7 +1829,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          
+          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1663,6 +1848,14 @@ export default {
             }
           });
           let a = me.tableData;
+          //融资情况表加一个删除的判断。针对保存之后会刷新来加的。
+          let rzFlag = false;
+          if((me.templateId == "7" || me.templateId == "8") && nid == null){
+            rzFlag = me.deleteHandle(nid,row);
+            if(rzFlag){
+              return;
+            }
+          }
           if (nid != 0) {
             let data = {
               // company:me.company,
@@ -1705,8 +1898,22 @@ export default {
         });
       }
     },
+    /**
+     * 融资情况表填报的删除处理。
+     */
+    deleteHandle (nid,row) {
+      let me = this,arrData = this.settings.data;
+      let arrItem,flag = true;
+      //暂时没有任何提示直接删除没有保存的数据。
+      arrItem = arrData.filter((item,index) => {
+        return index == row;
+      });
+      let $hot = this.$refs.hotTableComponent.hotInstance.alter("remove_row", row);
+      return flag;
+    },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
+      debugger
       if (!value) {
         return;
       }
@@ -1726,6 +1933,7 @@ export default {
     },
     //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
+      debugger;
       if (!value) {
         return;
       }
@@ -1794,7 +2002,7 @@ export default {
 }
 .underline {
   border: 1px solid #dcdfe6;
-  width: 220px;
+  width: 240px;
   margin-left: 10px;
   background-color: #f5f7fa;
 }

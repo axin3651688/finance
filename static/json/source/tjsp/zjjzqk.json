@@ -12,21 +12,21 @@
     let datas = [];//有数据的
     let datax = [];//没有数据的
     me.items[0].updateView = $vue.updateView;
-    data.forEach((item,index)=>{
-      if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
-        datas.push(item);
-      }else{
-        datax.push(item)
-      }
-    });
-    if(datax.length>0){
-      datax.forEach(item => {
-        debugger
-        datas.push(item);
-      });
-    }
-    return datas;
-    // return data ;
+    // data.forEach((item,index)=>{
+    //   if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
+    //     datas.push(item);
+    //   }else{
+    //     datax.push(item)
+    //   }
+    // });
+    // if(datax.length>0){
+    //   datax.forEach(item => {
+    //     debugger
+    //     datas.push(item);
+    //   });
+    // }
+    // return datas;
+    return data ;
 },
 
   // "changeYearBefore":function(newyear,option){
@@ -42,7 +42,8 @@
 
   "config":{
     //"sql000":"SELECT CASE WHEN C.SCODE IS NULL THEN '' ELSE '' END AS gsbm, CASE WHEN C.SCODE IS NULL THEN B.SCODE ELSE C.SCODE END AS SCODE, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname ,(CASE WHEN C.SNAME IS NULL THEN 'SH' ELSE C.SNAME END) AS YHZHMC,B.SCODE AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE (NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMBANK C ON A.DIM_ACCOUNTBANKS=C.SCODE WHERE B.SCODE IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND CTYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CTYPE='0') ORDER BY B.SCODE,DIM_ACCOUNTBANKS DESC",
-    "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN B.scode ELSE C.SCODE END AS gsbm, CASE WHEN C.SCODE IS NULL AND B.SNAME IS NOT NULL THEN B.SCODE ELSE '' END AS scode, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname , C.SNAME AS YHZHMC,( CASE WHEN C.SNAME IS NULL THEN null ELSE B.SCODE END) AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE round((NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))*100),4) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMACCOUNTBANKS C ON A.DIM_ACCOUNTBANKS=C.SCODE WHERE B.SCODE IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND STYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='0') ORDER BY B.SCODE,DIM_ACCOUNTBANKS ",
+    // "sql":"SELECT CASE WHEN C.SCODE IS NULL THEN B.scode ELSE C.SCODE END AS gsbm, CASE WHEN C.SCODE IS NULL AND B.SNAME IS NOT NULL THEN B.SCODE ELSE '' END AS scode, CASE WHEN C.scode is NOT NULL THEN '' ELSE B.sname END sname , C.SNAME AS YHZHMC,( CASE WHEN C.SNAME IS NULL THEN null ELSE B.SCODE END) AS PID,FACT_A AS HBZJ,FACT_B AS YHCK,FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE round((NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))*100),4) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMACCOUNTBANKS C ON A.DIM_ACCOUNTBANKS=C.SCODE WHERE B.SCODE IN(SELECT SCODE FROM DW_DIMCOMPANY WHERE (SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND STYPE='1') AND B.SCODE NOT IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='0') ORDER BY B.SCODE,DIM_ACCOUNTBANKS ",
+    "sql": "with tt as( SELECT CASE WHEN C.SCODE IS NULL THEN B.scode ELSE C.SCODE END AS gsbm, CASE WHEN C.SCODE IS NULL AND B.SNAME IS NOT NULL THEN B.SCODE ELSE '' END AS scode, CASE WHEN C.scode IS NOT NULL THEN '' ELSE B.sname END sname , CASE WHEN C.SNAME IS NOT NULL THEN C.SNAME ELSE A.DIM_ACCOUNTBANKS END YHZHMC, ( CASE WHEN C.SNAME IS NULL THEN NULL ELSE B.SCODE END) AS PID, FACT_A AS HBZJ, FACT_B AS YHCK, FACT_C AS JZJE, CASE WHEN(NVL(FACT_B,0)+NVL(FACT_C,0))=0 THEN 0 ELSE ROUND((NVL(FACT_C,0)/(NVL(FACT_B,0)+NVL(FACT_C,0))*100),4) END AS JZD FROM DW_FACTCAPITALDETAIL A INNER JOIN DW_DIMCOMPANY B ON A.DIM_COMPANY=B.SCODE AND DIM_PERIOD=:period LEFT JOIN DW_DIMACCOUNTBANKS C ON A.DIM_ACCOUNTBANKS=C.SCODE WHERE B.SCODE IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE ( SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND STYPE='1') AND B.SCODE NOT IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='0')) SELECT GSBM,SCODE,SNAME,YHZHMC,PID,SUM(HBZJ) HBZJ,SUM(YHCK) YHCK,SUM(JZJE) JZJE,SUM(JZD) JZD FROM( select GSBM,SCODE,SNAME,YHZHMC,PID,HBZJ,YHCK,JZJE,JZD from tt union all SELECT SCODE,SCODE,SNAME,'SH' AS YHZHMC,'' PID,0 HBZJ,0 YHCK,0 JZJE,0 JZD FROM DW_DIMCOMPANY WHERE ( SCODE=:company OR SPCODE LIKE :company||'%') AND CISDEL = 'N' AND STYPE='1' ) GROUP BY GSBM,SCODE,SNAME,YHZHMC,PID ORDER BY decode(pid,'',gsbm,pid),GSBM",
     "_cube":{
        "subject":"0001",
        "cubeId":5
@@ -66,18 +67,22 @@
         "text": "",
         "type":"",
         "id": "",
+        // "width":"120",
         "isTree":true
     },
     {
       "text": "公司编码",
       "type":"string",
+      "width":"120",
+      "fixed": true,
       "id": "scode"//,
       // "isTree":true
     },
     {
         "text": "公司名称",
         "type":"string",
-        "width":"280",
+        "width":"360",
+        "fixed": true,
         "id": "sname"
       },
       {

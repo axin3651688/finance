@@ -21,20 +21,20 @@
       let datax = [];//没有数据对
       me.items[0].updateView = $vue.updateView;
       me.items[0].$vue = $vue;
-      data.forEach((item,index)=>{
-        if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
-            datas.push(item);
-        }else{
-            datax.push(item); 
-        }
-      }); 
-      if(datax.length>0){
-        datax.forEach(item => {
-            datas.push(item);  
-        });
-      }   
-      return datas;
-    // return data ;
+    //   data.forEach((item,index)=>{
+    //     if((item.hbzj && item.hbzj!=0) || (item.yhck && item.yhck!=0) || (item.jzje && item.jzje!=0)){
+    //         datas.push(item);
+    //     }else{
+    //         datax.push(item); 
+    //     }
+    //   }); 
+    //   if(datax.length>0){
+    //     datax.forEach(item => {
+    //         datas.push(item);  
+    //     });
+    //   }   
+    //   return datas;
+    return data ;
   },
     "showDims": ["year","month","company","conversion"],
     "config":{
@@ -59,16 +59,20 @@
           "text": "",
           "type":"string",
           "id": "",
+          "width":"120",
           "isTree":true
       },{
           "text": "公司编码",
           "type":"string",
+          "fixed": true,
+          "width":"120",
           "id": "id"
       },
       {
           "text": "公司名称",
           "type":"string",
-          "width":"310",
+          "width":"360",
+          "fixed": true,
           "id": "sname"
         },
         {
