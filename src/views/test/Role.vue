@@ -30,8 +30,8 @@
     stripe
     :height ="heights"
     >
-      <el-table-column type="index" label="序号" width="80" header-align="center" align ="center" ></el-table-column>
-      <el-table-column prop="srolename" label="角色名称" width="240" header-align="center" align ="center"></el-table-column>
+      <el-table-column type="index" label="序号" width="80" header-align="center" align ="center" fixed="left"></el-table-column>
+      <el-table-column prop="srolename" label="角色名称" width="240" header-align="center" align ="center" fixed="left"></el-table-column>
       <el-table-column prop="sroledesc" label="角色描述" width="300" header-align="center" align ="center"></el-table-column>
       <el-table-column label="操作" header-align="center" min-width="260px">
         <template slot-scope="scope" v-if="scope.row.roleid != 2">
@@ -113,10 +113,10 @@
       @close="closeDilog('roleForm')"
     >
       <el-form :model="roleForm" :rules="rules" ref="roleForm" :label-width="formLabelWidth">
-        <el-form-item label="角色名称" prop="srolename">
+        <el-form-item label="角色名称" prop="srolename" label-width="100px">
           <el-input v-model="roleForm.srolename" autocomplete="off" style="width:300px"></el-input>
         </el-form-item>
-        <el-form-item label="角色描述" prop="sroledesc">
+        <el-form-item label="角色描述" prop="sroledesc" label-width="100px">
           <el-input type="textarea" v-model="roleForm.sroledesc" style="width:300px"></el-input>
         </el-form-item>
       </el-form>

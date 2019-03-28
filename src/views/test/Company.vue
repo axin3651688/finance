@@ -17,6 +17,15 @@
           :default-expanded-keys="expandKeys"
           ref="comtree"
           @node-click="handClick"
+          @node-drag-start="handleDragStart"
+          @node-drag-enter="handleDragEnter"
+          @node-drag-leave="handleDragLeave"
+          @node-drag-over="handleDragOver"
+          @node-drag-end="handleDragEnd"
+          @node-drop="handleDrop"
+          draggable
+          :allow-drop="allowDrop"
+          :allow-drag="allowDrag"
         ></el-tree>
       </el-col>
       <!--公司表单-->
@@ -333,7 +342,7 @@ export default {
     },
 
     //请求节点数据
-    findNodes() {
+    findNodes() {debugger
       const _this = this;
       var getters = _this.$store.getters;
       let username = this.$store.state.user.user.user.username;
@@ -633,24 +642,24 @@ export default {
     /**
      * @description 移动公司节点操作
      */
-    dropNode(draggingNode, dropNode) {
+    dropNode1(draggingNode, dropNode) {
       console.log(draggingNode, dropNode);
       var opt = tools.opt[3];
       var _this = this;
       request({
-        url: "/tjsp/company/" + opt.url,
+        url: "/zjb/sys/company/" + opt.url,
         method: opt.method,
         data: {
           //源
-          draggingscode: draggingNode.data.scode,
-          draggingspcode: draggingNode.data.spcode,
+          "draggingscode": draggingNode.data.scode,
+          "draggingspcode": draggingNode.data.spcode,
           //目标
-          dropscode: dropNode.data.scode,
-          dropspcode: dropNode.data.spcode
+          "dropscode": dropNode.data.scode,
+          "dropspcode": dropNode.data.spcode
           // ,dropisleaf: dropNode.data.cisleaf
         }
       }).then(result => {
-        if (result.status == 200) {
+        if (result.status == 200) {debugger
           if (result.data.code === 0) {
             _this.$message.error(result.data.msg);
           } else {
@@ -658,13 +667,14 @@ export default {
               type: "success",
               message: result.data.data
             });
+            _this.findNodes();
           }
         } else {
           _this.$message.error(result.statusText);
         }
       });
       //重新加载
-      _this.findNodes();
+      
     },
 
     /**
@@ -674,6 +684,29 @@ export default {
       // console.log("tree handleDragEnter: ", dropNode.label, dropType);
     },
     handleDragEnter(draggingNode, dropNode, ev) {
+    //  if (draggingNode.data.scode !== dropNode.data.scode) {
+    //     draggingNode.goon = true;
+    //     this.$confirm(
+    //       "将目标公司【" +
+    //         draggingNode.label +
+    //         "】移动到公司【" +
+    //         dropNode.label +
+    //         "】下, 是否继续?",
+    //       "提示",
+    //       {
+    //         confirmButtonText: "确定",
+    //         cancelButtonText: "取消",
+    //         type: "warning"
+    //       }
+    //     )
+    //       .then(() => {
+    //         //暂时禁用
+    //         //this.dropNode(draggingNode, dropNode);
+    //       })
+    //       .catch(() => {
+    //         this.findNodes();
+    //       });
+    //   }
       //console.log("tree handleDragEnter: ", dropNode.label, dropType);
     },
     handleDragLeave(draggingNode, dropNode, ev) {
@@ -686,6 +719,7 @@ export default {
       //console.log("tree drag end: ", dropNode && dropNode.label, dropType);
     },
     handleDrop(draggingNode, dropNode, dropType, ev) {
+      debugger
       if (draggingNode.data.scode !== dropNode.data.scode) {
         draggingNode.goon = true;
         this.$confirm(
@@ -703,7 +737,7 @@ export default {
         )
           .then(() => {
             //暂时禁用
-            //this.dropNode(draggingNode, dropNode);
+            this.dropNode1(draggingNode, dropNode);
           })
           .catch(() => {
             this.findNodes();
@@ -714,8 +748,9 @@ export default {
       return true;
     },
     allowDrag(draggingNode) {
+      let node = draggingNode.data;//移动的节点
       //根节点不允许拖拽
-      if (draggingNode.level === 1) {
+      if ( !node.nisleaf || draggingNode.level === 1) {
         return false;
       }
       return true;
