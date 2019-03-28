@@ -1227,8 +1227,9 @@ export default {
         ];
         this.parseNumberToString(itemNames,rows);
       }else if(this.templateId == 4 && rows && rows.length > 0) {
-        let itemNames = [//guarantee repaysource
+        let itemNames = [//guarantee repaysource isnormal
           {"text":"isinside","type":"single"},
+          {"text":"isnormal","type":"single"},
           {"text":"isnature","type":"MSeries","root":"dataDict"}
         ];
         this.parseNumberToString(itemNames,rows);
@@ -1268,7 +1269,7 @@ export default {
           let item = itemNames[i];
           if(item.type == "single"){
             rows.forEach(tt => {
-              tt[item.text] == 1? tt[item.text] = "是":tt[item.text] = "否";
+              tt[item.text] && tt[item.text] == 1? tt[item.text] = "是":(tt[item.text] == 0? tt[item.text] = "否":"");
             });
           }
           if(item.type == "MSeries"){
