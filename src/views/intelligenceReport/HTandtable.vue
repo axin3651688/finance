@@ -222,7 +222,7 @@ export default {
   },
   watch: {
     templateId(val) {
-      debugger;
+      
       this.tableData = [];
     },
     year(val) {
@@ -492,7 +492,7 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
-    debugger;
+    
   },
   mounted() {
     let data = 10;
@@ -525,7 +525,7 @@ export default {
      * 上报的处理按钮。
      */
     reportHandle () {
-      debugger;
+      
       let me = this;
       this.modalConfig = {
         title:"上报人员",
@@ -571,7 +571,7 @@ export default {
      * 查询当前公司下的用户。
      */
     queryUserByCompany(){
-      debugger;
+      
       let me = this,companyId = this.$store.getters.company,userData = [];
       let params = {companyId:companyId};
       queryUserByCompany(params).then(res => {
@@ -587,7 +587,7 @@ export default {
       // return userData;
     },
     parseTypeOfTree (data) {
-      debugger;
+      
       let me = this;
       data.forEach(item => {
         if(item){
@@ -629,7 +629,6 @@ export default {
       });
       let record = this.settings.data[row];
       if (record.cismenu === "否" || record.cismenu == 0) {
-        // debugger
         return;
       }
       return source;
@@ -648,7 +647,6 @@ export default {
     },
     //应收账款分析表  表格里面下拉的数据
     getDropDownSource(id) {
-      // debugger
       let array = this.dataDict.filter(item => item.pid === id);
       let source = [];
       array.forEach(element => {
@@ -737,7 +735,6 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      debugger
       let obj = {};
       let index;
       let key;
@@ -757,7 +754,7 @@ export default {
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
       }
-      debugger;
+      
       if (changes && changes.length > 0) {
         index = changes[0][0];
         key = changes[0][1];
@@ -811,7 +808,7 @@ export default {
               changeRecord[key] = values;
             }
           } else {
-            debugger;
+            
             if (reg.test(values) === true) {
               let bb = { index: index };
               bb[key] = values;
@@ -824,7 +821,7 @@ export default {
           if (changen) {
             changen[key] = values;
           } else if (this.templateId == 8) {
-            debugger;
+            
             if (index != 0) {
               let bb = { index: index };
               bb[key] = values;
@@ -843,7 +840,7 @@ export default {
             bb[key] = values;
             this.tableData.push(bb);
           }else {
-            debugger;
+            
             if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
               let bb = { index: index };
               bb[key] = values;
@@ -853,7 +850,7 @@ export default {
           // })
         }
       }
-      debugger;
+      
       // localStorage.setItem("saveData",JSON.stringify(this.tableData))
       this.tableData.forEach(e => {
         indexs = e.index;
@@ -918,7 +915,6 @@ export default {
     reRenderCell(row, columns) {
       if (this.fixed == 0 && this.templateId == 4) {
         if (columns > 7) {
-          //  debugger
           let record = this.settings.data[row];
           if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
             //8
@@ -1015,6 +1011,11 @@ export default {
         cellMeta.readOnly = this.reRenderCell(row, columns);
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
       }
+      //声明一个存放条件限制的数组。此时只针对预付、其他表的填报。
+      let restrictItems = ['5','6'];
+      if(restrictItems.indexOf(this.templateId) != -1){
+        cellMeta.readOnly = this.limitItemOfFill(row,columns);
+      }
       if (this.templateId == 7) {
         if (columns == 1) {
           cellMeta.source = this.mechanismdownData(row, columns);
@@ -1062,6 +1063,30 @@ export default {
       }
       
       return cellMeta;
+    },
+    /**
+     * 填报表的列与列之间的限制的判断添加。
+     * 2019年3月29日14:06:43  szc
+     */
+    limitItemOfFill (row,columns) {
+      
+      let me = this;
+      if (this.fixed == 0 && this.templateId == 5) {
+        if (columns > 7) {
+          let record = this.settings.data[row];
+          if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
+            return true;
+          }
+        }
+        if (columns > 8) {
+          let record = this.settings.data[row];
+          if (record.isnormal === "是" || record.isnormal == 1) {
+            return true;
+          }
+        }
+      }
+      return false;
+
     },
     //请求查询回来的数据的类型
     getHandsoneTableColType(type) {
@@ -1139,7 +1164,6 @@ export default {
               cc.readOnly = false;
               console.log(rows);
             } else if (col.id === "isnormal") {// 是否正常
-              debugger
               cc.source = this.getDropDownSource("1800");
               cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
@@ -1168,7 +1192,7 @@ export default {
             } else if (col.id === "srepaydate") {
               (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
             } else if (col.id === "cismenu") {
-              debugger;
+              
               cc.source = this.financingOptionsData("1700");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
@@ -1206,7 +1230,7 @@ export default {
       }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
-      debugger;
+      
       // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
       //
       // this.settings.afterGetCellMeta = this.afterGetCellMeta;
@@ -1217,6 +1241,7 @@ export default {
       // this.settings.colHeaders = true;
       // this.settings.rowHeaders = true;
       // this.settings.nestedHeaders = res.data.data.columnsShow;
+      let parseItems = ['4','5','6'];
       //新加一个装换成相应的数字显示成文字处理。
       if(this.templateId == 7 && rows && rows.length > 0){
         let itemNames = [//guarantee repaysource
@@ -1226,7 +1251,7 @@ export default {
           {"text":"repaysource","type":"MSeries","root":"financing"}
         ];
         this.parseNumberToString(itemNames,rows);
-      }else if(this.templateId == 4 && rows && rows.length > 0) {
+      }else if(parseItems.indexOf(this.templateId) != -1 && rows && rows.length > 0) {
         let itemNames = [//guarantee repaysource isnormal
           {"text":"isinside","type":"single"},
           {"text":"isnormal","type":"single"},
@@ -1287,7 +1312,7 @@ export default {
       }
     },
     financeValidator(instance, td, row, col, prop, value, cellProperties) {
-      debugger;
+      
       let me = this;
 
     },
@@ -1377,7 +1402,6 @@ export default {
         let keys = Object.keys(item);
         let flag = false;
         for (let key of keys) {
-          debugger
           if (item.isinside == "是") {
             if (
               key === "isinside" &&
@@ -1471,7 +1495,6 @@ export default {
           // console.log("保存", res);
           this.reportData(this.datas);
           if (res.data.code === 200) {
-            debugger
             me.$message({
               message: res.data.msg,
               type: "success"
@@ -1544,7 +1567,7 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      debugger;
+      
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1594,7 +1617,7 @@ export default {
       // console.log("传递的data", this.datas);
       let me = this;
       inquire(this.datas).then(res => {
-        debugger;
+        
         console.log("查询", res);
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
@@ -1748,7 +1771,7 @@ export default {
     templateDownload() {
       
       this.isShow = true;
-      this.axios.get("/cnbi/template.json").then(res => {
+      this.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
         console.log(res);
         this.list = res.data.data;
       });
@@ -1799,7 +1822,7 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      debugger;
+      
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
@@ -1830,7 +1853,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          debugger;
+          
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -1851,7 +1874,9 @@ export default {
           let a = me.tableData;
           //融资情况表加一个删除的判断。针对保存之后会刷新来加的。
           let rzFlag = false;
-          if((me.templateId == "7" || me.templateId == "8") && nid == null){
+          
+          let deleteItems = ['4','5','6','7','8','10','11'];
+          if((deleteItems.indexOf(me.templateId) != -1) && nid == null){
             rzFlag = me.deleteHandle(nid,row);
             if(rzFlag){
               return;
@@ -1914,7 +1939,6 @@ export default {
     },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
-      debugger
       if (!value) {
         return;
       }
@@ -1934,7 +1958,7 @@ export default {
     },
     //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
-      debugger;
+      
       if (!value) {
         return;
       }

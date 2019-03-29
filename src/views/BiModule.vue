@@ -154,21 +154,7 @@ export default {
       monthConfig:{}
     };
   },
-  // props: ["handsontanleapi"],
-  //1.从路由获取参数mid,路由没有就从localstory获取,再从地址栏获取
   created() {
-    // let bean = getClientParams();
-    // this.setScopeDatas(bean);
-    // this.loadModule();
-    //添加第一次this状态。
-    // this.$store.start_$vue = JSON.stringify(this);
-    //因为切换另一个组件时，会出现问题，日志的组件，所以要动态改变这个状态。
-    // if(this.$store.public && this.$store.public.url){
-    //   let newUrl = this.$store.public.url;
-    //   if(this.module_api != newUrl){
-    //     this.module_api = newUrl;
-    //   }
-    // }
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -221,48 +207,6 @@ export default {
        */
       this.changeConversionBefore(unit, this);
       this.updateView("conversion");
-      
-      /**------------------------------------------- */
-      // let $cc = this.$refs.mychild ;
-      // let tempDatas = ($rows && $rows.length>0)? $rows : this.datas ; //行
-      // let $column = (resColumns && resColumns.length>0)?resColumns : (this.config.columns || this.columns) ;//列
-
-      // if (tempDatas.length > 0) {
-      //   // this.datas = Math.convertUnit(
-      //   tempDatas = Math.convertUnit(
-      //     unit.id,
-      //     tempDatas,
-      //     // this.config.columns || this.columns,
-      //     $column,
-      //             older.id
-      //           );
-      //       }
-      // if ($cc) {
-      //   let ii = 0;
-      //   $cc.forEach(children => {
-      //     let cItem = children.item;
-      //     if (cItem) {
-      //       if (!children.hasConfig) {
-      //         children.$set(children.item, "datas", this.datas);
-      //         children.setItems(children.item, true);
-      //       } else {
-      //         let cc = cItem.datas;
-      //         if (cc.length > 0) {
-      //           cc = Math.convertUnit(
-      //             unit.id,
-      //             cc,
-      //             cItem.config.columns,
-      //             older.id
-      //           );
-      //           children.$set(children.item, "datas", cc);
-      //           children.setItems(children.item, true);
-      //         }
-      //       }
-
-      //       ii++;
-      //     }
-      //   });
-      // }
     }
   },
 
@@ -308,10 +252,6 @@ export default {
         if (cc && cc.length > 0) {
           this.showSet(cc);
         }
-        // if (item.show == true && flag) {
-        //   item.tabIndex = "0";
-        //   flag = false;
-        // }
       });
     },
     /**
@@ -464,10 +404,6 @@ export default {
       }else {
         this.$store.monthConfig? delete this.$store.monthConfig:"";
       }
-      // else {
-      //   this.datas = this.datas;
-      //   //  item.config = this.config;
-      // }
     },
     /**
      * 获取模块的参数
@@ -500,9 +436,6 @@ export default {
       });
       
       if (datas.year && datas.month) {
-        // let date = new Date();
-        // datas.year =  date.getFullYear();
-        // datas.month =  date.getMonth()-1;
         //判断是不是钻取的tab页的年月。管理驾驶舱的直接可以用
         let currentApi = this.api;
         let compareApiArr = ["/cnbi/json/source/tjsp/dash.json"];
@@ -525,7 +458,6 @@ export default {
       }
       //孙子成，请在此处加一个periodCount,compareType=[0&-1,-1&-0]的解析
       //目标：在datas.comparePeriod= 调用period.js的一个方法
-      // 
       let vars = config.generateVar;
       if (vars && vars.periodCount && vars.compareType) {
         let reverse = vars.reverse || false;
@@ -548,7 +480,6 @@ export default {
         if (vars.varName) {
           item.config[vars.varName] = periodArr;
         }
-        //datas.period = periodArr.map(p=>p.id).join(",");
       }
       return datas;
     },
@@ -590,7 +521,6 @@ export default {
         if (!params) return;
         let config = item.config;
         Cnbi.paramsHandler(config, params);
-        // 
         //在此加了查询数据之前的拦截处理
         if (item.queryDataBefore && typeof item.queryDataBefore == "function") {
           params = item.queryDataBefore(params, config, this);
@@ -620,12 +550,10 @@ export default {
         let ii = 0;
         $cc.forEach(children => {
           if (children.item) {
-            // console.info(children.item + "---setChlidComponent---");
             let cc = children.item.config;
             console.log(cc);
             if (cc && children.hasConfig) {
             } else {
-              //  console.info(ii + "--" + children.item.id + "--" + children.item.text);
               children.$set(children.item, "datas", datas);
               children.setItems(children.item, true);
             }
@@ -662,9 +590,6 @@ export default {
         //
         datas = item.__queryDataAfter(datas,this);
       }
-      // if($childVue){
-      //     item.config.columns = item.items[0].children[0].config.columns ;
-      // }
       let unit = itemUnit? itemUnit:params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0 ) {
         /**
@@ -709,7 +634,6 @@ export default {
       } else {
         $childVue.setItems(item, true);
       }
-      //  this.units(datas)
     },
     transColumnsOfChildren(resColumns,columns){
       let me = this;
@@ -745,6 +669,9 @@ export default {
     handleTabClick(tab, event) {
       console.log(tab, event);
     },
+    /**
+     * 页面布局的tab页的切换事件。
+     */
     tabClick(tab,event){
       let me = this,clickTabIndex = tab.index;
       let moduleTab = this.$store.public.tabModule.items;
