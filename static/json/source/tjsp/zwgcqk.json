@@ -13,7 +13,6 @@
         option.closeTabTaget(newcompany, option);
     }, //切换公司之前的回调
     "changeConversionBefore":function(newconversion, option){
-        // debugger
         option.closeTabTaget(newconversion,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
@@ -136,7 +135,6 @@
             }
         },
         "onCellClick": function (row, column, cell, event, option) {
-            // debugger
             let datas = this.datas;
             let data = datas.filter(function(item){
                     return item.id == row.id;
@@ -153,7 +151,6 @@
                     "way": "addTab", //调用的公共方法
                     "sourceApi": "/cnbi/json/source/tjsp/zwgcqkDrill.json", //下钻json路径
                     "handler": ($vue, params) => { //自定义的回调
-                        debugger
 
                         console.info(params);
                         // let pp = {id:params.xxx,xxx};

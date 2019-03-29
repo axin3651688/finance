@@ -25,10 +25,8 @@
          },
         //  "groupConfig": { "idProperty": "dim_company","textProperty": "gsmc"},//可选
         //   "queryDataAfter":function(){//数据的后置处理
-        //     debugger;
         //   },
         //  "queryDataBefore":function(){//数据的前置处理
-        //       debugger;
         //   },
           
         "columns":[
@@ -93,17 +91,20 @@
               {
                 "id": "ename",
                 "type": "string",
-                "text": "还款来源"
+                "text": "还款来源",
+                "align":"center"
               },
               {
                 "id": "status",
                 "type": "string",
-                "text": "新增/减少"
+                "text": "新增/减少",
+                "align":"center"
               },
               {
                 "id": "fname",
                 "type": "string",
-                "text": "担保方式"
+                "text": "担保方式",
+                "align":"center"
               }
         ],
         "rows":[

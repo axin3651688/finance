@@ -23,8 +23,8 @@
         
         "type":1
           
-     },
-     
+    },
+
     "columns":[
         {
             "id": "bz",
@@ -41,7 +41,8 @@
         "id": "jrjg",
         "type": "string",
         "fixed":true,
-        "text": "是否金融机构*"
+        "text": "是否金融机构*",
+        "align":"center"
       },
 {
         "id": "jrjgmc",
@@ -79,11 +80,13 @@
     }, {
         "id": "sfjtdb",
         "type": "string",
-        "text": "是否集团担保*"
+        "text": "是否集团担保*",
+        "align":"center"
     }, {
         "id": "dbfs",
         "type": "string",
-        "text": "担保方式*"
+        "text": "担保方式*",
+        "align":"center"
     }, {
         "id": "yhkrq",
         "type": "string",
@@ -91,11 +94,13 @@
     }, {
         "id": "hkly",
         "type": "string",
-        "text": "还款来源"
+        "text": "还款来源",
+        "align":"center"
     }, {
         "id": "xzjs",
         "type": "number",
-        "text": "新增/减少"
+        "text": "新增/减少",
+        "align":"center"
     }
     ],
     "rows":[
@@ -104,40 +109,44 @@
       "xtype":"tab"
    },
   "items":[
-     {
-      "xtype": "bi-table",
-      "id":"rzqk",
-      "text":"融资情况明细表",
-      "toolbar":[
-        {
-           "id":"1",
-           "text":"刷新",
-           "xtype":"button",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-                vue.item.updateView("company");
-           }
-       }
-       , {
-           "id":"2",
-           "text":"导出",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-               vue.handleDownload(vue);
-           }
-       }
-       ]
+    {
+        "xtype": "bi-table",
+        "id":"rzqk",
+        "text":"融资情况明细表",
+        "queryDataAfter": function(data,$vue){
+            if(data.length == 1)data = [];
+            return data;
+        },
+        "toolbar":[
+            {
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                        vue.item.updateView("company");
+                }
+            }
+            , {
+                "id":"2",
+                "text":"导出",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                    vue.handleDownload(vue);
+                }
+            }
+        ]
     }
-  ]
-  }
+    ]
+}
   
 
 

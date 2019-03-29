@@ -84,17 +84,20 @@
               {
                 "id": "ename",
                 "type": "string",
-                "text": "还款来源"
+                "text": "还款来源",
+                "align":"center"
               },
               {
                 "id": "status",
                 "type": "string",
-                "text": "新增/减少"
+                "text": "新增/减少",
+                "align":"center"
               },
               {
                 "id": "fname",
                 "type": "string",
-                "text": "担保方式"
+                "text": "担保方式",
+                "align":"center"
               }
         ],
         "rows":[
@@ -154,7 +157,7 @@
 
               }
 
-              if (columnIndex === 0 ||columnIndex === 1) {debugger
+              if (columnIndex === 0 ||columnIndex === 1) {
                 if (rowIndex === index) {
                   return {
                     rowspan: rowspan,

@@ -1,9 +1,14 @@
 <template>
   <div >
     <!-- style="margin-top:5px;" -->
-    <el-tabs v-model="activeName" @tab-click="handleClick1">
-      <el-tab-pane label="经济增加值（EVA）计算表" name="first" :style="tabHeight">
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="经济增加值（EVA）计算表" name="first">
         <!-- v-model="item.value" @input="handleClick(item)" -->
+        <div style="marginBottom: 5px;">
+          <el-button-group>
+            <el-button class="btn" v-for="(item,index) in items" :key="item.id" @click="buttonClick(item)">{{ item.text }}</el-button>
+          </el-button-group>
+        </div>
         <div>
           <el-input
             v-for="(item ,key) in vars"
@@ -294,6 +299,7 @@ import { eva_city_Request } from "~api/cube";
 import tools from "utils/tools";
 import { mapGetters } from "vuex";
 import Vue from "vue";
+// import EventMixins from "../mixins/EventMixins";
 // 注册
 Vue.filter("NumFormat", function(value) {
   // 返回处理后的值
@@ -301,10 +307,16 @@ Vue.filter("NumFormat", function(value) {
 });
 export default {
   name: "Eva",
+  // mixins: [EventMixins],
   data() {
     return {
       // tab页展示默认第一
       activeName: "first",
+      items: [
+          { id: "1", text: "刷新" },
+          { id: "2", text: "导出" }
+      ],
+      localStorage_new: [],
       gridData: [
         {
           sname: "营业外收支净额",
@@ -446,6 +458,13 @@ export default {
         this.yearId = this.$store.getters.year ;
         this.monthId = this.$store.getters.month ;
         this.conversionId = this.$store.getters.conversion ;
+    //  
+        let cc = JSON.parse(localStorage.getItem("majun"));
+        if(cc){
+          this.vars = [] ;
+          this.vars = cc ;
+        }
+                       
     // 表格的数据请求(唯一请求)
         this.tableDataRequest(this.companyId, this.yearId, this.monthId, this.conversionId) ;  
   },
@@ -474,11 +493,22 @@ export default {
   },
   methods: {
     focus(item){
-      debugger
+      // debugger
+    },
+    // 导出按钮、刷新按钮功能
+    buttonClick(item){
+      // debugger
+      let me = this ;
+      // 1.刷新   2.导出
+      if(item.id == "1"){
+        me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
+      }else{
+        alert('暂时没做！')
+      }
     },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
-        debugger
+        // debugger
         let me = this ;
         if(vax === 'year') {
             me.yearId = me.$store.getters[vax] ;
@@ -497,7 +527,7 @@ export default {
     },
     // 数据请求（唯一）
     tableDataRequest(companyId, yearId, monthId, conversionId){
-        debugger
+        // debugger
       let _period, _year, _sql, _sql2,_sql3, items ;
       // 月份处理 1~9 之间 前缀要加 ‘0’
       if(monthId>0 && monthId<10){
@@ -544,7 +574,7 @@ export default {
                 if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
                     let newId = me.conversionId.id ;
                     me.ArrData.forEach(items => {
-                      debugger
+                      // debugger
                       // items.B = Math.decimalToLocalString(items.B / newId) ;
                       items.B = items.B / newId ;
                     })
@@ -561,7 +591,8 @@ export default {
             //计算公式 资产总计
               // me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001"]);
               
-              console.log("me.ArrData:", me.ArrData) ;   
+              console.log("me.ArrData:", me.ArrData) ;
+              // debugger   
               me.setExpressionData();
               me.handleClick(me.vars[0]) ;         
           
@@ -570,15 +601,16 @@ export default {
     // 2.0
     eva_city_Request_second(items){
         let me = this ;
+        // debugger
         eva_city_Request(items).then(res => {
-          debugger
+          // debugger
             if(res.data.code === 200){
                 me.ArrData2 = res.data.data ;
                 // 单位的改变 元 、 千元 、 万元 、 亿元         
                 if(me.conversionId.id > me.conversionNid){ // 大于默认的单位‘元’
                   let newId = me.conversionId.id ;
                   me.ArrData2.forEach(items => {
-                    debugger
+                    // debugger
                     items.A = items.A / newId ;
                     items.B = items.B / newId ;
                   })
@@ -592,21 +624,22 @@ export default {
                   me.exps[item.scodea] = item.A ;
                   me.exps[item.scodeb] = item.B ;
                 }) ;
-                me.ArrData2.forEach(ress => {
-                  me.vars.forEach(recc => {
-                    // debugger
-                    if(ress.scode=="4101" && recc.code == "zbhfyqc"){
-                        recc.value = ress.A ;
-                        recc.display_num = ress.A ;
-                    }else if(ress.scode=="4101" && recc.code == "zbhfyqm"){
-                        recc.value = ress.B ;
-                        recc.display_num = ress.B ;
-                    }
-                  })
-                });
+                // me.ArrData2.forEach(ress => {
+                //   me.vars.forEach(recc => {
+                //     // debugger
+                //     if(ress.scode=="4101" && recc.code == "zbhfyqc"){
+                //         recc.value = ress.A ;
+                //         recc.display_num = ress.A ;
+                //     }else if(ress.scode=="4101" && recc.code == "zbhfyqm"){
+                //         recc.value = ress.B ;
+                //         recc.display_num = ress.B ;
+                //     }
+                //   })
+                // });
               //计算公式 资产总计
               me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001","v1131604","v1131605","v1222711","v4101"]);
-              console.log("me.ArrData:", me.ArrData) ;   
+              console.log("me.ArrData:", me.ArrData) ; 
+              // debugger  
               me.setExpressionData();        
             }
         })
@@ -665,7 +698,7 @@ export default {
     },
     updateTzhData(arr, newV) {
       arr.forEach(element => {
-        debugger
+        // debugger
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
     },
@@ -693,13 +726,34 @@ export default {
 
           //格式化数据
         if(item.value!=""){  
+          debugger
           item.display_num = tools.currency(item.value, "", 2);
+          // 清除localStorage里的名为 "majun" 的缓存信息  
+          localStorage.removeItem("majun"); 
+          // 把存储的信息塞到名为 "majun" 的字段里  
+          localStorage.setItem("majun", JSON.stringify(this.vars)) ;
+          // 读取localStorage里的majun的信息（注：必须转化，因为localStorage只能存字符串形式的）
+          let cc = JSON.parse(localStorage.getItem("majun"));
+          
+        }else{
+          // 清除localStorage里的名为 "majun" 的缓存信息  
+          localStorage.removeItem("majun"); 
+          // 把存储的信息塞到名为 "majun" 的字段里  
+          localStorage.setItem("majun", JSON.stringify(this.vars)) ;
         }
       });
     }
   }
 };
 </script>
+<style scoped>
+/* 导出、刷新按钮样式 */
+.btn {
+  width: 91px;
+  color: #606266;
+}
+</style>
+
 <style>
 .el-icon-info {
   cursor: pointer;
