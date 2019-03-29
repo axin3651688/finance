@@ -688,6 +688,7 @@ export default {
           }
         ],
         csex: [{ required: true, message: "必填项" }],
+        roleid: [{ required: true, message: "必填项" }],
         semail: [
           { required: true, message: "必填项", trigger: "blur" },
           {

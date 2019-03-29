@@ -11,7 +11,7 @@ import {
 import router from '@v/layout/router'
 
 export default function webSocket(data) {
-    // debugger;
+    debugger;
     let websocket = null;
     let url = data.url;
     let socketIsClosed = false;
@@ -24,26 +24,25 @@ export default function webSocket(data) {
         websocket = new SockJS(url);
     }
     // 打开连接时
-    websocket.onopen = function (evnt) {
-        // debugger;
+    websocket.onopen = function(evnt) {
         console.log("  websocket.onopen  ");
         window.socket = websocket;
         socketIsClosed = false;
     };
 
     // 收到消息时
-    websocket.onmessage = function (evnt) {
+    websocket.onmessage = function(evnt) {
         let datas = evnt.data;
         if (isJSON(datas)) {
             socketCoreProcess(websocket, JSON.parse(datas));
         }
     };
 
-    websocket.onerror = function (evnt) {
-        console.log("  websocket.onerror  ");
+    websocket.onerror = function(evnt) {
+        console.log("  websocket.onerror  " + evnt);
     };
 
-    let closeShow = function () {
+    let closeShow = function() {
         //zdk 2019-1-3 11:10:38 注释   没搞好就别放进来
         // Notification.success({
         //     title: '提示',
@@ -51,18 +50,18 @@ export default function webSocket(data) {
         //     showClose: true,
         //     position: "bottom-right"
         // });
-      //  // TODO: 加心跳检测
+        //  // TODO: 加心跳检测
         // alert('已断开连接')
     };
 
-    websocket.onclose = function (evnt) {
+    websocket.onclose = function(evnt) {
         // 服务断开连接，正在重连
         socketIsClosed = true;
         console.log("  websocket.onclose  ");
         closeShow();
     };
 
-    websocket.deliver = function (data) {
+    websocket.deliver = function(data) {
         if (socketIsClosed) {
             closeShow();
             return
