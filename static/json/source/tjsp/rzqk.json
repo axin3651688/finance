@@ -4,7 +4,6 @@
     "text":"融资情况明细表",
     "showDims":["year","month","company","conversion"],
      "__queryDataAfter":function(data,$vue){//数据的后置处理
-        // debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
@@ -42,7 +41,8 @@
         "id": "jrjg",
         "type": "string",
         "fixed":true,
-        "text": "是否金融机构*"
+        "text": "是否金融机构*",
+        "align":"center"
       },
 {
         "id": "jrjgmc",
@@ -80,11 +80,13 @@
     }, {
         "id": "sfjtdb",
         "type": "string",
-        "text": "是否集团担保*"
+        "text": "是否集团担保*",
+        "align":"center"
     }, {
         "id": "dbfs",
         "type": "string",
-        "text": "担保方式*"
+        "text": "担保方式*",
+        "align":"center"
     }, {
         "id": "yhkrq",
         "type": "string",
@@ -92,11 +94,13 @@
     }, {
         "id": "hkly",
         "type": "string",
-        "text": "还款来源"
+        "text": "还款来源",
+        "align":"center"
     }, {
         "id": "xzjs",
         "type": "number",
-        "text": "新增/减少"
+        "text": "新增/减少",
+        "align":"center"
     }
     ],
     "rows":[
@@ -110,7 +114,6 @@
         "id":"rzqk",
         "text":"融资情况明细表",
         "queryDataAfter": function(data,$vue){
-            debugger
             if(data.length == 1)data = [];
             return data;
         },
