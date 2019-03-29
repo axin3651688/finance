@@ -10,6 +10,11 @@
                         </div>
                     </div>
                     <div v-else>
+                        <div style="marginBottom: 5px;">
+                            <el-button-group>
+                                <el-button class="btn" v-for="(item,index) in items" :key="item.id" @click="buttonClick(item)">{{ item.text }}</el-button>
+                            </el-button-group>
+                        </div>
                         <table class="table2" style="float:left;">
                             <tr class="tr0">
                                 <th class="heightx" style="height:98px;line-height: 98px;">资产状况</th>
@@ -112,6 +117,10 @@ export default {
             tableData: [],
             tableData2:[],
             isShow: true ,
+            items: [
+                { id: "1", text: "刷新" },
+                { id: "2", text: "导出" }
+            ],
             exps: {
             // 资产总额                 
                 factzb: 0 ,
@@ -231,6 +240,17 @@ export default {
                 me.contenStyleObj.height = document.documentElement.clientHeight - 40 - 40 + "px" ;
             };
         },
+            // 导出按钮、刷新按钮功能
+        buttonClick(item){
+            // debugger
+            let me = this ;
+            // 1.刷新   2.导出
+            if(item.id == "1"){
+                me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
+            }else{
+                alert('暂时没做！')
+            }
+        },
         // 切换维度时触发
         getData(vax, value){
             debugger
@@ -307,7 +327,7 @@ export default {
         cityResults_first(items){
             let me = this ;
             eva_city_Request(items).then(res => {
-                // debugger
+                debugger
                 if(res.data.code === 200){
                     // me.num ++ ; 
                     // me.tableData = [] ;
@@ -340,7 +360,7 @@ export default {
         },
         // 单位切换
         dataProcessing_first(tableData){
-            // debugger
+            debugger
             let me = this ; 
             let newId = me.conversionId.id ;           
                 
@@ -350,13 +370,13 @@ export default {
             // let tableData2= tableData[1] ; // 效益
             if(newId > me.conversionNid){ 
             // 资产总额   
-                if(tableData.factzb && tableData.factzb>0){
+                if(tableData.factzb && tableData.factzb!=0){
                     tableData.factzb = Math.decimalToLocalString((tableData.factzb)/newId) ;
                 }else{
                     tableData.factzb = '--' ;
                 }
             // 所有者权益    
-                if(tableData.factsa && tableData.factsa>0){
+                if(tableData.factsa && tableData.factsa!=0){
                     tableData.factsa = Math.decimalToLocalString((tableData.factsa)/newId) ;
                 }else{
                     tableData.factsa = '--' ;
@@ -364,53 +384,53 @@ export default {
                 
             }else{
             // 资产总额    
-                if(tableData.factzb && tableData.factzb>0){
+                if(tableData.factzb && tableData.factzb!=0){
                     tableData.factzb = Math.decimalToLocalString(tableData.factzb) ;
                 }else{
                     tableData.factzb = '--' ;
                 }
                 
             // 所有者权益    
-                if(tableData.factsa && tableData.factsa>0){
+                if(tableData.factsa && tableData.factsa!=0){
                     tableData.factsa = Math.decimalToLocalString(tableData.factsa) ;
                 }else{
                     tableData.factsa = '--' ;
                 }
             }
             // 资产总额 环比增长%--同比增长%
-            if(tableData.zhbzz && tableData.zhbzz>0){
+            if(tableData.zhbzz && tableData.zhbzz!=0){
                 tableData.zhbzz = Math.decimalToLocalString((tableData.zhbzz)*100) + "%" ;
             }else{
                 tableData.zhbzz = '--' ;
             }
-            if(tableData.ztbzz && tableData.ztbzz>0){
+            if(tableData.ztbzz && tableData.ztbzz!=0){
                 tableData.ztbzz = Math.decimalToLocalString((tableData.ztbzz)*100) + "%" ;
             }else{
                 tableData.ztbzz = '--' ;
             }
             // 所有者权益 环比增长%--同比增长%
-            if(tableData.shbzz && tableData.shbzz>0){
+            if(tableData.shbzz && tableData.shbzz!=0){
                 tableData.shbzz = Math.decimalToLocalString((tableData.shbzz)*100) + "%" ;
             }else{
                 tableData.shbzz = '--' ;
             }
-            if(tableData.stbzz && tableData.stbzz>0){
+            if(tableData.stbzz && tableData.stbzz!=0){
                 tableData.stbzz = Math.decimalToLocalString((tableData.stbzz)*100) + "%" ;
             }else{
                 tableData.stbzz = '--' ;
             } 
             // 资产负债率 %  
-            if(tableData.factba && tableData.factba>0){
+            if(tableData.factba && tableData.factba!=0){
                 tableData.factba = Math.decimalToLocalString((tableData.factba)*100) + "%" ;
             }else{
                 tableData.factba = '--' ;
             }
-            if(tableData.zlhbzz && tableData.zlhbzz>0){
+            if(tableData.zlhbzz && tableData.zlhbzz!=0){
                 tableData.zlhbzz = Math.decimalToLocalString((tableData.zlhbzz)*100) + "%" ;
             }else{
                 tableData.zlhbzz = '--' ;
             }
-            if(tableData.zltbzz && tableData.zltbzz>0){
+            if(tableData.zltbzz && tableData.zltbzz!=0){
                 tableData.zltbzz = Math.decimalToLocalString((tableData.zltbzz)*100) + "%" ;
             }else{
                 tableData.zltbzz = '--' ;
@@ -425,106 +445,106 @@ export default {
             let newId = me.conversionId.id ;           
             if(newId > me.conversionNid){
                 // 营业收入    
-                if(tableData2.srbqdys && tableData2.srbqdys>0){
+                if(tableData2.srbqdys && tableData2.srbqdys!=0){
                     tableData2.srbqdys = Math.decimalToLocalString((tableData2.srbqdys)/newId) ;
                 }else{
                     tableData2.srbqdys = '--' ;
                 }
-                if(tableData2.srbqljs && tableData2.srbqljs>0){
+                if(tableData2.srbqljs && tableData2.srbqljs!=0){
                     tableData2.srbqljs = Math.decimalToLocalString((tableData2.srbqljs)/newId) ;
                 }else{
                     tableData2.srbqljs = '--' ;
                 }
             // 利润总额
-                if(tableData2.lrbqdys && tableData2.lrbqdys>0){
+                if(tableData2.lrbqdys && tableData2.lrbqdys!=0){
                     tableData2.lrbqdys = Math.decimalToLocalString((tableData2.lrbqdys)/newId) ;
                 }else{
                     tableData2.lrbqdys = '--' ;
                 }
-                if(tableData2.lrbqljs && tableData2.lrbqljs>0){
+                if(tableData2.lrbqljs && tableData2.lrbqljs!=0){
                     tableData2.lrbqljs = Math.decimalToLocalString((tableData2.lrbqljs)/newId) ;
                 }else{
                     tableData2.lrbqljs = '--' ;
                 } 
             }else{
                 // 营业收入
-                if(tableData2.srbqdys && tableData2.srbqdys>0){
+                if(tableData2.srbqdys && tableData2.srbqdys!=0){
                     tableData2.srbqdys = Math.decimalToLocalString(tableData2.srbqdys) ;
                 }else{
                     tableData2.srbqdys = '--' ;
                 }
-                if(tableData2.srbqljs && tableData2.srbqljs>0){
+                if(tableData2.srbqljs && tableData2.srbqljs!=0){
                     tableData2.srbqljs = Math.decimalToLocalString(tableData2.srbqljs) ;
                 }else{
                     tableData2.srbqljs = '--' ;
                 }
                 
                 // 利润总额
-                if(tableData2.lrbqdys && tableData2.lrbqdys>0){
+                if(tableData2.lrbqdys && tableData2.lrbqdys!=0){
                     tableData2.lrbqdys = Math.decimalToLocalString(tableData2.lrbqdys) ;
                 }else{
                     tableData2.lrbqdys = '--' ;
                 }
-                if(tableData2.lrbqljs && tableData2.lrbqljs>0){
+                if(tableData2.lrbqljs && tableData2.lrbqljs!=0){
                     tableData2.lrbqljs = Math.decimalToLocalString(tableData2.lrbqljs) ;
                 }else{
                     tableData2.lrbqljs = '--' ;
                 }
             }
             // 营业收入 环比增长%--同比增长%--同比累计增长%
-            if(tableData2.srhbzz && tableData2.srhbzz>0){
+            if(tableData2.srhbzz && tableData2.srhbzz!=0){
                 tableData2.srhbzz = Math.decimalToLocalString((tableData2.srhbzz)*100) + "%" ;
             }else{
                 tableData2.srhbzz = '--' ;
             }
-            if(tableData2.srtbzz && tableData2.srtbzz>0){
+            if(tableData2.srtbzz && tableData2.srtbzz!=0){
                 tableData2.srtbzz = Math.decimalToLocalString((tableData2.srtbzz)*100) + "%" ;
             }else{
                 tableData2.srtbzz = '--' ;
             }
-            if(tableData2.srtbljzz && tableData2.srtbljzz>0){
+            if(tableData2.srtbljzz && tableData2.srtbljzz!=0){
                 tableData2.srtbljzz = Math.decimalToLocalString((tableData2.srtbljzz)*100) + "%" ;
             }else{
                 tableData2.srtbljzz = '--' ;
             }
             // 利润总额 环比增长%--同比增长%--同比累计增长%
-            if(tableData2.lrhbzz && tableData2.lrhbzz>0){
+            if(tableData2.lrhbzz && tableData2.lrhbzz!=0){
                 tableData2.lrhbzz = Math.decimalToLocalString((tableData2.lrhbzz)*100) + "%" ;
             }else{
                 tableData2.lrhbzz = '--' ;
             }
-            if(tableData2.lrtbzz && tableData2.lrtbzz>0){
+            if(tableData2.lrtbzz && tableData2.lrtbzz!=0){
                 tableData2.lrtbzz = Math.decimalToLocalString((tableData2.lrtbzz)*100) + "%" ;
             }else{
                 tableData2.lrtbzz = '--' ;
             }
-            if(tableData2.lrtbljzz && tableData2.lrtbljzz>0){
+            if(tableData2.lrtbljzz && tableData2.lrtbljzz!=0){
                 tableData2.lrtbljzz = Math.decimalToLocalString((tableData2.lrtbljzz)*100) + "%" ;
             }else{
                 tableData2.lrtbljzz = '--' ;
             } 
             // 成本费用利润率 %    
-            if(tableData2.cblbys && tableData2.cblbys>0){
+            if(tableData2.cblbys && tableData2.cblbys!=0){
                 tableData2.cblbys = Math.decimalToLocalString((tableData2.cblbys)*100) + "%" ;
             }else{
                 tableData2.cblbys = '--' ;
             }
-            if(tableData2.cblrhbzz && tableData2.cblrhbzz>0){
+            if(tableData2.cblrhbzz && tableData2.cblrhbzz!=0){
                 tableData2.cblrhbzz = Math.decimalToLocalString((tableData2.cblrhbzz)*100) + "%" ;
             }else{
                 tableData2.cblrhbzz = '--' ;
             }
-            if(tableData2.cblrtbzz && tableData2.cblrtbzz>0){
+            if(tableData2.cblrtbzz && tableData2.cblrtbzz!=0){
                 tableData2.cblrtbzz = Math.decimalToLocalString((tableData2.cblrtbzz)*100) + "%" ;
             }else{
                 tableData2.cblrtbzz = '--' ;
             }
-            if(tableData2.cblj && tableData2.cblj>0){
+            if(tableData2.cblj && tableData2.cblj!=0){
                 tableData2.cblj = Math.decimalToLocalString((tableData2.cblj)*100) + "%" ;
             }else{
                 tableData2.cblj = '--' ;
             }
-            if(tableData2.cblrtbljzz && tableData2.cblrtbljzz>0){
+            if(tableData2.cblrtbljzz && tableData2.cblrtbljzz!=0){
                 tableData2.cblrtbljzz = Math.decimalToLocalString((tableData2.cblrtbljzz)*100) + "%" ;
             }else{
                 tableData2.cblrtbljzz = '--' ;
@@ -535,6 +555,11 @@ export default {
 }
 </script>
 <style scoped>
+    /* 导出、刷新按钮样式 */
+    .btn {
+        width: 91px;
+        color: #606266;
+    }
     /* 暂无权限样式设置 */
     .isShow{
         height: 80px;
@@ -547,9 +572,9 @@ export default {
         /* color: maroon; */
         color: red;
     }
-    .table {
+    /* .table {
         margin-top: 20px;
-    }
+    } */
     .table tr,td,th {
         border: 1px solid #ccc;
         text-align: center;        

@@ -4,6 +4,7 @@
     "text":"融资情况明细表",
     "showDims":["year","month","company","conversion"],
      "__queryDataAfter":function(data,$vue){//数据的后置处理
+        // debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
@@ -23,8 +24,8 @@
         
         "type":1
           
-     },
-     
+    },
+
     "columns":[
         {
             "id": "bz",
@@ -104,40 +105,45 @@
       "xtype":"tab"
    },
   "items":[
-     {
-      "xtype": "bi-table",
-      "id":"rzqk",
-      "text":"融资情况明细表",
-      "toolbar":[
-        {
-           "id":"1",
-           "text":"刷新",
-           "xtype":"button",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-                vue.item.updateView("company");
-           }
-       }
-       , {
-           "id":"2",
-           "text":"导出",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-               vue.handleDownload(vue);
-           }
-       }
-       ]
+    {
+        "xtype": "bi-table",
+        "id":"rzqk",
+        "text":"融资情况明细表",
+        "queryDataAfter": function(data,$vue){
+            debugger
+            if(data.length == 1)data = [];
+            return data;
+        },
+        "toolbar":[
+            {
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                        vue.item.updateView("company");
+                }
+            }
+            , {
+                "id":"2",
+                "text":"导出",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                    vue.handleDownload(vue);
+                }
+            }
+        ]
     }
-  ]
-  }
+    ]
+}
   
 
 

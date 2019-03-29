@@ -8,13 +8,14 @@
         {
         "id":"",
         "text":"",
-        "stype": "tree",
+        "stype": "table",
         "xtype":"bi-table",
         "weight": 24,
         "show":true,
         "queryDataBefore":function(params,$items,$this){
             debugger
-            // $items.sql = $items.sql2;
+            // 上年度12月份
+            params.oneYearBefore = params.year - 1 + "12" ; 
             let len = $this.items.length;
             let id = $this.items[len-1].id;
             params.company = id ;
@@ -28,7 +29,7 @@
                 if(item.riskrange == "SAFE"){
                     item.riskrange = "安全" ;
                 }else if(item.riskrange == "DANGER"){
-                    item.riskrange = "警告" ;
+                    item.riskrange = "提示" ;
                 }else if(item.riskrange == "PROMPT" ){
                     item.riskrange = "预警" ;
                 }else{
@@ -201,7 +202,7 @@
             ],
             "rows":[ ] 
         },
-        "drillProperties":["riskrange","gsmc"],
+        "drillProperties":["riskrange","gsmc","kj"],
         "onCellClick":function(row, column, cell,event,$this){
             debugger
             let id = row.gsbm, text = row.gsmc;
@@ -236,25 +237,28 @@
             let record = row.row;  
             let drillProperties = this.drillProperties;
             if(drillProperties.indexOf(pro) != -1){
-                if(record.riskrange && record.riskrange=="安全" && pro!="gsmc"){
-                    
+                if (record.riskrange && record.riskrange == "安全" && pro != "gsmc" && pro != "kj") {
                     let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;text-align: center;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else if(record.riskrange && record.riskrange=="警告" && pro!="gsmc"){
-                    let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
-                    css = css + "font-weight:bold;" + textIndent + drill;
-                    return css;
-                }else if(record.riskrange && record.riskrange=="预警" && pro!="gsmc"){
+                } else if (record.riskrange && record.riskrange == "提示" && pro != "gsmc" && pro != "kj") {
                     let drill = "text-decoration: none;color: #FF9900;font-weight: bold;cursor: pointer;text-align: center;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else if(pro == "gsmc" && record.gsmc!="总计"){
+                } else if (record.riskrange && record.riskrange == "预警" && pro != "gsmc" && pro != "kj") {
+                    let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                } else if (pro == "gsmc" && record.gsmc != "总计" && pro != "kj") {
                     let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
-                }else{
-                    return css+textIndent;
+                } else if(pro == "kj"&& record.kj){
+                    let drill = "text-decoration: none;text-align: center;";
+                    css = css + textIndent + drill;
+                    return css;
+                } else {
+                    return css + textIndent;
                 }
             }else{
                 return css+textIndent;

@@ -177,7 +177,7 @@
                                 "id": "skxz",
                                 "type": "string",
                                 "align": "center",
-                                "text": "商客性质*"
+                                "text": "供应商性质*"
                             },
                             {
                                 "id": "sfnb",
@@ -240,26 +240,17 @@
                             } else {
                                 return true;
                             }
-                        }
-                        // if($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf){
-                        //     return false ;
-                        // }else{
-                        //     return true ;
-                        // }                       
+                        }                     
                     },
                     "queryDataBefore": function(params, config, $vue) {
                         debugger
+                        // 上年度12月份
+                        params.oneYearBefore = params.year - 1 + "12" ; 
                         if (params.company == '1001') {
                             config.sql = config.sql1;
                         } else {
                             config.sql = config.sql2;
                         }
-                        // config.sql = config.sql1 ;
-                        //是不是穿透的
-                        // let selectPeriod = $vue.$store.selectPeriod;
-                        // if(selectPeriod){
-                        // 	params.period = selectPeriod;
-                        // }
                         return params;
                     },
                     "queryDataAfter": function(data, $vue) {
@@ -269,7 +260,7 @@
                             if (item.riskrange == "SAFE") {
                                 item.riskrange = "安全";
                             } else if (item.riskrange == "DANGER") {
-                                item.riskrange = "警告";
+                                item.riskrange = "提示";
                             } else if (item.riskrange == "PROMPT") {
                                 item.riskrange = "预警";
                             } else {
@@ -552,7 +543,7 @@
                             }
                         }
                     ],
-                    "drillProperties": ["riskrange", "gsmc"],
+                    "drillProperties": ["riskrange", "gsmc", "kj"],
                     "onRowClick": function(row, column, e, $this) {
                         // debugger
                         let id = row.gsbm,
@@ -601,21 +592,25 @@
                         let record = row.row;
                         let drillProperties = this.drillProperties;
                         if (drillProperties.indexOf(pro) != -1) {
-                            if (record.riskrange && record.riskrange == "安全" && pro != "gsmc") {
+                            if (record.riskrange && record.riskrange == "安全" && pro != "gsmc" && pro != "kj") {
                                 let drill = "text-decoration: none;color: green;font-weight: bold;cursor: pointer;text-align: center;";
                                 css = css + "font-weight:bold;" + textIndent + drill;
                                 return css;
-                            } else if (record.riskrange && record.riskrange == "警告" && pro != "gsmc") {
-                                let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
-                                css = css + "font-weight:bold;" + textIndent + drill;
-                                return css;
-                            } else if (record.riskrange && record.riskrange == "预警" && pro != "gsmc") {
+                            } else if (record.riskrange && record.riskrange == "提示" && pro != "gsmc" && pro != "kj") {
                                 let drill = "text-decoration: none;color: #FF9900;font-weight: bold;cursor: pointer;text-align: center;";
                                 css = css + "font-weight:bold;" + textIndent + drill;
                                 return css;
-                            } else if (pro == "gsmc" && record.gsmc != "总计") {
+                            } else if (record.riskrange && record.riskrange == "预警" && pro != "gsmc" && pro != "kj") {
+                                let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
+                                css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            } else if (pro == "gsmc" && record.gsmc != "总计" && pro != "kj") {
                                 let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
                                 css = css + "font-weight:bold;" + textIndent + drill;
+                                return css;
+                            } else if(pro == "kj"&& record.kj){
+                                let drill = "text-decoration: none;text-align: center;";
+                                css = css + textIndent + drill;
                                 return css;
                             } else {
                                 return css + textIndent;
