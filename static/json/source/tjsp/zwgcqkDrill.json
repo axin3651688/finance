@@ -19,7 +19,6 @@
                     "height": "812px"
                 },
                 "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
-                  debugger
                     config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
                     let len = option.items.length;
                     let id = option.items[len-1].id;//获取下钻科目的id
@@ -115,22 +114,26 @@
                         {
                           "id": "hkly",
                           "type": "string",
-                          "text": "还款来源"
+                          "text": "还款来源",
+                          "align":"center"
                         },
                         {
                           "id": "xzjs",
                           "type": "string",
-                          "text": "新增/减少"
+                          "text": "新增/减少",
+                          "align":"center"
                         },
                         {
                           "id": "sfjtdb",
                           "type": "string",
-                          "text": "是否集团担保"
+                          "text": "是否集团担保",
+                          "align":"center"
                         },
                         {
                           "id": "dbsf",
                           "type": "string",
-                          "text": "担保方式"
+                          "text": "担保方式",
+                          "align":"center"
                         }
                   ],
                   "rows": [],
