@@ -136,17 +136,20 @@
           {
             "id": "skxz",
             "type": "string",
-            "text": "商客性质*"
+            "text": "商客性质*",
+            "align":"center"
           },
           {
             "id": "sfnb",
             "type": "string",
-            "text": "是否内部*"
+            "text": "是否内部*",
+            "align":"center"
           },
           {
             "id": "sfzc",
             "type": "string",
-            "text": "是否正常*"
+            "text": "是否正常*",
+            "align":"center"
           },
           {
             "id": "fzcfl",
