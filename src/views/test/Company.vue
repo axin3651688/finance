@@ -4,7 +4,7 @@
       <!--公司树-->
       <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8">
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-          <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
+          <el-button slot="append" icon="el-icon-refresh" @click="refreshNodes()"></el-button>
         </el-input>
         <el-tree
           :data="treedata"
@@ -341,8 +341,17 @@ export default {
       });
     },
 
+    /**
+     * 刷新公司节点
+     * zb
+     */
+    refreshNodes(){
+        this.filterText="";
+        this.findNodes();
+    },
+
     //请求节点数据
-    findNodes() {debugger
+    findNodes() {
       const _this = this;
       var getters = _this.$store.getters;
       let username = this.$store.state.user.user.user.username;
@@ -390,7 +399,6 @@ export default {
       });
     },
     parseRootOfTree (data) {
-      debugger;
       let me = this;
 
     },
@@ -659,7 +667,7 @@ export default {
           // ,dropisleaf: dropNode.data.cisleaf
         }
       }).then(result => {
-        if (result.status == 200) {debugger
+        if (result.status == 200) {
           if (result.data.code === 0) {
             _this.$message.error(result.data.msg);
           } else {
@@ -719,7 +727,6 @@ export default {
       //console.log("tree drag end: ", dropNode && dropNode.label, dropType);
     },
     handleDrop(draggingNode, dropNode, dropType, ev) {
-      debugger
       if (draggingNode.data.scode !== dropNode.data.scode) {
         draggingNode.goon = true;
         this.$confirm(
