@@ -412,6 +412,115 @@ export default {
         //#region 税后净利润 =  税后净营业利润-资本占用×资本成本率 //#endregion
         shjlr: 0
       },
+      exportExps: [
+        {
+          sname:"净利润",
+          v1400100A: 1000, //净利润
+          v1400100A_tz: 1000, //净利润
+        },
+        {
+          sname:"研究与开发费用",
+          v1435301A: 1000, //研究与开发费
+          v1435301A_tz: 0, //调整后 研究与开发费 v1435301A*(1-zbcblv)
+        },
+        {
+          sname:"利息支出",
+          v1436604A: 2000, //利息支出
+          v1436604A_tz: 0,
+        },
+        {
+          sname:"其中：营业外收入",
+          v1416301A: 2000, //营业外收入
+          v1416301A_tz: 0
+        },
+        {
+          sname:"营业外支出",
+          v1426711A: 3000, //营业外支出
+          v1426711A_tz: 0
+        },
+        {
+          sname:"营业外收支净额",
+          yywsrje: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
+          yywsrje_tz: 0,
+        },
+        {
+          sname:"税后净营业利润",
+          yywsrlr: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+        },
+        {
+          sname:"资产总计",
+          v1100100A: 1000, //资产总计 期初
+          v1100100B: 20000, //资产总计 期末
+          v1100100_tz: 0
+        },
+        {
+          sname:"无息流动负债",
+          //无息流动负债 = 流动负债-短期借款-一年内到期的长期负债
+          wxldfzA: 0,
+          wxldfzB: 0,
+          wxldfz_tz: 0,
+        },
+        {
+          sname:"其中：流动负债",
+          v1210100A: 0, //无息流动负债
+          v1210100B: 0,
+          v1210100_tz: 0
+        },
+        {
+          sname:"短期借款",
+          v1212001A: 0, //短期借款
+          v1212001B: 0,
+          v1212001_tz: 0
+        },
+        {
+          sname:"一年到期的长期负债",
+          v1217001A: 0, //一年到期的长期负债
+          v1217001B: 0,
+          v1217001_tz: 0
+        },
+        {
+          sname:"在建工程",
+          v1131604A: 0, ////营业外收支净额 营业外支出本期金额-营业外收入本期金额
+          v1131604B: 0,
+          v1131604_tz: 0,
+        },
+        {
+          sname:"工程物资",
+          v1131605A: 0, //工程物资
+          v1131605B: 0,
+          v1131605_tz: 0,
+        },
+        {
+          sname:"专项应付款",
+          v1222711A: 0, //专项应付款
+          v1222711B: 0,
+          v1222711_tz: 0,
+        },
+        {
+          sname:"资本化费用调整后",
+          //资本化费用调整后
+          znhfy_tz: 0,
+        },
+        {
+          sname:"资本占用金额",
+          zbzyje: 0, //资本占用金额
+        },
+        {
+          sname:"资产负债率(%)",
+          //资产负债率 负债合计期末余额/资产合计期末余额*100
+          zcfzlv: 0,
+        },
+        {
+          sname:"资本成本率(%)",//这个不对
+          //负债合计
+          v1200100B: 0,
+        },
+        {
+          sname:"无息流动负债-资本占用×资本成本率",
+          //#region 税后净利润 =  税后净营业利润-资本占用×资本成本率 //#endregion
+          shjlr: 0
+        }
+      ],
       vars: [
         {
           code: "sl",
@@ -503,8 +612,123 @@ export default {
       if(item.id == "1"){
         me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
       }else{
-        alert('暂时没做！')
+        debugger;
+        this.downLoadEVA();
       }
+    },
+    /**
+     * 导出的格式。
+     */
+    parseDataOfExport () {
+      debugger;
+      let me = this;
+      let datas = this.exps;
+      let header1 = ['','项目','本期金额','','调整后'],header2 = ['资本占用','项目','期初余额','期末余额','调整后'],contentData = [];
+      let exportExps = this.exportExps;
+      for(let i = 0;i < exportExps.length;i++){
+        let item = exportExps[i];
+        if(i < 7){
+          let arr = ['税后净营业利润'];
+          for(let key in item){
+            if(key == "sname"){
+              arr[1] = item[key] || "";
+            }else{
+              if(key.endsWith('A')){
+                arr[2] = datas[key] || 0;
+              }else {
+                arr[2] = 0;
+              }
+              arr[3] = 0;
+              if(key.endsWith('_tz')){
+                arr[4] = datas[key] || 0;
+              }else {
+                key == 'v1400100A_tz' ? arr[4] = arr[2]:0;
+              }
+            }
+          }
+          contentData.push(arr);
+        }else if(i < 17){
+          if(i == 7){
+            contentData.push(header2);
+          }
+          let arr = ['资本占用'];
+          for(let key in item){
+            if(key == "sname"){
+              arr[1] = item[key] || "";
+            }else{
+              if(key.endsWith('A')){
+                arr[2] = datas[key] || 0;
+              }else{
+                arr[2] = 0;
+              }
+              if(key.endsWith('B')){
+                arr[3] = datas[key] || 0;
+              }else{
+                arr[3] = 0;
+              }
+              if(key.endsWith('_tz')){
+                arr[4] = datas[key] || 0;
+              }else {
+                arr[4] = 0;
+              }
+            }
+          }
+          contentData.push(arr);
+        }else if(i < 19){
+          let arr = [''];
+          for(let key in item){
+            if(key == "sname"){
+              arr[1] = item[key] || "";
+            }else{
+              if(key.endsWith('A')){
+                arr[2] = datas[key] || 0;
+              }else{
+                arr[2] = 0;
+              }
+              if(key.endsWith('B')){
+                arr[3] = datas[key] || 0;
+              }else{
+                arr[3] = 0;
+              }
+              arr[4] = datas[key] || 0;
+            }
+          }
+          contentData.push(arr);
+        }else {
+          let arr = ['EVA'];
+          for(let key in item){
+            if(key == "sname"){
+              arr[1] = datas[key] || "";
+            }else{
+              arr[2] = 0;
+              arr[3] = 0;
+              arr[4] = datas[key] || 0;
+            }
+          }
+          contentData.push(arr);
+        }
+      }
+      console.log("这个数据",contentData);
+      return {header:header1,content:contentData}
+      
+    },
+    downLoadEVA () {
+      debugger;
+      let me = this;
+      // vue.downloadLoading = true;
+      let resData = this.parseDataOfExport();
+      console.log(resData);
+      let data = resData.content;
+      import('@/excel/SExport2Excel').then(excel => {
+        excel.export_json_to_excel({
+          header: resData.header,
+          data,
+          filename: "这是一个神奇的故事",//导出表的表名称
+          autoWidth: "200px",
+          bookType: 'xlsx'  //导出的类型
+        })
+        // vue.downloadLoading = false
+      })
     },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
@@ -640,7 +864,8 @@ export default {
               me.updatePjsData(["v1100100", "v1210100", "v1212001", "v1217001","v1131604","v1131605","v1222711","v4101"]);
               console.log("me.ArrData:", me.ArrData) ; 
               // debugger  
-              me.setExpressionData();        
+              me.setExpressionData(); 
+              console.log("exps:",this.exps);       
             }
         })
     },
