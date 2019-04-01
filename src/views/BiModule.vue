@@ -172,6 +172,7 @@ export default {
   },
   watch: {
     module_api(newid) {
+      debugger;
       // let $vueNew = parse(this.$store.start_$vue);
       //改变url路径的时候，删除管理驾驶舱添加的属性。
       this.$store.selectPeriod? delete this.$store.selectPeriod:"";

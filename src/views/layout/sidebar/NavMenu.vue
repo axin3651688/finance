@@ -75,8 +75,18 @@ export default {
   },
   methods: {
     ...mapActions(["ToggleSideBar"]),
-    classHandle () {
-      
+    /**
+     * 有时会添加一些东西在状态管理中，所以这个地方可以进行删除、或者别的操作。
+     * @author szc 2019年4月1日16:11:42
+     */
+    changeBefore(){
+      let me = this;
+      //删除十三个月的问题
+      me.$store.monthConfig? delete me.$store.monthConfig:"";
+      let monthId = this.$store.getters.month;
+      if(monthId == 13){
+        this.$store.dispatch("GetSideMid", {month:12});
+      }
     },
     shownavMenu(e) {
       debugger;
@@ -88,6 +98,8 @@ export default {
       //在此把点击的节点放到缓存中。
       let siderState = JSON.stringify(e);
       localStorage.setItem("siderState",siderState);
+      //点击之前要进行的操作。
+      this.changeBefore();
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;
