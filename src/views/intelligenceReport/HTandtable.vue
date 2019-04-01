@@ -916,6 +916,9 @@ export default {
       if (this.fixed == 0 && this.templateId == 4) {
         if (columns > 7) {
           let record = this.settings.data[row];
+          if(!record){
+            return true;
+          }
           if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
             //8
             return true;
@@ -1069,11 +1072,11 @@ export default {
      * 2019年3月29日14:06:43  szc
      */
     limitItemOfFill (row,columns) {
-      
       let me = this;
       if (this.fixed == 0 && this.templateId == 5) {
         if (columns > 7) {
           let record = this.settings.data[row];
+          if(!record){return true}
           if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
             return true;
           }
@@ -1853,7 +1856,7 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          
+          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
