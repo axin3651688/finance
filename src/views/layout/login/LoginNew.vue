@@ -233,15 +233,11 @@ export default {
                 // data.user.avarUrl = "avar/upload/avar/" + data.user.userName;
                 store.dispatch("setUser", data);
                 // 把用户的状态更新到vuex
-                // alert(data.company.text);
                 this.GetSideMid({
                   // company: data.company.customerId,
                   company: data.company.id,
                   companyName: data.company.text
                 });
-                // debugger;
-                // debugger;
-                //this.initSocket(token);
                 let url = "/main";
                 //默认加载第一个管理驾驶舱
                 localStorage.module_api_cache =
@@ -254,17 +250,12 @@ export default {
                   leaf:1
                 };
                 localStorage.setItem("siderState",JSON.stringify(siderState));
-                // if (data.company && data.company.id === 121) {
-                //   url += "?monthCount=13";
-                //   localStorage.module_api_cache =
-                //     "/cnbi/json/source/tjsp/dash.json";
-                // }
-                // 页面跳转
-                //  判断加载哪个公司的布局页以加载不同样式
+                //添加一个websoket监听用户的掉线等 2019年3月28日18:49:19 szc
+                // let webData = {
+                //   url:"ws://192.168.2.41:9001/websocket/"+data.user.userName
+                // };
+                // webSocket(webData);
                 router.push(url);
-                // data.company.id === 121
-                //   ? router.push("/tjsp/module")
-                //   : // router.push("/message");
               } else {
                 this.loginUser.usename = "";
                 this.loginUser.password = "";

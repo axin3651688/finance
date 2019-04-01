@@ -212,6 +212,7 @@ export default {
       }))
     },
     btnClick(btn) {
+      debugger;
       btn.handler(this, btn);
     },
     //pagesize改变时触发 ---- 分页功能

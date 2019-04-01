@@ -4,9 +4,10 @@
       <!--公司树-->
       <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8">
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-          <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
+          <el-button slot="append" icon="el-icon-refresh" @click="refreshNodes()"></el-button>
         </el-input>
         <el-tree
+          :style="contentStyleObj"
           :data="treedata"
           node-key="scode"
           :props="props"
@@ -136,6 +137,10 @@ export default {
   },
   data() {
     return {
+      contentStyleObj: {
+        height: 500,
+        overflow: "auto"
+      },
       filterText: "",
       // rootNode: "1001",
       props: {
@@ -307,8 +312,20 @@ export default {
       deep: true
     }
   },
-
+  mounted() {
+    this.setTreeHeight();
+  },
   methods: {
+    setTreeHeight() {
+      this.contentStyleObj.height = `${document.documentElement.clientHeight -
+        124}px`;
+      // 然后监听window的resize事件．在浏览器窗口变化时高度．
+      const that = this;
+      window.onresize = function temp() {
+        that.contentStyleObj.height = `${document.documentElement.clientHeight -
+          124}px`;
+      };
+    },
     /**
      * @description 监控表单变化
      * @param 监控字段
@@ -341,8 +358,17 @@ export default {
       });
     },
 
+    /**
+     * 刷新公司节点
+     * zb
+     */
+    refreshNodes(){
+        this.filterText="";
+        this.findNodes();
+    },
+
     //请求节点数据
-    findNodes() {debugger
+    findNodes() {
       const _this = this;
       var getters = _this.$store.getters;
       let username = this.$store.state.user.user.user.username;
@@ -390,7 +416,6 @@ export default {
       });
     },
     parseRootOfTree (data) {
-      debugger;
       let me = this;
 
     },
@@ -659,7 +684,7 @@ export default {
           // ,dropisleaf: dropNode.data.cisleaf
         }
       }).then(result => {
-        if (result.status == 200) {debugger
+        if (result.status == 200) {
           if (result.data.code === 0) {
             _this.$message.error(result.data.msg);
           } else {
@@ -719,7 +744,6 @@ export default {
       //console.log("tree drag end: ", dropNode && dropNode.label, dropType);
     },
     handleDrop(draggingNode, dropNode, dropType, ev) {
-      debugger
       if (draggingNode.data.scode !== dropNode.data.scode) {
         draggingNode.goon = true;
         this.$confirm(
@@ -758,6 +782,28 @@ export default {
   }
 };
 </script>
+<style scoped>
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: #f5f5f5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
+  border-radius: 1px;
+  background-color: #f5f5f5;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 1px;
+  -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
+  background-color: #9fd467;
+}
+</style>
 <style scoped>
 .companyM {
   margin-top: 10px;
