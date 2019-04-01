@@ -4,7 +4,7 @@
       <!--公司树-->
       <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8">
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-          <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
+          <el-button slot="append" icon="el-icon-refresh" @click="refreshNodes()"></el-button>
         </el-input>
         <el-tree
           :style="contentStyleObj"
@@ -169,7 +169,6 @@ export default {
   watch: {
     //监听公司树筛选
     filterText(val) {
-      // debugger;
       this.$refs.comtree.filter(val);
     }
   },
@@ -187,6 +186,14 @@ export default {
           124}px`;
       };
     },
+    /**
+     * 刷新公司节点
+     * zb
+     */
+    refreshNodes(){
+        this.filterText="";
+        this.findNodes();
+    },
 
     // 抽取数据 按钮
     extraing(formName) {
@@ -196,7 +203,6 @@ export default {
       let comtree = _this.$refs.comtree;
       let coms = comtree.getCheckedKeys();
       if (_.isArray(coms) && coms.length > 0) {
-        debugger
         //验证
         _this.$refs[formName].validate(valid => {
           if (valid) {
@@ -255,7 +261,6 @@ export default {
                   }
                 }).then(result => {
                   if (result.status == 200) {
-                    // debugger
                     if (result.data) {
                       this.$message({
                         type: "success",
@@ -340,13 +345,11 @@ export default {
      *@description  右键菜单
      */
     handleContextMenu(event, node, nodeTarget, el) {
-      // debugger
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
       if (node.stype === "1") {
         return false;
       }
-      // debugger;
       this.contextMenuVisible = true;
       //
       var x = event.clientX + document.body.scrollLeft;
@@ -376,7 +379,6 @@ export default {
 
     // 请求节点数据
     findNodes() {
-      // debugger
       const _this = this;
       // var getters = _this.$store.getters;
       //请求数据
@@ -389,7 +391,6 @@ export default {
         // }
       }).then(result => {
         if (result.status == 200 && result.data.code == 200) {
-          // debugger
           //封装树对象数据
           const setting = {
             data: {
@@ -433,7 +434,6 @@ export default {
     },
     //过滤节点
     filterNode(value, data) {
-      // debugger
       if (!value) return true;
       return data.sname.indexOf(value) !== -1;
     }

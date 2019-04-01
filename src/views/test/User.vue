@@ -438,7 +438,6 @@ export default {
    * 导航栏高度  64*1
    */
   created() {
-    // debugger
     let me = this;
     if (document.getElementsByClassName("input-refresh").length > 0) {
       // 得到表单的高度并赋值
@@ -671,6 +670,9 @@ export default {
             }
           }
         ],
+        roleid: [
+          { required: true, message: "必选项" }
+        ],
         company: [
           // { required: true, message: "必填项", trigger: "blur" },
           { required: true, message: "必选项" }
@@ -724,7 +726,6 @@ export default {
     },
     //切换公司
     company(newV) {
-      // debugger;
       this.getData("company", newV);
     },
     //监听修改表单变化
@@ -772,9 +773,7 @@ export default {
     },
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
     offsetHeight(val) {
-      // debugger
       if (!this.timer) {
-        // debugger
         // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
         this.offsetHeight = val;
         this.timer = true;
@@ -804,7 +803,6 @@ export default {
     // const me = this
     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
     window.onresize = () => {
-      // debugger
       return (() => {
         window.offsetHeight = document.body.offsetHeight;
         this.offsetHeight = window.offsetHeight;
@@ -819,7 +817,6 @@ export default {
      * 文件改变时的回调。
      */
     changeFile (file,fileList) {
-      debugger;
       //限制上传的图片的大小。
       // let sizePhoto = file.size / 1024 / 1024 < 1;
       // if(!sizePhoto && file.status == "ready"){
@@ -849,7 +846,6 @@ export default {
         
       // // }
       // return isLt2M;
-      // debugger;
       // let me = this;
       // var imgFile = res;
       // var fr = new FileReader();
@@ -889,7 +885,6 @@ export default {
 
     // 切换公司时触发
     getData(vax, value) {
-      // debugger
       let me = this;
       // if(vax === 'year') {
       //     me.yearId = me.$store.getters[vax] ;
@@ -1026,11 +1021,9 @@ export default {
                   type: "success",
                   message: result.data.msg
                 });
-                debugger;
                 //修改图片的请求。
                 _this.submitPhotoOfAdd();
                 //重新加载
-                debugger;
                 _this.dialogEditUserVisible = false;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
               }
