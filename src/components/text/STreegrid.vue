@@ -13,14 +13,15 @@
     <el-input 
     v-if="item.proportion && item.proportion.length>0" 
     v-for="see in item.proportion" 
-    :key="see.id" 
+    :key="see.id"
+    clearable 
     :placeholder="see.placeholder" 
     v-model="see.input3" 
     :style="see.cellStyle"
     @change="seeChange(see)">
       <template slot="prepend">
         {{ see.text }}
-        <i :class="see.icon" style="marginLeft: 10px;"></i>
+        <span style="marginLeft: 10px;">{{ see.icon }}</span>
       </template>
       <template slot="append">%</template>
     </el-input>
@@ -71,6 +72,7 @@ export default {
   name: "STreeGrid",
   props: ["item"],
   created() {
+    debugger
     console.log("a", this.item);
     // this.item.rows = this.item.config.rows
     //  this.item.rows = this.item.datas
@@ -84,7 +86,24 @@ export default {
       // 计算当前页面的高度 得出表格的高度
       this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
     } 
-    
+    // 读取"yszkbl"的存储信息
+    let yszkbl = JSON.parse(localStorage.getItem("yszkbl"));
+    // 读取"yfzkbl"的存储信息
+    let yfzkbl = JSON.parse(localStorage.getItem("yfzkbl"));
+    // 读取"qtyskbl"的存储信息
+    let qtyskbl = JSON.parse(localStorage.getItem("qtyskbl"));
+    if(this.item.id=="yszkej"){
+      if(yszkbl)this.item.proportion = yszkbl ;
+      this.changeFormatData(this.item.proportion, this.formatData) ;
+    }
+    if(this.item.id=="yfzkej"){
+      if(yfzkbl)this.item.proportion = yfzkbl ;
+      this.changeFormatData(this.item.proportion, this.formatData) ;
+    }
+    if(this.item.id=="qtyskej"){
+      if(qtyskbl)this.item.proportion = qtyskbl ;
+      this.changeFormatData(this.item.proportion, this.formatData) ;
+    }
   },
   mounted() {
     this.convertData();
@@ -92,36 +111,10 @@ export default {
     // sjz 加的 
     // 设置表格高度（自适应）
       this.setTableScollHeight();
-    // const me = this
-    // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
-    // window.onresize = () => {
-    //     return (() => {
-    //         window.offsetHeight = document.body.offsetHeight;
-    //         me.offsetHeight = window.offsetHeight;
-    //     })()
-    // }
+
   },
   watch:{
-    // sjz 加的
-    // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
-    // offsetHeight(val){
-    //     if(!this.timer){
-    //         // 一旦监听到的offsetHeight值改变，就将其重新赋给data里的offsetHeight
-    //         this.offsetHeight = val
-    //         this.timer = true
-    //         let me = this
-    //         setTimeout(function(){
-    //             // 打印offsetHeight变化的值me.item.id=="zcfzbej" || me.item.id=="lrbej" || me.item.id=="xjllbej"
-    //             if(me.item.stype == "tree"){ 
-    //               me.heights = document.body.offsetHeight - 40 - 64 - 22 - 10 ;
-    //             }else{
-    //               me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40 ;
-    //             }
-    //             console.log(me.offsetHeight)
-    //             me.timer = false
-    //         },400)
-    //     }
-    // }
+    
   },
   __computed: {
     // 格式化数据源
@@ -190,8 +183,66 @@ export default {
     },
     // sjz 比例触发
     seeChange(see){
-        see.handler(this,see);
+      debugger
+      let me = this ;
+      // 看看json里有没有handler事件，如果有，直接跳转到json用 json的事件处理
+      if(see.handler && typeof see.handler == "function"){
+        return see.handler(this, see);
+      }
+      // 比例不能未负数
+      if(see.input3 < 0){
+        this.$message('比例不能为负数！');
+        see.input3 = "";
+        // return false ;
+      }
+      // 为空不做任何操作
+      if(see.input3 != "" && see.input3 != 0){
+        see.value = see.input3;
+        // string类型转number类型
+        if(typeof see.value === "string" && see.input3 != ""){
+            //输入数字
+            see.value = see.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
+        }
+        // 千分位两位小数显示
+        see.input3 = Math.decimalToLocalString(see.input3) ;
+      }else{
+          see.input3 = '' ;
+          see.value = 0 ;
+      }
+      if(see.id=="1" || see.id=="2"){
+        localStorage.removeItem("yszkbl");
+        localStorage.setItem("yszkbl",JSON.stringify(me.item.proportion));
+      }
+      if(see.id=="3" || see.id=="4"){
+        localStorage.removeItem("yfzkbl");
+        localStorage.setItem("yfzkbl",JSON.stringify(me.item.proportion));
+      }
+      if(see.id=="5" || see.id=="6"){
+        // 清除localStorage里的名为 "yszkbl" 的缓存信息  
+        localStorage.removeItem("qtyskbl");
+        // 把存储的信息塞到名为 "yszkbl" 的字段里   
+        localStorage.setItem("qtyskbl",JSON.stringify(me.item.proportion));
+      }
+      this.changeFormatData(me.item.proportion, me.formatData);
     },
+    // sjz 比例显示预警等级riskrange
+    changeFormatData(proportion, datas){
+      let first = proportion[0].value ;
+      let second= proportion[1].value ;
+      datas.forEach(element => {
+          if(element.zjl == 0){
+              element.riskrange = '' ;
+          }else{
+              if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
+              if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
+              if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
+              if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
+              if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
+          }
+          if(first == 0 && second == 0)element.riskrange = '' ;    
+      });
+    }, 
+
     rowClass({ row, rowIndex }) {
       return "height:100%-64px";
     },
@@ -476,5 +527,8 @@ img {
 <style>
 .el-table--scrollable-x .el-table__body-wrapper{
   overflow: auto;
+}
+.el-input__inner {
+  text-align: right !important;
 }
 </style>

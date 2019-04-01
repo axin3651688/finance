@@ -244,21 +244,35 @@
                     },
                     "queryDataAfter": function(data, $vue) {
                         debugger
-                        data.forEach(item => {
-                            // debugger
-                            if (item.riskrange == "SAFE") {
-                                item.riskrange = "安全";
-                            } else if (item.riskrange == "DANGER") {
-                                item.riskrange = "提示";
-                            } else if (item.riskrange == "PROMPT") {
-                                item.riskrange = "预警";
-                            } else {
-                                item.riskrange = "错误！不在范围之内！";
+                        let me = this ;
+                        let first = me.proportion[0].value;
+                        let second = me.proportion[1].value;
+                        data.forEach(element => {
+                            if(element.zjl == 0){
+                                element.riskrange = '' ;
+                            }else{
+                                if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
+                                if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
+                                if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
+                                if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
+                                if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
                             }
-                            if (item.scode == '9') {
-                                item.scode = '';
-                            }
+                            if(first == 0 && second == 0)element.riskrange = '' ;    
                         });
+                        // data.forEach(item => {
+                        //     if (item.riskrange == "SAFE") {
+                        //         item.riskrange = "安全";
+                        //     } else if (item.riskrange == "DANGER") {
+                        //         item.riskrange = "提示";
+                        //     } else if (item.riskrange == "PROMPT") {
+                        //         item.riskrange = "预警";
+                        //     } else {
+                        //         item.riskrange = "错误！不在范围之内！";
+                        //     }
+                        //     if (item.scode == '9') {
+                        //         item.scode = '';
+                        //     }
+                        // });
                         return data;
                     },
                     "config": {
@@ -432,7 +446,8 @@
                         ],
                         "rows": []
                     },
-                    "toolbar": [{
+                    "toolbar": [
+                        {
                             "id": "1",
                             "text": "全部展开",
                             "xtype": "button",
@@ -503,34 +518,26 @@
                     ],
                     proportion:[
                         {
-                            "id": "1",
+                            "id": "5",
                             "text": "安全比例",
-                            "placeholder": "请输入安全比例%",
+                            "placeholder": "请输入安全比例-%",
                             "cellStyle": {
                                 "width": "330px"
                             },
                             "input3": "",
-                            "icon": "el-icon-arrow-left",
-                            "handler": function(vue, btn) {
-                                debugger
-                                console.log(vue);
-                                
-                            }
+                            "value": 0,
+                            "icon": "≤"
                         },
                         {
-                            "id": "2",
+                            "id": "6",
                             "text": "预警比例",
-                            "placeholder": "请输入预警比例%",
+                            "placeholder": "请输入预警比例-%",
                             "cellStyle": {
                                 "width": "330px"
                             },
                             "input3": "",
-                            "icon": "el-icon-arrow-right",
-                            "handler": function(vue, btn) {
-                                debugger
-                                console.log(vue);
-                                
-                            }
+                            "value": 0,
+                            "icon": "≥"
                         }
                     ],
                     "drillProperties": ["riskrange", "gsmc", "kj"],
