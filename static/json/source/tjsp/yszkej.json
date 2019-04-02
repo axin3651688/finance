@@ -13,7 +13,7 @@
         "weight": 24,
         "show":true,
         "queryDataBefore":function(params,$items,$this){
-            debugger
+            // debugger
             // 上年度12月份
             params.oneYearBefore = params.year - 1 + "12" ; 
             let len = $this.items.length;
@@ -23,21 +23,21 @@
             return params;
         },
         "queryDataAfter":function(data,$this){
-            debugger
-            data.forEach(item => {
-                // debugger
-                if(item.riskrange == "SAFE"){
-                    item.riskrange = "安全" ;
-                }else if(item.riskrange == "DANGER"){
-                    item.riskrange = "提示" ;
-                }else if(item.riskrange == "PROMPT" ){
-                    item.riskrange = "预警" ;
+            // debugger
+            let first = $this.items[0].children[1].proportion[0].value;
+            let second =$this.items[0].children[1].proportion[1].value;
+            data.forEach(element => {
+                if(element.zjl == 0){
+                    element.riskrange = '' ;
                 }else{
-                    item.riskrange = "错误！不在范围之内！" ;
+                    if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
+                    if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
+                    if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
+                    if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
+                    if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
                 }
-                if(item.scode == '9'){
-                    item.scode = '' ;
-                }
+                if(first == 0 && second == 0)element.riskrange = '' ;
+                if(element.scode == '9')element.scode = ''; 
             });
             return data ;
         },
@@ -213,7 +213,7 @@
                     {
                         "type":"click",//事件类型
                         "way":"addTab",//调用的公共方法
-                        "sourceApi":"/cnbi/json/source/tjsp/qtyskmxb.json",
+                        "sourceApi":"/cnbi/json/source/tjsp/yszkmxb.json",
                         "handler":($vue,params)=>{//自定义的回调
                             console.info(params);
                             debugger; 

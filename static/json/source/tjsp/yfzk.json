@@ -268,7 +268,8 @@
                                 if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
                                 if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
                             }
-                            if(first == 0 && second == 0)element.riskrange = '' ;    
+                            if(first == 0 && second == 0)element.riskrange = '' ;
+                            if(element.scode == "9")element.scode = '' ;    
                         });
                         // data.forEach(item => {
                         //     if (item.riskrange == "SAFE") {
