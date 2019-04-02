@@ -598,7 +598,7 @@ export default {
          * 再次调用数据之后的处理方法，先处理数据中变量的替换再次换算单位
          */
         if ( item.queryDataAfter && typeof item.queryDataAfter == "function" && !item.correctWrongConfig ){
-          datas = item.queryDataAfter(datas);
+          datas = item.queryDataAfter(datas,this);
         }
         let resColumns = [];
         if(item.config.tableHeads){
@@ -624,7 +624,7 @@ export default {
         !item.correctWrongConfig
       ) {
         //
-        datas = item.queryDataAfter(datas);
+        datas = item.queryDataAfter(datas,this);
       }
       //
       item.datas = datas;
