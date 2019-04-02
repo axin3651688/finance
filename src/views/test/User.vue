@@ -312,6 +312,7 @@
       width="450px"
       @close="closeDilog('editPasswordForm')"
     >
+    
       <el-form
         :model="editPasswordForm"
         status-icon
@@ -361,7 +362,6 @@
       width="30%"
       @close="closeDilog('companyAuthorizationForm')"
     >
-      <!-- <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="8"> -->
       <el-form
         :inline="true"
         label-width="80px"
@@ -382,9 +382,8 @@
           :default-checked-keys="showNodes"
           ref="companysTree"
         ></el-tree>
-
       </el-form>
-      <!-- </el-col> -->
+      
       <!-- <el-form :inline="true" label-width="80px" :model="addUserForm"  class="user-form-inline">
         <el-form-item label="所属公司" prop="company">
             <treeselect
@@ -813,6 +812,17 @@ export default {
     };
   },
   methods: {
+
+    setTreeHeight() {
+      this.contentStyleObj.height = `${document.documentElement.clientHeight -
+        124}px`;
+      // 然后监听window的resize事件．在浏览器窗口变化时高度．
+      const that = this;
+      window.onresize = function temp() {
+        that.contentStyleObj.height = `${document.documentElement.clientHeight -
+          124}px`;
+      };
+    },
     /**
      * 文件改变时的回调。
      */
@@ -1223,20 +1233,22 @@ export default {
       this.companyAuthorizationForm.suser = row.suser;
       this.showNodes =[];//清空节点的选中（公司授权）
       this.selectUser = row.suser;
-      this.getUserCompany(row.suser);//根据当前用户获取公司权限
+      this.getUserCompany(row);//根据当前用户获取公司权限
     },
-    getUserCompany(suser){
+    getUserCompany(row){
         var _this = this;
       //getters 数据
       let getters = _this.$store.getters;
       let user=getters.user.user.userName;
+      let currentRoleId = getters.user.role.id;
       request({
         url: "/zjb/sys/menupermission/query_companys_permission",
         method: "get",
         params:{
-            userId:suser,
-            currentUserId:user
-            //currentUserId:"zb"
+            userId:row.suser,
+            roleId:row.roleid,
+            currentUserId:user,
+            currentRoleId:currentRoleId
         }
       }).then(result => { 
       if (result.status == 200 && result.data.code == 200) {
