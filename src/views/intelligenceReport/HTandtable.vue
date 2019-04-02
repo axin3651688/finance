@@ -486,7 +486,7 @@ export default {
         pid: "1800"
       }
     ];
-    this.axios.get("cnbi/template.json").then(res => {
+    this.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
       
       this.list = res.data.data;
       // console.log(res)

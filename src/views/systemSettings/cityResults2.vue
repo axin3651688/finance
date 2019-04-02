@@ -23,7 +23,7 @@
                                 <th class="heightx" style="height:197px;line-height:197px;">效益状况</th>
                             </tr>
                         </table>
-                        <table class="table">
+                        <table class="table" id="cityResults2">
                             <tr class="tr1">
                                 <!-- <th rowspan="3" class="heightx" style="width:150px;">资产状况</th> -->
                                 <th colspan="3" class="heights" style="width:450px;">资产总额</th>
@@ -248,8 +248,20 @@ export default {
             if(item.id == "1"){
                 me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
             }else{
-                alert('暂时没做！')
+                // 
+                this.downLoadEVA();
             }
+        },
+        /**
+         * 点击导出按钮触发的事件
+         * @author szc 2019年4月1日16:52:11
+         */
+        downLoadEVA () {
+            debugger;
+            let me = this;
+            import('@/excel/SZCExport2Excel').then(excel => {
+                excel.export_table_to_excel("cityResults2");
+            })
         },
         // 切换维度时触发
         getData(vax, value){
