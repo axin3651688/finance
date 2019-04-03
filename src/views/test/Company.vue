@@ -104,8 +104,13 @@
             <el-button type="primary" @click="add" :disabled="addDisabled">新增</el-button>
             <!-- <el-button type="primary" @click="update">修改</el-button> -->
             <el-button type="success" @click="save('form')">保存</el-button>
-
             <el-button type="danger" @click="remove">删除</el-button>
+            <!-- <template v-if="form.cisdel === 'N'">
+              <el-button type="danger" @click="remove">禁用</el-button>
+            </template>
+            <template v-else>
+              <el-button type="danger" @click="remove">启用</el-button>
+            </template> -->
             <!-- <el-button >取消</el-button> -->
           </el-form-item>
         </el-form>

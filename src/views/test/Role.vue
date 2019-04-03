@@ -178,6 +178,7 @@ export default {
   },
 
   data() {
+    let _this = this;
     return {
       right:[],
       //rightAll:["",];
@@ -222,7 +223,43 @@ export default {
       },
       rules: {
         srolename: [
-          { required: true, message: "请输入角色名称", trigger: "blur" },
+           {required: true, message: "请输入角色名称" },
+          {
+            validator: (rule, value, callback) => {
+              //const reg = /^[\w_-]{6,16}$/;
+              let len = _this.getByteLen(value);
+              if (len === 0) {
+                callback(new Error("请输入有效字符"));
+              } else if (len > 20) {
+                callback(new Error("角色名称超出长度"));
+              } else {
+                //编辑界面不需要验证同名
+                if (this.scodeDisabled || this.dialogEditUserVisible) {
+                  callback();
+                } else {
+                  //验证是否同名
+                  // setTimeout(() => {
+                  request({
+                    url: "/zjb/sys/role/check_role_name",
+                    method: "get",
+                    params: {
+                      roleName: value
+                    }
+                  }).then(result => {
+                    if (result.status == 200) {
+                      if (result.data.code == 200) {
+                        callback();
+                      } else {
+                        callback(new Error("角色名称已存在"));
+                      }
+                    }
+                  });
+                }
+                // }, 500);
+              }
+            },
+            trigger: "blur" //触发
+          },
           { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" }
         ],
         sroledesc: [
@@ -269,6 +306,19 @@ export default {
     this.setTableScollHeight();
   },
   methods: {
+
+    /**
+     * @value 字符串的长度（可以是汉字）
+     */
+    getByteLen(value) {
+      var isempty =
+        typeof value === "undefined" || value === null || value === "";
+      if (!isempty) {
+        var cn = value.match(/[^\x00-\xff]/g);
+        return value.length + (cn == null ? 0 : cn.length);
+      }
+      return 0;
+    },
     /**
      * 设置表格高度
      */
@@ -696,7 +746,7 @@ export default {
       
 
     },
-
+     
     handleCheckedPermissChange(value, event) {
       console.log(this.checkedPremiss);
     },
