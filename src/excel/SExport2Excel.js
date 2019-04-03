@@ -3,7 +3,6 @@ require('script-loader!file-saver');
 import XLSX from 'xlsx'
 
 function generateArray(table) {
-    debugger;
     var out = [];
     var rows = table.querySelectorAll('tr');
     var ranges = [];
@@ -12,7 +11,6 @@ function generateArray(table) {
         var row = rows[R];
         var columns = row.querySelectorAll('td');
         for (var C = 0; C < columns.length; ++C) {
-            debugger;
             var cell = columns[C];
             var colspan = cell.getAttribute('colspan');
             var rowspan = cell.getAttribute('rowspan');

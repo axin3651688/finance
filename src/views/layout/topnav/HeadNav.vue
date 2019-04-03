@@ -1,4 +1,5 @@
 <template>
+<div>
   <header class="head-nav">
     <hamburger
       :toggle-click="ToggleSideBar"
@@ -77,7 +78,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="0">
+      <el-badge :value="messageValue" @click.native="messageHandle">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
       <span class="username">
@@ -154,6 +155,10 @@
       <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
   </header>
+  <div class="messageCtn">
+    <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig"></SRModal>
+  </div>
+</div>
 </template>
 
 <script>
@@ -162,10 +167,13 @@ import { mapGetters, mapActions } from "vuex";
 import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
 import { logout } from "~api/interface.js";
+import SRModal from "@v/intelligenceReport/SRModal";
 export default {
   name: "Headnav",
   data() {
     return {
+      modalConfig:{},//审阅展示的modal配置
+      messageValue:1,//消息数
       // avarUrl:"",
       companyId: "",
       companyName_cache: "",
@@ -191,7 +199,8 @@ export default {
   },
   components: {
     Hamburger,
-    CompanyTree
+    CompanyTree,
+    SRModal
   },
   created() {
     //头像图片显示。
@@ -228,7 +237,14 @@ export default {
       }
     }
   },
-  mounted() {},
+  /**
+   * 页面加载之后的回调。
+   */
+  mounted() {
+    debugger;
+    let me = this;
+    // setInterval(() => this.getMessage(),10000);
+  },
   computed: {
     ...mapGetters([
       "user",
@@ -251,7 +267,7 @@ export default {
   //   }
   // },
   methods: {
-   
+    
     handleAvatarSuccess (e) {
       if(e && e.data.code == 200){
         //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
@@ -379,13 +395,104 @@ export default {
     },
     sayhidden() {
       this.isShow = true;
+    },
+    /**
+     * 获取消息提示框的数据内容。
+     * @author szc 2019年4月2日19:28:10
+     */
+    getMessage(){
+      debugger;
+      let me = this,suser = this.$store.getters.user.user.userName;
+      this.axios.get("/cnbi/json/source/tjsp/szcJson/message.json").then(res => {
+        debugger;
+        if(res.data.code == 200){
+          this.messageValue > 100? this.messageValue = 0:"";
+          this.messageValue += res.data.data.count;
+          console.log("一直在跳。。。");
+        }else {
+          console.error("查询消息记录出错。");
+        }
+      });
+      // console.log("外面也一直在跳。。。(这个定时器写在headNav.vue中)");
+    },
+    /**
+     * 点击消息展示上报的表的条目内容信息。
+     * @author szc 2019年4月2日20:12:14
+     */
+    messageHandle () {
+      debugger;
+      return;
+      let me = this;
+      if(this.messageValue == 0){
+        this.$message({
+          message:"暂无消息！",
+          type:"warning"
+        });
+        return;
+      }
+      this.axios.get("/cnbi/json/source/tjsp/szcJson/messageContent.json").then(res => {
+        if(res.data.code == 200){
+          this.showCkeckContent(res.data.data);
+        }else {
+          this.$message.error("请求出错！");
+        }
+      });
+    },
+    /**
+     * 展示审阅内容的配置。
+     * @author szc 2019年4月2日20:22:36
+     */
+    showCkeckContent (data) {
+      debugger;
+      let me = this;
+      this.modalConfig = {
+        title:"报表审阅",//modal框标题
+        rowListener:"checkfilldata",//事件监听方法名
+        dialogVisible:true,
+        type:"s-table",//要显示的类型
+        id:'userReport',//modal框的id
+        datas: {
+          tHeader:[
+            {
+              prop:"tabelId",
+              label:"报表名称"
+            },
+            {
+              prop:"fromUser",
+              label:"上报人"
+            },
+            {
+              prop:"sendTime",
+              label:"上报时间"
+            },
+            {
+              prop:"operation",
+              label:"操作"
+            }
+          ],
+          datas:data
+        }
+      }
+    },
+    /**
+     * 查看点击行所在的报表，审阅。
+     * @author szc 2019年4月3日14:38:13
+     */
+    checkFillDataHandle (rowData) {
+      debugger;
+      let me = this;
     }
   }
 };
 </script>
 <style lang="scss">
-.head-nav {
-}
+  //消息弹出框的表头样式
+  .messageCtn {
+    .el-table {
+      height: 100%;
+      max-height: 400px;
+    }
+  }
 </style>
 <style lang="scss" scoped>
   .user {

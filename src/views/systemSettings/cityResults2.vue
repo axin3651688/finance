@@ -111,6 +111,9 @@
 <script>
 import { eva_city_Request } from "~api/cube";
 import { mapGetters } from "vuex";
+import {
+    exportExcle
+} from "@/api/SZCExport.js";
 export default {
     data(){
         return {
@@ -120,6 +123,20 @@ export default {
             items: [
                 { id: "1", text: "刷新" },
                 { id: "2", text: "导出" }
+            ],
+            expsSort: [
+                // 资产总额
+                "factzb",
+                "zhbzz",     // %
+                "ztbzz",     // %
+                // 所有者权益    
+                "factsa",
+                "shbzz",     // %
+                "stbzz0" ,     // %
+                // 资产负债率（%）    
+                "factba",     // %
+                "zlhbzz",     // %
+                "zltbzz"     // %
             ],
             exps: {
             // 资产总额                 
@@ -135,6 +152,26 @@ export default {
                 zlhbzz: 0 ,     // %
                 zltbzz: 0       // %
             },    
+            expxSort: [
+            // 营业收入
+                "srbqdys",
+                "srhbzz",     // %
+                "srtbzz",     // %
+                "srbqljs",
+                "srtbljzz",     // %
+            // 利润总额
+                "lrbqdys",
+                "lrhbzz",     // %
+                "lrtbzz" ,     // %
+                "lrbqljs",
+                "lrtbljzz",     // %
+            // 成本费用利润率（%）
+                "cblbys",
+                "cblrhbzz",     // %
+                "cblrtbzz",     // %
+                "cblj",
+                "cblrtbljzz"    // %
+            ],   
             expx: {
             
             // 营业收入
@@ -253,14 +290,54 @@ export default {
             }
         },
         /**
-         * 点击导出按钮触发的事件
+         * 点击导出按钮触发的事件 (后台导出)
+         * @author szc 2019年4月3日16:10:44
+         */
+        downLoadEVA_old () {
+            debugger;
+            let me = this,getters = this.$store.getters,year = getters.year,month = getters.month;
+            let exportData = {sheet1:{year:year,month:month,data:[]}};
+            let row01Datas = this.exps,expxSort = me.expxSort,expx = me.expx;
+            row01Datas.rownum = "1";
+            exportData.sheet1.data.push(row01Datas);
+            let rowIndex = "2";
+            //第二行数据
+            let dataObj = {rownum:rowIndex};
+            for(let i = 0; i < expxSort.length;i ++){
+                let item = expxSort[i];
+                if(i < 10){
+                    dataObj[item] = expx[item];
+                }
+                if(i == 10){
+                    exportData.sheet1.data.push(dataObj);
+                    rowIndex = rowIndex + 1 + "";
+                    dataObj = {rownum:rowIndex};
+                }
+                if(i > 9){
+                    dataObj[item] = expx[item];
+                }
+            }
+            exportData.sheet1.data.push(dataObj);
+            let params = {sheetmap:JSON.stringify(exportData),templateFile:"市管企业经营业绩情况表.xlsx"};
+            exportExcle(params).then(res => {
+                if(res.code == 200){
+                    this.$message({
+                        message: "导出成功！",
+                        type: "success"
+                    });
+                }else {
+                    this.$message.error("导出失败！");
+                }
+            });
+        },
+        /**
+         * 点击导出按钮触发的事件 (前端导出)
          * @author szc 2019年4月1日16:52:11
          */
         downLoadEVA () {
-            debugger;
             let me = this;
             import('@/excel/SZCExport2Excel').then(excel => {
-                excel.export_table_to_excel("cityResults2");
+                excel.export_table_to_excel("cityResults2","市管企业经营业绩情况表");
             })
         },
         // 切换维度时触发
@@ -449,6 +526,7 @@ export default {
             }
                               
             me.exps = tableData ;
+            console.log("1",me.exps);
             // me.expx = tableData2;
         },
         dataProcessing_second(tableData2){
@@ -561,7 +639,8 @@ export default {
             }else{
                 tableData2.cblrtbljzz = '--' ;
             }
-            me.expx = tableData2 ;     
+            me.expx = tableData2 ; 
+            console.log("2",me.expx);    
         }
     }
 }

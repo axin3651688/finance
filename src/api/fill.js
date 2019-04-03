@@ -73,11 +73,18 @@ export function mechanism() {
 }
 /**
  * 查询当前公司下的用户。
+ * @author szc 2019年4月2日17:43:42
  */
 export function queryUserByCompany(data) {
     return request({
-        url: "/exl/fill_report?companyid=" + data.companyId,
-        method: 'get',
-        data: data,
+        url: "/exl/fill_report?company=" + data.company,
+        method: 'get'
+    })
+}
+export function sendFillMessage(data) {
+    return request({
+        url: "/exl/send_fill_message",
+        method: 'post',
+        params: data
     })
 }

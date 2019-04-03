@@ -26,11 +26,11 @@
           </div>
         </div>
         <div class="right">
-          <el-button class="button">审阅</el-button>
+          <!-- <el-button class="button">审阅</el-button> -->
           <el-button class="button" @click="reportHandle">上报</el-button>
         </div>
         <!-- 上报的人员modal -->
-        <SRModal v-if="true" :modalConfig.sync="modalConfig"></SRModal>
+        <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
         <hot-table
           v-if="settings.data && settings.data.length>0"
@@ -120,7 +120,8 @@ import {
     del,
     financingDown,
     mechanism,
-    queryUserByCompany
+    queryUserByCompany,
+    sendFillMessage
 } from "@/api/fill.js";
 // import BiModule from "@v/BiModule.vue";
 export default {
@@ -523,12 +524,22 @@ export default {
   methods: {
     /**
      * 上报的处理按钮。
+     * @author szc 2019年4月2日16:29:19
      */
     reportHandle () {
-      
+      return;
       let me = this;
+      //判断有没有选择上报的表。
+      if(!me.templateId){
+        this.$message({
+          message: '请选择要上报的报表！',
+          type: 'warning'
+        });
+        return;
+      }
       this.modalConfig = {
         title:"上报人员",
+        eventListener:"sendfillmessage",//事件监听方法名
         dialogVisible:true,
         checkbox:true,
         type:"tree",
@@ -569,11 +580,12 @@ export default {
     },
     /**
      * 查询当前公司下的用户。
+     * @author szc 2019年4月2日16:10:51
      */
     queryUserByCompany(){
       
       let me = this,companyId = this.$store.getters.company,userData = [];
-      let params = {companyId:companyId};
+      let params = {company:companyId};
       queryUserByCompany(params).then(res => {
         if(res.data.code == 200){
           //转换成对应的格式。
@@ -595,6 +607,38 @@ export default {
         }
       });
       return data;
+    },
+    /**
+     * 选择上报人员之后的点击确定之后的流程。
+     * @author szc 2019年4月2日16:52:43
+     */
+    sendFillMessageHandle (nodes) {
+      debugger;
+      let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
+          period = this.years,tableid = this.templateId;
+      if(!nodes || (nodes && nodes.length == 0)){
+        return;
+      }
+      for(let i = 0;i <nodes.length;i ++){
+        let item = nodes[i];
+        let param = {company:company,fromuser:suser,period:period,tableid:tableid,touser:item.suser};
+        paramsArr.push(param);
+      }
+      if(paramsArr && paramsArr.length > 0){
+        sendFillMessage(paramsArr).then(res => {
+          if(res.code == 200){
+            this.$message({
+              message:"上报成功！",
+              type:"success"
+            });
+          }else{
+            this.$message({
+              message:"上报失败！",
+              type:"error"
+            });
+          }
+        });
+      }
     },
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
@@ -1570,7 +1614,6 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;

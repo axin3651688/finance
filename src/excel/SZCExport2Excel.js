@@ -1,9 +1,8 @@
 /* eslint-disable */
 require('script-loader!file-saver');
-import XLSX from 'xlsx'
+import XLSX2 from 'xlsx'
 
 function generateArray(table) {
-    debugger;
     var out = [];
     var rows = table.querySelectorAll('tr');
     var ranges = [];
@@ -15,7 +14,6 @@ function generateArray(table) {
             columns = row.querySelectorAll('th');
         }
         for (var C = 0; C < columns.length; ++C) {
-            debugger;
             var cell = columns[C];
             var colspan = cell.getAttribute('colspan');
             var rowspan = cell.getAttribute('rowspan');
@@ -28,7 +26,6 @@ function generateArray(table) {
                     for (var i = 0; i <= range.e.c - range.s.c; ++i) outRow.push(null);
                 }
             });
-            debugger;
             //Handle Row Span
             if (rowspan || colspan) {
                 rowspan = rowspan || 1;
@@ -44,7 +41,6 @@ function generateArray(table) {
                     }
                 });
             };
-            debugger;
             //Handle Value
             outRow.push(cellValue !== "" ? cellValue : null);
 
@@ -90,7 +86,7 @@ function sheet_header_parse_old(header) {
                     v: data[R][C]
                 };
                 if (cell.v == null) continue;
-                var cell_ref = XLSX.utils.encode_cell({
+                var cell_ref = XLSX2.utils.encode_cell({
                     c: C,
                     r: R
                 });
@@ -98,7 +94,7 @@ function sheet_header_parse_old(header) {
                 else if (typeof cell.v === 'boolean') cell.t = 'b';
                 else if (cell.v instanceof Date) {
                     cell.t = 'n';
-                    cell.z = XLSX.SSF._table[14];
+                    cell.z = XLSX2.SSF._table[14];
                     cell.v = datenum(cell.v);
                 } else cell.t = 's';
 
@@ -141,9 +137,18 @@ function sheet_header_parse(header) {
 
 function sheet_from_array_of_arrays(data, header) {
     debugger;
-    var ws = {};
-    sheet_header_parse()
-        // data = XLSX.utils.format2Sheet(data);
+    // var ws = {};
+    var ws = {
+        s: {
+            "!row": [{ wpx: 67 }]
+        }
+    };
+    ws['!cols'] = [];
+    for (var n = 0; n != data[0].length; ++n) {
+        ws['!cols'].push({
+            wpx: 170
+        });
+    }
     var range = {
         s: {
             c: 10000000,
@@ -161,10 +166,24 @@ function sheet_from_array_of_arrays(data, header) {
             if (range.e.r < R) range.e.r = R;
             if (range.e.c < C) range.e.c = C;
             var cell = {
-                v: data[R][C]
+                v: data[R][C],
+                s: {
+                    font: {
+                        name: '宋体',
+                        sz: 14,
+                        color: { rgb: "#FFFF0000" },
+                        bold: true,
+                        italic: false,
+                        underline: false
+                    },
+                    alignment: {
+                        horizontal: "center",
+                        vertical: "center"
+                    }
+                }
             };
             if (cell.v == null) continue;
-            var cell_ref = XLSX.utils.encode_cell({
+            var cell_ref = XLSX2.utils.encode_cell({
                 c: C,
                 r: R
             });
@@ -172,7 +191,7 @@ function sheet_from_array_of_arrays(data, header) {
             else if (typeof cell.v === 'boolean') cell.t = 'b';
             else if (cell.v instanceof Date) {
                 cell.t = 'n';
-                cell.z = XLSX.SSF._table[14];
+                cell.z = XLSX2.SSF._table[14];
                 cell.v = datenum(cell.v);
             } else cell.t = 's';
 
@@ -193,7 +212,7 @@ function sheet_from_array_of_arrays(data, header) {
             }
         }
     }
-    if (range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+    if (range.s.c < 10000000) ws['!ref'] = XLSX2.utils.encode_range(range);
     return ws;
 }
 
@@ -210,7 +229,7 @@ function s2ab(s) {
     return buf;
 }
 
-export function export_table_to_excel(id) {
+export function export_table_to_excel(id, name) {
     debugger;
     var theTable = document.getElementById(id);
     var oo = generateArray(theTable);
@@ -231,7 +250,7 @@ export function export_table_to_excel(id) {
     wb.SheetNames.push(ws_name);
     wb.Sheets[ws_name] = ws;
 
-    var wbout = XLSX.write(wb, {
+    var wbout = XLSX2.write(wb, {
         bookType: 'xlsx',
         bookSST: false,
         type: 'binary'
@@ -239,7 +258,7 @@ export function export_table_to_excel(id) {
 
     saveAs(new Blob([s2ab(wbout)], {
         type: "application/octet-stream"
-    }), "test.xlsx")
+    }), (name ? name : "test") + ".xlsx")
 }
 
 export function export_json_to_excel({
@@ -294,7 +313,7 @@ export function export_json_to_excel({
     wb.SheetNames.push(ws_name);
     wb.Sheets[ws_name] = ws;
 
-    var wbout = XLSX.write(wb, {
+    var wbout = XLSX2.write(wb, {
         bookType: bookType,
         bookSST: false,
         type: 'binary'
