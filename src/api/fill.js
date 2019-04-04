@@ -23,7 +23,7 @@ export function importExcel(data) {
 //数据查询
 export function inquire(data) {
     return request({
-        url: '/exl/find_fill_data',
+        url: '/zjb/find_fill_data',
         method: 'post',
         data: data
     })
@@ -32,7 +32,7 @@ export function inquire(data) {
 //填报的保存
 export function save(data) {
     return request({
-        url: '/exl/save_fill_data',
+        url: '/zjb/save_fill_data',
         method: 'post',
         data: data
     })
@@ -40,7 +40,7 @@ export function save(data) {
 //填报模板的下载
 export function download(data) {
     return request({
-        url: '/exl/download_template?templateId=' + data,
+        url: '/zjb/download_template?templateId=' + data,
         method: 'get',
         data: data,
         responseType: 'arraybuffer'
@@ -49,7 +49,7 @@ export function download(data) {
 //删除
 export function del(data) {
     return request({
-        url: "/exl/delete_fill_data?templateId=" + data.templateId + "&id=" + data.nid,
+        url: "/zjb/delete_fill_data?templateId=" + data.templateId + "&id=" + data.nid,
         method: 'delete',
         data: data
     })
@@ -58,7 +58,7 @@ export function del(data) {
 //融资情况明细表的下拉数据 
 export function financingDown(data) {
     return request({
-        url: "/exl/find_options?scode=" + data,
+        url: "/zjb/find_options?scode=" + data,
         method: 'get',
         data: data
     })
@@ -67,7 +67,7 @@ export function financingDown(data) {
 //融资情况明细表的下拉数据 机构名称
 export function mechanism() {
     return request({
-        url: "/exl/find_banks",
+        url: "/zjb/find_banks",
         method: 'get',
     })
 }
@@ -77,13 +77,13 @@ export function mechanism() {
  */
 export function queryUserByCompany(data) {
     return request({
-        url: "/exl/fill_report?company=" + data.company,
+        url: "/zjb/fill_report?company=" + data.company,
         method: 'get'
     })
 }
 export function sendFillMessage(data) {
     return request({
-        url: "/exl/send_fill_message",
+        url: "/zjb/send_fill_message",
         method: 'post',
         params: data
     })
