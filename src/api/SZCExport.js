@@ -7,6 +7,7 @@ export function exportExcle(exportData) {
     return request({
         url: '/exp/exportexcle',
         method: 'post',
+        responseType: "blob",
         params: exportData
     })
 }

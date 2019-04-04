@@ -219,7 +219,6 @@ export default {
         }
     },
     created(){
-        debugger
         // let len = document.getElementById('pane-first') ;
         // if(len){
         //     this.tabHeight = this.offsetHeight - 64 - 40 - 40 ;
@@ -240,7 +239,6 @@ export default {
         this.tableDataRequest(this.companyId, this.yearId, this.monthId, this.conversionId) ;  
     },
     mounted(){
-        debugger
         // 设置表格高度（自适应）
         this.setTableScollHeight();
     },
@@ -267,7 +265,6 @@ export default {
     },
     methods: {
         setTableScollHeight(){
-            debugger
             // document.body.offsetHeight
             // this.contenStyleObj.height = `${document.documentElement.clientHeight - 200}px` ;
             this.contenStyleObj.height = document.documentElement.clientHeight - 40 - 40 + "px" ;
@@ -279,7 +276,6 @@ export default {
         },
             // 导出按钮、刷新按钮功能
         buttonClick(item){
-            // debugger
             let me = this ;
             // 1.刷新   2.导出
             if(item.id == "1"){
@@ -293,13 +289,12 @@ export default {
          * 点击导出按钮触发的事件 (后台导出)
          * @author szc 2019年4月3日16:10:44
          */
-        downLoadEVA_old () {
-            debugger;
+        downLoadEVA () {
             let me = this,getters = this.$store.getters,year = getters.year,month = getters.month;
-            let exportData = {sheet1:{year:year,month:month,data:[]}};
+            let exportData = {Sheet1:{year:year,month:month,data:[]}};
             let row01Datas = this.exps,expxSort = me.expxSort,expx = me.expx;
             row01Datas.rownum = "1";
-            exportData.sheet1.data.push(row01Datas);
+            exportData.Sheet1.data.push(row01Datas);
             let rowIndex = "2";
             //第二行数据
             let dataObj = {rownum:rowIndex};
@@ -309,7 +304,7 @@ export default {
                     dataObj[item] = expx[item];
                 }
                 if(i == 10){
-                    exportData.sheet1.data.push(dataObj);
+                    exportData.Sheet1.data.push(dataObj);
                     rowIndex = rowIndex + 1 + "";
                     dataObj = {rownum:rowIndex};
                 }
@@ -317,24 +312,26 @@ export default {
                     dataObj[item] = expx[item];
                 }
             }
-            exportData.sheet1.data.push(dataObj);
-            let params = {sheetmap:JSON.stringify(exportData),templateFile:"市管企业经营业绩情况表.xlsx"};
+            exportData.Sheet1.data.push(dataObj);
+            console.log("导出格式：",exportData)
+            let params = {sheetmapString:JSON.stringify(exportData),templateFile:"市管企业经营业绩情况表.xlsx"};
             exportExcle(params).then(res => {
-                if(res.code == 200){
-                    this.$message({
-                        message: "导出成功！",
-                        type: "success"
-                    });
-                }else {
-                    this.$message.error("导出失败！");
-                }
+                var blob = res.data;
+                var href = window.URL.createObjectURL(blob); // 创建下载的链接
+                var downloadElement = document.createElement('a');
+                downloadElement.href = href;
+                downloadElement.download = '市管企业经营业绩情况表.xlsx'; // 下载后文件名
+                document.body.appendChild(downloadElement);
+                downloadElement.click(); // 点击下载
+                document.body.removeChild(downloadElement); // 下载完成移除元素
+                window.URL.revokeObjectURL(href);
             });
         },
         /**
          * 点击导出按钮触发的事件 (前端导出)
          * @author szc 2019年4月1日16:52:11
          */
-        downLoadEVA () {
+        downLoadEVA_old () {
             let me = this;
             import('@/excel/SZCExport2Excel').then(excel => {
                 excel.export_table_to_excel("cityResults2","市管企业经营业绩情况表");
@@ -342,7 +339,6 @@ export default {
         },
         // 切换维度时触发
         getData(vax, value){
-            debugger
             let me = this ;
             // 判断公司是否为集团公司
             if(vax=="company"){
@@ -416,7 +412,6 @@ export default {
         cityResults_first(items){
             let me = this ;
             eva_city_Request(items).then(res => {
-                debugger
                 if(res.data.code === 200){
                     // me.num ++ ; 
                     // me.tableData = [] ;
@@ -438,7 +433,6 @@ export default {
         cityResults_second(items){
             let me = this ;
             eva_city_Request(items).then(res => {
-                debugger
                 if(res.data.code === 200){
                     
                     me.tableData2 = res.data.data[0] ;
@@ -449,7 +443,6 @@ export default {
         },
         // 单位切换
         dataProcessing_first(tableData){
-            debugger
             let me = this ; 
             let newId = me.conversionId.id ;           
                 
@@ -530,7 +523,6 @@ export default {
             // me.expx = tableData2;
         },
         dataProcessing_second(tableData2){
-            debugger
             let me = this ; 
             let newId = me.conversionId.id ;           
             if(newId > me.conversionNid){

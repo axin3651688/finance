@@ -58,85 +58,8 @@ function datenum(v, date1904) {
     var epoch = Date.parse(v);
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
-/**
- * 表头转换成导出的格式。(可以是多表头) (这个暂时废弃)
- * @author szc 2019年4月1日19:18:44
- * @param {*} data 
- * @param {*} header 
- */
-function sheet_header_parse_old(header) {
-    if (!header || header.length == 0) {
-        console.log("没有配置导出的表头!");
-        return;
-    }
-    var colLength = header.colLength,
-        rowLength = header.rowLength;
-    if (header.headDatas && header.headDatas.length > 0) {
-        var headDatas = header.headDatas;
-        for (var i = 0; i < headDatas.length; i++) {
-
-        }
-        for (var R = 0; R != rowLength; ++R) {
-            for (var C = 0; C != data[R].length; ++C) {
-                if (range.s.r > R) range.s.r = R;
-                if (range.s.c > C) range.s.c = C;
-                if (range.e.r < R) range.e.r = R;
-                if (range.e.c < C) range.e.c = C;
-                var cell = {
-                    v: data[R][C]
-                };
-                if (cell.v == null) continue;
-                var cell_ref = XLSX2.utils.encode_cell({
-                    c: C,
-                    r: R
-                });
-                if (typeof cell.v === 'number') cell.t = 'n';
-                else if (typeof cell.v === 'boolean') cell.t = 'b';
-                else if (cell.v instanceof Date) {
-                    cell.t = 'n';
-                    cell.z = XLSX2.SSF._table[14];
-                    cell.v = datenum(cell.v);
-                } else cell.t = 's';
-
-                ws[cell_ref] = cell;
-                if (C == 0 && R == 1) {
-                    let cellSum = {
-                        s: { //s为开始
-                            c: 0, //开始列
-                            r: 1 //可以看成开始行,实际是取值范围
-                        },
-                        e: { //e结束
-                            c: 0, //结束列
-                            r: 7 //结束行
-                        }
-                    }
-                    ws['!merges'] ? "" : ws['!merges'] = [];
-                    ws['!merges'].push(cellSum);
-                }
-            }
-        }
-    } else {
-        console.log("表头的内容配置为空！");
-    }
-}
-/**
- * 表头的处理。
- * @author szc 2019年4月2日08:55:32
- */
-function sheet_header_parse(header) {
-    debugger;
-    let me = this;
-    if (!header || header.length == 0) {
-        console.log("表头没有东西！");
-        return;
-    }
-    header.forEach(item => {
-
-    })
-}
 
 function sheet_from_array_of_arrays(data, header) {
-    debugger;
     // var ws = {};
     var ws = {
         s: {
@@ -230,7 +153,6 @@ function s2ab(s) {
 }
 
 export function export_table_to_excel(id, name) {
-    debugger;
     var theTable = document.getElementById(id);
     var oo = generateArray(theTable);
     var ranges = oo[1];
@@ -250,7 +172,7 @@ export function export_table_to_excel(id, name) {
     wb.SheetNames.push(ws_name);
     wb.Sheets[ws_name] = ws;
 
-    var wbout = XLSX2.write(wb, {
+    var wbout = STYLEXLSX.write(wb, {
         bookType: 'xlsx',
         bookSST: false,
         type: 'binary'
@@ -268,7 +190,6 @@ export function export_json_to_excel({
     autoWidth = true,
     bookType = 'xlsx'
 } = {}) {
-    debugger;
     /* original data */
     filename = filename || 'excel-list'
     data = [...data]
