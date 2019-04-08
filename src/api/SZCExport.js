@@ -11,3 +11,16 @@ export function exportExcle(exportData) {
         params: exportData
     })
 }
+/**
+ * EVA导出请求
+ * @param {导出的参数} exportData 
+ * @author szc 2019年4月8日16:49:53
+ */
+export function exportEVAExcle(exportData) {
+    return request({
+        url: '/exp/exportexcle',
+        method: 'post',
+        responseType: "blob",
+        params: exportData
+    })
+}

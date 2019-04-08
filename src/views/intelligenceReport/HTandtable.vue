@@ -1095,7 +1095,7 @@ export default {
         }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
-        if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2)){
+        if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
