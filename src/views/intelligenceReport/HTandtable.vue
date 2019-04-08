@@ -990,72 +990,71 @@ export default {
         }
       }
       if (this.templateId == 3) {
-        if (
-          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
-          (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
-        ) {
-          cellMeta.readOnly = true;
-        }
-        /** 
         // if (
-        //   (row === 0 && columns === 2) ||
-        //   (row === 0 && columns === 3) ||
-        //   (row == 0 && columns == 6) ||
-        //   (row == 0 && columns == 7) ||
-        //   (row == 48 && columns == 2) ||
-        //   (row == 48 && columns == 3) ||
-        //   (row == 49 && columns == 2) ||
-        //   (row == 49 && columns == 3) ||
-        //   (row == 50 && columns == 2) ||
-        //   (row == 50 && columns == 3) ||
-        //   (row == 51 && columns == 2) ||
-        //   (row == 51 && columns == 3) ||
-        //   (row == 52 && columns == 2) ||
-        //   (row == 52 && columns == 3) ||
-        //   (row == 53 && columns == 2) ||
-        //   (row == 53 && columns == 3) ||
-        //   (row == 54 && columns == 2) ||
-        //   (row == 54 && columns == 3) ||
-        //   (row == 55 && columns == 2) ||
-        //   (row == 55 && columns == 3) ||
-        //   (row == 56 && columns == 2) ||
-        //   (row == 56 && columns == 3) ||
-        //   (row == 57 && columns == 2) ||
-        //   (row == 57 && columns == 3) ||
-        //   (row == 58 && columns == 2) ||
-        //   (row == 58 && columns == 3) ||
-        //   (row == 59 && columns == 2) ||
-        //   (row == 59 && columns == 3) ||
-        //   (row == 60 && columns == 2) ||
-        //   (row == 60 && columns == 3) ||
-        //   (row == 61 && columns == 2) ||
-        //   (row == 61 && columns == 3) ||
-        //   (row == 62 && columns == 2) ||
-        //   (row == 62 && columns == 3) ||
-        //   (row == 63 && columns == 2) ||
-        //   (row == 63 && columns == 3) ||
-        //   (row == 64 && columns == 2) ||
-        //   (row == 64 && columns == 3) ||
-        //   (row == 65 && columns == 2) ||
-        //   (row == 65 && columns == 3) ||
-        //   (row == 66 && columns == 2) ||
-        //   (row == 66 && columns == 3) ||
-        //   (row == 67 && columns == 2) ||
-        //   (row == 67 && columns == 3) ||
-        //   (row == 68 && columns == 2) ||
-        //   (row == 68 && columns == 3) ||
-        //   (row == 69 && columns == 2) ||
-        //   (row == 69 && columns == 3) ||
-        //   (row == 70 && columns == 2) ||
-        //   (row == 70 && columns == 3) ||
-        //   (row == 71 && columns == 2) ||
-        //   (row == 71 && columns == 3) ||
-        //   (row == 72 && columns == 2) ||
-        //   (row == 72 && columns == 3)
+        //   (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
+        //   (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
         // ) {
         //   cellMeta.readOnly = true;
-        // } 
-        */
+        // }
+        if (
+          (row === 0 && columns === 2) ||
+          (row === 0 && columns === 3) ||
+          (row == 0 && columns == 6) ||
+          (row == 0 && columns == 7) ||
+          (row == 48 && columns == 2) ||
+          (row == 48 && columns == 3) ||
+          (row == 49 && columns == 2) ||
+          (row == 49 && columns == 3) ||
+          (row == 50 && columns == 2) ||
+          (row == 50 && columns == 3) ||
+          (row == 51 && columns == 2) ||
+          (row == 51 && columns == 3) ||
+          (row == 52 && columns == 2) ||
+          (row == 52 && columns == 3) ||
+          (row == 53 && columns == 2) ||
+          (row == 53 && columns == 3) ||
+          (row == 54 && columns == 2) ||
+          (row == 54 && columns == 3) ||
+          (row == 55 && columns == 2) ||
+          (row == 55 && columns == 3) ||
+          (row == 56 && columns == 2) ||
+          (row == 56 && columns == 3) ||
+          (row == 57 && columns == 2) ||
+          (row == 57 && columns == 3) ||
+          (row == 58 && columns == 2) ||
+          (row == 58 && columns == 3) ||
+          (row == 59 && columns == 2) ||
+          (row == 59 && columns == 3) ||
+          (row == 60 && columns == 2) ||
+          (row == 60 && columns == 3) ||
+          (row == 61 && columns == 2) ||
+          (row == 61 && columns == 3) ||
+          (row == 62 && columns == 2) ||
+          (row == 62 && columns == 3) ||
+          (row == 63 && columns == 2) ||
+          (row == 63 && columns == 3) ||
+          (row == 64 && columns == 2) ||
+          (row == 64 && columns == 3) ||
+          (row == 65 && columns == 2) ||
+          (row == 65 && columns == 3) ||
+          (row == 66 && columns == 2) ||
+          (row == 66 && columns == 3) ||
+          (row == 67 && columns == 2) ||
+          (row == 67 && columns == 3) ||
+          (row == 68 && columns == 2) ||
+          (row == 68 && columns == 3) ||
+          (row == 69 && columns == 2) ||
+          (row == 69 && columns == 3) ||
+          (row == 70 && columns == 2) ||
+          (row == 70 && columns == 3) ||
+          (row == 71 && columns == 2) ||
+          (row == 71 && columns == 3) ||
+          (row == 72 && columns == 2) ||
+          (row == 72 && columns == 3)
+        ) {
+          cellMeta.readOnly = true;
+        } 
+        
       }
       if (this.templateId == 2) {
         if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
@@ -1265,7 +1264,7 @@ export default {
               cc.type = "dropdown";
             }
           }
-          cc.validator = this.emailValidator;
+          // cc.validator = this.emailValidator;
           newCoulmns.push(cc);
           colHeaders.push(col.text);
           // if(me.templateId != 9 || (me.templateId == 9 && cc && cc.data != "item")){
