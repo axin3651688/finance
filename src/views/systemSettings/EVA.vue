@@ -299,7 +299,7 @@ import { eva_city_Request } from "~api/cube";
 import tools from "utils/tools";
 import { mapGetters } from "vuex";
 import {
-    exportExcle
+    exportEVAExcle
 } from "@/api/SZCExport.js";
 import Vue from "vue";
 // import EventMixins from "../mixins/EventMixins";
@@ -645,16 +645,13 @@ export default {
      * @author szc 2019年4月8日09:19:40
      */
     downLoadEVA () {
-      debugger;
       let me = this,getters = this.$store.getters,year = getters.year,month = getters.month;
       let exportData = {Sheet1:{year:year,month:month,data:[]}};
-      
       let data = this.parseTypeOfExport();
-
       exportData.Sheet1.data = data;
       console.log("导出格式：",exportData)
       let params = {sheetmapString:JSON.stringify(exportData),templateFile:"经济增加值（EVA）计算表.xlsx"};
-      exportExcle(params).then(res => {
+      exportEVAExcle(params).then(res => {
           var blob = res.data;
           var href = window.URL.createObjectURL(blob); // 创建下载的链接
           var downloadElement = document.createElement('a');
@@ -665,7 +662,6 @@ export default {
           document.body.removeChild(downloadElement); // 下载完成移除元素
           window.URL.revokeObjectURL(href);
       });
-
     },
     /**
      * 导出的格式。数据的处理
