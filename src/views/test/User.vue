@@ -1228,7 +1228,7 @@ export default {
      */
     handleAuthorizeCompany(index, row) {
       this.title = tools.opt[0].text;
-      this.dialogCompanyAuthorizationVisible = true;
+      //this.dialogCompanyAuthorizationVisible = true;
       this.opt = tools.opt[0];
       this.companyAuthorizationForm.suser = row.suser;
       this.showNodes =[];//清空节点的选中（公司授权）
@@ -1252,6 +1252,7 @@ export default {
         }
       }).then(result => { 
       if (result.status == 200 && result.data.code == 200) {
+          _this.dialogCompanyAuthorizationVisible = true;
           //封装树对象数据
           const setting = {
             data: {
@@ -1290,6 +1291,15 @@ export default {
           }
 
 
+        } else if (result.status == 200 && result.data.code != 200) {
+          //alert (result.data.msg);
+          //友情提示：用户是否用权限对别的用户授权
+          _this.$message({
+            "message":result.data.msg,
+            "type":"warning"
+          });
+          _this.dialogCompanyAuthorizationVisible = false;
+          return ;
         }
 
       });
