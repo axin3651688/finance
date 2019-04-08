@@ -298,6 +298,9 @@
 import { eva_city_Request } from "~api/cube";
 import tools from "utils/tools";
 import { mapGetters } from "vuex";
+import {
+    exportExcle
+} from "@/api/SZCExport.js";
 import Vue from "vue";
 // import EventMixins from "../mixins/EventMixins";
 // 注册
@@ -618,6 +621,53 @@ export default {
       }
     },
     /**
+     * 转换成后台的导出格式。
+     * @author szc 2019年4月8日09:30:39
+     */
+    parseTypeOfExport () {
+      debugger;
+      let me = this;
+      let exps = me.exps,exportData = me.exportExps,data = [];
+      for(let i = 0;i < exportData.length;i ++){
+        let itemObj = {rownum:i + 1 + ""};
+        let item = exportData[i];
+        for(let key in item){
+          if(key != "sname"){
+            itemObj[key] = exps[key] || 0;
+          }
+        }
+        data.push(itemObj);
+      }
+      return data;
+    },
+    /**
+     * 导出excel，后台导出。
+     * @author szc 2019年4月8日09:19:40
+     */
+    downLoadEVA () {
+      debugger;
+      let me = this,getters = this.$store.getters,year = getters.year,month = getters.month;
+      let exportData = {Sheet1:{year:year,month:month,data:[]}};
+      
+      let data = this.parseTypeOfExport();
+
+      exportData.Sheet1.data = data;
+      console.log("导出格式：",exportData)
+      let params = {sheetmapString:JSON.stringify(exportData),templateFile:"经济增加值（EVA）计算表.xlsx"};
+      exportExcle(params).then(res => {
+          var blob = res.data;
+          var href = window.URL.createObjectURL(blob); // 创建下载的链接
+          var downloadElement = document.createElement('a');
+          downloadElement.href = href;
+          downloadElement.download = '经济增加值（EVA）计算表.xlsx'; // 下载后文件名
+          document.body.appendChild(downloadElement);
+          downloadElement.click(); // 点击下载
+          document.body.removeChild(downloadElement); // 下载完成移除元素
+          window.URL.revokeObjectURL(href);
+      });
+
+    },
+    /**
      * 导出的格式。数据的处理
      * @author szc 2019年4月1日16:49:27
      */
@@ -734,7 +784,7 @@ export default {
      * 点击导出按钮触发的事件
      * @author szc 2019年4月1日16:52:11
      */
-    downLoadEVA () {
+    downLoadEVA_old () {
       debugger;
       let me = this;
       // vue.downloadLoading = true;
