@@ -479,6 +479,8 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
+    //隐藏单位，默认是元。
+    this.hideConverseOfYuan();
     
   },
   mounted() {
@@ -505,9 +507,21 @@ export default {
     window.removeEventListener("resize", this.resizeTable);
   },
   computed: {
-    ...mapGetters(["user", "year", "month", "company"])
+    ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    /**
+     * 隐藏元单位的切换，默认是元。
+     * @author szc 2019年4月9日14:54:50
+     */
+    hideConverseOfYuan () {
+      debugger;
+      let me = this;
+      let showDims = this.showDims;
+      if(showDims && showDims.conversion){
+        showDims.conversion = false;
+      }
+    },
     /**
      * 上报的处理按钮。
      * @author szc 2019年4月2日16:29:19
@@ -981,64 +995,6 @@ export default {
         ) {
           cellMeta.readOnly = true;
         }
-        // if (
-        //   (row === 0 && columns === 2) ||
-        //   (row === 0 && columns === 3) ||
-        //   (row == 0 && columns == 6) ||
-        //   (row == 0 && columns == 7) ||
-        //   (row == 48 && columns == 2) ||
-        //   (row == 48 && columns == 3) ||
-        //   (row == 49 && columns == 2) ||
-        //   (row == 49 && columns == 3) ||
-        //   (row == 50 && columns == 2) ||
-        //   (row == 50 && columns == 3) ||
-        //   (row == 51 && columns == 2) ||
-        //   (row == 51 && columns == 3) ||
-        //   (row == 52 && columns == 2) ||
-        //   (row == 52 && columns == 3) ||
-        //   (row == 53 && columns == 2) ||
-        //   (row == 53 && columns == 3) ||
-        //   (row == 54 && columns == 2) ||
-        //   (row == 54 && columns == 3) ||
-        //   (row == 55 && columns == 2) ||
-        //   (row == 55 && columns == 3) ||
-        //   (row == 56 && columns == 2) ||
-        //   (row == 56 && columns == 3) ||
-        //   (row == 57 && columns == 2) ||
-        //   (row == 57 && columns == 3) ||
-        //   (row == 58 && columns == 2) ||
-        //   (row == 58 && columns == 3) ||
-        //   (row == 59 && columns == 2) ||
-        //   (row == 59 && columns == 3) ||
-        //   (row == 60 && columns == 2) ||
-        //   (row == 60 && columns == 3) ||
-        //   (row == 61 && columns == 2) ||
-        //   (row == 61 && columns == 3) ||
-        //   (row == 62 && columns == 2) ||
-        //   (row == 62 && columns == 3) ||
-        //   (row == 63 && columns == 2) ||
-        //   (row == 63 && columns == 3) ||
-        //   (row == 64 && columns == 2) ||
-        //   (row == 64 && columns == 3) ||
-        //   (row == 65 && columns == 2) ||
-        //   (row == 65 && columns == 3) ||
-        //   (row == 66 && columns == 2) ||
-        //   (row == 66 && columns == 3) ||
-        //   (row == 67 && columns == 2) ||
-        //   (row == 67 && columns == 3) ||
-        //   (row == 68 && columns == 2) ||
-        //   (row == 68 && columns == 3) ||
-        //   (row == 69 && columns == 2) ||
-        //   (row == 69 && columns == 3) ||
-        //   (row == 70 && columns == 2) ||
-        //   (row == 70 && columns == 3) ||
-        //   (row == 71 && columns == 2) ||
-        //   (row == 71 && columns == 3) ||
-        //   (row == 72 && columns == 2) ||
-        //   (row == 72 && columns == 3)
-        // ) {
-        //   cellMeta.readOnly = true;
-        // } 
         
       }
       if (this.templateId == 2) {
@@ -1259,6 +1215,7 @@ export default {
           
         }
       }
+      debugger;
       //基本情况表、市管企业不显示编码。过滤掉
       if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {

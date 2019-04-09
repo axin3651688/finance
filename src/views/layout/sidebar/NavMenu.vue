@@ -48,7 +48,7 @@ export default {
   name: "NavMenu", //使用递归组件必须要有
   props: ["navMenus", "state","rootLevel"], // 传入子组件的数据
   computed: {
-    ...mapGetters(["device", "user"])
+    ...mapGetters(["device", "user","showDims"])
   },
   data() {
     return {
@@ -76,10 +76,26 @@ export default {
   methods: {
     ...mapActions(["ToggleSideBar"]),
     /**
+     * 如果是系统设置下的节点就隐藏导航栏的单位切换。
+     * @author szc 2019年4月9日15:43:44
+     */
+    hideDims (e) {
+      let arr = ['8'];
+      if(arr.indexOf(e.pid) == -1){
+        return;
+      }
+      let me = this,showDims = this.showDims;
+      showDims.conversion = false;
+      showDims.year = false;
+      showDims.month = false;
+      showDims.company =false;
+      showDims.day = false;
+    },
+    /**
      * 有时会添加一些东西在状态管理中，所以这个地方可以进行删除、或者别的操作。
      * @author szc 2019年4月1日16:11:42
      */
-    changeBefore(){
+    changeBefore(e){
       let me = this;
       //删除十三个月的问题
       me.$store.monthConfig? delete me.$store.monthConfig:"";
@@ -87,6 +103,9 @@ export default {
       if(monthId == 13){
         this.$store.dispatch("GetSideMid", {month:12});
       }
+      debugger;
+      //如果是系统设置下的节点就隐藏导航栏的切换。
+      this.hideDims(e);
     },
     shownavMenu(e) {
       debugger;
@@ -99,7 +118,7 @@ export default {
       let siderState = JSON.stringify(e);
       localStorage.setItem("siderState",siderState);
       //点击之前要进行的操作。
-      this.changeBefore();
+      this.changeBefore(e);
       let flag = this.lookNodeOfCompany(e);
       if(!flag){
         return;
