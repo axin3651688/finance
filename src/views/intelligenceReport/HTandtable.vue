@@ -27,7 +27,7 @@
         </div>
         <div class="right">
           <!-- <el-button class="button">审阅</el-button> -->
-          <el-button class="button" @click="reportHandle">上报</el-button>
+          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
         </div>
         <!-- 上报的人员modal -->
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
@@ -39,21 +39,7 @@
           :height=" heights"
           class="table"
         ></hot-table>
-        <!-- <BiModule v-show="show"></BiModule> -->
-        <!-- <el-dialog
-                title="提示"
-                :visible.sync="dialogVisible"
-                width="30%"
-        >-->
-        <!-- <span>这是一段信息</span> -->
-        <!-- <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        </span>-->
-        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader>  -->
-        <!-- </el-dialog> -->
-        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader> -->
-      </el-tab-pane>
+        </el-tab-pane>
       <!-- 模板的下载与导入 -->
       <el-tab-pane label="Excel导入" name="first">
         <el-button size="small" type="primary" @click="templateDownload" class="template">模板下载</el-button>
@@ -613,7 +599,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
           period = this.years,tableid = this.templateId;
       if(!nodes || (nodes && nodes.length == 0)){
@@ -990,70 +975,70 @@ export default {
         }
       }
       if (this.templateId == 3) {
-        // if (
-        //   (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
-        //   (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
-        // ) {
-        //   cellMeta.readOnly = true;
-        // }
         if (
-          (row === 0 && columns === 2) ||
-          (row === 0 && columns === 3) ||
-          (row == 0 && columns == 6) ||
-          (row == 0 && columns == 7) ||
-          (row == 48 && columns == 2) ||
-          (row == 48 && columns == 3) ||
-          (row == 49 && columns == 2) ||
-          (row == 49 && columns == 3) ||
-          (row == 50 && columns == 2) ||
-          (row == 50 && columns == 3) ||
-          (row == 51 && columns == 2) ||
-          (row == 51 && columns == 3) ||
-          (row == 52 && columns == 2) ||
-          (row == 52 && columns == 3) ||
-          (row == 53 && columns == 2) ||
-          (row == 53 && columns == 3) ||
-          (row == 54 && columns == 2) ||
-          (row == 54 && columns == 3) ||
-          (row == 55 && columns == 2) ||
-          (row == 55 && columns == 3) ||
-          (row == 56 && columns == 2) ||
-          (row == 56 && columns == 3) ||
-          (row == 57 && columns == 2) ||
-          (row == 57 && columns == 3) ||
-          (row == 58 && columns == 2) ||
-          (row == 58 && columns == 3) ||
-          (row == 59 && columns == 2) ||
-          (row == 59 && columns == 3) ||
-          (row == 60 && columns == 2) ||
-          (row == 60 && columns == 3) ||
-          (row == 61 && columns == 2) ||
-          (row == 61 && columns == 3) ||
-          (row == 62 && columns == 2) ||
-          (row == 62 && columns == 3) ||
-          (row == 63 && columns == 2) ||
-          (row == 63 && columns == 3) ||
-          (row == 64 && columns == 2) ||
-          (row == 64 && columns == 3) ||
-          (row == 65 && columns == 2) ||
-          (row == 65 && columns == 3) ||
-          (row == 66 && columns == 2) ||
-          (row == 66 && columns == 3) ||
-          (row == 67 && columns == 2) ||
-          (row == 67 && columns == 3) ||
-          (row == 68 && columns == 2) ||
-          (row == 68 && columns == 3) ||
-          (row == 69 && columns == 2) ||
-          (row == 69 && columns == 3) ||
-          (row == 70 && columns == 2) ||
-          (row == 70 && columns == 3) ||
-          (row == 71 && columns == 2) ||
-          (row == 71 && columns == 3) ||
-          (row == 72 && columns == 2) ||
-          (row == 72 && columns == 3)
+          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
+          (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
         ) {
           cellMeta.readOnly = true;
-        } 
+        }
+        // if (
+        //   (row === 0 && columns === 2) ||
+        //   (row === 0 && columns === 3) ||
+        //   (row == 0 && columns == 6) ||
+        //   (row == 0 && columns == 7) ||
+        //   (row == 48 && columns == 2) ||
+        //   (row == 48 && columns == 3) ||
+        //   (row == 49 && columns == 2) ||
+        //   (row == 49 && columns == 3) ||
+        //   (row == 50 && columns == 2) ||
+        //   (row == 50 && columns == 3) ||
+        //   (row == 51 && columns == 2) ||
+        //   (row == 51 && columns == 3) ||
+        //   (row == 52 && columns == 2) ||
+        //   (row == 52 && columns == 3) ||
+        //   (row == 53 && columns == 2) ||
+        //   (row == 53 && columns == 3) ||
+        //   (row == 54 && columns == 2) ||
+        //   (row == 54 && columns == 3) ||
+        //   (row == 55 && columns == 2) ||
+        //   (row == 55 && columns == 3) ||
+        //   (row == 56 && columns == 2) ||
+        //   (row == 56 && columns == 3) ||
+        //   (row == 57 && columns == 2) ||
+        //   (row == 57 && columns == 3) ||
+        //   (row == 58 && columns == 2) ||
+        //   (row == 58 && columns == 3) ||
+        //   (row == 59 && columns == 2) ||
+        //   (row == 59 && columns == 3) ||
+        //   (row == 60 && columns == 2) ||
+        //   (row == 60 && columns == 3) ||
+        //   (row == 61 && columns == 2) ||
+        //   (row == 61 && columns == 3) ||
+        //   (row == 62 && columns == 2) ||
+        //   (row == 62 && columns == 3) ||
+        //   (row == 63 && columns == 2) ||
+        //   (row == 63 && columns == 3) ||
+        //   (row == 64 && columns == 2) ||
+        //   (row == 64 && columns == 3) ||
+        //   (row == 65 && columns == 2) ||
+        //   (row == 65 && columns == 3) ||
+        //   (row == 66 && columns == 2) ||
+        //   (row == 66 && columns == 3) ||
+        //   (row == 67 && columns == 2) ||
+        //   (row == 67 && columns == 3) ||
+        //   (row == 68 && columns == 2) ||
+        //   (row == 68 && columns == 3) ||
+        //   (row == 69 && columns == 2) ||
+        //   (row == 69 && columns == 3) ||
+        //   (row == 70 && columns == 2) ||
+        //   (row == 70 && columns == 3) ||
+        //   (row == 71 && columns == 2) ||
+        //   (row == 71 && columns == 3) ||
+        //   (row == 72 && columns == 2) ||
+        //   (row == 72 && columns == 3)
+        // ) {
+        //   cellMeta.readOnly = true;
+        // } 
         
       }
       if (this.templateId == 2) {
@@ -1293,8 +1278,16 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
+      //判断第九个设置成多表头。
+      
       // this.settings.colHeaders = true;
       // this.settings.rowHeaders = true;
+      // if(this.templateId == 9){
+      //   this.settings.nestedHeaders = [
+      //     ['F', {label: 'G', colspan: 2}, {label: 'H', colspan: 2}],
+      //     ['V','B','N','M','K']
+      //   ];
+      // }
       // this.settings.nestedHeaders = res.data.data.columnsShow;
       let parseItems = ['4','5','6'];
       //新加一个装换成相应的数字显示成文字处理。
@@ -1914,7 +1907,6 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
