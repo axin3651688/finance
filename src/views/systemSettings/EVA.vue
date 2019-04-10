@@ -28,12 +28,12 @@
           <table class="table table-bordered table-striped" style="margin-top:5px;">
             <thead>
               <tr>
-                <td style="width:180px">
+                <td style="width:190px">
                   <i class="el-icon-info"></i>
                 </td>
-                <td style="width:230px">项 目</td>
+                <td style="width:280px">项 目</td>
                 <td colspan="2" style="width:400px">本期金额</td>
-                <td style="width:200px">调整后</td>
+                <td style="width:290px">调整后</td>
               </tr>
             </thead>
             <tbody>
@@ -527,32 +527,32 @@ export default {
       ],
       vars: [
         {
-          code: "sl",
+          code: "s1",
           value: 0,
           display_num: "", //用来显示的值
           text: "税率(%)",
-          wclass: "width:180px;"
+          wclass: "width:190px;"
         },
         {
           code: "zbcblv",
           value: 0,
           display_num: "", //用来显示的值
           text: "资本成本率(%)",
-          wclass: "width:230px"
+          wclass: "width:280px"
         },
         {
           code: "zbhfyqc",
           value: 0,
           display_num: "", //用来显示的值 A
           text: "资本化费用期初余额",
-          wclass: "width:300px"
+          wclass: "width:345px"
         },
         {
           code: "zbhfyqm",
           value: 0,
           display_num: "", //用来显示的值 B
           text: "资本化费用期末余额",
-          wclass: "width:300px"
+          wclass: "width:345px"
         }
       ],
       companyId: "",     // 默认的公司id

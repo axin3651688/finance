@@ -521,9 +521,9 @@
                         {
                             "id": "5",
                             "text": "安全比例",
-                            "placeholder": "请输入安全比例-%",
+                            "placeholder": "请输入安全比例%",
                             "cellStyle": {
-                                "width": "330px"
+                                "width": "340px"
                             },
                             "input3": "",
                             "value": 0,
@@ -532,9 +532,9 @@
                         {
                             "id": "6",
                             "text": "预警比例",
-                            "placeholder": "请输入预警比例-%",
+                            "placeholder": "请输入预警比例%",
                             "cellStyle": {
-                                "width": "330px"
+                                "width": "340px"
                             },
                             "input3": "",
                             "value": 0,
