@@ -9,7 +9,7 @@
             <el-button class="btn" v-for="(item,index) in items" :key="item.id" @click="buttonClick(item)">{{ item.text }}</el-button>
           </el-button-group>
         </div>
-        <div>
+        <div class="sInput">
           <el-input
             v-for="(item ,key) in vars"
             :key="key"
@@ -1059,12 +1059,12 @@ export default {
 </style>
 
 <style>
-.el-icon-info {
-  cursor: pointer;
-}
-.el-input__inner {
-  text-align: right !important;
-}
+  .sInput .el-icon-info {
+    cursor: pointer;
+  }
+  .sInput  .el-input__inner {
+    text-align: right !important;
+  }
 </style>
 
 <style scoped>

@@ -114,7 +114,6 @@ export default {
     //   // this.openeds = [newid + ""];
     // },
     activeId(newid) {
-      debugger;
       this.active = newid + "";
     }
   },
@@ -144,7 +143,6 @@ export default {
       })
     },
     handleOpen(key, code) {
-      debugger;
       let userId = this.userId;
       var clickNodeId = "";
       clickNodeId = userId + "_" + code[0];
@@ -190,7 +188,6 @@ export default {
      */
     fetchData(userId, code) {
       findSideBar(userId, code[0]).then(response => {
-        debugger;
         let data = response.data.data;
         data.forEach(ele => {
           if (ele.leaf == 0) {
