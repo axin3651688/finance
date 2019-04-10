@@ -995,15 +995,25 @@ export default {
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
     },
+    // 输入限制警告
+    warning(msg,item){
+        this.$message({ message: msg, type: 'warning' });
+        item.display_num = '' ;
+        item.value = '' ;
+        return false ;
+    },
     handleClick(item) {
       this.$nextTick(() => {
         debugger;
+        let msg = "超出范围，请重新输入！" ;
         item.value = item.display_num;
         if(typeof item.value === "string"){
           //输入数字
           item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
         }
-        
+        // 限制验证，超出范围不让走了
+        if((item.code === "sl" || item.code === "zbcblv") && item.value >= 1000)this.warning(msg,item);
+        if((item.code === "zbhfyqc" || item.code==="zbhfyqm") && item.value >= 100000000000)this.warning(msg,item);
           //税率
           if (item.code === "sl") {
             //调整后数据
