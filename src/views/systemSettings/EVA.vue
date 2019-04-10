@@ -1005,7 +1005,8 @@ export default {
     handleClick(item) {
       this.$nextTick(() => {
         debugger;
-        let msg = "超出范围，请重新输入！" ;
+        let msg = "温馨提示，范围<1000，您已超出范围，请重新输入！" ;
+        let msg2= "温馨提示，范围<11位数，您已超出范围，请重新输入！" 
         item.value = item.display_num;
         if(typeof item.value === "string"){
           //输入数字
@@ -1013,7 +1014,7 @@ export default {
         }
         // 限制验证，超出范围不让走了
         if((item.code === "sl" || item.code === "zbcblv") && item.value >= 1000)this.warning(msg,item);
-        if((item.code === "zbhfyqc" || item.code==="zbhfyqm") && item.value >= 100000000000)this.warning(msg,item);
+        if((item.code === "zbhfyqc" || item.code==="zbhfyqm") && item.value >= 100000000000)this.warning(msg2,item);
           //税率
           if (item.code === "sl") {
             //调整后数据
