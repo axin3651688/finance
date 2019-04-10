@@ -527,11 +527,10 @@ export default {
       ],
       vars: [
         {
-          code: "sl",
+          code: "s1",
           value: 0,
           display_num: "", //用来显示的值
           text: "税率(%)",
-          class: "s1",
           wclass: "width:190px;"
         },
         {
@@ -1063,9 +1062,9 @@ export default {
 .el-icon-info {
   cursor: pointer;
 }
-.el-input__inner {
+/* .el-input__inner {
   text-align: right !important;
-}
+} */
 </style>
 
 <style scoped>
