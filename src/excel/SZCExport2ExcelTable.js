@@ -4,7 +4,6 @@ import XLSX2 from 'xlsx'
 import { throws } from 'assert';
 
 function generateArray(tables) {
-    debugger;
     var out = [];
     var thRows = tables[0].querySelectorAll('tr');
     var rows = tables[1].querySelectorAll('tr');
@@ -76,7 +75,7 @@ function datenum(v, date1904) {
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
 
-function sheet_from_array_of_arrays(data, headNum) {
+function sheet_from_array_of_arrays(data, headNum, wb) {
     // var ws = {};
     var ws = {
         s: {
@@ -141,11 +140,22 @@ function sheet_from_array_of_arrays(data, headNum) {
                 c: C,
                 r: R
             });
+            // debugger;
             var value = cell.v;
-            if (typeof(value) === 'string') {
+            if (C > 0 && (typeof(value) === 'string' || !isNaN(value))) {
+                value = value + "";
                 value = value.replace(/\,/g, "");
                 if (!isNaN(value)) {
                     value = value - 0;
+                    cell.s = {
+                        alignment: {
+                            horizontal: "right", //左右位置
+                            vertical: "center" //上下位置
+                        },
+                        NumberFormatLocal: "#,##0.00"
+                    }
+                }
+                if (value == "--") {
                     cell.s = {
                         alignment: {
                             horizontal: "right", //左右位置
@@ -154,7 +164,11 @@ function sheet_from_array_of_arrays(data, headNum) {
                     }
                 }
             }
-            if (typeof cell.v === 'number') cell.t = 'n';
+            //有些数没有格式化，没有保留两位小数。
+            if (typeof cell.v === 'number' && C > 0) {
+                cell.v = cell.v.toFixed(2) + "";
+            }
+            if (typeof cell.v === 'number' && C > 0) cell.t = 'n';
             else if (typeof cell.v === 'boolean') cell.t = 'b';
             else if (cell.v instanceof Date) {
                 cell.t = 'n';
@@ -185,6 +199,9 @@ function sheet_from_array_of_arrays(data, headNum) {
                 ws['!merges'] ? "" : ws['!merges'] = [];
                 ws['!merges'].push(cellSum);
             }
+            // CellView cellView = new CellView();
+            // ws.setAutoSize(true);
+            // sheet.setColumnView(C, cellView);
         }
     }
     if (range.s.c < 10000000) ws['!ref'] = XLSX2.utils.encode_range(range);
@@ -214,7 +231,7 @@ export function export_table_to_excel(id, name) {
     /* original data */
     var data = oo[0];
     var ws_name = "SheetJS";
-
+    debugger;
     var wb = new Workbook(),
         ws = sheet_from_array_of_arrays(data, oo[2]);
 
@@ -231,7 +248,7 @@ export function export_table_to_excel(id, name) {
         bookSST: false,
         type: 'binary'
     });
-
+    // ws['!cols'].EntireColumn.AutoFit();
     saveAs(new Blob([s2ab(wbout)], {
         type: "application/octet-stream"
     }), (name ? name : "test") + ".xlsx")

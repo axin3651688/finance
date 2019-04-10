@@ -129,7 +129,7 @@ export default {
     handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/SZCExport2ExcelTable').then(excel => {
-        excel.export_table_to_excel("publicTable");
+        excel.export_table_to_excel("publicTable",vue.item.text);
         // const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
         // const columns = vue.item.config.columns;
         // if(columns && columns.length > 0){
