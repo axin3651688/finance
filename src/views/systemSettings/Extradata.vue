@@ -241,7 +241,7 @@ export default {
                    vartype: _this.form.vartype.join(","),
                   // varnature: _.join(_this.form.nature, ","),
                   // varcompany: "'" + _.join(coms, "','") + "'",
-                  varcompany: _.join(coms, "','"),
+                  varcompany: "'" + _.join(coms, "','") + "'",
                   varyear: _this.form.startperiod.substring(0, 4),
                   orgmonth:
                     _.replace(_this.form.startperiod, /-/g, "").substring(
