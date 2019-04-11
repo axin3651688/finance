@@ -1,164 +1,141 @@
-
 {
-    "id":"0024",
-    "text":"融资情况明细表",
-    "showDims":["year","month","company","conversion"],
-     "__queryDataAfter":function(data,$vue){//数据的后置处理
+    "id": "0024",
+    "text": "融资情况明细表",
+    "showDims": ["year", "month", "company", "conversion"],
+    "__queryDataAfter": function(data, $vue) { //数据的后置处理
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
-        if(data.length == 1)data = [];
+        if (data.length == 1) data = [];
         return data;
     },
-    "config":{
-		"sql":"SELECT(CASE WHEN CISMENU='0' THEN '否' ELSE '是' END) AS JRJG,A.DIM_BANKNAME AS JRJGMC, C.SNAME AS RZLX,NVL(FACT_A,0) AS JKBJ ,SSTARTDATE AS QSRQ,SENDDATE AS DQRQ,FACT_B AS LL,NVL(FACT_C,0) AS ZHCB,(CASE WHEN CISGUARANTEE='0' THEN '否' ELSE '是' END) AS SFJTDB ,D.SNAME AS DBFS,SREPAYDATE AS YHKRQ,E.SNAME AS HKLY,(CASE WHEN STATUS='-1' THEN '减少' WHEN STATUS='1' THEN '新增' ELSE '不符合条件' END)AS XZ_JS, SNOTE FROM DW_FACTFINANCEDETAIL A LEFT JOIN DW_DIMFINANCE C ON A.DIM_FINANCE = C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') D ON A.DIM_GUARANTEE=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE WHERE DIM_COMPANY=:company AND :period BETWEEN SSTARTDATE AND SENDDATE UNION ALL SELECT '' AS JRJG,'小计' AS JRJGMC,'--' AS RZLX,SUM(NVL(FACT_A,0)) AS JKBJ,'--' AS QSRQ,'--' AS DQRQ, 0 AS LL, (CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(FACT_A,0)*NVL(FACT_C,0))/SUM(NVL(FACT_A,0))),4) END) AS ZHCB,'--' AS SFJTDB,'--' AS DBFS,'--' AS YHKRQ,'--' AS HKLY,'--' AS XZ_JS,'--' AS SNOTE FROM DW_FACTFINANCEDETAIL WHERE DIM_COMPANY=:company AND :period BETWEEN SSTARTDATE AND SENDDATE",
-        "cube":{
-          "subject":"0007",
-          "cubeId":4
+    "config": {
+        "sql": "SELECT(CASE WHEN CISMENU='0' THEN '否' ELSE '是' END) AS JRJG,A.DIM_BANKNAME AS JRJGMC, C.SNAME AS RZLX,NVL(FACT_A,0) AS JKBJ ,SSTARTDATE AS QSRQ,SENDDATE AS DQRQ,FACT_B AS LL,NVL(FACT_C,0) AS ZHCB,(CASE WHEN CISGUARANTEE='0' THEN '否' ELSE '是' END) AS SFJTDB ,D.SNAME AS DBFS,SREPAYDATE AS YHKRQ,E.SNAME AS HKLY,(CASE WHEN STATUS='-1' THEN '减少' WHEN STATUS='1' THEN '新增' ELSE '不符合条件' END)AS XZ_JS, SNOTE FROM DW_FACTFINANCEDETAIL A LEFT JOIN DW_DIMFINANCE C ON A.DIM_FINANCE = C.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') D ON A.DIM_GUARANTEE=D.SCODE LEFT JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE WHERE DIM_COMPANY=:company AND :period BETWEEN substr(SSTARTDATE,0,6) AND substr(SENDDATE,0,6) UNION ALL SELECT '' AS JRJG,'小计' AS JRJGMC,'--' AS RZLX,SUM(NVL(FACT_A,0)) AS JKBJ,'--' AS QSRQ,'--' AS DQRQ, 0 AS LL, (CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(FACT_A,0)*NVL(FACT_C,0))/SUM(NVL(FACT_A,0))),4) END) AS ZHCB,'--' AS SFJTDB,'--' AS DBFS,'--' AS YHKRQ,'--' AS HKLY,'--' AS XZ_JS,'--' AS SNOTE FROM DW_FACTFINANCEDETAIL WHERE DIM_COMPANY=:company AND :period BETWEEN substr(SSTARTDATE,0,6) AND substr(SENDDATE,0,6)",
+        "cube": {
+            "subject": "0007",
+            "cubeId": 4
         },
-        "cubeId":4,
-        "mainDim":"itemperiod",
-        "needDims":["year","month","company","conversion"],
-        "random":{"min":100,"max":100000},
-        
-        "type":1
-          
+        "cubeId": 4,
+        "mainDim": "itemperiod",
+        "needDims": ["year", "month", "company", "conversion"],
+        "random": { "min": 100, "max": 100000 },
+
+        "type": 1
+
     },
 
-    "columns":[
-        {
+    "columns": [{
             "id": "bz",
             "type": "string",
             "text": "备注"
         },
-      {
-        "id": "xh",
-        "type": "index",
-        "text": "序号",
-        "width":"60px"
-      },
-      {
-        "id": "jrjg",
-        "type": "string",
-        "fixed":true,
-        "text": "是否金融机构*",
-        "align":"center"
-      },
-{
-        "id": "jrjgmc",
-        "type": "string",
-        "text": "机构名称",
-        "fixed":true,
-        "width":"300px"
-      },	  {
-        "id": "rzlx",
-        "type": "string",
-        "text": "融资类型*",
-        "width":"300px"
-    }, {
-        "id": "jkbj",
-        "type": "decimal",
-        "text": "借款本金*"
-    }, {
-        "id": "qsrq",
-        "type": "string",
-        "text": "起始日期*"
-    }, {
-        "id": "dqrq",
-        "type": "string",
-        "text": "到期日期*"
-    }, {
-        "id": "ll",
-        "type": "decimal",
-        "text": "利率（%）*",
-        "conversion":"%"
-    }, {
-        "id": "zhcb",
-        "type": "decimal",
-        "text": "综合成本（%）*",
-        "conversion":"%"
-    }, {
-        "id": "sfjtdb",
-        "type": "string",
-        "text": "是否集团担保*",
-        "align":"center"
-    }, {
-        "id": "dbfs",
-        "type": "string",
-        "text": "担保方式*",
-        "align":"center"
-    }, {
-        "id": "yhkrq",
-        "type": "string",
-        "text": "已还款日期"
-    }, {
-        "id": "hkly",
-        "type": "string",
-        "text": "还款来源",
-        "align":"center"
-    }, {
-        "id": "xzjs",
-        "type": "number",
-        "text": "新增/减少",
-        "align":"center"
-    }
+        {
+            "id": "xh",
+            "type": "index",
+            "text": "序号",
+            "width": "60px"
+        },
+        {
+            "id": "jrjg",
+            "type": "string",
+            "fixed": true,
+            "text": "是否金融机构*",
+            "align": "center"
+        },
+        {
+            "id": "jrjgmc",
+            "type": "string",
+            "text": "机构名称",
+            "fixed": true,
+            "width": "300px"
+        }, {
+            "id": "rzlx",
+            "type": "string",
+            "text": "融资类型*",
+            "width": "300px"
+        }, {
+            "id": "jkbj",
+            "type": "decimal",
+            "text": "借款本金*"
+        }, {
+            "id": "qsrq",
+            "type": "string",
+            "text": "起始日期*"
+        }, {
+            "id": "dqrq",
+            "type": "string",
+            "text": "到期日期*"
+        }, {
+            "id": "ll",
+            "type": "decimal",
+            "text": "利率（%）*",
+            "conversion": "%"
+        }, {
+            "id": "zhcb",
+            "type": "decimal",
+            "text": "综合成本（%）*",
+            "conversion": "%"
+        }, {
+            "id": "sfjtdb",
+            "type": "string",
+            "text": "是否集团担保*",
+            "align": "center"
+        }, {
+            "id": "dbfs",
+            "type": "string",
+            "text": "担保方式*",
+            "align": "center"
+        }, {
+            "id": "yhkrq",
+            "type": "string",
+            "text": "已还款日期"
+        }, {
+            "id": "hkly",
+            "type": "string",
+            "text": "还款来源",
+            "align": "center"
+        }, {
+            "id": "xzjs",
+            "type": "number",
+            "text": "新增/减少",
+            "align": "center"
+        }
     ],
-    "rows":[
-  ],
-  "layout":{
-      "xtype":"tab"
-   },
-  "items":[
-    {
+    "rows": [],
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
         "xtype": "bi-table",
-        "id":"rzqk",
-        "text":"融资情况明细表",
-        "queryDataAfter": function(data,$vue){
-            if(data.length == 1)data = [];
+        "id": "rzqk",
+        "text": "融资情况明细表",
+        "queryDataAfter": function(data, $vue) {
+            if (data.length == 1) data = [];
             return data;
         },
-        "toolbar":[
-            {
-                "id":"1",
-                "text":"刷新",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    //    "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                        vue.item.updateView("company");
-                }
+        "toolbar": [{
+            "id": "1",
+            "text": "刷新",
+            "xtype": "button",
+            "cellStyle": {
+                "color": "black",
+                //    "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                vue.item.updateView("company");
             }
-            , {
-                "id":"2",
-                "text":"导出",
-                "cellStyle":{
-                    "color":"black",
-                    //    "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                    vue.handleDownload(vue);
-                }
+        }, {
+            "id": "2",
+            "text": "导出",
+            "cellStyle": {
+                "color": "black",
+                //    "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                vue.handleDownload(vue);
             }
-        ]
-    }
-    ]
+        }]
+    }]
 }
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-

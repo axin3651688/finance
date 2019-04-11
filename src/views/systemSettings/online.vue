@@ -122,9 +122,6 @@ export default {
             isSearchForm: false,
             // 表单输入默认为空
             searchForm:{ 
-                // trueName: "",
-                // userName: "",
-                // roleNames: ""
                 schfilter: ""
             },
             heights: 0,
@@ -145,21 +142,7 @@ export default {
         }
     },
     created(){
-        debugger
         let me = this;
-        // if(document.getElementsByClassName('input-refresh').length > 0){
-        //     // 得到表单的高度并赋值
-        //     me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-        //     if (me.inputRefresh == 0) {
-        //         me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
-        //     } else {
-        //         // 计算当前页面的高度 得出表格的高度
-        //         me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-        //     }
-            
-        // }else{
-        //     me.heights = document.body.offsetHeight - 60 - 70 - 40 - 64 - 40;
-        // }
         me.heights = document.body.offsetHeight - 70 - 40 - 64 - 40 ;
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
@@ -168,27 +151,13 @@ export default {
         // 设置表格高度（自适应）
         this.setTableScollHeight();
     },
-    watch:{
-        // schfilter: function(val, oldVal){
-        //     debugger
-        //     this.tableData = this.tableData.filter( item => (~item.name.indexOf(val)));
-        // }
-    },
+    watch:{},
     methods:{
         // 页面自适应
         setTableScollHeight(){
             this.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;
             const me = this ;
             window.onresize = function temp(){
-                debugger
-                // 得到表单的高度并赋值
-                // me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-                // // 计算当前页面的高度 得出表格的高度
-                // if(me.inputRefresh>0){
-                //     me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-                // }else{
-                //     me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
-                // } 
                 me.heights = document.documentElement.clientHeight - 70 - 40 - 64 - 40 ;            
             };
         },
@@ -200,17 +169,11 @@ export default {
             let me = this;
             // item：传的参数
             let item = {
-                // "keyWord": me.searchForm.trueName,
                 "pageNum": currentPage,
                 "pageSize": pagesize,
-                // "userId": me.$store.getters.user.user.id
             };
             // 请求
             onlineRequest(item).then(res => {
-                debugger
-                    // me.person = res.data.data.totalElements;
-                    //获取行信息渲染
-                    // me.tableData = res.data.data.data;
                     if(res.data.data){
                         let dataTable = res.data.data.datas;
                         //获取总数据
@@ -223,27 +186,6 @@ export default {
             }); 
         },
         getTimes(row){
-            debugger
-            // debugger
-            // let etime, stime, dateBegin, usedTime, days, leave1,leave2,leave3, hours, minutes,seconds ;
-            // //var date = new Date();
-            // for(let i=0; i<row.length; i++){
-            //     dateBegin = (row[i].loginTime).replace(/-/g, "/");//转换类型。注：因为程序识别不了‘-’时间格式，必须是‘/’的。
-            //     etime = Date.parse(new Date(dateBegin));//登录时间转化成毫秒数
-            //     stime = new Date().getTime(); //得到现在的时间
-            //     usedTime = stime - etime ;//获得两个时间差（当前时间stime - 登录时间etime）
-            //     days = Math.floor(usedTime/(24*3600*1000));
-            //     leave1=usedTime%(24*3600*1000);    //计算天数后剩余的毫秒数
-            //     hours=Math.floor(leave1/(3600*1000));
-            //     //计算相差分钟数
-            //     leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
-            //     minutes=Math.floor(leave2/(60*1000));
-            //     //计算相差秒数
-            //     leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
-            //     seconds=Math.round(leave3/1000)
-            //     let time = days +"天"+ hours +"时"+ minutes +"分"+ seconds +"秒";
-            //     row[i].residencetime = time ;
-            // }
             this.tableData = row ;
         },
         /**
@@ -356,21 +298,7 @@ export default {
                     message: '已取消下线'
                 });
             });
-        },
-        /**
-         * 样式的调整，全局居中属性。弃用
-         */
-        // cellStyle(row){
-        //     debugger
-        //     let textIndent = '';
-        //     //找到列  （从第一列开始）
-        //     let pro = row.column.property;
-        //     if (pro){
-        //         let drill = "text-decoration: none;";
-        //         let css = "text-align: center;" + textIndent + drill;
-        //         return css;
-        //     }
-        // }
+        }
     }    
 }
 </script>

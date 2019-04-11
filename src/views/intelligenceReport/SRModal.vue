@@ -62,11 +62,9 @@ export default {
         }
     },
     created() {
-        debugger;
         this.update();
     },
     mounted() {
-        debugger;
         let me = this;
     },
     methods: {
@@ -74,28 +72,24 @@ export default {
          * 更新数据。
          */
         update () {
-            debugger;
             let me = this;
         },
         /**
          * 搜索节点。
          */
         filterNode () {
-            debugger;
             let me = this;
         },
         /**
          * 展开制定的节点。
          */
         expandKeys () {
-            debugger;
             let me = this;
         },
         /**
          * 节点点击事件。
          */
         handleNodeClick () {
-            debugger;
             let me = this;
         },
         /**
@@ -103,7 +97,6 @@ export default {
          * @author szc 2019年4月3日14:26:49
          */
         confirmHandle () {
-            debugger;
             let me = this,eventListener = this.modalConfig.eventListener;
             let nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
             if(eventListener){
@@ -115,7 +108,6 @@ export default {
          * @author szc 2019年4月3日14:28:17
          */
         handleClick (row) {
-            debugger;
             let me = this,eventListener = this.modalConfig.rowListener;
             if(eventListener){
                 this.$emit(eventListener,row.row);

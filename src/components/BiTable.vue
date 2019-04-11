@@ -5,12 +5,16 @@
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
-      <el-button       
+      <template 
         v-for="btn in item.toolbar"
-        v-bind:key="btn.id"
-        :style="btn.cellStyle"
-        @click="btnClick(btn)"
-      >{{btn.text}}</el-button>
+      >
+        <el-button
+          v-if="btn.showBtn"       
+          v-bind:key="btn.id"
+          :style="btn.cellStyle"
+          @click="btnClick(btn)"
+        >{{btn.text}}</el-button>
+      </template>
     </el-button-group>
     <el-table
       :data.sync="tableDatas"
@@ -61,6 +65,7 @@ export default {
   props: ["item"],
   data() {
     return {
+      showBtn:true,//按钮显示与否。
       input3: '',
       heights: 500,
       offsetHeight:document.body.offsetHeight,
@@ -93,9 +98,18 @@ export default {
      * 页面原始高度：document.body.offsetHeight
      * 按钮背景高度：40
      * 导航栏高度：64
-     * 间隙高度：15+7 = 22
+     * 间隙高度：15+7 = 22menupermisson
      */
-    debugger
+    // debugger
+    // for(let i = 0;i < this.$store.getters.user.menupermisson.length;i ++){
+    //   if(this.$store.getters.user.menupermisson[i].text == "现金流量表"){
+    //     console.log("这是一个神奇的东西：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
+    //   }
+    //   console.log("用户demo：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
+    // }
+    // console.log("用户：",this.$store.getters.user);
+    //是否具有导出功能。localStorage
+    this.showBtnOfExport();
     if(this.item.show){
       this.upData(this.item);
     }
@@ -116,10 +130,34 @@ export default {
   },
 
   methods: {
+    /**
+     * 根据角色的授权判断是否具有显示导出功能的权限。
+     * @author szc 2019年4月10日13:38:14
+     */
+    showBtnOfExport () {
+      debugger;
+      let me = this,siderState = JSON.parse(localStorage.siderState),toolbars = this.item.toolbar,
+          menupermisson = this.$store.getters.user.menupermisson,menuItem;
+      if(siderState && toolbars && toolbars.length > 0){
+        menuItem = menupermisson.filter(item => {
+          return item.id == siderState.code;
+        });
+      }
+      toolbars.forEach(item => {
+        item.showBtn = true;
+      });
+      if(menuItem[0].nexp == 0){
+        toolbars.forEach(item => {
+          if(item.text == "导出"){
+            item.showBtn = false;
+          }else {
+            item.showBtn = true;
+          }
+        });
+      }
+    },
     // / 页面大小改变时触发  主要用来自适应页面的布局的 
     setTableScollHeight(){
-      debugger
-        debugger
         this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
         const me = this ;
         window.onresize = function temp(){
@@ -260,6 +298,7 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
+      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }

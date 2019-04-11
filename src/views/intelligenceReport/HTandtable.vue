@@ -1028,8 +1028,8 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        //资金集中度的填写限制
-        if (row != 0 && (columns == 0 || columns == 2)) {
+        //资金集中度的填写限制 改成第一行可编辑
+        if (columns == 0 || columns == 2) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1847,12 +1847,12 @@ export default {
         el.id = "flag";
         el.innerHTML = "删除";
         td.appendChild(el);
-        if (this.templateId == 8) {
-          let dd = document.getElementsByTagName("td")[5];
-          if (dd && dd != "undefined") {
-            dd.innerText = "";
-          }
-        }
+        // if (this.templateId == 8) {
+        //   let dd = document.getElementsByTagName("td")[5];
+        //   if (dd && dd != "undefined") {
+        //     dd.innerText = "";
+        //   }
+        // }
         el.style.color = "red";
         el.style.cursor = "pointer";
         let me = this;
