@@ -1116,7 +1116,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      
+      debugger;
       let me = this;
       if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1988,10 +1988,15 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
-      // 
+      debugger;
       let source = [];
-      let str = "";
-      this.financingOptions.forEach(item => {
+      let str = "",finanData = [];
+      if(this.financingOptions && this.financingOptions.length > 0) {
+        finanData = this.financingOptions.filter(item => {
+          return item.isleaf == '1';
+        });
+      }
+      finanData.forEach(item => {
         source.push(item.text);
         // if(item.isleaf == "1"){
         //   str = "&nbsp;&nbsp;&nbsp;&nbsp;";

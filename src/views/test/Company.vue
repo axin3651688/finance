@@ -40,7 +40,7 @@
           class="comForm"
         >
           <el-form-item label="公司编码" prop="scode">
-            <el-input v-model="form.scode" :disabled="scodeDisabled"></el-input>
+            <el-input v-model="form.scode" placeholder="请填写公司编码" :disabled="scodeDisabled"></el-input>
           </el-form-item>
 
           <el-form-item label="公司名称(含编码)" prop="sname" style="display:none">
