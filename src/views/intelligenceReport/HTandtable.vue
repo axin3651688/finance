@@ -515,10 +515,12 @@ export default {
      * @author szc 2019年4月9日14:54:50
      */
     hideConverseOfYuan () {
-      debugger;
       let me = this;
       let showDims = this.showDims;
-      if(showDims && showDims.conversion){
+      if(showDims){
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = true,
         showDims.conversion = false;
       }
     },

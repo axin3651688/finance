@@ -189,7 +189,10 @@ export default {
     hideConverseOfYuan () {
       let me = this;
       let showDims = this.showDims;
-      if(showDims && showDims.conversion){
+      if(showDims){
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = true,
         showDims.conversion = false;
       }
     },

@@ -74,19 +74,41 @@ function datenum(v, date1904) {
     var epoch = Date.parse(v);
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
+/**
+ * 找出行次的下标，此方法存在很大的偶然性，可优化程度甚高。
+ * @author szc 2019年4月11日15:06:23
+ */
+function get_row_index(columns) {
+    var arr = [];
+    for (var i = 0; i < columns.length; i++) {
+        if (columns[i].id.indexOf('row') != -1) {
+            arr.push(i);
+        }
+    }
+    return arr;
+}
 
-function sheet_from_array_of_arrays(data, headNum, wb) {
+function sheet_from_array_of_arrays(data, headNum, columns) {
     // var ws = {};
+    //这个处理只是针对于行次不用处理两位小数。
+    var rowIndexs = get_row_index(columns);
     var ws = {
         s: {
             "!row": [{ wpx: 67 }]
         }
     };
+    //行次的距离设置
     ws['!cols'] = [];
     for (var n = 0; n != data[0].length; ++n) {
-        ws['!cols'].push({
-            wpx: 170
-        });
+        if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(n) != -1) {
+            ws['!cols'].push({
+                wpx: 80
+            });
+        } else {
+            ws['!cols'].push({
+                wpx: 170
+            });
+        }
     }
     var range = {
         s: {
@@ -147,12 +169,21 @@ function sheet_from_array_of_arrays(data, headNum, wb) {
                 value = value.replace(/\,/g, "");
                 if (!isNaN(value)) {
                     value = value - 0;
-                    cell.s = {
-                        alignment: {
-                            horizontal: "right", //左右位置
-                            vertical: "center" //上下位置
-                        },
-                        NumberFormatLocal: "#,##0.00"
+                    if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(C) != -1) {
+                        cell.s = {
+                            alignment: {
+                                horizontal: "center", //左右位置
+                                vertical: "center" //上下位置
+                            }
+                        }
+                    } else {
+                        cell.s = {
+                            alignment: {
+                                horizontal: "right", //左右位置
+                                vertical: "center" //上下位置
+                            },
+                            NumberFormatLocal: "#,##0.00"
+                        }
                     }
                 }
                 if (value == "--") {
@@ -166,7 +197,9 @@ function sheet_from_array_of_arrays(data, headNum, wb) {
             }
             //有些数没有格式化，没有保留两位小数。
             if (typeof cell.v === 'number' && C > 0) {
-                cell.v = cell.v.toFixed(2) + "";
+                if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(C) != -1) {} else {
+                    cell.v = cell.v.toFixed(2) + "";
+                }
             }
             if (typeof cell.v === 'number' && C > 0) cell.t = 'n';
             else if (typeof cell.v === 'boolean') cell.t = 'b';
@@ -221,7 +254,7 @@ function s2ab(s) {
     return buf;
 }
 
-export function export_table_to_excel(id, name) {
+export function export_table_to_excel(id, name, columns) {
     // var theTable = document.getElementById(id);
     // 导出table
     var theTable = document.getElementById(id).getElementsByTagName("table");
@@ -231,9 +264,8 @@ export function export_table_to_excel(id, name) {
     /* original data */
     var data = oo[0];
     var ws_name = "SheetJS";
-    debugger;
     var wb = new Workbook(),
-        ws = sheet_from_array_of_arrays(data, oo[2]);
+        ws = sheet_from_array_of_arrays(data, oo[2], columns);
 
     /* add ranges to worksheet */
     // ws['!cols'] = ['apple', 'banan'];

@@ -84,11 +84,15 @@ export default {
       if(arr.indexOf(e.pid) == -1){
         return;
       }
+      let companyFlag = false;
+      if(e.code == "802"){
+        companyFlag = true;
+      }
       let me = this,showDims = this.showDims;
       showDims.conversion = false;
       showDims.year = false;
       showDims.month = false;
-      showDims.company =false;
+      showDims.company = companyFlag;
       showDims.day = false;
     },
     /**

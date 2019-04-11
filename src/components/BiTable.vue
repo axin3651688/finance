@@ -164,10 +164,44 @@ export default {
             me.heights = document.documentElement.clientHeight - 22 - 40- 40 - 64 ;
         };
     },
+    /**
+     * 把多表头转换成一个通用的columns
+     * @author szc 2019年4月11日14:36:30
+     */
+    parseColmns (columns,rootColmuns) {
+      let me = this;
+      for(let i = 0;i < columns.length;i ++){
+        if(columns[i].children && columns[i].children.length > 0){
+          me.parseColmns(columns[i].children,rootColmuns);
+        }else {
+          if(!columns[i].hidden){
+            rootColmuns.push(columns[i]);
+          }
+        }
+      }
+    },
     handleDownload(vue) {//导出 zb
       vue.downloadLoading = true
       import('@/excel/SZCExport2ExcelTable').then(excel => {
-        excel.export_table_to_excel("publicTable",vue.item.text);
+        //制造一个columns格式传过去。
+        let rootColmuns = [],columns = vue.item.config.columns;
+        let firstItem = columns[0];
+        columns = columns.filter((item,index) => {
+          return index != 0;
+        });
+        columns.push(firstItem);
+        this.parseColmns(columns,rootColmuns);
+        // let tHeader = [],filterVal = [];
+        // let columns = vue.item.config.columns;
+        // if(columns && columns.length > 0){
+        //    for(let i = 1;i < columns.length;i++){
+        //       if((columns[i].text || columns[i].text == "") && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
+        //       if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
+        //    }
+        //    tHeader.push(columns[0].text);
+        //    filterVal.push(columns[0].id);
+        // }
+        excel.export_table_to_excel("publicTable",vue.item.text,rootColmuns);
         // const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
         // const columns = vue.item.config.columns;
         // if(columns && columns.length > 0){
