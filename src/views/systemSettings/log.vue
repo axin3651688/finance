@@ -62,12 +62,23 @@
                     <span v-if="scope.row.ntype===0">查询</span>
                     <span v-if="scope.row.ntype===1">登录</span>
                     <span v-if="scope.row.ntype===2">退出</span>
-                    <span v-if="scope.row.ntype > 2">其他</span>
+                    <span v-if="scope.row.ntype===3">验证</span>
+                    <span v-if="scope.row.ntype===4">插入</span>
+                    <span v-if="scope.row.ntype===5">删除</span>
+                    <span v-if="scope.row.ntype===6">修改</span>
+                    <span v-if="scope.row.ntype===7">其他</span>
+                    <span v-if="scope.row.ntype===8">上传</span>
+                    <span v-if="scope.row.ntype===9">下载</span>
+                    <span v-if="scope.row.ntype===10">导入</span>
+                    <span v-if="scope.row.ntype===11">导出</span>
+                    <span v-if="scope.row.ntype===12">填报</span>
                 </template>
             </el-table-column>
             <el-table-column prop="nlevel" label="日志级别" width="110" header-align="center" align ="center" sortable>
                 <template slot-scope="scope">
-                    <span v-if="scope.row.nlevel>=0">通知</span>
+                    <span v-if="scope.row.nlevel==1">通知</span>
+                    <span v-if="scope.row.nlevel==2">警告</span>
+                    <span v-if="scope.row.nlevel==3">错误</span>
                 </template>
             </el-table-column>
             <el-table-column prop="soperatetime" label="操作时间" width="200" header-align="center" align ="center" sortable></el-table-column>
