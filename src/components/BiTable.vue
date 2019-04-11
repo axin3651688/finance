@@ -191,16 +191,6 @@ export default {
         });
         columns.push(firstItem);
         this.parseColmns(columns,rootColmuns);
-        // let tHeader = [],filterVal = [];
-        // let columns = vue.item.config.columns;
-        // if(columns && columns.length > 0){
-        //    for(let i = 1;i < columns.length;i++){
-        //       if((columns[i].text || columns[i].text == "") && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
-        //       if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
-        //    }
-        //    tHeader.push(columns[0].text);
-        //    filterVal.push(columns[0].id);
-        // }
         excel.export_table_to_excel("publicTable",vue.item.text,rootColmuns);
         // const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
         // const columns = vue.item.config.columns;
