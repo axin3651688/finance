@@ -11,7 +11,6 @@
           :data="treedata"
           node-key="scode"
           :props="props"
-          class="filter-tree"
           :filter-node-method="filterNode"
           :highlight-current="true"
           :expand-on-click-node="false"
@@ -101,16 +100,22 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="add" :disabled="addDisabled">新增</el-button>
-            <!-- <el-button type="primary" @click="update">修改</el-button> -->
-            <el-button type="success" @click="save('form')">保存</el-button>
-            <el-button type="danger" @click="remove">删除</el-button>
-            <!-- <template v-if="form.cisdel === 'N'">
-              <el-button type="danger" @click="remove">禁用</el-button>
+            <template v-if="addButten === 1"> 
+              <el-button type="primary" @click="add" :disabled="addDisabled">新增</el-button>
             </template>
-            <template v-else>
-              <el-button type="danger" @click="remove">启用</el-button>
-            </template> -->
+            <!-- <el-button type="primary" @click="update">修改</el-button> -->
+            <template v-if="preserveButten === 1">
+              <el-button type="success" @click="save('form')">保存</el-button>
+            </template>
+            <!-- <el-button type="danger" @click="remove">删除</el-button> -->
+            <template v-if="delButten === 1">
+              <template v-if="form.cisdel === 'N'">
+                <el-button type="warning" @click="remove('禁用')">禁用</el-button>
+              </template>
+              <template v-else>
+                <el-button type="success" @click="remove('启用')">启用</el-button>
+              </template>
+            </template>
             <!-- <el-button >取消</el-button> -->
           </el-form-item>
         </el-form>
@@ -263,8 +268,15 @@ export default {
       opt: {},
       //scodeDisabled
       scodeDisabled: false,
-      //addDisabled
-      addDisabled: true
+      //新增按钮是否可操作设置
+      addDisabled: true,
+      //新增按钮是否显示
+      addButten:1,
+      //保存按钮是否显示
+      preserveButten:1,
+      //启用或禁用按钮是否显示
+      delButten:1
+
     };
   },
   watch: {
@@ -318,6 +330,16 @@ export default {
     }
   },
   mounted() {
+    let database = JSON.parse(localStorage.getItem("database"));
+    let menupermisson = database.menupermisson;
+    let data = menupermisson.filter( item =>{
+          return item.text == "公司管理"
+    });
+    if(data && data.length > 0){
+       this.addButten = data[0].nadd;
+       this.preserveButten = data[0].nupdate;
+       this.delButten = data[0].ndel;
+    }
     this.setTreeHeight();
   },
   methods: {
@@ -456,7 +478,7 @@ export default {
       }
       _this.opt = tools.opt[2];
       _this
-        .$confirm("此操作将永久删除该公司, 是否继续?", "提示", {
+        .$confirm("此操作将"+formName+"该公司, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -477,7 +499,7 @@ export default {
               _this.findNodes();
               this.$message({
                 type: "success",
-                message: "删除成功!"
+                message: result.data.msg
               });
             }
           });
