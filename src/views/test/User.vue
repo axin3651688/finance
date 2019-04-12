@@ -3,7 +3,9 @@
     <div class="input-refresh" ref="elememt">
       <el-form :inline="true" :model="searchForm" class="user-form-inline">
         <el-form-item>
-          <el-button type="primary" @click="handleAdd">添加用户</el-button>
+          <template v-if="addButten === 1">
+             <el-button type="primary" @click="handleAdd">添加用户</el-button>
+          </template>
           <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
         </el-form-item>
 
@@ -48,29 +50,38 @@
         header-align="center"
         align="center"
       ></el-table-column>
-      <el-table-column label="操作" header-align="center" min-width="350px" fixed="right">
-        <template slot-scope="scope">
-          <template v-if="scope.row.cisenabled === 'Y'">
-            <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
+      <template v-if="delButten !== 0 && editButten !== 0  && authorizeButten !== 0" >
+        <el-table-column label="操作" header-align="center" min-width="350px" fixed="right">
+          <template slot-scope="scope">
+            <template v-if="delButten === 1">
+              <template v-if="scope.row.cisenabled === 'Y'">
+                <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
+              </template>
+              <template v-else>
+                <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="success">启用</el-button>
+              </template>
+            </template>
+            <template v-if="editButten === 1">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary">修改</el-button>
+            </template>
+            <template v-if="editButten === 1"> 
+              <el-button
+                size="mini"
+                @click="handleEditPassword(scope.$index, scope.row)"
+                type="primary"
+              >修改密码</el-button>
+            </template>
+            <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
+            <template v-if="authorizeButten === 1"> 
+              <el-button
+                size="mini"
+                @click="handleAuthorizeCompany(scope.$index, scope.row)"
+                type="primary"
+              >公司授权</el-button>
+            </template>
           </template>
-          <template v-else>
-            <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="success">启用</el-button>
-          </template>
-
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary">修改</el-button>
-          <el-button
-            size="mini"
-            @click="handleEditPassword(scope.$index, scope.row)"
-            type="primary"
-          >修改密码</el-button>
-          <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
-          <el-button
-            size="mini"
-            @click="handleAuthorizeCompany(scope.$index, scope.row)"
-            type="primary"
-          >公司授权</el-button>
-        </template>
-      </el-table-column>
+        </el-table-column>
+      </template>
     </el-table>
 
     <!-- 分页 -->
@@ -371,7 +382,7 @@
         <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText">
               <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
         </el-input>-->
-         <el-tree
+        <el-tree
           :data="companysTree"
           show-checkbox
           node-key="id"
@@ -524,6 +535,15 @@ export default {
       inputRefresh: 0,
       // 表格初始化高度为 0 等待计算赋值
       heights: 0,
+
+      //启用或禁用按钮是否显示
+      delButten:1,
+      //修改按钮是否显示
+      editButten:1,
+      //新增按钮是否显示
+      addButten:1,
+      //授权按钮是否显示
+      authorizeButten:1,
 
       showNodes:[],//选中的节点（公司授权）
       searchForm: {},
@@ -810,6 +830,17 @@ export default {
         )[0].offsetHeight;
       })();
     };
+    let database = JSON.parse(localStorage.getItem("database"));
+    let menupermisson = database.menupermisson;
+    let data = menupermisson.filter( item =>{
+          return item.text == "用户管理"
+    });
+    if(data && data.length > 0){
+       this.addButten = data[0].nadd || 0;
+       this.editButten = data[0].nupdate  || 0;
+       this.delButten = data[0].ndel || 0;
+       this.authorizeButten = data[0].nper || 0;
+    }
   },
   methods: {
 
