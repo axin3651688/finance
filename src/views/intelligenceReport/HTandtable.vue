@@ -1797,7 +1797,7 @@ export default {
           let h = str.substring(index + 1, str.length);
           // let h = "xls";
           let name;
-          if(params.length > 0){
+          if(params.length > 1){
             name = "天津报表模板"
           }else {
             name = this.templateItems[0].title;
