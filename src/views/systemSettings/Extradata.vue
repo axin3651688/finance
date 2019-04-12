@@ -90,6 +90,7 @@
 </template>
 <script>
 import request from "utils/http";
+import { mapGetters } from "vuex";
 import tools from "utils/tools";
 import axios from "axios";
 import moment from "moment";
@@ -97,6 +98,8 @@ let nowDate = moment().format("YYYY-MM");
 export default {
   created() {
     this.findNodes();
+    //元的单位切换。
+    this.hideConverseOfYuan();
   },
   data() {
     return {
@@ -175,7 +178,24 @@ export default {
   mounted() {
     this.setTreeHeight();
   },
+  computed: {
+    ...mapGetters(["showDims"])
+  },
   methods: {
+    /**
+     * 隐藏元单位的切换，默认是元。
+     * @author szc 2019年4月9日14:54:50
+     */
+    hideConverseOfYuan () {
+      let me = this;
+      let showDims = this.showDims;
+      if(showDims){
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = true,
+        showDims.conversion = false;
+      }
+    },
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
         124}px`;
@@ -224,7 +244,7 @@ export default {
                    vartype: _this.form.vartype.join(","),
                   // varnature: _.join(_this.form.nature, ","),
                   // varcompany: "'" + _.join(coms, "','") + "'",
-                  varcompany: _.join(coms, "','"),
+                  varcompany: "'" + _.join(coms, "','") + "'",
                   varyear: _this.form.startperiod.substring(0, 4),
                   orgmonth:
                     _.replace(_this.form.startperiod, /-/g, "").substring(

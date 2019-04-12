@@ -420,7 +420,6 @@ export default {
      * @author szc 2019年4月2日20:12:14
      */
     messageHandle () {
-      debugger;
       return;
       let me = this;
       if(this.messageValue == 0){

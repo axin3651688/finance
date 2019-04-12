@@ -27,7 +27,7 @@
         </div>
         <div class="right">
           <!-- <el-button class="button">审阅</el-button> -->
-          <el-button class="button" @click="reportHandle">上报</el-button>
+          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
         </div>
         <!-- 上报的人员modal -->
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
@@ -39,21 +39,7 @@
           :height=" heights"
           class="table"
         ></hot-table>
-        <!-- <BiModule v-show="show"></BiModule> -->
-        <!-- <el-dialog
-                title="提示"
-                :visible.sync="dialogVisible"
-                width="30%"
-        >-->
-        <!-- <span>这是一段信息</span> -->
-        <!-- <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-        </span>-->
-        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader>  -->
-        <!-- </el-dialog> -->
-        <!-- <el-cascader :options="options" v-model="selectedOptions" @change="handleChange" v-show="dialogVisible"> </el-cascader> -->
-      </el-tab-pane>
+        </el-tab-pane>
       <!-- 模板的下载与导入 -->
       <el-tab-pane label="Excel导入" name="first">
         <el-button size="small" type="primary" @click="templateDownload" class="template">模板下载</el-button>
@@ -493,6 +479,8 @@ export default {
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
+    //隐藏单位，默认是元。
+    this.hideConverseOfYuan();
     
   },
   mounted() {
@@ -519,9 +507,23 @@ export default {
     window.removeEventListener("resize", this.resizeTable);
   },
   computed: {
-    ...mapGetters(["user", "year", "month", "company"])
+    ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    /**
+     * 隐藏元单位的切换，默认是元。
+     * @author szc 2019年4月9日14:54:50
+     */
+    hideConverseOfYuan () {
+      let me = this;
+      let showDims = this.showDims;
+      if(showDims){
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = true,
+        showDims.conversion = false;
+      }
+    },
     /**
      * 上报的处理按钮。
      * @author szc 2019年4月2日16:29:19
@@ -613,7 +615,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
           period = this.years,tableid = this.templateId;
       if(!nodes || (nodes && nodes.length == 0)){
@@ -641,6 +642,7 @@ export default {
       }
     },
     rightOfLeafCompany() {
+      debugger;
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
       let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
@@ -990,70 +992,12 @@ export default {
         }
       }
       if (this.templateId == 3) {
-        // if (
-        //   (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
-        //   (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
-        // ) {
-        //   cellMeta.readOnly = true;
-        // }
         if (
-          (row === 0 && columns === 2) ||
-          (row === 0 && columns === 3) ||
-          (row == 0 && columns == 6) ||
-          (row == 0 && columns == 7) ||
-          (row == 48 && columns == 2) ||
-          (row == 48 && columns == 3) ||
-          (row == 49 && columns == 2) ||
-          (row == 49 && columns == 3) ||
-          (row == 50 && columns == 2) ||
-          (row == 50 && columns == 3) ||
-          (row == 51 && columns == 2) ||
-          (row == 51 && columns == 3) ||
-          (row == 52 && columns == 2) ||
-          (row == 52 && columns == 3) ||
-          (row == 53 && columns == 2) ||
-          (row == 53 && columns == 3) ||
-          (row == 54 && columns == 2) ||
-          (row == 54 && columns == 3) ||
-          (row == 55 && columns == 2) ||
-          (row == 55 && columns == 3) ||
-          (row == 56 && columns == 2) ||
-          (row == 56 && columns == 3) ||
-          (row == 57 && columns == 2) ||
-          (row == 57 && columns == 3) ||
-          (row == 58 && columns == 2) ||
-          (row == 58 && columns == 3) ||
-          (row == 59 && columns == 2) ||
-          (row == 59 && columns == 3) ||
-          (row == 60 && columns == 2) ||
-          (row == 60 && columns == 3) ||
-          (row == 61 && columns == 2) ||
-          (row == 61 && columns == 3) ||
-          (row == 62 && columns == 2) ||
-          (row == 62 && columns == 3) ||
-          (row == 63 && columns == 2) ||
-          (row == 63 && columns == 3) ||
-          (row == 64 && columns == 2) ||
-          (row == 64 && columns == 3) ||
-          (row == 65 && columns == 2) ||
-          (row == 65 && columns == 3) ||
-          (row == 66 && columns == 2) ||
-          (row == 66 && columns == 3) ||
-          (row == 67 && columns == 2) ||
-          (row == 67 && columns == 3) ||
-          (row == 68 && columns == 2) ||
-          (row == 68 && columns == 3) ||
-          (row == 69 && columns == 2) ||
-          (row == 69 && columns == 3) ||
-          (row == 70 && columns == 2) ||
-          (row == 70 && columns == 3) ||
-          (row == 71 && columns == 2) ||
-          (row == 71 && columns == 3) ||
-          (row == 72 && columns == 2) ||
-          (row == 72 && columns == 3)
+          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
+          (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
         ) {
           cellMeta.readOnly = true;
-        } 
+        }
         
       }
       if (this.templateId == 2) {
@@ -1087,8 +1031,8 @@ export default {
         }
       }
       if (this.templateId == 8) {
-        //资金集中度的填写限制
-        if (row != 0 && (columns == 0 || columns == 2)) {
+        //资金集中度的填写限制 改成第一行可编辑
+        if (columns == 0 || columns == 2) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1175,7 +1119,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      
+      debugger;
       let me = this;
       if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1255,11 +1199,6 @@ export default {
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } else if (col.id === "finance") {
-              // cc.validator = "numeric";
-              // cc.validator = this.financeValidator;
-              // cc.renderer = this.contentOfFinance;
-              // cc.readOnly = true;
-              // cc.editor = this.contentEditor;
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
             }
@@ -1274,6 +1213,7 @@ export default {
           
         }
       }
+      debugger;
       //基本情况表、市管企业不显示编码。过滤掉
       if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {
@@ -1293,8 +1233,16 @@ export default {
       // this.settings.setDataAtCell = this.setDataAtCell;
       // this.settings.beforeChange = this.beforeChange;
       this.settings.colHeaders = colHeaders;
+      //判断第九个设置成多表头。
+      
       // this.settings.colHeaders = true;
       // this.settings.rowHeaders = true;
+      // if(this.templateId == 9){
+      //   this.settings.nestedHeaders = [
+      //     ['F', {label: 'G', colspan: 2}, {label: 'H', colspan: 2}],
+      //     ['V','B','N','M','K']
+      //   ];
+      // }
       // this.settings.nestedHeaders = res.data.data.columnsShow;
       let parseItems = ['4','5','6'];
       //新加一个装换成相应的数字显示成文字处理。
@@ -1415,18 +1363,6 @@ export default {
     beforeChange(changes, params) {
       // 
       let me = this;
-      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
-      // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
-      // this.settings.getCellEditor = this.getCellEditor;
-      // this.getCellEditor();
-      //融资的处理
-      // if(this.templateId == "7"){
-      //   if(changes && changes.length > 0 && changes[0][2]){
-      //     changes[0][2] = changes[0][2].replace("&nbsp","");
-      //   }
-      // }
-
-      // changes.push("不行");
     },
     afterGetCellMeta(row, col, params, pp, dd) {
       // 
@@ -1844,8 +1780,12 @@ export default {
     // 弹框的确定 模板下载
     Download() {
       this.isShow = false;
-      if (this.templateId != null) {
-        download(this.templateId).then(res => {
+      if (this.templateIds != null) {
+        let params;
+        if(this.templateIds.length > 0){
+          params = this.templateIds;
+        }
+        download(params).then(res => {
           console.log("模板的下载", res);
           const content = res.data;
           const blob = new Blob([content], {
@@ -1876,10 +1816,30 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      console.log("option:", val);
-      console.log("option data:", item);
-      this.templateId = item.templateId;
-      this.title = item.title;
+      debugger;
+      this.downloadTemplateItems(val, item);
+      // console.log("option:", val);
+      // console.log("option data:", item);
+      // this.templateId = item.templateId;
+      // this.title = item.title;
+    },
+    /**
+     * 下载模板的指标信息（主要是id）
+     * @author szc 2019年4月11日19:25:49
+     */
+    downloadTemplateItems (val, item) {
+      debugger;
+      let me = this,arr = this.templateIds || [];
+      if(val){
+        arr.push(item.templateId - 0);
+      }else{
+        if(arr.length > 0){
+          arr = arr.filter(it => {
+            return it != item.templateId;
+          });
+        }
+      }
+      this.templateIds = arr;
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
@@ -1897,12 +1857,12 @@ export default {
         el.id = "flag";
         el.innerHTML = "删除";
         td.appendChild(el);
-        if (this.templateId == 8) {
-          let dd = document.getElementsByTagName("td")[5];
-          if (dd && dd != "undefined") {
-            dd.innerText = "";
-          }
-        }
+        // if (this.templateId == 8) {
+        //   let dd = document.getElementsByTagName("td")[5];
+        //   if (dd && dd != "undefined") {
+        //     dd.innerText = "";
+        //   }
+        // }
         el.style.color = "red";
         el.style.cursor = "pointer";
         let me = this;
@@ -1914,7 +1874,6 @@ export default {
         }
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
-          debugger;
           // arr.alter("remove_row", row);//删除当前行
           let tabledata = me.tableData;
           let datas = me.settings.data;
@@ -2039,10 +1998,15 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
-      // 
+      debugger;
       let source = [];
-      let str = "";
-      this.financingOptions.forEach(item => {
+      let str = "",finanData = [];
+      if(this.financingOptions && this.financingOptions.length > 0) {
+        finanData = this.financingOptions.filter(item => {
+          return item.isleaf == '1';
+        });
+      }
+      finanData.forEach(item => {
         source.push(item.text);
         // if(item.isleaf == "1"){
         //   str = "&nbsp;&nbsp;&nbsp;&nbsp;";
