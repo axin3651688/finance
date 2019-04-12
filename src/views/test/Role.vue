@@ -14,7 +14,9 @@
 <div class="input-refresh" ref="elememt">
     <el-form class="user-form-inline">
       <el-form-item class="left">
-        <el-button  type="primary" @click="handleAdd('add')">添加角色</el-button>
+        <template v-if="addButten === 1">
+            <el-button  type="primary" @click="handleAdd('add')">添加角色</el-button>
+        </template>
         <el-button  type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
       </el-form-item>
       <!-- <el-form-item class="select">
@@ -199,6 +201,15 @@ export default {
       checked3: '1',
       selectRoleId:"",
 
+      //删除按钮是否显示
+      delButten:1,
+      //修改按钮是否显示
+      editButten:1,
+      //新增按钮是否显示
+      addButten:1,
+      //授权按钮是否显示
+      authorizeButten:1,
+
       //当前选中的菜单节点 -1代表没有选择
       activeRole: {
         id: -1,
@@ -234,7 +245,7 @@ export default {
                 callback(new Error("角色名称超出长度"));
               } else {
                 //编辑界面不需要验证同名
-                if (this.scodeDisabled || this.dialogEditUserVisible) {
+                if (_this.title == "修改" && _this.activeRole.srolename == value) {
                   callback();
                 } else {
                   //验证是否同名
@@ -305,6 +316,18 @@ export default {
     this.findAll(this.pageNum,this.pageSize);
     //设置表格高度（自适应）
     this.setTableScollHeight();
+
+    let database = JSON.parse(localStorage.getItem("database"));
+    let menupermisson = database.menupermisson;
+    let data = menupermisson.filter( item =>{
+          return item.text == "角色管理"
+    });
+    if(data && data.length > 0){
+       this.addButten = data[0].nadd;
+       this.editButten = data[0].nupdate;
+       this.delButten = data[0].ndel;
+       this.authorizeButten = data[0].nper;
+    }
   },
   methods: {
 
