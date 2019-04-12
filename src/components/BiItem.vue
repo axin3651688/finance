@@ -14,6 +14,7 @@ export default {
     STreeGrid: () => import("./text/STreegrid.vue"),
     BiFlhz: () => import("./BiFlhz"),
     BiButton: () => import("./BiButton"),
+    elementTree: () => import("./treeElement/treeTable.vue")
     // SBiDiv: () => import("./SBiDiv"),          
     // HandsonTable: () => import("./HandsonTable")
   },
