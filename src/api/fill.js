@@ -40,8 +40,8 @@ export function save(data) {
 //填报模板的下载
 export function download(data) {
     return request({
-        url: '/zjb/zjb/download_template?templateId=' + data,
-        method: 'get',
+        url: '/zjb/zjb/download_template',
+        method: 'post',
         data: data,
         responseType: 'arraybuffer'
     })

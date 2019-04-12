@@ -1795,9 +1795,10 @@ export default {
     },
     // 弹框的确定 模板下载
     Download() {
+      debugger;
       this.isShow = false;
-      if (this.templateId != null) {
-        download(this.templateId).then(res => {
+      if (this.templateIds != null) {
+        download(this.templateIds).then(res => {
           console.log("模板的下载", res);
           const content = res.data;
           const blob = new Blob([content], {
@@ -1828,10 +1829,30 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      console.log("option:", val);
-      console.log("option data:", item);
-      this.templateId = item.templateId;
-      this.title = item.title;
+      debugger;
+      this.downloadTemplateItems(val, item);
+      // console.log("option:", val);
+      // console.log("option data:", item);
+      // this.templateId = item.templateId;
+      // this.title = item.title;
+    },
+    /**
+     * 下载模板的指标信息（主要是id）
+     * @author szc 2019年4月11日19:25:49
+     */
+    downloadTemplateItems (val, item) {
+      debugger;
+      let me = this,arr = this.templateIds || [];
+      if(val){
+        arr.push(item.templateId);
+      }else{
+        if(arr.length > 0){
+          arr = arr.filter(it => {
+            return it != item.templateId;
+          });
+        }
+      }
+      this.templateIds = arr;
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
