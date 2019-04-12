@@ -642,6 +642,7 @@ export default {
       }
     },
     rightOfLeafCompany() {
+      debugger;
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
       let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
@@ -1198,11 +1199,6 @@ export default {
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } else if (col.id === "finance") {
-              // cc.validator = "numeric";
-              // cc.validator = this.financeValidator;
-              // cc.renderer = this.contentOfFinance;
-              // cc.readOnly = true;
-              // cc.editor = this.contentEditor;
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
             }
@@ -1367,18 +1363,6 @@ export default {
     beforeChange(changes, params) {
       // 
       let me = this;
-      // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(1,2);
-      // this.$refs.hotTableComponent.hotInstance.getCellEditor = this.getCellEditor;
-      // this.settings.getCellEditor = this.getCellEditor;
-      // this.getCellEditor();
-      //融资的处理
-      // if(this.templateId == "7"){
-      //   if(changes && changes.length > 0 && changes[0][2]){
-      //     changes[0][2] = changes[0][2].replace("&nbsp","");
-      //   }
-      // }
-
-      // changes.push("不行");
     },
     afterGetCellMeta(row, col, params, pp, dd) {
       // 
@@ -1795,12 +1779,11 @@ export default {
     },
     // 弹框的确定 模板下载
     Download() {
-      debugger;
       this.isShow = false;
       if (this.templateIds != null) {
-        let params = '';
+        let params;
         if(this.templateIds.length > 0){
-          params = this.templateIds.join(',');
+          params = this.templateIds;
         }
         download(params).then(res => {
           console.log("模板的下载", res);
@@ -1848,7 +1831,7 @@ export default {
       debugger;
       let me = this,arr = this.templateIds || [];
       if(val){
-        arr.push(item.templateId);
+        arr.push(item.templateId - 0);
       }else{
         if(arr.length > 0){
           arr = arr.filter(it => {
