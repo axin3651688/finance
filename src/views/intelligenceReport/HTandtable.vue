@@ -1798,7 +1798,11 @@ export default {
       debugger;
       this.isShow = false;
       if (this.templateIds != null) {
-        download(this.templateIds).then(res => {
+        let params = '';
+        if(this.templateIds.length > 0){
+          params = this.templateIds.join(',');
+        }
+        download(params).then(res => {
           console.log("模板的下载", res);
           const content = res.data;
           const blob = new Blob([content], {
