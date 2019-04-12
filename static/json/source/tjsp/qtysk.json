@@ -549,15 +549,30 @@
                         if (this.drillProperties[1].indexOf(column.property) != -1) {
                             if (row.gsmc != "" && row.gsmc != undefined) {
                                 if (this.config.sql == 11) { //一级公司下钻
-                                    $this.commonHandler({
-                                        "type": "click", //事件类型
-                                        "way": "addTab", //调用的公共方法
-                                        "sourceApi": "/cnbi/json/source/tjsp/qtyskej.json",
-                                        "handler": ($vue, params) => { //自定义的回调
-                                            console.info(params);
-                                            debugger;
-                                        }
-                                    }, { row: row, column: column, e: e }, { id: id, text: text });
+                                    let str = text;
+                                    let regex = /\(|\)|（|）/g ;
+                                    let is = regex.test(text);
+                                    if(is){
+                                        $this.commonHandler({
+                                            "type": "click", //事件类型
+                                            "way": "addTab", //调用的公共方法
+                                            "sourceApi": "/cnbi/json/source/tjsp/qtyskej.json",
+                                            "handler": ($vue, params) => { //自定义的回调
+                                                console.info(params);
+                                                debugger;
+                                            }
+                                        }, { row: row, column: column, e: e }, { id: id, text: text });
+                                    }else{
+                                        $this.commonHandler({
+                                            "type": "click", //事件类型
+                                            "way": "addTab", //调用的公共方法
+                                            "sourceApi": "/cnbi/json/source/tjsp/qtyskmxb.json",
+                                            "handler": ($vue, params) => { //自定义的回调
+                                                console.info(params);
+                                                debugger;
+                                            }
+                                        }, { row: row, column: column, e: e }, { id: id, text: text });
+                                    }
                                 } else { //二级公司下钻
                                     $this.commonHandler({
                                         "type": "click", //事件类型
