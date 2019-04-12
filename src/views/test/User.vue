@@ -1148,6 +1148,7 @@ export default {
      */
     handleRefresh() {
       let _this = this;
+      this.searchForm.search = "";
       _this.findAll(_this.currentPage, _this.pagesize);
     },
     /**

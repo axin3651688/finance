@@ -33,7 +33,7 @@
       <el-table-column type="index" label="序号" width="80" header-align="center" align ="center" fixed="left"></el-table-column>
       <el-table-column prop="srolename" label="角色名称" width="240" header-align="center" align ="center" fixed="left"></el-table-column>
       <el-table-column prop="sroledesc" label="角色描述" width="300" header-align="center" align ="center"></el-table-column>
-      <el-table-column label="操作" header-align="center" min-width="260px">
+      <el-table-column label="操作" header-align="center" min-width="260px" align ="center">
         <template slot-scope="scope" v-if="scope.row.roleid != 2">
           <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" >修改</el-button>
           <el-button size="mini" type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -263,6 +263,7 @@ export default {
           { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" }
         ],
         sroledesc: [
+          {required: true, message: "请输入角色描述内容" },
           { min: 0, max: 40, message: "长度在 0 到 40 个字符", trigger: "blur" }
         ]
       },
@@ -781,6 +782,7 @@ export default {
      * @description 保存表单操作
      */
     submitForm(formName) { 
+      debugger;
       var _this = this;
       //判断新增还是修改
       this.$refs[formName].validate(valid => { 
@@ -887,6 +889,10 @@ export default {
           //   }
           // });
         } else {
+          this.$message({
+            message: "请完善必填项！",
+            type: 'warning'
+          });
           return false;
         }
       });

@@ -159,6 +159,7 @@ export default {
       labelPosition: "right",
       //行业维度数据
       sindcodes: [],
+      sindcodesAll: [],
       property1s: [{ id: "1", text: "是" }, { id: "0", text: "否" }],
       wformArr: [
         "scode",
@@ -312,6 +313,7 @@ export default {
     },
     "form.npercent": {
       handler(nowVal, oldV) {
+        debugger;
         this.watchField("npercent", nowVal);
       },
       deep: true
@@ -355,9 +357,11 @@ export default {
         if (result.status == 200) {
           //  处理维度id 既有Integer 又有 String
           // 过滤抵消差额
+          _this.sindcodesAll = result.data.data;
           _this.sindcodes = _.filter(result.data.data, function(element) {
             element.id = element.id + "";
-            return element.id != "12";
+            // return element.id != "12";
+            return element;
           });
         }
       });
@@ -503,10 +507,14 @@ export default {
       }
       let form = _this.form; //右侧form表单中的参数  zb
       var wformArr = _this.wformArr;
-
+      debugger;
       if (_this.opt && _this.opt.url !== "save") {
         wformArr.forEach(ele => {
-          if (cur[ele] === this.activeForm[ele]) {
+          let curItem = cur[ele];
+          if(ele == "npercent" && !isNaN(curItem)){
+            curItem = curItem * 100;
+          }
+          if (curItem === this.activeForm[ele]) {
             Vue.delete(this.activeForm, ele);
           }
         });
@@ -643,6 +651,8 @@ export default {
      *  */
     handClick(snode, node, el) {
       // console.log(this.form, snode, node);
+      //根据动态生成行业的选择条数。
+      this.companyOfInsNumber(snode);
       this.form.sname = snode.sname; //sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
@@ -667,6 +677,21 @@ export default {
       this.scodeDisabled = true;
       this.activeForm = {};
       this.addDisabled = false;
+    },
+    /**
+     * 根据公司生成不同的行业条数，差额公司的行业有差额。
+     * @author szc 2019年4月12日15:27:27
+     */
+    companyOfInsNumber (snode) {
+      let me = this,sign = 'R',sindcodesAll = this.sindcodesAll;
+      if(snode && snode.stype == sign){
+        me.sindcodes = sindcodesAll;
+      }else {
+        me.sindcodes = sindcodesAll.filter(item => {
+          item.id = item.id + "";
+          return item.id != "12";
+        });
+      }
     },
 
     /**

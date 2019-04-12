@@ -190,9 +190,9 @@ export default {
       let me = this;
       let showDims = this.showDims;
       if(showDims){
-        showDims.company = true,
-        showDims.year = true,
-        showDims.month = true,
+        showDims.company = false,
+        showDims.year = false,
+        showDims.month = false,
         showDims.conversion = false;
       }
     },

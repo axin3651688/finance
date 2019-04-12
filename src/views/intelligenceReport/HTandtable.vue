@@ -1786,6 +1786,7 @@ export default {
           params = this.templateIds;
         }
         download(params).then(res => {
+          debugger;
           console.log("模板的下载", res);
           const content = res.data;
           const blob = new Blob([content], {
