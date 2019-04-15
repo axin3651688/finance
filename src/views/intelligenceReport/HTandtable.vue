@@ -1796,7 +1796,13 @@ export default {
           let index = str.lastIndexOf(".");
           let h = str.substring(index + 1, str.length);
           // let h = "xls";
-          const fileName = this.title + "." + h;
+          let name;
+          if(params.length > 1){
+            name = "天津报表模板"
+          }else {
+            name = this.templateItems[0].title;
+          }
+          const fileName = name + "." + h;
           if ("download" in document.createElement("a")) {
             // 非IE下载
             const elink = document.createElement("a");
@@ -1829,17 +1835,22 @@ export default {
      */
     downloadTemplateItems (val, item) {
       debugger;
-      let me = this,arr = this.templateIds || [];
+      let me = this,arr = this.templateIds || [],templateItems = this.templateItems || [];
       if(val){
         arr.push(item.templateId - 0);
+        templateItems.push(item);
       }else{
         if(arr.length > 0){
           arr = arr.filter(it => {
             return it != item.templateId;
           });
+          templateItems = templateItems.filter(tt => {
+            return tt.templateId != item.templateId;
+          });
         }
       }
       this.templateIds = arr;
+      this.templateItems = templateItems;
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
@@ -1857,12 +1868,12 @@ export default {
         el.id = "flag";
         el.innerHTML = "删除";
         td.appendChild(el);
-        // if (this.templateId == 8) {
-        //   let dd = document.getElementsByTagName("td")[5];
-        //   if (dd && dd != "undefined") {
-        //     dd.innerText = "";
-        //   }
-        // }
+        if (this.templateId == 8) {
+          let dd = document.getElementsByTagName("td")[5];
+          if (dd && dd != "undefined") {
+            dd.innerText = "";
+          }
+        }
         el.style.color = "red";
         el.style.cursor = "pointer";
         let me = this;
