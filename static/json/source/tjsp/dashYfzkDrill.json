@@ -197,11 +197,6 @@
                 },
                 "queryDataBefore":function(params,config,$vue){
                     debugger
-                    if(params.company=='1001'){
-                        config.sql = config.sql1;
-                    }else{
-                        config.sql = config.sql2;
-                    }
                     //是不是穿透的
                     let selectPeriod = $vue.$store.selectPeriod;
                     if(selectPeriod){
@@ -214,6 +209,13 @@
                             params.month = month;
                         }
                         params.period = selectPeriod;
+                    }
+                    //上年12月的数据。
+                    params.oneYearBefore = params.year - 1 + "12";
+                    if(params.company=='1001'){
+                        config.sql = config.sql1;
+                    }else{
+                        config.sql = config.sql2;
                     }
                     return params;
                 },

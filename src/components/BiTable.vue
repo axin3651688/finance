@@ -67,7 +67,7 @@ export default {
     return {
       showBtn:true,//按钮显示与否。
       input3: '',
-      heights: 500,
+      heights: 827,
       offsetHeight:document.body.offsetHeight,
       flag: true,
       dialogVisible: false,
@@ -108,25 +108,25 @@ export default {
     //   console.log("用户demo：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
     // }
     // console.log("用户：",this.$store.getters.user);
-    //是否具有导出功能。localStorage
-    this.showBtnOfExport();
-    if(this.item.show){
-      this.upData(this.item);
-    }
-    // this.upData(this.item);
-    console.log(this.item)
+    debugger
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
     }else{
       // 计算当前页面的高度 得出表格的高度
       this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
     }
+    //是否具有导出功能。localStorage
+    this.showBtnOfExport();
+    if(this.item.show){
+      this.upData(this.item);
+    }
+    // this.upData(this.item);
+    console.log(this.item) 
   },
   mounted() {
-    this.upData(this.item);
-
     // 设置表格高度（自适应）
       this.setTableScollHeight();
+    this.upData(this.item);
   },
 
   methods: {
@@ -135,7 +135,7 @@ export default {
      * @author szc 2019年4月10日13:38:14
      */
     showBtnOfExport () {
-      debugger;
+      // debugger;
       let me = this,siderState = JSON.parse(localStorage.siderState),toolbars = this.item.toolbar,
           menupermisson = this.$store.getters.user.menupermisson,menuItem;
       if(siderState && toolbars && toolbars.length > 0){
@@ -158,10 +158,19 @@ export default {
     },
     // / 页面大小改变时触发  主要用来自适应页面的布局的 
     setTableScollHeight(){
-        this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+      debugger
+        if(this.item.stype=="table"){
+          this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
+        }else{
+          this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+        }        
         const me = this ;
         window.onresize = function temp(){
-            me.heights = document.documentElement.clientHeight - 22 - 40- 40 - 64 ;
+            if(me.item.stype=="table"){
+              me.heights = document.body.offsetHeight - 40 - 64 - 15 ;
+            }else{
+              me.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+            } 
         };
     },
     /**
@@ -225,7 +234,7 @@ export default {
       }))
     },
     btnClick(btn) {
-      debugger;
+      // debugger;
       btn.handler(this, btn);
     },
     //pagesize改变时触发 ---- 分页功能
@@ -248,7 +257,7 @@ export default {
       return this.tableDatas;
     },
     upData(item) {
-      debugger;
+      // debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       this.setTableDatas(item);
@@ -322,7 +331,7 @@ export default {
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
     cellStyle(row) {
-      debugger;
+      // debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }

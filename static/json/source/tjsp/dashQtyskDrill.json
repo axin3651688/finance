@@ -232,6 +232,8 @@
                             }
                             params.period = selectPeriod;
                         }
+                        //上年12月的数据。
+                        params.oneYearBefore = params.year - 1 + "12";
                         if(params.company=='1001'){
                             config.sql = config.sql1;
                         }else{
