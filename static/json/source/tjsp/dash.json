@@ -115,7 +115,7 @@
                     "watchConfig": {
                         "itemNames": ["bnlj", "bnmb", "wcl"]
                     },
-                    "extendDrillPeriod": true,
+                    "extendDrillPeriod": true, //下钻的时候使用点击的下钻的日期。
                     "show": true,
                     "GItemScode": "1416001",
                     "conversion": {
