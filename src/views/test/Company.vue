@@ -325,7 +325,6 @@ export default {
     },
     "form.npercent": {
       handler(nowVal, oldV) {
-        debugger;
         this.watchField("npercent", nowVal);
       },
       deep: true
@@ -492,7 +491,8 @@ export default {
             url: "/zjb/sys/dimcompany/remove",
             method: "get",
             params: {
-              scodes: _this.form.scode
+              scodes: _this.form.scode,
+              cisdel: _this.form.cisdel
             }
           }).then(result => {
             if (result.status == 200) {
@@ -529,7 +529,6 @@ export default {
       }
       let form = _this.form; //右侧form表单中的参数  zb
       var wformArr = _this.wformArr;
-      debugger;
       if (_this.opt && _this.opt.url !== "save") {
         wformArr.forEach(ele => {
           let curItem = cur[ele];
