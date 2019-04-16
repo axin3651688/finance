@@ -527,7 +527,7 @@ export default {
       ],
       vars: [
         {
-          code: "s1",
+          code: "sl",
           value: 0,
           display_num: "", //用来显示的值
           text: "税率(%)",
@@ -1006,29 +1006,33 @@ export default {
       this.$nextTick(() => {
         debugger;
         let msg = "温馨提示，范围<1000，您已超出范围，请重新输入！" ;
-        let msg2= "温馨提示，范围<11位数，您已超出范围，请重新输入！" 
+        let msg2= "温馨提示，范围<11位数，您已超出范围，请重新输入！"; 
         item.value = item.display_num;
         if(typeof item.value === "string"){
           //输入数字
           item.value = item.value.replace(/[^\d.]/g, "").replace(/^0/, "") - 0;
         }
         // 限制验证，超出范围不让走了
-        if((item.code === "sl" || item.code === "zbcblv") && item.value >= 1000)this.warning(msg,item);
-        if((item.code === "zbhfyqc" || item.code==="zbhfyqm") && item.value >= 100000000000)this.warning(msg2,item);
-          //税率
-          if (item.code === "sl") {
-            //调整后数据
-            this.updateTzhData(
-              ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
-              item.value
-            );
-            //营业外收支净额 营业外支出本期金额-营业外收入本期金额
-            this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
-            this.updateTzhData(["yywsrje"], item.value);
-          }
-          this.setExpressionData();
+        if((item.code === "sl" || item.code === "zbcblv") && item.value >= 1000){
+          this.warning(msg,item);
+        }
+        if((item.code === "zbhfyqc" || item.code==="zbhfyqm") && item.value >= 100000000000){
+          this.warning(msg2,item);
+        }
+        //税率
+        if (item.code === "sl") {
+          //调整后数据
+          this.updateTzhData(
+            ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
+            item.value
+          );
+          //营业外收支净额 营业外支出本期金额-营业外收入本期金额
+          this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
+          this.updateTzhData(["yywsrje"], item.value);
+        }
+        this.setExpressionData();
 
-          //格式化数据
+        //格式化数据
         if(item.value!=""){  
           debugger
           item.display_num = tools.currency(item.value, "", 2);

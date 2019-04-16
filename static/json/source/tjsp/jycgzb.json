@@ -1,223 +1,226 @@
 {
-    "id":"001402",
+    "id": "001402",
     "text": "经营成果指标",
-    "layout":{
-        "xtype":"tab"
+    "layout": {
+        "xtype": "tab"
     },
-    "showDims": ["year","month","company","conversion"],
-    "changeCompanyBefore":function(newcompany,option){
-        option.closeTabTaget(newcompany,option);
+    "showDims": ["year", "month", "company", "conversion"],
+    "changeCompanyBefore": function(newcompany, option) {
+        option.closeTabTaget(newcompany, option);
     },
-    "changeYearBefore":function(newyear,option){
-        option.closeTabTaget(newyear,option);
+    "changeYearBefore": function(newyear, option) {
+        option.closeTabTaget(newyear, option);
     },
-    "changeMonthBefore":function(newmonth,option){
+    "changeMonthBefore": function(newmonth, option) {
         debugger
-        option.closeTabTaget(newmonth,option);
+        option.closeTabTaget(newmonth, option);
     },
-    "__queryDataAfter":function(data,$vue){//数据的后置处理
+    "__queryDataAfter": function(data, $vue) { //数据的后置处理
         let me = this;
+        // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
+        let property = me.$store.getters.treeInfo.property1 ; 
+        if(me.id == "001402"){
+            if(property == "0")data = "" ; 
+        }
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
     },
-    "queryDataBefore":function(params,config,option){
+    "queryDataBefore": function(params, config, option) {
         debugger
-        if(option.id === "001402"){
-            let sq ;
-            let $month = params.month ; 
+        if (option.id === "001402") {
+            let sq;
+            let $month = params.month;
             // config.sql = config.sql2 ;
             // if(params.month - 1 >0 && params.month - 1 < 10){
             //     params.month = "0" + (params.month - 1) ;
             // }else{
             //     params.month = "0" ;
             // }
-            if($month-1 > 0){
-                if($month-1>0 && $month-1<10){
-                    $month = "0" + ($month-1) ; 
-                    sq = params.year + $month ; 
-                }else{
-                    sq = params.year + $month ;
-                }                
-            }else{
-                sq = params.year - 1 + "12" ;
+            if ($month - 1 > 0) {
+                if ($month - 1 > 0 && $month - 1 < 10) {
+                    $month = "0" + ($month - 1);
+                    sq = params.year + $month;
+                } else {
+                    sq = params.year + $month;
+                }
+            } else {
+                sq = params.year - 1 + "12";
             }
-            config.sql = config.sql2.replace(/:periodMonth/g,"'"+sq+"'");//全局替换:itemperiod
+            config.sql = config.sql2.replace(/:periodMonth/g, "'" + sq + "'"); //全局替换:itemperiod
         }
         return params;
     },
     "config": {
-        "sql":"",
-        "sql2": "WITH t1 AS( SELECT E.DIM_COMPANY , QNMB QNMB01, LJSJ LJSJ01, NVL(SNTQ, 0) SNTQ01, (LJSJ-NVL(SNTQ, 0)) TBZJE01, ( CASE WHEN (NVL(SNTQ, 0))=0 THEN 0 ELSE ROUND(((LJSJ-SNTQ)/SNTQ),4)*100 END) TBZJL01, WCL WCL01, NVL(DYS,0) DYS01, NVL(TQS,0) TQS01 FROM ( SELECT DIM_COMPANY, FACT_B AS LJSJ, FACT_A DYS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) E LEFT JOIN ( SELECT FACT_B SNTQ, FACT_A TQS, DIM_COMPANY FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) G ON E.DIM_COMPANY=G.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY , FACT_C QNMB, ( CASE WHEN FACT_C=0 THEN 0 ELSE FACT_B/FACT_C*100 END) WCL FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) F ON E.DIM_COMPANY=F.DIM_COMPANY) , T2 AS ( SELECT E.DIM_COMPANY , QNMB QNMB02, LJSJ LJSJ02, NVL(SNTQ, 0) SNTQ02, (LJSJ-NVL(SNTQ, 0)) TBZJE02, ( CASE WHEN (NVL(SNTQ, 0))=0 THEN 0 ELSE ROUND(((LJSJ-SNTQ)/SNTQ),4)*100 END) TBZJL02, WCL WCL02, NVL(DYS,0) DYS02, NVL(TQS,0) TQS02 FROM ( SELECT DIM_COMPANY, FACT_B AS LJSJ, FACT_A DYS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1403100' AND DIM_PERIOD=:period) E LEFT JOIN ( SELECT FACT_B SNTQ, FACT_A TQS, DIM_COMPANY FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1403100' AND DIM_PERIOD=:comparePeriod) G ON E.DIM_COMPANY=G.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY , FACT_C QNMB, ( CASE WHEN FACT_C=0 THEN 0 ELSE FACT_B/FACT_C*100 END) WCL FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1403100' AND DIM_PERIOD=:period) F ON E.DIM_COMPANY=F.DIM_COMPANY ) SELECT H.SCODE GSBM, H.SNAME GSMC, QNMB01, LJSJ01, SNTQ01, TBZJE01, TBZJL01, WCL01, QNMB02, LJSJ02, SNTQ02, TBZJE02, TBZJL02, WCL02, DYS01, TQS01, DYS02, TQS02 FROM T1 LEFT JOIN T2 ON T1.DIM_COMPANY=T2.DIM_COMPANY RIGHT JOIN ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company) H ON T1.DIM_COMPANY=H.SCODE ORDER BY T1.DIM_COMPANY",
-        "_cube":{
-            "cubeId":4,
-            "subject":"0002"
+        "sql": "",
+        "sql2": "WITH t1 AS( SELECT E.DIM_COMPANY , QNMB QNMB01, LJSJ LJSJ01, NVL(SNTQ, 0) SNTQ01, (LJSJ-NVL(SNTQ, 0)) TBZJE01, ( CASE WHEN (NVL(SNTQ, 0))=0 THEN 0 ELSE ROUND(((LJSJ-SNTQ)/SNTQ),4)*100 END) TBZJL01, WCL WCL01, NVL(DYS,0) DYS01, NVL(TQS,0) TQS01 FROM ( SELECT DIM_COMPANY, FACT_B AS LJSJ, FACT_A DYS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) E LEFT JOIN ( SELECT FACT_B SNTQ, FACT_A TQS, DIM_COMPANY FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) G ON E.DIM_COMPANY=G.DIM_COMPANY LEFT JOIN ( SELECT TAB1.DIM_COMPANY , TAB2.FACT_A QNMB, ( CASE WHEN TAB2.FACT_A=0 THEN 0 ELSE TAB1.FACT_B/TAB2.FACT_A*100 END) WCL FROM DW_FACTFINANCEPERIOD TAB1 left join DW_FACTTARGETASSESSMENT TAB2 ON TAB1.DIM_COMPANY=TAB2.DIM_COMPANY AND TAB1.DIM_PERIOD=TAB2.DIM_PERIOD WHERE DIM_ITEMPERIOD='1416001' AND TAB1.DIM_PERIOD=:period) F ON E.DIM_COMPANY=F.DIM_COMPANY) , T2 AS ( SELECT E.DIM_COMPANY , QNMB QNMB02, LJSJ LJSJ02, NVL(SNTQ, 0) SNTQ02, (LJSJ-NVL(SNTQ, 0)) TBZJE02, ( CASE WHEN (NVL(SNTQ, 0))=0 THEN 0 ELSE ROUND(((LJSJ-SNTQ)/SNTQ),4)*100 END) TBZJL02, WCL WCL02, NVL(DYS,0) DYS02, NVL(TQS,0) TQS02 FROM ( SELECT DIM_COMPANY, FACT_B AS LJSJ, FACT_A DYS FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1403100' AND DIM_PERIOD=:period) E LEFT JOIN ( SELECT FACT_B SNTQ, FACT_A TQS, DIM_COMPANY FROM DW_FACTFINANCEPERIOD WHERE DIM_ITEMPERIOD='1403100' AND DIM_PERIOD=:comparePeriod) G ON E.DIM_COMPANY=G.DIM_COMPANY LEFT JOIN ( SELECT TAB1.DIM_COMPANY , TAB2.FACT_B QNMB, ( CASE WHEN TAB2.FACT_B=0 THEN 0 ELSE TAB1.FACT_B/TAB2.FACT_B*100 END) WCL FROM DW_FACTFINANCEPERIOD TAB1 left join DW_FACTTARGETASSESSMENT TAB2 ON TAB1.DIM_COMPANY=TAB2.DIM_COMPANY AND TAB1.DIM_PERIOD=TAB2.DIM_PERIOD WHERE DIM_ITEMPERIOD='1403100' AND TAB1.DIM_PERIOD=:period) F ON E.DIM_COMPANY=F.DIM_COMPANY ) SELECT H.SCODE GSBM, H.SNAME GSMC, QNMB01, LJSJ01, SNTQ01, TBZJE01, TBZJL01, WCL01, QNMB02, LJSJ02, SNTQ02, TBZJE02, TBZJL02, WCL02, DYS01, TQS01, DYS02, TQS02 FROM T1 LEFT JOIN T2 ON T1.DIM_COMPANY=T2.DIM_COMPANY RIGHT JOIN ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company) H ON T1.DIM_COMPANY=H.SCODE ORDER BY T1.DIM_COMPANY",
+        "_cube": {
+            "cubeId": 4,
+            "subject": "0002"
         },
-        "mainDim":"itemperiod",
-        "needDims":["year","month","company","conversion"],
-        "random":{"min":100,"max":100000},
-        "type":1 ,
-        "tableHeads":true,
-        "generateVar":{
-            "periodCount":2,
-            "compareType":"-1&0",
-            "reverse":true
-        }  
+        "mainDim": "itemperiod",
+        "needDims": ["year", "month", "company", "conversion"],
+        "random": { "min": 100, "max": 100000 },
+        "type": 1,
+        "tableHeads": true,
+        "generateVar": {
+            "periodCount": 2,
+            "compareType": "-1&0",
+            "reverse": true
+        }
     },
     "columns": [{
         "id": "",
         "type": "string",
         "text": "利润总额当月数",
-        "children":[{
+        "children": [{
             "id": "dys02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "本期"
-        },{
+        }, {
             "id": "tqs02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同期"
         }]
-    },{
+    }, {
         "id": "gsbm",
         "type": "string",
-        "width":"120px",
-        "fixed":true,
+        "width": "120px",
+        "fixed": true,
         "text": "公司编码"
-    },{
+    }, {
         "id": "gsmc",
         "type": "string",
-        "width":"360px",
-        "fixed":true,
+        "width": "360px",
+        "fixed": true,
         "text": "公司名称"
-    },{
+    }, {
         "id": "",
         "type": "string",
         "text": "营业收入",
-        "children":[{
+        "children": [{
             "id": "qnmb01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "全年目标"
-        },{
+        }, {
             "id": "ljsj01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "本期"
-        },{
+        }, {
             "id": "sntq01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同期"
-        },{
+        }, {
             "id": "tbzje01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同比增减额"
-        },{
+        }, {
             "id": "tbzjl01",
             "type": "decimal",
-            "width":"120px",
-            "conversion":"%",
+            "width": "120px",
+            "conversion": "%",
             "text": "同比增减率(%)"
-        },{
+        }, {
             "id": "wcl01",
             "type": "decimal",
-            "width":"130px",
-            "conversion":"%",
+            "width": "130px",
+            "conversion": "%",
             "text": "累计完成进度(%)"
         }]
-    },{
+    }, {
         "id": "",
         "type": "string",
         "text": "利润总额",
-        "children":[{
+        "children": [{
             "id": "qnmb02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "全年目标"
-        },{
+        }, {
             "id": "ljsj02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "本期"
-        },{
+        }, {
             "id": "sntq02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同期"
-        },{
+        }, {
             "id": "tbzje02",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同比增减额"
-        },{
+        }, {
             "id": "tbzjl02",
             "type": "decimal",
-            "width":"120px",
-            "conversion":"%",
+            "width": "120px",
+            "conversion": "%",
             "text": "同比增减率(%)"
-        },{
+        }, {
             "id": "wcl02",
             "type": "decimal",
-            "width":"130px",
-            "conversion":"%",
+            "width": "130px",
+            "conversion": "%",
             "text": "累计完成进度(%)"
         }]
-    },{
+    }, {
         "id": "",
         "type": "string",
         "text": "营业收入当月数",
-        "children":[{
+        "children": [{
             "id": "dys01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "本期"
-        },{
+        }, {
             "id": "tqs01",
             "type": "decimal",
-            "width":"170px",
+            "width": "170px",
             "text": "同期"
         }]
     }],
     "rows": [],
-    "items":[
-        {
-            "xtype" : "bi-table",
-            "id" : "jycgzb",
-            "text" : "经营成果指标",
-            "toolbar":[{    
-                "id":"1",
-                "text":"刷新",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    // "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    let $vue = vue.item.$vue;
-                    $vue.closeTabTaget({}, $vue);
-                    vue.item.updateView("company");
-                }
-            },{
-                "id":"2",
-                "text":"导出",
-                "xtype":"button",
-                "cellStyle":{
-                    "color":"black",
-                    // "background-color":"#189271"
-                    "background-color":"#fff"
-                },
-                "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
-                    vue.handleDownload(vue);
-                }
-            }]
-        }
-    ]
+    "items": [{
+        "xtype": "bi-table",
+        "id": "jycgzb",
+        "text": "经营成果指标",
+        "toolbar": [{
+            "id": "1",
+            "text": "刷新",
+            "xtype": "button",
+            "cellStyle": {
+                "color": "black",
+                // "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                debugger
+                console.log(vue);
+                let $vue = vue.item.$vue;
+                $vue.closeTabTaget({}, $vue);
+                vue.item.updateView("company");
+            }
+        }, {
+            "id": "2",
+            "text": "导出",
+            "xtype": "button",
+            "cellStyle": {
+                "color": "black",
+                // "background-color":"#189271"
+                "background-color": "#fff"
+            },
+            "handler": function(vue, btn) {
+                debugger
+                console.log(vue);
+                vue.handleDownload(vue);
+            }
+        }]
+    }]
 }
