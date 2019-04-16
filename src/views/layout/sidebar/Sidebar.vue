@@ -67,7 +67,7 @@ export default {
     //缓存中的侧边栏的内容。
     let siderState = JSON.parse(localStorage.siderState);
     if(siderState){
-      document.title = siderState.text;
+      document.title = siderState.text || document.title;
       this.openeds = [siderState.pid + ""];
       this.active = siderState.code;
       // this.$refs.leftMenu.open(siderState.pid);

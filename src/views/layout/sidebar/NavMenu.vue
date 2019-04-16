@@ -107,7 +107,6 @@ export default {
       if(monthId == 13){
         this.$store.dispatch("GetSideMid", {month:12});
       }
-      debugger;
       //如果是系统设置下的节点就隐藏导航栏的切换。
       this.hideDims(e);
     },
