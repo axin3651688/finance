@@ -790,6 +790,8 @@ export default {
       },
       deep: true
     },
+    //监听修改用户信息的表单变化。
+    "editUserForm": {},
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
     offsetHeight(val) {
       if (!this.timer) {
@@ -1031,9 +1033,21 @@ export default {
       $upload.submit();
     },
     /**
+     * 修改用户信息时改变的内容。
+     * @author szc 2019年4月16日15:40:22
+     */
+    changeOfFormEdit () {
+      debugger;
+      let me = this,activeForm = me.activeForm;
+
+    },
+    /**
      * @addUserForm 修改用户表单数据
      */
     submitEditUserForm(formName) {
+      debugger;
+      //判断表单中的内容是不是修改、改变了。
+      let changeFlag = this.changeOfFormEdit();
       this.$refs[formName].validate(valid => {
         if (valid) {
           const _this = this;
@@ -1144,6 +1158,7 @@ export default {
      * zb
      */
     watchField(field, nowVal) {
+      debugger;
       this.activeForm[field] = nowVal;
     },
     /**

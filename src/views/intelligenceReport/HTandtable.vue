@@ -1970,6 +1970,7 @@ export default {
     },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
+      debugger;
       if (!value) {
         return;
       }

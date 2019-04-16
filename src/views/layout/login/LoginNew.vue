@@ -179,7 +179,6 @@ export default {
     initCarousels(){
       // 走马灯轮播请求
       UploadShow().then(ress => {
-        debugger
           if(ress.data.code == 200){
             let datas = ress.data.data;
             if(datas.length > 0 ){
@@ -195,17 +194,14 @@ export default {
       let d = datas.filter(ele=>{
           return (ele.name - 0) === (key - 0) ;
       })
-      debugger
       this["imageUrl" + key] = d && d.length == 1 ? d[0].content  : '';
     },
 
     submitForm(formName) {
-      debugger;
       this.$refs[formName].validate(valid => {
         if (valid) {
           login(this.loginUser)
             .then(res => {
-              debugger;
               // 获取token
               // console.log(res);
               if(res.data && res.data.code != 200){
