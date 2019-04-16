@@ -54,7 +54,7 @@
                 {
                     "id" : "syzqytq",
                     "type" : "decimal",
-                    "text" : "上年同期",
+                    "text" : "同期",
                     "width": "170px"
                 }
             ]
