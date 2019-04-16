@@ -527,7 +527,7 @@ export default {
       ],
       vars: [
         {
-          code: "s1",
+          code: "sl",
           value: 0,
           display_num: "", //用来显示的值
           text: "税率(%)",
