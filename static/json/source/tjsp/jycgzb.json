@@ -20,14 +20,14 @@
         // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
         let property = me.$store.getters.treeInfo.property1 ; 
         if(me.id == "001402"){
-            if(property == "0")data = "" ; 
+            if(property == "0"){data = [] ;} 
         }
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
     },
     "queryDataBefore": function(params, config, option) {
-        debugger
+        // debugger
         if (option.id === "001402") {
             let sq;
             let $month = params.month;
@@ -191,6 +191,16 @@
         "xtype": "bi-table",
         "id": "jycgzb",
         "text": "经营成果指标",
+        "queryDataAfter":function(data, $vue){
+            debugger
+            // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
+            let property = $vue.$store.getters.treeInfo.property1 ; 
+            
+            if(property == "0")data = [] ; 
+
+            return data ; 
+            
+        },
         "toolbar": [{
             "id": "1",
             "text": "刷新",
