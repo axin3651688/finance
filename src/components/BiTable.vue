@@ -108,7 +108,7 @@ export default {
     //   console.log("用户demo：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
     // }
     // console.log("用户：",this.$store.getters.user);
-    debugger
+    // debugger
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
     }else{
@@ -158,7 +158,7 @@ export default {
     },
     // / 页面大小改变时触发  主要用来自适应页面的布局的 
     setTableScollHeight(){
-      debugger
+      // debugger
         if(this.item.stype=="table"){
           this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
         }else{

@@ -3,7 +3,15 @@
     "text": "融资情况明细表",
     "showDims": ["year", "month", "company", "conversion"],
     "__queryDataAfter": function(data, $vue) { //数据的后置处理
+        
         let me = this;
+        data.forEach(res => {
+            if(res.jrjgmc == "小计"){
+                // res.rzlx=0 ; res.qsrq=0 ;  res.dqrq=0 ; res.hkly=0 ;
+                // res.ll = 0 ; res.sfjtdb=0 ; res.dbfs=0 ; res.yhkrq=0;
+                res.zhcb= 0 ; 
+            }
+        });
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         if (data.length == 1) data = [];
@@ -110,7 +118,10 @@
         "id": "rzqk",
         "text": "融资情况明细表",
         "queryDataAfter": function(data, $vue) {
-            if (data.length == 1) data = [];
+            debugger
+            if (data.length == 1 && data[0].jrjgmc=="小计"){
+                data = [];
+            } 
             return data;
         },
         "toolbar": [{
