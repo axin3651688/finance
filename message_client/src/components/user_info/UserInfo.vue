@@ -2,14 +2,22 @@
   <div class="UserInfo" id="UserInfo" v-if="userInfo">
     <div class="top">
       <div class="img-box">
-        <img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">
+        <!--<img :src="userInfo.user.avatar" :title="userInfo.user.trueName" v-avatar="userInfo.user.trueName">-->
+        <avatar
+          :username="userInfo.user.trueName"
+          :rounded="false"
+          backgroundColor="transparent"
+          color="#fff"
+          :size="40"
+        ></avatar>
+        <img :src="userInfo.user.avatar" onerror="this.style.display='none'"/>
       </div>
       <div class="info">
         <h3 class="info-title">
-          {{userInfo.user.trueName}}
-          <i class="icon icon-gender"></i>
+          <span class="info-title__name">{{userInfo.user.trueName}}</span>
+          <span class="info-title__role">({{userInfo.role.text}})</span>
         </h3>
-        <div class="info-text" v-if="userInfo.user.sign" v-text="userInfo.user.sign"></div>
+        <div class="info-text">{{userInfo.company.text}}</div>
       </div>
     </div>
     <ul class="middle">
@@ -42,15 +50,15 @@
 </template>
 
 <script>
-import {LEFT_USER_INFO} from '@m_api/message.js'
-import {mapGetters} from 'vuex'
+import {LEFT_USER_INFO} from '@m_api/message.js';
+import {mapGetters} from 'vuex';
 
 export default {
-  name: "UserInfo",
+  name: 'UserInfo',
   data() {
     return {
-      userInfo: null, // 登陆用户的详细信息
-    }
+      userInfo: null // 登陆用户的详细信息
+    };
   },
   components: {
     MyBtn: () => import('@mc/my_btn/MyBtn.vue')
@@ -60,30 +68,30 @@ export default {
   },
   methods: {
     getUserInfo() {
-      let userId = this.user.user.id
-      let targetId = userId
+      let userId = this.user.user.id;
+      let targetId = userId;
       LEFT_USER_INFO(userId, targetId)
         .then(res => {
-          console.log('左边栏获取用户信息res：', res)
+          console.log('左边栏获取用户信息res：', res);
           if (res.data.code === 200) {
-            this.userInfo = res.data.data
+            this.userInfo = res.data.data;
           } else {
             this.$message({
               type: 'error',
               message: '' + res.data.msg,
               showClose: true
-            })
+            });
           }
         })
         .catch(err => {
-          console.log('左边栏获取用户信息err：', err)
-        })
+          console.log('左边栏获取用户信息err：', err);
+        });
     }
   },
   created() {
-    this.getUserInfo()
+    this.getUserInfo();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -108,19 +116,19 @@ export default {
           font-weight: bold;
           display: flex;
           align-items: center;
+        }
 
-          .icon {
-            width: 16px;
-            height: 16px;
-            overflow: hidden;
-            margin-left: 10px;
-            border-radius: 4px;
-            background: $colorTheme;
-          }
+        .info-title__name {
+          display: inline-block;
+          max-width: 75px;
+          @include singleEllipsis;
+        }
 
-          .icon-gender {
-            /*background: ;*/
-          }
+        .info-title__role {
+          font-size: 14px;
+          margin-left: 5px;
+          font-weight: 400;
+          color: $colorTextBlack5;
         }
 
         .info-text {
@@ -133,8 +141,11 @@ export default {
       .img-box {
         @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
         background: #eee;
-      }
 
+        div {
+          position: absolute;
+        }
+      }
 
     }
 

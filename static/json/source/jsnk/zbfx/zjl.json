@@ -1,0 +1,20 @@
+{
+    "id": "zjl",
+    "text": "增加率",
+    "rows": [],
+    "datas": {},
+    "layout": {
+        "xtype": "column"
+    },
+    "items": [{
+        "class_top": "0px",
+        "xtype": "BiText",
+        "id": "1416001",
+        "text": "增加率",
+        "weight": 12,
+        "show": true,
+        "options": {
+            "type": "Zjl"
+        }
+    }]
+}

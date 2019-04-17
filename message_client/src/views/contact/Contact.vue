@@ -1,33 +1,39 @@
 <template>
   <div class="MessageContacts">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane name="ContactsTeams">
-        <template slot="label">
-          <div class="label-text">团队</div>
-        </template>
-        <contacts-teams
-          v-if="activeName === 'ContactsTeams'"
-          @chatWithSingle="handleChatWithSingle"
-        ></contacts-teams>
-      </el-tab-pane>
       <el-tab-pane name="ContactsFriends">
         <template slot="label">
           <div class="label-text">好友</div>
         </template>
-        <contacts-friends
-          v-if="activeName === 'ContactsFriends'"
-          @chatWithSingle="handleChatWithSingle"
-        ></contacts-friends>
+        <keep-alive>
+          <contacts-friends
+            v-if="activeName === 'ContactsFriends'"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts-friends>
+        </keep-alive>
+      </el-tab-pane>
+      <el-tab-pane name="ContactsTeams">
+        <template slot="label">
+          <div class="label-text">团队</div>
+        </template>
+        <keep-alive>
+          <contacts-teams
+            v-if="activeName === 'ContactsTeams'"
+            @chatWithSingle="handleChatWithSingle"
+          ></contacts-teams>
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane name="ContactsGroups">
         <template slot="label">
           <div class="label-text">群聊</div>
         </template>
-        <contacts-groups
-          v-if="activeName === 'ContactsGroups'"
-          @chatWithGroup="handleChatWithGroup"
-        >
-        </contacts-groups>
+        <keep-alive>
+          <contacts-groups
+            v-if="activeName === 'ContactsGroups'"
+            @chatWithGroup="handleChatWithGroup"
+          >
+          </contacts-groups>
+        </keep-alive>
       </el-tab-pane>
 
     </el-tabs>
@@ -35,59 +41,62 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapActions} from 'vuex'
+import ContactsTeams from './ContactsTeams.vue'
+import ContactsFriends from './ContactsFriends.vue'
+import ContactsGroups from './ContactsGroups.vue'
 
 export default {
   name: 'MessageContacts',
   components: {
-    ContactsTeams: () => import('./ContactsTeams.vue'),
-    ContactsFriends: () => import('./ContactsFriends.vue'),
-    ContactsGroups: () => import('./ContactsGroups.vue')
+    ContactsTeams,
+    ContactsFriends,
+    ContactsGroups
   },
   data() {
     return {
-      activeName: 'ContactsTeams'
-    };
+      activeName: 'ContactsFriends'
+    }
   },
   watch: {
     $route(to, from) {
-      console.log('Contacts监听路由:', to, from);
-      this.activeName = from.query.activeName;
+      // console.log('Contacts监听路由:', to, from)
+      this.activeName = from.query.activeName
     }
   },
   methods: {
     ...mapActions(['ActionSetMessageStore']),
     handleClick(tab, event) {
       // console.log('通讯录切换标签页：', tab, event);
-      this.activeName = tab.name;
+      this.activeName = tab.name
     },
 
     // 开始群聊天
     handleChatWithGroup(groupId) {
-      this.$emit('chatWithGroup', groupId);
+      this.$emit('chatWithGroup', groupId)
     },
 
     // 开始单聊
     handleChatWithSingle(receiverId) {
-      this.$emit('chatWithSingle', receiverId);
+      this.$emit('chatWithSingle', receiverId)
     },
 
     /**
      * 从路由获得当前应该显示哪一个标签（团队、好友、群组）,如果没有路由数据，就默认显示团队
      */
     getActiveNameFromRoute() {
-      console.log('路由数据：', this.$route);
+      console.log('路由数据：', this.$route)
       if (this.$route.query.activeName) {
-        this.activeName = this.$route.query.activeName;
+        this.activeName = this.$route.query.activeName
       } else {
-        this.activeName = 'ContactsTeams';
+        this.activeName = 'ContactsFriends'
       }
     }
   },
   created() {
-    this.getActiveNameFromRoute();
+    this.getActiveNameFromRoute()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

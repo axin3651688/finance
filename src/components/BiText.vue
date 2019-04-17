@@ -13,7 +13,8 @@ export default {
   },
   components: {
     Cbsb: () => import("./text/Cbsb.vue"),
-    Bgch: () => import("./text/Bgch.vue")
+    Bgch: () => import("./text/Bgch.vue"),
+    Zjl: () => import("./text/Zjl.vue")
   }
 };
 </script>

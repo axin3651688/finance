@@ -1,0 +1,191 @@
+{
+    "id": "lrzefdtjb",
+    "text": "利润总额分段统计表",
+    "config": {
+        "sql": "2",
+        "cube": {
+            "cubeId": 7
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "generateVar": {
+            "periodCount": 2,
+            "compareType": "-1&0",
+            "reverse": true
+        },
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "项目"
+            }, {
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "tempa2",
+                "text": "上年同期",
+                "children": [{
+                        "id": "E",
+                        "text": "户数（户）",
+
+                        "type": "number"
+                    },
+                    {
+                        "id": "F",
+                        "text": "占比（%）",
+
+                        "type": "number"
+                    },
+                    {
+                        "id": "G",
+                        "text": "金额（万元）",
+
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "tempa",
+                "text": "本期",
+                "children": [{
+                        "id": "A",
+                        "text": "户数（户）",
+
+                        "type": "number"
+                    },
+                    {
+                        "id": "B",
+                        "text": "占比（%）",
+
+                        "type": "number"
+                    },
+                    {
+                        "id": "C",
+                        "text": "金额（万元）",
+
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": []
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+            "xtype": "bi-table",
+            "id": "lrzefdtjb2",
+            "text": "二级企业"
+        },
+        {
+            "xtype": "bi-table",
+            "id": "lrzefdtjb3",
+            "text": "三级企业",
+            "config": {
+                "sql": "3",
+                "cube": {
+                    "cubeId": 7
+                },
+                "mainDim": "itemperiod",
+                "needDims": [
+                    "year",
+                    "month",
+                    "company"
+                ],
+                "generateVar": {
+                    "periodCount": 2,
+                    "compareType": "-1&0",
+                    "reverse": true
+                },
+                "random": {
+                    "min": 100,
+                    "max": 100000
+                },
+                "type": 1,
+                "columns": [{
+
+                        "id": "row",
+                        "type": "index",
+                        "text": "行次"
+                    }, {
+                        "id": "nid",
+                        "type": "string",
+                        "hidden": true,
+                        "text": "编码"
+                    },
+                    {
+                        "id": "text",
+                        "type": "string",
+                        "width": 250,
+                        "text": "项目"
+                    },
+                    {
+                        "id": "tempa2",
+                        "text": "上年同期",
+                        "children": [{
+                                "id": "E",
+                                "text": "户数（户）",
+
+                                "type": "number"
+                            },
+                            {
+                                "id": "F",
+                                "text": "占比（%）",
+
+                                "type": "number"
+                            },
+                            {
+                                "id": "G",
+                                "text": "金额（万元）",
+
+                                "type": "decimal"
+                            }
+                        ]
+                    }, {
+                        "id": "tempa",
+                        "type": "decimal",
+                        "text": "本期",
+                        "children": [{
+                                "id": "A",
+                                "text": "户数（户）",
+
+                                "type": "number"
+                            },
+                            {
+                                "id": "B",
+                                "text": "占比（%）",
+
+                                "type": "number"
+                            },
+                            {
+                                "id": "C",
+                                "text": "金额（万元）",
+
+                                "type": "decimal"
+                            }
+                        ]
+                    }
+                ],
+                "rows": []
+            }
+        }
+    ]
+}

@@ -1,7 +1,9 @@
 <template>
-  <charts :options="chartOptions" auto-resize theme="bule"/>
-  <!-- <chart :options="map" auto-resize/> -->
-  <!-- @click="item1()" -->
+  <div @mousedown="mousedown">
+    <!-- v-if="isShow" -->
+    <ECharts :options="chartOptions" auto-resize theme="bule"/>
+    <!-- <div v-else :style="{'height':divHeight,'line-height':divHeight}" class="nodata">暂无数据</div> -->
+  </div>
 </template>
 <script type="text/ecmascript-6">
 import ECharts from "./ECharts.vue";
@@ -23,13 +25,16 @@ import polar from "./data/polar.js";
 ECharts.registerMap("china", chinaMap);
 import bule from "@s/theme/theme.json";
 ECharts.registerTheme("bule", bule);
+// ECharts.on("click", function(params) {
+//   console.log(params);
+// });
 export default {
   mixins: [EventMixins],
   props: {
     item: {}
   },
   components: {
-    charts: ECharts
+    ECharts
   },
   data() {
     return {
@@ -39,10 +44,30 @@ export default {
   },
   created() {},
   mounted() {
-    this.upData(this.item);
-    // console.log(this.item.options.datas);
+    console.log(this.item.datas[0]);
+
+    console.log(Cnbi.isEmpty(this.item.datas[0]));
+
+    if (Cnbi.isEmpty(this.item.datas[0])) {
+      this.isShow = false;
+    } else this.upData(this.item);
   },
+  computed: {
+    isShow() {
+      let flag = Cnbi.isEmpty(this.item.datas[0]);
+      return flag;
+    },
+    divHeight() {
+      return this.chartOptions.height_s ? this.chartOptions.height_s : "294px";
+    }
+  },
+
   methods: {
+    mousedown(event, instance, echarts) {
+      console.log(event, instance, echarts);
+
+      console.log("图表点击了");
+    },
     /** 
      *  动态替换配制中的变量 
      *  var third = eval('('+ str +')');
@@ -89,7 +114,7 @@ export default {
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
-      // debugger;
+      debugger;
       // console.log(this.item.options.datas);
 
       if (chartType === 1) {
@@ -103,10 +128,22 @@ export default {
          */
         debugger;
         if (subType == "pie") {
-          this.chartOptions.legend.data = this.item.options.datas.map(item => {
-            return item.name;
-          });
-          this.chartOptions.series[0].data = this.item.options.datas;
+          let chartDatas = [],
+            datas = this.item.datas[0];
+          debugger;
+          this.chartOptions.legend.data = this.item.options.getData.columns.map(
+            item => {
+              debugger;
+              Object.keys(datas).forEach(keys => {
+                debugger;
+                if (item.id == keys) {
+                  chartDatas.push({ value: datas[keys], name: item.text });
+                }
+              });
+              return item.text;
+            }
+          );
+          this.chartOptions.series[0].data = chartDatas;
         } else if (subType == "gauge") {
           // this.chartOptions.series[0].data = [
           //   { value: this.item.options.datas[0].value }

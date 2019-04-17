@@ -119,15 +119,8 @@ export default {
                   companyName: data.company.text
                 });
                 // debugger;
-                let url = "/main";
-                if (data.company && data.company.id === 121) {
-                  url += "?monthCount=13";
-                  localStorage.module_api_cache =
-                    "/cnbi/json/source/tjsp/dash.json";
-                }
                 // 页面跳转
-                //  判断加载哪个公司的布局页以加载不同样式
-                router.push(url);
+                router.push("/main");
               } else {
                 this.loginUser.usename = "";
                 this.loginUser.password = "";

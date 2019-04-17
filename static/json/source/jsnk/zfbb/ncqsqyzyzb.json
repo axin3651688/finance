@@ -1,0 +1,174 @@
+{
+    "id": "ncqsqyzyzb",
+    "text": "农场权属企业主要指标",
+    "config": {
+        "sql": "SELECT t1.text, t1.nid, t1.sort,(SELECT sname FROM dw_dimcompany WHERE scode = t1.sort) AS pcomsname, SUM(DECODE(t1.item, '1416001', t1.bnlj)) AS A, SUM(DECODE(t1.item, '1416001', t1.sntq)) AS B, SUM(DECODE(t1.item, '1416001', t1.zjl)) AS C, SUM(DECODE(t1.item, '1403100', t1.bnlj)) AS D, SUM(DECODE(t1.item, '1403100', t1.sntq)) AS E, SUM(DECODE(t1.item, '1403100', t1.zjl)) AS F, SUM(DECODE(t1.item, '1100100', t1.bnlj)) AS G, SUM(DECODE(t1.item, '1100100', t1.sntq)) AS H, SUM(DECODE(t1.item, '1100100', t1.zjl)) AS I, SUM(DECODE(t1.item, '1200100', t1.bnlj)) AS J, SUM(DECODE(t1.item, '1200100', t1.sntq)) AS K, SUM(DECODE(t1.item, '1200100', t1.zjl)) AS L, SUM(DECODE(t1.item, '1300100', t1.bnlj)) AS M, SUM(DECODE(t1.item, '1300100', t1.sntq)) AS N, SUM(DECODE(t1.item, '1300100', t1.zjl)) AS O, SUM(DECODE(t1.item, '1311009', t1.bnlj)) AS P, SUM(DECODE(t1.item, '1311009', t1.sntq)) AS Q, SUM(DECODE(t1.item, '1311009', t1.zjl)) AS R, SUM(DECODE(t1.item, '1100100', t1.isjump)) AS isj1100100, SUM(DECODE(t1.item, '1200100', t1.isjump)) AS isj1200100, SUM(DECODE(t1.item, '1300100', t1.isjump)) AS isj1300100, SUM(DECODE(t1.item, '1311009', t1.isjump)) AS isj1311009, SUM(DECODE(t1.item, '1416001', t1.isjump)) AS isj1416001, SUM(DECODE(t1.item, '1403100', t1.isjump)) AS isj1403100 FROM ( SELECT nid, text, sort, item, bnlj / 1 AS bnlj, sntq / 1 AS sntq, zjl, CASE WHEN ( zje >= m.zze OR zje <= m.jse) AND ( zjl >= m.zzl * 100 OR zjl <= m.jsl * 100 ) THEN 1 ELSE 0 END AS isjump FROM ( SELECT nid, text, sort, item, SUM(bnlj) AS bnlj, SUM(sntq) AS sntq, SUM(bnlj) - SUM(sntq) AS zje, CASE WHEN SUM(sntq) = 0 THEN 0 ELSE round(((SUM(bnlj) - SUM(sntq)) / abs(SUM(sntq))) * 100, 2) END AS zjl FROM ( SELECT rihht.subject, ddi.scode AS nid, ddi.sfullname AS text, ddi.property6 AS sort, dim_itemperiod AS item, nvl(fact_b, 0) AS bnlj, 0 AS sntq FROM dw_factfinanceperiod rihht JOIN dw_dimcompany ddi ON dim_company = ddi.scode AND dim_period = '201706' AND dim_itemperiod IN ('1416001','1403100') WHERE ddi.property6 IS NOT NULL AND ddi.cisdel = 'N' AND scode IN (SELECT scomcode FROM sys_usercompany WHERE suser = 'admin') UNION ALL SELECT rihht.subject, ddi.scode AS nid, ddi.sfullname AS text, ddi.property6 AS sort, dim_itemperiod AS item, 0 AS bnlj, nvl(fact_b, 0) AS sntq FROM dw_factfinanceperiod rihht JOIN dw_dimcompany ddi ON dim_company = ddi.scode AND dim_period = '201606' AND dim_itemperiod IN ('1416001','1403100') WHERE ddi.property6 IS NOT NULL AND ddi.cisdel = 'N' AND scode IN (SELECT scomcode FROM sys_usercompany WHERE suser = 'admin') UNION ALL SELECT rihht.subject, ddi.scode AS nid, ddi.sfullname AS text, ddi.property6 AS sort, dim_itempoint AS item, nvl(fact_b, 0) AS bnlj, nvl(fact_a, 0) AS sntq FROM dw_factfinancepoint rihht JOIN dw_dimcompany ddi ON dim_company = ddi.scode AND dim_period = '201706' AND dim_itempoint IN ('1100100','1200100','1300100','1311009') WHERE ddi.property6 IS NOT NULL AND ddi.cisdel = 'N' AND scode IN (SELECT scomcode FROM sys_usercompany WHERE suser = 'admin') ) t2 GROUP BY nid, text, sort, item, subject ) w LEFT JOIN ( SELECT mp.scomcode, mi.sfieldcode, mp.monitor_zze AS zze, mp.monitor_jse AS jse, mp.monitor_zzl AS zzl, mp.monitor_jsl AS jsl, mi.sgroup AS groups, mp.speriod FROM rpt_monitor_parameter mp LEFT JOIN rpt_monitor_index mi ON mi.stype IN ('0001','0002') AND mi.sfieldcode IN ('1100100','1200100','1300100','1311009','1416001','1403100') LEFT JOIN ( SELECT scomcode,MAX(speriod) AS speriod FROM rpt_monitor_parameter WHERE speriod <= '201706' AND spamtype = ( CASE WHEN mod(substr('201706', 5, 2), 3) = 0 THEN '3' ELSE '4' END ) GROUP BY scomcode ) tt ON ( tt.scomcode = mp.scomcode ) WHERE mp.nmonitor_id = mi.nmonitor_id AND mp.speriod = tt.speriod AND mp.spamtype = ( CASE WHEN mod(substr('201706', 5, 2), 3) = 0 THEN '3' ELSE '4' END ) ) m ON m.scomcode = w.nid AND m.sfieldcode = w.item ) t1 GROUP BY t1.text, t1.sort, t1.nid ORDER BY t1.sort, t1.nid",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            }, {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 300,
+                "text": "单位名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "1001",
+                "type": "decimal",
+                "text": "营业总收入",
+                "children": [{
+                        "id": "A",
+                        "text": "本年累计（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "上年同期（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1002",
+                "type": "decimal",
+                "text": "利润总额",
+                "children": [{
+                        "id": "D",
+                        "text": "本年累计（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "E",
+                        "text": "上年同期（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1003",
+                "type": "decimal",
+                "text": "资产总计",
+                "children": [{
+                        "id": "G",
+                        "text": "期末数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "I",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1004",
+                "type": "decimal",
+                "text": "负债合计",
+                "children": [{
+                        "id": "J",
+                        "text": "期末数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            },
+            {
+                "id": "1005",
+                "type": "decimal",
+                "text": "所有者权益合计",
+                "children": [{
+                        "id": "M",
+                        "text": "期末数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "O",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }, {
+                "id": "1006",
+                "type": "decimal",
+                "text": "归属于母公司所有者权益合计",
+                "children": [{
+                        "id": "P",
+                        "text": "期末数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Q",
+                        "text": "年初数（万元）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "R",
+                        "text": "增减比例（%）",
+                        "type": "number"
+                    }
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "items": [{
+        "id": "ncqsqyzyzb",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

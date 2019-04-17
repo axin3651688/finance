@@ -1,0 +1,184 @@
+{
+    "id": "srzefdtjb",
+    "text": "收入总额分段统计表",
+    "config": {
+        "sql": "select t1.nid, t1.text, t1.A, t1.B, t1.C, t2.D, t2.E, t2.F from( select (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end) as nid, (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) as text, count(*) as A, to_char(count(*)/(select count(*) from dw_dimcompany c,DW_FACTFINANCEPERIOD f where c.scode = f.dim_company and f.subject = '0002' AND f.dim_period = '201606' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0)*100,'fm9999990.00') as B, to_char(sum(f.fact_b)/10000,'fm9999990.00') as C from DW_FACTFINANCEPERIOD f left join dw_dimcompany c on c.scode = f.dim_company left join dw_dimitempoint d on d.scode = f.dim_itemPERIOD where f.subject = '0002' AND f.dim_period = '201606' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0 group by (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end), (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) order by nid) t1 left join ( select (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end) as nid, (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) as text, count(*) as D, to_char(count(*)/(select count(*) from dw_dimcompany c,DW_FACTFINANCEPERIOD f where c.scode = f.dim_company and f.subject = '0002' AND f.dim_period = '201506' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0)*100,'fm9999990.00') as E, to_char(sum(f.fact_b)/10000,'fm9999990.00') as F from DW_FACTFINANCEPERIOD f left join dw_dimcompany c on c.scode = f.dim_company left join dw_dimitempoint d on d.scode = f.dim_itemPERIOD where f.subject = '0002' AND f.dim_period = '201506' and c.nlevel = 2 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0 group by (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end), (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) order by nid ) t2 on t1.nid = t2.nid",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 250,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "tempa2",
+                "type": "decimal",
+                "text": "上年同期",
+                "children": [{
+                        "id": "D",
+                        "text": "户数（户）",
+                        "width": 200,
+                        "type": "number"
+                    },
+                    {
+                        "id": "E",
+                        "text": "占比（%）",
+                        "width": 200,
+                        "type": "number"
+                    },
+                    {
+                        "id": "F",
+                        "text": "金额（万元）",
+                        "width": 250,
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "tempa",
+                "type": "decimal",
+                "text": "本期",
+                "children": [{
+                        "id": "A",
+                        "text": "户数（户）",
+                        "width": 200,
+                        "type": "number"
+                    },
+                    {
+                        "id": "B",
+                        "text": "占比（%）",
+                        "width": 200,
+                        "type": "number"
+                    },
+                    {
+                        "id": "C",
+                        "text": "金额（万元）",
+                        "width": 250,
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "layout": {
+        "xtype": "tab"
+    },
+    "items": [{
+            "xtype": "bi-table",
+            "id": "srzefdtjb2",
+            "text": "二级企业"
+        },
+        {
+            "xtype": "bi-table",
+            "id": "srzefdtjb3",
+            "text": "三级企业",
+            "config": {
+                "sql": "select t1.nid, t1.text, t1.A, t1.B, t1.C, t2.D, t2.E, t2.F from( select (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end) as nid, (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) as text, count(*) as A, to_char(count(*)/(select count(*) from dw_dimcompany c,DW_FACTFINANCEPERIOD f where c.scode = f.dim_company and f.subject = '0002' AND f.dim_period = '201606' and c.nlevel = 3 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0)*100,'fm9999990.00') as B, to_char(sum(f.fact_b)/10000,'fm9999990.00') as C from DW_FACTFINANCEPERIOD f left join dw_dimcompany c on c.scode = f.dim_company left join dw_dimitempoint d on d.scode = f.dim_itemPERIOD where f.subject = '0002' AND f.dim_period = '201606' and c.nlevel = 3 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0 group by (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end), (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) order by nid) t1 left join ( select (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end) as nid, (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) as text, count(*) as D, to_char(count(*)/(select count(*) from dw_dimcompany c,DW_FACTFINANCEPERIOD f where c.scode = f.dim_company and f.subject = '0002' AND f.dim_period = '201506' and c.nlevel = 3 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0)*100,'fm9999990.00') as E, to_char(sum(f.fact_b)/10000,'fm9999990.00') as F from DW_FACTFINANCEPERIOD f left join dw_dimcompany c on c.scode = f.dim_company left join dw_dimitempoint d on d.scode = f.dim_itemPERIOD where f.subject = '0002' AND f.dim_period = '201506' and c.nlevel = 3 and c.property1 is not null and c.cisdel = 'N' and c.spcode <> '0' and c.ctype <> 2 and f.dim_itemPERIOD= '1416001' and f.fact_b >= 0 group by (case when f.fact_b >= 0 and f.fact_b < 5000000 then '1' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '2' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '3' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '4' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '5' when f.fact_b >= 500000000 then '6' end), (case when f.fact_b >= 0 and f.fact_b < 5000000 then '<500万' when f.fact_b >= 5000000 and f.fact_b < 10000000 then '500万~1000万' when f.fact_b >= 10000000 and f.fact_b < 50000000 then '1000万~5000万' when f.fact_b >= 50000000 and f.fact_b < 100000000 then '5000万~1亿' when f.fact_b >= 100000000 and f.fact_b < 500000000 then '1亿~5亿' when f.fact_b >= 500000000 then '>5亿' end) order by nid ) t2 on t1.nid = t2.nid",
+                "cube": {
+                    "cubeId": 2
+                },
+                "mainDim": "itemperiod",
+                "needDims": [
+                    "year",
+                    "month",
+                    "company"
+                ],
+                "random": {
+                    "min": 100,
+                    "max": 100000
+                },
+                "type": 1,
+                "columns": [{
+                        "id": "nid",
+                        "type": "string",
+                        "hidden": true,
+                        "text": "编码"
+                    },
+                    {
+                        "id": "tempa",
+                        "type": "decimal",
+                        "text": "本期",
+                        "children": [{
+                                "id": "A",
+                                "text": "户数（户）",
+                                "width": 200,
+
+                                "type": "number"
+                            },
+                            {
+                                "id": "B",
+                                "text": "占比（%）",
+                                "width": 200,
+                                "type": "number"
+                            },
+                            {
+                                "id": "C",
+                                "text": "金额（万元）",
+                                "width": 250,
+                                "type": "decimal"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "text",
+                        "type": "string",
+                        "width": 250,
+                        "text": "项目"
+                    },
+                    {
+                        "id": "tempa2",
+                        "type": "decimal",
+                        "text": "上年同期",
+                        "children": [{
+                                "id": "D",
+                                "text": "户数（户）",
+                                "width": 200,
+                                "type": "number"
+                            },
+                            {
+                                "id": "E",
+                                "text": "占比（%）",
+                                "width": 200,
+                                "type": "number"
+                            },
+                            {
+                                "id": "F",
+                                "text": "金额（万元）",
+                                "width": 250,
+                                "type": "decimal"
+                            }
+                        ]
+                    }
+                ],
+                "rows": []
+            }
+        }
+    ]
+}

@@ -1,9 +1,10 @@
 <template>
   <div class="search-bar" v-clickoutside="handleClose">
     <el-input placeholder="搜索" v-model="keywords" clearable @keyup.enter.native="doSearch">
-      <div slot="suffix" class="icon-zoom img-box">
-        <img src="@ma/icon/zoom.svg">
-      </div>
+      <!--<div slot="suffix" class="icon-zoom img-box">-->
+        <!--<img src="@ma/icon/zoom.svg">-->
+      <!--</div>-->
+      <div slot="suffix" class="el-icon-search" style="margin-top: 7px;">      </div>
     </el-input>
     <div class="search-bar_right" @click="doSearch">
       <div class="img-box">+</div>
@@ -206,6 +207,7 @@ export default {
       let targetId = '1100_' + item.id;
       sessionItem['miniType'] = 1100;
       sessionItem['targetId'] = targetId;
+      sessionItem['online'] = true // 默认每个用户是在线状态
       sessionItem['id'] = item.id;
       sessionItem['name'] = item.trueName;
       sessionItem['count'] = 0;

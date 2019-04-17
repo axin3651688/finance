@@ -57,13 +57,14 @@ export function findSideBar(userId, code) {
  * 获取第三方数据
  */
 export function findThirdPartData(params) {
-  // debugger
+  debugger
+  console.log("paramsparams", params)
   if (!params.cubeId) {
     params.cubeId = JSON.parse(localStorage.database).license.id;
   }
   return request({
     method: "post",
-    url: params.url || "/get/cube/find/",
+    url: params.url || "/api/api/find_cube_map/",
     params: params
   })
 }
@@ -74,6 +75,7 @@ export function findThirdPartData(params) {
  */
 export function findDesignSource(sourceId, url) {
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
+  console.log("sourceId", sourceId, "url", url)
   if (isNaN(sourceId)) {
     // debugger
     url = sourceId;
@@ -88,17 +90,64 @@ export function findDesignSource(sourceId, url) {
     }
   })
 }
+/**
+ * 组织成员列表
+ * 
+ */
+export function companyContactList(companyId) {
+  console.log("调用成员接口");
+  console.log(companyId);
 
-// /**
-//  * 发消息接口
-//  */
-// export function findSideBar(userId, code) {
-//   return request({
-//     url: '/api/api/find_node',
-//     method: 'get',
-//     params: {
-//       "userId": userId,
-//       "code": code || "10"
-//     }
-//   })
-// }
+  return request({
+    url: '/api/api/my_contact_list',
+    method: 'get',
+    params: {
+      companyId: companyId
+    }
+  })
+}
+/**
+ * 催报消息操作接口
+ *
+ */
+export function SAVE_MODULE_MSG(datas) {
+  console.log("催报消息操作接口");
+  // console.log(datas);
+  debugger
+  return request({
+    url: '/api/api/save_module_msg',
+    method: 'post',
+    data: datas
+  })
+}
+
+export function ACK_MODULE_MSG(data) {
+  console.log("催报消息操作接口");
+  // console.log(data);
+  debugger
+  return request({
+    url: '/api/api/ack_module_msg',
+    method: 'get',
+    params: {
+      code: data,
+      chat: 2000,
+      type: 1102
+    }
+  })
+}
+
+/**
+ * 成员信息查询是否存在
+ * 可以根据usename,邮箱,id查询
+ * 
+ */
+export function FIND_USER_ACCOUNT(use) {
+  console.log("调用成员接口");
+  return request({
+    url: '/api/api/find_user_account',
+    method: 'get',
+    params: {
+      account: use
+    }
+  })
+}

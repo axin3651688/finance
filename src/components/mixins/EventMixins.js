@@ -21,6 +21,7 @@ import {
 
 export default {
   mounted() {
+    debugger
     let me = this;
     if (me.item && me.item.listeners) {
       this.eventHandler(me.item.listeners);
@@ -35,6 +36,7 @@ export default {
     },
 
     eventFire(listener, params, bb) {
+      debugger
       let xtype = this.item.xtype;
       if (listener.type) {
         if (xtype === "chart" || xtype === "bi-chart") {
@@ -55,6 +57,7 @@ export default {
      * 事件通用处理
      */
     commonHandler(listener, params, bb) {
+      debugger
       let me = this;
       if (listener.handler) {
         listener.handler(me, params);
@@ -72,6 +75,7 @@ export default {
      * 图形事件处理
      */
     chartEventHandler(listener) {
+      debugger
       let me = this;
       this.$children[0].chart.on(listener.type, function (params) {
         if (listener.clickBefore && typeof listener.clickBefore == "function") {
@@ -108,15 +112,26 @@ export default {
     // api: listener.sourceApi,1
     openDialog(params, listener, bb) {
       debugger
+      if (listener.sourceApi !== "cnbi/json/source/jsnk/zbfx/zjl.json") {
+        this.ShowDialog({
+          params: params,
+          api: listener.sourceApi,
+          isShow: true,
+          tittle: bb.label,
+          width: listener.config.width + "px",
+          height: listener.config.height + "px",
+        });
+      } else {
+        this.ShowDialog({
+          params: params,
+          api: listener.sourceApi,
+          isShow: true,
+          tittle: `${bb.row.text}2016年1月营业收入与上年同期相比，较大幅度增长的主要原因是：`,
+          width: listener.config.width + "px",
+          height: listener.config.height + "px",
+        });
+      }
 
-      this.ShowDialog({
-        params: params,
-        api: listener.sourceApi,
-        isShow: true,
-        tittle: bb.label,
-        width: listener.config.width + "px",
-        height: listener.config.height + "px",
-      });
     },
     /**
      * 增加到tab的动作 openDialog openWindow
@@ -138,8 +153,14 @@ export default {
       if (!bb) {
         bb = this.item;
       }
+      if (!module.items) {
+        module = this.$root.$children[0].$children[0].$children[0].$children[2];
+        console.log(module.items);
+      }
       debugger;
       let text = bb.text;
+
+
       let arrs = module.items.filter(bean => bean.text == text);
       if (arrs.length > 0) {
         module.items.forEach((item, index) => {

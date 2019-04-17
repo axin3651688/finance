@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import AddFromFriends from './AddFromFriends' // 从我的好友中添加群成员
-import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
+import {mapGetters, mapActions} from 'vuex';
+import AddFromFriends from './AddFromFriends'; // 从我的好友中添加群成员
+import AddFromGroups from './AddFromGroups'; // 从我的团队中添加群成员
 import {
   GROUP_INFO,
   DEL_GROUP_USER
@@ -84,7 +84,7 @@ export default {
       groupMembers: null, // [{},{}]群成员列表
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
-    }
+    };
   },
   components: {
     AddFromGroups,
@@ -93,25 +93,25 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     senderId() {
-      return this.user.user.id
+      return this.user.user.id;
     },
     groupId() {
-      return this.messageStore.groupInfo.info.groupId
+      return this.messageStore.groupInfo.info.groupId;
     },
     groupOwnerId() {
-      return this.messageStore.groupInfo.info.ownerId
+      return this.messageStore.groupInfo.info.ownerId;
     }
   },
   methods: {
     // 关闭侧边群组成员栏
     handleCloseGroupMembers() {
-      this.$emit('closeGroupMembers')
+      this.$emit('closeGroupMembers');
     },
 
     // 添加群成员
     addMember() {
       this.showAddMember = false;
-      console.log('带处理，添加新成员')
+      console.log('带处理，添加新成员');
     },
 
     // 添加群成员标签切换事件
@@ -125,11 +125,11 @@ export default {
       GROUP_INFO(this.groupId).then(res => {
         console.log('群信息', res.data.data);
         if (res.data.code === 200) {
-          this.groupMembers = res.data.data.users
+          this.groupMembers = res.data.data.users;
         }
       }).catch(err => {
-        console.log('请求message：', err)
-      })
+        console.log('请求message：', err);
+      });
     },
 
     handleCommand(user) {
@@ -140,13 +140,13 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.delGroupUser(user)
+        this.delGroupUser(user);
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消移除该群成员'
-        })
-      })
+        });
+      });
     },
 
     // 移除群成员
@@ -167,25 +167,23 @@ export default {
           this.$message({
             type: 'success',
             message: res.data
-          })
+          });
         } else {
           this.$message({
             type: 'error',
             message: res.msg
-          })
+          });
         }
       }).catch(err => {
-        console.log('移除群成员err:', err)
-      })
+        console.log('移除群成员err:', err);
+      });
     }
   },
   mounted() {
     // 如果vuex中没有，则请求群信息
-    this.messageStore.groupInfo ?
-      this.groupMembers = this.messageStore.groupInfo.users :
-      this.groupMembers = this.getMembers()
+    this.groupMembers = this.getMembers();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

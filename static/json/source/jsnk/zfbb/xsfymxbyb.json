@@ -1,0 +1,80 @@
+{
+    "id": "xsfymxbyb",
+    "text": "销售费用明细表（月报）",
+    "config": {
+        "sql": "select ddi.scode as nid, ddi.sname as text,dfp.fact_a as A, dfp.fact_b as B,dfp.fact_c as C,dfp.fact_d as D,dfp.fact_e as E, dfp.fact_f as F from dw_factdetailfees dfp right join dw_dimitem ddi on ddi.scode = dfp.dim_item and dfp.dim_period = :period and dfp.dim_company = :company where ddi.stype = '25' order by ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "A",
+                "type": "decimal",
+                "width": 220,
+                "text": "本月"
+            },
+            {
+                "id": "B",
+                "type": "decimal",
+                "width": 220,
+                "text": "上年同期"
+            }, {
+                "id": "C",
+                "type": "decimal",
+                "width": 220,
+                "text": "变动比率"
+            },
+            {
+                "id": "D",
+                "type": "decimal",
+                "width": 220,
+                "text": "本期累计"
+            }, {
+                "id": "E",
+                "type": "decimal",
+                "width": 220,
+                "text": "上年同期累计"
+            }, {
+                "id": "F",
+                "type": "decimal",
+                "text": "累计数变动比例"
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "xsfymxbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

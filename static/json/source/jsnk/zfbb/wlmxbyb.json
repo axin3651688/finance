@@ -1,0 +1,239 @@
+{
+    "id": "wlmxbyb",
+    "text": "往来明细表（月报）",
+    "config": {
+        "sql": "SELECT * FROM(SELECT ddi.sname AS text, ddi.scode AS nid, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_a END) AS A, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_a END) AS B, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_a END) AS C, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_a END) AS D, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_b END) AS E, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_b END) AS F, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_b END) AS G, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_b END) AS H, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_c END) AS I, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_c END) AS J, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_c END) AS K, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_c END) AS L, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_d END) AS M, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_d END) AS N, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_d END) AS O, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_d END) AS P, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_e END) AS Q, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_e END) AS R, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_e END) AS S, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_e END) AS T, SUM(CASE WHEN dfi.dim_department = '1001' THEN dfi.fact_f END) AS U, SUM(CASE WHEN dfi.dim_department = '1002' THEN dfi.fact_f END) AS V, SUM(CASE WHEN dfi.dim_department = '1003' THEN dfi.fact_f END) AS W, SUM(CASE WHEN dfi.dim_department = '1004' THEN dfi.fact_f END) AS X FROM dw_factcontacts_money dfi RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfi.dim_item AND dfi.dim_company = '1020' AND dfi.dim_period = '201606' WHERE ddi.stype = '20' GROUP BY ddi.sname, ddi.scode ORDER BY ddi.scode) t1 LEFT JOIN (SELECT ddi.scode AS scode, SUM(CASE WHEN dfi.dim_contacts = '1001' THEN dfi.fact_a END) AS Y, SUM(CASE WHEN dfi.dim_contacts = '1002' THEN dfi.fact_a END) AS Z, SUM(CASE WHEN dfi.dim_contacts = '1001' THEN dfi.fact_b END) AS AA, SUM(CASE WHEN dfi.dim_contacts = '1002' THEN dfi.fact_b END) AS AB FROM dw_factcontacts_inner dfi RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfi.dim_item AND dfi.dim_company = :company AND dfi.dim_period = :period WHERE ddi.stype = '20' GROUP BY ddi.scode) t2 ON t1.nid= t2.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": ["year", "month", "company"],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 250,
+                "text": "关联单位名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            }, {
+                "id": "nid",
+                "type": "decimal",
+                "hidden": true,
+                "text": "编码"
+            },
+
+            {
+                "id": "tempa6",
+                "type": "decimal",
+                "text": "其他应付款",
+                "children": [{
+                        "id": "U",
+                        "text": "三级企业内部",
+
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "V",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "W",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "X",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+
+            {
+                "id": "tempa9",
+                "type": "decimal",
+                "text": "内部往来（借方余额）",
+                "children": [{
+                        "id": "Y",
+                        "text": "小计",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Z",
+                        "text": "二级企业子公司与母公司往来",
+                        "width": 220,
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa1",
+                "type": "decimal",
+                "text": "应收账款",
+                "children": [{
+                        "id": "A",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "D",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa2",
+                "type": "decimal",
+                "text": "预付账款",
+                "children": [{
+                        "id": "E",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "G",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa3",
+                "type": "decimal",
+                "text": "其他应收款",
+                "children": [{
+                        "id": "I",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "J",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa10",
+                "type": "decimal",
+                "text": "内部往来（贷方余额）",
+                "with": 500,
+                "children": [{
+                        "id": "AA",
+                        "text": "小计",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "AB",
+                        "text": "二级企业子公司与母公司往来",
+                        "fit": true,
+                        "width": 220,
+                        "type": "decimal"
+                    }
+                ]
+            },
+
+            {
+                "id": "tempa4",
+                "type": "decimal",
+                "text": "应付账款",
+                "children": [{
+                        "id": "M",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "O",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "P",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa5",
+                "type": "decimal",
+                "text": "预收账款",
+                "children": [{
+                        "id": "Q",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "R",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "S",
+                        "text": "农垦集团内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "T",
+                        "text": "农垦集团外部",
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": []
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "wlmxbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

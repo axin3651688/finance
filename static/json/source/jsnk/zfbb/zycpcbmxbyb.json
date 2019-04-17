@@ -1,0 +1,178 @@
+{
+    "id": "zycpcbmxbyb",
+    "text": "主要产品成本明细表（月报）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, SUM(CASE WHEN dfp.dim_products = '1001' THEN dfp.fact_a END) AS A, SUM(CASE WHEN dfp.dim_products = '1001' THEN dfp.fact_b END) AS B, SUM(CASE WHEN dfp.dim_products = '1002' THEN dfp.fact_a END) AS C, SUM(CASE WHEN dfp.dim_products = '1002' THEN dfp.fact_b END) AS D, SUM(CASE WHEN dfp.dim_products = '1003' THEN dfp.fact_a END) AS E, SUM(CASE WHEN dfp.dim_products = '1003' THEN dfp.fact_b END) AS F, SUM(CASE WHEN dfp.dim_products = '1004' THEN dfp.fact_a END) AS G, SUM(CASE WHEN dfp.dim_products = '1004' THEN dfp.fact_b END) AS H, SUM(CASE WHEN dfp.dim_products = '1005' THEN dfp.fact_a END) AS I, SUM(CASE WHEN dfp.dim_products = '1005' THEN dfp.fact_b END) AS J, SUM(CASE WHEN dfp.dim_products = '1006' THEN dfp.fact_a END) AS K, SUM(CASE WHEN dfp.dim_products = '1006' THEN dfp.fact_b END) AS L, SUM(CASE WHEN dfp.dim_products = '1007' THEN dfp.fact_a END) AS M, SUM(CASE WHEN dfp.dim_products = '1007' THEN dfp.fact_b END) AS N, SUM(CASE WHEN dfp.dim_products = '1008' THEN dfp.fact_a END) AS O, SUM(CASE WHEN dfp.dim_products = '1008' THEN dfp.fact_b END) AS P FROM dw_factdetailcost dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '21' and ddi.scode != '21' GROUP BY ddi.scode, ddi.sname ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            },
+            {
+                "id": "text",
+                "type": "string",
+                "fixed": true,
+                "width": 200,
+                "text": "项目"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "tempa1",
+                "type": "decimal",
+                "text": "商品房（千平米）",
+                "children": [{
+                        "id": "A",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa2",
+                "type": "decimal",
+                "text": "麦芽（吨）",
+                "children": [{
+                        "id": "C",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "D",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa3",
+                "type": "decimal",
+                "text": "连杆（万支）",
+                "children": [{
+                        "id": "E",
+                        "text": "三级企业内部",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "二级企业内部",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa4",
+                "type": "decimal",
+                "text": "减速机（台）",
+                "children": [{
+                        "id": "G",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa5",
+                "type": "decimal",
+                "text": "药品（吨）",
+                "children": [{
+                        "id": "I",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "J",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa6",
+                "type": "decimal",
+                "text": "水产养殖（吨）",
+                "children": [{
+                        "id": "K",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "tempa9",
+                "type": "decimal",
+                "text": "鸡（吨）",
+                "children": [{
+                        "id": "M",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "tempa10",
+                "type": "decimal",
+                "text": "林木花卉（立方/百株）",
+                "children": [{
+                        "id": "O",
+                        "text": "本期数（含初期）",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "P",
+                        "text": "上年同期数",
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "items": [{
+        "xtype": "bi-table",
+        "id": "zycpcbmxbyb"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+
+}

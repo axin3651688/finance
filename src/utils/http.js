@@ -1,9 +1,14 @@
 import axios from 'axios'
-import {Loading} from 'element-ui'
-import {SET_FULLSCREEN_LOADING} from 'utils/setFullscreenLoading.js'
+import {
+  Message,
+  Loading
+} from 'element-ui'
+import {
+  SET_FULLSCREEN_LOADING
+} from 'utils/setFullscreenLoading.js'
 // import router from '@v/layout/router'
 
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 100000
 
 let loading
 
@@ -15,7 +20,7 @@ let loading
  */
 function _startLoading() {
   let fullscreenLoading = true
-  try{
+  try {
     if (localStorage.fullscreenLoading) {
       fullscreenLoading = JSON.parse(localStorage.fullscreenLoading)
     }
@@ -55,12 +60,14 @@ axios.interceptors.request.use(
 
     // 加载动画
     _startLoading()
+    console.log(localStorage.getItem('device'), "请求头");
 
+    config.headers.device = localStorage.getItem('device') || Cnbi.getDevice()
     // debugger
     if (localStorage.authorization) {
       // 设置统一请求头 todo 暂时屏蔽
       config.headers.Authorization = localStorage.authorization
-      config.headers.device = Cnbi.getDevice()
+
     }
     return config
   },
@@ -80,10 +87,12 @@ axios.interceptors.response.use(
   error => {
     // 错误提醒
     _endLoading()
-    console.error(error)
-
+    Message.error(error.response.data);
+    // console.error(error)
     // 获取错误状态码
-    const {status} = error.response
+    const {
+      status
+    } = error.response
     if (status == 401) {
       console.error("toen失效,请重新登陆!")
       // token过期,清除token

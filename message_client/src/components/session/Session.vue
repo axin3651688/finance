@@ -8,9 +8,15 @@
         @click="setItemActive(item)"
       >
         <el-badge :value="item.count === 0 ? '' : item.count" :max="99" class="item">
-          <div class="img-box">
-            <img :src="item.avatar" v-avatar="item.name">
-            <!--<img :src="item.avatar">-->
+          <div :class="['img-box', {'off-line':!item.online}]">
+            <avatar
+              :username="item.name"
+              :rounded="false"
+              backgroundColor="transparent"
+              color="#fff"
+              :size="40"
+            ></avatar>
+            <img :src="item.avatar" onerror="this.style.display='none'"/>
           </div>
         </el-badge>
 
@@ -45,6 +51,9 @@ export default {
     ...mapGetters(['user', 'messageStore']),
     loginUserId() {
       return this.user.user.id;
+    },
+    socketOffLine() { // socket连接转态
+      return this.messageStore.socketOffLine
     }
   },
   filters: {
@@ -106,17 +115,10 @@ export default {
     cursor: pointer;
 
     .img-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
+      @include imgBox($width: 40px, $height: 40px, $borderRadius: 50%);
       background: $colorTheme;
-
-      img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        float: left;
+      div {
+        position: absolute;
       }
     }
   }
@@ -143,6 +145,7 @@ export default {
 
   /deep/ .el-badge {
     vertical-align: unset;
+
     .el-badge__content.is-fixed {
       right: 15px;
     }

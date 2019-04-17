@@ -1,0 +1,174 @@
+{
+    "id": "chjxcmxbyb",
+    "text": "存货进销存明细表（月报）",
+    "config": {
+        "sql": "SELECT ddi.scode AS nid, ddi.sname AS text, SUM( CASE WHEN dfp.dim_insales = '1001' THEN dfp.fact_a END) AS A, SUM( CASE WHEN dfp.dim_insales = '1001' THEN dfp.fact_b END) AS B, SUM( CASE WHEN dfp.dim_insales = '1001' THEN dfp.fact_c END) AS C, SUM ( CASE WHEN dfp.dim_insales = '1002' THEN dfp.fact_a END ) AS D, SUM ( CASE WHEN dfp.dim_insales = '1002' THEN dfp.fact_b END ) AS E, SUM ( CASE WHEN dfp.dim_insales = '1002' THEN dfp.fact_c END ) AS F, SUM ( CASE WHEN dfp.dim_insales = '1003' THEN dfp.fact_a END ) AS G, SUM ( CASE WHEN dfp.dim_insales = '1003' THEN dfp.fact_b END ) AS H, SUM ( CASE WHEN dfp.dim_insales = '1003' THEN dfp.fact_c END ) AS I, SUM ( CASE WHEN dfp.dim_insales = '1004' THEN dfp.fact_a END ) AS J, SUM ( CASE WHEN dfp.dim_insales = '1004' THEN dfp.fact_b END ) AS K, SUM ( CASE WHEN dfp.dim_insales = '1004' THEN dfp.fact_c END ) AS L, SUM ( CASE WHEN dfp.dim_insales = '1005' THEN dfp.fact_a END ) AS M, SUM ( CASE WHEN dfp.dim_insales = '1005' THEN dfp.fact_b END ) AS N, SUM ( CASE WHEN dfp.dim_insales = '1005' THEN dfp.fact_c END ) AS O, SUM ( CASE WHEN dfp.dim_insales = '1006' THEN dfp.fact_a END ) AS P, SUM ( CASE WHEN dfp.dim_insales = '1006' THEN dfp.fact_b END ) AS Q, SUM ( CASE WHEN dfp.dim_insales = '1006' THEN dfp.fact_c END ) AS R FROM DW_FactStockInSales dfp RIGHT JOIN dw_dimitem ddi ON ddi.scode = dfp.dim_item AND dfp.dim_period = :period AND dfp.dim_company = :company WHERE ddi.stype = '22' GROUP BY ddi.scode, ddi.sname ORDER BY ddi.scode",
+        "cube": {
+            "cubeId": 2
+        },
+        "mainDim": "itemperiod",
+        "needDims": [
+            "year",
+            "month",
+            "company"
+        ],
+        "random": {
+            "min": 100,
+            "max": 100000
+        },
+        "type": 1,
+        "columns": [{
+                "id": "nid",
+                "type": "string",
+                "hidden": true,
+                "text": "编码"
+            }, {
+                "id": "text",
+                "fixed": true,
+                "type": "string",
+                "width": 200,
+                "text": "产品名称"
+            }, {
+
+                "id": "row",
+                "type": "index",
+                "text": "行次"
+            },
+            {
+                "id": "1001",
+                "type": "decimal",
+                "text": "期初库存",
+                "children": [{
+                        "id": "A",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "B",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "C",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "1002",
+                "type": "decimal",
+                "text": "本期生产",
+                "children": [{
+                        "id": "D",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "E",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "F",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "1003",
+                "type": "decimal",
+                "text": "本期采购",
+                "children": [{
+                        "id": "G",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "H",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "I",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "1004",
+                "type": "decimal",
+                "text": "本期生产领用",
+                "children": [{
+                        "id": "J",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "K",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "L",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            },
+            {
+                "id": "1005",
+                "type": "decimal",
+                "text": "本期销售",
+                "children": [{
+                        "id": "M",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "N",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "O",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            }, {
+                "id": "1006",
+                "type": "decimal",
+                "text": "期末库存",
+                "children": [{
+                        "id": "P",
+                        "text": "数量",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "Q",
+                        "text": "成本",
+                        "type": "decimal"
+                    },
+                    {
+                        "id": "R",
+                        "text": "单位成本",
+                        "type": "decimal"
+                    }
+                ]
+            }
+        ],
+        "rows": [
+
+        ]
+    },
+    "items": [{
+        "id": "chjxcmxbyb",
+        "xtype": "bi-table"
+    }],
+    "layout": {
+        "xtype": "column"
+    }
+}

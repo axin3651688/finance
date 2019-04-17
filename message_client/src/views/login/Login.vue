@@ -188,7 +188,7 @@ export default {
      */
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        debugger;
+        // debugger;
         if (valid) {
           LOGIN(this.loginUser)
             .then(res => {
@@ -303,7 +303,7 @@ export default {
     margin: auto;
     user-select: none;
     box-sizing: border-box;
-    /*border: 1px solid #cccccc;*/
+    /*border: 1px solid #eee;*/
     box-shadow: #999 0px 0px 10px;
 
     .left {
@@ -375,6 +375,7 @@ export default {
           font-family: Microsoft YaHei;
           font-weight: 400;
           line-height: 16px;
+          margin-right: 15px;
           color: rgba(0, 0, 0, 0.7);
           opacity: 1;
         }
