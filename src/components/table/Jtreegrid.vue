@@ -80,9 +80,11 @@ export default {
       var flag = handleOpen(dat.row.id, this.nodes);
       if (!flag) {
         var params = apiItemDatas(this.item, dat.row.id);
+        console.log("paramsparams", params);
         debugger;
         findThirdPartData(params)
           .then(res => {
+            console.log("数据", res);
             debugger;
             let data = res.data.data;
             //添加元素到指定位置
@@ -119,7 +121,27 @@ export default {
 };
 </script>
 <style rel="stylesheet/css" lang="scss">
+@keyframes treeTableShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes treeTableShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .content {
+  .el-table th > .cell {
+    text-align: center;
+  }
   .el-input__inner {
     padding: 0px;
   }

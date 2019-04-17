@@ -12,7 +12,7 @@
       :data.sync="tableDatas"
       border
       :stripe="true"
-      :height="item.height || heights-88"
+      :height="item.height || heights-170"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
@@ -107,7 +107,7 @@ export default {
       if (rows && rows.length > 0) {
         rows.forEach(ele => {
           for (let i = 0, len = tempDatas.length; i < len; i++) {
-            debugger;
+            // debugger;
             if (ele.id == tempDatas[i].id) {
               ele = Object.assign(ele, tempDatas[i]);
               break;

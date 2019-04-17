@@ -1,6 +1,10 @@
-import {isArray} from 'util';
+import {
+  isArray
+} from 'util';
 import cmd1500Handle from './cmd1500Handle';
-import {showNotification} from 'utils/notification.js';  // 消息弹窗
+import {
+  showNotification
+} from 'utils/notification.js'; // 消息弹窗
 
 /**
  * 消息核心处理
@@ -15,6 +19,7 @@ export default function socketCoreProcess(websocket, datas) {
     // debugger;
     switch (code) {
       case 1001:
+        localStorage.setItem('device', data.data.token)
         break;
       case 1002:
         // 账号重复登录提示及处理

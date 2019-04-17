@@ -57,7 +57,8 @@ export function findSideBar(userId, code) {
  * 获取第三方数据
  */
 export function findThirdPartData(params) {
-  // debugger
+  debugger
+  console.log("paramsparams", params)
   if (!params.cubeId) {
     params.cubeId = JSON.parse(localStorage.database).license.id;
   }
@@ -74,6 +75,7 @@ export function findThirdPartData(params) {
  */
 export function findDesignSource(sourceId, url) {
   //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
+  console.log("sourceId", sourceId, "url", url)
   if (isNaN(sourceId)) {
     // debugger
     url = sourceId;

@@ -16,9 +16,10 @@
       :data.sync="formatData"
       border
       stripe
-      height="item.height || rowClass"
+      :height="item.height || heights-170"
       :cell-style="cellStyle"
       @row-click="onRowClick"
+      :style="item.style"
     >
       <!-- <el-table-column v-if="item.config.columns.length === 0" width="120">
       <template slot-scope="scope">
@@ -100,6 +101,7 @@ export default {
   },
   data() {
     return {
+       heights: document.body.offsetHeight,
       list: [],
       dialogVisible: false,
       selectedOptions: [],

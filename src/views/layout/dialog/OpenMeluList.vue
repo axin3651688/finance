@@ -146,4 +146,25 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.Pop{
+  .el-input__inner{
+    width:260px;
+    height:40px;
+    background:rgba(242,242,242,1);
+    border:1px solid rgba(0,0,0,0.2);
+    opacity:1;
+    border-radius:8px;
+    margin-top: 20px;
+  }
+  .el-input{
+    width: 220px;
+    line-height: 40px;
+  }
+  .el-input__suffix {
+    top: 10px;
+    left: 230px;
+  }
+}
+</style>
 

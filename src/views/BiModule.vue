@@ -360,13 +360,14 @@ export default {
 
       findDesignSource(api).then(res => {
         //
+        console.log("resres", api);
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
         if (dbData && dbData.source) {
           //说明是从数据库来的
           source = dbData.source;
         }
-        this.loadModuleAfter(source);
+        // this.loadModuleAfter(source);
       });
     },
     /**
@@ -531,6 +532,8 @@ export default {
       findThirdPartData(params)
         .then(res => {
           debugger;
+          // console.log("sql", params);
+          // console.log("res", res);
           this.queryDataAfter(item, res.data.data, $childVue);
         })
         .catch(res => {
