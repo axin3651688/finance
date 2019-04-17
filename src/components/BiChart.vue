@@ -30,6 +30,13 @@ export default {
   },
   methods: {
     upData(from) {
+      //添加专门处理option的回调方法。----start
+      if(this.item.options.optionListeners){
+        let optionListeners = this.item.options.optionListeners;
+        if(optionListeners.type == "before" && typeof optionListeners.handlerBefore == "function"){
+          this.item.options = optionListeners.handlerBefore(this,this.item.options);
+        }
+      }//---end
       let config = this.item.options.getData;
       if (!config || !config.type) {
         console.error(this.item.text + "没有配制正确！");
