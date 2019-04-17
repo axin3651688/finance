@@ -259,6 +259,7 @@ export default {
                   url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
+                  timeout: 0,
                   // data: {
                   //   vartype: _this.form.vartype,
                   //   varnature: _.join(_this.form.nature, ","),

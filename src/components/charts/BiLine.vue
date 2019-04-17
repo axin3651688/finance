@@ -169,8 +169,11 @@ export default {
           trigger: "axis",
           formatter:function(a,b,c,d,e){
             let value = "";
+            debugger;
             if(a && a.length > 0){
               value += a[0].name + "指标如下:<br>";
+              //过滤掉父公司。
+              a = me.parseItemsOfCompany(a);
               a.forEach(ele => {
                 let unitFlag = false;
                 //判断是否有unit
@@ -205,6 +208,27 @@ export default {
       // }
       this.receive.legend.data = dd.legend;
       
+    },
+    /**
+     * 管理驾驶的指标的根据单体、合并变化。
+     * @author szc 2019年4月17日16:01:27
+     */
+    parseItemsOfCompany (aItems) {
+      let me = this,arr = [],series = this.item.options.datas.series;
+      if(aItems.length > series.length){
+        for(let i = 0; i < aItems.length; i++){
+          let it = aItems[i];
+          for(let j = 0; j < series.length; j++){
+            let serItem = series[j];
+            if(it.seriesName == serItem.name){
+              arr.push(it);
+            }
+          }
+        }
+      }else {
+        arr = aItems;
+      }
+      return arr;
     },
     handleDataFormat (dd) {
       //加一个y轴的对应
