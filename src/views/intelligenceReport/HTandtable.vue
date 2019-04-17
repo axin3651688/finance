@@ -981,7 +981,24 @@ export default {
       }
       return false;
     },
-
+    /**
+     * 还款来源的限制。
+     * @author szc 2019年4月17日11:41:42
+     */
+    paymentLimit(row, columns) {
+      if (this.templateId == 7) {
+        if (columns == 11) {
+          let record = this.settings.data[row];
+          if(!record){
+            return true;
+          }
+          if (!record.srepaydate) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
       // 
@@ -1015,6 +1032,8 @@ export default {
         cellMeta.readOnly = this.limitItemOfFill(row,columns);
       }
       if (this.templateId == 7) {
+        //添加一个还款来源的限制。
+        cellMeta.readOnly = this.paymentLimit(row, columns);
         if (columns == 1) {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";

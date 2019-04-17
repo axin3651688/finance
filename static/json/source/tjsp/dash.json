@@ -501,6 +501,7 @@
                         }
                         return data;
                     },
+                    "optionsBefore": function() {},
                     "options": {
                         "type": "line",
                         "getData": {
@@ -540,8 +541,19 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']   zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'] //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
+                            "type": "before",
+                            "handlerBefore": function($vue, option) {
+                                let me = this;
+                                let leaf = $vue.$store.getters.company.leaf;
+                                if (leaf == '1') {
+                                    return option;
+                                }
 
+                                return option;
+                            }
+                        }
                     }
                 },
                 {
