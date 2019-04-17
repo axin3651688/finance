@@ -29,6 +29,7 @@
                     placeholder="请输入文字，按enter建发送信息"
                     v-model="sendText"
                     ref="textarea"
+                    @drop="setDragFile($event)"
                     @keyup.enter.prevent="sendMsg(sendText, null, true)"
           ></textarea>
       </div>
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      canSend: true, // 限制发送频率
       sendText: '',
       showFacePop: false // 是否弹出聊天表情
     }
@@ -67,32 +69,28 @@ export default {
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      debugger
-      console.log('要上传的文件信息：', file)
-
-      // 判断文件类型是否可以上传，不能上传则跳出程序
-      if (!this._isAllowUpload(file.name)) {
-        this.$alert('不支持此类文件传输！', '上传提示：', {
-          confirmButtonText: '确定'
-        })
-        return false
-      }
-
-      let fd = new FormData()
-      fd.append('file', file)
-      fd.append('userId', this.loginUserId)
-      fd.append('size', file.size)
-      this.submitUpload(fd)
+      this.submitUpload(file)
       return true
     },
-    submitUpload(fd) {
-      if (fd) {
+    submitUpload(file) {
+      console.log('要上传的文件信息：', file)
+      // 判断文件类型是否可以上传
+      if (this._isAllowUpload(file.name)) {
+        let fd = new FormData()
+        fd.append('file', file)
+        fd.append('userId', this.loginUserId)
+        fd.append('size', file.size)
+
         FILE_UPLOAD(fd).then(res => {
           console.log('上传群文件res', res)
           // debugger
           if (res.data.code === 200 && res.data.data) {
             this.sendMsg('', res.data.data, false)
           }
+        })
+      } else {
+        this.$alert('不支持此类文件传输！', '上传提示：', {
+          confirmButtonText: '确定'
         })
       }
     },
@@ -107,7 +105,14 @@ export default {
 
     // 向父组件触发发送消息
     sendMsg(sendText, fileData, clearSendText) {
-      debugger
+      // debugger
+      if (!this.canSend) {
+        console.log('发送太快')
+        this.$message({type: 'warning', message: '您发送的太快了，歇会吧！', showClose: true})
+        this.sendText = this.sendText.trim()
+        return false
+      }
+      this.canSend = false
       if (this.socketOffLine) { // socket断开不让发消息
         return this.$message({
           type: 'warning',
@@ -143,8 +148,9 @@ export default {
       return false
     },
 
-    // 获取粘贴板上的图片
-
+    /**
+     * 获取粘贴板上的图片,发送
+     */
     _setPasteImg() {
       let _this = this
       let inputWindow = this.$refs.textarea
@@ -153,25 +159,32 @@ export default {
         if (event.clipboardData || event.originalEvent) {
           let clipboardData = (event.clipboardData || event.originalEvent.clipboardData)
           if (clipboardData.items) {
-            let blob
             for (let i = 0; i < clipboardData.items.length; i++) {
               if (clipboardData.items[i].type.indexOf('image') !== -1) {
-                blob = clipboardData.items[i].getAsFile()
-                console.log('blob', blob)
-                let fd = new FormData()
-                fd.append('file', blob)
-                fd.append('userId', _this.loginUserId)
-                fd.append('size', blob.size)
-                _this.submitUpload(fd)
+                let file = clipboardData.items[i].getAsFile()
+                console.log('file', file)
+                _this.submitUpload(file)
               }
             }
           }
         }
       })
+    },
+
+    /**
+     * 获取拖拽的文件发送
+     */
+    setDragFile(e) {
+      let file = e.dataTransfer.files[0]
+      console.log('file:', file)
+      this.submitUpload(file)
     }
   },
   mounted() {
-    this._setPasteImg()
+    this._setPasteImg() // 获取粘贴板上的图片,发送
+    setInterval(() => { // 限制发送频率
+      this.canSend = true
+    }, 1000)
   }
 }
 </script>

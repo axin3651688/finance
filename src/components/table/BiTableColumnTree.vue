@@ -22,10 +22,25 @@ export default {
   },
   computed: {
     isFolder() {
-      console.log("isFolder");
-      console.log(this.col.children && this.col.children.length);
-
       return this.col.children && this.col.children.length;
+    }
+  },
+  created() {},
+  methods: {
+    upData(item) {
+      this.$set(this, "tableData", item);
+      this.$set(this.tableData, "datas", item.datas);
+      let refs = this.$refs;
+
+      if (refs) {
+        if (refs.tcol) {
+          if (refs.tcol.upData) {
+            refs.tcol.upData(item);
+          }
+        }
+      }
+
+      let bb = {"source_id":"4","token":"bGl1cWklN0UyNDQlNDAxOTIxNjgxMTE5TW96aWxsYTUwV2luZG93c05UNjFXaW42NHg2NEFwcGxlV2ViS2l0NTM3MzZLSFRNTGxpa2VHZWNrb2NuYmlzb2Z0MzAyQ2hyb21lNjYwMzM1OTE4MUVsZWN0cm9uMzAxM1NhZmFyaTUzNzM2JTQwNTkzNiU3RTElN0U2MDAwMDA","scope":"0","tdsourcetag":"s_pctim_aioms"}
     }
   }
 };

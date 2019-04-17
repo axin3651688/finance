@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+       #test{
+       	margin:0 auto;
+       	padding:0px;
+       	width:400px;
+       	font-weight: bold;
+       	margin-top: 150px;
+       }
+	</style>
+	<script type="text/javascript" src="lib/fingerprint2.min.js"></script>
+
+		<script>
+
+		   function test(){
+		   	     new Fingerprint2().get(function(result, components){
+		    	debugger;
+		        document.getElementById("test").innerHTML = "设备号为："+result;
+		        console.log(result); //a hash, representing your device fingerprint
+		        console.log(components); // an array of FP components
+		    });
+		   }
+
+		   
+
+    //        debugger;
+		  // var fingerprint = new Fingerprint2({canvas: true}).get();
+		  //   console.info(fingerprint)
+
+		</script>
+</head>
+<body onload="test()">
+    <div id="test">
+    	
+    </div>
+
+	
+</body>
+</html>

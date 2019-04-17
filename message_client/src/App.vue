@@ -57,7 +57,6 @@ export default {
     },
     initSocket(authorization) {
       let url = process.env.VUE_APP_SOCKET
-      debugger;
       if (authorization != null) {
         url = url + '?Authorization=' + authorization
       } else {

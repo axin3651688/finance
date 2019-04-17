@@ -3,8 +3,7 @@
 	"text": "现金流量表",
 	"config": {
 		"cube": {
-			"subject": "0002",
-			"cubeId": 7
+			"subject": "0002"
 		},
 		"mainDim": "itemperiod",
 		"needDims": ["year", "month", "company"],

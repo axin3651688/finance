@@ -28,9 +28,19 @@ export default {
     initSocket(authorization) {
           let url = "ws://192.168.1.120:7006/cnbi.io/";
       // let url = "ws://192.168.2.237:7006/socket.io/";
+<<<<<<< HEAD
       // let url = "ws://192.168.2.224:7006/cnbi.io/";
+=======
+<<<<<<< HEAD
+      //let url = "ws://192.168.2.224:7006/socket.io/";
+      // let url = "ws://192.168.1.122:7006/socket.io/";
+       let url = "ws://192.168.1.118:7006/cnbi.io/";
+=======
+      let url = "ws://192.168.2.224:7006/cnbi.io/";
+>>>>>>> c0e8d119734db0a2cd11b39c3bc571b9f5f60ec6
       // let url = "ws://192.168.1.122:7006/socket.io/";
       // let url = "wss://192.168.1.118:7006/socket.io/";
+>>>>>>> 753d89be7a81877985e609132ff61975dc03cc92
       if (null != authorization) {
         url = url + "?Authorization=" + authorization;
       } else {

@@ -21,7 +21,7 @@
           >
         </div>
         <h3>登陆</h3>
-        <p class="copy">安徽经邦数据展示客户端</p>
+        <p class="copy">经邦大数据客户端</p>
 
         <!--表单-->
         <div class="login-form" v-show="showWhat === 'form'">

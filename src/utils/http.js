@@ -7,7 +7,7 @@ import {
   SET_FULLSCREEN_LOADING
 } from 'utils/setFullscreenLoading.js'
 // import router from '@v/layout/router'
-
+import packageConfig from "../../package.json"
 axios.defaults.timeout = 100000
 
 let loading
@@ -67,8 +67,20 @@ axios.interceptors.request.use(
     if (localStorage.authorization) {
       // 设置统一请求头 todo 暂时屏蔽
       config.headers.Authorization = localStorage.authorization
+<<<<<<< HEAD
 
+=======
+>>>>>>> c0e8d119734db0a2cd11b39c3bc571b9f5f60ec6
     }
+    if(!localStorage.device){
+      console.error("没有获取到正确的设备信息！");
+    }else{
+      config.headers.device = localStorage.device;//Cnbi.getDevice()
+    }
+    
+    debugger
+    config.headers.version = packageConfig.version;
+    console.log("------headers-----",config.headers);
     return config
   },
 

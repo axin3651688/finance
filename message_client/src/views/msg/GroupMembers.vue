@@ -19,7 +19,14 @@
             <figure>
               <div>
                 <div class="img-box">
-                  <img :src="item.avatar" v-avatar="item.trueName">
+                  <avatar
+                    :username="item.trueName"
+                    :rounded="false"
+                    backgroundColor="transparent"
+                    color="#fff"
+                    :size="40"
+                  ></avatar>
+                  <img :src="item.avatar" onerror="this.style.display='none'"/>
                 </div>
               </div>
               <h4 class="text">{{item.trueName}}</h4>
@@ -69,13 +76,13 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import AddFromFriends from './AddFromFriends'; // 从我的好友中添加群成员
-import AddFromGroups from './AddFromGroups'; // 从我的团队中添加群成员
+import {mapGetters, mapActions} from 'vuex'
+import AddFromFriends from './AddFromFriends' // 从我的好友中添加群成员
+import AddFromGroups from './AddFromGroups' // 从我的团队中添加群成员
 import {
   GROUP_INFO,
   DEL_GROUP_USER
-} from '@m_api/message.js';
+} from '@m_api/message.js'
 
 export default {
   name: 'GroupMembers',
@@ -84,7 +91,7 @@ export default {
       groupMembers: null, // [{},{}]群成员列表
       activePanelName: 'Teams', // Teams or friends
       showAddMember: false, // 是否显示添加群成员弹窗
-    };
+    }
   },
   components: {
     AddFromGroups,
@@ -93,97 +100,97 @@ export default {
   computed: {
     ...mapGetters(['user', 'messageStore']),
     senderId() {
-      return this.user.user.id;
+      return this.user.user.id
     },
     groupId() {
-      return this.messageStore.groupInfo.info.groupId;
+      return this.messageStore.groupInfo.info.groupId
     },
     groupOwnerId() {
-      return this.messageStore.groupInfo.info.ownerId;
+      return this.messageStore.groupInfo.info.ownerId
     }
   },
   methods: {
     // 关闭侧边群组成员栏
     handleCloseGroupMembers() {
-      this.$emit('closeGroupMembers');
+      this.$emit('closeGroupMembers')
     },
 
     // 添加群成员
     addMember() {
-      this.showAddMember = false;
-      console.log('带处理，添加新成员');
+      this.showAddMember = false
+      console.log('带处理，添加新成员')
     },
 
     // 添加群成员标签切换事件
     handleClickTab(tab, event) {
-      console.log('添加群成员标签切换事件', tab, event);
+      console.log('添加群成员标签切换事件', tab, event)
     },
 
     // 群id查询群信息
     getMembers() {
-      debugger;
+      debugger
       GROUP_INFO(this.groupId).then(res => {
-        console.log('群信息', res.data.data);
+        console.log('群信息', res.data.data)
         if (res.data.code === 200) {
-          this.groupMembers = res.data.data.users;
+          this.groupMembers = res.data.data.users
         }
       }).catch(err => {
-        console.log('请求message：', err);
-      });
+        console.log('请求message：', err)
+      })
     },
 
     handleCommand(user) {
       // debugger;
-      let msg = `确定移除群成员 "${user.trueName}" ?`;
+      let msg = `确定移除群成员 "${user.trueName}" ?`
       this.$confirm(msg, '提示', {
         type: 'warning',
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(() => {
-        this.delGroupUser(user);
+        this.delGroupUser(user)
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消移除该群成员'
-        });
-      });
+        })
+      })
     },
 
     // 移除群成员
     delGroupUser(removeMember) {
-      debugger;
+      debugger
       // return;
       let params = {
         groupId: this.groupId,
         remark: removeMember.id.toString(), //  '1,2,3' 传递多个id组成的字符串为批量操作
         senderId: this.senderId
-      };
+      }
       DEL_GROUP_USER(params).then(res => {
-        console.log('移除群成员res:', res);
+        console.log('移除群成员res:', res)
         if (res.data.code === 200) {
           // debugger;
           // 移除群成员成功后从新获取移除群列表
-          this.getMembers();
+          this.getMembers()
           this.$message({
             type: 'success',
             message: res.data
-          });
+          })
         } else {
           this.$message({
             type: 'error',
             message: res.msg
-          });
+          })
         }
       }).catch(err => {
-        console.log('移除群成员err:', err);
-      });
+        console.log('移除群成员err:', err)
+      })
     }
   },
   mounted() {
     // 如果vuex中没有，则请求群信息
-    this.groupMembers = this.getMembers();
+    this.groupMembers = this.getMembers()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -286,16 +293,22 @@ export default {
           align-items: center;
 
           .img-box {
+            position: relative;
             overflow: hidden;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             margin-right: 20px;
             border-radius: 50%;
             background: $colorTheme;
 
             img {
+              position: absolute;
               width: 100%;
               height: 100%;
+            }
+
+            div {
+              position: absolute
             }
           }
 

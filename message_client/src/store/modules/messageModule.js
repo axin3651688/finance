@@ -99,7 +99,7 @@ const messageModule = {
 
     // 更新session消息队列用户在线状态，(临时的)
     MutationUpdateSessionOnlineState(state, dataObj) {
-      debugger
+      // debugger
       let sessionList = state.messageStore.sessionList
       for (let index in sessionList) {
         if (sessionList[index].targetId === dataObj.targetId) {

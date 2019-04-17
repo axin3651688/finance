@@ -42,7 +42,7 @@
     </div>
 
     <!--群成员侧边栏组件-->
-    <sidebar-pop :size="300" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop" style="z-index: 20">
+    <sidebar-pop :size="240" :showSidebarPop.sync="showSidebarPop" v-if="showSidebarPop" style="z-index: 20">
       <group-members @closeGroupMembers="showSidebarPop=false"></group-members>
     </sidebar-pop>
 
@@ -59,6 +59,7 @@ import FILE_TYPE from '@ma/data/fileType.js' // 可以上传的文件列表
 import GroupMembers from '@mv/msg/GroupMembers'
 import SidebarPop from '@mc/sidebar_pop/SidebarPop'
 import InfiniteLoading from 'vue-infinite-loading'
+import {SET_FULLSCREEN_LOADING} from '@mu/setFullscreenLoading.js'
 
 import {
   FIND_SINGLE_MSG,
@@ -116,12 +117,15 @@ export default {
   },
   watch: {
     /**
-     * 当自己的socket重连成功后，重新加载当前聊天对象的聊天内容
+     * 当自己的socket重连成功后，重新加载当前聊天对象的聊天内容，10秒内重连不频发请求
      */
     socketOffLine(val) {
-      if (!val) {
-        this._resetChat()
-      }
+      if (this.timer) clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        if (!val) {
+          this._resetChat()
+        }
+      }, 10000)
     },
 
     /**
@@ -140,7 +144,6 @@ export default {
         return false
       }
 
-      debugger
       this._socketUpdateChatState(val.data, 1) // 收到消息后,告诉服务器我已经收到消息了，但还没有阅读
       if (val.data.senderId === this.loginUserId) { // 如果发送消息的人是自己，不处理
         return false
@@ -161,7 +164,6 @@ export default {
         return false
       }
 
-      debugger
       this._socketUpdateChatState(val.data, 2) // 收到消息后,告诉服务器我已经收到消息了，并且阅读了
 
       console.log('监听到聊天消息：', val)
@@ -198,9 +200,10 @@ export default {
      * 重置聊天相关的内容
      */
     _resetChat() {
+      debugger
+      this.infiniteHandlerState.reset() // 重置无限加载
       this.page = 1 // 重置请求的消息页码
       this.msgList = [] // 重置消息队列
-      this.infiniteHandlerState.reset() // 重置无限加载
     },
 
     /**
@@ -208,9 +211,10 @@ export default {
      */
     requestMsgHistory() {
       // debugger
+      SET_FULLSCREEN_LOADING(false) // 禁用全屏加载动画
       let postData = {
         page: this.page,
-        size: 12
+        size: 10
       }
       switch (this.miniType) {
         case 1100: // 单聊
@@ -259,15 +263,16 @@ export default {
             this._chatWindowScrollToBottom()
           })
         }
-        this.page++
-        this.infiniteHandlerState.loaded()
 
         // 请求服务器更新已读消息状态
+        // debugger
         let lastItem = this.msgList[this.msgList.length - 1]
         if (lastItem) {
-          // this._httpClearChatState(lastItem)
+          this._httpClearChatState(lastItem)
           this._socketClearChatState(lastItem)
         }
+        this.page++
+        this.infiniteHandlerState.loaded()
       } else {
         this.infiniteHandlerState.complete()
       }
@@ -329,6 +334,7 @@ export default {
      */
     _httpSend(sendData, pushData) {
       // debugger
+      SET_FULLSCREEN_LOADING(false) // 禁用全屏加载动画
       switch (this.miniType) {
         case 1100: // 单聊
           SAVE_SINGLE_MSG(sendData.data)

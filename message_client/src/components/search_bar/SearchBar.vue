@@ -39,9 +39,16 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item" v-for="item in searchData.contacts">
+            <li class="content-item" v-for="item in searchData.contacts" :key="item.id">
               <div class="img-box item-avatar" @click="redirectContact(item.id, 'ContactsFriends')">
-                <img :src="item.avatar" v-avatar="item.trueName">
+                <avatar
+                  :username="item.trueName"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  :size="30"
+                ></avatar>
+                <img :src="item.avatar" onerror="this.style.display='none'"/>
               </div>
               <h4 class="item-title">{{item.trueName}}</h4>
               <div class="item-btn" @click="redirectSingleChat(item)">聊天</div>
@@ -57,10 +64,17 @@
             <div class="panel-btn">更多>></div>
           </div>
           <ul class="panel-content">
-            <li class="content-item content-item__group" v-for="item in searchData.groups"
+            <li class="content-item content-item__group" v-for="item in searchData.groups" :key=item.id
                 @click="redirectGroupChat(item)">
               <div class="img-box item-avatar">
-                <img :src="item.avatar" v-avatar="item.text">
+                <avatar
+                  :username="item.text"
+                  :rounded="false"
+                  backgroundColor="transparent"
+                  color="#fff"
+                  :size="30"
+                ></avatar>
+                <img :src="item.avatar" onerror="this.style.display='none'"/>
               </div>
               <h4 class="item-title">{{item.text}}</h4>
             </li>
@@ -397,6 +411,9 @@ export default {
 
         .img-box {
           @include imgBox($width: 30px, $height: 30px, $borderRadius: 50%)
+          div{
+            position: absolute;
+          }
         }
 
         .item-avatar {
