@@ -93,6 +93,9 @@ import request from "utils/http";
 import { mapGetters } from "vuex";
 import tools from "utils/tools";
 import axios from "axios";
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+instance.interceptors.response.user(function(){});
 import moment from "moment";
 let nowDate = moment().format("YYYY-MM");
 export default {
@@ -255,7 +258,7 @@ export default {
                     _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
                     0
                 };
-                axios({
+                instance({
                   url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
