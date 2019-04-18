@@ -135,13 +135,12 @@ export default {
     // debugger;
   },
   watch: {
-    receive: {
-      handler: function() {
-        // this.options.series[0].data = this.item.options.datas
-        //   ? this.item.options.datas.slice(1, 2)[0]
-        //   : [];
-      }
-    }
+    // receive: {
+    //   handler: function(old, newValue) {
+    //     let me = this;
+    //   },
+    //   deep: true
+    // }
   },
   methods: {
     upData(item) {    
@@ -169,11 +168,10 @@ export default {
           trigger: "axis",
           formatter:function(a,b,c,d,e){
             let value = "";
-            debugger;
             if(a && a.length > 0){
               value += a[0].name + "指标如下:<br>";
               //过滤掉父公司。
-              a = me.parseItemsOfCompany(a);
+              // a = me.parseItemsOfCompany(a);
               a.forEach(ele => {
                 let unitFlag = false;
                 //判断是否有unit

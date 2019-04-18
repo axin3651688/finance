@@ -24,28 +24,28 @@ function endLoading() {
 
 // 请求拦截
 axios.interceptors.request.use(config => {
-    // if(config.method === 'post') {
-    // config.headers['Content-Type'] = 'application/json; charset=UTF-8';
-    // config.transformRequest = [function (data, headers) {
-    //     // return qs.stringify(data);
-    //     console.log(data)
-    // }];
-    // }
-    // 加载动画
-    startLodading();
-    // debugger
-    if (localStorage.authorization) {
-        // 设置统一请求头 todo 暂时屏蔽
-        config.headers.Authorization = localStorage.authorization;
-    }
-    if(localStorage.authorization){
-        config.headers.Authentication = localStorage.authorization;
-    }
-    return config;
-}, error => {
-    return Promise.reject(error)
-})
-// 响应拦截
+        // if(config.method === 'post') {
+        // config.headers['Content-Type'] = 'application/json; charset=UTF-8';
+        // config.transformRequest = [function (data, headers) {
+        //     // return qs.stringify(data);
+        //     console.log(data)
+        // }];
+        // }
+        // 加载动画
+        startLodading();
+        // debugger
+        if (localStorage.authorization) {
+            // 设置统一请求头 todo 暂时屏蔽
+            config.headers.Authorization = localStorage.authorization;
+        }
+        if (localStorage.authorization) {
+            config.headers.Authentication = localStorage.authorization;
+        }
+        return config;
+    }, error => {
+        return Promise.reject(error)
+    })
+    // 响应拦截
 axios.interceptors.response.use(response => {
     // 结束加载动画
     endLoading();
