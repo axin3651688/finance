@@ -90,12 +90,10 @@
 </template>
 <script>
 import request from "utils/http";
+import extraRequest from "utils/extraHttp"
 import { mapGetters } from "vuex";
 import tools from "utils/tools";
 import axios from "axios";
-const instance = axios.create();
-instance.interceptors.request.use(function () {/*...*/});
-instance.interceptors.response.user(function(){});
 import moment from "moment";
 let nowDate = moment().format("YYYY-MM");
 export default {
@@ -258,27 +256,12 @@ export default {
                     _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
                     0
                 };
-                instance({
+                
+                extraRequest({
                   url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
                   timeout: 0,
-                  // data: {
-                  //   vartype: _this.form.vartype,
-                  //   varnature: _.join(_this.form.nature, ","),
-                  //   varcompany: "'" + _.join(coms, "','") + "'",
-                  //   varyear: _this.form.startperiod.substring(0, 4),
-                  //   orgmonth:
-                  //     _.replace(_this.form.startperiod, /-/g, "").substring(
-                  //       4,
-                  //       6
-                  //     ) - 0,
-                  //   endmonth:
-                  //     _.replace(_this.form.endperiod, /-/g, "").substring(
-                  //       4,
-                  //       6
-                  //     ) - 0
-                  // },
                   headers: {
                     "X-Requested-With": "XMLHttpRequest",
                     "Content-Type": "application/json; charset=UTF-8"
@@ -287,8 +270,10 @@ export default {
                   if (result.status == 200) {
                     if (result.data) {
                       this.$message({
+                        showClose: true,
                         type: "success",
-                        message: result.data.msg
+                        message: result.data.msg,
+                        duration: 0
                       });
                     }
                   }
