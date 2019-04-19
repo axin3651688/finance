@@ -35,7 +35,7 @@
                 // })
                 // if(is) {
                     data.forEach(item => { // 没有数据的不显示行数据
-                        if((item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || (item.ljsj && item.ljsj!=0)){
+                        if((item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || (item.ljsj && item.ljsj!=0) || (item.cye && item.cye!=0)){
                             datas.push(item);
                         }
                     });
