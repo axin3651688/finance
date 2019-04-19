@@ -155,6 +155,7 @@ export default {
     };
   },
   created() {
+    debugger;
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);

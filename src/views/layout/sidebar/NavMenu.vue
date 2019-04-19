@@ -96,6 +96,17 @@ export default {
       showDims.day = false;
     },
     /**
+     * 关闭抽取的提示框
+     * @author szc 2019年4月19日14:22:11
+     */
+    closeMessageOfExtra () {
+      if(this.$store.extraMessage){
+        let extraMessage = this.$store.extraMessage;
+        extraMessage.close();
+        delete this.$store.extraMessage;
+      }
+    },
+    /**
      * 有时会添加一些东西在状态管理中，所以这个地方可以进行删除、或者别的操作。
      * @author szc 2019年4月1日16:11:42
      */
@@ -109,6 +120,8 @@ export default {
       }
       //如果是系统设置下的节点就隐藏导航栏的切换。
       this.hideDims(e);
+      //处理抽取的成功之后的提示，自动关闭。
+      this.closeMessageOfExtra();
     },
     shownavMenu(e) {
       debugger;
@@ -120,6 +133,10 @@ export default {
       //在此把点击的节点放到缓存中。
       let siderState = JSON.stringify(e);
       localStorage.setItem("siderState",siderState);
+      //因为后面会从缓存中取这个东西，所以手动改变一下，不然请求的不是想要的。
+      if(e && e.url){
+        localStorage.setItem("module_api_cache",e.url);
+      }
       //点击之前要进行的操作。
       this.changeBefore(e);
       let flag = this.lookNodeOfCompany(e);

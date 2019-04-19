@@ -36,13 +36,12 @@ axios.interceptors.response.use(response => {
     endLoading();
     return response;
 }, error => {
-    debugger;
     // 错误提醒
     endLoading();
-    Message({
-        message: "抽取出现错误！",
-        type: "error"
-    });
+    // Message({
+    //     message: "抽取出现错误！",
+    //     type: "error"
+    // });
     console.error(error);
 
     // 获取错误状态码
