@@ -65,11 +65,16 @@
 						
 						data.forEach(item => { // 没有数据的不显示行数据
 							if((item.dysj && item.dysj!=0) || (item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || 
-							(item.ljsj && item.ljsj!=0) || (item.sntq1 && item.sntq1!=0) || (item.tbzje1 && item.tbzje1!=0)){
+							(item.ljsj && item.ljsj!=0) || (item.sntq1 && item.sntq1!=0) || (item.tbzje1 && item.tbzje1!=0)||
+							(item.cye && item.cye!=0)){
 								datas.push(item);
 							}
 						});
-						return datas;
+						if(datas && datas.length>0){
+							return datas;
+						}else{
+							return data;
+						}						
 					// }else{
 						// return data ;
 					// }
