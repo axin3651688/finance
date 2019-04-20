@@ -91,7 +91,7 @@
                         }
                         return params;
                     },
-                    "queryDataAfter": function(data, $vue) {
+                    "queryDataAfter": function(data, $vue) {debugger 
                         debugger
                         let datas = [];
                         let datax = [];
