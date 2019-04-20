@@ -53,6 +53,7 @@
       {
         "text": "集中度（%）",
         "type":"decimal",
+        "width":"120",
         "conversion":"%",
         "id": "jzd"
       },
