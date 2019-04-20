@@ -642,7 +642,6 @@ export default {
       }
     },
     rightOfLeafCompany() {
-      debugger;
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
       let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
@@ -1138,7 +1137,6 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      debugger;
       let me = this;
       if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1232,7 +1230,6 @@ export default {
           
         }
       }
-      debugger;
       //基本情况表、市管企业不显示编码。过滤掉
       if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {
@@ -1309,7 +1306,6 @@ export default {
      * 
      */
     emailValidator (value, callback) {
-      debugger;
       let me = this;
     },
     /**
@@ -1584,7 +1580,6 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
-      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1611,7 +1606,7 @@ export default {
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
       //三张主表加十三个审计月。
-      // this.mainTableMonth();
+      this.mainTableMonth();
       this.reportData(this.datas);
     },
     /**
@@ -1619,10 +1614,13 @@ export default {
      * @author szc 2019年4月20日15:03:07
      */
     mainTableMonth () {
-      debugger;
       let me = this,arr = ['1','2','3'];
       if(arr.indexOf(this.templateId) != -1){
-
+        let monthConfig = {value:13,id:"month"};
+        me.$store.monthConfig = monthConfig;
+      }else {
+        let monthConfig = {value:12,id:"month"};
+        me.$store.monthConfig = monthConfig;
       }
     },
     /**
@@ -1855,7 +1853,6 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      debugger;
       this.downloadTemplateItems(val, item);
       // console.log("option:", val);
       // console.log("option data:", item);
@@ -1867,7 +1864,6 @@ export default {
      * @author szc 2019年4月11日19:25:49
      */
     downloadTemplateItems (val, item) {
-      debugger;
       let me = this,arr = this.templateIds || [],templateItems = this.templateItems || [];
       if(val){
         arr.push(item.templateId - 0);
@@ -2003,7 +1999,6 @@ export default {
     },
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
-      debugger;
       if (!value) {
         return;
       }
@@ -2043,7 +2038,6 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
-      debugger;
       let source = [];
       let str = "",finanData = [];
       if(this.financingOptions && this.financingOptions.length > 0) {

@@ -565,7 +565,11 @@ export default {
     };
   },
   created(){
-    debugger
+    let showDims = this.showDims;
+    showDims.company = true,
+    showDims.year = true,
+    showDims.month = true,
+    showDims.conversion = false;
     // 获得默认的公司、日期、单位
         this.companyId = this.$store.getters.company ;
         this.yearId = this.$store.getters.year ;
@@ -596,7 +600,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["year", "month", "company", "conversion"])
+    ...mapGetters(["year", "month", "company", "conversion","showDims"])
   },
   mounted() {
     //计算公式 资产总计
