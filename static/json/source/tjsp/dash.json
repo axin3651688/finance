@@ -387,10 +387,10 @@
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.leaf && $vue.$store.getters.treeInfo.id != "121") {
                                 //params.sourceApi = "cnbi/json/source/tjsp/yszkTwoDebug.json";
-                                params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/yszkDebugDemo.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/yszkDebugDemo.json";
                             return params;
                         },
                         "way": "addTab",
@@ -640,11 +640,11 @@
                         "type": "click",
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.leaf) {
-                                params.sourceApi = "cnbi/json/source/tjsp/dashYfzkDrill.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/dashYfzkDrill.json";
                                 //    params.sourceApi = "cnbi/json/source/tjsp/yfzk.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/dashYfzkDrill.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/dashYfzkDrill.json";
                             return params;
                         },
                         "way": "addTab",
@@ -848,10 +848,10 @@
                         "type": "click",
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.nisleaf) {
-                                params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/dashQtyskDrill.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/dashQtyskDrill.json";
                             return params;
                         },
                         "way": "addTab",

@@ -1087,7 +1087,7 @@ export default {
      */
     limitItemOfFill (row,columns) {
       let me = this;
-      if (this.fixed == 0 && this.templateId == 5) {
+      if (this.fixed == 0) {
         if (columns > 7) {
           let record = this.settings.data[row];
           if(!record){return true}
@@ -1584,6 +1584,7 @@ export default {
     },
     //填报页面下拉获取要传递的数据
     matching(list, index, item) {
+      debugger;
       let date;
       if (this.month < 10) {
         date = this.year + "0" + this.month;
@@ -1609,7 +1610,20 @@ export default {
       this.$store.curParams = this.datas;
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
+      //三张主表加十三个审计月。
+      // this.mainTableMonth();
       this.reportData(this.datas);
+    },
+    /**
+     * 三张主表加十三个审计月。
+     * @author szc 2019年4月20日15:03:07
+     */
+    mainTableMonth () {
+      debugger;
+      let me = this,arr = ['1','2','3'];
+      if(arr.indexOf(this.templateId) != -1){
+
+      }
     },
     /**
      * 控制按钮显示与否

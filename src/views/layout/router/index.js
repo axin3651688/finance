@@ -60,17 +60,17 @@ const router = new Router({
                         import ('@v/test/Role.vue')
                 },
                 {
-                    path: '/handsontable',
-                    name: 'handsontable',
+                    path: '/fillData',
+                    name: 'fillData',
                     component: () =>
                         import ('@v/intelligenceReport/HTandtable.vue')
                 },
-                {
-                    path: '/fillTable',
-                    name: 'fillTable',
-                    component: () =>
-                        import ('@v/intelligenceReport/SHandSonTable.vue')
-                },
+                // {
+                //     path: '/fillTable',
+                //     name: 'fillTable',
+                //     component: () =>
+                //         import ('@v/intelligenceReport/SHandSonTable.vue')
+                // },
                 {
                     path: '/c',
                     name: 'cx',
