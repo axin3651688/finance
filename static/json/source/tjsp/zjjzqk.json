@@ -9,6 +9,11 @@
   "__queryDataAfter":function(data,$vue){//数据的后置处理
     debugger
     let me = this;
+    if(me.id === "1013"){
+      data.forEach(res => {
+        if(res.yhzhmc === "SH")res.yhzhmc = "合计"
+      });
+    }
     let datas = [];//有数据的
     let datax = [];//没有数据的
     me.items[0].updateView = $vue.updateView;
@@ -113,7 +118,12 @@
     "id": "zjjzqk",
     "text": "资金集中情况明细表",
     "show":true,
-    
+    "queryDataAfter":function(data, $vue){
+        data.forEach(res => {
+            if(res.yhzhmc==="SH")res.yhzhmc = "合计"
+        });
+        return data;
+    },
     "toolbar":[{
       "id":"1",
       "text":"刷新",
