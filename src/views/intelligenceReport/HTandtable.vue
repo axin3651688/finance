@@ -1325,6 +1325,14 @@ export default {
         this.parseNumberToString(itemNames,rows);
       }
       this.settings.data = rows;
+      //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
+      if(this.templateId == "8" && rows && rows.length > 0){
+        rows.forEach(item => {
+          if(item["B"] == 0){
+            item["B"] = "";
+          }
+        });
+      }
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
