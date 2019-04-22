@@ -316,12 +316,12 @@ export default {
     },
     //添加在表头要加的内容
     tableBefore(){
-      debugger;
       let me = this;
       if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
         this.titleText = this.item.tableBeforeFun(this,this.titleText);
       }else {
         let period = me.$store.selectPeriod;
+        // let period = me.titleContentPeriod();
         let year = period.substring(0,4);
         let month = period.substring(4,6);
         let company = me.$store.getters.companyName;
@@ -332,6 +332,25 @@ export default {
         let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + 
         "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
         this.titleText = html;
+      }
+    },
+    /**
+     * 可能存在不是选择日期的钻取。(做个兼容)
+     * @author szc 2019年4月22日10:04:23
+     */
+    titleContentPeriod () {
+      debugger;
+      let me = this,year = this.$store.getters.year,month = this.$store.getters.month,period;
+      if(me.$store.selectPeriod){
+        return me.$store.selectPeriod;
+      }else {
+        if(month < 10){
+          month = "0" + month;
+          period = year + month;
+        }else {
+          period = year + "" + month;
+        }
+        return period;
       }
     },
     rowClass({ row, rowIndex }) {

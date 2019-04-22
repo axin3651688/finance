@@ -700,6 +700,11 @@ export default {
     getActiveTabName(item) {
       return item.id;
     },
+    /**
+     * tab页的关闭。
+     * @author szc 2019年4月22日10:20:33
+     * add：添加一个删除当前选择日期的处理 2019年4月22日10:21:09 szc
+     */
     removeTab(targetName) {
       let tabs = this.items;
       let tabName = this.activeTabName;
@@ -717,6 +722,10 @@ export default {
       this.items = tabs.filter(tab => tab.text !== targetName);
       if (this.items.length == 1) {
         this.activeTabName = "0";
+      }
+      //删除当前选中的日期。
+      if(this.$store.selectPeriod){
+        delete this.$store.selectPeriod;
       }
     },
     /**

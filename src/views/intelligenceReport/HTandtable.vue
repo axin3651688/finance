@@ -195,6 +195,13 @@ export default {
         afterChange: Function,
         cells: Function
         // ,
+        // beforeOnCellMouseDown: Function,
+        // afterOnCellMouseDown: Function,
+        // afterRenderer: Function,
+        // afterSelection: Function,
+        // afterBeginEditing: Function,
+        // afterCellMetaReset: Function
+        // ,
         // getCellEditor: Function//获取编辑器
         // ,
         // beforeChange: Function
@@ -492,6 +499,12 @@ export default {
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
+    // this.settings.beforeOnCellMouseDown = this.beforeOnCellMouseDown;
+    // this.settings.afterOnCellMouseDown = this.afterOnCellMouseDown;
+    // this.settings.afterRenderer = this.afterRenderer;
+    // this.settings.afterSelection = this.afterSelection;
+    // this.settings.afterBeginEditing = this.afterOnCellCornerDblClick;
+    // this.settings.afterCellMetaReset = this.beforeAutofill;
     //融资情况明细表的下拉数据 机构名称
     mechanism().then(res => {
       this.mechanismdown = res.data.data;
@@ -510,6 +523,32 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    beforeAutofill (aa,cc,dd,ee,ff,gg,hh) {debugger},
+    afterOnCellCornerDblClick (aa,cc,dd,ee,ff,gg,hh) {
+      let me = this;
+      debugger;
+    },
+    afterSelection (aa,cc,dd,ee,ff,gg,hh) {
+      // debugger;
+      let me = this;
+      if(gg == 0){
+        gg = ""
+      }
+    },
+    afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
+      // debugger;
+      let me = this;
+    },
+    /**
+     * 鼠标按下单元格之前的处理。
+     * @author szc 2019年4月22日11:35:10
+     */
+    beforeOnCellMouseDown (aa,cc,dd,ee,ff,gg) {
+      let me = this;
+    },
+    afterOnCellMouseDown (aa,cc,dd,ee,ff,gg) {
+      let me = this;
+    },
     /**
      * 隐藏元单位的切换，默认是元。
      * @author szc 2019年4月9日14:54:50
@@ -1050,7 +1089,7 @@ export default {
       }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
-        if (columns == 0 || columns == 2) {
+        if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1219,6 +1258,13 @@ export default {
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
             }
+            //资金集中情况表的render方法重新写里面的内容。
+            if(this.templateId == "8"){
+              let arr = ['B'];
+              if(arr.indexOf(col.id) != -1){
+                cc.renderer = this.handleTemplate8;
+              }
+            }
           }
           // cc.validator = this.emailValidator;
           newCoulmns.push(cc);
@@ -1279,6 +1325,14 @@ export default {
         this.parseNumberToString(itemNames,rows);
       }
       this.settings.data = rows;
+      //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
+      if(this.templateId == "8" && rows && rows.length > 0){
+        rows.forEach(item => {
+          if(item["B"] == 0){
+            item["B"] = "";
+          }
+        });
+      }
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
@@ -1301,6 +1355,29 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    /**
+     * 处理资金集中情况表。
+     * @author szc 2019年4月22日10:57:40
+     */
+    handleTemplate8 (instance, td, row, col, prop, value, cellProperties) {
+      let me = this;
+      if (!value) {
+        return;
+      }
+      if (/[\u4e00-\u9fa5]/.test(value)) {
+        td.innerHTML = value;
+        return;
+      }
+      let text = value;
+      // let datas = this.financing.filter(item => item.id === value);
+      // if (datas.length == 0) {
+      //   td.innerHTML = "";
+      //   return;
+      // } else {
+      //   text = datas.length > 0 ? datas[0].text : value;
+      // }
+      td.innerHTML = text;
     },
     /**
      * 
@@ -1883,7 +1960,6 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
