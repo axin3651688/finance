@@ -3,6 +3,13 @@
   <div v-if="divShow" class="divContent" v-html="divContent"></div>
   <div v-else-if="tableShow">
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
+    <el-alert
+      v-if="item.property"
+      title="温馨提示：此公司不为重点单位，不展示数据！"
+      type="warning"
+      center
+      show-icon>
+    </el-alert>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <template 
@@ -108,12 +115,13 @@ export default {
     //   console.log("用户demo：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
     // }
     // console.log("用户：",this.$store.getters.user);
-    // debugger
+    debugger
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
     }else{
       // 计算当前页面的高度 得出表格的高度
-      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+      if(!this.item.property)this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+      if(this.item.property)this.heights = document.body.offsetHeight - 200;
     }
     //是否具有导出功能。localStorage
     this.showBtnOfExport();
@@ -143,6 +151,9 @@ export default {
           return item.id == siderState.code;
         });
       }
+      if(!toolbars){
+        return;
+      }
       toolbars.forEach(item => {
         item.showBtn = true;
       });
@@ -162,14 +173,16 @@ export default {
         if(this.item.stype=="table"){
           this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
         }else{
-          this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+          if(!this.item.property)this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+          if(this.item.property)this.heights = document.body.offsetHeight - 200;
         }        
         const me = this ;
         window.onresize = function temp(){
             if(me.item.stype=="table"){
               me.heights = document.body.offsetHeight - 40 - 64 - 15 ;
             }else{
-              me.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+              if(!me.item.property)me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+              if(me.item.property)me.heights = document.body.offsetHeight - 200;
             } 
         };
     },
@@ -278,6 +291,7 @@ export default {
           });
         }
       }
+      this.setTableScollHeight();
       //自定义要显示的内容。
       if(this.item.divContent){
         if(this.item.customDivCotent && typeof this.item.customDivCotent == "function"){

@@ -200,6 +200,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, col, scope, rows) {
+      // debugger;
       let colId = col.id,
         row = scope.row;
       let rowId = row.id || row.nid;
@@ -214,14 +215,16 @@ export default {
         //  debugger
       }
       if (!row[colId] && !union) {
-        let temp = datas.filter(tempRow=>{
-          return tempRow.id == rowId;
-        })
-        if(temp.length > 0 && temp[0][colId]){
-            row = temp[0];
-        }else{
-             return "--";
-        }
+        return '--';
+        // let temp = datas.filter(tempRow=>{
+        //   return tempRow.id == rowId;
+        // })
+        // if(temp.length > 0 && temp[0][colId]){
+        //     if(temp.length=== 1)row = temp[0];
+        //     if(temp.length>=2)row = temp[temp.length-1];
+        // }else{
+        //      return "--";
+        // }
        
       }
       let value = 0;

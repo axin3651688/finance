@@ -19,7 +19,12 @@
         let me = this ; 
         let property = $vue.$store.getters.treeInfo.property1 ;                
         if(me.id == "001401"){
-            if(property == "0"){data = [] ;} 
+            if(property == "0"){
+                data = [] ;
+                me.items[0].property = true; 
+            }else{
+                me.items[0].property = false;
+            } 
         }
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
