@@ -143,6 +143,9 @@ export default {
           return item.id == siderState.code;
         });
       }
+      if(!toolbars){
+        return;
+      }
       toolbars.forEach(item => {
         item.showBtn = true;
       });
