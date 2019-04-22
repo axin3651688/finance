@@ -200,7 +200,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, col, scope, rows) {
-      debugger;
+      // debugger;
       let colId = col.id,
         row = scope.row;
       let rowId = row.id || row.nid;

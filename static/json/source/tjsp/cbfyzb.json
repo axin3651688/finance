@@ -11,7 +11,12 @@
         // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
         let property = me.$store.getters.treeInfo.property1 ; 
         if(me.id == "001403"){
-            if(property == "0")data = [] ; 
+            if(property == "0"){
+                data = [] ; 
+                me.items[0].property = true; 
+            }else{
+                me.items[0].property = false; 
+            }
         }
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
