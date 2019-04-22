@@ -26,6 +26,9 @@
                     return params;
     
                 },
+                "queryDataAfter":function(data,$vue){
+                  return data ;
+                },
                 "config": {
                     "sql":"",
                     "sql1":"SELECT A.DIM_COMPANY id,(CASE WHEN GROUPING_ID(A.DIM_COMPANY,B.SNAME)=3 THEN '总计' ELSE B.SNAME END) GSMC,(CASE WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=1 THEN '小计' ELSE DIM_BANKNAME END) JGMC, D.SNAME RZLX, SUM(NVL(A.FACT_A, 0)) JKBJ,A.SSTARTDATE QSRQ, A.SENDDATE DQRQ, A.FACT_B LL, (CASE WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=1 THEN (CASE WHEN SUM(NVL(A.FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(A.FACT_A,0)*NVL(A.FACT_C,0))*100/SUM(NVL(A.FACT_A,0))),4) END) WHEN GROUPING_ID(A.DIM_COMPANY, B.SNAME)=3 THEN (CASE WHEN SUM(NVL(A.FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(NVL(A.FACT_A,0)*NVL(A.FACT_C,0))/SUM(NVL(A.FACT_A,0))),4) END) ELSE FACT_C END) ZHCB, A.SREPAYDATE YHKRQ, E.SNAME HKLY, (CASE WHEN A.STATUS='1' THEN '新增' WHEN A.STATUS=-1 THEN '减少' ELSE '' END )XZJS, (CASE WHEN A.CISGUARANTEE='1' THEN '是' ELSE '否' END) SFJTDB, F.SNAME DBFS, A.SNOTE BZ FROM (SELECT * FROM DW_FACTFINANCEDETAIL WHERE DIM_FINANCE = :finance ) A left JOIN (SELECT SCODE,SNAME FROM DW_DIMCOMPANY WHERE (SPCODE LIKE :company||'%' OR SCODE=:company) AND STYPE='1' AND CISDEL='N') B ON B.SCODE=A.DIM_COMPANY left JOIN DW_DIMFINANCE D ON A.DIM_FINANCE = D.SCODE left JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='21') E ON A.DIM_REPAYSOURCE=E.SCODE left JOIN (SELECT SCODE,SNAME FROM DW_DIMDROPMENU WHERE SPCODE='20') F ON A.DIM_GUARANTEE=F.SCODE WHERE :period BETWEEN SUBSTR(SSTARTDATE,1,6) AND SUBSTR(SENDDATE,1,6) GROUP BY ROLLUP((A.DIM_COMPANY),(B.SNAME, DIM_BANKNAME, D.SNAME,A.SSTARTDATE, A.SENDDATE, A.FACT_B, A.FACT_C, A.SREPAYDATE, E.SNAME, A.STATUS, A.CISGUARANTEE, F.SNAME, A.SNOTE )) ORDER BY A.DIM_COMPANY", //
@@ -138,6 +141,28 @@
                         }
                   ],
                   "rows": [],
+                  "drillProperties":["gsmc","jgmc"],
+                  "cellStyle":function(row){
+                      let record = row.row;
+                      let textIndent = '';
+                      let css = "padding: 4px 0;";
+                      let pro = row.column.property; //列id
+                      if (!pro) {
+                          return css;
+                      }
+                      let drillProperties = this.drillProperties; //钻取列获取
+                      if (drillProperties.indexOf(pro) != -1) { //匹配需要下钻的列
+                        if ((record.gsmc && record.gsmc === "总计") || (record.jgmc && record.jgmc === "小计") ) { 
+                            let drill = "textAlign: center;"; //可以下钻的科目的颜色的设置
+                            css = css + textIndent + drill;
+                            return css;
+                        } else {
+                            return css + textIndent;
+                        }
+                    } else {
+                        return css + textIndent;
+                    }
+                  },
           "groupConfig": { "idProperty": "id","textProperty": "gsmc"},//可选
           "rowSpanAndColSpanHandler":function({ row, column, rowIndex, columnIndex },option){//单元格处理 retrun  {rowspan:2,colspan:5}//可选
               let data = option.item.datas;
