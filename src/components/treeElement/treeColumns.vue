@@ -200,7 +200,43 @@ export default {
                 return see.handler(this, see);
             }
             return Utils.changeFormatData(me.item.proportion, me.data, me, see) ;
-        }
+        },
+        // 导出报表
+        handleDownload(vue){
+            debugger
+            vue.downloadLoading = true;
+            import('@/excel/Export2Excel').then(excel => {debugger
+                const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
+                const columns = vue.item.config.columns;
+                if(columns && columns.length > 0){
+                for(let i = 0;i < columns.length;i++){
+                    if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
+                    if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
+                }
+                // tHeader.push(columns[0].text);
+                // filterVal.push(columns[0].id);
+                }
+                const list = vue.item.datas;//获取数据
+                const data = vue.formatJson(filterVal, list);//根据id获取相应的数据
+                excel.export_json_to_excel({
+                header: tHeader,
+                data,
+                filename: vue.item.text,//导出表的表名称
+                autoWidth:  "200px",
+                bookType: 'xlsx' //导出的类型
+                })
+                vue.downloadLoading = false
+            })
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => {
+                if (j === 'timestamp') {
+                    return parseTime(v[j])
+                } else {
+                    return v[j]
+                }
+            }))
+        },
         
     }
 }
