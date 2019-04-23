@@ -30,7 +30,7 @@ function generateArray(tables) {
             var cell = columns[C];
             var colspan = cell.getAttribute('colspan');
             var rowspan = cell.getAttribute('rowspan');
-            var cellValue = cell.innerText;
+            var cellValue = cell.innerText || cell.textContent;
             if (C < 2 && cellValue == "") {
                 cellValue = cell.querySelectorAll('div')[0].textContent;
             }
