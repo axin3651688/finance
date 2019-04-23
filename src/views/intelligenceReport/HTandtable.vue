@@ -1265,8 +1265,13 @@ export default {
                 cc.renderer = this.handleTemplate8;
               }
             }
+            // else if (this.templateId == "7") {
+            //   cc.allowInvalid = true;
+            //   // cc.invalidCellClassName = "htInvalid";
+            //   // cc.validator = this.emailValidator;
+            //   // cc.validator = /^(?:\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|null)$/;
+            // }
           }
-          // cc.validator = this.emailValidator;
           newCoulmns.push(cc);
           colHeaders.push(col.text);
           // if(me.templateId != 9 || (me.templateId == 9 && cc && cc.data != "item")){
@@ -1383,7 +1388,15 @@ export default {
      * 
      */
     emailValidator (value, callback) {
+      debugger;
       let me = this;
+      if(value == "是" || value == ""){
+        // return true;
+        callback(true);
+      }else{
+        // return false;
+        callback(false);
+      }
     },
     /**
      * 有些查询出来的是 1 or 0 or 别的， 在此转换成要显示的字符串。
@@ -2185,6 +2198,9 @@ export default {
 }
 .left {
 }
+/* .htInvalid {
+  background-color: red;
+} */
 </style>
 <style lang="scss">
 .shuju {
