@@ -155,6 +155,7 @@ export default {
     };
   },
   created() {
+    debugger;
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -172,7 +173,6 @@ export default {
   },
   watch: {
     module_api(newid) {
-      debugger;
       // let $vueNew = parse(this.$store.start_$vue);
       //改变url路径的时候，删除管理驾驶舱添加的属性。
       this.$store.selectPeriod? delete this.$store.selectPeriod:"";
@@ -499,11 +499,12 @@ export default {
       let $cc = this.$refs.mychild;
       if ($cc) {
         let $cc = this.$refs.mychild;
-        $cc.forEach(children => {
+        $cc.forEach(children => { //debugger
           let ii = children.item;
           // 加了个ii.show
           //添加一个extendConfig判断用来过滤掉是继承来的config的元素，不然数据会出现错误,dash中 szc 2019年3月12日14:53:19
-          if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
+          // if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
+          if (ii && ii.config && ii.show && !ii.extendConfig) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }
@@ -517,7 +518,7 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        
+        // debugger
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;
@@ -566,8 +567,7 @@ export default {
     /**
      * 获取数据后的操作处理
      */
-    queryDataAfter(item, datas, $childVue) {
-      debugger
+    queryDataAfter(item, datas, $childVue) { //debugger
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
@@ -700,6 +700,11 @@ export default {
     getActiveTabName(item) {
       return item.id;
     },
+    /**
+     * tab页的关闭。
+     * @author szc 2019年4月22日10:20:33
+     * add：添加一个删除当前选择日期的处理 2019年4月22日10:21:09 szc
+     */
     removeTab(targetName) {
       let tabs = this.items;
       let tabName = this.activeTabName;
@@ -717,6 +722,10 @@ export default {
       this.items = tabs.filter(tab => tab.text !== targetName);
       if (this.items.length == 1) {
         this.activeTabName = "0";
+      }
+      //删除当前选中的日期。
+      if(this.$store.selectPeriod){
+        delete this.$store.selectPeriod;
       }
     },
     /**

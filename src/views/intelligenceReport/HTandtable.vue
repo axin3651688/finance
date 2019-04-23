@@ -195,6 +195,13 @@ export default {
         afterChange: Function,
         cells: Function
         // ,
+        // beforeOnCellMouseDown: Function,
+        // afterOnCellMouseDown: Function,
+        // afterRenderer: Function,
+        // afterSelection: Function,
+        // afterBeginEditing: Function,
+        // afterCellMetaReset: Function
+        // ,
         // getCellEditor: Function//获取编辑器
         // ,
         // beforeChange: Function
@@ -492,6 +499,12 @@ export default {
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
+    // this.settings.beforeOnCellMouseDown = this.beforeOnCellMouseDown;
+    // this.settings.afterOnCellMouseDown = this.afterOnCellMouseDown;
+    // this.settings.afterRenderer = this.afterRenderer;
+    // this.settings.afterSelection = this.afterSelection;
+    // this.settings.afterBeginEditing = this.afterOnCellCornerDblClick;
+    // this.settings.afterCellMetaReset = this.beforeAutofill;
     //融资情况明细表的下拉数据 机构名称
     mechanism().then(res => {
       this.mechanismdown = res.data.data;
@@ -510,6 +523,32 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    beforeAutofill (aa,cc,dd,ee,ff,gg,hh) {debugger},
+    afterOnCellCornerDblClick (aa,cc,dd,ee,ff,gg,hh) {
+      let me = this;
+      debugger;
+    },
+    afterSelection (aa,cc,dd,ee,ff,gg,hh) {
+      // debugger;
+      let me = this;
+      if(gg == 0){
+        gg = ""
+      }
+    },
+    afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
+      // debugger;
+      let me = this;
+    },
+    /**
+     * 鼠标按下单元格之前的处理。
+     * @author szc 2019年4月22日11:35:10
+     */
+    beforeOnCellMouseDown (aa,cc,dd,ee,ff,gg) {
+      let me = this;
+    },
+    afterOnCellMouseDown (aa,cc,dd,ee,ff,gg) {
+      let me = this;
+    },
     /**
      * 隐藏元单位的切换，默认是元。
      * @author szc 2019年4月9日14:54:50
@@ -642,7 +681,6 @@ export default {
       }
     },
     rightOfLeafCompany() {
-      debugger;
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
           userCompany = this.$store.getters.userCompany;
       let flag = true,html = "<p>此公司无填报权限，请切换至单体公司！</p>";
@@ -981,7 +1019,24 @@ export default {
       }
       return false;
     },
-
+    /**
+     * 还款来源的限制。
+     * @author szc 2019年4月17日11:41:42
+     */
+    paymentLimit(row, columns) {
+      if (this.templateId == 7) {
+        if (columns == 11) {
+          let record = this.settings.data[row];
+          if(!record){
+            return true;
+          }
+          if (!record.srepaydate) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
       // 
@@ -1015,6 +1070,8 @@ export default {
         cellMeta.readOnly = this.limitItemOfFill(row,columns);
       }
       if (this.templateId == 7) {
+        //添加一个还款来源的限制。
+        cellMeta.readOnly = this.paymentLimit(row, columns);
         if (columns == 1) {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
@@ -1032,7 +1089,7 @@ export default {
       }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
-        if (columns == 0 || columns == 2) {
+        if (row != 0 && (columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1068,7 +1125,7 @@ export default {
      */
     limitItemOfFill (row,columns) {
       let me = this;
-      if (this.fixed == 0 && this.templateId == 5) {
+      if (this.fixed == 0) {
         if (columns > 7) {
           let record = this.settings.data[row];
           if(!record){return true}
@@ -1119,7 +1176,6 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      debugger;
       let me = this;
       if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1202,8 +1258,20 @@ export default {
               cc.source = this.typeOfFinancing();
               cc.type = "dropdown";
             }
+            //资金集中情况表的render方法重新写里面的内容。
+            if(this.templateId == "8"){
+              let arr = ['B'];
+              if(arr.indexOf(col.id) != -1){
+                cc.renderer = this.handleTemplate8;
+              }
+            }
+            // else if (this.templateId == "7") {
+            //   cc.allowInvalid = true;
+            //   // cc.invalidCellClassName = "htInvalid";
+            //   // cc.validator = this.emailValidator;
+            //   // cc.validator = /^(?:\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|null)$/;
+            // }
           }
-          // cc.validator = this.emailValidator;
           newCoulmns.push(cc);
           colHeaders.push(col.text);
           // if(me.templateId != 9 || (me.templateId == 9 && cc && cc.data != "item")){
@@ -1213,7 +1281,6 @@ export default {
           
         }
       }
-      debugger;
       //基本情况表、市管企业不显示编码。过滤掉
       if((this.templateId == 9 || this.templateId == 12) && newCoulmns && newCoulmns.length > 0){
         newCoulmns = newCoulmns.filter(item => {
@@ -1263,6 +1330,14 @@ export default {
         this.parseNumberToString(itemNames,rows);
       }
       this.settings.data = rows;
+      //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
+      if(this.templateId == "8" && rows && rows.length > 0){
+        rows.forEach(item => {
+          if(item["B"] == 0){
+            item["B"] = "";
+          }
+        });
+      }
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
       me.settings.data = [];
@@ -1287,11 +1362,41 @@ export default {
       }, 100);
     },
     /**
+     * 处理资金集中情况表。
+     * @author szc 2019年4月22日10:57:40
+     */
+    handleTemplate8 (instance, td, row, col, prop, value, cellProperties) {
+      let me = this;
+      if (!value) {
+        return;
+      }
+      if (/[\u4e00-\u9fa5]/.test(value)) {
+        td.innerHTML = value;
+        return;
+      }
+      let text = value;
+      // let datas = this.financing.filter(item => item.id === value);
+      // if (datas.length == 0) {
+      //   td.innerHTML = "";
+      //   return;
+      // } else {
+      //   text = datas.length > 0 ? datas[0].text : value;
+      // }
+      td.innerHTML = text;
+    },
+    /**
      * 
      */
     emailValidator (value, callback) {
       debugger;
       let me = this;
+      if(value == "是" || value == ""){
+        // return true;
+        callback(true);
+      }else{
+        // return false;
+        callback(false);
+      }
     },
     /**
      * 有些查询出来的是 1 or 0 or 别的， 在此转换成要显示的字符串。
@@ -1590,7 +1695,23 @@ export default {
       this.$store.curParams = this.datas;
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
+      //三张主表加十三个审计月。
+      this.mainTableMonth();
       this.reportData(this.datas);
+    },
+    /**
+     * 三张主表加十三个审计月。
+     * @author szc 2019年4月20日15:03:07
+     */
+    mainTableMonth () {
+      let me = this,arr = ['1','2','3'];
+      if(arr.indexOf(this.templateId) != -1){
+        let monthConfig = {value:13,id:"month"};
+        me.$store.monthConfig = monthConfig;
+      }else {
+        let monthConfig = {value:12,id:"month"};
+        me.$store.monthConfig = monthConfig;
+      }
     },
     /**
      * 控制按钮显示与否
@@ -1822,7 +1943,6 @@ export default {
     },
     //模板下载选择的表格
     select(val, item) {
-      debugger;
       this.downloadTemplateItems(val, item);
       // console.log("option:", val);
       // console.log("option data:", item);
@@ -1834,7 +1954,6 @@ export default {
      * @author szc 2019年4月11日19:25:49
      */
     downloadTemplateItems (val, item) {
-      debugger;
       let me = this,arr = this.templateIds || [],templateItems = this.templateItems || [];
       if(val){
         arr.push(item.templateId - 0);
@@ -1854,7 +1973,6 @@ export default {
     },
     //插入了删除
     flags(instance, td, row, col, prop, value, cellProperties) {
-      
       let arr = this.$refs.hotTableComponent.hotInstance;
       // console.log("arr",arr)
       let list = this.settings.data;
@@ -2009,7 +2127,6 @@ export default {
     },
     //融资页面单元格融资类型下拉
     typeOfFinancing() {
-      debugger;
       let source = [];
       let str = "",finanData = [];
       if(this.financingOptions && this.financingOptions.length > 0) {
@@ -2081,6 +2198,9 @@ export default {
 }
 .left {
 }
+/* .htInvalid {
+  background-color: red;
+} */
 </style>
 <style lang="scss">
 .shuju {

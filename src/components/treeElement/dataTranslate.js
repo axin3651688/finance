@@ -38,12 +38,18 @@ export default {
      * @event 'treeElement/treeColumns.vue'引用了此方法：页面自适应高度
      */
     setTableScollHeight(item,offsetHeight){
-
+        // debugger
         let value ;        
-        if(!item.stype){    // 不是下钻的页面
+        if(!item.stype && !item.pagination){        // 【不是】下钻的页面/ 【没有】分页功能
             value = offsetHeight - 40 - 64 - 25 - 38 ;
-        }else{              // 是下钻的页面
-            value = offsetHeight - 64 - 75 ;
+        }else if(!item.stype && item.pagination){   // 【不是】下钻的页面/ 【有】分页功能
+            value = offsetHeight - 40 - 64 - 25 - 38 - 32 ;
+        }else{                                      // 【是】下钻的页面
+            if(item.stype=="table"){                // 下钻的是【普通表】时
+                value = offsetHeight - 64 - 55 ;
+            } else {
+                value = offsetHeight - 64 - 75 ;
+            }
         }
         return value ;
     },
@@ -170,6 +176,28 @@ export default {
         if($this.item.id=="qtyskej"){
             if(qtysk)$this.item.proportion = qtysk ;
             this.changeFormatData2($this.item.proportion, datas) ;
+        }
+    },
+    /**
+     * @event 'treeElement/treeColumns.vue'引用了此方法：管理驾驶舱应收、预付、其他下钻之后显示的html的字段。
+     * @event 列如：`(100101)天津农垦渤海农业集团有限公司（托管汇总）(期间：2018年07月单位：元)`
+     */
+    tableBefore($this){
+        
+        if($this.item.tableBeforeFun && typeof $this.item.tableBeforeFun == "function"){
+            $this.titleText = $this.item.tableBeforeFun($this,$this.titleText);
+        }else {
+            let period = $this.$store.selectPeriod;
+            let year = period.substring(0,4);
+            let month = period.substring(4,6);
+            let company = $this.$store.getters.companyName;
+            // let unit = "单位：元";
+            let pStyle = "height:30px;line-height:30px;font-weight:bold;";
+            let snStyle = "padding:5px 10px;";
+            let currentUnit = "元";
+            let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + 
+            "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
+            return html ;
         }
     }
 }

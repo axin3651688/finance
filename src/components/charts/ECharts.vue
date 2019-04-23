@@ -137,7 +137,6 @@ export default {
       if (this.chart) {
         return;
       }
-
       let chart = echarts.init(this.$el, this.theme, this.initOptions);
 
       if (this.group) {
@@ -250,7 +249,10 @@ export default {
             // will trigger `this.chart.setOption(val, true)
             // `this.options.title.text = 'Trends'`
             // will trigger `this.chart.setOption(val, false)`
-            this.chart.setOption(val, val !== oldVal);
+            // this.init();
+            this.chart.setOption(val,true);//这个是事件的东西用的。
+            // this.chart.setOption(val, val !== oldVal);//这个是以前的老的方法。在此改成下面的刷新方法。
+            // this.refresh();
           }
         },
         { deep: !this.watchShallow }

@@ -373,6 +373,7 @@
       width="30%"
       @close="closeDilog('companyAuthorizationForm')"
     >
+      <div class="dialog-body">
       <el-form
         :inline="true"
         label-width="80px"
@@ -394,7 +395,7 @@
           ref="companysTree"
         ></el-tree>
       </el-form>
-      
+      </div>
       <!-- <el-form :inline="true" label-width="80px" :model="addUserForm"  class="user-form-inline">
         <el-form-item label="所属公司" prop="company">
             <treeselect
@@ -790,6 +791,70 @@ export default {
       },
       deep: true
     },
+    //监听修改用户信息的表单变化。
+    // "editUserForm.suser": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("suser", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.struename": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("struename", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.csex": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("csex", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.roleid": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("roleid", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.sphone": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("sphone", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.semail": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("semail", nowVal);
+    //   },
+    //   deep: true
+    // },
+    // "editUserForm.company": {
+    //   handler(nowVal, oldV) {
+    //     if(nowVal == oldV){
+    //       return;
+    //     }
+    //     this.watchField("company", nowVal);
+    //   },
+    //   deep: true
+    // },
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
     offsetHeight(val) {
       if (!this.timer) {
@@ -870,6 +935,8 @@ export default {
         photoUrl = 'addPhotoUrl';
       }else if(this.dialogEditUserVisible){
         photoUrl = 'editPhotoUrl';
+        //修改图片的改变监听。
+        this.editUserMessage.avatar = imgFile;
       }
       //上传头像预览
       let fr = new FileReader();
@@ -1031,9 +1098,40 @@ export default {
       $upload.submit();
     },
     /**
+     * 修改用户信息时改变的内容。
+     * @author szc 2019年4月16日15:40:22
+     */
+    changeOfFormEdit () {
+      debugger;
+      let me = this,editUserMessage = me.editUserMessage,editUserForm = me.editUserForm;
+      let flag = true;
+      if(editUserMessage && editUserForm){
+        for(let key in editUserMessage){
+          if(editUserMessage[key] != editUserForm[key]){
+            flag = false;
+            return flag;
+          }
+          // for(let keyIt in editUserForm) {
+
+          // }
+        }
+      }
+      return flag;
+    },
+    /**
      * @addUserForm 修改用户表单数据
      */
     submitEditUserForm(formName) {
+      debugger;
+      //判断表单中的内容是不是修改、改变了。
+      let changeFlag = this.changeOfFormEdit();
+      if(changeFlag){
+        this.$message({
+          message: "没有修改内容！",
+          type: "warning"
+        });
+        return;
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           const _this = this;
@@ -1144,7 +1242,8 @@ export default {
      * zb
      */
     watchField(field, nowVal) {
-      this.activeForm[field] = nowVal;
+      debugger;
+      this.editActiveForm? this.editActiveForm[field] = nowVal:this.editActiveForm = {},this.editActiveForm[field] = nowVal;
     },
     /**
      * @description 添加用户
@@ -1173,6 +1272,19 @@ export default {
       this.editUserForm.avatar = row.avatar;
       //修改头像图片
       this.editPhotoUrl = row.avatar;
+      //把当前点击的用户绑定到this上
+      this.editUserMessage = {
+        suser: row.suser,
+        struename: row.struename,
+        csex: row.csex,
+        roleid: row.roleid,
+        cisenabled: row.cisenabled,
+        cauthorize: row.cauthorize,
+        sphone: row.sphone,
+        semail: row.semail,
+        company: row.company,
+        avatar: this.imgFile || row.avatar
+      };
     },
     /**
      * @description 刷新

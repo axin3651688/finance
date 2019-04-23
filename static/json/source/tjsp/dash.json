@@ -387,10 +387,10 @@
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.leaf && $vue.$store.getters.treeInfo.id != "121") {
                                 //params.sourceApi = "cnbi/json/source/tjsp/yszkTwoDebug.json";
-                                params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/yszkDebugDemo.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/yszkDebugDemo.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/yszkDebugDemo.json";
                             return params;
                         },
                         "way": "addTab",
@@ -501,6 +501,7 @@
                         }
                         return data;
                     },
+                    "optionsBefore": function() {},
                     "options": {
                         "type": "line",
                         "getData": {
@@ -521,14 +522,16 @@
                                     "name": "安全值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "prompt",
                                     "name": "预警值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "ye",
@@ -540,8 +543,38 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']   zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'] //紫色变化率，绿色安全，红色预警，淡蓝柱图
-
+                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
+                            "type": "before",
+                            "handlerBefore": function($vue, option) {
+                                let me = this,
+                                    optionCurrent;
+                                optionCurrent = me.deepCopy(option); //拷贝
+                                let leaf = $vue.$store.getters.treeInfo.nisleaf;
+                                if (leaf == '1') {
+                                    let dataColumns = optionCurrent.getData.columns;
+                                    dataColumns = dataColumns.filter(function(item) {
+                                        return !item.show;
+                                    });
+                                    optionCurrent.getData.columns = dataColumns;
+                                    return optionCurrent;
+                                }
+                                return optionCurrent;
+                            },
+                            "deepCopy": function(obj) { //深拷贝
+                                var result = Array.isArray(obj) ? [] : {};
+                                for (var key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+                                        if (typeof obj[key] === 'object') {
+                                            result[key] = this.deepCopy(obj[key]); //递归复制
+                                        } else {
+                                            result[key] = obj[key];
+                                        }
+                                    }
+                                }
+                                return result;
+                            }
+                        }
                     }
                 },
                 {
@@ -607,11 +640,11 @@
                         "type": "click",
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.leaf) {
-                                params.sourceApi = "cnbi/json/source/tjsp/dashYfzkDrill.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/dashYfzkDrill.json";
                                 //    params.sourceApi = "cnbi/json/source/tjsp/yfzk.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/dashYfzkDrill.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/dashYfzkDrill.json";
                             return params;
                         },
                         "way": "addTab",
@@ -688,14 +721,16 @@
                                     "name": "安全值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "prompt",
                                     "name": "预警值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "ye",
@@ -707,8 +742,38 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'] //紫色变化率，绿色安全，红色预警，淡蓝柱图
-
+                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
+                            "type": "before",
+                            "handlerBefore": function($vue, option) {
+                                let me = this,
+                                    optionCurrent;
+                                optionCurrent = me.deepCopy(option); //拷贝
+                                let leaf = $vue.$store.getters.treeInfo.nisleaf;
+                                if (leaf == '1') {
+                                    let dataColumns = optionCurrent.getData.columns;
+                                    dataColumns = dataColumns.filter(function(item) {
+                                        return !item.show;
+                                    });
+                                    optionCurrent.getData.columns = dataColumns;
+                                    return optionCurrent;
+                                }
+                                return optionCurrent;
+                            },
+                            "deepCopy": function(obj) { //深拷贝
+                                var result = Array.isArray(obj) ? [] : {};
+                                for (var key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+                                        if (typeof obj[key] === 'object') {
+                                            result[key] = this.deepCopy(obj[key]); //递归复制
+                                        } else {
+                                            result[key] = obj[key];
+                                        }
+                                    }
+                                }
+                                return result;
+                            }
+                        }
                     }
                 }
 
@@ -783,10 +848,10 @@
                         "type": "click",
                         "clickBefore": function(params, $vue) {
                             if (!$vue.$store.getters.treeInfo.nisleaf) {
-                                params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
+                                params.sourceApi = "/cnbi/json/source/tjsp/dashQtyskDrill.json";
                                 return params;
                             }
-                            params.sourceApi = "cnbi/json/source/tjsp/dashQtyskDrill.json";
+                            params.sourceApi = "/cnbi/json/source/tjsp/dashQtyskDrill.json";
                             return params;
                         },
                         "way": "addTab",
@@ -865,14 +930,16 @@
                                     "name": "安全值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "prompt",
                                     "name": "预警值",
                                     "type": "line",
                                     "smooth": false,
-                                    "unit": "%"
+                                    "unit": "%",
+                                    "show": "leaf" //子公司不显示
                                 },
                                 {
                                     "id": "ye",
@@ -884,7 +951,39 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']			zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'] //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
+                            "type": "before",
+                            "handlerBefore": function($vue, option) {
+                                debugger;
+                                let me = this,
+                                    optionCurrent;
+                                optionCurrent = me.deepCopy(option); //拷贝
+                                let leaf = $vue.$store.getters.treeInfo.nisleaf;
+                                if (leaf == '1') {
+                                    let dataColumns = optionCurrent.getData.columns;
+                                    dataColumns = dataColumns.filter(function(item) {
+                                        return !item.show;
+                                    });
+                                    optionCurrent.getData.columns = dataColumns;
+                                    return optionCurrent;
+                                }
+                                return optionCurrent;
+                            },
+                            "deepCopy": function(obj) { //深拷贝
+                                var result = Array.isArray(obj) ? [] : {};
+                                for (var key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+                                        if (typeof obj[key] === 'object') {
+                                            result[key] = this.deepCopy(obj[key]); //递归复制
+                                        } else {
+                                            result[key] = obj[key];
+                                        }
+                                    }
+                                }
+                                return result;
+                            }
+                        }
                     }
                 }
 
@@ -1186,7 +1285,7 @@
                     "watchState": true,
                     "weight": 6,
                     "config": {
-                        "sql": "WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY  AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+                        "sql": "WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE) GROUP BY ROOT_SCODE ) , TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE ( CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ) , TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ) , FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE WHEN SCODE = '1001' THEN NVL(FACT_A, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON ( T1.SCODE = A.DIM_COMPANY AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
                         "_cubes": {
                             "subject": "0002",
                             "dims": {

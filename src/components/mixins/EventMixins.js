@@ -20,6 +20,7 @@ export default {
         let me = this;
         let xtype = me.item && me.item.xtype;
         if (me.item && me.item.listeners) {
+            debugger;
             me.item.listeners.forEach(listener => {
                 if (listener.type) {
                     if (xtype === "chart" || xtype === "bi-chart") {
@@ -77,6 +78,7 @@ export default {
          * 图形事件处理
          */
         chartEventHandler(listener) {
+            debugger;
             let me = this,
                 tabTitleObj = "";
             this.$children[0].chart.on(listener.type, function(params) {

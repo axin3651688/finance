@@ -8,7 +8,7 @@ export function exportExcle(exportData) {
         url: '/exp/exportexcle',
         method: 'post',
         responseType: "blob",
-        params: exportData
+        data: exportData
     })
 }
 /**
@@ -21,6 +21,6 @@ export function exportEVAExcle(exportData) {
         url: '/exp/exportexcle',
         method: 'post',
         responseType: "blob",
-        params: exportData
+        data: exportData
     })
 }

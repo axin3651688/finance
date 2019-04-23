@@ -31,8 +31,8 @@
 			},
 			"queryDataAfter":function(data,vue){
 				let datas = [];
-				data.forEach(item => {
-					if((item.qmye && item.qmye!=0) || (item.zje && item.zje!=0) || (item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0)){
+				data.forEach(item => { // 没有数据的不显示行数据
+					if((item.qmye && item.qmye!=0) || (item.zje && item.zje!=0) || (item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || (item.cye && item.cye!=0)){
 						datas.push(item);
 					}
 				});

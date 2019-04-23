@@ -29,11 +29,18 @@
             "queryDataAfter":function(data,vue){
                 debugger
                 let datas = [];
-                data.forEach(item => {
-                    if((item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || (item.ljsj && item.ljsj!=0)){
-                        datas.push(item);
-                    }
-                });
+                // if(data && data.length==1)return data ; 
+                // let is = data.some(res => {
+                //     return (res.sntq && res.sntq!=0) || (res.tbzje && res.tbzje!=0) || (res.ljsj && res.ljsj!=0)
+                // })
+                // if(is) {
+                    data.forEach(item => { // 没有数据的不显示行数据
+                        if((item.sntq && item.sntq!=0) || (item.tbzje && item.tbzje!=0) || (item.ljsj && item.ljsj!=0) || (item.cye && item.cye!=0)){
+                            datas.push(item);
+                        }
+                    });
+                // }
+                
                 return datas;
             },
             "config": {

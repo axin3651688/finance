@@ -3,6 +3,13 @@
   <div v-if="divShow" class="divContent" v-html="divContent"></div>
   <div v-else-if="tableShow">
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
+    <el-alert
+      v-if="item.property"
+      title="温馨提示：此公司不为重点单位，不展示数据！"
+      type="warning"
+      center
+      show-icon>
+    </el-alert>
     <!-- 判断写在外层，不然生成的没有配置toolbar的table时，上面会有一个空隙 -->
     <el-button-group class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
       <template 
@@ -113,7 +120,8 @@ export default {
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
     }else{
       // 计算当前页面的高度 得出表格的高度
-      this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+      if(!this.item.property)this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+      if(this.item.property)this.heights = document.body.offsetHeight - 200;
     }
     //是否具有导出功能。localStorage
     this.showBtnOfExport();
@@ -143,6 +151,9 @@ export default {
           return item.id == siderState.code;
         });
       }
+      if(!toolbars){
+        return;
+      }
       toolbars.forEach(item => {
         item.showBtn = true;
       });
@@ -158,18 +169,20 @@ export default {
     },
     // / 页面大小改变时触发  主要用来自适应页面的布局的 
     setTableScollHeight(){
-      debugger
+      // debugger
         if(this.item.stype=="table"){
           this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
         }else{
-          this.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+          if(!this.item.property)this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+          if(this.item.property)this.heights = document.body.offsetHeight - 200;
         }        
         const me = this ;
         window.onresize = function temp(){
             if(me.item.stype=="table"){
               me.heights = document.body.offsetHeight - 40 - 64 - 15 ;
             }else{
-              me.heights = document.documentElement.clientHeight - 22 - 40 - 40 - 64 ;
+              if(!me.item.property)me.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+              if(me.item.property)me.heights = document.body.offsetHeight - 200;
             } 
         };
     },
@@ -278,6 +291,7 @@ export default {
           });
         }
       }
+      this.setTableScollHeight();
       //自定义要显示的内容。
       if(this.item.divContent){
         if(this.item.customDivCotent && typeof this.item.customDivCotent == "function"){
@@ -302,12 +316,12 @@ export default {
     },
     //添加在表头要加的内容
     tableBefore(){
-      debugger;
       let me = this;
       if(this.item.tableBeforeFun && typeof this.item.tableBeforeFun == "function"){
         this.titleText = this.item.tableBeforeFun(this,this.titleText);
       }else {
         let period = me.$store.selectPeriod;
+        // let period = me.titleContentPeriod();
         let year = period.substring(0,4);
         let month = period.substring(4,6);
         let company = me.$store.getters.companyName;
@@ -318,6 +332,25 @@ export default {
         let html = "<p style='" + pStyle + "'><span style='"+snStyle+"'>" + company + 
         "</span><span  style='"+snStyle+"'>(期间：" + year + "年" + month + "月" + "</span><span>单位：" + currentUnit + ")</span></p>";
         this.titleText = html;
+      }
+    },
+    /**
+     * 可能存在不是选择日期的钻取。(做个兼容)
+     * @author szc 2019年4月22日10:04:23
+     */
+    titleContentPeriod () {
+      debugger;
+      let me = this,year = this.$store.getters.year,month = this.$store.getters.month,period;
+      if(me.$store.selectPeriod){
+        return me.$store.selectPeriod;
+      }else {
+        if(month < 10){
+          month = "0" + month;
+          period = year + month;
+        }else {
+          period = year + "" + month;
+        }
+        return period;
       }
     },
     rowClass({ row, rowIndex }) {

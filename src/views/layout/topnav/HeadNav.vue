@@ -241,7 +241,6 @@ export default {
    * 页面加载之后的回调。
    */
   mounted() {
-    debugger;
     let me = this;
     // setInterval(() => this.getMessage(),10000);
   },
@@ -293,7 +292,6 @@ export default {
     },
     //隐藏与显示的回调
     dropChange (flag,dd) {
-      debugger;
       let me = this,monthConfig = this.$store.monthConfig;
       if(flag){
         this.changeBecauseOfNode();
@@ -401,10 +399,8 @@ export default {
      * @author szc 2019年4月2日19:28:10
      */
     getMessage(){
-      debugger;
       let me = this,suser = this.$store.getters.user.user.userName;
       this.axios.get("/cnbi/json/source/tjsp/szcJson/message.json").then(res => {
-        debugger;
         if(res.data.code == 200){
           this.messageValue > 100? this.messageValue = 0:"";
           this.messageValue += res.data.data.count;
@@ -442,7 +438,6 @@ export default {
      * @author szc 2019年4月2日20:22:36
      */
     showCkeckContent (data) {
-      debugger;
       let me = this;
       this.modalConfig = {
         title:"报表审阅",//modal框标题
@@ -478,7 +473,6 @@ export default {
      * @author szc 2019年4月3日14:38:13
      */
     checkFillDataHandle (rowData) {
-      debugger;
       let me = this;
     }
   }

@@ -1,14 +1,14 @@
 <template>
     <div class="tree-columns">
         <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
-        <!-- 刷新、导出 按钮 -->
+        <!-- 刷新、导出 按钮 关键参数：toolbar-->
         <el-button-group  class="toolbar" >
             <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
         </el-button-group>
-        <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 -->
+        <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 关键参数：proportion-->
         <el-input 
-        v-if="item.proportion && item.proportion.length>0" 
-        v-for="see in item.proportion" 
+        v-if="item.proportion && item.proportion.length>0 && (item.proportion[0].show && item.proportion[1].show)" 
+        v-for="see in item.proportion"
         :key="see.id"
         clearable 
         :placeholder="see.placeholder" 
@@ -33,7 +33,7 @@
         @row-click="onRowClick"
         class="tree_table"
         >
-            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align">
+            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed">
                 <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align">
                     <template slot-scope="scope">
                         <el-tooltip :content="getCellValues(scope,too)" placement="right" effect="light">
@@ -54,6 +54,17 @@
                 </template>
             </el-table-column>
         </el-table>
+        <!-- 分页功能  pagination: 在json中配置为true（或者有这个参数不为''|0 的） 说明具有分页功能-->
+        <el-pagination
+        v-if="item.pagination && item.show && item.xtype=='elementTree'"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[100, 200, 500, 1000]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="data.length">
+        </el-pagination>
     </div>
 </template>
 <script>
@@ -67,7 +78,10 @@ export default {
     data(){
         return{
             defaultExpandAll: false ,
-            heights: 0 
+            heights: 0 ,
+            titleText: "" ,
+            currentPage: 1,
+            pagesize: 100
         }
     },
     created(){
@@ -83,6 +97,8 @@ export default {
     mounted(){
         // 设置表格高度（自适应）
         this.setTableScollHeight();
+        // 设置管理驾驶舱下钻的日期提醒
+        if(this.item.tableBefore)this.titleText=Utils.tableBefore(this);
     },
     computed: {
         // 格式化数据源
@@ -104,9 +120,17 @@ export default {
         setTableScollHeight(){
             this.heights = Utils.setTableScollHeight(this.item, document.body.offsetHeight) ;
             const me = this ;
-            window.onresize = function temp(){
+            window.onresize = function temp(){ 
                 me.heights = Utils.setTableScollHeight(me.item, document.body.offsetHeight) ;
             };
+        },
+        //pagesize改变时触发 ---- 分页功能
+        handleSizeChange: function(size) {
+            this.pagesize = size;
+        },
+        //currentPage改变时会触发 --- 分页功能
+        handleCurrentChange: function(currentPage) {
+            this.currentPage = currentPage;
         },
         // 显示行
         showTr: function (row, index) {
@@ -193,9 +217,6 @@ export default {
     }
 </style>
 <style>
-    /* .el-input-group>.el-input__inner {
-        text-align: right;
-    } */
     .tree-proportion input {
         text-align: right;
     }
@@ -205,7 +226,12 @@ export default {
     }
     /* 表头背景颜色的设定 */
     .has-gutter tr th {
-        background-color: rgb(240, 248, 255);
+        background-color: rgb(240, 248, 255) !important;
+        color: #606266;
+    }
+    /* 固定列表头的颜色设定  加重覆盖*/
+    .el-table__fixed tr th {
+        background-color: rgb(240, 248, 255) !important;
         color: #606266;
     }
     /** 这是对表行的行高设置*/

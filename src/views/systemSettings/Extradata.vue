@@ -90,6 +90,7 @@
 </template>
 <script>
 import request from "utils/http";
+import extraRequest from "utils/extraHttp"
 import { mapGetters } from "vuex";
 import tools from "utils/tools";
 import axios from "axios";
@@ -255,26 +256,12 @@ export default {
                     _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
                     0
                 };
-                axios({
+                
+                extraRequest({
                   url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
-                  // data: {
-                  //   vartype: _this.form.vartype,
-                  //   varnature: _.join(_this.form.nature, ","),
-                  //   varcompany: "'" + _.join(coms, "','") + "'",
-                  //   varyear: _this.form.startperiod.substring(0, 4),
-                  //   orgmonth:
-                  //     _.replace(_this.form.startperiod, /-/g, "").substring(
-                  //       4,
-                  //       6
-                  //     ) - 0,
-                  //   endmonth:
-                  //     _.replace(_this.form.endperiod, /-/g, "").substring(
-                  //       4,
-                  //       6
-                  //     ) - 0
-                  // },
+                  timeout: 0,
                   headers: {
                     "X-Requested-With": "XMLHttpRequest",
                     "Content-Type": "application/json; charset=UTF-8"
@@ -282,10 +269,16 @@ export default {
                 }).then(result => {
                   if (result.status == 200) {
                     if (result.data) {
-                      this.$message({
+                      let extraMessage = this.$message({
+                        showClose: true,
                         type: "success",
-                        message: result.data.msg
+                        message: result.data.msg,
+                        duration: 0
                       });
+                      //提示框的实例绑定到vue对象上，切换页面的时候自动关闭。
+                      if(extraMessage){
+                        _this.$store.extraMessage = extraMessage;
+                      }
                     }
                   }
                 });
