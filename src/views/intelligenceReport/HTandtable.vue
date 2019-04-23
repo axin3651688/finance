@@ -194,11 +194,15 @@ export default {
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function
+        // ,beforeValidate: Function
         // ,
         // beforeOnCellMouseDown: Function,
         // afterOnCellMouseDown: Function,
         // afterRenderer: Function,
-        // afterSelection: Function,
+        // ,afterSelection: Function
+        // ,afterValidate: Function
+        // ,afterRenderer: Function
+        // ,afterRender: Function
         // afterBeginEditing: Function,
         // afterCellMetaReset: Function
         // ,
@@ -499,10 +503,14 @@ export default {
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
+    this.settings.beforeValidate = this.beforeValidate;
     // this.settings.beforeOnCellMouseDown = this.beforeOnCellMouseDown;
     // this.settings.afterOnCellMouseDown = this.afterOnCellMouseDown;
     // this.settings.afterRenderer = this.afterRenderer;
     // this.settings.afterSelection = this.afterSelection;
+    // this.settings.afterValidate = this.afterValidate;
+    // this.settings.afterRenderer = this.afterRenderer;
+    // this.settings.afterRender = this.afterRender;
     // this.settings.afterBeginEditing = this.afterOnCellCornerDblClick;
     // this.settings.afterCellMetaReset = this.beforeAutofill;
     //融资情况明细表的下拉数据 机构名称
@@ -523,6 +531,39 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    // afterRender (aa,cc,dd,ee,ff,gg,hh) {
+    //   debugger;
+    //   let me = this,row = 8,column = me.selectCoulmn;
+    //   let cellTD = me.$refs.hotTableComponent.hotInstance.getCell(8,0);
+    //   // if(aa){
+    //     cellTD.className = cellTD.className? cellTD.className + " " + "htInvalid":"htInvalid";
+    //     cellTD.innerText = "垃圾";
+    //   // }
+    // },
+    afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
+      debugger;
+      if(cc < 8){
+        return
+      }
+      let me = this,row = dd,column = me.selectCoulmn;
+      let cellTD = me.$refs.hotTableComponent.hotInstance.getCell(row,column);
+      // if(aa){
+        cellTD.className = cellTD.className? cellTD.className + " " + "htInvalid":"htInvalid";
+        cellTD.innerText = "垃圾";
+      // }
+    },
+    beforeValidate (aa,cc,dd,ee,ff,gg,hh) {
+      debugger;
+    },
+    afterValidate (aa,cc,dd,ee,ff,gg,hh) {
+      debugger;
+      let me = this,row = dd,column = me.selectCoulmn;
+      let cellTD = me.$refs.hotTableComponent.hotInstance.getCell(row,column);
+      // if(aa){
+        cellTD.className = cellTD.className? cellTD.className + " " + "htInvalid":"htInvalid";
+        cellTD.innerText = "垃圾";
+      // }
+    },
     beforeAutofill (aa,cc,dd,ee,ff,gg,hh) {debugger},
     afterOnCellCornerDblClick (aa,cc,dd,ee,ff,gg,hh) {
       let me = this;
@@ -531,14 +572,16 @@ export default {
     afterSelection (aa,cc,dd,ee,ff,gg,hh) {
       // debugger;
       let me = this;
-      if(gg == 0){
-        gg = ""
+      if(aa == dd && cc == ee){
+        me.selectCoulmn = cc;
+      }else {
+        me.selectCoulmn = cc;
       }
     },
-    afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
-      // debugger;
-      let me = this;
-    },
+    // afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
+    //   // debugger;
+    //   let me = this;
+    // },
     /**
      * 鼠标按下单元格之前的处理。
      * @author szc 2019年4月22日11:35:10
@@ -1176,6 +1219,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
+      debugger;
       let me = this;
       if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1390,13 +1434,21 @@ export default {
     emailValidator (value, callback) {
       debugger;
       let me = this;
-      if(value == "是" || value == ""){
-        // return true;
-        callback(true);
-      }else{
-        // return false;
-        callback(false);
-      }
+      setTimeout(function(){
+        if (value == "2019/04/03" || value == "") {
+          callback(true);
+        }
+        else {
+          callback(false);
+        }
+      }, 1000);
+      // if(value == "是" || value == ""){
+      //   // return true;
+      //   callback(true);
+      // }else{
+      //   // return false;
+      //   callback(false);
+      // }
     },
     /**
      * 有些查询出来的是 1 or 0 or 别的， 在此转换成要显示的字符串。
