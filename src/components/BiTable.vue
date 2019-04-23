@@ -125,9 +125,9 @@ export default {
     }
     //是否具有导出功能。localStorage
     this.showBtnOfExport();
-    if(this.item.show){
-      this.upData(this.item);
-    }
+    // if(this.item.show){
+    //   this.upData(this.item);
+    // }
     // this.upData(this.item);
     console.log(this.item) 
   },
@@ -261,7 +261,9 @@ export default {
     setTableDatas(item) {
       let rows = item.config.rows;
       let tempDatas = [];
-      if (rows && rows.length > 0) {
+      if (rows && rows.length > 0 && 
+         (item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk' ||
+          item.id=='yszkej'||item.id=='yfzkej'||item.id=='qtyskej')) {
         tempDatas =  rows;
       }else{
         tempDatas =  item.datas;

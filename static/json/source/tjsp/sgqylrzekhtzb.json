@@ -19,9 +19,9 @@
     "__queryDataAfter": function(data, $vue) { //数据的后置处理
         debugger
 
-        // let me = this;
-        // me.items[0].updateView = $vue.updateView;
-        // me.items[0].$vue = $vue;
+        let me = this;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
         return data;
     },
     "config": {
