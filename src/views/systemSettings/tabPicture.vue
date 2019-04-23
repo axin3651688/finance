@@ -142,7 +142,7 @@ export default {
                         me.items.forEach(element => {
                             datas.forEach(item => {
                                 if(element.id === item.name){
-                                    element.imageUrl = item.content ;
+                                    element.imageUrl = item.content + "?t=" + new Date().getTime();
                                 }
                             });
                         });
