@@ -146,6 +146,9 @@ export default {
             if (!module.items) {
                 module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
             }
+            if(!module.items){
+                module = this.$parent.$parent.$parent.$parent.$parent;
+            }
             //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];
             // let module = tab.$parent.$parent;
             if (!bb) {

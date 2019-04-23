@@ -8,7 +8,8 @@
         "id": "",
         "text": "",
         "stype": "tree",
-        "xtype": "STreeGrid",
+        // "xtype": "STreeGrid",
+        "xtype": "elementTree",
         "weight": 24,
         "show": true,
         "queryDataBefore": function(params, $items, $this) {
@@ -21,7 +22,10 @@
         },
         "queryDataAfter": function(data, $vue) { //数据的后置处理
             debugger
-            let me = this;
+            let me = this;           
+            data.forEach(res => {
+                if(res.yhzhmc === "SH")res.yhzhmc = "合计"
+            });
             let datas = []; //有数据的
             let datax = []; //没有数据的
             // me.items[0].updateView = $vue.updateView;
@@ -58,27 +62,31 @@
 
         ],
 
-        "columns": [{
-                "text": "集中度（%）",
-                "type": "decimal",
-                "conversion": "%",
-                "id": "jzd"
-            },
-            {
-                "text": "",
-                "type": "string",
-                "id": "",
-                "isTree": true
-            },
+        "columns": [
+            // {
+            //     "text": "集中度（%）",
+            //     "type": "decimal",
+            //     "conversion": "%",
+            //     "id": "jzd"
+            // },
+            // {
+            //     "text": "",
+            //     "type": "string",
+            //     "id": "",
+            //     "isTree": true
+            // },
             {
                 "text": "公司编码",
                 "type": "string",
+                "width":"160",
+                "fixed": true,
                 "id": "scode"
             },
             {
                 "text": "公司名称",
                 "type": "string",
                 "width": "300",
+                "fixed": true,
                 "id": "sname"
             },
             {
@@ -90,19 +98,33 @@
             {
                 "text": "货币金额",
                 "type": "decimal",
+                "width": "160",
+                "align": "right",
                 "id": "hbzj"
             },
             {
                 "text": "其中：银行存款",
                 "type": "decimal",
+                "width": "160",
+                "align": "right",
                 "id": "yhck"
             },
             {
                 "text": "集中金额",
                 "type": "decimal",
+                "width": "160",
+                "align": "right",
                 "id": "jzje"
+            },
+            {
+                "text": "集中度（%）",
+                "type": "decimal",
+                "width": "120",
+                "align": "right",
+                "conversion": "%",
+                "id": "jzd"
             }
-        ]
-
+        ],
+        "levelProperties":{scode:"_level"} //加缩进 可选 table
     }]
 }
