@@ -372,7 +372,7 @@ export default {
     findDim() {
       const _this = this;
       request({
-        url: "zjb/dict/query/INDUSTRY",
+        url: "/zjb/dict/query/INDUSTRY",
         method: "get"
       }).then(result => {
         if (result.status == 200) {
