@@ -23,9 +23,16 @@
             return params;
         },
         "queryDataAfter":function(data,$this){
-            // debugger
-            let first = $this.items[0].children[1].proportion[0].value;
-            let second =$this.items[0].children[1].proportion[1].value;
+            debugger
+            let first, second ; 
+            let yszk = JSON.parse(localStorage.getItem("yszk"));
+            if(yszk == null){
+                first = 0 ; 
+                second = 0; 
+            }else{
+                first = yszk[0].value ; 
+                second= yszk[1].value ;  
+            } 
             data.forEach(element => {
                 if(element.zjl == 0){
                     element.riskrange = '' ;
@@ -33,8 +40,8 @@
                     if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
                     if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
                     if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
-                    if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
-                    if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
+                    if(first == 0)element.riskrange = '' ;
+                    if(second == 0)element.riskrange = '' ;
                 }
                 if(first == 0 && second == 0)element.riskrange = '' ;
                 if(element.scode == '9')element.scode = ''; 

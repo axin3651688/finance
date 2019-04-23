@@ -7,16 +7,15 @@
 	 "show":true,
     "items":[
         {
-			"xtype": "STreeGrid",
+			// "xtype": "STreeGrid",
+            "xtype": "elementTree",
             "id": "xjllbej",
-            "stype": "tree",
+            "stype": true,
+            "isUnfold": true,// 自动展开的配置
             "text": "现金流量表二级",
             "showDims":["year","month","company","conversion"],
 			"weight": 24,
             "show":true,
-            "style":{
-				"height": "812px"
-			},
             "queryDataBefore":function(params,config,option){//替换sql中的:itemperiod
                 debugger
                 config.sql = config.sql1;//执行sql，但是设置sql1是为了sql中一直是:itemperiod
@@ -65,39 +64,89 @@
                 "type": 1
             },    
                  
+            // "columns": [
+            //     {
+            //         "type": "string",
+            //         "text": "预算数",
+            //         "children":[
+            //             {
+            //             "id": "bnlj",
+            //             "type": "decimal",
+            //             "text": "本年预算"
+            //             },
+            //             {
+            //                 "id": "cye",
+            //                 "type": "decimal",
+            //                 "text": "差异额"
+            //             },
+            //             {
+            //                 "id": "wcl",
+            //                 "type": "decimal",
+            //                 "text": "完成率（%）",
+            //                 "conversion":"%"
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         "id": "gsbm",
+            //         "type": "string",
+            //         "text": "",
+            //         "isTree":true
+            //     },
+            //     {
+            //         "id": "scode",
+            //         "type": "string",
+            //         "fixed":true,
+            //         "text": "公司编码"
+            //     },
+            //     {
+            //         "id": "gsmc",
+            //         "type": "string",
+            //         "text": "公司名称",
+            //         "fixed":true,
+            //         "width":"360px"
+            //     },
+            //     {
+            //         "type": "string",
+            //         "text": "累计数",
+            //         "children":[
+            //             {
+            //                 "id": "ljsj",
+            //                 "type": "decimal",
+            //                 "text": "累计实际"
+            //             },{
+            //                 "id": "sntq",
+            //                 "type": "decimal",
+            //                 "text": "上年同期"
+            //             },
+            //             {
+            //                 "id": "tbzje",
+            //                 "type": "decimal",
+            //                 "text": "同比增减额"
+            //             },
+            //             {
+            //                 "id": "tbzjl",
+            //                 "type": "decimal",
+            //                 "width": "150px",
+            //                 "text": "同比增减率（%）",
+            //                 "conversion":"%"
+            //             }
+            //         ]
+            //     }				
+            // ],
             "columns": [
-                {
-                    "type": "string",
-                    "text": "预算数",
-                    "children":[
-                        {
-                        "id": "bnlj",
-                        "type": "decimal",
-                        "text": "本年预算"
-                        },
-                        {
-                            "id": "cye",
-                            "type": "decimal",
-                            "text": "差异额"
-                        },
-                        {
-                            "id": "wcl",
-                            "type": "decimal",
-                            "text": "完成率（%）",
-                            "conversion":"%"
-                        }
-                    ]
-                },
-                {
-                    "id": "gsbm",
-                    "type": "string",
-                    "text": "",
-                    "isTree":true
-                },
+                
+                // {
+                //     "id": "gsbm",
+                //     "type": "string",
+                //     "text": "",
+                //     "isTree":true
+                // },
                 {
                     "id": "scode",
                     "type": "string",
                     "fixed":true,
+                    "width": "180",
                     "text": "公司编码"
                 },
                 {
@@ -114,28 +163,64 @@
                         {
                             "id": "ljsj",
                             "type": "decimal",
+                            "width": "160",
+                            "align": "right",
                             "text": "累计实际"
                         },{
                             "id": "sntq",
                             "type": "decimal",
+                            "width": "160",
+                            "align": "right",
                             "text": "上年同期"
                         },
                         {
                             "id": "tbzje",
                             "type": "decimal",
+                            "width": "160",
+                            "align": "right",
                             "text": "同比增减额"
                         },
                         {
                             "id": "tbzjl",
                             "type": "decimal",
-                            "width": "150px",
+                            "width": "160",
+                            "align": "right",
                             "text": "同比增减率（%）",
+                            "conversion":"%"
+                        }
+                    ]
+                },
+                {
+                    "type": "string",
+                    "text": "预算数",
+                    "children":[
+                        {
+                            "id": "bnlj",
+                            "type": "decimal",
+                            "width": "160",
+                            "align": "right",
+                            "text": "本年预算"
+                        },
+                        {
+                            "id": "cye",
+                            "type": "decimal",
+                            "width": "160",
+                            "align": "right",
+                            "text": "差异额"
+                        },
+                        {
+                            "id": "wcl",
+                            "type": "decimal",
+                            "width": "160",
+                            "align": "right",
+                            "text": "完成率（%）",
                             "conversion":"%"
                         }
                     ]
                 }				
             ],
-            "rows": []
+            "rows": [],
+            "levelProperties":{scode:"_level"} //加缩进 可选 table
         }		
     ]
 }

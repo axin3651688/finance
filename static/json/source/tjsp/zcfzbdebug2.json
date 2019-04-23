@@ -8,10 +8,10 @@
 	"showDims": ["year","month","company","conversion"],
 	"items": [
 		{
-			// "xtype": "tree-grid",
-			"xtype":"STreeGrid",
+			"xtype":"elementTree",
 			"id": "zcfzbej",
-			"stype": "tree",
+			"stype": true,
+			"isUnfold": true,// 自动展开的配置
 			"text": "资产负债表二级",
 			"weight": 24,
 			"show":true,
@@ -65,53 +65,32 @@
 				"type": 1
 			},
 			"columns": [
-				{
-					"id":"",
-					"type":"string",
-					"text":"预算数",
-					"children":[
-						{
-							"id": "bnys",
-							"type": "decimal",
-							"text": "本年预算"
-						},
-						{
-							"id": "cye",
-							"type": "decimal",
-							"text": "差异额"
-						},
-						{
-							"id": "cyl",
-							"type": "decimal",
-							"conversion":"%",
-							"text": "差异率（%）"
-						}
-					]
-				},
-				{
-					"id": "",
-					"type": "string",
-					"text": "",
-					"isTree":true
-				},
+				
+				// {
+				// 	"id": "",
+				// 	"type": "string",
+				// 	"text": "",
+				// 	"isTree":true
+				// },
 				{
 					"id": "gsbm",
 					"type": "string",
-					"width":"120",
+					"width":"180",
 					"fixed":true,
 					"text": "编码"
-					// "isTree":true
 				},
 				{
 					"id": "gsmc",
 					"type": "string",
-					"width":"330px",
+					"width":"360px",
 					"fixed":true,
 					"text": "公司名称"
 				},
 				{
 					"id": "qmye",
 					"type": "decimal",
+					"width": "160",
+					"align": "right",
 					"text": "期末余额"
 				},
 				{
@@ -122,12 +101,15 @@
 						{
 							"id": "zje",
 							"type": "decimal",
+							"width": "160",
+							"align": "right",
 							"text": "增减额"
 						},
 						{
 							"id": "zjl",
 							"type": "decimal",
-							"width": "110",
+							"width": "120",
+							"align": "right",
 							"conversion":"%",
 							"text": "增减率（%）"
 						}
@@ -141,23 +123,58 @@
 						{
 							"id": "sntq",
 							"type": "decimal",
+							"width": "160",
+							"align": "right",
 							"text": "上年同期"
 						},
 						{
 							"id": "tbzje",
 							"type": "decimal",
+							"width": "160",
+							"align": "right",
 							"text": "同比增减额"
 						},{
 							"id":"tbzjl",
 							"text":"同比增减率（%）",
-							"width": "150px",
+							"width": "160",
+							"align": "right",
 							"type":"decimal",
 							"conversion":"%"
 						}
 					]
+				},
+				{
+					"id":"",
+					"type":"string",
+					"text":"预算数",
+					"children":[
+						{
+							"id": "bnys",
+							"type": "decimal",
+							"width": "160",
+							"align": "right",
+							"text": "本年预算"
+						},
+						{
+							"id": "cye",
+							"type": "decimal",
+							"width": "160",
+							"align": "right",
+							"text": "差异额"
+						},
+						{
+							"id": "cyl",
+							"type": "decimal",
+							"conversion":"%",
+							"width": "120",
+							"align": "right",
+							"text": "差异率（%）"
+						}
+					]
 				}
 			],
-			"rows":[]
+			"rows":[],
+			"levelProperties":{gsbm:"_level"},//加缩进 可选 table
 		}
 	]
 }
