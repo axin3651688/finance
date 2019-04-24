@@ -258,12 +258,12 @@ export default {
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
     },
-    setTableDatas(item) {
+    setTableDatas(item) { debugger
       let rows = item.config.rows;
       let tempDatas = [];
       if (rows && rows.length > 0 && 
          (item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk' ||
-          item.id=='yszkej'||item.id=='yfzkej'||item.id=='qtyskej')) {
+          item.id=='yszkej'||item.id=='yfzkej'||item.id=='qtyskej'||item.id=='zcfzb')) {
         tempDatas =  rows;
       }else{
         tempDatas =  item.datas;
@@ -277,22 +277,22 @@ export default {
       this.$set(this, "item", item);
       this.setTableDatas(item);
       let refs = this.$refs;
-      if (refs) {
-        if (refs.child) {
-          refs.child.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-        if (refs.tchild) {
-          refs.tchild.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-      }
+      // if (refs) {
+      //   if (refs.child) {
+      //     refs.child.forEach(children => {
+      //       if (children.upData) {
+      //         children.upData(item);
+      //       }
+      //     });
+      //   }
+      //   if (refs.tchild) {
+      //     refs.tchild.forEach(children => {
+      //       if (children.upData) {
+      //         children.upData(item);
+      //       }
+      //     });
+      //   }
+      // }
       this.setTableScollHeight();
       //自定义要显示的内容。
       if(this.item.divContent){

@@ -410,7 +410,7 @@ export default {
      * 获取模块的参数
      *  */
 
-    getModuleParams(item, changeDim) {
+    getModuleParams(item, changeDim) { 
       let config = item.config,
         needDims = config.needDims;
       if (!needDims) {
@@ -487,24 +487,24 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) {
+    updateView(changeDim) { debugger
 
       console.log(this)
       console.log(this.config);
-      if (this.config) {
-        this.generateApiModelDatas(this, null, changeDim);
-      }
+      // if (this.config) {
+      //   this.generateApiModelDatas(this, null, changeDim);
+      // }
       let me = this;
       //this.$forceUpdate();//并不管用
       let $cc = this.$refs.mychild;
       if ($cc) {
         let $cc = this.$refs.mychild;
-        $cc.forEach(children => { //debugger
+        $cc.forEach(children => { debugger
           let ii = children.item;
           // 加了个ii.show
           //添加一个extendConfig判断用来过滤掉是继承来的config的元素，不然数据会出现错误,dash中 szc 2019年3月12日14:53:19
-          // if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
-          if (ii && ii.config && ii.show && !ii.extendConfig) {
+          if (ii && ii.config && (children.hasConfig || ii.show) && !ii.extendConfig) {
+          // if (ii && ii.config && ii.show && !ii.extendConfig) {
             let cc = ii.config;
             me.generateApiModelDatas(ii, children, changeDim);
           }
@@ -567,7 +567,7 @@ export default {
     /**
      * 获取数据后的操作处理
      */
-    queryDataAfter(item, datas, $childVue) { //debugger
+    queryDataAfter(item, datas, $childVue) { debugger
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;

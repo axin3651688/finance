@@ -193,7 +193,7 @@ export default {
         },
         // 应收、预付、其他比例触发 click事件
         seeChange(see){
-            debugger
+            // debugger
             let me = this ;
             // 看看json里有没有handler事件，如果有，直接跳转到json用 json的事件处理
             if(see.handler && typeof see.handler == "function"){
@@ -203,7 +203,7 @@ export default {
         },
         // 导出报表
         handleDownload(vue){
-            debugger
+            // debugger
             vue.downloadLoading = true;
             import('@/excel/Export2Excel').then(excel => {debugger
                 const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
