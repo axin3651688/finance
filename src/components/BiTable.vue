@@ -277,22 +277,22 @@ export default {
       this.$set(this, "item", item);
       this.setTableDatas(item);
       let refs = this.$refs;
-      if (refs) {
-        if (refs.child) {
-          refs.child.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-        if (refs.tchild) {
-          refs.tchild.forEach(children => {
-            if (children.upData) {
-              children.upData(item);
-            }
-          });
-        }
-      }
+      // if (refs) {
+      //   if (refs.child) {
+      //     refs.child.forEach(children => {
+      //       if (children.upData) {
+      //         children.upData(item);
+      //       }
+      //     });
+      //   }
+      //   if (refs.tchild) {
+      //     refs.tchild.forEach(children => {
+      //       if (children.upData) {
+      //         children.upData(item);
+      //       }
+      //     });
+      //   }
+      // }
       this.setTableScollHeight();
       //自定义要显示的内容。
       if(this.item.divContent){
