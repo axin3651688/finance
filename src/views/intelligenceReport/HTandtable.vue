@@ -1376,6 +1376,9 @@ export default {
       this.settings.data = rows;
       //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
       if(this.templateId == "8" && rows && rows.length > 0){
+        if(rows[0]){
+          rows[0].accountbanks == "" || rows[0].accountbanks == "SH" || !rows[0].accountbanks? rows[0].accountbanks = "合计":"";
+        }
         rows.forEach(item => {
           if(item["B"] == 0){
             item["B"] = "";
