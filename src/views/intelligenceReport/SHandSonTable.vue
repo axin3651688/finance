@@ -503,7 +503,7 @@ export default {
     });
     window.addEventListener("resize", this.resizeTable);
     this.settings.afterChange = this.afterChange;
-    this.settings.beforeValidate = this.beforeValidate;
+    // this.settings.beforeValidate = this.beforeValidate;
     // this.settings.beforeOnCellMouseDown = this.beforeOnCellMouseDown;
     // this.settings.afterOnCellMouseDown = this.afterOnCellMouseDown;
     // this.settings.afterRenderer = this.afterRenderer;
@@ -552,9 +552,9 @@ export default {
         cellTD.innerText = "垃圾";
       // }
     },
-    beforeValidate (aa,cc,dd,ee,ff,gg,hh) {
-      debugger;
-    },
+    // beforeValidate (aa,cc,dd,ee,ff,gg,hh) {
+    //   debugger;
+    // },
     afterValidate (aa,cc,dd,ee,ff,gg,hh) {
       debugger;
       let me = this,row = dd,column = me.selectCoulmn;
@@ -1112,24 +1112,31 @@ export default {
       // if(restrictItems.indexOf(this.templateId) != -1){
       //   cellMeta.readOnly = this.limitItemOfFill(row,columns);
       // }
-      // if (this.templateId == 7) {
-      //   //添加一个还款来源的限制。
-      //   cellMeta.readOnly = this.paymentLimit(row, columns);
-      //   if (columns == 1) {
-      //     cellMeta.source = this.mechanismdownData(row, columns);
-      //     cellMeta.type = "dropdown";
-      //   }
-      //   if (columns == 2) {
-      //     // 
-      //     // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
-      //     // this.getCellEditor = this.settings.getCellEditor(row,columns);
-      //     cellMeta.source = this.typeOfFinancing();
-      //     cellMeta.type = "dropdown";
-      //   }
-      //   if (columns == 12) {
-      //     cellMeta.readOnly = true;
-      //   }
-      // }
+      if (this.templateId == 7) {
+        debugger;
+        //添加一个还款来源的限制。
+        cellMeta.readOnly = this.paymentLimit(row, columns);
+        if (columns == 1) {
+          cellMeta.source = this.mechanismdownData(row, columns);
+          cellMeta.type = "dropdown";
+          cellMeta.validator = this.emailValidator;
+          cellMeta.allowInvalid = true;
+        }
+        if(columns == 3){
+          cellMeta.validator = this.emailValidator;
+          cellMeta.allowInvalid = true;
+        }
+        // if (columns == 2) {
+        //   // 
+        //   // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
+        //   // this.getCellEditor = this.settings.getCellEditor(row,columns);
+        //   cellMeta.source = this.typeOfFinancing();
+        //   cellMeta.type = "dropdown";
+        // }
+        if (columns == 12) {
+          cellMeta.readOnly = true;
+        }
+      }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
         if (row != 0 && (columns == 0 || columns == 2)) {
@@ -1247,65 +1254,71 @@ export default {
             cc.source = col.source;
           } else {
             if (col.type === "decimal") {
-              // cc.renderer = this.decimalDefaultRenderer;
+              cc.renderer = this.decimalDefaultRenderer;
+              cc.allowInvalid = true;
+              cc.validator = this.emailValidator;
             } 
-            // else if (col.id === "caozuo") {
-            //   // cc.renderer = this.flags;
-            //   // cc.readOnly = true;
-            // } else if (col.id === "isnature") {// 客商性质
-            //   // cc.source = this.getDropDownSource("1400");
-            //   // cc.renderer = this.flagrenderer;
-            //   // cc.type = "dropdown";
-            // } else if (col.id === "isinside") {//isinside
-            //   cc.source = this.getDropDownSource("1700");
-            //   cc.renderer = this.flagrenderer;
-            //   // cc.type = "autocomplete";
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            //   console.log(rows);
-            // } else if (col.id === "isnormal") {// 是否正常
-            //   cc.source = this.getDropDownSource("1800");
-            //   cc.renderer = this.flagrenderer;
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontenta") {// 非正常分类
-            //   cc.source = this.getDropDownSource("1500");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontentb") {// 债务人状况
-            //   cc.source = this.getDropDownSource("1600");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            // } else if (col.id === "guarantee") {
-            //   cc.source = this.financingOptionsData("20");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "repaysource") {
-            //   cc.source = this.financingOptionsData("21");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "sstartdate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "senddate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "srepaydate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else 
+            else if (col.id === "caozuo") {
+              cc.renderer = this.flags;
+              cc.readOnly = true;
+            } else if (col.id === "isnature") {// 客商性质
+              cc.source = this.getDropDownSource("1400");
+              // cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "isinside") {//isinside
+              cc.source = this.getDropDownSource("1700");
+              cc.renderer = this.flagrenderer;
+              // cc.type = "autocomplete";
+              cc.type = "dropdown";
+              cc.readOnly = false;
+              console.log(rows);
+            } else if (col.id === "isnormal") {// 是否正常
+              cc.source = this.getDropDownSource("1800");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontenta") {// 非正常分类
+              cc.source = this.getDropDownSource("1500");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontentb") {// 债务人状况
+              cc.source = this.getDropDownSource("1600");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+            } else if (col.id === "guarantee") {
+              cc.source = this.financingOptionsData("20");
+              // cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "repaysource") {
+              cc.source = this.financingOptionsData("21");
+              // cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "sstartdate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "senddate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "srepaydate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else 
             if (col.id === "cismenu") {
               cc.source = this.financingOptionsData("1700");
               // cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
             } 
-            // else 
-            // if (col.id === "cisguarantee") {
-            //   cc.source = this.financingOptionsData("1800");
-            //   // cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } 
-            // else if (col.id === "finance") {
-            //   cc.source = this.typeOfFinancing();
-            //   cc.type = "dropdown";
+            else 
+            if (col.id === "cisguarantee") {
+              cc.source = this.financingOptionsData("1800");
+              // cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } 
+            else if (col.id === "finance") {
+              cc.source = this.typeOfFinancing();
+              cc.type = "dropdown";
+            } 
+            // else if(this.templateId == "8"){
+            //   cellMeta.source = this.mechanismdownData(row, columns);
+            //   cellMeta.type = "dropdown";
             // }
             //资金集中情况表的render方法重新写里面的内容。
             if(this.templateId == "8"){
@@ -1316,7 +1329,7 @@ export default {
             }
             else if (this.templateId == "7") {
               debugger;
-              let arr = ['bankname','cismenu'];//,'sstartdate','srepaydate'
+              let arr = ['bankname','cismenu','cisguarantee','finance','guarantee','repaysource','senddate','srepaydate','sstartdate','A','B','C'];//,'sstartdate','srepaydate'
               if(arr.indexOf(col.id) != -1){
                 cc.allowInvalid = true;
                 cc.validator = this.emailValidator;
@@ -1453,7 +1466,7 @@ export default {
       //     callback(false);
       //   }
       // }, 1000);
-      if(value == ""){
+      if(value == "" || !value){
         // return true;
         callback(false);
       }else{
@@ -1553,7 +1566,15 @@ export default {
     },
     //点击保存数据
     saveData() {
+      debugger;
       let that = this;
+      //
+      if(this.templateId == '7'){
+        let valiArr = [0,1,2,3,4,5,6,7,8,9,10,11];//,'1','2','3','4','5','6','7','8','9','10','11'
+        this.$refs.hotTableComponent.hotInstance.validateColumns(valiArr,(valiValue) => {
+          debugger
+        });
+      }
       //判断是不是有改动。
       if(this.tableData && this.tableData.length == 0){
         this.$message({
@@ -1611,7 +1632,7 @@ export default {
       });
       //
       if(this.templateId == "7"){
-        
+
         // this.validatorTemplate7();
       }
       // if (this.templateId == 7) {
