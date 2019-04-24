@@ -58,6 +58,8 @@ export default {
   },
   created() {
     let me = this;
+    let navmenuCall = JSON.parse(localStorage.getItem("navmenuCall"));
+    if(navmenuCall)me.hideDims(navmenuCall);
     console.log(this.navMenus);
 
   },
@@ -125,6 +127,8 @@ export default {
     },
     shownavMenu(e) {
       debugger;
+      localStorage.removeItem("navmenuCall");
+      localStorage.setItem("navmenuCall",JSON.stringify(e));
       //在此加一个页面上面的title。2019年3月26日11:47:15 szc
       document.title = e.text;
       // //把地址传到vuex对象中监听。此时没有什么作用，在此注释掉。
