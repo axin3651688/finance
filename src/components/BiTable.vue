@@ -261,9 +261,7 @@ export default {
     setTableDatas(item) { debugger
       let rows = item.config.rows;
       let tempDatas = [];
-      if (rows && rows.length > 0 && 
-         (item.id=='yszk' || item.id=='yfzk' || item.id=='qtysk' ||
-          item.id=='yszkej'||item.id=='yfzkej'||item.id=='qtyskej'||item.id=='zcfzb')) {
+      if (rows && rows.length > 0) {
         tempDatas =  rows;
       }else{
         tempDatas =  item.datas;
