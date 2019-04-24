@@ -26,6 +26,7 @@
         debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
         return data;
     },
     "items": [{
@@ -251,6 +252,7 @@
                     "queryDataAfter": function(data, $vue) {
                         debugger
                         let me = this ;
+                        if(data.length === 0)return data;
                         let first, second ;
                         let yszk = JSON.parse(localStorage.getItem("yszk"));
                         if(yszk == null){

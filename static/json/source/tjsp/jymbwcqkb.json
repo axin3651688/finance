@@ -7,8 +7,8 @@
     "showDims": ["year","month","company","conversion"],
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         let me = this;
-        // me.items[0].updateView = $vue.updateView;
-        // me.items[0].$vue = $vue;
+        me.items[0].updateView = $vue.updateView;
+        me.items[0].$vue = $vue;
         return data;
     },
     "config": {

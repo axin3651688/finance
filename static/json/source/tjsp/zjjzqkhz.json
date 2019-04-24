@@ -21,8 +21,8 @@
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         // debugger
       let me = this;
-      let datas = [];//有数据的
-      let datax = [];//没有数据对
+      // let datas = [];//有数据的
+      // let datax = [];//没有数据对
       me.items[0].updateView = $vue.updateView;
       me.items[0].$vue = $vue;
     //   data.forEach((item,index)=>{

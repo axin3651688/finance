@@ -17,18 +17,20 @@
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
         debugger
-        data.forEach(res => {
-            if(res.scode == "31" || res.scode == "30"){
-                res.bqdys = 0 ;
-                res.bqljs = 0 ;
-                res.sndys = 0 ;
-                res.snljs = 0 ;
-            }else if(res.scode=="3001" || res.scode=="3002" || res.scode=="300101"){
-                res.bqdys = 0 ; 
-                res.sndys = 0 ; 
-            }
-        })
         let me = this;
+        if(me.id==="001408"){
+            data.forEach(res => {
+                if(res.scode == "31" || res.scode == "30"){
+                    res.bqdys = 0 ;
+                    res.bqljs = 0 ;
+                    res.sndys = 0 ;
+                    res.snljs = 0 ;
+                }else if(res.scode=="3001" || res.scode=="3002" || res.scode=="300101"){
+                    res.bqdys = 0 ; 
+                    res.sndys = 0 ; 
+                }
+            });
+        }
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
         return data;
