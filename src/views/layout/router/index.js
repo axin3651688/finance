@@ -65,12 +65,12 @@ const router = new Router({
                     component: () =>
                         import ('@v/intelligenceReport/HTandtable.vue')
                 },
-                // {
-                //     path: '/fillTable',
-                //     name: 'fillTable',
-                //     component: () =>
-                //         import ('@v/intelligenceReport/SHandSonTable.vue')
-                // },
+                {
+                    path: '/SFillTable',
+                    name: 'SFillTable',
+                    component: () =>
+                        import ('@v/intelligenceReport/SHandSonTable.vue')
+                },
                 {
                     path: '/c',
                     name: 'cx',

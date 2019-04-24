@@ -1089,47 +1089,47 @@ export default {
           cellMeta.readOnly = true;
         }
       }
-      // if (this.templateId == 3) {
-      //   if (
-      //     (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
-      //     (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
-      //   ) {
-      //     cellMeta.readOnly = true;
-      //   }
+      if (this.templateId == 3) {
+        if (
+          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
+          (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
+        ) {
+          cellMeta.readOnly = true;
+        }
         
-      // }
-      // if (this.templateId == 2) {
-      //   if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
-      //     cellMeta.readOnly = true;
-      //   }
-      // }
-      // if (this.templateId == 4) {
-      //   cellMeta.readOnly = this.reRenderCell(row, columns);
-      //   //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
-      // }
-      // //声明一个存放条件限制的数组。此时只针对预付、其他表的填报。
-      // let restrictItems = ['5','6'];
-      // if(restrictItems.indexOf(this.templateId) != -1){
-      //   cellMeta.readOnly = this.limitItemOfFill(row,columns);
-      // }
-      // if (this.templateId == 7) {
-      //   //添加一个还款来源的限制。
-      //   cellMeta.readOnly = this.paymentLimit(row, columns);
-      //   if (columns == 1) {
-      //     cellMeta.source = this.mechanismdownData(row, columns);
-      //     cellMeta.type = "dropdown";
-      //   }
-      //   if (columns == 2) {
-      //     // 
-      //     // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
-      //     // this.getCellEditor = this.settings.getCellEditor(row,columns);
-      //     cellMeta.source = this.typeOfFinancing();
-      //     cellMeta.type = "dropdown";
-      //   }
-      //   if (columns == 12) {
-      //     cellMeta.readOnly = true;
-      //   }
-      // }
+      }
+      if (this.templateId == 2) {
+        if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
+          cellMeta.readOnly = true;
+        }
+      }
+      if (this.templateId == 4) {
+        cellMeta.readOnly = this.reRenderCell(row, columns);
+        //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
+      }
+      //声明一个存放条件限制的数组。此时只针对预付、其他表的填报。
+      let restrictItems = ['5','6'];
+      if(restrictItems.indexOf(this.templateId) != -1){
+        cellMeta.readOnly = this.limitItemOfFill(row,columns);
+      }
+      if (this.templateId == 7) {
+        //添加一个还款来源的限制。
+        cellMeta.readOnly = this.paymentLimit(row, columns);
+        if (columns == 1) {
+          cellMeta.source = this.mechanismdownData(row, columns);
+          cellMeta.type = "dropdown";
+        }
+        if (columns == 2) {
+          // 
+          // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
+          // this.getCellEditor = this.settings.getCellEditor(row,columns);
+          cellMeta.source = this.typeOfFinancing();
+          cellMeta.type = "dropdown";
+        }
+        if (columns == 12) {
+          cellMeta.readOnly = true;
+        }
+      }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
         if (row != 0 && (columns == 0 || columns == 2)) {
@@ -1137,29 +1137,28 @@ export default {
         } else {
           cellMeta.readOnly = true;
         }
+      }else if(this.templateId == 9){
+        //基本情况表的判断只读的列
+        if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
+      }else if (this.templateId == 10) {
+        //集团年度目标考核建议值。
+        if(columns != 1 && columns != 4){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
+      }else if (this.templateId == 12) {
+        //市管企业利润总额考核调整表。
+        if(columns == 0){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
       }
-      // else if(this.templateId == 9){
-      //   //基本情况表的判断只读的列
-      //   if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
-      //     cellMeta.readOnly = true;
-      //   }else {
-      //     cellMeta.readOnly = false;
-      //   }
-      // }else if (this.templateId == 10) {
-      //   //集团年度目标考核建议值。
-      //   if(columns != 1 && columns != 4){
-      //     cellMeta.readOnly = true;
-      //   }else {
-      //     cellMeta.readOnly = false;
-      //   }
-      // }else if (this.templateId == 12) {
-      //   //市管企业利润总额考核调整表。
-      //   if(columns == 0){
-      //     cellMeta.readOnly = true;
-      //   }else {
-      //     cellMeta.readOnly = false;
-      //   }
-      // }
       
       return cellMeta;
     },
@@ -1247,66 +1246,62 @@ export default {
             cc.source = col.source;
           } else {
             if (col.type === "decimal") {
-              // cc.renderer = this.decimalDefaultRenderer;
-            } 
-            // else if (col.id === "caozuo") {
-            //   // cc.renderer = this.flags;
-            //   // cc.readOnly = true;
-            // } else if (col.id === "isnature") {// 客商性质
-            //   // cc.source = this.getDropDownSource("1400");
-            //   // cc.renderer = this.flagrenderer;
-            //   // cc.type = "dropdown";
-            // } else if (col.id === "isinside") {//isinside
-            //   cc.source = this.getDropDownSource("1700");
-            //   cc.renderer = this.flagrenderer;
-            //   // cc.type = "autocomplete";
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            //   console.log(rows);
-            // } else if (col.id === "isnormal") {// 是否正常
-            //   cc.source = this.getDropDownSource("1800");
-            //   cc.renderer = this.flagrenderer;
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontenta") {// 非正常分类
-            //   cc.source = this.getDropDownSource("1500");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontentb") {// 债务人状况
-            //   cc.source = this.getDropDownSource("1600");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            // } else if (col.id === "guarantee") {
-            //   cc.source = this.financingOptionsData("20");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "repaysource") {
-            //   cc.source = this.financingOptionsData("21");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "sstartdate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "senddate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "srepaydate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else 
-            if (col.id === "cismenu") {
-              cc.source = this.financingOptionsData("1700");
-              // cc.renderer = this.financingrenderer;
+              cc.renderer = this.decimalDefaultRenderer;
+            } else if (col.id === "caozuo") {
+              cc.renderer = this.flags;
+              cc.readOnly = true;
+            } else if (col.id === "isnature") {// 客商性质
+              cc.source = this.getDropDownSource("1400");
+              cc.renderer = this.flagrenderer;
               cc.type = "dropdown";
-            } 
-            // else 
-            // if (col.id === "cisguarantee") {
-            //   cc.source = this.financingOptionsData("1800");
-            //   // cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } 
-            // else if (col.id === "finance") {
-            //   cc.source = this.typeOfFinancing();
-            //   cc.type = "dropdown";
-            // }
+            } else if (col.id === "isinside") {//isinside
+              cc.source = this.getDropDownSource("1700");
+              cc.renderer = this.flagrenderer;
+              // cc.type = "autocomplete";
+              cc.type = "dropdown";
+              cc.readOnly = false;
+              console.log(rows);
+            } else if (col.id === "isnormal") {// 是否正常
+              cc.source = this.getDropDownSource("1800");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontenta") {// 非正常分类
+              cc.source = this.getDropDownSource("1500");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontentb") {// 债务人状况
+              cc.source = this.getDropDownSource("1600");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+            } else if (col.id === "guarantee") {
+              cc.source = this.financingOptionsData("20");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "repaysource") {
+              cc.source = this.financingOptionsData("21");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "sstartdate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "senddate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "srepaydate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "cismenu") {
+              
+              cc.source = this.financingOptionsData("1700");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "cisguarantee") {
+              cc.source = this.financingOptionsData("1800");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "finance") {
+              cc.source = this.typeOfFinancing();
+              cc.type = "dropdown";
+            }
             //资金集中情况表的render方法重新写里面的内容。
             if(this.templateId == "8"){
               let arr = ['B'];
@@ -1315,15 +1310,9 @@ export default {
               }
             }
             else if (this.templateId == "7") {
-              debugger;
-              let arr = ['bankname','cismenu'];//,'sstartdate','srepaydate'
-              if(arr.indexOf(col.id) != -1){
-                cc.allowInvalid = true;
-                cc.validator = this.emailValidator;
-              }
-              // cc.allowInvalid = true;
-              // // cc.invalidCellClassName = "htInvalid";
-              // cc.validator = this.emailValidator;
+              cc.allowInvalid = true;
+              // cc.invalidCellClassName = "htInvalid";
+              cc.validator = this.emailValidator;
               // cc.validator = /^(?:\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|null)$/;
             }
           }
@@ -1453,12 +1442,12 @@ export default {
       //     callback(false);
       //   }
       // }, 1000);
-      if(value == ""){
+      if(value == "是" || value == ""){
         // return true;
-        callback(false);
+        callback(true);
       }else{
         // return false;
-        callback(true);
+        callback(false);
       }
     },
     /**
@@ -1609,11 +1598,6 @@ export default {
           }
         }
       });
-      //
-      if(this.templateId == "7"){
-        
-        // this.validatorTemplate7();
-      }
       // if (this.templateId == 7) {
       //   this.tableData.forEach(item => {
       //     // if(item.senddate || item.srepaydate || item.sstartdate){
