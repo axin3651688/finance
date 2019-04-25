@@ -174,25 +174,26 @@ export default {
       if(!contiFlag){
         return flag;
       }
-      if(companyId == treeInfo.scode){
-        if(treeInfo.spcode != 0){
-          me.$message({
-            showClose: true,
-            message: '此公司没有查看此报表的权限！',
-            type: 'warning'
-          });
-          flag = false;
-          return flag;
-        }
-      }else if(companyId == userCompany.customerId && companyId != "1001"){
-        me.$message({
-          showClose: true,
-          message: '此公司没有查看此报表的权限！',
-          type: 'warning'
-        });
-        flag = false;
-        return flag;
-      }
+      // if(companyId == treeInfo.scode){
+      //   if(treeInfo.spcode != 0){
+      //     me.$message({
+      //       showClose: true,
+      //       message: '此公司没有查看此报表的权限！',
+      //       type: 'warning'
+      //     });
+      //     flag = false;
+      //     return flag;
+      //   }
+      // }
+      // else if(companyId == userCompany.customerId && companyId != "1001"){
+      //   me.$message({
+      //     showClose: true,
+      //     message: '此公司没有查看此报表的权限！',
+      //     type: 'warning'
+      //   });
+      //   flag = false;
+      //   return flag;
+      // }
       return flag;
     }
   }
