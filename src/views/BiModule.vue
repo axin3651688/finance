@@ -491,7 +491,7 @@ export default {
 
       console.log(this)
       console.log(this.config);
-      if (this.config && this.id==="0001") {
+      if (this.config) {
         this.generateApiModelDatas(this, null, changeDim);
       }
       let me = this;
