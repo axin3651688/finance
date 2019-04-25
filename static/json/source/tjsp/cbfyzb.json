@@ -191,12 +191,14 @@
             "queryDataAfter":function(data, $vue){
                 debugger
                 // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
-                let property = $vue.$store.getters.treeInfo.property1 ; 
-                
-                if(property == "0")data = [] ; 
-
-                return data ; 
-                
+                let property = $vue.$store.getters.treeInfo.property1 ;                
+                if(property == "0"){
+                    data = [] ;
+                    $vue.items[0].property = true; 
+                }else{
+                    $vue.items[0].property = false; 
+                }
+                return data;                 
             },
             "toolbar":[{    
                 "id":"1",

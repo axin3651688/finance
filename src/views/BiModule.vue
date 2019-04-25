@@ -491,9 +491,12 @@ export default {
 
       console.log(this)
       console.log(this.config);
-      if (this.config && this.id==="0001") {
+      if (this.config && (this.id==="0001" || this.id===1)) {
         this.generateApiModelDatas(this, null, changeDim);
       }
+      // if(this.config){
+      //   this.generateApiModelDatas(this, null, changeDim);
+      // }
       let me = this;
       //this.$forceUpdate();//并不管用
       let $cc = this.$refs.mychild;
