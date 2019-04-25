@@ -637,6 +637,10 @@ export default {
         let item = exportData[i];
         for(let key in item){
           if(key != "sname"){
+            if(key==="v1400100A_tz")exps[key] = itemObj["v1400100A"];
+            if(key==="vzbhfyC")exps[key] = me.vars[2].value;
+            if(key==="vzbhfyD")exps[key] = me.vars[3].value;
+            if(key==="znhfy_tz")exps[key] = (exps["vzbhfyC"] + exps["vzbhfyD"])/2;
             itemObj[key] = exps[key] || 0;
           }
         }
