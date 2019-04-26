@@ -1084,7 +1084,11 @@ export default {
     cells(row, columns, prop, params, pp) {
       // 
       let cellMeta = {};
-      if (this.fixed === 1) {
+      if(this.templateId == "2"){
+        if(columns == 0 || columns == 1 || columns == 3 || columns == 4){
+          cellMeta.readOnly = true;
+        }
+      }else if (this.fixed === 1) {
         if (columns == 0 || columns == 1 || columns == 5 || columns == 4) {
           cellMeta.readOnly = true;
         }
