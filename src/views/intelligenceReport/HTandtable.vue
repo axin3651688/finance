@@ -252,10 +252,14 @@ export default {
     company(val) {
       
       //判断不是合并公司才给填报
-      let flag = this.rightOfLeafCompany();
-      if(!flag){
-        return;
-      }
+      // let flag = this.rightOfLeafCompany();
+      // if(!flag){
+      //   return;
+      // }
+      //切换公司之后可能有些选项没有但是页面还展示出来了，所以处理掉。
+      let flag = this.contentOfCompany();
+      //公司的显示选项的控制。
+      this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
       this.divShow = false;
       this.fillShow = true;
       if (this.activeName2 == "second") {
@@ -264,7 +268,7 @@ export default {
         let newcompany = company.replace(company, val);
         this.datas.company = newcompany;
         // console.log(this.datas);
-        this.reportData(this.datas);
+        !flag || this.reportData(this.datas);
       }
     }
   },
@@ -486,7 +490,9 @@ export default {
     ];
     this.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
       
-      this.list = res.data.data;
+      // this.list = res.data.data;
+      this.listOld = res.data.data;
+      this.list = this.parseResultOfCompany(res.data.data);
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
@@ -518,11 +524,11 @@ export default {
       this.mechanismdown = res.data.data;
     });
     //合并公司没有填报的权限
-    let flag = this.rightOfLeafCompany();
-    if(flag){
-      this.divShow = false;
-      this.fillShow = true;
-    }
+    // let flag = this.rightOfLeafCompany();
+    // if(flag){
+    //   this.divShow = false;
+    //   this.fillShow = true;
+    // }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.resizeTable);
@@ -531,6 +537,56 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    /**
+     * 切换公司之后，去掉不该显示的选项。
+     * @author szc 2019年4月26日13:40:45
+     */
+    contentOfCompany () {
+      let me = this;
+      let listSelects = this.list,flag = false;
+      let currentSelects = this.parseResultOfCompany(this.listOld);
+      //当前的情况是只存在个数为 1、2、11的情况，所以目前可以用 length来判断。
+      if(listSelects && listSelects.length > 0 && currentSelects && currentSelects.length > 0){
+        if(listSelects.length == currentSelects.length){
+          flag = true;
+          return flag;
+        }else {
+          me.reportHeader = "请选择";
+          this.settings.data = [];
+        }
+      }
+      return flag;
+    },
+    /**
+     * 通过公司来转换下拉选中应该有的结果。
+     * @author szc 2019年4月26日11:24:14
+     */
+    parseResultOfCompany (data) {
+      let me = this,nisleaf = this.$store.getters.treeInfo.nisleaf,spcode = this.$store.getters.treeInfo.spcode;
+      console.log("公司：---------------------------",this.$store);
+      if(data && data.length == 0){
+        return;
+      }
+      if(nisleaf == 0){
+        if(spcode == 0){
+          let arr = ['10','12']
+          data = data.filter(item => {
+            return arr.indexOf(item.templateId) != -1;
+          });
+        }else {
+          let arr = ['10']
+          data = data.filter(item => {
+            return arr.indexOf(item.templateId) != -1;
+          });
+        }
+      }else {
+        let arr = ['12'];
+        data = data.filter(item => {
+          return arr.indexOf(item.templateId) == -1;
+        });
+      }
+      return data;
+    },
     // afterRender (aa,cc,dd,ee,ff,gg,hh) {
     //   debugger;
     //   let me = this,row = 8,column = me.selectCoulmn;
