@@ -1,1334 +1,258 @@
 {
-  "id":"0001",
-  "text":"资产负债表",
-  "layout": {
-    "xtype": "tab"
-},
-"showDims": ["year","month","company","conversion"],
-"monthConfig":{//显示13审计月
-  "id":"month",
-  "value":13
-},
-"changeCompanyBefore":function(newcompany,option){
-  // this.showSet(this.items[0].children); 
-  option.closeTabTaget(newcompany,option);
-},
-"changeYearBefore":function(newyear,option){
-  option.closeTabTaget(newyear,option);
-},
-"changeMonthBefore":function(newmonth,option){
-  debugger
-  // option.cellStyle(this.items[0]);
-  option.closeTabTaget(newmonth,option);
-},
-"changeConversionBefore":function(newconversion, option){
-  debugger
-  option.closeTabTaget(newconversion,option);
-},
-"__queryDataAfter":function(data,$vue){
-  debugger
-  let me = this;
-  if(me.id==="0001"){
-    let rows = this.rows;
-    data.forEach(res => {
-        rows.forEach(item => {
-            if(res.id == item.id){
-                item.A = res.A ; 
-                item.B = res.B ; 
-            }
-            if(res.id == item.id_){
-                item.A_ = res.A ; 
-                item.B_ = res.B ; 
-            }
+    
+    "id":"0001",
+    "text":"资产负债表",
+    "layout": {
+        "xtype": "tab"
+    },
+    "showDims": ["year","month","company","conversion"],
+    "monthConfig":{//显示13审计月
+        "id":"month",
+        "value":13
+    },
+    "changeCompanyBefore":function(newcompany,option){
+        option.closeTabTaget(newcompany,option);
+    },
+    "changeYearBefore":function(newyear,option){
+        option.closeTabTaget(newyear,option);
+    },
+    "changeMonthBefore":function(newmonth,option){
+        option.closeTabTaget(newmonth,option);
+    },
+    "changeConversionBefore":function(newconversion, option){
+        option.closeTabTaget(newconversion,option);
+    },
+    "__queryDataAfter":function(data, $vue){
+        let arr = []; 
+        let array = new Array();
+        // let array2= {sname: "流动负债:"};
+        for(let i=0; i < 23; i++){ data.splice(48,0,array); }
+        // data.splice(72,0,array2); 
+        data.forEach((res,index) => { res.row = index+1 });
+        let data_left = data.filter((res,index) => { return index < 72 ; });
+        data_left.forEach((res, index) => {
+            arr.push({ 
+                id: res.scode,      id2: "",
+                text1: res.sname,   text2: "",
+                row: res.row,       row2: "" ,
+                A: res.A || 0,      A2: 0 ,
+                B: res.B || 0,      B2: 0 ,
+                level: res.nlevel,  level2: 0
+            })
+        })
+
+        let data_right= data.filter((res,index) => { return index > 71 ; });
+        data_right.forEach((res, index) => { 
+            arr[index].id2 = res.scode;
+            arr[index].text2 = res.sname;
+            arr[index].row2 = res.row;
+            arr[index].A2 = res.A || 0;
+            arr[index].B2 = res.B || 0;
+            arr[index].level2 = res.nlevel;
         });
-    });
-  }
-  me.items[0].updateView = $vue.updateView;
-  me.items[0].$vue = $vue;
-  return data;
-},
-"config":{
-    "cube":{
-        "subject":"0001",
-        "cubeId":4
+        debugger
+        return arr ;
     },
-    "mainDim":"itempoint",
-    "needDims":["year","month","company","conversion"],
-    "random":{"min":100,"max":100000},
-    "type":1
-  },
-  "columns":[
-    {
-      "id": "A_",
-      "type": "decimal",
-      "text": "年初余额",
-      "subfix":"_",
-      "width":"150px"
-    },
-    {
-      "id": "id",
-      "type": "string",
-      "hidden": true,
-      "text": "编码"
-    },
-    {
-      "id": "text1",
-      "type": "string",
-      "text": "项目",
-      "width":"400px"
-    },
-    {
-        "id": "row",
-        "type": "number",
-        "align":"center",
-        "text": "行次",
-        "width":"50px"
-      },
-    
-    
-    {
-      "id": "B",
-      "type": "decimal",
-      "text": "期末余额",
-      "width":"150px"
-    },
-    {
-      "id": "A",
-      "type": "decimal",
-      "text": "年初余额",
-      "width":"150px"
-    },
-    
-    {
-      "id": "id_",
-      "type": "string",
-      "hidden": true,
-      "text": "编码"
-    },
-    {
-      "id": "text2",
-      "type": "string",
-      "text": "项目",
-      "subfix":"_",
-      "width":"400px"
-    },
-    {
-      "id": "row2",
-      "type": "number",
-      "align":"center",
-      "text": "行次",
-      "width":"60px"
-    },
-    {
-      "id": "B_",
-      "type": "decimal",
-      "subfix":"_",
-      "text": "期末余额",
-      "width":"150px"
-    }
-  ],
-  "rows":[
-  {
-    "id": "1110",
-    "ignore":true,
-    "text1": "流动资产:",
-    "row":1,
-    "id_": "1210",
-    "text2": "流动负债:",
-    "row2":73
-    
-  },
-  {
-    "id": "1111001",
-    "text1": "货币资金",
-    "level":2.5,
-    "row":2,
-    "A":0,
-    "B":0,
-    "id_": "1212001",
-    "text2": "短期借款",
-    "row2":74,
-    "level2":2.5,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111021",
-    "text1": "△结算备付金",
-    "level":2,
-    "row":3,
-    "A":0,
-    "B":0,
-    "id_": "1212004",
-    "text2": "△向中央银行借款",
-    "row2":75,
-    "A_":0,
-    "level2":2,
-    "B_":0
-  },
-  {
-    "id": "1111302",
-    "text1": "△拆出资金",
-    "level":2,
-    "row":4,
-    "A":0,
-    "B":0,
-    "id_": "1212010",
-    "text2": "△吸收存款及同业存放",
-    "row2":76,
-    "level2":2,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111101",
-    "text1": "以公允价值计量且其变动计入当期损益的金融资产",
-    "level":2.5,
-    "row":5,
-    "A":0,
-    "B":0,
-    "id_": "1212003",
-    "text2": "△拆入资金",
-    "level2":2,
-    "row2":77,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111102",
-    "text1": "衍生金融资产",
-    "level":2.5,
-    "row":6,
-    "A":0,
-    "B":0,
-    "id_": "1212101",
-    "text2": "以公允价值计量且其变动计入当期损益的金融负债",
-    "row2":78,
-    "level2":2.5,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111121",
-    "text1": "应收票据",
-    "level":2.5,
-    "row":7,
-    "A":0,
-    "B":0,
-    "id_": "1212110",
-    "text2": "衍生金融负债",
-    "level2":2.5,
-    "row2":79,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111122",
-    "text1": "应收账款",
-    "level":2.5,
-    "row":8,
-    "A":0,
-    "B":0,
-    "id_": "1212201",
-    "text2": "应付票据",
-    "level2":2.5,
-    "row2":80,
-    "A_":0,
-    "B_":0
-  },{
-    "id": "1111123",
-    "text1": "预付款项",
-    "level":2.5,
-    "row":9,
-    "A":0,
-    "B":0,
-    "id_": "1212202",
-    "text2": "应付账款",
-    "level2":2.5,
-    "row2":81,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111201",
-    "text1": "△应收保费",
-    "level":2,
-    "row":10,
-    "A":0,
-    "B":0,
-    "id_": "1212203",
-    "text2": "预收款项",
-    "level2":2.5,
-    "row2":82,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111211",
-    "text1": "△应收分保账款",
-    "level":2,
-    "row":11,
-    "A":0,
-    "B":0,
-    "id_": "1212111",
-    "text2": "△卖出回购金融资产款",
-    "level2":2,
-    "row2":83,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111212",
-    "text1": "△应收分保准备金",
-    "level":2,
-    "row":12,
-    "A":0,
-    "B":0,
-    "id_": "1212122",
-    "text2": "△应付手续费及佣金",
-    "level2":2,
-    "row2":84,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111132",
-    "text1": "应收利息",
-    "level":2.5,
-    "row":13,
-    "A":0,
-    "B":0,
-    "id_": "1212211",
-    "text2": "应付职工薪酬",
-    "level2":2.5,
-    "row2":85,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111131",
-    "text1": "应收股利",
-    "level":2.5,
-    "row":14,
-    "A":0,
-    "B":0,
-    "id_": "1212212",
-    "text2": "其中：应付工资",
-    "level2":3.5,
-    "row2":86,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111221",
-    "text1": "其他应收款",
-    "level":2.5,
-    "row":15,
-    "A":0,
-    "B":0,
-    "id_": "1212213",
-    "text2": "应付福利费",
-    "level2":5.5,
-    "row2":87,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111111",
-    "text1": "△买入返售金融资产",
-    "level":2,
-    "row":16,
-    "A":0,
-    "B":0,
-    "id_": "1212214",
-    "text2": "#其中：职工奖励及福利基金",
-    "row2":88,
-    "level2":7,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111401",
-    "text1": "存货",
-    "level":2.5,
-    "row":17,
-    "A":0,
-    "B":0,
-    "id_": "1212221",
-    "text2": "应交税费",
-    "level2":2.5,
-    "row2":89,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111403",
-    "text1": "其中：原材料",
-    "level":4,
-    "row":18,
-    "A":0,
-    "B":0,
-    "id_": "1212222",
-    "text2": "其中：应交税金",
-    "level2":4,
-    "row2":90,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1111405",
-    "text1": "库存商品(产成品)",
-    "level":6,
-    "row":19,
-    "A":0,
-    "B":0,
-    "id_": "1212231",
-    "text2": "应付利息",
-    "level2":2.5,
-    "row2":91,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1116001",
-    "text1": "划分为持有待售的资产",
-    "level":2.5,
-    "row":20,
-    "A":0,
-    "B":0,
-    "id_": "1212232",
-    "text2": "应付股利",
-    "level2":2.5,
-    "row2":92,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1117001",
-    "text1": "一年内到期的非流动资产",
-    "level":2.5,
-    "row":21,
-    "A":0,
-    "B":0,
-    "id_": "1212241",
-    "text2": "其他应付款",
-    "level2":2.5,
-    "row2":93,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1118001",
-    "text1": "其他流动资产",
-    "level":2.5,
-    "row":22,
-    "A":0,
-    "B":0,
-    "id_": "1212261",
-    "text2": "△应付分保账款",
-    "level2":2,
-    "row2":94,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1110100",
-    "text1": "流动资产合计",
-    "level":9,
-    "row":23,
-    "A":0,
-    "B":0,
-    "id_": "1212602",
-    "text2": "△保险合同准备金",
-    "level2":2,
-    "row2":95,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1120",
-    "text1": "非流动资产：",
-    "row":24,
-    "A":0,
-    "B":0,
-    "id_": "1212311",
-    "text2": "△代理买卖证券款",
-    "level2":2,
-    "row2":96,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121303",
-    "text1": "△发放贷款及垫款",
-    "row":25,
-    "level":2,
-    "A":0,
-    "B":0,
-    "id_": "1212312",
-    "text2": "△代理承销证券款",
-    "level2":2,
-    "row2":97,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121503",
-    "text1": "可供出售金融资产",
-    "row":26,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1216001",
-    "text2": "划分为持有待售的负债",
-    "level2":2.5,
-    "row2":98,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121501",
-    "text1": "持有至到期投资",
-    "row":27,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1217001",
-    "text2": "一年内到期的非流动负债",
-    "level2":2.5,
-    "row2":99,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121531",
-    "text1": "长期应收款",
-    "row":28,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1218001",
-    "text2": "其他流动负债",
-    "level2":2.5,
-    "row2":100,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121511",
-    "text1": "长期股权投资",
-    "row":29,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1210100",
-    "text2": "流动负债合计",
-    "level2":9,
-    "row2":101,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1121521",
-    "text1": "投资性房地产",
-    "row":30,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1220",
-    "text2": "非流动负债：",
-    "row2":102,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131601",
-    "text1": "固定资产原价",
-    "row":31,
-    "A":0,
-    "level":2.5,
-    "B":0,
-    "id_": "1222501",
-    "text2": "长期借款",
-    "level2":2.5,
-    "row2":103,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131602",
-    "text1": "减：累计折旧",
-    "row":32,
-    "level":4,
-    "A":0,
-    "B":0,
-    "id_": "1222502",
-    "text2": "应付债券",
-    "level2":2.5,
-    "row2":104,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131600",
-    "text1": "固定资产净值",
-    "row":33,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1222701",
-    "text2": "长期应付款",
-    "level2":2.5,
-    "row2":105,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131603",
-    "text1": "减：固定资产减值准备",
-    "row":34,
-    "level":4,
-    "A":0,
-    "B":0,
-    "id_": "1222706",
-    "text2": "长期应付职工薪酬",
-    "level2":2.5,
-    "row2":106,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131599",
-    "text1": "固定资产净额",
-    "row":35,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1222711",
-    "text2": "专项应付款",
-    "level2":2.5,
-    "row2":107,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131604",
-    "text1": "在建工程",
-    "row":36,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1222801",
-    "text2": "预计负债",
-    "level2":2.5,
-    "row2":108,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131605",
-    "text1": "工程物资",
-    "row":37,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1222401",
-    "text2": "递延收益",
-    "level2":2.5,
-    "row2":109,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131606",
-    "text1": "固定资产清理",
-    "row":38,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1222901",
-    "text2": "递延所得税负债",
-    "level2":2.5,
-    "row2":110,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131621",
-    "text1": "生产性生物资产",
-    "row":39,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1228001",
-    "text2": "其他非流动负债",
-    "level2":2.5,
-    "row2":111,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1131631",
-    "text1": "油气资产",
-    "row":40,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1228002",
-    "text2": "其中：特准储备基金",
-    "level2":4,
-    "row2":112,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1141701",
-    "text1": "无形资产",
-    "row":41,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1220100",
-    "text2": "非流动负债合计",
-    "level2":8.5,
-    "row2":113,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1145301",
-    "text1": "开发支出",
-    "row":42,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1200100",
-    "text2": "负 债 合 计",
-    "level2":9,
-    "row2":114,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1141711",
-    "text1": "商誉",
-    "row":43,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1310",
-    "text2": "所有者权益（或股东权益）：",
-    "row2":115,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1141801",
-    "text1": "长期待摊费用",
-    "row":44,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1314001",
-    "text2": "实收资本（或股本）",
-    "level2":2.5,
-    "row2":116,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1151811",
-    "text1": "递延所得税资产",
-    "row":45,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1314011",
-    "text2": "国有资本",
-    "level2":4,
-    "row2":117,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1148001",
-    "text1": "其他非流动资产",
-    "row":46,
-    "level":2.5,
-    "A":0,
-    "B":0,
-    "id_": "1314012",
-    "text2": "其中：国有法人资本",
-    "level2":5.5,
-    "row2":118,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1148011",
-    "text1": "其中：特准储备物资",
-    "row":47,
-    "level":4,
-    "A":0,
-    "B":0,
-    "id_": "1314021",
-    "text2": "集体资本",
-    "level2":4,
-    "row2":119,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1120100",
-    "text1": "非流动资产合计",
-    "row":48,
-    "A":0,
-    "B":0,
-    "level":9,
-    "id_": "1314031",
-    "text2": "民营资本",
-    "level2":4,
-    "row2":120,
-    "A_":0,
-    "B_":0
-  },
-  
-  {
-    "id": "1",
-    "text1": "",
-    "row":49,
-    "A":0,
-    "B":0,
-    "id_": "1314032",
-    "text2": "其中： 个人资本",
-    "row2":121,
-    "level2":5.5,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":50,
-    "A":0,
-    "B":0,
-    "id_": "1314041",
-    "text2": "外商资本",
-    "level2":4,
-    "row2":122,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":51,
-    "A":0,
-    "B":0,
-    "id_": "1314071",
-    "text2": "#减：已归还投资",
-    "level2":2,
-    "row2":123,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":52,
-    "A":0,
-    "B":0,
-    "id_": "1314000",
-    "text2": "实收资本（或股本）净额",
-    "level2":2.5,
-    "row2":124,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":53,
-    "A":0,
-    "B":0,
-    "id_": "1314081",
-    "text2": "其他权益工具",
-    "level2":2.5,
-    "row2":125,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":54,
-    "A":0,
-    "B":0,
-    "id_": "1314082",
-    "text2": "其中：优先股",
-    "level2":4,
-    "row2":126,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":55,
-    "A":0,
-    "B":0,
-    "id_": "1314083",
-    "text2": "永续债",
-    "level2":6,
-    "row2":127,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":56,
-    "A":0,
-    "B":0,
-    "id_": "1314002",
-    "text2": "资本公积",
-    "level2":2.5,
-    "row2":128,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":57,
-    "A":0,
-    "B":0,
-    "id_": "1314201",
-    "text2": "减：库存股",
-    "level2":2.5,
-    "row2":129,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":58,
-    "A":0,
-    "B":0,
-    "id_": "1314202",
-    "text2": "其他综合收益",
-    "level2":2.5,
-    "row2":130,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":59,
-    "A":0,
-    "B":0,
-    "id_": "1314203",
-    "text2": "其中：外币报表折算差额",
-    "level2":4,
-    "row2":131,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":60,
-    "A":0,
-    "B":0,
-    "id_": "1314004",
-    "text2": "专项储备",
-    "level2":2.5,
-    "row2":132,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":61,
-    "A":0,
-    "B":0,
-    "id_": "1314101",
-    "text2": "盈余公积",
-    "level2":2.5,
-    "row2":133,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":62,
-    "A":0,
-    "B":0,
-    "id_": "1314111",
-    "text2": "其中：法定公积金",
-    "level2":4,
-    "row2":134,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":63,
-    "A":0,
-    "B":0,
-    "id_": "1314121",
-    "text2": "任意公积金",
-    "level2":6,
-    "row2":135,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":64,
-    "A":0,
-    "B":0,
-    "id_": "1314131",
-    "text2": "#储备基金",
-    "level2":5.5,
-    "row2":136,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":65,
-    "A":0,
-    "B":0,
-    "id_": "1314141",
-    "text2": "#企业发展基金",
-    "level2":5.5,
-    "row2":137,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":66,
-    "A":0,
-    "B":0,
-    "id_": "1314151",
-    "text2": "#利润归还投资",
-    "level2":5.5,
-    "row2":138,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":67,
-    "A":0,
-    "B":0,
-    "id_": "1314102",
-    "text2": "△一般风险准备",
-    "level2":2,
-    "row2":139,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":68,
-    "A":0,
-    "B":0,
-    "id_": "1314104",
-    "text2": "未分配利润",
-    "level2":2.5,
-    "row2":140,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":69,
-    "A":0,
-    "B":0,
-    "id_": "1311000",
-    "text2": "归属于母公司所有者权益合计",
-    "row2":141,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1",
-    "text1": "",
-    "row":70,
-    "A":0,
-    "B":0,
-    "id_": "1311001",
-    "text2": "*少数股东权益",
-    "level2":2,
-    "row2":142,
-    "A_":0,
-    "B_":0
-  },
-  {
-  
-    "id": "1",
-    "text1": "",
-    "row":71,
-    "A":0,
-    "B":0,
-    "id_": "1300100",
-    "text2": "所有者权益（或股东权益）合计",
-    "row2":143,
-    "A_":0,
-    "B_":0
-  },
-  {
-    "id": "1100100",
-    "text1": "资  产  总  计",
-    "row":72,
-    "A":0,
-    "B":0,
-    "level":9,
-    "id_": "1320100",
-    "text2": "负债和所有者权益（或股东权益）总计",
-    "row2":144,
-    "A_":0,
-    "B_":0
-  }
-],
-  "items" : [
-    {
-      "xtype" : "bi-table",
-      "id" : "zcfzb",
-      "text" : "资产负债表",
-      "toolbar":[{
-        "id":"1",
-        "text":"刷新",
-        "xtype":"button",
-        "cellStyle":{
-            "color":"black",
-            // "background-color":"#189271"
-            "background-color": "#fff"
+    "config":{
+        "sql":"SELECT CASE WHEN SCODE IN ('1110','1120','1210','1220','1310','1311000','1300100','1320100') THEN 0 WHEN SCODE IN('1111021','1111302','1111201','1111211','1111212','1111111','1121303','1212004','1212010','1212003','1212111','1212122','1212261','1212602','1212311','1212312','1314102','1311001','1212004','1212010','1212003') THEN 2 WHEN SCODE IN ('1111403','1148011','1212212','1212222','1228002','1314082','1314111','1314203','1131602','1131603','1314011','1314021','1314031','1314041') THEN 4 WHEN SCODE IN ('1111405','1314083','1314121') THEN 6 WHEN SCODE IN ('1314131','1314141','1314151','1314012','1314032','1212213') THEN 5.5 WHEN SCODE IN ('1100100','1120100','1110100','1210100','1220100','1200100') THEN 9 ELSE 2.5 END NLEVEL,A.SCODE,A.SNAME,B.FACT_A AS A,B.FACT_B AS B FROM( SELECT SCODE ,SNAME, NLEVEL FROM DW_DIMITEMPOINT WHERE SCODE NOT LIKE '19%' AND SCODE NOT IN('1','11') AND stype = '1' and cisdisplay = 'Y' and PROPERTY3 = '1' and SPCODE <> '1' ORDER BY SSORTBY) A LEFT JOIN (SELECT DIM_ITEMPOINT,DIM_PERIOD,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD =:period GROUP BY DIM_ITEMPOINT,DIM_PERIOD) B on A.SCODE = B.DIM_ITEMPOINT",
+        "cube":{
+            "subject":"0001",
+            "cubeId":4
         },
-        "handler":function(vue,btn){
-            debugger
-            console.log(vue);
-            let $vue = vue.item.$vue;
-            $vue.closeTabTaget({}, $vue);
-            vue.item.updateView("company");
-        }
-      }
-      , {
-        "id":"2",
-        "text":"导出",
-        "xtype":"button",
-        "cellStyle":{
-            "color":"black",
-            // "background-color":"#189271"
-            "background-color": "#fff"
+        "mainDim":"itempoint",
+        "needDims":["year","month","company","conversion"],
+        "random":{"min":100,"max":100000},
+        "type":1
+    },
+    "columns":[
+        {
+            "id": "A2",
+            "type": "decimal",
+            "text": "年初余额",
+            "subfix":"_",
+            "width":"150px"
         },
-        "handler":function(vue,btn){
-            debugger
-            console.log(vue);
-            vue.handleDownload(vue);
-        }
-      }
-    ],
-      "drillProperties":["text1","text2"],//有钻取，给蓝色
-
-      "levelProperties":{text1:"level",text2:"level2"},//加缩进 可选 table
-      "cellStyle":function(row) {
-          // debugger 
-             let datas = this.datas;
-             if(datas && datas.length>0){
-                let data = datas.filter(function(item){
-                  return item.id == row.row.id || item.id == row.row.id_;
-                });
-                if(data.length == 0){
-                  row.row.A = 0;
-                  row.row.B = 0;
-                  row.row.A_ = 0;
-                  row.row.B_ = 0;
-
-                }else if(data.length == 1){
-                  if(data[0].id == row.row.id){
-                      if(data[0].A || data[0].A == 0){
-                        row.row.A = data[0].A;
-                      }else{
-                        row.row.A = 0;
-                      }
-                      if(data[0].B || data[0].B == 0){
-                        row.row.B = data[0].B;
-                      }else{
-                        row.row.B = 0;
-                      }
-                      row.row.A_ = 0;
-                      row.row.B_ = 0;
-
-                  }else{
-                      if(data[0].A || data[0].A == 0){
-                        row.row.A_ = data[0].A;
-                      }else{
-                        row.row.A_ = 0;
-                      }
-                      if(data[0].B || data[0].B == 0){
-                        row.row.B_ = data[0].B;
-                      }else{
-                        row.row.B_ = 0;
-                      }
-                      row.row.A = 0;
-                      row.row.B = 0;
-
-                  }
-
-                }else{
-                  if(data[0].id == row.row.id){
-                    if(data[0].A || data[0].A == 0){
-                      row.row.A = data[0].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[0].B || data[0].B == 0){
-                      row.row.B = data[0].B;
-                    }else{
-                      row.row.B = 0;
-                    }
-                    if(data[1].A || data[1].A == 0){
-                      row.row.A_ = data[1].A;
-                    }else{
-                      row.row.A_ = 0;
-                    }
-                    if(data[1].B || data[1].B == 0){
-                      row.row.B_ = data[1].B;
-                    }else{
-                      row.row.B_ = 0;
-                    }
-
-                }else{
-                    if(data[0].A || data[0].A == 0){
-                      row.row.A_ = data[0].A;
-                    }else{
-                      row.row.A_ = 0;
-                    }
-                    if(data[0].B || data[0].B == 0){
-                      row.row.B_ = data[0].B;
-                    }else{
-                      row.row.B_ = 0;
-                    }
-                    if(data[1].A || data[1].A == 0){
-                      row.row.A = data[1].A;
-                    }else{
-                      row.row.A = 0;
-                    }
-                    if(data[1].B || data[1].B == 0){
-                      row.row.B = data[1].B;
-                    }else{
-                      row.row.B = 0;
-                    }
-
-                }
-
-                }
-              
-            }else{
-                  row.row.A = 0;
-                  row.row.B = 0;
-                  row.row.A_ = 0;
-                  row.row.B_ = 0;
-            }
-            let css = "padding: 4px 0;";
-            let pro = row.column.property;//列id
-            if (!pro) {
-              return css;
-            }
-            let levelProperties = this.levelProperties;//缩进列获取
-            let textIndent ="";
-            let record = row.row;
-            let levelPro = levelProperties[pro];
-            if (levelPro && row.row[levelPro]) {
-                let level = row.row[levelPro] || 1;
-                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
-            }
-            let drillProperties = this.drillProperties;//钻取列获取
-            if (pro.indexOf("text1") != -1) {//第一列项目
-                if((record.A && record.A != 0) || (record.B && record.B != 0) ){//有数据时才显示蓝色，并且可以下钻
-                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                    css = css + "font-weight:bold;" + textIndent + drill;
-                    record.drill = true;//下钻设置
-                    return css ;
-                }
-                else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
-                    let drill = "text-decoration: none;color: black;";
-                    css = css + "font-weight:bold;" + textIndent + drill;
-                    return css;
-                }
-                else{
-                    return css+ textIndent; 
-                }
-            }else if(pro.indexOf("text2") != -1){//第二列项目
-                if((record.A_ && record.A_ != 0) || (record.B_ && record.B_ != 0) ){//有数据时才显示蓝色，并且可以下钻
-                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                    css = css + "font-weight:bold;" + textIndent + drill;
-                    record._drill = true;//下钻设置
-                    return css;
-                }
-                else if(!record.A_ && !record.B_ && (record.id_=="1210" || record.id_=="1210100" || record.id_=="1220" || record.id_=="1310" || record.id_=="1300100" || record.id_=="1320100" || record.id_=="1220100" || record.id_=="1200100")){
-                    let drill = "text-decoration: none;color: black;";
-                    css = css + "font-weight:bold;" + textIndent + drill;
-                    return css;
-                }
-                else{
-                    return css + textIndent; 
-                }
-            }else {
-              return css+textIndent;
-            }
-        // }    
-      },
-    "onCellClick":function(row, column, cell, event,option){
-        // debugger
-        let cv = column.property + "",
-        len = cv.length;
-        let text = row[cv];
-        let id = "" ;
-        let listener = false ; 
-        if(cv == "text1" )id = row.id;//下钻的标识
-        if(cv == "text2" )id = row.id_;//下钻的标识
-        // drill||_drill 是否下钻的标识
-        if(cv == "text1")listener = row.drill; 
-        if(cv == "text2")listener = row._drill;
-        if( this.drillProperties.indexOf(column.property) != -1 ){
-          // if(listener && (row.A && row.A!=0) || (row.B && row.B!=0) || (row.A_ && row.A_!=0) || (row.B_ && row.B_!=0)){
-            if(listener && (cv == "text1" || cv == "text2" )){
-                  option.commonHandler(
-                  {
-                      "type":"click",//事件类型
-                      "way":"addTab",//调用的公共方法
-                      "sourceApi":"/cnbi/json/source/tjsp/zcfzbdebug2.json",
-                      "handler":($vue,params)=>{//自定义的回调
-                          console.info(params);
-                          debugger; 
-                      } 
-                  },
-                  { row: row, column: column, cell: cell, event: event },
-                  { id: id, text: text }
-                  );
-              
-                  
-              
-          }    
-        }
+        {
+            "id": "id",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "text1",
+            "type": "string",
+            "text": "项目",
+            "width":"400px"
+        },
+        {
+            "id": "row",
+            "type": "number",
+            "align":"center",
+            "text": "行次",
+            "width":"50px"
+        },       
+        {
+            "id": "B",
+            "type": "decimal",
+            "text": "期末余额",
+            "width":"150px"
+        },
+        {
+            "id": "A",
+            "type": "decimal",
+            "text": "年初余额",
+            "width":"150px"
+        },
         
-      }
-    }
-  ]
+        {
+            "id": "id2",
+            "type": "string",
+            "hidden": true,
+            "text": "编码"
+        },
+        {
+            "id": "text2",
+            "type": "string",
+            "text": "项目",
+            "subfix":"_",
+            "width":"400px"
+        },
+        {
+            "id": "row2",
+            "type": "number",
+            "align":"center",
+            "text": "行次",
+            "width":"60px"
+        },
+        {
+            "id": "B2",
+            "type": "decimal",
+            "subfix":"_",
+            "text": "期末余额",
+            "width":"150px"
+        }
+    ],
+    "rows":[],
+    "items":[
+        {
+            "xtype" : "bi-table",
+            "id" : "zcfzb",
+            "text" : "资产负债表",
+            "queryDataAfter":function(data, $vue){
+                debugger;
+                return $vue.__queryDataAfter();
+            },
+            "toolbar":[
+                {
+                    "id":"1",
+                    "text":"刷新",
+                    "xtype":"button",
+                    "cellStyle":{
+                        "color":"black",
+                        "background-color": "#fff"
+                    },
+                    "handler":function(vue,btn){
+                        let $vue = vue.item.$vue;
+                        $vue.closeTabTaget({}, $vue);
+                        vue.item.updateView("company");
+                    }
+                },
+                {
+                    "id":"2",
+                    "text":"导出",
+                    "xtype":"button",
+                    "cellStyle":{
+                        "color":"black",
+                        "background-color": "#fff"
+                    },
+                    "handler":function(vue,btn){
+                        vue.handleDownload(vue);
+                    }
+                }
+            ],
+            "drillProperties":["text1","text2"],//有钻取，给蓝色
+            "levelProperties":{text1:"level",text2:"level2"},//加缩进 可选 table
+            "cellStyle":function(row) {
+                let datas = this.datas;
+                let record = [];
+                record = datas[row.rowIndex];
+                let css = "padding: 4px 0;";
+                let pro = row.column.property;//列id
+                if (!pro) {
+                return css;
+                }
+                let levelProperties = this.levelProperties;//缩进列获取
+                let textIndent ="";
+                let levelPro = levelProperties[pro];
+                if (levelPro && row.row[levelPro]) {
+                    let level = row.row[levelPro] || 1;
+                    textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+                }
+                let drillProperties = this.drillProperties;//钻取列获取
+                if (pro.indexOf("text1") != -1) {//第一列项目
+                    if((record.A && record.A != 0) || (record.B && record.B != 0) ){//有数据时才显示蓝色，并且可以下钻
+                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                        css = css + "font-weight:bold;" + textIndent + drill;
+                        record.drill = true;//下钻设置
+                        return css ;
+                    }
+                    else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
+                        let drill = "text-decoration: none;color: black;";
+                        css = css + "font-weight:bold;" + textIndent + drill;
+                        return css;
+                    }
+                    else{
+                        return css+ textIndent; 
+                    }
+                }else if(pro.indexOf("text2") != -1){//第二列项目
+                    if((record.A2 && record.A2 != 0) || (record.B2 && record.B2 != 0) ){//有数据时才显示蓝色，并且可以下钻
+                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
+                        css = css + "font-weight:bold;" + textIndent + drill;
+                        record._drill = true;//下钻设置
+                        return css;
+                    }
+                    else if(!record.A2 && !record.B2 && (record.id2=="1210" || record.id2=="1210100" || record.id2=="1220" || record.id2=="1310" || record.id2=="1300100" || record.id2=="1320100" || record.id2=="1220100" || record.id2=="1200100")){
+                        let drill = "text-decoration: none;color: black;";
+                        css = css + "font-weight:bold;" + textIndent + drill;
+                        return css;
+                    }
+                    else{
+                        return css + textIndent; 
+                    }
+                }else {
+                  return css+textIndent;
+                }
+            },
+            "onCellClick":function(row, column, cell, event,option){
+                // debugger
+                let cv = column.property + "",
+                len = cv.length;
+                let text = row[cv];
+                let id = "" ;
+                let listener = false ; 
+                if(cv == "text1" )id = row.id;//下钻的标识
+                if(cv == "text2" )id = row.id_;//下钻的标识
+                // drill||_drill 是否下钻的标识
+                if(cv == "text1")listener = row.drill; 
+                if(cv == "text2")listener = row._drill;
+                if( this.drillProperties.indexOf(column.property) != -1 ){
+                    if(listener && (cv == "text1" || cv == "text2" )){
+                        option.commonHandler(
+                        {
+                            "type":"click",//事件类型
+                            "way":"addTab",//调用的公共方法
+                            "sourceApi":"/cnbi/json/source/tjsp/zcfzbdebug2.json",
+                            "handler":($vue,params)=>{//自定义的回调
+                                console.info(params);
+                                debugger; 
+                            } 
+                        },
+                        { row: row, column: column, cell: cell, event: event },
+                        { id: id, text: text }
+                        );                                                                   
+                    }    
+                }                
+            }   
+        }
+    ]
 }
