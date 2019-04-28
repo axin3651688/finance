@@ -179,8 +179,9 @@
       },
      "handler":function(vue,btn){
         debugger
-        console.log(vue);
-        let row = vue.item.rows;
+        // console.log(vue);
+        // let row = vue.item.rows;
+        let row = vue.dataSource ;
         if(row.length){
           for(let i=0; i<row.length; i++){
             if(row[i].children.length>0){
@@ -203,8 +204,9 @@
       },
      "handler":function(vue,btn){
         debugger
-        console.log(vue);
-        let row = vue.item.rows;
+        // console.log(vue);
+        // let row = vue.item.rows;
+        let row = vue.dataSource ;
         if(row.length){
           for(let i=0; i<row.length; i++){
             if(row[i].children.length>0){

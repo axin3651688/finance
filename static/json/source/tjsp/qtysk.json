@@ -499,8 +499,9 @@
                             },
                             "handler": function(vue, btn) {
                                 debugger
-                                console.log(vue);
-                                let row = vue.item.rows;
+                                // console.log(vue);
+                                // let row = vue.item.rows;
+                                let row = vue.dataSource ;
                                 for (let i = 0; i < row.length; i++) {
                                     if (row[i].children.length > 0) {
                                         row[i]._expanded = true;
@@ -518,8 +519,9 @@
                             },
                             "handler": function(vue, btn) {
                                 debugger
-                                console.log(vue);
-                                let row = vue.item.rows;
+                                // console.log(vue);
+                                // let row = vue.item.rows;
+                                let row = vue.dataSource ;
                                 for (let i = 0; i < row.length; i++) {
                                     if (row[i].children.length > 0) {
                                         row[i]._expanded = false;
