@@ -113,75 +113,7 @@
         }              
     ],
     "rows": [
-        // { 
-        //     "id": "30","text" : "一、人员、工资指示", "row" : 1,"A" : 0,"B" : 0,"A_" : 0, "B_" : 0 , "level" : 0
-        // },
-        // {
-        //     "id": "3001","text" : "1、职工人数（不含劳务派遣）（人）", "row" : 2,"A" : 0,"B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        // },
-        // {
-        //     "id": "300101","text" : "其中：在岗职工人数（人）", "row" : 3, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        // },
-        // {
-        //     "id": "3002","text" : "2、从业人员人数", "row" : 4, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        // },
-        // {
-        //     "id": "3003","text" : "3、职工薪酬（不含劳务派遣）", "row" : 5, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        // },
-        // {
-        //     "id": "300301","text" : "其中：职工工资总额", "row" : 6, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        // },
-        // {
-        //     "id": "300302","text" : "福利费用", "row" : 7, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "300303","text" : "社会保险费用", "row" : 8, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "31","text" : "二、税收指示", "row" : 9, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
-        // },
-        // {
-        //     "id": "3101","text" : "1、应交税金总额", "row" : 10, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        // },
-        // {
-        //     "id": "310101","text" : "其中：增值税", "row" : 11, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        // },
-        // {
-        //     "id": "310102","text" : "消费税", "row" : 12, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310103","text" : "企业所得税", "row" : 13, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310104","text" : "关税", "row" : 14, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310105","text" : "个人所得税", "row" : 15, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "3102","text" : "2、已交税金总额", "row" : 16, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 2
-        // },
-        // {
-        //     "id": "310201","text" : "其中：增值税", "row" : 17, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        // },
-        // {
-        //     "id": "310202","text" : "消费税", "row" : 18, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310203","text" : "企业所得税", "row" : 19, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310204","text" : "关税", "row" : 20, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "310205","text" : "个人所得税", "row" : 21, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 6
-        // },
-        // {
-        //     "id": "32","text" : "三、增加值", "row" : 22, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 0
-        // },
-        // {
-        //     "id": "3201","text" : "其中：本期计提折旧额", "row" : 23, "A" : 0, "B" : 0, "A_" : 0, "B_" : 0 , "level" : 4
-        // }
+        
     ],
     "items": [
         {
@@ -220,9 +152,11 @@
                     vue.handleDownload(vue);
                 }
             }],
-            "levelProperties":{sname:"evel"},
+            "levelProperties":{sname:"evel"},   // 行缩进
+            "drillProperties": ["sname"],       // 蓝色下钻
             "cellStyle":function(row,col){
                 // debugger
+                let css = "padding: 4px 0;";
                 let pro = row.column.property;
                 let textIndent ="";
                 let record = row.row ;
@@ -235,7 +169,44 @@
                     let level = record[levelPro] || 1;
                     textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
                 }
-                return textIndent ;
+                let drillProperties = this.drillProperties;
+                if(drillProperties.indexOf(pro) != -1){
+                    if((record.bqdys && record.bqdys != 0) || (record.bqljs && record.bqljs != 0) || (record.sndys && record.sndys != 0) || (record.snljs && record.snljs != 0)){
+                        let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
+                        css = css + "font-weight:bold;" + textIndent + drill;
+                        record.drill = true ;
+                        return css;
+                    }else{
+                        return css + textIndent;
+                    }
+                }else{
+                    return css + textIndent ;
+                }
+            },
+            "onCellClick":function(row, column, cell, event,option){
+                debugger
+                // 符合下钻的列
+                let pro = column.property;
+                // 下钻的编码 or 下钻的名称
+                let id = row.scode, text = row.sname;
+                // 是否是下钻
+                let drill = row.drill ;
+                // 下钻的标识
+                let drillProperties = this.drillProperties;
+                if(drillProperties.indexOf(pro) != -1 && drill){
+                    option.commonHandler(
+                    {
+                        "type":"click",//事件类型
+                        "way":"addTab",//调用的公共方法
+                        "sourceApi":"/cnbi/json/source/tjsp/jbqkbdebug2.json",
+                        "handler":($vue,params)=>{//自定义的回调
+                            console.info(params);
+                        } 
+                    },
+                    { row: row, column: column, cell: cell, event: event },
+                    { id: id, text: text }
+                    );
+                }
             }
         }
     ]
