@@ -124,7 +124,7 @@
                         "type": 1,
                         "tableHeads": true,
                         "columns": [{
-                                "id": "sjssje",
+                                "id": "szxssje",
                                 "type": "decimal",
                                 "width": "180px",
                                 "text": "已形成实质性损失金额"
@@ -197,17 +197,17 @@
                                 "text": "非正常分类*"
                             },
                             {
-                                "id": "zwrqk",
+                                "id": "zwrzk",
                                 "type": "decimal",
                                 "text": "债务人情况*"
                             },
                             {
-                                "id": "kshjk",
+                                "id": "khsje",
                                 "type": "decimal",
                                 "text": "可收回金额*"
                             },
                             {
-                                "id": "dykshje",
+                                "id": "dnkhsje",
                                 "type": "decimal",
                                 "width": "180px",
                                 "text": "其中:当年可收回金额*"
