@@ -205,7 +205,7 @@ export default {
                   //验证是否同名
                   // setTimeout(() => {
                   request({
-                    url: "zjb/sys/dimcompany/validate",
+                    url: "/zjb/sys/dimcompany/validate",
                     method: "get",
                     params: {
                       scode: value
