@@ -26,7 +26,13 @@
           </div>
         </div>
         <div class="right">
+          <template v-for="(item,index) in buttonsOperation">
+            <el-button class="button" :key="index">
+              {{item.text}}
+            </el-button>
+          </template>
           <!-- <el-button class="button">审阅</el-button> -->
+          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
           <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
         </div>
         <!-- 上报的人员modal -->
@@ -119,6 +125,7 @@ export default {
   },
   data() {
     return {
+      buttonsOperation:[],//包含上报、审阅等操作按钮。
       //上报人员的modal框的显示。
       modalConfig:{},
       //控制显示区域块
@@ -270,6 +277,8 @@ export default {
         // console.log(this.datas);
         !flag || this.reportData(this.datas);
       }
+      //上报、审阅按钮的内容。
+      // this.contentOfButtons();
     }
   },
   created() {
@@ -498,7 +507,8 @@ export default {
     });
     //隐藏单位，默认是元。
     this.hideConverseOfYuan();
-    
+    //操作按钮显示的内容。
+    // this.contentOfButtons();
   },
   mounted() {
     let data = 10;
@@ -537,6 +547,34 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    /**
+     * 操作按钮显示的内容。
+     * @author szc 2019年4月29日14:14:09
+     */
+    contentOfButtons () {
+      debugger;
+      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf;
+      if(!this.templateId){
+        me.buttonsOperation = [];
+        return
+      }
+      this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
+        buttons = res.data;
+        if(isleaf == 1){
+          let arr1 = ['0','1'];
+          buttons = buttons.filter(item => {
+            return arr1.indexOf(item.id) != -1;
+          });
+          me.buttonsOperation = buttons;
+        }else {
+          let arr0 = ['0','1'];
+          buttons = buttons.filter(item => {
+            return arr0.indexOf(item.id) == -1;
+          });
+          me.buttonsOperation = buttons;
+        }
+      });
+    },
     /**
      * 切换公司之后，去掉不该显示的选项。
      * @author szc 2019年4月26日13:40:45
@@ -1828,6 +1866,8 @@ export default {
       //三张主表加十三个审计月。
       this.mainTableMonth();
       this.reportData(this.datas);
+      //上报、审阅按钮的内容。
+      // this.contentOfButtons();
     },
     /**
      * 三张主表加十三个审计月。
