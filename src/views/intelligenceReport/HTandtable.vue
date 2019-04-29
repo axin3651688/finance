@@ -580,7 +580,7 @@ export default {
           });
         }
       }else {
-        let arr = ['12'];
+        let arr = ['10','12'];
         data = data.filter(item => {
           return arr.indexOf(item.templateId) == -1;
         });
@@ -1016,6 +1016,12 @@ export default {
             let bb = { index: index,item: changeRow.item };
             bb[key] = values;
             this.tableData.push(bb);
+          }else if(this.templateId == 10) {
+            //添加一个基本情况表的item编码。
+            let changeRow = datas[index];
+            let bb = { index: index,company: changeRow.company };
+            bb[key] = values;
+            this.tableData.push(bb);
           }else if(this.templateId == 12) {
             //添加一个基本情况表的item编码。
             let changeRow = datas[index];
@@ -1206,7 +1212,7 @@ export default {
         }
       }else if (this.templateId == 10) {
         //集团年度目标考核建议值。
-        if(columns != 1 && columns != 4){
+        if(columns != 2 && columns != 5){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1280,8 +1286,8 @@ export default {
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
       debugger;
-      let me = this;
-      if (this.fixed === 0 && this.templateId != "9" && this.templateId != "12") {
+      let me = this,arrTem = ['9','12','10'];
+      if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
       }
@@ -1392,6 +1398,15 @@ export default {
         });
         colHeaders = colHeaders.filter(item => {
           return item != "项目编码";
+        });
+      }
+      //集团经营目标不显示公司编码过滤掉
+      if((this.templateId == 10) && newCoulmns && newCoulmns.length > 0){
+        newCoulmns = newCoulmns.filter(item => {
+          return item.data != "company";
+        });
+        colHeaders = colHeaders.filter(item => {
+          return item != "公司编码";
         });
       }
       this.settings.columns = newCoulmns;
@@ -1833,7 +1848,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','9','12'],flag = true;
+      let arr = ['0','1','2','3','9','12','10'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
