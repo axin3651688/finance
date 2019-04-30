@@ -112,7 +112,8 @@
                         "random": { "min": 100, "max": 100000 },
                         "type": 1,
                         "tableHeads": true,
-                        "columns": [{
+                        "columns": [
+                            {
                                 "id": "szxssje",
                                 "type": "decimal",
                                 "width": "180px",
