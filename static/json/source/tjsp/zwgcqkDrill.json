@@ -151,7 +151,7 @@
                           "align":"center"
                         },
                         {
-                          "id": "dbsf",
+                          "id": "dbfs",
                           "type": "string",
                           "text": "担保方式",
                           "align":"center"
