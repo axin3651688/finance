@@ -113,7 +113,8 @@ import {
     financingDown,
     mechanism,
     queryUserByCompany,
-    sendFillMessage
+    sendFillMessage,
+    saveReport
 } from "@/api/fill.js";
 import EventMixins from "./mixins/szcFillBtnOpe";
 // import BiModule from "@v/BiModule.vue";

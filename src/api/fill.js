@@ -88,3 +88,20 @@ export function sendFillMessage(data) {
         params: data
     })
 }
+/**
+ * 上报按钮的发送请求
+ */
+export function saveReport(params) {
+    return request({
+        url: '/zjb/save_fill_message',
+        method: 'post',
+        data: params
+    })
+}
+export function saveReview(params) {
+    return request({
+        url: '/zjb/update_fill_message',
+        method: 'post',
+        data: params
+    })
+}
