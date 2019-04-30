@@ -27,7 +27,7 @@
         </div>
         <div class="right">
           <template v-for="(item,index) in buttonsOperation">
-            <el-button class="button" :key="index">
+            <el-button class="button" :key="index" @click="buttonsHandle(item)">
               {{item.text}}
             </el-button>
           </template>
@@ -115,8 +115,10 @@ import {
     queryUserByCompany,
     sendFillMessage
 } from "@/api/fill.js";
+import EventMixins from "./mixins/szcFillBtnOpe";
 // import BiModule from "@v/BiModule.vue";
 export default {
+  mixins: [EventMixins],
   components: {
     HotTable,
     SBiDiv,
@@ -278,7 +280,7 @@ export default {
         !flag || this.reportData(this.datas);
       }
       //上报、审阅按钮的内容。
-      // this.contentOfButtons();
+      this.contentOfButtons(flag);
     }
   },
   created() {
@@ -548,13 +550,35 @@ export default {
   },
   methods: {
     /**
+     * 上报、审阅的按钮的操作。
+     * @author szc 2019年4月29日15:54:06
+     * 0:上报,1:申请退回,2:审阅,3:退回,4:催报
+     */
+    buttonsHandle (item) {
+      debugger;
+      return;
+      let me = this;
+      if(item){
+        if(item.id == '1'){
+          this.reportHandler(item);
+        }else if(item.id == '2'){
+          this.applicationForRefund(item);
+        }else if(item.id == '3') {
+          this.reviewHandler(item);
+        }else if(item.id == '4') {
+          this.returnHandler(item);
+        }else if(item.id == '0') {
+          this.urgeToReport(item);
+        }
+      }
+    },
+    /**
      * 操作按钮显示的内容。
      * @author szc 2019年4月29日14:14:09
      */
-    contentOfButtons () {
-      debugger;
+    contentOfButtons (flag) {
       let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf;
-      if(!this.templateId){
+      if(!this.templateId || (typeof(flag) != "undefined" && !flag)){
         me.buttonsOperation = [];
         return
       }
@@ -1867,7 +1891,7 @@ export default {
       this.mainTableMonth();
       this.reportData(this.datas);
       //上报、审阅按钮的内容。
-      // this.contentOfButtons();
+      this.contentOfButtons();
     },
     /**
      * 三张主表加十三个审计月。
