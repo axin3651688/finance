@@ -270,7 +270,7 @@ export default {
       return this.tableDatas;
     },
     upData(item) {
-      // debugger;
+      debugger;
       this.$set(this.item, "datas", item.datas);
       this.$set(this, "item", item);
       this.setTableDatas(item);
