@@ -42,7 +42,7 @@
         },
         "config":{
             "sql":"",
-            "sql2":"SELECT NID, A.DIM_CUSUPPLIERNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,( CASE WHEN ISINSIDE IS NULL THEN NULL WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB, ( CASE WHEN ISNORMAL IS NULL THEN NULL WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC, D.SNAME AS FZCFL, E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM ( SELECT NID, DIM_CUSUPPLIER, DIM_COMPANY, DIM_ITEM, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D, ISNATURE, ISINSIDE, ISNORMAL, SCONTENTA, SCONTENTB, FACT_E, FACT_F, FACT_G, FACT_H, DIM_CUSUPPLIERNAME FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1003' AND ISINSIDE IS NOT NULL) A LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE",
+            "sql2":"SELECT NID, A.DIM_CUSUPPLIERNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,( CASE WHEN ISINSIDE IS NULL THEN NULL WHEN ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB, ( CASE WHEN ISNORMAL IS NULL THEN NULL WHEN ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC, A.SCONTENTA AS FZCFL, A.SCONTENTB AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM ( SELECT NID, DIM_CUSUPPLIER, DIM_COMPANY, DIM_ITEM, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D, ISNATURE, ISINSIDE, ISNORMAL, SCONTENTA, SCONTENTB, FACT_E, FACT_F, FACT_G, FACT_H, DIM_CUSUPPLIERNAME FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1003' AND ISINSIDE IS NOT NULL) A LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE",
             "cube":{
                 "subject":"",
                 "cubeId":4
@@ -53,102 +53,101 @@
             "tableHeads":true,
             "type":1
         }, 
-        "columns":[
-        {
-            "id": "sjssje",
-            "type": "decimal",
-            "width": "180px",
-            "text": "已形成实质性损失金额"
-        },
-        {
-            "id":"id",
-            "width": "60",
-            "type":"index",
-            "text":"序号"
-        },
-        {
-            "id": "sk",
-            "type": "string",
-            "width":"300px",
-            "fixed":true,
-            "text": "客商"
-        },
-        {
-            "id": "balance",
-            "type": "decimal",
-            "text": "余额"
-        },
-        {
-            "id": "zq",
-            "type": "string",
-            "text": "账期",
-            "children":[
-                {
-                    "id":"oneyear",
-                    "type":"decimal",
-                    "text":"1年以内"
-                },
-                {
-                    "id":"twoyear",
-                    "type":"decimal",
-                    "text":"1-2年以内"
-                },
-                {
-                    "id":"threeyear",
-                    "type":"decimal",
-                    "text":"2-3年以内"
-                },
-                {
-                    "id":"fouryear",
-                    "type":"decimal",
-                    "text":"3年以上"
-                }
-            ]
-        },
-        {
-            "id": "skxz",
-            "type": "string",
-            "align": "center",
-            "text": "商客性质*"
-        },
-        {
-            "id": "sfnb",
-            "align": "center",
-            "type": "string",
-            "text": "是否内部*"
-        },
-        {
-            "id": "sfzc",
-            "align": "center",
-            "type": "string",
-            "text": "是否正常*"
-        },
-        {
-            "id": "fzcfl",
-            "type": "decimal",
-            "text": "非正常分类*"
-        },
-        {
-            "id": "zwrqk",
-            "type": "decimal",
-            "text": "债务人情况*"
-        },
-        {
-            "id": "kshjk",
-            "type": "decimal",
-            "text": "可收回金额*"
-        },
-        {
-            "id": "dykshje",
-            "type": "decimal",
-            "width": "180px",
-            "text": "其中:当年可收回金额*"
-        },
-        {
-            "id": "yqzk",
-            "type": "decimal",
-            "text": "逾期账款"
-        }
+        "columns": [
+            {
+                "id": "szxssje",
+                "type": "decimal",
+                "width": "180px",
+                "text": "已形成实质性损失金额"
+            },
+            {
+                "id": "id",
+                "type": "index",
+                "width": "60",
+                "text": "序号"
+            },
+            {
+                "id": "sk",
+                "type": "string",
+                "width": "330",
+                "fixed": true,
+                "text": "客商"
+            },
+            {
+                "id": "balance",
+                "type": "decimal",
+                "text": "余额"
+            },
+            {
+                "id": "zq",
+                "type": "string",
+                "text": "账期",
+                "children": [{
+                        "id": "oneyear",
+                        "type": "decimal",
+                        "text": "1年以内"
+                    },
+                    {
+                        "id": "twoyear",
+                        "type": "decimal",
+                        "text": "1-2年以内"
+                    },
+                    {
+                        "id": "threeyear",
+                        "type": "decimal",
+                        "text": "2-3年以内"
+                    },
+                    {
+                        "id": "fouryear",
+                        "type": "decimal",
+                        "text": "3年以上"
+                    }
+                ]
+            },
+            {
+                "id": "skxz",
+                "type": "string",
+                "align": "center",
+                "text": "客商性质*"
+            },
+            {
+                "id": "sfnb",
+                "type": "string",
+                "align": "center",
+                "text": "是否内部*"
+            },
+            {
+                "id": "sfzc",
+                "type": "string",
+                "align": "center",
+                "text": "是否正常*"
+            },
+            {
+                "id": "fzcfl",
+                "type": "string",
+                "text": "非正常分类*"
+            },
+            {
+                "id": "zwrzk",
+                "type": "string",
+                "text": "债务人情况*"
+            },
+            {
+                "id": "khsje",
+                "type": "decimal",
+                "text": "可收回金额*"
+            },
+            {
+                "id": "dnkhsje",
+                "type": "decimal",
+                "width": "180px",
+                "text": "其中:当年可收回金额*"
+            },
+            {
+                "id": "yqzk",
+                "type": "decimal",
+                "text": "逾期账款"
+            }
         ],
         "rows":[ ]           
         
