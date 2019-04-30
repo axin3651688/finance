@@ -90,6 +90,7 @@ export function sendFillMessage(data) {
 }
 /**
  * 上报按钮的发送请求
+ * @author szc 2019年4月30日13:37:52
  */
 export function saveReport(params) {
     return request({
@@ -98,6 +99,11 @@ export function saveReport(params) {
         data: params
     })
 }
+/**
+ * 审阅的发送请求。
+ * @author szc 2019年4月30日13:38:30
+ * @param {*} params 
+ */
 export function saveReview(params) {
     return request({
         url: '/zjb/update_fill_message',
