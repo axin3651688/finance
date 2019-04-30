@@ -608,7 +608,6 @@ export default {
             }
             // console.log("参数对象：", obj);
             _this.activeForm = {};
-
             request({
               url: "/zjb/sys/dimcompany/" + _this.opt.url,
               method: "post",
@@ -717,7 +716,7 @@ export default {
       this.form.sname = snode.sname; //sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
-      this.form.nlevel = snode.level;
+      this.form.nlevel = snode.nlevel;
       this.form.sindcode = snode.sindcode;
       // this.form.cisleaf = snode.cisleaf;
       this.form.ssrccode = snode.ssrccode;
