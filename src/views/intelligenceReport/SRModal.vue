@@ -97,6 +97,7 @@ export default {
          * @author szc 2019年4月3日14:26:49
          */
         confirmHandle () {
+            debugger;
             let me = this,eventListener = this.modalConfig.eventListener;
             let nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
             if(eventListener){
