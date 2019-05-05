@@ -30,7 +30,7 @@
                        config.sql = config.sql.replace(/:helpDim/g," where SENDDATE-SSTARTDATE>10000 AND SENDDATE-SSTARTDATE<=50000 ");
                     }else if(id === "2003"){//大于五年
                        config.sql = config.sql2;
-                       config.sql = config.sql.replace(/:helpDim/g," where SENDDATE>50000 ");
+                       config.sql = config.sql.replace(/:helpDim/g," where SENDDATE-SSTARTDATE>50000 ");
                     }
                     config.sql = config.sql.replace(/:finance/g,"'"+id+"'");//全局替换:itemperiod
                     return params;
