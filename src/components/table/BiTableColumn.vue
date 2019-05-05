@@ -200,7 +200,7 @@ export default {
      * 获取单元格数据
      */
     getCellValues(datas, col, scope, rows) {
-      // debugger;
+      let me = this,tableid = me.tableData.id;
       let colId = col.id,
         row = scope.row;
       let rowId = row.id || row.nid;
@@ -231,7 +231,7 @@ export default {
       if (Array.isArray(datas) && datas.length == 0) {
         return "--";
       }
-      if (rowId) {
+      if (rowId && tableid !="zwgcqkbxz" && tableid !="xsqydkdbqk" && tableid !="xsqydydkqk") {
         value = Math.getCellValue(datas, colId, rowId, rows);
       } else if (datas.length >= scope.$index) {
         value = datas[scope.$index][colId];
