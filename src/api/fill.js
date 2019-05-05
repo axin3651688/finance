@@ -75,9 +75,19 @@ export function mechanism() {
  * 查询当前公司下的用户。
  * @author szc 2019年4月2日17:43:42
  */
-export function queryUserByCompany(data) {
+export function queryUserByCompany_old(data) {
     return request({
         url: "/zjb/zjb/fill_report?company=" + data.company,
+        method: 'get'
+    })
+}
+/**
+ * 查询当前公司下的用户。
+ * @author szc 2019年4月2日17:43:42
+ */
+export function queryUserByCompany(data) {
+    return request({
+        url: "/zjb/zjb/query_report_users?company=" + data.company,
         method: 'get'
     })
 }
@@ -93,8 +103,9 @@ export function sendFillMessage(data) {
  * @author szc 2019年4月30日13:37:52
  */
 export function saveReport(params) {
+    debugger;
     return request({
-        url: '/zjb/save_fill_message',
+        url: '/zjb/zjb/save_fill_message',
         method: 'post',
         data: params
     })
@@ -106,7 +117,7 @@ export function saveReport(params) {
  */
 export function saveReview(params) {
     return request({
-        url: '/zjb/update_fill_message',
+        url: '/zjb/zjb/update_fill_message',
         method: 'post',
         data: params
     })

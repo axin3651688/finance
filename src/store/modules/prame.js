@@ -21,11 +21,20 @@ const prame = {
             defaultOpen: 0,
         },
         treeInfo: {
-            id: "1001",
-            leaf: true,
-            pid: "1001",
-            industryId: 1,
-            text: "天津食品"
+            cisdel: "N",
+            codename: "(1001)天津食品集团有限公司（合并）",
+            nisleaf: 0,
+            nlevel: 1,
+            npercent: 0,
+            open: true,
+            property1: "0",
+            scode: "1001",
+            seascomcode: "00000000-0000-0000-0000-000000000000CCE7AED4",
+            sindcode: null,
+            sname: "天津食品集团有限公司（合并）",
+            spcode: "0",
+            ssrccode: "0",
+            stype: "0"
         },
         // 默认是公司,分开的年,月显示,day不显示,如果需要展现day,
         showDims: {

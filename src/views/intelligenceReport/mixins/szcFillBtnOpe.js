@@ -1,3 +1,7 @@
+import {
+    saveReport
+} from "~api/fill.js";
+
 /**
  * 填报的上报、审阅等按钮的操作。
  * 当前默认@author szc 2019年4月30日08:56:51
@@ -6,28 +10,45 @@ export default {
     methods: {
         /**
          * 上报
+         * @param userStr 上报选择的人员拼接。
          */
-        reportHandler(item) {
+        reportHandler(userStr) {
             debugger;
             let me = this,
+                item = this.currentItem,
                 id = this.templateId,
                 storeParams = this.$store.getters,
                 company = storeParams.company,
-                period = storeParams.period,
-                companyname = storeParams.company,
-                fromuser = storeParams.user.user.username,
+                period = '',
+                year = storeParams.year,
+                month = storeParams.month,
+                companyname = storeParams.companyName,
+                fromuser = storeParams.user.user.userName,
                 statemun = item.id;
-            let params = {
+            if (month > 9) {
+                period = year + "" + month;
+            } else {
+                period = year + "0" + month;
+            }
+            let tableFillInfoDto = {
                 "company": company,
+                "id": 0,
                 "nreportnum": 1,
                 "period": period,
                 "scompanyname": companyname,
-                "sfromuser": fromuser,
+                "screatetime": new Date(),
+                "screateuser": fromuser,
                 "statemun": statemun,
-                // "stouser": "string",
-                "templateid": id
+                // "stouser": fromuser,
+                "templateid": id,
+                "users": userStr
             };
-            saveReport(params).then(res => {
+            // users = userStr;
+            let params = {
+                tableFillInfoDto: tableFillInfoDto
+            };
+            // params = JSON.stringify(params);
+            saveReport(tableFillInfoDto).then(res => {
                 if (res.code == 0) {
                     me.$message({
                         message: "上报成功！",
@@ -45,7 +66,8 @@ export default {
          * 申请退回
          */
         applicationForRefund(item) {
-
+            debugger;
+            let me = this;
         },
         /**
          * 审阅

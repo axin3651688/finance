@@ -281,7 +281,7 @@ export default {
         !flag || this.reportData(this.datas);
       }
       //上报、审阅按钮的内容。
-      this.contentOfButtons(flag);
+      // this.contentOfButtons(flag);
     }
   },
   created() {
@@ -512,7 +512,7 @@ export default {
     //隐藏单位，默认是元。
     this.hideConverseOfYuan();
     //操作按钮显示的内容。
-    // this.contentOfButtons();
+    this.contentOfButtons();
   },
   mounted() {
     let data = 10;
@@ -543,6 +543,7 @@ export default {
     //   this.divShow = false;
     //   this.fillShow = true;
     // }
+    this.contentOfButtons();
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.resizeTable);
@@ -558,11 +559,13 @@ export default {
      */
     buttonsHandle (item) {
       debugger;
-      return;
+      // return;
       let me = this;
       if(item){
         if(item.id == '1'){
-          this.reportHandler(item);
+          this.currentItem = item;
+          this.reportHandle();
+          // this.reportHandler(item);
         }else if(item.id == '2'){
           this.applicationForRefund(item);
         }else if(item.id == '3') {
@@ -579,21 +582,23 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
+      debugger;
       let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf;
       if(!this.templateId || (typeof(flag) != "undefined" && !flag)){
         me.buttonsOperation = [];
         return
       }
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
+        debugger;
         buttons = res.data;
         if(isleaf == 1){
-          let arr1 = ['0','1'];
+          let arr1 = ['2','1'];
           buttons = buttons.filter(item => {
             return arr1.indexOf(item.id) != -1;
           });
           me.buttonsOperation = buttons;
         }else {
-          let arr0 = ['0','1'];
+          let arr0 = ['2','1'];
           buttons = buttons.filter(item => {
             return arr0.indexOf(item.id) == -1;
           });
@@ -731,16 +736,16 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle () {
-      return;
+      // return;
       let me = this;
       //判断有没有选择上报的表。
-      if(!me.templateId){
-        this.$message({
-          message: '请选择要上报的报表！',
-          type: 'warning'
-        });
-        return;
-      }
+      // if(!me.templateId){
+      //   this.$message({
+      //     message: '请选择要上报的报表！',
+      //     type: 'warning'
+      //   });
+      //   return;
+      // }
       this.modalConfig = {
         title:"上报人员",
         eventListener:"sendfillmessage",//事件监听方法名
@@ -783,14 +788,15 @@ export default {
       this.modalConfig.datas = this.queryUserByCompany();
     },
     /**
-     * 查询当前公司下的用户。
+     * 查询上报的目标人员。
      * @author szc 2019年4月2日16:10:51
      */
     queryUserByCompany(){
       
-      let me = this,companyId = this.$store.getters.company,userData = [];
+      let me = this,companyId = this.$store.getters.treeInfo.spcode,userData = [];
       let params = {company:companyId};
       queryUserByCompany(params).then(res => {
+        debugger
         if(res.data.code == 200){
           //转换成对应的格式。
           userData = me.parseTypeOfTree(res.data.data);
@@ -817,31 +823,40 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
-          period = this.years,tableid = this.templateId;
-      if(!nodes || (nodes && nodes.length == 0)){
-        return;
-      }
-      for(let i = 0;i <nodes.length;i ++){
-        let item = nodes[i];
-        let param = {company:company,fromuser:suser,period:period,tableid:tableid,touser:item.suser};
-        paramsArr.push(param);
-      }
-      if(paramsArr && paramsArr.length > 0){
-        sendFillMessage(paramsArr).then(res => {
-          if(res.code == 200){
-            this.$message({
-              message:"上报成功！",
-              type:"success"
-            });
-          }else{
-            this.$message({
-              message:"上报失败！",
-              type:"error"
-            });
-          }
-        });
-      }
+      debugger;
+      let me = this,userStr = "",arr = [];
+      // userStr = nodes.join(',');
+      nodes.forEach(item => {
+        arr.push(item.suser);
+      });
+      userStr = arr.join(',');
+      this.reportHandler(userStr);
+      this.modalConfig.dialogVisible = false;
+      // let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
+      //     period = this.years,tableid = this.templateId;
+      // if(!nodes || (nodes && nodes.length == 0)){
+      //   return;
+      // }
+      // for(let i = 0;i <nodes.length;i ++){
+      //   let item = nodes[i];
+      //   let param = {company:company,fromuser:suser,period:period,tableid:tableid,touser:item.suser};
+      //   paramsArr.push(param);
+      // }
+      // if(paramsArr && paramsArr.length > 0){
+      //   sendFillMessage(paramsArr).then(res => {
+      //     if(res.code == 200){
+      //       this.$message({
+      //         message:"上报成功！",
+      //         type:"success"
+      //       });
+      //     }else{
+      //       this.$message({
+      //         message:"上报失败！",
+      //         type:"error"
+      //       });
+      //     }
+      //   });
+      // }
     },
     rightOfLeafCompany() {
       let me = this,companyId = this.$store.getters.company,treeInfo = this.$store.getters.treeInfo,
@@ -1204,7 +1219,6 @@ export default {
      * @author szc 2019年4月30日13:51:46
      */
     clearRowOfAfter (row,arrItems) {
-      debugger;
       let me = this;
       let record = this.settings.data[row];
       if(record && arrItems && arrItems.length > 0){
@@ -1377,7 +1391,6 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      debugger;
       let me = this,arrTem = ['9','12','10'];
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
@@ -1602,7 +1615,6 @@ export default {
      * 
      */
     emailValidator (value, callback) {
-      debugger;
       let me = this;
       setTimeout(function(){
         if (value == "2019/04/03" || value == "") {
@@ -1846,7 +1858,6 @@ export default {
      * 应收、预付、其他表的填报。
      */
     parseTypeIdOfContent (keys,item) {
-      debugger;
       let me = this;
       let financingOptions = this.dataDict;
       if(financingOptions && financingOptions.length > 0) {
