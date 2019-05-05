@@ -363,6 +363,7 @@ export default {
         pid: "1800"
       }
     ];
+    //
     this.dataDict = [
       {
         id: "1400",
@@ -408,37 +409,37 @@ export default {
         text: "非正常分类"
       },
       {
-        id: "150006",
+        id: "1106",
         text: "核算不规范",
         pid: "1500"
       },
       {
-        id: "150007",
+        id: "1107",
         text: "其他",
         pid: "1500"
       },
       {
-        id: "150001",
+        id: "1101",
         text: "向系统外出借资金",
         pid: "1500"
       },
       {
-        id: "150002",
+        id: "1102",
         text: "成本费用挂账",
         pid: "1500"
       },
       {
-        id: "150004",
+        id: "1104",
         text: "为其他企业代偿金融机构的贷款",
         pid: "1500"
       },
       {
-        id: "150005",
+        id: "1105",
         text: "长期挂账、未及时清理",
         pid: "1500"
       },
       {
-        id: "150003",
+        id: "1103",
         text: "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
         pid: "1500"
       },
@@ -447,27 +448,27 @@ export default {
         text: "债务人状况"
       },
       {
-        id: "160001",
+        id: "1201",
         text: "债务人经营困难",
         pid: "1600"
       },
       {
-        id: "160002",
+        id: "1202",
         text: "债务人改制或退出",
         pid: "1600"
       },
       {
-        id: "160003",
+        id: "1203",
         text: "债务人停业",
         pid: "1600"
       },
       {
-        id: "160004",
+        id: "1204",
         text: "债务人失踪",
         pid: "1600"
       },
       {
-        id: "160005",
+        id: "1205",
         text: "超过诉讼时效",
         pid: "1600"
       },
@@ -1165,7 +1166,19 @@ export default {
     },
     //应收账款分析表 判断是否控制填报
     reRenderCell(row, columns) {
+      // debugger;
       if (this.fixed == 0 && this.templateId == 4) {
+        if(columns == 7){
+          let record = this.settings.data[row];
+          if(!record){
+            return true;
+          }
+          if (record.isinside === "是" || record.isinside == 1) {
+            //如果是是或是1，清空后面的内容。
+            let arrItems = ['isnormal','scontenta','scontentb','E','F','G','H'];
+            this.clearRowOfAfter(row,arrItems);
+          }
+        }
         if (columns > 7) {
           let record = this.settings.data[row];
           if(!record){
@@ -1180,12 +1193,28 @@ export default {
           //isnature isnormal
           let record = this.settings.data[row];
           if (record.isnormal === "是" || record.isnormal == 1) {
-            //9
             return true;
           }
         }
       }
       return false;
+    },
+    /**
+     * 根据前面的选择清空后面的内容。
+     * @author szc 2019年4月30日13:51:46
+     */
+    clearRowOfAfter (row,arrItems) {
+      debugger;
+      let me = this;
+      let record = this.settings.data[row];
+      if(record && arrItems && arrItems.length > 0){
+        arrItems.forEach(item => {
+          if(record[item] || record[item] == '否') {
+            typeof(record[item]) == "number"? record[item] = null:record[item] = null;
+          }
+        });
+      }
+      this.settings.data[row] = record;
     },
     /**
      * 还款来源的限制。
@@ -1692,6 +1721,7 @@ export default {
         });
         return;
       }
+      let arrTems = ['4','5','6'];
       this.tableData.forEach(item => {
         //isinside
         // a = item
@@ -1737,6 +1767,11 @@ export default {
           if(that.templateId == "7" && key == "finance" && item){
             that.parseTypeOfFinance(key,item);
           }
+          //应收、预付、其他等表的转换。
+          if(arrTems.indexOf(that.templateId) != -1 && item) {
+            let keys = ['scontenta','scontentb'];
+            that.parseTypeIdOfContent(keys,item);
+          } 
         }
       });
       // if (this.templateId == 7) {
@@ -1805,6 +1840,25 @@ export default {
             });
           }
         });
+      }
+    },
+    /**
+     * 应收、预付、其他表的填报。
+     */
+    parseTypeIdOfContent (keys,item) {
+      debugger;
+      let me = this;
+      let financingOptions = this.dataDict;
+      if(financingOptions && financingOptions.length > 0) {
+        for(let i = 0;i < financingOptions.length;i++) {
+          let itemOp = financingOptions[i];
+          for(let j = 0;j < keys.length;j++){
+            let keyItem = keys[j];
+            if(item[keyItem] == itemOp.text) {
+              item[keyItem] = itemOp.id;
+            };
+          }
+        }
       }
     },
     /**

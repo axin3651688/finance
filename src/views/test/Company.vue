@@ -6,7 +6,8 @@
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           <el-button slot="append" icon="el-icon-refresh" @click="refreshNodes()"></el-button>
         </el-input>
-        <el-tree
+
+         <el-tree
           :style="contentStyleObj"
           :data="treedata"
           node-key="scode"
@@ -26,7 +27,34 @@
           draggable
           :allow-drop="allowDrop"
           :allow-drag="allowDrag"
-        ></el-tree>
+          :render-content="renderContent"
+          >
+      
+      <!-- <span  slot-scope="{ node }">
+        <span :class="[node.cisdel === 'N' ? 'noDelCss' : 'delCss' ]">{{ node.label }}</span>
+      </span> -->
+    </el-tree>
+        <!-- <el-tree
+          :style="contentStyleObj"
+          :data="treedata"
+          node-key="scode"
+          :props="props"
+          :filter-node-method="filterNode"
+          :highlight-current="true"
+          :expand-on-click-node="false"
+          :default-expanded-keys="expandKeys"
+          ref="comtree"
+          @node-click="handClick"
+          @node-drag-start="handleDragStart"
+          @node-drag-enter="handleDragEnter"
+          @node-drag-leave="handleDragLeave"
+          @node-drag-over="handleDragOver"
+          @node-drag-end="handleDragEnd"
+          @node-drop="handleDrop"
+          draggable
+          :allow-drop="allowDrop"
+          :allow-drag="allowDrag"
+        ></el-tree> -->
       </el-col>
       <!--公司表单-->
       <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="16">
@@ -156,6 +184,7 @@ export default {
       props: {
         label: "codename",
         children: "children"
+        // cisdel:"cisdel"
       },
       treedata: [],
       //默认展开节点
@@ -344,6 +373,16 @@ export default {
     this.setTreeHeight();
   },
   methods: {
+    /***
+     * 
+     * 节点自定义操作
+     */
+    renderContent(h, { node, data, store }){
+      var css = node.data.cisdel === 'N' ? 'noDelCss' : 'company_cisdel';
+      return (
+            <span class={css}>{node.label}</span>
+          );
+    },
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
         124}px`;
@@ -436,6 +475,7 @@ export default {
                 _this.expandKeys.push(item.scode);
               }
               item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
+              item.label = "(" + item.scode + ")" + item.sname
               return item;
             });
             //data[0].open = true;
@@ -568,7 +608,6 @@ export default {
             }
             // console.log("参数对象：", obj);
             _this.activeForm = {};
-
             request({
               url: "/zjb/sys/dimcompany/" + _this.opt.url,
               method: "post",
@@ -677,7 +716,7 @@ export default {
       this.form.sname = snode.sname; //sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
-      this.form.nlevel = snode.level;
+      this.form.nlevel = snode.nlevel;
       this.form.sindcode = snode.sindcode;
       // this.form.cisleaf = snode.cisleaf;
       this.form.ssrccode = snode.ssrccode;
@@ -833,7 +872,18 @@ export default {
   }
 };
 </script>
+
+<style>
+span.company_cisdel {
+  color: rgb(255, 0, 0); 
+}
+
+</style>
 <style scoped>
+.companyM {
+  margin-top: 10px;
+}
+
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 ::-webkit-scrollbar {
   width: 2px;
@@ -853,11 +903,6 @@ export default {
   border-radius: 1px;
   -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
   background-color: #9fd467;
-}
-</style>
-<style scoped>
-.companyM {
-  margin-top: 10px;
 }
 </style>
 
