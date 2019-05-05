@@ -242,6 +242,16 @@ export default {
    */
   mounted() {
     let me = this;
+    //看看缓存中是否有公司，名称放上去。
+    let treeInfo = localStorage.treeInfo;
+    treeInfo? "":treeInfo = this.$store.getters.treeInfo;
+    if(treeInfo && treeInfo.text){
+      // this.companyName = treeInfo.text;
+      this.GetSideMid({
+        company: treeInfo.scode,
+        companyName: treeInfo.codename
+      });
+    }
     // setInterval(() => this.getMessage(),10000);
   },
   computed: {
