@@ -267,6 +267,7 @@ export default {
       //   return;
       // }
       //切换公司之后可能有些选项没有但是页面还展示出来了，所以处理掉。
+      debugger;
       let flag = this.contentOfCompany();
       //公司的显示选项的控制。
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
@@ -280,8 +281,8 @@ export default {
         // console.log(this.datas);
         !flag || this.reportData(this.datas);
       }
-      //上报、审阅按钮的内容。
-      // this.contentOfButtons(flag);
+      //上报、审阅按钮切换公司展示 or 隐藏。
+      this.contentOfButtons(flag);
     }
   },
   created() {
@@ -567,7 +568,8 @@ export default {
           this.reportHandle();
           // this.reportHandler(item);
         }else if(item.id == '2'){
-          this.applicationForRefund(item);
+          this.applicationForRefundStation();
+          // this.applicationForRefund(item);
         }else if(item.id == '3') {
           this.reviewHandler(item);
         }else if(item.id == '4') {
@@ -576,6 +578,29 @@ export default {
           this.urgeToReport(item);
         }
       }
+    },
+    /**
+     * 申请退回的选择人的操作。
+     * @author szc 2019年5月5日15:22:07
+     */
+    applicationForRefundStation () {
+      debugger;
+      let me = this;
+      this.modalConfig = {
+        title:"申请退回人员",
+        eventListener:"sendfillmessage",//事件监听方法名
+        dialogVisible:true,
+        checkbox:true,
+        type:"tree",
+        id:'userReportRT',
+        title: "申请退回人员",
+        datas: [],
+        props:{
+          label: "label",
+          children: "children"
+        }
+      };
+      this.modalConfig.datas = this.queryUserByCompany();
     },
     /**
      * 操作按钮显示的内容。
@@ -616,7 +641,7 @@ export default {
       let currentSelects = this.parseResultOfCompany(this.listOld);
       //当前的情况是只存在个数为 1、2、11的情况，所以目前可以用 length来判断。
       if(listSelects && listSelects.length > 0 && currentSelects && currentSelects.length > 0){
-        if(listSelects.length == currentSelects.length){
+        if(listSelects.length == currentSelects.length && this.templateId && currentSelects.indexOf(this.templateId) != -1){
           flag = true;
           return flag;
         }else {
@@ -825,13 +850,32 @@ export default {
     sendFillMessageHandle (nodes) {
       debugger;
       let me = this,userStr = "",arr = [];
+      let itemSel = this.currentItem;
+      if(itemSel){
+        if(itemSel.id == '1'){
+          nodes.forEach(item => {
+            arr.push(item.suser);
+          });
+          userStr = arr.join(',');
+          this.reportHandler(userStr);
+          this.modalConfig.dialogVisible = false;
+        }else if(itemSel.id == '2'){
+          nodes.forEach(item => {
+            arr.push(item.suser);
+          });
+          userStr = arr.join(',');
+          this.applicationForRefund(userStr);
+          this.modalConfig.dialogVisible = false;
+        }else if(itemSel.id == '3') {
+          this.reviewHandler(itemSel);
+        }else if(itemSel.id == '4') {
+          this.returnHandler(itemSel);
+        }else if(itemSel.id == '0') {
+          this.urgeToReport(itemSel);
+        }
+      }
       // userStr = nodes.join(',');
-      nodes.forEach(item => {
-        arr.push(item.suser);
-      });
-      userStr = arr.join(',');
-      this.reportHandler(userStr);
-      this.modalConfig.dialogVisible = false;
+      
       // let me = this,paramsArr = [],company = this.$store.getters.company,suser = this.$store.getters.user.user.userName,
       //     period = this.years,tableid = this.templateId;
       // if(!nodes || (nodes && nodes.length == 0)){
