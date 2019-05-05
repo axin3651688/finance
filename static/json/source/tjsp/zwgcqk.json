@@ -16,6 +16,13 @@
         option.closeTabTaget(newconversion,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
+        // debugger
+        let bue = data.some(res => {
+            return (res.scode=="2001" || res.scode=="2002" || res.scode=="2003") && res.bz && res.bz!=0 ;
+        })
+        if(bue){
+            data.forEach(res => { if(res.scode=="20")res.bz=100.00; })
+        }
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
@@ -71,38 +78,46 @@
     "rows":[
   ],
   "items":[
-     {
-      "xtype": "bi-table",
-      "id":"zwgc",
-      "text":"债务构成情况分析表"
-      ,
-      "toolbar":[
-        {
-           "id":"1",
-           "text":"刷新",
-           "xtype":"button",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-               vue.item.updateView("company");
-           }
-       }, {
-           "id":"2",
-           "text":"导出",
-           "cellStyle":{
-               "color":"black",
-            //    "background-color":"#189271"
-            "background-color":"#fff"
-           },
-           "handler":function(vue,btn){
-                vue.handleDownload(vue);
-           }
-       }
-       ],
-       "drillProperties":["sname"],//有钻取，给蓝色
+    {
+        "xtype": "bi-table",
+        "id":"zwgc",
+        "text":"债务构成情况分析表",
+        "queryDataAfter":function(data){
+            let bue = data.some(res => {
+                return (res.scode=="2001" || res.scode=="2002" || res.scode=="2003") && res.bz && res.bz!=0 ;
+            })
+            if(bue){
+                data.forEach(res => { if(res.scode=="20")res.bz=100.00; })
+            }
+            return data ;
+        },
+        "toolbar":[
+            {
+                "id":"1",
+                "text":"刷新",
+                "xtype":"button",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                    vue.item.updateView("company");
+                }
+            }, {
+                "id":"2",
+                "text":"导出",
+                "cellStyle":{
+                    "color":"black",
+                    //    "background-color":"#189271"
+                    "background-color":"#fff"
+                },
+                "handler":function(vue,btn){
+                        vue.handleDownload(vue);
+                }
+            }
+        ],
+        "drillProperties":["sname"],//有钻取，给蓝色
         "levelProperties":{"sname":"nlevel"},//加缩进
         "cellStyle": function (row) {
             let datas = this.datas;
