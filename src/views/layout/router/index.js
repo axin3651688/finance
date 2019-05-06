@@ -109,7 +109,7 @@ const router = new Router({
                     path: '/riskControl',
                     name: 'riskControl',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/szcRiskControl/riskControl.vue')
                 },
                 //风险反馈
                 {
