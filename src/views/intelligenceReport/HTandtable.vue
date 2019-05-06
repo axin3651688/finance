@@ -641,7 +641,11 @@ export default {
       let currentSelects = this.parseResultOfCompany(this.listOld);
       //当前的情况是只存在个数为 1、2、11的情况，所以目前可以用 length来判断。
       if(listSelects && listSelects.length > 0 && currentSelects && currentSelects.length > 0){
-        if(listSelects.length == currentSelects.length && this.templateId && currentSelects.indexOf(this.templateId) != -1){
+        let arrSel = [];
+        currentSelects.forEach(item => {
+          arrSel.push(item.templateId);
+        });
+        if(listSelects.length == currentSelects.length && this.templateId && arrSel.indexOf(this.templateId) != -1){
           flag = true;
           return flag;
         }else {
