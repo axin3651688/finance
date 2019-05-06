@@ -1,0 +1,123 @@
+<template>
+    <div>
+
+
+        <div class="top-tip">
+            <span class="select-name">部门选择:</span>
+            <el-select v-model="value" placeholder="请选择">
+                <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
+        </div>
+
+
+        <div class="risk-back-table">
+            <el-table
+                    :data="tableData"
+                    :header-cell-style="getRowClass"
+                    border
+                    stripe
+                    style="width: 100%">
+                <el-table-column
+                        type="index"
+                        label="序号"
+                        width="50"
+                        style="text-align: center"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="riskName"
+                        label="风险名称"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="feedBackState"
+                        label="反馈状态"
+                        width="180">
+                </el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="riskHandle(scope.$index, scope.row)">{{scope.row.handle}}
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "riskBack",
+        data() {
+            return {
+                options: [
+                    {
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }, {
+                        value: '选项5',
+                        label: '北京烤鸭'
+                    }
+                ],
+                value: '',
+                tableData: [
+                    {
+                        riskName: '一号财务风险',
+                        feedBackState: '已反馈',
+                        handle: '已反馈'
+                    }, {
+                        riskName: '二号财务风险',
+                        feedBackState: '已反馈',
+                        handle: '已反馈'
+                    }, {
+                        riskName: '三号财务风险',
+                        feedBackState: '未反馈',
+                        handle: '反馈'
+                    }, {
+                        riskName: '四号财务风险',
+                        feedBackState: '已反馈',
+                        handle: '已反馈'
+                    }
+                ]
+            }
+        },
+        methods: {
+            riskHandle: function (index, row) {
+                console.log(index, row);
+            },
+            getRowClass({rowIndex}) {
+                if (rowIndex === 0) {
+                    return 'background:rgb(240, 248, 255)'
+                } else {
+                    return ''
+                }
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .select-name {
+        margin-right: 10px;
+    }
+
+    .top-tip {
+        margin-bottom: 10px;
+    }
+</style>

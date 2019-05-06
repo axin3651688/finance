@@ -116,7 +116,7 @@ const router = new Router({
                     path: '/riskFeedback',
                     name: 'riskFeedback',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/cwtRiskControl/riskFeedback.vue')
                 },
                 //风险批示
                 {

@@ -1,12 +1,12 @@
 <template>
     <div>
-        iiii
+        报告反馈
     </div>
 </template>
 
 <script>
     export default {
-        name: "cwt"
+        name: "reportBack"
     }
 </script>
 
