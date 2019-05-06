@@ -244,8 +244,8 @@ export default {
     let me = this;
     //看看缓存中是否有公司，名称放上去。
     let treeInfo = localStorage.treeInfo;
-    treeInfo? "":treeInfo = this.$store.getters.treeInfo;
-    if(treeInfo && treeInfo.text){
+    treeInfo? treeInfo = JSON.parse(treeInfo):treeInfo = this.$store.getters.treeInfo;
+    if(treeInfo && treeInfo.codename){
       // this.companyName = treeInfo.text;
       this.GetSideMid({
         company: treeInfo.scode,

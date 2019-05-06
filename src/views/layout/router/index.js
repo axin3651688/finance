@@ -88,6 +88,42 @@ const router = new Router({
                     name: 'roles',
                     component: () =>
                         import ('@v/test/Role.vue')
+                },
+                //风控的路由
+                //风险识别
+                {
+                    path: '/riskDis',
+                    name: 'riskDis',
+                    component: () =>
+                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                },
+                //风险报告
+                {
+                    path: '/riskReport',
+                    name: 'riskReport',
+                    component: () =>
+                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                },
+                //风险管控
+                {
+                    path: '/riskControl',
+                    name: 'riskControl',
+                    component: () =>
+                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                },
+                //风险反馈
+                {
+                    path: '/riskFeedback',
+                    name: 'riskFeedback',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/riskFeedback.vue')
+                },
+                //风险批示
+                {
+                    path: '/riskInstructions',
+                    name: 'riskInstructions',
+                    component: () =>
+                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
                 }
             ]
         },
