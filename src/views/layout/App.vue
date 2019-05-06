@@ -20,25 +20,27 @@ export default {
       //暂时
       return;
     }
-    // debugger;
+    // debugger;TODU 暂时关闭
     this.initSocket(authorization);
   },
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo"]),
+
     initSocket(authorization) {
+      debugger
           // let url = "ws://192.168.1.120:7006/cnbi.io/";
       // let url = "ws://192.168.2.237:7006/socket.io/";
       // let url = "ws://192.168.2.224:7006/cnbi.io/";
       //let url = "ws://192.168.2.224:7006/socket.io/";
       // let url = "ws://192.168.1.122:7006/socket.io/";
       //  let url = "ws://192.168.1.118:7006/cnbi.io/";
-      let url = "ws://192.168.2.224:7006/cnbi.io/";
-      // let url = "ws://192.168.1.122:7006/socket.io/";
+     // let url = "ws://192.168.2.224:7006/cnbi.io/";
+      let url = "ws://223.255.22.11:6680/cnbi.io/";
       // let url = "wss://192.168.1.118:7006/socket.io/";
       if (null != authorization) {
-        url = url + "?Authorization=" + authorization;
+       // url = url + "?Authorization=" + authorization;
       } else {
-        url = url + "?device=" + Cnbi.getDevice();
+       // url = url + "?device=" + Cnbi.getDevice();
       }
       // debugger;
       webSocket({ url: url });

@@ -44,7 +44,7 @@ export default {
   },
   created() {},
   mounted() {
-    console.log(this.item.datas[0]);
+    // console.log(this.item,"我想看item顶顶顶顶顶顶顶顶顶顶顶顶顶顶");
 
     console.log(Cnbi.isEmpty(this.item.datas[0]));
 

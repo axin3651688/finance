@@ -60,23 +60,23 @@ axios.interceptors.request.use(
 
     // 加载动画
     _startLoading()
-    console.log(localStorage.getItem('device'), "请求头");
+    // console.log(localStorage.getItem('device'), "请求头");
 
-    config.headers.device = localStorage.getItem('device') || Cnbi.getDevice()
+    // config.headers.device = localStorage.getItem('device') || Cnbi.getDevice()
     // debugger
     if (localStorage.authorization) {
       // 设置统一请求头 todo 暂时屏蔽
       config.headers.Authorization = localStorage.authorization
     }
     if (!localStorage.device) {
-      console.error("没有获取到正确的设备信息！");
+      // console.error("没有获取到正确的设备信息！");
     } else {
       config.headers.device = localStorage.device; //Cnbi.getDevice()
     }
 
     debugger
-    config.headers.version = packageConfig.version;
-    console.log("------headers-----", config.headers);
+    // config.headers.version = packageConfig.version;
+    // console.log("------headers-----", config.headers);
     return config
   },
 

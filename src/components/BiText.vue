@@ -12,8 +12,8 @@ export default {
     debugger;
   },
   components: {
-    Cbsb: () => import("./text/Cbsb.vue"),
-    Bgch: () => import("./text/Bgch.vue"),
+    Cbsb: () => import("./text/Cbsb.vue"),//催报
+    Bgch: () => import("./text/Bgch.vue"),//报告撤回
     Zjl: () => import("./text/Zjl.vue")
   }
 };

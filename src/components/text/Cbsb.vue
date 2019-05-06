@@ -44,7 +44,7 @@ export default {
     };
   },
   created() {
-    this.getMemberList(this.companyId);
+    this.getMemberList(this.companyId,"this.companyIdthis.companyIdthis.companyIdthis.companyId");
   },
   computed: {
     ...mapGetters(["showMeluList"]),
