@@ -544,6 +544,7 @@ export default {
     //   this.divShow = false;
     //   this.fillShow = true;
     // }
+    debugger;
     this.contentOfButtons();
   },
   beforeDestroy() {
@@ -660,6 +661,7 @@ export default {
      * @author szc 2019年4月26日11:24:14
      */
     parseResultOfCompany (data) {
+      debugger;
       let me = this,nisleaf = this.$store.getters.treeInfo.nisleaf,spcode = this.$store.getters.treeInfo.spcode;
       console.log("公司：---------------------------",this.$store);
       if(data && data.length == 0){
