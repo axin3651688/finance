@@ -88,6 +88,13 @@ const router = new Router({
                     name: 'roles',
                     component: () =>
                         import ('@v/test/Role.vue')
+                },
+                //风控的路由
+                {
+                    path: '/riskDis',
+                    name: 'riskDis',
+                    component: () =>
+                        import ('@v/test/Role.vue')
                 }
             ]
         },
