@@ -1,7 +1,5 @@
 <template>
     <div>
-
-
         <div class="top-tip">
             <span class="select-name">部门选择:</span>
             <el-select v-model="value" placeholder="请选择">
@@ -13,8 +11,6 @@
                 </el-option>
             </el-select>
         </div>
-
-
         <div class="risk-back-table">
             <el-table
                     :data="tableData"
@@ -60,19 +56,13 @@
                 options: [
                     {
                         value: '选项1',
-                        label: '黄金糕'
+                        label: '财务部'
                     }, {
                         value: '选项2',
-                        label: '双皮奶'
+                        label: '风控部'
                     }, {
                         value: '选项3',
-                        label: '蚵仔煎'
-                    }, {
-                        value: '选项4',
-                        label: '龙须面'
-                    }, {
-                        value: '选项5',
-                        label: '北京烤鸭'
+                        label: '其他部门'
                     }
                 ],
                 value: '',
