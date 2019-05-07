@@ -314,6 +314,7 @@ export default {
       if (this.module_api) {
         this.api = this.module_api;
       }
+      // debugger
       //临时测试用
       if (this.source_id) {
         this.api = this.source_id;
@@ -359,7 +360,7 @@ export default {
       debugger;
 
       findDesignSource(api).then(res => {
-        //
+        debugger
         console.log("resres", api);
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
@@ -367,7 +368,10 @@ export default {
           //说明是从数据库来的
           source = dbData.source;
         }
-        // this.loadModuleAfter(source);
+        if (this.api) {
+            this.loadModuleAfter(source);
+        }
+      
       });
     },
     /**
@@ -383,7 +387,7 @@ export default {
      * 加载模块之后的处理
      */
     loadModuleAfter(source) {
-      debugger;
+      // debugger;
       this.setScopeDatas(source, 1);
       this.correctWrongConfig();
       if (this.config && this.config.columns.length > 0) {

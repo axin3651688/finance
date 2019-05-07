@@ -124,7 +124,7 @@ export default {
 
       setTimeout(function() {
         mapArry.forEach(element => {
-          debugger;
+          // debugger;
           me.fetchData(me.userId, element);
         });
       }, 2000);

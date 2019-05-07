@@ -74,7 +74,7 @@ axios.interceptors.request.use(
       config.headers.device = localStorage.device; //Cnbi.getDevice()
     }
 
-    debugger
+    // debugger
     // config.headers.version = packageConfig.version;
     // console.log("------headers-----", config.headers);
     return config
