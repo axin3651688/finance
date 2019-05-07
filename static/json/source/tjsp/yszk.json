@@ -240,7 +240,7 @@
                         }                     
                     },
                     "queryDataBefore": function(params, config, $vue) {
-                        // debugger
+                        debugger
                         // 上年度12月份
                         // params.oneYearBefore = params.year - 1 + "12" ; 
                         params.oneYearBefore = params.year + "01" ;
