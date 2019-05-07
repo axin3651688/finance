@@ -21,7 +21,7 @@
                     </template>
                 </el-table-column>
                 <template slot-scope="scope">
-                    <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
+                    <!-- <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span> -->
                     <span class="button is-outlined is-primary is-small" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
                         <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i>
                         <i v-if="scope.row._expanded" class="iconfont icon-minus-square" aria-hidden="true"></i>
@@ -142,7 +142,6 @@ export default {
         },
         // 数据处理（千分位、两位小数）
         getCellValues(value,vax){
-            debugger;
             let num ;
             if(vax.type != "decimal" )num = value.row[vax.id] ;
             if(vax.type == "decimal" ){
@@ -157,6 +156,7 @@ export default {
         },
         // 单元格的 style 的回调方法
         cellStyle(row){
+            return row;
             if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
                 return this.item.cellStyle(row, this);
             }

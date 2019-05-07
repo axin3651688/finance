@@ -1434,6 +1434,7 @@ export default {
       }
       var flagElement = document.createElement("DIV");
       flagElement.style.textAlign = "right";
+      //添加一个市管企业的户数，不用格式化数据。
       if (value != null && !isNaN(value)) {
         flagElement.innerText = Math.decimalToLocalString(value);
         td.appendChild(flagElement);
