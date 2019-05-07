@@ -14,8 +14,9 @@
         "show":true,
         "queryDataBefore":function(params,$items,$this){
             // debugger
-            // 上年度12月份
-            params.oneYearBefore = params.year - 1 + "12" ; 
+            // 
+            // params.oneYearBefore = params.year - 1 + "12" ; 
+            params.oneYearBefore = params.year + "01" ;
             let len = $this.items.length;
             let id = $this.items[len-1].id;
             params.company = id ;
