@@ -37,6 +37,7 @@
         </div>
         <!-- 上报的人员modal -->
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
+        <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
         <hot-table
           v-if="settings.data && settings.data.length>0"
@@ -104,6 +105,7 @@ import { HotTable } from "@handsontable/vue";
 import Handsontable from "handsontable-pro";
 import SBiDiv from "@c/SBiDiv";
 import SRModal from "@v/intelligenceReport/SRModal";
+import FillModal from "@v/intelligenceReport/szcModal/FillModal";
 import {
     importExcel,
     inquire,
@@ -123,11 +125,13 @@ export default {
   components: {
     HotTable,
     SBiDiv,
-    SRModal
+    SRModal,
+    FillModal
     // BiModule
   },
   data() {
     return {
+      fillModalConfig: {},//审阅的弹出框。
       buttonsOperation:[],//包含上报、审阅等操作按钮。
       //上报人员的modal框的显示。
       modalConfig:{},
@@ -557,7 +561,7 @@ export default {
     /**
      * 上报、审阅的按钮的操作。
      * @author szc 2019年4月29日15:54:06
-     * 0:上报,1:申请退回,2:审阅,3:退回,4:催报
+     * 1:上报,2:申请退回,3:审阅,4:退回,0:催报
      */
     buttonsHandle (item) {
       debugger;
@@ -614,6 +618,12 @@ export default {
         me.buttonsOperation = [];
         return
       }
+      // //集团年度目标考核值。
+      // let arrTems = ['10'];
+      // if(arrTems.indexOf(this.templateId) != -1){
+      //   me.buttonsOperation = [];
+      //   return;
+      // }
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         debugger;
         buttons = res.data;
@@ -1368,7 +1378,7 @@ export default {
         }
       }else if (this.templateId == 10) {
         //集团年度目标考核建议值。
-        if(columns != 2 && columns != 5){
+        if(columns != 2 && columns != 1){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1432,10 +1442,13 @@ export default {
       while (td.firstChild) {
         td.removeChild(td.firstChild);
       }
+      debugger;
       var flagElement = document.createElement("DIV");
       flagElement.style.textAlign = "right";
+      //添加一个市管企业的户数，不用格式化数据。
+      let arr = ['12'];
       if (value != null && !isNaN(value)) {
-        flagElement.innerText = Math.decimalToLocalString(value);
+        flagElement.innerText = arr.indexOf(this.templateId) != -1? parseInt(value):Math.decimalToLocalString(value);
         td.appendChild(flagElement);
       }
     },
@@ -1557,11 +1570,15 @@ export default {
       }
       //集团经营目标不显示公司编码过滤掉
       if((this.templateId == 10) && newCoulmns && newCoulmns.length > 0){
+        let arrIds = ['company','lrwc','lrtbzjl','yewc','yetbzjl'],
+            arrTexts = ['公司编码','营业收入-上年实际完成','营业收入-同比增减率%','利润总额-上年实际完成','利润总额-同比增减率%'];
         newCoulmns = newCoulmns.filter(item => {
-          return item.data != "company";
+          // return item.data != "company";
+          return arrIds.indexOf(item.data) == -1;
         });
         colHeaders = colHeaders.filter(item => {
-          return item != "公司编码";
+          // return item != "公司编码";
+          return arrTexts.indexOf(item) == -1;
         });
       }
       this.settings.columns = newCoulmns;

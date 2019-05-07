@@ -3,6 +3,9 @@
   <div v-if="divShow" class="divContent" v-html="divContent"></div>
   <div v-else-if="tableShow">
     <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
+    <div v-else-if="item.biSelect">
+        <bi-select/>
+    </div>
     <el-alert
       v-if="item.property"
       title="温馨提示：此公司不为重点单位，不展示数据！"
@@ -35,12 +38,8 @@
       :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
       id="publicTable"
     >
-      <!-- :height="item.height || heights-170" -->
-      <!--  :summary-method="getSummaries"  -->
-      <!-- :show-summary="item.showSummary || true"     -->
       <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
         <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
-        <!-- <bi-table-column-tree :col="cc" :datas.sync="item" ref="tchild"   v-if="!cc.hidden"/> -->
       </el-tag>
     </el-table>
     <!-- sjz 分页功能 -->
@@ -62,12 +61,14 @@
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
 import EventMixins from "./mixins/EventMixins";
+import BiSelect from "@v/riskControlSystem/szcRiskControl/riskSelect"
 export default {
   name: "BiTable",
   mixins: [EventMixins],
   components: {
     BiTableColumn,
-    BiTableColumnTree
+    BiTableColumnTree,
+    BiSelect
   },
   props: ["item"],
   data() {
@@ -107,14 +108,6 @@ export default {
      * 导航栏高度：64
      * 间隙高度：15+7 = 22menupermisson
      */
-    // debugger
-    // for(let i = 0;i < this.$store.getters.user.menupermisson.length;i ++){
-    //   if(this.$store.getters.user.menupermisson[i].text == "现金流量表"){
-    //     console.log("这是一个神奇的东西：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
-    //   }
-    //   console.log("用户demo：",this.$store.getters.user.menupermisson[i].text,"下标：",i);
-    // }
-    // console.log("用户：",this.$store.getters.user);
     debugger
     if(this.item.stype == "table"){
       this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
@@ -125,10 +118,6 @@ export default {
     }
     //是否具有导出功能。localStorage
     this.showBtnOfExport();
-    // if(this.item.show){
-    //   this.upData(this.item);
-    // }
-    // this.upData(this.item);
     console.log("这个是bitabel的东西",this.item) 
   },
   mounted() {
@@ -214,27 +203,6 @@ export default {
         columns.push(firstItem);
         this.parseColmns(columns,rootColmuns);
         excel.export_table_to_excel("publicTable",vue.item.text,rootColmuns);
-        // const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
-        // const columns = vue.item.config.columns;
-        // if(columns && columns.length > 0){
-        //    for(let i = 1;i < columns.length;i++){
-        //       if((columns[i].text || columns[i].text == "") && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
-        //       if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
-        //    }
-        //    tHeader.push(columns[0].text);
-        //    filterVal.push(columns[0].id);
-        // }
-        // let list = vue.item.datas;//获取数据
-        // if((!vue.item.datas || vue.item.datas) && !vue.item.config.sql)list = vue.item.config.rows;//cube配置查询不到数据时，显示配置的行数据
-        // const data = vue.formatJson(filterVal, list);//根据id获取相应的数据
-        // excel.export_json_to_excel({
-        //   header: tHeader,
-        //   data,
-        //   filename: vue.item.text,//导出表的表名称
-        //   autoWidth: "200px",
-        //   bookType: 'xlsx'  //导出的类型
-        // })
-        // vue.downloadLoading = false
       })
     },
     formatJson(filterVal, jsonData) {
@@ -275,22 +243,6 @@ export default {
       this.$set(this, "item", item);
       this.setTableDatas(item);
       let refs = this.$refs;
-      // if (refs) {
-      //   if (refs.child) {
-      //     refs.child.forEach(children => {
-      //       if (children.upData) {
-      //         children.upData(item);
-      //       }
-      //     });
-      //   }
-      //   if (refs.tchild) {
-      //     refs.tchild.forEach(children => {
-      //       if (children.upData) {
-      //         children.upData(item);
-      //       }
-      //     });
-      //   }
-      // }
       this.setTableScollHeight();
       //自定义要显示的内容。
       if(this.item.divContent){

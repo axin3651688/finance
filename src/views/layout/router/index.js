@@ -91,12 +91,12 @@ const router = new Router({
                 },
                 //风控的路由
                 //风险识别
-                {
-                    path: '/riskDis',
-                    name: 'riskDis',
-                    component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
-                },
+                // {
+                //     path: '/riskDis',
+                //     name: 'riskDis',
+                //     component: () =>
+                //         import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                // },
                 //风险报告
                 {
                     path: '/riskReport',
@@ -109,7 +109,7 @@ const router = new Router({
                     path: '/riskControl',
                     name: 'riskControl',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/szcRiskControl/riskControl.vue')
                 },
                 //风险反馈
                 {
