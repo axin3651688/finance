@@ -129,7 +129,7 @@ export default {
     //   this.upData(this.item);
     // }
     // this.upData(this.item);
-    console.log(this.item) 
+    console.log("这个是bitabel的东西",this.item) 
   },
   mounted() {
     // 设置表格高度（自适应）

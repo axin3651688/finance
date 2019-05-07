@@ -109,7 +109,7 @@ const router = new Router({
                     path: '/riskControl',
                     name: 'riskControl',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/szcRiskControl/riskControl.vue')
                 },
                 //风险反馈
                 {
@@ -262,12 +262,12 @@ const router = new Router({
                         import ('@v/intelligenceReport/Profit.vue')
                 },
                 // 风险识别与评估
-                {
-                    path: '/riskDis',
-                    name: 'riskDis',
-                    component: () =>
-                        import ('@v/riskControlSystem/riskDis.vue')
-                },
+                // {
+                //     path: '/riskDis',
+                //     name: 'riskDis',
+                //     component: () =>
+                //         import ('@v/riskControlSystem/riskDis.vue')
+                // },
                 {
                     path: '/Column',
                     name: 'Column',

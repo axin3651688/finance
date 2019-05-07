@@ -614,6 +614,12 @@ export default {
         me.buttonsOperation = [];
         return
       }
+      //集团年度目标考核值。
+      let arrTems = ['10'];
+      if(arrTems.indexOf(this.templateId) != -1){
+        me.buttonsOperation = [];
+        return;
+      }
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         debugger;
         buttons = res.data;
@@ -1368,7 +1374,7 @@ export default {
         }
       }else if (this.templateId == 10) {
         //集团年度目标考核建议值。
-        if(columns != 2 && columns != 5){
+        if(columns != 2 && columns != 1){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1432,10 +1438,13 @@ export default {
       while (td.firstChild) {
         td.removeChild(td.firstChild);
       }
+      debugger;
       var flagElement = document.createElement("DIV");
       flagElement.style.textAlign = "right";
+      //添加一个市管企业的户数，不用格式化数据。
+      let arr = ['12'];
       if (value != null && !isNaN(value)) {
-        flagElement.innerText = Math.decimalToLocalString(value);
+        flagElement.innerText = arr.indexOf(this.templateId) != -1? parseInt(value):Math.decimalToLocalString(value);
         td.appendChild(flagElement);
       }
     },
@@ -1557,11 +1566,15 @@ export default {
       }
       //集团经营目标不显示公司编码过滤掉
       if((this.templateId == 10) && newCoulmns && newCoulmns.length > 0){
+        let arrIds = ['company','lrwc','lrtbzjl','yewc','yetbzjl'],
+            arrTexts = ['公司编码','营业收入-上年实际完成','营业收入-同比增减率%','利润总额-上年实际完成','利润总额-同比增减率%'];
         newCoulmns = newCoulmns.filter(item => {
-          return item.data != "company";
+          // return item.data != "company";
+          return arrIds.indexOf(item.data) == -1;
         });
         colHeaders = colHeaders.filter(item => {
-          return item != "公司编码";
+          // return item != "公司编码";
+          return arrTexts.indexOf(item) == -1;
         });
       }
       this.settings.columns = newCoulmns;
