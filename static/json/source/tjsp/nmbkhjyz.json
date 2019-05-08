@@ -108,7 +108,14 @@
         "id": "nmbkhjyz",
         "stype": "tree",
         "text": "集团年度目标考核建议值",
-
+        "queryDataBefore": function(params, config, $vue) {
+            debugger
+            if ($vue.id === "0014253678") {
+                let yearBefore = params.year - 1;
+                config.sql = config.sql2.replace(/:yearBefore/g, "'" + yearBefore + "'");
+            }
+            return params;
+        },
         "toolbar": [{
             "id": "1",
             "text": "刷新",

@@ -224,14 +224,14 @@
                 }
             },
             "onCellClick":function(row, column, cell, event,option){
-                // debugger
+                debugger
                 let cv = column.property + "",
                 len = cv.length;
                 let text = row[cv];
                 let id = "" ;
                 let listener = false ; 
                 if(cv == "text1" )id = row.id;//下钻的标识
-                if(cv == "text2" )id = row.id_;//下钻的标识
+                if(cv == "text2" )id = row.id2;//下钻的标识
                 // drill||_drill 是否下钻的标识
                 if(cv == "text1")listener = row.drill; 
                 if(cv == "text2")listener = row._drill;
