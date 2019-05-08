@@ -1,0 +1,130 @@
+{
+    "id": "riskDis",
+    "text": "风险识别",
+    "config":{
+        "sql": ""
+    },
+    "columns": [
+        {
+            "id": "index",
+            "text": "序号",
+            "type": "index",
+            "determine": true,
+            "width": "60"
+        },
+        {
+            "id": "selection",
+            "determine": true,
+            "type": "selection",
+            "width": "60"
+        },
+        {
+            "id": "tjzt",
+            "text": "提交状态",
+            "type": "string",
+            "determine": true,
+            "width": "120"
+        },
+        {
+            "id": "fxmc",
+            "text": "风险名称",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxlx",
+            "text": "风险类型",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxdj",
+            "text": "风险等级",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "tbbm",
+            "text": "填报部门",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "tbr",
+            "text": "填报人",
+            "type": "string",
+            "determine": true,
+            "width": "120"
+        },
+        {
+            "id": "fxly",
+            "text": "风险来源",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "tjsj",
+            "text": "提交时间",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxgs",
+            "text": "风险概述",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxfsgl",
+            "text": "风险发生概率",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxyxdj",
+            "text": "风险影响等级",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "fxfz",
+            "text": "风险分值",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "bglx",
+            "text": "报告类型",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "cqcs",
+            "text": "采取措施",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        },
+        {
+            "id": "ydjy",
+            "text": "应对建议",
+            "type": "string",
+            "determine": true,
+            "width": "160"
+        }
+    ],
+    "rows": [
+        { "fxdj": "重大" },{ "fxdj": "重要" }
+    ]
+}
