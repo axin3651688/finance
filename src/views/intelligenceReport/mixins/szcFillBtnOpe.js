@@ -1,5 +1,6 @@
 import {
-    saveReport
+    saveReport,
+    querySonByspcode
 } from "~api/fill.js";
 
 /**
@@ -79,21 +80,33 @@ export default {
         reviewHandler(item) {
             debugger;
             let me = this,
+                companyscode = me.$store.getters.company,
                 fillModalConfig = {
                     title: "申请退回人员",
                     eventListener: "sendfillmessage", //事件监听方法名
                     dialogVisible: true,
                     checkbox: true,
                     type: "tree",
-                    id: 'userReportRT',
+                    id: 'review',
                     title: "申请退回人员",
-                    datas: [],
+                    datas: {
+                        companyDatas: []
+                    },
                     props: {
                         label: "label",
                         children: "children"
-                    }
+                    },
+                    itemObj: item
                 };
-            me.fillModalConfig = fillModalConfig;
+            //请求子公司的内容。
+            querySonByspcode(companyscode).then(res => {
+                if (res.data.code == 200) {
+                    let resData = me.parseCompanyOfNeed(res.data.data);
+                    fillModalConfig.datas.companyDatas = resData;
+                    me.fillModalConfig = fillModalConfig;
+                }
+            });
+            // me.fillModalConfig = fillModalConfig;
         },
         /**
          * 退回
@@ -103,7 +116,27 @@ export default {
          * 催报
          */
         urgeToReport(item) {
-
+            debugger;
+            let me = this,
+                fillModalConfig = {
+                    title: "催报列表",
+                    eventListener: "sendfillmessage", //事件监听方法名
+                    dialogVisible: true,
+                    checkbox: true,
+                    type: "tree",
+                    id: 'urgeToReport',
+                    title: "催报列表",
+                    datas: [],
+                    props: {
+                        label: "label",
+                        children: "children"
+                    },
+                    operationBtns: [{
+                        id: "urgeToBtn",
+                        text: "催报"
+                    }]
+                };
+            me.fillModalConfig = fillModalConfig;
         },
         /**
          * 可能存在一样的操作与请求。
@@ -158,6 +191,21 @@ export default {
                     // });
                 }
             });
+        },
+        /**
+         * 公司数据转换成select想要的格式。
+         * @author szc 2019年5月8日09:33:09
+         */
+        parseCompanyOfNeed(data) {
+            debugger;
+            let me = this;
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    item.label = item.companyname;
+                    item.value = item.scode;
+                });
+            }
+            return data;
         }
     }
 }
