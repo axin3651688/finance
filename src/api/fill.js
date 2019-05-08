@@ -122,3 +122,14 @@ export function saveReview(params) {
         data: params
     })
 }
+/**
+ * 查询子公司数量。
+ * @author szc 2019年5月8日08:59:35
+ * /sys/dimcompany/query_son_byspcode
+ */
+export function querySonByspcode(scode) {
+    return request({
+        url: '/zjb/sys/dimcompany/query_son_byspcode?scode=' + scode,
+        method: 'get'
+    })
+}
