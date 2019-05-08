@@ -61,6 +61,7 @@
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
+                <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component :dialogData="this.dialogData"></dialog-component>
             </el-dialog>
         </div>
