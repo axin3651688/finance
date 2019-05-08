@@ -60,7 +60,7 @@ export default {
     let me = this;
     let navmenuCall = JSON.parse(localStorage.getItem("navmenuCall"));
     if(navmenuCall)me.hideDims(navmenuCall);
-    console.log(this.navMenus);
+    // console.log(this.navMenus);
 
   },
   /**

@@ -79,20 +79,21 @@ export default {
         reviewHandler(item) {
             debugger;
             let me = this,
-                storeParams = this.$store.getters;
-            let params = {
-                "company": storeParams.scode,
-                "nreportnum": 1,
-                "period": storeParams.period,
-                "scompanyname": storeParams.company,
-                "sfromuser": storeParams.user.user.username,
-                "statemun": item.id,
-                // "stouser": "string",
-                "templateid": me.templateId
-            }
-            saveReview(params).then(res => {
-
-            });
+                fillModalConfig = {
+                    title: "申请退回人员",
+                    eventListener: "sendfillmessage", //事件监听方法名
+                    dialogVisible: true,
+                    checkbox: true,
+                    type: "tree",
+                    id: 'userReportRT',
+                    title: "申请退回人员",
+                    datas: [],
+                    props: {
+                        label: "label",
+                        children: "children"
+                    }
+                };
+            me.fillModalConfig = fillModalConfig;
         },
         /**
          * 退回
