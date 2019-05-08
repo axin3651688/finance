@@ -1,0 +1,70 @@
+{
+    "id": "fxyxcd",
+    "text": "风险影响程度",
+    "config": {
+        "sql": ""
+    },
+    "columns":[
+        { "id": "index", "type": "index", "text": "序号", "width": "60", "align": "center" },
+        { "id": "pfgz" , "type": "number","text": "评分估值", "width": "100", "align": "center" },
+        { "id": "sscd" , "type": "string","text": "损失程度", "width": "100", "align": "center" },
+        { "id": "flfg" , "type": "string","text": "法律法规及其他要求", "width": "250", "align": "left" },
+        { "id": "ry" , "type": "string","text": "人员", "width": "120", "align": "left" },
+        { "id": "ccss" , "type": "string","text": "财产损失（万元）", "width": "140", "align": "center" },
+        { "id": "tg" , "type": "string","text": "停工", "width": "250", "align": "left" },
+        { "id": "qyxx" , "type": "string","text": "企业形象", "width": "120", "align": "left" },
+        { "id": "qtsm" , "type": "string","text": "其他说明", "width": "500", "align": "left" }
+    ],
+    "rows":[
+        { 
+            "pfgz": 5, 
+            "sscd": "很大", 
+            "flfg": "违反法律、法规和标准",
+            "ry": "死亡",
+            "ccss": ">50",
+            "tg": "部分装置(>2套)或设备",
+            "qyxx": "重大国际影响",
+            "qtsm": "令企业失去继续动作的能力（或经经济损失占税前利润达到20%以上）"
+        },
+        {
+            "pfgz": 4, 
+            "sscd": "大", 
+            "flfg": "潜在违反法规和标准",
+            "ry": "丧失劳动力",
+            "ccss": ">25",
+            "tg": "2套装置或设备停工",
+            "qyxx": "行业内、省内影响",
+            "qtsm": "对于企业争取完成其性计划和目标造成重大影响（5-10%税前利润）"
+        },
+        {
+            "pfgz": 3, 
+            "sscd": "中", 
+            "flfg": "不符合上级公司或行业的安全方针、制度、规定等",
+            "ry": "截肢、骨折、听力丧失、慢性病",
+            "ccss": ">10",
+            "tg": "1套装置或设备停工",
+            "qyxx": "地区影响",
+            "qtsm": "对于企业在争取完成其策略性计划和目标的过程在一定程度上造成阻碍（至少5%税前利润）"
+        },
+        {
+            "pfgz": 2, 
+            "sscd": "低", 
+            "flfg": "不符合企业的安全操作程序、规定",
+            "ry": "轻微受伤、间隙不舒服",
+            "ccss": "<10",
+            "tg": "受影响不大，几乎不停工",
+            "qyxx": "公司及周边范围",
+            "qtsm": "对于企业在争取完成其策略性计划和目标，只造成轻微影响（1%）以下税前利润"
+        },
+        {
+            "pfgz": 1, 
+            "sscd": "很低", 
+            "flfg": "完全符合",
+            "ry": "无丧亡",
+            "ccss": "无损失",
+            "tg": "没有停工",
+            "qyxx": "形象没有受损",
+            "qtsm": "影响程度十分轻微"
+        }
+    ]
+}
