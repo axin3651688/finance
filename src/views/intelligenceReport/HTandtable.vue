@@ -271,7 +271,6 @@ export default {
       //   return;
       // }
       //切换公司之后可能有些选项没有但是页面还展示出来了，所以处理掉。
-      debugger;
       let flag = this.contentOfCompany();
       //公司的显示选项的控制。
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
@@ -548,7 +547,6 @@ export default {
     //   this.divShow = false;
     //   this.fillShow = true;
     // }
-    debugger;
     this.contentOfButtons();
   },
   beforeDestroy() {
@@ -564,7 +562,6 @@ export default {
      * 1:上报,2:申请退回,3:审阅,4:退回,0:催报
      */
     buttonsHandle (item) {
-      debugger;
       // return;
       let me = this;
       if(item){
@@ -589,7 +586,6 @@ export default {
      * @author szc 2019年5月5日15:22:07
      */
     applicationForRefundStation () {
-      debugger;
       let me = this;
       this.modalConfig = {
         title:"申请退回人员",
@@ -612,7 +608,6 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
-      debugger;
       let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf;
       if(!this.templateId || (typeof(flag) != "undefined" && !flag)){
         me.buttonsOperation = [];
@@ -625,7 +620,6 @@ export default {
       //   return;
       // }
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
-        debugger;
         buttons = res.data;
         if(isleaf == 1){
           let arr1 = ['2','1'];
@@ -671,7 +665,6 @@ export default {
      * @author szc 2019年4月26日11:24:14
      */
     parseResultOfCompany (data) {
-      debugger;
       let me = this,nisleaf = this.$store.getters.treeInfo.nisleaf,spcode = this.$store.getters.treeInfo.spcode;
       console.log("公司：---------------------------",this.$store);
       if(data && data.length == 0){
@@ -707,7 +700,6 @@ export default {
     //   // }
     // },
     afterRenderer (aa,cc,dd,ee,ff,gg,hh) {
-      debugger;
       if(cc < 8){
         return
       }
@@ -719,10 +711,9 @@ export default {
       // }
     },
     beforeValidate (aa,cc,dd,ee,ff,gg,hh) {
-      debugger;
+      // debugger;
     },
     afterValidate (aa,cc,dd,ee,ff,gg,hh) {
-      debugger;
       let me = this,row = dd,column = me.selectCoulmn;
       let cellTD = me.$refs.hotTableComponent.hotInstance.getCell(row,column);
       // if(aa){
@@ -730,10 +721,9 @@ export default {
         cellTD.innerText = "垃圾";
       // }
     },
-    beforeAutofill (aa,cc,dd,ee,ff,gg,hh) {debugger},
+    beforeAutofill (aa,cc,dd,ee,ff,gg,hh) {},
     afterOnCellCornerDblClick (aa,cc,dd,ee,ff,gg,hh) {
       let me = this;
-      debugger;
     },
     afterSelection (aa,cc,dd,ee,ff,gg,hh) {
       // debugger;
@@ -837,7 +827,6 @@ export default {
       let me = this,companyId = this.$store.getters.treeInfo.spcode,userData = [];
       let params = {company:companyId};
       queryUserByCompany(params).then(res => {
-        debugger
         if(res.data.code == 200){
           //转换成对应的格式。
           userData = me.parseTypeOfTree(res.data.data);
@@ -864,7 +853,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
       if(itemSel){
@@ -1442,13 +1430,12 @@ export default {
       while (td.firstChild) {
         td.removeChild(td.firstChild);
       }
-      debugger;
       var flagElement = document.createElement("DIV");
       flagElement.style.textAlign = "right";
       //添加一个市管企业的户数，不用格式化数据。
       let arr = ['12'];
       if (value != null && !isNaN(value)) {
-        flagElement.innerText = arr.indexOf(this.templateId) != -1? parseInt(value):Math.decimalToLocalString(value);
+        flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
         td.appendChild(flagElement);
       }
     },
@@ -1860,11 +1847,12 @@ export default {
       //     // }
       //   });
       // }
+      let period = this.parsePeriod();
       let objs = {
         cubeId: this.cubeId,
         dims: {
           company: this.company,
-          period: this.years
+          period: period
         },
         subject: this.subject,
         templateId: this.templateId,
@@ -1920,6 +1908,19 @@ export default {
           }
         });
       }
+    },
+    /**
+     * 转换日期。
+     * @author szc 2019年5月7日15:55:29
+     */
+    parsePeriod () {
+      let me = this,paramsStore = this.$store.getters,year = paramsStore.year,month = paramsStore.month,period = "";
+      if(month > 9){
+        period = year + "" + month;
+      }else {
+        period = year + "0" + month;
+      }
+      return period;
     },
     /**
      * 应收、预付、其他表的填报。
