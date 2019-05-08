@@ -19,7 +19,7 @@ export default {
         }
     },
     created(){
-        
+
         this.columns = this.item.config.columns ;
         let datas = this.item.datas ;
         this.array(datas) ;
@@ -67,11 +67,11 @@ export default {
                 }
                 // tmp = this.item.rows;
             }
-            const func = this.evalFunc || treeToArray;
-            const args = this.evalArgs
-                ? Array.concat([tmp, this.expandAll], this.evalArgs)
-                : [tmp, this.expandAll];
-            let formatData = func.apply(null, args);
+            // const func = this.evalFunc || treeToArray;
+            // const args = this.evalArgs
+            //     ? Array.concat([tmp, this.expandAll], this.evalArgs)
+            //     : [tmp, this.expandAll];
+            // let formatData = func.apply(null, args);
             this.$set(this, "dataSource", tmp);
             if(this.item.tableBefore)this.tableBefore();
             
