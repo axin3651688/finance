@@ -1,4 +1,9 @@
 <template>
+<!--
+    name: sjz
+    time: sjz 2019/5/6 9:40:00
+    说明: 风险识别弹出框里的风险矩阵的图形组件
+-->
     <div id="riskMatrix">
         <table v-if="rowLength>0">
             <tr>

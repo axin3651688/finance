@@ -1,4 +1,9 @@
 <template>
+<!--
+    name : sjz
+    time : sjz 2019/5/6 9:40:00
+    说明 : 风险识别的弹出框组件 
+-->
     <div id="dialog">
         <!-- 内层弹出框 -->
         <el-dialog width="660px" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
@@ -19,7 +24,7 @@
                 :prop="element.id" 
                 :label="element.text"
                 :width="element.width"
-                :align="align" >
+                :align="element.align" >
             </el-table-column>
         </el-table>
         </el-dialog>
