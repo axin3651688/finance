@@ -99,6 +99,13 @@
             // 图标显示
             iconShow(index, record) {
                 return (index === 0 && record.children && record.children.length > 0)
+            },
+            /**
+             * 点击公司显示具体报告内容
+             * @param row
+             */
+            showReportDetail() {
+                this.$emit('showreportdetailp');
             }
         }
     }
