@@ -24,17 +24,15 @@
             <el-button @click="saveData" class="button">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
+          <div class="right">
+            <template v-for="(item,index) in buttonsOperation">
+              <el-button class="button" :key="index" @click="buttonsHandle(item)">
+                {{item.text}}
+              </el-button>
+            </template>
+          </div>
         </div>
-        <div class="right">
-          <template v-for="(item,index) in buttonsOperation">
-            <el-button class="button" :key="index" @click="buttonsHandle(item)">
-              {{item.text}}
-            </el-button>
-          </template>
-          <!-- <el-button class="button">审阅</el-button> -->
-          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
-          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
-        </div>
+        
         <!-- 上报的人员modal -->
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>

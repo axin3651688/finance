@@ -4,6 +4,7 @@
     :title="modalConfig.title||'上报人员'"
     :modal-append-to-body="false"
     :visible.sync="modalConfig.dialogVisible"
+    :before-close="beforeClose"
     >
         <div>
             <div class="fillSelect">
@@ -21,9 +22,9 @@
                         </el-option>
                     </el-select>
                     <el-input
-                    v-else-if="modalConfig.id == 'urgeToReport' && itemSel.type && itemSel.type == 'input'"
-                    placeholder="请选择报表"
-                    v-model="input"
+                    v-else-if="itemSel.type && itemSel.type == 'input'"
+                    placeholder="暂无状态"
+                    v-model="inputValue"
                     :disabled="true"
                     :key="index">
                     </el-input>
@@ -40,7 +41,7 @@
                     </el-select>
                 </template>
                 <el-button v-if="modalConfig.id != 'urgeToReport'" @click="queryHandler" class="button">确定</el-button>
-                <div v-if="modalConfig.operationBtns" class="btnClass">
+                <div v-if="urgeToShow" class="btnClass">
                     <el-button @click="urgeToBtnHandler" class="button">催报</el-button>
                 </div>
             </div>
@@ -61,12 +62,12 @@
                 </el-table>
             </div>
             <!-- 审阅批示的显示的内容 -->
-            <div v-if="tableData && tableData.length > 0">
+            <div v-if="tableData && tableData.length > 0 && reviewShow">
                 <el-form :model="form" label-width="80px" :inline="true">
                     <el-form-item label="审阅结果">
                         <el-select v-model="form.result" placeholder="请选择">
-                        <el-option label="通过" value="pass"></el-option>
-                        <el-option label="不通过" value="noPass"></el-option>
+                        <el-option label="通过" value="3"></el-option>
+                        <el-option label="不通过" value="4"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="结果说明" prop="explain">
@@ -84,7 +85,9 @@
 
 import {
     inquire,
-    saveReview
+    saveReview,
+    queryStateOfTable,
+    urgeToReport
 } from "@/api/fill.js"
 
 export default {
@@ -92,6 +95,8 @@ export default {
     props: ['modalConfig'],
     data() {
         return {
+            urgeToShow:false,//催报的按钮的显示与否
+            reviewShow:true,//审阅的按钮功能的显示与否
             matchShow:false,//控制没有选择公司不能选后面的下拉框
             value:"",
             companyValue:"",
@@ -107,10 +112,10 @@ export default {
             },
             selectCompany:"",//审阅选择的公司
             selectTable:"",//选择表的标记
+            inputValue:""//输入框的内容
         }
     },
     created() {
-        debugger;
         let me = this;
         this.axios.get("/cnbi/json/source/tjsp/szcJson/fillModal/selectOps.json").then(res => {
             console.log(res);
@@ -136,7 +141,6 @@ export default {
     },
     watch : {
         modalConfig(){
-            debugger
             let me = this;
             if(this.selectOps && this.selectOps.length > 0){
                 let res = this.selectOps;
@@ -173,7 +177,7 @@ export default {
             return result;
         },
         showChange (item,value) {
-            debugger;
+            
             return
             let me = this;
             if(item){
@@ -185,7 +189,7 @@ export default {
          * @author szc 2019年5月7日15:34:47
          */
         changeEvent (item,value) {
-            debugger;
+            
             let me = this;
             if(item && item.id == "company"){
                 me.selectCompany = item.valueLabel;
@@ -201,7 +205,7 @@ export default {
          * @author szc 2019年5月8日10:12:08
          */
         tablesByCompany (item) {
-            debugger;
+            
             let me = this;
             if(item){
                 let scode = item.valueLabel,content = item.content;
@@ -219,7 +223,7 @@ export default {
          * @author szc 2019年5月8日10:17:08
          */
         createTableSelect (companyItem) {
-            debugger;
+            
             let me = this,isleaf = companyItem.nisleaf,selectTables = me.$store.fillParams.selectTables[0].content,resSelect = [];
             if(isleaf == '0'){
                 let arr = ['10','12'];
@@ -243,25 +247,116 @@ export default {
          * @author szc 2019年5月7日15:35:20
          */
         queryHandler () {
-            debugger;
+            
             let me = this;
-            let params = {
-                company: "1001",
-                fixed: 0,
-                period: "201711",
-                subject: "1004",
-                templateId: "12"
+            //查询选中的报表状态。
+            let stateParams = {
+                company:me.selectCompany,
+                period: me.parsePeriod(),
+                templateid:me.selectTable.valueLabel
             };
-            params = this.parseRequestParams(params);
+            queryStateOfTable(stateParams).then(res => {
+                
+                if(res.data.code == 200){
+                    me.urgeToShow = false;
+                    me.tipsOfState(res.data.data);
+                }else if(res.data.code == 1001) {
+                    me.inputValue = "未上报";
+                    me.urgeToShow = true;
+                    me.tableData = [];
+                    me.$message({
+                        message:"此公司的此报表未上报！",
+                        type: "warning"
+                    });
+                }
+            })
+            // let params = {
+            //     company: "1001",
+            //     fixed: 0,
+            //     period: "201711",
+            //     subject: "1004",
+            //     templateId: "12"
+            // };
+            // params = this.parseRequestParams(params);
+            // inquire(params).then(res => {
+            //     
+            //     if(res.data.code == 200){
+            //         me.columns = res.data.data.columns;
+            //         me.tableData = res.data.data.rows;
+            //         me.$message({
+            //             message: "成功！",
+            //             type: "success"
+            //         });
+            //     }
+            // });
+        },
+        /**
+         * 选中报表的状态结果提示。
+         * @author szc 2019年5月8日15:03:09
+         */
+        tipsOfState (data) {
+            
+            let me = this;
+            if(data){
+                let state = data.statemun;
+                let params = {
+                    company: "1001",
+                    fixed: 0,
+                    period: "201711",
+                    subject: "1004",
+                    templateId: "12"
+                };
+                params = this.parseRequestParams(params);
+                switch (state) {
+                    case 1:
+                        me.inputValue = "已上报";
+                        me.reviewShow = true;
+                        me.queryDataOfTable(params);
+                        break;
+                    case 2:
+                        me.$message({
+                            message:"状态2"
+                        });
+                        break;
+                    case 3:
+                        me.inputValue = "已审阅";
+                        me.reviewShow = false;
+                        me.queryDataOfTable(params);
+                        me.$message({
+                            message:"已审阅！"
+                        });
+                        break;
+                    case 4:
+                        me.urgeToShow = true;
+                        me.inputValue = "已退回，未上报";
+                        me.tableData = [];
+                        me.$message({
+                            message:"已退回，未上报！"
+                        });
+                        break;
+                    case 0:
+                        me.inputValue = "已催报";
+                        me.urgeToShow = true;
+                        me.$message({
+                            message:"已催报!"
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+        },
+        /**
+         * 查询table的数据。
+         * @author szc 2019年5月8日16:50:13
+         */
+        queryDataOfTable (params) {
+            
+            let me = this;
             inquire(params).then(res => {
-                debugger;
                 if(res.data.code == 200){
                     me.columns = res.data.data.columns;
                     me.tableData = res.data.data.rows;
-                    me.$message({
-                        message: "成功！",
-                        type: "success"
-                    });
                 }
             });
         },
@@ -270,7 +365,7 @@ export default {
          * @author szc 2019年5月7日17:43:21
          */
         parseRequestParams (params) {
-            debugger;
+            
             let me = this,selectTable = me.selectTable,itemTable = "";
             if(selectTable && selectTable.valueLabel){
                 let content = selectTable.content;
@@ -306,27 +401,36 @@ export default {
          * @author szc 2019年5月7日19:07:24
          */
         submitForm (form) {
-            debugger;
+            
             let me = this,formData = me.form,reviewParams = me.reviewParams,curSelectCompany = me.curSelectCompany[0],
                 storeParams = me.$store.getters;
             if(formData){
-                // me.queryStateOfTable();
+                // me.queryStateOfTable();/zjb/update_fill_message
                 let params = {
                     "company": reviewParams.company,
                     "id": 0,
                     "nreportnum": 0,
                     "period": reviewParams.period,
                     "scompanyname": curSelectCompany.sname,
-                    "screatetime": new data(),
+                    "screatetime": new Date(),
                     "screateuser": storeParams.user.user.userName,
-                    "statemun": me.modalConfig.itemObj.id,
+                    "statemun": formData.result,
                     "supdateuser": storeParams.user.user.userName,
                     "templateid": reviewParams.templateId,
                     "users": storeParams.user.user.userName
                 }
+                let inputMsg = "已审阅";
+                if(formData.result == 4){
+                    inputMsg = "已退回";
+                }
                 saveReview(params).then(res => {
                     if(res.data.code == 200){
-                        me.$message
+                        me.inputValue = inputMsg;
+                        me.reviewShow = false;
+                        me.$message({
+                            message: formData.result == 3? "审阅成功！":"退回成功！",
+                            type: "success"
+                        });
                     }
                 });
             }
@@ -335,17 +439,55 @@ export default {
          * 查询table的状态。
          * @author szc 2019年5月7日19:27:25
          */
-        queryStateOfTable () {
-            debugger;
-            let me = this;
-        },
+        // queryStateOfTable () {
+        //     
+        //     let me = this;
+        // },
         /**
          * 选择相应的表来进行催报。
          * @author szc 2019年5月7日20:22:15
          */
         urgeToBtnHandler () {
-            debugger;
-            let me = this;
+            
+            let me = this,curSelectCompany = me.curSelectCompany[0],
+                storeParams = me.$store.getters;;
+            let params = {
+                "company": me.selectCompany,
+                "id": 0,
+                "nreportnum": 0,
+                "period": me.parsePeriod(),
+                "scompanyname": curSelectCompany.sname,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": '0',
+                "supdateuser": storeParams.user.user.userName,
+                "templateid": me.selectTable.valueLabel,
+                "users": storeParams.user.user.userName
+            };
+            urgeToReport(params).then(res => {
+                if(res.data.code == 200) {
+                    me.inputValue = "已催报";
+                    me.$message({
+                        message:"催报成功！",
+                        type:"success"
+                    });
+                }
+            });
+        },
+        /**
+         * modal框关闭前。
+         * @author szc 2019年5月8日16:20:16
+         */
+        beforeClose (done) {
+            
+            let me = this,selectOps = me.selectOps;
+            selectOps.forEach(item => {
+                item.valueLabel = "";
+            });
+            me.inputValue = "";
+            me.valueLabel ="";
+            me.tableData = [];
+            done();
         }
     }
 }

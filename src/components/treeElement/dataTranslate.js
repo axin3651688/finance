@@ -1,8 +1,8 @@
 /*
 * @Author: sjz
 * @Date:   2019-04-11 12:06:49
-* @Last Modified by:   sjz
-* @Last Modified time: 2019-04-11 16:30:03
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2019-05-08 16:45:54
 */
 
 import Vue from 'vue'
@@ -14,7 +14,7 @@ export default {
         let tmp = [];
         let me = this ;
         Array.from(data).forEach(function (record) {
-
+           
             if (record._expanded === undefined) {
                 Vue.set(record, '_expanded', expandedAll)
             }
@@ -57,7 +57,7 @@ export default {
      * @event 'treeElement/treeColumns.vue'引用了此方法：树表自动展开
      */
     automaticallyOpen(data, me, kong){
-
+   
         let datas ;
         let companyId = me.$store.getters.company;//获取公司id
         let is = me.item.isUnfold ; //获取自展开的条件

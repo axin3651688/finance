@@ -261,13 +261,13 @@ const router = new Router({
                     component: () =>
                         import ('@v/intelligenceReport/Profit.vue')
                 },
-                // 风险识别与评估
-                // {
-                //     path: '/riskDis',
-                //     name: 'riskDis',
-                //     component: () =>
-                //         import ('@v/riskControlSystem/riskDis.vue')
-                // },
+                // 风险识别与评估sjz
+                {
+                    path: '/riskDis',
+                    name: 'riskDis',
+                    component: () =>
+                        import ('@v/riskControlSystem/riskDis.vue')
+                },
                 {
                     path: '/Column',
                     name: 'Column',

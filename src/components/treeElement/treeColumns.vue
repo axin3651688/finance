@@ -102,15 +102,15 @@ export default {
     },
     computed: {
         // 格式化数据源
-        data: function () { 
+        data: function () {  
             let me = this
             let parent,level ;
             if (me.treeStructure) {
                 let data = Utils.treeToArray(me.dataSource, null, null, me.defaultExpandAll)
                 console.log("data",data) ;
                 // 判断是否自动展开
-                let datas = Utils.automaticallyOpen(data, me, null) ;
-                return datas ;
+                data = Utils.automaticallyOpen(data, me, null) ;
+                return data ;
             }
             return me.dataSource ;
         }
@@ -133,7 +133,7 @@ export default {
             this.currentPage = currentPage;
         },
         // 显示行
-        showTr: function (row, index) {
+        showTr: function (row, index) { 
             let show = (row.row._parent ? (row.row._parent._expanded && row.row._parent._show) : true)
             row.row._show = show
             return show ? '' : 'display:none;'
@@ -147,7 +147,7 @@ export default {
             return false ;
         },
         // 点击展开和关闭的时候，图标的切换
-        toggleIconShow (index, record) {
+        toggleIconShow (index, record) { 
             let me = this
             if (me.treeStructure && index === 0 && record.children && record.children.length > 0) {
                 return true

@@ -133,3 +133,27 @@ export function querySonByspcode(scode) {
         method: 'get'
     })
 }
+/**
+ * 查询报表的状态。
+ * @author szc 2019年5月8日08:59:35
+ * 
+ */
+export function queryStateOfTable(params) {
+    return request({
+        url: '/zjb/zjb/query_filltable_record',
+        method: 'post',
+        data: params
+    })
+}
+/**
+ * 催报
+ * @author szc 2019年5月8日08:59:35
+ * 
+ */
+export function urgeToReport(params) {
+    return request({
+        url: '/zjb/zjb/save_fill_message',
+        method: 'post',
+        data: params
+    })
+}
