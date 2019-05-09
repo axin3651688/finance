@@ -58,11 +58,12 @@
             <el-dialog
                     :title="getDialogTitle()"
                     width="56%"
+                    top="50px"
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-                <dialog-component :dialogData="this.dialogData"></dialog-component>
+                <dialog-component :dialogData="this.dialogData" :dialogType="this.dialogType"></dialog-component>
             </el-dialog>
         </div>
     </div>
@@ -78,6 +79,7 @@
         data() {
             return {
                 dialogData:{},
+                dialogType:'riskBack',
                 dialogVisible: false,
                 options: [
                     {
@@ -150,8 +152,7 @@
              */
             getDialogTitle(){
                 let _riskName = this.dialogData.riskName;
-                let str = '关于【' + _riskName + '】的反馈';
-                return str;
+                return '关于【' + _riskName + '】的反馈';
             }
         }
     }

@@ -6,97 +6,122 @@
             </div>
             <div class="form-content">
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
-                    <el-row :gutter="20">
+                    <el-row :gutter="24">
                         <el-col :span="6">
                             <div class="top-form-contents">
                                 <span style="min-width: 70px;width: 100px">风险类型：</span>
                                 <el-input v-model="formData.riskType" placeholder="风险类型"></el-input>
-                                <!--<el-form-item label="风险类型">-->
-                                <!--<el-input v-model="formData.riskType" placeholder="风险类型"></el-input>-->
-                                <!--</el-form-item>-->
                             </div>
                         </el-col>
                         <el-col :span="7">
                             <div class="top-form-contents">
                                 <span style="min-width: 98px;width: 150px">风险发生概率：</span>
                                 <el-input v-model="formData.riskProbability" placeholder="风险发生概率"></el-input>
-                                <!--<el-form-item label="风险发生概率">-->
-                                <!--<el-input v-model="formData.riskProbability" placeholder="风险发生概率"></el-input>-->
-                                <!--</el-form-item>-->
                             </div>
                         </el-col>
                         <el-col :span="7">
                             <div class="top-form-contents">
                                 <span style="min-width: 98px;width: 150px">风险影响程度：</span>
                                 <el-input v-model="formData.riskDegree" placeholder="风险影响程度"></el-input>
-                                <!--<el-form-item label="风险影响程度">-->
-                                <!--<el-input v-model="formData.riskDegree" placeholder="风险影响程度"></el-input>-->
-                                <!--</el-form-item>-->
                             </div>
                         </el-col>
                         <el-col :span="4" style="padding-right: 0">
-                            <div class="top-form-contents" style="height: 40px">
+                            <div class="top-form-contents" style="height: 40px;justify-content: space-around;">
                                 <span style="min-width: 70px;width: 70px">风险等级：</span>
                                 <div class="risk-level">
                                     <span>{{this.formData.riskLevel}}</span>
                                 </div>
-                                <!--<el-form-item label="风险等级">-->
-                                <!--<div class="risk-level">-->
-                                <!--<span>{{this.formData.riskLevel}}</span>-->
-                                <!--</div>-->
-                                <!--</el-form-item>-->
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col>
+                            <div class="top-form-contents">
+                                <span style="min-width: 70px;width: 70px">风险概述：</span>
+                                <el-input type="textarea" :rows="4" v-model="formData.riskOverview"></el-input>
+                            </div>
+                        </el-col>
+                        <el-col>
+                            <div class="top-form-contents">
+                                <span style="min-width: 70px;width: 70px">采取措施：</span>
+                                <el-input type="textarea" :rows="4" v-model="formData.riskMeasure"></el-input>
+                            </div>
+                        </el-col>
+                        <el-col>
+                            <div class="top-form-contents">
+                                <span style="min-width: 70px;width: 70px">应对建议：</span>
+                                <el-input type="textarea" :rows="4" v-model="formData.riskSuggest"></el-input>
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col>
+                            <el-col>
+                                <div class="top-form-contents">
+                                    <span style="min-width: 70px;width: 70px">领导批示：</span>
+                                    <div class="top-form-contents" style="margin-bottom: 0">
+                                        <span style="min-width: 98px;width: 150px;font-weight: 200;">风险应对策略：</span>
+                                        <el-input v-model="formData.countermeasures"></el-input>
+                                    </div>
+                                </div>
+                            </el-col>
+
+                            <!--<el-col style="margin-left: 70px">-->
+                                <!--<el-col>-->
+                                    <!--<el-input type="textarea" v-model="formData.instruction"></el-input>-->
+                                <!--</el-col>-->
+                            <!--</el-col>-->
+
+                        </el-col>
+                    </el-row>
+
+
+                    <el-row>
+                        <el-col>
+                            <div class="top-form-contents">
+                                <span style="min-width: 70px;width: 70px">风险反馈：</span>
+                                <el-input type="textarea" :rows="4" v-model="formData.riskFeed"
+                                          placeholder="针对风险进行相关反馈录入"></el-input>
                             </div>
                         </el-col>
                     </el-row>
 
 
-                    <el-form-item label="风险概述" prop="desc" class="risk-detail-area">
-                        <el-input type="textarea" :cols="80" v-model="formData.riskOverview"></el-input>
-                    </el-form-item>
-                    <el-form-item label="采取措施" prop="desc" class="risk-detail-area">
-                        <el-input type="textarea" :cols="80" v-model="formData.riskMeasure"></el-input>
-                    </el-form-item>
-                    <el-form-item label="应对建议" prop="desc" class="risk-detail-area">
-                        <el-input type="textarea" :cols="80" v-model="formData.riskSuggest"></el-input>
-                    </el-form-item>
+                    <!--<el-form-item label="风险反馈" prop="desc" class="risk-detail-area">-->
+                    <!--<el-input type="textarea" :cols="80" v-model="formData.riskFeed"-->
+                    <!--placeholder="针对风险进行相关反馈录入"></el-input>-->
+                    <!--</el-form-item>-->
+                    <el-row>
+                        <el-col>
+                            <div class="form-foot">
+                                <div class="form-foot-left">
+                                    <el-form-item>
+                                        <el-button type="primary" @click="lastMessage()">上一条</el-button>
+                                        <el-button type="primary" @click="nextMessage()">下一条</el-button>
+                                    </el-form-item>
+                                </div>
+                                <div class="form-foot-right">
+                                    <el-form-item>
+                                        <el-checkbox
+                                                label="指定反馈人员"
+                                                name="type"
+                                                class="form-foot-right-check"
+                                                @change="handleCheckedChange"
+                                        ></el-checkbox>
+                                        <el-button type="primary" @click="riskSend()">反馈上报</el-button>
+                                    </el-form-item>
+                                </div>
+                            </div>
+                        </el-col>
+                    </el-row>
 
-                    <el-form-item label="领导批示">
-                        <el-form-item label="风险应对策略">
-                            <el-input v-model="formData.countermeasures" placeholder="风险应对策略，不可编辑"></el-input>
-                        </el-form-item>
-                        <el-input type="textarea" v-model="formData.instruction"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="风险反馈" prop="desc" class="risk-detail-area">
-                        <el-input type="textarea" :cols="80" v-model="formData.riskFeed"
-                                  placeholder="针对风险进行相关反馈录入"></el-input>
-                    </el-form-item>
-
-                    <div class="form-foot">
-                        <div class="form-foot-left">
-                            <el-form-item>
-                                <el-button type="primary" @click="lastMessage()">上一条</el-button>
-                                <el-button type="primary" @click="nextMessage()">下一条</el-button>
-                            </el-form-item>
-                        </div>
-                        <div class="form-foot-right">
-                            <el-form-item>
-                                <el-checkbox
-                                        label="指定反馈人员"
-                                        name="type"
-                                        class="form-foot-right-check"
-                                        @change="handleCheckedChange"
-                                ></el-checkbox>
-                                <el-button type="primary" @click="riskSend()">反馈上报</el-button>
-                            </el-form-item>
-                        </div>
-                    </div>
 
                 </el-form>
 
             </div>
         </div>
-
         <div class="personnel-list" v-show="personnelListShow">
             <el-input
                     placeholder="输入关键字进行过滤"
@@ -116,8 +141,6 @@
                 <el-button @click="resetChecked">重置</el-button>
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -126,7 +149,7 @@
         name: "dialogComponent",
         components: {},
         props: {
-            dialogData: Object
+            dialogData: Object,
         },
         data() {
             return {
@@ -205,6 +228,7 @@
             filterText(val) {
                 this.$refs.tree.filter(val);
             }
+
         },
         methods: {
             /**
@@ -301,11 +325,13 @@
         right: 20px;
         height: 354px;
     }
-    .btn-sure{
+
+    .btn-sure {
         text-align: right;
         margin-top: 10px;
     }
-    .btn-sure button{
+
+    .btn-sure button {
         border-radius: 16px;
         padding: 8px 16px;
     }

@@ -24,12 +24,20 @@
           <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
           <i v-else class="el-icon-minus"></i>
         </span>
+                <span
+                        v-if="column.value === 'companyName'"
+                        @click="showReportDetail()"
+                        style="color: dodgerblue;cursor: pointer"
+                >
+                    {{scope.row[column.value]}}
+                </span>
+                <span v-if="column.value === 'feedState'">{{scope.row[column.value]}}</span>
                 <el-button
                         size="mini"
-                        v-if="column.value === 'handle'">
+                        v-if="column.value === 'handle'"
+                >
                     {{scope.row[column.value]}}
                 </el-button>
-                <span v-if="column.value !== 'handle'">{{scope.row[column.value]}}</span>
             </template>
         </el-table-column>
         <slot></slot>
@@ -42,6 +50,7 @@
     export default {
         name: 'treeTable',
         props: {
+            dialogVisible:Boolean,
             data: {
                 type: [Array, Object],
                 required: true
@@ -85,6 +94,13 @@
             // 图标显示
             iconShow(index, record) {
                 return (index === 0 && record.children && record.children.length > 0)
+            },
+            /**
+             * 点击公司显示具体报告内容
+             * @param row
+             */
+            showReportDetail() {
+                this.$emit('showreportdetailp');
             }
         }
     }
