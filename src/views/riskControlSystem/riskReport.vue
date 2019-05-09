@@ -1,7 +1,7 @@
 <template>
 <!--
     name: sjz
-    风险反馈汇总
+    风险报告页面
 -->
     <div id="riskReport">
         <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>
@@ -17,8 +17,10 @@ export default {
     },
     data(){
         return {
-            jsonAdress: "cnbi/risk/riskfeedback.json",
-            tableHeight: 185
+            // json地址
+            jsonAdress: "cnbi/risk/riskReport.json",
+            // 高度
+            tableHeight: 124 
         }
     },
     created(){
