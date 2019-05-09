@@ -157,3 +157,15 @@ export function urgeToReport(params) {
         data: params
     })
 }
+/**
+ * 上报流程的操作请求（似公用）
+ * @author szc 2019年5月8日08:59:35
+ * 
+ */
+export function publicReport(params) {
+    return request({
+        url: '/zjb/zjb/update_fill_message',
+        method: 'post',
+        data: params
+    })
+}

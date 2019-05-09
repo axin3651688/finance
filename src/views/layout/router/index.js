@@ -98,12 +98,12 @@ const router = new Router({
                         import ('@v/riskControlSystem/riskDis.vue')
                 },
                 //风险报告
-                {
-                    path: '/riskReport',
-                    name: 'riskReport',
-                    component: () =>
-                        import ('@v/riskControlSystem/riskReport.vue')
-                },
+                // {
+                //     path: '/riskReport',
+                //     name: 'riskReport',
+                //     component: () =>
+                //         import ('@v/riskControlSystem/riskReport.vue')
+                // },
                 //风险管控
                 {
                     path: '/riskControl',

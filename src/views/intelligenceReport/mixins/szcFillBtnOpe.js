@@ -1,6 +1,8 @@
 import {
     saveReport,
-    querySonByspcode
+    querySonByspcode,
+    queryStateOfTable,
+    publicReport
 } from "~api/fill.js";
 
 /**
@@ -69,10 +71,59 @@ export default {
          */
         applicationForRefund(item) {
             debugger;
-            let me = this;
+            let me = this,
+                storeParams = this.$store.getters;
             let params = {
-
-            }
+                "company": storeParams.company,
+                "id": 0,
+                "nreportnum": 1,
+                "period": me.parsePeriod(),
+                "scompanyname": storeParams.companyName,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": item.id,
+                // "stouser": fromuser,
+                "templateid": me.templateId,
+                "users": storeParams.user.user.userName
+            };
+            publicReport(params).then(res => {
+                if (res.data.code == 200) {
+                    me.$message({
+                        message: "申请退回成功！",
+                        type: "success"
+                    });
+                }
+            });
+        },
+        /**
+         * 撤回
+         * @author szc 2019-5-9 14:08:03
+         */
+        revoke(item) {
+            debugger;
+            let me = this,
+                storeParams = this.$store.getters;
+            let params = {
+                "company": storeParams.company,
+                "id": 0,
+                "nreportnum": 1,
+                "period": me.parsePeriod(),
+                "scompanyname": storeParams.companyName,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": 4,
+                // "stouser": fromuser,
+                "templateid": me.templateId,
+                "users": storeParams.user.user.userName
+            };
+            publicReport(params).then(res => {
+                if (res.data.code == 200) {
+                    me.$message({
+                        message: "撤回成功！",
+                        type: "success"
+                    });
+                }
+            });
         },
         /**
          * 审阅
@@ -82,13 +133,13 @@ export default {
             let me = this,
                 companyscode = me.$store.getters.company,
                 fillModalConfig = {
-                    title: "申请退回人员",
+                    title: "审阅报表",
                     eventListener: "sendfillmessage", //事件监听方法名
                     dialogVisible: true,
                     checkbox: true,
                     type: "tree",
                     id: 'review',
-                    title: "申请退回人员",
+                    title: "审阅报表",
                     datas: {
                         companyDatas: []
                     },
@@ -206,6 +257,28 @@ export default {
                 });
             }
             return data;
-        }
+        },
+        // /**
+        //  * 查询当前选中的table的状态。
+        //  * @author szc 2019年5月8日19:16:48
+        //  */
+        // queryStateOfFillTable() {
+        //     debugger;
+        //     let me = this,
+        //         company = me.$store.getters.company;
+        //     //查询选中的报表状态。
+        //     let stateParams = {
+        //         company: company,
+        //         period: me.parsePeriod(),
+        //         templateid: me.templateId
+        //     };
+        //     queryStateOfTable(stateParams).then(res => {
+        //         if (res.data.code == 200) {
+        //             me.tableState = res.data.data.statemun;
+        //         } else if (res.data.code == 1001) {
+        //             me.tableState = "";
+        //         }
+        //     })
+        // }
     }
 }

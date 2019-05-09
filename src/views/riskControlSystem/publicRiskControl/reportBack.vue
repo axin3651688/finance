@@ -4,7 +4,7 @@
     风险反馈汇总
 -->
     <div id="riskReport">
-        <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>
+        <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>       
     </div>
 </template>
 <script>

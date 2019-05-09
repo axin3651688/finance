@@ -66,6 +66,7 @@ export default {
       }
     },
     setFlagState() {
+      debugger;
       if(this.item.watchValue){
         let jFlag= this.judgeValue();
         this.flag = jFlag;
@@ -82,9 +83,10 @@ export default {
       let dataRes = this.item.datas,fFlag = false;
       if(dataRes && dataRes.length > 0){
         for(let i = 0;i < dataRes.length;i ++){
+          debugger;
           let item = dataRes[i];
           for(let key in item){
-            if(typeof item[key] == "number" && item[key] > 0){
+            if(typeof item[key] == "number" && item[key] != 0){
               // this.flag = true;
               // return false;
               fFlag = true;
@@ -103,11 +105,18 @@ export default {
     },
     showChartOrDiv(itemNames){
       let me = this,itemFlag = false;
-      let dataRes = this.item.datas;
-      for(let i = 0;i < dataRes.length;i ++){
-        let itemData = dataRes[i];
+      let dataRes = this.item.datas,resDatas = [];
+      //判断单个的数据，过滤出来。
+      if(me.item.GItemScode){
+        resDatas = dataRes.filter(it => {
+          return it.id == me.item.GItemScode;
+        });
+      }
+      for(let i = 0;i < resDatas.length;i ++){
+        debugger;
+        let itemData = resDatas[i];
         itemNames.forEach(item => {
-          if(typeof itemData[item] == "number" && itemData[item] > 0){
+          if(typeof itemData[item] == "number" && itemData[item] != 0){
             itemFlag = true;
             return itemFlag;
           }
