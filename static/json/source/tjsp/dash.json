@@ -276,6 +276,9 @@
                         "position": "before",
                         "text": "公司"
                     },
+                    "watchConfig": {
+                        "itemNames": ["bnlj", "sntq"]
+                    },
                     "extendConfig": "p", //继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
                     "weight": 6,
                     "listeners": [{
@@ -328,6 +331,9 @@
                     "extendConfig": "p", //继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
                     "watchState": true,
                     "weight": 6,
+                    "watchConfig": {
+                        "itemNames": ["bnlj", "sntq"]
+                    },
                     "listeners": [{
                         "type": "click",
                         "way": "addTab",

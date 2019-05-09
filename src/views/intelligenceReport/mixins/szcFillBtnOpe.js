@@ -1,6 +1,8 @@
 import {
     saveReport,
-    querySonByspcode
+    querySonByspcode,
+    queryStateOfTable,
+    publicReport
 } from "~api/fill.js";
 
 /**
@@ -69,10 +71,26 @@ export default {
          */
         applicationForRefund(item) {
             debugger;
-            let me = this;
+            let me = this,
+                storeParams = this.$store.getters;
             let params = {
+                "company": storeParams.company,
+                "id": 0,
+                "nreportnum": 1,
+                "period": me.parsePeriod(),
+                "scompanyname": storeParams.companyName,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": item.id,
+                // "stouser": fromuser,
+                "templateid": me.templateId,
+                "users": storeParams.user.user.userName
+            };
+            publicReport(params).then(res => {
+                if (res.data.code == 200) {
 
-            }
+                }
+            });
         },
         /**
          * 审阅
@@ -206,6 +224,28 @@ export default {
                 });
             }
             return data;
-        }
+        },
+        // /**
+        //  * 查询当前选中的table的状态。
+        //  * @author szc 2019年5月8日19:16:48
+        //  */
+        // queryStateOfFillTable() {
+        //     debugger;
+        //     let me = this,
+        //         company = me.$store.getters.company;
+        //     //查询选中的报表状态。
+        //     let stateParams = {
+        //         company: company,
+        //         period: me.parsePeriod(),
+        //         templateid: me.templateId
+        //     };
+        //     queryStateOfTable(stateParams).then(res => {
+        //         if (res.data.code == 200) {
+        //             me.tableState = res.data.data.statemun;
+        //         } else if (res.data.code == 1001) {
+        //             me.tableState = "";
+        //         }
+        //     })
+        // }
     }
 }

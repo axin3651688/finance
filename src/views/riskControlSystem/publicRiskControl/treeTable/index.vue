@@ -4,42 +4,34 @@
 * 树表渲染，列项有按钮的树表
 */
 <template>
-    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
+    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs" border stripe>
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                 <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-          <i v-else class="el-icon-minus"></i>
-        </span>
+                    <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+                    <i v-else class="el-icon-minus"></i>
+                </span>
                 {{scope.$index}}
             </template>
         </el-table-column>
-        <el-table-column v-else v-for="(column, index) in columns" :key="column.value" :label="column.text"
-                         :width="column.width">
+        <el-table-column v-else v-for="(column, index) in columns" :key="column.value" :label="column.text" :width="column.width">
             <template slot-scope="scope">
-                    <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space"
-                          :key="space"></span>
+                <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space":key="space"></span>
                 <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-          <i v-else class="el-icon-minus"></i>
-        </span>
-                <span
-                        v-if="column.value === 'companyName'"
-                        @click="showReportDetail()"
-                        style="color: dodgerblue;cursor: pointer"
-                >
-                    {{scope.row[column.value]}}
+                    <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+                    <i v-else class="el-icon-minus"></i>
                 </span>
-                <span v-if="column.value === 'feedState'">{{scope.row[column.value]}}</span>
-                <el-button
-                        size="mini"
-                        v-if="column.value === 'handle'"
-                >
-                    {{scope.row[column.value]}}
+                <el-button size="mini" v-if="column.id === 'cz'" v-for="tool in toolBar" :key="tool.id" :class="tool.icon">
+                    <!-- {{scope.row[column.id]}} -->
+                    {{ tool.text }}
                 </el-button>
+                <span v-if="column.value !== 'handle'">{{scope.row[column.id]}}</span>
             </template>
         </el-table-column>
+        <!-- <el-table-column>
+            <el-button v-for="(tool,index) in toolBar" :key="tool.id" :class="tool.icon">{{ tool.text }}</el-button>
+        </el-table-column> -->
         <slot></slot>
     </el-table>
 </template>
@@ -50,7 +42,10 @@
     export default {
         name: 'treeTable',
         props: {
-            dialogVisible:Boolean,
+            toolBar: {
+                type: Array,
+                default: () => []
+            },
             data: {
                 type: [Array, Object],
                 required: true
@@ -65,6 +60,16 @@
                 type: Boolean,
                 default: false
             }
+        },
+        data(){
+            return {
+
+            }
+        },
+        created(){
+            debugger
+            let cc = this.columns;
+            let ss = this.toolBar;
         },
         computed: {
             // 格式化数据源
