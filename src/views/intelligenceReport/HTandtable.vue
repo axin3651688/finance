@@ -24,15 +24,17 @@
             <el-button @click="saveData" class="button">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
-          <div class="right">
-            <template v-for="(item,index) in buttonsOperation">
-              <el-button class="button" :key="index" @click="buttonsHandle(item)">
-                {{item.text}}
-              </el-button>
-            </template>
-          </div>
         </div>
-        
+        <div class="right">
+          <template v-for="(item,index) in buttonsOperation">
+            <el-button class="button" :key="index" @click="buttonsHandle(item)">
+              {{item.text}}
+            </el-button>
+          </template>
+          <!-- <el-button class="button">审阅</el-button> -->
+          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
+          <!-- <el-button class="button" @click="reportHandle">上报</el-button> -->
+        </div>
         <!-- 上报的人员modal -->
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
@@ -114,7 +116,8 @@ import {
     mechanism,
     queryUserByCompany,
     sendFillMessage,
-    saveReport
+    saveReport,
+    queryStateOfTable
 } from "@/api/fill.js";
 import EventMixins from "./mixins/szcFillBtnOpe";
 // import BiModule from "@v/BiModule.vue";
@@ -620,13 +623,13 @@ export default {
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         buttons = res.data;
         if(isleaf == 1){
-          let arr1 = ['2','1'];
+          let arr1 = ['2','1','5'];
           buttons = buttons.filter(item => {
             return arr1.indexOf(item.id) != -1;
           });
           me.buttonsOperation = buttons;
         }else {
-          let arr0 = ['2','1'];
+          let arr0 = ['2','1','5'];
           buttons = buttons.filter(item => {
             return arr0.indexOf(item.id) == -1;
           });
@@ -1297,7 +1300,7 @@ export default {
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
       // 
-      let cellMeta = {};
+      let cellMeta = {},me = this,tableState = me.tableState;
       if(this.templateId == "2"){
         if(columns == 0 || columns == 1 || columns == 3 || columns == 4){
           cellMeta.readOnly = true;
@@ -1377,7 +1380,8 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      
+      debugger;
+      [1,4].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**
@@ -1439,7 +1443,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      let me = this,arrTem = ['9','12','10'];
+      let me = this,arrTem = ['9','12','10'],tableState = me.tableState;
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
@@ -2072,8 +2076,34 @@ export default {
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
         }
-        me.convertHansoneTableColumns(columns, rows,res);
+        debugger;
+        //查询当前选中报表的状态。
+        me.queryStateOfFillTable(columns,rows,res);
+        // me.convertHansoneTableColumns(columns, rows,res);
       });
+    },
+    /**
+     * 查询当前选中的table的状态。
+     * @author szc 2019年5月8日19:16:48
+     */
+    queryStateOfFillTable(columns,rows,res) {
+        debugger;
+        let me = this,
+            company = me.$store.getters.company;
+        //查询选中的报表状态。
+        let stateParams = {
+            company: company,
+            period: me.parsePeriod(),
+            templateid: me.templateId
+        };
+        queryStateOfTable(stateParams).then(res => {
+            if (res.data.code == 200) {
+                me.tableState = res.data.data.statemun;
+            } else if (res.data.code == 1001) {
+                me.tableState = "";
+            }
+            me.convertHansoneTableColumns(columns, rows,res);
+        })
     },
     /**
      * 转换融资类型作为名字

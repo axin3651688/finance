@@ -337,6 +337,7 @@ export default {
                     case 0:
                         me.inputValue = "已催报";
                         me.urgeToShow = true;
+                        me.tableData = [];
                         me.$message({
                             message:"已催报!"
                         });

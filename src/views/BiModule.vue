@@ -155,7 +155,6 @@ export default {
     };
   },
   created() {
-    debugger;
     if (Cnbi.isEmpty(this.handsontanleapi)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -487,7 +486,7 @@ export default {
     /**
      * 更新vuex属性过来更新组件数据的
      */
-    updateView(changeDim) { debugger
+    updateView(changeDim) {
 
       console.log(this)
       console.log(this.config);
@@ -505,7 +504,7 @@ export default {
       let $cc = this.$refs.mychild;
       if ($cc) {
         let $cc = this.$refs.mychild;
-        $cc.forEach(children => { debugger
+        $cc.forEach(children => {
           let ii = children.item;
           // 加了个ii.show
           //添加一个extendConfig判断用来过滤掉是继承来的config的元素，不然数据会出现错误,dash中 szc 2019年3月12日14:53:19
@@ -573,7 +572,7 @@ export default {
     /**
      * 获取数据后的操作处理
      */
-    queryDataAfter(item, datas, $childVue) { debugger
+    queryDataAfter(item, datas, $childVue) { 
       let params = this.$store.state.prame.command;
       //判断当是不是存在单位的切换问题。conversion
       let showDims = this.$store.state.prame.showDims;
