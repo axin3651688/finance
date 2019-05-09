@@ -68,15 +68,15 @@
                                 </div>
                             </el-col>
 
-                            <!--<el-col style="margin-left: 70px">-->
-                                <!--<el-col>-->
-                                    <!--<el-input type="textarea" v-model="formData.instruction"></el-input>-->
-                                <!--</el-col>-->
-                            <!--</el-col>-->
+                            <el-col>
+                                <div class="top-form-contents">
+                                    <span style="min-width: 70px;width: 70px"></span>
+                                    <el-input type="textarea" :rows="3" v-model="formData.instruction"></el-input>
+                                </div>
+                            </el-col>
 
                         </el-col>
                     </el-row>
-
 
                     <el-row>
                         <el-col>
@@ -88,11 +88,6 @@
                         </el-col>
                     </el-row>
 
-
-                    <!--<el-form-item label="风险反馈" prop="desc" class="risk-detail-area">-->
-                    <!--<el-input type="textarea" :cols="80" v-model="formData.riskFeed"-->
-                    <!--placeholder="针对风险进行相关反馈录入"></el-input>-->
-                    <!--</el-form-item>-->
                     <el-row>
                         <el-col>
                             <div class="form-foot">
@@ -162,7 +157,7 @@
                     riskMeasure: '自动查询风险识别的',
                     riskSuggest: '自动查询风险识别的',
                     countermeasures: '风险应对策略，不可编辑',
-                    instruction: '自动查询风险识别的',
+                    instruction: '显示批示内容，不可编辑',
                     riskFeed: '',
                 },
                 personnelList: [
