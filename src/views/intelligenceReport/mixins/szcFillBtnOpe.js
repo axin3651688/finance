@@ -88,7 +88,10 @@ export default {
             };
             publicReport(params).then(res => {
                 if (res.data.code == 200) {
-
+                    me.$message({
+                        message: "申请退回成功！",
+                        type: "success"
+                    });
                 }
             });
         },
@@ -115,7 +118,10 @@ export default {
             };
             publicReport(params).then(res => {
                 if (res.data.code == 200) {
-
+                    me.$message({
+                        message: "撤回成功！",
+                        type: "success"
+                    });
                 }
             });
         },
@@ -127,13 +133,13 @@ export default {
             let me = this,
                 companyscode = me.$store.getters.company,
                 fillModalConfig = {
-                    title: "申请退回人员",
+                    title: "审阅报表",
                     eventListener: "sendfillmessage", //事件监听方法名
                     dialogVisible: true,
                     checkbox: true,
                     type: "tree",
                     id: 'review',
-                    title: "申请退回人员",
+                    title: "审阅报表",
                     datas: {
                         companyDatas: []
                     },

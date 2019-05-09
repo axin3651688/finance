@@ -1122,7 +1122,6 @@ export default {
             if (changen) {
               changen[key] = values;
             } else if (this.templateId == 8) {
-              
               if (index != 0) {
                 let bb = { index: index };
                 bb[key] = values;
