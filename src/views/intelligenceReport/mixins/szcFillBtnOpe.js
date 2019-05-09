@@ -93,6 +93,33 @@ export default {
             });
         },
         /**
+         * 撤回
+         * @author szc 2019-5-9 14:08:03
+         */
+        revoke(item) {
+            debugger;
+            let me = this,
+                storeParams = this.$store.getters;
+            let params = {
+                "company": storeParams.company,
+                "id": 0,
+                "nreportnum": 1,
+                "period": me.parsePeriod(),
+                "scompanyname": storeParams.companyName,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": 4,
+                // "stouser": fromuser,
+                "templateid": me.templateId,
+                "users": storeParams.user.user.userName
+            };
+            publicReport(params).then(res => {
+                if (res.data.code == 200) {
+
+                }
+            });
+        },
+        /**
          * 审阅
          */
         reviewHandler(item) {
