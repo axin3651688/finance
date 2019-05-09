@@ -242,8 +242,8 @@
                     "queryDataBefore": function(params, config, $vue) {
                         debugger
                         // 上年度12月份
-                        // params.oneYearBefore = params.year - 1 + "12" ; 
-                        params.oneYearBefore = params.year + "01" ;
+                        params.oneYearBefore = params.year - 1 + "12" ; 
+                        // params.oneYearBefore = params.year + "01" ;
                         if (params.company == '1001') {
                             config.sql = config.sql1; //9
                         } else {

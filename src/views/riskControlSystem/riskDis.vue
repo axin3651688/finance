@@ -15,14 +15,14 @@
         <el-row :gutter="10">
             <el-col :xs="12" :md="24" :lg="24">
                 <div class="elbtn" style="float: left">
-                    <el-button-group>
+                    <el-button-group class="iconbtn">
                         <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="dialogFormVisible = true">添加</el-button>
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain>删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain>刷新</el-button>
-                        <el-button type="primary" icon="el-icon-download" plain>批量下达</el-button>
+                        <el-button type="primary" plain><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain>下达记录查询</el-button>
-                        <el-button type="primary" plain>导入</el-button>
-                        <el-button type="primary" plain>导出</el-button>
+                        <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
                 <!-- <div class="elbtn" style="float: left" v-html="html">divided</div> -->
@@ -96,7 +96,7 @@ export default {
         }
     },
     created(){
-        this.heights = document.documentElement.offsetHeight - 20 - 40 -64;
+        this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
         if(document.body.offsetWidth <= 1200 )this.widths = "540px" ;
     },
     mounted(){
@@ -113,10 +113,10 @@ export default {
     methods: {
         // 自适应高度
         setClientHeight(){
-            this.heights = document.documentElement.offsetHeight - 20 - 40 -64;
+            this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
             const me = this ;
             window.onresize = function temp(){ 
-                me.heights = document.body.offsetHeight - 20 - 40 -64 ;
+                me.heights = document.body.offsetHeight - 20 - 42 -64 ;
                 if(document.body.offsetWidth <= 1200 ){
                     me.widths = "540px"; 
                 }else{
@@ -177,6 +177,13 @@ export default {
     /* width: 100%; */
     margin-top: 10px;
     margin-bottom: 10px; 
+}
+.iconbtn .el-button {
+    height: 42px;
+    font-size: 13px;
+}
+.iconbtn .icon-batch-import, .icon-daoru, .icon-daochu {
+    padding-right: 5px;
 }
 </style>
 <style>
