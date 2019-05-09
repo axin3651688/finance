@@ -90,19 +90,19 @@ const router = new Router({
                         import ('@v/test/Role.vue')
                 },
                 //风控的路由
-                //风险识别
-                // {
-                //     path: '/riskDis',
-                //     name: 'riskDis',
-                //     component: () =>
-                //         import ('@v/riskControlSystem/publicRiskControl/public.vue')
-                // },
+                // 风险识别与评估sjz
+                {
+                    path: '/riskDis',
+                    name: 'riskDis',
+                    component: () =>
+                        import ('@v/riskControlSystem/riskDis.vue')
+                },
                 //风险报告
                 {
                     path: '/riskReport',
                     name: 'riskReport',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/riskReport.vue')
                 },
                 //风险管控
                 {
@@ -260,13 +260,6 @@ const router = new Router({
                     name: 'profit',
                     component: () =>
                         import ('@v/intelligenceReport/Profit.vue')
-                },
-                // 风险识别与评估sjz
-                {
-                    path: '/riskDis',
-                    name: 'riskDis',
-                    component: () =>
-                        import ('@v/riskControlSystem/riskDis.vue')
                 },
                 {
                     path: '/Column',

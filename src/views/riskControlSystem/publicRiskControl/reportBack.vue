@@ -1,19 +1,35 @@
 <template>
     <div class="app-container">
-        <tree-table :data="data" :columns="columns" border></tree-table>
+        <tree-table
+                :data="reportRiskData"
+                :columns="columns"
+                border
+                v-show="!reportBackDetail"
+                @showreportdetailp="changeDiaShowState"
+        >
+        </tree-table>
+
+        <div class="report-component-content" v-show="reportBackDetail">
+            <report-component></report-component>
+        </div>
     </div>
+
+
 </template>
 
 <script>
-    import treeTable from '../publicRiskControl/treeTable'
+    import treeTable from '../publicRiskControl/treeTable/index'
+    import reportComponent from './reportComponent'
 
     export default {
-        name: 'treeTableDemo',
+        name: 'reportBack',
         components: {
-            treeTable
+            treeTable,
+            reportComponent
         },
         data() {
             return {
+                reportBackDetail: false,
                 columns: [
                     {
                         text: '公司名称',
@@ -29,7 +45,7 @@
                         value: 'handle'
                     }
                 ],
-                data: [
+                reportRiskData: [
                     {
                         companyName: '(1001)天津食品集团有限公司(合并)',
                         feedState: '已反馈',
@@ -67,6 +83,15 @@
                         ]
                     }
                 ]
+            }
+        },
+        methods: {
+            getDialogTitle() {
+                let _companyName = this.reportRiskData.companyName;
+                return '关于【' + _companyName + '】的反馈';
+            },
+            changeDiaShowState() {
+                this.reportBackDetail = true;
             }
         }
     }
