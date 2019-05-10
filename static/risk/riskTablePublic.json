@@ -1,6 +1,6 @@
 {
-    "id": "riskReport",
-    "text": "风险报告树表",
+    "id": "riskTablePublic",
+    "text": "风险追踪",
     "config": {
         "sql": "SELECT D.ROOT_SCODE GSBM, D.SNAME GSMC, D.SPCODE PID, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY GSBM"
     },
@@ -8,137 +8,76 @@
         {
             "id": "gsmc",
             "text": "公司名称",
-            "tepe": "string",
+            "type": "string",
             "align": "left",
-            "width": "460"
+            "fixed": true,
+            "width": "500"
         },
         {
-            "id": "bgzt",
-            "text": "报告状态",
-            "tepe": "string",
+            "id": "zt",
+            "text": "状态",
+            "type": "string",
             "align": "center",
             "width": "160"
         },
         {
             "id": "sbr",
             "text": "上报人",
-            "tepe": "string",
+            "type": "string",
+            "align": "center",
+            "width": "160"
+        },
+        {
+            "id": "psr",
+            "text": "批示人",
+            "type": "string",
+            "align": "center",
+            "width": "160"
+        },
+        {
+            "id": "fkr",
+            "text": "反馈人",
+            "type": "string",
             "align": "center",
             "width": "160"
         },
         {
             "id": "cz",
-            "text": "操作"
+            "text": "操作",
+            "align": "center",
+            "width": "260"
         }
     ],
     "rows": [
-        // {
-        //     "gsmc": "(1001)天津食品集团有限公司(合并)",
-        //     "bgzt": "1",
-        //     "children": [
-        //         {
-        //             "gsmc": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
-        //             "bgzt": "1",
-        //             "children": [
-        //                 {
-        //                     "gsmc": "(10010101)天津农垦渤海农业集团有限公司(合并)",
-        //                     "bgzt": "1",
-        //                     "children": [
-        //                         {
-        //                             "gsmc": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
-        //                             "bgzt": "1"
-        //                         },
-        //                         {
-        //                             "gsmc": "(1001010102)天津农垦龙天畜牧养殖有限公司",
-        //                             "bgzt": "1"
-        //                         }
-        //                     ]
-        //                 },
-        //                 {
-        //                     "gsmc": "(10010102)天津市宝德包装有限公司",
-        //                     "bgzt": "0"
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // }
+        
     ],
     "items": [
         {
-            "id": "riskReport",
-            "text": "风险报告树表",
-            "index": false, // 是否显示序号
-            "isTree": true, // 是否树形
-            "toolbar": [
-                {
-                    "id": 1,
-                    "text": "全部展开",
-                    "styles":{
-                        "marginTop": "10px"
-                    },
-                    "handler": function(data, btn, $vue){
-                        // debugger
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = true ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                },
-                {
-                    "id": 2,
-                    "text": "全部收起",
-                    "styles":{
-                        "marginTop": "10px"
-                    },
-                    "handler": function(data, btn, $vue){
-                        // debugger
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = false ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                } 
-            ],
+            "id": "riskTablePublic",
+            "text": "风险追踪报告",
+            "index": true, // 是否显示序号
+            "isTree": false,// 是否是树形
             "tableBtn": [
                 {
                     "id": 1,
-                    "text": "上报",
-                    "icon": "iconfont icon-tianjiashangbao"
-                },
-                {
-                    "id": 2,
                     "text": "查看",
-                    "icon": "iconfont icon-chakan-copy"
-                },
-                {
-                    "id": 3,
-                    "text": "退回",
-                    "icon": "iconfont icon-tuihui"
-                },
-                {
-                    "id": 4,
-                    "text": "催报",
-                    "icon": "iconfont icon-clock"
+                    "icon": "iconfont icon-chakan-copy",
+                    "handler": function(tool, $vue){
+                        $vue.$emit('showreportdetailp');
+                    }
                 }
             ],
             "queryDataAfter": function(data, $vue){
                 // debugger
                 data.forEach(res => {
-                    if(res.bgzt == "0")res.bgzt = "未上报";
-                    if(res.bgzt == "1")res.bgzt = "已上报";
+                    if(res.zt == "0")res.zt = "未上报";
+                    if(res.zt == "1")res.zt = "已上报";
                     if(res.children && res.children.length>0)this.queryDataAfter(res.children);
                 });
+                // debugger
                 return data; 
             },
-            "drillProperties": ["bgzt"],
+            "drillProperties": ["sbzt","pszt","fkzt"],
             "cellStyle": function({row, column, rowIndex, columnIndex}, $vue){
                 // debugger
                 let css = "padding: 4px 0;";
@@ -149,7 +88,7 @@
                 }
                 let drillProperties = this.drillProperties;
                 if (drillProperties.indexOf(pro) != -1) {
-                    if(row.bgzt == "已上报"){
+                    if(row.zt == "已上报"){
                         let drill = "text-decoration: none;color: green;font-weight: bold;";
                         css = css + textIndent + drill;
                         return css;
