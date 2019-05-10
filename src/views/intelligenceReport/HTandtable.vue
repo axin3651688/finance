@@ -1388,10 +1388,14 @@ export default {
             return true;
           }
           if (record.isinside === "是" || record.isinside == 1) {
+            if(record.isnormal){
+              delete record.isnormal;
+            }
             //如果是是或是1，清空后面的内容。
             let arrItems = ['isnormal','scontenta','scontentb','E','F','G','H'];
-            this.clearRowOfAfter(row,arrItems);
+            this.clearRowOfAfter(row,arrItems,columns);
           }
+          //如果选择是否内部
         }
         if (columns > 7) {
           let record = this.settings.data[row];
@@ -1417,13 +1421,22 @@ export default {
      * 根据前面的选择清空后面的内容。
      * @author szc 2019年4月30日13:51:46
      */
-    clearRowOfAfter (row,arrItems) {
+    clearRowOfAfter (row,arrItems,columns) {
+      // debugger;
       let me = this;
       let record = this.settings.data[row];
       if(record && arrItems && arrItems.length > 0){
         arrItems.forEach(item => {
           if(record[item] || record[item] == '否') {
             typeof(record[item]) == "number"? record[item] = null:record[item] = null;
+          }
+          if(item == "isnormal"){
+            me.$refs.hotTableComponent.hotInstance.setDataAtCell(
+              row,
+              columns,
+              ""
+            );
+            // delete record[item];
           }
         });
       }
@@ -1470,7 +1483,7 @@ export default {
         
       }
       if (this.templateId == 2) {
-        if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
+        if ((row === 28 && columns === 5)) {
           cellMeta.readOnly = true;
         }
       }
@@ -1530,7 +1543,7 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1,4].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      [1].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**
@@ -2244,6 +2257,8 @@ export default {
             templateid: me.templateId
         };
         queryStateOfTable(stateParams).then(res => {
+          debugger;
+            let arr = ['2','5'],states = [1,4];
             if (res.data.code == 200) {
                 me.tableState = res.data.data.statemun;
             } else if (res.data.code == 1001) {
@@ -2251,17 +2266,40 @@ export default {
             }
             me.convertHansoneTableColumns(columns, rows,res);
             //如果是上报过了，按钮就显示已上报。
-            if(me.tableState == 1 && me.buttonsOperation && me.buttonsOperation.length > 0){
+            
+            debugger;
+            if(states.indexOf(me.tableState) != -1 && me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
-                if(it.id == 1){
-                  it.disabled = true;
-                  it.text = "已上报";
+                if(me.tableState == 1){
+                  if(it.id == 1){
+                    it.disabled = true;
+                    it.text = "已上报";
+                  }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = false;
+                  }
                 }
+                if(me.tableState == 4){
+                  if(it.id == 1){
+                    it.disabled = false;
+                    it.text = "上报";
+                  }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = true;
+                  }
+                }
+                // if(it.id == 1){
+                //   it.disabled = true;
+                //   it.text = "已上报";
+                // }else if(arr.indexOf(it.id) != -1) {
+                //   it.disabled = true;
+                // }
               });
             }else if(me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
                 if(it.id == 1){
                   it.disabled = false;
+                  it.text = "上报";
+                }else if(arr.indexOf(it.id) != -1) {
+                  it.disabled = true;
                 }
               });
             }
@@ -2609,6 +2647,7 @@ export default {
       if (!value) {
         return;
       }
+      // debugger;
       if (/[\u4e00-\u9fa5]/.test(value)) {
         td.innerHTML = value;
         return;
