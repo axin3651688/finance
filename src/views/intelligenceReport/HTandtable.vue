@@ -264,7 +264,7 @@ export default {
         this.reportData(this.datas);
       }
     },
-    company(val) {
+    company(val,oldVal) {
       
       //判断不是合并公司才给填报
       // let flag = this.rightOfLeafCompany();
@@ -279,9 +279,9 @@ export default {
       this.fillShow = true;
       if (this.activeName2 == "second") {
         this.tableData = [];
-        let company = this.datas.company;
+        let company = this.datas? this.datas.company:oldVal;
         let newcompany = company.replace(company, val);
-        this.datas.company = newcompany;
+        this.datas? this.datas.company = newcompany:"";
         // console.log(this.datas);
         !flag || this.reportData(this.datas);
       }
@@ -849,7 +849,7 @@ export default {
       let me = this;
       data.forEach(item => {
         if(item){
-          item.label = item.suser;
+          item.label = item.susername;
         }
       });
       return data;
@@ -859,8 +859,16 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
+      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
+      if(nodes && nodes.length == 0){
+        me.$message({
+          message:"人员不能为空！",
+          type:"warning"
+        });
+        return;
+      }
       if(itemSel){
         if(itemSel.id == '1'){
           nodes.forEach(item => {
@@ -1557,7 +1565,7 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      [1,2].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**

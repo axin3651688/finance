@@ -189,7 +189,7 @@ export default {
          * @author szc 2019年5月7日15:34:47
          */
         changeEvent (item,value) {
-            
+            debugger;
             let me = this;
             if(item && item.id == "company"){
                 me.selectCompany = item.valueLabel;

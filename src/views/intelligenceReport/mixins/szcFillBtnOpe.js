@@ -87,14 +87,21 @@ export default {
                 "templateid": me.templateId,
                 "users": storeParams.user.user.userName
             };
-            publicReport(params).then(res => {
+            queryStateOfTable(stateParams).then(res => {
                 if (res.data.code == 200) {
-                    me.$message({
-                        message: "申请退回成功！",
-                        type: "success"
-                    });
+                    me.handlerStateOfTable(res.data.data, params);
+                } else {
+                    me.$message.error(res.data.data);
                 }
             });
+            // publicReport(params).then(res => {
+            //     if (res.data.code == 200) {
+            //         me.$message({
+            //             message: res.data.data,
+            //             type: "success"
+            //         });
+            //     }
+            // });
         },
         /**
          * 撤回
@@ -127,7 +134,7 @@ export default {
                 if (res.data.code == 200) {
                     me.handlerStateOfTable(res.data.data, params);
                 } else {
-                    me.$message.error('撤回失败！');
+                    me.$message.error(res.data.data);
                 }
             });
             // publicReport(params).then(res => {
@@ -287,14 +294,19 @@ export default {
                         me.publicReportHandler(params);
                         break;
                     case 2:
-                        // me.$message({
-                        //     message: "已"
-                        // });
-                        me.publicReportHandler(params);
+                        //申请退回
+                        me.$message({
+                            message: "报表申请退回中！"
+                        });
+                        // let msgObj = {
+                        //     msg:""
+                        // };
+                        // me.publicReportHandler(params);
+                        // me.applicationForRefund();
                         break;
                     case 3:
                         me.$message({
-                            message: "已审阅！"
+                            message: "报表已被审阅，请申请退回！"
                         });
                         break;
                     case 4:
@@ -324,33 +336,18 @@ export default {
                 if (res.data.code == 200) {
                     me.reportData(me.datas);
                     me.$message({
-                        message: "撤回成功！",
+                        message: res.data.data,
                         type: "success"
                     });
                 }
             });
+        },
+        /**
+         * 申请退回
+         * @author szc 2019年5月10日17:20:05
+         */
+        applicationForRefund() {
+
         }
-        // /**
-        //  * 查询当前选中的table的状态。
-        //  * @author szc 2019年5月8日19:16:48
-        //  */
-        // queryStateOfFillTable() {
-        //     debugger;
-        //     let me = this,
-        //         company = me.$store.getters.company;
-        //     //查询选中的报表状态。
-        //     let stateParams = {
-        //         company: company,
-        //         period: me.parsePeriod(),
-        //         templateid: me.templateId
-        //     };
-        //     queryStateOfTable(stateParams).then(res => {
-        //         if (res.data.code == 200) {
-        //             me.tableState = res.data.data.statemun;
-        //         } else if (res.data.code == 1001) {
-        //             me.tableState = "";
-        //         }
-        //     })
-        // }
     }
 }
