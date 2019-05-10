@@ -191,3 +191,15 @@ export function smallBellCount(suser) {
         method: 'get'
     })
 }
+/**
+ * 修改信息的状态
+ * @author szc 2019年5月8日08:59:35
+ * /sys/Msg/change_fill_message_to_read
+ */
+export function editStateOfMessage(params) {
+    return request({
+        url: '/zjb/sys/Msg/change_fill_message_to_read',
+        method: 'post',
+        data: params
+    })
+}
