@@ -5,11 +5,18 @@
 */
 <template>
     <div id="index">
+        <!-- button按钮 -->
         <el-button-group  class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
             <el-button type="primary" plain v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.styles" @click="btnClick(btn)">
                 {{btn.text}}
             </el-button>
         </el-button-group>
+        <!-- dialog弹出框 -->
+        <el-dialog title="123" width="56%" top="40px" :visible.sync="dialogVisible">               
+            <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
+            <dialog-component></dialog-component>
+        </el-dialog>
+        <!-- table表格 -->
         <el-table 
         :data="formatData" 
         :row-style="showRow"
@@ -18,8 +25,9 @@
         border 
         stripe 
         class="tree-table"
-        :cell-style="cellStyle">
-            <el-table-column v-if="item.index" type="index" width="80" label="序号" align="center"></el-table-column>
+        :cell-style="cellStyle"
+        @row-click="rowClick">
+            <el-table-column v-if="item.index" type="index" width="80" label="序号" align="center" fixed></el-table-column>
             <el-table-column v-if="columns.length===0" width="150">
                 <template slot-scope="scope">
                     <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
@@ -55,9 +63,12 @@
 
 <script>
     import treeToArray from './eval'
-
+    import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
     export default {
         name: 'treeTable',
+        components: {
+            dialogComponent
+        },
         props: {
             tableHeight: {
                 type: Number,
@@ -84,6 +95,7 @@
         },
         data(){
             return {
+                dialogVisible: false,
                 heights: "",
                 $height: 0
             }
@@ -95,7 +107,8 @@
         },
         mounted(){
             // 页面自适应
-            this.setClientHeight();
+            let me = this ;
+            me.setClientHeight();
         },
         computed: {
             // 页面自适应
@@ -164,6 +177,18 @@
                     return this.item.cellStyle({row, column, rowIndex, columnIndex}, this);
                 }
                 // return Utils.levelProperties(this.item, row);
+            },
+            // 单元格的 click 的回调方法/ 当某个单元格被点击时会触发该事件
+            // cellClick(row, column, cell, event){ debugger
+            //     if (this.item.cellClick && typeof this.item.cellClick == "function") {
+            //         return this.item.cellClick(row, column, rowIndex, columnIndex, this);
+            //     }
+            // },
+            // 行的 click 的回调方法/ 当某一行被点击时会触发该事件
+            rowClick(row, event, column){ debugger
+                if (this.item.rowClick && typeof this.item.rowClick == "function") {
+                    return this.item.rowClick(row, event, column, this);
+                }
             }
         }
     }

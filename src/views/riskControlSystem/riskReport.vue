@@ -20,7 +20,7 @@ export default {
             // json地址
             jsonAdress: "cnbi/risk/riskReport.json",
             // 高度
-            tableHeight: 124 
+            tableHeight: 130 
         }
     },
     created(){

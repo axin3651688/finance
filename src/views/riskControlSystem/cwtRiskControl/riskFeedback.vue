@@ -5,8 +5,8 @@
                 <el-tab-pane label="风险反馈" name="first">
                     <risk-back></risk-back>
                 </el-tab-pane>
-                <el-tab-pane label="报告反馈" name="second">
-                    <report-back></report-back>
+                <el-tab-pane label="汇总反馈" name="second">
+                    <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>  
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -15,16 +15,18 @@
 
 <script>
     import riskBack from '../publicRiskControl/riskBack'
-    import reportBack from '../publicRiskControl/reportBack'
+    import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
     export default {
         name: "riskFeedback",
         components:{
             riskBack,
-            reportBack
+            aiModule
         },
         data(){
             return {
-                activeName: "first"
+                activeName: "first",
+                jsonAdress: "cnbi/risk/riskfeedback.json",
+                tableHeight: 190
             }
         }
     }
