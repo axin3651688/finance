@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="risk-feed-back-top">
-            <el-tabs type="border-card">
-                <el-tab-pane label="风险反馈">
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="风险反馈" name="first">
                     <risk-back></risk-back>
                 </el-tab-pane>
-                <el-tab-pane label="报告反馈">
+                <el-tab-pane label="报告反馈" name="second">
                     <report-back></report-back>
                 </el-tab-pane>
             </el-tabs>
@@ -21,6 +21,11 @@
         components:{
             riskBack,
             reportBack
+        },
+        data(){
+            return {
+                activeName: "first"
+            }
         }
     }
 </script>

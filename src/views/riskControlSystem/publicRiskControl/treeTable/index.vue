@@ -5,8 +5,8 @@
 */
 <template>
     <div id="index">
-        <el-button-group  class="toolbar" >
-            <el-button type="primary" plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.styles" @click="btnClick(btn)">
+        <el-button-group  class="toolbar" v-if="item.toolbar && item.toolbar.length > 0 ">
+            <el-button type="primary" plain v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.styles" @click="btnClick(btn)">
                 {{btn.text}}
             </el-button>
         </el-button-group>
