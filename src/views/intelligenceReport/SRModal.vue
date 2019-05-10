@@ -2,7 +2,7 @@
     <el-dialog
     :title="modalConfig.title||'上报人员'"
     :modalConfig.sync="modalConfig"
-    width="30%"
+    :width="modalConfig.width || '30%'"
     :modal-append-to-body="false"
     :visible.sync="modalConfig.dialogVisible"
     >
@@ -28,11 +28,11 @@
             :prop="item.prop" :label="item.label" 
             v-bind:key="index"
             v-bind:index="index"
-            width="150"
             >
                 <template  slot-scope="scope">
                     <span v-if="item.prop == 'operation'">
-                        <el-button @click="handleClick(scope)" type="text" size="small">查看</el-button>
+                        <el-button v-if="scope.row['sislook'] == 'N'" @click="handleClick(scope)" type="text" size="small">标为已读</el-button>
+                        <el-button v-else @click="handleClick(scope)" disabled type="text" size="small">已读</el-button>
                     </span>
                     <span v-else> {{ scope.row[scope.column.property] }} </span>
                 </template>

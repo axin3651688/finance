@@ -168,6 +168,10 @@ import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
 import { logout } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
+import {
+  smallBell,
+  smallBellCount
+} from "@/api/fill.js"
 export default {
   name: "Headnav",
   data() {
@@ -252,7 +256,7 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    // setInterval(() => this.getMessage(),10000);
+    setInterval(() => this.getMessage(),10000);
   },
   computed: {
     ...mapGetters([
@@ -410,15 +414,21 @@ export default {
      */
     getMessage(){
       let me = this,suser = this.$store.getters.user.user.userName;
-      this.axios.get("/cnbi/json/source/tjsp/szcJson/message.json").then(res => {
+      smallBellCount(suser).then(res => {
         if(res.data.code == 200){
-          this.messageValue > 100? this.messageValue = 0:"";
-          this.messageValue += res.data.data.count;
-          console.log("一直在跳。。。");
-        }else {
-          console.error("查询消息记录出错。");
+          console.log("ddddddd",res.data);
+          this.messageValue = res.data.data;
         }
       });
+      // this.axios.get("/cnbi/json/source/tjsp/szcJson/message.json").then(res => {
+      //   if(res.data.code == 200){
+      //     this.messageValue > 100? this.messageValue = 0:"";
+      //     this.messageValue += res.data.data.count;
+      //     console.log("一直在跳。。。");
+      //   }else {
+      //     console.error("查询消息记录出错。");
+      //   }
+      // });
       // console.log("外面也一直在跳。。。(这个定时器写在headNav.vue中)");
     },
     /**
@@ -426,22 +436,33 @@ export default {
      * @author szc 2019年4月2日20:12:14
      */
     messageHandle () {
-      return;
-      let me = this;
+      debugger
+      let me = this,storeParams = me.$store.getters;
       if(this.messageValue == 0){
         this.$message({
           message:"暂无消息！",
           type:"warning"
         });
         return;
-      }
-      this.axios.get("/cnbi/json/source/tjsp/szcJson/messageContent.json").then(res => {
+      };
+      let params = {
+        pageNum:0,
+        pageSize:20,
+        account:storeParams.user.user.userName
+      };
+      smallBell(params).then(res => {
         if(res.data.code == 200){
+          // console.log("ddddddd",res.data);
           this.showCkeckContent(res.data.data);
-        }else {
-          this.$message.error("请求出错！");
         }
       });
+      // this.axios.get("/cnbi/json/source/tjsp/szcJson/messageContent.json").then(res => {
+      //   if(res.data.code == 200){
+      //     this.showCkeckContent(res.data.data);
+      //   }else {
+      //     this.$message.error("请求出错！");
+      //   }
+      // });
     },
     /**
      * 展示审阅内容的配置。
@@ -453,28 +474,33 @@ export default {
         title:"报表审阅",//modal框标题
         rowListener:"checkfilldata",//事件监听方法名
         dialogVisible:true,
+        width:"70%",
         type:"s-table",//要显示的类型
         id:'userReport',//modal框的id
         datas: {
           tHeader:[
             {
-              prop:"tabelId",
-              label:"报表名称"
-            },
-            {
-              prop:"fromUser",
+              prop:"sfromuser",
               label:"上报人"
             },
             {
-              prop:"sendTime",
+              prop:"stouser",
+              label:"接收人"
+            },
+            {
+              prop:"screatetime",
               label:"上报时间"
+            },
+            {
+              prop:"scontent",
+              label:"上报内容"
             },
             {
               prop:"operation",
               label:"操作"
             }
           ],
-          datas:data
+          datas:data.datas
         }
       }
     },

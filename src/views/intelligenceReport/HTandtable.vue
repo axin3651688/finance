@@ -622,6 +622,7 @@ export default {
       //   me.buttonsOperation = [];
       //   return;
       // }
+      debugger;
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         buttons = res.data;
         if(isleaf == 1){
@@ -632,6 +633,9 @@ export default {
           me.buttonsOperation = buttons;
         }else {
           let arr0 = ['2','1','5','0','4'];
+          if(me.reportHeader != "请选择"){
+            arr0 = ['0','4'];
+          }
           buttons = buttons.filter(item => {
             return arr0.indexOf(item.id) == -1;
           });
@@ -729,7 +733,6 @@ export default {
       let me = this;
     },
     afterSelection (aa,cc,dd,ee,ff,gg,hh) {
-      // debugger;
       let me = this;
       if(aa == dd && cc == ee){
         me.selectCoulmn = cc;
@@ -1388,10 +1391,14 @@ export default {
             return true;
           }
           if (record.isinside === "是" || record.isinside == 1) {
+            if(record.isnormal){
+              delete record.isnormal;
+            }
             //如果是是或是1，清空后面的内容。
             let arrItems = ['isnormal','scontenta','scontentb','E','F','G','H'];
-            this.clearRowOfAfter(row,arrItems);
+            this.clearRowOfAfter(row,arrItems,columns);
           }
+          //如果选择是否内部
         }
         if (columns > 7) {
           let record = this.settings.data[row];
@@ -1417,7 +1424,8 @@ export default {
      * 根据前面的选择清空后面的内容。
      * @author szc 2019年4月30日13:51:46
      */
-    clearRowOfAfter (row,arrItems) {
+    clearRowOfAfter (row,arrItems,columns) {
+      // debugger;
       let me = this;
       let record = this.settings.data[row];
       if(record && arrItems && arrItems.length > 0){
@@ -1434,6 +1442,7 @@ export default {
      * @author szc 2019年4月17日11:41:42
      */
     paymentLimit(row, columns) {
+      let me = this;
       if (this.templateId == 7) {
         if (columns == 11) {
           let record = this.settings.data[row];
@@ -1441,11 +1450,29 @@ export default {
             return true;
           }
           if (!record.srepaydate) {
+            let arrItems = ['repaysource'];
+            this.clearRepayDate(row,arrItems,columns);
             return true;
           }
         }
       }
       return false;
+    },
+    /**
+     * 融资情况明细表
+     * @author szc 2019年5月10日10:36:42
+     */
+    clearRepayDate (row,arrItems,columns) {
+      let me = this;
+      let record = this.settings.data[row];
+      if(record && arrItems && arrItems.length > 0){
+        arrItems.forEach(item => {
+          if(record[item]) {
+            record[item] = "";
+          }
+        });
+      }
+      this.settings.data[row] = record;
     },
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
@@ -1470,7 +1497,7 @@ export default {
         
       }
       if (this.templateId == 2) {
-        if ((row === 28 && columns === 6) || (row === 28 && columns === 7)) {
+        if ((row === 28 && columns === 5)) {
           cellMeta.readOnly = true;
         }
       }
@@ -1530,7 +1557,7 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1,4].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      [1].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**
@@ -2244,6 +2271,7 @@ export default {
             templateid: me.templateId
         };
         queryStateOfTable(stateParams).then(res => {
+            let arr = ['2','5'],states = [1,4];
             if (res.data.code == 200) {
                 me.tableState = res.data.data.statemun;
             } else if (res.data.code == 1001) {
@@ -2251,17 +2279,38 @@ export default {
             }
             me.convertHansoneTableColumns(columns, rows,res);
             //如果是上报过了，按钮就显示已上报。
-            if(me.tableState == 1 && me.buttonsOperation && me.buttonsOperation.length > 0){
+            if(states.indexOf(me.tableState) != -1 && me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
-                if(it.id == 1){
-                  it.disabled = true;
-                  it.text = "已上报";
+                if(me.tableState == 1){
+                  if(it.id == 1){
+                    it.disabled = true;
+                    it.text = "已上报";
+                  }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = false;
+                  }
                 }
+                if(me.tableState == 4){
+                  if(it.id == 1){
+                    it.disabled = false;
+                    it.text = "上报";
+                  }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = true;
+                  }
+                }
+                // if(it.id == 1){
+                //   it.disabled = true;
+                //   it.text = "已上报";
+                // }else if(arr.indexOf(it.id) != -1) {
+                //   it.disabled = true;
+                // }
               });
             }else if(me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
                 if(it.id == 1){
                   it.disabled = false;
+                  it.text = "上报";
+                }else if(arr.indexOf(it.id) != -1) {
+                  it.disabled = true;
                 }
               });
             }
@@ -2607,6 +2656,7 @@ export default {
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
       if (!value) {
+        td.innerHTML = "";
         return;
       }
       if (/[\u4e00-\u9fa5]/.test(value)) {
@@ -2627,6 +2677,7 @@ export default {
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
       
       if (!value) {
+        td.innerHTML = "";
         return;
       }
       if (/[\u4e00-\u9fa5]/.test(value)) {

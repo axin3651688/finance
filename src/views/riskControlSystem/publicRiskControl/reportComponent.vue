@@ -18,12 +18,17 @@
             <div class="container-right">
                 <report-header :reportCompanyNameShow="reportCompanyNameShow"></report-header>
                 <report-conventional :reportCompanyNameShow="reportCompanyNameShow"></report-conventional>
-                <report-instruction></report-instruction>
-                <report-schedule v-show="false"></report-schedule>
+                <report-instruction v-show="this.instructionShow"></report-instruction>
+                <report-schedule v-show="this.scheduleShow"></report-schedule>
 
 
-                <div class="sb-btn" style="text-align: right;">
+                <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
                     <el-button @click="sbRiskFeed">反馈上报</el-button>
+                </div>
+
+                <div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">
+                    <el-button type="primary" @click="exportBtn">导出</el-button>
+                    <el-button @click="closeBtn">关闭</el-button>
                 </div>
 
 
@@ -57,7 +62,14 @@
         data: function () {
             return {
                 reportCompanyNameShow: this.reportCompanyName,
-                personnelListShow:false,
+                personnelListShow: false,
+
+
+                //控制显示哪个组件的flag
+                instructionShow: true,
+                scheduleShow: false,
+
+
                 leftNode: {
                     zlfx: '一、战略风险',
                     tzfx: '二、投资风险',
@@ -87,6 +99,18 @@
              */
             sbRiskFeed() {
                 this.personnelListShow = !this.personnelListShow;
+            },
+            /**
+             * 导出按钮
+             */
+            exportBtn() {
+                alert('导出成功')
+            },
+            /**
+             * 关闭按钮
+             */
+            closeBtn() {
+                alert('关闭事件')
             }
         }
     }
