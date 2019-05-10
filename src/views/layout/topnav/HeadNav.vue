@@ -170,7 +170,8 @@ import { logout } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
 import {
   smallBell,
-  smallBellCount
+  smallBellCount,
+  editStateOfMessage
 } from "@/api/fill.js"
 export default {
   name: "Headnav",
@@ -256,7 +257,7 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    setInterval(() => this.getMessage(),10000);
+    // setInterval(() => this.getMessage(),10000);
   },
   computed: {
     ...mapGetters([
@@ -509,7 +510,21 @@ export default {
      * @author szc 2019年4月3日14:38:13
      */
     checkFillDataHandle (rowData) {
-      let me = this;
+      debugger;
+      let me = this,id = rowData.id;
+      let params = {
+        id:id
+      };
+      editStateOfMessage (params).then(res => {
+        if(res.data.code == 200){
+          me.$message({
+            message:"修改成功！",
+            type:"success"
+          });
+        }else {
+          me.$message.error(res.data.data);
+        }
+      });
     }
   }
 };

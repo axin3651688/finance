@@ -839,7 +839,7 @@ export default {
           me.modalConfig.datas = userData;
           // return userData;
         }else {
-          this.$message.error('用户信息查询失败！');
+          this.$message.error(res.data.data);
         }
       });
       // return userData;
@@ -1490,7 +1490,7 @@ export default {
       if (this.templateId == 3) {
         if (
           (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
-          (row >= 48 && row <= 72 && (columns == 2 || columns == 3))
+          (row >= 48 && row <= 70 && (columns == 2 || columns == 3))
         ) {
           cellMeta.readOnly = true;
         }
@@ -1571,6 +1571,9 @@ export default {
           let record = this.settings.data[row];
           if(!record){return true}
           if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
+            //如果是是或是1，清空后面的内容。
+            let arrItems = ['isnormal','scontenta','scontentb','E','F','G','H'];
+            this.clearRowOfAfter(row,arrItems,columns);
             return true;
           }
         }

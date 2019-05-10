@@ -261,6 +261,7 @@ export default {
                   url: "/etl/extradata/import",
                   method: "post",
                   data: datas,
+                  deParams:"456",
                   timeout: 0,
                   headers: {
                     "X-Requested-With": "XMLHttpRequest",
