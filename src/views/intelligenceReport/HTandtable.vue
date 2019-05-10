@@ -1497,7 +1497,6 @@ export default {
       }
       if (this.templateId == 3) {
         if (
-          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
           (row >= 48 && row <= 70 && (columns == 2 || columns == 3))
         ) {
           cellMeta.readOnly = true;

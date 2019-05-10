@@ -31,8 +31,12 @@
             >
                 <template  slot-scope="scope">
                     <span v-if="item.prop == 'operation'">
-                        <el-button v-if="scope.row['sislook'] == 'N'" @click="handleClick(scope)" type="text" size="small">标为已读</el-button>
-                        <el-button v-else @click="handleClick(scope)" disabled type="text" size="small">已读</el-button>
+                        <template v-if="scope.row['statemun'] == 2"> 
+                            <el-button @click="handleClick(scope,'agree')" type="" size="small">同意</el-button>
+                            <el-button @click="handleClick(scope,'noAgree')" type="" size="small">不同意</el-button>
+                        </template>
+                        <el-button v-else-if="scope.row['sislook'] == 'N' && scope.row['statemun'] != 4" @click="handleClick(scope,'unread')" type="text" size="small">标为已读</el-button>
+                        <el-button v-else disabled type="text" size="small">已读</el-button>
                     </span>
                     <span v-else> {{ scope.row[scope.column.property] }} </span>
                 </template>
@@ -108,10 +112,10 @@ export default {
          * 上报的报表的查看点击事件。(此时运用传导出去，到父组件上)
          * @author szc 2019年4月3日14:28:17
          */
-        handleClick (row) {
+        handleClick (row,sign) {
             let me = this,eventListener = this.modalConfig.rowListener;
             if(eventListener){
-                this.$emit(eventListener,row.row);
+                this.$emit(eventListener,row.row,sign);
             }
         }
     }

@@ -248,7 +248,7 @@ export default {
          */
         queryHandler () {
             
-            let me = this;
+            let me = this,storeParams = me.$store.getters;
             //查询选中的报表状态。
             let stateParams = {
                 company:me.selectCompany,
@@ -256,8 +256,22 @@ export default {
                 templateid:me.selectTable.valueLabel
             };
             queryStateOfTable(stateParams).then(res => {
-                
+                debugger;
                 if(res.data.code == 200){
+                    //添加一个不是指定的用户不给查询报表显示。
+                    if(res.data.data && res.data.data.stouser){
+                        let stouser = res.data.data.stouser;
+                        if(stouser != storeParams.user.user.userName){
+                            me.inputValue = "未上报";
+                            me.urgeToShow = true;
+                            me.tableData = [];
+                            me.$message({
+                                message:"此公司的此报表未上报！",
+                                type: "warning"
+                            });
+                            return;
+                        }
+                    }
                     me.urgeToShow = false;
                     me.tipsOfState(res.data.data);
                 }else if(res.data.code == 1001) {

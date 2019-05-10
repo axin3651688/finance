@@ -203,3 +203,15 @@ export function editStateOfMessage(params) {
         data: params
     })
 }
+/**
+ * 修改信息的状态
+ * @author szc 2019年5月8日08:59:35
+ * /sys/Msg/change_fill_message_to_read
+ */
+export function ageeReturn(params) {
+    return request({
+        url: '/zjb/zjb/rollback_fill_message',
+        method: 'post',
+        data: params
+    })
+}
