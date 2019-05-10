@@ -18,7 +18,7 @@ export default {
     data(){
         return {
             jsonAdress: "cnbi/risk/riskfeedback.json",
-            tableHeight: 185
+            tableHeight: 190
         }
     },
     created(){

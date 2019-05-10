@@ -30,14 +30,18 @@
                     {{scope.$index}}
                 </template>
             </el-table-column>
-            <el-table-column v-else v-for="(column, index) in columns" :prop="column.id" :key="column.id" :label="column.text" :width="column.width" :align="column.align">
+            <el-table-column 
+            v-else v-for="(column, index) in columns" :prop="column.id" :key="column.id" 
+            :label="column.text" :width="column.width" :align="column.align" :fixed="column.fixed">
                 <template slot-scope="scope">
                     <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                     <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
                         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                         <i v-else class="el-icon-minus"></i>
                     </span>
-                    <el-button type="primary" plain size="mini" id="minibtn" v-if="column.id === 'cz'" v-for="tool in item.tableBtn" :key="tool.id" :class="tool.icon" @click="tabtnClick(tool)">
+                    <el-button 
+                    type="primary" plain size="mini" id="minibtn" v-if="column.id === 'cz'" 
+                    v-for="tool in item.tableBtn" :key="tool.id" :class="tool.icon" @click="tabtnClick(tool)">
                         <!-- {{scope.row[column.id]}} -->
                         {{ tool.text }}
                     </el-button>
@@ -85,7 +89,7 @@
             }
         },
         created(){
-            debugger
+            // debugger
             this.$height = this.tableHeight;
             this.heights = document.documentElement.clientHeight - this.$height + "px";
         },
@@ -104,6 +108,7 @@
             },
             // 格式化数据源
             formatData: function () {
+                // debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
@@ -186,6 +191,7 @@
     /* 表头居中显示 */
     .el-table th {
         text-align: center !important;
+        background-color: rgb(240, 248, 255) !important;
     }
     /* 表头背景颜色的设定 */
     .has-gutter tr th {
@@ -196,6 +202,10 @@
     .el-table__body tr, .el-table__body td {
         padding: 0;
         height: 32px;
+    }
+    /* 表行的滚动条显示 */
+    .el-table__body-wrapper {
+        overflow: auto;
     }
 </style>
 

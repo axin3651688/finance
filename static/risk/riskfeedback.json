@@ -21,7 +21,8 @@
         },
         {
             "id": "cz",
-            "text": "操作"
+            "text": "操作",
+            "align": "left"
         }
     ],
     "rows": [
@@ -60,7 +61,8 @@
         {
             "id": "riskReport",
             "text": "风险反馈汇总",
-            "index": true, // 是否显示序号
+            "index": false, // 是否显示序号
+            "isTree": true,// 是否是树形
             "toolbar": [
                 {
                     "id": 1,
