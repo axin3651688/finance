@@ -169,3 +169,25 @@ export function publicReport(params) {
         data: params
     })
 }
+/**
+ * 小铃铛请求。
+ * @author szc 2019年5月8日08:59:35
+ * 
+ */
+export function smallBell(params) {
+    return request({
+        url: '/zjb/zjb/query_fill_messages?pageNum=' + params.pageNum + "&pageSize=" + params.pageSize + "&account=" + params.account,
+        method: 'get'
+    })
+}
+/**
+ * 消息条数。
+ * @author szc 2019年5月8日08:59:35
+ * 
+ */
+export function smallBellCount(suser) {
+    return request({
+        url: '/zjb/sys/Msg/query_nolook_count?user=' + suser,
+        method: 'get'
+    })
+}

@@ -622,6 +622,7 @@ export default {
       //   me.buttonsOperation = [];
       //   return;
       // }
+      debugger;
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         buttons = res.data;
         if(isleaf == 1){
@@ -632,6 +633,9 @@ export default {
           me.buttonsOperation = buttons;
         }else {
           let arr0 = ['2','1','5','0','4'];
+          if(me.reportHeader != "请选择"){
+            arr0 = ['0','4'];
+          }
           buttons = buttons.filter(item => {
             return arr0.indexOf(item.id) == -1;
           });
@@ -729,7 +733,6 @@ export default {
       let me = this;
     },
     afterSelection (aa,cc,dd,ee,ff,gg,hh) {
-      // debugger;
       let me = this;
       if(aa == dd && cc == ee){
         me.selectCoulmn = cc;
@@ -1430,14 +1433,6 @@ export default {
           if(record[item] || record[item] == '否') {
             typeof(record[item]) == "number"? record[item] = null:record[item] = null;
           }
-          if(item == "isnormal"){
-            me.$refs.hotTableComponent.hotInstance.setDataAtCell(
-              row,
-              columns,
-              ""
-            );
-            // delete record[item];
-          }
         });
       }
       this.settings.data[row] = record;
@@ -1447,6 +1442,7 @@ export default {
      * @author szc 2019年4月17日11:41:42
      */
     paymentLimit(row, columns) {
+      let me = this;
       if (this.templateId == 7) {
         if (columns == 11) {
           let record = this.settings.data[row];
@@ -1454,11 +1450,29 @@ export default {
             return true;
           }
           if (!record.srepaydate) {
+            let arrItems = ['repaysource'];
+            this.clearRepayDate(row,arrItems,columns);
             return true;
           }
         }
       }
       return false;
+    },
+    /**
+     * 融资情况明细表
+     * @author szc 2019年5月10日10:36:42
+     */
+    clearRepayDate (row,arrItems,columns) {
+      let me = this;
+      let record = this.settings.data[row];
+      if(record && arrItems && arrItems.length > 0){
+        arrItems.forEach(item => {
+          if(record[item]) {
+            record[item] = "";
+          }
+        });
+      }
+      this.settings.data[row] = record;
     },
     // 设置单元格的只读和下拉方法
     cells(row, columns, prop, params, pp) {
@@ -2257,7 +2271,6 @@ export default {
             templateid: me.templateId
         };
         queryStateOfTable(stateParams).then(res => {
-          debugger;
             let arr = ['2','5'],states = [1,4];
             if (res.data.code == 200) {
                 me.tableState = res.data.data.statemun;
@@ -2266,8 +2279,6 @@ export default {
             }
             me.convertHansoneTableColumns(columns, rows,res);
             //如果是上报过了，按钮就显示已上报。
-            
-            debugger;
             if(states.indexOf(me.tableState) != -1 && me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
                 if(me.tableState == 1){
@@ -2645,9 +2656,9 @@ export default {
     //应收账款分析表单元格下拉 把编码转成文字
     flagrenderer(instance, td, row, col, prop, value, cellProperties) {
       if (!value) {
+        td.innerHTML = "";
         return;
       }
-      // debugger;
       if (/[\u4e00-\u9fa5]/.test(value)) {
         td.innerHTML = value;
         return;
@@ -2666,6 +2677,7 @@ export default {
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
       
       if (!value) {
+        td.innerHTML = "";
         return;
       }
       if (/[\u4e00-\u9fa5]/.test(value)) {
