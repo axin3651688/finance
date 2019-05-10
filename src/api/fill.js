@@ -164,7 +164,7 @@ export function urgeToReport(params) {
  */
 export function publicReport(params) {
     return request({
-        url: '/zjb/zjb/save_fill_message',
+        url: '/zjb/zjb/update_fill_message',
         method: 'post',
         data: params
     })

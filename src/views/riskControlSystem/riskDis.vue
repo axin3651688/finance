@@ -128,7 +128,7 @@ export default {
         axiosJson(){
             // debugger
             let me = this;
-            me.axios.get("cnbi/riskDis.json").then(res => { 
+            me.axios.get("cnbi/risk/riskDis.json").then(res => { 
                 me.elements = res.data.columns;
                 me.tableData = res.data.rows;
                 me.items = me.elements.filter(res => { return res.type=='string' });
@@ -137,7 +137,7 @@ export default {
         // 2.获取【风险矩阵】的json信息
         axiosRequest(){
             let me = this ;
-            me.axios.get("cnbi/riskmatrix.json").then(res => {
+            me.axios.get("cnbi/risk/riskmatrix.json").then(res => {
                 // debugger
                 me.riskTableRow = res.data.rows;
             });
@@ -145,7 +145,7 @@ export default {
         // 3.  获取【参照按钮-发生概率】的json信息
         table1Request(){
             let me = this ;
-            me.axios.get("cnbi/tableDemo1.json").then(res => {
+            me.axios.get("cnbi/risk/tableDemo1.json").then(res => {
                 // debugger
                 me.tableDemo1 = res.data ;
             });
@@ -153,7 +153,7 @@ export default {
         // 4.  获取【参照按钮-影响程度】的json信息
         tab1e2Request(){
             let me = this ;
-            me.axios.get("cnbi/tableDemo2.json").then(res => {
+            me.axios.get("cnbi/risk/tableDemo2.json").then(res => {
                 // debugger
                 me.tableDemo2 = res.data ;
             });
