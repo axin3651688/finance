@@ -1,0 +1,143 @@
+{
+    "id": "riskfeedback",
+    "text": "风险反馈汇总",
+    "config": {
+        "sql": ""
+    },
+    "columns": [
+        {
+            "id": "gsmc",
+            "text": "公司名称",
+            "type": "string",
+            "align": "left",
+            "width": "560"
+        },
+        {
+            "id": "fkzt",
+            "text": "反馈状态",
+            "type": "string",
+            "align": "center",
+            "width": "260"
+        },
+        {
+            "id": "cz",
+            "text": "操作"
+        }
+    ],
+    "rows": [
+        {
+            "gsmc": "(1001)天津食品集团有限公司(合并)",
+            "fkzt": "1",
+            "children": [
+                {
+                    "gsmc": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+                    "fkzt": "1",
+                    "children": [
+                        {
+                            "gsmc": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+                            "fkzt": "1",
+                            "children": [
+                                {
+                                    "gsmc": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                                    "fkzt": "1"
+                                },
+                                {
+                                    "gsmc": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                                    "fkzt": "1"
+                                }
+                            ]
+                        },
+                        {
+                            "gsmc": "(10010102)天津市宝德包装有限公司",
+                            "fkzt": "0"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "id": "riskReport",
+            "text": "风险反馈汇总",
+            "index": true, // 是否显示序号
+            "toolbar": [
+                {
+                    "id": 1,
+                    "text": "全部展开",
+                    "handler": function(data, btn, $vue){
+                        // debugger
+                        if(data && data.length>0){
+                            data.forEach(res => {
+                                res._expanded = true ; 
+                                if(res.children && res.children.length>0)this.handler(res.children); 
+                            });
+                        }else{  
+                            $vue.$message('暂无数据！');
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "text": "全部收起",
+                    "handler": function(data, btn, $vue){
+                        // debugger
+                        if(data && data.length>0){
+                            data.forEach(res => {
+                                res._expanded = false ; 
+                                if(res.children && res.children.length>0)this.handler(res.children); 
+                            });
+                        }else{  
+                            $vue.$message('暂无数据！');
+                        }
+                    }
+                } 
+            ],
+            "tableBtn": [
+                {
+                    "id": 1,
+                    "text": "反馈",
+                    "icon": "iconfont icon-chakan-copy",
+                    "handler": function(tool, $vue){
+                        $vue.$emit('showreportdetailp');
+                    }
+                }
+            ],
+            "queryDataAfter": function(data, $vue){
+                // debugger
+                data.forEach(res => {
+                    if(res.fkzt == "0")res.fkzt = "未反馈";
+                    if(res.fkzt == "1")res.fkzt = "已反馈";
+                    if(res.children && res.children.length>0)this.queryDataAfter(res.children);
+                });
+                return data; 
+            },
+            "drillProperties": ["fkzt"],
+            "cellStyle": function({row, column, rowIndex, columnIndex}, $vue){
+                // debugger
+                let css = "padding: 4px 0;";
+                let pro = column.property;
+                let textIndent = "" ;
+                if (!pro) {
+                    return css;
+                }
+                let drillProperties = this.drillProperties;
+                if (drillProperties.indexOf(pro) != -1) {
+                    if(row.fkzt == "已反馈"){
+                        let drill = "text-decoration: none;color: green;font-weight: bold;";
+                        css = css + textIndent + drill;
+                        return css;
+                    }else{
+                        let drill = "text-decoration: none;color: red;font-weight: bold;";
+                        css = css + textIndent + drill;
+                        return css;
+                    }
+                    
+                }else{
+                    return css ;
+                }
+            }
+        }
+        
+    ]
+}

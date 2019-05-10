@@ -175,7 +175,7 @@ export default {
             return num ;
         },
         // 单元格的 style 的回调方法
-        cellStyle(row){
+        cellStyle(row){ 
             if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
                 return this.item.cellStyle(row, this);
             }
