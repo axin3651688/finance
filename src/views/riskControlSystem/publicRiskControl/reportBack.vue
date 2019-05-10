@@ -29,7 +29,7 @@
         },
         data() {
             return {
-                reportBackDetail: false,
+                reportBackDetail: true,
                 reportCompanyName:'天津食品集团有限公司(合并)',
                 columns: [
                     {
