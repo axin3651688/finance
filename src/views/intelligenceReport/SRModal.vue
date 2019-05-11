@@ -31,7 +31,7 @@
             >
                 <template  slot-scope="scope">
                     <span v-if="item.prop == 'operation'">
-                        <template v-if="scope.row['statemun'] == 2"> 
+                        <template v-if="scope.row['ninfostate'] == 2 && scope.row['sislook'] == 'N'"> 
                             <el-button @click="handleClick(scope,'agree')" type="" size="small">同意</el-button>
                             <el-button @click="handleClick(scope,'noAgree')" type="" size="small">不同意</el-button>
                         </template>

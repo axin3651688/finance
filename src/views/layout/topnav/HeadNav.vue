@@ -527,7 +527,7 @@ export default {
             if(res.data.code == 200){
               rowData.sislook = 'Y';
               me.$message({
-                message:res.data.data,
+                message:"操作成功！",
                 type:"success"
               });
             }else {
@@ -553,22 +553,39 @@ export default {
      */
     ageeOrNoReturnHandler (rowData,flag) {
       debugger;
-      let me = this,storeParams = me.$store.getters;
+      let me = this,storeParams = me.$store.getters,statemun = 4;
+      statemun = flag? 4:3;
       let params = {
         supdateuser:storeParams.user.user.userName,
         nreportnum:0,
         supdatetime:new Date(),
-        statemun:4,
-        nid:rowData.sinfoid,
+        statemun:statemun,
+        id:rowData.sinfoid,
         flag:flag
       };
       ageeReturn (params).then(res => {
         if(res.data.code == 200) {
-          rowData.sislook = 'Y';
-          me.$message({
-            message:res.data.data,
-            type:"success"
+          let resParams = {
+            pageNum:0,
+            pageSize:20,
+            account:storeParams.user.user.userName
+          },
+          msgParams = {
+            id:rowData.id
+          };
+          editStateOfMessage(msgParams).then(res => {
+            if(res.data.code == 200){
+              smallBell(resParams).then(res => {
+                if(res.data.code == 200){
+                  me.modalConfig.datas.datas = res.data.data.datas;
+                }
+              });
+            }
           });
+          // me.$message({
+          //   message:res.data.data,
+          //   type:"success"
+          // });
         }
       });
     },

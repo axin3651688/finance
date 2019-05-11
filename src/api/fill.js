@@ -198,9 +198,8 @@ export function smallBellCount(suser) {
  */
 export function editStateOfMessage(params) {
     return request({
-        url: '/zjb/sys/Msg/change_fill_message_to_read',
-        method: 'post',
-        data: params
+        url: '/zjb/sys/Msg/change_fill_message_to_read?id=' + params.id,
+        method: 'get'
     })
 }
 /**
@@ -213,5 +212,16 @@ export function ageeReturn(params) {
         url: '/zjb/zjb/rollback_fill_message',
         method: 'post',
         data: params
+    })
+}
+/**
+ * 修改信息的状态
+ * @author szc 2019年5月8日08:59:35
+ * /sys/Msg/change_fill_message_to_read
+ */
+export function queryUrgeUsers(params) {
+    return request({
+        url: '/zjb/zjb/query_urgereport_users?company=' + params.company,
+        method: 'get'
     })
 }

@@ -87,8 +87,10 @@ import {
     inquire,
     saveReview,
     queryStateOfTable,
-    urgeToReport
+    urgeToReport,
+    queryUrgeUsers
 } from "@/api/fill.js"
+import SRModal from "@v/intelligenceReport/SRModal";
 
 export default {
     name: "FillModal",
@@ -431,8 +433,7 @@ export default {
                     "screateuser": storeParams.user.user.userName,
                     "statemun": formData.result,
                     "supdateuser": storeParams.user.user.userName,
-                    "templateid": reviewParams.templateId,
-                    "users": storeParams.user.user.userName
+                    "templateid": reviewParams.templateId
                 }
                 let inputMsg = "已审阅";
                 if(formData.result == 4){
@@ -463,9 +464,9 @@ export default {
          * @author szc 2019年5月7日20:22:15
          */
         urgeToBtnHandler () {
-            
+            debugger;
             let me = this,curSelectCompany = me.curSelectCompany[0],
-                storeParams = me.$store.getters;;
+                storeParams = me.$store.getters;
             let params = {
                 "company": me.selectCompany,
                 "id": 0,
@@ -479,7 +480,49 @@ export default {
                 "templateid": me.selectTable.valueLabel,
                 "users": storeParams.user.user.userName
             };
-            urgeToReport(params).then(res => {
+            me.queryUserByCompany(params);
+            // urgeToReport(params).then(res => {
+            //     if(res.data.code == 200) {
+            //         me.inputValue = "已催报";
+            //         me.$message({
+            //             message:"催报成功！",
+            //             type:"success"
+            //         });
+            //     }
+            // });
+        },
+        /**
+         * 催报人员选择处理
+         * @author szc 2019-5-11 19:52:52
+         */
+        urgeToUserSelect (userData) {
+            debugger;
+            let me = this;
+            let params = {
+                title:"申请退回人员",
+                eventListener:"sendfillmessage",//事件监听方法名
+                dialogVisible:true,
+                checkbox:true,
+                type:"tree",
+                id:'userReportRT',
+                title: "申请退回人员",
+                datas: userData,
+                props:{
+                    label: "label",
+                    children: "children"
+                }
+            };
+
+        },
+        urgeToHandler(data,urgeParams) {
+            debugger;
+            let me = this,arr = [],userStr = "";
+            data.forEach(item => {
+                arr.push(item.username);
+            });
+            userStr = arr.join(',');
+            urgeParams.users = userStr;
+            urgeToReport(urgeParams).then(res => {
                 if(res.data.code == 200) {
                     me.inputValue = "已催报";
                     me.$message({
@@ -488,6 +531,42 @@ export default {
                     });
                 }
             });
+        },
+        /**
+         * 查询催报的目标人员。
+         * @author szc 2019年4月2日16:10:51
+         */
+        queryUserByCompany(urgeParams){
+
+            let me = this,companyId = me.selectCompany,userData = [];
+            let params = {company:companyId};
+            queryUrgeUsers(params).then(res => {
+                if(res.data.code == 200){
+                    me.urgeToHandler(res.data.data,urgeParams);
+                //转换成对应的格式。
+                // userData = me.parseTypeOfTree(res.data.data);
+                // me.modalConfig.datas = userData;
+                // me.urgeToUserSelect(userData);
+                // return userData;
+                }else if(res.data.code == 1001){
+                    me.$message({
+                        message:"此公司没有所属人员!",
+                        type:"warning"
+                    });
+                }else{
+                    me.$message.error(res.data.data);
+                }
+            });
+        },
+        parseTypeOfTree (data) {
+      
+            let me = this;
+            data.forEach(item => {
+                if(item){
+                item.label = item.susername;
+                }
+            });
+            return data;
         },
         /**
          * modal框关闭前。

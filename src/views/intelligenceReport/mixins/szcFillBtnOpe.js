@@ -82,12 +82,12 @@ export default {
                 "scompanyname": storeParams.companyName,
                 "screatetime": new Date(),
                 "screateuser": storeParams.user.user.userName,
+                "supdateuser": storeParams.user.user.userName,
                 "statemun": item.id,
                 // "stouser": fromuser,
-                "templateid": me.templateId,
-                "users": storeParams.user.user.userName
+                "templateid": me.templateId
             };
-            queryStateOfTable(stateParams).then(res => {
+            queryStateOfTable(params).then(res => {
                 if (res.data.code == 200) {
                     me.handlerStateOfTable(res.data.data, params);
                 } else {
@@ -119,6 +119,7 @@ export default {
                 "scompanyname": storeParams.companyName,
                 "screatetime": new Date(),
                 "screateuser": storeParams.user.user.userName,
+                "supdateuser": storeParams.user.user.userName,
                 "statemun": 4,
                 // "stouser": fromuser,
                 "templateid": me.templateId,
@@ -291,12 +292,27 @@ export default {
                 switch (state) {
                     case 1:
                         // me.inputValue = "已上报";
-                        me.publicReportHandler(params);
+                        //没有审阅直接点击申请退回，走撤回流程。
+                        let msgObj = {};
+                        if (params.statemun == 2) {
+                            msgObj = {
+                                text: "报表还未审阅，已撤回！"
+                            };
+                            params.statemun = 4;
+                            me.publicReportHandler(params, msgObj);
+                        } else if (params.statemun == 4) {
+                            msgObj = {
+                                text: "撤回成功！"
+                            };
+                            me.publicReportHandler(params, msgObj);
+                        } else {
+                            me.publicReportHandler(params);
+                        }
                         break;
                     case 2:
                         //申请退回
                         me.$message({
-                            message: "报表申请退回中！"
+                            message: "报表已在申请退回中..."
                         });
                         // let msgObj = {
                         //     msg:""
@@ -305,9 +321,17 @@ export default {
                         // me.applicationForRefund();
                         break;
                     case 3:
-                        me.$message({
-                            message: "报表已被审阅，请申请退回！"
-                        });
+                        //通过传的参数来判断，是不是申请退回。
+                        if (params.statemun == 2) {
+                            let msgObj = {
+                                text: "申请成功..."
+                            };
+                            me.publicReportHandler(params, msgObj);
+                        } else {
+                            me.$message({
+                                message: "报表已被审阅，请申请退回！"
+                            });
+                        }
                         break;
                     case 4:
                         me.reportData(me.datas);
@@ -329,14 +353,14 @@ export default {
          * 撤回请求等通用的
          * @author szc 2019年5月9日19:14:12
          */
-        publicReportHandler(params) {
+        publicReportHandler(params, msgObj) {
             debugger;
             let me = this;
             publicReport(params).then(res => {
                 if (res.data.code == 200) {
                     me.reportData(me.datas);
                     me.$message({
-                        message: res.data.data,
+                        message: msgObj ? msgObj.text : "操作成功！",
                         type: "success"
                     });
                 }
@@ -346,8 +370,8 @@ export default {
          * 申请退回
          * @author szc 2019年5月10日17:20:05
          */
-        applicationForRefund() {
+        // applicationForRefund() {
 
-        }
+        // }
     }
 }

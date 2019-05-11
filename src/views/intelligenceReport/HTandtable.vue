@@ -2281,7 +2281,7 @@ export default {
             templateid: me.templateId
         };
         queryStateOfTable(stateParams).then(res => {
-            let arr = ['2','5'],states = [1,4];
+            let arr = ['2','5'],states = [1,4,3,2];
             if (res.data.code == 200) {
                 me.tableState = res.data.data.statemun;
             } else if (res.data.code == 1001) {
@@ -2291,7 +2291,7 @@ export default {
             //如果是上报过了，按钮就显示已上报。
             if(states.indexOf(me.tableState) != -1 && me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
-                if(me.tableState == 1){
+                if(me.tableState == 1 || me.tableState == 3){
                   if(it.id == 1){
                     it.disabled = true;
                     it.text = "已上报";
@@ -2304,6 +2304,15 @@ export default {
                     it.disabled = false;
                     it.text = "上报";
                   }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = true;
+                  }
+                }else if(me.tableState == 2) {
+                  if(it.id == 1){
+                    it.disabled = true;
+                    it.text = "上报";
+                  }else if(it.id == 2) {
+                    it.disabled = false;
+                  }else {
                     it.disabled = true;
                   }
                 }
