@@ -2,10 +2,12 @@
 * @Author: sjz
 * @Date:   2019-04-11 12:06:49
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-05-08 16:45:54
+ * @Last Modified time: 2019-05-13 13:33:09
 */
 
 import Vue from 'vue'
+import { findThirdPartData } from "~api/interface";
+import { ageanalysis,query_sjz,update_sjz } from "~api/cube";
 export default {
     /**
      * @event 'treeElement/treeColumns.vue'引用了此方法：数据的处理
@@ -100,7 +102,7 @@ export default {
      * @event 'treeElement/treeColumns.vue'引用了此方法：应收、预付、其他三张表的比例显示预警等级
      */
     changeFormatData(proportion, datas, $this, see){
-
+        debugger
         // 比例不能未负数
         if(see.input3 < 0){
             $this.$message('比例不能为负数！');
@@ -121,23 +123,43 @@ export default {
             see.value = 0 ;
         }
         if(see.id=="1" || see.id=="2"){
-            localStorage.removeItem("yszk");
-            localStorage.setItem("yszk",JSON.stringify(proportion));
+            debugger
+            // localStorage.removeItem("yszk");
+            // localStorage.setItem("yszk",JSON.stringify(proportion));
+            let dimItem = "1001" ;
+            this.update_sjz_new(proportion,$this,dimItem,see.id,see);
+            
         }
         if(see.id=="3" || see.id=="4"){
-            localStorage.removeItem("yfzk");
-            localStorage.setItem("yfzk",JSON.stringify(proportion));
+            // localStorage.removeItem("yfzk");
+            // localStorage.setItem("yfzk",JSON.stringify(proportion));
+            let dimItem = "1002"; 
+            let sratiotype = null ;
+            if(see.id == "3")sratiotype = "1";
+            if(see.id == "4")sratiotype = "2";
+            this.update_sjz_new(proportion,$this,dimItem,sratiotype,see);
         }
         if(see.id=="5" || see.id=="6"){
-            localStorage.removeItem("qtysk");
-            localStorage.setItem("qtysk",JSON.stringify(proportion));
+            // localStorage.removeItem("qtysk");
+            // localStorage.setItem("qtysk",JSON.stringify(proportion));
+            let dimItem = "1003", sratiotype ;
+            if(see.id == "5")sratiotype = "1";
+            if(see.id == "6")sratiotype = "2";
+            this.update_sjz_new(proportion,$this,dimItem,sratiotype,see);
         }
         // 比例显示预警等级riskrange
         this.changeFormatData2(proportion, datas);
     },
+    // 日期处理
+    getPeriod(month){
+        if(month>0 && month<10){
+            month = "0" + month ;
+        }
+        return month ;
+    },
     // 比例显示预警等级riskrange
     changeFormatData2(proportion, datas){
-
+        debugger
         let first = proportion[0].value ;
         let second= proportion[1].value ;
         datas.forEach(element => {
@@ -157,26 +179,112 @@ export default {
     /**
      * @event 'treeElement/treeColumns.vue'引用了此方法：获取存在应收、预付、其他三张表的比例数LocalStorage
      */
-    getLocalStorage(datas, $this){
-        
+    getLocalStorage(datas, item, $this){
+        debugger
+        // let len = $this.item.proportion.length || 2;
+        // let len = 2 ;
         // 读取"yszk"的存储信息
         let yszk = JSON.parse(localStorage.getItem("yszk"));
         // 读取"yfzk"的存储信息
         let yfzk = JSON.parse(localStorage.getItem("yfzk"));
         // 读取"qtysk"的存储信息
         let qtysk = JSON.parse(localStorage.getItem("qtysk"));
-        if($this.item.id=="yszkej"){
-            if(yszk)$this.item.proportion = yszk ;
-            this.changeFormatData2($this.item.proportion, datas) ;
+        if(item.id=="yszkej"){
+            if(yszk)item.proportion = yszk ;
+            let dimItem = "1001" ;
+            if(!yszk){
+                this.findThirdPartData_sjz(dimItem,item, $this, datas);
+            }
         }
-        if($this.item.id=="yfzkej"){
-            if(yfzk)$this.item.proportion = yfzk ;
-            this.changeFormatData2($this.item.proportion, datas) ;
+        if(item.id=="yfzkej"){
+            if(yfzk)item.proportion = yfzk ;
+            let dimItem = "1002" ;
+            if(!yszk){
+                this.findThirdPartData_sjz(dimItem,item, $this, datas);
+            }
+            // this.changeFormatData2($this.item.proportion, datas) ;
         }
-        if($this.item.id=="qtyskej"){
-            if(qtysk)$this.item.proportion = qtysk ;
-            this.changeFormatData2($this.item.proportion, datas) ;
+        if(item.id=="qtyskej"){
+            if(qtysk)item.proportion = qtysk ;
+            let dimItem = "1003" ;
+            if(!yszk){
+                this.findThirdPartData_sjz(dimItem,item, $this, datas);
+            }
+            // this.changeFormatData2($this.item.proportion, datas) ;
         }
+    },
+    /**
+     * 修改
+     * @param {*} proportion 
+     * @param {*} $this 
+     * @param {*} dimItem 
+     * @param {*} sratiotype 
+     */
+    update_sjz_new(proportion,$this,dimItem,sratiotype,see){
+        debugger
+        let params = {
+            company: $this.$store.getters.company,
+            fact_a: see.value,
+            id:0,
+            item: dimItem,
+            period: $this.$store.getters.year + this.getPeriod($this.$store.getters.month),
+            sratiotype: sratiotype
+        }
+        update_sjz(params).then(res => {
+            debugger
+            console.log('修改成功！');
+        })
+    },
+    /**
+     * 查询
+     */
+    findThirdPartData_sjz(dimItem,item, $this, datas){
+        // debugger
+        // 查询是否有值，有的话就赋值，没有的话就输入值再插入值，有值后更改直接更新
+            let params = {
+                item: dimItem,
+                company: $this.$store.getters.company,
+                period: $this.$store.getters.year + this.getPeriod($this.$store.getters.month)               
+            }
+            let me = this ;
+        query_sjz(params).then(res => { 
+            debugger
+            if(res.data.data === null){
+                let num = 0 ;
+                for(let i=0; i<2; i++){
+                    let $ii = i + 1 ;
+                    me.ageanalysis_sjz($this,$ii,dimItem, num);
+                }               
+            }else{
+                let $one = res.data.data.filter(item => { return item.sratiotype == '1' });
+                let $two = res.data.data.filter(item => { return item.sratiotype == '2' });
+
+                item.proportion[0].value = $one[0].fact_a ;
+                item.proportion[1].value = $two[0].fact_a ;
+                if($one[0].fact_a && $one[0].fact_a !=0)item.proportion[0].input3 = Math.decimalToLocalString($one[0].fact_a) ;
+                if($two[0].fact_a && $two[0].fact_a !=0)item.proportion[1].input3 = Math.decimalToLocalString($two[0].fact_a) ;
+                this.changeFormatData2(item.proportion, datas) ;
+            }
+        }).catch(res => {
+            console.info(res);
+        });
+    },
+    /**
+     * 数据库没有数据的时候新增数据   0
+     */
+    ageanalysis_sjz($this,sratiotype,dimItem, num){
+        // debugger
+        let params= {
+            company: $this.$store.getters.company,
+            period: $this.$store.getters.year + this.getPeriod($this.$store.getters.month),
+            fact_a: num,
+            sratiotype: sratiotype,
+            item: dimItem
+        }
+        ageanalysis(params).then(res => { 
+            // debugger
+            console.log('新增成功');
+        })
     },
     /**
      * @event 'treeElement/treeColumns.vue'引用了此方法：管理驾驶舱应收、预付、其他下钻之后显示的html的字段。

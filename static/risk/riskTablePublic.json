@@ -81,11 +81,13 @@
             },
             "drillProperties": ["zt","gsmc"],
             "rowClick": function(row, event, column, $this){
-                debugger
+                // debugger
                 let pro = column.property ; 
-                let drillProperties = this.drillProperties;
-                if (drillProperties.indexOf("gsmc") != -1) {
-                    $this.dialogVisible = true ; 
+                let text = row.gsmc ;
+                let drillProperties = this.drillProperties[1];
+                if (drillProperties.indexOf(pro) != -1) {
+                    // 子组件向父组件传值
+                    $this.$emit("listenToChildEvent", text);
                 }
             },
             "cellStyle": function({row, column, rowIndex, columnIndex}, $vue){

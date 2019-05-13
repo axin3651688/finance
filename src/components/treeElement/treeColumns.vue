@@ -91,7 +91,7 @@ export default {
         // 得到初始的高度
         this.heights = Utils.setTableScollHeight(ate,offsetHeight) ;
         // 得到存在LocalStorage里的值（比例：应收、预付、其他）
-        this.data = Utils.getLocalStorage(this.data, this) ;
+        // this.data = Utils.getLocalStorage(this.data, this) ;
        
     },
     mounted(){
@@ -102,7 +102,7 @@ export default {
     },
     computed: {
         // 格式化数据源
-        data: function () {  
+        data: function () { 
             let me = this
             let parent,level ;
             if (me.treeStructure) {
@@ -110,6 +110,7 @@ export default {
                 console.log("data",data) ;
                 // 判断是否自动展开
                 data = Utils.automaticallyOpen(data, me, null) ;
+                // data = Utils.getLocalStorage(data, me) ;
                 return data ;
             }
             return me.dataSource ;

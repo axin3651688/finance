@@ -13,7 +13,6 @@
                         {{value}}
                     </div>
                 </div>
-
             </div>
             <div class="container-right">
                 <report-header :reportCompanyNameShow="reportCompanyNameShow"></report-header>
@@ -66,8 +65,8 @@
 
 
                 //控制显示哪个组件的flag
-                instructionShow: false,
-                scheduleShow: true,
+                instructionShow: true,
+                scheduleShow: false,
 
 
                 leftNode: {
