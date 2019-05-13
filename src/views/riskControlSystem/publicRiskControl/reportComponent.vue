@@ -30,8 +30,6 @@
                     <el-button type="primary" @click="exportBtn">导出</el-button>
                     <el-button @click="closeBtn">关闭</el-button>
                 </div>
-
-
             </div>
         </el-container>
 
