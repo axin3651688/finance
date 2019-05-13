@@ -44,7 +44,7 @@
     "unit": 10000,
     "datas": {},
     "config": {
-        "sql": "SELECT B.SCODE AS ID,B.SNAME AS ITEM ,SUM(BQ)AS BQ,SUM(BNLJ) AS BNLJ,SUM(SNTQ) AS SNTQ ,SUM(BNMB) AS BNMB , CASE WHEN SUM(BNMB) = 0 THEN 0 ELSE ROUND(SUM(BNLJ) / SUM(BNMB)* 100, 4) END AS WCL FROM( SELECT DIM_ITEMPERIOD,SUM(BQ)AS BQ,SUM(BNLJ) AS BNLJ,SUM(SNTQ) AS SNTQ ,SUM(BNMB) AS BNMB FROM ( SELECT DIM_ITEMPERIOD, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) AS BQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) AS SNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) AS BNLJ, 0 AS BNMB FROM DW_FACTFINANCEPERIOD WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD IN (:period,:comparePeriod) AND DIM_ITEMPERIOD IN ('1416001','1403100') GROUP BY DIM_ITEMPERIOD UNION ALL SELECT '1416001' AS DIM_ITEMPERIOD ,0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_A AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) UNION ALL SELECT '1403100' AS DIM_ITEMPERIOD ,0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_B AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE)) GROUP BY DIM_ITEMPERIOD)A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME, B.SCODE",
+        "sql": "SELECT B.SCODE AS ID, B.SNAME AS ITEM , SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB , CASE WHEN SUM(BNMB) = 0 THEN 0 ELSE ROUND(SUM(BNLJ) / SUM(BNMB)* 100, 4) END AS WCL FROM( SELECT DIM_ITEMPERIOD, SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB FROM ( SELECT d.DIM_ITEMPERIOD, d.DIM_COMPANY, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) AS BQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) AS SNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) AS BNLJ, sum(nvl(e.bnmb,0))/2 AS BNMB FROM DW_FACTFINANCEPERIOD d left join ( SELECT '1416001' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_A AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) UNION ALL SELECT '1403100' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_B AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) ) e on e.DIM_COMPANY=d.DIM_COMPANY and d.DIM_ITEMPERIOD=e.DIM_ITEMPERIOD WHERE d.DIM_COMPANY IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND d.DIM_PERIOD IN (:period,:comparePeriod) AND d.DIM_ITEMPERIOD IN ('1416001','1403100') GROUP BY d.DIM_ITEMPERIOD, d.DIM_COMPANY ) GROUP BY DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME, B.SCODE",
         "_cube": {
             "subject": "0002",
             "cubeId": 4
@@ -1263,13 +1263,13 @@
                                     "id": "period",
                                     "type": "category"
                                 },
-                                {
-                                    "id": "zhcb",
-                                    "name": "综合融资成本率",
-                                    "type": "line",
-                                    "smooth": false,
-                                    "unit": "%"
-                                },
+                                // {
+                                //     "id": "zhcb",
+                                //     "name": "综合融资成本率",
+                                //     "type": "line",
+                                //     "smooth": false,
+                                //     "unit": "%"
+                                // },
                                 {
                                     "id": "je",
                                     "name": "融资性债务总额",
@@ -1280,7 +1280,7 @@
                             ]
 
                         },
-                        "color": ['#9a7fd1', '#2ec7c9'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
+                        "color": ['#2ec7c9'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义 '#9a7fd1', '#2ec7c9'
                     }
                 },
 

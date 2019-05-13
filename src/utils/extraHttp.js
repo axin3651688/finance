@@ -1,4 +1,4 @@
-import axios from 'axios'
+import extraAxios from 'axios'
 import {
     Message,
     Loading
@@ -10,10 +10,10 @@ let loading;
 // axios.defaults.timeout = 10000;
 // request.defaults.headers.common['Authentication'] = store.state.user.authorization;
 
-function startLodading() {
+function startLodading(text) {
     loading = Loading.service({
         lock: true,
-        text: "数据抽取中...",
+        text: text ? text : "拼命加载中...",
         background: 'rgba(0,0,0,0)'
     });
 }
@@ -23,15 +23,25 @@ function endLoading() {
 }
 
 // 请求拦截
-axios.interceptors.request.use(config => {
-        // 加载动画
-        startLodading();
+extraAxios.interceptors.request.use(config => {
+        // 加载动画 701是抽取的节点
+        if (localStorage.siderState) {
+            let siderState = JSON.parse(localStorage.siderState),
+                text = "拼命加载中...";
+            if (siderState.code == '701') {
+                text = "数据抽取中..."
+            }
+            startLodading(text);
+        } else {
+            startLodading();
+        }
+
         return config;
     }, error => {
         return Promise.reject(error)
     })
     // 响应拦截
-axios.interceptors.response.use(response => {
+extraAxios.interceptors.response.use(response => {
     // 结束加载动画
     endLoading();
     return response;
@@ -56,4 +66,4 @@ axios.interceptors.response.use(response => {
     return Promise.reject(error);
 
 })
-export default axios;
+export default extraAxios;

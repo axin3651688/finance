@@ -1,21 +1,21 @@
 {
-    "id": "riskTreePublic",
-    "text": "风险追踪报告",
+    "id": "riskTablePublic",
+    "text": "风险追踪",
     "config": {
         "sql": "SELECT D.ROOT_SCODE GSBM, D.SNAME GSMC, D.SPCODE PID, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY GSBM"
     },
     "columns": [
         {
             "id": "gsmc",
-            "text": "公司名称",
+            "text": "风险名称",
             "type": "string",
             "align": "left",
             "fixed": true,
             "width": "500"
         },
         {
-            "id": "sbzt",
-            "text": "上报状态",
+            "id": "zt",
+            "text": "状态",
             "type": "string",
             "align": "center",
             "width": "160"
@@ -28,13 +28,6 @@
             "width": "160"
         },
         {
-            "id": "pszt",
-            "text": "批示状态",
-            "type": "string",
-            "align": "center",
-            "width": "160"
-        },
-        {
             "id": "psr",
             "text": "批示人",
             "type": "string",
@@ -42,8 +35,8 @@
             "width": "160"
         },
         {
-            "id": "fkzt",
-            "text": "反馈状态",
+            "id": "fkr",
+            "text": "反馈人",
             "type": "string",
             "align": "center",
             "width": "160"
@@ -60,67 +53,41 @@
     ],
     "items": [
         {
-            "id": "riskTreePublic",
+            "id": "riskTablePublic",
             "text": "风险追踪报告",
-            "index": false, // 是否显示序号
-            "isTree": true,// 是否是树形
-            "toolbar": [
-                {
-                    "id": 1,
-                    "text": "全部展开",
-                    "handler": function(data, btn, $vue){
-                        // debugger
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = true ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                },
-                {
-                    "id": 2,
-                    "text": "全部收起",
-                    "handler": function(data, btn, $vue){
-                        // debugger
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = false ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                } 
-            ],
+            "index": true, // 是否显示序号
+            "isTree": false,// 是否是树形
+            "toolbar": [],
             "tableBtn": [
                 {
                     "id": 1,
                     "text": "查看",
                     "icon": "iconfont icon-chakan-copy",
                     "handler": function(tool, $vue){
-                        $vue.$emit('showreportdetailp');
+                        // $vue.$emit('showreportdetailp');
+                        $vue.$message('暂无此功能');
                     }
                 }
             ],
             "queryDataAfter": function(data, $vue){
                 // debugger
                 data.forEach(res => {
-                    if(res.sbzt == "0")res.sbzt = "未上报";
-                    if(res.sbzt == "1")res.sbzt = "已上报";
-                    if(res.pszt == "0")res.pszt = "未批示";
-                    if(res.pszt == "1")res.pszt = "已批示";
-                    if(res.fkzt == "0")res.fkzt = "未反馈";
-                    if(res.fkzt == "1")res.fkzt = "已反馈";
+                    if(res.zt == "0")res.zt = "未上报";
+                    if(res.zt == "1")res.zt = "已上报";
                     if(res.children && res.children.length>0)this.queryDataAfter(res.children);
                 });
                 // debugger
                 return data; 
             },
-            "drillProperties": ["sbzt","pszt","fkzt"],
+            "drillProperties": ["zt","gsmc"],
+            "rowClick": function(row, event, column, $this){
+                debugger
+                let pro = column.property ; 
+                let drillProperties = this.drillProperties;
+                if (drillProperties.indexOf("gsmc") != -1) {
+                    $this.dialogVisible = true ; 
+                }
+            },
             "cellStyle": function({row, column, rowIndex, columnIndex}, $vue){
                 // debugger
                 let css = "padding: 4px 0;";
@@ -131,18 +98,30 @@
                 }
                 let drillProperties = this.drillProperties;
                 if (drillProperties.indexOf(pro) != -1) {
-                    if(row.fkzt == "已反馈" || row.sbzt == "已上报" || row.pszt == "已批示"){
-                        let drill = "text-decoration: none;color: green;font-weight: bold;";
-                        css = css + textIndent + drill;
-                        return css;
-                    }else{
-                        let drill = "text-decoration: none;color: red;font-weight: bold;";
+                    if(pro == "gsmc" && pro != "zt"){
+                        let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
                         css = css + textIndent + drill;
                         return css;
                     }
-                    
+                    // if(row.zt && row.zt == "已上报" && pro != "gsmc"){
+                    //     let drill = "text-decoration: none;color: green;font-weight: bold;";
+                    //     css = css + textIndent + drill;
+                    //     return css;
+                    // }else if(row.zt && row.zt == "未上报" && pro != "gsmc"){
+                    //     let drill = "text-decoration: none;color: red;font-weight: bold;";
+                    //     css = css + textIndent + drill;
+                    //     return css;
+                    // }
+                    // else if(pro != "zr" && pro == "gsmc"){
+                    //     let drill = "text-decoration: none;color: #428bca;font-weight: bold;";
+                    //     css = css + textIndent + drill;
+                    //     return css;
+                    // }
+                    // else{
+                    //     retrun css + textIndent;
+                    // }                  
                 }else{
-                    return css ;
+                    return css + textIndent;
                 }
             }
         }

@@ -170,7 +170,9 @@ import { logout } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
 import {
   smallBell,
-  smallBellCount
+  smallBellCount,
+  editStateOfMessage,
+  ageeReturn
 } from "@/api/fill.js"
 export default {
   name: "Headnav",
@@ -256,7 +258,7 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    setInterval(() => this.getMessage(),10000);
+    // setInterval(() => this.getMessage(),10000);
   },
   computed: {
     ...mapGetters([
@@ -451,6 +453,7 @@ export default {
         account:storeParams.user.user.userName
       };
       smallBell(params).then(res => {
+        debugger;
         if(res.data.code == 200){
           // console.log("ddddddd",res.data);
           this.showCkeckContent(res.data.data);
@@ -508,8 +511,90 @@ export default {
      * 查看点击行所在的报表，审阅。
      * @author szc 2019年4月3日14:38:13
      */
-    checkFillDataHandle (rowData) {
-      let me = this;
+    checkFillDataHandle (rowData,sign) {
+      debugger;
+      let me = this,id = rowData.id;
+      let params = {
+        id:id
+      };
+      if(sign){
+        if(sign == "agree"){
+          me.ageeOrNoReturnHandler(rowData,true);
+        }else if(sign == "noAgree") {
+          me.ageeOrNoReturnHandler(rowData,false);
+        }else if(sign == "unread") {
+          editStateOfMessage (params).then(res => {
+            if(res.data.code == 200){
+              rowData.sislook = 'Y';
+              me.$message({
+                message:"操作成功！",
+                type:"success"
+              });
+            }else {
+              me.$message.error(res.data.data);
+            }
+          });
+        }
+      }
+      // editStateOfMessage (params).then(res => {
+      //   if(res.data.code == 200){
+      //     me.$message({
+      //       message:"修改成功！",
+      //       type:"success"
+      //     });
+      //   }else {
+      //     me.$message.error(res.data.data);
+      //   }
+      // });
+    },
+    /**
+     * 同意申请退回。
+     * @author szc 2019年5月10日20:40:42
+     */
+    ageeOrNoReturnHandler (rowData,flag) {
+      debugger;
+      let me = this,storeParams = me.$store.getters,statemun = 4;
+      statemun = flag? 4:3;
+      let params = {
+        supdateuser:storeParams.user.user.userName,
+        nreportnum:0,
+        supdatetime:new Date(),
+        statemun:statemun,
+        id:rowData.sinfoid,
+        flag:flag
+      };
+      ageeReturn (params).then(res => {
+        if(res.data.code == 200) {
+          let resParams = {
+            pageNum:0,
+            pageSize:20,
+            account:storeParams.user.user.userName
+          },
+          msgParams = {
+            id:rowData.id
+          };
+          editStateOfMessage(msgParams).then(res => {
+            if(res.data.code == 200){
+              smallBell(resParams).then(res => {
+                if(res.data.code == 200){
+                  me.modalConfig.datas.datas = res.data.data.datas;
+                }
+              });
+            }
+          });
+          // me.$message({
+          //   message:res.data.data,
+          //   type:"success"
+          // });
+        }
+      });
+    },
+    /**
+     * 不同意申请退回。
+     * @author szc 2019年5月10日20:52:17
+     */
+    noAgeeReturnHandler (rowData) {
+
     }
   }
 };

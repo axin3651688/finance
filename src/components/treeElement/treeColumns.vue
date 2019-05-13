@@ -85,7 +85,7 @@ export default {
         }
     },
     created(){
-        
+        debugger
         let ate = this.item ;
         let offsetHeight = document.body.offsetHeight ;
         // 得到初始的高度
