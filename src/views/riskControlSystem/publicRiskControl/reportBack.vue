@@ -10,7 +10,7 @@
         </tree-table>
 
         <div class="report-component-content" v-show="reportBackDetail">
-            <report-component></report-component>
+            <report-component :reportCompanyName="this.reportCompanyName"></report-component>
         </div>
     </div>
 
@@ -30,6 +30,7 @@
         data() {
             return {
                 reportBackDetail: false,
+                reportCompanyName:'天津食品集团有限公司(合并)',
                 columns: [
                     {
                         text: '公司名称',
