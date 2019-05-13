@@ -25,6 +25,7 @@ export default {
     created () {
         debugger;
         let me = this;
+        
         this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
             console.log(res);
             me.options = res.data;
