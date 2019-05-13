@@ -4,53 +4,44 @@
 * 树表渲染，列项有按钮的树表
 */
 <template>
-    <div id="index">
-        <el-button-group  class="toolbar" >
-            <el-button type="primary" plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.styles" @click="btnClick(btn)">
-                {{btn.text}}
-            </el-button>
-        </el-button-group>
-        <el-table 
-        :data="formatData" 
-        :row-style="showRow"
-        :height="heights" 
-        v-bind="$attrs" 
-        border 
-        stripe 
-        class="tree-table"
-        :cell-style="cellStyle">
-            <el-table-column v-if="item.index" type="index" width="80" label="序号" align="center"></el-table-column>
-            <el-table-column v-if="columns.length===0" width="150">
-                <template slot-scope="scope">
-                    <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
-                    <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
-                        <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-                        <i v-else class="el-icon-minus"></i>
-                    </span>
-                    {{scope.$index}}
-                </template>
-            </el-table-column>
-            <el-table-column 
-            v-else v-for="(column, index) in columns" :prop="column.id" :key="column.id" 
-            :label="column.text" :width="column.width" :align="column.align" :fixed="column.fixed">
-                <template slot-scope="scope">
-                    <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
-                    <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
-                        <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-                        <i v-else class="el-icon-minus"></i>
-                    </span>
-                    <el-button 
-                    type="primary" plain size="mini" id="minibtn" v-if="column.id === 'cz'" 
-                    v-for="tool in item.tableBtn" :key="tool.id" :class="tool.icon" @click="tabtnClick(tool)">
-                        <!-- {{scope.row[column.id]}} -->
-                        {{ tool.text }}
-                    </el-button>
-                    <span>{{ scope.row[column.id] }}</span>
-                </template>
-            </el-table-column>
-            <slot></slot>
-        </el-table>
-    </div>  
+    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
+        <el-table-column v-if="columns.length===0" width="150">
+            <template slot-scope="scope">
+                <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
+                <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
+          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+          <i v-else class="el-icon-minus"></i>
+        </span>
+                {{scope.$index}}
+            </template>
+        </el-table-column>
+        <el-table-column v-else v-for="(column, index) in columns" :key="column.value" :label="column.text"
+                         :width="column.width">
+            <template slot-scope="scope">
+                    <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space"
+                          :key="space"></span>
+                <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
+          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+          <i v-else class="el-icon-minus"></i>
+        </span>
+                <span
+                        v-if="column.value === 'companyName'"
+                        @click="showReportDetail()"
+                        style="color: dodgerblue;cursor: pointer"
+                >
+                    {{scope.row[column.value]}}
+                </span>
+                <span v-if="column.value === 'feedState'">{{scope.row[column.value]}}</span>
+                <el-button
+                        size="mini"
+                        v-if="column.value === 'handle'"
+                >
+                    {{scope.row[column.value]}}
+                </el-button>
+            </template>
+        </el-table-column>
+        <slot></slot>
+    </el-table>
 </template>
 
 <script>
@@ -59,14 +50,7 @@
     export default {
         name: 'treeTable',
         props: {
-            tableHeight: {
-                type: Number,
-                require: false
-            },
-            item: {
-                type: [Array, Object],
-                required: false
-            },
+            dialogVisible:Boolean,
             data: {
                 type: [Array, Object],
                 required: true
@@ -82,33 +66,9 @@
                 default: false
             }
         },
-        data(){
-            return {
-                heights: "",
-                $height: 0
-            }
-        },
-        created(){
-            // debugger
-            this.$height = this.tableHeight;
-            this.heights = document.documentElement.clientHeight - this.$height + "px";
-        },
-        mounted(){
-            // 页面自适应
-            this.setClientHeight();
-        },
         computed: {
-            // 页面自适应
-            setClientHeight(){
-                this.heights = document.documentElement.clientHeight - this.$height + "px" ;
-                const me = this ;
-                window.onresize = function temp(){ debugger
-                    me.heights = document.documentElement.clientHeight - me.$height + "px" ;
-                }
-            },
             // 格式化数据源
             formatData: function () {
-                // debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
@@ -136,34 +96,11 @@
                 return (index === 0 && record.children && record.children.length > 0)
             },
             /**
-             * 点击按钮显示具体报告内容
+             * 点击公司显示具体报告内容
              * @param row
              */
             showReportDetail() {
                 this.$emit('showreportdetailp');
-            },
-            // 表格上面的按钮事件方法
-            btnClick(btn){
-                if(btn.handler && typeof btn.handler == "function"){
-                    return btn.handler(this.formatData, btn, this) ; 
-                }else{
-                    this.$message('暂无此功能');
-                }
-            },
-            // 表格里面的按钮事件方法
-            tabtnClick(tool){ debugger
-                if(tool.handler && typeof tool.handler == "function"){
-                    return tool.handler(tool, this) ; 
-                }else{
-                    this.$message('暂无此功能');
-                }
-            },
-            // 单元格的 style 的回调方法
-            cellStyle({row, column, rowIndex, columnIndex}){ //debugger
-                if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
-                    return this.item.cellStyle({row, column, rowIndex, columnIndex}, this);
-                }
-                // return Utils.levelProperties(this.item, row);
             }
         }
     }
@@ -185,40 +122,6 @@
         to {
             opacity: 1;
         }
-    }
-</style>
-<style>
-    /* 表头居中显示 */
-    .el-table th {
-        text-align: center !important;
-        background-color: rgb(240, 248, 255) !important;
-    }
-    /* 表头背景颜色的设定 */
-    .has-gutter tr th {
-        background-color: rgb(240, 248, 255) !important;
-        color: #606266;
-    }
-    /** 这是对表行的行高设置*/
-    .el-table__body tr, .el-table__body td {
-        padding: 0;
-        height: 32px;
-    }
-    /* 表行的滚动条显示 */
-    .el-table__body-wrapper {
-        overflow: auto;
-    }
-</style>
-
-<style scoped>
-    /* 操作列按钮的样式 */
-    #minibtn {
-        height: 31px;
-        /* color: #606266;  */
-        font-size: 14px;  
-    }
-    .toolbar {
-        /* margin-top: 10px; */
-        margin-bottom: 10px;
     }
 </style>
 
