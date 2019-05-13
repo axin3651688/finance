@@ -1,0 +1,72 @@
+<template>
+    <div>
+        <el-row :gutter="24">
+            <el-col :span="6">
+                <div class="top-form-contents">
+                    <span style="min-width: 70px;width: 100px">风险类型：</span>
+                    <el-input v-model="formData.riskType" placeholder="风险类型"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="7">
+                <div class="top-form-contents">
+                    <span style="min-width: 98px;width: 150px">风险发生概率：</span>
+                    <el-input v-model="formData.riskProbability" placeholder="风险发生概率"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="7">
+                <div class="top-form-contents">
+                    <span style="min-width: 98px;width: 150px">风险影响程度：</span>
+                    <el-input v-model="formData.riskDegree" placeholder="风险影响程度"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="4" style="padding-right: 0">
+                <div class="top-form-contents" style="height: 40px;justify-content: space-around;">
+                    <span style="min-width: 70px;width: 70px">风险等级：</span>
+                    <div class="risk-level">
+                        <span>{{this.formData.riskLevel}}</span>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "riskHeader",
+        components: {},
+        props: {
+            formData: Object
+        },
+        data() {
+            return {}
+        },
+        created() {
+        },
+        mounted() {
+        },
+        methods: {}
+    }
+</script>
+
+<style scoped>
+    .top-form-contents {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .top-form-contents span {
+        font-size: 14px;
+        color: #606266;
+        font-weight: 700;
+    }
+
+    .risk-level {
+        min-width: 40px;
+        border: 1px solid black;
+        border-radius: 10px;
+        text-align: center;
+        background: red;
+    }
+</style>
