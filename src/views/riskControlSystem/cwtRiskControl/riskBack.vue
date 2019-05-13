@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import dialogComponent from './dialogComponent'
+    import dialogComponent from '../publicRiskControl/dialogComponent'
     export default {
         name: "riskBack",
         components: {

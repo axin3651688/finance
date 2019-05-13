@@ -14,8 +14,8 @@
 </template>
 
 <script>
-    import riskBack from '../publicRiskControl/riskBack'
-    import reportBack from '../publicRiskControl/reportBack'
+    import riskBack from './riskBack'
+    import reportBack from './reportBack'
     export default {
         name: "riskFeedback",
         components:{

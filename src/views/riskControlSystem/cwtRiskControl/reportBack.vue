@@ -21,7 +21,7 @@
 
 <script>
     import treeTable from '../publicRiskControl/treeTable/index'
-    import reportComponent from './reportComponent'
+    import reportComponent from '../publicRiskControl/reportComponent'
 
     export default {
         name: 'reportBack',
