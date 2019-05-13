@@ -58,7 +58,7 @@
             <el-dialog
                     :title="getDialogTitle()"
                     width="56%"
-                    top="40px"
+                    top="50px"
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
