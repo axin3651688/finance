@@ -85,3 +85,37 @@ export function UploadShow() {
         // params: data
     })
 }
+/**
+ * name: sjz
+ * 说明：应收、预付、其他安全比例和预警比例的查询接口
+ */
+export function query_sjz(data){
+    return request({
+        url: '/zjb/ageanalysis/query?company=' + data.company + '&period=' + data.period + '&item=' + data.item,
+        // url: '/zjb/ageanalysis/query',
+        method: 'get'
+        // params: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：应收、预付、其他安全比例和预警比例的新增接口
+ */
+export function ageanalysis(data){
+    return request({
+        url: '/zjb/ageanalysis/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name：sjz
+ * 说明：应收、预付、其他安全比例和预警比例的修改（更新）接口
+ */
+export function update_sjz(data){
+    return request({
+        url: '/zjb/ageanalysis/update',
+        method: 'post',
+        data: data
+    })
+}

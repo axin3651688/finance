@@ -62,6 +62,7 @@
         {
             "id": "riskTreePublic",
             "text": "风险追踪报告",
+            "xtype": "tree",
             "index": false, // 是否显示序号
             "isTree": true,// 是否是树形
             "toolbar": [
