@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="risk-feed-back-top">
-            <el-tabs v-model="activeName">
-                <el-tab-pane label="风险反馈" name="first">
+            <el-tabs type="border-card">
+                <el-tab-pane label="风险反馈">
                     <risk-back></risk-back>
                 </el-tab-pane>
-                <el-tab-pane label="汇总反馈" name="second">
-                    <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>  
+                <el-tab-pane label="报告反馈">
+                    <report-back></report-back>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -15,19 +15,12 @@
 
 <script>
     import riskBack from '../publicRiskControl/riskBack'
-    import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
+    import reportBack from '../publicRiskControl/reportBack'
     export default {
         name: "riskFeedback",
         components:{
             riskBack,
-            aiModule
-        },
-        data(){
-            return {
-                activeName: "first",
-                jsonAdress: "cnbi/risk/riskfeedback.json",
-                tableHeight: 190
-            }
+            reportBack
         }
     }
 </script>

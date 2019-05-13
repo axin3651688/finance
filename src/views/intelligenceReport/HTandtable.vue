@@ -264,7 +264,7 @@ export default {
         this.reportData(this.datas);
       }
     },
-    company(val) {
+    company(val,oldVal) {
       
       //判断不是合并公司才给填报
       // let flag = this.rightOfLeafCompany();
@@ -279,9 +279,9 @@ export default {
       this.fillShow = true;
       if (this.activeName2 == "second") {
         this.tableData = [];
-        let company = this.datas.company;
+        let company = this.datas? this.datas.company:oldVal;
         let newcompany = company.replace(company, val);
-        this.datas.company = newcompany;
+        this.datas? this.datas.company = newcompany:"";
         // console.log(this.datas);
         !flag || this.reportData(this.datas);
       }
@@ -849,7 +849,7 @@ export default {
       let me = this;
       data.forEach(item => {
         if(item){
-          item.label = item.suser;
+          item.label = item.susername;
         }
       });
       return data;
@@ -859,8 +859,16 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
+      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
+      if(nodes && nodes.length == 0){
+        me.$message({
+          message:"人员不能为空！",
+          type:"warning"
+        });
+        return;
+      }
       if(itemSel){
         if(itemSel.id == '1'){
           nodes.forEach(item => {
@@ -1489,7 +1497,6 @@ export default {
       }
       if (this.templateId == 3) {
         if (
-          (row == 0 && (columns == 2 || columns == 3 || columns === 6 || columns === 7)) || 
           (row >= 48 && row <= 70 && (columns == 2 || columns == 3))
         ) {
           cellMeta.readOnly = true;
@@ -1557,7 +1564,7 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      [1,2].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**
@@ -2274,7 +2281,7 @@ export default {
             templateid: me.templateId
         };
         queryStateOfTable(stateParams).then(res => {
-            let arr = ['2','5'],states = [1,4];
+            let arr = ['2','5'],states = [1,4,3,2];
             if (res.data.code == 200) {
                 me.tableState = res.data.data.statemun;
             } else if (res.data.code == 1001) {
@@ -2284,7 +2291,7 @@ export default {
             //如果是上报过了，按钮就显示已上报。
             if(states.indexOf(me.tableState) != -1 && me.buttonsOperation && me.buttonsOperation.length > 0){
               me.buttonsOperation.forEach(it => {
-                if(me.tableState == 1){
+                if(me.tableState == 1 || me.tableState == 3){
                   if(it.id == 1){
                     it.disabled = true;
                     it.text = "已上报";
@@ -2297,6 +2304,15 @@ export default {
                     it.disabled = false;
                     it.text = "上报";
                   }else if(arr.indexOf(it.id) != -1) {
+                    it.disabled = true;
+                  }
+                }else if(me.tableState == 2) {
+                  if(it.id == 1){
+                    it.disabled = true;
+                    it.text = "上报";
+                  }else if(it.id == 2) {
+                    it.disabled = false;
+                  }else {
                     it.disabled = true;
                   }
                 }

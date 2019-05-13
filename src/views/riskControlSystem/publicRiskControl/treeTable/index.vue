@@ -61,14 +61,7 @@
     export default {
         name: 'treeTable',
         props: {
-            tableHeight: {
-                type: Number,
-                require: false
-            },
-            item: {
-                type: [Array, Object],
-                required: false
-            },
+            dialogVisible:Boolean,
             data: {
                 type: [Array, Object],
                 required: true
@@ -112,7 +105,6 @@
             },
             // 格式化数据源
             formatData: function () {
-                // debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
@@ -140,7 +132,7 @@
                 return (index === 0 && record.children && record.children.length > 0)
             },
             /**
-             * 点击按钮显示具体报告内容
+             * 点击公司显示具体报告内容
              * @param row
              */
             showReportDetail() {
@@ -201,40 +193,6 @@
         to {
             opacity: 1;
         }
-    }
-</style>
-<style>
-    /* 表头居中显示 */
-    .el-table th {
-        text-align: center !important;
-        background-color: rgb(240, 248, 255) !important;
-    }
-    /* 表头背景颜色的设定 */
-    .has-gutter tr th {
-        background-color: rgb(240, 248, 255) !important;
-        color: #606266;
-    }
-    /** 这是对表行的行高设置*/
-    .el-table__body tr, .el-table__body td {
-        padding: 0;
-        height: 32px;
-    }
-    /* 表行的滚动条显示 */
-    .el-table__body-wrapper {
-        overflow: auto;
-    }
-</style>
-
-<style scoped>
-    /* 操作列按钮的样式 */
-    #minibtn {
-        height: 31px;
-        /* color: #606266;  */
-        font-size: 14px;  
-    }
-    .toolbar {
-        /* margin-top: 10px; */
-        margin-bottom: 10px;
     }
 </style>
 

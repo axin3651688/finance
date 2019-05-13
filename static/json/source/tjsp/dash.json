@@ -1263,13 +1263,13 @@
                                     "id": "period",
                                     "type": "category"
                                 },
-                                {
-                                    "id": "zhcb",
-                                    "name": "综合融资成本率",
-                                    "type": "line",
-                                    "smooth": false,
-                                    "unit": "%"
-                                },
+                                // {
+                                //     "id": "zhcb",
+                                //     "name": "综合融资成本率",
+                                //     "type": "line",
+                                //     "smooth": false,
+                                //     "unit": "%"
+                                // },
                                 {
                                     "id": "je",
                                     "name": "融资性债务总额",
@@ -1280,7 +1280,7 @@
                             ]
 
                         },
-                        "color": ['#9a7fd1', '#2ec7c9'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
+                        "color": ['#2ec7c9'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义 '#9a7fd1', '#2ec7c9'
                     }
                 },
 

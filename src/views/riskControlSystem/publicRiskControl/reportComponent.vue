@@ -66,8 +66,8 @@
 
 
                 //控制显示哪个组件的flag
-                instructionShow: true,
-                scheduleShow: false,
+                instructionShow: false,
+                scheduleShow: true,
 
 
                 leftNode: {
