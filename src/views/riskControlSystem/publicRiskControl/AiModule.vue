@@ -4,21 +4,53 @@
     树表的公用组件
 -->
     <div id="riskReport">
-        <tree-table :columns="columns" :data="data" :item="item" :tableHeight="tableHeight"></tree-table>
+        <!-- 树表组件 -->
+        <tree-table 
+        v-show="!isShow"
+        :columns="columns" 
+        :data="data" 
+        :item="item" 
+        :tableHeight="tableHeight" 
+        @listenToChildEvent="showFromChild"
+        @showreportdetailp="showreportdetailp">
+        </tree-table>
+        <!-- dialog弹出框 -->
+        <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
+            <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
+            <dialog-component :treeName="treeName"></dialog-component>
+        </el-dialog>
+        <div v-show="isShow">
+            <report-component></report-component>
+        </div>
     </div>
+    
 </template>
 <script>
+// 引用树表
 import treeTable from "@v/riskControlSystem/publicRiskControl/treeTable";
+// 引用接口（获取数据）
 import { findThirdPartData, findDesignSource } from "~api/interface";
+// 引用弹出框组件
+import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
+
+import reportComponent from "@v/riskControlSystem/publicRiskControl/reportComponent"
+// 引用vuex
 import { mapGetters, mapActions } from "vuex";
+// import { constants } from 'http2';
 export default {
     name: 'treeTableDemo',
     components: {
-        treeTable
+        treeTable,
+        dialogComponent,
+        reportComponent
     },
     props: ["jsonAdress","tableHeight"],
     data(){
         return {
+            dialogVisible: false,
+            isShow: false ,
+            treeName: "",
+            title: "",
             columns:[],
             data:[],
             biYear: "",
@@ -52,6 +84,19 @@ export default {
         }
     },
     methods: {
+        /** 树表子组件 传过来 的值
+         *  可点击的列 点击之后跳转到父组件的 showFromChild的方法
+         */ 
+        showFromChild(data){
+            // debugger
+            let me = this ;
+            me.dialogVisible = true ;
+            me.title = "关于【" + data + "】的追踪" ; 
+            me.treeName = me.item.id ;
+        },
+        showreportdetailp(){
+            this.isShow = true;
+        },
         // 获取树表的json信息
         setTreeTableRequest(){ 
             const me = this ;
@@ -99,7 +144,7 @@ export default {
             };
             // 看看json里有没有配置【queryDataBefore】数据获取之前拦截的方法
             if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
-                datas = me.item.queryDataAfter(datas, me);
+                datas = me.item.queryDataBefore(datas, me);
             }else if(datas.sql){
                 me.setData(me.item, datas);
             }else if(me.rows.length){

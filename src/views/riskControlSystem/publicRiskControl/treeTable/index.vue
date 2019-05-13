@@ -11,11 +11,6 @@
                 {{btn.text}}
             </el-button>
         </el-button-group>
-        <!-- dialog弹出框 -->
-        <el-dialog title="123" width="56%" top="40px" :visible.sync="dialogVisible">               
-            <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-            <dialog-component></dialog-component>
-        </el-dialog>
         <!-- table表格 -->
         <el-table 
         :data="formatData" 
@@ -63,12 +58,8 @@
 
 <script>
     import treeToArray from './eval'
-    import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
     export default {
         name: 'treeTable',
-        components: {
-            dialogComponent
-        },
         props: {
             tableHeight: {
                 type: Number,
@@ -95,7 +86,7 @@
         },
         data(){
             return {
-                dialogVisible: false,
+                
                 heights: "",
                 $height: 0
             }
@@ -115,7 +106,7 @@
             setClientHeight(){
                 this.heights = document.documentElement.clientHeight - this.$height + "px" ;
                 const me = this ;
-                window.onresize = function temp(){ debugger
+                window.onresize = function temp(){
                     me.heights = document.documentElement.clientHeight - me.$height + "px" ;
                 }
             },
@@ -185,7 +176,7 @@
             //     }
             // },
             // 行的 click 的回调方法/ 当某一行被点击时会触发该事件
-            rowClick(row, event, column){ debugger
+            rowClick(row, event, column){ 
                 if (this.item.rowClick && typeof this.item.rowClick == "function") {
                     return this.item.rowClick(row, event, column, this);
                 }

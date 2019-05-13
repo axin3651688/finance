@@ -253,36 +253,36 @@
                     },
                     "queryDataAfter": function(data, $vue) {
                         debugger
-                        let me = this ;
-                        if(data.length === 0)return data;
-                        let first, second ;
-                        let yszk = JSON.parse(localStorage.getItem("yszk"));
-                        if(yszk == null){
-                            first = 0 ;
-                            second = 0;
-                        } else {
-                            localStorage.removeItem("yszk");
-                            yszk[0].show = true ;
-                            yszk[1].show = true ;
-                            localStorage.setItem("yszk",JSON.stringify(yszk));
-                            first = yszk[0].value;
-                            second= yszk[1].value;
-                        }
-                        data.forEach(element => {
-                            if(element.zjl == 0){
-                                element.riskrange = '' ;
-                            }else{
-                                if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
-                                if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
-                                if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
-                                // if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
-                                // if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
-                                if(first == 0)element.riskrange = '' ;
-                                if(second == 0)element.riskrange = '' ;
-                            }
-                            if(first == 0 && second == 0)element.riskrange = '' ;
-                            if(element.scode == '9')element.scode = '';   
-                        });
+                        // let me = this ;
+                        // if(data.length === 0)return data;
+                        // let first, second ;
+                        // let yszk = JSON.parse(localStorage.getItem("yszk"));
+                        // if(yszk == null){
+                        //     first = 0 ;
+                        //     second = 0;
+                        // } else {
+                        //     localStorage.removeItem("yszk");
+                        //     yszk[0].show = true ;
+                        //     yszk[1].show = true ;
+                        //     localStorage.setItem("yszk",JSON.stringify(yszk));
+                        //     first = yszk[0].value;
+                        //     second= yszk[1].value;
+                        // }
+                        // data.forEach(element => {
+                        //     if(element.zjl == 0){
+                        //         element.riskrange = '' ;
+                        //     }else{
+                        //         if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
+                        //         if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
+                        //         if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
+                        //         // if(first == 0 && (element.riskrange == '安全' || element.riskrange == '提示'))element.riskrange = '' ;
+                        //         // if(second == 0 && element.riskrange == '预警')element.riskrange = '' ;
+                        //         if(first == 0)element.riskrange = '' ;
+                        //         if(second == 0)element.riskrange = '' ;
+                        //     }
+                        //     if(first == 0 && second == 0)element.riskrange = '' ;
+                        //     if(element.scode == '9')element.scode = '';   
+                        // });
                         return data;
                     },
                     "config": {
@@ -312,151 +312,6 @@
                             "xtype": "tab",
                             "ctype": "button"
                         },
-                        // "columns": [
-                        //     {
-                        //         "text": "已形成实质性损失金额",
-                        //         "type": "decimal",
-                        //         "width": "180px",
-                        //         "id": "www4"
-                        //     },
-                        //     {
-                        //         "text": "",
-                        //         "type": "string",
-                        //         "id": "",
-                        //         "isTree": true
-                        //     },
-                        //     {
-                        //         "text": "公司编码",
-                        //         "type": "string",
-                        //         "fixed": true,
-                        //         "id": "scode"
-                        //     },
-                        //     {
-                        //         "text": "公司名称",
-                        //         "width": "360px",
-                        //         "type": "string",
-                        //         "fixed": true,
-                        //         "id": "gsmc"
-                        //     },
-                        //     {
-                        //         "text": "口径",
-                        //         "type": "string",
-                        //         "id": "kj"
-                        //     },
-                        //     {
-                        //         "text": "余额",
-                        //         "type": "decimal",
-                        //         "id": "ye"
-                        //     },
-                        //     {
-                        //         "text": "与年初相比增减额",
-                        //         "type": "decimal",
-                        //         "id": "zje"
-                        //     },
-                        //     {
-                        //         "text": "与年初相比增减率（%）",
-                        //         "type": "decimal",
-                        //         "conversion": "%",
-                        //         "width": "180px",
-                        //         "id": "zjl"
-                        //     },
-                        //     {
-                        //         "text": "预警等级",
-                        //         "type": "string",
-                        //         "id": "riskrange"
-                        //     },
-                        //     {
-                        //         "id": "",
-                        //         "type": "string",
-                        //         "text": "账期",
-                        //         "children": [{
-                        //                 "text": "1年以内",
-                        //                 "type": "decimal",
-                        //                 "id": "oneYear"
-                        //             },
-                        //             {
-                        //                 "text": "1-2年",
-                        //                 "type": "decimal",
-                        //                 "id": "twoYear"
-                        //             },
-                        //             {
-                        //                 "text": "2-3年",
-                        //                 "type": "decimal",
-                        //                 "id": "threeYear"
-                        //             },
-                        //             {
-                        //                 "text": "3年以上",
-                        //                 "type": "decimal",
-                        //                 "id": "allYear"
-                        //             }
-                        //         ]
-                        //     },
-                        //     {
-                        //         "text": "正常金额",
-                        //         "type": "decimal",
-                        //         "id": "zcje"
-                        //     },
-                        //     {
-                        //         "id": "",
-                        //         "type": "string",
-                        //         "text": "非正常金额",
-                        //         "children": [{
-                        //                 "text": "向系统外出借资金",
-                        //                 "type": "decimal",
-                        //                 "id": "fff1"
-                        //             },
-                        //             {
-                        //                 "text": "成本费用挂账",
-                        //                 "type": "decimal",
-                        //                 "id": "fff2"
-                        //             },
-                        //             {
-                        //                 "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
-                        //                 "type": "decimal",
-                        //                 "width": "330px",
-                        //                 "id": "fff3"
-                        //             },
-                        //             {
-                        //                 "text": "为其他企业代偿金融机构的贷款",
-                        //                 "type": "decimal",
-                        //                 "width": "230px",
-                        //                 "id": "fff4"
-                        //             },
-                        //             {
-                        //                 "text": "长期挂账、未及时清理",
-                        //                 "type": "decimal",
-                        //                 "width": "180px",
-                        //                 "id": "fff5"
-                        //             },
-                        //             {
-                        //                 "text": "核算不规范",
-                        //                 "type": "decimal",
-                        //                 "id": "fff6"
-                        //             },
-                        //             {
-                        //                 "text": "其他",
-                        //                 "type": "decimal",
-                        //                 "id": "fff7"
-                        //             }
-                        //         ]
-                        //     },
-                        //     {
-                        //         "text": "可收回金额",
-                        //         "type": "decimal",
-                        //         "id": "www1"
-                        //     },
-                        //     {
-                        //         "text": "其中：当年可收回金额",
-                        //         "type": "decimal",
-                        //         "width": "180px",
-                        //         "id": "www2"
-                        //     },
-                        //     {
-                        //         "text": "逾期账款",
-                        //         "type": "decimal",
-                        //         "id": "www3"
-                        //     }
-                        // ],
                         "columns": [
                             // {
                             //     "text": "",

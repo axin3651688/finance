@@ -122,6 +122,7 @@ import { findThirdPartData, findDesignSource } from "~api/interface";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
+import Utils from '@c/treeElement/dataTranslate.js';
 export default {
   name: "BiModule",
   components: {
@@ -605,6 +606,9 @@ export default {
         if ( item.queryDataAfter && typeof item.queryDataAfter == "function" && !item.correctWrongConfig ){
           datas = item.queryDataAfter(datas,this);
         }
+        if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej") && !this.$store.getters.treeInfo.nisleaf){ debugger
+          datas = Utils.getLocalStorage(datas, this) ;
+        }
         let resColumns = [];
         if(item.config.tableHeads){
           let columns = item.config.columns;
@@ -630,6 +634,9 @@ export default {
       ) {
         //
         datas = item.queryDataAfter(datas,this);
+        if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej" ) && !this.$store.getters.treeInfo.nisleaf){ debugger
+          datas = Utils.getLocalStorage(datas, item, this) ;
+        }
       }
       //
       item.datas = datas;

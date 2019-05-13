@@ -78,6 +78,41 @@
                         </el-col>
                     </el-row>
 
+                    <!-- 风险追踪 -->
+                    <!-- <el-row v-if="treeName=='riskTablePublic'">
+                        <el-col>
+                            <div class="top-form-contents" style="float: left">
+                                <span style="min-width: 70px;width: 70px">风险追踪：</span>
+                            </div>
+                            <div style="border: 1px solid #ccc;width: 955px; height: 100%;float: left; marginBottom: 10px;">
+                                <p style="fontSize: 15px;">进度一</p>
+                                <p style="margin: 15px 15px 15px 15px">名称：风险上报</p>
+                                <p style="margin: 15px 15px 15px 15px">
+                                    状态：
+                                    <span style="border: 1px solid #ccc; backgroundColor: blue; color: #fff">已上报</span>
+                                    <span style="border: 1px solid #ccc; backgroundColor: red; color: #fff">未上报</span>
+                                </p>
+                                <p style="margin: 15px 15px 15px 15px">内容：<span>状态为：已上报，则显示上报人+上报时间；状态为：未上报，则提示“请将风险尽快上报”</span></p>                                
+                                <p style="fontSize: 15px;">进度二</p>
+                                <p style="margin: 15px 15px 15px 15px">名称：风险批示</p>
+                                <p style="margin: 15px 15px 15px 15px">
+                                    状态：
+                                    <span style="border: 1px solid #ccc; backgroundColor: blue; color: #fff">已批示</span>
+                                    <span style="border: 1px solid #ccc; backgroundColor: red; color: #fff">未批示</span>
+                                </p>
+                                <p style="margin: 15px 15px 15px 15px">内容：<span>状态为：已批示，则显示领导批示的内容+批示人+批示时间；状态为：未批示，则提示“请尽快对风险进行批示...”</span></p>
+                                <p style="fontSize: 15px;">进度三</p>
+                                <p style="margin: 15px 15px 15px 15px">名称：风险反馈</p>
+                                <p style="margin: 15px 15px 15px 15px">
+                                    状态：
+                                    <span style="border: 1px solid #ccc; backgroundColor: blue; color: #fff">已反馈</span>
+                                    <span style="border: 1px solid #ccc; backgroundColor: red; color: #fff">未反馈</span>
+                                </p>
+                                <p style="margin: 15px 15px 15px 15px">内容：<span>状态为：已反馈，则显示反馈内容+反馈人+反馈时间；状态为：未反馈，则提示“请尽快对风险进行反馈...”</span></p>
+                            </div>
+                        </el-col>
+                    </el-row> -->
+
                     <el-row>
                         <el-col>
                             <div class="top-form-contents">
@@ -129,6 +164,7 @@
         },
         props: {
             dialogData: Object,
+            treeName: Object
         },
         data() {
             return {
@@ -150,6 +186,8 @@
             }
         },
         created() {
+            debugger
+            let cc = this.treeName;
         },
         mounted() {
         },
