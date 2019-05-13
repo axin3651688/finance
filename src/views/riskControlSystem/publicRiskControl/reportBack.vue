@@ -10,6 +10,9 @@
         </tree-table>
 
         <div class="report-component-content" v-show="reportBackDetail">
+            <div style="text-align: right; padding-right: 4px;">
+                <el-button type="primary" @click="pageBack">返回</el-button>
+            </div>
             <report-component :reportCompanyName="this.reportCompanyName"></report-component>
         </div>
     </div>
@@ -92,12 +95,17 @@
             },
             changeDiaShowState() {
                 this.reportBackDetail = true;
+            },
+            pageBack(){
+                this.reportBackDetail = false;
             }
         }
     }
 </script>
 
-<style>
-
+<style scoped>
+    .report-component-content button{
+        text-align: right;
+    }
 </style>
 
