@@ -15,6 +15,7 @@
                         :key="index"
                         :show-overflow-tooltip="true"
                         :prop="item.id"
+                        :header-align="center"
                         :label="item.text"
                         :width="item.width">
                         <template slot-scope="scope">
@@ -74,7 +75,7 @@ export default {
     }
 };
 </script>
-<style scope>
+<style scoped>
     .textClass {
         background-color: red;
         border-radius: 20px;

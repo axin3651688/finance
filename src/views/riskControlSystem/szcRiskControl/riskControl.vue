@@ -1,8 +1,9 @@
 <template>
     <div>
         <div>
-            <el-tabs>
-                <el-tab-pane label="风险批示">
+            <el-tabs v-model="activeName"
+            @tab-click="handleTabClick">
+                <el-tab-pane label="风险批示" name="first">
                     <div class="selectClass">
                         <RiskSelect/>
                     </div>
@@ -10,9 +11,20 @@
                         <stable :tableData.sync="tableData" :columns.sync="columns"></stable>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="汇总批示">
-                    <div>
-                        <treeTable :data.sync="treeData" :columns.sync="columns"></treeTable>
+                <el-tab-pane label="汇总批示" name="second">
+                    <div v-if="treeTableShow">
+                        <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
+                    </div>
+                    <div v-else>
+                        <el-row>
+                            <el-col :span="24">
+                                <div>
+                                    <el-button @click="returnCurrentClick">返回</el-button>
+                                </div>
+                                <reportContent :reportCompanyName="reportCompanyName"></reportContent>
+                            </el-col>
+                        </el-row>
+                        
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -24,7 +36,9 @@
 
 import stable from "@v/riskControlSystem/publicRiskControl/table/table";
 import RiskSelect from "./riskSelect";
-import treeTable from "./../publicRiskControl/treeTable/index"
+import treeTable from "./../publicRiskControl/treeTable/treeTable"
+import reportContent from "../publicRiskControl/reportComponent"
+// import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 
 
 export default {
@@ -33,13 +47,17 @@ export default {
     components:{
         stable,
         RiskSelect,
-        treeTable
+        treeTable,
+        reportContent
     },
     data() {
         return {
             tableData:[],
             columns:[],
-            treeData:[]
+            treeData:[],
+            activeName:"second",
+            treeTableShow:true,
+            reportCompanyName:"天津食品有限公司"
         }
     },
     /**
@@ -48,8 +66,11 @@ export default {
     created() {
         debugger;
         //请求table的数据。
-        let me = this;
-        this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskTable.json").then(res => {
+        let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+        if(me.activeName == "second"){
+            url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+        }
+        this.axios.get(url).then(res => {
             debugger;
             if(res.data.code == 200) {
                 me.tableData = res.data.rows;
@@ -62,7 +83,100 @@ export default {
      * 页面渲染之后的回调。
      */
     mounted () {},
-    methods: {}
+    methods: {
+        /**
+         * 处理tab切换点击事件。
+         * @author szc 2019年5月14日14:55:16
+         */
+        handleTabClick (tab, event) {
+            debugger;
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            if(tab.name == "second"){
+                url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+            }
+            this.axios.get(url).then(res => {
+                debugger;
+                if(res.data.code == 200) {
+                    if(tab.name == "first"){
+                        me.tableData = res.data.rows;
+                    }else {
+                        me.treeData = res.data.rows;
+                    }
+                    me.columns = res.data.columns
+                }
+            });
+        },
+        /**
+         * 按钮的处理。
+         * @author szc 2019-5-14 11:56:40
+         * 查看
+         */
+        buttonHandler (scope,btnItem) {
+            debugger;
+            let me = this;
+            if(btnItem){
+                let id = btnItem.id;
+                if(id == "0"){
+                    //批示.
+                    me.instructionsState(scope);
+                }else if (id == "1") {
+                    me.lookInstructions(scope);
+                }else if (id == "2") {
+
+                }else if (id == "3") {
+
+                }
+            }
+        },
+        /**
+         * 批示状态的改变。
+         * @author szc 2019年5月14日13:48:28
+         */
+        instructionsState (scope) {
+            debugger;
+            let me = this,$index = scope.$index,scode = scope.row.scode;
+            if(scode){
+                // me.treeData.forEach();
+                me.changeValue(me.treeData,scode);
+                debugger;
+                console.log("ooooooooooo",me.treeData)
+                me.treeData;
+            }
+        },
+        changeValue (treeData,scode) {
+            debugger;
+            let me = this;
+            for(let i = 0; i < treeData.length; i++) {
+                let item = treeData[i];
+                if(item.scode == scode) {
+                    item.status = "已批示";
+                    item.operation[0].btnShow = false;
+                    break;
+                }
+                if(i == treeData.length - 1 && item.children){
+                    me.changeValue(item.children,scode);
+                }
+            }
+        },
+        /**
+         * 查看批示的内容
+         * @author szc 2019年5月14日14:24:14
+         */
+        lookInstructions () {
+            debugger;
+            let me = this;
+            me.treeTableShow = false;
+        },
+        /**
+         * 返回当前点击的选择。
+         * @author szc 2019年5月14日15:13:52
+         */
+        returnCurrentClick () {
+            debugger;
+            let me = this;
+            me.treeTableShow = true;
+        }
+    }
 };
 </script>
 <style scope>
