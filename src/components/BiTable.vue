@@ -12,7 +12,7 @@
       :data.sync="tableDatas"
       border
       :stripe="true"
-      :height="item.height || heights-170"
+      :height="item.height || heights-90"
       :cell-style="cellStyle"
       @cell-click="onCellClick"
       :span-method="rowSpanAndColSpanHandler"
@@ -49,7 +49,7 @@ export default {
   props: ["item"],
   data() {
     return {
-      heights: document.body.offsetHeight,
+      heights: document.body.clientHeight,
       flag: true,
       dialogVisible: false,
       currentPage: 1,

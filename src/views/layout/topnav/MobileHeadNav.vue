@@ -203,6 +203,7 @@ export default {
     },
     showDilog() {
       this.dialogVisible = true;
+      this.showDims.company = false;
     },
     logout() {
       // todo备以后用,先不删
