@@ -13,44 +13,13 @@
                 </el-select>
             </div>
             <div class="risk-back-table">
-                <el-table
-                        :data="tableData"
-                        :header-cell-style="getRowClass"
-                        border
-                        stripe
-                        style="width: 100%">
-                    <el-table-column
-                            type="index"
-                            label="序号"
-                            width="50"
-                            style="text-align: center"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="riskName"
-                            label="风险名称"
-                            width="180">
-                        <template slot-scope="scope">
-                        <span
-                                style="color: dodgerblue;cursor: pointer"
-                                @click="riskDetailShow(scope.$index,scope.row)"
-                        >{{scope.row.riskName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="feedBackState"
-                            label="反馈状态"
-                            width="180">
-                    </el-table-column>
-                    <el-table-column label="操作">
-                        <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    @click="riskHandle(scope.$index, scope.row)">{{scope.row.handle}}
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                <stable
+                        :tableData.sync="tableData"
+                        :columns.sync="columns"
+                        :dialogVisible="!dialogVisible"
+                        @changeShowContent="changeShowContent"
+                >
+                </stable>
             </div>
         </div>
 
@@ -63,7 +32,11 @@
             >
                 <!--<span>{{ diaData }}}</span>-->
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-                <dialog-component :dialogData="this.dialogData" :dialogType="this.dialogType"></dialog-component>
+                <dialog-component
+                        :dialogData="this.dialogData"
+                        :dialogType="this.dialogType"
+                >
+                </dialog-component>
             </el-dialog>
         </div>
     </div>
@@ -71,16 +44,22 @@
 
 <script>
     import dialogComponent from '../publicRiskControl/dialogComponent'
+    import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
     export default {
         name: "riskBack",
         components: {
-            dialogComponent
+            dialogComponent,
+            stable
         },
         data() {
             return {
-                dialogData:{},
+                dialogData:{
+                    riskName:""
+                },
                 dialogType:'riskBack',
                 dialogVisible: false,
+                tableData:[],
+                columns:[],
                 options: [
                     {
                         value: '选项1',
@@ -93,27 +72,19 @@
                         label: '其他部门'
                     }
                 ],
-                value: '',
-                tableData: [
-                    {
-                        riskName: '一号财务风险',
-                        feedBackState: '已反馈',
-                        handle: '已反馈'
-                    }, {
-                        riskName: '二号财务风险',
-                        feedBackState: '已反馈',
-                        handle: '已反馈'
-                    }, {
-                        riskName: '三号财务风险',
-                        feedBackState: '未反馈',
-                        handle: '反馈'
-                    }, {
-                        riskName: '四号财务风险',
-                        feedBackState: '已反馈',
-                        handle: '已反馈'
-                    }
-                ]
+                value: ''
             }
+        },
+        created(){
+            //请求table的数据。
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskSingleTable.json").then(res => {
+                if(res.data.code === 200) {
+                    me.tableData = res.data.rows;
+                    me.treeData = res.data.rows;
+                    me.columns = res.data.columns
+                }
+            });
         },
         methods: {
             /**
@@ -141,10 +112,11 @@
              * @param index
              * @param row
              */
-            riskDetailShow(index, row) {
+            changeShowContent(row) {
+                debugger;
                 this.dialogVisible = true;
                 // this.dialogData[index] = index;
-                this.dialogData = row;
+                this.dialogData['riskName'] = row.riskName;
             },
             /**
              * 获取当前弹出框title
