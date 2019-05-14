@@ -1,19 +1,33 @@
 <template>
     <div>
         <div>
-            表格
             <el-table
             v-if="tableData && tableData.length > 0"
             :data="tableData"
             border
             stripe
+            height="80%"
+            :header-cell-style="headerRowStyle"
             style="width: 100%">
                 <template v-for="(item,index) in columns">
                     <el-table-column
+                        :align="item.align || left"
                         :key="index"
+                        :show-overflow-tooltip="true"
                         :prop="item.id"
                         :label="item.text"
-                        width="180">
+                        :width="item.width">
+                        <template slot-scope="scope">
+                            <span v-if="item.id == 'operation'">
+                            </span>
+                            <div v-else-if="item.htmlType && scope.row.htmlType && scope.row.htmlType == 'text'" class="textClass">
+                                {{ scope.row[scope.column.property] }}
+                            </div>
+                            <span v-else>
+                                <!-- <el-button @click="elButton(scope)"></el-button> -->
+                                {{ scope.row[scope.column.property] }}
+                            </span>
+                        </template>
                     </el-table-column>
                 </template>
             </el-table>
@@ -27,7 +41,11 @@ export default {
     name: "table",
     props:["columns","tableData"],
     data() {
-        return {}
+        return {
+            headerStyle:{
+                background:rgb(240, 248, 255)
+            }
+        }
     },
     /**
      * 组件生成的回调。
@@ -39,9 +57,27 @@ export default {
      * 页面渲染之后的回调。
      */
     mounted () {},
-    methods: {}
+    methods: {
+        headerRowStyle(row){
+            debugger;
+            let me = this;
+            if(row.rowIndex == 0){
+                return 'background:rgb(240, 248, 255)';
+            }else {
+                return "";
+            }
+        },
+        elButton (scope) {
+            debugger;
+            console.log(scope)
+        }
+    }
 };
 </script>
-<style>
-    
+<style scope>
+    .textClass {
+        background-color: red;
+        border-radius: 20px;
+        color: #fff;
+    }
 </style>

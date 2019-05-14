@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label>部门选择</label>
+        <label class="labelClass">部门选择：</label>
         <el-select v-model="value" placeholder="请选择">
             <el-option
             v-for="item in options"
@@ -43,3 +43,8 @@ export default {
     }
 }
 </script>
+<style scope>
+    .labelClass {
+        margin-right: 10px;
+    }
+</style>

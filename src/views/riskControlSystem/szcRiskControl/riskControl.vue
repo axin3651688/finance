@@ -3,11 +3,17 @@
         <div>
             <el-tabs>
                 <el-tab-pane label="风险批示">
-                    keyi
-                    <stable :tableData.sync="tableData" :columns.sync="columns"></stable>
+                    <div class="selectClass">
+                        <RiskSelect/>
+                    </div>
+                    <div>
+                        <stable :tableData.sync="tableData" :columns.sync="columns"></stable>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane label="汇总批示">
-
+                    <div>
+                        <treeTable :data.sync="treeData" :columns.sync="columns"></treeTable>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -16,18 +22,24 @@
 </template>
 <script>
 
-import stable from "@v/riskControlSystem/publicRiskControl/table/table"
+import stable from "@v/riskControlSystem/publicRiskControl/table/table";
+import RiskSelect from "./riskSelect";
+import treeTable from "./../publicRiskControl/treeTable/index"
+
 
 export default {
 
     name: "riskControl",
     components:{
-        stable
+        stable,
+        RiskSelect,
+        treeTable
     },
     data() {
         return {
             tableData:[],
-            columns:[]
+            columns:[],
+            treeData:[]
         }
     },
     /**
@@ -41,6 +53,7 @@ export default {
             debugger;
             if(res.data.code == 200) {
                 me.tableData = res.data.rows;
+                me.treeData = res.data.rows;
                 me.columns = res.data.columns
             }
         });
@@ -52,6 +65,8 @@ export default {
     methods: {}
 };
 </script>
-<style>
-    
+<style scope>
+    .selectClass {
+        margin-bottom: 10px;
+    }
 </style>
