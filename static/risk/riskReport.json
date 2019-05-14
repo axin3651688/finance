@@ -32,36 +32,7 @@
         }
     ],
     "rows": [
-        // {
-        //     "gsmc": "(1001)天津食品集团有限公司(合并)",
-        //     "bgzt": "1",
-        //     "children": [
-        //         {
-        //             "gsmc": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
-        //             "bgzt": "1",
-        //             "children": [
-        //                 {
-        //                     "gsmc": "(10010101)天津农垦渤海农业集团有限公司(合并)",
-        //                     "bgzt": "1",
-        //                     "children": [
-        //                         {
-        //                             "gsmc": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
-        //                             "bgzt": "1"
-        //                         },
-        //                         {
-        //                             "gsmc": "(1001010102)天津农垦龙天畜牧养殖有限公司",
-        //                             "bgzt": "1"
-        //                         }
-        //                     ]
-        //                 },
-        //                 {
-        //                     "gsmc": "(10010102)天津市宝德包装有限公司",
-        //                     "bgzt": "0"
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // }
+        
     ],
     "items": [
         {
@@ -77,7 +48,6 @@
                         "marginTop": "10px"
                     },
                     "handler": function(data, btn, $vue){
-                        // debugger
                         if(data && data.length>0){
                             data.forEach(res => {
                                 res._expanded = true ; 
@@ -95,7 +65,6 @@
                         "marginTop": "10px"
                     },
                     "handler": function(data, btn, $vue){
-                        // debugger
                         if(data && data.length>0){
                             data.forEach(res => {
                                 res._expanded = false ; 
@@ -111,21 +80,34 @@
                 {
                     "id": 1,
                     "text": "上报",
+                    "show": true,
                     "icon": "iconfont icon-tianjiashangbao"
                 },
                 {
                     "id": 2,
                     "text": "查看",
-                    "icon": "iconfont icon-chakan-copy"
+                    "show": true,
+                    "icon": "iconfont icon-chakan-copy",
+                    "handler": function(btn, $this){ debugger
+                        let params = {
+                            year: $this.$store.getters.year,        // 年
+                            month:$this.$store.getters.month,       // 月
+                            company: $this.$store.getters.company   // 公司
+                        }
+                        // 子组件向父组件传值
+                        $this.$emit("showreportdetailp", params);
+                    }
                 },
                 {
                     "id": 3,
                     "text": "退回",
+                    "show": true,
                     "icon": "iconfont icon-tuihui"
                 },
                 {
                     "id": 4,
                     "text": "催报",
+                    "show": true,
                     "icon": "iconfont icon-clock"
                 }
             ],
