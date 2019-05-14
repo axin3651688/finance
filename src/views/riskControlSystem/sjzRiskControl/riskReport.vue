@@ -1,24 +1,26 @@
 <template>
-   <!-- name: sjz
-    风险报告页面
+   <!-- 
+       name: sjz
+        风险报告页面 
+    -->
     <div id="riskReport">
         <ai-module :jsonAdress="jsonAdress" :tableHeight="tableHeight"></ai-module>
-    </div>-->
+    </div>
 </template>
 <script>
 // 引用公共组件方法
-// import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
+import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
 export default {
     name: 'treeTableDemo',
     components: {
-        // aiModule
+        aiModule
     },
     data(){
         return {
-            // // json地址
-            // jsonAdress: "cnbi/risk/riskReport.json",
-            // // 高度
-            // tableHeight: 130
+            // json地址
+            jsonAdress: "cnbi/risk/riskReport.json",
+            // 高度
+            tableHeight: 130
         }
     },
     created(){

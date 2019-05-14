@@ -4,35 +4,50 @@
     树表的公用组件
 -->
     <div id="riskReport">
+        <!-- 按钮 -->
+        <el-button-group>
+            <el-button 
+            v-if="item.toolbar && item.toolbar.length>0"
+            v-show="!isShow"
+            v-for="(btn, index) in item.toolbar"
+            :key="btn.id" 
+            type="primary"
+            style="margin: 10px 0px 10px 0"
+            @click="btnClick(btn)"
+            plain 
+            :icon="btn.icon">
+                {{ btn.text }}
+            </el-button>
+        </el-button-group>
         <!-- 树表组件 -->
         <tree-table 
         v-show="!isShow"
         :columns="columns" 
         :data="data" 
-        :item="item" 
-        :tableHeight="tableHeight" 
-        @listenToChildEvent="showFromChild"
-        @showreportdetailp="showreportdetailp">
+        :item="item"
+        @showreportdetailp="showreportdetailp"  
+        >
         </tree-table>
+        <!-- 跳转报告页面 -->
+        <div v-show="isShow">
+            <report-component :dataSource="dataSource"></report-component>
+        </div>
         <!-- dialog弹出框 -->
-        <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
+        <!-- <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
             <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
             <dialog-component :treeName="treeName"></dialog-component>
-        </el-dialog>
-        <div v-show="isShow">
-            <report-component></report-component>
-        </div>
+        </el-dialog>--> 
     </div>
     
 </template>
 <script>
 // 引用树表
-import treeTable from "@v/riskControlSystem/publicRiskControl/treeTable";
+import treeTable from "@v/riskControlSystem/sjzRiskControl/treeTable";
 // 引用接口（获取数据）
 import { findThirdPartData, findDesignSource } from "~api/interface";
 // 引用弹出框组件
 import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
-
+// 引用跳转的报告页面
 import reportComponent from "@v/riskControlSystem/publicRiskControl/reportComponent"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -53,6 +68,8 @@ export default {
             title: "",
             columns:[],
             data:[],
+            item: {},
+            dataSource: {},
             biYear: "",
             biMonth: "",
             biCompany: ""
@@ -87,15 +104,21 @@ export default {
         /** 树表子组件 传过来 的值
          *  可点击的列 点击之后跳转到父组件的 showFromChild的方法
          */ 
-        showFromChild(data){
-            // debugger
-            let me = this ;
-            me.dialogVisible = true ;
-            me.title = "关于【" + data + "】的追踪" ; 
-            me.treeName = me.item.id ;
-        },
-        showreportdetailp(){
-            this.isShow = true;
+        // showFromChild(data){
+        //     // debugger
+        //     let me = this ;
+        //     me.dialogVisible = true ;
+        //     me.title = "关于【" + data + "】的追踪" ; 
+        //     me.treeName = me.item.id ;
+        // },
+        /** 
+         * 树表子组件 传过来 的值
+         * 可点击的列 点击之后跳转到父组件的 showreportdetailp 方法
+         * 组件引用： reportComponent.vue
+         */ 
+        showreportdetailp(params){
+            this.isShow = true ;
+            this.dataSource = params ;
         },
         // 获取树表的json信息
         setTreeTableRequest(){ 
@@ -155,7 +178,7 @@ export default {
 
         },
         // 取数总接口
-        setData(item, params){
+        setData(item, params){ 
             let me = this ;
             findThirdPartData(params).then(res => { 
                 me.queryDataAfter(item, res.data.data);
@@ -248,6 +271,12 @@ export default {
                     let tt = rootItem.children[i];
                     me.tranformData(dataArr, tt);
                 }
+            }
+        },
+        // 按钮功能: 由于按钮的功能都不一样，所以写在json里的每个按钮方法里，自由发挥。
+        btnClick(btn){
+            if(btn.handler && typeof btn.handler == "function"){
+                return btn.handler(this.data, btn, this);
             }
         }
     }
