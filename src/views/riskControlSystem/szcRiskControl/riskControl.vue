@@ -34,7 +34,7 @@
 </template>
 <script>
 
-import stable from "@v/riskControlSystem/publicRiskControl/table/table";
+import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
 import RiskSelect from "./riskSelect";
 import treeTable from "./../publicRiskControl/treeTable/treeTable"
 import reportContent from "../publicRiskControl/reportComponent"
@@ -179,7 +179,7 @@ export default {
     }
 };
 </script>
-<style scope>
+<style scoped>
     .selectClass {
         margin-bottom: 10px;
     }
