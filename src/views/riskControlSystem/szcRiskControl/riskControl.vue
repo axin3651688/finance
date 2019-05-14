@@ -8,7 +8,7 @@
                         <RiskSelect/>
                     </div>
                     <div>
-                        <stable :tableData.sync="tableData" :columns.sync="columns"></stable>
+                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:changeShowContent="clickItemName"></stable>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="汇总批示" name="second">
@@ -29,7 +29,17 @@
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <div></div>
+        <div>
+            <el-dialog
+                title="【风险名称】批示"
+                :visible.sync="dialogVisible"
+                width="56%"
+                top="50px">
+                <div>
+                    <dialogContent></dialogContent>
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -38,6 +48,7 @@ import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
 import RiskSelect from "./riskSelect";
 import treeTable from "./../publicRiskControl/treeTable/treeTable"
 import reportContent from "../publicRiskControl/reportComponent"
+import dialogContent from '../publicRiskControl/dialogComponent'
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 
 
@@ -48,7 +59,8 @@ export default {
         stable,
         RiskSelect,
         treeTable,
-        reportContent
+        reportContent,
+        dialogContent
     },
     data() {
         return {
@@ -57,7 +69,8 @@ export default {
             treeData:[],
             activeName:"second",
             treeTableShow:true,
-            reportCompanyName:"天津食品有限公司"
+            reportCompanyName:"天津食品有限公司",
+            dialogVisible:false
         }
     },
     /**
@@ -175,6 +188,15 @@ export default {
             debugger;
             let me = this;
             me.treeTableShow = true;
+        },
+        /**
+         * 风险名称项目的点击事件
+         * @author szc 2019年5月14日15:26:03
+         */
+        clickItemName (row) {
+            debugger;
+            let me = this;
+            me.dialogVisible = true;
         }
     }
 };
@@ -182,5 +204,9 @@ export default {
 <style scoped>
     .selectClass {
         margin-bottom: 10px;
+    }
+    .riskNameContent {
+        max-height: 600px;
+        overflow: auto;
     }
 </style>

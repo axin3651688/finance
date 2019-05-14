@@ -15,7 +15,7 @@
                         :key="index"
                         :show-overflow-tooltip="true"
                         :prop="item.id"
-                        :header-align="center"
+                        header-align="center"
                         :label="item.text"
                         :width="item.width">
                         <template slot-scope="scope">
