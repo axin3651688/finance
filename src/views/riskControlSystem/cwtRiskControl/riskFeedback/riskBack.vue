@@ -34,7 +34,6 @@
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
                         :dialogData="this.dialogData"
-                        :dialogType="this.dialogType"
                 >
                 </dialog-component>
             </el-dialog>
@@ -43,7 +42,7 @@
 </template>
 
 <script>
-    import dialogComponent from '../publicRiskControl/dialogComponent'
+    import dialogComponent from '../../publicRiskControl/dialogComponent'
     import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
     export default {
         name: "riskBack",
@@ -54,9 +53,9 @@
         data() {
             return {
                 dialogData:{
+                    dialogRiskType:"riskBack",
                     riskName:""
                 },
-                dialogType:'riskBack',
                 dialogVisible: false,
                 tableData:[],
                 columns:[],

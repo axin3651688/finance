@@ -2,20 +2,49 @@
     <div>
         <div class="dialog-component">
             <div class="risk-reference">
-                <a style="color: dodgerblue;">风险矩阵参照</a>
+                <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
+            </div>
+            <div class="risk-reference">
+                <a style="color: dodgerblue;"v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
             </div>
             <div class="form-content">
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
 
-                    <risk-header :formData="formData"></risk-header>
-                    <risk-conventional :formData="formData"></risk-conventional>
-                    <risk-instruction :formData="formData"></risk-instruction>
-                    <risk-foot></risk-foot>
+                    <!--弹出层头部-->
+                    <risk-header
+                            :formData="formData"
+                    >
+                    </risk-header>
+
+                    <!--弹出层中间的三个公共部分-->
+                    <risk-conventional
+                            :formData="formData"
+                    >
+                    </risk-conventional>
+
+                    <!--弹出层关于领导批示的部分-->
+                    <risk-instruction
+                            v-show="dialogData['dialogRiskType'] === 'riskBack'"
+                            :formData="formData"
+                    >
+                    </risk-instruction>
+
+                    <!--弹出层有关风险追踪的进度的部分-->
+                    <risk-schedule
+                            v-show="dialogData['dialogRiskType'] === 'riskTrack'"
+                            :formData="formData"
+                    >
+                    </risk-schedule>
+
+                    <!--弹出层底部按钮-->
+                    <risk-foot
+                            :formData="formData"
+                    >
+                    </risk-foot>
 
                 </el-form>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -24,15 +53,16 @@
     import riskHeader from './riskFeedComponents/riskHeader'
     import riskConventional from './riskFeedComponents/riskConventional'
     import riskInstruction from './riskFeedComponents/riskInstruction'
+    import riskSchedule from './riskFeedComponents/riskSchedule';
     import riskFoot from './riskFeedComponents/riskFoot'
 
     export default {
         name: "dialogComponent",
         components: {
-
             riskHeader,
             riskConventional,
             riskInstruction,
+            riskSchedule,
             riskFoot
         },
         props: {

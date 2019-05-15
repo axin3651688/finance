@@ -20,8 +20,8 @@
 </template>
 
 <script>
-    import treeTable from '../publicRiskControl/treeTable/index'
-    import reportComponent from '../publicRiskControl/reportComponent'
+    import treeTable from '../../publicRiskControl/treeTable/index'
+    import reportComponent from '../../publicRiskControl/reportComponent'
 
     export default {
         name: 'reportBack',

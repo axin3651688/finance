@@ -36,7 +36,9 @@
         components: {
             showPersonnelList
         },
-        props: {},
+        props: {
+            formData: Object
+        },
         data() {
             return {
                 personnelListShow: false

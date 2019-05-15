@@ -22,6 +22,7 @@
                             <div v-if="item.id === 'operation'">
                                 <el-button
                                         size="mini"
+                                        @click="handleClickBtn(scope.$index,scope.row)"
                                 >
                                     {{ scope.row[scope.column.property] }}
                                 </el-button>
@@ -102,16 +103,24 @@
                 debugger;
                 let me = this;
                 if(row.levelNum){
-                    if(row.levelNum == "1"){
+                    if(row.levelNum === "1"){
                         return "textClass01";
-                    }else if (row.levelNum == "2") {
+                    }else if (row.levelNum === "2") {
                         return "textClass02";
-                    }else if (row.levelNum == "3") {
+                    }else if (row.levelNum === "3") {
                         return "textClass03";
                     }
                 }else {
                     return "";
                 }
+            },
+            /**
+             * 操作列里面的按钮点击事件
+             * @param index
+             * @param row
+             */
+            handleClickBtn(index, row){
+                this.$emit("showRiskSingleTrack",row);
             }
         }
     };
