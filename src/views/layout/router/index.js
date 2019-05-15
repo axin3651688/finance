@@ -323,6 +323,7 @@ const router = new Router({
 // 路由守卫
 
 router.beforeEach((to, from, next) => {
+    debugger;
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;
     if (!authorization) {

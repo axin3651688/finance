@@ -372,7 +372,11 @@ export default {
             let me = this;
             inquire(params).then(res => {
                 if(res.data.code == 200){
-                    me.columns = res.data.data.columns;
+                    let columns = res.data.data.columns,arr = ['id','id_'];
+                    columns = columns.filter(item => {
+                        return arr.indexOf(item.id) == -1;
+                    });
+                    me.columns = columns;
                     me.tableData = res.data.data.rows;
                 }
             });

@@ -4,8 +4,9 @@ import {
     Loading
 } from 'element-ui';
 import store from '@/store';
-// import router from '@v/layout/router'
-
+// import routerNew from './../views/layout/router'
+// import vue from './../views/layout/main'
+let met = this;
 let loading;
 axios.defaults.timeout = 10000;
 // request.defaults.headers.common['Authentication'] = store.state.user.authorization;
@@ -54,7 +55,7 @@ axios.interceptors.response.use(response => {
     // 错误提醒
     endLoading();
     console.error(error);
-
+    let me = this;
     // 获取错误状态码
     const {
         status
@@ -66,6 +67,13 @@ axios.interceptors.response.use(response => {
         // todo 有bug暂时无法解决
         // 跳转到登陆页面
         // router.push("/login");
+    }
+    if (status == 911) {
+        localStorage.removeItem('authorization');
+        // Message({
+        //     message: "没有登录！",
+        //     type: "warning"
+        // })
     }
     return Promise.reject(error);
 

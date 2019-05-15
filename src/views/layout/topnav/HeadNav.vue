@@ -168,6 +168,7 @@ import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
 import { logout } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
+import request from 'utils/http'
 import {
   smallBell,
   smallBellCount,
@@ -258,7 +259,8 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    // setInterval(() => this.getMessage(),10000);
+    let interval = setInterval(() => this.getMessage(),10000);
+    this.interval = interval;
   },
   computed: {
     ...mapGetters([
@@ -415,23 +417,78 @@ export default {
      * @author szc 2019年4月2日19:28:10
      */
     getMessage(){
-      let me = this,suser = this.$store.getters.user.user.userName;
-      smallBellCount(suser).then(res => {
+      let me = this,suser = this.$store.getters.user.user.userName,router = me.$router;
+      request({
+        url: '/zjb/sys/Msg/query_nolook_count?user=' + suser,
+        method: 'get',
+        validateStatus: function(status) {
+            if (status == 999) {
+              window.clearInterval(me.interval);
+              me.relanding();
+            }else if(status == 911) {
+              me.$message({
+                message:"用户未登录！",
+                type:"warning"
+              });
+              window.clearInterval(me.interval);
+              router.push("/login");
+            }else if (status == 912) {
+              window.clearInterval(me.interval);
+              me.dropLine();
+            }
+            return status; // 默认的
+        },
+      }).then(res => {
         if(res.data.code == 200){
-          console.log("ddddddd",res.data);
           this.messageValue = res.data.data;
         }
       });
-      // this.axios.get("/cnbi/json/source/tjsp/szcJson/message.json").then(res => {
+      // smallBellCount.call(me,suser).then(res => {
+      //   debugger;
       //   if(res.data.code == 200){
-      //     this.messageValue > 100? this.messageValue = 0:"";
-      //     this.messageValue += res.data.data.count;
-      //     console.log("一直在跳。。。");
-      //   }else {
-      //     console.error("查询消息记录出错。");
+      //     console.log("ddddddd",res.data);
+      //     this.messageValue = res.data.data;
+      //   }else if (res.data.code == 999) {
+      //     me.relanding();
       //   }
       // });
-      // console.log("外面也一直在跳。。。(这个定时器写在headNav.vue中)");
+    },
+    /**
+     * 掉线操作。
+     * @author szc 2019年5月15日09:22:57
+     */
+    dropLine () {
+      let me = this;
+      this.$confirm('你的账号长时间没有操作，已掉线，需要重新登录！', '提示', {
+        confirmButtonText: '确定',
+        // cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        me.$router.push("/login");
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '出错了！！！'
+        });          
+      });
+    },
+    /**
+     * 重新登录
+     */
+    relanding () {
+      let me = this;
+      this.$confirm('你的账号已在别处登录，如非本人操作可能你的账号信息已泄露，请修改密码，重新登录！', '提示', {
+        confirmButtonText: '确定',
+        // cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        me.$router.push("/login");
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '出错了！'
+        });          
+      });
     },
     /**
      * 点击消息展示上报的表的条目内容信息。

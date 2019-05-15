@@ -775,6 +775,14 @@ export default {
     reportHandle () {
       // return;
       let me = this;
+      //判断如果没有保存，提示他去保存。
+      if(me.tableData && me.tableData.length > 0){
+        me.$message({
+          message:"请先保存填写的数据，再上报！",
+          type:"warning"
+        });
+        return;
+      }
       //判断有没有选择上报的表。
       // if(!me.templateId){
       //   this.$message({
