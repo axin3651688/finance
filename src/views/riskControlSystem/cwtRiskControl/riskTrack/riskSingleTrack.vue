@@ -15,7 +15,7 @@
             <single-table
                 :tableData="tableData"
                 :columns="columns"
-                @showRiskSingleTrack="showRiskSingleTrack"
+                @changeShowContent="showRiskSingleTrack"
             >
             </single-table>
         </div>

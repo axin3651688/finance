@@ -19,14 +19,20 @@
                             :label="item.text"
                             :width="item.width">
                         <template slot-scope="scope">
-                            <div v-if="item.id === 'operation'">
-                                <el-button
-                                        size="mini"
-                                        @click="handleClickBtn(scope.$index,scope.row)"
-                                >
-                                    {{ scope.row[scope.column.property] }}
-                                </el-button>
-                            </div>
+
+                            <template v-if="item.id  === 'operation'">
+                                <template v-for="(it,index) in scope.row[item.id]">
+                                    <el-button
+                                            v-if="it.btnShow"
+                                            :key="index"
+                                            size="mini"
+                                            @click="handleClickBtn(scope,it,index)"
+                                    >
+                                        {{ it.text }}
+                                    </el-button>
+                                </template>
+                            </template>
+
                             <div
                                     v-else-if="item.htmlType && scope.row.htmlType && scope.row.htmlType === 'text'"
                                     :class="textClassHandler(scope.row)"
@@ -88,40 +94,46 @@
                 }
             },
             /**
-             * 关于某个风险的反馈弹出按钮
+             *
+             * @param scope
+             * @param it
              * @param index
-             * @param row
              */
-            riskDetailShow(index, row) {
-                this.$emit("changeShowContent", row);
+            handleClickBtn(scope, it, index) {
+                if (it.id === '0') {
+                    //反馈操作
+                    alert('反馈操作')
+                } else if (it.id === '1') {
+                    //查看操作
+                    this.$emit("changeShowContent", scope.row);
+                } else if (it.id === '2') {
+                    //退回流程操作
+                    alert('退回流程操作')
+                } else if (it.id === '3') {
+                    //提醒操作
+                    alert('提醒操作')
+                }
             },
 
             elButton(scope) {
                 console.log(scope)
             },
-            textClassHandler (row) {
+            textClassHandler(row) {
                 debugger;
                 let me = this;
-                if(row.levelNum){
-                    if(row.levelNum === "1"){
+                if (row.levelNum) {
+                    if (row.levelNum === "1") {
                         return "textClass01";
-                    }else if (row.levelNum === "2") {
+                    } else if (row.levelNum === "2") {
                         return "textClass02";
-                    }else if (row.levelNum === "3") {
+                    } else if (row.levelNum === "3") {
                         return "textClass03";
                     }
-                }else {
+                } else {
                     return "";
                 }
-            },
-            /**
-             * 操作列里面的按钮点击事件
-             * @param index
-             * @param row
-             */
-            handleClickBtn(index, row){
-                this.$emit("showRiskSingleTrack",row);
             }
+
         }
     };
 </script>
@@ -132,16 +144,19 @@
         border-radius: 20px;
         color: #fff;
     }
+
     .textClass02 {
         background-color: rgb(255, 187, 0);
         border-radius: 20px;
         color: #fff;
     }
+
     .textClass03 {
         background-color: rgb(48, 172, 48);
         border-radius: 20px;
         color: #fff;
     }
+
     .textClass04 {
         background-color: red;
         border-radius: 20px;
