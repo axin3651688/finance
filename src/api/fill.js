@@ -2,7 +2,7 @@ import request from 'utils/http'
 import {
     id
 } from 'postcss-selector-parser';
-
+// import routerNew from './../views/layout/router'
 export function fill() {
     return request({
         url: '/fill/query',
@@ -103,7 +103,6 @@ export function sendFillMessage(data) {
  * @author szc 2019年4月30日13:37:52
  */
 export function saveReport(params) {
-    debugger;
     return request({
         url: '/zjb/zjb/save_fill_message',
         method: 'post',
@@ -181,14 +180,32 @@ export function smallBell(params) {
     })
 }
 /**
- * 消息条数。
+ * 消息条数。(暂时没用，2019年5月15日09:43:01)
  * @author szc 2019年5月8日08:59:35
  * 
  */
 export function smallBellCount(suser) {
-    return request({
+    let me = this,
+        router = me.$router;
+    return request.call(me, {
         url: '/zjb/sys/Msg/query_nolook_count?user=' + suser,
-        method: 'get'
+        method: 'get',
+        transformResponse: [function(data) {
+            debugger
+            return data;
+        }],
+        validateStatus: function(status) {
+            debugger;
+            if (status == 911) {
+                me.$message({
+                    message: "dddd",
+                    type: "warning"
+                });
+                me.clearInterval(interval);
+                router.push("/login");
+            }
+            return status; // 默认的
+        },
     })
 }
 /**

@@ -1,0 +1,140 @@
+{
+    "code": 200,
+    "id": "riskControl",
+    "text": "风险管控",
+    "columns": [{
+            "text": "公司名称",
+            "value": "companyName",
+            "align": "left"
+        },
+        {
+            "text": "批示状态",
+            "value": "status",
+            "width": 200
+        },
+        {
+            "text": "上报人",
+            "value": "reportUser",
+            "width": 200
+        },
+        {
+            "text": "上报时间",
+            "value": "reportTime",
+            "width": 200
+        },
+        {
+            "text": "操作",
+            "value": "operation"
+        }
+    ],
+    "rows": [{
+        "scode": "1001",
+        "companyName": "(1001)天津食品集团有限公司(合并)",
+        "status": "未批示",
+        "reportUser": "诸葛亮",
+        "reportTime": "2018/12/12",
+        "operation": [{
+                "id": "0",
+                "btnShow": true,
+                "text": "批示"
+            },
+            {
+                "id": "1",
+                "btnShow": true,
+                "text": "查看"
+            },
+            {
+                "id": "2",
+                "btnShow": true,
+                "text": "退回"
+            },
+            {
+                "id": "3",
+                "btnShow": true,
+                "text": "催报"
+            }
+        ],
+        "children": [{
+            "scode": "100101",
+            "companyName": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+            "status": "未批示",
+            "reportUser": "诸葛亮",
+            "reportTime": "2018/12/12",
+            "operation": [{
+                    "id": "0",
+                    "btnShow": true,
+                    "text": "批示"
+                },
+                {
+                    "id": "1",
+                    "btnShow": true,
+                    "text": "查看"
+                },
+                {
+                    "id": "2",
+                    "btnShow": true,
+                    "text": "退回"
+                },
+                {
+                    "id": "3",
+                    "btnShow": true,
+                    "text": "催报"
+                }
+            ],
+            "children": [{
+                    "scode": "10010101",
+                    "companyName": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+                    "status": "未批示",
+                    "reportUser": "诸葛亮",
+                    "reportTime": "2018/12/12",
+                    "operation": [{
+                            "id": "0",
+                            "btnShow": true,
+                            "text": "批示"
+                        },
+                        {
+                            "id": "1",
+                            "btnShow": true,
+                            "text": "查看"
+                        },
+                        {
+                            "id": "2",
+                            "btnShow": true,
+                            "text": "退回"
+                        },
+                        {
+                            "id": "3",
+                            "btnShow": true,
+                            "text": "催报"
+                        }
+                    ],
+                    "children": [{
+                            "scode": "1001010101",
+                            "companyName": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                            "status": "未批示",
+                            "reportUser": "诸葛亮",
+                            "reportTime": "2018/12/12",
+                            "operation": "反馈"
+                        },
+                        {
+                            "scode": "1001010102",
+                            "companyName": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                            "status": "未批示",
+                            "reportUser": "诸葛亮",
+                            "reportTime": "2018/12/12",
+                            "operation": "关闭"
+                        }
+                    ]
+                },
+                {
+                    "scode": "10010102",
+                    "companyName": "(10010102)天津市宝德包装有限公司",
+                    "status": "未批示",
+                    "reportUser": "诸葛亮",
+                    "reportTime": "2018/12/12",
+                    "operation": "反馈"
+                }
+            ]
+        }]
+    }]
+}
