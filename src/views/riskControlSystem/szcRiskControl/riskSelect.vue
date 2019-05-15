@@ -16,7 +16,8 @@ export default {
     name:"riskSelect",
     data () {
         return {
-            options: []
+            options: [],
+            value:""
         }
     },
     /**

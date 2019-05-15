@@ -4,7 +4,8 @@
 * 树表渲染，列项有按钮的树表
 */
 <template>
-    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
+    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs"
+    :header-cell-style="headerRowStyle">
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
@@ -20,6 +21,7 @@
                 :key="column.value" 
                 :label="column.text"
                 :width="column.width"
+                header-align="center"
                 :align="column.align || 'center'">
                 <template slot-scope="scope">
                     <span v-if="index === 0" 
@@ -42,7 +44,8 @@
                             <el-button
                                 v-if="it.btnShow"
                                 :key="indx"
-                                size="mini">
+                                size="mini"
+                                @click="btnHandler(scope,it,indx)">
                             {{ it.text }}
                             </el-button>
                         </template>
@@ -96,6 +99,18 @@
             }
         },
         methods: {
+            /**
+             * 行样式
+             */
+            headerRowStyle (row) {
+                debugger;
+                let me =this;
+                if(row.rowIndex == 0){
+                    return 'background:rgb(240, 248, 255)';
+                }else {
+                    return "";
+                }
+            },
             showRow: function (row) {
                 const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
                 row.row._show = show;
@@ -116,7 +131,17 @@
              */
             showReportDetail() {
                 this.$emit('showreportdetailp');
-            }
+            },
+            /**
+             * 按钮点击事件 所有的
+             * @author szc 2019年5月14日11:20:27
+             * 0:批示，1:查看，2:退回，3:催报
+             */
+            btnHandler (scope,btnItem,index) {
+                debugger;
+                let me = this;
+                me.$emit("buttonHandler",scope,btnItem)
+            }   
         }
     }
 </script>
