@@ -158,9 +158,14 @@ export default {
       this.loadRemoteSource(this.dialogData);
     }
   },
-
+  mounted () {
+    let device = this.device;
+    if(device == "mobile"){
+      this.showDims.company = false;
+    }
+  },
   computed: {
-    ...mapGetters(["year", "month", "company", "module_api", "conversion"])
+    ...mapGetters(["year", "month", "company", "module_api", "conversion","device"])
   },
   watch: {
     module_api(newid) {
@@ -295,6 +300,7 @@ export default {
         debugger;
         this.ShowDims(bean.showDims);
       } else {
+        
         this.ShowDims({
           company: true,
           year: true,
@@ -302,6 +308,19 @@ export default {
           day: false,
           conversion: false
         });
+      }
+      if(this.device == "mobile"){
+        if(this.ShowDims.company){
+          this.ShowDims.company = false;
+        }else {
+          this.ShowDims({
+            company: false,
+            year: true,
+            month: true,
+            day: false,
+            conversion: false
+          })
+        }
       }
       return this;
     },
