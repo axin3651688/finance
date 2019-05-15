@@ -116,18 +116,17 @@ const router = new Router({
                     path: '/riskFeedback',
                     name: 'riskFeedback',
                     component: () =>
-                        import ('@v/riskControlSystem/cwtRiskControl/riskFeedback.vue')
+                        import ('@v/riskControlSystem/cwtRiskControl/riskFeedback/riskFeedback.vue')
                 },
-                //风险批示
+                //风险追踪
                 {
                     path: '/riskInstructions',
                     name: 'riskInstructions',
                     component: () =>
-                        import ('@v/riskControlSystem/publicRiskControl/public.vue')
+                        import ('@v/riskControlSystem/cwtRiskControl/riskTrack/riskTrack.vue')
                 }
             ]
         },
-
         {
             path: '/',
             name: '各种charts',
@@ -324,7 +323,6 @@ const router = new Router({
 // 路由守卫
 
 router.beforeEach((to, from, next) => {
-    debugger;
     let bean = getClientParams();
     let authorization = bean.authorization || bean.tikct || bean.token;
     if (!authorization) {
