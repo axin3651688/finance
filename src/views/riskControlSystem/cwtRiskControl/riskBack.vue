@@ -113,7 +113,6 @@
              * @param row
              */
             changeShowContent(row) {
-                debugger;
                 this.dialogVisible = true;
                 // this.dialogData[index] = index;
                 this.dialogData['riskName'] = row.riskName;

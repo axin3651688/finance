@@ -91,12 +91,10 @@
              * @param row
              */
             riskDetailShow(index, row) {
-                debugger;
                 this.$emit("changeShowContent", row);
             },
 
             elButton(scope) {
-                debugger;
                 console.log(scope)
             }
         }
