@@ -43,7 +43,7 @@
             </el-table-column>
         </el-table>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <span v-if="modalConfig.footConfig && modalConfig.footConfig.footBtn" slot="footer" class="dialog-footer">
         <el-button type="primary" @click="modalConfig.dialogVisible = false">取消</el-button>
         <el-button @click="confirmHandle">确认</el-button>
     </span>
@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             filterText:"",
+            footBtn: true,
             // dialogVisible: modalConfig.dialogVisible,
             datas:[],
             props:{

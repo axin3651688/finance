@@ -611,7 +611,8 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
-      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState;
+      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
+          spcode = this.$store.getters.treeInfo.spcode;
       if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){
         me.buttonsOperation = [];
         return
@@ -633,7 +634,7 @@ export default {
           me.buttonsOperation = buttons;
         }else {
           let arr0 = ['2','1','5','0','4'];
-          if(me.reportHeader != "请选择"){
+          if(me.reportHeader != "请选择" && spcode != "0"){
             arr0 = ['0','4'];
           }
           buttons = buttons.filter(item => {
@@ -825,6 +826,9 @@ export default {
             }]
           }
         ],
+        footConfig:{
+          footBtn:true
+        },
         props:{
           label: "label",
           children: "children"
@@ -867,7 +871,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
       if(nodes && nodes.length == 0){
