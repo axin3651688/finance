@@ -15,20 +15,39 @@
                 </div>
             </div>
             <div class="container-right">
-                <report-header :reportCompanyNameShow="reportCompanyNameShow"></report-header>
-                <report-conventional :reportCompanyNameShow="reportCompanyNameShow"></report-conventional>
-                <report-instruction v-show="this.instructionShow"></report-instruction>
-                <report-schedule v-show="this.scheduleShow"></report-schedule>
+                <!--报告跳转界面头部内容-->
+                <report-header
+                        :reportCompanyNameShow="this.reportData['reportCompanyName']"
+                >
+                </report-header>
+
+                <!--报告跳转界面中间公共部分内容-->
+                <report-conventional
+                        :reportCompanyNameShow="this.reportData['reportCompanyName']"
+                >
+                </report-conventional>
+
+                <!--报告跳转界面领导批示的内容-->
+                <report-instruction
+                        v-show="this.instructionShow"
+                >
+                </report-instruction>
+
+                <!--报告跳转界面关于追踪的进度的内容-->
+                <report-schedule
+                        v-show="this.scheduleShow"
+                >
+                </report-schedule>
 
 
                 <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
                     <el-button @click="sbRiskFeed">反馈上报</el-button>
                 </div>
 
-                <div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">
-                    <el-button type="primary" @click="exportBtn">导出</el-button>
-                    <el-button @click="closeBtn">关闭</el-button>
-                </div>
+                <!--<div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">-->
+                    <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
+                    <!--<el-button @click="closeBtn">关闭</el-button>-->
+                <!--</div>-->
 
 
             </div>
@@ -56,17 +75,15 @@
             showPersonnelList
         },
         props: {
-            reportCompanyName: String
+            reportData: Object
         },
         data: function () {
             return {
-                reportCompanyNameShow: this.reportCompanyName,
                 personnelListShow: false,
 
-
                 //控制显示哪个组件的flag
-                instructionShow: false,
-                scheduleShow: true,
+                instructionShow: this.reportData['reportType'] === 'riskFeedCom',
+                scheduleShow: this.reportData['reportType'] === 'riskTrackCom',
 
 
                 leftNode: {
@@ -99,18 +116,19 @@
             sbRiskFeed() {
                 this.personnelListShow = !this.personnelListShow;
             },
-            /**
-             * 导出按钮
-             */
-            exportBtn() {
-                alert('导出成功')
-            },
-            /**
-             * 关闭按钮
-             */
-            closeBtn() {
-                alert('关闭事件')
-            }
+
+            // /**
+            //  * 导出按钮
+            //  */
+            // exportBtn() {
+            //     alert('导出成功')
+            // },
+            // /**
+            //  * 关闭按钮
+            //  */
+            // closeBtn() {
+            //     alert('关闭事件')
+            // }
         }
     }
 </script>

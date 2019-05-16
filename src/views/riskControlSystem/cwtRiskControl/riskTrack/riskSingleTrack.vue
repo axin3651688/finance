@@ -13,9 +13,9 @@
         </div>
         <div class="track-table">
             <single-table
-                :tableData="tableData"
-                :columns="columns"
-                @changeShowContent="showRiskSingleTrack"
+                    :tableData="tableData"
+                    :columns="columns"
+                    @changeShowContent="showRiskSingleTrack"
             >
             </single-table>
         </div>
@@ -29,6 +29,7 @@
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
                         :dialogData="this.dialogData"
+                        @closeDialogContent1="closeDialogContent1"
                 >
                 </dialog-component>
             </el-dialog>
@@ -39,6 +40,7 @@
 <script>
     import SingleTable from "../../publicRiskControl/table/singleTable";
     import dialogComponent from '../../publicRiskControl/dialogComponent';
+
     export default {
         name: "riskSingleTrack",
         components: {
@@ -48,12 +50,12 @@
         props: {},
         data() {
             return {
-                trackDialogVisible:false,
-                tableData:[],
-                columns:[],
-                dialogData:{
-                    dialogRiskType:"riskTrack",
-                    riskName:""
+                trackDialogVisible: false,
+                tableData: [],
+                columns: [],
+                dialogData: {
+                    dialogRiskType: "riskTrack",
+                    riskName: ""
                 },
                 options: [
                     {
@@ -73,7 +75,7 @@
         created() {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskSingleTrack.json").then(res => {
-                if(res.data.code === 200) {
+                if (res.data.code === 200) {
                     me.tableData = res.data.rows;
                     me.columns = res.data.columns
                 }
@@ -85,17 +87,33 @@
             /**
              * 改变控制弹出层的参数，显示弹出层
              * */
-            showRiskSingleTrack(row){
-                this.trackDialogVisible = true;
-                this.dialogData['riskName'] = row.riskName;
+            showRiskSingleTrack(scope, it) {
+                if (it.id === '0') {
+                    //反馈操作
+                    alert('反馈操作')
+                } else if (it.id === '1') {
+                    //查看操作
+                    this.trackDialogVisible = true;
+                    this.dialogData['riskName'] = scope.row.riskName;
+                } else if (it.id === '2') {
+                    //退回流程操作
+                    alert('退回流程操作')
+                } else if (it.id === '3') {
+                    //提醒操作
+                    alert('提醒操作')
+                }
             },
             /**
              * 获取当前弹出框title
              * @returns {string}
              */
-            getDialogTitle(){
+            getDialogTitle() {
                 let _riskName = this.dialogData.riskName;
                 return '关于【' + _riskName + '】的追踪';
+            },
+
+            closeDialogContent1() {
+                this.trackDialogVisible = false;
             }
         }
     }
