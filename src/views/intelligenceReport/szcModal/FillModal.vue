@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-    width="80%"
+    width="90%"
     :title="modalConfig.title||'上报人员'"
     :modal-append-to-body="false"
     :visible.sync="modalConfig.dialogVisible"
@@ -8,42 +8,51 @@
     >
         <div>
             <div class="fillSelect">
-                <template v-for="(itemSel,index) in selectOps">
-                    <label :key="index" style="margin:0 10px;">{{ itemSel.label }}</label>
-                    <el-select  v-if="itemSel.id == 'match' && !matchShow && itemSel.type && itemSel.type == 'select'" disabled v-model="itemSel.valueLabel" placeholder="请先选择公司" :key="index" 
-                    @change="changeEvent(itemSel,item)"
-                    @visible-change="showChange">
-                        <el-option
-                        v-for="item in itemSel.content"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                            <span style="float: left">{{ item.label }}</span>
-                        </el-option>
-                    </el-select>
-                    <el-input
-                    v-else-if="itemSel.type && itemSel.type == 'input'"
-                    placeholder="暂无状态"
-                    v-model="inputValue"
-                    :disabled="true"
-                    :key="index">
-                    </el-input>
-                    <el-select v-else-if="itemSel.type && itemSel.type == 'select'" v-model="itemSel.valueLabel" placeholder="请选择" :key="index" 
-                    @change="changeEvent(itemSel,item)"
-                    @visible-change="showChange">
-                        <el-option
-                        v-for="item in itemSel.content"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                            <span style="float: left">{{ item.label }}</span>
-                        </el-option>
-                    </el-select>
-                </template>
-                <el-button v-if="modalConfig.id != 'urgeToReport'" @click="queryHandler" class="button">确定</el-button>
-                <div v-if="urgeToShow" class="btnClass">
-                    <el-button @click="urgeToBtnHandler" class="button">催报</el-button>
-                </div>
+                <el-row>
+                    <template v-for="(itemSel,index) in selectOps">
+                        <el-col :span="5" :key="index">
+                            <label :key="index" style="margin:0 10px;">{{ itemSel.label }}</label>
+                            <el-select  v-if="itemSel.id == 'match' && !matchShow && itemSel.type && itemSel.type == 'select'" disabled v-model="itemSel.valueLabel" placeholder="请先选择公司" :key="index" 
+                            @change="changeEvent(itemSel,item)"
+                            @visible-change="showChange">
+                                <el-option
+                                v-for="item in itemSel.content"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                    <span style="float: left">{{ item.label }}</span>
+                                </el-option>
+                            </el-select>
+                            <div :key="index" v-else-if="itemSel.type && itemSel.type == 'input'" class="stateInput">
+                                <el-input
+                                placeholder="暂无状态"
+                                v-model="inputValue"
+                                :disabled="true">
+                                </el-input>
+                            </div>
+                            <el-select v-else-if="itemSel.type && itemSel.type == 'select'" v-model="itemSel.valueLabel" placeholder="请选择" :key="index" 
+                            @change="changeEvent(itemSel,item)"
+                            @visible-change="showChange">
+                                <el-option
+                                v-for="item in itemSel.content"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                    <span style="float: left">{{ item.label }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </template>
+                    <el-col :span="5">
+                        <el-button v-if="modalConfig.id != 'urgeToReport'" @click="queryHandler" class="button">确定</el-button>
+                        <el-button v-if="modalConfig.id != 'urgeToReport' && auditMonth" @click="queryHandler('audit')" class="button">审计月</el-button>
+                    </el-col>
+                    <el-col :span="4">
+                        <div v-if="urgeToShow" class="btnClass">
+                            <el-button @click="urgeToBtnHandler" class="button">催报</el-button>
+                        </div>
+                    </el-col>
+                </el-row>
             </div>
             <div class="modalTable">
                 <el-table v-if="tableData && tableData.length > 0"
@@ -97,6 +106,7 @@ export default {
     props: ['modalConfig'],
     data() {
         return {
+            auditMonth:false,//审计月显示。
             urgeToShow:false,//催报的按钮的显示与否
             reviewShow:true,//审阅的按钮功能的显示与否
             matchShow:false,//控制没有选择公司不能选后面的下拉框
@@ -199,7 +209,17 @@ export default {
                 me.tablesByCompany(item);
             }else if(item && item.id == "match") {
                 me.selectTable = item;
+                //根据三张主表显示审计月。
+                me.showAuditMonth(item);
             }
+        },
+        /**
+         * 三张主表的审计月。
+         * @author szc 2019年5月16日09:51:44
+         */
+        showAuditMonth (item) {
+            let me = this,arr = ['1','2','3'];
+            arr.indexOf(item.valueLabel) != -1? me.auditMonth = true:me.auditMonth = false;
         },
         /**
          * 根据公司来判断要显示的报表。
@@ -247,13 +267,14 @@ export default {
          * 查询数据提交按钮。
          * @author szc 2019年5月7日15:35:20
          */
-        queryHandler () {
+        queryHandler (sign) {
             
-            let me = this,storeParams = me.$store.getters;
+            let me = this,storeParams = me.$store.getters,year = storeParams.year,period = "";
+            sign && sign == "audit"? period = year + "13":period = me.parsePeriod();
             //查询选中的报表状态。
             let stateParams = {
                 company:me.selectCompany,
-                period: me.parsePeriod(),
+                period: period,
                 templateid:me.selectTable.valueLabel
             };
             queryStateOfTable(stateParams).then(res => {
@@ -575,7 +596,6 @@ export default {
          * @author szc 2019年5月8日16:20:16
          */
         beforeClose (done) {
-            
             let me = this,selectOps = me.selectOps;
             selectOps.forEach(item => {
                 item.valueLabel = "";
@@ -583,12 +603,13 @@ export default {
             me.inputValue = "";
             me.valueLabel ="";
             me.tableData = [];
+            me.auditMonth = false;
             done();
         }
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .modalTable {
         margin: 20px 0;
     }
@@ -597,14 +618,24 @@ export default {
         .el-button {
             margin-left: 20px;
         }
-        .el-input {
-            width: 202px;
-        }
+        // .el-input {
+        //     width: 202px;
+        // }
         .btnClass {
             display: inline-block;
             // background-color: #ccc;
             float: right;
             padding-right: 20px;
+        }
+        .el-select {
+            width: 60%;
+        }
+        .stateInput {
+            width: 60%;
+            display: inline-block;
+            // .el-input {
+            //     width: 60%;
+            // }
         }
     }
 </style>
