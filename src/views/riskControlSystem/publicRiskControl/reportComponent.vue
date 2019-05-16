@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="reportComponent" ref="reportComponent" id="reportComponent">
         <el-container class="container-all">
             <div class="container-left">
                 <div class="container-left-inner">
@@ -45,8 +45,8 @@
                 </div>
 
                 <!--<div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">-->
-                    <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
-                    <!--<el-button @click="closeBtn">关闭</el-button>-->
+                <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
+                <!--<el-button @click="closeBtn">关闭</el-button>-->
                 <!--</div>-->
 
 
@@ -54,7 +54,7 @@
         </el-container>
 
         <show-personnel-list :personnelListShow="personnelListShow"></show-personnel-list>
-
+        <back-to-top></back-to-top>
     </div>
 </template>
 
@@ -64,6 +64,7 @@
     import reportInstruction from './riskReportComponents/reportInstruction'
     import reportSchedule from './riskReportComponents/reportSchedule'
     import showPersonnelList from './showPersonnelList'
+    import backToTop from './backToTop'
 
     export default {
         name: "reportComponent",
@@ -72,7 +73,8 @@
             reportConventional,
             reportInstruction,
             reportSchedule,
-            showPersonnelList
+            showPersonnelList,
+            backToTop
         },
         props: {
             reportData: Object
