@@ -611,7 +611,8 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
-      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState;
+      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
+          spcode = this.$store.getters.treeInfo.spcode;
       if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){
         me.buttonsOperation = [];
         return
@@ -622,7 +623,6 @@ export default {
       //   me.buttonsOperation = [];
       //   return;
       // }
-      debugger;
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         buttons = res.data;
         if(isleaf == 1){
@@ -633,7 +633,7 @@ export default {
           me.buttonsOperation = buttons;
         }else {
           let arr0 = ['2','1','5','0','4'];
-          if(me.reportHeader != "请选择"){
+          if(me.reportHeader != "请选择" && spcode != "0"){
             arr0 = ['0','4'];
           }
           buttons = buttons.filter(item => {
@@ -825,6 +825,9 @@ export default {
             }]
           }
         ],
+        footConfig:{
+          footBtn:true
+        },
         props:{
           label: "label",
           children: "children"
@@ -867,7 +870,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
       if(nodes && nodes.length == 0){
@@ -1545,7 +1547,7 @@ export default {
       }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
-        if (row != 0 && (columns == 0 || columns == 2)) {
+        if ((columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1764,6 +1766,12 @@ export default {
           return arrTexts.indexOf(item) == -1;
         });
       }
+      //资金集中情况表。
+      if(this.templateId == 8 && rows && rows.length > 0){
+        if(rows[0] && rows[0].accountbanks == ""){
+          rows = rows.splice(1,rows.length)
+        }
+      }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
       
@@ -1805,19 +1813,19 @@ export default {
       }
       this.settings.data = rows;
       //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
-      if(this.templateId == "8" && rows && rows.length > 0){
-        if(rows[0]){
-          rows[0].accountbanks == "" || rows[0].accountbanks == "SH" || !rows[0].accountbanks? rows[0].accountbanks = "合计":"";
-        }
-        rows.forEach(item => {
-          if(item["B"] == 0){
-            item["B"] = "";
-          }
-        });
-      }
+      // if(this.templateId == "8" && rows && rows.length > 0){
+      //   if(rows[0]){
+      //     rows[0].accountbanks == "" || rows[0].accountbanks == "SH" || !rows[0].accountbanks? rows[0].accountbanks = "合计":"";
+      //   }
+      //   rows.forEach(item => {
+      //     if(item["B"] == 0){
+      //       item["B"] = "";
+      //     }
+      //   });
+      // }
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
-      me.settings.data = [];
+      me.settings.data = rows;
       setTimeout(() => {
         var p = /(\d{4})(\d{2})(\d{2})/;
         let newarr = [];
@@ -2580,12 +2588,12 @@ export default {
         el.id = "flag";
         el.innerHTML = "删除";
         td.appendChild(el);
-        if (this.templateId == 8) {
-          let dd = document.getElementsByTagName("td")[5];
-          if (dd && dd != "undefined") {
-            dd.innerText = "";
-          }
-        }
+        // if (this.templateId == 8) {
+        //   let dd = document.getElementsByTagName("td")[5];
+        //   if (dd && dd != "undefined") {
+        //     dd.innerText = "";
+        //   }
+        // }
         el.style.color = "red";
         el.style.cursor = "pointer";
         let me = this;

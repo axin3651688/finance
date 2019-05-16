@@ -191,7 +191,6 @@ export default {
          * @author szc 2019年5月7日15:34:47
          */
         changeEvent (item,value) {
-            debugger;
             let me = this;
             if(item && item.id == "company"){
                 me.selectCompany = item.valueLabel;
@@ -258,22 +257,21 @@ export default {
                 templateid:me.selectTable.valueLabel
             };
             queryStateOfTable(stateParams).then(res => {
-                debugger;
                 if(res.data.code == 200){
                     //添加一个不是指定的用户不给查询报表显示。
-                    if(res.data.data && res.data.data.stouser){
-                        let stouser = res.data.data.stouser;
-                        if(stouser != storeParams.user.user.userName){
-                            me.inputValue = "未上报";
-                            me.urgeToShow = true;
-                            me.tableData = [];
-                            me.$message({
-                                message:"此公司的此报表未上报！",
-                                type: "warning"
-                            });
-                            return;
-                        }
-                    }
+                    // if(res.data.data && res.data.data.stouser){
+                    //     let stouser = res.data.data.stouser;
+                    //     if(stouser != storeParams.user.user.userName){
+                    //         me.inputValue = "未上报";
+                    //         me.urgeToShow = true;
+                    //         me.tableData = [];
+                    //         me.$message({
+                    //             message:"此公司的此报表未上报！",
+                    //             type: "warning"
+                    //         });
+                    //         return;
+                    //     }
+                    // }
                     me.urgeToShow = false;
                     me.tipsOfState(res.data.data);
                 }else if(res.data.code == 1001) {
@@ -330,8 +328,9 @@ export default {
                         me.queryDataOfTable(params);
                         break;
                     case 2:
+                        me.inputValue = "申请退回中";
                         me.$message({
-                            message:"状态2"
+                            message:"申请退回中..."
                         });
                         break;
                     case 3:
@@ -451,6 +450,8 @@ export default {
                             message: formData.result == 3? "审阅成功！":"退回成功！",
                             type: "success"
                         });
+                        me.form.result = "";
+                        me.form.explain = "";
                     }
                 });
             }
@@ -468,7 +469,6 @@ export default {
          * @author szc 2019年5月7日20:22:15
          */
         urgeToBtnHandler () {
-            debugger;
             let me = this,curSelectCompany = me.curSelectCompany[0],
                 storeParams = me.$store.getters;
             let params = {
@@ -500,7 +500,6 @@ export default {
          * @author szc 2019-5-11 19:52:52
          */
         urgeToUserSelect (userData) {
-            debugger;
             let me = this;
             let params = {
                 title:"申请退回人员",
@@ -519,10 +518,9 @@ export default {
 
         },
         urgeToHandler(data,urgeParams) {
-            debugger;
             let me = this,arr = [],userStr = "";
             data.forEach(item => {
-                arr.push(item.username);
+                arr.push(item.suser);
             });
             userStr = arr.join(',');
             urgeParams.users = userStr;
