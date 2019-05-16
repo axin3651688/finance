@@ -1,11 +1,11 @@
 <template>
     <div class="app-container">
         <tree-table
-                :data="reportRiskData"
-                :columns="columns"
                 border
+                :data.sync="treeData"
+                :columns.sync="columns"
                 v-show="!reportBackDetail"
-                @showreportdetailp="changeDiaShowState"
+                @buttonHandler="buttonHandler"
         >
         </tree-table>
 
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import treeTable from '../../publicRiskControl/treeTable/index'
+    import treeTable from "../../publicRiskControl/treeTable/treeTable"
     import reportComponent from '../../publicRiskControl/reportComponent'
 
     export default {
@@ -31,74 +31,42 @@
         },
         data() {
             return {
-                reportBackDetail: false,
+                reportBackDetail:false,
                 reportCompanyName:'天津食品集团有限公司(合并)',
-                columns: [
-                    {
-                        text: '公司名称',
-                        value: 'companyName',
-                    },
-                    {
-                        text: '反馈状态',
-                        value: 'feedState',
-                        width: 200
-                    },
-                    {
-                        text: '操作',
-                        value: 'handle'
-                    }
-                ],
-                reportRiskData: [
-                    {
-                        companyName: '(1001)天津食品集团有限公司(合并)',
-                        feedState: '已反馈',
-                        handle: '反馈',
-                        children: [
-                            {
-                                companyName: ' (100101)天津农垦渤海农业集团有限公司(托管汇总)',
-                                feedState: '已反馈',
-                                handle: '反馈',
-                                children: [
-                                    {
-                                        companyName: '(10010101)天津农垦渤海农业集团有限公司(合并)',
-                                        feedState: '已反馈',
-                                        handle: '反馈',
-                                        children: [
-                                            {
-                                                companyName: ' (1001010101)天津农垦渤海农业集团有限公司(本部)',
-                                                feedState: '已反馈',
-                                                handle: '反馈'
-                                            },
-                                            {
-                                                companyName: '(1001010102)天津农垦龙天畜牧养殖有限公司',
-                                                feedState: '已反馈',
-                                                handle: '关闭'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        companyName: '(10010102)天津市宝德包装有限公司',
-                                        feedState: '未反馈',
-                                        handle: '反馈'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                treeData:[],
+                columns:[]
             }
         },
         methods: {
-            getDialogTitle() {
-                let _companyName = this.reportRiskData.companyName;
-                return '关于【' + _companyName + '】的反馈';
-            },
-            changeDiaShowState() {
-                this.reportBackDetail = true;
+            /**
+             * 按钮点击事件 所有的
+             * 0:反馈，1:查看，2:退回，3:提醒
+             */
+            buttonHandler(scope,btnItem){
+                let _id = btnItem.id;
+                if(_id === '0'){
+
+                }else if(_id === '1'){
+                    //显示报告详情
+                    this.reportBackDetail = true;
+                }else if(_id === '2'){
+
+                }else if(_id === '3'){
+
+                }
             },
             pageBack(){
                 this.reportBackDetail = false;
             }
+        },
+        created(){
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskTreeBack.json").then(res => {
+                if(res.data.code === 200) {
+                    me.treeData = res.data.rows;
+                    me.columns = res.data.columns
+                }
+            });
         }
     }
 </script>

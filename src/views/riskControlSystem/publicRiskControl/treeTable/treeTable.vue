@@ -33,10 +33,15 @@
                         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                         <i v-else class="el-icon-minus"></i>
                     </span>
-                    <span
+                    <!--<span
                         v-if="column.value === 'companyName'"
                         @click="showReportDetail()"
                         style="color: dodgerblue;cursor: pointer">
+                        {{scope.row[column.value]}}
+                    </span>-->
+                    <span
+                            v-if="column.value === 'companyName'"
+                    >
                         {{scope.row[column.value]}}
                     </span>
                     <template v-else-if="column.value === 'operation' && scope.row[column.value]">
@@ -127,19 +132,11 @@
                 return (index === 0 && record.children && record.children.length > 0)
             },
             /**
-             * 点击公司显示具体报告内容
-             * @param row
-             */
-            showReportDetail() {
-                this.$emit('showreportdetailp');
-            },
-            /**
              * 按钮点击事件 所有的
              * @author szc 2019年5月14日11:20:27
              * 0:批示，1:查看，2:退回，3:催报
              */
             btnHandler (scope,btnItem,index) {
-                debugger;
                 let me = this;
                 me.$emit("buttonHandler",scope,btnItem)
             }   

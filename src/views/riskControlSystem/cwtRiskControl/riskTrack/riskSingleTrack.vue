@@ -71,12 +71,10 @@
             }
         },
         created() {
-            //请求table的数据。
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskSingleTrack.json").then(res => {
                 if(res.data.code === 200) {
                     me.tableData = res.data.rows;
-                    me.treeData = res.data.rows;
                     me.columns = res.data.columns
                 }
             });
