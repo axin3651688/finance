@@ -392,7 +392,7 @@ export default {
             let me = this;
             inquire(params).then(res => {
                 if(res.data.code == 200){
-                    let columns = res.data.data.columns,arr = ['id','id_'];
+                    let columns = res.data.data.columns,arr = ['id','id_','item'];
                     columns = columns.filter(item => {
                         return arr.indexOf(item.id) == -1;
                     });

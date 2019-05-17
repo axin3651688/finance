@@ -1075,6 +1075,7 @@ export default {
       if(changes && changes[0][2] && changes[0][3] &&　changes[0][2] === changes[0][3]){
         return;
       }
+      let me = this;
       // return
       //融资的新增与减少的判断
       if (this.templateId == "7") {
@@ -1089,15 +1090,14 @@ export default {
           obj["index"] = index;
           // obj["colId"] = key;
           obj["row"] = values;
-          this.values = values;
+          me.values = values;
           //融资的status可以传过去 空字符串 ""
-          if (values == "" && key != "status" && this.templateId != "7") {
+          if (values == "" && key != "status" && me.templateId != "7") {
             values = 0;
           }
           let arr = datas.filter(record => {
             return record.cusuppliername != null;
           });
-          let me = this;
           function res(arr) {
             var tmp = [];
             var copy = [];
@@ -1117,14 +1117,14 @@ export default {
             return tmp;
           }
           var result = res(arr);
-          let changeRecord = this.tableData.filter(record => {
+          let changeRecord = me.tableData.filter(record => {
             return record.index === index && record.colId === key;
           })[0];
-          let changen = this.tableData.filter(record => {
+          let changen = me.tableData.filter(record => {
             return record.index === index;
           })[0];
 
-          if (this.fixed === 1) {
+          if (me.fixed === 1) {
             if (changeRecord) {
               if (reg.test(values) === true) {
                 changeRecord[key] = values;
@@ -1135,43 +1135,43 @@ export default {
                 let bb = { index: index };
                 bb[key] = values;
                 bb["colId"] = key;
-                this.tableData.push(bb);
+                me.tableData.push(bb);
               }
             }
           }
-          if (this.fixed === 0) {
+          if (me.fixed === 0) {
             if (changen) {
               changen[key] = values;
-            } else if (this.templateId == 8) {
-              if (index != 0) {
+            } else if (me.templateId == 8) {
+              // if (index != 0) {
                 let bb = { index: index };
                 bb[key] = values;
-                this.tableData.push(bb);
-              }
-            } else if(this.templateId == 9) {
+                me.tableData.push(bb);
+              // }
+            } else if(me.templateId == 9) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,item: changeRow.item };
               bb[key] = values;
-              this.tableData.push(bb);
-            }else if(this.templateId == 10) {
+              me.tableData.push(bb);
+            }else if(me.templateId == 10) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,company: changeRow.company };
               bb[key] = values;
-              this.tableData.push(bb);
-            }else if(this.templateId == 12) {
+              me.tableData.push(bb);
+            }else if(me.templateId == 12) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,item: changeRow.item };
               bb[key] = values;
-              this.tableData.push(bb);
+              me.tableData.push(bb);
             }else {
               
               if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
                 let bb = { index: index };
                 bb[key] = values;
-                this.tableData.push(bb);
+                me.tableData.push(bb);
               }
             }
             // })
@@ -1179,7 +1179,7 @@ export default {
         
         
         // localStorage.setItem("saveData",JSON.stringify(this.tableData))
-        this.tableData.forEach(e => {
+        me.tableData.forEach(e => {
           indexs = e.index;
           value = e;
         });
@@ -1237,166 +1237,6 @@ export default {
         });
         });
       }
-      // if (changes && changes.length > 0) {
-      //   index = changes[0][0];
-      //   key = changes[0][1];
-      //   values = changes[0][3];
-      //   obj[key] = values;
-      //   obj["index"] = index;
-      //   // obj["colId"] = key;
-      //   obj["row"] = values;
-      //   this.values = values;
-      //   //融资的status可以传过去 空字符串 ""
-      //   if (values == "" && key != "status" && this.templateId != "7") {
-      //     values = 0;
-      //   }
-      //   // let x;
-      //   let arr = datas.filter(record => {
-      //     // x = record;
-      //     return record.cusuppliername != null;
-      //   });
-      //   let me = this;
-      //   function res(arr) {
-          
-      //     var tmp = [];
-      //     var copy = [];
-      //     arr.forEach(item => {
-      //       if (copy.indexOf(item.cusuppliername) === -1) {
-      //         copy.push(item.cusuppliername);
-      //       } else {
-      //         if (tmp.indexOf(item.cusuppliername) === -1) {
-      //           me.$message({
-      //             type: "error",
-      //             message: "商客名称重复，请重新输入"
-      //           });
-      //           tmp.push(item.cusuppliername);
-      //         }
-      //       }
-      //     });
-      //     return tmp;
-      //   }
-      //   var result = res(arr);
-      //   let changeRecord = this.tableData.filter(record => {
-      //     return record.index === index && record.colId === key;
-      //   })[0];
-      //   let changen = this.tableData.filter(record => {
-      //     return record.index === index;
-      //   })[0];
-
-      //   if (this.fixed === 1) {
-      //     if (changeRecord) {
-      //       //|| reg.test(values) == ""
-      //       if (reg.test(values) === true) {
-      //         changeRecord[key] = values;
-      //       }
-      //     } else {
-            
-      //       if (reg.test(values) === true) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         bb["colId"] = key;
-      //         this.tableData.push(bb);
-      //       }
-      //     }
-      //   }
-      //   if (this.fixed === 0) {
-      //     if (changen) {
-      //       changen[key] = values;
-      //     } else if (this.templateId == 8) {
-            
-      //       if (index != 0) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         this.tableData.push(bb);
-      //       }
-      //     } else if(this.templateId == 9) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,item: changeRow.item };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else if(this.templateId == 10) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,company: changeRow.company };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else if(this.templateId == 12) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,item: changeRow.item };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else {
-            
-      //       if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         this.tableData.push(bb);
-      //       }
-      //     }
-      //     // })
-      //   }
-      // }
-      
-      // // localStorage.setItem("saveData",JSON.stringify(this.tableData))
-      // this.tableData.forEach(e => {
-      //   indexs = e.index;
-      //   value = e;
-      // });
-      // datas.forEach((item, i) => {
-      //   modify = item;
-      //   if (i === indexs) {
-      //     if (
-      //       value.A ||
-      //       value.A == "" ||
-      //       value.B ||
-      //       value.B == "" ||
-      //       value.C ||
-      //       value.C == "" ||
-      //       value.D ||
-      //       value.D == "" ||
-      //       value.E ||
-      //       value.E == "" ||
-      //       value.F ||
-      //       value.F == "" ||
-      //       value.G ||
-      //       value.G == "" ||
-      //       value.H ||
-      //       value.H == ""
-      //     ) {
-      //       value["id"] = modify.id;
-      //       value["nid"] = modify.nid;
-      //       if (value["nid"] == null) {
-      //         value["nid"] = 0;
-      //       }
-      //     } else if (
-      //       value.A_ ||
-      //       value.A_ == "" ||
-      //       value.B_ ||
-      //       value.B_ == "" ||
-      //       value.C_ ||
-      //       value.C_ == "" ||
-      //       value.D_ ||
-      //       value.D_ == "" ||
-      //       value.E_ ||
-      //       value.E_ == "" ||
-      //       value.F_ ||
-      //       value.F_ == ""
-      //     ) {
-      //       // console.log("2",modify.id_)
-      //       value["id_"] = modify.id_;
-      //     } else {
-      //       // value["id"] = modify.id;
-      //       // value["id_"] = modify.id_;
-      //       value["nid"] = modify.nid;
-      //       if (value["nid"] == null) {
-      //         value["nid"] = 0;
-      //       }
-      //     }
-      //   }
-      // });
-      
       console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
@@ -1982,6 +1822,7 @@ export default {
     },
     //点击保存数据
     saveData() {
+      debugger;
       let that = this;
       //判断是不是有改动。
       if(this.tableData && this.tableData.length == 0){
