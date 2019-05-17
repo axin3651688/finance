@@ -5,7 +5,7 @@
             @tab-click="handleTabClick">
                 <el-tab-pane label="风险批示" name="first">
                     <div class="selectClass">
-                        <RiskSelect/>
+                        <RiskSelect v-on:changeOption="changeOption" />
                     </div>
                     <div>
                         <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></stable>
@@ -52,11 +52,12 @@ import reportContent from "../publicRiskControl/reportComponent"
 // import dialogContent from '../publicRiskControl/dialogComponent'
 import dialogContent from '../publicRiskControl/dialogComponentS'
 import basicsModal from "./dialogModal/basicsModal"
+import deptSelect from "./mixin/deptSelectHandler"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 
 
 export default {
-
+    mixins: [deptSelect],
     name: "riskControl",
     components:{
         stable,

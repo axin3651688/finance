@@ -1,7 +1,9 @@
 <template>
     <div>
         <label class="labelClass">部门选择：</label>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" 
+        placeholder="请选择"
+        @change="changeOption">
             <el-option
             v-for="item in options"
             :key="item.value"
@@ -24,9 +26,7 @@ export default {
      * 组件生成回调。
      */
     created () {
-        debugger;
         let me = this;
-        
         this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
             console.log(res);
             me.options = res.data;
@@ -39,8 +39,16 @@ export default {
     /**
      * 方法存放器。
      */
-    methods () {
-
+    methods : {
+        /**
+         * 改变options的内容事件
+         * @author szc 2019年5月17日11:43:00
+         */
+        changeOption(item,param){
+            debugger;
+            let me = this;
+            this.$emit("changeOption",item,param);
+        }
     }
 }
 </script>

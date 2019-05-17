@@ -1822,7 +1822,6 @@ export default {
     },
     //点击保存数据
     saveData() {
-      debugger;
       let that = this;
       //判断是不是有改动。
       if(this.tableData && this.tableData.length == 0){

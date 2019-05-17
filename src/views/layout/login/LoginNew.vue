@@ -167,7 +167,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["GetSideMid"]),
+    ...mapActions(["GetSideMid", "GettRreeInfo"]),
     // showPwd() {
     //   if (this.pwdType === "password") {
     //     this.pwdType = "";
@@ -235,9 +235,20 @@ export default {
                   companyName: data.company.text
                 });
                 //缓存中放入当前登录人的公司信息。
-                if(!data.company.codename){
+                if(!data.company.codename && !data.company.scode){
                   data.company.codename = data.company.text;
-                  localStorage.setItem("treeInfo",data.company);
+                  data.company.scode = data.company.id;
+                  let objTree = JSON.stringify(data.company);
+                  localStorage.setItem("treeInfo",objTree);
+                  if (!Cnbi.isEmpty(objTree)) {
+                    this.GettRreeInfo(JSON.parse(objTree));
+                  }
+                }else {
+                  let objTree = JSON.stringify(data.company);
+                  localStorage.setItem("treeInfo",objTree);
+                  if (!Cnbi.isEmpty(objTree)) {
+                    this.GettRreeInfo(JSON.parse(objTree));
+                  }
                 }
                 let url = "/main";
                 //默认加载第一个管理驾驶舱

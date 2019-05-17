@@ -247,7 +247,7 @@ export default {
             
             let me = this,isleaf = companyItem.nisleaf,selectTables = me.$store.fillParams.selectTables[0].content,resSelect = [];
             if(isleaf == '0'){
-                let arr = ['10','12'];
+                let arr = ['10'];
                 resSelect = selectTables.filter(item => {
                     return arr.indexOf(item.value) != -1;
                 });
