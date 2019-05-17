@@ -6,7 +6,6 @@
                     :data="tableData"
                     border
                     stripe
-                    height="80%"
                     :header-cell-style="headerRowStyle"
                     style="width: 100%">
                 <template v-for="(item,index) in columns">
@@ -42,7 +41,7 @@
                             <span
                                     v-else-if="item.action && item.action==='click'"
                                     style="color: dodgerblue;cursor: pointer"
-                                    @click="riskDetailShow(scope.$index,scope.row)"
+                                    @click="clickItemNameHandler(scope,scope.$index)"
                             >
                                 <!-- <el-button @click="elButton(scope)"></el-button> -->
                                 {{ scope.row[scope.column.property] }}
@@ -85,6 +84,9 @@
         mounted() {
         },
         methods: {
+            /**
+             * 表头样式。
+             */
             headerRowStyle(row) {
                 let me = this;
                 if (row.rowIndex === 0) {
@@ -114,12 +116,21 @@
                     alert('提醒操作')
                 }
             },
-
+            /**
+             * 点击table内容的名字的事件。
+             * @author szc 2019年5月16日11:24:42
+             */
+            clickItemNameHandler (scope,index,row) {
+                debugger;
+                this.$emit("clickItemName", scope,index,row);
+            },
             elButton(scope) {
                 console.log(scope)
             },
+            /**
+             * 根据配置属性生成单元格文本样式。
+             */
             textClassHandler(row) {
-                debugger;
                 let me = this;
                 if (row.levelNum) {
                     if (row.levelNum === "1") {

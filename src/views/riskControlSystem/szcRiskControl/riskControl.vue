@@ -8,7 +8,7 @@
                         <RiskSelect/>
                     </div>
                     <div>
-                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:changeShowContent="clickItemName"></stable>
+                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></stable>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="汇总批示" name="second">
@@ -31,12 +31,13 @@
         </div>
         <div>
             <el-dialog
-                title="【风险名称】批示"
+                title="关于【风险名称】的批示"
                 :visible.sync="dialogVisible"
-                width="56%"
+                width="70%"
                 top="50px">
                 <div>
-                    <dialogContent></dialogContent>
+                    <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
+                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage"/>
                 </div>
             </el-dialog>
         </div>
@@ -48,7 +49,9 @@ import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
 import RiskSelect from "./riskSelect";
 import treeTable from "./../publicRiskControl/treeTable/treeTable"
 import reportContent from "../publicRiskControl/reportComponent"
-import dialogContent from '../publicRiskControl/dialogComponent'
+// import dialogContent from '../publicRiskControl/dialogComponent'
+import dialogContent from '../publicRiskControl/dialogComponentS'
+import basicsModal from "./dialogModal/basicsModal"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 
 
@@ -60,7 +63,8 @@ export default {
         RiskSelect,
         treeTable,
         reportContent,
-        dialogContent
+        dialogContent,
+        basicsModal
     },
     data() {
         return {
@@ -70,7 +74,11 @@ export default {
             activeName:"second",
             treeTableShow:true,
             reportCompanyName:"天津食品有限公司",
-            dialogVisible:false
+            dialogVisible:false,
+            dialogData:{
+                dialogRiskType:"riskBack"
+            },
+            modalData:{}
         }
     },
     /**
@@ -196,7 +204,70 @@ export default {
         clickItemName (row) {
             debugger;
             let me = this;
-            me.dialogVisible = true;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
+                if(res.data.code == 200){
+                    me.parseData(res.data.formConfig,row.row);
+                    me.currentRowIndex = row.$index;
+                    me.dialogVisible = true;
+                }
+            });
+        },
+        /**
+         * 装换数据。
+         * @author szc 2019年5月16日17:59:32
+         */
+        parseData (formConfig,row) {
+            debugger;
+            let me = this;
+            if(formConfig && row){
+                let groups = formConfig.groups,itemData = row;
+                for(let i = 0;i < groups.length;i ++){
+                    let groupItem = groups[i];
+                    if(groupItem.content && groups.length > 0) {
+                        let content = groupItem.content;
+                        for(let j = 0;j < content.length;j ++){
+                            let contenItem = content[j];
+                            if(itemData[contenItem.text]){
+                                contenItem[contenItem.text] = itemData[contenItem.text];
+                                contenItem.text == "riskLevel" && itemData.levelNum? contenItem.levelNum = itemData.levelNum:"";
+                            }
+                        }
+                    }
+                }
+            }
+            me.modalData = formConfig;
+        },
+        /**
+         * 上一条、下一条。
+         * @author szc 2019年5月17日08:26:42
+         */
+        changMessage (sign) {
+            let me = this,$index = me.currentRowIndex,tableData = me.tableData;
+            if(typeof($index) != "undefined"){
+                if($index == 0 && sign == "up"){
+                    me.$message({
+                        message:"已是第一条！",
+                        type:"warning"
+                    });
+                    return;
+                }
+                if($index == tableData.length - 1 && sign == "down") {
+                    me.$message({
+                        message:"已是最后一条！",
+                        type:"warning"
+                    });
+                    return;
+                }
+                if(sign == "up"){
+                    $index = $index - 1;
+                    me.parseData(me.modalData,me.tableData[$index]);
+                    me.currentRowIndex = $index;
+                }else {
+                    $index = $index + 1;
+                    me.parseData(me.modalData,me.tableData[$index]);
+                    me.currentRowIndex = $index;
+                }
+            }
         }
     }
 };
