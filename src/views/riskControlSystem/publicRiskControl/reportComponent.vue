@@ -54,7 +54,6 @@
         </el-container>
 
         <show-personnel-list :personnelListShow="personnelListShow"></show-personnel-list>
-        <back-to-top></back-to-top>
     </div>
 </template>
 
@@ -64,7 +63,6 @@
     import reportInstruction from './riskReportComponents/reportInstruction'
     import reportSchedule from './riskReportComponents/reportSchedule'
     import showPersonnelList from './showPersonnelList'
-    import backToTop from './backToTop'
 
     export default {
         name: "reportComponent",
@@ -73,8 +71,7 @@
             reportConventional,
             reportInstruction,
             reportSchedule,
-            showPersonnelList,
-            backToTop
+            showPersonnelList
         },
         props: {
             reportData: Object
