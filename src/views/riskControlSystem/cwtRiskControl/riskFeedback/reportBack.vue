@@ -39,7 +39,94 @@
                 columns: [],
                 reportData: {
                     reportCompanyName: '天津食品集团有限公司(合并)',
-                    reportType: 'riskFeedCom'
+                    reportType: 'riskFeedCom',
+                    reportDataContent:{
+                        id:'riskFeed',
+                        headerData:{
+                            data1:0,
+                            data2:3,
+                            data3:4,
+                            data4:5,
+                            data5:23,
+                            data6:5,
+                            data7:7,
+                            data8:345,
+                            data9:673,
+                            data10:6,
+                        },
+                        riskFeedData:[
+                            /*zlfx: '一、战略风险',
+                            tzfx: '二、投资风险',
+                            yyfx: '三、运营风险',
+                            cwfx: '四、财务风险',
+                            flfx: '五、法律风险',
+                            ljfx: '六、廉洁风险'*/
+                            {
+                                id:'zlfx',
+                                text:'一、战略风险',
+                                responsibility:{
+                                    text:'社会责任风险',
+                                    level:'重要',
+                                    company:'',
+                                    IdentificationUser:'张三'
+                                },
+
+                                content:{
+                                    id:'zlfx',
+                                    contentUp:[
+                                        {
+                                            title:'风险评估',
+                                            content:[
+                                                '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
+                                                '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
+                                            ]
+                                        },
+                                        {
+                                            title:'风险概述',
+                                            content:[
+                                                '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
+                                            ]
+                                        },
+                                        {
+                                            title:'采取措施',
+                                            content:[
+                                                '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
+                                            ]
+                                        },
+                                        {
+                                            title:'应对建议',
+                                            content:[
+                                                '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
+                                            ]
+                                        }
+                                    ],
+                                    contentDown:[
+                                        {
+                                            schedule:'进度一',
+                                            text:'风险上报',
+                                            state:'已上报',
+                                            content:'上报的内容。上报人：小智。上报时间：2019年3月'
+                                        },
+                                        {
+                                            schedule:'进度二',
+                                            text:'风险批示',
+                                            state:'未批示',
+                                            content:'请尽快批示'
+                                        },
+                                        {
+                                            schedule:'进度三',
+                                            text:'风险反馈',
+                                            state:'未反馈',
+                                            content:'请尽快反馈'
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+
+
+                    },
+
                 }
             }
         },

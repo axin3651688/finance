@@ -1,6 +1,9 @@
 <template>
     <div class="reportComponent" ref="reportComponent" id="reportComponent">
-        <el-container class="container-all">
+        <el-container
+                class="container-all"
+                ref="containerAll"
+        >
             <div class="container-left">
                 <div class="container-left-inner">
                     <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;">目&nbsp&nbsp录</h1>
@@ -14,45 +17,47 @@
                     </div>
                 </div>
             </div>
-            <div class="container-right">
-                <!--报告跳转界面头部内容-->
-                <report-header
-                        :reportCompanyNameShow="this.reportData['reportCompanyName']"
-                >
-                </report-header>
+            <div ref="containerRightAll">
+                <div class="container-right" ref="containerRight">
+                    <!--报告跳转界面头部内容-->
+                    <report-header
+                            :reportCompanyNameShow="this.reportData['reportCompanyName']"
+                    >
+                    </report-header>
 
-                <!--报告跳转界面中间公共部分内容-->
-                <report-conventional
-                        :reportCompanyNameShow="this.reportData['reportCompanyName']"
-                >
-                </report-conventional>
+                    <!--报告跳转界面中间公共部分内容-->
+                    <report-conventional
+                            :reportCompanyNameShow="this.reportData['reportCompanyName']"
+                    >
+                    </report-conventional>
 
-                <!--报告跳转界面领导批示的内容-->
-                <report-instruction
-                        v-show="this.instructionShow"
-                >
-                </report-instruction>
+                    <!--报告跳转界面领导批示的内容-->
+                    <report-instruction
+                            v-show="this.instructionShow"
+                    >
+                    </report-instruction>
 
-                <!--报告跳转界面关于追踪的进度的内容-->
-                <report-schedule
-                        v-show="this.scheduleShow"
-                >
-                </report-schedule>
+                    <!--报告跳转界面关于追踪的进度的内容-->
+                    <report-schedule
+                            v-show="this.scheduleShow"
+                    >
+                    </report-schedule>
 
 
-                <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
-                    <el-button @click="sbRiskFeed">反馈上报</el-button>
+                    <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
+                        <el-button @click="sbRiskFeed">反馈上报</el-button>
+                    </div>
+
+                    <!--<div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">-->
+                    <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
+                    <!--<el-button @click="closeBtn">关闭</el-button>-->
+                    <!--</div>-->
+
+
                 </div>
-
-                <!--<div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">-->
-                <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
-                <!--<el-button @click="closeBtn">关闭</el-button>-->
-                <!--</div>-->
-
-
             </div>
-        </el-container>
 
+        </el-container>
         <show-personnel-list :personnelListShow="personnelListShow"></show-personnel-list>
     </div>
 </template>
@@ -98,9 +103,25 @@
         created() {
         },
         mounted() {
+
+            /**
+             * 设置div高度，并且实现左侧导航栏不跟随滚动，整个页面不滚动，只滚动报告内容部分
+             * @type {number}
+             */
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
+
+            this.$refs.containerAll.$el.style.height = tableHeight +'px';
+            this.$refs.containerRightAll.style.height = tableHeight +'px';
+            this.$refs.containerAll.$el.style.overflow  = 'hidden';
+            this.$refs.containerAll.$el.style['overflow-x']  = 'auto';
+            this.$refs.containerRightAll.style.overflow  = 'auto';
         },
         methods: {
-
             /**
              * 左侧导航栏点击事件
              * @param type
@@ -140,6 +161,7 @@
         flex-basis: auto;
         box-sizing: border-box;
         min-width: 0;
+        border: 1px solid;
     }
 
     .container-left-inner {
@@ -157,7 +179,7 @@
         flex-grow: 0;
         flex-shrink: 0;
         width: 250px;
-        border: 1px solid;
+        /*border-right: 1px solid;*/
     }
 
     .container-left .risk-items {
@@ -170,7 +192,6 @@
     .container-right {
         width: 100%;
         padding: 20px;
-        border: 1px solid;
-        border-left: 0;
+        border-left: 1px solid;
     }
 </style>

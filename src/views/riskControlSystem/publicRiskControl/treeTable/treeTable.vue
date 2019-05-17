@@ -8,6 +8,7 @@
             :data="formatData"
             :row-style="showRow"
             v-bind="$attrs"
+            :height="tableHeight"
             :header-cell-style="headerRowStyle"
     >
         <el-table-column v-if="columns.length===0" width="150">
@@ -92,6 +93,17 @@
                 type: Boolean,
                 default: false
             }
+        },
+        created(){
+            /**
+             * 计算表格高度
+             */
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 0,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
         },
         computed: {
             // 格式化数据源
