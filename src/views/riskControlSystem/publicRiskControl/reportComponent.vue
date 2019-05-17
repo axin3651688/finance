@@ -21,7 +21,7 @@
                 <div class="container-right" ref="containerRight">
                     <!--报告跳转界面头部内容-->
                     <report-header
-                            :reportCompanyNameShow="this.reportData['reportCompanyName']"
+                            :reportHeaderData="reportHeaderData"
                     >
                     </report-header>
 
@@ -43,16 +43,9 @@
                     >
                     </report-schedule>
 
-
                     <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
                         <el-button @click="sbRiskFeed">反馈上报</el-button>
                     </div>
-
-                    <!--<div class="sb-btn" style="text-align: right;" v-show="this.scheduleShow">-->
-                    <!--<el-button type="primary" @click="exportBtn">导出</el-button>-->
-                    <!--<el-button @click="closeBtn">关闭</el-button>-->
-                    <!--</div>-->
-
 
                 </div>
             </div>
@@ -86,24 +79,22 @@
                 personnelListShow: false,
 
                 //控制显示哪个组件的flag
-                instructionShow: this.reportData['reportType'] === 'riskFeedCom',
-                scheduleShow: this.reportData['reportType'] === 'riskTrackCom',
+                instructionShow: true,
+                scheduleShow: true,
 
+                //目录信息，在下面进行赋值了
+                leftNode: {},
 
-                leftNode: {
-                    zlfx: '一、战略风险',
-                    tzfx: '二、投资风险',
-                    yyfx: '三、运营风险',
-                    cwfx: '四、财务风险',
-                    flfx: '五、法律风险',
-                    ljfx: '六、廉洁风险'
-                }
+                //传到头部reportHeader的数据
+                reportHeaderData:{},
             }
         },
         created() {
+            this.getShowContentData();
+            this.getDirectoryData();
+            this.getReportHeaderData();
         },
         mounted() {
-
             /**
              * 设置div高度，并且实现左侧导航栏不跟随滚动，整个页面不滚动，只滚动报告内容部分
              * @type {number}
@@ -120,6 +111,11 @@
             this.$refs.containerAll.$el.style.overflow  = 'hidden';
             this.$refs.containerAll.$el.style['overflow-x']  = 'auto';
             this.$refs.containerRightAll.style.overflow  = 'auto';
+
+
+            // this.
+
+
         },
         methods: {
             /**
@@ -137,18 +133,41 @@
                 this.personnelListShow = !this.personnelListShow;
             },
 
-            // /**
-            //  * 导出按钮
-            //  */
-            // exportBtn() {
-            //     alert('导出成功')
-            // },
-            // /**
-            //  * 关闭按钮
-            //  */
-            // closeBtn() {
-            //     alert('关闭事件')
-            // }
+            /**
+             * 根据当前风险节点确定需要显示报告中的领导批示还是进度
+             */
+            getShowContentData(){
+                let data = this.reportData,
+                    reportType = data.reportType;
+                this.instructionShow = reportType === 'riskFeedCom';
+                this.scheduleShow = reportType === 'riskTrackCom';
+            },
+
+            /**
+             * 获取目录的数据
+             */
+            getDirectoryData(){
+                let data = this.reportData,
+                    reportDataList = data.reportDataContent.riskFeedData;
+                reportDataList.forEach((report)=>{
+                    let _id = report.id,
+                        _text = report.text;
+                    this.leftNode[_id] = _text;
+                });
+                // console.log(this.leftNode);
+            },
+
+            /**
+             *获取报告头部那些数字数据的方法
+             */
+            getReportHeaderData(){
+                let data = this.reportData,
+                    headerData = data.reportDataContent.headerData;
+                this.reportHeaderData['reportCompanyName'] = data.reportCompanyName;
+                // this.reportHeaderData['period'] = data.period;
+                this.reportHeaderData['dataList'] = headerData;
+            }
+
         }
     }
 </script>
