@@ -6,6 +6,7 @@
                     :data="tableData"
                     border
                     stripe
+                    :height="tableHeight"
                     :header-cell-style="headerRowStyle"
                     style="width: 100%">
                 <template v-for="(item,index) in columns">
@@ -70,18 +71,32 @@
             return {
                 headerStyle: {
                     background: "rgb(240, 248, 255)"
-                }
+                },
+                tableHeight: 0
             }
         },
         /**
          * 组件生成的回调。
          */
         created() {
+            /**
+             * 计算表格高度
+             */
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
         },
         /**
          * 页面渲染之后的回调。
          */
         mounted() {
+            /**
+             * 屏幕自适应方法调用
+             */
+            this.setPageAdaptive();
         },
         methods: {
             /**
@@ -108,9 +123,9 @@
              * 点击table内容的名字的事件。
              * @author szc 2019年5月16日11:24:42
              */
-            clickItemNameHandler (scope,index,row) {
+            clickItemNameHandler(scope, index, row) {
                 debugger;
-                this.$emit("clickItemName", scope,index,row);
+                this.$emit("clickItemName", scope, index, row);
             },
             elButton(scope) {
                 console.log(scope)
@@ -131,6 +146,17 @@
                 } else {
                     return "";
                 }
+            },
+            setPageAdaptive() {
+                const _this = this;
+                window.onresize = function temp() {
+                    let offsetHeight = document.body.offsetHeight,//页面整体高度
+                        selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
+                        tabHeight = 39,//tab标签高度
+                        gapHeight = 32,//间隙的高度
+                        pageHeaderHeight = 64;//导航栏高度
+                    _this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+                };
             }
 
         }
