@@ -39,6 +39,8 @@
                     <!--弹出层底部按钮-->
                     <risk-foot
                             :formData="formData"
+                            :dialogData="dialogData"
+                            @closeDialogContent="closeDialogContent"
                     >
                     </risk-foot>
 
@@ -89,7 +91,11 @@
         mounted() {
         },
         watch: {},
-        methods: {}
+        methods: {
+            closeDialogContent(){
+                this.$emit('closeDialogContent1')
+            }
+        }
     }
 </script>
 

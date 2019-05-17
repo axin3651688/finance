@@ -102,19 +102,7 @@
              * @param index
              */
             handleClickBtn(scope, it, index) {
-                if (it.id === '0') {
-                    //反馈操作
-                    alert('反馈操作')
-                } else if (it.id === '1') {
-                    //查看操作
-                    this.$emit("changeShowContent", scope.row);
-                } else if (it.id === '2') {
-                    //退回流程操作
-                    alert('退回流程操作')
-                } else if (it.id === '3') {
-                    //提醒操作
-                    alert('提醒操作')
-                }
+                this.$emit("changeShowContent", scope, it);
             },
             /**
              * 点击table内容的名字的事件。

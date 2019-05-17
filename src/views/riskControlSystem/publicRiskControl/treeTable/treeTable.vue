@@ -108,7 +108,6 @@
              * 行样式
              */
             headerRowStyle (row) {
-                debugger;
                 let me =this;
                 if(row.rowIndex == 0){
                     return 'background:rgb(240, 248, 255)';

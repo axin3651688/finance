@@ -106,15 +106,26 @@
                     return ''
                 }
             },
+
             /**
              * 关于某个风险的反馈弹出按钮
-             * @param index
-             * @param row
-             */
-            changeShowContent(row) {
-                this.dialogVisible = true;
-                // this.dialogData[index] = index;
-                this.dialogData['riskName'] = row.riskName;
+             *
+             **/
+            changeShowContent(scope, it) {
+                if (it.id === '0') {
+                    //反馈操作
+                    alert('反馈操作')
+                } else if (it.id === '1') {
+                    //查看操作
+                    this.dialogVisible = true;
+                    this.dialogData['riskName'] = scope.row.riskName;
+                } else if (it.id === '2') {
+                    //退回流程操作
+                    alert('退回流程操作')
+                } else if (it.id === '3') {
+                    //提醒操作
+                    alert('提醒操作')
+                }
             },
             /**
              * 获取当前弹出框title
