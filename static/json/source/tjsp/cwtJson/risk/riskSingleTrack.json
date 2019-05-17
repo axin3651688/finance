@@ -1,0 +1,111 @@
+{
+  "code": 200,
+  "id": "riskSingleTrack",
+  "text": "风险单个追踪",
+  "columns": [
+    {
+      "id": "riskName",
+      "type": "string",
+      "text": "风险名称",
+      "align": "center",
+      "width": "500"
+    },
+    {
+      "id": "riskState",
+      "type": "string",
+      "text": "状态",
+      "align": "center",
+      "width": "180"
+    },
+    {
+      "id": "sb_user",
+      "type": "string",
+      "text": "上报人",
+      "align": "center",
+      "width": "180"
+    },
+    {
+      "id": "ps_user",
+      "type": "string",
+      "text": "批示人",
+      "align": "center",
+      "width": "180"
+    },
+    {
+      "id": "fk_user",
+      "type": "string",
+      "text": "反馈人",
+      "align": "center",
+      "width": "180"
+    },
+    {
+      "id": "operation",
+      "type": "string",
+      "text": "操作",
+      "align": "center",
+      "htmlType": "text"
+    }
+  ],
+  "rows": [
+    {
+      "scode": "101",
+      "riskName": "关于资不抵债的风险",
+      "riskState": "已上报",
+      "sb_user":"admin",
+      "ps_user":"admin",
+      "fk_user":"admin",
+      "operation": [
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        }
+      ]
+    },
+    {
+      "scode": "102",
+      "riskName": "关于桃色新闻的风险",
+      "riskState": "已上报",
+      "sb_user":"admin",
+      "ps_user":"admin",
+      "fk_user":"admin",
+      "operation": [
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        }
+      ]
+    },
+    {
+      "scode": "103",
+      "riskName": "关于自杀倾向的风险",
+      "riskState": "已上报",
+      "sb_user":"admin",
+      "ps_user":"admin",
+      "fk_user":"admin",
+      "operation": [
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        }
+      ]
+    },
+    {
+      "scode": "104",
+      "riskName": "关于兔死狐悲的风险",
+      "riskState": "已上报",
+      "sb_user":"admin",
+      "ps_user":"admin",
+      "fk_user":"admin",
+      "operation": [
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        }
+      ]
+    }
+  ]
+}

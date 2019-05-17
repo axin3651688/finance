@@ -1,0 +1,192 @@
+{
+  "code": 200,
+  "id": "riskBack",
+  "text": "风险反馈",
+  "columns": [
+    {
+      "text": "公司名称",
+      "value": "companyName",
+      "align": "left",
+      "width": 600
+    },
+    {
+      "text": "反馈状态",
+      "value": "status",
+      "width": 200
+    },
+    {
+      "text": "操作",
+      "value": "operation"
+    }
+  ],
+  "rows": [
+    {
+      "scode": "1001",
+      "companyName": "(1001)天津食品集团有限公司(合并)",
+      "status": "已反馈",
+      "operation": [
+        {
+          "id": "0",
+          "btnShow": false,
+          "text": "反馈"
+        },
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        },
+        {
+          "id": "2",
+          "btnShow": true,
+          "text": "退回"
+        },
+        {
+          "id": "3",
+          "btnShow": false,
+          "text": "提醒"
+        }
+      ],
+      "children": [
+        {
+          "scode": "100101",
+          "companyName": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+          "status": "已反馈",
+          "operation": [
+            {
+              "id": "0",
+              "btnShow": false,
+              "text": "反馈"
+            },
+            {
+              "id": "1",
+              "btnShow": true,
+              "text": "查看"
+            },
+            {
+              "id": "2",
+              "btnShow": true,
+              "text": "退回"
+            },
+            {
+              "id": "3",
+              "btnShow": false,
+              "text": "提醒"
+            }
+          ],
+          "children": [
+            {
+              "scode": "10010101",
+              "companyName": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+              "status": "未反馈",
+              "operation": [
+                {
+                  "id": "0",
+                  "btnShow": true,
+                  "text": "反馈"
+                },
+                {
+                  "id": "1",
+                  "btnShow": false,
+                  "text": "查看"
+                },
+                {
+                  "id": "2",
+                  "btnShow": false,
+                  "text": "退回"
+                },
+                {
+                  "id": "3",
+                  "btnShow": true,
+                  "text": "提醒"
+                }
+              ],
+              "children": [
+                {
+                  "scode": "1001010101",
+                  "companyName": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                  "status": "已反馈",
+                  "operation": [
+                    {
+                      "id": "0",
+                      "btnShow": false,
+                      "text": "反馈"
+                    },
+                    {
+                      "id": "1",
+                      "btnShow": true,
+                      "text": "查看"
+                    },
+                    {
+                      "id": "2",
+                      "btnShow": true,
+                      "text": "退回"
+                    },
+                    {
+                      "id": "3",
+                      "btnShow": false,
+                      "text": "提醒"
+                    }
+                  ]
+                },
+                {
+                  "scode": "1001010102",
+                  "companyName": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                  "status": "已反馈",
+                  "operation": [
+                    {
+                      "id": "0",
+                      "btnShow": false,
+                      "text": "反馈"
+                    },
+                    {
+                      "id": "1",
+                      "btnShow": true,
+                      "text": "查看"
+                    },
+                    {
+                      "id": "2",
+                      "btnShow": true,
+                      "text": "退回"
+                    },
+                    {
+                      "id": "3",
+                      "btnShow": false,
+                      "text": "提醒"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "scode": "10010102",
+              "companyName": "(10010102)天津市宝德包装有限公司",
+              "status": "未反馈",
+              "operation": [
+                {
+                  "id": "0",
+                  "btnShow": true,
+                  "text": "反馈"
+                },
+                {
+                  "id": "1",
+                  "btnShow": false,
+                  "text": "查看"
+                },
+                {
+                  "id": "2",
+                  "btnShow": false,
+                  "text": "退回"
+                },
+                {
+                  "id": "3",
+                  "btnShow": true,
+                  "text": "提醒"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
