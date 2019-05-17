@@ -234,6 +234,11 @@ export default {
                   company: data.company.id,
                   companyName: data.company.text
                 });
+                //缓存中放入当前登录人的公司信息。
+                if(!data.company.codename){
+                  data.company.codename = data.company.text;
+                  localStorage.setItem("treeInfo",data.company);
+                }
                 let url = "/main";
                 //默认加载第一个管理驾驶舱
                 localStorage.module_api_cache =
