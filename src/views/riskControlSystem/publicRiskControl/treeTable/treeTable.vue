@@ -4,8 +4,12 @@
 * 树表渲染，列项有按钮的树表
 */
 <template>
-    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs"
-    :header-cell-style="headerRowStyle">
+    <el-table
+            :data="formatData"
+            :row-style="showRow"
+            v-bind="$attrs"
+            :header-cell-style="headerRowStyle"
+    >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
