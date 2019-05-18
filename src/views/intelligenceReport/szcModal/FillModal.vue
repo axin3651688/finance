@@ -271,6 +271,8 @@ export default {
             
             let me = this,storeParams = me.$store.getters,year = storeParams.year,period = "";
             sign && sign == "audit"? period = year + "13":period = me.parsePeriod();
+            //放到全局对象上，催报的时候用。
+            me.clickPeriod = period;
             //查询选中的报表状态。
             let stateParams = {
                 company:me.selectCompany,
@@ -492,11 +494,12 @@ export default {
         urgeToBtnHandler () {
             let me = this,curSelectCompany = me.curSelectCompany[0],
                 storeParams = me.$store.getters;
+            let period = me.clickPeriod? me.clickPeriod:me.parsePeriod();
             let params = {
                 "company": me.selectCompany,
                 "id": 0,
                 "nreportnum": 0,
-                "period": me.parsePeriod(),
+                "period": period,
                 "scompanyname": curSelectCompany.sname,
                 "screatetime": new Date(),
                 "screateuser": storeParams.user.user.userName,
