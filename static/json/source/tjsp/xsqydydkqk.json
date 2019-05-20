@@ -118,9 +118,9 @@
                 "text":"刷新",
                 "xtype":"button",
                 "cellStyle":{
-                    "color":"black",
+                    // "color":"black",
                     // "background-color":"#189271"
-                    "background-color":"#fff"
+                    // "background-color":"#fff"
                 },
                 
                "handler":function(vue,btn){
@@ -131,9 +131,9 @@
                "id":"2",
                "text":"导出",
                "cellStyle":{
-                   "color":"black",
+                  //  "color":"black",
                   //  "background-color":"#189271"
-                  "background-color":"#fff"
+                  // "background-color":"#fff"
                },
                "handler":function(vue,btn){
                   vue.handleDownload(vue);

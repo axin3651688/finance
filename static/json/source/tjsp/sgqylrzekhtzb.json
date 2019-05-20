@@ -69,78 +69,7 @@
         }
     ],
     "rows": [
-        // {
-        //     "id": "2201",
-        //     "sname" : "利润总额",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 0
-        // },
-        // {
-        //     "id": "2202",
-        //     "sname" : "加：创新收入",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 0
-        // },
-        // {
-        //     "id": "220201",
-        //     "sname" : "解决以前年度问题损失",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 4
-        // },
-        // {
-        //     "id": "220202",
-        //     "sname" : "承担特定智能损失",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 4
-        // },
-        // {
-        //     "id": "220203",
-        //     "sname" : "政策性安置职工损失",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 4
-        // },
-        // {
-        //     "id": "2203",
-        //     "sname" : "减：处置优良资产收益",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 0
-        // },
-        // {
-        //     "id": "220301",
-        //     "sname" : "公允价值变动损益",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 4
-        // },
-        // {
-        //     "id": "220302",
-        //     "sname" : "非经营性政府补贴",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 4
-        // },
-        // {
-        //     "id": "2204",
-        //     "sname" : "业绩利润",
-        //     "A" : 0,
-        //     "B": 0,
-        //     "C": 0,
-        //     "level" : 0
-        // }
+        
     ],
     "items": [{
         "xtype": "bi-table",
@@ -153,9 +82,9 @@
             "text": "刷新",
             "xtype": "button",
             "cellStyle": {
-                "color": "black",
+                // "color": "black",
                 // "background-color":"#189271"
-                "background-color": "#fff"
+                // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
                 debugger
@@ -169,9 +98,9 @@
             "text": "导出",
             "xtype": "button",
             "cellStyle": {
-                "color": "black",
+                // "color": "black",
                 // "background-color":"#189271"
-                "background-color": "#fff"
+                // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
                 debugger

@@ -12,7 +12,7 @@
                     <div v-else>
                         <div style="marginBottom: 5px;">
                             <el-button-group>
-                                <el-button class="btn" v-for="(item,index) in items" :key="item.id" @click="buttonClick(item)">{{ item.text }}</el-button>
+                                <el-button class="btn" type="primary" plain v-for="(item,index) in items" :key="item.id" @click="buttonClick(item)">{{ item.text }}</el-button>
                             </el-button-group>
                         </div>
                         <table class="table2" style="float:left;">
@@ -641,7 +641,7 @@ export default {
     /* 导出、刷新按钮样式 */
     .btn {
         width: 91px;
-        color: #606266;
+        /* color: #606266; */
     }
     /* 暂无权限样式设置 */
     .isShow{

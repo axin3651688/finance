@@ -2,7 +2,7 @@
 * @Author: sjz
 * @Date:   2019-04-11 12:06:49
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-05-13 13:33:09
+ * @Last Modified time: 2019-05-20 14:26:36
 */
 
 import Vue from 'vue'
@@ -83,7 +83,7 @@ export default {
     /**
      * @event 'treeElement/treeColumns.vue'引用了此方法：树表图标的缩进
      */
-    levelProperties(item,row){
+    levelProperties(item,row){ debugger
         let css = "padding: 4px 0;";
         let pro = row.column.property;
         if (!pro) {

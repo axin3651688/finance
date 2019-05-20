@@ -3,7 +3,7 @@
         <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
         <!-- 刷新、导出 按钮 关键参数：toolbar-->
         <el-button-group  class="toolbar" >
-            <el-button plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+            <el-button type="primary" plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
         </el-button-group>
         <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 关键参数：proportion-->
         <el-input 
@@ -71,6 +71,7 @@
 import Utils from '@c/treeElement/dataTranslate.js';
 import EventMixins from "@c/mixins/EventMixins.js";
 import tools from "utils/tools";
+import treeToArray from '@c/treeElement/eval.js'
 export default {
     props: ["item","treeStructure","dataSource","columns"],
     mixins: [EventMixins],
@@ -115,6 +116,19 @@ export default {
             }
             return me.dataSource ;
         }
+        // 格式化数据源
+        // data: function () { debugger
+        //     let tmp;
+        //     let parent,level ;
+        //     if (!Array.isArray(this.dataSource)) {
+        //         tmp = [this.dataSource]
+        //     } else {
+        //         tmp = this.dataSource
+        //     }
+        //     const func = this.evalFunc || treeToArray;
+        //     const args = this.evalArgs ? Array.concat([tmp, this.defaultExpandAll], this.evalArgs) : [tmp, this.defaultExpandAll];
+        //     return func.apply(null, args)
+        // }
     },
     methods: {
         // 设置表格高度（自适应）
