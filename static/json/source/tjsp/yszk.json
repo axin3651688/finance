@@ -566,7 +566,7 @@
                             }
                         }
                     ],
-                    proportion:[
+                    "proportion":[
                         {
                             "id": "1",
                             "text": "安全比例",

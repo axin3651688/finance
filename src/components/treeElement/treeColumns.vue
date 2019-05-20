@@ -3,7 +3,7 @@
         <div v-if="item.tableBefore" v-html="titleText">请添加你要显示的内容！</div>
         <!-- 刷新、导出 按钮 关键参数：toolbar-->
         <el-button-group  class="toolbar" >
-            <el-button v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
+            <el-button plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
         </el-button-group>
         <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 关键参数：proportion-->
         <el-input 

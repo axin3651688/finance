@@ -717,11 +717,11 @@ export default {
      * @author szc 2019年4月22日10:20:33
      * add：添加一个删除当前选择日期的处理 2019年4月22日10:21:09 szc
      */
-    removeTab(targetName) {
+    removeTab(targetName) { debugger
       let tabs = this.items;
       let tabName = this.activeTabName;
       if (tabName === targetName) {
-        tabs.forEach((tab, index) => {
+        tabs.forEach((tab, index) => { debugger
           if (tab.text === targetName) {
             let nextTab = tabs[index + 1] || tabs[index - 1];
             if (nextTab) {

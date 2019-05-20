@@ -148,8 +148,8 @@
                     "text":"刷新",
                     "xtype":"button",
                     "cellStyle":{
-                        "color":"black",
-                        "background-color": "#fff"
+                        // "color":"#606266"
+                        // "background-color": "#fff"
                     },
                     "handler":function(vue,btn){
                         let $vue = vue.item.$vue;
@@ -162,8 +162,8 @@
                     "text":"导出",
                     "xtype":"button",
                     "cellStyle":{
-                        "color":"black",
-                        "background-color": "#fff"
+                        // "color":"#606266"
+                        // "background-color": "#fff"
                     },
                     "handler":function(vue,btn){
                         vue.handleDownload(vue);
