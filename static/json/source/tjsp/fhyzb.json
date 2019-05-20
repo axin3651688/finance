@@ -209,42 +209,7 @@
         }
     ],
     "rows": [
-        // {
-        //     "hymc" : "现代农牧渔业"
-        // },
-        // {
-        //     "hymc" : "食品加工业"
-        // },
-        // {
-        //     "hymc" : "食品贸易"
-        // },
-        // {
-        //     "hymc" : "粮油贸易"
-        // },
-        // {
-        //     "hymc" : "冷链仓库"
-        // },
-        // {
-        //     "hymc" : "房地产业"
-        // },
-        // {
-        //     "hymc" : "商品贸易"
-        // },
-        // {
-        //     "hymc" : "钢材贸易"
-        // },
-        // {
-        //     "hymc" : "非食品加工业"
-        // },
-        // {
-        //     "hymc" : "金融业"
-        // },
-        // {
-        //     "hymc" : "服务业"
-        // },
-        // {
-        //     "hymc" : "抵消差额"
-        // }
+        
     ],
     "items":[
         {
@@ -257,9 +222,9 @@
                 "text":"刷新",
                 "xtype":"button",
                 "cellStyle":{
-                    "color":"black",
+                    // "color":"black",
                     // "background-color":"#189271"
-                    "background-color":"#fff"
+                    // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
                     debugger
@@ -273,9 +238,9 @@
                 "text":"导出",
                 "xtype":"button",
                 "cellStyle":{
-                    "color":"black",
+                    // "color":"black",
                     // "background-color":"#189271"
-                    "background-color":"#fff"
+                    // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
                     debugger

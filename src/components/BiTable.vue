@@ -16,10 +16,12 @@
         v-for="btn in item.toolbar"
       >
         <el-button
+          type="primary"
           v-if="btn.showBtn"       
           v-bind:key="btn.id"
           :style="btn.cellStyle"
           @click="btnClick(btn)"
+          plain
         >{{btn.text}}</el-button>
       </template>
     </el-button-group>

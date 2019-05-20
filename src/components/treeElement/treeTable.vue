@@ -37,7 +37,7 @@ export default {
          * 赋值，填充行信息
          * @author sjz 2019年4月2日18:46:58
          */
-        assignMent(rows){
+        assignMent(rows){ 
             if (!rows.length>0) {
                 this.dataSource.push(rows);
             } else {
