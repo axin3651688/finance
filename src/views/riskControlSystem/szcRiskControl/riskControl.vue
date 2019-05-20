@@ -21,7 +21,7 @@
                                 <div>
                                     <el-button @click="returnCurrentClick">返回</el-button>
                                 </div>
-                                <reportContent :reportCompanyName="reportCompanyName"></reportContent>
+                                <reportContent :reportData="reportData"></reportContent>
                             </el-col>
                         </el-row>
                         
@@ -79,7 +79,10 @@ export default {
             dialogData:{
                 dialogRiskType:"riskBack"
             },
-            modalData:{}
+            modalData:{},
+            reportData:{//报告的数据
+                reportCompanyName:"天津食品"
+            }
         }
     },
     /**
@@ -187,7 +190,15 @@ export default {
         lookInstructions () {
             debugger;
             let me = this;
-            me.treeTableShow = false;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+                debugger;
+                if(res.data.code == 200) {
+                    debugger;
+                    me.reportData = res.data.reportData;
+                    me.treeTableShow = false;
+                }
+            });
+            // me.treeTableShow = false;
         },
         /**
          * 返回当前点击的选择。
