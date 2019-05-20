@@ -1,47 +1,32 @@
 <template>
     <div>
         <div class="conventional-container">
-            <div v-for="(rptItem,rptIndex) in middleData" :key="rptIndex">
                 <div class="container-title">
-                    {{ rptItem.text }}
+                    {{ middleData.text }}
                 </div>
-                <template v-if="rptItem.responsibility">
+                <template v-if="middleData.responsibility">
                     <div class="container-top">
                         <div class="container-top-left">
                             <span class="left_1">
-                                {{ rptItem.responsibility.text }}
+                                {{ middleData.responsibility.text }}
                             </span>
                             <span class="left_2">
-                                {{ rptItem.responsibility.level }}
+                                {{ middleData.responsibility.level }}
                             </span>
                         </div>
                         <div class="container-top-right">
                             <span class="left_1">
-                                {{ rptItem.responsibility.company }}
+                                {{ middleData.responsibility.company }}
                             </span>
                             <span class="left_2">
-                                识别人：{{ rptItem.responsibility.identificationUser }}
+                                识别人：{{ middleData.responsibility.identificationUser }}
                             </span>
                         </div>
                     </div>
                 </template>
                 <div>
-                    <template v-if="rptItem.contentUp && rptItem.contentUp.type == 'text'">
-                        <div v-for="(item,index) in rptItem.contentUp.content" :key="index">
-                            <div :key="index" class="container-center">
-                                <div>
-                                    {{ item.title }}
-                                </div>
-                                <template v-if="item.content && item.content.length > 0">
-                                    <p v-for="(cntItem,cntIndex) in item.content" :key="cntIndex">
-                                        {{ cntItem }}
-                                    </p>
-                                </template>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-if="rptItem.contentDown && rptItem.contentDown.type == 'text'">
-                        <div v-for="(item,index) in rptItem.contentDown.content" :key="index">
+                    <template v-if="middleData.contentUp && middleData.contentUp.content.length > 0">
+                        <div v-for="(item,index) in middleData.contentUp.content" :key="index">
                             <div :key="index" class="container-center">
                                 <div>
                                     {{ item.title }}
@@ -55,7 +40,6 @@
                         </div>
                     </template>
                 </div>
-            </div>
         </div>
     </div>
 </template>
@@ -65,8 +49,7 @@
         name: "reportConventional",
         components: {},
         props: {
-            reportCompanyNameShow: String,
-            middleData:Array
+            middleData:Object
         },
         data() {
             return {
@@ -90,15 +73,17 @@
         },
         created() {
             let me = this;
-            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
-                debugger;
-                if(res.data.code == 200) {
-                    debugger;
-                    me.middleData = res.data.reportDataContent.riskFeedData;
-                }
-            });
+            // debugger;
+            // this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+            //     debugger;
+            //     if(res.data.code == 200) {
+            //         debugger;
+            //         me.middleData = res.data.reportData.reportDataContent.riskFeedData[0];
+            //     }
+            // });
         },
         mounted() {
+            let me = this;
         },
         methods: {}
     }

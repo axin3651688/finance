@@ -91,7 +91,7 @@ export function UploadShow() {
  */
 export function query_sjz(data){
     return request({
-        url: '/zjb/ageanalysis/query?company=' + data.company + '&period=' + data.period + '&item=' + data.item,
+        url: '/zjb/ageanalysis/query?company=' + data.company + '&period=' + data.period + '&item=' + data.item + '&suser=' + data.suser,
         // url: '/zjb/ageanalysis/query',
         method: 'get'
         // params: data

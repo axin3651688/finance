@@ -205,8 +205,8 @@
                 "text":"刷新",
                 "xtype":"button",
                 "cellStyle":{
-                    "color":"black",
-                    "background-color":"#fff"
+                    // "color":"black",
+                    // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
                     debugger
@@ -220,8 +220,8 @@
                 "text":"导出",
                 "xtype":"button",
                 "cellStyle":{
-                    "color":"black",
-                    "background-color":"#fff"
+                    // "color":"black",
+                    // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
                     debugger

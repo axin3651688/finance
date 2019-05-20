@@ -95,7 +95,7 @@ const router = new Router({
                     path: '/riskDis',
                     name: 'riskDis',
                     component: () =>
-                        import ('@v/riskControlSystem/riskDis.vue')
+                        import ('@v/riskControlSystem/sjzRiskControl/riskDis.vue')
                 },
                 //风险报告sjz
                 {
@@ -246,6 +246,24 @@ const router = new Router({
                     name: 'dimension',
                     component: () =>
                         import ('@v/systemSettings/dimension')
+                },
+                { // 应收账款
+                    path: '/yszk',
+                    name: 'yszk',
+                    component: () =>
+                        import ('@v/yskxx/yszk')
+                },
+                { // 预付账款
+                    path: '/yfzk',
+                    name: 'yfzk',
+                    component: () =>
+                        import ('@v/yskxx/yfzk.vue')
+                },
+                { // 其他应收款
+                    path: '/qtysk',
+                    name: 'qtysk',
+                    component: () =>
+                        import ('@v/yskxx/qtysk.vue')
                 },
                 { //数据抽取
                     path: '/extradata',

@@ -213,9 +213,9 @@
             "text": "刷新",
             "xtype": "button",
             "cellStyle": {
-                "color": "black",
+                // "color": "black",
                 // "background-color":"#189271"
-                "background-color": "#fff"
+                // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
                 debugger
@@ -229,9 +229,9 @@
             "text": "导出",
             "xtype": "button",
             "cellStyle": {
-                "color": "black",
+                // "color": "black",
                 // "background-color":"#189271"
-                "background-color": "#fff"
+                // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
                 debugger
