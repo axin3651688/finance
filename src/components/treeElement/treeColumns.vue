@@ -71,7 +71,6 @@
 import Utils from '@c/treeElement/dataTranslate.js';
 import EventMixins from "@c/mixins/EventMixins.js";
 import tools from "utils/tools";
-import treeToArray from '@c/treeElement/eval.js'
 export default {
     props: ["item","treeStructure","dataSource","columns"],
     mixins: [EventMixins],
