@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-row :gutter="24">
+        <el-row :gutter="3">
             <el-col :span="6">
                 <div class="top-form-contents">
                     <span style="min-width: 70px;width: 100px">风险类型：</span>
-                    <el-input v-model="formData.riskType" placeholder="风险类型"></el-input>
+                    <el-input v-model="formData.riskType" disabled="true" placeholder="风险类型"></el-input>
                 </div>
             </el-col>
             <el-col :span="7">
@@ -36,16 +36,27 @@
         name: "riskHeader",
         components: {},
         props: {
-            formData: Object
+            dialogHeaderData: Object
         },
         data() {
-            return {}
+            return {
+                formData: {}
+            }
         },
         created() {
+            this.getFormData();
         },
         mounted() {
         },
-        methods: {}
+        methods: {
+            getFormData() {
+                let _this = this;
+                let data = this.dialogHeaderData['content'];
+                data.forEach((item) => {
+                    _this.formData[item.dataType] = item.text;
+                });
+            }
+        }
     }
 </script>
 

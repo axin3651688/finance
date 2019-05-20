@@ -249,7 +249,7 @@ export default {
    */
   mounted() {
     let me = this;
-    debugger;
+    // debugger;
     //看看缓存中是否有公司，名称放上去。
     let treeInfo = localStorage.treeInfo;
     treeInfo? treeInfo = JSON.parse(treeInfo):treeInfo = this.$store.getters.treeInfo;
