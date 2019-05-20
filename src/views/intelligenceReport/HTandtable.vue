@@ -611,7 +611,8 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
-      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState;
+      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
+          spcode = this.$store.getters.treeInfo.spcode;
       if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){
         me.buttonsOperation = [];
         return
@@ -622,7 +623,6 @@ export default {
       //   me.buttonsOperation = [];
       //   return;
       // }
-      debugger;
       this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
         buttons = res.data;
         if(isleaf == 1){
@@ -633,7 +633,7 @@ export default {
           me.buttonsOperation = buttons;
         }else {
           let arr0 = ['2','1','5','0','4'];
-          if(me.reportHeader != "请选择"){
+          if(me.reportHeader != "请选择" && spcode != "0"){
             arr0 = ['0','4'];
           }
           buttons = buttons.filter(item => {
@@ -775,6 +775,14 @@ export default {
     reportHandle () {
       // return;
       let me = this;
+      //判断如果没有保存，提示他去保存。
+      if(me.tableData && me.tableData.length > 0){
+        me.$message({
+          message:"请先保存填写的数据，再上报！",
+          type:"warning"
+        });
+        return;
+      }
       //判断有没有选择上报的表。
       // if(!me.templateId){
       //   this.$message({
@@ -817,6 +825,9 @@ export default {
             }]
           }
         ],
+        footConfig:{
+          footBtn:true
+        },
         props:{
           label: "label",
           children: "children"
@@ -859,7 +870,6 @@ export default {
      * @author szc 2019年4月2日16:52:43
      */
     sendFillMessageHandle (nodes) {
-      debugger;
       let me = this,userStr = "",arr = [];
       let itemSel = this.currentItem;
       if(nodes && nodes.length == 0){
@@ -1065,6 +1075,7 @@ export default {
       if(changes && changes[0][2] && changes[0][3] &&　changes[0][2] === changes[0][3]){
         return;
       }
+      let me = this;
       // return
       //融资的新增与减少的判断
       if (this.templateId == "7") {
@@ -1079,15 +1090,14 @@ export default {
           obj["index"] = index;
           // obj["colId"] = key;
           obj["row"] = values;
-          this.values = values;
+          me.values = values;
           //融资的status可以传过去 空字符串 ""
-          if (values == "" && key != "status" && this.templateId != "7") {
+          if (values == "" && key != "status" && me.templateId != "7") {
             values = 0;
           }
           let arr = datas.filter(record => {
             return record.cusuppliername != null;
           });
-          let me = this;
           function res(arr) {
             var tmp = [];
             var copy = [];
@@ -1107,14 +1117,14 @@ export default {
             return tmp;
           }
           var result = res(arr);
-          let changeRecord = this.tableData.filter(record => {
+          let changeRecord = me.tableData.filter(record => {
             return record.index === index && record.colId === key;
           })[0];
-          let changen = this.tableData.filter(record => {
+          let changen = me.tableData.filter(record => {
             return record.index === index;
           })[0];
 
-          if (this.fixed === 1) {
+          if (me.fixed === 1) {
             if (changeRecord) {
               if (reg.test(values) === true) {
                 changeRecord[key] = values;
@@ -1125,43 +1135,43 @@ export default {
                 let bb = { index: index };
                 bb[key] = values;
                 bb["colId"] = key;
-                this.tableData.push(bb);
+                me.tableData.push(bb);
               }
             }
           }
-          if (this.fixed === 0) {
+          if (me.fixed === 0) {
             if (changen) {
               changen[key] = values;
-            } else if (this.templateId == 8) {
-              if (index != 0) {
+            } else if (me.templateId == 8) {
+              // if (index != 0) {
                 let bb = { index: index };
                 bb[key] = values;
-                this.tableData.push(bb);
-              }
-            } else if(this.templateId == 9) {
+                me.tableData.push(bb);
+              // }
+            } else if(me.templateId == 9) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,item: changeRow.item };
               bb[key] = values;
-              this.tableData.push(bb);
-            }else if(this.templateId == 10) {
+              me.tableData.push(bb);
+            }else if(me.templateId == 10) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,company: changeRow.company };
               bb[key] = values;
-              this.tableData.push(bb);
-            }else if(this.templateId == 12) {
+              me.tableData.push(bb);
+            }else if(me.templateId == 12) {
               //添加一个基本情况表的item编码。
               let changeRow = datas[index];
               let bb = { index: index,item: changeRow.item };
               bb[key] = values;
-              this.tableData.push(bb);
+              me.tableData.push(bb);
             }else {
               
               if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
                 let bb = { index: index };
                 bb[key] = values;
-                this.tableData.push(bb);
+                me.tableData.push(bb);
               }
             }
             // })
@@ -1169,7 +1179,7 @@ export default {
         
         
         // localStorage.setItem("saveData",JSON.stringify(this.tableData))
-        this.tableData.forEach(e => {
+        me.tableData.forEach(e => {
           indexs = e.index;
           value = e;
         });
@@ -1227,166 +1237,6 @@ export default {
         });
         });
       }
-      // if (changes && changes.length > 0) {
-      //   index = changes[0][0];
-      //   key = changes[0][1];
-      //   values = changes[0][3];
-      //   obj[key] = values;
-      //   obj["index"] = index;
-      //   // obj["colId"] = key;
-      //   obj["row"] = values;
-      //   this.values = values;
-      //   //融资的status可以传过去 空字符串 ""
-      //   if (values == "" && key != "status" && this.templateId != "7") {
-      //     values = 0;
-      //   }
-      //   // let x;
-      //   let arr = datas.filter(record => {
-      //     // x = record;
-      //     return record.cusuppliername != null;
-      //   });
-      //   let me = this;
-      //   function res(arr) {
-          
-      //     var tmp = [];
-      //     var copy = [];
-      //     arr.forEach(item => {
-      //       if (copy.indexOf(item.cusuppliername) === -1) {
-      //         copy.push(item.cusuppliername);
-      //       } else {
-      //         if (tmp.indexOf(item.cusuppliername) === -1) {
-      //           me.$message({
-      //             type: "error",
-      //             message: "商客名称重复，请重新输入"
-      //           });
-      //           tmp.push(item.cusuppliername);
-      //         }
-      //       }
-      //     });
-      //     return tmp;
-      //   }
-      //   var result = res(arr);
-      //   let changeRecord = this.tableData.filter(record => {
-      //     return record.index === index && record.colId === key;
-      //   })[0];
-      //   let changen = this.tableData.filter(record => {
-      //     return record.index === index;
-      //   })[0];
-
-      //   if (this.fixed === 1) {
-      //     if (changeRecord) {
-      //       //|| reg.test(values) == ""
-      //       if (reg.test(values) === true) {
-      //         changeRecord[key] = values;
-      //       }
-      //     } else {
-            
-      //       if (reg.test(values) === true) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         bb["colId"] = key;
-      //         this.tableData.push(bb);
-      //       }
-      //     }
-      //   }
-      //   if (this.fixed === 0) {
-      //     if (changen) {
-      //       changen[key] = values;
-      //     } else if (this.templateId == 8) {
-            
-      //       if (index != 0) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         this.tableData.push(bb);
-      //       }
-      //     } else if(this.templateId == 9) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,item: changeRow.item };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else if(this.templateId == 10) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,company: changeRow.company };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else if(this.templateId == 12) {
-      //       //添加一个基本情况表的item编码。
-      //       let changeRow = datas[index];
-      //       let bb = { index: index,item: changeRow.item };
-      //       bb[key] = values;
-      //       this.tableData.push(bb);
-      //     }else {
-            
-      //       if ((key == "cismenu" && "cismenu" != 1) || "cismenu" != 0) {
-      //         let bb = { index: index };
-      //         bb[key] = values;
-      //         this.tableData.push(bb);
-      //       }
-      //     }
-      //     // })
-      //   }
-      // }
-      
-      // // localStorage.setItem("saveData",JSON.stringify(this.tableData))
-      // this.tableData.forEach(e => {
-      //   indexs = e.index;
-      //   value = e;
-      // });
-      // datas.forEach((item, i) => {
-      //   modify = item;
-      //   if (i === indexs) {
-      //     if (
-      //       value.A ||
-      //       value.A == "" ||
-      //       value.B ||
-      //       value.B == "" ||
-      //       value.C ||
-      //       value.C == "" ||
-      //       value.D ||
-      //       value.D == "" ||
-      //       value.E ||
-      //       value.E == "" ||
-      //       value.F ||
-      //       value.F == "" ||
-      //       value.G ||
-      //       value.G == "" ||
-      //       value.H ||
-      //       value.H == ""
-      //     ) {
-      //       value["id"] = modify.id;
-      //       value["nid"] = modify.nid;
-      //       if (value["nid"] == null) {
-      //         value["nid"] = 0;
-      //       }
-      //     } else if (
-      //       value.A_ ||
-      //       value.A_ == "" ||
-      //       value.B_ ||
-      //       value.B_ == "" ||
-      //       value.C_ ||
-      //       value.C_ == "" ||
-      //       value.D_ ||
-      //       value.D_ == "" ||
-      //       value.E_ ||
-      //       value.E_ == "" ||
-      //       value.F_ ||
-      //       value.F_ == ""
-      //     ) {
-      //       // console.log("2",modify.id_)
-      //       value["id_"] = modify.id_;
-      //     } else {
-      //       // value["id"] = modify.id;
-      //       // value["id_"] = modify.id_;
-      //       value["nid"] = modify.nid;
-      //       if (value["nid"] == null) {
-      //         value["nid"] = 0;
-      //       }
-      //     }
-      //   }
-      // });
-      
       console.log("this.tableData", this.tableData);
     },
     //应收账款分析表 判断是否控制填报
@@ -1537,7 +1387,7 @@ export default {
       }
       if (this.templateId == 8) {
         //资金集中度的填写限制 改成第一行可编辑
-        if (row != 0 && (columns == 0 || columns == 2)) {
+        if ((columns == 0 || columns == 2)) {
           cellMeta.readOnly = false;
         } else {
           cellMeta.readOnly = true;
@@ -1756,6 +1606,12 @@ export default {
           return arrTexts.indexOf(item) == -1;
         });
       }
+      //资金集中情况表。
+      if(this.templateId == 8 && rows && rows.length > 0){
+        if(rows[0] && rows[0].accountbanks == ""){
+          rows = rows.splice(1,rows.length)
+        }
+      }
       this.settings.columns = newCoulmns;
       this.settings.cells = this.cells;
       
@@ -1797,19 +1653,19 @@ export default {
       }
       this.settings.data = rows;
       //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
-      if(this.templateId == "8" && rows && rows.length > 0){
-        if(rows[0]){
-          rows[0].accountbanks == "" || rows[0].accountbanks == "SH" || !rows[0].accountbanks? rows[0].accountbanks = "合计":"";
-        }
-        rows.forEach(item => {
-          if(item["B"] == 0){
-            item["B"] = "";
-          }
-        });
-      }
+      // if(this.templateId == "8" && rows && rows.length > 0){
+      //   if(rows[0]){
+      //     rows[0].accountbanks == "" || rows[0].accountbanks == "SH" || !rows[0].accountbanks? rows[0].accountbanks = "合计":"";
+      //   }
+      //   rows.forEach(item => {
+      //     if(item["B"] == 0){
+      //       item["B"] = "";
+      //     }
+      //   });
+      // }
       rows = rows && rows.length > 0? rows:[{}];
       //有待修复
-      me.settings.data = [];
+      me.settings.data = rows;
       setTimeout(() => {
         var p = /(\d{4})(\d{2})(\d{2})/;
         let newarr = [];
@@ -2572,12 +2428,12 @@ export default {
         el.id = "flag";
         el.innerHTML = "删除";
         td.appendChild(el);
-        if (this.templateId == 8) {
-          let dd = document.getElementsByTagName("td")[5];
-          if (dd && dd != "undefined") {
-            dd.innerText = "";
-          }
-        }
+        // if (this.templateId == 8) {
+        //   let dd = document.getElementsByTagName("td")[5];
+        //   if (dd && dd != "undefined") {
+        //     dd.innerText = "";
+        //   }
+        // }
         el.style.color = "red";
         el.style.cursor = "pointer";
         let me = this;

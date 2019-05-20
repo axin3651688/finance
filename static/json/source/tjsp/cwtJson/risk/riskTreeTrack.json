@@ -1,0 +1,134 @@
+{
+  "code": 200,
+  "id": "riskTrack",
+  "text": "风险追踪",
+  "columns": [
+    {
+      "text": "公司名称",
+      "value": "companyName",
+      "align": "left",
+      "width": 600
+    },
+    {
+      "text": "状态",
+      "value": "status",
+      "width": 200
+    },
+    {
+      "text": "上报人",
+      "value": "sb_user",
+      "width": 200
+    },
+    {
+      "text": "批示人",
+      "value": "ps_user",
+      "width": 200
+    },
+    {
+      "text": "反馈人",
+      "value": "fk_user"
+    },
+    {
+      "text": "操作",
+      "value": "operation"
+    }
+  ],
+  "rows": [
+    {
+      "scode": "1001",
+      "companyName": "(1001)天津食品集团有限公司(合并)",
+      "status": "未上报",
+      "sb_user": "",
+      "ps_user": "",
+      "fk_user": "",
+      "operation": [
+        {
+          "id": "1",
+          "btnShow": true,
+          "text": "查看"
+        }
+      ],
+      "children": [
+        {
+          "scode": "100101",
+          "companyName": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+          "status": "未上报",
+          "sb_user": "",
+          "ps_user": "",
+          "fk_user": "",
+          "operation": [
+            {
+              "id": "1",
+              "btnShow": true,
+              "text": "查看"
+            }
+          ],
+          "children": [
+            {
+              "scode": "10010101",
+              "companyName": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+              "status": "已上报",
+              "sb_user": "张三",
+              "ps_user": "",
+              "fk_user": "",
+              "operation": [
+                {
+                  "id": "1",
+                  "btnShow": true,
+                  "text": "查看"
+                }
+              ],
+              "children": [
+                {
+                  "scode": "1001010101",
+                  "companyName": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                  "status": "已上报",
+                  "sb_user": "李四",
+                  "ps_user": "王五",
+                  "fk_user": "",
+                  "operation": [
+                    {
+                      "id": "1",
+                      "btnShow": true,
+                      "text": "查看"
+                    }
+                  ]
+                },
+                {
+                  "scode": "1001010102",
+                  "companyName": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                  "status": "未上报",
+                  "sb_user": "",
+                  "ps_user": "",
+                  "fk_user": "",
+                  "operation": [
+                    {
+                      "id": "1",
+                      "btnShow": true,
+                      "text": "查看"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "scode": "10010102",
+              "companyName": "(10010102)天津市宝德包装有限公司",
+              "status": "已上报",
+              "sb_user": "赵六",
+              "ps_user": "钱八",
+              "fk_user": "周九儿",
+              "operation": [
+                {
+                  "id": "1",
+                  "btnShow": true,
+                  "text": "查看"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

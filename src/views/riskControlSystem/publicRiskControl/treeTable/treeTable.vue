@@ -4,7 +4,13 @@
 * 树表渲染，列项有按钮的树表
 */
 <template>
-    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
+    <el-table
+            :data="formatData"
+            :row-style="showRow"
+            v-bind="$attrs"
+            :height="tableHeight"
+            :header-cell-style="headerRowStyle"
+    >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
@@ -20,6 +26,7 @@
                 :key="column.value" 
                 :label="column.text"
                 :width="column.width"
+                header-align="center"
                 :align="column.align || 'center'">
                 <template slot-scope="scope">
                     <span v-if="index === 0" 
@@ -31,10 +38,15 @@
                         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                         <i v-else class="el-icon-minus"></i>
                     </span>
-                    <span
+                    <!--<span
                         v-if="column.value === 'companyName'"
                         @click="showReportDetail()"
                         style="color: dodgerblue;cursor: pointer">
+                        {{scope.row[column.value]}}
+                    </span>-->
+                    <span
+                            v-if="column.value === 'companyName'"
+                    >
                         {{scope.row[column.value]}}
                     </span>
                     <template v-else-if="column.value === 'operation' && scope.row[column.value]">
@@ -42,7 +54,8 @@
                             <el-button
                                 v-if="it.btnShow"
                                 :key="indx"
-                                size="mini">
+                                size="mini"
+                                @click="btnHandler(scope,it,indx)">
                             {{ it.text }}
                             </el-button>
                         </template>
@@ -81,6 +94,17 @@
                 default: false
             }
         },
+        created(){
+            /**
+             * 计算表格高度
+             */
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 0,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+        },
         computed: {
             // 格式化数据源
             formatData: function () {
@@ -96,6 +120,17 @@
             }
         },
         methods: {
+            /**
+             * 行样式
+             */
+            headerRowStyle (row) {
+                let me =this;
+                if(row.rowIndex == 0){
+                    return 'background:rgb(240, 248, 255)';
+                }else {
+                    return "";
+                }
+            },
             showRow: function (row) {
                 const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
                 row.row._show = show;
@@ -107,16 +142,19 @@
                 record._expanded = !record._expanded
             },
             // 图标显示
+
             iconShow(index, record) {
                 return (index === 0 && record.children && record.children.length > 0)
             },
             /**
-             * 点击公司显示具体报告内容
-             * @param row
+             * 按钮点击事件 所有的
+             * @author szc 2019年5月14日11:20:27
+             * 0:批示，1:查看，2:退回，3:催报
              */
-            showReportDetail() {
-                this.$emit('showreportdetailp');
-            }
+            btnHandler (scope,btnItem,index) {
+                let me = this;
+                me.$emit("buttonHandler",scope,btnItem)
+            }   
         }
     }
 </script>

@@ -1,39 +1,284 @@
 <template>
     <div>
         <div>
-            <el-tabs type="border-card">
-                <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-                <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+            <el-tabs v-model="activeName"
+            @tab-click="handleTabClick">
+                <el-tab-pane label="风险批示" name="first">
+                    <div class="selectClass">
+                        <RiskSelect v-on:changeOption="changeOption" />
+                    </div>
+                    <div>
+                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></stable>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="汇总批示" name="second">
+                    <div v-if="treeTableShow">
+                        <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
+                    </div>
+                    <div v-else>
+                        <el-row>
+                            <el-col :span="24">
+                                <div>
+                                    <el-button @click="returnCurrentClick">返回</el-button>
+                                </div>
+                                <reportContent :reportCompanyName="reportCompanyName"></reportContent>
+                            </el-col>
+                        </el-row>
+                        
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
-        <div></div>
+        <div>
+            <el-dialog
+                title="关于【风险名称】的批示"
+                :visible.sync="dialogVisible"
+                width="70%"
+                top="50px">
+                <div>
+                    <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
+                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage"/>
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script>
 
-export default {
+import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
+import RiskSelect from "./riskSelect";
+import treeTable from "./../publicRiskControl/treeTable/treeTable"
+import reportContent from "../publicRiskControl/reportComponent"
+// import dialogContent from '../publicRiskControl/dialogComponent'
+import dialogContent from '../publicRiskControl/dialogComponentS'
+import basicsModal from "./dialogModal/basicsModal"
+import deptSelect from "./mixin/deptSelectHandler"
+// import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 
+
+export default {
+    mixins: [deptSelect],
     name: "riskControl",
+    components:{
+        stable,
+        RiskSelect,
+        treeTable,
+        reportContent,
+        dialogContent,
+        basicsModal
+    },
     data() {
         return {
-            tabData:[
-                {
-                    
-                },
-            ]
+            tableData:[],
+            columns:[],
+            treeData:[],
+            activeName:"second",
+            treeTableShow:true,
+            reportCompanyName:"天津食品有限公司",
+            dialogVisible:false,
+            dialogData:{
+                dialogRiskType:"riskBack"
+            },
+            modalData:{}
         }
     },
     /**
      * 组件生成的回调。
      */
-    created() {},
+    created() {
+        debugger;
+        //请求table的数据。
+        let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+        if(me.activeName == "second"){
+            url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+        }
+        this.axios.get(url).then(res => {
+            debugger;
+            if(res.data.code == 200) {
+                me.tableData = res.data.rows;
+                me.treeData = res.data.rows;
+                me.columns = res.data.columns
+            }
+        });
+    },
     /**
      * 页面渲染之后的回调。
      */
     mounted () {},
-    methods: {}
+    methods: {
+        /**
+         * 处理tab切换点击事件。
+         * @author szc 2019年5月14日14:55:16
+         */
+        handleTabClick (tab, event) {
+            debugger;
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            if(tab.name == "second"){
+                url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+            }
+            this.axios.get(url).then(res => {
+                debugger;
+                if(res.data.code == 200) {
+                    if(tab.name == "first"){
+                        me.tableData = res.data.rows;
+                    }else {
+                        me.treeData = res.data.rows;
+                    }
+                    me.columns = res.data.columns
+                }
+            });
+        },
+        /**
+         * 按钮的处理。
+         * @author szc 2019-5-14 11:56:40
+         * 查看
+         */
+        buttonHandler (scope,btnItem) {
+            debugger;
+            let me = this;
+            if(btnItem){
+                let id = btnItem.id;
+                if(id == "0"){
+                    //批示.
+                    me.instructionsState(scope);
+                }else if (id == "1") {
+                    me.lookInstructions(scope);
+                }else if (id == "2") {
+
+                }else if (id == "3") {
+
+                }
+            }
+        },
+        /**
+         * 批示状态的改变。
+         * @author szc 2019年5月14日13:48:28
+         */
+        instructionsState (scope) {
+            debugger;
+            let me = this,$index = scope.$index,scode = scope.row.scode;
+            if(scode){
+                // me.treeData.forEach();
+                me.changeValue(me.treeData,scode);
+                debugger;
+                console.log("ooooooooooo",me.treeData)
+                me.treeData;
+            }
+        },
+        changeValue (treeData,scode) {
+            debugger;
+            let me = this;
+            for(let i = 0; i < treeData.length; i++) {
+                let item = treeData[i];
+                if(item.scode == scode) {
+                    item.status = "已批示";
+                    item.operation[0].btnShow = false;
+                    break;
+                }
+                if(i == treeData.length - 1 && item.children){
+                    me.changeValue(item.children,scode);
+                }
+            }
+        },
+        /**
+         * 查看批示的内容
+         * @author szc 2019年5月14日14:24:14
+         */
+        lookInstructions () {
+            debugger;
+            let me = this;
+            me.treeTableShow = false;
+        },
+        /**
+         * 返回当前点击的选择。
+         * @author szc 2019年5月14日15:13:52
+         */
+        returnCurrentClick () {
+            debugger;
+            let me = this;
+            me.treeTableShow = true;
+        },
+        /**
+         * 风险名称项目的点击事件
+         * @author szc 2019年5月14日15:26:03
+         */
+        clickItemName (row) {
+            debugger;
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
+                if(res.data.code == 200){
+                    me.parseData(res.data.formConfig,row.row);
+                    me.currentRowIndex = row.$index;
+                    me.dialogVisible = true;
+                }
+            });
+        },
+        /**
+         * 装换数据。
+         * @author szc 2019年5月16日17:59:32
+         */
+        parseData (formConfig,row) {
+            debugger;
+            let me = this;
+            if(formConfig && row){
+                let groups = formConfig.groups,itemData = row;
+                for(let i = 0;i < groups.length;i ++){
+                    let groupItem = groups[i];
+                    if(groupItem.content && groups.length > 0) {
+                        let content = groupItem.content;
+                        for(let j = 0;j < content.length;j ++){
+                            let contenItem = content[j];
+                            if(itemData[contenItem.text]){
+                                contenItem[contenItem.text] = itemData[contenItem.text];
+                                contenItem.text == "riskLevel" && itemData.levelNum? contenItem.levelNum = itemData.levelNum:"";
+                            }
+                        }
+                    }
+                }
+            }
+            me.modalData = formConfig;
+        },
+        /**
+         * 上一条、下一条。
+         * @author szc 2019年5月17日08:26:42
+         */
+        changMessage (sign) {
+            let me = this,$index = me.currentRowIndex,tableData = me.tableData;
+            if(typeof($index) != "undefined"){
+                if($index == 0 && sign == "up"){
+                    me.$message({
+                        message:"已是第一条！",
+                        type:"warning"
+                    });
+                    return;
+                }
+                if($index == tableData.length - 1 && sign == "down") {
+                    me.$message({
+                        message:"已是最后一条！",
+                        type:"warning"
+                    });
+                    return;
+                }
+                if(sign == "up"){
+                    $index = $index - 1;
+                    me.parseData(me.modalData,me.tableData[$index]);
+                    me.currentRowIndex = $index;
+                }else {
+                    $index = $index + 1;
+                    me.parseData(me.modalData,me.tableData[$index]);
+                    me.currentRowIndex = $index;
+                }
+            }
+        }
+    }
 };
 </script>
-<style>
-    
+<style scoped>
+    .selectClass {
+        margin-bottom: 10px;
+    }
+    .riskNameContent {
+        max-height: 600px;
+        overflow: auto;
+    }
 </style>

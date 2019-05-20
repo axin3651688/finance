@@ -1,61 +1,59 @@
 <template>
     <div>
         <div class="conventional-container">
-            <div class="container-title">
-                一、战略风险
-            </div>
-
-            <div class="container-top">
-                <div class="container-top-left">
-                    <span class="left_1">
-                        社会责任风险
-                    </span>
-                    <span class="left_2">
-                        重要
-                    </span>
+            <div v-for="(rptItem,rptIndex) in middleData" :key="rptIndex">
+                <div class="container-title">
+                    {{ rptItem.text }}
                 </div>
-                <div class="container-top-right">
-                    <span class="left_1">
-                        {{this.reportCompanyNameShow}}
-                    </span>
-                    <span class="left_2">
-                        识别人：{{this.discernPeople}}
-                    </span>
-                </div>
-            </div>
-
-            <div>
-                <div class="container-center">
-                    <div>
-                        风险评估
+                <template v-if="rptItem.responsibility">
+                    <div class="container-top">
+                        <div class="container-top-left">
+                            <span class="left_1">
+                                {{ rptItem.responsibility.text }}
+                            </span>
+                            <span class="left_2">
+                                {{ rptItem.responsibility.level }}
+                            </span>
+                        </div>
+                        <div class="container-top-right">
+                            <span class="left_1">
+                                {{ rptItem.responsibility.company }}
+                            </span>
+                            <span class="left_2">
+                                识别人：{{ rptItem.responsibility.identificationUser }}
+                            </span>
+                        </div>
                     </div>
-                    <p v-for="item in this.riskContainer['risk_pg']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        风险概述
-                    </div>
-                    <p v-for="item in this.riskContainer['risk_gs']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        采取措施
-                    </div>
-                    <p v-for="item in this.riskContainer['risk_cs']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        应对建议
-                    </div>
-                    <p v-for="item in this.riskContainer['risk_jy']">
-                        {{item}}
-                    </p>
+                </template>
+                <div>
+                    <template v-if="rptItem.contentUp && rptItem.contentUp.type == 'text'">
+                        <div v-for="(item,index) in rptItem.contentUp.content" :key="index">
+                            <div :key="index" class="container-center">
+                                <div>
+                                    {{ item.title }}
+                                </div>
+                                <template v-if="item.content && item.content.length > 0">
+                                    <p v-for="(cntItem,cntIndex) in item.content" :key="cntIndex">
+                                        {{ cntItem }}
+                                    </p>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-if="rptItem.contentDown && rptItem.contentDown.type == 'text'">
+                        <div v-for="(item,index) in rptItem.contentDown.content" :key="index">
+                            <div :key="index" class="container-center">
+                                <div>
+                                    {{ item.title }}
+                                </div>
+                                <template v-if="item.content && item.content.length > 0">
+                                    <p v-for="(cntItem,cntIndex) in item.content" :key="cntIndex">
+                                        {{ cntItem }}
+                                    </p>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -67,7 +65,8 @@
         name: "reportConventional",
         components: {},
         props: {
-            reportCompanyNameShow: String
+            reportCompanyNameShow: String,
+            middleData:Array
         },
         data() {
             return {
@@ -90,6 +89,14 @@
             }
         },
         created() {
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+                debugger;
+                if(res.data.code == 200) {
+                    debugger;
+                    me.middleData = res.data.reportDataContent.riskFeedData;
+                }
+            });
         },
         mounted() {
         },

@@ -9,7 +9,7 @@
                             <el-button type="primary" @click="nextMessage()">下一条</el-button>
                         </el-form-item>
                     </div>
-                    <div class="form-foot-right">
+                    <div class="form-foot-right" v-show="dialogData['dialogRiskType'] === 'riskBack'">
                         <el-form-item>
                             <el-checkbox
                                     label="指定反馈人员"
@@ -20,6 +20,14 @@
                             <el-button type="primary" @click="riskSend()">反馈上报</el-button>
                         </el-form-item>
                     </div>
+
+                    <div class="form-foot-right" v-show="dialogData['dialogRiskType'] === 'riskTrack'">
+                        <div style="text-align: right; padding-right: 4px;">
+                            <el-button type="primary" @click="pageExport">导出</el-button>
+                            <el-button @click="pageBack">关闭</el-button>
+                        </div>
+                    </div>
+
                 </div>
             </el-col>
         </el-row>
@@ -31,12 +39,16 @@
 
 <script>
     import showPersonnelList from '../showPersonnelList'
+
     export default {
         name: "riskFoot",
         components: {
             showPersonnelList
         },
-        props: {},
+        props: {
+            formData: Object,
+            dialogData: Object
+        },
         data() {
             return {
                 personnelListShow: false
@@ -71,6 +83,12 @@
             handleCheckedChange() {
                 // alert("反馈上报。。。")
                 this.personnelListShow = !this.personnelListShow;
+            },
+            pageBack() {
+                this.$emit("closeDialogContent")
+            },
+            pageExport() {
+                alert('报告导出事件')
             }
         }
     }
