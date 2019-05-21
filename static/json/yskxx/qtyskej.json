@@ -1,0 +1,380 @@
+{
+    "id": "qtyskej",
+    "text": "其他应收款二级",
+    "layout": {
+        "xtype": "tab"
+    },
+    "config": {
+        "sql": "",
+        "sql2": 8,
+        "sql1": 11,
+        "mainDim": "itemperiod",
+        "needDims": ["year", "month", "company", "conversion"],
+        "random": { "min": 100, "max": 100000 }
+    },
+    "columns": [
+        {
+            "text": "公司编码",
+            "type": "string",
+            "fixed": true,
+            "width": "160",
+            "id": "scode"
+        },
+        {
+            "text": "公司名称",
+            "width": "360px",
+            "type": "string",
+            "fixed": true,
+            "id": "gsmc"
+        },
+        {
+            "text": "口径",
+            "type": "string",
+            "width": "120",
+            "align": "center",
+            "id": "kj"
+        },
+        {
+            "text": "余额",
+            "type": "decimal",
+            "width": "160",
+            "align": "right",
+            "id": "ye"
+        },
+        {
+            "text": "与年初相比增减额",
+            "type": "decimal",
+            "width": "160",
+            "align": "right",
+            "id": "zje"
+        },
+        {
+            "text": "与年初相比增减率（%）",
+            "type": "decimal",
+            "conversion": "%",
+            "align": "right",
+            "width": "180px",
+            "id": "zjl"
+        },
+        {
+            "text": "预警等级",
+            "type": "string",
+            "width": "120",
+            "align": "center",
+            "id": "riskrange"
+        },
+        {
+            "id": "",
+            "type": "string",
+            "text": "账期",
+            "children": [{
+                    "text": "1年以内",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "oneYear"
+                },
+                {
+                    "text": "1-2年",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "twoYear"
+                },
+                {
+                    "text": "2-3年",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "threeYear"
+                },
+                {
+                    "text": "3年以上",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "allYear"
+                }
+            ]
+        },
+        {
+            "text": "正常金额",
+            "type": "decimal",
+            "width": "160",
+            "align": "right",
+            "id": "zcje"
+        },
+        {
+            "id": "",
+            "type": "string",
+            "text": "非正常金额",
+            "children": [{
+                    "text": "向系统外出借资金",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "fff1"
+                },
+                {
+                    "text": "成本费用挂账",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "fff2"
+                },
+                {
+                    "text": "通过融资性贸易、赊销业务、虚假贸易等虚增应收",
+                    "type": "decimal",
+                    "width": "330px",
+                    "align": "right",
+                    "id": "fff3"
+                },
+                {
+                    "text": "为其他企业代偿金融机构的贷款",
+                    "type": "decimal",
+                    "width": "230px",
+                    "align": "right",
+                    "id": "fff4"
+                },
+                {
+                    "text": "长期挂账、未及时清理",
+                    "type": "decimal",
+                    "width": "180px",
+                    "align": "right",
+                    "id": "fff5"
+                },
+                {
+                    "text": "核算不规范",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "fff6"
+                },
+                {
+                    "text": "其他",
+                    "type": "decimal",
+                    "width": "160",
+                    "align": "right",
+                    "id": "fff7"
+                }
+            ]
+        },
+        {
+            "text": "可收回金额",
+            "type": "decimal",
+            "width": "160",
+            "align": "right",
+            "id": "www1"
+        },
+        {
+            "text": "其中：当年可收回金额",
+            "type": "decimal",
+            "width": "180px",
+            "align": "right",
+            "id": "www2"
+        },
+        {
+            "text": "逾期账款",
+            "type": "decimal",
+            "width": "160",
+            "align": "right",
+            "id": "www3"
+        },
+        {
+            "text": "已形成实质性损失金额",
+            "type": "decimal",
+            "width": "180px",
+            "align": "right",
+            "id": "www4"
+        }
+    ],
+    "rows": [],
+    "items": [
+        {
+            "id": "qtyskej",
+            "text": "其他应收款",
+            "index": false,
+            "isTree": true,
+            "xtype": true,
+            "name": "1",
+            "tableHeads": true,
+            "queryDataBefore": function(params, $this){ 
+                let me = this ; 
+                let $ss = $this.$store.state.prame.command;
+                // 上年度12月份
+                params.oneYearBefore = params.year - 1 + "12" ; 
+                if ($ss.company == '1001') {
+                    params.sql = $this.config.sql1; //9 集团公司
+                } else {
+                    params.sql = $this.config.sql2; //7 二级合并公司
+                }
+                return params;
+            },
+            "queryDataAfter": function(datas, $this){
+                // debugger
+                let first = $this.objer2.proportion[0].value ;
+                let second= $this.objer2.proportion[1].value ;
+                datas.forEach(element => { 
+                    if(first && first > 0 && element.zjl && element.zjl <= first){
+                        element.riskrange = '安全' ;
+                    }
+                    if(first == 0 && element.zjl && element.riskrange == '安全'){
+                        element.riskrange = '' ;
+                    }
+                    if(second && second >0 && element.zjl && element.zjl >= second){
+                        element.riskrange = '预警' ;
+                    }
+                    if(second == 0 && element.zjl && element.riskrange == '预警'){
+                        element.riskrange = '' ;
+                    }
+                    if(first && second && first>0 && second>0 && element.zjl && element.zjl>first && element.zjl<second){
+                        element.riskrange = '提示' ; 
+                    }
+                    if((first==0 || second==0) && element.zjl && element.riskrange == '提示'){
+                        element.riskrange = '' ;
+                    }
+                    if(element.riskrange != "安全" && element.riskrange != "预警" && element.riskrange != "提示"){
+                        element.riskrange = '' ;
+                    }
+                    if(first == 0 && second == 0)element.riskrange = '' ;
+                    if(element.scode == "9")element.scode = '' ;
+                });
+                return datas ;
+            },
+            "toolbar": [
+                {
+                    "id": "1",
+                    "text": "全部展开",
+                    "xtype": "button",
+                    "handler": function(data, btn, $this) {
+                        if(data && data.length>0){
+                            data.forEach(res => {
+                                res._expanded = true ; 
+                                if(res.children && res.children.length>0)this.handler(res.children); 
+                            });
+                        }else{  
+                            $vue.$message('暂无数据！');
+                        }
+                    }
+                }, 
+                {
+                    "id": "2",
+                    "text": "全部收起",
+                    "xtype": "button",
+                    "handler": function(data, btn, $this) {
+                        if(data && data.length>0){
+                            data.forEach(res => {
+                                res._expanded = false ; 
+                                if(res.children && res.children.length>0)this.handler(res.children); 
+                            });
+                        }else{  
+                            $vue.$message('暂无数据！');
+                        }
+                    }
+                },
+                {
+                    "id": "3",
+                    "text": "刷新",
+                    "xtype": "button",
+                    "handler": function(data, btn, $this) {
+                        $this.closeTab($this);
+                    }
+                }, {
+                    "id": "4",
+                    "text": "导出",
+                    "xtype": "button",
+                    "handler": function(data, btn, $this) {
+                        $this.handleDownload();
+                    }
+                }
+            ],
+            "proportion":[
+                {
+                    "id": "5",
+                    "text": "安全比例",
+                    "placeholder": "请输入安全比例%",
+                    "cellStyle": {
+                        "width": "340px"
+                    },
+                    "input3": "",
+                    "value": 0,
+                    "show": true,
+                    "icon": "≤"
+                },
+                {
+                    "id": "6",
+                    "text": "预警比例",
+                    "placeholder": "请输入预警比例%",
+                    "cellStyle": {
+                        "width": "340px"
+                    },
+                    "input3": "",
+                    "value": 0,
+                    "show": true,
+                    "icon": "≥"
+                }
+            ],
+            "drillProperties": ["riskrange", "gsmc"],
+            "cellStyle": function({row, column, cell, event}, $this){
+                let css = "padding: 4px 0;";
+                let pro = row.column.property;
+                if (!pro) {
+                    return css;
+                }
+                let record = row.row;
+                let drillProperties = this.drillProperties;
+                if (drillProperties.indexOf(pro) != -1) {
+                    if(pro == "gsmc" && record.gsmc && record.gsmc != "" && record.gsmc != "总计"){
+                        let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
+                        css = css + "font-weight:bold;" + drill;
+                        record.drill = true ;
+                        return css;
+                    }else if(pro == "riskrange" && pro!="gsmc" && record.riskrange && record.riskrange == "安全"){
+                        let drill = "text-decoration: none;color: green;font-weight: bold;";
+                        css = css + "font-weight:bold;" + drill;
+                        return css;
+                    }else if(pro == "riskrange" && pro!="gsmc" && record.riskrange && record.riskrange == "提示"){
+                        let drill = "text-decoration: none;color: #FF9900;font-weight: bold;";
+                        css = css + "font-weight:bold;" + drill;
+                        return css;
+                    }else if(pro == "riskrange" && pro!="gsmc" && record.riskrange && record.riskrange == "预警"){
+                        let drill = "text-decoration: none;color: red;font-weight: bold;";
+                        css = css + "font-weight:bold;" + drill;
+                        return css;
+                    }else {
+                        return css ;
+                    }
+                }else{
+                    return css ;
+                }
+            },
+            "rowClick": function({row, event, column}, $this){
+                // debugger
+                let pool = {
+                    id: row.gsbm,
+                    text: row.gsmc,
+                    row: row,
+                    column: column,
+                    event: event
+                }
+                let sourceApi1 ;
+                let drill = row.drill? true : false ;
+                let regex = /\(|\)|（|）/g ;
+                let is = regex.test(pool.text);
+                let com = $this.$store.state.prame.command;
+                if(com.company == "1001"){
+                    if(is){
+                        sourceApi1 = "/cnbi/json/yskxx/qtyskejDrill.json";
+                    }else{
+                        sourceApi1 = "/cnbi/json/yskxx/qtyskDrill.json";
+                    }                    
+                }else{
+                    sourceApi1 = "/cnbi/json/yskxx/qtyskDrill.json";
+                }
+                if (this.drillProperties[1].indexOf(column.property) != -1 && drill) {
+                    $this.$emit("addTab",pool, sourceApi1);
+                }
+            }
+        }
+    ]
+}

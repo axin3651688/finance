@@ -8,7 +8,8 @@
                             v-for="item in options"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.value"
+                    >
                     </el-option>
                 </el-select>
             </div>
@@ -105,43 +106,45 @@
                             {
                                 dataType: 'riskOverview',
                                 label: "风险概述",
-                                width: ""
+                                disableEdit: true,
+                                text: '自动带出，不可编辑'
                             },
                             {
                                 dataType: 'riskMeasure',
                                 label: "采取措施",
-                                width: ""
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
                             },
                             {
                                 dataType: 'riskSuggest',
                                 label: "应对建议",
-                                width: ""
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
                             }
                         ]
                     },
                     contentFoot: {
                         content: [
                             {
-                                schedule: '进度一',
-                                text: '风险上报',
-                                state: '已上报',
-                                content: '上报的内容。上报人：小智。上报时间：2019年3月'
+                                dataType: 'countermeasures',
+                                label: '风险应对策略',
+                                disableEdit: true,
+                                text: '风险应对策略，不可编辑'
                             },
                             {
-                                schedule: '进度二',
-                                text: '风险批示',
-                                state: '未批示',
-                                content: '请尽快批示'
+                                dataType: 'instruction',
+                                label: '风险应对策略描述',
+                                disableEdit: true,
+                                text: '显示批示内容，不可编辑'
                             },
                             {
-                                schedule: '进度三',
-                                text: '风险反馈',
-                                state: '未反馈',
-                                content: '请尽快反馈'
+                                dataType: 'riskFeed',
+                                label: '风险反馈',
+                                disableEdit: false,
+                                text: '针对风险进行相关反馈录入'
                             }
                         ]
                     }
-
                 },
             }
         },

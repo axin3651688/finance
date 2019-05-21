@@ -119,3 +119,44 @@ export function update_sjz(data){
         data: data
     })
 }
+/**1.
+ * name: sjz
+ * 说明：风险识别的【风险发生概率-参照按钮】接口 /riskprobability/query_tovo
+ */
+export function riskprobability(){
+    return request({
+        url: '/zjb/riskprobability/query_tovo',
+        method: 'get'
+    })
+}
+/**2.
+ * name: sjz
+ * 说明：风险识别的【风险影响程度-参照按钮】接口 /risk_influence_degree/query_tovo
+ */
+export function risk_influence_degree(){
+    return request({
+        url: '/zjb/risk_influence_degree/query_tovo',
+        method: 'get'
+    })
+}
+/**3.
+ * name: sjz
+ * 说明：风险识别的【删除按钮】接口 /riskdistinguish/delete
+ */
+export function deleteRiskdistinguish(data){
+    return request({
+        url: '/zjb/riskdistinguish/delete',
+        method: 'post',
+        data: data
+    })
+}
+/**4.
+ * name: sjz
+ * 说明：风险识别的【风险类型下拉】接口 /risktype/query_all
+ */
+export function risktype(){
+    return request({
+        url: '/zjb/risktype/query_all',
+        method: 'get'
+    })
+}
