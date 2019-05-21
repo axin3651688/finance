@@ -41,9 +41,11 @@
                     <!--报告跳转界面关于追踪的进度的内容-->
                     <report-schedule
                             v-show="this.scheduleShow"
-                            :scheduleData.sync="scheduleData"
+                            :contentDown.sync="contentDown"
                     >
                     </report-schedule>
+                    <!-- 风险管控的领导批示 -->
+                    <reportControlInstruction v-if="reportControl" :contentDown="contentDown"></reportControlInstruction>
 
                     <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
                         <el-button @click="sbRiskFeed">反馈上报</el-button>
@@ -63,6 +65,7 @@
     import reportInstruction from './riskReportComponents/reportInstruction'
     import reportSchedule from './riskReportComponents/reportSchedule'
     import showPersonnelList from './showPersonnelList'
+    import reportControlInstruction from './riskReportComponents/reportControlInstruction'
 
     export default {
         name: "reportComponent",
@@ -71,13 +74,15 @@
             reportConventional,
             reportInstruction,
             reportSchedule,
-            showPersonnelList
+            showPersonnelList,
+            reportControlInstruction
         },
         props: {
             reportData: Object
         },
         data: function () {
             return {
+                reportControl:false,//风险管控的领导批示
                 personnelListShow: false,
 
                 //控制显示哪个组件的flag
@@ -90,7 +95,7 @@
                 //传到头部reportHeader的数据
                 reportHeaderData:{},
                 middleData:{},//报告中间的数据
-                scheduleData:{}//进度的数据
+                contentDown:{}//报告的不同的内容的数据。
             }
         },
         created() {
@@ -160,6 +165,7 @@
                     reportType = data.reportType;
                 this.instructionShow = reportType === 'riskFeedCom';
                 this.scheduleShow = reportType === 'riskTrackCom';
+                this.reportControl = reportType === "riskControlCom";
             },
 
             /**
@@ -198,7 +204,7 @@
                         let item = contentData[i];
                         if(item.show){
                             me.middleData = item;
-                            me.scheduleData = item.contentDown;
+                            me.contentDown = item.contentDown;
                             break;
                         }
                     }
