@@ -54,7 +54,10 @@ import dialogContent from '../publicRiskControl/dialogComponentS'
 import basicsModal from "./dialogModal/basicsModal"
 import deptSelect from "./mixin/deptSelectHandler"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
-
+import {
+    queryInstructions
+} from "~api/szcRiskControl/riskControl"
+import { findThirdPartData } from "~api/interface";
 
 export default {
     mixins: [deptSelect],
@@ -130,6 +133,59 @@ export default {
                     me.columns = res.data.columns
                 }
             });
+        },
+        /**
+         * 查询风险管控的数据。
+         * @author szc 2019年5月21日11:32:47
+         */
+        queryDataOfInstructions () {
+            debugger;
+            let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
+                month = storeParams.month,period = "";
+            if(month > 9) {
+                period = year + "" + month;
+            }else {
+                period = year + "0" + month;
+            }
+            let params = {
+                company:company,
+                year:year,
+                month:month,
+                period:period,
+                sql:""
+            };
+            me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
+                if(res.data.code == 200){
+                    params = me.paramsOfSql(params,res.data.sqlList);
+                    findThirdPartData(params).then(res => {
+                        debugger;
+                        if(res.data.code == 200) {
+                            me.$message({
+                                message:"成功！",
+                                type:"success"
+                            });
+                        }
+                    });
+                }
+            }); 
+        },
+        /**
+         * 请求参数上添加sql语句。
+         * @author szc 2019年5月21日14:15:22
+         */
+        paramsOfSql (prams,data) {
+            debugger;
+            let me = this;
+            if(data && data.length > 0) {
+                for(let i = 0;i < data.length;i ++) {
+                    let item = data[i];
+                    if(item.id == "101") {
+                        params.sql = item.sql;
+                        break;
+                    }
+                }
+            }
+            return params;
         },
         /**
          * 按钮的处理。
