@@ -63,13 +63,15 @@
              * 查看上一条信息
              */
             lastMessage() {
-                alert("查看上一条信息。。。")
+                let flag = 'up';
+                this.$emit("messageChange",flag);
             },
             /**
              * 查看下一条信息
              */
             nextMessage() {
-                alert("查看下一条信息。。。")
+                let flag = 'down';
+                this.$emit("messageChange",flag);
             },
             /**
              * 反馈上报

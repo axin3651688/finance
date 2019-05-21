@@ -8,7 +8,8 @@
                             v-for="item in options"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.value"
+                    >
                     </el-option>
                 </el-select>
             </div>
@@ -127,19 +128,19 @@
                             {
                                 dataType: 'countermeasures',
                                 label: '风险应对策略',
-                                disableEdit :true,
+                                disableEdit: true,
                                 text: '风险应对策略，不可编辑'
                             },
                             {
                                 dataType: 'instruction',
                                 label: '风险应对策略描述',
-                                disableEdit :true,
+                                disableEdit: true,
                                 text: '显示批示内容，不可编辑'
                             },
                             {
                                 dataType: 'riskFeed',
                                 label: '风险反馈',
-                                disableEdit :false,
+                                disableEdit: false,
                                 text: '针对风险进行相关反馈录入'
                             }
                         ]

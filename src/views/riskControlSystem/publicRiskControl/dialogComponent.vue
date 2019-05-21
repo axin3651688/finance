@@ -41,6 +41,7 @@
                             :formData="formData"
                             :dialogData="dialogData"
                             @closeDialogContent="closeDialogContent"
+                            @messageChange="messageChange"
                     >
                     </risk-foot>
 
@@ -123,6 +124,27 @@
                 let data = this.dialogData,
                     footData = data.contentFoot;
                 this.dialogScheduleData = footData;
+            },
+            /**
+             * 上一条下一条
+             * @param flag
+             */
+            messageChange(flag){
+
+                //$message 可传入的type的值
+                //'success' | 'warning' | 'info' | 'error'
+                if(flag === 'up'){
+                    this.$message({
+                        message:'切换上一条成功',
+                        type:"success"
+                    });
+                }else if(flag === 'down'){
+                    this.$message({
+                        message:'切换下一条成功',
+                        type:"success"
+                    });
+                }
+
             }
         }
     }
