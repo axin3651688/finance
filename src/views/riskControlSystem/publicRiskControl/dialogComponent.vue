@@ -18,14 +18,14 @@
 
                     <!--弹出层中间的三个公共部分-->
                     <risk-conventional
-                            :formData="formData"
+                            :dialogMiddleData="dialogMiddleData"
                     >
                     </risk-conventional>
 
                     <!--弹出层关于领导批示的部分-->
                     <risk-instruction
                             v-show="dialogData['dialogRiskType'] === 'riskBack'"
-                            :formData="formData"
+                            :dialogInstructionData="dialogInstructionData"
                     >
                     </risk-instruction>
 
@@ -72,23 +72,16 @@
         },
         data() {
             return {
-                formData: {
-                    riskType: '自动填入',
-                    riskProbability: '自动填入',
-                    riskDegree: '自动填入',
-                    riskLevel: '重大',
-                    riskOverview: '自动带出，不可编辑',
-                    riskMeasure: '自动查询风险识别的',
-                    riskSuggest: '自动查询风险识别的',
-                    countermeasures: '风险应对策略，不可编辑',
-                    instruction: '显示批示内容，不可编辑',
-                    riskFeed: '',
-                },
-                dialogHeaderData: {}
+                formData: {},
+                dialogHeaderData: {},
+                dialogMiddleData:{},
+                dialogInstructionData:{}
             }
         },
         created() {
             this.getDialogHeaderData();
+            this.getDialogMiddleData();
+            this.getDialogInstructionData();
         },
         mounted() {
         },
@@ -104,6 +97,22 @@
                 let data = this.dialogData,
                     headerData = data.contentHeader;
                 this.dialogHeaderData = headerData;
+            },
+            /**
+             * 获取弹窗中间的内容
+             */
+            getDialogMiddleData(){
+                let data = this.dialogData,
+                    middleData = data.contentMiddle;
+                this.dialogMiddleData = middleData;
+            },
+            /**
+             * 获取领带批示数据
+             */
+            getDialogInstructionData(){
+                let data = this.dialogData,
+                    footData = data.contentFoot;
+                this.dialogInstructionData = footData;
             }
         }
     }
