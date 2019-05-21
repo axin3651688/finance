@@ -1,25 +1,24 @@
 <template>
     <div>
-        <div class="schedule-title">
-            风险追踪
+        <div v-if="contentDown.title" class="schedule-title">
+            {{ contentDown.title }}
         </div>
-
-        <div class="schedule-list" v-for="(value, key) of scheduleList" :key="key">
-            <div class="risk-content">
+        <div v-for="(item,index) in contentDown.content" :key="index" class="schedule-list">
+            <div :key="index" class="risk-content">
                 <div class="risk-num">
-                    {{value.risk_count}}
+                    {{ item.schedule }}
                 </div>
                 <div class="risk-name">
                     <span class="title-left">名称 :</span>
-                    <span class="content-right">{{value.risk_name}}</span>
+                    <span class="content-right">{{ item.text }}</span>
                 </div>
                 <div class="risk-state">
                     <span class="title-left">状态 :</span>
-                    <span class="content-right">{{value.state}}</span>
+                    <span class="content-right">{{ item.state }}</span>
                 </div>
                 <div class="risk-content">
                     <span class="title-left">内容 :</span>
-                    <span class="content-right">{{value.content}}</span>
+                    <span class="content-right">{{ item.content }}</span>
                 </div>
             </div>
         </div>
@@ -30,7 +29,9 @@
     export default {
         name: "reportSchedule",
         components: {},
-        props: {},
+        props: {
+            contentDown:Object
+        },
         data() {
             return {
                 scheduleList: {

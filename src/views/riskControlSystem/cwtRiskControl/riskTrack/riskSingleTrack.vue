@@ -53,10 +53,6 @@
                 trackDialogVisible: false,
                 tableData: [],
                 columns: [],
-                dialogData: {
-                    dialogRiskType: "riskTrack",
-                    riskName: ""
-                },
                 options: [
                     {
                         value: '选项1',
@@ -69,7 +65,87 @@
                         label: '其他部门'
                     }
                 ],
-                value: ''
+                value: '',
+                dialogData: {
+                    dialogRiskType: "riskTrack",
+                    riskName: "",
+                    contentHeader: {
+                        content: [
+                            {
+                                dataType: 'riskType',
+                                label: "风险类型",
+                                disableEdit: true,
+                                text: '风险类型自动填入'
+                            },
+                            {
+                                dataType: 'riskProbability',
+                                label: "风险发生概率",
+                                disableEdit: true,
+                                text: '很大的可能性'
+                            },
+                            {
+                                dataType: 'riskDegree',
+                                label: "风险影响程度",
+                                disableEdit: true,
+                                text: '极重'
+                            },
+                            {
+                                dataType: 'riskLevel',
+                                label: "风险等级",
+                                disableEdit: true,
+                                text: '极重'
+                            }
+                        ]
+                    },
+                    contentMiddle: {
+                        content: [
+                            {
+                                dataType: 'riskOverview',
+                                label: "风险概述",
+                                disableEdit: true,
+                                text: '自动带出，不可编辑'
+                            },
+                            {
+                                dataType: 'riskMeasure',
+                                label: "采取措施",
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
+                            },
+                            {
+                                dataType: 'riskSuggest',
+                                label: "应对建议",
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
+                            }
+                        ]
+                    },
+                    contentFoot: {
+                        content: [
+                            {
+                                dataType: 'risk_sb',
+                                schedule: '进度一',
+                                text: '风险上报',
+                                state: '已上报',
+                                content: '上报的内容。上报人：小智。上报时间：2019年3月'
+                            },
+                            {
+                                dataType: 'risk_ps',
+                                schedule: '进度二',
+                                text: '风险批示',
+                                state: '未批示',
+                                content: '请尽快批示'
+                            },
+                            {
+                                dataType: 'risk_fq',
+                                schedule: '进度三',
+                                text: '风险反馈',
+                                state: '未反馈',
+                                content: '请尽快反馈'
+                            }
+                        ]
+                    }
+
+                },
             }
         },
         created() {

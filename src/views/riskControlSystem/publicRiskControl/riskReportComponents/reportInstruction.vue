@@ -4,12 +4,12 @@
             <span>领导批示</span>
             <div class="top-form-contents" style="margin-bottom: 0">
                 <p style="min-width: 98px;width: 150px;margin-left: 30px">风险策略为：</p>
-                <el-input v-model="this.countermeasures"></el-input>
+                <el-input v-model="countermeasures" disabled></el-input>
             </div>
         </div>
         <div class="top-form-contents">
             <span style="min-width: 194px;width: 194px"></span>
-            <el-input type="textarea" :rows="3" v-model="this.instruction"></el-input>
+            <el-input type="textarea" :rows="3" v-model="instruction" disabled></el-input>
         </div>
 
         <div class="top-form-contents">
@@ -23,7 +23,9 @@
     export default {
         name: "reportInstruction",
         components: {},
-        props: {},
+        props: {
+            contentDown:Object
+        },
         data() {
             return {
                 countermeasures:'应对策略自动显示，不可编辑',
@@ -32,6 +34,9 @@
             }
         },
         created() {
+            let me = this;
+            me.countermeasures = me.contentDown.content.countermeasures || me.countermeasures;
+            me.instruction = me.contentDown.content.instruction || me.instruction
         },
         mounted() {
         },

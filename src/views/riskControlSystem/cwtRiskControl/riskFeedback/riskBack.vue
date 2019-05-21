@@ -44,6 +44,7 @@
 <script>
     import dialogComponent from '../../publicRiskControl/dialogComponent'
     import stable from "@v/riskControlSystem/publicRiskControl/table/singleTable";
+
     export default {
         name: "riskBack",
         components: {
@@ -52,13 +53,9 @@
         },
         data() {
             return {
-                dialogData:{
-                    dialogRiskType:"riskBack",
-                    riskName:""
-                },
                 dialogVisible: false,
-                tableData:[],
-                columns:[],
+                tableData: [],
+                columns: [],
                 options: [
                     {
                         value: '选项1',
@@ -71,14 +68,90 @@
                         label: '其他部门'
                     }
                 ],
-                value: ''
+                value: '',
+                dialogData: {
+                    dialogRiskType: "riskBack",
+                    riskName: "",
+                    contentHeader: {
+                        content: [
+                            {
+                                dataType: 'riskType',
+                                label: "风险类型",
+                                disableEdit: true,
+                                text: '风险类型自动填入'
+                            },
+                            {
+                                dataType: 'riskProbability',
+                                label: "风险发生概率",
+                                disableEdit: true,
+                                text: '很大的可能性'
+                            },
+                            {
+                                dataType: 'riskDegree',
+                                label: "风险影响程度",
+                                disableEdit: true,
+                                text: '极重'
+                            },
+                            {
+                                dataType: 'riskLevel',
+                                label: "风险等级",
+                                disableEdit: true,
+                                text: '极重'
+                            }
+                        ]
+                    },
+                    contentMiddle: {
+                        content: [
+                            {
+                                dataType: 'riskOverview',
+                                label: "风险概述",
+                                disableEdit: true,
+                                text: '自动带出，不可编辑'
+                            },
+                            {
+                                dataType: 'riskMeasure',
+                                label: "采取措施",
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
+                            },
+                            {
+                                dataType: 'riskSuggest',
+                                label: "应对建议",
+                                disableEdit: true,
+                                text: '自动查询风险识别的内容显示'
+                            }
+                        ]
+                    },
+                    contentFoot: {
+                        content: [
+                            {
+                                dataType: 'countermeasures',
+                                label: '风险应对策略',
+                                disableEdit :true,
+                                text: '风险应对策略，不可编辑'
+                            },
+                            {
+                                dataType: 'instruction',
+                                label: '风险应对策略描述',
+                                disableEdit :true,
+                                text: '显示批示内容，不可编辑'
+                            },
+                            {
+                                dataType: 'riskFeed',
+                                label: '风险反馈',
+                                disableEdit :false,
+                                text: '针对风险进行相关反馈录入'
+                            }
+                        ]
+                    }
+                },
             }
         },
-        created(){
+        created() {
             //请求table的数据。
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskSingleTable.json").then(res => {
-                if(res.data.code === 200) {
+                if (res.data.code === 200) {
                     me.tableData = res.data.rows;
                     me.treeData = res.data.rows;
                     me.columns = res.data.columns
@@ -131,7 +204,7 @@
              * 获取当前弹出框title
              * @returns {string}
              */
-            getDialogTitle(){
+            getDialogTitle() {
                 let _riskName = this.dialogData.riskName;
                 return '关于【' + _riskName + '】的反馈';
             }
