@@ -1683,6 +1683,23 @@ export default {
   }
 };
 </script>
+<style>
+/* 表头背景颜色的设定 */
+    .has-gutter tr th {
+        background-color: rgb(240, 248, 255) !important;
+        color: #606266;
+    }
+/* 固定列表头的颜色设定  加重覆盖*/
+.el-table--border th, .el-table__fixed-right-patch{
+    background-color: rgb(240, 248, 255);
+}
+/** 这是对表行的行高设置*/
+    .el-table__body tr, .el-table__body td {
+        padding: 0;
+        height: 32px;
+    }
+</style>
+
 <style scoped>
 /* .userM {
   margin-top: 10px;
