@@ -5,14 +5,14 @@
                 <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
             </div>
             <div class="risk-reference">
-                <a style="color: dodgerblue;"v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
+                <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
             </div>
             <div class="form-content">
-                <el-form :inline="true" :model="formData" class="demo-form-inline">
+                <el-form :inline="true"  class="demo-form-inline">
 
                     <!--弹出层头部-->
                     <risk-header
-                            :formData="formData"
+                            :dialogHeaderData="dialogHeaderData"
                     >
                     </risk-header>
 
@@ -55,7 +55,7 @@
     import riskHeader from './riskFeedComponents/riskHeader'
     import riskConventional from './riskFeedComponents/riskConventional'
     import riskInstruction from './riskFeedComponents/riskInstruction'
-    import riskSchedule from './riskFeedComponents/riskSchedule';
+    import riskSchedule from './riskFeedComponents/riskSchedule'
     import riskFoot from './riskFeedComponents/riskFoot'
 
     export default {
@@ -84,16 +84,26 @@
                     instruction: '显示批示内容，不可编辑',
                     riskFeed: '',
                 },
+                dialogHeaderData: {}
             }
         },
         created() {
+            this.getDialogHeaderData();
         },
         mounted() {
         },
         watch: {},
         methods: {
-            closeDialogContent(){
+            closeDialogContent() {
                 this.$emit('closeDialogContent1')
+            },
+            /**
+             * 获取弹窗界面头部数据
+             */
+            getDialogHeaderData(){
+                let data = this.dialogData,
+                    headerData = data.contentHeader;
+                this.dialogHeaderData = headerData;
             }
         }
     }

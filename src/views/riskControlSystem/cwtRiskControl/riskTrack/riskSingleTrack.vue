@@ -53,10 +53,6 @@
                 trackDialogVisible: false,
                 tableData: [],
                 columns: [],
-                dialogData: {
-                    dialogRiskType: "riskTrack",
-                    riskName: ""
-                },
                 options: [
                     {
                         value: '选项1',
@@ -69,7 +65,76 @@
                         label: '其他部门'
                     }
                 ],
-                value: ''
+                value: '',
+                dialogData:{
+                    dialogRiskType:"riskTrack",
+                    riskName:"",
+                    contentHeader:{
+                        content:[
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            },
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            },
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            },
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            }
+                        ]
+                    },
+                    contentMiddle:{
+                        content:[
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            },
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            },
+                            {
+                                riskType:'',
+                                label:"",
+                                width:""
+                            }
+                        ]
+                    },
+                    contentFoot:{
+                        content:[
+                            {
+                                schedule:'进度一',
+                                text:'风险上报',
+                                state:'已上报',
+                                content:'上报的内容。上报人：小智。上报时间：2019年3月'
+                            },
+                            {
+                                schedule:'进度二',
+                                text:'风险批示',
+                                state:'未批示',
+                                content:'请尽快批示'
+                            },
+                            {
+                                schedule:'进度三',
+                                text:'风险反馈',
+                                state:'未反馈',
+                                content:'请尽快反馈'
+                            }
+                        ]
+                    }
+                },
             }
         },
         created() {
