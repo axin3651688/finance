@@ -34,13 +34,13 @@
 
                     <!--报告跳转界面领导批示的内容-->
                     <report-instruction
-                            v-show="this.instructionShow"
+                            v-if="this.instructionShow"
                     >
                     </report-instruction>
 
                     <!--报告跳转界面关于追踪的进度的内容-->
                     <report-schedule
-                            v-show="this.scheduleShow"
+                            v-if="this.scheduleShow"
                             :contentDown.sync="contentDown"
                     >
                     </report-schedule>
