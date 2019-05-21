@@ -150,6 +150,7 @@ export default {
     // debugger;
     /*     下面是针对弹框写的判断,可以再次引用bimodule
     马军  2019.1.11 */
+    debugger
     if (Cnbi.isEmpty(this.dialogData)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -368,7 +369,7 @@ export default {
           //说明是从数据库来的
           source = dbData.source;
         }
-        if (this.api) {
+        if (api) {
             this.loadModuleAfter(source);
         }
       

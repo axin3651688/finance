@@ -26,8 +26,8 @@
 import { mapActions, mapGetters } from "vuex";
 import {
   companyContactList,
-  SAVE_MODULE_MSG,
-  ACK_MODULE_MSG
+  SAVE_MODULE_MSG
+
 } from "~api/interface";
 export default {
   name: "Cbsb",
@@ -44,6 +44,8 @@ export default {
     };
   },
   created() {
+    console.log("我进来了");
+    
     this.getMemberList(this.companyId,"this.companyIdthis.companyIdthis.companyIdthis.companyId");
   },
   computed: {
@@ -122,26 +124,22 @@ export default {
         senderId: this.userId,
         type: 1
       };
+      console.log(datas,"消息已经发送成功！");
+      
       SAVE_MODULE_MSG(datas).then(res => {
-        let data = res.data.data;
-        // console.log(data);
-        ACK_MODULE_MSG(data)
-          .then(res => {
-            console.log(res.data.msg);
-            this.$message({
+        this.$message({
               message: "消息已经发送成功！",
               type: "success"
             });
+        let data = res.data.data;
+        // 清空所有内容,并关闭弹窗
+            this.ShowMeluList({ deleteData: "deleteAll" });
+            this.ShowDialog({ isShow: false });      
+      }).catch(res => {
             // 清空所有内容,并关闭弹窗
             this.ShowMeluList({ deleteData: "deleteAll" });
             this.ShowDialog({ isShow: false });
-          })
-          .catch(res => {
-            // 清空所有内容,并关闭弹窗
-            this.ShowMeluList({ deleteData: "deleteAll" });
-            this.ShowDialog({ isShow: false });
-          });
-      });
+          });;
     }
   }
 };

@@ -115,26 +115,26 @@ export function SAVE_MODULE_MSG(datas) {
   // console.log(datas);
   debugger
   return request({
-    url: '/api/api/save_module_msg',
+    url: '/api/api/new/save_module_msg',
     method: 'post',
     data: datas
   })
 }
 
-export function ACK_MODULE_MSG(data) {
-  console.log("催报消息操作接口");
-  // console.log(data);
-  debugger
-  return request({
-    url: '/api/api/ack_module_msg',
-    method: 'get',
-    params: {
-      code: data,
-      chat: 2000,
-      type: 1102
-    }
-  })
-}
+// export function ACK_MODULE_MSG(data) {
+//   console.log("催报消息操作接口");
+//   // console.log(data);
+//   debugger
+//   return request({
+//     url: '/api/api/change_module_user_state',
+//     method: 'get',
+//     params: {
+//       code: data,
+//       chat: 2000,
+//       type: 1102
+//     }
+//   })
+// }
 
 /**
  * 成员信息查询是否存在
