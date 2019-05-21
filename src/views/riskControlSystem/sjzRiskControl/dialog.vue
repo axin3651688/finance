@@ -32,42 +32,45 @@
         <p class="title1">风险表现</p>
             <el-form :model="form" :inline="true" label-width="120px" >
                 <el-form-item label="风险名称：">
-                    <el-input v-model="form.name" auto-complete="off" placeholder="请输入风险名称" class="input"></el-input>
+                    <el-input v-model="form.sriskname" auto-complete="off" placeholder="请输入风险名称" class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险类型：">
-                    <el-select v-model="form.region" placeholder="请选择风险类型" class="input">
-                        <el-option label="风险一" value="1"></el-option>
-                        <el-option label="风险二" value="2"></el-option>
+                    <el-select v-model="form.srisktype" placeholder="请选择风险类型" class="input">
+                        <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="填报部门：">
-                    <el-input v-model="form.department" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.departmentname" auto-complete="off" readonly class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="填报人：">
-                    <el-input v-model="form.person" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.sfilluser" auto-complete="off" readonly class="input"></el-input>
                 </el-form-item>
             </el-form>
             <el-form :model="form" :inline="false" label-width="120px">
                 <el-form-item label="风险概述：">
-                    <el-input type="textarea" v-model="form.textarea" placeholder="请输入风险概述..."></el-input>
+                    <el-input type="textarea" v-model="form.sriskdescription" placeholder="请输入风险概述..."></el-input>
                 </el-form-item>
             </el-form>
         <!-- 2 -->
         <p class="title1">风险分析</p>
             <el-form :model="form" :inline="true" label-width="120px">
                 <el-form-item label="风险发生概率：">
-                    <el-input v-model="form.probability" auto-complete="off" placeholder="请输入风险概率" class="input2"></el-input>
+                    <el-select v-model="form.nprobability" placeholder="请选择风险概率" class="input2">
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
+                    </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：">
-                    <el-input v-model="form.impact" auto-complete="off" placeholder="请选择风险影响" class="input2"></el-input>
+                    <el-select v-model="form.ninfluence" placeholder="请选择风险影响" class="input2">
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                    </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险分值：">
-                    <el-input v-model="form.score" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.nscore" auto-complete="off" readonly class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险等级：">
-                    <el-input v-model="form.level" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.gradename" auto-complete="off" readonly class="input"></el-input>
                 </el-form-item>
             </el-form>
             <el-form :model="form" :inline="false" label-width="120px">
@@ -75,7 +78,7 @@
                     <risk-matrix :data="riskTableRow"></risk-matrix>
                 </el-form-item>
                 <el-form-item label="报告类型：">
-                    <el-select style="width: 100%" v-model="form.report" placeholder="请选择报告类型">
+                    <el-select style="width: 100%" v-model="form.sreporttype" placeholder="请选择报告类型">
                         <el-option label="报告类型一" value="1"></el-option>
                         <el-option label="报告类型二" value="2"></el-option>
                         <el-option label="报告类型三" value="3"></el-option>
@@ -86,10 +89,10 @@
         <p class="title1">风险分析</p>
         <el-form :model="form" :inline="false" label-width="120px">
             <el-form-item label="采取措施：">
-                <el-input type="textarea" placeholder="请输入采取措施..." v-model="form.measures"></el-input>
+                <el-input type="textarea" placeholder="请输入采取措施..." v-model="form.smeasures"></el-input>
             </el-form-item>
             <el-form-item label="应对建议：">
-                <el-input type="textarea" placeholder="请输入应对建议..." v-model="form.advice"></el-input>
+                <el-input type="textarea" placeholder="请输入应对建议..." v-model="form.sproposal"></el-input>
             </el-form-item>
             <div style="marginLeft: 38px;marginBottom: 15px;">
                 <el-checkbox v-model="form.checked">下达</el-checkbox>
@@ -111,6 +114,8 @@
 <script>
 // 引用的风险矩阵
 import riskMatrix from "@v/riskControlSystem/sjzRiskControl/riskMatrix";
+// 引用接口
+import { risktype } from "~api/cube.js";
 export default {
     components:{
         riskMatrix
@@ -124,46 +129,71 @@ export default {
             type: null,
             tableData: [],
             elements: [],
+            options: [],            // 风险类型的数组（请求的数据）
+            optionl: [],            // 风险发生概率数组（请求的数据）
+            optiond: [],            // 风险影响程度数组（请求的数据）
             form: {
-                name: "",           // 风险名称
-                region: "",         // 风险类型
-                department: "",     // 填报部门（只读）
-                person: "",         // 填报人（只读）
-                textarea: "",       // 风险概述
-                measures: "",       // 采取措施
-                advice: "",         // 应对建议
-                probability: "",    // 风险发生概率
-                impact: "",         // 风险影响程度
-                score: "",          // 风险分值（只读，自动计算，根据R=L*S）
-                level: "",          // 风险等级（只读）
-                report: ""          // 报告类型
+                sriskname: "",              // 风险名称
+                srisktype: "",              // 风险类型
+                departmentname: "",         // 填报部门（只读）
+                sfilluser: "",              // 填报人（只读）
+                sriskdescription: "",       // 风险概述
+                smeasures: "",              // 采取措施
+                sproposal: "",              // 应对建议
+                nprobability: "",           // 风险发生概率
+                ninfluence: "",             // 风险影响程度
+                nscore: "",                 // 风险分值（只读，自动计算，根据R=L*S）
+                gradename: "",              // 风险等级（只读）
+                sreporttype: ""             // 报告类型
             }
         }
     },
     created(){ 
         // debugger
+        let $params = this.$store.state.prame.command;
+        let username = this.$store.getters.user.user.userName;
+        // 自动获取登录人作为填报人
+            this.form.sfilluser = username ;
+        // 自动获取当前用户的所属部门
+            this.form.departmentname = "董事会办公室" ;
+        // 风险发生概率下拉框数据
+            this.optiond = this.fsgl.rows ;
+        // 风险影响程度下拉框数据
+            this.optionl = this.yxcd.rows ;
     },
     mounted(){
-        
+        // 风险类型请求
+        this.regionRequest() ;
     },
     computed: {
         
     },
     methods: {
+        // 风险类型请求
+        regionRequest(){
+            let me = this ;
+            risktype().then(res => {
+                if(res.data.code === 200){
+                    me.options = res.data.data ;
+                }else{
+                    me.$message.error("风险类型请求失败，请联系开发人员哦！")
+                }
+            });
+        },
         // 风险发生概率 按钮 的事件
         probability_first(){
-            debugger
+            // debugger
             this.riskProbability = true ;
             this.title = "风险发生概率" ;
             // 列
             this.elements = [] ;
             this.elements = this.fsgl.columns ;
             // 行
-            this.tableData= this.fsgl.rows;
+            this.tableData= this.fsgl.rows;           
         },
         // 风险影响程度 按钮 的事件
         probability_second(){
-            debugger
+            // debugger
             this.riskProbability = true ;
             this.title = "风险影响程度" ;
             // 列
