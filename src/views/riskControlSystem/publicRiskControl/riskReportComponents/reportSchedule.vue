@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div v-if="scheduleData.title" class="schedule-title">
-            {{ scheduleData.title }}
+        <div v-if="contentDown.title" class="schedule-title">
+            {{ contentDown.title }}
         </div>
-        <div v-for="(item,index) in scheduleData.content" :key="index" class="schedule-list">
+        <div v-for="(item,index) in contentDown.content" :key="index" class="schedule-list">
             <div :key="index" class="risk-content">
                 <div class="risk-num">
                     {{ item.schedule }}
@@ -30,7 +30,7 @@
         name: "reportSchedule",
         components: {},
         props: {
-            scheduleData:Object
+            contentDown:Object
         },
         data() {
             return {

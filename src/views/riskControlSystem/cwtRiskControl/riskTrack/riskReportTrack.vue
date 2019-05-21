@@ -42,10 +42,10 @@
                 treeData: [],
                 columns: [],
                 reportData: {
-                    reportCompanyName: '',
+                    reportCompanyName: '天津食品集团有限公司(合并)',
                     reportType: 'riskTrackCom',
                     reportDataContent:{
-                        id:'riskFeed',
+                        id:'riskTrack',
                         headerData:{
                             data1:0,
                             data2:3,
@@ -62,16 +62,16 @@
                             {
                                 id:'zlfx',
                                 text:'一、战略风险',
+                                show:true,
                                 responsibility:{
                                     text:'社会责任风险',
                                     level:'重要',
                                     company:'',
-                                    IdentificationUser:'张三'
+                                    identificationUser:'张三'
                                 },
-
-                                content:{
-                                    id:'zlfx',
-                                    contentUp:[
+                                contentUp:{
+                                    id:"zlfxUp",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
@@ -97,8 +97,11 @@
                                                 '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
                                             ]
                                         }
-                                    ],
-                                    contentDown:[
+                                    ]
+                                },
+                                contentDown:{
+                                    id:"zlfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
@@ -125,18 +128,17 @@
                                 text:'二、投资风险',
                                 responsibility:{
                                     text:'社会责任风险',
-                                    level:'重要',
+                                    level:'重大',
                                     company:'',
-                                    IdentificationUser:'张三'
+                                    identificationUser:'吴某人'
                                 },
-
-                                content:{
-                                    id:'tzfx',
-                                    contentUp:[
+                                contentUp:{
+                                    id:"tzfxUp",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
-                                                '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
+                                                '1、投资风险可能性为高(30-65%)，对业务和目标的影响额为500万元以下，这是一个好消息',
                                                 '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
                                             ]
                                         },
@@ -159,12 +161,15 @@
                                             ]
                                         }
                                     ],
-                                    contentDown:[
+                                },
+                                contentDown:{
+                                    id:"tzfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
                                             state:'已上报',
-                                            content:'上报的内容。上报人：小智。上报时间：2019年3月'
+                                            content:'上报的内容。上报人：小刘。上报时间：2019年3月'
                                         },
                                         {
                                             schedule:'进度二',
@@ -179,7 +184,7 @@
                                             content:'请尽快反馈'
                                         }
                                     ]
-                                }
+                                } 
                             },
                             {
                                 id:'yyfx',
@@ -188,12 +193,11 @@
                                     text:'社会责任风险',
                                     level:'重要',
                                     company:'',
-                                    IdentificationUser:'张三'
+                                    identificationUser:'张三'
                                 },
-
-                                content:{
-                                    id:'yyfx',
-                                    contentUp:[
+                                contentUp:{
+                                    id:"yyfxUp",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
@@ -220,7 +224,10 @@
                                             ]
                                         }
                                     ],
-                                    contentDown:[
+                                },
+                                contentDown:{
+                                    id:"yyfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
@@ -249,12 +256,11 @@
                                     text:'社会责任风险',
                                     level:'重要',
                                     company:'',
-                                    IdentificationUser:'张三'
+                                    identificationUser:'张三'
                                 },
-
-                                content:{
-                                    id:'cwfx',
-                                    contentUp:[
+                                contentUp:{
+                                    id:"cwfx",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
@@ -281,7 +287,10 @@
                                             ]
                                         }
                                     ],
-                                    contentDown:[
+                                },
+                                contentDown:{
+                                    id:"cwfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
@@ -310,12 +319,11 @@
                                     text:'社会责任风险',
                                     level:'重要',
                                     company:'',
-                                    IdentificationUser:'张三'
+                                    identificationUser:'张三'
                                 },
-
-                                content:{
-                                    id:'flfx',
-                                    contentUp:[
+                                contentUp:{
+                                    id:"flfxUp",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
@@ -342,7 +350,10 @@
                                             ]
                                         }
                                     ],
-                                    contentDown:[
+                                },
+                                contentDown:{
+                                    id:"flfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
@@ -371,12 +382,10 @@
                                     text:'社会责任风险',
                                     level:'重要',
                                     company:'',
-                                    IdentificationUser:'张三'
-                                },
-
-                                content:{
-                                    id:'ljfx',
-                                    contentUp:[
+                                    identificationUser:'张三'
+                                },contentUp:{
+                                    id:"ljfx",
+                                    content:[
                                         {
                                             title:'风险评估',
                                             content:[
@@ -403,7 +412,10 @@
                                             ]
                                         }
                                     ],
-                                    contentDown:[
+                                },
+                                contentDown:{
+                                    id:"ljfxDown",
+                                    content:[
                                         {
                                             schedule:'进度一',
                                             text:'风险上报',
