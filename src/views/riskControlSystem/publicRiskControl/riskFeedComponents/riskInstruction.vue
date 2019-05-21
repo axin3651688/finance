@@ -59,7 +59,7 @@
         },
         data() {
             return {
-                formData:{}
+                formData: {}
             }
         },
         created() {

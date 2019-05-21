@@ -142,28 +142,8 @@
                                 disableEdit :false,
                                 text: '针对风险进行相关反馈录入'
                             }
-
-                           /* {
-                                schedule: '进度一',
-                                text: '风险上报',
-                                state: '已上报',
-                                content: '上报的内容。上报人：小智。上报时间：2019年3月'
-                            },
-                            {
-                                schedule: '进度二',
-                                text: '风险批示',
-                                state: '未批示',
-                                content: '请尽快批示'
-                            },
-                            {
-                                schedule: '进度三',
-                                text: '风险反馈',
-                                state: '未反馈',
-                                content: '请尽快反馈'
-                            }*/
                         ]
                     }
-
                 },
             }
         },

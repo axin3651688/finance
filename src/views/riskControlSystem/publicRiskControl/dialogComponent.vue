@@ -8,7 +8,7 @@
                 <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
             </div>
             <div class="form-content">
-                <el-form :inline="true"  class="demo-form-inline">
+                <el-form :inline="true" class="demo-form-inline">
 
                     <!--弹出层头部-->
                     <risk-header
@@ -24,15 +24,15 @@
 
                     <!--弹出层关于领导批示的部分-->
                     <risk-instruction
-                            v-show="dialogData['dialogRiskType'] === 'riskBack'"
+                            v-if="dialogData['dialogRiskType'] === 'riskBack'"
                             :dialogInstructionData="dialogInstructionData"
                     >
                     </risk-instruction>
 
                     <!--弹出层有关风险追踪的进度的部分-->
                     <risk-schedule
-                            v-show="dialogData['dialogRiskType'] === 'riskTrack'"
-                            :formData="formData"
+                            v-if="dialogData['dialogRiskType'] === 'riskTrack'"
+                            :dialogScheduleData="dialogScheduleData"
                     >
                     </risk-schedule>
 
@@ -74,14 +74,16 @@
             return {
                 formData: {},
                 dialogHeaderData: {},
-                dialogMiddleData:{},
-                dialogInstructionData:{}
+                dialogMiddleData: {},
+                dialogInstructionData: {},
+                dialogScheduleData: {}
             }
         },
         created() {
             this.getDialogHeaderData();
             this.getDialogMiddleData();
             this.getDialogInstructionData();
+            this.getDialogScheduleData();
         },
         mounted() {
         },
@@ -93,7 +95,7 @@
             /**
              * 获取弹窗界面头部数据
              */
-            getDialogHeaderData(){
+            getDialogHeaderData() {
                 let data = this.dialogData,
                     headerData = data.contentHeader;
                 this.dialogHeaderData = headerData;
@@ -101,7 +103,7 @@
             /**
              * 获取弹窗中间的内容
              */
-            getDialogMiddleData(){
+            getDialogMiddleData() {
                 let data = this.dialogData,
                     middleData = data.contentMiddle;
                 this.dialogMiddleData = middleData;
@@ -109,10 +111,18 @@
             /**
              * 获取领带批示数据
              */
-            getDialogInstructionData(){
+            getDialogInstructionData() {
                 let data = this.dialogData,
                     footData = data.contentFoot;
                 this.dialogInstructionData = footData;
+            },
+            /**
+             * 获取追踪进度的相关数据
+             */
+            getDialogScheduleData() {
+                let data = this.dialogData,
+                    footData = data.contentFoot;
+                this.dialogScheduleData = footData;
             }
         }
     }

@@ -5,14 +5,14 @@
                 <div class="top-form-contents">
                     <span style="min-width: 70px;width: 70px;font-size: 14px;color: #606266;font-weight: 700;">风险追踪：</span>
                     <div class="risk-track-content">
-                        <div class="schedule-list" v-for="(value, key) of scheduleList" :key="key">
+                        <div class="schedule-list" v-for="(value, key) of formData" :key="key">
                             <div class="risk-content">
                                 <div class="risk-num">
-                                    {{value.risk_count}}
+                                    {{value.schedule}}
                                 </div>
                                 <div class="risk-name">
                                     <span class="title-left">名称 :</span>
-                                    <span class="content-right">{{value.risk_name}}</span>
+                                    <span class="content-right">{{value.text}}</span>
                                 </div>
                                 <div class="risk-state">
                                     <span class="title-left">状态 :</span>
@@ -36,43 +36,31 @@
         name: "riskSchedule",
         components: {},
         props: {
-            formData: Object
+            dialogScheduleData: Object
         },
         data() {
             return {
-                scheduleList: {
-                    risk_sb: {
-                        risk_count: '进度一',
-                        risk_name: '风险上报',
-                        user_name: '',
-                        time: '',
-                        state: '未上报',
-                        content: '请将风险尽快上报'
-                    },
-                    risk_ps: {
-                        risk_count: '进度二',
-                        risk_name: '风险批示',
-                        user_name: '',
-                        time: '2019年3月',
-                        state: '已批示',
-                        content: '领导批示的内容。批示人：小智。批示时间：2019年3月'
-                    },
-                    risk_fq: {
-                        risk_count: '进度三',
-                        risk_name: '风险反馈',
-                        user_name: '',
-                        time: '2019年3月',
-                        state: '已反馈',
-                        content: '反馈内容。反馈人：小智。反馈时间：2019年3月'
-                    }
-                }
+                formData: {},
             }
         },
         created() {
+            this.getFormData();
         },
         mounted() {
         },
-        methods: {}
+        methods: {
+            getFormData() {
+                let _this = this;
+                let data = this.dialogScheduleData['content'];
+                data.forEach((item) => {
+                    _this.formData[item.dataType] = {};
+                    _this.formData[item.dataType]['schedule'] = item.schedule;
+                    _this.formData[item.dataType]['state'] = item.state;
+                    _this.formData[item.dataType]['content'] = item.content;
+                    _this.formData[item.dataType]['text'] = item.text;
+                });
+            }
+        }
     }
 </script>
 
