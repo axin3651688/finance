@@ -1,8 +1,11 @@
 /* reset element-ui css */
+
 .login-container {
     position: fixed;
+    padding-top: 40px;
     height: 100%;
     width: 100%;
+    min-width: 320px;
     opacity: 1;
     background: url(~@a/loginpic.png) no-repeat center;
     background-size: cover;
@@ -12,6 +15,7 @@
         border-radius: 5px;
         height: 539px;
         width: 674px;
+        padding: 80px;
         position: relative;
 
         background: rgba(255, 255, 255, 1);
@@ -20,7 +24,9 @@
         opacity: 1;
         z-index: 3;
         // todo
-        margin: 200px auto;
+        margin: auto;
+        top: 50%;
+        transform: translateY(-50%);
 
         .bannerimg {
             width: 284px;
@@ -29,16 +35,12 @@
             background: url(~@a/logo_old.svg) no-repeat center;
             // box-shadow: 0px 4px 28px rgba(0, 0, 0, 0.5);
             position: absolute;
-            left: 195px;
+            left: 9%;
             top: -42px;
         }
 
         .login-form {
-            position: absolute;
-            top: 61px;
-            left: 99px;
-            width: 476px;
-
+        
             .title {
                 text-align: center;
                 font-size: 22px;
@@ -56,10 +58,6 @@
         }
 
         .el-input {
-            display: inline-block;
-            height: 52px;
-            width: 476px;
-            background-color: #F5F6F8;
             font-size: 18px;
 
             input {
@@ -75,21 +73,27 @@
 
         .el-form-item {
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.1);
+            background-color: #F5F6F8;
             border-radius: 5px;
             color: #000;
+
+            .el-form-item__content{
+                padding-right: 50px;
+                position: relative;
+            }
 
             .show-pwd {
                 position: absolute;
                 font-size: 30px;
                 right: 10px;
-                top: 8px;
+                top: 7px;
                 height: 25px;
                 color: #889aa4;
                 cursor: pointer;
                 user-select: none;
             }
         }
+    
 
         .btn_wrapp {
             margin-top: 60px;
@@ -102,5 +106,38 @@
             }
 
         }
+    }
+}
+
+
+@media (min-width: 489px) and (max-width: 768px) {
+    .login-border {
+        padding: 80px 60px 50px !important;
+        width: calc(100% - 60px) !important;
+        height: auto !important;
+        .el-input{
+            width: auto !important;
+        }
+    }
+    .login-form{
+        width: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-border {
+        padding: 80px 15px 20px !important;
+        width: calc(100% - 40px) !important;
+        height: auto !important;
+        .el-input{
+            width: auto !important;
+        }
+        .btn_wrapp {
+            margin-top: 30px !important;
+        }
+    }
+    .bannerimg {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
     }
 }

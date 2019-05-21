@@ -335,7 +335,8 @@
 
         .containerMain {
             padding-left: 0px;
-            padding-top: $app_contai_padding-top;
+            // padding-top: $app_contai_padding-top;
+            padding-top: 40px !important;
 
             .el-row {
                 padding-right: 0px !important;

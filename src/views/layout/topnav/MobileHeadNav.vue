@@ -142,11 +142,18 @@ export default {
         }
       }
     }
+    debugger;
+    //判断客户端
+    if(this.device == "mobile"){
+      this.showDims.company = false;
+    }
+
   },
   mounted() {},
   computed: {
     ...mapGetters([
       "user",
+      "device",
       "sidebar",
       "userCompany",
       "year",
@@ -158,7 +165,11 @@ export default {
       "conversion"
     ])
   },
-
+  watch:{
+    showDims (newValue,oldValue) {
+      debugger;
+    }
+  },
   methods: {
     openHead() {
       this.flag = !this.flag;
