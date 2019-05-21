@@ -1,0 +1,18 @@
+{
+    "id": "fxfsgl",
+    "text": "风险发生概率",
+    "columns":[
+        { "id": "index", "type": "index", "text": "序号", "width": "60", "align": "center" },
+        { "id": "nscore" , "type": "number","text": "评分估值", "width": "100", "align": "center" },
+        { "id": "sname" , "type": "string", "text": "可能性", "width": "120", "align": "center" },
+        { "id": "valuerange" , "type": "string","text": "概率值", "width": "160", "align": "center" },
+        { "id": "sdescription" , "type": "string", "text": "说 明" , "width": "360", "align": "left" }
+    ],
+    "rows":[
+        // { "pfgz": 5, "knx": "几乎肯定", "glz": "(75%,100]", "sm": "在未来12个月内，这项风险几乎肯定会出现至少1次" },
+        // { "pfgz": 4, "knx": "极可能", "glz": "(50%,75%]", "sm": "在未来12个月内，这项风险极可能出现1次" },
+        // { "pfgz": 3, "knx": "可能", "glz": "(25%,50%]", "sm": "在未来2-10年内，这项风险可能会出现至少1次" },
+        // { "pfgz": 2, "knx": "低", "glz": "(10%~25%]", "sm": "在未来10-100年内，这项风险可能会出现至少1次" },
+        // { "pfgz": 1, "knx": "极低", "glz": "(0,10%]", "sm": "这项风险出现的可能性极低，估计在100年内出现的可能性少于1次" }
+    ]
+}
