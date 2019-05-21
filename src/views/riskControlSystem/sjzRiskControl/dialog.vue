@@ -56,13 +56,13 @@
             <el-form :model="form" :inline="true" label-width="120px">
                 <el-form-item label="风险发生概率：">
                     <el-select v-model="form.nprobability" placeholder="请选择风险概率" class="input2">
-                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id" @change="selectChange"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：">
                     <el-select v-model="form.ninfluence" placeholder="请选择风险影响" class="input2">
-                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore" @change="selectChange"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
@@ -169,6 +169,10 @@ export default {
         
     },
     methods: {
+        // 发生概率选择器 and 影响程度选择器 触发
+        selectChange(val){
+            debugger
+        },
         // 风险类型请求
         regionRequest(){
             let me = this ;
