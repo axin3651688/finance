@@ -2,129 +2,174 @@
     "id": "riskDis",
     "text": "风险识别",
     "config":{
-        "sql": ""
+        "sql": "select a.nid as id, dim_company as company, b.sname as companyname, dim_period as period, dim_department as department, c.sname as departmentname, sriskname, sfilluser, screatetime, sriskdescription, nprobability, d.sname as probabilityname, ninfluence, e.sname as influencename, nscore, ngrade, f.sname as gradename, colormark as gradecolor, srisktype, g.sname as srisktypename,sreporttype, h.sname as sreporttypename, sissubmit, smeasures, sproposal, ssubmituser, ssubmittime,SORIGIN from(select * from risk_distinguish where substr(screatetime,1,6) :permissionDate and dim_company = :company) a left join dw_dimcompany b on a.dim_company = b.scode left join dw_dimdepartment c on a.dim_department = c.scode left join RISK_PROBABILITY d on a.nprobability = d.nid left join RISK_INFLUENCE_DEGREE e on a.ninfluence = e.nid left join RISK_MATRIX f on a.ngrade = f.nid left join RISK_TYPE g on a.srisktype = g.scode left join RISKREPORT_TYPE h on a.sreporttype = h.scode "
     },
     "columns": [
         {
             "id": "index",
             "text": "序号",
             "type": "index",
-            "determine": true,
+            "determine": false,
             "width": "60"
         },
         {
             "id": "selection",
-            "determine": true,
+            "determine": false,
             "type": "selection",
             "width": "60"
         },
         {
-            "id": "tjzt",
+            "id": "sissubmit",
             "text": "提交状态",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "120"
         },
         {
-            "id": "fxmc",
+            "id": "sriskname",
             "text": "风险名称",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxlx",
+            "id": "srisktype",
             "text": "风险类型",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxdj",
+            "id": "gradename",
             "text": "风险等级",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "tbbm",
+            "id": "departmentname",
             "text": "填报部门",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "tbr",
+            "id": "sfilluser",
             "text": "填报人",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "120"
         },
         {
-            "id": "fxly",
+            "id": "sorigin",
             "text": "风险来源",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "tjsj",
+            "id": "screatetime",
             "text": "提交时间",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxgs",
+            "id": "sriskdescription",
             "text": "风险概述",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxfsgl",
+            "id": "nprobability",
             "text": "风险发生概率",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxyxdj",
+            "id": "ninfluence",
             "text": "风险影响等级",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "fxfz",
+            "id": "nscore",
             "text": "风险分值",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "bglx",
+            "id": "sreporttype",
             "text": "报告类型",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "cqcs",
+            "id": "smeasures",
             "text": "采取措施",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         },
         {
-            "id": "ydjy",
+            "id": "sproposal",
             "text": "应对建议",
             "type": "string",
-            "determine": true,
+            "determine": false,
             "width": "160"
         }
     ],
     "rows": [
         { "fxdj": "重大" },{ "fxdj": "重要" }
-    ]
+    ],
+    "queryDataBefore": function(params, obj, $this){
+        // debugger
+        let html = "" ;
+        if($this.periodtype){
+            html = "= :period" ; 
+        }else{
+            html = "<= :period and sisclose = 'N'" ; 
+        }
+        obj.config.sql = obj.config.sql.replace(/:permissionDate/g,html) ;
+        params.sql = obj.config.sql ;
+        return params ; 
+    },
+    "queryDataAfter": function(datas, $this){
+        // debugger
+        datas.forEach(res => {
+            if(res.sissubmit == "N"){
+                res.sissubmit = "未提交" ;
+            }else{
+                res.sissubmit = "已提交"
+            }
+        });
+        return datas ;
+    },
+    "drillProperties": ["sissubmit"],
+    "cellStyle": function({row, column, rowIndex, columnIndex}, $this){
+        // debugger
+        let css = "padding: 4px 0;";
+        let pro = column.property;
+        if (!pro) {
+            return css;
+        }
+        // let record = row.row;
+        let drillProperties = this.drillProperties;
+        if (drillProperties.indexOf(pro) != -1) {
+            if(row[pro] == "未提交"){
+                let drill = "color: red; fontWeight: bold;" ;
+                return css + drill ;
+            }else if(row[pro] == "已提交"){
+                let drill = "color: green; fontWeight: bold;" ;
+                return css + drill ;
+            }
+        }else{
+            return css ;
+        }
+    }
 }
