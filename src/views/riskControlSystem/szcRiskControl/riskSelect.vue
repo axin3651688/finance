@@ -5,10 +5,10 @@
         placeholder="请选择"
         @change="changeOption">
             <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in selectConfig.options"
+            :key="item.scode"
+            :label="item.sname"
+            :value="item.scode">
             </el-option>
         </el-select>
     </div>
@@ -16,10 +16,13 @@
 <script>
 export default {
     name:"riskSelect",
+    props:{
+        selectConfig:Object
+    },
     data () {
         return {
             options: [],
-            value:""
+            value:"董事会"
         }
     },
     /**
@@ -27,10 +30,11 @@ export default {
      */
     created () {
         let me = this;
-        this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
-            console.log(res);
-            me.options = res.data;
-        });
+        // me.options = selectConfig.options;
+        // this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
+        //     console.log(res);
+        //     me.options = res.data;
+        // });
     },
     /**
      * 组件页面加载完成之后回调。

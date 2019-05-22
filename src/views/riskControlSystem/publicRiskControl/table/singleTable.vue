@@ -2,7 +2,6 @@
     <div>
         <div>
             <el-table
-                    v-if="tableData && tableData.length > 0"
                     :data="tableData"
                     border
                     stripe
@@ -135,12 +134,12 @@
              */
             textClassHandler(row) {
                 let me = this;
-                if (row.levelNum) {
-                    if (row.levelNum === "1") {
+                if (row.nlevel) {
+                    if (row.nlevel == "1") {
                         return "textClass01";
-                    } else if (row.levelNum === "2") {
+                    } else if (row.nlevel == "2") {
                         return "textClass02";
-                    } else if (row.levelNum === "3") {
+                    } else if (row.nlevel == "3") {
                         return "textClass03";
                     }
                 } else {

@@ -5,7 +5,7 @@
             @tab-click="handleTabClick">
                 <el-tab-pane label="风险批示" name="first">
                     <div class="selectClass">
-                        <RiskSelect v-on:changeOption="changeOption" />
+                        <RiskSelect v-on:changeOption="changeOption" :selectConfig.sync="selectConfig" />
                     </div>
                     <div>
                         <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></stable>
@@ -55,9 +55,11 @@ import basicsModal from "./dialogModal/basicsModal"
 import deptSelect from "./mixin/deptSelectHandler"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 import {
-    queryInstructions
+    queryInstructions,
+    queryCopingStrategies
 } from "~api/szcRiskControl/riskControl"
-import { findThirdPartData } from "~api/interface";
+import { findThirdPartData } from "~api/interface"
+import { mapGetters } from "vuex";
 
 export default {
     mixins: [deptSelect],
@@ -85,7 +87,35 @@ export default {
             modalData:{},
             reportData:{//报告的数据
                 reportCompanyName:"天津食品"
-            }
+            },
+            selectConfig:{
+                id:"101",
+                text:"",
+                options:[]
+            }//下拉框的内容配置
+        }
+    },
+    /**
+     * 计算属性。
+     */
+    computed: {
+        ...mapGetters(["year", "month", "company"])
+    },
+    /**
+     * 监听属性。
+     */
+    watch: {
+        /**
+         * 监听公司
+         */
+        company (newValue,oldValue) {
+            this.updateView();
+        },
+        year (newValue,oldValue) {
+            this.updateView();
+        },
+        month (newValue,oldValue) {
+            this.updateView();
         }
     },
     /**
@@ -106,12 +136,23 @@ export default {
                 me.columns = res.data.columns
             }
         });
+        //查询部门。
+        // me.queryDepartMent()
     },
     /**
      * 页面渲染之后的回调。
      */
     mounted () {},
     methods: {
+        /**
+         * 更新视图。
+         * @author szc 2019年5月21日19:37:42
+         */
+        updateView () {
+            debugger;
+            let me = this,selectItem = me.selectItem;
+            me.queryDataOfInstructions(selectItem);
+        },
         /**
          * 处理tab切换点击事件。
          * @author szc 2019年5月14日14:55:16
@@ -126,7 +167,13 @@ export default {
                 debugger;
                 if(res.data.code == 200) {
                     if(tab.name == "first"){
-                        me.tableData = res.data.rows;
+                        // me.tableData = res.data.rows;
+                        let selectItem = "";
+                        if(me.selectItem){
+                            selectItem = me.selectItem;
+                        }
+                        me.queryDepartMent();
+                        me.queryDataOfInstructions(selectItem);
                     }else {
                         me.treeData = res.data.rows;
                     }
@@ -138,7 +185,7 @@ export default {
          * 查询风险管控的数据。
          * @author szc 2019年5月21日11:32:47
          */
-        queryDataOfInstructions () {
+        queryDataOfInstructions (item) {
             debugger;
             let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
                 month = storeParams.month,period = "";
@@ -152,18 +199,25 @@ export default {
                 year:year,
                 month:month,
                 period:period,
+                departId:item? item:"",
                 sql:""
             };
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
+                    debugger;
                     params = me.paramsOfSql(params,res.data.sqlList);
                     findThirdPartData(params).then(res => {
                         debugger;
                         if(res.data.code == 200) {
-                            me.$message({
-                                message:"成功！",
-                                type:"success"
+                            let resData = res.data.data;
+                            resData.forEach(item => {
+                                item.htmlType = "text";
                             });
+                            me.tableData = resData;
+                            // me.$message({
+                            //     message:"成功！",
+                            //     type:"success"
+                            // });
                         }
                     });
                 }
@@ -173,7 +227,7 @@ export default {
          * 请求参数上添加sql语句。
          * @author szc 2019年5月21日14:15:22
          */
-        paramsOfSql (prams,data) {
+        paramsOfSql (params,data) {
             debugger;
             let me = this;
             if(data && data.length > 0) {
@@ -274,6 +328,16 @@ export default {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
+                    // queryCopingStrategies().then(res => {
+                    //     if(res.data.code == 200) {
+
+                    //     }else {
+                    //         me.$message({
+                    //             message:"查询风险策略失败！",
+                    //             type:"warning"
+                    //         });
+                    //     }
+                    // });
                     me.parseData(res.data.formConfig,row.row);
                     me.currentRowIndex = row.$index;
                     me.dialogVisible = true;
@@ -297,7 +361,7 @@ export default {
                             let contenItem = content[j];
                             if(itemData[contenItem.text]){
                                 contenItem[contenItem.text] = itemData[contenItem.text];
-                                contenItem.text == "riskLevel" && itemData.levelNum? contenItem.levelNum = itemData.levelNum:"";
+                                contenItem.text == "fxdj" && itemData.nlevel? contenItem.nlevel = itemData.nlevel:"";
                             }
                         }
                     }

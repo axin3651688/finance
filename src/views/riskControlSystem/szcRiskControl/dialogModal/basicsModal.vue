@@ -29,7 +29,7 @@
                                 <el-form-item :label="it.label || '没有配置'" :key="itIndex">
                                     <template v-for="(selItem,selIndex) in it.selectConfig">
                                         <label :key="selIndex">{{ selItem.label }}</label>
-                                        <el-select v-model="it[it.text]" placeholder="请选择" :key="selIndex">
+                                        <el-select v-model="it[it.text]" placeholder="请选择" :key="selIndex+10">
                                             <el-option
                                             v-for="sltItem in selItem.options"
                                             :key="sltItem.value"
@@ -74,23 +74,6 @@ export default {
     },
     data() {
         return {
-            formConfig:{
-                groups:[
-                    {
-                        id:"101",
-                        content:[
-                            {
-                                span:6,
-                                type:"input",
-                                label:"风险1",
-                                disabled:"disabled",
-                                text:"name",
-                                name:"风险1"
-                            }
-                        ]
-                    }
-                ]
-            },
             releasePeople:""
         }
     },
@@ -120,13 +103,14 @@ export default {
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
+            debugger;
             let me = this;
-            if (it.levelNum) {
-                if (it.levelNum === "1") {
+            if (it.nlevel) {
+                if (it.nlevel == "1") {
                     return "textClass01";
-                } else if (it.levelNum === "2") {
+                } else if (it.nlevel == "2") {
                     return "textClass02";
-                } else if (it.levelNum === "3") {
+                } else if (it.nlevel == "3") {
                     return "textClass03";
                 }
             } else {
