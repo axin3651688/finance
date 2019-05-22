@@ -1,0 +1,20 @@
+{
+    "id": "sqth",
+    "text": "申请退回",
+    "rows": [],
+    "datas": {},
+    "layout": {
+        "xtype": "column"
+    },
+    "items": [{
+        "class_top": "0px",
+        "xtype": "BiText",
+        "id": "1416001",
+        "text": "申请退回001",
+        "weight": 12,
+        "show": true,
+        "options": {
+            "type": "Sqth"
+        }
+    }]
+}
