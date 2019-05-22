@@ -30,9 +30,9 @@ export default {
         jsonAdressNew(){
             // 0合并公司/ 1单体公司
             if(this.$store.getters.treeInfo.nisleaf){
-                this.jsonAdress = "cnbi/json/yskxx/yfzk.json" ;
+                this.jsonAdress = "/cnbi/json/yskxx/yfzk.json" ;
             }else{
-                this.jsonAdress = "cnbi/json/yskxx/yfzkej.json" ;
+                this.jsonAdress = "/cnbi/json/yskxx/yfzkej.json" ;
             }
         }
     }

@@ -26,23 +26,23 @@ export default {
         // 应收
         if(jsonId === "yszk"){
             if(biNisleaf){
-                cc = "cnbi/json/yskxx/yszk.json" ;
+                cc = "/cnbi/json/yskxx/yszk.json" ;
             }else{
-                cc = "cnbi/json/yskxx/yszkej.json" ;
+                cc = "/cnbi/json/yskxx/yszkej.json" ;
             }
         // 预付
         }else if(jsonId === "yfzk"){
             if(biNisleaf){
-                cc = "cnbi/json/yskxx/yfzk.json" ;
+                cc = "/nbi/json/yskxx/yfzk.json" ;
             }else{
-                cc = "cnbi/json/yskxx/yfzkej.json" ;
+                cc = "/cnbi/json/yskxx/yfzkej.json" ;
             }
         // 其他
         }else if(jsonId === "qtysk"){
             if(biNisleaf){
-                cc = "cnbi/json/yskxx/qtysk.json" ;
+                cc = "/cnbi/json/yskxx/qtysk.json" ;
             }else{
-                cc = "cnbi/json/yskxx/qtyskej.json" ;
+                cc = "/cnbi/json/yskxx/qtyskej.json" ;
             }
         }
         return cc ;

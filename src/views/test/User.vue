@@ -188,10 +188,20 @@
               :options="comtree"
               placeholder="请选择所属公司"
               style="width:300px"
+              @select="companyRight"
             />
             <!-- <pre class="result">{{ value }}</pre> -->
           </el-form-item>
-
+          <el-form-item label="所属部门" prop="department">
+            <treeselect
+              class="companyDepartment"
+              v-model="addUserForm.department"
+              :options="comtree2"
+              placeholder="请选择所属部门"
+              style="width:300px"
+            />
+            <!-- <pre class="result">{{ value }}</pre> -->
+          </el-form-item>
           <el-form-item label="联系电话" prop="sphone">
             <el-input v-model="addUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
           </el-form-item>
@@ -200,12 +210,6 @@
             <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
           </el-form-item>
 
-          <!-- <el-form-item label="QQ">
-            <el-input v-model="addUserForm.phone" placeholder="请填写QQ"></el-input>
-          </el-form-item>-->
-          <!-- <el-form-item label="微信">
-            <el-input v-model="addUserForm.phone" placeholder="请填写微信"></el-input>
-          </el-form-item>-->
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -291,10 +295,20 @@
             :searchable="true"
             placeholder="请选择所属公司"
             style="width:300px"
+            @select="companyRight"
           />
           <!-- <pre class="result">{{ value }}</pre> -->
         </el-form-item>
-
+        <el-form-item label="所属部门" prop="department">
+            <treeselect
+              class="companyDepartment"
+              v-model="editUserForm.department"
+              :options="comtree2"
+              placeholder="请选择所属部门"
+              style="width:300px"
+            />
+            <!-- <pre class="result">{{ value }}</pre> -->
+          </el-form-item>
         <el-form-item label="联系电话" prop="sphone">
           <el-input v-model="editUserForm.sphone" placeholder="请填写联系电话" style="width:300px"></el-input>
         </el-form-item>
@@ -303,12 +317,6 @@
           <el-input v-model="editUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="QQ">
-          <el-input v-model="editUserForm.phone" placeholder="请填写QQ"></el-input>
-        </el-form-item>-->
-        <!-- <el-form-item label="微信">
-          <el-input v-model="editUserForm.phone" placeholder="请填写微信"></el-input>
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitEditUserForm('editUserForm')">确 定</el-button>
@@ -353,18 +361,6 @@
           <el-button @click="resetForm('editPasswordForm')">重置</el-button>
         </el-form-item>
       </el-form>
-      <!-- <el-form :model="editPasswordForm"  ref="editPasswordForm" :rules="rulepwd" label-width="80px">
-        <el-form-item label="密码" prop="spassword">
-          <el-input type="password" v-model="editPasswordForm.spassword" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="spassword2">
-          <el-input type="password" v-model="editPasswordForm.spassword2"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitEditPasswordForm(editPasswordForm)">确 定</el-button>
-        <el-button @click="dialogEditPasswordVisible = false">取 消</el-button>
-      </div>-->
     </el-dialog>
 
     <el-dialog
@@ -380,9 +376,6 @@
         :model="companyAuthorizationForm"
         class="user-form-inline"
       >
-        <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-              <el-button slot="append" icon="el-icon-refresh" @click="findNodes()"></el-button>
-        </el-input>-->
         <el-tree
           :data="companysTree"
           show-checkbox
@@ -396,16 +389,6 @@
         ></el-tree>
       </el-form>
       </div>
-      <!-- <el-form :inline="true" label-width="80px" :model="addUserForm"  class="user-form-inline">
-        <el-form-item label="所属公司" prop="company">
-            <treeselect
-                :options="comtree"
-                :multiple="true"
-  
-                />
-            <pre class="result">{{ value }}</pre>
-        </el-form-item>
-      </el-form>-->
       <div slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -526,6 +509,7 @@ export default {
       allNum: 0,
       comvalue: null,
       comtree: [],
+      comtree2: [],
       //默认展开节点
       expandKeys: [],
       companysTree:[],
@@ -560,6 +544,7 @@ export default {
         cisenabled: "Y",
         cauthorize: "Y",
         company: "",
+        department: null,
         value: ""
       },
       // usercompany:null,//用户所属公司编码
@@ -578,6 +563,7 @@ export default {
         cauthorize: "Y",
         semail: "",
         company: "",
+        department: null ,
         avatar:""
       },
       userdata: [],
@@ -675,13 +661,6 @@ export default {
               if (value === "") {
                 callback(new Error("请再次输入密码"));
               }
-              // else if (!isValiatePw(value)) {
-              //   callback(
-              //     new Error(
-              //       "最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符"
-              //     )
-              //   );
-              // }
               else if (value !== _this.addUserForm.spassword) {
                 callback(new Error("两次输入密码不一致!"));
               } else {
@@ -695,6 +674,9 @@ export default {
         ],
         company: [
           // { required: true, message: "必填项", trigger: "blur" },
+          { required: true, message: "必选项" }
+        ],
+        department: [
           { required: true, message: "必选项" }
         ],
         sphone: [
@@ -791,70 +773,6 @@ export default {
       },
       deep: true
     },
-    //监听修改用户信息的表单变化。
-    // "editUserForm.suser": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("suser", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.struename": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("struename", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.csex": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("csex", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.roleid": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("roleid", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.sphone": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("sphone", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.semail": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("semail", nowVal);
-    //   },
-    //   deep: true
-    // },
-    // "editUserForm.company": {
-    //   handler(nowVal, oldV) {
-    //     if(nowVal == oldV){
-    //       return;
-    //     }
-    //     this.watchField("company", nowVal);
-    //   },
-    //   deep: true
-    // },
     // 监听offsetHeight属性值的变化，打印并观察offsetHeight发生变化的值：
     offsetHeight(val) {
       if (!this.timer) {
@@ -875,16 +793,6 @@ export default {
   mounted() {
     // console.log(store);
     this.addUserForm.company = store.getters.company;
-    // const that = this;
-    // window.onresize = () =>{
-    //   return (() => {
-    //     this.maxHeight = tools.setTableMaxHeight(subHeight);
-    //     this.$refs.userTable.fetchData();
-    //   })();
-    // };
-    // this.maxHeight = tools.setTableMaxHeight(subHeight);
-    // this.$refs.userTable.fetchData();
-    // const me = this
     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
     window.onresize = () => {
       return (() => {
@@ -908,7 +816,68 @@ export default {
     }
   },
   methods: {
-
+    // sjz 添加用户--选择所属公司时触发
+    companyRight(vax,val){
+      // debugger
+      let me = this ;
+      me.getCompanyRight(vax) ;
+    },
+    // 部门请求数据方法
+    getCompanyRight(vax){
+      // debugger
+      let me = this ;
+      // 所属部门请求
+      request({
+        url: "/zjb/department/query_byscomcode",
+        method: "get",
+        params: {
+          scomcode: vax.id 
+        }
+      }).then(result => { 
+        if (result.status == 200) {
+          if (result.data.code == 200) { 
+            debugger
+            me.$message({message:'查询成功', type:"success"});
+            //封装树对象数据
+            const setting = {
+              data: {
+                simpleData: {
+                  enable: true,
+                  idKey: "scode",
+                  pIdKey: "spcode"
+                },
+                key: {
+                  name: "scode",
+                  children: "children"
+                }
+              }
+            };
+            var data = result.data.data;
+            if (Array.isArray(data) && data.length > 0) {
+              data = tools.sortByKey(data, "scode");
+              data = data.filter(function(item) {
+                item.id = item.scode;
+                item.label = "(" + item.scode + ") " + item.sname;
+                item.sname = item.label;
+                return item;
+              });
+              me.comtree2 = data;
+              data[0].open = true;
+              me.expandKeys.push(data[0].scode);
+              me.comtree2 = tools.transformToeTreeNodes(setting, data);
+              me.addUserForm.department = me.comtree2[0].id ;
+              // me.addUserForm.department = 1 ;
+            }
+          } else {
+            debugger
+            me.comtree2 = [] ;
+            me.addUserForm.department = null ;
+            me.editUserForm.department = null ;
+            me.$message("暂无部门数据");
+          }
+        }
+      });
+    },
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
         124}px`;
@@ -924,11 +893,6 @@ export default {
      */
     changeFile (file,fileList) {
       //限制上传的图片的大小。
-      // let sizePhoto = file.size / 1024 / 1024 < 1;
-      // if(!sizePhoto && file.status == "ready"){
-      //   this.$message.error('上传头像图片大小不能超过1MB!');
-      //   return;
-      // }
       let me = this,photoUrl = "";
       let imgFile = file.raw;
       if(this.dialogAddUserVisible){
@@ -1024,7 +988,7 @@ export default {
     submitAddUserForm(formName) {
       //上传图片的请求。
       // this.submitPhotoOfAdd();
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(valid => { debugger
         if (valid) {
           const _this = this;
           let addUserForm = _this.addUserForm;
@@ -1042,7 +1006,8 @@ export default {
               semail: addUserForm.semail,
               cisenabled: addUserForm.cisenabled,
               cauthorize: addUserForm.cauthorize,
-              company: addUserForm.company
+              company: addUserForm.company,
+              sdepartmentid: addUserForm.department
             }
           }).then(result => {
             // if (result.status == 200) {
@@ -1102,7 +1067,7 @@ export default {
      * @author szc 2019年4月16日15:40:22
      */
     changeOfFormEdit () {
-      debugger;
+      // debugger;
       let me = this,editUserMessage = me.editUserMessage,editUserForm = me.editUserForm;
       let flag = true;
       if(editUserMessage && editUserForm){
@@ -1122,7 +1087,7 @@ export default {
      * @addUserForm 修改用户表单数据
      */
     submitEditUserForm(formName) {
-      debugger;
+      // debugger;
       //判断表单中的内容是不是修改、改变了。
       let changeFlag = this.changeOfFormEdit();
       if(changeFlag){
@@ -1132,7 +1097,7 @@ export default {
         });
         return;
       }
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(valid => { 
         if (valid) {
           const _this = this;
           let editUserForm = _this.editUserForm;
@@ -1149,7 +1114,8 @@ export default {
               semail: editUserForm.semail,
               cisenabled: editUserForm.cisenabled,
               cauthorize: editUserForm.cauthorize,
-              company: editUserForm.company
+              company: editUserForm.company,
+              sdepartmentid: editUserForm.department
             }
           }).then(result => {
             if (result.status == 200) {
@@ -1249,14 +1215,20 @@ export default {
      * @description 添加用户
      */
     handleAdd() {
+      debugger
       this.title = tools.opt[0].text;
       this.dialogAddUserVisible = true;
       this.opt = tools.opt[0];
+      let vax = this.comtree[0] ;
+      this.getCompanyRight(vax);
     },
     /**
      * @description 修改用户
      */
-    handleEdit(index, row) {
+    handleEdit(index, row) { 
+      debugger
+      let vax = { id : row.company } ;
+      this.getCompanyRight(vax);
       this.title = tools.opt[1].text;
       this.dialogEditUserVisible = true;
       this.opt = tools.opt[1];
@@ -1270,6 +1242,7 @@ export default {
       this.editUserForm.semail = row.semail;
       this.editUserForm.company = row.company;
       this.editUserForm.avatar = row.avatar;
+      this.editUserForm.department = row.sdepartmentid
       //修改头像图片
       this.editPhotoUrl = row.avatar;
       //把当前点击的用户绑定到this上
@@ -1283,6 +1256,7 @@ export default {
         sphone: row.sphone,
         semail: row.semail,
         company: row.company,
+        department: row.sdepartmentid,
         avatar: this.imgFile || row.avatar
       };
     },
@@ -1709,6 +1683,23 @@ export default {
   }
 };
 </script>
+<style>
+/* 表头背景颜色的设定 */
+    .has-gutter tr th {
+        background-color: rgb(240, 248, 255) !important;
+        color: #606266;
+    }
+/* 固定列表头的颜色设定  加重覆盖*/
+.el-table--border th, .el-table__fixed-right-patch{
+    background-color: rgb(240, 248, 255);
+}
+/** 这是对表行的行高设置*/
+    .el-table__body tr, .el-table__body td {
+        padding: 0;
+        height: 32px;
+    }
+</style>
+
 <style scoped>
 /* .userM {
   margin-top: 10px;
