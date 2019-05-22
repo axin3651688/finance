@@ -8,19 +8,22 @@
         <table v-if="rowLength>0">
             <tr>
                 <td :style="styles" :rowspan="rowLength">风险发生概率(L)</td>
-                <td v-for="item in item1" :style="styles">{{ item.text }}</td>
-                <td v-for="item in item1" :style="styles">{{ item.num }}</td>
+                <td v-for="item in item1" :style="styles">{{ item.sname }}</td>
+                <td v-for="item in item1" :style="styles">{{ item.nscore }}</td>
+                <!-- <td v-for="item in item"></td> -->
+                <td>123</td>
             </tr>
             <tr v-for="item in items" :style="item.width">
-                <td>{{ item.text }}</td>
-                <td>{{ item.num }}</td>
+                <td>{{ item.sname }}</td>
+                <td>{{ item.nscore }}</td>
+                <td>123</td>
             </tr>
             <tr>
                 <td :style="styles" :rowspan="3" :colspan="3">风险值：R=L*S</td>
-                <td v-for="item in item2" :style="styles">{{ item.num2 }}</td>
+                <td v-for="item in item2" :style="styles">{{ item.id }}</td>
             </tr>
             <tr>
-                <td v-for="item in item2" :style="item.width">{{ item.level }}</td>
+                <td v-for="item in item2" :style="item.width">{{ item.sname }}</td>
             </tr>
             <tr>
                 <td :style="styles" :rowspan="3" :colspan="rowLength">风险影响程度（S）</td>
@@ -31,7 +34,12 @@
 <script>
 export default {
     name: "riskMatrix",
-    props:["data"],
+    // props:["data"],
+    props: {
+        data: Array,
+        fsgl: Object,
+        yxcd: Object
+    },
     data(){
         return {
             tableData: [],
@@ -39,17 +47,16 @@ export default {
             styles: {
                 width: "100px"
             },
-            item1:[
-                
-            ],
-            item2:[],
-            items:[]
+            item1:[],   // 风险发生概率第一行
+            item2:[],   // 风险影响程度
+            items:[],   // 风险发生概率（后几行）
         }
     },
     created(){
-        // debugger
+        debugger
         this.rowLength = this.data.length ;
-        this.item2 = this.data;
+        let cc = this.fsgl ;
+        let dd = this.yxcd ;
         this.firstDemo();
         this.secondDemo();
     },
@@ -58,10 +65,11 @@ export default {
     },
     methods: {
         firstDemo(){
-            this.item1 = this.data.filter((res,index) => { return index == 0 });
+            this.item1 = this.fsgl.rows.filter((res,index) => { return index == 0 });
+            this.items = this.fsgl.rows.filter((res,index) => { return index > 0 });
         },
         secondDemo(){
-            this.items = this.data.filter((res,index) => { return index > 0 });
+            this.item2 = this.yxcd.rows ;
         }
     }
 }

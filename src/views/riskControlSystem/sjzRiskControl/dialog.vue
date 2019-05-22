@@ -75,7 +75,7 @@
             </el-form>
             <el-form :model="form" :inline="false" label-width="120px">
                 <el-form-item label="风险矩阵：">
-                    <risk-matrix :data="riskTableRow"></risk-matrix>
+                    <risk-matrix :data="riskTableRow" :fsgl="fsgl" :yxcd="yxcd"></risk-matrix>
                 </el-form-item>
                 <el-form-item label="报告类型：">
                     <el-select style="width: 100%" v-model="form.sreporttype" placeholder="请选择报告类型">
