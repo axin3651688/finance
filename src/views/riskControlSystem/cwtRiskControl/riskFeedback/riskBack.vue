@@ -183,8 +183,7 @@
 
             /**
              * 关于某个风险的反馈弹出按钮
-             *
-             **/
+             */
             changeShowContent(scope, it) {
                 if (it.id === '0') {
                     //反馈操作
