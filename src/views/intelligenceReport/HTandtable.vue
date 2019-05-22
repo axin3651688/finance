@@ -1486,7 +1486,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      let me = this,arrTem = ['9','12','10'],tableState = me.tableState;
+      let me = this,arrTem = ['9','12','10','11'],tableState = me.tableState;
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
@@ -2106,7 +2106,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','9','12','10'],flag = true;
+      let arr = ['0','1','2','3','9','12','10','11'],flag = true;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){

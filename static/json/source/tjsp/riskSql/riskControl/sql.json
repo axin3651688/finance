@@ -8,7 +8,7 @@
         {
             "id": "102",
             "text": "风险管控弹出框的指定下达人员的sql",
-            "sql": "SELECT SCODE, SNAME, SPCODE, b.STRUENAME FROM DW_DIMDEPARTMENT a left join(select STRUENAME, SDEPARTMENTID from SYS_USER where COMPANY='1001') b on a.scode=b.SDEPARTMENTID where SCOMCODE='1001' order by scode"
+            "sql": "SELECT SCODE, SNAME, SPCODE,b.nid as usernid, b.STRUENAME,b.suser||'('||b.STRUENAME||')' username FROM DW_DIMDEPARTMENT a left join(select nid,STRUENAME,suser, SDEPARTMENTID from SYS_USER where COMPANY='1001') b on a.scode=b.SDEPARTMENTID where SCOMCODE='1001' order by scode"
         }
     ]
 }
