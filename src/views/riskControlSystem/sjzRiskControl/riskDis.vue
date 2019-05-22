@@ -66,7 +66,7 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index, tableData4)">查看</el-button>
+                        <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData4)">查看</el-button>
                         <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData4)">修改</el-button>
                     </template>
                 </el-table-column>
@@ -85,7 +85,7 @@ import diaLog from "@v/riskControlSystem/sjzRiskControl/dialog";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口1.（获取数据）
-import { findThirdPartData, findDesignSource } from "~api/interface";
+import { findThirdPartData, findDesignSource, riskmatrix_tovo } from "~api/interface";
 // 引用接口2.（获取数据）
 import { 
     riskprobability, 
@@ -243,9 +243,12 @@ export default {
         // 2.获取【风险矩阵】的json信息
         axiosRequest(){
             let me = this ;
-            me.axios.get("cnbi/json/risk/riskmatrix.json").then(res => {
-                // debugger
-                me.riskTableRow = res.data.rows;
+            // me.axios.get("cnbi/json/risk/riskmatrix.json").then(res => {
+            //     debugger
+            //     me.riskTableRow = res.data.rows;
+            // });
+            riskmatrix_tovo().then(res => {
+
             });
         },
         // 3.  获取【参照按钮-发生概率】的json信息

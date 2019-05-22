@@ -710,7 +710,7 @@ export default {
           //  }
 
          }
-      }
+      }    
       if(changeDatas.length >0){
         let data = [];
         if(rightDatas.length>0){
