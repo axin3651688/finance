@@ -8,16 +8,16 @@
                         "type": "input",
                         "label": "风险名称：",
                         "disabled": "disabled",
-                        "text": "riskName",
-                        "riskName": ""
+                        "text": "fxmc",
+                        "fxmc": ""
                     },
                     {
                         "span": 6,
                         "type": "input",
                         "label": "风险类型：",
                         "disabled": "disabled",
-                        "text": "riskType",
-                        "riskType": "风险2"
+                        "text": "fxlx",
+                        "fxlx": "风险2"
                     },
                     {
                         "span": 7,
@@ -25,16 +25,16 @@
                         "label": "风险发生概率：",
                         "disabled": "disabled",
                         "labelWidth": "120px",
-                        "text": "riskLevel",
-                        "riskLevel": "风险3"
+                        "text": "fxgl",
+                        "fxgl": "风险3"
                     },
                     {
                         "span": 5,
                         "type": "text",
                         "label": "风险等级：",
                         "disabled": "disabled",
-                        "text": "riskLevel",
-                        "riskLevel": "重大"
+                        "text": "fxdj",
+                        "fxdj": "重大"
                     }
                 ]
             },
@@ -45,24 +45,24 @@
                         "type": "textarea",
                         "label": "风险概述：",
                         "disabled": "disabled",
-                        "text": "riskSummary",
-                        "riskSummary": "风险1"
+                        "text": "fxms",
+                        "fxms": "风险1"
                     },
                     {
                         "span": 24,
                         "type": "textarea",
                         "label": "采取措施：",
                         "disabled": "disabled",
-                        "text": "riskSummary",
-                        "riskSummary": "风险2"
+                        "text": "cqcs",
+                        "cqcs": "风险2"
                     },
                     {
                         "span": 24,
                         "type": "textarea",
                         "label": "应对建议：",
                         "disabled": "disabled",
-                        "text": "riskSummary",
-                        "riskSummary": "风险3"
+                        "text": "ydjy",
+                        "ydjy": "风险3"
                     }
                 ]
             },

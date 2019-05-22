@@ -21,3 +21,23 @@ export function queryInstructions(params) {
         data: params
     })
 }
+/**
+ * 查询风险应对策略。
+ * @author szc 2019年5月21日11:37:58
+ */
+export function queryCopingStrategies() {
+    return request({
+        url: '/zjb/riskstrategy/query_all',
+        method: 'get'
+    })
+}
+/**
+ * 按照公司查询部门。
+ * @author szc 2019年5月21日20:26:58
+ */
+export function queryDeparts(company) {
+    return request({
+        url: '/zjb/department/query_byscomcode?scomcode=' + company,
+        method: 'get'
+    })
+}
