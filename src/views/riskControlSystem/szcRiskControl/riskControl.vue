@@ -197,7 +197,7 @@ export default {
                 year:year,
                 month:monthStr,
                 period:period,
-                departId:item? item:"",
+                departId:item? item:"01",
                 sql:""
             };
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
@@ -326,17 +326,36 @@ export default {
                     //         });
                     //     }
                     // });
-                    me.parseData(res.data.formConfig,row.row);
-                    me.currentRowIndex = row.$index;
-                    me.dialogVisible = true;
+                    queryCopingStrategies().then(resData => {
+                        debugger;
+                        if(resData.data.code == 200) {
+                            // me.copingStrategies(res.data.formConfig,res.data.data);
+                            me.parseData(res.data.formConfig,row.row,resData.data.data);
+                            me.currentRowIndex = row.$index;
+                            me.dialogVisible = true;
+                        }else {
+                            me.$message({
+                                message:"查询风险策略失败！",
+                                type:"warning"
+                            });
+                        }
+                    });
+                    
                 }
             });
         },
+        // copingStrategies (formConfig,data) {
+        //     debugger;
+        //     let me = this;
+        //     if(formConfig && data) {
+
+        //     }
+        // },
         /**
          * 装换数据。
          * @author szc 2019年5月16日17:59:32
          */
-        parseData (formConfig,row) {
+        parseData (formConfig,row,options) {
             let me = this;
             if(formConfig && row){
                 let groups = formConfig.groups,itemData = row;
@@ -349,6 +368,10 @@ export default {
                             if(itemData[contenItem.text]){
                                 contenItem[contenItem.text] = itemData[contenItem.text];
                                 contenItem.text == "fxdj" && itemData.nlevel? contenItem.nlevel = itemData.nlevel:"";
+                            }
+                            if(contenItem.type == "labelSelect" && options){
+                                //暂时就一个，先写死，后面可以循环
+                                contenItem.selectConfig[0].options = options;
                             }
                         }
                     }
