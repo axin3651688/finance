@@ -648,6 +648,7 @@ export default {
      * @author szc 2019年4月26日13:40:45
      */
     contentOfCompany () {
+      debugger;
       let me = this;
       let listSelects = this.list,flag = false;
       let currentSelects = this.parseResultOfCompany(this.listOld);
@@ -1414,7 +1415,7 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1,2].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      [1,2,3].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
     },
     /**
@@ -2067,9 +2068,18 @@ export default {
       this.showOrHideOfButtonForAdd(index,item);
       //三张主表加十三个审计月。
       this.mainTableMonth();
+      //清楚以前的数据。
+      this.clearDataOfBefore();
       this.reportData(this.datas);
       //上报、审阅按钮的内容。
       this.contentOfButtons();
+    },
+    /**
+     * 清楚以前的数据。
+     */
+    clearDataOfBefore () {
+      let me = this;
+      me.settings.colHeaders = [],me.settings.columns = [],me.settings.data = [];
     },
     /**
      * 三张主表加十三个审计月。

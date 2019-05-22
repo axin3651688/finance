@@ -4,8 +4,10 @@
  */
 
 import {
-    deptQueryRisk
+    deptQueryRisk,
+    queryDeparts
 } from '~api/szcRiskControl/riskControl.js'
+import { findThirdPartData } from "~api/interface";
 
 export default {
     methods: {
@@ -16,16 +18,22 @@ export default {
         changeOption(item, param) {
             debugger;
             let me = this;
-            let params = {
-                company: "",
-                period: "",
-                department: ""
-            };
-            // deptQueryRisk(params).then(res => {
-            //     if (res.data.code) {
-
-            //     }
-            // })
+            me.queryDataOfInstructions(item);
+        },
+        /**
+         * 根据公司查询部门。
+         * @author szc 2019年5月21日20:20:36
+         */
+        queryDepartMent() {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company;
+            queryDeparts(company).then(res => {
+                debugger;
+                if (res.data.code == 200) {
+                    me.selectConfig.options = res.data.data;
+                }
+            });
         }
     },
 }
