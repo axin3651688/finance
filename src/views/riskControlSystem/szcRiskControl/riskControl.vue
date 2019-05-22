@@ -149,7 +149,6 @@ export default {
          * @author szc 2019年5月21日19:37:42
          */
         updateView () {
-            debugger;
             let me = this,selectItem = me.selectItem;
             me.queryDataOfInstructions(selectItem);
         },
@@ -158,13 +157,11 @@ export default {
          * @author szc 2019年5月14日14:55:16
          */
         handleTabClick (tab, event) {
-            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
             if(tab.name == "second"){
                 url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
             }
             this.axios.get(url).then(res => {
-                debugger;
                 if(res.data.code == 200) {
                     if(tab.name == "first"){
                         // me.tableData = res.data.rows;
@@ -186,28 +183,27 @@ export default {
          * @author szc 2019年5月21日11:32:47
          */
         queryDataOfInstructions (item) {
-            debugger;
             let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
-                month = storeParams.month,period = "";
+                month = storeParams.month,period = "",monthStr = "";
             if(month > 9) {
                 period = year + "" + month;
+                monthStr = "" + month;
             }else {
                 period = year + "0" + month;
+                monthStr = "0" + month;
             }
             let params = {
                 company:company,
                 year:year,
-                month:month,
+                month:monthStr,
                 period:period,
                 departId:item? item:"",
                 sql:""
             };
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
-                    debugger;
                     params = me.paramsOfSql(params,res.data.sqlList);
                     findThirdPartData(params).then(res => {
-                        debugger;
                         if(res.data.code == 200) {
                             let resData = res.data.data;
                             resData.forEach(item => {
@@ -228,7 +224,6 @@ export default {
          * @author szc 2019年5月21日14:15:22
          */
         paramsOfSql (params,data) {
-            debugger;
             let me = this;
             if(data && data.length > 0) {
                 for(let i = 0;i < data.length;i ++) {
@@ -247,7 +242,6 @@ export default {
          * 查看
          */
         buttonHandler (scope,btnItem) {
-            debugger;
             let me = this;
             if(btnItem){
                 let id = btnItem.id;
@@ -268,18 +262,15 @@ export default {
          * @author szc 2019年5月14日13:48:28
          */
         instructionsState (scope) {
-            debugger;
             let me = this,$index = scope.$index,scode = scope.row.scode;
             if(scode){
                 // me.treeData.forEach();
                 me.changeValue(me.treeData,scode);
-                debugger;
                 console.log("ooooooooooo",me.treeData)
                 me.treeData;
             }
         },
         changeValue (treeData,scode) {
-            debugger;
             let me = this;
             for(let i = 0; i < treeData.length; i++) {
                 let item = treeData[i];
@@ -298,7 +289,6 @@ export default {
          * @author szc 2019年5月14日14:24:14
          */
         lookInstructions () {
-            debugger;
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 debugger;
@@ -315,7 +305,6 @@ export default {
          * @author szc 2019年5月14日15:13:52
          */
         returnCurrentClick () {
-            debugger;
             let me = this;
             me.treeTableShow = true;
         },
@@ -324,7 +313,6 @@ export default {
          * @author szc 2019年5月14日15:26:03
          */
         clickItemName (row) {
-            debugger;
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
@@ -349,7 +337,6 @@ export default {
          * @author szc 2019年5月16日17:59:32
          */
         parseData (formConfig,row) {
-            debugger;
             let me = this;
             if(formConfig && row){
                 let groups = formConfig.groups,itemData = row;

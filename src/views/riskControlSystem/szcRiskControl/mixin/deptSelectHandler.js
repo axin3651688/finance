@@ -16,8 +16,8 @@ export default {
          * 2019年5月17日13:41:32
          */
         changeOption(item, param) {
-            debugger;
             let me = this;
+            me.selectItem = item;
             me.queryDataOfInstructions(item);
         },
         /**
@@ -29,7 +29,6 @@ export default {
                 storeParams = me.$store.getters,
                 company = storeParams.company;
             queryDeparts(company).then(res => {
-                debugger;
                 if (res.data.code == 200) {
                     me.selectConfig.options = res.data.data;
                 }

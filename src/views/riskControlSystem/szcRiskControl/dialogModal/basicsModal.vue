@@ -132,6 +132,16 @@ export default {
         nextMessage () {
             let me = this,sign = "down";
             this.$emit("changMessage",sign);
+        },
+        /**
+         * 下拉框出现隐藏的回调。
+         */
+        visibleChange (item,params) {
+            debugger;
+            let me = this;
+            if(item){
+
+            }
         }
     },
 }
