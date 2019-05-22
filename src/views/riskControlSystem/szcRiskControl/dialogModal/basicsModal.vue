@@ -32,9 +32,9 @@
                                         <el-select v-model="it[it.text]" placeholder="请选择" :key="selIndex+10">
                                             <el-option
                                             v-for="sltItem in selItem.options"
-                                            :key="sltItem.value"
-                                            :label="sltItem.label"
-                                            :value="sltItem.value">
+                                            :key="sltItem.nid"
+                                            :label="sltItem.sname"
+                                            :value="sltItem.nid">
                                             </el-option>
                                         </el-select>
                                     </template>
@@ -43,7 +43,7 @@
                                     </div>
                                     <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
                                     <div class="selectTextarea">
-                                        <el-input v-if="it.textarea && it.textarea.show" type="textarea" v-model="it[it.text]" :disabled="it.disabled"></el-input>
+                                        <el-input v-if="it.textarea && it.textarea.show" type="textarea" v-model="instructions" :disabled="it.disabled"></el-input>
                                     </div>
                                 </el-form-item>
                             </el-col>
@@ -54,7 +54,8 @@
                                         <el-button @click="nextMessage">下一条</el-button>
                                     </div>
                                     <div class="checkClass">
-                                        <el-checkbox v-model="releasePeople">指定下达人员</el-checkbox>
+                                        <person :dptUserConfig="dptUserConfig"></person>
+                                        <el-checkbox v-model="releasePeople" @change="checkboxChange">指定下达人员</el-checkbox>
                                         <div class="footDiv">批示下达</div>
                                     </div>
                                 </el-form-item>
@@ -67,14 +68,24 @@
     </div>
 </template>
 <script>
+import person from "./showPersonnelList"
+import { findThirdPartData } from "~api/interface"
+import {
+    paramsOfSql
+} from "@/utils/riskPublic"
 export default {
     name:"basicsModal",
     props:{
         formConfig:Object
     },
+    components:{
+        person
+    },
     data() {
         return {
-            releasePeople:""
+            releasePeople:"",
+            instructions:"",
+            dptUserConfig:""
         }
     },
     /**
@@ -141,6 +152,63 @@ export default {
             let me = this;
             if(item){
 
+            }
+        },
+        /**
+         * checkBox改变的回调。
+         * @author szc 2019年5月22日11:45:56
+         */
+        checkboxChange (item,params) {
+            debugger;
+            let me = this,storeParams = me.$store.getters,
+                company = storeParams.company;
+            if(item){
+                let params = {
+                    company:company
+                };
+                me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
+                    if(res.data.code == 200){
+                        params = me.paramsOfSql(params,res.data.data,"102");
+                        findThirdPartData(params).then(res => {
+                            if(res.data.code == 200) {
+                                me.parseTreeData(me.dptUserConfig,res.data.data);
+                            }
+                        });
+                    }
+                });
+                
+                // me.dptUserConfig = {
+                //     id:"dptUser",
+                //     show:true,
+                //     userDatas:[]
+                // };
+            }else {
+                me.dptUserConfig = {
+                    id:"dptUser",
+                    show:false,
+                    userDatas:[]
+                };
+            }
+        },
+        /**
+         * 指定下达人员是树表。
+         * @author szc 2019年5月22日14:30:25
+         */
+        parseTreeData (dptUserConfig,data) {
+            let me = this,objRes = {};
+        if(data && data.length > 0) {
+                data.forEach(item => {
+                    if(!objRes[item.scode]){
+                        objRes[item.scode] = item.scode;
+                    }
+                });
+            }
+            let dptUser = [];
+            for(let key in objRes){
+                let objDptUser = {};
+                for(let i = 0;i < data.length;i ++){
+
+                }
             }
         }
     },

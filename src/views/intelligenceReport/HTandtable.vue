@@ -239,7 +239,9 @@ export default {
       this.tableData = [];
     },
     year(val) {
+      //清楚以前的数据。
       if (this.activeName2 == "second") {
+        this.clearDataOfBefore();
         this.tableData = [];
         let period = this.datas.period;
         let year = period.substring(0, 4);
@@ -250,7 +252,9 @@ export default {
       }
     },
     month(val) {
+      //清楚以前的数据。
       if (this.activeName2 == "second") {
+        this.clearDataOfBefore();
         this.tableData = [];
         let period = this.datas.period;
         let date;
@@ -277,6 +281,8 @@ export default {
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
       this.divShow = false;
       this.fillShow = true;
+      //清楚以前的数据。
+      this.clearDataOfBefore();
       if (this.activeName2 == "second") {
         this.tableData = [];
         let company = this.datas? this.datas.company:oldVal;

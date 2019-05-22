@@ -16,7 +16,7 @@
             </span>
         </div>
       <el-dialog title="选择公司" :visible.sync="dialogVisible" :modal-append-to-body="false">
-        <companyTree @click="getname"/>
+        <companyTree @click="getname" :showCompanyDilog.sync="showCompanyDilog"/>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="handleQoose">确 定</el-button>
@@ -179,6 +179,7 @@ export default {
   name: "Headnav",
   data() {
     return {
+      showCompanyDilog:false,
       modalConfig:{},//审阅展示的modal配置
       messageValue:1,//消息数
       // avarUrl:"",
@@ -382,6 +383,11 @@ export default {
     },
     showDilog() {
       this.dialogVisible = true;
+      if(this.showCompanyDilog){
+        this.showCompanyDilog = false;
+      }else {
+        this.showCompanyDilog = true;
+      }
     },
     logout() {
       // todo备以后用,先不删
