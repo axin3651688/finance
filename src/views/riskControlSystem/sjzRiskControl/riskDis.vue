@@ -85,12 +85,13 @@ import diaLog from "@v/riskControlSystem/sjzRiskControl/dialog";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口1.（获取数据）
-import { findThirdPartData, findDesignSource, riskmatrix_tovo } from "~api/interface";
+import { findThirdPartData, findDesignSource } from "~api/interface";
 // 引用接口2.（获取数据）
 import { 
     riskprobability, 
     risk_influence_degree,
-    deleteRiskdistinguish
+    deleteRiskdistinguish,
+    riskmatrix_tovo
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -241,14 +242,18 @@ export default {
             }
         },
         // 2.获取【风险矩阵】的json信息
-        axiosRequest(){
+        axiosRequest(){ 
             let me = this ;
             // me.axios.get("cnbi/json/risk/riskmatrix.json").then(res => {
             //     debugger
             //     me.riskTableRow = res.data.rows;
             // });
-            riskmatrix_tovo().then(res => {
-
+            riskmatrix_tovo().then(res => { 
+                if(res.data.code === 200){
+                    me.riskTableRow = res.data.data;
+                }else{
+                    me.$message.error('发生了个小意外！请联系开发人员哦！') ;
+                }
             });
         },
         // 3.  获取【参照按钮-发生概率】的json信息

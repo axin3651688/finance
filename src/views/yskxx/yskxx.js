@@ -33,7 +33,7 @@ export default {
         // 预付
         }else if(jsonId === "yfzk"){
             if(biNisleaf){
-                cc = "/nbi/json/yskxx/yfzk.json" ;
+                cc = "/cnbi/json/yskxx/yfzk.json" ;
             }else{
                 cc = "/cnbi/json/yskxx/yfzkej.json" ;
             }
