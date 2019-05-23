@@ -15,9 +15,9 @@
     <el-form class="user-form-inline">
       <el-form-item class="left">
         <template v-if="addButten === 1">
-            <el-button  type="primary" @click="handleAdd('add')">添加角色</el-button>
+            <el-button  type="primary" plain @click="handleAdd('add')">添加角色</el-button>
         </template>
-        <el-button  type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+        <el-button  type="success" plain @click="handleRefresh" icon="el-icon-refresh">刷新</el-button>
       </el-form-item>
       <!-- <el-form-item class="select">
         <el-button  type="primary" @click="handleSelect">选项</el-button>
@@ -37,9 +37,9 @@
       <el-table-column prop="sroledesc" label="角色描述" width="300" header-align="center" align ="center"></el-table-column>
       <el-table-column label="操作" header-align="center" min-width="260px" align ="center">
         <template slot-scope="scope" v-if="scope.row.roleid != 2">
-          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" >修改</el-button>
-          <el-button size="mini" type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-          <el-button size="mini" type="primary" @click="handleDark(scope.$index, scope.row)">模块授权</el-button>
+          <el-button size="mini" type="primary" plain @click="handleEdit(scope.$index, scope.row)" >修改</el-button>
+          <el-button size="mini" type="danger" plain @click="handleDel(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="primary" plain @click="handleDark(scope.$index, scope.row)">模块授权</el-button>
         </template>
       </el-table-column>
 </el-table>
@@ -176,7 +176,7 @@ export default {
 //     ExTable
 //   },
   created() {
-    this.heights = document.documentElement.clientHeight-217;
+    this.heights = document.documentElement.clientHeight-227;
   },
 
   data() {
@@ -347,10 +347,10 @@ export default {
      * 设置表格高度
      */
     setTableScollHeight(){
-        this.heights = document.documentElement.clientHeight-217;
+        this.heights = document.documentElement.clientHeight-227;
         const me = this;
         window.onresize = function temp(){
-            me.heights = document.documentElement.clientHeight-217;
+            me.heights = document.documentElement.clientHeight-227;
         }
     },
     /**
@@ -710,7 +710,7 @@ export default {
           //  }
 
          }
-      }
+      }    
       if(changeDatas.length >0){
         let data = [];
         if(rightDatas.length>0){
@@ -1066,7 +1066,7 @@ export default {
 </script>
 <style scoped>
 .roleM {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 .menus {
   margin-top: 5px;
@@ -1080,13 +1080,42 @@ div.select {
 .el-checkbox{
     margin-left: 30px;
 }
-/* .input-refresh {
+/* 分页样式 */
+.pagination {
+    height: 70px;
     width: 100%;
-   
-    text-align: center;
+    background-color: #fff;
+    margin-top: 10px;
+    padding-top: 21px;
+}
+.input-refresh {
+    width: 100%;
+    height: 60px ;
+    margin-top: 10px;
+    /* text-align: center; */
     margin-bottom: 10px;
     background-color: #fff;
-} */
+}
+</style>
+<style>
+.user-form-inline .el-form-item {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+/* 表头背景颜色的设定 */
+    .has-gutter tr th {
+        background-color: rgb(240, 248, 255) !important;
+        color: #606266;
+    }
+/* 固定列表头的颜色设定  加重覆盖*/
+    .el-table--border th, .el-table__fixed-right-patch{
+        background-color: rgb(240, 248, 255);
+    }
+/** 这是对表行的行高设置*/
+    .el-table__body tr, .el-table__body td {
+        padding: 0;
+        height: 32px;
+    }
 </style>
 
 

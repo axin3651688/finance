@@ -1,23 +1,27 @@
 <template>
+  <!--
+    组织管理页面
+  -->
   <div class="userM">
     <div class="input-refresh" ref="elememt">
-      <el-form :inline="true" :model="searchForm" class="user-form-inline">
+      <el-form :inline="true" :model="searchForm" class="user-form-inline" style="float: left">
         <el-form-item>
           <template v-if="addButten === 1">
-             <el-button type="primary" @click="handleAdd">添加用户</el-button>
+             <el-button type="primary" plain icon="el-icon-circle-plus-outline" @click="handleAdd">添加用户</el-button>
           </template>
-          <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button>
+          <el-button type="success" plain @click="handleRefresh" icon="el-icon-refresh">刷新</el-button>
         </el-form-item>
-
+      </el-form>
+      <el-form :inline="true" :model="searchForm" class="user-form-inline" style="float: right">
         <el-form-item>
           <el-input v-model="searchForm.search" placeholder="用户名/真实姓名模糊搜索"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            @click="handleSearchhandleSearch(searchForm.search)"
-          ></el-button>
+          <el-button type="primary" plain icon="el-icon-search" @click="handleSearchhandleSearch(searchForm.search)" ></el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
+          <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button> 
         </el-form-item>
       </el-form>
     </div>
@@ -55,20 +59,20 @@
           <template slot-scope="scope">
             <template v-if="delButten === 1">
               <template v-if="scope.row.cisenabled === 'Y'">
-                <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning">禁用</el-button>
+                <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning" plain>禁用</el-button>
               </template>
               <template v-else>
-                <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="success">启用</el-button>
+                <el-button size="mini" @click="handleAble(scope.$index, scope.row)" type="success" plain>启用</el-button>
               </template>
             </template>
             <template v-if="editButten === 1">
-              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary">修改</el-button>
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary" plain>修改</el-button>
             </template>
             <template v-if="editButten === 1"> 
               <el-button
                 size="mini"
                 @click="handleEditPassword(scope.$index, scope.row)"
-                type="primary"
+                type="primary" plain
               >修改密码</el-button>
             </template>
             <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
@@ -76,7 +80,7 @@
               <el-button
                 size="mini"
                 @click="handleAuthorizeCompany(scope.$index, scope.row)"
-                type="primary"
+                type="primary" plain
               >公司授权</el-button>
             </template>
           </template>
@@ -100,14 +104,13 @@
     <el-dialog
       title="新增用户"
       :visible.sync="dialogAddUserVisible"
-      width="480px"
+      width="901.5px"
       max-height="60%"
       @close="closeDilog('addUserForm')"
     > 
       <div class="dialog-body">
-        <div>
+        <!-- <div style="border: 1px solid #ccc;height: 130px;">
           <label class="el-form-item__label" style="width: 100px;margin-top:40px;">上传图片</label>
-          <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
           <div class="uploadHead" style="display:inline-block;margin-top:40px;">
             <el-upload
               class="upload-demo"
@@ -121,14 +124,13 @@
               ref="uploadPhoto"
               >
               <el-button size="small" type="primary">点击上传</el-button>
-              <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
             </el-upload>
           </div>
           <div class="showUploadHead">
             <img class="imgClass" v-if="true" :src="addPhotoUrl">
           </div>
-        </div>
-        
+        </div> -->
+        <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
         <el-form
           :inline="true"
           label-width="100px"
@@ -138,6 +140,30 @@
           class="user-form-inline"
           id="addUser"
         >
+          <el-form-item prop="src" style="height: 130px; width: 100%;lineHeight: 130px;">
+            <div style="width: 500px;height: 128px; marginLeft:45%;">
+              <div style="float: left;lineHeight: 130px;fontSize: 16px;fontWeight:bold;fontFamily:'微软雅黑'">
+                <span>头像设置：</span>
+              </div>
+              <el-upload
+              style="lineHeight: 130px;float: left;"
+              class="upload-demo"
+              action="avar/upload/avar"
+              :auto-upload="false"
+              :show-file-list="false"
+              :data="{suser:addUserForm.suser}"
+              :on-success="handleAvatarSuccess"
+              :on-change="changeFile"
+              :before-upload="beforeAvatarUpload"
+              ref="uploadPhoto"
+              >
+                <el-button size="small" type="primary" plain>点击上传</el-button>
+                <span style="color: #909399 ; fontSize: 12px; marginLeft: 15px;">支持png、jpeg、jpg文件</span>
+              </el-upload>
+              <img class="imgClass" v-if="true" :src="addPhotoUrl">
+            </div>
+          </el-form-item>
+
           <el-form-item label="用户名" prop="suser">
             <el-input v-model="addUserForm.suser" placeholder="请填写用户名" style="width:300px"></el-input>
           </el-form-item>
@@ -210,7 +236,43 @@
             <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
           </el-form-item>
 
+          <el-form-item label="政治面貌" prop="landscape">
+            <el-select v-model="addUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="教育程度" prop="education">
+            <el-select v-model="addUserForm.education" placeholder="请选择教育程度" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <el-option label="小学" value="0"></el-option>
+              <el-option label="初中" value="1"></el-option>
+              <el-option label="高中" value="2"></el-option>
+              <el-option label="本科" value="3"></el-option>
+              <el-option label="硕士" value="4"></el-option>
+              <el-option label="博士" value="5"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="专业职称" prop="professionalTitle">
+            <el-select v-model="addUserForm.professionalTitle" placeholder="请选择专业职称" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <!-- <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option> -->
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="现任职务" prop="currentPosition">
+            <el-select v-model="addUserForm.currentPosition" placeholder="请选择现任职务" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <!-- <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option> -->
+            </el-select>
+          </el-form-item>
         </el-form>
+          
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitAddUserForm('addUserForm')">确 定</el-button>
@@ -221,13 +283,13 @@
     <el-dialog
       title="修改用户"
       :visible.sync="dialogEditUserVisible"
-      width="450px"
+      width="901.5px"
       max-height="60%"
       @close="closeDilog('editUserForm')"
     >
-      <div>
+      <!-- <div>
         <label class="el-form-item__label" style="width: 100px;margin-top:20px;">修改头像</label>
-        <!-- <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input> -->
+        <el-input v-model="addUserForm.suser" placeholder="选择图片" style="width:100px"></el-input>width="450px"
         <div class="uploadHead" style="display:inline-block;margin-top:20px;">
           <el-upload
             class="upload-demo"
@@ -241,13 +303,14 @@
             ref="editPhoto"
             >
             <el-button size="small" type="primary">点击上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </div>
         <div class="showUploadHead">
           <img class="imgClass" v-if="true" :src="editPhotoUrl">
         </div>
-      </div>
+      </div> -->
+      <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
       <el-form
         :inline="true"
         label-width="100px"
@@ -256,6 +319,29 @@
         :rules="rules"
         class="user-form-inline"
       >
+        <el-form-item prop="src" style="height: 130px; width: 100%;lineHeight: 130px;">
+          <div style="width: 500px;height: 128px; marginLeft:45%;">
+            <div style="float: left;lineHeight: 130px;fontSize: 16px;fontWeight:bold;fontFamily:'微软雅黑'">
+              <span>头像设置：</span>
+            </div>
+            <el-upload
+            style="lineHeight: 130px;float: left;"
+            class="upload-demo"
+            action="avar/upload/avar"
+            :auto-upload="false"
+            :show-file-list="false"
+            :data="{suser:addUserForm.suser}"
+            :on-success="handleAvatarSuccess"
+            :on-change="changeFile"
+            :before-upload="beforeAvatarUpload"
+            ref="uploadPhoto"
+            >
+              <el-button size="small" type="primary" plain>点击上传</el-button>
+              <span style="color: #909399 ; fontSize: 12px; marginLeft: 15px;">支持png、jpeg、jpg文件</span>
+            </el-upload>
+            <img class="imgClass" v-if="true" :src="editPhotoUrl">
+          </div>
+        </el-form-item>
         <el-form-item label="用户名" prop="suser" :gutter="20">
           <el-input
             type="text"
@@ -316,7 +402,41 @@
         <el-form-item label="邮箱" prop="semail">
           <el-input v-model="editUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
         </el-form-item>
+        <el-form-item label="政治面貌" prop="landscape">
+            <el-select v-model="editUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option>
+            </el-select>
+          </el-form-item>
 
+          <el-form-item label="教育程度" prop="education">
+            <el-select v-model="editUserForm.education" placeholder="请选择教育程度" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <el-option label="小学" value="0"></el-option>
+              <el-option label="初中" value="1"></el-option>
+              <el-option label="高中" value="2"></el-option>
+              <el-option label="本科" value="3"></el-option>
+              <el-option label="硕士" value="4"></el-option>
+              <el-option label="博士" value="5"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="专业职称" prop="professionalTitle">
+            <el-select v-model="editUserForm.professionalTitle" placeholder="请选择专业职称" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <!-- <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option> -->
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="现任职务" prop="currentPosition">
+            <el-select v-model="editUserForm.currentPosition" placeholder="请选择现任职务" style="width:300px">
+              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
+              <!-- <el-option label="团员" value="0"></el-option>
+              <el-option label="党员" value="1"></el-option> -->
+            </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitEditUserForm('editUserForm')">确 定</el-button>
@@ -1684,6 +1804,25 @@ export default {
 };
 </script>
 <style>
+.user-form-inline .el-button{
+  height: 40px;
+  font-size: 13px;
+}
+.input-refresh .el-button {
+  height: 40px;
+  font-size: 13px;
+}
+.user-form-inline .icon-daoru, .icon-daochu {
+  padding-right: 5px ;
+}
+/* 分页样式 */
+.pagination {
+    height: 70px;
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+    padding-top: 21px;
+}
 /* 表头背景颜色的设定 */
     .has-gutter tr th {
         background-color: rgb(240, 248, 255) !important;
@@ -1713,9 +1852,10 @@ export default {
 }
 .input-refresh {
   width: 100%;
+  height: 60px;
   /* height: 80px; line-height: 80px; */
   /* max-height: 160px; */
-  text-align: center;
+  /* text-align: center; */
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: #fff;
@@ -1742,6 +1882,9 @@ lable[for="company"] {
   .imgClass {
     height: 120px;
     width: 120px;
+    float: left;
+    margin-top: 3.5px;
+    margin-left: 15px;
     border-radius: 50%;
     overflow: hidden;
   }
@@ -1772,8 +1915,8 @@ lable[for="company"] {
   }
   //新增用户的样式调整 2019年3月27日10:54:51 szc
   .dialog-body {
-    max-height: 400px;
-    overflow: auto;
+    // max-height: 400px;
+    // overflow: auto;
   }
   
 </style>

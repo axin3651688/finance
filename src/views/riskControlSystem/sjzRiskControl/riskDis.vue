@@ -66,7 +66,7 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index, tableData4)">查看</el-button>
+                        <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData4)">查看</el-button>
                         <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData4)">修改</el-button>
                     </template>
                 </el-table-column>
@@ -90,7 +90,8 @@ import { findThirdPartData, findDesignSource } from "~api/interface";
 import { 
     riskprobability, 
     risk_influence_degree,
-    deleteRiskdistinguish
+    deleteRiskdistinguish,
+    riskmatrix_tovo
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -241,11 +242,18 @@ export default {
             }
         },
         // 2.获取【风险矩阵】的json信息
-        axiosRequest(){
+        axiosRequest(){ 
             let me = this ;
-            me.axios.get("cnbi/json/risk/riskmatrix.json").then(res => {
-                // debugger
-                me.riskTableRow = res.data.rows;
+            // me.axios.get("cnbi/json/risk/riskmatrix.json").then(res => {
+            //     debugger
+            //     me.riskTableRow = res.data.rows;
+            // });
+            riskmatrix_tovo().then(res => { 
+                if(res.data.code === 200){
+                    me.riskTableRow = res.data.data;
+                }else{
+                    me.$message.error('发生了个小意外！请联系开发人员哦！') ;
+                }
             });
         },
         // 3.  获取【参照按钮-发生概率】的json信息

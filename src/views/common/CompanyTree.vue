@@ -24,6 +24,9 @@ import tools from "utils/tools";
 // import { setTimeout } from "timers";
 export default {
   name: "",
+  props:{
+    showCompanyDilog:Boolean
+  },
   data() {
     return {
       filterText:"",
@@ -56,6 +59,10 @@ export default {
     filterText(val) {
       this.$refs.navcomtree.filter(val);
     },
+    showCompanyDilog(newValue,oldValue){
+      this.navtreedata = [];
+      this.findNodes();
+    }
   },
   components: {
     tree: () => import("@v/test/tree/tree")
@@ -69,14 +76,12 @@ export default {
   },
   methods: {
     findNodes () {
-      debugger
       let me = this;
       let suser = this.$store.state.user.user.user.userName;
       // let item = {
       //   "suser": suser
       // }
       getCompanyTree(suser).then(res => {
-        debugger
         if (res.status == 200 && res.data.code == 200) {
           //封装树对象数据
           let setting = me.setting;
@@ -85,7 +90,6 @@ export default {
             data = me.filterDataOfEmpty(data);
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
-              debugger;
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
                 item.open = true; //展开此节点
@@ -105,7 +109,6 @@ export default {
      * 过滤掉为空的
      */
     filterDataOfEmpty(data){
-      debugger;
       let me = this;
       data = data.filter(item => {
         return item;
@@ -126,7 +129,6 @@ export default {
       this.$emit("click", data);
     },
     setStyleOfCurrentClick () {
-      debugger;
       let me = this;
     }
   }

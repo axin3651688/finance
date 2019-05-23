@@ -3,6 +3,7 @@
     <div class="logo-contener">
       <!-- <img :src="user.company.avatar"> -->
       <img src="http://jiaxin365.cn/images/tjsp.svg">
+      <!-- <img src="@a/logo.png"> -->
     </div>
     <el-scrollbar style="flex:1;">
       <el-menu
@@ -212,3 +213,13 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+// 暂时加上自己的logo，没有什么大用，可以去除。
+  // .logo-contener{
+  //   img {
+  //     height: 100%;
+  //     width: 100%;
+  //     padding: 15px 20px;
+  //   }
+  // }
+</style>

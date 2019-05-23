@@ -55,33 +55,31 @@
         <p class="title1">风险分析</p>
             <el-form :model="form" :inline="true" label-width="120px">
                 <el-form-item label="风险发生概率：">
-                    <el-select v-model="form.nprobability" placeholder="请选择风险概率" class="input2">
-                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id" @change="selectChange"></el-option>
+                    <el-select v-model="form.nprobability" @change="selectChange" placeholder="请选择风险概率" class="input2">
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：">
-                    <el-select v-model="form.ninfluence" placeholder="请选择风险影响" class="input2">
-                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore" @change="selectChange"></el-option>
+                    <el-select v-model="form.ninfluence" @change="selectChange2" placeholder="请选择风险影响" class="input2">
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险分值：">
-                    <el-input v-model="form.nscore" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.nscore" auto-complete="off" placeholder="不可编辑，自动计算出，根据R=L*S" readonly class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险等级：">
-                    <el-input v-model="form.gradename" auto-complete="off" readonly class="input"></el-input>
+                    <el-input v-model="form.gradename" auto-complete="off" placeholder="不可编辑" readonly class="input"></el-input>
                 </el-form-item>
             </el-form>
             <el-form :model="form" :inline="false" label-width="120px">
                 <el-form-item label="风险矩阵：">
-                    <risk-matrix :data="riskTableRow"></risk-matrix>
+                    <risk-matrix :data="riskTableRow" :fsgl="fsgl" :yxcd="yxcd"></risk-matrix>
                 </el-form-item>
                 <el-form-item label="报告类型：">
                     <el-select style="width: 100%" v-model="form.sreporttype" placeholder="请选择报告类型">
-                        <el-option label="报告类型一" value="1"></el-option>
-                        <el-option label="报告类型二" value="2"></el-option>
-                        <el-option label="报告类型三" value="3"></el-option>
+                        <el-option v-for="(option, inedx) in optione" :key="option.scode" :label="option.sname" :value="option.scode"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -115,7 +113,7 @@
 // 引用的风险矩阵
 import riskMatrix from "@v/riskControlSystem/sjzRiskControl/riskMatrix";
 // 引用接口
-import { risktype } from "~api/cube.js";
+import { risktype, riskreporttype, riskmatrix } from "~api/cube.js";
 export default {
     components:{
         riskMatrix
@@ -132,6 +130,8 @@ export default {
             options: [],            // 风险类型的数组（请求的数据）
             optionl: [],            // 风险发生概率数组（请求的数据）
             optiond: [],            // 风险影响程度数组（请求的数据）
+            optione: [],            // 报告类型数组（请求的数据）
+            optiong: [],
             form: {
                 sriskname: "",              // 风险名称
                 srisktype: "",              // 风险类型
@@ -151,36 +151,79 @@ export default {
     created(){ 
         // debugger
         let $params = this.$store.state.prame.command;
-        let username = this.$store.getters.user.user.userName;
+        let sfilluser = this.$store.getters.user.user.userName;
+        let departmentname = this.$store.getters.user.dept[0].sname ;
         // 自动获取登录人作为填报人
-            this.form.sfilluser = username ;
+            this.form.sfilluser = sfilluser ;
         // 自动获取当前用户的所属部门
-            this.form.departmentname = "董事会办公室" ;
+            this.form.departmentname = departmentname ;
         // 风险发生概率下拉框数据
-            this.optiond = this.fsgl.rows ;
+            this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
-            this.optionl = this.yxcd.rows ;
+            this.optiond = this.yxcd.rows ;
     },
     mounted(){
         // 风险类型请求
-        this.regionRequest() ;
+        this.srisktypeRequest() ;
+        // 报告类型请求
+        this.sreporttypeRequest() ;
     },
     computed: {
         
     },
     methods: {
-        // 发生概率选择器 and 影响程度选择器 触发
-        selectChange(val){
-            debugger
+        // 发生概率选择器  触发
+        selectChange(val){ 
+            this.nscoreCalculate();
+        },
+        // 影响程度选择器  触发
+        selectChange2(val){
+            this.nscoreCalculate();
+        },
+        // 风险分值自动计算
+        nscoreCalculate(){ 
+            if(this.form.nprobability == '' || this.form.ninfluence == ''){
+                this.form.nscore = "" ;
+            }else{
+                this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                // 风险等级请求 
+                this.riskmatrixRequest(this.form.nscore) ;
+            }
+        },
+        // 风险等级请求 
+        riskmatrixRequest(num){
+            let me = this ;
+            let params = {
+                score : num
+            }
+            riskmatrix(params).then(res => {
+                if(res.data.code === 200){ 
+                    me.optiong = res.data.data[0] ;
+                    me.form.gradename = res.data.data[0].sname ;
+                }else{
+
+                }
+            });
         },
         // 风险类型请求
-        regionRequest(){
+        srisktypeRequest(){
             let me = this ;
             risktype().then(res => {
                 if(res.data.code === 200){
                     me.options = res.data.data ;
                 }else{
                     me.$message.error("风险类型请求失败，请联系开发人员哦！")
+                }
+            });
+        },
+        // 报告类型请求
+        sreporttypeRequest(){
+            let me = this ;
+            riskreporttype().then(res => {
+                if(res.data.code === 200){
+                    me.optione = res.data.data ;
+                }else{
+                    me.$message.error("报告类型请求失败，请联系开发人员哦！")
                 }
             });
         },

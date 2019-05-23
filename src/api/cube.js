@@ -160,3 +160,34 @@ export function risktype(){
         method: 'get'
     })
 }
+/**5.
+ * name: sjz
+ * 说明：风险识别的【报告类型下拉】接口 /riskreporttype/query_all
+ */
+export function riskreporttype(){
+    return request({
+        url: '/zjb/riskreporttype/query_all',
+        method: 'get'
+    })
+}
+/**6.
+ * name: sjz
+ * 说明：风险识别的【风险等级】接口 /riskmatrix/query_byscore
+ */
+export function riskmatrix(data){
+    return request({
+        url: '/zjb/riskmatrix/query_byscore',
+        method: 'get',
+        params: data
+    })
+}
+/**7.
+ * name: sjz
+ * 说明：风险识别的【风险矩阵】接口 /riskmatrix/query_tovo
+ */
+export function riskmatrix_tovo(){
+    return request({
+        url: '/zjb/riskmatrix/query_tovo',
+        method: 'get'
+    })
+}

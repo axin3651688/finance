@@ -37,7 +37,7 @@
                 top="50px">
                 <div>
                     <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
-                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage"/>
+                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler"/>
                 </div>
             </el-dialog>
         </div>
@@ -149,7 +149,6 @@ export default {
          * @author szc 2019年5月21日19:37:42
          */
         updateView () {
-            debugger;
             let me = this,selectItem = me.selectItem;
             me.queryDataOfInstructions(selectItem);
         },
@@ -158,13 +157,11 @@ export default {
          * @author szc 2019年5月14日14:55:16
          */
         handleTabClick (tab, event) {
-            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
             if(tab.name == "second"){
                 url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
             }
             this.axios.get(url).then(res => {
-                debugger;
                 if(res.data.code == 200) {
                     if(tab.name == "first"){
                         // me.tableData = res.data.rows;
@@ -186,28 +183,27 @@ export default {
          * @author szc 2019年5月21日11:32:47
          */
         queryDataOfInstructions (item) {
-            debugger;
             let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
-                month = storeParams.month,period = "";
+                month = storeParams.month,period = "",monthStr = "";
             if(month > 9) {
                 period = year + "" + month;
+                monthStr = "" + month;
             }else {
                 period = year + "0" + month;
+                monthStr = "0" + month;
             }
             let params = {
                 company:company,
                 year:year,
-                month:month,
+                month:monthStr,
                 period:period,
-                departId:item? item:"",
+                departId:item? item:"01",
                 sql:""
             };
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
-                    debugger;
                     params = me.paramsOfSql(params,res.data.sqlList);
                     findThirdPartData(params).then(res => {
-                        debugger;
                         if(res.data.code == 200) {
                             let resData = res.data.data;
                             resData.forEach(item => {
@@ -228,7 +224,6 @@ export default {
          * @author szc 2019年5月21日14:15:22
          */
         paramsOfSql (params,data) {
-            debugger;
             let me = this;
             if(data && data.length > 0) {
                 for(let i = 0;i < data.length;i ++) {
@@ -247,7 +242,6 @@ export default {
          * 查看
          */
         buttonHandler (scope,btnItem) {
-            debugger;
             let me = this;
             if(btnItem){
                 let id = btnItem.id;
@@ -268,18 +262,15 @@ export default {
          * @author szc 2019年5月14日13:48:28
          */
         instructionsState (scope) {
-            debugger;
             let me = this,$index = scope.$index,scode = scope.row.scode;
             if(scode){
                 // me.treeData.forEach();
                 me.changeValue(me.treeData,scode);
-                debugger;
                 console.log("ooooooooooo",me.treeData)
                 me.treeData;
             }
         },
         changeValue (treeData,scode) {
-            debugger;
             let me = this;
             for(let i = 0; i < treeData.length; i++) {
                 let item = treeData[i];
@@ -298,7 +289,6 @@ export default {
          * @author szc 2019年5月14日14:24:14
          */
         lookInstructions () {
-            debugger;
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 debugger;
@@ -315,7 +305,6 @@ export default {
          * @author szc 2019年5月14日15:13:52
          */
         returnCurrentClick () {
-            debugger;
             let me = this;
             me.treeTableShow = true;
         },
@@ -324,7 +313,6 @@ export default {
          * @author szc 2019年5月14日15:26:03
          */
         clickItemName (row) {
-            debugger;
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
@@ -338,18 +326,36 @@ export default {
                     //         });
                     //     }
                     // });
-                    me.parseData(res.data.formConfig,row.row);
-                    me.currentRowIndex = row.$index;
-                    me.dialogVisible = true;
+                    queryCopingStrategies().then(resData => {
+                        debugger;
+                        if(resData.data.code == 200) {
+                            // me.copingStrategies(res.data.formConfig,res.data.data);
+                            me.parseData(res.data.formConfig,row.row,resData.data.data);
+                            me.currentRowIndex = row.$index;
+                            me.dialogVisible = true;
+                        }else {
+                            me.$message({
+                                message:"查询风险策略失败！",
+                                type:"warning"
+                            });
+                        }
+                    });
+                    
                 }
             });
         },
+        // copingStrategies (formConfig,data) {
+        //     debugger;
+        //     let me = this;
+        //     if(formConfig && data) {
+
+        //     }
+        // },
         /**
          * 装换数据。
          * @author szc 2019年5月16日17:59:32
          */
-        parseData (formConfig,row) {
-            debugger;
+        parseData (formConfig,row,options) {
             let me = this;
             if(formConfig && row){
                 let groups = formConfig.groups,itemData = row;
@@ -363,11 +369,17 @@ export default {
                                 contenItem[contenItem.text] = itemData[contenItem.text];
                                 contenItem.text == "fxdj" && itemData.nlevel? contenItem.nlevel = itemData.nlevel:"";
                             }
+                            if(contenItem.type == "labelSelect" && options){
+                                //暂时就一个，先写死，后面可以循环
+                                contenItem.selectConfig[0].options = options;
+                            }
                         }
                     }
                 }
             }
+            me.selectItem? formConfig.departId = me.selectItem:formConfig.departId = "01";
             me.modalData = formConfig;
+            
         },
         /**
          * 上一条、下一条。
@@ -399,6 +411,17 @@ export default {
                     me.parseData(me.modalData,me.tableData[$index]);
                     me.currentRowIndex = $index;
                 }
+            }
+        },
+        /**
+         * 事件处理公共出口。
+         * @author szc 2019年5月22日19:39:07
+         */
+        eventHandler (params) {
+            debugger;
+            let me = this;
+            if(params.id == "instruction"){
+                
             }
         }
     }

@@ -90,7 +90,8 @@ export default {
             objer: {},
             objer2: {},
             tabsDataArray: [],
-            queryEmptyArray: 0
+            queryEmptyArray: 0,
+            adressArray: ""
         }
     },
     created(){
@@ -113,14 +114,16 @@ export default {
             this.loadModuleBefore(newmonth, this);
         },
         // 切换公司触发
-        company(newcompany){
+        company(newcompany){ 
+            // 注：每次切换公司应该把tabsDataArray的数组清空，要不保留的还是上一次公司的信息，坑啊
+            this.tabsDataArray = [] ;
             if(this.items.length > 1)this.closeTab(newcompany) ;
             let cc = this.$store.getters.treeInfo.nisleaf ;
             if(cc === this.biNisleaf){
                 this.loadModuleBefore(newcompany, this);
             }else{
                 this.biNisleaf = this.$store.getters.treeInfo.nisleaf ;
-                this.jsonAdress = mini.getJsonAdress(this.jsonId, this.biNisleaf);
+                this.adressArray = mini.getJsonAdress(this.jsonId, this.biNisleaf);
                 this.setTreeTableRequest();
             }
         },
@@ -137,8 +140,8 @@ export default {
         setTreeTableRequest(){ 
             const me = this ;
             // jsonAdress传入的json地址
-            let $json = me.jsonAdress ;
-            me.axios.get($json).then(res => {  
+            let $json = me.adressArray != ''?me.adressArray : me.jsonAdress ;
+            me.axios.get($json).then(res => { 
                 let obj = res.data;
                 // 把json字符串转换成对象
                 obj = eval("(" + obj + ")");
@@ -169,6 +172,7 @@ export default {
          * @event 数据处理加载模块
          */
         loadModuleBefore(){ 
+            // debugger
             let me = this ;
             let $params = me.$store.state.prame.command;
             // 请求传的参数
@@ -200,6 +204,7 @@ export default {
             // debugger
             let me = this ;
             findThirdPartData(params).then(res => {
+                // debugger
                 // 获取数据之后的处理 参数：item=objer，数据，this对象
                 item.rows = res.data.data ;
                 // 是否是应收、预付、其他三张表

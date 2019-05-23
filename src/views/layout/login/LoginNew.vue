@@ -5,6 +5,7 @@
         <el-col :span="9">
           <div style="height:100%;width:100%;text-align:left;padding-left:100px;">
             <img src="@a/loginT/topLogo.svg" class="first">
+            <!-- <img src="@a/logo.png" class="firstDemo"> -->
           </div>
         </el-col>
         <el-col :span="15">
@@ -370,6 +371,13 @@ button.loginBtn>span{
   height:100%;
   width: 100%;
   // background: url(@a/loginT/first.jpg);
+}
+//demo用的
+.firstDemo {
+  height: 100%;
+  width: 100%;
+  background-color: #ccc;
+  margin-top: 15px;
 }
 .middleContent {
   height: 100%;
