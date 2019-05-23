@@ -4,6 +4,7 @@ export default {
      * @author szc 2019年5月21日14:15:22
      */
     paramsOfSql(params, data, sqlId) {
+        debugger;
         let me = this;
         if (data && data.length > 0) {
             for (let i = 0; i < data.length; i++) {

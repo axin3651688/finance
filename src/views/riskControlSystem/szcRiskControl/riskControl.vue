@@ -37,7 +37,7 @@
                 top="50px">
                 <div>
                     <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
-                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage"/>
+                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler"/>
                 </div>
             </el-dialog>
         </div>
@@ -377,7 +377,9 @@ export default {
                     }
                 }
             }
+            me.selectItem? formConfig.departId = me.selectItem:formConfig.departId = "01";
             me.modalData = formConfig;
+            
         },
         /**
          * 上一条、下一条。
@@ -409,6 +411,17 @@ export default {
                     me.parseData(me.modalData,me.tableData[$index]);
                     me.currentRowIndex = $index;
                 }
+            }
+        },
+        /**
+         * 事件处理公共出口。
+         * @author szc 2019年5月22日19:39:07
+         */
+        eventHandler (params) {
+            debugger;
+            let me = this;
+            if(params.id == "instruction"){
+                
             }
         }
     }

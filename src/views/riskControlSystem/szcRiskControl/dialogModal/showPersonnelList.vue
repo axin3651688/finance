@@ -7,7 +7,7 @@
             </el-input>
             <el-tree
                     class="filter-tree"
-                    :data="personnelList"
+                    :data="dptUserConfig.userDatas || personnelList"
                     show-checkbox
                     node-key="id"
                     default-expand-all
@@ -24,6 +24,9 @@
 </template>
 
 <script>
+import {
+    updateInstruction
+} from "~api/szcRiskControl/riskControl"
     export default {
         name: "showPersonnelList",
         components: {},
@@ -40,40 +43,6 @@
                             {
                                 id: 3,
                                 label: '人员A-1'
-                            },
-                            {
-                                id: 4,
-                                label: '人员A-2'
-                            },
-                            {
-                                id: 5,
-                                label: '人员A-3'
-                            },
-                            {
-                                id: 6,
-                                label: '人员A-4'
-                            }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        label: '部门B',
-                        children: [
-                            {
-                                id: 7,
-                                label: '人员B-1'
-                            },
-                            {
-                                id: 8,
-                                label: '人员B-2'
-                            },
-                            {
-                                id: 9,
-                                label: '人员B-3'
-                            },
-                            {
-                                id: 10,
-                                label: '人员B-4'
                             }
                         ]
                     }
@@ -110,8 +79,53 @@
             resetChecked() {
                 this.$refs.tree.setCheckedKeys([]);
             },
+            /**
+             * 确定按钮。
+             */
             checkedSure() {
-                alert("反馈成功");
+                debugger;
+                let me = this;
+                let nodes = this.$refs.tree.getCheckedNodes();
+                if(nodes && nodes.length > 0){
+                    me.$emit("instructionHandler",nodes);
+                }
+            },
+            checkedSure_old() {
+                debugger;
+                let me = this,storeParams = me.$store.getters,
+                company = storeParams.company;
+                let nodes = this.$refs.tree.getCheckedNodes();
+                if(nodes && nodes.length > 0){
+                    let arrUser = [],userStr = "";
+                    nodes.forEach(item => {
+                        arrUser.push(item.id);
+                    });
+                    userStr = arrUser.join(',');
+                    let params = [
+                        {
+                            company:company,
+                            departId:dptUserConfig.departId,
+                            riskYDCL:"",
+                            riskContent:"",
+                            userStr:userStr
+                        }
+                    ];
+                    updateInstruction();
+                }
+            },
+            /**
+             * 转换日期。
+             * @author szc 2019年5月22日19:04:24
+             */
+            parsePeriod(){
+                let me = this,storeParams = me.$store.getters,
+                year = storeParams.company,month = storeParams.month,period = "";
+                if(month > 9) {
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                return period;
             }
         }
     }
@@ -128,6 +142,7 @@
         bottom: 45px;
         right: 20px;
         max-height: 354px;
+        overflow: auto;
     }
 
     .btn-sure {
@@ -138,5 +153,9 @@
     .btn-sure button {
         border-radius: 16px;
         padding: 8px 16px;
+    }
+    .filter-tree {
+        max-height: 250px;
+        overflow: auto;
     }
 </style>

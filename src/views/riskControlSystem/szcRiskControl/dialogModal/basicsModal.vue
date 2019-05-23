@@ -29,7 +29,7 @@
                                 <el-form-item :label="it.label || '没有配置'" :key="itIndex">
                                     <template v-for="(selItem,selIndex) in it.selectConfig">
                                         <label :key="selIndex">{{ selItem.label }}</label>
-                                        <el-select v-model="it[it.text]" placeholder="请选择" :key="selIndex+10">
+                                        <el-select v-model="selectValue" placeholder="请选择" :key="selIndex+10">
                                             <el-option
                                             v-for="sltItem in selItem.options"
                                             :key="sltItem.nid"
@@ -54,8 +54,8 @@
                                         <el-button @click="nextMessage">下一条</el-button>
                                     </div>
                                     <div class="checkClass">
-                                        <person :dptUserConfig="dptUserConfig"></person>
-                                        <el-checkbox v-model="releasePeople" @change="checkboxChange">指定下达人员</el-checkbox>
+                                        <person :dptUserConfig.sync="dptUserConfig" v-on:instructionHandler="instructionHandler"></person>
+                                        <el-checkbox v-model="releasePeople" @change="checkboxChange" :checked="checked" ref="peopleCheckbox">指定下达人员</el-checkbox>
                                         <div class="footDiv">批示下达</div>
                                     </div>
                                 </el-form-item>
@@ -70,9 +70,10 @@
 <script>
 import person from "./showPersonnelList"
 import { findThirdPartData } from "~api/interface"
+import riskPublic from "@/utils/riskPublic"
 import {
-    paramsOfSql
-} from "@/utils/riskPublic"
+    updateInstruction
+} from "~api/szcRiskControl/riskControl"
 export default {
     name:"basicsModal",
     props:{
@@ -85,7 +86,9 @@ export default {
         return {
             releasePeople:"",
             instructions:"",
-            dptUserConfig:""
+            dptUserConfig:{},
+            selectValue:"",
+            checked:false//是否选中
         }
     },
     /**
@@ -134,6 +137,7 @@ export default {
          */
         upMessage () {
             let me = this,sign = "up";
+            me.setDefaultValue();
             this.$emit("changMessage",sign);
         },
         /**
@@ -142,7 +146,33 @@ export default {
          */
         nextMessage () {
             let me = this,sign = "down";
+            me.setDefaultValue();
             this.$emit("changMessage",sign);
+        },
+        /**
+         * 设置一些默认的值。
+         * @author szc 2019年5月22日20:27:54
+         */
+        setDefaultValue(){
+            debugger;
+            let me = this;
+            me.selectValue = "";
+            me.dptUserConfig = {
+                id:"dptUser",
+                show:false,
+                userDatas:[]
+            };
+            // me.$refs.peopleCheckbox[0].isChecked = false;
+            // let classValue = me.$refs.peopleCheckbox[0].$el.getAttribute("class");
+            // let spanClassValue = me.$refs.peopleCheckbox[0].$el.childNodes[0].getAttribute("class");
+            // classValue = classValue.replace("is-checked","");
+            // spanClassValue = spanClassValue.replace("is-checked","")
+            // me.$refs.peopleCheckbox[0].$el.setAttribute("class",classValue);
+            // me.$refs.peopleCheckbox[0].$el.childNodes[0].setAttribute("class",spanClassValue);
+            // me.$refs.peopleCheckbox[0].$el.removeAttribute("is-checked");
+            // let myEvent = new Event('click');
+            // me.$refs.peopleCheckbox[0].$el.dispatchEvent(myEvent);
+            // me.$refs.peopleCheckbox[0].$el.removeAttribute("is-checked");
         },
         /**
          * 下拉框出现隐藏的回调。
@@ -158,7 +188,7 @@ export default {
          * checkBox改变的回调。
          * @author szc 2019年5月22日11:45:56
          */
-        checkboxChange (item,params) {
+        checkboxChange (item,paramsEvent) {
             debugger;
             let me = this,storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -168,8 +198,9 @@ export default {
                 };
                 me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                     if(res.data.code == 200){
-                        params = me.paramsOfSql(params,res.data.data,"102");
+                        params = riskPublic.paramsOfSql(params,res.data.sqlList,"102");
                         findThirdPartData(params).then(res => {
+                            debugger;
                             if(res.data.code == 200) {
                                 me.parseTreeData(me.dptUserConfig,res.data.data);
                             }
@@ -196,7 +227,7 @@ export default {
          */
         parseTreeData (dptUserConfig,data) {
             let me = this,objRes = {};
-        if(data && data.length > 0) {
+            if(data && data.length > 0) {
                 data.forEach(item => {
                     if(!objRes[item.scode]){
                         objRes[item.scode] = item.scode;
@@ -205,11 +236,72 @@ export default {
             }
             let dptUser = [];
             for(let key in objRes){
-                let objDptUser = {};
+                let objDptUser = {
+                    id:"",
+                    label:"",
+                    children:[]
+                };
                 for(let i = 0;i < data.length;i ++){
-
+                    let item = data[i];
+                    if(item.scode == key){
+                        if(item.usernid){
+                            let objItem = {
+                                id:item.suser,
+                                label:item.username
+                            };
+                            objDptUser.id = item.scode;
+                            objDptUser.label = item.sname;
+                            objDptUser.children.push(objItem);
+                        }else {
+                            objDptUser.id = item.scode;
+                            objDptUser.label = item.sname;
+                        }
+                    }
                 }
+                dptUser.push(objDptUser);
             }
+            // me.dptUserConfig.userDatas = dptUser;
+            me.dptUserConfig = {
+                id:"dptUser",
+                show:true,
+                userDatas:dptUser
+            };
+        },
+        /**
+         * 选中人员下达的确定按钮的事件。
+         * @author szc 2019年5月22日19:32:54
+         */
+        instructionHandler (nodes) {
+            debugger;
+            let me = this,storeParams = me.$store.getters,
+            company = storeParams.company;
+            if(nodes && nodes.length > 0){
+                let arrUser = [],userStr = "";
+                nodes.forEach(item => {
+                    arrUser.push(item.id);
+                });
+                userStr = arrUser.join(',');
+                let params = [
+                    {
+                        company:company,
+                        departId:me.formConfig.departId,
+                        riskYDCL:me.selectValue,
+                        riskContent:me.instructions,
+                        userStr:userStr
+                    }
+                ];
+                updateInstruction(params).then(res => {
+                    debugger;
+                    if(res.data.code = 200) {
+
+                    }
+                });
+            }
+            // let params = {
+            //     id:"instruction",
+            //     data:nodes
+            // };
+            // me.$emit("eventHandler",params);
         }
     },
 }

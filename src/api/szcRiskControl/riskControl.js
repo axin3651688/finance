@@ -41,3 +41,14 @@ export function queryDeparts(company) {
         method: 'get'
     })
 }
+/**
+ * 风险管控的风险批示人员的下达。
+ * @author szc 2019年5月21日20:26:58
+ */
+export function updateInstruction(params) {
+    return request({
+        url: '/zjb/riskreportstate/update_bynrelateids',
+        method: 'post',
+        data: params
+    })
+}
