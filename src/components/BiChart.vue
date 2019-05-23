@@ -24,7 +24,6 @@ export default {
     };
   },
   created() {
-    debugger;
     this.upData();
   },
   methods: {

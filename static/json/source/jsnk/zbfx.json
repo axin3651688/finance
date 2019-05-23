@@ -508,6 +508,19 @@
                 "id": "23945",
                 "text": "应收款项周转率",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        debugger;
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -543,6 +556,18 @@
                 "id": "45457",
                 "text": "归属于母公司所有者权益",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -578,6 +603,18 @@
                 "id": "1111401",
                 "text": "存货",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -613,6 +650,18 @@
                 "id": "274",
                 "text": "三项费用合计",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",

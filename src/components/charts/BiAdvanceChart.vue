@@ -114,7 +114,6 @@ export default {
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
-      debugger;
       // console.log(this.item.options.datas);
 
       if (chartType === 1) {
@@ -126,16 +125,12 @@ export default {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-        debugger;
         if (subType == "pie") {
           let chartDatas = [],
             datas = this.item.datas[0];
-          debugger;
           this.chartOptions.legend.data = this.item.options.getData.columns.map(
             item => {
-              debugger;
               Object.keys(datas).forEach(keys => {
-                debugger;
                 if (item.id == keys) {
                   chartDatas.push({ value: datas[keys], name: item.text });
                 }

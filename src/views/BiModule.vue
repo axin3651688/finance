@@ -150,7 +150,6 @@ export default {
     // debugger;
     /*     下面是针对弹框写的判断,可以再次引用bimodule
     马军  2019.1.11 */
-    debugger
     if (Cnbi.isEmpty(this.dialogData)) {
       let bean = getClientParams();
       this.setScopeDatas(bean);
@@ -170,7 +169,6 @@ export default {
   },
   watch: {
     module_api(newid) {
-      debugger;
       this.changeMonduleBefore(newid);
       this.activeTabName = "0";
       this.flag = false; //神奇的操作，由龚佳新推导出来，没有这一行，this.datas不能及时清理的问题，真的太坑！
@@ -183,7 +181,6 @@ export default {
     },
 
     month(newmonth) {
-      debugger;
       this.changeMonthBefore(newmonth, this);
       this.updateView("month");
       console.log("改变", newmonth);
@@ -232,7 +229,6 @@ export default {
       }
     },
     dialogData() {
-      debugger;
       this.loadRemoteSource(this.dialogData);
     }
   },
@@ -298,7 +294,6 @@ export default {
        *
        */
       if (bean.hasOwnProperty("showDims")) {
-        debugger;
         this.ShowDims(bean.showDims);
       } else {
         
@@ -377,10 +372,8 @@ export default {
         });
         return;
       }
-      debugger;
 
       findDesignSource(api).then(res => {
-        debugger
         console.log("resres", api);
         let source = res.data; //默认认为是从文件服务器加载进来的
         let dbData = source.data;
@@ -414,7 +407,6 @@ export default {
         this.generateApiModelDatas(this, null, "company");
       } else {
         //解决当父亲没有配制config的情况
-        debugger;
         this.flag = true;
       }
       // else {
@@ -452,7 +444,6 @@ export default {
      * $childVue   vue子组件对象
      */
     generateApiModelDatas(item, $childVue, changeDim) {
-      debugger;
       try {
         let params = getModuleParams(item, changeDim);
         // console.log(params);
@@ -510,7 +501,6 @@ export default {
      * 获取数据后的操作处理
      */
     queryDataAfter(item, datas, $childVue) {
-      debugger;
       let params = this.$store.state.param.command;
       let unit = params.conversion;
       if (unit && unit.id > 1 && datas && datas.length > 0) {
@@ -537,7 +527,6 @@ export default {
       item.datas = datas;
       if (!$childVue) {
         this.$set(this, "datas", datas);
-        debugger;
         this.flag = true;
         this.setChlidComponent(datas);
       } else {
@@ -552,10 +541,9 @@ export default {
      * 设置模型数据
      */
     setDatas(item, params, $childVue) {
-      debugger;
       findThirdPartData(params)
         .then(res => {
-          debugger;
+          
           // console.log("sql", params);
           // console.log("res", res);
           this.queryDataAfter(item, res.data.data, $childVue);
