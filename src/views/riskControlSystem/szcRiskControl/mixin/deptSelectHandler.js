@@ -23,8 +23,7 @@ export default {
         /**
          * 根据公司查询部门。
          * @author szc 2019年5月21日20:20:36
-         */
-        queryDepartMent() {
+         */queryDepartMent() {
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -35,5 +34,6 @@ export default {
                 }
             });
         }
+
     },
 }
