@@ -2,10 +2,10 @@
     <div>
         <div class="dialog-component">
             <div class="risk-reference">
-                <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
+                <a style="color: dodgerblue;" v-if="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
             </div>
             <div class="risk-reference">
-                <a style="color: dodgerblue;"v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
+                <a style="color: dodgerblue;"v-if="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
             </div>
             <div class="form-content">
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
@@ -24,14 +24,14 @@
 
                     <!--弹出层关于领导批示的部分-->
                     <risk-instruction
-                            v-show="dialogData['dialogRiskType'] === 'riskBack'"
+                            v-if="dialogData['dialogRiskType'] === 'riskBack'"
                             :formData="dialogData.formData ||formData"
                     >
                     </risk-instruction>
 
                     <!--弹出层有关风险追踪的进度的部分-->
                     <risk-schedule
-                            v-show="dialogData['dialogRiskType'] === 'riskTrack'"
+                            v-if="dialogData['dialogRiskType'] === 'riskTrack'"
                             :formData="dialogData.formData || formData"
                     >
                     </risk-schedule>

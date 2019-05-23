@@ -310,10 +310,6 @@
 </script>
 
 <style scoped>
-    .select-name {
-        margin-right: 10px;
-    }
-
     .top-tip {
         margin-bottom: 10px;
     }

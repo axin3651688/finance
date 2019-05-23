@@ -3,7 +3,7 @@
         <div class="risk-back-content">
             <div class="top-tip">
                 <public-risk-select
-                    @selectChanged="selectChanged"
+                        @selectChanged="selectChanged"
                 >
                 </public-risk-select>
             </div>
@@ -43,7 +43,7 @@
     import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
     import {mapGetters} from "vuex"
     // import {getDepartments} from '~api/cwtRiskControl/riskControlRequest'
-    import { findThirdPartData } from "~api/interface"
+    import {findThirdPartData} from "~api/interface"
     // import getSql from '../publicJsFill/getSql'
 
 
@@ -224,7 +224,7 @@
              * @param params
              * @constructor
              */
-            RiskBackDataQuery(params){
+            RiskBackDataQuery(params) {
                 let _this = this;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
@@ -234,13 +234,13 @@
                          */
                         let datas = res.data.data;
                         let _operations = [];
-                        datas.forEach((data)=>{
+                        datas.forEach((data) => {
                             let operations = data.operation.split(',');
-                            for(let i = 0, len = operations.length; i < len; i++){
+                            for (let i = 0, len = operations.length; i < len; i++) {
                                 let emptyBtn = {
-                                    id:'',
-                                    btnShow:true,
-                                    text:''
+                                    id: '',
+                                    btnShow: true,
+                                    text: ''
                                 };
                                 let btnDes = operations[i].split('-');
                                 let btnId = btnDes[0],
@@ -264,7 +264,7 @@
              * @param selectedOption
              * @returns {{company: *, year: *, month: *, period: (string|string), departId: string, sql: string}}
              */
-            getQueryParameter(selectedOption){
+            getQueryParameter(selectedOption) {
                 let _this = this,
                     _getter = _this.$store.getters,
                     company = _getter.company,
@@ -291,7 +291,7 @@
              * 子组件里select中的options改变的时候触发的函数
              * @param item
              */
-            selectChanged(item){
+            selectChanged(item) {
                 this.getRiskBackData(item);
             }
         }

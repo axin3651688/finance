@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="personnel-list" v-show="personnelListShow">
+        <div class="personnel-list" v-if="personnelListShow">
             <el-input
                     placeholder="输入关键字进行过滤"
                     v-model="filterText">

@@ -1,24 +1,29 @@
 <template>
     <div>
+
         <span class="select-name">部门选择:</span>
-        <el-select
-                v-model="selectedValue"
-                placeholder="请选择"
-                @change="selectDepartment"
-        >
-            <el-option
-                    v-for="item in options"
-                    :key="item.scode"
-                    :label="item.sname"
-                    :value="item.scode"
+        <keep-alive>
+            <el-select
+                    v-model="selectedValue"
+                    placeholder="请选择"
+                    @change="selectDepartment"
             >
-            </el-option>
-        </el-select>
+                <el-option
+                        v-for="item in options"
+                        :key="item.scode"
+                        :label="item.sname"
+                        :value="item.scode"
+                >
+                </el-option>
+            </el-select>
+        </keep-alive>
+
     </div>
 </template>
 
 <script>
     import {getDepartments} from '~api/cwtRiskControl/riskControlRequest'
+
     export default {
         name: "publicRiskSelect",
         components: {},
@@ -41,9 +46,9 @@
              * 选择不同部门的时候的查询
              * @param item
              */
-            selectDepartment(item){
+            selectDepartment(item) {
                 debugger;
-                this.$emit("selectChanged",item);
+                this.$emit("selectChanged", item);
             },
 
             /**

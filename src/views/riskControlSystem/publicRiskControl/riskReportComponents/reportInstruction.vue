@@ -34,6 +34,7 @@
             }
         },
         created() {
+            debugger;
             let me = this;
             me.countermeasures = me.contentDown.content.countermeasures || me.countermeasures;
             me.instruction = me.contentDown.content.instruction || me.instruction
