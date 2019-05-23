@@ -76,6 +76,7 @@
                 dialogVisible: false,
                 tableData: [],
                 columns: [],
+                selectedItem: '',
                 dialogData: {
                     dialogRiskType: "riskBack",
                     riskName: "",
@@ -200,6 +201,7 @@
              * 获取单个风险反馈页面表格数据
              */
             getRiskBackData(selectedOption) {
+                selectedOption = this.selectedItem || '01';
                 let _this = this;
                 let requestParams = _this.getQueryParameter(selectedOption);
 
@@ -292,7 +294,15 @@
              * @param item
              */
             selectChanged(item) {
+                this.selectedItem = item;
                 this.getRiskBackData(item);
+            },
+
+            /**
+             * 页面维度改变的时候刷新页面数据
+             */
+            updateView() {
+                this.getRiskBackData();
             }
         }
     }

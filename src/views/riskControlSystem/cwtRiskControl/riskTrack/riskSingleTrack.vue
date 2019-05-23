@@ -69,7 +69,7 @@
                 trackDialogVisible: false,
                 tableData: [],
                 columns: [],
-                // options: [],
+                selectedItem:'',
                 value: '',
                 dialogData: {
                     dialogRiskType: "riskTrack",
@@ -210,6 +210,7 @@
              * @param params
              */
             selectChanged(item) {
+                this.selectedItem = item;
                 this.getRiskTrackData(item);
             },
 
@@ -218,6 +219,7 @@
              * @param selectedOption
              */
             getRiskTrackData(selectedOption) {
+                selectedOption = this.selectedItem || '01';
                 let _this = this;
                 let requestParams = _this.getQueryParameter(selectedOption);
 
@@ -304,6 +306,13 @@
 
                     }
                 })
+            },
+
+            /**
+             * 页面维度改变的时候刷新页面数据
+             */
+            updateView() {
+                this.getRiskTrackData();
             }
         }
     }
