@@ -33,7 +33,7 @@
             "width": "160"
         },
         {
-            "id": "srisktype",
+            "id": "srisktypename",
             "text": "风险类型",
             "type": "string",
             "determine": false,
