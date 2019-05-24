@@ -2,10 +2,10 @@
     <div>
         <div class="dialog-component">
             <div class="risk-reference">
-                <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
+                <a style="color: dodgerblue;" v-if="dialogData['dialogRiskType'] === 'riskBack'">风险矩阵参照</a>
             </div>
             <div class="risk-reference">
-                <a style="color: dodgerblue;" v-show="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
+                <a style="color: dodgerblue;" v-if="dialogData['dialogRiskType'] === 'riskTrack'">风险可能性参照</a>
             </div>
             <div class="form-content">
                 <el-form :inline="true" class="demo-form-inline">

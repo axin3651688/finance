@@ -74,6 +74,8 @@
                     "label": "领导批示：",
                     "selectConfig": [{
                         "label": "风险应对策略：",
+                        "disabled": "false",
+                        "selectValues": [],
                         "options": [{
                                 "nid": "10301",
                                 "sname": "风险承担"
@@ -100,10 +102,17 @@
                 }]
             },
             {
-                "id": "102",
+                "id": "104",
                 "content": [{
+                    "id": "10401",
                     "span": 24,
-                    "type": "div"
+                    "type": "div",
+                    "checkbox": {
+                        "id": "check",
+                        "text": "指定下达人员",
+                        "type": "checkbox",
+                        "checked": false
+                    }
                 }]
             }
         ]

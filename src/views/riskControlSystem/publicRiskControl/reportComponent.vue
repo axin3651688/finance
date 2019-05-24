@@ -47,7 +47,7 @@
                     <!-- 风险管控的领导批示 -->
                     <reportControlInstruction v-if="reportControl" :contentDown="contentDown"></reportControlInstruction>
 
-                    <div class="sb-btn" style="text-align: right;" v-show="this.instructionShow">
+                    <div class="sb-btn" style="text-align: right;" v-if="this.instructionShow">
                         <el-button @click="sbRiskFeed">反馈上报</el-button>
                     </div>
 

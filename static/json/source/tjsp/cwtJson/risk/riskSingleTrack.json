@@ -4,14 +4,14 @@
   "text": "风险单个追踪",
   "columns": [
     {
-      "id": "riskName",
+      "id": "riskname",
       "type": "string",
       "text": "风险名称",
       "align": "center",
       "width": "500"
     },
     {
-      "id": "riskState",
+      "id": "riskstate",
       "type": "string",
       "text": "状态",
       "align": "center",
@@ -49,8 +49,8 @@
   "rows": [
     {
       "scode": "101",
-      "riskName": "关于资不抵债的风险",
-      "riskState": "已上报",
+      "riskname": "关于资不抵债的风险",
+      "riskstate": "已上报",
       "sb_user":"admin",
       "ps_user":"admin",
       "fk_user":"admin",
@@ -64,8 +64,8 @@
     },
     {
       "scode": "102",
-      "riskName": "关于桃色新闻的风险",
-      "riskState": "已上报",
+      "riskname": "关于桃色新闻的风险",
+      "riskstate": "已上报",
       "sb_user":"admin",
       "ps_user":"admin",
       "fk_user":"admin",
@@ -79,8 +79,8 @@
     },
     {
       "scode": "103",
-      "riskName": "关于自杀倾向的风险",
-      "riskState": "已上报",
+      "riskname": "关于自杀倾向的风险",
+      "riskstate": "已上报",
       "sb_user":"admin",
       "ps_user":"admin",
       "fk_user":"admin",
@@ -94,8 +94,8 @@
     },
     {
       "scode": "104",
-      "riskName": "关于兔死狐悲的风险",
-      "riskState": "已上报",
+      "riskname": "关于兔死狐悲的风险",
+      "riskstate": "已上报",
       "sb_user":"admin",
       "ps_user":"admin",
       "fk_user":"admin",

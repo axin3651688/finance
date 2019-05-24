@@ -4,14 +4,14 @@
   "text": "风险反馈",
   "columns": [
     {
-      "id": "riskName",
+      "id": "riskname",
       "type": "string",
       "text": "风险名称",
       "align": "center",
       "width": "600"
     },
     {
-      "id": "backState",
+      "id": "backstate",
       "type": "string",
       "text": "反馈状态",
       "align": "center",
@@ -28,14 +28,10 @@
   "rows": [
     {
       "scode": "101",
-      "riskName": "一号财务风险",
-      "backState": "已反馈",
+      "riskname": "一号财务风险",
+      "backstate": "已反馈",
       "operation": [
-        {
-          "id": "0",
-          "btnShow": false,
-          "text": "反馈"
-        },
+
         {
           "id": "1",
           "btnShow": true,
@@ -45,33 +41,18 @@
           "id": "2",
           "btnShow": true,
           "text": "退回"
-        },
-        {
-          "id": "3",
-          "btnShow": false,
-          "text": "提醒"
         }
       ]
     },
     {
       "scode": "102",
-      "riskName": "二号财务风险",
-      "backState": "未反馈",
+      "riskname": "二号财务风险",
+      "backstate": "未反馈",
       "operation": [
         {
           "id": "0",
           "btnShow": true,
           "text": "反馈"
-        },
-        {
-          "id": "1",
-          "btnShow": false,
-          "text": "查看"
-        },
-        {
-          "id": "2",
-          "btnShow": false,
-          "text": "退回"
         },
         {
           "id": "3",
@@ -82,14 +63,9 @@
     },
     {
       "scode": "103",
-      "riskName": "三号财务风险",
-      "backState": "已反馈",
+      "riskname": "三号财务风险",
+      "backstate": "已反馈",
       "operation": [
-        {
-          "id": "0",
-          "btnShow": false,
-          "text": "反馈"
-        },
         {
           "id": "1",
           "btnShow": true,
@@ -99,24 +75,14 @@
           "id": "2",
           "btnShow": true,
           "text": "退回"
-        },
-        {
-          "id": "3",
-          "btnShow": false,
-          "text": "提醒"
         }
       ]
     },
     {
       "scode": "104",
-      "riskName": "四号财务风险",
-      "backState": "已反馈",
+      "riskname": "四号财务风险",
+      "backstate": "已反馈",
       "operation": [
-        {
-          "id": "0",
-          "btnShow": false,
-          "text": "反馈"
-        },
         {
           "id": "1",
           "btnShow": true,
@@ -126,11 +92,6 @@
           "id": "2",
           "btnShow": true,
           "text": "退回"
-        },
-        {
-          "id": "3",
-          "btnShow": false,
-          "text": "提醒"
         }
       ]
     }
