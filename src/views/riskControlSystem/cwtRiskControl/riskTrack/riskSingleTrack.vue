@@ -73,7 +73,7 @@
                 value: '',
                 dialogData: {
                     dialogRiskType: "riskTrack",
-                    riskName: "",
+                    riskname: "",
                     contentHeader: {
                         content: [
                             {
@@ -178,7 +178,7 @@
                 } else if (it.id === '1') {
                     //查看操作
                     this.trackDialogVisible = true;
-                    this.dialogData['riskName'] = scope.row.riskName;
+                    this.dialogData['riskname'] = scope.row.riskname;
                 } else if (it.id === '2') {
                     //退回流程操作
                     alert('退回流程操作')
@@ -193,8 +193,8 @@
              * @returns {string}
              */
             getDialogTitle() {
-                let _riskName = this.dialogData.riskName;
-                return '关于【' + _riskName + '】的追踪';
+                let _riskname = this.dialogData.riskname;
+                return '关于【' + _riskname + '】的追踪';
             },
 
             /**

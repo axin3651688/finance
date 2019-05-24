@@ -178,7 +178,8 @@
                 } else if (it.id === '1') {
                     //查看操作
                     this.dialogVisible = true;
-                    this.dialogData['riskName'] = scope.row.riskName;
+                    this.dialogData['riskname'] = scope.row.riskname;
+                    this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
                     alert('退回流程操作')
@@ -193,8 +194,8 @@
              * @returns {string}
              */
             getDialogTitle() {
-                let _riskName = this.dialogData.riskName;
-                return '关于【' + _riskName + '】的反馈';
+                let _riskname = this.dialogData.riskname;
+                return '关于【' + _riskname + '】的反馈';
             },
 
             /**
@@ -303,6 +304,23 @@
              */
             updateView() {
                 this.getRiskBackData();
+            },
+
+            /**
+             * 点击查看按钮获取弹出页面的数据
+             * @param scope
+             * @param it
+             */
+            getDialogData(scope, it){
+                debugger;
+                let row = scope.row,
+                    riskId = row.scode;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
             }
         }
     }
