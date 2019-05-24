@@ -1613,6 +1613,7 @@ export default {
           return arrTexts.indexOf(item) == -1;
         });
       }
+      debugger;
       //资金集中情况表。
       if(this.templateId == 8 && rows && rows.length > 0){
         if(rows[0] && rows[0].accountbanks == ""){

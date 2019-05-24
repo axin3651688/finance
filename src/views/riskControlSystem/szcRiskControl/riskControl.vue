@@ -31,13 +31,14 @@
         </div>
         <div>
             <el-dialog
-                title="关于【风险名称】的批示"
+                :title="dialogTitle"
                 :visible.sync="dialogVisible"
                 width="70%"
-                top="50px">
+                top="50px"
+                :before-close="beforeClose">
                 <div>
                     <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
-                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler"/>
+                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler" ref="riskModal"/>
                 </div>
             </el-dialog>
         </div>
@@ -74,6 +75,8 @@ export default {
     },
     data() {
         return {
+            dialogTitle:"关于【风险名称】的批示",
+            fixedTitle:"关于【风险名称】的批示",
             tableData:[],
             columns:[],
             treeData:[],
@@ -136,8 +139,6 @@ export default {
                 me.columns = res.data.columns
             }
         });
-        //查询部门。
-        // me.queryDepartMent()
     },
     /**
      * 页面渲染之后的回调。
@@ -210,10 +211,6 @@ export default {
                                 item.htmlType = "text";
                             });
                             me.tableData = resData;
-                            // me.$message({
-                            //     message:"成功！",
-                            //     type:"success"
-                            // });
                         }
                     });
                 }
@@ -316,16 +313,6 @@ export default {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
-                    // queryCopingStrategies().then(res => {
-                    //     if(res.data.code == 200) {
-
-                    //     }else {
-                    //         me.$message({
-                    //             message:"查询风险策略失败！",
-                    //             type:"warning"
-                    //         });
-                    //     }
-                    // });
                     queryCopingStrategies().then(resData => {
                         debugger;
                         if(resData.data.code == 200) {
@@ -358,7 +345,13 @@ export default {
         parseData (formConfig,row,options) {
             let me = this;
             if(formConfig && row){
-                let groups = formConfig.groups,itemData = row;
+                let groups = formConfig.groups,itemData = row,psztid = row.psztid;
+                formConfig.rowData = row;
+                if(psztid == "1"){
+                    me.dialogTitle = me.fixedTitle + "--【已批示】"
+                }else {
+                    me.dialogTitle = me.fixedTitle;
+                }
                 for(let i = 0;i < groups.length;i ++){
                     let groupItem = groups[i];
                     if(groupItem.content && groups.length > 0) {
@@ -372,6 +365,13 @@ export default {
                             if(contenItem.type == "labelSelect" && options){
                                 //暂时就一个，先写死，后面可以循环
                                 contenItem.selectConfig[0].options = options;
+                            }
+                            if(contenItem.type == "labelSelect"){
+                                psztid && psztid == "1"? contenItem.disabled = "disabled":contenItem.disabled = undefined;
+                            }
+                            //人员指定的判断 10101是自己规定的
+                            if(contenItem.id == "10401"){
+                                psztid && psztid == "1"? contenItem.checkbox.disabled = "disabled":contenItem.checkbox.disabled = undefined;
                             }
                         }
                     }
@@ -419,10 +419,21 @@ export default {
          */
         eventHandler (params) {
             debugger;
-            let me = this;
-            if(params.id == "instruction"){
-                
+            let me = this,selectItem = me.selectItem;
+            //10401 自定义的 表示批示下达之后要进行的操作。
+            if(params.id == "10401"){
+                me.queryDataOfInstructions(selectItem);
             }
+        },
+        /**
+         * 关闭modal框的回调。
+         * @author szc 2019年5月23日11:35:08
+         */
+        beforeClose (done) {
+            debugger;
+            let me = this;
+            this.$refs.riskModal.recoveryDefault();
+            done();
         }
     }
 };
