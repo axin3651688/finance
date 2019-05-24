@@ -79,29 +79,30 @@
                 selectedItem: '',
                 dialogData: {
                     dialogRiskType: "riskBack",
-                    riskName: "",
+                    riskname: "",
+                    riskid:'',
                     contentHeader: {
                         content: [
                             {
-                                dataType: 'riskType',
+                                dataType: 'risktype',
                                 label: "风险类型",
                                 disableEdit: true,
                                 text: '风险类型自动填入'
                             },
                             {
-                                dataType: 'riskProbability',
+                                dataType: 'riskprobability',
                                 label: "风险发生概率",
                                 disableEdit: true,
                                 text: '很大的可能性'
                             },
                             {
-                                dataType: 'riskDegree',
+                                dataType: 'riskdegree',
                                 label: "风险影响程度",
                                 disableEdit: true,
                                 text: '极重'
                             },
                             {
-                                dataType: 'riskLevel',
+                                dataType: 'risklevel',
                                 label: "风险等级",
                                 disableEdit: true,
                                 text: '极重'
@@ -111,19 +112,19 @@
                     contentMiddle: {
                         content: [
                             {
-                                dataType: 'riskOverview',
+                                dataType: 'riskoverview',
                                 label: "风险概述",
                                 disableEdit: true,
                                 text: '自动带出，不可编辑'
                             },
                             {
-                                dataType: 'riskMeasure',
+                                dataType: 'riskmeasure',
                                 label: "采取措施",
                                 disableEdit: true,
                                 text: '自动查询风险识别的内容显示'
                             },
                             {
-                                dataType: 'riskSuggest',
+                                dataType: 'risksuggest',
                                 label: "应对建议",
                                 disableEdit: true,
                                 text: '自动查询风险识别的内容显示'
@@ -145,7 +146,7 @@
                                 text: '显示批示内容，不可编辑'
                             },
                             {
-                                dataType: 'riskFeed',
+                                dataType: 'riskfeed',
                                 label: '风险反馈',
                                 disableEdit: false,
                                 text: '针对风险进行相关反馈录入'
@@ -178,7 +179,6 @@
                 } else if (it.id === '1') {
                     //查看操作
                     this.dialogVisible = true;
-                    this.dialogData['riskname'] = scope.row.riskname;
                     this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
@@ -312,23 +312,46 @@
              * @param it
              */
             getDialogData(scope, it){
-                debugger;
-                let row = scope.row,
-                    riskId = row.scode;
-                let _this = this,
-                    _getter = _this.$store.getters,
-                    company = _getter.company,
-                    year = _getter.year,
-                    month = _getter.month,
-                    period = "";
-            }
+                let row = scope.row;
+                this.dataFormat(row);
+            },
+
+            /**
+             * 格式化单行数据row  传到组件中渲染
+             * @param data
+             */
+            dataFormat(data){
+                let _dialogData = this.dialogData;
+                _dialogData.riskname = data.riskname;
+                _dialogData.riskid = data.scode;
+                let contentHeader = _dialogData.contentHeader,
+                    contentMiddle = _dialogData.contentMiddle,
+                    contentFoot = _dialogData.contentFoot;
+                contentHeader.content.forEach((item)=>{
+                   item.text = data[item.dataType]
+                });
+                contentMiddle.content.forEach((item)=>{
+                    item.text = data[item.dataType]
+                });
+                contentFoot.content.forEach((item)=>{
+                    if(data['backstate'] === '已反馈'){
+                        item.disableEdit = true;
+                    }
+                    item.text = data[item.dataType]
+                })
+            },
+
+            // /**
+            //  * 反馈成功的回调函数
+            //  */
+            // riskFeedSuccess(){
+            //     this.getRiskBackData();
+            // }
         }
     }
 </script>
 
 <style scoped>
-
-
     .top-tip {
         margin-bottom: 10px;
     }
