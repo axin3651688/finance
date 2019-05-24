@@ -4,12 +4,12 @@
                 border
                 :data.sync="treeData"
                 :columns.sync="columns"
-                v-show="!reportBackDetail"
+                v-if="!reportBackDetail"
                 @buttonHandler="buttonHandler"
         >
         </tree-table>
 
-        <div class="report-component-content" v-show="reportBackDetail">
+        <div class="report-component-content" v-if="reportBackDetail">
             <div style="text-align: right; padding-right: 4px;">
                 <el-button type="primary" @click="pageBack">返回</el-button>
             </div>

@@ -1,15 +1,10 @@
 <template>
     <div>
         <div class="top-tip">
-            <span class="select-name">部门选择:</span>
-            <el-select v-model="value" placeholder="请选择">
-                <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                </el-option>
-            </el-select>
+            <public-risk-select
+                    @selectChanged="selectChanged"
+            >
+            </public-risk-select>
         </div>
         <div class="track-table">
             <single-table
@@ -40,31 +35,41 @@
 <script>
     import SingleTable from "../../publicRiskControl/table/singleTable";
     import dialogComponent from '../../publicRiskControl/dialogComponent';
+    import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
+    import {findThirdPartData} from "~api/interface"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "riskSingleTrack",
         components: {
             SingleTable,
-            dialogComponent
+            dialogComponent,
+            publicRiskSelect
         },
         props: {},
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.updateView();
+            },
+            year(newValue, oldValue) {
+                this.updateView();
+            },
+            month(newValue, oldValue) {
+                this.updateView();
+            }
+        },
         data() {
             return {
                 trackDialogVisible: false,
                 tableData: [],
                 columns: [],
-                options: [
-                    {
-                        value: '选项1',
-                        label: '财务部'
-                    }, {
-                        value: '选项2',
-                        label: '风控部'
-                    }, {
-                        value: '选项3',
-                        label: '其他部门'
-                    }
-                ],
+                selectedItem:'',
                 value: '',
                 dialogData: {
                     dialogRiskType: "riskTrack",
@@ -152,10 +157,13 @@
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/risk/riskSingleTrack.json").then(res => {
                 if (res.data.code === 200) {
-                    me.tableData = res.data.rows;
+                    // me.tableData = res.data.rows;
                     me.columns = res.data.columns
                 }
             });
+
+            this.getRiskTrackData();
+
         },
         mounted() {
         },
@@ -179,6 +187,7 @@
                     alert('提醒操作')
                 }
             },
+
             /**
              * 获取当前弹出框title
              * @returns {string}
@@ -188,18 +197,128 @@
                 return '关于【' + _riskName + '】的追踪';
             },
 
+            /**
+             * 关于某个风险的追踪弹出按钮
+             * */
             closeDialogContent1() {
                 this.trackDialogVisible = false;
+            },
+
+            /**
+             * 选择部门的时候触发的事件
+             * @param item
+             * @param params
+             */
+            selectChanged(item) {
+                this.selectedItem = item;
+                this.getRiskTrackData(item);
+            },
+
+            /**
+             * 获取当前风险追踪单个风险数据
+             * @param selectedOption
+             */
+            getRiskTrackData(selectedOption) {
+                selectedOption = this.selectedItem || '01';
+                let _this = this;
+                let requestParams = _this.getQueryParameter(selectedOption);
+
+                let sqlObj = '', sql = '';
+                _this.axios.get("/cnbi/json/source/tjsp/riskSql/cwtRiskControlSql/riskSql.json").then(res => {
+                    let sqlList = res.data['sqlList'];
+                    if (sqlList.length > 0) {
+                        sqlObj = sqlList.filter((item) => {
+                            //通过id获取对应的sql
+                            return item.id === '002'
+                        })
+                    }
+                    sql = sqlObj[0].sql;
+                    requestParams['sql'] = sql;
+
+                    _this.RiskBackDataQuery(requestParams);
+
+                });
+            },
+
+            /**
+             * 获取请求发送的参数
+             * @param selectedOption
+             */
+            getQueryParameter(selectedOption) {
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                if (month > 9) {
+                    period = year + "" + month;
+                } else {
+                    period = year + "0" + month;
+                }
+                let requestParams = {
+                    company: company,
+                    // year: year,
+                    // month: month,
+                    period: period,
+                    departId: selectedOption ? selectedOption : "01",
+                    sql: ""
+                };
+                return requestParams;
+            },
+
+            /**
+             * 发送请求
+             * @param params
+             * @constructor
+             */
+            RiskBackDataQuery(params) {
+                let _this = this;
+                findThirdPartData(params).then(res => {
+                    if (res.data.code) {
+                        /**
+                         * 获取数据之后进行的数据处理
+                         */
+                        let datas = res.data.data;
+                        let _operations = [];
+                        datas.forEach((data) => {
+                            let operations = data.operation.split(',');
+                            for (let i = 0, len = operations.length; i < len; i++) {
+                                let emptyBtn = {
+                                    id: '',
+                                    btnShow: true,
+                                    text: ''
+                                };
+                                let btnDes = operations[i].split('-');
+                                let btnId = btnDes[0],
+                                    btnText = btnDes[1];
+                                emptyBtn.id = btnId;
+                                emptyBtn.text = btnText;
+
+                                _operations.push(emptyBtn);
+
+                            }
+                            data['operation'] = _operations;
+                            _operations = [];
+                        });
+                        //将处理好的数据给tableData渲染查询出来的数据
+                        _this.tableData = res.data.data;
+
+                    }
+                })
+            },
+
+            /**
+             * 页面维度改变的时候刷新页面数据
+             */
+            updateView() {
+                this.getRiskTrackData();
             }
         }
     }
 </script>
 
 <style scoped>
-    .select-name {
-        margin-right: 10px;
-    }
-
     .top-tip {
         margin-bottom: 10px;
     }
