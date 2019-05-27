@@ -62,7 +62,7 @@
     import riskInstruction from './riskFeedComponents/riskInstruction'
     import riskSchedule from './riskFeedComponents/riskSchedule'
     import riskFoot from './riskFeedComponents/riskFoot'
-    import {riskFeedControl} from "~api/cwtRiskControl/riskControlRequest"
+    import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
     export default {
         name: "dialogComponent",
@@ -192,11 +192,12 @@
                             users: userStr
                         }
                     ];
-                    riskFeedControl(params).then(res => {
-                        if (res.data.code = 200) {
-                            debugger
+                    updateInstruction(params).then(res => {
+                        if (res.data.code === 200) {
+                            debugger;
                             _this.riskFeedSuccess = true;
 
+                            _this.$emit("riskFeedSuccess");
 
                             _this.$message({
                                 message: "反馈成功。",
@@ -208,8 +209,6 @@
                             })
                         }
                     });
-
-
                 }, 500)
 
             },
@@ -222,6 +221,10 @@
                 this.riskInstructionData = data;
             },
 
+            /**
+             * 获取当前期间
+             * @returns {string|string}
+             */
             parsePeriod() {
                 let me = this, storeParams = me.$store.getters,
                     year = storeParams.year, month = storeParams.month, period = "";

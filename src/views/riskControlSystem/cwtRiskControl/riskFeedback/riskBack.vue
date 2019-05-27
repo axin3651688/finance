@@ -30,6 +30,7 @@
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
                         :dialogData="this.dialogData"
+                        @riskFeedSuccess="riskFeedSuccess"
                 >
                 </dialog-component>
             </el-dialog>
@@ -80,7 +81,7 @@
                 dialogData: {
                     dialogRiskType: "riskBack",
                     riskname: "",
-                    riskid:'',
+                    riskid: '',
                     contentHeader: {
                         content: [
                             {
@@ -175,7 +176,8 @@
             changeShowContent(scope, it) {
                 if (it.id === '0') {
                     //反馈操作
-                    alert('反馈操作')
+                    this.dialogVisible = true;
+                    this.getDialogData(scope, it);
                 } else if (it.id === '1') {
                     //查看操作
                     this.dialogVisible = true;
@@ -311,7 +313,7 @@
              * @param scope
              * @param it
              */
-            getDialogData(scope, it){
+            getDialogData(scope, it) {
                 let row = scope.row;
                 this.dataFormat(row);
             },
@@ -320,33 +322,35 @@
              * 格式化单行数据row  传到组件中渲染
              * @param data
              */
-            dataFormat(data){
+            dataFormat(data) {
+                debugger;
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
-                contentHeader.content.forEach((item)=>{
-                   item.text = data[item.dataType]
-                });
-                contentMiddle.content.forEach((item)=>{
+                contentHeader.content.forEach((item) => {
                     item.text = data[item.dataType]
                 });
-                contentFoot.content.forEach((item)=>{
-                    if(data['backstate'] === '已反馈'){
+                contentMiddle.content.forEach((item) => {
+                    item.text = data[item.dataType]
+                });
+                contentFoot.content.forEach((item) => {
+                    if (data['backstate'] === '已反馈') {
                         item.disableEdit = true;
                     }
                     item.text = data[item.dataType]
                 })
             },
 
-            // /**
-            //  * 反馈成功的回调函数
-            //  */
-            // riskFeedSuccess(){
-            //     this.getRiskBackData();
-            // }
+            /**
+             * 反馈成功的回调函数
+             */
+            riskFeedSuccess() {
+                debugger;
+                this.getRiskBackData();
+            }
         }
     }
 </script>
