@@ -116,6 +116,7 @@
              * @param index
              */
             handleClickBtn(scope, it, index) {
+                debugger;
                 this.$emit("changeShowContent", scope, it);
             },
             /**

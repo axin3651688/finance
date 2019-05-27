@@ -8,7 +8,7 @@
                         <RiskSelect v-on:changeOption="changeOption" :selectConfig.sync="selectConfig" />
                     </div>
                     <div>
-                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></stable>
+                        <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName" v-on:changeShowContent="changeShowContent"></stable>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="汇总批示" name="second">
@@ -126,19 +126,28 @@ export default {
      */
     created() {
         debugger;
-        //请求table的数据。
-        let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
-        if(me.activeName == "second"){
-            url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+        let me = this;
+        if(me.activeName == "second") {
+            let selectItem = me.selectItem;
+            let judgeParams = {
+                id:"treeTable",
+                sqlId:"103"
+            };
+            me.queryDataOfInstructions(selectItem,judgeParams);
         }
-        this.axios.get(url).then(res => {
-            debugger;
-            if(res.data.code == 200) {
-                me.tableData = res.data.rows;
-                me.treeData = res.data.rows;
-                me.columns = res.data.columns
-            }
-        });
+        //请求table的数据。
+        // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+        // if(me.activeName == "second"){
+        //     url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+        // }
+        // this.axios.get(url).then(res => {
+        //     debugger;
+        //     if(res.data.code == 200) {
+        //         me.tableData = res.data.rows;
+        //         me.treeData = res.data.rows;
+        //         me.columns = res.data.columns
+        //     }
+        // });
     },
     /**
      * 页面渲染之后的回调。
@@ -164,18 +173,27 @@ export default {
             }
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
+                    me.columns = res.data.columns
                     if(tab.name == "first"){
                         // me.tableData = res.data.rows;
-                        let selectItem = "";
+                        let selectItem = "",judgeParams = {
+                            id:"stable",
+                            sqlId:"101"
+                        };
                         if(me.selectItem){
                             selectItem = me.selectItem;
                         }
                         me.queryDepartMent();
-                        me.queryDataOfInstructions(selectItem);
+                        me.queryDataOfInstructions(selectItem,judgeParams);
                     }else {
-                        me.treeData = res.data.rows;
+                        // me.treeData = res.data.rows;
+                        let selectItem = me.selectItem;
+                        let judgeParams = {
+                            id:"treeTable",
+                            sqlId:"103"
+                        };
+                        me.queryDataOfInstructions(selectItem,judgeParams);
                     }
-                    me.columns = res.data.columns
                 }
             });
         },
@@ -183,7 +201,7 @@ export default {
          * 查询风险管控的数据。
          * @author szc 2019年5月21日11:32:47
          */
-        queryDataOfInstructions (item) {
+        queryDataOfInstructions (item,judgeParams) {
             let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
                 month = storeParams.month,period = "",monthStr = "";
             if(month > 9) {
@@ -203,14 +221,21 @@ export default {
             };
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
-                    params = me.paramsOfSql(params,res.data.sqlList);
+                    let curSqlId = judgeParams? judgeParams.sqlId:"101";
+                    params = me.paramsOfSql(params,res.data.sqlList,curSqlId);
                     findThirdPartData(params).then(res => {
                         if(res.data.code == 200) {
-                            let resData = res.data.data;
-                            resData.forEach(item => {
-                                item.htmlType = "text";
-                            });
-                            me.tableData = resData;
+                            if(judgeParams.id == "treeTable"){
+                                let treeDatas = me.transformationTreeData(res.data.data);
+                                me.treeData = treeDatas;
+                            }else if (judgeParams.id == "stable") {
+                                let resData = res.data.data;
+                                resData.forEach(item => {
+                                    item.htmlType = "text";
+                                });
+                                resData = me.setOperationBtns(resData);
+                                me.tableData = resData;
+                            }
                         }
                     });
                 }
@@ -220,18 +245,57 @@ export default {
          * 请求参数上添加sql语句。
          * @author szc 2019年5月21日14:15:22
          */
-        paramsOfSql (params,data) {
+        paramsOfSql (params,data,sqlId) {
             let me = this;
             if(data && data.length > 0) {
                 for(let i = 0;i < data.length;i ++) {
                     let item = data[i];
-                    if(item.id == "101") {
+                    if(item.id == sqlId) {
                         params.sql = item.sql;
                         break;
                     }
                 }
             }
             return params;
+        },
+        /**
+         * 根据行的批示状态生成按钮。
+         * @author szc 2019年5月24日11:08:51
+         */
+        setOperationBtns (data) {
+            debugger;
+            let me = this,btns01 = [
+                {
+                    "id": "1",
+                    "btnShow": true,
+                    "text": "查看"
+                },
+                {
+                    "id": "2",
+                    "btnShow": true,
+                    "text": "退回"
+                }
+            ],
+            btns02 = [
+                {
+                    "id": "0",
+                    "btnShow": true,
+                    "text": "批示"
+                },
+                {
+                    "id": "3",
+                    "btnShow": true,
+                    "text": "提醒"
+                }
+            ];
+            data.forEach(item => {
+                if(item.psztid == "1"){
+                    item.operation = btns01;
+                }else if (item.psztid == "-1") {
+                    item.operation = btns02;
+                }
+            });
+            return data;
         },
         /**
          * 按钮的处理。

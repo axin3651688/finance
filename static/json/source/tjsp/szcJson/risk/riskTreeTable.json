@@ -4,12 +4,12 @@
     "text": "风险管控",
     "columns": [{
             "text": "公司名称",
-            "value": "companyName",
+            "value": "sname",
             "align": "left"
         },
         {
             "text": "批示状态",
-            "value": "status",
+            "value": "sstate",
             "width": 200
         },
         {
