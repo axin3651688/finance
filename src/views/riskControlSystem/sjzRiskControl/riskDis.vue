@@ -17,7 +17,7 @@
                 <div class="elbtn" style="float: left">
                     <!-- 按钮 -->
                     <el-button-group class="iconbtn">
-                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="dialogFormVisible = true">添加</el-button>
+                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="addClick">添加</el-button>
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
@@ -66,8 +66,8 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData4)">查看</el-button>
-                        <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData4)">修改</el-button>
+                        <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
+                        <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -75,7 +75,19 @@
         <!-- 弹出框 -->
         <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :width="widths" style="marginTop: -15vh;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
-            <dia-log :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2"></dia-log>
+            <!-- 
+                参数名                  数据类型                作用
+                riskTableRow:           Array                  风险矩阵的数据
+                fsgl:                   Object                 发生概率参照图数据
+                yxcd:                   Object                 影响程度参照图数据
+                newThis：               Object                 this对象
+                flag:                   Boolean                作为监听作用（区分查看按钮和添加按钮）
+                modify:                 Boolean                作为监听作用（区分修改按钮）
+             -->
+            <dia-log 
+            :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2" 
+            :newThis="me" :flag="viewReadonly" :modify="modifyReadonly">
+            </dia-log>
         </el-dialog>
     </div>
 </template>
@@ -95,6 +107,7 @@ import {
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
+import { debounce } from '../../../utils';
 export default {
     components: {
         diaLog
@@ -118,6 +131,15 @@ export default {
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
             selection: [],      // 存储 Checkbox 选中的行信息 （注：用于删除时 和 下达时） 
+            me: this,
+            // 
+            view_row: [],
+            view_btn: 0 ,
+            viewReadonly: false,
+            // 
+            modify_row: [],
+            modify_btn: 0 ,
+            modifyReadonly: false
         }
     },
     created(){
@@ -337,9 +359,14 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteRiskdistinguish(data).then(res => {
+                    deleteRiskdistinguish(data).then(res => { 
                         if(res.data.code === 200){
-                            me.tableData = me.tableData.filter((item, index) => { return item.id != data[index] ; }) ;
+                            data.forEach(ris => {
+                                me.tableData = me.tableData.filter(rds => {
+                                    return ris != rds.id ;
+                                });
+                            })
+                            selection_no = [] ;
                             me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
                             me.$message({ type: 'success', message: '删除成功!' });
                         }else{
@@ -367,6 +394,40 @@ export default {
          */
         refreshRow(){
             this.loadModuleBefore() ;
+        },
+        /**
+         * @event 添加按钮
+         */
+        addClick(){
+            // debugger
+            this.view_row = [] ;
+            this.view_btn = 0 ;
+            this.viewReadonly = false ;
+            this.dialogFormVisible = true ;
+        },
+        /**
+         * @event 查看按钮
+         */
+        viewRow(index, tableData){
+            // debugger
+            let me = this ;
+            me.view_btn = 1 ;
+            me.view_row = [] ;
+            me.view_row = tableData[index] ;
+            me.viewReadonly = true ;
+            me.dialogFormVisible = true ;
+        },
+        /**
+         * @event 修改按钮
+         */
+        modifyRow(index, tableData){
+            debugger
+            let me = this ;
+            me.modify_btn = 1 ;
+            me.modify_row = [] ;
+            me.modify_row = tableData[index] ;
+            me.modifyReadonly = true ;
+            me.dialogFormVisible = true ;
         },
         handleCommand(command){},
         

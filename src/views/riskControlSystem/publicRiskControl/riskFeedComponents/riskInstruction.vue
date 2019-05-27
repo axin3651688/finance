@@ -8,8 +8,8 @@
                         <div class="top-form-contents" style="margin-bottom: 0">
                             <span style="min-width: 98px;width: 150px;font-weight: 200;">风险应对策略：</span>
                             <el-input
-                                    v-model="formData.countermeasures.text"
-                                    :disabled="formData.countermeasures.disableEdit"
+                                    v-model="formData['countermeasures'].text"
+                                    :disabled="formData['countermeasures'].disableEdit"
                             >
                             </el-input>
                         </div>
@@ -22,8 +22,8 @@
                         <el-input
                                 type="textarea"
                                 :rows="3"
-                                v-model="formData.instruction.text"
-                                :disabled="formData.instruction.disableEdit"
+                                v-model="formData['instruction'].text"
+                                :disabled="formData['instruction'].disableEdit"
                         >
                         </el-input>
                     </div>
@@ -39,11 +39,19 @@
                     <el-input
                             type="textarea"
                             :rows="4"
-                            v-model="formData.riskFeed.text"
-                            :disabled="formData.riskFeed.disableEdit"
+                            v-model="formData['riskfeed'].text"
+                            :disabled="formData['riskfeed'].disableEdit"
                             placeholder="针对风险进行相关反馈录入"
                     >
                     </el-input>
+                    <!--<el-input
+                            type="textarea"
+                            :rows="4"
+                            v-model="riskFeedData"
+                            :disabled="this.riskFeedSuccess"
+                            placeholder="针对风险进行相关反馈录入"
+                    >
+                    </el-input>-->
                 </div>
             </el-col>
         </el-row>
@@ -55,17 +63,27 @@
         name: "riskInstruction",
         components: {},
         props: {
-            dialogInstructionData: Object
+            dialogInstructionData: Object,
+            sureBtnClick: Boolean,
+            riskFeedSuccess: Boolean
         },
         data() {
             return {
-                formData: {}
+                formData: {},
+                riskFeedData: ''
             }
         },
         created() {
             this.getFormData();
         },
         mounted() {
+        },
+        watch: {
+            sureBtnClick(newValue, oldValue) {
+                if (newValue === true) {
+                    this.$emit("sendRiskInstructionData", this.riskFeedData)
+                }
+            }
         },
         methods: {
             getFormData() {

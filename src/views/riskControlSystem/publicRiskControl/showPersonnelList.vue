@@ -16,7 +16,11 @@
                 :props="defaultProps">
             </el-tree>
             <div class="btn-sure">
-                <el-button type="primary" @click="checkedSure">确定</el-button>
+                <el-button
+                        type="primary"
+                        @click="checkedSure"
+                >确定</el-button>
+
                 <el-button @click="resetChecked">重置</el-button>
             </div>
         </div>
@@ -115,7 +119,10 @@
                 this.$refs.tree.setCheckedKeys([]);
             },
             checkedSure() {
-                alert("反馈成功");
+                let nodes = this.$refs.tree.getCheckedNodes();
+                if (nodes && nodes.length > 0) {
+                    this.$emit("personSureBtnClicked", nodes)
+                }
             },
             /**
              * checkBox改变的回调。
@@ -138,7 +145,7 @@
                             });
                         }
                     });
-                    
+
                     // me.dptUserConfig = {
                     //     id:"dptUser",
                     //     show:true,

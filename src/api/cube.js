@@ -191,3 +191,25 @@ export function riskmatrix_tovo(){
         method: 'get'
     })
 }
+/**8.
+ * name: sjz
+ * 说明：风险识别的【保存/提交按钮】接口 /riskdistinguish/add
+ */
+export function riskdistinguish_add(data){
+    return request({
+        url: '/zjb/riskdistinguish/add',
+        method: 'post',
+        data: data
+    })
+}
+/**9.
+ * name: sjz
+ * 说明：风险识别的【修改按钮】接口 /riskdistinguish/update
+ */
+export function riskdistinguish_update(data){
+    return request({
+        url: '/zjb/riskdistinguish/update',
+        method: 'post',
+        data: data
+    })
+}

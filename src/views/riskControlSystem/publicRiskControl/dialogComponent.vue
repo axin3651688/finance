@@ -26,6 +26,9 @@
                     <risk-instruction
                             v-if="dialogData['dialogRiskType'] === 'riskBack'"
                             :dialogInstructionData="dialogInstructionData"
+                            :sureBtnClick="sureBtnClick"
+                            :riskFeedSuccess="riskFeedSuccess"
+                            @sendRiskInstructionData="sendRiskInstructionData"
                     >
                     </risk-instruction>
 
@@ -42,6 +45,7 @@
                             :dialogData="dialogData"
                             @closeDialogContent="closeDialogContent"
                             @messageChange="messageChange"
+                            @personSureBtnClicked="personSureBtnClicked"
                     >
                     </risk-foot>
 
@@ -58,6 +62,7 @@
     import riskInstruction from './riskFeedComponents/riskInstruction'
     import riskSchedule from './riskFeedComponents/riskSchedule'
     import riskFoot from './riskFeedComponents/riskFoot'
+    import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
     export default {
         name: "dialogComponent",
@@ -77,7 +82,10 @@
                 dialogHeaderData: {},
                 dialogMiddleData: {},
                 dialogInstructionData: {},
-                dialogScheduleData: {}
+                dialogScheduleData: {},
+                sureBtnClick: false,
+                riskInstructionData: '',
+                riskFeedSuccess: false
             }
         },
         created() {
@@ -129,23 +137,104 @@
              * 上一条下一条
              * @param flag
              */
-            messageChange(flag){
+            messageChange(flag) {
 
                 //$message 可传入的type的值
                 //'success' | 'warning' | 'info' | 'error'
-                if(flag === 'up'){
+                if (flag === 'up') {
                     this.$message({
-                        message:'切换上一条成功',
-                        type:"success"
+                        message: '切换上一条成功',
+                        type: "success"
                     });
-                }else if(flag === 'down'){
+                } else if (flag === 'down') {
                     this.$message({
-                        message:'切换下一条成功',
-                        type:"success"
+                        message: '切换下一条成功',
+                        type: "success"
                     });
                 }
+            },
+            /**
+             * 确认下达处理
+             */
+            personSureBtnClicked(nodes) {
+                this.sureBtnClick = true;
+                let _this = this,
+                    store = _this.$store.getters,
+                    company = store.company,
+                    user = store.user.user;
 
-            }
+                let arrUser = [],
+                    userStr = "";
+                if (nodes && nodes.length > 0) {
+                    nodes.forEach(item => {
+                        arrUser.push(item.id);
+                    });
+                    userStr = arrUser.join(',');
+                }
+
+                setTimeout(function () {
+                    let _riskInstructionData = _this.riskInstructionData;
+
+                    let params = [
+                        {
+                            company: company,
+                            nrelateid: _this.dialogData['riskid'],
+                            period: _this.parsePeriod(),
+                            sfeedbackscontent: _riskInstructionData,
+                            sisfeedback: "1",
+                            sfeedbackuser: user.userName,
+                            sfeedbackusername: user.trueName,
+                            scompanyname: user.companyName,
+                            sriskname: _this.dialogData['riskname'],
+
+                        },
+                        {
+                            users: userStr
+                        }
+                    ];
+                    updateInstruction(params).then(res => {
+                        if (res.data.code === 200) {
+                            debugger;
+                            _this.riskFeedSuccess = true;
+
+                            _this.$emit("riskFeedSuccess");
+
+                            _this.$message({
+                                message: "反馈成功。",
+                                type: "success"
+                            });
+                        } else {
+                            _this.$message({
+                                message: "反馈失败！请联系开发人员"
+                            })
+                        }
+                    });
+                }, 500)
+
+            },
+
+            /**
+             * 获取风险反馈内容
+             * @param data
+             */
+            sendRiskInstructionData(data) {
+                this.riskInstructionData = data;
+            },
+
+            /**
+             * 获取当前期间
+             * @returns {string|string}
+             */
+            parsePeriod() {
+                let me = this, storeParams = me.$store.getters,
+                    year = storeParams.year, month = storeParams.month, period = "";
+                if (month > 9) {
+                    period = year + "" + month;
+                } else {
+                    period = year + "0" + month;
+                }
+                return period;
+            },
         }
     }
 </script>
