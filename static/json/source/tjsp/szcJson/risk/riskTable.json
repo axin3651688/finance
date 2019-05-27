@@ -7,7 +7,6 @@
             "type": "string",
             "text": "风险名称",
             "align": "center",
-            "action": "click",
             "width": "180"
         },
         {
@@ -48,6 +47,12 @@
             "type": "string",
             "text": "创建时间",
             "width": "180"
+        },
+        {
+            "id": "operation",
+            "type": "string",
+            "text": "操作",
+            "align": "center"
         }
     ],
     "rows": [{

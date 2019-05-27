@@ -7,8 +7,8 @@
                     <el-input
                             type="textarea"
                             :rows="4"
-                            v-model="formData.riskOverview.text"
-                            :disabled="formData.riskOverview.disableEdit"
+                            v-model="formData['riskoverview'].text"
+                            :disabled="formData['riskoverview'].disableEdit"
                     >
                     </el-input>
                 </div>
@@ -19,8 +19,8 @@
                     <el-input
                             type="textarea"
                             :rows="4"
-                            v-model="formData.riskMeasure.text"
-                            :disabled="formData.riskMeasure.disableEdit"
+                            v-model="formData['riskmeasure'].text"
+                            :disabled="formData['riskmeasure'].disableEdit"
                     >
                     </el-input>
                 </div>
@@ -31,8 +31,8 @@
                     <el-input
                             type="textarea"
                             :rows="4"
-                            v-model="formData.riskSuggest.text"
-                            :disabled="formData.riskSuggest.disableEdit"
+                            v-model="formData['risksuggest'].text"
+                            :disabled="formData['risksuggest'].disableEdit"
                     >
                     </el-input>
                 </div>

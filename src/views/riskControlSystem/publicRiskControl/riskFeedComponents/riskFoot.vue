@@ -32,7 +32,12 @@
             </el-col>
         </el-row>
 
-        <show-personnel-list :personnelListShow="personnelListShow"></show-personnel-list>
+        <show-personnel-list
+                :personnelListShow="personnelListShow"
+                @personSureBtnClicked="personSureBtnClicked"
+
+        >
+        </show-personnel-list>
 
     </div>
 </template>
@@ -86,11 +91,23 @@
                 // alert("反馈上报。。。")
                 this.personnelListShow = !this.personnelListShow;
             },
+            /**
+             * 关闭按钮
+             */
             pageBack() {
                 this.$emit("closeDialogContent")
             },
+            /**
+             *导出按钮
+             */
             pageExport() {
                 alert('报告导出事件')
+            },
+            /**
+             * 确认下达按钮
+             */
+            personSureBtnClicked(nodes){
+                this.$emit("personSureBtnClicked",nodes)
             }
         }
     }

@@ -33,9 +33,9 @@
                                         <el-select v-model="selectValues" placeholder="请选择" multiple :key="selIndex+10" :disabled="it.disabled || selectDsiabled">
                                             <el-option
                                             v-for="sltItem in selItem.options"
-                                            :key="sltItem.nid"
+                                            :key="sltItem.scode"
                                             :label="sltItem.sname"
-                                            :value="sltItem.nid">
+                                            :value="sltItem.scode">
                                             </el-option>
                                         </el-select>
                                     </template>
@@ -107,7 +107,7 @@ export default {
             debugger;
             let me = this,rowData = newValue.rowData;
             me.publicDisabled = undefined;
-            me.selectDsiabled - undefined;
+            me.selectDsiabled = undefined;
             if(rowData){
                 me.copingStrategies(rowData);
             }
@@ -117,7 +117,10 @@ export default {
      * 组件渲染前的回调。
      */
     created() {
-        let me = this;
+        let me = this,rowData = me.formConfig.rowData;
+        if(rowData){
+            me.copingStrategies(rowData);
+        }
     },
     /**
      * 页面加载完成后的回调。
@@ -345,21 +348,27 @@ export default {
                 // let selectStr = me.selectValues.join(',');
                 let selectStr = me.selectValues[0];
                 userStr = arrUser.join(',');
-                let params = [
-                    {
-                        id: 0,
-                        company:company,
-                        nrelateid: me.formConfig.rowData.id,
-                        sinstructionsuser:user,
-                        nstrategy:selectStr,
-                        period: me.parsePeriod(),
-                        sinstructscontent:me.instructions,
-                        sisinstructions:"1"
-                    }
-                ];
+                let params = {
+                    riskReportStateDtos:[
+                        {
+                            id: 0,
+                            company:company,
+                            nrelateid: me.formConfig.rowData.id,
+                            sinstructionsuser:user,
+                            cstrategy:selectStr,
+                            period: me.parsePeriod(),
+                            sinstructscontent:me.instructions,
+                            sisinstructions:"1"
+                        }
+                    ],
+                    users:[
+                        userStr
+                    ]
+                };
+                
                 updateInstruction(params).then(res => {
                     debugger;
-                    if(res.data.code = 200) {
+                    if(res.data.code == 200) {
                         me.checked = false;
                         me.selectDsiabled = "disabled";
                         me.publicDisabled = "disabled";
@@ -374,7 +383,7 @@ export default {
                             type:"success"
                         });
                     }else {
-                        me.$message.errer("批示出错！");
+                        me.$message.error("批示出错！");
                     }
                 });
             }
@@ -419,8 +428,9 @@ export default {
          */
         copingStrategies (rowData) {
             debugger;
-            let me = this;
-            me.selectValues = [rowData.fxydcl];
+            let me = this,fxydcl = rowData.fxydcl;
+            let arr = fxydcl.split(',');
+            me.selectValues = arr;
         }
     },
 }
