@@ -32,6 +32,7 @@
                         :dialogData.sync="dialogData"
                         :dataChanged="dataChanged"
                         @riskFeedSuccess="riskFeedSuccess"
+                        @dataMessageChange="dataMessageChange"
                 >
                 </dialog-component>
             </el-dialog>
@@ -156,7 +157,7 @@
                         ]
                     }
                 },
-                dataChanged:false
+                dataChanged: false
             }
         },
         created() {
@@ -316,8 +317,10 @@
              * @param it
              */
             getDialogData(scope, it) {
-                let row = scope.row;
-                this.dataFormat(row);
+                let row = scope.row,
+                    dataIndex = row.rownum - 1;
+                let _data = this.tableData[dataIndex];
+                this.dataFormat(_data);
             },
 
             /**
@@ -328,6 +331,7 @@
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
+                _dialogData.rownum = data.rownum;
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
@@ -340,7 +344,7 @@
                 contentFoot.content.forEach((item) => {
                     if (data['backstate'] === '已反馈' && item.dataType === 'riskfeed') {
                         item.disableEdit = true;
-                    }else if(data['backstate'] !== '已反馈' && item.dataType === 'riskfeed'){
+                    } else if (data['backstate'] !== '已反馈' && item.dataType === 'riskfeed') {
                         item.disableEdit = false;
                     }
                     item.text = data[item.dataType]
@@ -355,6 +359,52 @@
             riskFeedSuccess() {
                 debugger;
                 this.getRiskBackData();
+            },
+
+
+            /**
+             * 切换上一条下一条
+             * @param flag
+             */
+            dataMessageChange(obj) {
+                // $message 可传入的type的值
+                // 'success' | 'warning' | 'info' | 'error'
+
+                debugger;
+                let _index = obj.rowIndex - 1;
+                let _data = this.tableData;
+                let newData = null;
+                if (obj.flag === 'up') {
+                    newData = _data[_index - 1];
+                    if (_index - 1 < 0) {
+                        this.$message({
+                            message: '已经是第一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dataFormat(newData);
+                    this.$message({
+                        message: '切换上一条成功',
+                        type: "success"
+                    });
+                } else if (obj.flag === 'down') {
+
+                    newData = _data[_index + 1];
+                    if (_index - 1 >= _data.length - 2) {
+                        this.$message({
+                            message: '已经是最后一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dataFormat(newData);
+                    this.$message({
+                        message: '切换下一条成功',
+                        type: "success"
+                    });
+                }
+
             }
         }
     }

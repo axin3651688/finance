@@ -102,13 +102,13 @@
         mounted() {
         },
         watch: {
-            dataChanged(newValue,oldValue){
+            dataChanged(newValue, oldValue) {
                 this.getDialogHeaderData();
                 this.getDialogMiddleData();
                 this.getDialogInstructionData();
                 this.getDialogScheduleData();
             },
-            deep:true
+            deep: true
         },
         methods: {
             closeDialogContent() {
@@ -151,20 +151,7 @@
              * @param flag
              */
             messageChange(flag) {
-
-                //$message 可传入的type的值
-                //'success' | 'warning' | 'info' | 'error'
-                if (flag === 'up') {
-                    this.$message({
-                        message: '切换上一条成功',
-                        type: "success"
-                    });
-                } else if (flag === 'down') {
-                    this.$message({
-                        message: '切换下一条成功',
-                        type: "success"
-                    });
-                }
+                this.$emit("dataMessageChange", flag)
             },
             /**
              * 确认下达处理
@@ -197,7 +184,7 @@
                             sfeedbackscontent: _riskInstructionData,
                             sfeedbackuser: user.userName,
                             sfeedbackusername: user.trueName,
-                            sfeedbacktime:'2019-05-27 09:20:22',
+                            sfeedbacktime: '2019-05-27 09:20:22',
                             sisfeedback: "1",
                             sriskname: _this.dialogData['riskname'],
 
