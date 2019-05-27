@@ -213,3 +213,25 @@ export function riskdistinguish_update(data){
         data: data
     })
 }
+/**10.
+ * name: sjz
+ * 说明：风险识别的【风险关闭按钮】接口 /riskdistinguish/update_sisclose
+ */
+export function riskdistinguish_update_sisclose(data){
+    return request({
+        url: '/zjb/riskdistinguish/update_sisclose',
+        method: 'post',
+        data: data
+    })
+}
+/**11.
+ * name: sjz
+ * 说明：风险识别的【下达/批量下达按钮】接口 /riskdistinguish/risk_release
+ */
+export function riskdistinguish_risk_release(data){
+    return request({
+        url: '/zjb/riskdistinguish/risk_release',
+        method: 'post',
+        data: data
+    })
+}

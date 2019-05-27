@@ -54,19 +54,34 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
+        // debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode ;
-        let ngrade ;
-        if(me.optiong.length == 0){
-            ngrade = 0 ;
-        }else{
+        let ngrade, sissubmit, nid ;
+        // 风险等级编码获取
+        if(me.optiong.length){
             ngrade = me.optiong[0].nid ;
+        }else{
+            ngrade = 0 ;
         }
+        // ngrade = me.form.gradename > 0? me.form.gradename : 0 ;
         let time = this.getTimers() ;                   // 获取时间
-        let sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
+        if(me.newThis.modify_btn == 1){                 // 修改弹出框
+            if(me.newThis.view_row.sissubmit == "已提交"){
+                sissubmit = "Y" ;
+            }else{
+                // sissubmit = "N" ;
+                sissubmit = value == "save"? "N" : "Y" ;
+            }           
+            nid = me.newThis.view_row.id ;
+        }else{
+            sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
+            nid = 0 ;
+        }
+        let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;
         let params = 
              [{
-                "id": 0,                                  
+                "id": nid,                                  
                 "period": $params.year + this.getPeriod($params),
                 "company": $params.company,               
                 "department": departmentname,             
@@ -86,7 +101,7 @@ export default {
                 "screatetime": time,                      
                 "ssubmittime": time,
                 "sisclose": "",
-                "ssubmituser": ""
+                "ssubmituser": ssubmituser
              }];
         return params ;
     },
@@ -113,6 +128,52 @@ export default {
             sreporttype: "",                // 报告类型
         }
         return form ;
+    },
+    /**
+     * @author sjz
+     * @event 看看有没有变化数据的（修改弹出框的保存按钮）（已提交的页面）
+     * @param {*} me 
+     */
+    getForChange(me){
+        // debugger
+        var viewTrue = false ;
+        var viewFalse= true ;
+        // 看有没有改动的
+        for(let keys in me.form){
+            if(me.form[keys] == me.newThis.view_row[keys]){
+                viewTrue = true ;
+            }else{
+                viewFalse = false ;
+            }
+        }
+        if(!viewFalse){
+            return viewFalse ;
+        }else{
+            return viewTrue ;
+        }       
+    },
+    /**
+     * @author sjz
+     * @event 看看有没有变化数据的（修改弹出框的保存按钮）（未提交的页面）
+     * @param {*} me 
+     */
+    getForChange2(me){
+        // debugger
+        let isTrue = false ;
+        let isFalse= true ;
+        for(let kk in me.form){
+            if(me.form[kk] && me.form[kk]!="" && me.form[kk]!=0){
+                if(me.form[kk] == me.newThis.view_row[kk]){
+                    isTrue = true ;
+                }else{
+                    isFalse = false ;
+                }
+            }
+        }
+        if(!isFalse){
+            return isFalse;
+        }else{
+            return isTrue ;
+        }
     }
-
 }
