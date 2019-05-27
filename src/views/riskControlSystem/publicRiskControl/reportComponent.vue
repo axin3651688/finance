@@ -35,6 +35,7 @@
                     <!--报告跳转界面领导批示的内容-->
                     <report-instruction
                             v-if="this.instructionShow"
+                            :contentDown.sync="contentDown"
                     >
                     </report-instruction>
 

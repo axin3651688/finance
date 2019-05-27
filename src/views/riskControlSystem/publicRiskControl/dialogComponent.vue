@@ -13,12 +13,14 @@
                     <!--弹出层头部-->
                     <risk-header
                             :dialogHeaderData="dialogHeaderData"
+                            :dataChanged="dataChanged"
                     >
                     </risk-header>
 
                     <!--弹出层中间的三个公共部分-->
                     <risk-conventional
                             :dialogMiddleData="dialogMiddleData"
+                            :dataChanged="dataChanged"
                     >
                     </risk-conventional>
 
@@ -28,6 +30,7 @@
                             :dialogInstructionData="dialogInstructionData"
                             :sureBtnClick="sureBtnClick"
                             :riskFeedSuccess="riskFeedSuccess"
+                            :dataChanged="dataChanged"
                             @sendRiskInstructionData="sendRiskInstructionData"
                     >
                     </risk-instruction>
@@ -36,6 +39,7 @@
                     <risk-schedule
                             v-if="dialogData['dialogRiskType'] === 'riskTrack'"
                             :dialogScheduleData="dialogScheduleData"
+                            :dataChanged="dataChanged"
                     >
                     </risk-schedule>
 
@@ -75,6 +79,7 @@
         },
         props: {
             dialogData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
@@ -96,7 +101,15 @@
         },
         mounted() {
         },
-        watch: {},
+        watch: {
+            dataChanged(newValue,oldValue){
+                this.getDialogHeaderData();
+                this.getDialogMiddleData();
+                this.getDialogInstructionData();
+                this.getDialogScheduleData();
+            },
+            deep:true
+        },
         methods: {
             closeDialogContent() {
                 this.$emit('closeDialogContent1')
@@ -180,11 +193,12 @@
                             company: company,
                             nrelateid: _this.dialogData['riskid'],
                             period: _this.parsePeriod(),
+                            scompanyname: user.companyName,
                             sfeedbackscontent: _riskInstructionData,
-                            sisfeedback: "1",
                             sfeedbackuser: user.userName,
                             sfeedbackusername: user.trueName,
-                            scompanyname: user.companyName,
+                            sfeedbacktime:'2019-05-27 09:20:22',
+                            sisfeedback: "1",
                             sriskname: _this.dialogData['riskname'],
 
                         },

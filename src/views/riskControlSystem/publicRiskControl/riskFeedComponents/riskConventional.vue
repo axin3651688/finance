@@ -46,11 +46,30 @@
         name: "riskConventional",
         components: {},
         props: {
-            dialogMiddleData: Object
+            dialogMiddleData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
-                formData:{}
+                formData: {
+                    riskoverview: {
+                        text: '',
+                        disableEdit: null
+                    },
+                    riskmeasure: {
+                        text: '',
+                        disableEdit: null
+                    },
+                    risksuggest: {
+                        text: '',
+                        disableEdit: null
+                    }
+                }
+            }
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
             }
         },
         created() {

@@ -41,11 +41,26 @@
         name: "riskControl",
         components: {},
         props: {
-            dialogInstructionData: Object
+            dialogInstructionData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
-                formData: {}
+                formData: {
+                    countermeasures:{
+                        text:'',
+                        disableEdit:null
+                    },
+                    riskFeed:{
+                        text:'',
+                        disableEdit:null
+                    }
+                }
+            }
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
             }
         },
         created() {

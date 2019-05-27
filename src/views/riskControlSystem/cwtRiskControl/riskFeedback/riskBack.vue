@@ -29,7 +29,8 @@
                 <!--<span>{{ diaData }}}</span>-->
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
-                        :dialogData="this.dialogData"
+                        :dialogData.sync="dialogData"
+                        :dataChanged="dataChanged"
                         @riskFeedSuccess="riskFeedSuccess"
                 >
                 </dialog-component>
@@ -155,6 +156,7 @@
                         ]
                     }
                 },
+                dataChanged:false
             }
         },
         created() {
@@ -323,7 +325,6 @@
              * @param data
              */
             dataFormat(data) {
-                debugger;
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
@@ -337,11 +338,15 @@
                     item.text = data[item.dataType]
                 });
                 contentFoot.content.forEach((item) => {
-                    if (data['backstate'] === '已反馈') {
+                    if (data['backstate'] === '已反馈' && item.dataType === 'riskfeed') {
                         item.disableEdit = true;
+                    }else if(data['backstate'] !== '已反馈' && item.dataType === 'riskfeed'){
+                        item.disableEdit = false;
                     }
                     item.text = data[item.dataType]
-                })
+                });
+
+                this.dataChanged = !this.dataChanged;
             },
 
             /**

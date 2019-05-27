@@ -52,7 +52,8 @@
         },
         props: {
             formData: Object,
-            dialogData: Object
+            dialogData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
@@ -62,6 +63,11 @@
         created() {
         },
         mounted() {
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            }
         },
         methods: {
             /**
