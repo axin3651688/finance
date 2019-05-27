@@ -26,6 +26,7 @@ export default {
          * @author szc 2019年5月21日20:20:36
          */
         queryDepartMent() {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -129,7 +130,6 @@ export default {
          * @author szc 2019年5月24日15:44:46
          */
         publicUpdateInstruction(params) {
-            debugger;
             let me = this;
             updateInstruction(params.data).then(res => {
                 if (res.data.code == 200) {
@@ -166,7 +166,6 @@ export default {
          * 此方法是转换树表的数据。当前切换公司的所有下级。
          */
         transformationTreeData(data) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -177,8 +176,15 @@ export default {
             rootItem = data.filter(item => {
                 return item.scode == root;
             });
-            me.recursionData(data, rootItem[0]);
-            return rootItem;
+            data = data.filter(item => {
+                return item.scode != company;
+            });
+            let rootItemData = rootItem[0];
+            if (rootItemData.sstate) {
+                me.setOperations(rootItemData);
+            }
+            me.recursionData(data, rootItemData);
+            return rootItemData;
         },
         /**
          * 递归转换数据。
@@ -191,6 +197,9 @@ export default {
             for (let i = 0; i < data.length; i++) {
                 let item = data[i];
                 if (rootItem.scode == item.spcode) {
+                    if (item.sstate) {
+                        me.setOperations(item);
+                    }
                     rootItem.children.push(item);
                 } else {
                     arr.push(item);
@@ -202,6 +211,55 @@ export default {
                     me.recursionData(arr, childItme);
                 }
             }
+        },
+        /**
+         * 设置操作按钮。
+         * @author szc 2019年5月27日16:02:58
+         */
+        setOperations(item) {
+            let me = this,
+                ops01 = [{
+                        "id": "1",
+                        "btnShow": true,
+                        "text": "查看"
+                    },
+                    {
+                        "id": "2",
+                        "btnShow": true,
+                        "text": "退回"
+                    }
+                ],
+                ops02 = [{
+                        "id": "0",
+                        "btnShow": true,
+                        "text": "查看"
+                    },
+                    {
+                        "id": "3",
+                        "btnShow": true,
+                        "text": "退回"
+                    }
+                ];
+            if (item.sstate == "已批示") {
+                item.operation = ops01;
+            } else if (item.sstate == "未批示") {
+                item.operation = ops02;
+            }
+
+        },
+        /**
+         * 这以下的一段是报告的查看方法处理。
+         * @author szc 2019年5月27日16:56:28
+         */
+        showDataOfInstruction(lookData, data) {
+            debugger;
+            let me = this,
+                objLook = {};
+            lookData.forEach(item => {
+                if (item.riskscode && !objLook[item.riskscode]) {
+                    objLook[item.riskscode] = item.riskscode;
+                }
+            });
         }
     },
 }
