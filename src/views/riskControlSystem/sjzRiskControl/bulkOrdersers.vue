@@ -117,7 +117,7 @@ export default {
          * @event 1.下达按钮
          */
         onSubmit(){
-            debugger
+            // debugger
             let me = this ;
             let params = {} ;
             let rowId = [] ;

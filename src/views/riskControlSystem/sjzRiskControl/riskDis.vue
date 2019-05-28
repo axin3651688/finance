@@ -434,6 +434,7 @@ export default {
          * @function 重新走一次请求
          */
         refreshRow(){
+            this.selection = [] ;
             this.loadModuleBefore() ;
         },
         /**

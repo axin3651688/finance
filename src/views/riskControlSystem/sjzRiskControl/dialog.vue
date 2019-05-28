@@ -514,7 +514,7 @@ export default {
          */
         riskReleaseVo(){
             let me = this ;
-            debugger
+            // debugger
             if(this.checkbox){
                 // this.$message('下达') ;
                 this.riskbulkOrderser = true ;

@@ -235,8 +235,8 @@ export default {
                         item.label = "(" + item.scode + ") " + item.sname;
                         return item;
                     });
-                    data.forEach(ress => {
-                        if(ress.id === "1001")ress.disabled = true ;
+                    data.forEach((ress, index) => {
+                        if(index === 0)ress.disabled = true ;
                     })
                     me.comtree2 = data;
                     me.comtree2 = tools.transformToeTreeNodes(setting, data);
