@@ -411,7 +411,7 @@
              * @param scope
              * @param it
              */
-            riskFeedBackEvent(scope, it){
+            riskFeedBackEvent(scope, it) {
                 let _this = this;
                 let params = _this.getRiskFeedbackParams(scope);
                 updateInstruction(params).then(res => {
@@ -437,7 +437,7 @@
              * 获取风险退回参数
              * @param scope
              */
-            getRiskFeedbackParams(scope){
+            getRiskFeedbackParams(scope) {
                 debugger;
                 let rowData = scope.row,
                     nRelateId = rowData.scode;
