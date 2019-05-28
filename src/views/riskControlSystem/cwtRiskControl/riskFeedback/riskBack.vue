@@ -45,9 +45,8 @@
     import stable from '../../publicRiskControl/table/singleTable'
     import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
     import {mapGetters} from "vuex"
-    // import {getDepartments} from '~api/cwtRiskControl/riskControlRequest'
     import {findThirdPartData} from "~api/interface"
-    // import getSql from '../publicJsFill/getSql'
+    import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
 
     export default {
@@ -174,7 +173,7 @@
         },
         methods: {
             /**
-             * 关于某个风险的反馈弹出按钮
+             * 关于某个风险的操作按钮
              */
             changeShowContent(scope, it) {
                 if (it.id === '0') {
@@ -187,7 +186,9 @@
                     this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
-                    alert('退回流程操作')
+
+                    this.riskFeedBackEvent(scope, it);
+                    // alert('退回流程操作')
                 } else if (it.id === '3') {
                     //提醒操作
                     alert('提醒操作')
@@ -361,7 +362,6 @@
                 this.getRiskBackData();
             },
 
-
             /**
              * 切换上一条下一条
              * @param flag
@@ -403,6 +403,74 @@
                         type: "success"
                     });
                 }
+
+            },
+
+            /**
+             * 风险退回操作
+             * @param scope
+             * @param it
+             */
+            riskFeedBackEvent(scope, it){
+                let _this = this;
+                let params = _this.getRiskFeedbackParams(scope);
+                updateInstruction(params).then(res => {
+                    debugger;
+                    if (res.data.code === 200) {
+                        // _this.$emit("riskFeedBackSuccess");
+
+                        _this.updateView();
+
+                        _this.$message({
+                            message: "退回成功",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "退回失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            /**
+             * 获取风险退回参数
+             * @param scope
+             */
+            getRiskFeedbackParams(scope){
+                debugger;
+                let rowData = scope.row,
+                    nRelateId = rowData.scode;
+                let backUser = 'cwt';
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    user = _getter.user.user,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                let _month = month > 9 ? month : '0' + month;
+
+                period = year + _month + '';
+                let param = {
+                    "riskReportStateDtos": [
+                        {
+                            "company": company,
+                            "nrelateid": nRelateId,
+                            "period": period,
+                            "scompanyname": user.companyName,
+                            "sfeedbacksuser": user.userName,
+                            "sfeedbacksusername": user.trueName,
+                            "sisfeedback": "-1",
+                            "sriskname": rowData.riskname
+                        }
+                    ],
+                    "users": [
+                        backUser
+                    ]
+                };
+
+                return param;
 
             }
         }
