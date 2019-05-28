@@ -1,8 +1,11 @@
-
+import { eva_city_Request } from "~api/cube.js";
+// 引用的tools.js文件
+import tools from "utils/tools";
 export default {
     /**
      * @author sjz
      * @event 日期处理
+     * @name 【风险识别页面引用】
      * @param {*} $params 
      */
     getPeriod($params){
@@ -17,6 +20,7 @@ export default {
     /**
      * @author sjz
      * @event 时间获取---作用于【提交时间】列
+     * @name 【风险识别页面引用】
      * @param {*} 
      */
     getTimers(){
@@ -50,6 +54,7 @@ export default {
     /**
      * @author sjz
      * @event 保存/提交按钮触发时获取的请求参数
+     * @name 【风险识别页面引用】
      * @param {*} me 
      * @param {*} value 
      */
@@ -108,6 +113,7 @@ export default {
     /**
      * @author sjz
      * @event 初始化参数
+     * @name 【风险识别页面引用】
      * @param {*} me 
      */
     getForm(me){
@@ -132,6 +138,7 @@ export default {
     /**
      * @author sjz
      * @event 看看有没有变化数据的（修改弹出框的保存按钮）（已提交的页面）
+     * @name 【风险识别页面引用】
      * @param {*} me 
      */
     getForChange(me){
@@ -155,6 +162,7 @@ export default {
     /**
      * @author sjz
      * @event 看看有没有变化数据的（修改弹出框的保存按钮）（未提交的页面）
+     * @name 【风险识别页面引用】
      * @param {*} me 
      */
     getForChange2(me){
@@ -175,5 +183,83 @@ export default {
         }else{
             return isTrue ;
         }
+    },
+    /**
+     * @author sjz
+     * @event 获取得到下达弹出框的公司树数据
+     * @name 【风险识别页面引用】
+     * @param {*} me 
+     */
+    getCompanyTree(me){
+        // debugger
+        let $params = me.$store.state.prame.command;
+        let _sql = ` select scode, sname, spcode, connect_by_isleaf as cisleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode order by level ` ;
+        _sql = _sql.replace(/:company/g,"'"+$params.company+"'");
+        let params = {
+            cubeId: 4,
+            sql: encodeURI(_sql) 
+        }
+        const _this = this ;
+        _this.getCompanyTree_request(_this,me, params) ;
+    },
+    /**
+     * @author sjz
+     * @event 获取得到下达弹出框的公司树数据请求方法
+     * @name 【风险识别页面引用】
+     * @param {*} _this 
+     * @param {*} me 
+     * @param {*} params 
+     */
+    getCompanyTree_request(_this,me, params){
+        eva_city_Request(params).then(red => {
+            if(red.data.code === 200){
+                //封装树对象数据
+                const setting = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "scode",
+                            pIdKey: "spcode"
+                        },
+                        key: {
+                            name: "scode",
+                            children: "children"
+                        }
+                    }
+                };
+                var data = red.data.data;
+                if (Array.isArray(data) && data.length > 0) {
+                    data = tools.sortByKey(data, "scode");
+                    data = data.filter(function(item) {
+                        item.id = item.scode;
+                        item.label = "(" + item.scode + ") " + item.sname;
+                        return item;
+                    });
+                    data.forEach(ress => {
+                        if(ress.id === "1001")ress.disabled = true ;
+                    })
+                    me.comtree2 = data;
+                    me.comtree2 = tools.transformToeTreeNodes(setting, data);
+                    // return me.getCompanyTree_set(me.comtree2);
+                    return me.comtree2
+                }
+            }else{
+                _this.$message.error(red.data.msg) ;
+                // return me.getCompanyTree_set(me.comtree2);
+                return me.comtree2
+            }
+        })
+    },
+    /**
+     * @author sjz
+     * @event 默认公司树表全部展开、
+     * @name 【风险报告页面引用】
+     * @param {*} data 
+     */
+    getOpenbyDefault(data){
+        data.forEach(quo2 => {
+            quo2._expanded = true ;           
+        });
+        return data ;
     }
 }

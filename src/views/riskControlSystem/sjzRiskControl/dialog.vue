@@ -92,9 +92,10 @@
             <el-form-item label="应对建议：" prop="sproposal">
                 <el-input type="textarea" placeholder="请输入应对建议..." maxlength="1000" :readonly="readonly" @change="descInput_sproposal" v-model="form.sproposal"></el-input>
             </el-form-item>
-            <div style="marginLeft: 38px;marginBottom: 15px;">
+            <div v-show="isCheckbox" style="marginLeft: 38px;marginBottom: 15px;">
+                <bulk-orderser v-show="riskbulkOrderser" :data="comtree2" :newThis="newThis"></bulk-orderser>
                 <el-checkbox :disabled="readonly2" v-model="checkbox" @change="riskReleaseVo">下达</el-checkbox>
-            </div>           
+            </div>          
         </el-form>
         <!-- 4 -->
         <div slot="footer" class="dialog-footer">
@@ -106,12 +107,17 @@
                     <el-button @click="resetClick('sub2','sub3','sub4','sub5','sub6')">取 消</el-button>
                 </el-col>
             </el-row>
-        </div>   
+        </div>
     </div>
+
 </template>
 <script>
 // 引用的风险矩阵
 import riskMatrix from "@v/riskControlSystem/sjzRiskControl/riskMatrix";
+// 引用的下达弹出框
+import bulkOrderser from "@v/riskControlSystem/sjzRiskControl/bulkOrderser";
+// 引用的tools.js文件
+import tools from "utils/tools";
 // 引用接口
 import { 
     risktype, 
@@ -119,13 +125,15 @@ import {
     riskmatrix,
     riskdistinguish_add,
     riskdistinguish_update,
-    riskdistinguish_update_sisclose 
+    riskdistinguish_update_sisclose ,
+    eva_city_Request
     } from "~api/cube.js";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 export default {
     components:{
-        riskMatrix
+        riskMatrix,
+        bulkOrderser
     },
     // props:["riskTableRow","fsgl","yxcd","newThis","fsgl"],
     props: {
@@ -156,8 +164,11 @@ export default {
             optiond: [],            // 风险影响程度数组（请求的数据）
             optione: [],            // 报告类型数组（请求的数据）
             optiong: [],
+            comtree2: [],           // 下达的树形数据
             checkbox: false ,       // 下达按钮的状态
+            riskbulkOrderser: false,        // 下达弹出框的状态（显示与隐藏）
             addOpen: "",
+            riskRelease: "",
             // form2: {},
             form: {
                 sriskname: "",              // 风险名称
@@ -175,6 +186,8 @@ export default {
             },
             reporttype: 0,          // 全局控制报告类型，0不显示，1显示
             isReportType: false,    // 控制报告类型的显示与隐藏
+
+            isCheckbox: true ,      // 控制下达选择按钮的显示与隐藏（注：单体公司无法下达故此隐藏，合并公司可以下达故此显示）
             // 
             rules2:{
                 // sriskname: [{ validator: validate_sriskname, trigger: 'blur' }],
@@ -275,11 +288,19 @@ export default {
     methods: {
         addDialog(){
             // debugger
+            // 0合并公司/ 1单体公司
+            // 控制下达选择按钮的显示与隐藏（注：单体公司无法下达故此隐藏，合并公司可以下达故此显示）
+            if(this.$store.getters.treeInfo.nisleaf){
+                this.isCheckbox = false ;
+            }else{
+                this.isCheckbox = true ;
+            }
             this.readonly = false ;     // 可填写/可选择
             this.readonly2= true ;      // 添加弹出框下达按钮禁用
             this.isBtn = true ;        // 保存 按钮的显示
             this.isBtn2 = true ;       // 提交 按钮的显示
-            this.isBtn3 = true ;       // 风险关闭 按钮的显示
+            // 刚点击添加按钮弹出框显示，风险关闭按钮隐藏，提交之后显现。
+            this.isBtn3 = false ;       // 风险关闭 按钮的显示
             if(this.form.sfilluser){
                 this.form = {} ;
                 this.form = mini.getForm(this) ;
@@ -492,8 +513,15 @@ export default {
          * @event 添加弹出框的下达按钮/修改弹出框的下达按钮
          */
         riskReleaseVo(){
-            // debugger
-            this.$message('下达') ;
+            let me = this ;
+            debugger
+            if(this.checkbox){
+                // this.$message('下达') ;
+                this.riskbulkOrderser = true ;
+                mini.getCompanyTree(me) ;
+            }else{
+                this.riskbulkOrderser = false ;
+            }
         },
         /**
          * @event (2)添加/提交请求接口
@@ -503,7 +531,10 @@ export default {
             let me = this ;
             riskdistinguish_add(params).then(res => { 
                 if(res.data.code === 200){
-                    if(params[0].sissubmit == "Y")me.readonly2 = false ;
+                    if(params[0].sissubmit == "Y"){
+                        me.readonly2 = false ;
+                        me.isBtn3 = true ;
+                    }
                     me.$message({message: res.data.msg, type: "success"}) ;
                 }else{
                     me.$message.error(res.data.msg) ;
@@ -532,25 +563,31 @@ export default {
          */
         riskCloseClick(){
             // debugger
-            // let me = this ;
-            // let params = mini.getParams(me, "sub2") ;  
-            // if(me.newThis.modify_btn === 1){
-            //     if(me.form.sissubmit == "已提交"){
-            //         let data = {
-            //             id : me.form.id
-            //         } ;
-            //         // let id = me.form.id ;
-            //         riskdistinguish_update_sisclose(data).then(ress => {
-            //             debugger
-            //         })
-            //     }       
-            // }
-            // if(me.form.sissubmit === "已提交"){
-            //     riskdistinguish_update_sisclose().then(ress => {
-
-            //     })
-            // }            
+            let me = this ;
+            let params = mini.getParams(me, "sub2") ;  
+            let data = {
+                id : me.form.id
+            } ;
+            if(me.newThis.modify_btn === 1){
+                if(me.form.sissubmit == "已提交"){
+                    me.riskdistinguish_update_sisclose_request(data, me) ;
+                }       
+            }else{
+                me.riskdistinguish_update_sisclose_request(data, me) ;
+            }   
         },
+        // 风险关闭按钮请求
+        riskdistinguish_update_sisclose_request(data, me){
+            riskdistinguish_update_sisclose(data).then(ress => {
+                // debugger
+                if(ress.data.code === 200){
+                    me.$message({ message: "关闭成功!", type: "success" });
+                }else{
+                    me.$message({ message: "温馨提示：未批示/未反馈的风险无法关闭！", type: "warning" });
+                }
+            })
+        },
+        
         /**
          * @event (5)取消按钮
          */

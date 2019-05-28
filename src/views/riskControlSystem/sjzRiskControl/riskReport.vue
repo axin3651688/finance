@@ -9,7 +9,7 @@
 </template>
 <script>
 // 引用公共组件方法
-import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
+import aiModule from "@v/riskControlSystem/sjzRiskControl/AiModule";
 export default {
     name: 'treeTableDemo',
     components: {
