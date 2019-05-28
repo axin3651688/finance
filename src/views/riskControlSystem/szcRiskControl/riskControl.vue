@@ -26,6 +26,7 @@
                         </el-row>
                         
                     </div>
+                    <el-button @click="lookInstructions"></el-button>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -133,8 +134,15 @@ export default {
                 id:"treeTable",
                 sqlId:"103"
             };
-            me.queryDataOfInstructions(selectItem,judgeParams);
+            let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+            this.axios.get(url).then(res => {
+                if(res.data.code == 200) {
+                    me.columns = res.data.columns;
+                    me.queryDataOfInstructions(selectItem,judgeParams);
+                }
+            })
         }
+        me.queryDepartMent();
         //请求table的数据。
         // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
         // if(me.activeName == "second"){
@@ -222,6 +230,7 @@ export default {
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
                     let curSqlId = judgeParams? judgeParams.sqlId:"101";
+                    me.sqlList = res.data.sqlList;
                     params = me.paramsOfSql(params,res.data.sqlList,curSqlId);
                     findThirdPartData(params).then(res => {
                         if(res.data.code == 200) {
@@ -235,6 +244,8 @@ export default {
                                 });
                                 resData = me.setOperationBtns(resData);
                                 me.tableData = resData;
+                            }else if (judgeParams.id == "lookInstruc"){
+                                me.lookInstructionRes(res.data.data);
                             }
                         }
                     });
@@ -298,6 +309,21 @@ export default {
             return data;
         },
         /**
+         * 查看之后的查询结果。
+         * @author szc 2019年5月27日16:31:38
+         */
+        lookInstructionRes (lookData) {
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+                if(res.data.code == 200) {
+                    debugger;
+                    // me.reportData = res.data.reportData;
+                    me.reportData = me.showDataOfInstruction(lookData,res.data.reportData);
+                    me.treeTableShow = false;
+                }
+            });
+        },
+        /**
          * 按钮的处理。
          * @author szc 2019-5-14 11:56:40
          * 查看
@@ -312,7 +338,7 @@ export default {
                 }else if (id == "1") {
                     me.lookInstructions(scope);
                 }else if (id == "2") {
-
+                    
                 }else if (id == "3") {
 
                 }
@@ -344,6 +370,17 @@ export default {
                     me.changeValue(item.children,scode);
                 }
             }
+        },
+        /**
+         * 查看批示的内容
+         * @author szc 2019年5月14日14:24:14
+         */
+        lookInstructions_old (scope) {
+            let me = this,selectItem = me.selectItem,judgeParams = {
+                id:"lookInstruc",
+                sqlId:"104"
+            };
+            me.queryDataOfInstructions(selectItem,judgeParams);
         },
         /**
          * 查看批示的内容

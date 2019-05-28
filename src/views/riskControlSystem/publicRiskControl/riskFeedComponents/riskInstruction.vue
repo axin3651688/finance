@@ -39,19 +39,12 @@
                     <el-input
                             type="textarea"
                             :rows="4"
+                            ref="riskFeedData"
                             v-model="formData['riskfeed'].text"
-                            :disabled="formData['riskfeed'].disableEdit"
+                            :disabled="riskFeedDisableEdit"
                             placeholder="针对风险进行相关反馈录入"
                     >
                     </el-input>
-                    <!--<el-input
-                            type="textarea"
-                            :rows="4"
-                            v-model="riskFeedData"
-                            :disabled="this.riskFeedSuccess"
-                            placeholder="针对风险进行相关反馈录入"
-                    >
-                    </el-input>-->
                 </div>
             </el-col>
         </el-row>
@@ -63,14 +56,29 @@
         name: "riskInstruction",
         components: {},
         props: {
+            // v-model="formData['riskfeed'].text"
             dialogInstructionData: Object,
             sureBtnClick: Boolean,
-            riskFeedSuccess: Boolean
+            riskFeedSuccess: Boolean,
+            dataChanged: Boolean
         },
         data() {
             return {
-                formData: {},
-                riskFeedData: ''
+                formData: {
+                    countermeasures: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    instruction: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    riskfeed: {
+                        text: '',
+                        disableEdit: null
+                    }
+                },
+                riskFeedDisableEdit:false
             }
         },
         created() {
@@ -79,9 +87,32 @@
         mounted() {
         },
         watch: {
+            /**
+             * 监听确认反馈按钮点击事件
+             * @param newValue
+             * @param oldValue
+             */
             sureBtnClick(newValue, oldValue) {
-                if (newValue === true) {
-                    this.$emit("sendRiskInstructionData", this.riskFeedData)
+                if (newValue !== oldValue) {
+                    this.$emit("sendRiskInstructionData", this.formData['riskfeed'].text)
+                }
+            },
+            /**
+             * 监听上一条下一条中的点击事件，刷新数据
+             * @param newValue
+             * @param oldValue
+             */
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            },
+            /**
+             * 监听反馈成功之后的数据处理
+             * @param newValue
+             * @param oldValue
+             */
+            riskFeedSuccess(newValue, oldValue){
+                if(newValue !== oldValue){
+                    this.riskFeedDisableEdit = true;
                 }
             }
         },
@@ -96,6 +127,7 @@
                     _this.formData[item.dataType]['label'] = item.label;
                     _this.formData[item.dataType]['text'] = item.text;
                 });
+                this.riskFeedDisableEdit = _this.formData['riskfeed'].disableEdit;
             }
         }
     }

@@ -35,6 +35,7 @@
                     <!--报告跳转界面领导批示的内容-->
                     <report-instruction
                             v-if="this.instructionShow"
+                            :contentDown.sync="contentDown"
                     >
                     </report-instruction>
 
@@ -172,6 +173,7 @@
              * 获取目录的数据
              */
             getDirectoryData(){
+                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{

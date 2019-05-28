@@ -51,17 +51,40 @@
         name: "riskHeader",
         components: {},
         props: {
-            dialogHeaderData: Object
+            dialogHeaderData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
-                formData: {}
+                formData: {
+                    risktype: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    riskprobability: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    riskdegree: {
+                        text: '',
+                        disableEdit: null
+                    },
+                    risklevel: {
+                        text: '',
+                        disableEdit: null
+                    }
+                },
             }
         },
         created() {
             this.getFormData();
         },
         mounted() {
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            }
         },
         methods: {
             getFormData() {

@@ -29,8 +29,10 @@
                 <!--<span>{{ diaData }}}</span>-->
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
-                        :dialogData="this.dialogData"
+                        :dialogData.sync="dialogData"
+                        :dataChanged="dataChanged"
                         @riskFeedSuccess="riskFeedSuccess"
+                        @dataMessageChange="dataMessageChange"
                 >
                 </dialog-component>
             </el-dialog>
@@ -43,9 +45,8 @@
     import stable from '../../publicRiskControl/table/singleTable'
     import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
     import {mapGetters} from "vuex"
-    // import {getDepartments} from '~api/cwtRiskControl/riskControlRequest'
     import {findThirdPartData} from "~api/interface"
-    // import getSql from '../publicJsFill/getSql'
+    import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
 
     export default {
@@ -155,6 +156,7 @@
                         ]
                     }
                 },
+                dataChanged: false
             }
         },
         created() {
@@ -171,7 +173,7 @@
         },
         methods: {
             /**
-             * 关于某个风险的反馈弹出按钮
+             * 关于某个风险的操作按钮
              */
             changeShowContent(scope, it) {
                 if (it.id === '0') {
@@ -184,7 +186,9 @@
                     this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
-                    alert('退回流程操作')
+
+                    this.riskFeedBackEvent(scope, it);
+                    // alert('退回流程操作')
                 } else if (it.id === '3') {
                     //提醒操作
                     alert('提醒操作')
@@ -314,8 +318,10 @@
              * @param it
              */
             getDialogData(scope, it) {
-                let row = scope.row;
-                this.dataFormat(row);
+                let row = scope.row,
+                    dataIndex = row.rownum - 1;
+                let _data = this.tableData[dataIndex];
+                this.dataFormat(_data);
             },
 
             /**
@@ -323,10 +329,11 @@
              * @param data
              */
             dataFormat(data) {
-                debugger;
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
+                _dialogData.rownum = data.rownum;
+                _dialogData.isFeeded = data['backstate'] === '已反馈';
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
@@ -337,19 +344,134 @@
                     item.text = data[item.dataType]
                 });
                 contentFoot.content.forEach((item) => {
-                    if (data['backstate'] === '已反馈') {
+                    if (data['backstate'] === '已反馈' && item.dataType === 'riskfeed') {
                         item.disableEdit = true;
+                    } else if (data['backstate'] !== '已反馈' && item.dataType === 'riskfeed') {
+                        item.disableEdit = false;
                     }
                     item.text = data[item.dataType]
-                })
+                });
+
+                this.dataChanged = !this.dataChanged;
             },
 
             /**
              * 反馈成功的回调函数
              */
             riskFeedSuccess() {
-                debugger;
                 this.getRiskBackData();
+            },
+
+            /**
+             * 切换上一条下一条
+             * @param flag
+             */
+            dataMessageChange(obj) {
+                // $message 可传入的type的值
+                // 'success' | 'warning' | 'info' | 'error'
+
+                let _index = obj.rowIndex - 1;
+                let _data = this.tableData;
+                let newData = null;
+                if (obj.flag === 'up') {
+                    newData = _data[_index - 1];
+                    if (_index - 1 < 0) {
+                        this.$message({
+                            message: '已经是第一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dataFormat(newData);
+                    this.$message({
+                        message: '切换上一条成功',
+                        type: "success"
+                    });
+                } else if (obj.flag === 'down') {
+
+                    newData = _data[_index + 1];
+                    if (_index - 1 >= _data.length - 2) {
+                        this.$message({
+                            message: '已经是最后一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dataFormat(newData);
+                    this.$message({
+                        message: '切换下一条成功',
+                        type: "success"
+                    });
+                }
+
+            },
+
+            /**
+             * 风险退回操作
+             * @param scope
+             * @param it
+             */
+            riskFeedBackEvent(scope, it) {
+                let _this = this;
+                let params = _this.getRiskFeedbackParams(scope);
+                updateInstruction(params).then(res => {
+                    debugger;
+                    if (res.data.code === 200) {
+                        // _this.$emit("riskFeedBackSuccess");
+
+                        _this.updateView();
+
+                        _this.$message({
+                            message: "退回成功",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "退回失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            /**
+             * 获取风险退回参数
+             * @param scope
+             */
+            getRiskFeedbackParams(scope) {
+                debugger;
+                let rowData = scope.row,
+                    nRelateId = rowData.scode;
+                let backUser = 'cwt';
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    user = _getter.user.user,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                let _month = month > 9 ? month : '0' + month;
+
+                period = year + _month + '';
+                let param = {
+                    "riskReportStateDtos": [
+                        {
+                            "company": company,
+                            "nrelateid": nRelateId,
+                            "period": period,
+                            "scompanyname": user.companyName,
+                            "sfeedbacksuser": user.userName,
+                            "sfeedbacksusername": user.trueName,
+                            "sisfeedback": "-1",
+                            "sriskname": rowData.riskname
+                        }
+                    ],
+                    "users": [
+                        backUser
+                    ]
+                };
+
+                return param;
+
             }
         }
     }

@@ -1,0 +1,37 @@
+[{
+        "id": "3",
+        "text": "审阅",
+        "show": true,
+        "disabled": false
+    },
+    {
+        "id": "1",
+        "text": "上报",
+        "show": true,
+        "disabled": true
+    },
+    {
+        "id": "5",
+        "text": "撤回",
+        "show": true,
+        "disabled": false
+    },
+    {
+        "id": "2",
+        "text": "申请退回",
+        "show": true,
+        "disabled": false
+    },
+    {
+        "id": "4",
+        "text": "退回",
+        "show": true,
+        "disabled": false
+    },
+    {
+        "id": "0",
+        "text": "催报",
+        "show": true,
+        "disabled": false
+    }
+]

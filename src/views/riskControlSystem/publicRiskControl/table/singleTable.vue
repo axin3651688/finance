@@ -116,7 +116,6 @@
              * @param index
              */
             handleClickBtn(scope, it, index) {
-                debugger;
                 this.$emit("changeShowContent", scope, it);
             },
             /**
@@ -124,7 +123,6 @@
              * @author szc 2019年5月16日11:24:42
              */
             clickItemNameHandler(scope, index, row) {
-                debugger;
                 this.$emit("clickItemName", scope, index, row);
             },
             elButton(scope) {

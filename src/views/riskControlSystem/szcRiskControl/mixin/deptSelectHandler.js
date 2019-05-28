@@ -26,6 +26,7 @@ export default {
          * @author szc 2019年5月21日20:20:36
          */
         queryDepartMent() {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -129,7 +130,6 @@ export default {
          * @author szc 2019年5月24日15:44:46
          */
         publicUpdateInstruction(params) {
-            debugger;
             let me = this;
             updateInstruction(params.data).then(res => {
                 if (res.data.code == 200) {
@@ -166,7 +166,6 @@ export default {
          * 此方法是转换树表的数据。当前切换公司的所有下级。
          */
         transformationTreeData(data) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -177,8 +176,15 @@ export default {
             rootItem = data.filter(item => {
                 return item.scode == root;
             });
-            me.recursionData(data, rootItem[0]);
-            return rootItem;
+            data = data.filter(item => {
+                return item.scode != company;
+            });
+            let rootItemData = rootItem[0];
+            if (rootItemData.sstate) {
+                me.setOperations(rootItemData);
+            }
+            me.recursionData(data, rootItemData);
+            return rootItemData;
         },
         /**
          * 递归转换数据。
@@ -191,6 +197,9 @@ export default {
             for (let i = 0; i < data.length; i++) {
                 let item = data[i];
                 if (rootItem.scode == item.spcode) {
+                    if (item.sstate) {
+                        me.setOperations(item);
+                    }
                     rootItem.children.push(item);
                 } else {
                     arr.push(item);
@@ -201,6 +210,124 @@ export default {
                     let childItme = rootItem.children[j];
                     me.recursionData(arr, childItme);
                 }
+            }
+        },
+        /**
+         * 设置操作按钮。
+         * @author szc 2019年5月27日16:02:58
+         */
+        setOperations(item) {
+            let me = this,
+                ops01 = [{
+                        "id": "1",
+                        "btnShow": true,
+                        "text": "查看"
+                    },
+                    {
+                        "id": "2",
+                        "btnShow": true,
+                        "text": "退回"
+                    }
+                ],
+                ops02 = [{
+                        "id": "0",
+                        "btnShow": true,
+                        "text": "查看"
+                    },
+                    {
+                        "id": "3",
+                        "btnShow": true,
+                        "text": "退回"
+                    }
+                ];
+            if (item.sstate == "已批示") {
+                item.operation = ops01;
+            } else if (item.sstate == "未批示") {
+                item.operation = ops02;
+            }
+
+        },
+        /**
+         * 这以下的一段是报告的查看方法处理。
+         * @author szc 2019年5月27日16:56:28
+         */
+        showDataOfInstruction(lookData, data) {
+            debugger;
+            let me = this,
+                objLook = {},
+                objItems = [];
+            lookData.forEach(item => {
+                if (item.riskscode && !objLook[item.riskscode]) {
+                    objLook[item.riskscode] = item.riskscode;
+                    //取出每不同行的唯一一行。
+                    objItems.push(item);
+                }
+            });
+            data.reportDataContent.riskFeedData = [];
+            me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData);
+            return data;
+        },
+        /**
+         * 报告的中间的内容。
+         * @param {*} lookData 
+         * @param {*} data 
+         */
+        middleContentOfReport(lookData, objItems, data) {
+            debugger;
+            let me = this;
+            for (let i = 0; i < objItems.length; i++) {
+                let item = objItems[i];
+                let objItem = {
+                    id: item.riskscode,
+                    show: true,
+                    text: item.risktype,
+                    responsibility: {
+                        text: "社会责任风险",
+                        level: "重要",
+                        company: "",
+                        identificationUser: "张三"
+                    },
+                    contentUp: {
+                        id: item.riskscode + "Up",
+                        type: "text",
+                        content: []
+                    }
+                };
+                let objUpContentFXPG = {
+                        title: "风险评估",
+                        content: []
+                    },
+                    objUpContentFXGS = {
+                        title: "风险概述",
+                        content: []
+                    },
+                    objUpContentCQCS = {
+                        title: "采取措施",
+                        content: []
+                    },
+                    objUpContentYDJY = {
+                        title: "应对建议",
+                        content: []
+                    };
+                for (let j = 0; j < lookData.length; j++) {
+                    let lookItem = lookData[j];
+                    if (item.riskscode == lookItem.riskscode) {
+                        //风险评估。
+                        objUpContentFXPG.content.push(lookItem.nprobability);
+                        objUpContentFXPG.content.push(lookItem.ninfluence);
+                        //风险概述。
+                        objUpContentFXGS.content.push(lookItem.description);
+                        //采取措施。
+                        objUpContentCQCS.content.push(lookItem.cqcs);
+                        //应对建议
+                        objUpContentYDJY.content.push(lookItem.ydjy);
+                    }
+                }
+                objItem.contentUp.content.push(objUpContentFXPG);
+                objItem.contentUp.content.push(objUpContentFXGS);
+                objItem.contentUp.content.push(objUpContentCQCS);
+                objItem.contentUp.content.push(objUpContentYDJY);
+                data.push(objItem);
             }
         }
     },

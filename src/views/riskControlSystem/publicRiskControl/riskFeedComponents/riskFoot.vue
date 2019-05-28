@@ -14,6 +14,7 @@
                             <el-checkbox
                                     label="指定反馈人员"
                                     name="type"
+                                    :disabled="this.formData['isFeed']"
                                     class="form-foot-right-check"
                                     @change="handleCheckedChange"
                             ></el-checkbox>
@@ -51,32 +52,53 @@
             showPersonnelList
         },
         props: {
-            formData: Object,
-            dialogData: Object
+            dialogData: Object,
+            dataChanged: Boolean,
+            riskFeedSuccess: Boolean
         },
         data() {
             return {
-                personnelListShow: false
+                personnelListShow: false,
+                formData: {
+                    isFeed: null
+                }
             }
         },
         created() {
+            this.getFormData();
         },
         mounted() {
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            },
+            riskFeedSuccess(newValue, oldValue){
+                this.personnelListShow = false;
+            }
         },
         methods: {
             /**
              * 查看上一条信息
              */
             lastMessage() {
-                let flag = 'up';
-                this.$emit("messageChange",flag);
+                let rowIndex = this.dialogData['rownum'];
+                let obj = {
+                    flag: 'up',
+                    rowIndex : rowIndex
+                };
+                this.$emit("messageChange",obj);
             },
             /**
              * 查看下一条信息
              */
             nextMessage() {
-                let flag = 'down';
-                this.$emit("messageChange",flag);
+                let rowIndex = this.dialogData['rownum'];
+                let obj = {
+                    flag: 'down',
+                    rowIndex : rowIndex
+                };
+                this.$emit("messageChange",obj);
             },
             /**
              * 反馈上报
@@ -108,6 +130,14 @@
              */
             personSureBtnClicked(nodes){
                 this.$emit("personSureBtnClicked",nodes)
+            },
+
+            /**
+             * 获取单行数据
+             */
+            getFormData(){
+                let _this = this;
+                _this.formData['isFeed'] = _this.dialogData['isFeeded']
             }
         }
     }

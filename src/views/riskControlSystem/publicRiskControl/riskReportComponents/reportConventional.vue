@@ -4,26 +4,6 @@
                 <div class="container-title">
                     {{ middleData.text }}
                 </div>
-                <template v-if="middleData.responsibility">
-                    <div class="container-top">
-                        <div class="container-top-left">
-                            <span class="left_1">
-                                {{ middleData.responsibility.text }}
-                            </span>
-                            <span class="left_2">
-                                {{ middleData.responsibility.level }}
-                            </span>
-                        </div>
-                        <div class="container-top-right">
-                            <span class="left_1">
-                                {{ middleData.responsibility.company }}
-                            </span>
-                            <span class="left_2">
-                                识别人：{{ middleData.responsibility.identificationUser }}
-                            </span>
-                        </div>
-                    </div>
-                </template>
                 <div>
                     <template v-if="middleData.contentUp && middleData.contentUp.content.length > 0">
                         <div v-for="(item,index) in middleData.contentUp.content" :key="index">
