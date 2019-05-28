@@ -14,6 +14,7 @@
                             <el-checkbox
                                     label="指定反馈人员"
                                     name="type"
+                                    :disabled="this.formData['isFeed']"
                                     class="form-foot-right-check"
                                     @change="handleCheckedChange"
                             ></el-checkbox>
@@ -51,22 +52,29 @@
             showPersonnelList
         },
         props: {
-            formData: Object,
             dialogData: Object,
-            dataChanged: Boolean
+            dataChanged: Boolean,
+            riskFeedSuccess: Boolean
         },
         data() {
             return {
-                personnelListShow: false
+                personnelListShow: false,
+                formData: {
+                    isFeed: null
+                }
             }
         },
         created() {
+            this.getFormData();
         },
         mounted() {
         },
         watch: {
             dataChanged(newValue, oldValue) {
                 this.getFormData();
+            },
+            riskFeedSuccess(newValue, oldValue){
+                this.personnelListShow = false;
             }
         },
         methods: {
@@ -122,6 +130,14 @@
              */
             personSureBtnClicked(nodes){
                 this.$emit("personSureBtnClicked",nodes)
+            },
+
+            /**
+             * 获取单行数据
+             */
+            getFormData(){
+                let _this = this;
+                _this.formData['isFeed'] = _this.dialogData['isFeeded']
             }
         }
     }

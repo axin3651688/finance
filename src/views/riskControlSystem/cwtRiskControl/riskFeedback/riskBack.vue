@@ -332,6 +332,7 @@
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
+                _dialogData.isFeeded = data['backstate'] === '已反馈';
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
@@ -357,7 +358,6 @@
              * 反馈成功的回调函数
              */
             riskFeedSuccess() {
-                debugger;
                 this.getRiskBackData();
             },
 
@@ -370,7 +370,6 @@
                 // $message 可传入的type的值
                 // 'success' | 'warning' | 'info' | 'error'
 
-                debugger;
                 let _index = obj.rowIndex - 1;
                 let _data = this.tableData;
                 let newData = null;

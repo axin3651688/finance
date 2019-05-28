@@ -45,8 +45,9 @@
 
                     <!--弹出层底部按钮-->
                     <risk-foot
-                            :formData="formData"
                             :dialogData="dialogData"
+                            :dataChanged="dataChanged"
+                            :riskFeedSuccess="riskFeedSuccess"
                             @closeDialogContent="closeDialogContent"
                             @messageChange="messageChange"
                             @personSureBtnClicked="personSureBtnClicked"
@@ -83,7 +84,6 @@
         },
         data() {
             return {
-                formData: {},
                 dialogHeaderData: {},
                 dialogMiddleData: {},
                 dialogInstructionData: {},
@@ -157,7 +157,7 @@
              * 确认下达处理
              */
             personSureBtnClicked(nodes) {
-                this.sureBtnClick = true;
+                this.sureBtnClick = !this.sureBtnClick;
                 let _this = this,
                     store = _this.$store.getters,
                     company = store.company,
@@ -196,28 +196,9 @@
                             userStr
                         ]
                     };
-                    // let params = {
-                    //     riskReportStateDtos:[
-                    //         {
-                    //             id: 0,
-                    //             company:company,
-                    //             nrelateid: me.formConfig.rowData.id,
-                    //             sinstructionsuser:user,
-                    //             cstrategy:selectStr,
-                    //             period: me.parsePeriod(),
-                    //             sinstructscontent:me.instructions,
-                    //             sisinstructions:"1"
-                    //         }
-                    //     ],
-                    //     users:[
-                    //         userStr
-                    //     ]
-                    // };
-                    // params = JSON.stringify(params);
                     updateInstruction(params).then(res => {
                         if (res.data.code === 200) {
-                            debugger;
-                            _this.riskFeedSuccess = true;
+                            _this.riskFeedSuccess = !_this.riskFeedSuccess;
 
                             _this.$emit("riskFeedSuccess");
 
