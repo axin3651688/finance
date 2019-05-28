@@ -172,6 +172,7 @@
              * 获取目录的数据
              */
             getDirectoryData(){
+                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{

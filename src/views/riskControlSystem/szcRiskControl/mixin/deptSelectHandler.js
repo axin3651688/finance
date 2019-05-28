@@ -254,12 +254,81 @@ export default {
         showDataOfInstruction(lookData, data) {
             debugger;
             let me = this,
-                objLook = {};
+                objLook = {},
+                objItems = [];
             lookData.forEach(item => {
                 if (item.riskscode && !objLook[item.riskscode]) {
                     objLook[item.riskscode] = item.riskscode;
+                    //取出每不同行的唯一一行。
+                    objItems.push(item);
                 }
             });
+            data.reportDataContent.riskFeedData = [];
+            me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData);
+            return data;
+        },
+        /**
+         * 报告的中间的内容。
+         * @param {*} lookData 
+         * @param {*} data 
+         */
+        middleContentOfReport(lookData, objItems, data) {
+            debugger;
+            let me = this;
+            for (let i = 0; i < objItems.length; i++) {
+                let item = objItems[i];
+                let objItem = {
+                    id: item.riskscode,
+                    show: true,
+                    text: item.risktype,
+                    responsibility: {
+                        text: "社会责任风险",
+                        level: "重要",
+                        company: "",
+                        identificationUser: "张三"
+                    },
+                    contentUp: {
+                        id: item.riskscode + "Up",
+                        type: "text",
+                        content: []
+                    }
+                };
+                let objUpContentFXPG = {
+                        title: "风险评估",
+                        content: []
+                    },
+                    objUpContentFXGS = {
+                        title: "风险概述",
+                        content: []
+                    },
+                    objUpContentCQCS = {
+                        title: "采取措施",
+                        content: []
+                    },
+                    objUpContentYDJY = {
+                        title: "应对建议",
+                        content: []
+                    };
+                for (let j = 0; j < lookData.length; j++) {
+                    let lookItem = lookData[j];
+                    if (item.riskscode == lookItem.riskscode) {
+                        //风险评估。
+                        objUpContentFXPG.content.push(lookItem.nprobability);
+                        objUpContentFXPG.content.push(lookItem.ninfluence);
+                        //风险概述。
+                        objUpContentFXGS.content.push(lookItem.description);
+                        //采取措施。
+                        objUpContentCQCS.content.push(lookItem.cqcs);
+                        //应对建议
+                        objUpContentYDJY.content.push(lookItem.ydjy);
+                    }
+                }
+                objItem.contentUp.content.push(objUpContentFXPG);
+                objItem.contentUp.content.push(objUpContentFXGS);
+                objItem.contentUp.content.push(objUpContentCQCS);
+                objItem.contentUp.content.push(objUpContentYDJY);
+                data.push(objItem);
+            }
         }
     },
 }

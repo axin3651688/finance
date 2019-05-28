@@ -26,6 +26,7 @@
                         </el-row>
                         
                     </div>
+                    <el-button @click="lookInstructions"></el-button>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -311,8 +312,16 @@ export default {
          * 查看之后的查询结果。
          * @author szc 2019年5月27日16:31:38
          */
-        lookInstructionRes (data) {
-            
+        lookInstructionRes (lookData) {
+            let me = this;
+            this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+                if(res.data.code == 200) {
+                    debugger;
+                    // me.reportData = res.data.reportData;
+                    me.reportData = me.showDataOfInstruction(lookData,res.data.reportData);
+                    me.treeTableShow = false;
+                }
+            });
         },
         /**
          * 按钮的处理。
@@ -329,7 +338,7 @@ export default {
                 }else if (id == "1") {
                     me.lookInstructions(scope);
                 }else if (id == "2") {
-
+                    
                 }else if (id == "3") {
 
                 }
@@ -366,7 +375,7 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions (scope) {
+        lookInstructions_old (scope) {
             let me = this,selectItem = me.selectItem,judgeParams = {
                 id:"lookInstruc",
                 sqlId:"104"
@@ -377,7 +386,7 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions_old () {
+        lookInstructions () {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 debugger;

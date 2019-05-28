@@ -1,0 +1,130 @@
+[{
+        "id": "company",
+        "label": "公司选择",
+        "type": "select",
+        "valueLabel": "",
+        "content": [{
+                "value": "部门1",
+                "label": "财务部"
+            },
+            {
+                "value": "部门2",
+                "label": "销售部"
+            },
+            {
+                "value": "部门3",
+                "label": "党委会"
+            },
+            {
+                "value": "部门4",
+                "label": "这是一个神奇的部门"
+            },
+            {
+                "value": "部门5",
+                "label": "这也是一个神奇的部门"
+            }
+        ]
+    },
+    {
+        "id": "match",
+        "label": "匹配报表",
+        "type": "select",
+        "valueLabel": "",
+        "content": [{
+                "subject": "0001",
+                "sourceId": "4",
+                "value": "3",
+                "label": "资产负债表",
+                "fixed": 1
+
+            },
+            {
+                "subject": "0002",
+                "sourceId": "2",
+                "value": "1",
+                "label": "利润表",
+                "fixed": 1
+
+            },
+            {
+                "subject": "0002",
+                "sourceId": "3",
+                "value": "2",
+                "label": "现金流量表",
+                "fixed": 1
+            },
+            {
+                "sourceId": "1",
+                "label": "应收账款分析表",
+                "fixed": 0,
+                "value": "4",
+                "subject": "1001"
+
+            },
+            {
+                "subject": "1001",
+                "value": "5",
+                "sourceId": "5",
+                "label": "预付账款分析表",
+                "fixed": 0
+            },
+            {
+                "subject": "1001",
+                "value": "6",
+                "sourceId": "6",
+                "label": "其他应收账款分析表",
+                "fixed": 0
+            },
+            {
+                "subject": "1002",
+                "value": "7",
+                "sourceId": "7",
+                "label": "融资情况明细表",
+                "fixed": 0
+            },
+            {
+                "subject": "1003",
+                "value": "8",
+                "sourceId": "8",
+                "label": "资金集中情况表",
+                "fixed": 0
+            },
+            {
+                "subject": "1007",
+                "value": "9",
+                "sourceId": "9",
+                "label": "基本情况表",
+                "fixed": 0
+            },
+            {
+                "subject": "1005",
+                "value": "10",
+                "sourceId": "10",
+                "label": "集团年度目标考核建议值",
+                "fixed": 0
+            },
+            {
+                "subject": "1006",
+                "value": "11",
+                "sourceId": "11",
+                "label": "集团经营目标预测分析情况表",
+                "fixed": 0
+            },
+            {
+                "subject": "1004",
+                "value": "12",
+                "sourceId": "12",
+                "label": "市管企业利润总额考核调整表",
+                "fixed": 0
+            }
+        ]
+    },
+    {
+        "id": "state",
+        "label": "报表状态",
+        "type": "input",
+        "content": [
+
+        ]
+    }
+]
