@@ -457,7 +457,7 @@ export default {
          * @event 查看按钮
          */
         viewRow(index, tableData){
-            // debugger
+            debugger
             let me = this ;
             me.view_btn = 1 ;
             me.view_row = [] ;
@@ -524,7 +524,7 @@ export default {
 </script>
 <style scoped>
 .elbtn{
-    background-color: #fff;
+    /* background-color: #fff; */
     /* width: 100%; */
     margin-top: 10px;
     margin-bottom: 10px; 

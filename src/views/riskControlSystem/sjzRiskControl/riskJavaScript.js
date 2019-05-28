@@ -236,7 +236,7 @@ export default {
                         return item;
                     });
                     data.forEach((ress, index) => {
-                        if(index === 0)ress.disabled = true ;
+                        if(index === 0 || ress.id=="1001")ress.disabled = true ;
                     })
                     me.comtree2 = data;
                     me.comtree2 = tools.transformToeTreeNodes(setting, data);

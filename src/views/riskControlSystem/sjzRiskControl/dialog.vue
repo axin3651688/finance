@@ -425,7 +425,7 @@ export default {
          * @event (1)保存按钮/提交按钮
          */
         saveClick(value, value2,value3,value4,value5){ 
-            debugger
+            // debugger
             let me = this ;
             let viewTrue = false ;
             // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;

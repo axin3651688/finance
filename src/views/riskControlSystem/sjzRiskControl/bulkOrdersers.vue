@@ -35,7 +35,7 @@
                     ref="tree2">
                     </el-tree>
                 </el-form-item>
-                <el-form-item size="medium " :span="0.1">
+                <el-form-item class="bulkOrdersers_btn" size="medium ">
                     <el-button type="primary" plain @click="onSubmit">下达按钮</el-button>
                     <el-button type="warning" plain @click="onReset">重置</el-button>
                     <el-button plain @click="onCancel">取消</el-button>
@@ -169,8 +169,11 @@ export default {
 }
 .bulkOrdersers_tree{
     width: 100%; 
-    height: 280px;
+    height: 290px;
     border:1px solid #dcdfe6;
     overflow: auto ;
+}
+.bulkOrdersers_btn{
+    margin: 0 0 0 302px ;
 }
 </style>
