@@ -52,7 +52,8 @@
         },
         props: {
             formData: Object,
-            dialogData: Object
+            dialogData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
@@ -63,20 +64,33 @@
         },
         mounted() {
         },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            }
+        },
         methods: {
             /**
              * 查看上一条信息
              */
             lastMessage() {
-                let flag = 'up';
-                this.$emit("messageChange",flag);
+                let rowIndex = this.dialogData['rownum'];
+                let obj = {
+                    flag: 'up',
+                    rowIndex : rowIndex
+                };
+                this.$emit("messageChange",obj);
             },
             /**
              * 查看下一条信息
              */
             nextMessage() {
-                let flag = 'down';
-                this.$emit("messageChange",flag);
+                let rowIndex = this.dialogData['rownum'];
+                let obj = {
+                    flag: 'down',
+                    rowIndex : rowIndex
+                };
+                this.$emit("messageChange",obj);
             },
             /**
              * 反馈上报

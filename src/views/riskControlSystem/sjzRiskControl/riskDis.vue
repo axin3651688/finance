@@ -73,7 +73,7 @@
             </el-table>
         </div>
         <!-- 弹出框 -->
-        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :width="widths" style="marginTop: -15vh;">
+        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :before-close="handleClose" :close-on-click-modal="false" :width="widths" style="marginTop: -15vh;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <!-- 
                 参数名                  数据类型                作用
@@ -83,10 +83,12 @@
                 newThis：               Object                 this对象
                 flag:                   Boolean                作为监听作用（区分查看按钮和添加按钮）
                 modify:                 Boolean                作为监听作用（区分修改按钮）
+                numOpen:                Number                 作为添加按钮的监听事件（每按一次添加按钮重置一次）
              -->
             <dia-log 
             :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2" 
-            :newThis="me" :flag="viewReadonly" :modify="modifyReadonly">
+            :newThis="me" :flag="viewReadonly" :modify="modifyReadonly"
+            :numOpen="numOpen">
             </dia-log>
         </el-dialog>
     </div>
@@ -137,7 +139,7 @@ export default {
             view_btn: 0 ,
             viewReadonly: false,
             // 
-            modify_row: [],
+            numOpen: 0 ,        // 添加的监听事件
             modify_btn: 0 ,
             modifyReadonly: false
         }
@@ -399,10 +401,16 @@ export default {
          * @event 添加按钮
          */
         addClick(){
-            // debugger
+            debugger
             this.view_row = [] ;
             this.view_btn = 0 ;
-            this.viewReadonly = false ;
+            this.modify_btn = 0 ;
+            if(this.numOpen===0){
+                this.numOpen = 1 ;
+            }else{
+                this.numOpen = 0 ;
+            }
+            this.viewReadonly = !this.viewReadonly;
             this.dialogFormVisible = true ;
         },
         /**
@@ -413,6 +421,7 @@ export default {
             let me = this ;
             me.view_btn = 1 ;
             me.view_row = [] ;
+            me.modify_btn = 0 ;
             me.view_row = tableData[index] ;
             me.viewReadonly = true ;
             me.dialogFormVisible = true ;
@@ -421,13 +430,24 @@ export default {
          * @event 修改按钮
          */
         modifyRow(index, tableData){
-            debugger
+            // debugger
             let me = this ;
             me.modify_btn = 1 ;
-            me.modify_row = [] ;
-            me.modify_row = tableData[index] ;
-            me.modifyReadonly = true ;
+            me.view_btn = 0 ;
+            me.view_row = [] ;
+            me.view_row = tableData[index] ;
             me.dialogFormVisible = true ;
+        },
+        /**
+         * @event 关闭前的回调，会暂停-Dialog-的关闭
+         */
+        handleClose(done){
+            // debugger
+            let me = this ;
+            me.view_row = [] ;
+            me.view_btn = 0 ;
+            me.modify_btn = 0 ;
+            done() ;
         },
         handleCommand(command){},
         

@@ -36,7 +36,8 @@
         name: "riskSchedule",
         components: {},
         props: {
-            dialogScheduleData: Object
+            dialogScheduleData: Object,
+            dataChanged: Boolean
         },
         data() {
             return {
@@ -47,6 +48,11 @@
             this.getFormData();
         },
         mounted() {
+        },
+        watch: {
+            dataChanged(newValue, oldValue) {
+                this.getFormData();
+            }
         },
         methods: {
             getFormData() {

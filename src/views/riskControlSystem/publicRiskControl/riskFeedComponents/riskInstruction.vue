@@ -44,14 +44,6 @@
                             placeholder="针对风险进行相关反馈录入"
                     >
                     </el-input>
-                    <!--<el-input
-                            type="textarea"
-                            :rows="4"
-                            v-model="riskFeedData"
-                            :disabled="this.riskFeedSuccess"
-                            placeholder="针对风险进行相关反馈录入"
-                    >
-                    </el-input>-->
                 </div>
             </el-col>
         </el-row>
@@ -63,14 +55,38 @@
         name: "riskInstruction",
         components: {},
         props: {
+            // v-model="formData['riskfeed'].text"
             dialogInstructionData: Object,
             sureBtnClick: Boolean,
-            riskFeedSuccess: Boolean
+            riskFeedSuccess: Boolean,
+            dataChanged: Boolean
         },
         data() {
             return {
-                formData: {},
-                riskFeedData: ''
+                formData: {
+                    countermeasures: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    instruction: {
+                        text: "",
+                        disableEdit: null
+                    },
+                    riskfeed: {
+                        text: '',
+                        disableEdit: null
+                    }
+                },
+                riskFeedData: '',
+
+                countermeasures: '',
+                countermeasures_edit: true,
+
+                instruction: '',
+                instruction_edit: true,
+
+                riskFeed: '',
+                riskFeed_edit: true
             }
         },
         created() {
@@ -83,6 +99,10 @@
                 if (newValue === true) {
                     this.$emit("sendRiskInstructionData", this.riskFeedData)
                 }
+            },
+            dataChanged(newValue, oldValue) {
+                debugger;
+                this.getFormData();
             }
         },
         methods: {

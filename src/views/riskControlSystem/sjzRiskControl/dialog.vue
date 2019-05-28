@@ -2,11 +2,11 @@
 <!--
     name : sjz
     time : sjz 2019/5/6 9:40:00
-    说明 : 风险识别的弹出框组件 
+    说明 : 风险识别的弹出框组件 :modify="flagar"
 -->
-    <div id="dialog">
+    <div id="dialog" :flag="flager" :addOpen="numOpen">
         <!-- 内层弹出框 -->
-        <el-dialog width="660px" :flag="flager" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
+        <el-dialog width="660px" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
             <!-- 下划线 -->
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <!-- 内层表格（供参考使用） -->
@@ -25,8 +25,8 @@
                 :label="element.text"
                 :width="element.width"
                 :align="element.align" >
-            </el-table-column>
-        </el-table>
+                </el-table-column>
+            </el-table>
         </el-dialog>
         <!-- 1 -->
         <p class="title1">风险表现</p>
@@ -93,7 +93,7 @@
                 <el-input type="textarea" placeholder="请输入应对建议..." maxlength="1000" :readonly="readonly" @change="descInput_sproposal" v-model="form.sproposal"></el-input>
             </el-form-item>
             <div style="marginLeft: 38px;marginBottom: 15px;">
-                <el-checkbox v-model="form.checked">下达</el-checkbox>
+                <el-checkbox :disabled="readonly2" v-model="checkbox" @change="riskReleaseVo">下达</el-checkbox>
             </div>           
         </el-form>
         <!-- 4 -->
@@ -102,7 +102,7 @@
                 <el-col :span="0.1">
                     <el-button type="primary" v-show="isBtn" @click="saveClick('save')">保 存</el-button>
                     <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')">提 交</el-button>
-                    <el-button type="info" v-show="isBtn3">风险关闭</el-button>
+                    <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button>
                     <el-button @click="resetClick('sub2','sub3','sub4','sub5','sub6')">取 消</el-button>
                 </el-col>
             </el-row>
@@ -117,7 +117,9 @@ import {
     risktype, 
     riskreporttype, 
     riskmatrix,
-    riskdistinguish_add 
+    riskdistinguish_add,
+    riskdistinguish_update,
+    riskdistinguish_update_sisclose 
     } from "~api/cube.js";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
@@ -132,44 +134,15 @@ export default {
         yxcd: Object,
         newThis: Object,
         flag: Boolean,
-        modify: Boolean
+        modify: Boolean,
+        numOpen: Number
     },
     data(){
-        var validate_sriskname = (rule, value, callback) => { 
-            if (value === '')callback(new Error('请输入风险名称'));
-            if (value !== '')callback();
-        };
-        var validate_srisktype = (rule, value, callback) => { 
-            if (value === '' || value === null)callback(new Error('请选择风险类型'));
-            if (value !== '' && value !== null)callback();
-        };
-        var validate_sriskdescription = (rule, value, callback) => {
-            if (value === '')callback(new Error('请输入风险概述'));
-            if (value !== '')callback();
-        };
-        var validate_nprobability = (rule, value, callback) => {
-            if (value === '' || value === null)callback(new Error('请选择风险发生概率'));
-            if (value !== '' && value !== null)callback();
-        };
-        var validate_ninfluence = (rule, value, callback) => {
-            if (value === '' || value === null)callback(new Error('请选择风险影响程度'));
-            if (value !== '' && value !== null)callback();
-        };
-        var validate_sreporttype = (rule, value, callback) => {
-            if (value === '' || value === null)callback(new Error('请选择风险报告类型'));
-            if (value !== '' && value !== null)callback();
-        };
-        var validate_smeasures = (rule, value, callback) => {
-            if (value === '')callback(new Error('请输入采取措施'));
-            if (value !== '')callback();
-        };
-        var validate_sproposal = (rule, value, callback) => {
-            if (value === '')callback(new Error('请输入应对建议'));
-            if (value !== '')callback();
-        };
+        
         return {
             riskProbability: false,
             readonly: false ,       // 只读属性（查看按钮触发时用到）
+            readonly2: false,       // 下达专用
             isBtn: true,            // 保存 按钮的显示与隐藏
             isBtn2: true,           // 提交 按钮的显示与隐藏
             isBtn3: true,           // 风险关闭 按钮的显示与隐藏
@@ -183,6 +156,8 @@ export default {
             optiond: [],            // 风险影响程度数组（请求的数据）
             optione: [],            // 报告类型数组（请求的数据）
             optiong: [],
+            checkbox: false ,       // 下达按钮的状态
+            addOpen: "",
             // form2: {},
             form: {
                 sriskname: "",              // 风险名称
@@ -202,22 +177,22 @@ export default {
             isReportType: false,    // 控制报告类型的显示与隐藏
             // 
             rules2:{
-                sriskname: [{ validator: validate_sriskname, trigger: 'blur' }],
-                srisktype: [{ validator: validate_srisktype, trigger: 'change' }]
+                // sriskname: [{ validator: validate_sriskname, trigger: 'blur' }],
+                // srisktype: [{ validator: validate_srisktype, trigger: 'change' }]
             },
             rules3:{
-                sriskdescription: [{ validator: validate_sriskdescription, trigger: 'blur' }]
+                // sriskdescription: [{ validator: validate_sriskdescription, trigger: 'blur' }]
             },
             rules4:{
-                nprobability: [{ validator: validate_nprobability, trigger: 'change' }],
-                ninfluence: [{ validator: validate_ninfluence, trigger: 'change' }]
+                // nprobability: [{ validator: validate_nprobability, trigger: 'change' }],
+                // ninfluence: [{ validator: validate_ninfluence, trigger: 'change' }]
             },
             rules5:{
-                sreporttype: [{ validator: validate_sreporttype, trigger: 'change' }]
+                // sreporttype: [{ validator: validate_sreporttype, trigger: 'change' }]
             },
             rules6:{
-                smeasures: [{ validator: validate_smeasures, trigger: 'blur' }],
-                sproposal: [{ validator: validate_sproposal, trigger: 'blur' }]
+                // smeasures: [{ validator: validate_smeasures, trigger: 'blur' }],
+                // sproposal: [{ validator: validate_sproposal, trigger: 'blur' }]
             }
         }
     },
@@ -227,12 +202,6 @@ export default {
         let $params = this.$store.state.prame.command;
         let sfilluser = this.$store.getters.user.user.userName;
         let departmentname = this.$store.getters.user.dept[0].sname ;
-        // 查看按钮触发时设置成只读（不允许修改，只能看）
-            if(viewBtn){
-                this.readonly2 = true ;
-            }else{
-                this.readonly2 = false ;
-            }
         // 全局控制选择的报告类型0不显示，1显示
             this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
             if(this.reporttype){
@@ -255,31 +224,68 @@ export default {
         // 报告类型请求
         this.sreporttypeRequest() ;
     },
+    watch: {
+        numOpen(){
+            // debugger
+            // this.$message('132');
+            this.addDialog() ;
+        }
+    },
     computed: {
         // 监听事件（区分查看状态和添加状态）
         flager: function(){
             // debugger
+            let viewRow = {} ;
             let viewBtn = this.newThis.view_btn ;
+            let modifyBtn = this.newThis.modify_btn ;
             if(viewBtn){
+                this.$message({ message: '温馨小提示，只能查看哦！不能编辑！', type: "warning" }) ;
                 this.readonly = true ;      // 只读/禁用
+                this.readonly2= true ;      // 下达禁用
                 this.isBtn = false ;        // 保存 按钮的隐藏
                 this.isBtn2 = false ;       // 提交 按钮的隐藏
                 this.isBtn3 = false ;       // 风险关闭 按钮的隐藏
-                let viewRow = this.newThis.view_row ;
-                this.form = viewRow ;
-                this.$message({ message: '温馨小提示，只能查看哦！不能编辑！', type: "warning" }) ;
-            }else{
+            }else if(modifyBtn){
                 this.readonly = false ;     // 可填写/可选择
                 this.isBtn = true ;        // 保存 按钮的显示
                 this.isBtn2 = true ;       // 提交 按钮的显示
                 this.isBtn3 = true ;       // 风险关闭 按钮的显示
-                this.form = mini.getForm(this) ;
+                if(this.newThis.view_row.sissubmit == "已提交"){    // 已提交的可以风险关闭/ 未提交的不允许风险关闭
+                    this.isBtn3 = true ;
+                    this.readonly2= false ;      // (已提交)下达启用
+                }else{
+                    this.isBtn3 = false ;
+                    this.readonly2= true ;       // (未提交)下达禁用
+                }
+            }
+            if(modifyBtn || viewBtn){
+                viewRow = this.newThis.view_row ; 
+                for(let key in this.form){
+                    this.form[key] = "" ;
+                }               
+                for(let key in viewRow){
+                    this.form[key] = viewRow[key] ;
+                }               
+                
+            }else{
+                this.addDialog() ;
             }
         }
     },
     methods: {
-        closeDialog(){
-            debugger
+        addDialog(){
+            // debugger
+            this.readonly = false ;     // 可填写/可选择
+            this.readonly2= true ;      // 添加弹出框下达按钮禁用
+            this.isBtn = true ;        // 保存 按钮的显示
+            this.isBtn2 = true ;       // 提交 按钮的显示
+            this.isBtn3 = true ;       // 风险关闭 按钮的显示
+            if(this.form.sfilluser){
+                this.form = {} ;
+                this.form = mini.getForm(this) ;
+            }else {
+                this.form = mini.getForm(this) ;
+            }
         },
         // 0. 风险名称输入超出限制提示 <=50
         descInput_sriskname(){
@@ -397,44 +403,160 @@ export default {
         /**
          * @event (1)保存按钮/提交按钮
          */
-        saveClick(value, value2,value3,value4,value5){
+        saveClick(value, value2,value3,value4,value5){ 
+            debugger
             let me = this ;
-            let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
+            let viewTrue = false ;
+            // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
             let params = mini.getParams(me, value) ;               // 获取请求参数
-            if(value != "save"){
-                me.$refs[value].validate((valid) => { if(valid)t1 = true; })
-                me.$refs[value2].validate((valid) => { if(valid)t2 = true; })
-                me.$refs[value3].validate((valid) => { if(valid)t3 = true; })
-                me.$refs[value4].validate((valid) => { if(valid)t4 = true; })
-                me.$refs[value5].validate((valid) => { if(valid)t5 = true; })
-                if(t1 && t2 && t3 && t4 && t5){
-                    me.riskdistinguishRequest(params) ;
-                }else{
-                    me.$message({message:'请填写完整再提交哦！',type: "warning"});
-                }
+            // 添加页面的保存与提交
+            if(me.newThis.modify_btn !== 1){
+                if(value != "save"){
+                    // 有没有空的  
+                    if(!me.isEmpty(me)){
+                        me.$message({message:'请填写完整再提交哦！',type: "warning"});
+                    } else {
+                    // 提交
+                        me.riskdistinguishRequest(params) ;      
+                    }         
+                }else{    
+                    // 保存 
+                    me.riskdistinguishRequest(params) ;                
+                } 
+            // 修改页面的保存与提交  
             }else{
-                me.riskdistinguishRequest(params) ;
-            }           
+                // 已提交的修改页面
+                if(me.form.sissubmit === "已提交"){
+                    me.modify_add_yes(me, params) ;
+                // 未提交的修改页面
+                }else{
+                    me.modify_add_no(me, params, value) ;
+                }
+            }
+             
+        },
+        /**
+         * @event 修改弹出框页面/保存+提交的事件（已提交的风险）yes
+         */
+        modify_add_yes(me, params){ 
+            // debugger
+            // 有没有空的
+            if(!me.isEmpty(me)){
+                me.$message({message:'请填写完整再提交哦！',type: "warning"});
+            }else{
+            // 没有改动的提示一下，不给保存，浪费资源
+                if(mini.getForChange(me))me.$message({ message: '暂无改动！', type: 'warning' }) ;
+            }
+            // 即无空亦有改动则保存/提交也
+            if(me.isEmpty(me) && !mini.getForChange(me)){
+                me.modify_riskdistinguishRequest(params) ;
+            }
+        },
+        /**
+         * @event 修改弹出框页面/保存+提交的事件（未提交的风险）no
+         */
+        modify_add_no(me, params, value){ 
+            // debugger
+            // 保存按钮
+            if(value === "save"){
+                // (1)有没有变动
+                if(mini.getForChange2(me))me.$message({ message: "暂无改动！", type: "warning" }) ;
+                // (2)没有变动直接保存修改即可
+                if(!mini.getForChange2(me)){
+                    me.modify_riskdistinguishRequest(params) ;
+                }
+            // 提交按钮
+            }else{
+                // (1)有没有空的
+                if(!me.isEmpty(me)){
+                    me.$message({ message: "请填写完整！", type: "warning" }) ;
+                }else{
+                // (2)没有就提交修改
+                    me.modify_riskdistinguishRequest(params) ;
+                }
+                
+            }
+        },
+        // empty 判断提交的时候有没有空的  空则不提交  并且提示
+        isEmpty(me){
+            // debugger
+            // 有没有空的  
+            for(let keys in me.form){
+                if(!me.form[keys] && (me.form[keys]=="" || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
+                    return false ;
+                }
+            }
+            return true ;   
+        },
+        /**
+         * @event 添加弹出框的下达按钮/修改弹出框的下达按钮
+         */
+        riskReleaseVo(){
+            // debugger
+            this.$message('下达') ;
         },
         /**
          * @event (2)添加/提交请求接口
          */
         riskdistinguishRequest(params){ 
+            // debugger
             let me = this ;
             riskdistinguish_add(params).then(res => { 
-                if(res.data.code === 200)me.$message({message: res.data.msg, type: "success"}) ;
+                if(res.data.code === 200){
+                    if(params[0].sissubmit == "Y")me.readonly2 = false ;
+                    me.$message({message: res.data.msg, type: "success"}) ;
+                }else{
+                    me.$message.error(res.data.msg) ;
+                }
                 me.newThis.axiosJson() ;
             });
         },
         /**
-         * @event (3)取消按钮
+         * @event (3)添加/提交请求接口（注：修改弹出框的按钮）
+         */
+        modify_riskdistinguishRequest(params){ 
+            // debugger
+            let me = this ;
+            riskdistinguish_update(params).then(res => { 
+                if(res.data.code === 200){
+                    if(params[0].sissubmit == "Y")me.readonly2 = false ;    //注：提交之后才可以下达
+                    me.$message({message: res.data.msg, type: "success"}) ;
+                }else{
+                    if(res.data.code !== 200)me.$message.error(res.data.msg) ;
+                }
+                me.newThis.axiosJson() ;
+            });
+        },
+        /**
+         * @event (4)风险关闭按钮
+         */
+        riskCloseClick(){
+            // debugger
+            // let me = this ;
+            // let params = mini.getParams(me, "sub2") ;  
+            // if(me.newThis.modify_btn === 1){
+            //     if(me.form.sissubmit == "已提交"){
+            //         let data = {
+            //             id : me.form.id
+            //         } ;
+            //         // let id = me.form.id ;
+            //         riskdistinguish_update_sisclose(data).then(ress => {
+            //             debugger
+            //         })
+            //     }       
+            // }
+            // if(me.form.sissubmit === "已提交"){
+            //     riskdistinguish_update_sisclose().then(ress => {
+
+            //     })
+            // }            
+        },
+        /**
+         * @event (5)取消按钮
          */
         resetClick(value, value2,value3,value4,value5){
-            this.$refs[value].resetFields();
-            this.$refs[value2].resetFields();
-            this.$refs[value3].resetFields();
-            this.$refs[value4].resetFields();
-            this.$refs[value5].resetFields();
+            
+            this.newThis.viewReadonly = false ;
             this.newThis.dialogFormVisible = false ;
         }
     }
