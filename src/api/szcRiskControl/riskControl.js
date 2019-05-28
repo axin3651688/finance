@@ -49,6 +49,8 @@ export function updateInstruction(params) {
     return request({
         url: '/zjb/riskreportstate/update_bynrelateids',
         method: 'post',
+        // contentType: 'application/json;charset=UTF-8',
         data: params
+            // dataType: 'json'
     })
 }

@@ -175,24 +175,45 @@
                 setTimeout(function () {
                     let _riskInstructionData = _this.riskInstructionData;
 
-                    let params = [
-                        {
-                            company: company,
-                            nrelateid: _this.dialogData['riskid'],
-                            period: _this.parsePeriod(),
-                            scompanyname: user.companyName,
-                            sfeedbackscontent: _riskInstructionData,
-                            sfeedbackuser: user.userName,
-                            sfeedbackusername: user.trueName,
-                            sfeedbacktime: '2019-05-27 09:20:22',
-                            sisfeedback: "1",
-                            sriskname: _this.dialogData['riskname'],
+                    let params = {
+                        riskReportStateDtos:[
+                            {
+                                company: company,
+                                nrelateid: _this.dialogData['riskid'],
+                                period: _this.parsePeriod(),
+                                scompanyname: user.companyName,
+                                sfeedbackscontent: _riskInstructionData,
+                                sfeedbackuser: user.userName,
+                                sfeedbackusername: user.trueName,
+                                sfeedbacktime: '2019-05-27 09:20:22',
+                                sisfeedback: "1",
+                                sriskname: _this.dialogData['riskname'],
 
-                        },
-                        {
-                            users: userStr
-                        }
-                    ];
+                            },
+                        
+                        ],
+                        users:[
+                            userStr
+                        ]
+                    };
+                    // let params = {
+                    //     riskReportStateDtos:[
+                    //         {
+                    //             id: 0,
+                    //             company:company,
+                    //             nrelateid: me.formConfig.rowData.id,
+                    //             sinstructionsuser:user,
+                    //             cstrategy:selectStr,
+                    //             period: me.parsePeriod(),
+                    //             sinstructscontent:me.instructions,
+                    //             sisinstructions:"1"
+                    //         }
+                    //     ],
+                    //     users:[
+                    //         userStr
+                    //     ]
+                    // };
+                    // params = JSON.stringify(params);
                     updateInstruction(params).then(res => {
                         if (res.data.code === 200) {
                             debugger;
