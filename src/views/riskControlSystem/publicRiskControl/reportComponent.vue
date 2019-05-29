@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+
             <div ref="containerRightAll">
                 <div class="container-right" ref="containerRight">
                     <!--报告跳转界面头部内容-->
@@ -60,6 +61,7 @@
             </div>
 
         </el-container>
+
         <show-personnel-list :personnelListShow="personnelListShow" v-on:personSureBtnClicked="personSureBtnClicked"></show-personnel-list>
     </div>
 </template>
