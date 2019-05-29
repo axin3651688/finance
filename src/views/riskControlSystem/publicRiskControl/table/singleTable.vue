@@ -34,6 +34,7 @@
 
                             <div
                                     v-else-if="item.htmlType && scope.row.htmlType && scope.row.htmlType === 'text'"
+                                    :style="styleHandler(scope.row)"
                                     :class="textClassHandler(scope.row)"
                             >
                                 {{ scope.row[scope.column.property] }}
@@ -140,9 +141,18 @@
                         return "textClass02";
                     } else if (row.nlevel == "3") {
                         return "textClass03";
+                    }else {
+                        return "textClassAll";
                     }
                 } else {
                     return "";
+                }
+            },
+            styleHandler (row) {
+                debugger;
+                let me = this;
+                if(row && row.fxlxcolor){
+                    return "background-color:" + row.fxlxcolor;
                 }
             },
             setPageAdaptive() {
@@ -182,6 +192,10 @@
 
     .textClass04 {
         background-color: red;
+        border-radius: 20px;
+        color: #fff;
+    }
+    .textClassAll {
         border-radius: 20px;
         color: #fff;
     }

@@ -1,35 +1,62 @@
 <template>
     <div>
         <div class="conventional-container">
-                <div class="container-title">
-                    {{ middleData.text }}
-                </div>
-                <div>
-                    <template v-if="middleData.contentUp && middleData.contentUp.content.length > 0">
-                        <div v-for="(item,index) in middleData.contentUp.content" :key="index">
-                            <div :key="index" class="container-center">
-                                <div>
-                                    {{ item.title }}
-                                </div>
-                                <template v-if="item.content && item.content.length > 0">
-                                    <p v-for="(cntItem,cntIndex) in item.content" :key="cntIndex">
-                                        {{ cntItem }}
-                                    </p>
-                                </template>
-                            </div>
+            <div class="container-title">
+                {{ middleData.text }}
+            </div>
+            <template v-if="middleData.contentUp && middleData.contentUp.content.length > 0">
+                <template v-for="(item,indexCnt) in middleData.contentUp.content">
+                    <div class="container-top" :key="indexCnt">
+                        <div class="container-top-left">
+                            <span class="left_1">
+                                {{ item.responsibility.text }}
+                            </span>
+                            <span class="left_2">
+                                {{ item.responsibility.level }}
+                            </span>
                         </div>
-                    </template>
-                </div>
+                        <div class="container-top-right">
+                            <span class="left_1">
+                                {{ item.responsibility.company }}
+                            </span>
+                            <span class="left_2">
+                                识别人：{{ item.responsibility.identificationUser }}
+                            </span>
+                        </div>
+                    </div>
+                    <div :key="indexCnt + 10">
+                        <template v-if="item.content && item.content.length > 0">
+                            <div v-for="(itemLast,index) in item.content" :key="index">
+                                <div :key="index" class="container-center">
+                                    <div>
+                                        {{ itemLast.title }}
+                                    </div>
+                                    <template v-if="itemLast.content && itemLast.content.length > 0">
+                                        <p v-for="(cntItem,cntIndex) in itemLast.content" :key="cntIndex">
+                                            {{ cntItem }}
+                                        </p>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <reportControlInstruction v-if="showComponent && showComponent == 'riskControl'" :key="indexCnt + 20" :contentDown="item.contentDown"></reportControlInstruction>
+                </template>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
+    import reportControlInstruction from './reportControlInstruction'
     export default {
         name: "reportConventional",
-        components: {},
+        components: {
+            reportControlInstruction
+        },
         props: {
-            middleData:Object
+            middleData:Object,
+            showComponent:String
         },
         data() {
             return {

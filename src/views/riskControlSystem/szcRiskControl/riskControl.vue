@@ -24,9 +24,7 @@
                                 <reportContent :reportData="reportData"></reportContent>
                             </el-col>
                         </el-row>
-                        
                     </div>
-                    <el-button @click="lookInstructions"></el-button>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -76,6 +74,7 @@ export default {
     },
     data() {
         return {
+            // showComponent:""//控制显示报告下面的组件批示
             dialogTitle:"关于【风险名称】的批示",
             fixedTitle:"关于【风险名称】的批示",
             tableData:[],
@@ -168,7 +167,17 @@ export default {
          */
         updateView () {
             let me = this,selectItem = me.selectItem;
-            me.queryDataOfInstructions(selectItem);
+            let currentTab = me.activeName,judgeParams = {
+                id:"stable",
+                sqlId:'101'
+            };
+            if(currentTab == "second") {
+                judgeParams = {
+                    id:"treeTable",
+                    sqlId:"103"
+                }
+            }
+            me.queryDataOfInstructions(selectItem,judgeParams);
         },
         /**
          * 处理tab切换点击事件。
@@ -218,6 +227,10 @@ export default {
             }else {
                 period = year + "0" + month;
                 monthStr = "0" + month;
+            }
+            //判断是不是点击报告的scope
+            if(judgeParams && judgeParams.scope){
+                company = judgeParams.scope.row.scode;
             }
             let params = {
                 company:company,
@@ -318,8 +331,9 @@ export default {
                 if(res.data.code == 200) {
                     debugger;
                     // me.reportData = res.data.reportData;
-                    me.reportData = me.showDataOfInstruction(lookData,res.data.reportData);
-                    me.treeTableShow = false;
+                    me.showDataOfInstruction(lookData,res.data.reportData);
+                    // me.reportData = res.data.reportData;
+                    // me.treeTableShow = false;
                 }
             });
         },
@@ -329,12 +343,14 @@ export default {
          * 查看
          */
         buttonHandler (scope,btnItem) {
+            debugger;
             let me = this;
             if(btnItem){
                 let id = btnItem.id;
                 if(id == "0"){
                     //批示.
-                    me.instructionsState(scope);
+                    // me.instructionsState(scope);
+                    me.lookInstructions(scope);
                 }else if (id == "1") {
                     me.lookInstructions(scope);
                 }else if (id == "2") {
@@ -375,10 +391,12 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions_old (scope) {
+        lookInstructions (scope) {
+            debugger;
             let me = this,selectItem = me.selectItem,judgeParams = {
                 id:"lookInstruc",
-                sqlId:"104"
+                sqlId:"104",
+                scope:scope
             };
             me.queryDataOfInstructions(selectItem,judgeParams);
         },
@@ -386,7 +404,7 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions () {
+        lookInstructions_old () {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 debugger;
@@ -523,7 +541,8 @@ export default {
             let me = this,selectItem = me.selectItem;
             //10401 自定义的 表示批示下达之后要进行的操作。
             if(params.id == "10401"){
-                me.queryDataOfInstructions(selectItem);
+                let judgeParams = me.getJudgeParams();
+                me.queryDataOfInstructions(selectItem,judgeParams);
             }
         },
         /**
