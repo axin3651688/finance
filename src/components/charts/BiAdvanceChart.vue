@@ -53,9 +53,18 @@ export default {
     } else this.upData(this.item);
   },
   computed: {
-    isShow() {
-      let flag = Cnbi.isEmpty(this.item.datas[0]);
+    // isShow() {
+    //   let flag = Cnbi.isEmpty(this.item.datas[0]);
+    //   return flag;
+    // },
+    isShow: {
+      get() {
+        let flag = Cnbi.isEmpty(this.item.datas[0]);
       return flag;
+      },
+      set(val) {
+        return val
+      }
     },
     divHeight() {
       return this.chartOptions.height_s ? this.chartOptions.height_s : "294px";
@@ -140,6 +149,7 @@ export default {
           );
           this.chartOptions.series[0].data = chartDatas;
         } else if (subType == "gauge") {
+          // debugger
           // this.chartOptions.series[0].data = [
           //   { value: this.item.options.datas[0].value }
           // ];

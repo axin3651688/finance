@@ -46,7 +46,7 @@ export default {
       this.$set(this, "item", this.item);
       this.$set(this.item.options, "datas", tempData);
       let children = this.$children;
-      debugger;
+      // debugger;
       if (from && children && children.length > 0 && children[0].upData) {
         children[0].upData(this.item);
       }

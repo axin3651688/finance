@@ -67,7 +67,7 @@ export default {
       this.fetchData(dat);
     },
     cellStyle(row) {
-      // debugger;
+      debugger;
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }

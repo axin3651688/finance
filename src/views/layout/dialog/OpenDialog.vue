@@ -12,12 +12,19 @@
     :before-close="closePop"
     class="OpenDialog"
   >
+    
     <span slot="title" class="dialog-title">
       <!-- <i class="iconfont icon-shanchuguanbicha2 item_img"></i> -->
       <!-- <img src="@a/icons/jsnk/laba.svg"> -->
+      <!-- <button @click="radio" v-if="showDialog.button">{{showDialog.button}}</button> -->
       <span>{{showDialog.tittle}}</span>
     </span>
+    <audio ref="bobao" style="margin-bottom:30px" @click="radio" v-if="showDialog.button" controls>
+      <source src="./1_201606_1-1416001.mp3" type="audio/mpeg">
+        您的浏览器不支持 audio 元素。
+    </audio>
     <BiModule v-if="showDialog.isShow" :dialogData="showDialog.api"></BiModule>
+    
   </el-dialog>
 </template>
 <script>
@@ -34,6 +41,12 @@ export default {
     ...mapGetters(["showDialog", "showMeluList"]),
     target() {
       return this.showDialog.api;
+    },
+    button() {
+      let bu = this.showDialog.button?true:false;
+      alert(this.showDialog.button+bu);
+      console.trace(this.bu)
+      return bu;
     }
   },
   methods: {
@@ -41,6 +54,18 @@ export default {
     closePop() {
       debugger;
       this.ShowDialog({ isShow: false });
+    },
+    radio(){
+      debugger
+      this.$refs.bobao.play()
+      console.log('bobao---------')
+      
+      // let audio=document.createElement("audio");
+      // audio.src='@static/mp3/1_201606_1-1416001.mp3';//路径
+      
+      // let audio = new Audio('@static/mp3/sfdsf.mp3');
+      // audio.play();
+     
     }
   }
 };

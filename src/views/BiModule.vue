@@ -230,6 +230,9 @@ export default {
     },
     dialogData() {
       this.loadRemoteSource(this.dialogData);
+      console.log('*********加载加载模块资源****************')
+      console.log(this.loadRemoteSource(this.dialogData))
+      console.log('***************************')
     }
   },
 
@@ -325,6 +328,7 @@ export default {
      * fromClick  来自点击
      */
     loadModule() {
+      debugger;
       this.debug = 1; //临时的动作
       if (this.module_api) {
         this.api = this.module_api;
@@ -352,6 +356,7 @@ export default {
      * 加载加载模块资源
      */
     loadRemoteSource(api) {
+      debugger
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
       if (!api) {

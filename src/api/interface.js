@@ -62,6 +62,7 @@ export function findThirdPartData(params) {
     if (!params.cubeId) {
         params.cubeId = JSON.parse(localStorage.database).license.id;
     }
+
     return request({
         method: "post",
         url: params.url || "/api/api/find_cube_map/",
@@ -81,7 +82,8 @@ export function findDesignSource(sourceId, url) {
         url = sourceId;
         sourceId = 0;
     }
-    let api = sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
+    let num = url.indexOf("zbfx.json");
+    let api = num == -1 && sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
     return request({
         url: api,
         method: 'get',
@@ -118,6 +120,21 @@ export function SAVE_MODULE_MSG(datas) {
         url: '/api/api/new/save_module_msg',
         method: 'post',
         data: datas
+    })
+}
+
+/**
+ * 催报消息操作接口
+ *
+ */
+export function queryCellDetail(datas) {
+    console.log("请求原因弹框详细信息");
+    console.log(datas);
+    debugger
+    return request({
+        url: '/api/api/find_data?cubeId=' + datas.cubeId + '&sql=' + datas.sql,
+        method: 'post'
+            // data: datas
     })
 }
 

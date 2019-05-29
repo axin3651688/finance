@@ -145,6 +145,7 @@ export default {
           //   { value: this.item.options.datas[0].value }
           // ];
           // 为了做演示,先搞个1-100的随机取数
+          debugger
           this.chartOptions.series[0].data = [
             { value: (Math.random() * 100).toFixed(2) }
           ];
