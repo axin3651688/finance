@@ -23,8 +23,10 @@
             >
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
-                        :dialogData="this.dialogData"
-                        @closeDialogContent1="closeDialogContent1"
+                        :dialogData.sync="this.dialogData"
+                        :dataChanged="dataChanged"
+                        @dataMessageChange="dataMessageChange"
+                        @closeTrackDialogContent="closeTrackDialogContent"
                 >
                 </dialog-component>
             </el-dialog>
@@ -69,33 +71,34 @@
                 trackDialogVisible: false,
                 tableData: [],
                 columns: [],
-                selectedItem:'',
+                selectedItem: '',
                 value: '',
+                dataChanged: false,
                 dialogData: {
                     dialogRiskType: "riskTrack",
                     riskname: "",
                     contentHeader: {
                         content: [
                             {
-                                dataType: 'riskType',
+                                dataType: 'risktype',
                                 label: "风险类型",
                                 disableEdit: true,
                                 text: '风险类型自动填入'
                             },
                             {
-                                dataType: 'riskProbability',
+                                dataType: 'riskprobability',
                                 label: "风险发生概率",
                                 disableEdit: true,
                                 text: '很大的可能性'
                             },
                             {
-                                dataType: 'riskDegree',
+                                dataType: 'riskdegree',
                                 label: "风险影响程度",
                                 disableEdit: true,
                                 text: '极重'
                             },
                             {
-                                dataType: 'riskLevel',
+                                dataType: 'risklevel',
                                 label: "风险等级",
                                 disableEdit: true,
                                 text: '极重'
@@ -105,19 +108,19 @@
                     contentMiddle: {
                         content: [
                             {
-                                dataType: 'riskOverview',
+                                dataType: 'riskoverview',
                                 label: "风险概述",
                                 disableEdit: true,
                                 text: '自动带出，不可编辑'
                             },
                             {
-                                dataType: 'riskMeasure',
+                                dataType: 'riskmeasure',
                                 label: "采取措施",
                                 disableEdit: true,
                                 text: '自动查询风险识别的内容显示'
                             },
                             {
-                                dataType: 'riskSuggest',
+                                dataType: 'risksuggest',
                                 label: "应对建议",
                                 disableEdit: true,
                                 text: '自动查询风险识别的内容显示'
@@ -128,6 +131,8 @@
                         content: [
                             {
                                 dataType: 'risk_sb',
+                                risk_up_user:'',
+                                risk_up_time:'',
                                 schedule: '进度一',
                                 text: '风险上报',
                                 state: '已上报',
@@ -135,6 +140,8 @@
                             },
                             {
                                 dataType: 'risk_ps',
+                                risk_up_user:'',
+                                risk_up_time:'',
                                 schedule: '进度二',
                                 text: '风险批示',
                                 state: '未批示',
@@ -142,6 +149,9 @@
                             },
                             {
                                 dataType: 'risk_fq',
+                                risk_up_user:'',
+                                risk_up_time:'',
+                                risk_up_content:'',
                                 schedule: '进度三',
                                 text: '风险反馈',
                                 state: '未反馈',
@@ -149,7 +159,6 @@
                             }
                         ]
                     }
-
                 },
             }
         },
@@ -178,7 +187,9 @@
                 } else if (it.id === '1') {
                     //查看操作
                     this.trackDialogVisible = true;
-                    this.dialogData['riskname'] = scope.row.riskname;
+                    // this.dialogData['riskname'] = scope.row.riskname;
+                    this.dialogContentShow(scope);
+
                 } else if (it.id === '2') {
                     //退回流程操作
                     alert('退回流程操作')
@@ -195,13 +206,6 @@
             getDialogTitle() {
                 let _riskname = this.dialogData.riskname;
                 return '关于【' + _riskname + '】的追踪';
-            },
-
-            /**
-             * 关于某个风险的追踪弹出按钮
-             * */
-            closeDialogContent1() {
-                this.trackDialogVisible = false;
             },
 
             /**
@@ -313,6 +317,107 @@
              */
             updateView() {
                 this.getRiskTrackData();
+            },
+
+            /**
+             * 风险追踪弹出层展示
+             * @param scope
+             */
+            dialogContentShow(scope) {
+                let row = scope.row,
+                    dataIndex = row.rownum - 1;
+                let _data = this.tableData[dataIndex];
+                this.dialogDataFormat(_data);
+            },
+
+            /**
+             * 格式化数据用于显示在弹出层里面
+             * @param data
+             */
+            dialogDataFormat(data) {
+                let _dialogData = this.dialogData;
+                _dialogData.riskname = data.riskname;
+                _dialogData.riskid = data.scode;
+                _dialogData.rownum = data.rownum;
+                let contentHeader = _dialogData.contentHeader,
+                    contentMiddle = _dialogData.contentMiddle,
+                    contentFoot = _dialogData.contentFoot;
+
+                contentHeader.content.forEach((item) => {
+                    item.text = data[item.dataType]
+                });
+                contentMiddle.content.forEach((item) => {
+                    item.text = data[item.dataType]
+                });
+                contentFoot.content.forEach((item)=>{
+                    item.state = data[item.dataType];
+                    if(item.dataType === 'risk_sb'){
+                        item.risk_up_user = data.sreportuser;
+                        item.risk_up_time = data.sreporttime;
+                    }else if(item.dataType === 'risk_ps'){
+                        item.risk_up_user = data.sinstructionsuser;
+                        item.risk_up_time = data.sinstructiontime;
+                        item.risk_up_content = data.sinstructscontent;
+                    }else if(item.dataType === 'risk_fq'){
+                        item.risk_up_user = data.sfeedbacksuser;
+                        item.risk_up_time = data.sfeedbacktime;
+                        item.risk_up_content = data.sfeedbackscontent;
+                    }
+
+                });
+
+                this.dataChanged = !this.dataChanged;
+            },
+
+            /**
+             * 上一条下一条数据变化
+             * @param obj
+             */
+            dataMessageChange(obj) {
+                // $message 可传入的type的值
+                // 'success' | 'warning' | 'info' | 'error'
+
+                let _index = obj.rowIndex - 1;
+                let _data = this.tableData;
+                let newData = null;
+                if (obj.flag === 'up') {
+                    newData = _data[_index - 1];
+                    if (_index - 1 < 0) {
+                        this.$message({
+                            message: '已经是第一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogDataFormat(newData);
+                    this.$message({
+                        message: '切换上一条成功',
+                        type: "success"
+                    });
+                } else if (obj.flag === 'down') {
+
+                    newData = _data[_index + 1];
+                    if (_index - 1 >= _data.length - 2) {
+                        this.$message({
+                            message: '已经是最后一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogDataFormat(newData);
+                    this.$message({
+                        message: '切换下一条成功',
+                        type: "success"
+                    });
+                }
+
+            },
+
+            /**
+             * 弹出层关闭按钮事件处理
+             */
+            closeTrackDialogContent(){
+                this.trackDialogVisible = false;
             }
         }
     }

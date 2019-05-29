@@ -2,26 +2,27 @@
     "id": "riskReport",
     "text": "风险报告树表",
     "config": {
-        "sql": "SELECT D.ROOT_SCODE GSBM, D.SNAME GSMC, D.SPCODE PID, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY GSBM"
+        "sql": "select a.scode as scode , a.sname as company,a.spcode as spcode, case c.SISREPORT when 'Y' then '已上报' else '未上报' end as srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel from(select scode, sname, spcode, connect_by_isleaf as nleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode) a left join (select DIM_COMPANY, case when ncount > 0 then '已上报' else '未上报' end as srepotstate, case when ncount > 0 then 'Y' else 'N' end as SISREPORT, 'fuq' as SREPORTUSER from (select DIM_COMPANY, count (*) as ncount from RISK_REPORTSTATE where NRELATEID in (select nid from risk_distinguish where dim_company = :company and substr(screatetime,1,6) <= :period) and SISREPORT = '1' group by DIM_COMPANY)) c on a.scode = c.dim_company"
+        // "sql": "SELECT D.ROOT_SCODE GSBM, D.SNAME GSMC, D.SPCODE PID, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY GSBM"
         // "sql": "SELECT NID, A.DIM_CUSUPPLIERNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,( CASE WHEN ISINSIDE is null then null when ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB, ( CASE WHEN ISNORMAL is null then null when ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC, D.SNAME AS FZCFL, E.SNAME AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM ( SELECT NID, DIM_CUSUPPLIER, DIM_COMPANY, DIM_ITEM, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D, ISNATURE, ISINSIDE, ISNORMAL, SCONTENTA, SCONTENTB, FACT_E, FACT_F, FACT_G, FACT_H,DIM_CUSUPPLIERNAME FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1001' AND ISINSIDE IS NOT NULL) A LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE "
     },
     "columns": [
         {
-            "id": "gsmc",
+            "id": "company",
             "text": "公司名称",
             "tepe": "string",
             "align": "left",
             "width": "460"
         },
         {
-            "id": "bgzt",
+            "id": "srepotstate",
             "text": "报告状态",
             "tepe": "string",
             "align": "center",
             "width": "160"
         },
         {
-            "id": "sbr",
+            "id": "sreportuser",
             "text": "上报人",
             "tepe": "string",
             "align": "center",
@@ -29,7 +30,8 @@
         },
         {
             "id": "cz",
-            "text": "操作"
+            "text": "操作",
+            "align": "center"
         }
     ],
     "rows": [
@@ -96,7 +98,7 @@
                             company: $this.$store.getters.company   // 公司
                         }
                         // 子组件向父组件传值
-                        $this.$emit("showreportdetailp", params);
+                        // $this.$emit("showreportdetailp", params);
                     }
                 },
                 {
@@ -114,14 +116,10 @@
             ],
             "queryDataAfter": function(data, $vue){
                 // debugger
-                data.forEach(res => {
-                    if(res.bgzt == "0")res.bgzt = "未上报";
-                    if(res.bgzt == "1")res.bgzt = "已上报";
-                    if(res.children && res.children.length>0)this.queryDataAfter(res.children);
-                });
+                let cc = this ; 
                 return data; 
             },
-            "drillProperties": ["bgzt"],
+            "drillProperties": ["srepotstate"],
             "cellStyle": function({row, column, rowIndex, columnIndex}, $vue){
                 // debugger
                 let css = "padding: 4px 0;";
@@ -132,7 +130,7 @@
                 }
                 let drillProperties = this.drillProperties;
                 if (drillProperties.indexOf(pro) != -1) {
-                    if(row.bgzt == "已上报"){
+                    if(row.srepotstate == "已上报"){
                         let drill = "text-decoration: none;color: green;font-weight: bold;";
                         css = css + textIndent + drill;
                         return css;

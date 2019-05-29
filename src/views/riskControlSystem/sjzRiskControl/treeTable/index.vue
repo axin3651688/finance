@@ -1,10 +1,19 @@
+<!--
 /**
-* @Author: cwt
+* @Author: sjz
 * @Date:   2019-5-6
 * 树表渲染，列项有按钮的树表
 */
+-->
 <template>
-    <el-table :data="formatData" :row-style="showRow" v-bind="$attrs" stripe border>
+    <el-table 
+    :data="formatData" 
+    :row-style="showRow" 
+    v-bind="$attrs" 
+    :cell-style="cellStyle"
+    :height="heights"
+    stripe 
+    border>
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
@@ -17,7 +26,7 @@
         </el-table-column>
         <!-- sjz 序号 -->
         <el-table-column v-if="item.index" type="index" lable="序号"></el-table-column>
-        <el-table-column v-else v-for="(column, index) in columns" :key="column.id" :prop="column.id" :label="column.text" :width="column.width">
+        <el-table-column v-else v-for="(column, index) in columns" :key="column.id" :prop="column.id" :label="column.text" :width="column.width" :align="column.align">
             <template slot-scope="scope">
                 <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                 <!-- 图标 -->
@@ -30,11 +39,25 @@
                 {{scope.row[column.id]}}
                 <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span>
                 <!-- sjz 按钮 -->
-                <span v-if="column.id === 'cz' && item.tableBtn.length>0" >
-                    <el-button                 
+                <span v-if="column.id === 'cz' && item.tableBtn.length>0">
+                    <el-button
+                    v-if="scope.row.srepotstate == '未上报'"           
                     v-for="(btn,index) in item.tableBtn"
-                    v-show="btn.show"
+                    v-show="btn.show && (btn.id==1 || btn.id==4)"
                     style="fontSize: 14px;height: 30px"
+                    :key="btn.id"
+                    :class="btn.icon"
+                    @click="btnClick(btn)"
+                    size="mini"
+                    type="primary" 
+                    plain>
+                        {{ btn.text }}
+                    </el-button>
+                    <el-button
+                    v-if="scope.row.srepotstate == '已上报'"          
+                    v-for="(btn,index) in item.tableBtn"
+                    v-show="btn.show && (btn.id==2 || btn.id==3)"
+                    style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
                     :key="btn.id"
                     :class="btn.icon"
                     @click="btnClick(btn)"
@@ -52,7 +75,8 @@
 
 <script>
     import treeToArray from './eval'
-
+    // 引用公用 js 方法
+    import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
     export default {
         name: 'treeTable',
         props: {
@@ -73,8 +97,17 @@
                 default: false
             }
         },
+        data(){
+            return {
+                heights: 0
+            }
+        },
         created(){
-            
+            this.heights = document.body.offsetHeight - 124 ;
+        },
+        mounted(){
+            // 自适应高度
+            this.getClientHeight();
         },
         computed: {
             // 格式化数据源
@@ -87,10 +120,20 @@
                 }
                 const func = this.evalFunc || treeToArray;
                 const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
-                return func.apply(null, args)
+                const lyuo = func.apply(null, args) ;
+                return mini.getOpenbyDefault(lyuo ) //默认全部展开
             }
         },
         methods: {
+            // 自适应高度
+            getClientHeight(){
+                this.heights = document.body.offsetHeight - 124 ;
+                const me = this ;
+                window.onresize = function temp(){ 
+                    me.heights = document.body.offsetHeight - 124 ;
+                }
+            },
+            // 显示与隐藏
             showRow: function (row) {
                 const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
                 row.row._show = show;
@@ -121,6 +164,17 @@
                 }else{
                     this.$message('暂无此功能开发！');
                 }   
+            },
+            /**
+             * @author sjz
+             * @event 单元格的-style-的回调方法，也可以使用一个固定的-Object-为所有单元格设置一样的 Style
+             */
+            cellStyle({row, column, rowIndex, columnIndex}){
+                if(this.item.cellStyle && typeof this.item.cellStyle == "function"){
+                    return this.item.cellStyle({row, column, rowIndex, columnIndex}, this) ;
+                }else{
+                    return false ;
+                }
             }
         }
     }

@@ -51,7 +51,10 @@ import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogCompon
 import reportComponent from "@v/riskControlSystem/publicRiskControl/reportComponent"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
-// import { constants } from 'http2';
+// 引用公用 js 方法
+import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
+// 引用 js 方法
+import tools from "utils/tools";
 export default {
     name: 'treeTableDemo',
     components: {
@@ -180,8 +183,37 @@ export default {
         // 取数总接口
         setData(item, params){ 
             let me = this ;
-            findThirdPartData(params).then(res => { 
-                me.queryDataAfter(item, res.data.data);
+            findThirdPartData(params).then(res => {
+                var data = res.data.data ;
+                if(item.isTree){
+                    //封装树对象数据
+                    const setting = {
+                        data: {
+                            simpleData: {
+                                enable: true,
+                                idKey: "scode",
+                                pIdKey: "spcode"
+                            },
+                            key: {
+                                name: "scode",
+                                children: "children"
+                            }
+                        }
+                    };
+                    if (Array.isArray(data) && data.length > 0) {
+                        data = tools.sortByKey(data, "scode");
+                        data = data.filter(function(item) {
+                            item.id = item.scode;
+                            item.label = "(" + item.scode + ") " + item.sname;
+                            return item;
+                        });
+                        // me.comtree2 = data;
+                        data = tools.transformToeTreeNodes(setting, data);
+                        // return me.getCompanyTree_set(me.comtree2);
+                        // return me.comtree2
+                    }
+                } 
+                me.queryDataAfter(item, data);
             }).catch(res => {
                 console.info(res);
             });
@@ -190,87 +222,9 @@ export default {
         queryDataAfter(item, datas){
             // debugger
             let me = this ;
-            // 如果是树表，处理成树表类型
-            if(item.isTree && !me.rows.length){
-                me.array(datas);
-                datas = datas.filter((res, index) => { return index == 0 });
-            }
             // 看看json里有没有配置【queryDataAfter】数据获取之后拦截的方法
             if(me.item.queryDataAfter && typeof me.item.queryDataAfter == "function"){
                 me.data = me.item.queryDataAfter(datas, me);
-            }
-        },
-        /**
-         * @event 2.1树表的类型处理
-         */
-        array(datas){
-            let data = datas;
-            let arr = [];
-            let index = 0;
-            let flag = false;
-            //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
-            let root, rootItem, demoItem;
-            let rootArr = [];
-            if (data && data.length > 0) {
-                demoItem = data[0];
-                if (demoItem.pid) {
-                    for (let i = 1; i < data.length - 1; i++) {
-                        let eveItem = data[i];
-                        //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
-                        if (eveItem.gsbm == demoItem.pid) {
-                            demoItem = eveItem;
-                        }
-                    }
-                    rootItem = demoItem;
-                } else {
-                    rootItem = demoItem;
-                }
-            }
-            //找到多个父节点
-            for (let i = 0; i < data.length; i++) {
-                // if(i == data.length)return rows ;
-                if (!data[i].pid) {
-                    rootArr.push(data[i]);
-                }
-            }
-            if (rootArr && rootArr.length > 1) {
-                for (let i = 0; i < rootArr.length; i++) {
-                    let it = rootArr[i];
-                    this.tranformData(data, it);
-                }
-                this.item.rows = rootArr;
-            } else {
-                if (rootItem) {
-                    this.tranformData(data, rootItem);
-                }
-                this.item.rows = rootItem;
-            }
-        },
-        /**
-         * @event 2.2树表的类型处理
-         */
-        tranformData(data, rootItem){
-            let me = this;
-            let children = [];
-            let dataArr = [];
-            rootItem.children = children;
-            for (let i = 0; i < data.length; i++) {
-                let it = data[i];
-                if (it.gsbm === rootItem.gsbm) {
-                    continue;
-                }
-                //满足条件的就塞进去，不满足的塞到另一个新数组中
-                if (rootItem.gsbm == it.pid) {
-                    rootItem.children.push(it);
-                } else {
-                    dataArr.push(it);
-                }
-            }
-            if (rootItem.children && rootItem.children.length > 0) {
-                for (let i = 0; i < rootItem.children.length; i++) {
-                    let tt = rootItem.children[i];
-                    me.tranformData(dataArr, tt);
-                }
             }
         },
         // 按钮功能: 由于按钮的功能都不一样，所以写在json里的每个按钮方法里，自由发挥。

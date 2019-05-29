@@ -83,7 +83,6 @@ import {
              * 确定按钮。
              */
             checkedSure() {
-                debugger;
                 let me = this;
                 let nodes = this.$refs.tree.getCheckedNodes();
                 if(nodes && nodes.length > 0){
@@ -91,7 +90,6 @@ import {
                 }
             },
             checkedSure_old() {
-                debugger;
                 let me = this,storeParams = me.$store.getters,
                 company = storeParams.company;
                 let nodes = this.$refs.tree.getCheckedNodes();
