@@ -88,16 +88,6 @@
                 let _this = this;
                 let data = _this.dialogScheduleData['content'];
                 data.forEach((item) => {
-
-                    // content: "上报的内容。上报人：小智。上报时间：2019年3月"
-                    // dataType: "risk_sb"
-                    // risk_up_time: "20190205"
-                    // risk_up_user: "伊娃"
-                    // schedule: "进度一"
-                    // state: "已上报"
-                    // text: "风险上报"
-
-
                     _this.formData[item.dataType] = {};
                     _this.formData[item.dataType]['schedule'] = item.schedule;
                     _this.formData[item.dataType]['state'] = item.state;
@@ -113,11 +103,8 @@
                     risk_ps = _this.formData['risk_ps'],
                     risk_fq = _this.formData['risk_fq'];
 
-                // if(true){
                 if (risk_sb.state === '未上报') {
                     risk_sb.content = '请尽快上报';
-                    risk_ps.content = '请尽快上报';
-                    risk_fq.content = '请尽快上报';
                 } else {
                     //上报人：小智。上报时间：2019年3月
                     risk_sb.content = '上报人：' + risk_sb.risk_up_user + "。   上报时间：" + risk_sb.risk_up_time;
@@ -125,7 +112,7 @@
 
                 if (risk_ps.state === '未批示') {
                     risk_ps.content = '请尽快上报';
-                    risk_fq.content = '请尽快上报';
+                    // risk_fq.content = '请尽快上报';
                 } else {
                     risk_ps.content = '批示内容：' + risk_ps.risk_up_content + '。  上报人：' + risk_ps.risk_up_user + "。   上报时间：" + risk_ps.risk_up_time;
                 }
@@ -135,11 +122,9 @@
                 } else {
                     risk_fq.content = '批示内容：' + risk_fq.risk_up_content + '。   上报人：' + risk_fq.risk_up_user + "。   上报时间：" + risk_fq.risk_up_time;
                 }
-                // }
-                debugger;
-                _this.formData['risk_sb'] = risk_sb;
-                _this.formData['risk_ps'] = risk_ps;
-                _this.formData['risk_fq'] = risk_fq;
+                // _this.formData['risk_sb'] = risk_sb;
+                // _this.formData['risk_ps'] = risk_ps;
+                // _this.formData['risk_fq'] = risk_fq;
 
             }
         }

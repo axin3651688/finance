@@ -415,7 +415,6 @@
                 let _this = this;
                 let params = _this.getRiskFeedbackParams(scope);
                 updateInstruction(params).then(res => {
-                    debugger;
                     if (res.data.code === 200) {
                         // _this.$emit("riskFeedBackSuccess");
 
@@ -438,7 +437,6 @@
              * @param scope
              */
             getRiskFeedbackParams(scope) {
-                debugger;
                 let rowData = scope.row,
                     nRelateId = rowData.scode;
                 let backUser = 'cwt';

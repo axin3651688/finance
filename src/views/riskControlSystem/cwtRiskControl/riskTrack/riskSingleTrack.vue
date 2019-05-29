@@ -24,6 +24,9 @@
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
                 <dialog-component
                         :dialogData.sync="this.dialogData"
+                        :dataChanged="dataChanged"
+                        @dataMessageChange="dataMessageChange"
+                        @closeTrackDialogContent="closeTrackDialogContent"
                 >
                 </dialog-component>
             </el-dialog>
@@ -70,6 +73,7 @@
                 columns: [],
                 selectedItem: '',
                 value: '',
+                dataChanged: false,
                 dialogData: {
                     dialogRiskType: "riskTrack",
                     riskname: "",
@@ -363,6 +367,57 @@
                 });
 
                 this.dataChanged = !this.dataChanged;
+            },
+
+            /**
+             * 上一条下一条数据变化
+             * @param obj
+             */
+            dataMessageChange(obj) {
+                // $message 可传入的type的值
+                // 'success' | 'warning' | 'info' | 'error'
+
+                let _index = obj.rowIndex - 1;
+                let _data = this.tableData;
+                let newData = null;
+                if (obj.flag === 'up') {
+                    newData = _data[_index - 1];
+                    if (_index - 1 < 0) {
+                        this.$message({
+                            message: '已经是第一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogDataFormat(newData);
+                    this.$message({
+                        message: '切换上一条成功',
+                        type: "success"
+                    });
+                } else if (obj.flag === 'down') {
+
+                    newData = _data[_index + 1];
+                    if (_index - 1 >= _data.length - 2) {
+                        this.$message({
+                            message: '已经是最后一条数据',
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogDataFormat(newData);
+                    this.$message({
+                        message: '切换下一条成功',
+                        type: "success"
+                    });
+                }
+
+            },
+
+            /**
+             * 弹出层关闭按钮事件处理
+             */
+            closeTrackDialogContent(){
+                this.trackDialogVisible = false;
             }
         }
     }

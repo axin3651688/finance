@@ -73,7 +73,7 @@
             dataChanged(newValue, oldValue) {
                 this.getFormData();
             },
-            riskFeedSuccess(newValue, oldValue){
+            riskFeedSuccess(newValue, oldValue) {
                 this.personnelListShow = false;
             }
         },
@@ -85,9 +85,9 @@
                 let rowIndex = this.dialogData['rownum'];
                 let obj = {
                     flag: 'up',
-                    rowIndex : rowIndex
+                    rowIndex: rowIndex
                 };
-                this.$emit("messageChange",obj);
+                this.$emit("messageChange", obj);
             },
             /**
              * 查看下一条信息
@@ -96,9 +96,9 @@
                 let rowIndex = this.dialogData['rownum'];
                 let obj = {
                     flag: 'down',
-                    rowIndex : rowIndex
+                    rowIndex: rowIndex
                 };
-                this.$emit("messageChange",obj);
+                this.$emit("messageChange", obj);
             },
             /**
              * 反馈上报
@@ -117,25 +117,29 @@
              * 关闭按钮
              */
             pageBack() {
-                this.$emit("closeDialogContent")
+                this.$emit("closeTrackDialogContent")
             },
             /**
              *导出按钮
              */
             pageExport() {
-                alert('报告导出事件')
+                // alert('报告导出事件')
+                this.$message({
+                    message: '导出事件接口',
+                    type: 'success'
+                })
             },
             /**
              * 确认下达按钮
              */
-            personSureBtnClicked(nodes){
-                this.$emit("personSureBtnClicked",nodes)
+            personSureBtnClicked(nodes) {
+                this.$emit("personSureBtnClicked", nodes)
             },
 
             /**
              * 获取单行数据
              */
-            getFormData(){
+            getFormData() {
                 let _this = this;
                 _this.formData['isFeed'] = _this.dialogData['isFeeded']
             }

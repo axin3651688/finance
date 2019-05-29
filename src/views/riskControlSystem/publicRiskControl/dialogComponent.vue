@@ -48,7 +48,7 @@
                             :dialogData="dialogData"
                             :dataChanged="dataChanged"
                             :riskFeedSuccess="riskFeedSuccess"
-                            @closeDialogContent="closeDialogContent"
+                            @closeTrackDialogContent="closeTrackDialogContent"
                             @messageChange="messageChange"
                             @personSureBtnClicked="personSureBtnClicked"
                     >
@@ -111,8 +111,11 @@
             deep: true
         },
         methods: {
-            closeDialogContent() {
-                this.$emit('closeDialogContent1')
+            /**
+             * 关闭弹窗按钮点击事件
+             */
+            closeTrackDialogContent() {
+                this.$emit('closeTrackDialogContent')
             },
             /**
              * 获取弹窗界面头部数据
