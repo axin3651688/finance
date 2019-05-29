@@ -146,7 +146,6 @@
              * @param type
              */
             riskTypeChange(type) {
-                debugger;
                 // alert(type + '   恭喜，风险类型切换了，但是没有实现功能，只是效果展示');
                 let me = this,reportData = me.reportData,reportDataList = reportData.reportDataContent.riskFeedData;
                 if (reportDataList && reportDataList.length > 0) {
@@ -180,7 +179,6 @@
              * 指定的人员的下达。
              */
             personSureBtnClicked (nodes) {
-                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData;
                 if(instructionsRpt && middleData){
                     if(instructionsRpt.length == 0){
@@ -233,6 +231,7 @@
                         cstrategy:"",
                         period: me.parsePeriod(),
                         sinstructscontent:"",
+                        sisfeedback:"-1",
                         sisinstructions:"1"
                     }
                     riskReportState.nrelateid = item.id;
@@ -274,7 +273,6 @@
              * @author szc 2019年5月29日14:15:01
              */
             afterInstructionRpt (afterParams) {
-                debugger;
                 let me = this,middleData = me.middleData;
                 let content = middleData.contentUp.content;
                 for(let i = 0;i < content.length;i++){
@@ -335,7 +333,6 @@
              * 获取目录的数据
              */
             getDirectoryData(){
-                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{
@@ -360,7 +357,6 @@
              * 报告中间的数据。
              */
             createDataOfMiddle () {
-                debugger;
                 let me = this,reportData = me.reportData,contentData = [];
                 if(reportData.type == "0"){
                     me.instructionRelease = true

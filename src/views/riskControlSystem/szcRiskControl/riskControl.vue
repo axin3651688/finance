@@ -125,7 +125,6 @@ export default {
      * 组件生成的回调。
      */
     created() {
-        debugger;
         let me = this;
         if(me.activeName == "second") {
             let selectItem = me.selectItem;
@@ -287,7 +286,6 @@ export default {
          * @author szc 2019年5月24日11:08:51
          */
         setOperationBtns (data) {
-            debugger;
             let me = this,btns01 = [
                 {
                     "id": "1",
@@ -329,7 +327,6 @@ export default {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
-                    debugger;
                     // me.reportData = res.data.reportData;
                     me.showDataOfInstruction(lookData,res.data.reportData);
                     // me.reportData = res.data.reportData;
@@ -343,7 +340,6 @@ export default {
          * 0 批示 1 查看 2 退回 3 提醒
          */
         buttonHandler (scope,btnItem) {
-            debugger;
             let me = this;
             if(btnItem){
                 let id = btnItem.id;
@@ -394,7 +390,6 @@ export default {
          * @author szc 2019年5月14日14:24:14
          */
         lookInstructions (scope) {
-            debugger;
             let me = this,selectItem = me.selectItem,judgeParams = {
                 id:"lookInstruc",
                 sqlId:"104",
@@ -409,9 +404,7 @@ export default {
         lookInstructions_old () {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
-                debugger;
                 if(res.data.code == 200) {
-                    debugger;
                     me.reportData = res.data.reportData;
                     me.treeTableShow = false;
                 }
@@ -441,7 +434,6 @@ export default {
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
                     queryCopingStrategies().then(resData => {
-                        debugger;
                         if(resData.data.code == 200) {
                             // me.copingStrategies(res.data.formConfig,res.data.data);
                             me.parseData(res.data.formConfig,row.row,resData.data.data);
@@ -545,7 +537,6 @@ export default {
          * @author szc 2019年5月22日19:39:07
          */
         eventHandler (params) {
-            debugger;
             let me = this,selectItem = me.selectItem;
             //10401 自定义的 表示批示下达之后要进行的操作。
             if(params.id == "10401"){
@@ -558,7 +549,6 @@ export default {
          * @author szc 2019年5月23日11:35:08
          */
         beforeClose (done) {
-            debugger;
             let me = this;
             this.$refs.riskModal.recoveryDefault();
             done();

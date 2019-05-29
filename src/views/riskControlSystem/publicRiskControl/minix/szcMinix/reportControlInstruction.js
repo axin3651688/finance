@@ -50,7 +50,6 @@ export default {
          * 制造instructionRpt
          */
         createPropOfInstru(instructionsRpt) {
-            debugger;
             let me = this,
                 arr = [];
             me.$store[instructionsRpt] = arr;

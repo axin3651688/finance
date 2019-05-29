@@ -31,7 +31,6 @@ export default {
          * @author szc 2019年5月21日20:20:36
          */
         queryDepartMent() {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -46,7 +45,6 @@ export default {
          * @author szc 2019年5月24日13:29:47
          */
         changeShowContent(row, item) {
-            debugger;
             let me = this;
             //0 批示 1 查看 2 退回 3 提醒
             if (item.id == "1") {
@@ -64,7 +62,6 @@ export default {
          * @author szc 2019年5月24日16:50:58
          */
         remindInstruction(row) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -93,7 +90,6 @@ export default {
          * @author szc 2019年5月24日15:39:45
          */
         returnRiskInstruction(row) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -268,7 +264,6 @@ export default {
          * @author szc 2019年5月27日16:56:28
          */
         showDataOfInstruction(lookData, data) {
-            debugger;
             let me = this,
                 objLook = {},
                 objItems = [];
@@ -303,7 +298,6 @@ export default {
          * @param {*} data 
          */
         middleContentOfReport(lookData, objItems, data, optionsData) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -399,12 +393,27 @@ export default {
          */
         remindTreeInstruction(scope) {
             let me = this,
-                params = {
-
-                };
-            findThirdPartData().then(res => {
-
-            });
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
+            let params = {
+                riskReportStateDtos: [{
+                    id: 0,
+                    company: company,
+                    // nrelateid: row.row.id,
+                    // sinstructionsuser: user,
+                    // cstrategy:selectStr,
+                    period: me.parsePeriod(),
+                    // sinstructscontent:me.instructions,
+                    sisinstructions: "0"
+                }]
+            };
+            let requertParams = {
+                data: params,
+                success: "提醒成功！",
+                error: "提醒失败！"
+            };
+            me.publicUpdateInstruction(requertParams);
         },
         /**
          * 风险管控汇总树表的退回功能。
@@ -412,10 +421,27 @@ export default {
          */
         returnInstruction(scope) {
             let me = this,
-                params = {
-
-                };
-
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
+            let params = {
+                riskReportStateDtos: [{
+                    id: 0,
+                    company: company,
+                    // nrelateid: row.row.id,
+                    // sinstructionsuser: user,
+                    // cstrategy:selectStr,
+                    period: me.parsePeriod(),
+                    // sinstructscontent:me.instructions,
+                    sisinstructions: "2"
+                }]
+            };
+            let requertParams = {
+                data: params,
+                success: "退回成功！",
+                error: "退回失败！"
+            };
+            me.publicUpdateInstruction(requertParams);
         }
     },
 }
