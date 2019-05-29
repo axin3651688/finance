@@ -220,8 +220,10 @@ export function riskdistinguish_update(data){
 export function riskdistinguish_update_sisclose(data){
     return request({
         url: '/zjb/riskdistinguish/update_sisclose',
-        method: 'post',
-        data: data
+        // contentType: "application/json;charset=UTF-8",
+        method: 'get',
+        // dataType: 'json',
+        params: data
     })
 }
 /**11.

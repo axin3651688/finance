@@ -9,7 +9,7 @@
 </template>
 <script>
 // 引用公共组件方法
-import aiModule from "@v/riskControlSystem/publicRiskControl/AiModule";
+import aiModule from "@v/riskControlSystem/sjzRiskControl/AiModule";
 export default {
     name: 'treeTableDemo',
     components: {
@@ -18,7 +18,7 @@ export default {
     data(){
         return {
             // json地址
-            jsonAdress: "cnbi/risk/riskReport.json",
+            jsonAdress: "/cnbi/json/risk/riskReport.json",
             // 高度
             tableHeight: 130
         }

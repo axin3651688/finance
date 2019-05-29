@@ -20,13 +20,20 @@
                         <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="addClick">添加</el-button>
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
-                        <el-button type="primary" plain v-show="isbtnShow"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain>下达记录查询</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
-                <!-- <div class="elbtn" style="float: left" v-html="html">divided</div> -->
+                <!-- 文字 -->
+                <div class="elbtn" style="float: left;lineHeight: 40px;marginLeft: 10px">
+                    <span>共</span><span style="color: #409EFF; margin: 0 5px 0px 5px;fontSize: 15px">{{ tableLength }}</span><span>条风险：</span>
+                    <span style="color: #409EFF; fontSize: 14px;margin: 0 0 0 10px;textDecoration:underline" 
+                    v-for="(element, index) in elementui" :key="element.id" v-html="element.html">
+                    </span>
+                </div>
+
                 <div class="elbtn" style="float: right;marginRight: 10px;">  
                     <!-- 列控制显示按钮 -->
                     <el-dropdown trigger="click" @command="handleCommand" :hide-on-click="false">
@@ -40,6 +47,8 @@
                 </div>
             </el-col>
         </el-row>
+        <!-- 批量下达弹出框 -->
+        <bulk-ordersers ref="mychild" v-if="riskRelease" :newThis="me" :data="comtree2"></bulk-ordersers>
         <!-- 表格 -->
         <div class="table">
             <el-table
@@ -84,6 +93,7 @@
                 flag:                   Boolean                作为监听作用（区分查看按钮和添加按钮）
                 modify:                 Boolean                作为监听作用（区分修改按钮）
                 numOpen:                Number                 作为添加按钮的监听事件（每按一次添加按钮重置一次）
+                
              -->
             <dia-log 
             :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2" 
@@ -94,32 +104,37 @@
     </div>
 </template>
 <script>
+// 引用批量下达弹出框
+import bulkOrdersers from "@v/riskControlSystem/sjzRiskControl/bulkOrdersers";
 // 引用弹出框组件
 import diaLog from "@v/riskControlSystem/sjzRiskControl/dialog";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口1.（获取数据）
-import { findThirdPartData, findDesignSource } from "~api/interface";
+import { findThirdPartData, findDesignSource, riskdistinguish_risk_release } from "~api/interface";
 // 引用接口2.（获取数据）
 import { 
     riskprobability, 
     risk_influence_degree,
     deleteRiskdistinguish,
-    riskmatrix_tovo
+    riskmatrix_tovo,
+    eva_city_Request
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
 import { debounce } from '../../../utils';
 export default {
     components: {
-        diaLog
+        diaLog,
+        bulkOrdersers
     },
     name: "riskDis",
     data(){
         return {
             heights: 0,         // 表格的高度
             widths: "960px",    // 弹出框的宽度
-            html: "",           // 文字
+            elementui: [],           // 文字
+            tableLength: 0,          // 共多少条数据
             tableData: [],      // 表格的数据
             elements: [],       // 表格的列
             items: [],          // 控制列显示【作用于列选择按钮】
@@ -140,6 +155,8 @@ export default {
             viewReadonly: false,
             // 
             numOpen: 0 ,        // 添加的监听事件
+            riskRelease: false,     // 批量下达按钮的监听事件，打开弹出框用的
+            comtree2: [],          // 批量下达按钮公司树数据
             modify_btn: 0 ,
             modifyReadonly: false
         }
@@ -164,10 +181,12 @@ export default {
     watch: {
         // 切换年触发
         year: function(newyear){
+            this.selection = [] ;
             this.loadModuleBefore() ;
         },
         // 切换月触发
         month: function(newmonth){
+            this.selection = [] ;
             this.loadModuleBefore() ;
         },
         /**
@@ -176,6 +195,7 @@ export default {
          *       2. 合并公司显示【批量下达按钮】/单体公司隐藏【批量下达按钮】 
          */
         company: function(newcompany){
+            this.selection = [] ;
             // 查看公司的信息
             let nisleaf = this.$store.getters.treeInfo.nisleaf ;
             // 0合并公司/ 1单体公司
@@ -259,10 +279,32 @@ export default {
         },
         // 1.3 数据获取之后的处理
         queryDataAfter(datas){
+            // debugger
             let me = this ;
             let obj = me.objer ;
             if(obj.queryDataAfter && typeof obj.queryDataAfter == "function"){
                 me.tableData = obj.queryDataAfter(datas, me);
+            }
+            me.tableLength = me.tableData.length ;
+            // 必须要有数据
+            if(me.tableData.length > 0){
+                me.elementui = [] ;
+                let one = me.tableData.filter(first => { return first.gradename=="可接受风险" }) ;
+                let two = me.tableData.filter(second => { return second.gradename=="一般风险" }) ;
+                let three = me.tableData.filter(third => { return third.gradename=="中等风险" }) ;
+                let four = me.tableData.filter(fourth => { return fourth.gradename=="重大风险" }) ;
+                let five = me.tableData.filter(fifth => { return fifth.gradename == "巨大风险" }) ;
+                let six = me.tableData.filter(sixth => { return sixth.gradename == "最低风险" }) ;
+                let seven = me.tableData.filter(seventh => { return seventh.gradename == "高风险" }) ;
+                if(one.length > 0)me.elementui.push({ html: "<a>可接受风险"+one.length+"条</a>" }) ;
+                if(two.length > 0)me.elementui.push({ html: "<a>一般风险"+two.length+"条</a>" }) ;
+                if(three.length > 0)me.elementui.push({ html: "<a>中等风险"+three.length+"条</a>" }) ;
+                if(four.length > 0)me.elementui.push({ html: "<a>重大风险"+four.length+"条</a>" }) ;
+                if(five.length > 0)me.elementui.push({ html: "<a>巨大风险"+five.length+"条</a>" }) ;
+                if(six.length > 0)me.elementui.push({ html: "<a>最低风险"+six.length+"条</a>" }) ;
+                if(seven.length > 0)me.elementui.push({ html: "<a>高风险"+seven.length+"条</a>" }) ;
+            }else{
+                me.elementui = [] ;
             }
         },
         // 2.获取【风险矩阵】的json信息
@@ -395,13 +437,14 @@ export default {
          * @function 重新走一次请求
          */
         refreshRow(){
+            this.selection = [] ;
             this.loadModuleBefore() ;
         },
         /**
          * @event 添加按钮
          */
         addClick(){
-            debugger
+            // debugger
             this.view_row = [] ;
             this.view_btn = 0 ;
             this.modify_btn = 0 ;
@@ -449,6 +492,34 @@ export default {
             me.modify_btn = 0 ;
             done() ;
         },
+        /**
+         * @event 批量下达按钮
+         */
+        bulkOrders(){
+            // debugger
+            let me = this ;
+            let dataArray_y = [], dataArray_n = [] ;
+            let data = me.selection ;
+            if(data.length===0){
+                me.$message({ message: "暂无要下达的风险，请选择风险！", type: "warning" });
+            }else{
+                // 看勾选的已提交/未提交数量多少
+                data.forEach(res => {
+                    if(res.sissubmit === "未提交")dataArray_n.push(res) ;
+                    if(res.sissubmit === "已提交")dataArray_y.push(res) ;
+                });
+                // 如果未提交的数量 > 0 说明勾选了未提交的风险，不允许下达，进行提示，并且停止继续运行
+                if(dataArray_n.length > 0){
+                    me.$message({ message: "您勾选了未提交的风险！无法下达！请重新勾选！", type: "warning" }) ;
+                    return false ;
+                }
+                // 如果已提交的数量 > 0 说明勾选了已提交的风险，可以下达，批量下达或者单次下达都可以
+                if(dataArray_y.length > 0){
+                    mini.getCompanyTree(me) ;
+                    me.riskRelease = !me.riskRelease ;
+                }
+            }
+        },
         handleCommand(command){},
         
     }
@@ -456,7 +527,7 @@ export default {
 </script>
 <style scoped>
 .elbtn{
-    background-color: #fff;
+    /* background-color: #fff; */
     /* width: 100%; */
     margin-top: 10px;
     margin-bottom: 10px; 
