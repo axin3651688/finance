@@ -59,7 +59,7 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        // debugger
+        debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode ;
         let ngrade, sissubmit, nid ;
@@ -67,8 +67,13 @@ export default {
         if(me.optiong.length){
             ngrade = me.optiong[0].nid ;
         }else{
-            ngrade = 0 ;
+            if(me.newThis.view_row.id >= 0){
+                ngrade = me.newThis.view_row.ngrade ;
+            }else{
+                ngrade = 0 ;
+            }
         }
+        
         // ngrade = me.form.gradename > 0? me.form.gradename : 0 ;
         let time = this.getTimers() ;                   // 获取时间
         if(me.newThis.modify_btn == 1){                 // 修改弹出框
@@ -83,14 +88,15 @@ export default {
             sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
             nid = 0 ;
         }
-        let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;
+        let ssubmituser = me.$store.getters.user.user.userName ;
+        // let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;me.form.sfilluser
         let params = 
-             [{
+            [{
                 "id": nid,                                  
                 "period": $params.year + this.getPeriod($params),
                 "company": $params.company,               
                 "department": departmentname,             
-                "sfilluser": me.form.sfilluser,           
+                "sfilluser": ssubmituser,           
                 "sriskname": me.form.sriskname,           
                 "srisktype": me.form.srisktype,           
                 "sriskdescription": me.form.sriskdescription,     
@@ -107,7 +113,7 @@ export default {
                 "ssubmittime": time,
                 "sisclose": "",
                 "ssubmituser": ssubmituser
-             }];
+            }];
         return params ;
     },
     /**

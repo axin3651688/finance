@@ -279,14 +279,15 @@ export default {
         },
         // 1.3 数据获取之后的处理
         queryDataAfter(datas){
+            // debugger
             let me = this ;
             let obj = me.objer ;
             if(obj.queryDataAfter && typeof obj.queryDataAfter == "function"){
                 me.tableData = obj.queryDataAfter(datas, me);
             }
+            me.tableLength = me.tableData.length ;
             // 必须要有数据
             if(me.tableData.length > 0){
-                me.tableLength = me.tableData.length ;
                 me.elementui = [] ;
                 let one = me.tableData.filter(first => { return first.gradename=="可接受风险" }) ;
                 let two = me.tableData.filter(second => { return second.gradename=="一般风险" }) ;
@@ -302,6 +303,8 @@ export default {
                 if(five.length > 0)me.elementui.push({ html: "<a>巨大风险"+five.length+"条</a>" }) ;
                 if(six.length > 0)me.elementui.push({ html: "<a>最低风险"+six.length+"条</a>" }) ;
                 if(seven.length > 0)me.elementui.push({ html: "<a>高风险"+seven.length+"条</a>" }) ;
+            }else{
+                me.elementui = [] ;
             }
         },
         // 2.获取【风险矩阵】的json信息
@@ -457,7 +460,7 @@ export default {
          * @event 查看按钮
          */
         viewRow(index, tableData){
-            debugger
+            // debugger
             let me = this ;
             me.view_btn = 1 ;
             me.view_row = [] ;

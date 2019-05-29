@@ -425,7 +425,7 @@ export default {
          * @event (1)保存按钮/提交按钮
          */
         saveClick(value, value2,value3,value4,value5){ 
-            // debugger
+            debugger
             let me = this ;
             let viewTrue = false ;
             // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
@@ -460,7 +460,7 @@ export default {
          * @event 修改弹出框页面/保存+提交的事件（已提交的风险）yes
          */
         modify_add_yes(me, params){ 
-            // debugger
+            debugger
             // 有没有空的
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
