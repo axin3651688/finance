@@ -11,6 +11,7 @@
     :row-style="showRow" 
     v-bind="$attrs" 
     :cell-style="cellStyle"
+    :height="heights"
     stripe 
     border>
         <el-table-column v-if="columns.length===0" width="150">
@@ -96,8 +97,17 @@
                 default: false
             }
         },
+        data(){
+            return {
+                heights: 0
+            }
+        },
         created(){
-            
+            this.heights = document.body.offsetHeight - 124 ;
+        },
+        mounted(){
+            // 自适应高度
+            this.getClientHeight();
         },
         computed: {
             // 格式化数据源
@@ -115,6 +125,15 @@
             }
         },
         methods: {
+            // 自适应高度
+            getClientHeight(){
+                this.heights = document.body.offsetHeight - 124 ;
+                const me = this ;
+                window.onresize = function temp(){ 
+                    me.heights = document.body.offsetHeight - 124 ;
+                }
+            },
+            // 显示与隐藏
             showRow: function (row) {
                 const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
                 row.row._show = show;

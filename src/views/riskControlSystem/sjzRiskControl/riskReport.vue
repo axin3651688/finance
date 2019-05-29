@@ -18,7 +18,7 @@ export default {
     data(){
         return {
             // json地址
-            jsonAdress: "cnbi/risk/riskReport.json",
+            jsonAdress: "/cnbi/json/risk/riskReport.json",
             // 高度
             tableHeight: 130
         }
