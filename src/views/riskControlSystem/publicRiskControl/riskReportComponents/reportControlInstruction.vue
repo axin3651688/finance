@@ -76,6 +76,9 @@ export default {
             debugger;
             let me = this;
             if(rowItem && rowItem.instructionid == "1"){
+                if(typeof rowItem.cstrategy == 'number'){
+                    rowItem.cstrategy = rowItem.cstrategy + "";
+                }
                 let arr = rowItem.cstrategy.split(',');
                 me.instructionValues = arr;
                 me.instruction = rowItem.psnr || "";

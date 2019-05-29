@@ -287,6 +287,9 @@ export default {
                     //lookData,查询的风险的所有的条数  objItems 风险的类型个数 
                     //data.reportDataContent.riskFeedData报告的展示内容 resData 下拉选的内容
                     data.reportDataContent.riskFeedData = me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData, resData);
+                    if (me.reportData.type) {
+                        data.type = me.reportData.type;
+                    }
                     me.reportData = data;
                     me.treeTableShow = false;
                 }
@@ -389,6 +392,30 @@ export default {
                 data.push(objItem);
             }
             return data;
+        },
+        /**
+         * 树表汇总的提醒功能。
+         * @author szc 2019年5月29日12:57:35
+         */
+        remindTreeInstruction(scope) {
+            let me = this,
+                params = {
+
+                };
+            findThirdPartData().then(res => {
+
+            });
+        },
+        /**
+         * 风险管控汇总树表的退回功能。
+         * @author szc 2019年5月29日16:49:22
+         */
+        returnInstruction(scope) {
+            let me = this,
+                params = {
+
+                };
+
         }
     },
 }

@@ -13,33 +13,33 @@ export default {
             let me = this,
                 instructionsRpt = me.$store.instructionsRpt || [],
                 contentDown = me.contentDown,
-                instructionObj = contentDown;
+                instructionObj = contentDown.instructionObj;
             if (instructionsRpt && instructionsRpt.length > 0) {
                 let flag = false;
-                for (let i = 0; i < instructionObj.length; i++) {
-                    let item = instructionObj[i];
+                for (let i = 0; i < instructionsRpt.length; i++) {
+                    let item = instructionsRpt[i];
                     if (item.id == instructionObj.nrelateid) {
-                        item[param] = me[param];
+                        item[param] = me[param].toString();
                         break;
                     }
-                    if (i == instructionObj.length - 1) {
+                    if (i == instructionsRpt.length - 1) {
                         flag = true;
                     }
                 }
                 if (flag) {
                     let obj = {
                         id: instructionObj.nrelateid,
-                        instructionValues: me.instructionValues,
+                        instructionValues: me.instructionValues.join(','),
                         instruction: me.instruction
                     };
-                    instructionObj.push(obj);
+                    instructionsRpt.push(obj);
                 }
                 me.$store.instructionsRpt = instructionsRpt;
             } else {
                 // me.createPropOfInstru("instructionsRpt");
                 let obj = {
                     id: instructionObj.nrelateid,
-                    instructionValues: me.instructionValues,
+                    instructionValues: me.instructionValues.join(','),
                     instruction: me.instruction
                 };
                 instructionsRpt.push(obj);

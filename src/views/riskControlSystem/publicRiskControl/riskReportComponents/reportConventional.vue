@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="renderFlag">
         <div class="conventional-container">
             <div class="container-title">
                 {{ middleData.text }}
@@ -60,6 +60,7 @@
         },
         data() {
             return {
+                renderFlag:true,
                 discernPeople: '***',
                 riskContainer: {
                     risk_pg: [
@@ -76,6 +77,22 @@
                         ' 1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
                     ]
                 }
+            }
+        },
+        watch: {
+            middleData :{
+                handler(newValue,oldValue){
+                    // debugger;
+                    let me = this;
+
+                    // me.renderFlag = false;
+                    // this.$nextTick(()=>{
+                    
+                    //     this.reFresh = true
+                    // })
+                    // this.getChange();
+                },
+                deep:true
             }
         },
         created() {

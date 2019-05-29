@@ -340,7 +340,7 @@ export default {
         /**
          * 按钮的处理。
          * @author szc 2019-5-14 11:56:40
-         * 查看
+         * 0 批示 1 查看 2 退回 3 提醒
          */
         buttonHandler (scope,btnItem) {
             debugger;
@@ -350,13 +350,15 @@ export default {
                 if(id == "0"){
                     //批示.
                     // me.instructionsState(scope);
+                    me.reportData.type = "0";
                     me.lookInstructions(scope);
                 }else if (id == "1") {
+                    me.reportData.type = "1";
                     me.lookInstructions(scope);
                 }else if (id == "2") {
-                    
+                    me.returnInstruction(scope);
                 }else if (id == "3") {
-
+                    me.remindTreeInstruction(scope);
                 }
             }
         },
@@ -422,6 +424,12 @@ export default {
          */
         returnCurrentClick () {
             let me = this;
+            let selectItem = me.selectItem;
+            let judgeParams = {
+                id:"treeTable",
+                sqlId:"103"
+            };
+            me.queryDataOfInstructions(selectItem,judgeParams);
             me.treeTableShow = true;
         },
         /**
