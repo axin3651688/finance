@@ -30,20 +30,53 @@
                         </div>
                         <span class="zs">总述</span>
                         <p class="describe">
-                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{reportTitleData.data1}} 条，从风险类型来看，
-                            其中战略风险 {{reportTitleData.data2}} 条，投资风险 {{reportTitleData.data3}} 条，运营风险
-                            {{reportTitleData.data4}} 条，
-                            财务风险 {{reportTitleData.data5}} 条，法律风险 {{reportTitleData.data6}} 条，廉洁风险
-                            {{reportTitleData.data7}} 条；
-                            从风险等级来看，其中重大风险 {{reportTitleData.data8}} 条，重要风险 {{reportTitleData.data9}} 条，一般风险
-                            {{reportTitleData.data10}} 条
+                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条，从风险类型来看，
+
+                            其中
+                            <template v-if="riskCount.riskStypeCountArray.cwfx > 0">
+                                财务风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.flfx > 0">
+                                法律风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.ljfx > 0">
+                                廉洁风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.scfx > 0">
+                                市场风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.syfx > 0">
+                                声誉风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.yyfx > 0">
+                                运营风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            <template v-if="riskCount.riskStypeCountArray.zlfx > 0">
+                                战略风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                            </template>
+                            其中
+                            <template v-if="riskCount.riskLevelCountArray.level_1 > 0">
+                                可接受风险 {{riskCount.riskLevelCountArray.level_1}} 条，
+                            </template>
+                            <template v-if="riskCount.riskLevelCountArray.level_2 > 0">
+                                一般风险 {{riskCount.riskLevelCountArray.level_2}} 条，
+                            </template>
+                            <template v-if="riskCount.riskLevelCountArray.level_3 > 0">
+                                中等风险 {{riskCount.riskLevelCountArray.level_3}} 条，
+                            </template>
+                            <template v-if="riskCount.riskLevelCountArray.level_4 > 0">
+                                重大风险 {{riskCount.riskLevelCountArray.level_4}} 条，
+                            </template>
+                            <template v-if="riskCount.riskLevelCountArray.level_5 > 0">
+                                巨大风险 {{riskCount.riskLevelCountArray.level_5}} 条，
+                            </template>
                         </p>
                     </div>
 
                     <div class="container-right-center">
 
                         <div class="container-right-loop-title">
-                            {{risktype}}
+                            {{risksptype}}
                         </div>
 
                         <div class="container-right-loop">
@@ -74,11 +107,9 @@
                                         <div>
                                             {{ item.title }}
                                         </div>
-                                        <template>
-                                            <p v-for="p in item.content">
-                                                {{p}}
-                                            </p>
-                                        </template>
+                                        <p>
+                                            {{item.content}}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -99,7 +130,7 @@
                                     <div class="top-form-contents">
                                         <span style="min-width: 194px;width: 194px">风险反馈</span>
                                         <el-input type="textarea" :rows="4" v-model="risk.risk_feed_content"
-                                                  placeholder="this.riskSuggest"></el-input>
+                                                  placeholder="请填写反馈内容。。。"></el-input>
                                     </div>
                                 </div>
                             </div>
@@ -107,22 +138,38 @@
                     </div>
 
                     <div class="container-right-foot">
-
+                        <el-button
+                                type="primary"
+                                @click="showPersonnelListClicked"
+                        >
+                            反馈上报
+                        </el-button>
                     </div>
 
                 </div>
-            </div>
 
+                <show-personnel-list
+                        v-if="personListShow"
+                >
+                </show-personnel-list>
+
+            </div>
         </el-container>
     </div>
 </template>
 
 <script>
+    import showPersonnelList from '../../publicRiskControl/showPersonnelList'
+    // import ShowPersonnelList from "../../szcRiskControl/dialogModal/showPersonnelList";
+
     export default {
         name: "riskFeedReportComponent",
-        components: {},
+        components: {
+            showPersonnelList
+        },
         props: {
-            reportData: Object
+            reportData: Object,
+            dataFresh: Boolean
         },
         data: function () {
             return {
@@ -133,37 +180,56 @@
                 risklevel: '2',
                 riskcompany: '3',
                 risksbuser: '4',
-                reportTitleData: {},
-                risktype: "战略风险",
+                riskCount: {},
+                risksptype: "战略风险",
                 riskdetaildata: [],
+                personListShow: false
+            }
+        },
+        watch: {
+            dataFresh() {
+                this.updateData();
             }
         },
         created() {
-            let _this = this,
-                _reportData = _this.reportData.reportDataContent,
-                riskFeedDataList = _reportData.riskFeedDataList;
-            _this.getReportTitleData(_reportData);
-            this.getDirectoryData(riskFeedDataList);
-            this.reportDataFormat();
+            this.updateData();
+
         },
         mounted() {
+            this.pageScrollSet();
+        },
+        methods: {
+
+            /**
+             * 更新数据
+             */
+            updateData() {
+                let _this = this,
+                    _reportData = _this.reportData.reportDataContent,
+                    riskFeedDataList = _reportData.riskFeedDataList;
+                _this.getReportTitleData(_reportData);
+                this.getDirectoryData(riskFeedDataList);
+                this.reportDataFormat();
+            },
+
             /**
              * 设置div高度，并且实现左侧导航栏不跟随滚动，整个页面不滚动，只滚动报告内容部分
              * @type {number}
              */
-            let offsetHeight = document.body.offsetHeight,//页面整体高度
-                buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
-                tabHeight = 39,//tab标签高度
-                gapHeight = 32,//间隙的高度
-                pageHeaderHeight = 64;//导航栏高度
-            let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
-            this.$refs.containerAll.$el.style.height = tableHeight + 'px';
-            this.$refs.containerRightAll.style.height = tableHeight + 'px';
-            this.$refs.containerAll.$el.style.overflow = 'hidden';
-            this.$refs.containerAll.$el.style['overflow-x'] = 'auto';
-            this.$refs.containerRightAll.style.overflow = 'auto';
-        },
-        methods: {
+            pageScrollSet() {
+                let offsetHeight = document.body.offsetHeight,//页面整体高度
+                    buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
+                    tabHeight = 39,//tab标签高度
+                    gapHeight = 32,//间隙的高度
+                    pageHeaderHeight = 64;//导航栏高度
+                let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
+                this.$refs.containerAll.$el.style.height = tableHeight + 'px';
+                this.$refs.containerRightAll.style.height = tableHeight + 'px';
+                this.$refs.containerAll.$el.style.overflow = 'hidden';
+                this.$refs.containerAll.$el.style['overflow-x'] = 'auto';
+                this.$refs.containerRightAll.style.overflow = 'auto';
+            },
+
             reportDataFormat() {
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
@@ -176,7 +242,9 @@
              */
             getDirectoryData(riskFeedDataList) {
                 for (let key in riskFeedDataList) {
-                    this.leftNode[key] = riskFeedDataList[key].risktype;
+                    if (riskFeedDataList[key].risksptype) {
+                        this.leftNode[key] = riskFeedDataList[key].risksptype;
+                    }
                 }
             },
 
@@ -185,18 +253,27 @@
              * @param _reportData
              */
             getReportTitleData(_reportData) {
+                debugger;
                 let _this = this;
-                _this.reportTitleData = _reportData.headerData;
+                let _headerData = _reportData.headerData;
+                let _riskLevelCountArray = _headerData.riskLevelCountArray;
+                let allRiskCount = 0;
+                for (let key in _riskLevelCountArray) {
+                    allRiskCount += _riskLevelCountArray[key];
+                }
+                _headerData['allRiskCount'] = allRiskCount;
+                _this.riskCount = _headerData;
             },
+
             /**
              * 获取报告中间部分数据
              * @param riskFeedDataList
              */
             getReportCenterData(riskFeedDataList) {
                 let _this = this;
-                let riskTpyeId = this.selectedNode === '' ? 'zlfx' : this.selectedNode;
+                let riskTpyeId = this.selectedNode === '' ? 'flfx' : this.selectedNode;
                 let allriskFeedDataList = riskFeedDataList[riskTpyeId];
-                _this.risktype = allriskFeedDataList.risktype;
+                _this.risksptype = allriskFeedDataList.risksptype;
                 _this.riskdetaildata = allriskFeedDataList.riskdetaildata;
             },
 
@@ -209,6 +286,15 @@
                 this.selectedNode = key;
                 this.reportDataFormat();
             },
+
+            /**
+             * 反馈上报按钮点击
+             */
+            showPersonnelListClicked() {
+                debugger;
+                this.personListShow = !this.personListShow;
+            }
+
         }
     }
 </script>
@@ -359,5 +445,9 @@
 
     .container-right-loop-list {
         margin-bottom: 100px;
+    }
+
+    .container-right-foot {
+        text-align: right;
     }
 </style>
