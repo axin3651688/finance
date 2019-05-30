@@ -24,9 +24,7 @@
                                 <reportContent :reportData="reportData"></reportContent>
                             </el-col>
                         </el-row>
-                        
                     </div>
-                    <el-button @click="lookInstructions"></el-button>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -76,6 +74,7 @@ export default {
     },
     data() {
         return {
+            // showComponent:""//控制显示报告下面的组件批示
             dialogTitle:"关于【风险名称】的批示",
             fixedTitle:"关于【风险名称】的批示",
             tableData:[],
@@ -126,7 +125,6 @@ export default {
      * 组件生成的回调。
      */
     created() {
-        debugger;
         let me = this;
         if(me.activeName == "second") {
             let selectItem = me.selectItem;
@@ -168,7 +166,17 @@ export default {
          */
         updateView () {
             let me = this,selectItem = me.selectItem;
-            me.queryDataOfInstructions(selectItem);
+            let currentTab = me.activeName,judgeParams = {
+                id:"stable",
+                sqlId:'101'
+            };
+            if(currentTab == "second") {
+                judgeParams = {
+                    id:"treeTable",
+                    sqlId:"103"
+                }
+            }
+            me.queryDataOfInstructions(selectItem,judgeParams);
         },
         /**
          * 处理tab切换点击事件。
@@ -218,6 +226,10 @@ export default {
             }else {
                 period = year + "0" + month;
                 monthStr = "0" + month;
+            }
+            //判断是不是点击报告的scope
+            if(judgeParams && judgeParams.scope){
+                company = judgeParams.scope.row.scode;
             }
             let params = {
                 company:company,
@@ -274,7 +286,6 @@ export default {
          * @author szc 2019年5月24日11:08:51
          */
         setOperationBtns (data) {
-            debugger;
             let me = this,btns01 = [
                 {
                     "id": "1",
@@ -316,17 +327,17 @@ export default {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
-                    debugger;
                     // me.reportData = res.data.reportData;
-                    me.reportData = me.showDataOfInstruction(lookData,res.data.reportData);
-                    me.treeTableShow = false;
+                    me.showDataOfInstruction(lookData,res.data.reportData);
+                    // me.reportData = res.data.reportData;
+                    // me.treeTableShow = false;
                 }
             });
         },
         /**
          * 按钮的处理。
          * @author szc 2019-5-14 11:56:40
-         * 查看
+         * 0 批示 1 查看 2 退回 3 提醒
          */
         buttonHandler (scope,btnItem) {
             let me = this;
@@ -334,13 +345,16 @@ export default {
                 let id = btnItem.id;
                 if(id == "0"){
                     //批示.
-                    me.instructionsState(scope);
+                    // me.instructionsState(scope);
+                    me.reportData.type = "0";
+                    me.lookInstructions(scope);
                 }else if (id == "1") {
+                    me.reportData.type = "1";
                     me.lookInstructions(scope);
                 }else if (id == "2") {
-                    
+                    me.returnInstruction(scope);
                 }else if (id == "3") {
-
+                    me.remindTreeInstruction(scope);
                 }
             }
         },
@@ -375,10 +389,11 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions_old (scope) {
+        lookInstructions (scope) {
             let me = this,selectItem = me.selectItem,judgeParams = {
                 id:"lookInstruc",
-                sqlId:"104"
+                sqlId:"104",
+                scope:scope
             };
             me.queryDataOfInstructions(selectItem,judgeParams);
         },
@@ -386,12 +401,10 @@ export default {
          * 查看批示的内容
          * @author szc 2019年5月14日14:24:14
          */
-        lookInstructions () {
+        lookInstructions_old () {
             let me = this;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
-                debugger;
                 if(res.data.code == 200) {
-                    debugger;
                     me.reportData = res.data.reportData;
                     me.treeTableShow = false;
                 }
@@ -404,6 +417,12 @@ export default {
          */
         returnCurrentClick () {
             let me = this;
+            let selectItem = me.selectItem;
+            let judgeParams = {
+                id:"treeTable",
+                sqlId:"103"
+            };
+            me.queryDataOfInstructions(selectItem,judgeParams);
             me.treeTableShow = true;
         },
         /**
@@ -415,7 +434,6 @@ export default {
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/basicsModalConfig.json").then(res => {
                 if(res.data.code == 200){
                     queryCopingStrategies().then(resData => {
-                        debugger;
                         if(resData.data.code == 200) {
                             // me.copingStrategies(res.data.formConfig,res.data.data);
                             me.parseData(res.data.formConfig,row.row,resData.data.data);
@@ -519,11 +537,11 @@ export default {
          * @author szc 2019年5月22日19:39:07
          */
         eventHandler (params) {
-            debugger;
             let me = this,selectItem = me.selectItem;
             //10401 自定义的 表示批示下达之后要进行的操作。
             if(params.id == "10401"){
-                me.queryDataOfInstructions(selectItem);
+                let judgeParams = me.getJudgeParams();
+                me.queryDataOfInstructions(selectItem,judgeParams);
             }
         },
         /**
@@ -531,7 +549,6 @@ export default {
          * @author szc 2019年5月23日11:35:08
          */
         beforeClose (done) {
-            debugger;
             let me = this;
             this.$refs.riskModal.recoveryDefault();
             done();

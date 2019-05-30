@@ -6,7 +6,8 @@
 import {
     deptQueryRisk,
     queryDeparts,
-    updateInstruction
+    updateInstruction,
+    queryCopingStrategies
 } from '~api/szcRiskControl/riskControl.js'
 import { findThirdPartData } from "~api/interface";
 
@@ -19,14 +20,17 @@ export default {
         changeOption(item, param) {
             let me = this;
             me.selectItem = item;
-            me.queryDataOfInstructions(item);
+            let judgeParams = {
+                id: "stable",
+                sqlId: "101"
+            };
+            me.queryDataOfInstructions(item, judgeParams);
         },
         /**
          * 根据公司查询部门。
          * @author szc 2019年5月21日20:20:36
          */
         queryDepartMent() {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company;
@@ -41,7 +45,6 @@ export default {
          * @author szc 2019年5月24日13:29:47
          */
         changeShowContent(row, item) {
-            debugger;
             let me = this;
             //0 批示 1 查看 2 退回 3 提醒
             if (item.id == "1") {
@@ -59,7 +62,6 @@ export default {
          * @author szc 2019年5月24日16:50:58
          */
         remindInstruction(row) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -69,7 +71,7 @@ export default {
                     company: company,
                     id: 0,
                     nrelateid: row.row.id,
-                    sisinstructions: "0",
+                    sisinstructions: "-1",
                     period: me.parsePeriod()
                 }],
                 users: [
@@ -87,43 +89,35 @@ export default {
          * 退回风险批示。
          * @author szc 2019年5月24日15:39:45
          */
-        returnRiskInstruction() {
-            debugger;
-            let me = this;
+        returnRiskInstruction(row) {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
             let params = {
-                "riskReportStateDtos": [{
-                    "company": "string",
-                    "cstrategy": "string",
-                    "id": 0,
-                    "nrelateid": 0,
-                    "period": "string",
-                    "scompanyname": "string",
-                    "sfeedbackscontent": "string",
-                    "sfeedbacksuser": "string",
-                    "sfeedbacksusername": "string",
-                    "sfeedbacktime": "string",
-                    "sinstructionsuser": "string",
-                    "sinstructionsusername": "string",
-                    "sinstructiontime": "string",
-                    "sinstructscontent": "string",
-                    "sisfeedback": "string",
-                    "sisinstructions": "string",
-                    "sisreport": "string",
-                    "sissummary": "string",
-                    "sreporttime": "string",
-                    "sreportuser": "string",
-                    "sreportusername": "string",
-                    "sriskname": "string"
+                riskReportStateDtos: [{
+                    id: 0,
+                    company: company,
+                    nrelateid: row.row.id,
+                    sinstructionsuser: user,
+                    // cstrategy:selectStr,
+                    period: me.parsePeriod(),
+                    // sinstructscontent:me.instructions,
+                    sisinstructions: "-1"
                 }],
-                "users": [
-                    "string"
+                users: [
+                    row.row.sinstructionsuser
                 ]
             };
             let requertParams = {
-                data: "",
+                data: params,
                 success: "退回成功！",
                 error: "退回失败！"
             };
+            me.publicUpdateInstruction(requertParams);
+            let selectItem = me.selectItem,
+                judgeParams = me.getJudgeParams();
+            me.queryDataOfInstructions(selectItem, judgeParams);
         },
         /**
          * 公共的退回、提醒等操作。
@@ -141,6 +135,24 @@ export default {
                     me.$message.error(params.error ? params.error : "操作失败！");
                 }
             });
+        },
+        /**
+         * 公共获取判断参数。
+         * @author szc 2019年5月28日16:56:51
+         */
+        getJudgeParams() {
+            let me = this;
+            let judgeParams = {
+                id: "stable",
+                sqlId: "101"
+            }
+            if (me.activeName == "second") {
+                judgeParams = {
+                    id: "treeTable",
+                    sqlId: "103"
+                }
+            }
+            return judgeParams;
         },
         /**
          * 转换日期。
@@ -232,12 +244,12 @@ export default {
                 ops02 = [{
                         "id": "0",
                         "btnShow": true,
-                        "text": "查看"
+                        "text": "批示"
                     },
                     {
                         "id": "3",
                         "btnShow": true,
-                        "text": "退回"
+                        "text": "提醒"
                     }
                 ];
             if (item.sstate == "已批示") {
@@ -252,7 +264,6 @@ export default {
          * @author szc 2019年5月27日16:56:28
          */
         showDataOfInstruction(lookData, data) {
-            debugger;
             let me = this,
                 objLook = {},
                 objItems = [];
@@ -264,54 +275,90 @@ export default {
                 }
             });
             data.reportDataContent.riskFeedData = [];
-            me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData);
-            return data;
+            //查询风险策略下拉选的内容，放到报告上面去。
+            queryCopingStrategies().then(res => {
+                if (res.data.code == 200) {
+                    let resData = res.data.data;
+                    //lookData,查询的风险的所有的条数  objItems 风险的类型个数 
+                    //data.reportDataContent.riskFeedData报告的展示内容 resData 下拉选的内容
+                    data.reportDataContent.riskFeedData = me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData, resData);
+                    if (me.reportData.type) {
+                        data.type = me.reportData.type;
+                    }
+                    me.reportData = data;
+                    me.treeTableShow = false;
+                }
+            });
+            // me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData);
+            // return data;
         },
         /**
          * 报告的中间的内容。
          * @param {*} lookData 
          * @param {*} data 
          */
-        middleContentOfReport(lookData, objItems, data) {
-            debugger;
-            let me = this;
+        middleContentOfReport(lookData, objItems, data, optionsData) {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company;
             for (let i = 0; i < objItems.length; i++) {
                 let item = objItems[i];
                 let objItem = {
                     id: item.riskscode,
                     show: true,
+                    riskCount: 0,
                     text: item.risktype,
-                    responsibility: {
-                        text: "社会责任风险",
-                        level: "重要",
-                        company: "",
-                        identificationUser: "张三"
-                    },
                     contentUp: {
-                        id: item.riskscode + "Up",
-                        type: "text",
                         content: []
                     }
                 };
-                let objUpContentFXPG = {
-                        title: "风险评估",
-                        content: []
-                    },
-                    objUpContentFXGS = {
-                        title: "风险概述",
-                        content: []
-                    },
-                    objUpContentCQCS = {
-                        title: "采取措施",
-                        content: []
-                    },
-                    objUpContentYDJY = {
-                        title: "应对建议",
-                        content: []
-                    };
                 for (let j = 0; j < lookData.length; j++) {
                     let lookItem = lookData[j];
+                    let objUpContentFXPG = {
+                            title: "风险评估",
+                            content: []
+                        },
+                        objUpContentFXGS = {
+                            title: "风险概述",
+                            content: []
+                        },
+                        objUpContentCQCS = {
+                            title: "采取措施",
+                            content: []
+                        },
+                        objUpContentYDJY = {
+                            title: "应对建议",
+                            content: []
+                        },
+                        contentLast = {
+                            responsibility: {
+                                text: "社会责任风险",
+                                level: "重要",
+                                company: "",
+                                identificationUser: "张三"
+                            },
+                            content: [],
+                            contentDown: {
+                                content: []
+                            }
+                        },
+                        objDownContent = {
+                            id: "",
+                            type: "select",
+                            label: "风险策略为：",
+                            options: []
+                        };
                     if (item.riskscode == lookItem.riskscode) {
+                        if (lookItem.instructionid == '1') {
+                            contentLast.contentDown.rowItem = lookItem;
+                        } else {
+                            contentLast.contentDown.instructionObj = lookItem;
+                        }
+                        //上报人、等级、类型
+                        contentLast.responsibility.text = lookItem.sriskname;
+                        contentLast.responsibility.level = lookItem.levelsname || "暂无等级";
+                        contentLast.responsibility.company = company;
+                        contentLast.responsibility.identificationUser = lookItem.reportuser;
                         //风险评估。
                         objUpContentFXPG.content.push(lookItem.nprobability);
                         objUpContentFXPG.content.push(lookItem.ninfluence);
@@ -321,14 +368,80 @@ export default {
                         objUpContentCQCS.content.push(lookItem.cqcs);
                         //应对建议
                         objUpContentYDJY.content.push(lookItem.ydjy);
+                        //contenDown内容。
+                        objDownContent.id = "10" + j;
+                        objDownContent.options = optionsData;
+                        //下拉选放进去。
+                        contentLast.contentDown.content.push(objDownContent);
+                        //内容装进去。
+                        contentLast.content.push(objUpContentFXPG);
+                        contentLast.content.push(objUpContentFXGS);
+                        contentLast.content.push(objUpContentCQCS);
+                        contentLast.content.push(objUpContentYDJY);
+                        objItem.contentUp.content.push(contentLast);
+                        //风险的条数。
+                        objItem.riskCount++;
                     }
                 }
-                objItem.contentUp.content.push(objUpContentFXPG);
-                objItem.contentUp.content.push(objUpContentFXGS);
-                objItem.contentUp.content.push(objUpContentCQCS);
-                objItem.contentUp.content.push(objUpContentYDJY);
                 data.push(objItem);
             }
+            return data;
+        },
+        /**
+         * 树表汇总的提醒功能。
+         * @author szc 2019年5月29日12:57:35
+         */
+        remindTreeInstruction(scope) {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
+            let params = {
+                riskReportStateDtos: [{
+                    id: 0,
+                    company: company,
+                    // nrelateid: row.row.id,
+                    // sinstructionsuser: user,
+                    // cstrategy:selectStr,
+                    period: me.parsePeriod(),
+                    // sinstructscontent:me.instructions,
+                    sisinstructions: "0"
+                }]
+            };
+            let requertParams = {
+                data: params,
+                success: "提醒成功！",
+                error: "提醒失败！"
+            };
+            me.publicUpdateInstruction(requertParams);
+        },
+        /**
+         * 风险管控汇总树表的退回功能。
+         * @author szc 2019年5月29日16:49:22
+         */
+        returnInstruction(scope) {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
+            let params = {
+                riskReportStateDtos: [{
+                    id: 0,
+                    company: company,
+                    // nrelateid: row.row.id,
+                    // sinstructionsuser: user,
+                    // cstrategy:selectStr,
+                    period: me.parsePeriod(),
+                    // sinstructscontent:me.instructions,
+                    sisinstructions: "2"
+                }]
+            };
+            let requertParams = {
+                data: params,
+                success: "退回成功！",
+                error: "退回失败！"
+            };
+            me.publicUpdateInstruction(requertParams);
         }
     },
 }

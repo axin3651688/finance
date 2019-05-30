@@ -122,6 +122,11 @@
                 let nodes = this.$refs.tree.getCheckedNodes();
                 if (nodes && nodes.length > 0) {
                     this.$emit("personSureBtnClicked", nodes)
+                }else{
+                    this.$message({
+                        message:"没有选择人员!",
+                        type:"warning"
+                    });
                 }
             },
             /**

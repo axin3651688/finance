@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+
             <div ref="containerRightAll">
                 <div class="container-right" ref="containerRight">
                     <!--报告跳转界面头部内容-->
@@ -26,9 +27,10 @@
                     </report-header>
 
                     <!--报告跳转界面中间公共部分内容-->
-                    <report-conventional
+                    <report-conventional v-if="reportConventional"
                             :reportCompanyNameShow="this.reportData['reportCompanyName']"
                             :middleData.sync="middleData"
+                            :showComponent.sync="showComponent"
                     >
                     </report-conventional>
 
@@ -46,17 +48,21 @@
                     >
                     </report-schedule>
                     <!-- 风险管控的领导批示 -->
-                    <reportControlInstruction v-if="reportControl" :contentDown="contentDown"></reportControlInstruction>
+                    <!-- <reportControlInstruction v-if="reportControl" :contentDown="contentDown"></reportControlInstruction> -->
 
                     <div class="sb-btn" style="text-align: right;" v-if="this.instructionShow">
                         <el-button @click="sbRiskFeed">反馈上报</el-button>
                     </div>
-
+                     <!-- v-if="instructionRelease" -->
+                    <div class="sb-btn" style="text-align: right;" v-if="instructionRelease">
+                        <el-button @click="instructionHandle">批示下达</el-button>
+                    </div>
                 </div>
             </div>
 
         </el-container>
-        <show-personnel-list :personnelListShow="personnelListShow"></show-personnel-list>
+
+        <show-personnel-list :personnelListShow="personnelListShow" v-on:personSureBtnClicked="personSureBtnClicked"></show-personnel-list>
     </div>
 </template>
 
@@ -67,7 +73,9 @@
     import reportSchedule from './riskReportComponents/reportSchedule'
     import showPersonnelList from './showPersonnelList'
     import reportControlInstruction from './riskReportComponents/reportControlInstruction'
-
+    import {
+        updateInstruction
+    } from '~api/szcRiskControl/riskControl.js'
     export default {
         name: "reportComponent",
         components: {
@@ -83,6 +91,9 @@
         },
         data: function () {
             return {
+                reportConventional:true,//重新渲染用的。
+                instructionRelease:false,//批示下达按钮的显示与否
+                showComponent:"",//控制显示报告下面的哪个组件，
                 reportControl:false,//风险管控的领导批示
                 personnelListShow: false,
 
@@ -157,7 +168,156 @@
             sbRiskFeed() {
                 this.personnelListShow = !this.personnelListShow;
             },
-
+            /**
+             * 批示下达
+             * @author szc 2019年5月28日17:54:02
+             */
+            instructionHandle () {
+                this.personnelListShow = !this.personnelListShow;
+            },
+            /**
+             * 指定的人员的下达。
+             */
+            personSureBtnClicked (nodes) {
+                let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData;
+                if(instructionsRpt && middleData){
+                    if(instructionsRpt.length == 0){
+                        me.$message({
+                            message:"请填写批示信息！",
+                            type:"warning"
+                        });
+                        return;
+                    }
+                    if(instructionsRpt.length == middleData.riskCount){
+                        me.saveInstructionsRpt(instructionsRpt,nodes);
+                    }else {
+                        me.$message({
+                            message:"请完善批示信息！",
+                            type:"warning"
+                        });
+                    }
+                }else {
+                    me.$message({
+                        message:"请填写批示信息！",
+                        type:"warning"
+                    });
+                }
+            },
+            /**
+             * 批示保存批示信息。
+             */
+            saveInstructionsRpt (instructionsRpt,nodes) {
+                let me = this,storeParams = me.$store.getters,
+                    company = storeParams.company,
+                    user = storeParams.user.user.userName;
+                // let userStr = nodes
+                let arr = [],userStr = "";
+                nodes.forEach(item => {
+                    arr.push(item.id)
+                });
+                userStr = arr.join(',');
+                let params = {
+                    riskReportStateDtos:[],
+                    users:[
+                        userStr
+                    ]
+                };
+                instructionsRpt.forEach(item => {
+                    let riskReportState = {
+                        id: 0,
+                        company:company,
+                        nrelateid: "",
+                        sinstructionsuser:user,
+                        cstrategy:"",
+                        period: me.parsePeriod(),
+                        sinstructscontent:"",
+                        sisfeedback:"-1",
+                        sisinstructions:"1"
+                    }
+                    riskReportState.nrelateid = item.id;
+                    riskReportState.cstrategy = item.instructionValues;
+                    riskReportState.sinstructscontent = item.instruction;
+                    params.riskReportStateDtos.push(riskReportState);
+                });
+                let requertParams = {
+                    data: params,
+                    success: "批示成功！",
+                    error: "批示失败！",
+                    afterHandler:"afterInstructionRpt",
+                    afterParams:instructionsRpt
+                };
+                me.publicUpdateInstruction(requertParams);
+            },
+            /**
+             * 公共的退回、提醒等操作。
+             * @author szc 2019年5月24日15:44:46
+             */
+            publicUpdateInstruction(params) {
+                let me = this;
+                updateInstruction(params.data).then(res => {
+                    if (res.data.code == 200) {
+                        me.$message({
+                            message: params.success ? params.success : "操作成功！",
+                            type: "success",
+                        });
+                        if(params.afterHandler){
+                            me[params.afterHandler](params.afterParams);
+                        }
+                    } else {
+                        me.$message.error(params.error ? params.error : "操作失败！");
+                    }
+                });
+            },
+            /**
+             * 风险批示之后的处理。
+             * @author szc 2019年5月29日14:15:01
+             */
+            afterInstructionRpt (afterParams) {
+                let me = this,middleData = me.middleData;
+                let content = middleData.contentUp.content;
+                for(let i = 0;i < content.length;i++){
+                    let item = content[i];
+                    if(item.contentDown){
+                        item.contentDown.rowItem = item.contentDown.instructionObj;
+                        for(let j = 0;j < afterParams.length;j ++){
+                            let afterParamsItem = afterParams[j];
+                            if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
+                                item.contentDown.rowItem.cstrategy = afterParamsItem.instructionValues;
+                                item.contentDown.rowItem.instructionid = "1";
+                                item.contentDown.rowItem.psnr = afterParamsItem.instruction;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //删除添加到全局对象上的批示内容
+                if(me.$store.instructionsRpt){
+                    delete me.$store.instructionsRpt;
+                }
+                me.instructionRelease = false;
+                middleData.contentUp.content = content;
+                middleData.changeValue = Math.floor(Math.random()*1000);
+                me.middleData = middleData;
+                me.personnelListShow = !me.personnelListShow;
+                me.reportConventional = false;
+                me.$nextTick(()=>{
+                    me.reportConventional = true;
+                })
+            },
+            /**
+             * 转换日期。
+             * @author szc 2019年5月22日19:04:24
+             */
+            parsePeriod(){
+                let me = this,storeParams = me.$store.getters,
+                year = storeParams.year,month = storeParams.month,period = "";
+                if(month > 9) {
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                return period;
+            },
             /**
              * 根据当前风险节点确定需要显示报告中的领导批示还是进度
              */
@@ -173,7 +333,6 @@
              * 获取目录的数据
              */
             getDirectoryData(){
-                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{
@@ -199,7 +358,13 @@
              */
             createDataOfMiddle () {
                 let me = this,reportData = me.reportData,contentData = [];
+                if(reportData.type == "0"){
+                    me.instructionRelease = true
+                }else {
+                    me.instructionRelease = false
+                }
                 if(reportData.reportDataContent && reportData.reportDataContent.riskFeedData) {
+                    me.showComponent = "riskControl";
                     contentData = reportData.reportDataContent.riskFeedData;
                     let length = contentData.length;
                     for(let i = 0; i < length; i++){
