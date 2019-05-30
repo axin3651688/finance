@@ -35,6 +35,13 @@
         >
             <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed">
                 <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align">
+                    <el-table-column v-for="tool in too.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align">
+                        <template slot-scope="scope">
+                            <el-tooltip :content="getCellValues(scope,tool)" placement="right" effect="light">
+                                <span>{{ getCellValues(scope,tool) }}</span>
+                            </el-tooltip>
+                    </template>
+                    </el-table-column>
                     <template slot-scope="scope">
                         <el-tooltip :content="getCellValues(scope,too)" placement="right" effect="light">
                             <span>{{ getCellValues(scope,too) }}</span>
@@ -283,6 +290,11 @@ export default {
     .el-table__fixed tr th {
         background-color: rgb(240, 248, 255) !important;
         color: #606266;
+    }
+    /** 这是对表头的行高设置*/
+    .el-table__header tr, .el-table__header th {
+        padding: 0;
+        height: 35px;
     }
     /** 这是对表行的行高设置*/
     .el-table__body tr, .el-table__body td {
