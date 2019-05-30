@@ -237,3 +237,14 @@ export function riskdistinguish_risk_release(data){
         data: data
     })
 }
+/**12.
+ * name: sjz
+ * 说明：风险报告的【报告页面】接口 /riskreportstate/query_riskreport
+ */
+export function riskreportstate_query_riskreport(data){
+    return request({
+        url: '/zjb/riskreportstate/query_riskreport',
+        method: 'post',
+        data: data
+    })
+}

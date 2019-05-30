@@ -102,7 +102,7 @@ export default {
     },
     computed: {
         // 格式化数据源
-        data: function () { 
+        data: function () { debugger
             let me = this
             let parent,level ;
             if (me.treeStructure) {

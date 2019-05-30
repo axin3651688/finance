@@ -47,7 +47,7 @@
                     style="fontSize: 14px;height: 30px"
                     :key="btn.id"
                     :class="btn.icon"
-                    @click="btnClick(btn)"
+                    @click="btnClick(btn,scope)"
                     size="mini"
                     type="primary" 
                     plain>
@@ -60,7 +60,7 @@
                     style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
                     :key="btn.id"
                     :class="btn.icon"
-                    @click="btnClick(btn)"
+                    @click="btnClick(btn,scope)"
                     size="mini"
                     type="primary" 
                     plain>
@@ -149,18 +149,11 @@
                 return (index === 0 && record.children && record.children.length > 0)
             },
             /**
-             * 点击公司显示具体报告内容
-             * @param row
-             */
-            showReportDetail() {
-                this.$emit('showreportdetailp');
-            },
-            /**
              * 点击操作列按钮触发，由于按钮功能不一致，所以写在json里面，自由发挥！
              */
-            btnClick(btn){
+            btnClick(btn,scope){
                 if(btn.handler && typeof btn.handler == "function"){
-                    return btn.handler(btn, this)
+                    return btn.handler(btn,scope, this)
                 }else{
                     this.$message('暂无此功能开发！');
                 }   
