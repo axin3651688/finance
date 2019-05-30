@@ -25,7 +25,8 @@
     "config": {
         // 原来的sql，没有跟公司表关联
         // "sql": "WITH TT AS( SELECT SCODE,spcode, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' and CISDEL='N' and SPCODE like :company||'%' or scode=:company), T1 as (select fact_b, DIM_ITEMPERIOD, DIM_COMPANY, F.SNAME, dim_period from DW_FACTFINANCEPERIOD E RIGHT JOIN TT F ON E.DIM_COMPANY=F.SCODE where DIM_PERIOD in (:comparePeriod, :period) ), T2 AS ( select T1.DIM_COMPANY, T1.SNAME, fact_b YYCB_BN, YYLR_BN, YYSR_BN, XSFY_BN, CWFY_BN, GLFY_BN, YYCB_SN, YYLR_SN, YYSR_SN, XSFY_SN, CWFY_SN, GLFY_SN from T1 LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_BN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:period) AA ON T1.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_BN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) BB ON BB.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_BN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:period) CC ON BB.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_BN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:period) DD ON DD.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B GLFY_BN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:period) EE ON DD.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, fact_b YYCB_SN from T1 where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:comparePeriod) FF ON FF.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_SN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:comparePeriod) HH ON FF.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_SN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) II ON II.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_SN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:comparePeriod) JJ ON II.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_SN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:comparePeriod) KK ON KK.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME,FACT_B GLFY_SN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:comparePeriod) LL ON KK.DIM_COMPANY=LL.DIM_COMPANY where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:period ) SELECT DIM_COMPANY GSBM, SNAME GSMC, sum(nvl(YYCB_BN,0)) YYCB_BN,sum(nvl(YYCB_SN,0)) YYCB_SN,CASE WHEN sum(nvl(YYCB_SN,0))=0 THEN 0 ELSE ROUND((sum(nvl(YYCB_BN,0))-sum(nvl(YYCB_SN,0)))/sum(nvl(YYCB_SN,0)),4)*100 END ZJL, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_BN,0))/sum(nvl(YYSR_BN,0)),4)*100 END MLL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_SN,0))/sum(nvl(YYSR_SN,0)),4)*100 END MLL_SN, sum(nvl(XSFY_BN,0)) XSFY_BN,sum(nvl(XSFY_SN,0)) XSFY_SN, sum(nvl(CWFY_BN,0)) CWFY_BN, sum(nvl(CWFY_SN,0)) CWFY_SN,sum(nvl(GLFY_BN,0)) GLFY_BN, sum(nvl(GLFY_SN,0)) GLFY_SN, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_BN,0))+sum(nvl(CWFY_BN,0))+sum(nvl(GLFY_BN,0)))/sum(nvl(YYSR_BN,0))),4)*100 END FYL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_SN,0))+sum(nvl(CWFY_SN,0))+sum(nvl(GLFY_SN,0)))/sum(nvl(YYSR_SN,0))),4)*100 END FYL_SN FROM T2 group by DIM_COMPANY, SNAME order by DIM_COMPANY ",
-        "sql": " WITH TT AS( SELECT SCODE,spcode, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' and CISDEL='N' and SPCODE like :company||'%' or scode=:company), T1 as (select fact_b, DIM_ITEMPERIOD, DIM_COMPANY, F.SNAME, dim_period from DW_FACTFINANCEPERIOD E RIGHT JOIN TT F ON E.DIM_COMPANY=F.SCODE where DIM_PERIOD in (:comparePeriod, :period) ), T2 AS ( select T1.DIM_COMPANY, T1.SNAME, fact_b YYCB_BN, YYLR_BN, YYSR_BN, XSFY_BN, CWFY_BN, GLFY_BN, YYCB_SN, YYLR_SN, YYSR_SN, XSFY_SN, CWFY_SN, GLFY_SN from T1 LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_BN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:period) AA ON T1.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_BN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) BB ON BB.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_BN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:period) CC ON BB.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_BN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:period) DD ON DD.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B GLFY_BN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:period) EE ON DD.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, fact_b YYCB_SN from T1 where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:comparePeriod) FF ON FF.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_SN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:comparePeriod) HH ON FF.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_SN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) II ON II.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_SN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:comparePeriod) JJ ON II.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_SN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:comparePeriod) KK ON KK.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME,FACT_B GLFY_SN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:comparePeriod) LL ON KK.DIM_COMPANY=LL.DIM_COMPANY where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:period ), tt1 as ( SELECT DIM_COMPANY GSBM, SNAME GSMC, sum(nvl(YYCB_BN,0)) YYCB_BN,sum(nvl(YYCB_SN,0)) YYCB_SN,CASE WHEN sum(nvl(YYCB_SN,0))=0 THEN 0 ELSE ROUND((sum(nvl(YYCB_BN,0))-sum(nvl(YYCB_SN,0)))/sum(nvl(YYCB_SN,0)),4) END ZJL, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_BN,0))/sum(nvl(YYSR_BN,0)),4) END MLL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_SN,0))/sum(nvl(YYSR_SN,0)),4) END MLL_SN, sum(nvl(XSFY_BN,0)) XSFY_BN,sum(nvl(XSFY_SN,0)) XSFY_SN, sum(nvl(CWFY_BN,0)) CWFY_BN, sum(nvl(CWFY_SN,0)) CWFY_SN,sum(nvl(GLFY_BN,0)) GLFY_BN, sum(nvl(GLFY_SN,0)) GLFY_SN, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_BN,0))+sum(nvl(CWFY_BN,0))+sum(nvl(GLFY_BN,0)))/sum(nvl(YYSR_BN,0))),4) END FYL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_SN,0))+sum(nvl(CWFY_SN,0))+sum(nvl(GLFY_SN,0)))/sum(nvl(YYSR_SN,0))),4) END FYL_SN FROM T2 group by DIM_COMPANY, SNAME order by DIM_COMPANY ) SELECT SCODE, SNAME, YYCB_BN, YYCB_SN, ZJL*100 AS ZJL, MLL_BN*100 AS MLL_BN, MLL_SN*100 AS MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN*100 AS FYL_BN, FYL_SN*100 AS FYL_SN FROM DW_DIMCOMPANY H left join ( select GSBM, GSMC, YYCB_BN, YYCB_SN, ZJL, MLL_BN, MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN, FYL_SN from tt1) g ON h.scode = g.gsbm WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company ORDER BY H.SCODE",
+        // "sql": " WITH TT AS( SELECT SCODE,spcode, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' and CISDEL='N' and SPCODE like :company||'%' or scode=:company), T1 as (select fact_b, DIM_ITEMPERIOD, DIM_COMPANY, F.SNAME, dim_period from DW_FACTFINANCEPERIOD E RIGHT JOIN TT F ON E.DIM_COMPANY=F.SCODE where DIM_PERIOD in (:comparePeriod, :period) ), T2 AS ( select T1.DIM_COMPANY, T1.SNAME, fact_b YYCB_BN, YYLR_BN, YYSR_BN, XSFY_BN, CWFY_BN, GLFY_BN, YYCB_SN, YYLR_SN, YYSR_SN, XSFY_SN, CWFY_SN, GLFY_SN from T1 LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_BN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:period) AA ON T1.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_BN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) BB ON BB.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_BN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:period) CC ON BB.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_BN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:period) DD ON DD.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B GLFY_BN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:period) EE ON DD.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, fact_b YYCB_SN from T1 where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:comparePeriod) FF ON FF.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYLR_SN from T1 where DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:comparePeriod) HH ON FF.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B YYSR_SN from T1 where DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) II ON II.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B XSFY_SN from T1 where DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:comparePeriod) JJ ON II.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME, FACT_B CWFY_SN from T1 where DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:comparePeriod) KK ON KK.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN (select DIM_COMPANY, SNAME,FACT_B GLFY_SN from T1 where DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:comparePeriod) LL ON KK.DIM_COMPANY=LL.DIM_COMPANY where DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:period ), tt1 as ( SELECT DIM_COMPANY GSBM, SNAME GSMC, sum(nvl(YYCB_BN,0)) YYCB_BN,sum(nvl(YYCB_SN,0)) YYCB_SN,CASE WHEN sum(nvl(YYCB_SN,0))=0 THEN 0 ELSE ROUND((sum(nvl(YYCB_BN,0))-sum(nvl(YYCB_SN,0)))/sum(nvl(YYCB_SN,0)),4) END ZJL, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_BN,0))/sum(nvl(YYSR_BN,0)),4) END MLL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(sum(nvl(YYLR_SN,0))/sum(nvl(YYSR_SN,0)),4) END MLL_SN, sum(nvl(XSFY_BN,0)) XSFY_BN,sum(nvl(XSFY_SN,0)) XSFY_SN, sum(nvl(CWFY_BN,0)) CWFY_BN, sum(nvl(CWFY_SN,0)) CWFY_SN,sum(nvl(GLFY_BN,0)) GLFY_BN, sum(nvl(GLFY_SN,0)) GLFY_SN, CASE WHEN sum(nvl(YYSR_BN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_BN,0))+sum(nvl(CWFY_BN,0))+sum(nvl(GLFY_BN,0)))/sum(nvl(YYSR_BN,0))),4) END FYL_BN, CASE WHEN sum(nvl(YYSR_SN,0))=0 THEN 0 ELSE ROUND(((sum(nvl(XSFY_SN,0))+sum(nvl(CWFY_SN,0))+sum(nvl(GLFY_SN,0)))/sum(nvl(YYSR_SN,0))),4) END FYL_SN FROM T2 group by DIM_COMPANY, SNAME order by DIM_COMPANY ) SELECT SCODE, SNAME, YYCB_BN, YYCB_SN, ZJL*100 AS ZJL, MLL_BN*100 AS MLL_BN, MLL_SN*100 AS MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN*100 AS FYL_BN, FYL_SN*100 AS FYL_SN FROM DW_DIMCOMPANY H left join ( select GSBM, GSMC, YYCB_BN, YYCB_SN, ZJL, MLL_BN, MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN, FYL_SN from tt1) g ON h.scode = g.gsbm WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company ORDER BY H.SCODE",
+        "sql": "WITH TT AS( SELECT SCODE, spcode, SNAME FROM DW_DIMCOMPANY WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company) , T1 AS ( SELECT fact_b, DIM_ITEMPERIOD, DIM_COMPANY, F.SNAME, dim_period FROM DW_FACTFINANCEPERIOD E RIGHT JOIN TT F ON E.DIM_COMPANY=F.SCODE WHERE DIM_PERIOD IN (:comparePeriod, :period) ) , T2 AS ( SELECT T1.DIM_COMPANY, T1.SNAME, fact_b YYCB_BN, YYLR_BN, YYSR_BN, XSFY_BN, CWFY_BN, GLFY_BN, YYCB_SN, YYLR_SN, YYSR_SN, XSFY_SN, CWFY_SN, GLFY_SN FROM T1 LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B YYLR_BN FROM T1 WHERE DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:period) AA ON T1.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B YYSR_BN FROM T1 WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:period) BB ON BB.DIM_COMPANY=AA.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B XSFY_BN FROM T1 WHERE DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:period) CC ON BB.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B CWFY_BN FROM T1 WHERE DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:period) DD ON DD.DIM_COMPANY=CC.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B GLFY_BN FROM T1 WHERE DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:period) EE ON DD.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, fact_b YYCB_SN FROM T1 WHERE DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:comparePeriod) FF ON FF.DIM_COMPANY=EE.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B YYLR_SN FROM T1 WHERE DIM_ITEMPERIOD='1402100' AND DIM_PERIOD=:comparePeriod) HH ON FF.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B YYSR_SN FROM T1 WHERE DIM_ITEMPERIOD='1416001' AND DIM_PERIOD=:comparePeriod) II ON II.DIM_COMPANY=HH.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B XSFY_SN FROM T1 WHERE DIM_ITEMPERIOD='1436601' AND DIM_PERIOD=:comparePeriod) JJ ON II.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B CWFY_SN FROM T1 WHERE DIM_ITEMPERIOD='1436603' AND DIM_PERIOD=:comparePeriod) KK ON KK.DIM_COMPANY=JJ.DIM_COMPANY LEFT JOIN ( SELECT DIM_COMPANY, SNAME, FACT_B GLFY_SN FROM T1 WHERE DIM_ITEMPERIOD='1436602' AND DIM_PERIOD=:comparePeriod) LL ON KK.DIM_COMPANY=LL.DIM_COMPANY WHERE DIM_ITEMPERIOD='1426400' AND DIM_PERIOD=:period ) , tt1 AS ( SELECT DIM_COMPANY GSBM, SNAME GSMC, SUM(NVL(YYCB_BN,0)) YYCB_BN, SUM(NVL(YYCB_SN,0)) YYCB_SN, CASE WHEN SUM(NVL(YYCB_SN,0))=0 THEN 0 ELSE ROUND((SUM(NVL(YYCB_BN,0))-SUM(NVL(YYCB_SN,0)))/SUM(NVL(YYCB_SN,0)),4) END ZJL, CASE WHEN SUM(NVL(YYSR_BN,0))=0 THEN 0 ELSE ROUND(SUM(NVL(YYLR_BN,0))/SUM(NVL(YYSR_BN,0)),4) END MLL_BN, CASE WHEN SUM(NVL(YYSR_SN,0))=0 THEN 0 ELSE ROUND(SUM(NVL(YYLR_SN,0))/SUM(NVL(YYSR_SN,0)),4) END MLL_SN, SUM(NVL(XSFY_BN,0)) XSFY_BN, SUM(NVL(XSFY_SN,0)) XSFY_SN, SUM(NVL(CWFY_BN,0)) CWFY_BN, SUM(NVL(CWFY_SN,0)) CWFY_SN, SUM(NVL(GLFY_BN,0)) GLFY_BN, SUM(NVL(GLFY_SN,0)) GLFY_SN, CASE WHEN SUM(NVL(YYSR_BN,0))=0 THEN 0 ELSE ROUND(((SUM(NVL(XSFY_BN,0))+SUM(NVL(CWFY_BN,0))+SUM(NVL(GLFY_BN,0)))/SUM(NVL (YYSR_BN,0))),4) END FYL_BN, CASE WHEN SUM(NVL(YYSR_SN,0))=0 THEN 0 ELSE ROUND(((SUM(NVL(XSFY_SN,0))+SUM(NVL(CWFY_SN,0))+SUM(NVL(GLFY_SN,0)))/SUM(NVL (YYSR_SN,0))),4) END FYL_SN FROM T2 GROUP BY DIM_COMPANY, SNAME ORDER BY DIM_COMPANY ) SELECT SCODE gsbm, SNAME, spcode pid, YYCB_BN, YYCB_SN, ZJL*100 AS ZJL, MLL_BN*100 AS MLL_BN, MLL_SN*100 AS MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN*100 AS FYL_BN, FYL_SN*100 AS FYL_SN FROM DW_DIMCOMPANY H LEFT JOIN ( SELECT GSBM, GSMC, YYCB_BN, YYCB_SN, ZJL, MLL_BN, MLL_SN, XSFY_BN, XSFY_SN, CWFY_BN, CWFY_SN, GLFY_BN, GLFY_SN, FYL_BN, FYL_SN FROM tt1) g ON h.scode = g.gsbm WHERE PROPERTY1='1' AND CISDEL='N' AND SPCODE LIKE :company||'%' OR scode=:company ORDER BY H.SCODE",
         "_cube": {
             "cubeId": 4 ,
             "subject": "0002"
@@ -42,31 +43,11 @@
         } 
     },
     "columns": [
+        
         {
-            "id" : "",
-            "type" : "string",
-            "text" : "费用率%",
-            "children" : [
-                {
-                    "id" : "fyl_bn",
-                    "type" : "decimal",
-                    "text" : "本期",
-                    "width": "130px",
-                    "conversion":"%"
-                },
-                {
-                    "id" : "fyl_sn",
-                    "type" : "decimal",
-                    "text" : "上年同期",
-                    "width": "130px",
-                    "conversion":"%"
-                }
-            ]
-        },
-        {
-            "id": "scode",
+            "id": "gsbm",
             "type": "string",
-            "width": "120px",
+            "width": "200",
             "fixed":true,
             "text": "公司编码"
         },
@@ -180,14 +161,38 @@
                     "width": "170px"
                 }
             ]
+        },
+        {
+            "id" : "",
+            "type" : "string",
+            "text" : "费用率%",
+            "children" : [
+                {
+                    "id" : "fyl_bn",
+                    "type" : "decimal",
+                    "text" : "本期",
+                    "width": "130px",
+                    "conversion":"%"
+                },
+                {
+                    "id" : "fyl_sn",
+                    "type" : "decimal",
+                    "text" : "上年同期",
+                    "width": "130px",
+                    "conversion":"%"
+                }
+            ]
         }
     ],
     "rows": [],
     "items":[
         {
-            "xtype" : "bi-table",
+            "xtype" : "elementTree",
             "id" : "cbfyzb",
             "text" : "成本费用指标",
+            "stype": false,
+            "isUnfold": true,// 自动展开的配置
+            "levelProperties": { gsbm: "_level" },
             "queryDataAfter":function(data, $vue){
                 debugger
                 // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
@@ -207,6 +212,7 @@
                 "cellStyle":{
                     // "color":"black",
                     // "background-color":"#fff"
+                    "margin-bottom": "8px"
                 },
                 "handler":function(vue,btn){
                     debugger
@@ -222,6 +228,7 @@
                 "cellStyle":{
                     // "color":"black",
                     // "background-color":"#fff"
+                    "margin-bottom": "8px"
                 },
                 "handler":function(vue,btn){
                     debugger

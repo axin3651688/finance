@@ -40,17 +40,14 @@ export default {
     },
     watch: {
         contentDown (newValue,oldValue) {
-            debugger;
             let me = this;
             me.editableInstruction(newValue.rowItem);
         },
         instructionValues (newValue,oldValue) {
-            debugger;
             let me = this,contentDown = me.contentDown;
             me.instructionContent("instructionValues");
         },
         instruction (newValue,oldValue) {
-            debugger;
             let me = this,contentDown = me.contentDown;
             me.instructionContent("instruction");
         }
@@ -73,9 +70,11 @@ export default {
          * @author szc 2019年5月28日14:45:14
          */
         editableInstruction (rowItem) {
-            debugger;
             let me = this;
             if(rowItem && rowItem.instructionid == "1"){
+                if(typeof rowItem.cstrategy == 'number'){
+                    rowItem.cstrategy = rowItem.cstrategy + "";
+                }
                 let arr = rowItem.cstrategy.split(',');
                 me.instructionValues = arr;
                 me.instruction = rowItem.psnr || "";
@@ -90,7 +89,6 @@ export default {
          * 改变下拉选的内容。
          */
         changeOption (item,params,contentDown) {
-            debugger;
             let me = this;
 
         }

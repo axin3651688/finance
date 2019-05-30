@@ -25,12 +25,22 @@
         :columns="columns" 
         :data="data" 
         :item="item"
-        @showreportdetailp="showreportdetailp"  
+        @showreportdetailp="showreportdetailp"
+        @viewreportdetailp="viewreportdetailp"  
         >
         </tree-table>
-        <!-- 跳转报告页面 -->
+        <!-- 
+            跳转报告页面 
+            参数名                  数据类型                作用
+            dataSource              Object                  点击的那一行的数据（包括其他的信息）
+            newThis                 Object                  this对象
+            numOpen                 Number                  监控（区分查看按钮还是上报按钮）
+            data                    Object                  请求的数据（一切信息）
+        -->
         <div v-show="isShow">
-            <report-component :dataSource="dataSource"></report-component>
+            <report-component 
+            :dataSource="dataSource" :newThis="this" :numOpen="numOpen"
+            :data="reportRow"></report-component>
         </div>
         <!-- dialog弹出框 -->
         <!-- <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
@@ -46,36 +56,42 @@ import treeTable from "@v/riskControlSystem/sjzRiskControl/treeTable";
 // 引用接口（获取数据）
 import { findThirdPartData, findDesignSource } from "~api/interface";
 // 引用弹出框组件
-import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
+// import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
 // 引用跳转的报告页面
-import reportComponent from "@v/riskControlSystem/publicRiskControl/reportComponent"
+import reportComponent from "@v/riskControlSystem/sjzRiskControl/report/reportComponent"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
 // 引用公用 js 方法
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
+// 引用接口
+import { 
+    riskreportstate_query_riskreport
+    } from "~api/cube.js";
 // 引用 js 方法
 import tools from "utils/tools";
 export default {
     name: 'treeTableDemo',
     components: {
         treeTable,
-        dialogComponent,
         reportComponent
     },
     props: ["jsonAdress","tableHeight"],
     data(){
         return {
             dialogVisible: false,
-            isShow: false ,
             treeName: "",
             title: "",
-            columns:[],
-            data:[],
-            item: {},
-            dataSource: {},
-            biYear: "",
-            biMonth: "",
-            biCompany: ""
+            columns:[],             // 树表的列
+            data:[],                // 树表的行
+            item: {},               // json的请求信息
+            biYear: "",             // 年
+            biMonth: "",            // 月
+            biCompany: "",          // 公司
+            // 报告页面
+            dataSource: {},         // 报告页面的信息
+            isShow: false ,         // 报告页面的隐藏与显示
+            numOpen: null ,         // 区分【查看】【上报】两个按钮的状态，监控用的
+            reportRow: {} ,         // 请求的数据
         }
     },
     created(){ 
@@ -94,12 +110,15 @@ export default {
     },
     watch: {
         year(newyear) {
+            this.isShow = false ;
             this.loadModuleBefore(newyear, this);
         },
         month(newmonth) {
+            this.isShow = false ;
             this.loadModuleBefore(newmonth, this);
         },
         company(newcompany) {
+            this.isShow = false ;
             this.loadModuleBefore(newcompany, this);
         }
     },
@@ -118,9 +137,39 @@ export default {
          * 树表子组件 传过来 的值
          * 可点击的列 点击之后跳转到父组件的 showreportdetailp 方法
          * 组件引用： reportComponent.vue
+         * 【上报按钮】
          */ 
-        showreportdetailp(params){
+        showreportdetailp(params,scope){ 
+            // debugger
+            let $params = this.$store.state.prame.command;
+            let company = scope.row.id ;
+            let sparam = {
+                company: company,
+                period: $params.year + mini.getPeriod($params) ,
+                sissubmit: "Y"
+            }
+            const me = this ;
+            riskreportstate_query_riskreport(sparam).then(her => { 
+                me.isShow = true ;
+                me.numOpen = 1 ;
+                me.dataSource = params ;
+                if(her.data.code === 200){
+                    me.reportRow = her.data.data ;
+                }else{
+                    me.$message.error('请求失败!');
+                    
+                }
+            });
+        },
+        /**
+         * 树表子组件 传过来 的值
+         * 可点击的列 点击之后跳转到父组件的 viewreportdetailp 方法
+         * 组件引用： reportComponent.vue
+         * 【查看按钮】
+         */
+        viewreportdetailp(params,scope){
             this.isShow = true ;
+            this.numOpen = 0 ;
             this.dataSource = params ;
         },
         // 获取树表的json信息
@@ -147,14 +196,6 @@ export default {
                 this.loadModuleBefore();
             });
         },
-        // 日期处理
-        getPeriod(){
-            let me = this, period = "" ;
-            if(me.biMonth>0 && me.biMonth<10){
-                period = "0" + me.biMonth ;
-            }
-            return period ;
-        },
         // 数据处理加载模块
         loadModuleBefore(){
             // debugger
@@ -165,8 +206,8 @@ export default {
                 year: params.year ,
                 month: params.month,
                 company: params.company,
-                period: params.year + me.getPeriod(),
-                comparePeriod: params.year -1 + me.getPeriod(),
+                period: params.year + mini.getPeriod(params),
+                comparePeriod: params.year -1 + mini.getPeriod(params),
             };
             // 看看json里有没有配置【queryDataBefore】数据获取之前拦截的方法
             if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
@@ -204,7 +245,7 @@ export default {
                         data = tools.sortByKey(data, "scode");
                         data = data.filter(function(item) {
                             item.id = item.scode;
-                            item.label = "(" + item.scode + ") " + item.sname;
+                            item.label = "(" + item.scode + ") " + item.company;
                             return item;
                         });
                         // me.comtree2 = data;

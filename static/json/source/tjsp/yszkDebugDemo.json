@@ -67,7 +67,7 @@
                         datas.push(item);
                     })
                 }
-                return datas;
+                return data;
             },
             "config": {
                 "sql": "SELECT NID, A.DIM_CUSUPPLIERNAME AS SK, FACT_BALANCE AS BALANCE, FACT_A AS ONEYEAR, FACT_B AS TWOYEAR, FACT_C AS THREEYEAR, FACT_D AS FOURYEAR, C.SNAME AS SKXZ,( CASE WHEN ISINSIDE is null then null when ISINSIDE='1' THEN '是' ELSE '否' END) AS SFNB, ( CASE WHEN ISNORMAL is null then null when ISNORMAL='1' THEN '是' ELSE '否' END) AS SFZC, A.SCONTENTA AS FZCFL, A.SCONTENTB AS ZWRZK, FACT_E AS KHSJE, FACT_F AS DNKHSJE, FACT_G AS YQZK, FACT_H AS SZXSSJE FROM ( SELECT NID, DIM_CUSUPPLIER, DIM_COMPANY, DIM_ITEM, FACT_BALANCE, FACT_A, FACT_B, FACT_C, FACT_D, ISNATURE, ISINSIDE, ISNORMAL, SCONTENTA, SCONTENTB, FACT_E, FACT_F, FACT_G, FACT_H,DIM_CUSUPPLIERNAME FROM DW_FACTAGEANALYSIS WHERE DIM_COMPANY=:company AND DIM_PERIOD=:period AND DIM_ITEM='1001' AND ISINSIDE IS NOT NULL) A LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='10') C ON A.ISNATURE=C.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='11') D ON A.SCONTENTA=D.SCODE LEFT JOIN ( SELECT SCODE, SNAME FROM DW_DIMDROPMENU WHERE SPCODE='12') E ON A.SCONTENTB=E.SCODE ",
@@ -216,45 +216,45 @@
                 } else {
                     config.sql = config.sql2;
                 }
+                // 预警比例请求
+                let _sql = me.config.riskrangeSql ;
+                let user = $vue.$store.getters.user.user.userName;
+                _sql = _sql.replace(/:company/g,"'"+params.company+"'").replace(/:period/g,"'"+params.period+"'").replace(/:suser/g,"'"+user+"'") ;
+                let shuju = {
+                    cubeId: 4,
+                    sql: _sql
+                }
+                $vue.riskrangeRequest(shuju);
+                // 
                 return params;
             },
             "queryDataAfter": function(data, $vue) {
                 debugger
-                let me = this ;
-                let first, second ;
-                let yszk = JSON.parse(localStorage.getItem("yszk"));
-                if(yszk == null){
-                    first = 0 ;
-                    second= 0 ;
+                let riskrangeData = $vue.riskrangeData ;
+                let first , second ;
+                if(riskrangeData.length == 0){
+                    first = 0 ; second = 0 ;
                 }else{
-                    localStorage.removeItem("yszk");
-                    yszk[0].show = false ;
-                    yszk[1].show = false ;
-                    localStorage.setItem("yszk",JSON.stringify(yszk));
-                    first = yszk[0].value;
-                    second = yszk[1].value;
+                    riskrangeData.forEach(qwe => {
+                        if(qwe.sratiotype == 1)first = qwe.fact_a ;
+                        if(qwe.sratiotype == 2)second = qwe.fact_a ;
+                    })
                 }
-                data.forEach(element => {
-                    if(element.zjl == 0){
-                        element.riskrange = '' ;
-                    }else{
-                        if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
-                        if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
-                        if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
-                        // if(first == 0 && (element.riskrange == 'SAFE' || element.riskrange == '提示'))element.riskrange = '' ;
-                        // if(second == 0 && element.riskrange == 'DANGER')element.riskrange = '' ;
-                        if(first == 0)element.riskrange = '' ;
-                        if(second == 0)element.riskrange = '' ;
-                    }
-                    if(first == 0 && second == 0)element.riskrange = '' ;
-                    if(element.scode == '9')element.scode = '';   
-                });
+                // 循环
+                data.forEach(res => {
+                    if(first && first!=0 && res.zjl && res.zjl <= first)res.riskrange = "安全" ;
+                    if(second && second!=0 && res.zjl && res.zjl >= second)res.riskrange = "预警" ;
+                    if(first && first!=0 && second && second!=0 && res.zjl && res.zjl>first && res.zjl<second)res.riskrange = "提示" ;
+                    if(first == 0 && second == 0)res.riskrange = "" ;
+                    if(!res.zjl || res.zjl == 0)res.riskrange = "" ;
+                })
                 return data;
             },
             "config": {
                 "sql2": 7,
                 "sql1": 9,
                 "sql": "",
+                "riskrangeSql": " SELECT SRATIOTYPE, FACT_A, DIM_ITEM, SUSER FROM DW_FACTAGEANALYSIS_PERCENT where DIM_COMPANY=:company and DIM_PERIOD=:period and SUSER=:suser and DIM_ITEM='1001'",
                 "_cube": {
                     "subject": "",
                     "cubeId": 4
@@ -459,32 +459,32 @@
                 ],
                 "rows": []
             },
-            proportion:[
-                {
-                    "id": "1",
-                    "text": "安全比例",
-                    "placeholder": "请输入安全比例%",
-                    "cellStyle": {
-                        "width": "340px"
-                    },
-                    "input3": "",
-                    "show": false,
-                    "value": 0,                           
-                    "icon": "≤"
-                },
-                {
-                    "id": "2",
-                    "text": "预警比例",
-                    "placeholder": "请输入预警比例%",
-                    "cellStyle": {
-                        "width": "340px"
-                    },
-                    "input3": "",
-                    "value": 0,
-                    "show": false,
-                    "icon": "≥"
-                }
-            ],
+            // proportion:[
+            //     {
+            //         "id": "1",
+            //         "text": "安全比例",
+            //         "placeholder": "请输入安全比例%",
+            //         "cellStyle": {
+            //             "width": "340px"
+            //         },
+            //         "input3": "",
+            //         "show": false,
+            //         "value": 0,                           
+            //         "icon": "≤"
+            //     },
+            //     {
+            //         "id": "2",
+            //         "text": "预警比例",
+            //         "placeholder": "请输入预警比例%",
+            //         "cellStyle": {
+            //             "width": "340px"
+            //         },
+            //         "input3": "",
+            //         "value": 0,
+            //         "show": false,
+            //         "icon": "≥"
+            //     }
+            // ],
             "drillProperties":["riskrange","gsmc"],
             "__onRowClick": function(row, column, e, $this) {
                 debugger

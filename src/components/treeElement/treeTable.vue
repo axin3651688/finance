@@ -19,7 +19,7 @@ export default {
         }
     },
     created(){
-
+        debugger
         this.columns = this.item.config.columns ;
         let datas = this.item.datas ;
         this.array(datas) ;

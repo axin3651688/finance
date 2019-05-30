@@ -8,7 +8,7 @@
     },
     "columns": [
         {
-            "id": "company",
+            "id": "label",
             "text": "公司名称",
             "tepe": "string",
             "align": "left",
@@ -84,21 +84,32 @@
                     "id": 1,
                     "text": "上报",
                     "show": true,
-                    "icon": "iconfont icon-tianjiashangbao"
+                    "icon": "iconfont icon-tianjiashangbao",
+                    "handler": function(btn,scope, $this){
+                        // debugger
+                        let params = {
+                            year: $this.$store.getters.year,        // 年
+                            month:$this.$store.getters.month,       // 月
+                            company: $this.$store.getters.company,   // 公司
+                            row: scope 
+                        }
+                        // 子组件向父组件传值
+                        $this.$emit("showreportdetailp", params,scope);
+                    }
                 },
                 {
                     "id": 2,
                     "text": "查看",
                     "show": true,
                     "icon": "iconfont icon-chakan-copy",
-                    "handler": function(btn, $this){ debugger
+                    "handler": function(btn, $this){ 
                         let params = {
                             year: $this.$store.getters.year,        // 年
                             month:$this.$store.getters.month,       // 月
                             company: $this.$store.getters.company   // 公司
                         }
                         // 子组件向父组件传值
-                        // $this.$emit("showreportdetailp", params);
+                        $this.$emit("showreportdetailp", params);
                     }
                 },
                 {
@@ -111,7 +122,18 @@
                     "id": 4,
                     "text": "催报",
                     "show": true,
-                    "icon": "iconfont icon-clock"
+                    "icon": "iconfont icon-clock",
+                    "handler": function(btn,scope, $this){
+                        // debugger
+                        let params = {
+                            year: $this.$store.getters.year,        // 年
+                            month:$this.$store.getters.month,       // 月
+                            company: $this.$store.getters.company,   // 公司
+                            row: scope 
+                        }
+                        // 子组件向父组件传值
+                        $this.$emit("viewreportdetailp", params,scope);
+                    }
                 }
             ],
             "queryDataAfter": function(data, $vue){

@@ -27,7 +27,7 @@
                     </report-header>
 
                     <!--报告跳转界面中间公共部分内容-->
-                    <report-conventional
+                    <report-conventional v-if="reportConventional"
                             :reportCompanyNameShow="this.reportData['reportCompanyName']"
                             :middleData.sync="middleData"
                             :showComponent.sync="showComponent"
@@ -53,7 +53,8 @@
                     <div class="sb-btn" style="text-align: right;" v-if="this.instructionShow">
                         <el-button @click="sbRiskFeed">反馈上报</el-button>
                     </div>
-                    <div class="sb-btn" style="text-align: right;">
+                     <!-- v-if="instructionRelease" -->
+                    <div class="sb-btn" style="text-align: right;" v-if="instructionRelease">
                         <el-button @click="instructionHandle">批示下达</el-button>
                     </div>
                 </div>
@@ -72,7 +73,9 @@
     import reportSchedule from './riskReportComponents/reportSchedule'
     import showPersonnelList from './showPersonnelList'
     import reportControlInstruction from './riskReportComponents/reportControlInstruction'
-
+    import {
+        updateInstruction
+    } from '~api/szcRiskControl/riskControl.js'
     export default {
         name: "reportComponent",
         components: {
@@ -88,6 +91,8 @@
         },
         data: function () {
             return {
+                reportConventional:true,//重新渲染用的。
+                instructionRelease:false,//批示下达按钮的显示与否
                 showComponent:"",//控制显示报告下面的哪个组件，
                 reportControl:false,//风险管控的领导批示
                 personnelListShow: false,
@@ -141,7 +146,6 @@
              * @param type
              */
             riskTypeChange(type) {
-                debugger;
                 // alert(type + '   恭喜，风险类型切换了，但是没有实现功能，只是效果展示');
                 let me = this,reportData = me.reportData,reportDataList = reportData.reportDataContent.riskFeedData;
                 if (reportDataList && reportDataList.length > 0) {
@@ -175,7 +179,6 @@
              * 指定的人员的下达。
              */
             personSureBtnClicked (nodes) {
-                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData;
                 if(instructionsRpt && middleData){
                     if(instructionsRpt.length == 0){
@@ -186,7 +189,7 @@
                         return;
                     }
                     if(instructionsRpt.length == middleData.riskCount){
-                        me.saveInstructionsRpt(instructionsRpt);
+                        me.saveInstructionsRpt(instructionsRpt,nodes);
                     }else {
                         me.$message({
                             message:"请完善批示信息！",
@@ -203,27 +206,34 @@
             /**
              * 批示保存批示信息。
              */
-            saveInstructionsRpt (instructionsRpt) {
+            saveInstructionsRpt (instructionsRpt,nodes) {
                 let me = this,storeParams = me.$store.getters,
                     company = storeParams.company,
                     user = storeParams.user.user.userName;
+                // let userStr = nodes
+                let arr = [],userStr = "";
+                nodes.forEach(item => {
+                    arr.push(item.id)
+                });
+                userStr = arr.join(',');
                 let params = {
                     riskReportStateDtos:[],
                     users:[
                         userStr
                     ]
                 };
-                let riskReportState = {
-                    id: 0,
-                    company:company,
-                    nrelateid: "",
-                    sinstructionsuser:user,
-                    cstrategy:"",
-                    period: me.parsePeriod(),
-                    sinstructscontent:"",
-                    sisinstructions:"1"
-                }
                 instructionsRpt.forEach(item => {
+                    let riskReportState = {
+                        id: 0,
+                        company:company,
+                        nrelateid: "",
+                        sinstructionsuser:user,
+                        cstrategy:"",
+                        period: me.parsePeriod(),
+                        sinstructscontent:"",
+                        sisfeedback:"-1",
+                        sisinstructions:"1"
+                    }
                     riskReportState.nrelateid = item.id;
                     riskReportState.cstrategy = item.instructionValues;
                     riskReportState.sinstructscontent = item.instruction;
@@ -232,7 +242,9 @@
                 let requertParams = {
                     data: params,
                     success: "批示成功！",
-                    error: "批示失败！"
+                    error: "批示失败！",
+                    afterHandler:"afterInstructionRpt",
+                    afterParams:instructionsRpt
                 };
                 me.publicUpdateInstruction(requertParams);
             },
@@ -248,10 +260,49 @@
                             message: params.success ? params.success : "操作成功！",
                             type: "success",
                         });
+                        if(params.afterHandler){
+                            me[params.afterHandler](params.afterParams);
+                        }
                     } else {
                         me.$message.error(params.error ? params.error : "操作失败！");
                     }
                 });
+            },
+            /**
+             * 风险批示之后的处理。
+             * @author szc 2019年5月29日14:15:01
+             */
+            afterInstructionRpt (afterParams) {
+                let me = this,middleData = me.middleData;
+                let content = middleData.contentUp.content;
+                for(let i = 0;i < content.length;i++){
+                    let item = content[i];
+                    if(item.contentDown){
+                        item.contentDown.rowItem = item.contentDown.instructionObj;
+                        for(let j = 0;j < afterParams.length;j ++){
+                            let afterParamsItem = afterParams[j];
+                            if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
+                                item.contentDown.rowItem.cstrategy = afterParamsItem.instructionValues;
+                                item.contentDown.rowItem.instructionid = "1";
+                                item.contentDown.rowItem.psnr = afterParamsItem.instruction;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //删除添加到全局对象上的批示内容
+                if(me.$store.instructionsRpt){
+                    delete me.$store.instructionsRpt;
+                }
+                me.instructionRelease = false;
+                middleData.contentUp.content = content;
+                middleData.changeValue = Math.floor(Math.random()*1000);
+                me.middleData = middleData;
+                me.personnelListShow = !me.personnelListShow;
+                me.reportConventional = false;
+                me.$nextTick(()=>{
+                    me.reportConventional = true;
+                })
             },
             /**
              * 转换日期。
@@ -282,7 +333,6 @@
              * 获取目录的数据
              */
             getDirectoryData(){
-                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{
@@ -307,8 +357,12 @@
              * 报告中间的数据。
              */
             createDataOfMiddle () {
-                debugger;
                 let me = this,reportData = me.reportData,contentData = [];
+                if(reportData.type == "0"){
+                    me.instructionRelease = true
+                }else {
+                    me.instructionRelease = false
+                }
                 if(reportData.reportDataContent && reportData.reportDataContent.riskFeedData) {
                     me.showComponent = "riskControl";
                     contentData = reportData.reportDataContent.riskFeedData;

@@ -27,7 +27,8 @@
 
     },
 
-    "columns": [{
+    "columns": [
+        {
             "id": "bz",
             "type": "string",
             "text": "备注"
@@ -37,6 +38,13 @@
             "type": "index",
             "text": "序号",
             "width": "60px"
+        },
+        {
+            "id": "gsmc",
+            "type": "string",
+            "text": "公司名称",
+            "fixed": true,
+            "width": "330px"
         },
         {
             "id": "jrjg",
@@ -49,7 +57,6 @@
             "id": "jrjgmc",
             "type": "string",
             "text": "机构名称",
-            "fixed": true,
             "width": "300px"
         }, {
             "id": "rzlx",

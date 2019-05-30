@@ -122,6 +122,12 @@
         "width": "120",
         "align": "right",
         "id": "jzd"
+      },
+      {
+        "text": "原因",
+        "type": "string",
+        "align": "right",
+        "id": "yy"
       }
       
   ],
