@@ -141,7 +141,6 @@ export default {
       items: [],
       chartOptions: {},
       debug: 0,
-
       xtype: ""
     };
   },
@@ -230,9 +229,6 @@ export default {
     },
     dialogData() {
       this.loadRemoteSource(this.dialogData);
-      console.log('*********加载加载模块资源****************')
-      console.log(this.loadRemoteSource(this.dialogData))
-      console.log('***************************')
     }
   },
 

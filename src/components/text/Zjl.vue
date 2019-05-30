@@ -4,7 +4,6 @@
       <div class="text" style="overflow-y:auto;" id="content">
           <ul v-if='this.showData.length' style="min-height:150px; padding-inline-start: 30px;">
               <li v-html="this.showData"  >{{this.showData.length}}</li>
-             
           </ul>
           <div v-if='!this.showData.length'  style="min-height:150px;background:#faebcc;text-align:center;padding-top:45px;font-size:18px;">
             <strong>温馨提示：</strong> 还未填报原因！
@@ -83,7 +82,9 @@ export default {
       queryCellDetail(params).then(res => {
         debugger;
         let data = res.data.data[0];
-        this.showData = data['cause'];
+        if(data){
+          this.showData = data.cause;
+        }
       });
     }
   }
@@ -103,9 +104,6 @@ export default {
 .text ul{
   list-style:none;
 }
-// .cause{
-//   min-height:400px !important; 
-// }
 </style>
 
 

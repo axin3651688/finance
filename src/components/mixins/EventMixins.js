@@ -157,7 +157,7 @@ export default {
                 bb = this.item;
             }
             if (!module.items) {
-                module = this.$root.$children[0].$children[0].$children[0].$children[2];
+                module = this.$root.$children[0].$children[0].$children[4].$children[0];
                 console.log(module.items);
             }
             debugger;

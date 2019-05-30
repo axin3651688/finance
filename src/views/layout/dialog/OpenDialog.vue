@@ -80,6 +80,7 @@ export default {
   }
   .el-dialog__header {
     margin-right: 20px;
+    padding: 35px 20px 10px;
   }
 }
 </style>
