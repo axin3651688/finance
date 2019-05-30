@@ -6,7 +6,7 @@
             <el-button type="primary" plain v-if="item.toolbar && item.toolbar.length > 0 " v-for="btn in item.toolbar" v-bind:key="btn.id" :style="btn.cellStyle"  @click="btnClick(btn)">{{btn.text}}</el-button>
         </el-button-group>
         <!-- sjz 应收、预付、其他三张表使用 预警比例、安全比例 关键参数：proportion-->
-        <el-input 
+        <!-- <el-input 
         v-if="item.proportion && item.proportion.length>0 && (item.proportion[0].show && item.proportion[1].show)" 
         v-for="see in item.proportion"
         :key="see.id"
@@ -21,7 +21,7 @@
                 <span style="marginLeft: 10px;">{{ see.icon }}</span>
             </template>
             <template slot="append">%</template>
-        </el-input>
+        </el-input> -->
         <!-- 表格 -->
         <el-table 
         border
@@ -206,15 +206,15 @@ export default {
             btn.handler(this,btn);
         },
         // 应收、预付、其他比例触发 click事件
-        seeChange(see){
-            // debugger
-            let me = this ;
-            // 看看json里有没有handler事件，如果有，直接跳转到json用 json的事件处理
-            if(see.handler && typeof see.handler == "function"){
-                return see.handler(this, see);
-            }
-            return Utils.changeFormatData(me.item.proportion, me.data, me, see) ;
-        },
+        // seeChange(see){
+        //     // debugger
+        //     let me = this ;
+        //     // 看看json里有没有handler事件，如果有，直接跳转到json用 json的事件处理
+        //     if(see.handler && typeof see.handler == "function"){
+        //         return see.handler(this, see);
+        //     }
+        //     return Utils.changeFormatData(me.item.proportion, me.data, me, see) ;
+        // },
         // 导出报表
         handleDownload(vue){
             // debugger
