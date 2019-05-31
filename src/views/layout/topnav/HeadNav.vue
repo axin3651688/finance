@@ -469,6 +469,7 @@ export default {
       this.$confirm('你的账号长时间没有操作，已掉线，需要重新登录！', '提示', {
         confirmButtonText: '确定',
         // cancelButtonText: '取消',
+        showCancelButton:true,
         type: 'warning'
       }).then(() => {
         me.$router.push("/login");
@@ -487,6 +488,7 @@ export default {
       this.$confirm('你的账号已在别处登录，如非本人操作可能你的账号信息已泄露，请修改密码，重新登录！', '提示', {
         confirmButtonText: '确定',
         // cancelButtonText: '取消',
+        showCancelButton:true,
         type: 'warning'
       }).then(() => {
         me.$router.push("/login");
@@ -502,7 +504,6 @@ export default {
      * @author szc 2019年4月2日20:12:14
      */
     messageHandle () {
-      debugger
       let me = this,storeParams = me.$store.getters;
       if(this.messageValue == 0){
         this.$message({
@@ -517,7 +518,6 @@ export default {
         account:storeParams.user.user.userName
       };
       smallBell(params).then(res => {
-        debugger;
         if(res.data.code == 200){
           // console.log("ddddddd",res.data);
           this.showCkeckContent(res.data.data);
@@ -579,7 +579,6 @@ export default {
      * @author szc 2019年4月3日14:38:13
      */
     checkFillDataHandle (rowData,sign) {
-      debugger;
       let me = this,id = rowData.id;
       let params = {
         id:id
@@ -619,7 +618,6 @@ export default {
      * @author szc 2019年5月10日20:40:42
      */
     ageeOrNoReturnHandler (rowData,flag) {
-      debugger;
       let me = this,storeParams = me.$store.getters,statemun = 4;
       statemun = flag? 4:3;
       let params = {
