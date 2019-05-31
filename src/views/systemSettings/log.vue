@@ -6,7 +6,7 @@
             function: 模拟专用测试，日志管理界面
          -->
         <!-- 查询刷新 -->
-        <!-- <el-row :gutter="10"> -->
+        <el-row :gutter="10">
             <!-- 
                 响应式布局：
                 1. xs <768px 响应式栅格数或者栅格属性对象
@@ -15,36 +15,21 @@
                 4. lg ≥1200 响应式栅格数或者栅格属性对象
                 注：全局最大为24
              -->
-            <!-- <el-col :xs="12" :md="24"> -->
+            <el-col :xs="12" :md="24">
                 <div class="input-refresh">
-                    <!-- <el-form :inline="true" :model="searchForm" class="user-form-inline">
-                        <el-form-item label="用户名称">
-                            <el-input v-model="searchForm.username" placeholder="用户名称" clearable ></el-input>
-                        </el-form-item> -->
-
-                        <!-- <el-form-item label="真实姓名">
-                            <el-input v-model="searchForm.truename" placeholder="真实姓名" disabled clearable></el-input>
-                        </el-form-item> -->
-
-                        <!-- <el-form-item label="类型">
-                            <el-select v-model="searchForm.stype" placeholder="类型" clearable>
-                                <el-option label="其他" value="3"></el-option>
-                                <el-option label="退出" value="2"></el-option>
-                                <el-option label="登录" value="1"></el-option>
-                                <el-option label="查询" value="0"></el-option>
-                            </el-select>
-                        </el-form-item> -->
-
-                        <!-- <el-form-item>
+                    <el-form :inline="true" :model="searchForm" class="user-form-inline">
+                        <el-form-item>
+                            <el-input v-model="searchForm.fuzzySearch" placeholder="请根据用户名/真实姓名/日期模糊查询" clearable style="width: 400px"></el-input>
+                        </el-form-item>
+                        <el-form-item>
                             <el-button type="text" @click="handleDelete">清除</el-button>
                             <el-button type="primary"  @click="handleSearch" icon="el-icon-search" ></el-button>
-                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button> -->
-                            <!-- <el-button type="primary" style="height:40px;padding-top:0"><i class="el-icon-search">搜索</i></el-button> -->
-                        <!-- </el-form-item> -->
-                    <!-- </el-form> -->
+                            <el-button type="success" @click="handleRefresh" icon="el-icon-refresh"></el-button> 
+                        </el-form-item>
+                    </el-form>
                 </div>
-            <!-- </el-col> -->
-        <!-- </el-row>          -->
+            </el-col>
+        </el-row>         
 
         <!-- 表格展现 :cell-style="cellStyle"height="720"-->
         <el-table
@@ -54,10 +39,10 @@
         border
         stripe
         >
-            <el-table-column fixed prop="row_id" width="75" label="序列" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column fixed prop="suser" label="用户名称" width="120" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column fixed prop="struename" label="真实姓名" width="120" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="ntype" label="类型" width="80" header-align="center" align ="center" sortable>
+            <el-table-column fixed prop="row_id" width="75" label="序列" header-align="center" align ="center" ></el-table-column>
+            <el-table-column fixed prop="suser" label="用户名称" width="120" header-align="center" align ="center" ></el-table-column>
+            <el-table-column fixed prop="struename" label="真实姓名" width="120" header-align="center" align ="center" ></el-table-column>
+            <el-table-column prop="ntype" label="类型" width="80" header-align="center" align ="center" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.ntype===0">查询</span>
                     <span v-if="scope.row.ntype===1">登录</span>
@@ -74,17 +59,17 @@
                     <span v-if="scope.row.ntype===12">填报</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="nlevel" label="日志级别" width="110" header-align="center" align ="center" sortable>
+            <el-table-column prop="nlevel" label="日志级别" width="110" header-align="center" align ="center" >
                 <template slot-scope="scope">
                     <span v-if="scope.row.nlevel==1">通知</span>
                     <span v-if="scope.row.nlevel==2">警告</span>
                     <span v-if="scope.row.nlevel==3">错误</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="soperatetime" label="操作时间" width="200" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="sbroswer" label="浏览器" width="100" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="shostname" label="主机IP" width="180" header-align="center" align ="center" sortable></el-table-column>
-            <el-table-column prop="scontent" label="内容" header-align="center" width="600" show-overflow-tooltip align ="left" sortable></el-table-column>
+            <el-table-column prop="soperatetime" label="操作时间" width="200" header-align="center" align ="center" ></el-table-column>
+            <el-table-column prop="sbroswer" label="浏览器" width="100" header-align="center" align ="center" ></el-table-column>
+            <el-table-column prop="shostname" label="主机IP" width="180" header-align="center" align ="center" ></el-table-column>
+            <el-table-column prop="scontent" label="内容" header-align="center" show-overflow-tooltip align ="left" ></el-table-column>
         </el-table>
 
         <!-- 分页 -->
@@ -136,9 +121,7 @@ export default {
             // drillProperties:["R","suser","truename","ntype","nlevel","soperatetime","sbroswer","shostip"],
             // 表单输入默认为空
             searchForm:{ 
-                username: "",
-                truename: "",
-                stype: ""
+                fuzzySearch: ""
             }
             /**
              * 页面原始高度：document.body.offsetHeight
@@ -150,21 +133,9 @@ export default {
         }
     },
     created(){
-        debugger
+        // debugger
         let me =this;
-        // if(document.getElementsByClassName('input-refresh').length>0){
-        //     // 得到表单的高度并赋值
-        //     me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-        //     if(me.inputRefresh == 0) {
-        //         me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
-        //     } else {
-        //         // 计算当前页面的高度 得出表格的高度
-        //         me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 64 - 30;
-        //     }
-        // } else {
-        //     me.heights = document.body.offsetHeight - 60 - 70 - 64 - 30;
-        // } 
-        this.heights = document.body.offsetHeight - 154 ;  
+        this.heights = document.body.offsetHeight - 224 ;  
         // 跳转到请求数据方法
         me.requestDataRendering(me.currentPage,me.pagesize);
     },
@@ -178,26 +149,18 @@ export default {
     methods:{
         // 页面自适应
         setTableScollHeight(){
-            this.heights = document.body.offsetHeight - 154 ;
+            this.heights = document.body.offsetHeight - 224 ;
             const me = this ;
             window.onresize = function temp(){
-                debugger
-                // // 得到表单的高度并赋值
-                // me.inputRefresh = document.getElementsByClassName('input-refresh')[0].offsetHeight;
-                // // 计算当前页面的高度 得出表格的高度
-                // if(me.inputRefresh>0){
-                //     me.heights = document.body.offsetHeight - me.inputRefresh - 70 - 40 - 64 - 40;
-                // }else{
-                //     me.heights = document.documentElement.clientHeight - 60 - 70 - 40 - 64 - 40;
-                // } 
-                me.heights = document.body.offsetHeight - 154 ;            
+                // debugger
+                me.heights = document.body.offsetHeight - 224 ;            
             };
         },
         /**
          * 获取的要渲染的数据  发送请求
          */
         requestDataRendering(currentPage,pagesize){
-            debugger
+            // debugger
             let me = this;
             // item：传的参数
             let item = {
@@ -237,9 +200,7 @@ export default {
         handleDelete(){
             // debugger
             let me = this;
-            me.searchForm.username = '';
-            me.searchForm.truename = '';
-            me.searchForm.stype = '';
+            me.searchForm.fuzzySearch = '';
             //
             me.isSearchForm = true ;
 
@@ -283,14 +244,10 @@ export default {
          * 点击 “刷新” 按钮时触发 初始化
          */
         handleRefresh(){
-            debugger
+            // debugger
             let me =this;
-            //初始化表单的用户名称
-            me.searchForm.username = '';
-            //初始化表单的真实姓名
-            me.searchForm.truename = '';
             //初始化表单的类型:有值才能赋空值，不然显示有问题
-            if(me.searchForm.stype){me.searchForm.stype = '';}
+            if(me.searchForm.fuzzySearch){me.searchForm.fuzzySearch = '';}
             //初始化表单是否为空 false 默认为空
             me.isSearchForm = false ;
             //初始化分页默认为第一页
@@ -317,7 +274,7 @@ export default {
     width: 100%;
     /* height: 80px; line-height: 80px; */
     /* max-height: 160px; */
-    text-align: center;
+    text-align: right;
     margin-top: 10px;
     margin-bottom: 10px;
     background-color: #fff;
