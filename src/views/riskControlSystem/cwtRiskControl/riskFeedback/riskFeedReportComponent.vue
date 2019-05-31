@@ -18,7 +18,8 @@
                 </div>
             </div>
 
-            <div ref="containerRightAll">
+            <div ref="containerRightAll" style="width: 100%">
+
                 <div class="container-right" ref="containerRight">
 
                     <div class="container-right-top">
@@ -30,9 +31,11 @@
                         </div>
                         <span class="zs">总述</span>
                         <p class="describe">
-                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条，从风险类型来看，
+                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
+                            <template v-if="riskCount.allRiskCount > 0">
+                                从风险类型来看，其中
+                            </template>
 
-                            其中
                             <template v-if="riskCount.riskStypeCountArray.cwfx > 0">
                                 财务风险 {{riskCount.riskStypeCountArray.flfx}} 条，
                             </template>
@@ -54,7 +57,12 @@
                             <template v-if="riskCount.riskStypeCountArray.zlfx > 0">
                                 战略风险 {{riskCount.riskStypeCountArray.flfx}} 条，
                             </template>
-                            其中
+
+
+                            <template v-if="riskCount.allRiskCount > 0">
+                                其中
+                            </template>
+
                             <template v-if="riskCount.riskLevelCountArray.level_1 > 0">
                                 可接受风险 {{riskCount.riskLevelCountArray.level_1}} 条，
                             </template>
@@ -146,24 +154,28 @@
                         </el-button>
                     </div>
 
+
                 </div>
-
-                <show-personnel-list
-                        v-if="personListShow"
-                >
-                </show-personnel-list>
-
             </div>
         </el-container>
+
+        <show-personnel-list
+                :personnelListShow="personnelListShow"
+                @personSureBtnClicked="personSureBtnClicked"
+        >
+        </show-personnel-list>
+
     </div>
 </template>
 
 <script>
     import showPersonnelList from '../../publicRiskControl/showPersonnelList'
-    // import ShowPersonnelList from "../../szcRiskControl/dialogModal/showPersonnelList";
+    import cwtPublicJS from "../mixin/cwtPublicJS"
+    import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
     export default {
         name: "riskFeedReportComponent",
+        mixins: [cwtPublicJS],
         components: {
             showPersonnelList
         },
@@ -183,7 +195,8 @@
                 riskCount: {},
                 risksptype: "战略风险",
                 riskdetaildata: [],
-                personListShow: false
+                personnelListShow: false,
+                pageHeight: document.body.offsetHeight
             }
         },
         watch: {
@@ -253,7 +266,6 @@
              * @param _reportData
              */
             getReportTitleData(_reportData) {
-                debugger;
                 let _this = this;
                 let _headerData = _reportData.headerData;
                 let _riskLevelCountArray = _headerData.riskLevelCountArray;
@@ -291,8 +303,78 @@
              * 反馈上报按钮点击
              */
             showPersonnelListClicked() {
+                this.personnelListShow = !this.personnelListShow;
+            },
+
+
+            /**
+             * 点击了人员列表里面的确认上报
+             * 这里已经获取了参数，
+             * 传递给下一个发送请求的方法就行了
+             */
+            personSureBtnClicked(nodes) {
+                let _this = this,
+                    store = _this.$store.getters,
+                    company = store.company,
+                    user = store.user.user;
+
+                let arrUser = [],
+                    userStr = "";
+                if (nodes && nodes.length > 0) {
+                    nodes.forEach(item => {
+                        arrUser.push(item.id);
+                    });
+                    userStr = arrUser.join(',');
+                }
+
+                let params = {
+                    riskReportStateDtos: [],
+                    users: [
+                        userStr
+                    ]
+                };
+                let _riskdetaildata = _this.riskdetaildata;
+
+                _riskdetaildata.forEach((item) => {
+                    let singleRiskData = {
+                        company: '',
+                        nrelateid: '',
+                        period: _this.publicGetPeriodMethod(),
+                        scompanyname: user.companyName,
+                        sfeedbackscontent: '',
+                        sfeedbackuser: user.userName,
+                        sfeedbackusername: user.trueName,
+                        sisfeedback: "1",
+                        sriskname: '',
+                    };
+                    singleRiskData.company = company;
+                    singleRiskData.nrelateid = item.riskid;
+                    singleRiskData.sfeedbackscontent = item.risk_feed_content;
+                    singleRiskData.sriskname = item.riskname;
+                    params.riskReportStateDtos.push(singleRiskData);
+                });
                 debugger;
-                this.personListShow = !this.personListShow;
+                _this.riskFeedSend(params);
+            },
+
+            /**
+             * 反馈上报发送请求
+             * @param params
+             */
+            riskFeedSend(params) {
+                let _this = this;
+                updateInstruction(params).then(res => {
+                    if (res.data.code === 200) {
+                        _this.$message({
+                            message: "反馈成功。",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "反馈失败！请联系开发人员"
+                        })
+                    }
+                });
             }
 
         }

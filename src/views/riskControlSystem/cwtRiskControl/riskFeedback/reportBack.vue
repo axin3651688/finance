@@ -65,7 +65,6 @@
                             }
                         },
                         riskFeedDataList: {
-
                             flfx: {
                                 risksptype: '战略风险',
                                 riskdetaildata: [
@@ -78,8 +77,7 @@
                                             {
                                                 title: '风险评估',
                                                 content: [
-                                                    '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
-                                                    '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
+                                                    '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下'
                                                 ]
                                             },
                                             {
@@ -115,8 +113,6 @@
                             zlfx: {},
                             syfx: {},
                             ljfx: {}
-
-
                         }
                     },
                 },
@@ -407,6 +403,9 @@
                             riskModel_riskdetaildata.riskcompany = item.riskcompany;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
+                            riskModel_riskdetaildata['riskid'] = item.nid;
+                            riskModel_riskdetaildata['companyid'] = item['dim_company'];
+                            riskModel_riskdetaildata['riskcode'] = key;
 
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.risk_pg;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_gs;
@@ -420,7 +419,6 @@
 
                             emptyData['riskdetaildata'].push(riskModel_riskdetaildata);
                         });
-                        debugger;
                         _riskFeedDataList[key] = emptyData;
 
                     }
