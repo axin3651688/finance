@@ -5,7 +5,7 @@
   "columns": [
     {
       "text": "公司名称",
-      "value": "companyName",
+      "value": "companyname",
       "align": "left",
       "width": 600
     },
@@ -22,7 +22,7 @@
   "rows": [
     {
       "scode": "1001",
-      "companyName": "(1001)天津食品集团有限公司(合并)",
+      "companyname": "(1001)天津食品集团有限公司(合并)",
       "status": "已反馈",
       "operation": [
         {
@@ -49,7 +49,7 @@
       "children": [
         {
           "scode": "100101",
-          "companyName": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+          "companyname": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
           "status": "已反馈",
           "operation": [
             {
@@ -76,7 +76,7 @@
           "children": [
             {
               "scode": "10010101",
-              "companyName": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+              "companyname": "(10010101)天津农垦渤海农业集团有限公司(合并)",
               "status": "未反馈",
               "operation": [
                 {
@@ -103,7 +103,7 @@
               "children": [
                 {
                   "scode": "1001010101",
-                  "companyName": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                  "companyname": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
                   "status": "已反馈",
                   "operation": [
                     {
@@ -130,7 +130,7 @@
                 },
                 {
                   "scode": "1001010102",
-                  "companyName": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                  "companyname": "(1001010102)天津农垦龙天畜牧养殖有限公司",
                   "status": "已反馈",
                   "operation": [
                     {
@@ -159,7 +159,7 @@
             },
             {
               "scode": "10010102",
-              "companyName": "(10010102)天津市宝德包装有限公司",
+              "companyname": "(10010102)天津市宝德包装有限公司",
               "status": "未反馈",
               "operation": [
                 {

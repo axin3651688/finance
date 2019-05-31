@@ -119,6 +119,7 @@
 import BiItem from "@c/BiItem";
 import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData, findDesignSource } from "~api/interface";
+import {eva_city_Request} from "~api/cube";
 import { getClientParams } from "../utils/index";
 import { generatePeriod } from "../utils/period";
 import { rowsOfChildrenContent, closeTabTaget } from "../utils/math";
@@ -152,7 +153,8 @@ export default {
       ],
       chartOptions: {},
       debug: 0,
-      monthConfig:{}
+      monthConfig:{},
+      riskrangeData: [] 
     };
   },
   created() {
@@ -606,9 +608,9 @@ export default {
         if ( item.queryDataAfter && typeof item.queryDataAfter == "function" && !item.correctWrongConfig ){
           datas = item.queryDataAfter(datas,this);
         }
-        if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej") && !this.$store.getters.treeInfo.nisleaf){ debugger
-          datas = Utils.getLocalStorage(datas, this) ;
-        }
+        // if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej") && !this.$store.getters.treeInfo.nisleaf){ debugger
+        //   datas = Utils.getLocalStorage(datas, this) ;
+        // }
         let resColumns = [];
         if(item.config.tableHeads){
           let columns = item.config.columns;
@@ -634,9 +636,9 @@ export default {
       ) {
         //
         datas = item.queryDataAfter(datas,this);
-        if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej" ) && !this.$store.getters.treeInfo.nisleaf){ debugger
-          datas = Utils.getLocalStorage(datas, item, this) ;
-        }
+        // if((item.id==="yszkej" || item.id==="yfzkej" || item.id==="qtyskej" ) && !this.$store.getters.treeInfo.nisleaf){ debugger
+        //   datas = Utils.getLocalStorage(datas, item, this) ;
+        // }
       }
       //
       item.datas = datas;
@@ -754,6 +756,20 @@ export default {
       } else {
         $vue.activeTabName = "0";
       }
+    },
+    /**sjz
+     * 管理驾驶舱应收款项系预警比例请求
+     */
+    riskrangeRequest(params){
+      let me = this ;
+      me.riskrangeData = [] ;
+      eva_city_Request(params).then(res => {
+        if(res.data.code === 200){
+          me.riskrangeData = res.data.data ;
+        }else{
+          console.error('管理驾驶舱应收款项系比例请求错误！Bimodule.vue: 762',)
+        }
+      })
     }
   }
 };

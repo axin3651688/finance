@@ -267,5 +267,22 @@ export default {
             quo2._expanded = true ;           
         });
         return data ;
+    },
+    /**
+     * @author sjz
+     * @event 根据sql、cubeId来查询的数据接口请求方法
+     * @name 【风险报告页面引用】
+     * @param {*} $this     this对象
+     * @param {*} sparam    请求参数={ cubeId：4，sql：sql }
+     */
+    getSql_quertData_all($this, sparam){
+        eva_city_Request(sparam).then(rec => {
+            if(rec.data.code === 200){
+                let data = rec.data.data ;
+                return $this.setSql_quertData_all(data);
+            }else{
+                $this.$message.error( rec.data.msg );
+            }
+        })
     }
 }

@@ -259,39 +259,38 @@
                         }else{
                             config.sql = config.sql2;
                         }
+                        // 预警比例请求
+                        let _sql = me.config.riskrangeSql ;
+                        let user = $vue.$store.getters.user.user.userName;
+                        _sql = _sql.replace(/:company/g,"'"+params.company+"'").replace(/:period/g,"'"+params.period+"'").replace(/:suser/g,"'"+user+"'") ;
+                        let shuju = {
+                            cubeId: 4,
+                            sql: _sql
+                        }
+                        $vue.riskrangeRequest(shuju);
                         return params;
                     },
                     "queryDataAfter":function(data, $vue){
                         debugger
                         let me = this ;
+                        let riskrangeData = $vue.riskrangeData ;
                         let first, second ;
-                        let qtysk = JSON.parse(localStorage.getItem("qtysk"));
-                        if(qtysk == null){
-                            first = 0 ;
-                            second= 0 ;
+                        if(riskrangeData.length == 0){
+                            first = 0 ; second = 0 ;
                         }else{
-                            localStorage.removeItem("qtysk");
-                            qtysk[0].show = false ;
-                            qtysk[1].show = false ;
-                            localStorage.setItem("qtysk",JSON.stringify(qtysk));
-                            first = qtysk[0].value;
-                            second = qtysk[1].value;
+                            riskrangeData.forEach(qwe => {
+                                if(qwe.sratiotype == 1)first = qwe.fact_a ;
+                                if(qwe.sratiotype == 2)second = qwe.fact_a ;
+                            })
                         }
-                        data.forEach(element => {
-                            if(element.zjl == 0){
-                                element.riskrange = '' ;
-                            }else{
-                                if(first>0 && element.zjl <= first)element.riskrange = '安全' ;             
-                                if(second>0 && element.zjl >= second)element.riskrange = '预警' ;
-                                if(first>0 && second>0 && element.zjl>first && element.zjl<second)element.riskrange = '提示' ; 
-                                // if(first == 0 && (element.riskrange == 'SAFE' || element.riskrange == '提示'))element.riskrange = '' ;
-                                // if(second == 0 && element.riskrange == 'DANGER')element.riskrange = '' ;
-                                if(first == 0)element.riskrange = '' ;
-                                if(second == 0)element.riskrange = '' ;
-                            }
-                            if(first == 0 && second == 0)element.riskrange = '' ;
-                            if(element.scode == '9')element.scode = '';   
-                        });
+                        // 循环
+                        data.forEach(res => {
+                            if(first && first!=0 && res.zjl && res.zjl <= first)res.riskrange = "安全" ;
+                            if(second && second!=0 && res.zjl && res.zjl >= second)res.riskrange = "预警" ;
+                            if(first && first!=0 && second && second!=0 && res.zjl && res.zjl>first && res.zjl<second)res.riskrange = "提示" ;
+                            if(first == 0 && second == 0)res.riskrange = "" ;
+                            if(!res.zjl || res.zjl == 0)res.riskrange = "" ;
+                        })
                         return data;
                     },
                     "config":{
@@ -301,6 +300,7 @@
                         "sql1": 11,
                         "sql2": 8 ,
                         "sql":"",
+                        "riskrangeSql": " SELECT SRATIOTYPE, FACT_A, DIM_ITEM, SUSER FROM DW_FACTAGEANALYSIS_PERCENT where DIM_COMPANY=:company and DIM_PERIOD=:period and SUSER=:suser and DIM_ITEM='1003'",
                         "_cube":{
                             "subject":"",
                             "cubeId":4
