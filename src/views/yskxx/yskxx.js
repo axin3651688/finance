@@ -4,7 +4,7 @@
  * @event 应收、预付、其他分析表的js方法
  */
 import Vue from 'vue'
-import { ageanalysis,query_sjz,update_sjz } from "~api/cube";
+import { ageanalysis,query_sjz,update_sjz,ageanalysis_delete } from "~api/cube";
 export default {
     // 单位切换数据处理
     getConversion(col, row, $this){
@@ -122,63 +122,76 @@ export default {
         if(see.id == "1" || see.id == "2"){
             dimItem = "1001" ;
             paramsr.item = dimItem ;
-            query_sjz(paramsr).then(res => {
-                // debugger
-                let data = res.data.data ;
-                if(data === null)$this.insertProportion(see.value, see.id, dimItem, me) ;
-                if(data.length == 1){
-                    let isTrue = data.some(item => { return item.sratiotype == see.id });
-                    if(isTrue){
+            if(see.value != ""){
+                query_sjz(paramsr).then(res => {
+                    // debugger
+                    let data = res.data.data ;
+                    if(data === null)$this.insertProportion(see.value, see.id, dimItem, me) ;
+                    if(data.length == 1){
+                        let isTrue = data.some(item => { return item.sratiotype == see.id });
+                        if(isTrue){
+                            $this.updataRequest(dimItem, see.id, me, see) ;
+                        }else{
+                            $this.insertProportion(see.value, see.id, dimItem, me) ;
+                        }
+                    }else if(data.length >= 2){
                         $this.updataRequest(dimItem, see.id, me, see) ;
-                    }else{
-                        $this.insertProportion(see.value, see.id, dimItem, me) ;
                     }
-                }else if(data.length >= 2){
-                    $this.updataRequest(dimItem, see.id, me, see) ;
-                }
-            });      
-
+                });      
+            }else{
+                // 删除接口
+                $this.ageanalysis_delete_request(see.id,dimItem, me) ;
+            }
         }else if(see.id == "3" || see.id == "4"){
             dimItem = "1002" ;
             paramsr.item = dimItem ;
             if(see.id == "3")sratiotype = "1" ;
             if(see.id == "4")sratiotype = "2" ;
-            query_sjz(paramsr).then(res => {
-                // debugger
-                let data = res.data.data ;
-                if(data === null)$this.insertProportion(see.value, sratiotype, dimItem, me) ;
-                if(data.length == 1){
-                    let isTrue = data.some(item => { return item.sratiotype == sratiotype });
-                    if(isTrue){
+            if(see.value != ""){
+                query_sjz(paramsr).then(res => {
+                    // debugger
+                    let data = res.data.data ;
+                    if(data === null)$this.insertProportion(see.value, sratiotype, dimItem, me) ;
+                    if(data.length == 1){
+                        let isTrue = data.some(item => { return item.sratiotype == sratiotype });
+                        if(isTrue){
+                            $this.updataRequest(dimItem, sratiotype, me, see) ;
+                        }else{
+                            $this.insertProportion(see.value, sratiotype, dimItem, me) ;
+                        }
+                    }else if(data.length >= 2){
                         $this.updataRequest(dimItem, sratiotype, me, see) ;
-                    }else{
-                        $this.insertProportion(see.value, sratiotype, dimItem, me) ;
                     }
-                }else if(data.length >= 2){
-                    $this.updataRequest(dimItem, sratiotype, me, see) ;
-                }
-            });              
-
+                });              
+            }else{
+                // 删除接口
+                $this.ageanalysis_delete_request(sratiotype,dimItem, me) ;
+            }
         }else if(see.id == "5" || see.id == "6"){
             dimItem = "1003" ;
             paramsr.item = dimItem ;
             if(see.id == "5")sratiotype = "1" ;
-            if(see.id == "6")sratiotype = "2" ;          
-            query_sjz(paramsr).then(res => {
-                // debugger
-                let data = res.data.data ;
-                if(data === null)$this.insertProportion(see.value, sratiotype, dimItem, me) ;
-                if(data.length == 1){
-                    let isTrue = data.some(item => { return item.sratiotype == sratiotype });
-                    if(isTrue){
+            if(see.id == "6")sratiotype = "2" ;   
+            if(see.value != ""){       
+                query_sjz(paramsr).then(res => {
+                    // debugger
+                    let data = res.data.data ;
+                    if(data === null)$this.insertProportion(see.value, sratiotype, dimItem, me) ;
+                    if(data.length == 1){
+                        let isTrue = data.some(item => { return item.sratiotype == sratiotype });
+                        if(isTrue){
+                            $this.updataRequest(dimItem, sratiotype, me, see) ;
+                        }else{
+                            $this.insertProportion(see.value, sratiotype, dimItem, me) ;
+                        }
+                    }else if(data.length >= 2){
                         $this.updataRequest(dimItem, sratiotype, me, see) ;
-                    }else{
-                        $this.insertProportion(see.value, sratiotype, dimItem, me) ;
                     }
-                }else if(data.length >= 2){
-                    $this.updataRequest(dimItem, sratiotype, me, see) ;
-                }
-            });
+                });
+            }else{
+                // 删除接口
+                $this.ageanalysis_delete_request(sratiotype,dimItem, me) ;
+            }
         }
     },
     /**updataRequest
@@ -313,6 +326,28 @@ export default {
                 me.objer.queryDataAfter(me.objer2.rows, me ) ;
             }else{
                 me.$message.error(res.data.msg);
+            }
+        })
+    },
+    /**
+     *  @author 4.删除比例接口
+     */
+    ageanalysis_delete_request(sratiotype,dimItem,me ){
+        let $params = me.$store.state.prame.command;
+        let username = me.$store.getters.user.user.userName;
+        let cc = {
+            company: $params.company,
+            item: dimItem,
+            period: $params.year + this.getPeriod($params),
+            sratiotype: sratiotype,
+            suser: username
+        }
+        ageanalysis_delete(cc).then(rek => {
+            if(rek.data.code === 200){
+                me.$message({ message: rek.data.msg, type: "success" }) ;
+                me.objer.queryDataAfter(me.objer2.rows, me ) ;
+            }else{
+                me.$message.error(rek.data.msg) ;
             }
         })
     }
