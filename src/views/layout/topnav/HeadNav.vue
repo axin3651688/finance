@@ -18,8 +18,8 @@
       <el-dialog title="选择公司" :visible.sync="dialogVisible" :modal-append-to-body="false">
         <companyTree @click="getname" :showCompanyDilog.sync="showCompanyDilog"/>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="handleQoose">确 定</el-button>
+          <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
 
@@ -181,7 +181,7 @@ export default {
     return {
       showCompanyDilog:false,
       modalConfig:{},//审阅展示的modal配置
-      messageValue:1,//消息数
+      messageValue:0,//消息数
       // avarUrl:"",
       companyId: "",
       companyName_cache: "",
@@ -468,8 +468,7 @@ export default {
       let me = this;
       this.$confirm('你的账号长时间没有操作，已掉线，需要重新登录！', '提示', {
         confirmButtonText: '确定',
-        // cancelButtonText: '取消',
-        showCancelButton:true,
+        showCancelButton:false,
         type: 'warning'
       }).then(() => {
         me.$router.push("/login");
@@ -487,8 +486,7 @@ export default {
       let me = this;
       this.$confirm('你的账号已在别处登录，如非本人操作可能你的账号信息已泄露，请修改密码，重新登录！', '提示', {
         confirmButtonText: '确定',
-        // cancelButtonText: '取消',
-        showCancelButton:true,
+        showCancelButton:false,
         type: 'warning'
       }).then(() => {
         me.$router.push("/login");

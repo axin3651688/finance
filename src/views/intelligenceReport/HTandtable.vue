@@ -1529,6 +1529,19 @@ export default {
       }
       return "text";
     },
+    /**
+     * 处理一些自定义的格式。
+     * @author szc 2019年5月31日11:17:28
+     */
+    changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
+      debugger;
+      td.style.textAlign = "center"
+      // if (!value) {
+      //   td.innerHTML = companyname;
+      //   return;
+      // }
+      td.innerHTML = value;
+    },
     // 判断是decimal类型的加上千分两位小数显示
     decimalDefaultRenderer(
       instance,
@@ -1580,7 +1593,9 @@ export default {
           } else {
             if (col.type === "decimal") {
               cc.renderer = this.decimalDefaultRenderer;
-            } else if (col.id === "caozuo") {
+            } else if(col.type === "number"){
+              cc.renderer = this.changeFormatOfTable;
+            }else if (col.id === "caozuo") {
               cc.renderer = this.flags;
               cc.readOnly = true;
             } else if (col.id === "isnature") {// 客商性质
@@ -1623,7 +1638,6 @@ export default {
             } else if (col.id === "srepaydate") {
               (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
             } else if (col.id === "cismenu") {
-              
               cc.source = this.financingOptionsData("1700");
               cc.renderer = this.financingrenderer;
               cc.type = "dropdown";
@@ -1730,7 +1744,7 @@ export default {
       }
       this.settings.data = rows;
       //添加左侧固定的列。
-      let fixdTemplates = ['4','5','6'];
+      let fixdTemplates = ['4','5','6','7'];
       if(fixdTemplates.indexOf(this.templateId) != -1) {
         this.settings.fixedColumnsLeft = 1;
       }else {
@@ -2767,7 +2781,9 @@ export default {
   margin-right: 20px;
 }
 .input {
-  width: 220px;
+  /* width: 220px; */
+  width: 240px;
+  margin-left: -3px;
 }
 .checkbox {
   display: block;
