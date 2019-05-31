@@ -188,7 +188,6 @@
                                 sfeedbackscontent: _riskInstructionData,
                                 sfeedbackuser: user.userName,
                                 sfeedbackusername: user.trueName,
-                                sfeedbacktime: '2019-05-27 09:20:22',
                                 sisfeedback: "1",
                                 sriskname: _this.dialogData['riskname'],
 
