@@ -44,8 +44,8 @@
         </el-table>
     </div>
     <span v-if="modalConfig.footConfig && modalConfig.footConfig.footBtn" slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="modalConfig.dialogVisible = false">取消</el-button>
-        <el-button @click="confirmHandle">确认</el-button>
+        <el-button type="primary" @click="confirmHandle">确认</el-button>
+        <el-button @click="modalConfig.dialogVisible = false">取消</el-button>
     </span>
     </el-dialog>
 </template>
