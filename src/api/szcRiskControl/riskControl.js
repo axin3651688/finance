@@ -54,3 +54,16 @@ export function updateInstruction(params) {
             // dataType: 'json'
     })
 }
+/**
+ * 树表的批量退回、提醒
+ * @author szc 2019年5月21日20:26:58
+ */
+export function updateInstructionAll(params) {
+    return request({
+        url: '/zjb/riskreportstate/update_remindback',
+        method: 'post',
+        // contentType: 'application/json;charset=UTF-8',
+        data: params
+            // dataType: 'json'
+    })
+}

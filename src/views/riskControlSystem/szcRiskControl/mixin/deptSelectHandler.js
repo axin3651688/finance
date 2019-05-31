@@ -7,7 +7,8 @@ import {
     deptQueryRisk,
     queryDeparts,
     updateInstruction,
-    queryCopingStrategies
+    queryCopingStrategies,
+    updateInstructionAll
 } from '~api/szcRiskControl/riskControl.js'
 import { findThirdPartData } from "~api/interface";
 
@@ -397,16 +398,10 @@ export default {
                 company = storeParams.company,
                 user = storeParams.user.user.userName;
             let params = {
-                riskReportStateDtos: [{
-                    id: 0,
-                    company: company,
-                    // nrelateid: row.row.id,
-                    // sinstructionsuser: user,
-                    // cstrategy:selectStr,
-                    period: me.parsePeriod(),
-                    // sinstructscontent:me.instructions,
-                    sisinstructions: "0"
-                }]
+                company: company,
+                period: me.parsePeriod(),
+                sisinstructions: "0",
+                sinstructionsuser: scope.row.sinstructionsuser
             };
             let requertParams = {
                 data: params,
@@ -425,23 +420,39 @@ export default {
                 company = storeParams.company,
                 user = storeParams.user.user.userName;
             let params = {
-                riskReportStateDtos: [{
-                    id: 0,
-                    company: company,
-                    // nrelateid: row.row.id,
-                    // sinstructionsuser: user,
-                    // cstrategy:selectStr,
-                    period: me.parsePeriod(),
-                    // sinstructscontent:me.instructions,
-                    sisinstructions: "2"
-                }]
+                id: 0,
+                company: company,
+                // nrelateid: row.row.id,/riskreportstate/update_remindback
+                // sinstructionsuser: user,
+                // cstrategy:selectStr,
+                period: me.parsePeriod(),
+                // sinstructscontent:me.instructions,
+                sisinstructions: "2",
+                sinstructionsuser: scope.row.sinstructionsuser
             };
             let requertParams = {
                 data: params,
                 success: "退回成功！",
                 error: "退回失败！"
             };
-            me.publicUpdateInstruction(requertParams);
-        }
+            me.publicUpdateInstructionAll(requertParams);
+        },
+        /**
+         * 批量退回、提醒的接口
+         * @param {*} params 
+         */
+        publicUpdateInstructionAll(params) {
+            let me = this;
+            updateInstructionAll(params.data).then(res => {
+                if (res.data.code == 200) {
+                    me.$message({
+                        message: params.success ? params.success : "操作成功！",
+                        type: "success",
+                    });
+                } else {
+                    me.$message.error(params.error ? params.error : "操作失败！");
+                }
+            });
+        },
     },
 }
