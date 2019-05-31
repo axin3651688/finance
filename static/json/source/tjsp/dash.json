@@ -44,7 +44,7 @@
     "unit": 10000,
     "datas": {},
     "config": {
-        "sql": "SELECT B.SCODE AS ID, B.SNAME AS ITEM , SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB , CASE WHEN SUM(BNMB) = 0 THEN 0 ELSE ROUND(SUM(BNLJ) / SUM(BNMB)* 100, 4) END AS WCL FROM(SELECT DIM_ITEMPERIOD, SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB FROM (SELECT d.DIM_ITEMPERIOD, d.DIM_COMPANY, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) AS BQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) AS SNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) AS BNLJ, sum(nvl(e.bnmb,0))/2 AS BNMB FROM DW_FACTFINANCEPERIOD d LEFT JOIN (SELECT '1416001' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_A AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:year||'00' AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) UNION ALL SELECT '1403100' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_B AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:year||'00' AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE)) e ON e.DIM_COMPANY=d.DIM_COMPANY AND d.DIM_ITEMPERIOD=e.DIM_ITEMPERIOD WHERE d.DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND d.DIM_PERIOD IN (:period,:comparePeriod) AND d.DIM_ITEMPERIOD IN ('1416001','1403100') GROUP BY d.DIM_ITEMPERIOD, d.DIM_COMPANY ) GROUP BY DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME, B.SCODE",
+        "sql": "SELECT B.SCODE AS ID, B.SNAME AS ITEM , SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB , CASE WHEN SUM(BNMB) = 0 THEN 0 ELSE ROUND(SUM(BNLJ) / SUM(BNMB)* 100, 4) END AS WCL FROM(SELECT DIM_ITEMPERIOD, SUM(BQ)AS BQ, SUM(BNLJ) AS BNLJ, SUM(SNTQ) AS SNTQ , SUM(BNMB) AS BNMB FROM (SELECT d.DIM_ITEMPERIOD, d.DIM_COMPANY, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_A ELSE 0 END) AS BQ, SUM(CASE WHEN DIM_PERIOD=:comparePeriod THEN FACT_B ELSE 0 END) AS SNTQ, SUM(CASE WHEN DIM_PERIOD=:period THEN FACT_B ELSE 0 END) AS BNLJ, sum(nvl(e.bnmb,0)) AS BNMB FROM DW_FACTFINANCEPERIOD d LEFT JOIN (SELECT '1416001' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_A AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:year||'00' AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE cisdel='N' AND SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) UNION ALL SELECT '1403100' AS DIM_ITEMPERIOD ,DIM_COMPANY, 0 AS BQ,0 AS SNTQ,0 AS BNLJ ,FACT_B AS BNMB FROM DW_FACTTARGETASSESSMENT WHERE DIM_PERIOD=:year||'00' AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL AND STYPE<>'0' AND STYPE!='R' AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE)) e ON e.DIM_COMPANY=d.DIM_COMPANY AND d.DIM_ITEMPERIOD=e.DIM_ITEMPERIOD WHERE d.DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') AND CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND d.DIM_PERIOD IN (:period,:comparePeriod) AND d.DIM_ITEMPERIOD IN ('1416001','1403100') GROUP BY d.DIM_ITEMPERIOD, d.DIM_COMPANY ) GROUP BY DIM_ITEMPERIOD) A INNER JOIN DW_DIMITEMPERIOD B ON B.SCODE = A.DIM_ITEMPERIOD GROUP BY B.SNAME, B.SCODE",
         "_cube": {
             "subject": "0002",
             "cubeId": 4
@@ -487,11 +487,11 @@
                         }
                         return 1;
                     },
-                    "queryDataBefore": function(params, mm ,$vue){ 
+                    "queryDataBefore": function(params, mm, $vue) {
                         params.suser = $vue.$store.getters.user.user.userName;
-                        return params ;
+                        return params;
                     },
-                    "queryDataAfter": function(data) { 
+                    "queryDataAfter": function(data) {
                         let me = this;
                         let columns = me.options.getData.columns;
                         let unit = me.unit;
@@ -511,15 +511,15 @@
                             }
                         }
                         data.forEach(element => {
-                            if(element.safe && element.safe != 0){
-                                element.safe = element.safe / 100 ;
-                            }else{
-                                element.safe = 0 ;
+                            if (element.safe && element.safe != 0) {
+                                element.safe = element.safe / 100;
+                            } else {
+                                element.safe = 0;
                             }
-                            if(element.prompt && element.prompt != 0){
-                                element.prompt = element.prompt / 100 ;
-                            }else{
-                                element.prompt = 0 ;
+                            if (element.prompt && element.prompt != 0) {
+                                element.prompt = element.prompt / 100;
+                            } else {
+                                element.prompt = 0;
                             }
                         })
                         return data;
@@ -704,9 +704,9 @@
                         }
                         return 1;
                     },
-                    "queryDataBefore": function(params, mm ,$vue){ 
+                    "queryDataBefore": function(params, mm, $vue) {
                         params.suser = $vue.$store.getters.user.user.userName;
-                        return params ;
+                        return params;
                     },
                     "queryDataAfter": function(data) {
                         let me = this;
@@ -728,15 +728,15 @@
                             }
                         }
                         data.forEach(element => {
-                            if(element.safe && element.safe != 0){
-                                element.safe = element.safe / 100 ;
-                            }else{
-                                element.safe = 0 ;
+                            if (element.safe && element.safe != 0) {
+                                element.safe = element.safe / 100;
+                            } else {
+                                element.safe = 0;
                             }
-                            if(element.prompt && element.prompt != 0){
-                                element.prompt = element.prompt / 100 ;
-                            }else{
-                                element.prompt = 0 ;
+                            if (element.prompt && element.prompt != 0) {
+                                element.prompt = element.prompt / 100;
+                            } else {
+                                element.prompt = 0;
                             }
                         })
                         return data;
@@ -850,8 +850,7 @@
                             "reverse": true
                         },
                         "rows": [],
-                        "columns": [
-                            {
+                        "columns": [{
                                 "id": "period",
                                 "type": "string",
                                 "text": "日期"
@@ -879,9 +878,9 @@
                         ]
 
                     },
-                    "queryDataBefore": function(params, mm ,$vue){ 
+                    "queryDataBefore": function(params, mm, $vue) {
                         params.suser = $vue.$store.getters.user.user.userName;
-                        return params ;
+                        return params;
                     },
                     "listeners": [{
                         "type": "click",
@@ -948,15 +947,15 @@
                             }
                         }
                         data.forEach(element => {
-                            if(element.safe && element.safe != 0){
-                                element.safe = element.safe / 100 ;
-                            }else{
-                                element.safe = 0 ;
+                            if (element.safe && element.safe != 0) {
+                                element.safe = element.safe / 100;
+                            } else {
+                                element.safe = 0;
                             }
-                            if(element.prompt && element.prompt != 0){
-                                element.prompt = element.prompt / 100 ;
-                            }else{
-                                element.prompt = 0 ;
+                            if (element.prompt && element.prompt != 0) {
+                                element.prompt = element.prompt / 100;
+                            } else {
+                                element.prompt = 0;
                             }
                         })
                         return data;
@@ -1535,7 +1534,7 @@
                     "watchState": true,
                     "weight": 6,
                     "config": {
-                        "sql": "WITH TMP1 AS ( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) GROUP BY ROOT_SCODE ),  TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE (CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ),  TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ),  FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE  WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON (T1.SCODE = A.DIM_COMPANY  AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+                        "sql": "WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE) GROUP BY ROOT_SCODE ) , TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE ( CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ) , TMP3 AS ( SELECT ROOT_SCODE, COUNT(num) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY, '1' as num FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period AND fact_c <>'0' ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ) , FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE WHEN SCODE = '1001' THEN NVL(FACT_A - FACT_C, 0) ELSE NVL(FACT_B, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN DW_FACTCAPITALDETAIL A ON ( T1.SCODE = A.DIM_COMPANY AND dim_accountbanks = 'SH' AND DIM_PERIOD = :period) ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT ",
                         "_cubes": {
                             "subject": "0002",
                             "dims": {
