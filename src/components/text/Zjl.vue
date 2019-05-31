@@ -2,10 +2,10 @@
   <div class="Cbsb" style="overflow:auto;">
     <div class="cause">
       <div class="text" style="overflow-y:auto;" id="content">
-          <ul v-if='this.showData.length' style="min-height:150px; padding-inline-start: 30px;">
-              <li v-html="this.showData"  >{{this.showData.length}}</li>
+          <ul v-if='this.showData && this.showData.length' style="min-height:150px; padding-inline-start: 30px;">
+              <li v-html="this.showData" ></li>
           </ul>
-          <div v-if='!this.showData.length'  style="min-height:150px;background:#faebcc;text-align:center;padding-top:45px;font-size:18px;">
+          <div v-if="noData" style="min-height:150px;background:#faebcc;text-align:center;padding-top:45px;font-size:18px;">
             <strong>温馨提示：</strong> 还未填报原因！
           </div>
       </div>
@@ -34,6 +34,7 @@ export default {
     }],
   data() {
     return {
+      noData: false,
       showData:''
     };
   },
@@ -70,7 +71,6 @@ export default {
 
       let _period = year + _month + "";
       let localStorage = this.localStorage;
-      // let cubeId = ;
 
       let _sql =
         "SELECT  c.scontent AS cause FROM sys_source_comment c INNER JOIN sys_topic_source s ON s.nid = c.nsource WHERE s.smoduleid IN ('report') AND s.scontent LIKE '%/_"+ _companyId +"_"+ _period +"_1-mainlastYear_1%' ESCAPE '/' ORDER BY s.createtime DESC";
@@ -84,6 +84,8 @@ export default {
         let data = res.data.data[0];
         if(data){
           this.showData = data.cause;
+        } else {
+          this.noData = true
         }
       });
     }
@@ -95,7 +97,7 @@ export default {
   font-size: 16px;
   width: 620px;
   // padding: 10px;
-  padding-top: 10px;
+  // padding-top: 10px;
   max-height: 350px;
   overflow: auto;
   line-height:35px;
