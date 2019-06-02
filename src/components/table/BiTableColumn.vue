@@ -174,6 +174,9 @@ export default {
         // console.log(column.menu.list[0].listeners[0]);
         this.commonHandler(column.listeners[0], column, scope);
         let companyId = scope.row.id;
+        if(!companyId){
+          companyId = 1;
+        }
         this.mutationSetCompanyId(companyId)
       }
     },
