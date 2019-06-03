@@ -329,6 +329,11 @@ export default {
         pid: "20"
       },
       {
+        id: "2006",
+        text: "信用",
+        pid: "20"
+      },
+      {
         id: "21",
         text: "还款来源"
       },
@@ -990,7 +995,6 @@ export default {
       return source;
     },
     judgeAddRowsData (row) {
-      debugger;
       let me = this,tableData = me.tableData,resItem = {};
       for(let i = 0;i < tableData.length;i++){
         let item = tableData[i];
@@ -1495,7 +1499,6 @@ export default {
       let me = this;
       if (this.fixed == 0) {
         if (columns > 7) {
-          debugger;
           let record = this.settings.data[row];
           if(!record){return true}
           if (record.isinside === "是" || record.isinside == 1 || !record.isinside) {
@@ -1534,7 +1537,6 @@ export default {
      * @author szc 2019年5月31日11:17:28
      */
     changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
-      debugger;
       td.style.textAlign = "center"
       // if (!value) {
       //   td.innerHTML = companyname;
@@ -1560,7 +1562,11 @@ export default {
       //添加一个市管企业的户数，不用格式化数据。
       let arr = ['12'];
       if (value != null && !isNaN(value)) {
-        flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
+        if(this.templateId == "7" && (prop == "B" || prop == "C")){
+          flagElement.innerText = value == ""? "":value.toFixed(4);
+        }else {
+          flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
+        }
         td.appendChild(flagElement);
       }
     },
@@ -1762,7 +1768,6 @@ export default {
       //   });
       // }
       rows = rows && rows.length > 0? rows:[{}];
-      debugger;
       //融资情况明细表添加公司字段名称。
       if(this.templateId == "7" && rows && rows.length > 0){
         let companyname = this.$store.getters.companyName;

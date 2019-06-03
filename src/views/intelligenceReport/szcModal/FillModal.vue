@@ -65,7 +65,26 @@
                     :prop="item.id"
                     :label="item.text"
                     :key="index"
+                    :show-overflow-tooltip="true"
+                    :align="item.type == 'decimal'? 'right':''"
                     >
+                    <!-- <template> -->
+                        <template slot-scope="scope">
+                            <span v-if="item.type == 'decimal'">
+                                {{ handlerTypeOfValue(scope) }}
+                            </span>
+                            <span v-else>
+                                {{ scope.row[scope.column.property] }}
+                            </span>
+                        </template>
+                        <!-- <template v-else>
+                            <span>
+                                {{ scope.row[scope.column.property] }}
+                            </span>
+                        </template> -->
+                        
+                    <!-- </template> -->
+                        
                     </el-table-column>
                 </template>
                 </el-table>
@@ -97,7 +116,8 @@ import {
     saveReview,
     queryStateOfTable,
     urgeToReport,
-    queryUrgeUsers
+    queryUrgeUsers,
+    financingDown
 } from "@/api/fill.js"
 import SRModal from "@v/intelligenceReport/SRModal";
 
@@ -145,6 +165,16 @@ export default {
             me.$store.fillParams = {
                 selectTables : me.deepCopy(me.selectTables)
             }
+        });
+        this.axios.get("/cnbi/json/source/tjsp/szcJson/fillModal/financing.json").then(res => {
+            if(res.data.code == 200){
+                me.financing = res.data.financing;
+                me.dataDict = res.data.dataDict;
+            }
+        });
+        let params = 10;
+        financingDown(params).then(res => {
+            this.financingOptions = res.data.data;
         });
         this.update();
     },
@@ -399,9 +429,63 @@ export default {
                         return arr.indexOf(item.id) == -1;
                     });
                     me.columns = columns;
-                    me.tableData = res.data.data.rows;
+                    //加个融资情况表的判断。
+                    if(params.templateId && params.templateId == "7"){
+                        let itemNames = [//guarantee repaysource
+                            {"text":"cismenu","type":"single"},
+                            {"text":"cisguarantee","type":"single"},
+                            {"text":"guarantee","type":"MSeries","root":"financing"},
+                            {"text":"repaysource","type":"MSeries","root":"financing"},
+                            {"text":"finance","type":"MSeries","root":"financingOptions"}
+                        ];
+                        me.parseNumberToString(itemNames,res.data.data.rows);
+                        me.tableData = me.handleFinancingCompany(res.data.data.rows);
+                    }else {
+                        me.tableData = res.data.data.rows;
+                    }
                 }
             });
+        },
+        /**
+         * 融资的类型转换。
+         * @author szc 2019年6月2日14:24:26
+         */
+        parseNumberToString(itemNames,rows) {
+            let me = this;
+            if(itemNames && itemNames.length > 0){
+                for(let i = 0; i < itemNames.length;i ++){
+                    let item = itemNames[i];
+                    if(item.type == "single"){
+                        rows.forEach(tt => {
+                            tt[item.text] && tt[item.text] == 1? tt[item.text] = "是":(tt[item.text] == 0? tt[item.text] = "否":"");
+                        });
+                    }
+                    if(item.type == "MSeries"){
+                        for(let j = 0; j < rows.length;j ++){
+                            let rowItem = rows[j];
+                            let filItem = me[item.root].filter(filIt => {
+                                return filIt.id == rowItem[item.text];
+                            });
+                            if(filItem && filItem.length > 0){
+                                rowItem[item.text] = filItem[0].text;
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        /**
+         * 转换融资情况表的一些关联类型数据。
+         * @author szc 2019年6月2日13:44:00
+         */
+        handleFinancingCompany (data) {
+            let me = this,company = me.$store.getters.companyName;
+            data.forEach(item => {
+                if(!item.companyname){
+                    item.companyname = company;
+                }
+            });
+            return data;
         },
         /**
          * 请求参数的转换。
@@ -593,6 +677,37 @@ export default {
                 }
             });
             return data;
+        },
+        /**
+         * 处理设置类型
+         */
+        handlerTypeOfValue (scope) {
+            let me = this,selectTable = me.selectTable;
+            let value = scope.row[scope.column.property];
+            if(selectTable && selectTable.valueLabel == "7"){
+                if(scope.column.property == "B" || scope.column.property == "C"){
+                    return value.toFixed(4);
+                }else {
+                    return value.toFixed(2);
+                }
+            }
+            return value.toFixed(2);
+        },
+        /**
+         * 转换融资的 融资类型的转换
+         */
+        parseTypeOfFinance(key,itemOut) {
+            let me = this;
+            let financingOptions = this.financingOptions;
+            if(financingOptions && financingOptions.length > 0){
+                for(let i = 0;i < financingOptions.length;i ++){
+                    let item = financingOptions[i];
+                    if(itemOut[key] == item.text){
+                        itemOut[key] = item.id;
+                        break;
+                    }
+                }
+            } 
         },
         /**
          * modal框关闭前。
