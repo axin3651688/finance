@@ -450,6 +450,11 @@ export default {
           v1436604A_tz: 0,
         },
         {
+          sname:"资产处置收益",
+          v1416121A: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
+          v1416121A_tz: 0,
+        },
+        {
           sname:"营业外收支净额",
           yywsrje: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
           yywsrje_tz: 0,
@@ -466,7 +471,8 @@ export default {
         },       
         {
           sname:"税后净营业利润",
-          yywsrlr: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+          yywsrlrA: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+          yywsrlrA_tz: 0
         },
         {
           sname:"资产总额",
@@ -638,7 +644,7 @@ export default {
       if(item.id == "1"){
         me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
       }else{
-        debugger;
+        // debugger;
         this.downLoadEVA();
       }
     },
@@ -668,7 +674,7 @@ export default {
         }
         data.push(itemObj);
       }
-      debugger;
+      // debugger;
       data.push({ sl: me.vars[0].display_num })
       return data;
     },
@@ -694,141 +700,6 @@ export default {
           document.body.removeChild(downloadElement); // 下载完成移除元素
           window.URL.revokeObjectURL(href);
       });
-    },
-    /**
-     * 导出的格式。数据的处理
-     * @author szc 2019年4月1日16:49:27
-     */
-    parseDataOfExport () {
-      // debugger;
-      let me = this;
-      let datas = this.exps;
-      let header1 = ['','项目','本期金额','','调整后'],header2 = ['资本占用','项目','期初余额','期末余额','调整后'],contentData = [];
-      let exportExps = this.exportExps;
-      for(let i = 0;i < exportExps.length;i++){
-        let item = exportExps[i];
-        if(i < 7){
-          let arr = ['税后净营业利润'];
-          Object.keys(item).forEach(key => { 
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A') || key=='yywsrje'){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]) {
-                arr[2] = 0;
-              }
-              arr[3] = 0;
-              if(key.endsWith('_tz')){
-                if(key == "yywsrje" || key != "v1400100A_tz"){
-                  arr[4] = Math.decimalToLocalString(datas[key]) ;
-                }else if(key == "v1400100A_tz"){
-                  arr[4] = arr[2]|| 0;
-                }
-              }
-              if(key=="yywsrlr"){
-                arr[4] = Math.decimalToLocalString(datas[key]) ;
-              }
-            }
-          });
-          contentData.push(arr);
-        }else if(i < 17){
-          if(i == 7){
-            contentData.push(header2);
-          }
-          let arr = ['资本占用'];
-          Object.keys(item).forEach(key => {debugger
-            let me = this ;
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A')){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]){
-                arr[2] = 0;
-              }
-              if(key.endsWith('C')){
-                arr[2] = me.vars[2].display_num ;
-              }
-              if(key.endsWith('D')){
-                arr[3] = me.vars[3].display_num ;
-              }
-              if(key.endsWith('B')){
-                arr[3] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[3]){
-                arr[3] = 0;
-              }
-              if(key.endsWith('_tz') || key == "zbzyje"){
-                arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[4]) {
-                arr[4] = 0;
-              }
-            }
-          });
-          contentData.push(arr);
-        }else if(i < 19){
-          let arr = [''];
-          Object.keys(item).forEach(key => {
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A')){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]){
-                arr[2] = 0;
-              }
-              if(key.endsWith('B')){
-                arr[3] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[3]){
-                arr[3] = 0;
-              }
-              if(key.endsWith('E')){
-                arr[4] = me.vars[1].display_num ;
-              }else{
-                arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-              }             
-            }
-          });
-          contentData.push(arr);
-        }else {
-          let arr = ['EVA'];
-          Object.keys(item).forEach(key => {debugger
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              arr[2] = 0;
-              arr[3] = 0;
-              arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-            }
-          });
-          contentData.push(arr);
-        }
-      }
-      console.log("这个数据",contentData);
-      return {header:header1,content:contentData}
-      
-    },
-    /**
-     * 点击导出按钮触发的事件
-     * @author szc 2019年4月1日16:52:11
-     */
-    downLoadEVA_old () {
-      debugger;
-      let me = this;
-      // vue.downloadLoading = true;
-      let resData = this.parseDataOfExport();
-      console.log(resData);
-      let data = resData.content;
-      import('@/excel/SExport2Excel').then(excel => {
-        excel.export_json_to_excel({
-          header: resData.header,
-          data,
-          filename: "经济增加值（EVA）计算表",//导出表的表名称
-          autoWidth: "200px",
-          bookType: 'xlsx'  //导出的类型
-        })
-        // vue.downloadLoading = false
-      })
     },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
@@ -1031,8 +902,8 @@ export default {
       });
     },
     // 调整后的计算
-    updateTzhData(arr, newV) { debugger
-      arr.forEach(element => { debugger
+    updateTzhData(arr, newV) { 
+      arr.forEach(element => { 
         // debugger
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
