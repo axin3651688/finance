@@ -59,7 +59,7 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        debugger
+        // debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode ;
         let ngrade, sissubmit, nid ;
@@ -284,5 +284,26 @@ export default {
                 $this.$message.error( rec.data.msg );
             }
         })
+    },
+    /**
+     * @author sjz
+     * @event 总述文字
+     * @name 【风险报告页面引用】
+     * @param {*} directory 
+     */
+    getReportOverviewText(directory){
+        debugger
+        let dd = [] ;
+        let html = "" ;
+        directory.forEach((ffq, index) => {
+            let fuhao = directory.length==index+1?"；": "，";
+            ffq.html = ffq.sname + ffq.ncount + '条' + fuhao ;
+            dd[index] = ffq.html ;
+        });
+        
+        for(let i=0; i<dd.length; i++){
+            html += dd[i] ;
+        }
+        return html ;
     }
 }
