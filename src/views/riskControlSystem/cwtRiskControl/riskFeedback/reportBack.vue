@@ -11,6 +11,7 @@
 
         <div class="report-component-content" v-if="reportBackDetail">
             <div style="text-align: right; padding-right: 4px;">
+                <el-button type="primary" @click="pageExport">导出</el-button>
                 <el-button type="primary" @click="pageBack">返回</el-button>
             </div>
 
@@ -138,10 +139,10 @@
                 let _id = btnItem.id;
                 if (_id === '0') {
                     //风险报告反馈
-                    this.reportPageOpen(scope, btnItem);
+                    this.reportPageOpen(scope);
                 } else if (_id === '1') {
                     //显示报告详情
-                    this.reportPageOpen(scope, btnItem);
+                    this.reportPageOpen(scope);
                 } else if (_id === '2') {
                     //风险报告退回
                 } else if (_id === '3') {
@@ -154,6 +155,16 @@
              */
             pageBack() {
                 this.reportBackDetail = false;
+            },
+
+            /**
+             * 页面报告导出事件
+             */
+            pageExport() {
+                this.$message({
+                    message: '导出功能搁浅',
+                    type: 'success'
+                })
             },
 
             /**
