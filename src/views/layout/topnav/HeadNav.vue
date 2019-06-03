@@ -94,10 +94,10 @@
               <i class="info"></i>
               <span @sayhidden="sayhidden">个人信息</span>
             </el-dropdown-item>
-            <el-dropdown-item command="info">
+            <!-- <el-dropdown-item command="info">
               <i class="manage"></i>
               <span>管理互动</span>
-            </el-dropdown-item>
+            </el-dropdown-item> -->
             <el-dropdown-item command="info">
               <i class="about"></i>
               <span>关于软件</span>
