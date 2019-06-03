@@ -715,7 +715,6 @@ export default {
      * @param el 节点组件本身
      *  */
     handClick(snode, node, el) {
-      debugger
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);
@@ -733,9 +732,9 @@ export default {
         this.form.npercent = this.form.npercent * 100;
       }
       //根节点
-      if (this.form.nlevel - 0 === 1) {
-        this.form.spcode = snode.scode;
-      }
+      // if (this.form.nlevel - 0 === 1) {
+      //   this.form.spcode = snode.scode;
+      // }
       //默认为修改状态
       this.opt = tools.opt[1];
       //表单可编辑状态
