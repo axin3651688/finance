@@ -264,9 +264,9 @@ export default {
             }
         },
         // 1.2 获取请求的数据
-        setData(params){
+        setData(params){ debugger
             let me = this ;
-            findThirdPartData(params).then(res => {
+            findThirdPartData(params).then(res => { 
                 // debugger
                 if(res.data.code === 200){
                     // me.tableData = res.data.data ;

@@ -36,11 +36,11 @@
                         <div style="width:100%;background:#ddd;marginBottom: 10px;padding: 10px 0 10px 0">
                             <span style="fontSize:22px;fontWeight: 200;">总述</span>
                         </div>
-                        <div v-if="directory.length == 0" style="marginBottom: 10px;">
-                            <span>暂无数据显示！</span>
+                        <div v-if="directory.length == 0" style="marginBottom: 10px;text-indent: 2em;">
+                            <span v-html="html2">暂无数据显示！</span>
                         </div>
-                        <div v-else>
-                            <span>有数据</span>
+                        <div v-else style="marginBottom: 10px;text-indent: 2em;">
+                            <span v-html="html2">有数据！</span>
                         </div>
                     </el-main>
                 </el-container>
@@ -68,6 +68,7 @@ export default {
             directory: [] ,     // 存放目录数据的
             numArray: ["一、","二、","三、","四、","五、","六、","七、"] ,
             textBody: "",
+            html2: "",          // 没有数据的提示文字
         }
     },
     created(){
@@ -117,14 +118,25 @@ export default {
         setModify(){
             debugger
             this.isAlertShow = false ;  // 提示-隐藏
-            // 过滤出有数据的数据
+            // 这家公司有几条风险（总共）
+            let len = this.data.report_data.length ;
+            // 过滤出有数据的数据(目录)
             this.directory = this.data.stype_data.filter((res, index) => { return res.ncount > 0 ; }) ;
             // 前缀+序号的（大写的）
             this.directory.forEach((res, index) => { res.text = this.numArray[index] + res.sname }) ;
             // 获取从父组件传递过来的表格信息数据
             let rowData = this.dataSource.row.row ;
-            // 生成文字
-            this.textBody = rowData.company + '' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ; 
+            // 生成文字（正文标题）
+            this.textBody = rowData.company + '' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ;
+            // 根据风险类型查出风险几条 ；
+            let html = mini.getReportOverviewText(this.directory) ; 
+            // 没有数据时的提示文字
+            if(this.directory.length === 0){
+                this.html2 = '截止'+this.dataSource.year + '年' + this.dataSource.month +'月份无数据显示！' ;
+            }else{
+                this.html2 = '截止'+this.dataSource.year + '年' + this.dataSource.month +'月份，经风险评估分析，'+rowData.company+'在风险上面共存在'+len+'条，'+
+                    '从风险类型来看，其中'+ html ;
+            }
         },
         // 查看按钮触发
         setView(){
