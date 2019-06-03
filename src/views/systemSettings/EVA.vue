@@ -38,7 +38,7 @@
             </thead>
             <tbody>
               <tr>
-                <td rowspan="7" class="bd">税后净营业利润</td>
+                <td rowspan="8" class="bd">税后净营业利润</td>
                 <td>净利润</td>
                 <td colspan="2" class="br">
                   <!-- <input v-model="exps.v1400100A" readonly class="exps"> -->
@@ -70,6 +70,15 @@
                 <td class="br">
                   <!-- <input v-model="exps.v1436604A_tz" readonly class="exps"> -->
                   <span class="expsv">{{exps.v1436604A_tz|NumFormat}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>资产处置收益</td>
+                <td colspan="2" class="br">
+                  <span class="expsv">{{exps.v1416121A|NumFormat}}</span>
+                </td>
+                <td class="br">
+                  <span class="expsv">{{exps.v1416121A_tz|NumFormat}}</span>
                 </td>
               </tr>
               <tr>
@@ -106,10 +115,13 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3" class="bd">税后净营业利润</td>
-                <td class="br">
+                <td class="bd">税后净营业利润</td>
+                <td colspan="2" class="br">
                   <!-- <input v-model="exps.yywsrlr" readonly class="exps"> -->
-                  <span class="expsv">{{exps.yywsrlr|NumFormat}}</span>
+                  <span class="expsv">{{ exps.yywsrlrA|NumFormat }}</span>
+                </td>
+                <td class="br">
+                  <span class="expsv">{{exps.yywsrlrA_tz|NumFormat}}</span>
                 </td>
               </tr>
 
@@ -360,13 +372,19 @@ export default {
         v1416301A: 2000, //营业外收入
         v1416301A_tz: 0,
 
+        v1416121A: 1000, // 资产处置收益
+        v1416121A_tz: 0,
+
         v1426711A: 3000, //营业外支出
         v1426711A_tz: 0,
 
         yywsrje: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
         yywsrje_tz: 0,
 
-        yywsrlr: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+        yywsrlrA: 1000, // 税后净营业利润本期金额
+        yywsrlrA_tz: 0, 
+        // 税后经营业利润调整后 = 净利润+（研发费用+利息支出-资产处置收益-营业外收入+营业外支出）*（1-25%【250%为税率的值-假想】）（现在的-启用）
+        //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额（以前的-弃用）
 
         v1100100A: 1000, //资产总计 期初
         v1100100B: 20000, //资产总计 期末
@@ -432,6 +450,11 @@ export default {
           v1436604A_tz: 0,
         },
         {
+          sname:"资产处置收益",
+          v1416121A: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
+          v1416121A_tz: 0,
+        },
+        {
           sname:"营业外收支净额",
           yywsrje: 0, //营业外收支净额 = 营业外支出本期金额-营业外收入本期金额
           yywsrje_tz: 0,
@@ -448,7 +471,8 @@ export default {
         },       
         {
           sname:"税后净营业利润",
-          yywsrlr: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+          yywsrlrA: 0, //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
+          yywsrlrA_tz: 0
         },
         {
           sname:"资产总额",
@@ -620,7 +644,7 @@ export default {
       if(item.id == "1"){
         me.tableDataRequest(me.companyId, me.yearId, me.monthId, me.conversionId);
       }else{
-        debugger;
+        // debugger;
         this.downLoadEVA();
       }
     },
@@ -650,7 +674,7 @@ export default {
         }
         data.push(itemObj);
       }
-      debugger;
+      // debugger;
       data.push({ sl: me.vars[0].display_num })
       return data;
     },
@@ -676,141 +700,6 @@ export default {
           document.body.removeChild(downloadElement); // 下载完成移除元素
           window.URL.revokeObjectURL(href);
       });
-    },
-    /**
-     * 导出的格式。数据的处理
-     * @author szc 2019年4月1日16:49:27
-     */
-    parseDataOfExport () {
-      // debugger;
-      let me = this;
-      let datas = this.exps;
-      let header1 = ['','项目','本期金额','','调整后'],header2 = ['资本占用','项目','期初余额','期末余额','调整后'],contentData = [];
-      let exportExps = this.exportExps;
-      for(let i = 0;i < exportExps.length;i++){
-        let item = exportExps[i];
-        if(i < 7){
-          let arr = ['税后净营业利润'];
-          Object.keys(item).forEach(key => { 
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A') || key=='yywsrje'){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]) {
-                arr[2] = 0;
-              }
-              arr[3] = 0;
-              if(key.endsWith('_tz')){
-                if(key == "yywsrje" || key != "v1400100A_tz"){
-                  arr[4] = Math.decimalToLocalString(datas[key]) ;
-                }else if(key == "v1400100A_tz"){
-                  arr[4] = arr[2]|| 0;
-                }
-              }
-              if(key=="yywsrlr"){
-                arr[4] = Math.decimalToLocalString(datas[key]) ;
-              }
-            }
-          });
-          contentData.push(arr);
-        }else if(i < 17){
-          if(i == 7){
-            contentData.push(header2);
-          }
-          let arr = ['资本占用'];
-          Object.keys(item).forEach(key => {debugger
-            let me = this ;
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A')){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]){
-                arr[2] = 0;
-              }
-              if(key.endsWith('C')){
-                arr[2] = me.vars[2].display_num ;
-              }
-              if(key.endsWith('D')){
-                arr[3] = me.vars[3].display_num ;
-              }
-              if(key.endsWith('B')){
-                arr[3] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[3]){
-                arr[3] = 0;
-              }
-              if(key.endsWith('_tz') || key == "zbzyje"){
-                arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[4]) {
-                arr[4] = 0;
-              }
-            }
-          });
-          contentData.push(arr);
-        }else if(i < 19){
-          let arr = [''];
-          Object.keys(item).forEach(key => {
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              if(key.endsWith('A')){
-                arr[2] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[2]){
-                arr[2] = 0;
-              }
-              if(key.endsWith('B')){
-                arr[3] = Math.decimalToLocalString(datas[key]) || 0;
-              }else if(!arr[3]){
-                arr[3] = 0;
-              }
-              if(key.endsWith('E')){
-                arr[4] = me.vars[1].display_num ;
-              }else{
-                arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-              }             
-            }
-          });
-          contentData.push(arr);
-        }else {
-          let arr = ['EVA'];
-          Object.keys(item).forEach(key => {debugger
-            if(key == "sname"){
-              arr[1] = item[key] || "";
-            }else{
-              arr[2] = 0;
-              arr[3] = 0;
-              arr[4] = Math.decimalToLocalString(datas[key]) || 0;
-            }
-          });
-          contentData.push(arr);
-        }
-      }
-      console.log("这个数据",contentData);
-      return {header:header1,content:contentData}
-      
-    },
-    /**
-     * 点击导出按钮触发的事件
-     * @author szc 2019年4月1日16:52:11
-     */
-    downLoadEVA_old () {
-      debugger;
-      let me = this;
-      // vue.downloadLoading = true;
-      let resData = this.parseDataOfExport();
-      console.log(resData);
-      let data = resData.content;
-      import('@/excel/SExport2Excel').then(excel => {
-        excel.export_json_to_excel({
-          header: resData.header,
-          data,
-          filename: "经济增加值（EVA）计算表",//导出表的表名称
-          autoWidth: "200px",
-          bookType: 'xlsx'  //导出的类型
-        })
-        // vue.downloadLoading = false
-      })
     },
     // 导航栏切换触发 注：公司、日期、单位
     getData(vax, value){
@@ -852,7 +741,10 @@ export default {
             }
             this.eva_city_Request_second(items) ;
         }else{
-            _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='1436604' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','1436604','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','1436604','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
+            // 原来的
+            // _sql2 = `WITH T AS(SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='1436604' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' ELSE SNAME END AS SNAME,SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100','1435301','1436604','1416301','1426711')) SELECT SCODE,SNAME,B FROM ( SELECT T.SCODE,T.SNAME,T1.FACT_B AS B FROM T LEFT JOIN (SELECT DIM_ITEMPERIOD,SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100','1435301','1436604','1416301','1426711') GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'其中：营业外收入',4,' 营业外支出',5)`
+            // 新的
+            _sql2 = `WITH T AS( SELECT CASE WHEN SCODE ='1400100' THEN '净利润' WHEN SCODE ='1435301' THEN '研究与开发费' WHEN SCODE ='1436604' THEN '利息支出' WHEN SCODE='1416301' THEN '其中：营业外收入' WHEN SCODE ='1426711' THEN ' 营业外支出' when scode='1416121' then '资产处置收益' ELSE SNAME END AS SNAME, SCODE FROM DW_DIMITEMPERIOD WHERE SCODE IN ('1400100', '1435301', '1436604', '1416301', '1426711', '1416121')) SELECT SCODE, SNAME, B FROM ( SELECT T.SCODE, T.SNAME, T1.FACT_B AS B FROM T LEFT JOIN ( SELECT DIM_ITEMPERIOD, SUM(NVL(FACT_B,0)) FACT_B FROM DW_FACTFINANCEPERIOD WHERE DIM_PERIOD=:period AND DIM_COMPANY=:company AND DIM_ITEMPERIOD IN ('1400100', '1435301', '1436604', '1416301', '1426711', '1416121' ) GROUP BY DIM_ITEMPERIOD) T1 ON T.SCODE = T1.DIM_ITEMPERIOD) ORDER BY DECODE (SNAME,'净利润',1,'研究与开发费',2,'利息支出',3,'资产处置收益',4,'其中：营业外收入',5,' 营业外支出',6)`;
             _sql = _sql2.replace(/:company/g,"'"+companyId+"'").replace(/:period/g,"'"+_period+"'");
             items = {
                 'cubeId': 4,
@@ -952,7 +844,7 @@ export default {
         })
     },
     setExpressionData() {
-      debugger
+      // debugger
       //营业外收支净额 营业外支出本期金额-营业外收入本期金额     
       this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
       //资产负债率 = 负债合计期末余额/资产合计期末余额 *100
@@ -960,12 +852,18 @@ export default {
       if (!this.exps.zcfzlv) {
         this.exps.zcfzlv = 0;
       }
-      //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额
-      this.exps.yywsrlr =
-        this.exps.v1400100A +
-        this.exps.v1435301A_tz +
-        this.exps.v1436604A_tz +
-        this.exps.yywsrje_tz;
+      //税后净营业利润 = 净利润 + 研究与开发费 + 利息支出 + 营业外收支净额(old)
+      // this.exps.yywsrlr =
+      //   this.exps.v1400100A +
+      //   this.exps.v1435301A_tz +
+      //   this.exps.v1436604A_tz +
+      //   this.exps.yywsrje_tz;
+
+      // 说明：1、[税后净营业利润=净利润+（研发费用+利息支出-资产处置收益-营业外收入+营业外支出）]本期金额*（1-25%）
+      // 说明：2、1400100 + (1435301+1436604-1416121-1416301+1426711)
+      this.exps.yywsrlrA = 
+        this.exps.v1400100A + 
+        (this.exps.v1435301A + this.exps.v1436604A - this.exps.v1416121A - this.exps.v1416301A + this.exps.v1426711A)
 
       //无息流动负债 = 流动负债-短期借款-一年内到期的长期负债
       this.exps.wxldfzA =
@@ -1003,8 +901,9 @@ export default {
           (this.exps[element + "A"] + this.exps[element + "B"]) / 2;
       });
     },
-    updateTzhData(arr, newV) {
-      arr.forEach(element => {
+    // 调整后的计算
+    updateTzhData(arr, newV) { 
+      arr.forEach(element => { 
         // debugger
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
@@ -1016,9 +915,10 @@ export default {
         item.value = '' ;
         return false ;
     },
+    // input 框点击触发
     handleClick(item) {
       this.$nextTick(() => {
-        debugger;
+        // debugger;
         let msg = "温馨提示，范围<1000，您已超出范围，请重新输入！" ;
         let msg2= "温馨提示，范围<11位数，您已超出范围，请重新输入！"; 
         item.value = item.display_num;
@@ -1037,7 +937,8 @@ export default {
         if (item.code === "sl") {
           //调整后数据
           this.updateTzhData(
-            ["v1435301A", "v1436604A", "v1416301A", "v1426711A"],
+          //   研发费用      利息支出   资产处置收益   营业外收入    营业外支出   税后净营业利润
+            ["v1435301A", "v1436604A","v1416121A", "v1416301A", "v1426711A", "yywsrlrA"],
             item.value
           );
           //营业外收支净额 营业外支出本期金额-营业外收入本期金额
@@ -1048,7 +949,7 @@ export default {
 
         //格式化数据
         if(item.value!=""){  
-          debugger
+          // debugger
           item.display_num = tools.currency(item.value, "", 2);
           // 清除localStorage里的名为 "majun" 的缓存信息  
           localStorage.removeItem("majun"); 
@@ -1093,7 +994,7 @@ input {
   border: 0;
 }
 .textIndent {
-  text-indent: 2em;
+  text-indent: 3em;
 }
 .br {
   text-align: right;

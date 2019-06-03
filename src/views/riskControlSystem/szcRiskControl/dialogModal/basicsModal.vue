@@ -12,7 +12,7 @@
                             </el-col>
                             <el-col v-else-if="it.type == 'text'" :span="it.span || 12" :key="itIndex">
                                 <el-form-item :label="it.label || '没有配置'" :prop="it.text" :key="itIndex">
-                                    <div :class="modalTextClass(it)">
+                                    <div :class="modalTextClass(it)" :style="styleHandler(formConfig.rowData)">
                                         <span>
                                             {{ it[it.text] }}
                                         </span>
@@ -133,11 +133,19 @@ export default {
      */
     methods: {
         /**
+         * 查询出来的样式
+         */
+        styleHandler (row) {
+            let me = this;
+            if(row && row.fxlxcolor){
+                return "background-color:" + row.fxlxcolor;
+            }
+        },
+        /**
          * 弹出框的文本添加样式。
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
-            debugger;
             let me = this;
             if (it.nlevel) {
                 if (it.nlevel == "1") {

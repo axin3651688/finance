@@ -44,6 +44,19 @@ export function dataRequest(data) {
 }
 /**
  * name: sjz
+ * 说明：日志管理模糊搜索的请求接口
+ * time: 2019年6月2日13:38:10
+ * @param {*} data 
+ */
+export function dataLikeRequest(data) {
+    return request({
+        url: '/zjb/sys/log/like_query',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz
  * 说明: 在线用户数据的请求接口
  * time: 2019/1/18 16:54:00
  */

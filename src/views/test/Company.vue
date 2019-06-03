@@ -137,11 +137,14 @@
             </template>
             <!-- <el-button type="danger" @click="remove">删除</el-button> -->
             <template v-if="delButten === 1">
-              <template v-if="form.cisdel === 'N'">
+              <!-- <template v-if="form.cisdel === 'N'">
                 <el-button type="warning" @click="remove('禁用')">禁用</el-button>
               </template>
               <template v-else>
                 <el-button type="success" @click="remove('启用')">启用</el-button>
+              </template> -->
+              <template>
+                <el-button type="warning" @click="remove('禁用')">禁用</el-button>
               </template>
             </template>
             <!-- <el-button >取消</el-button> -->
@@ -408,12 +411,12 @@ export default {
     },
 
     //请求维度信息
-    findDim() {
+    findDim() { debugger
       const _this = this;
       request({
         url: "/zjb/dict/query/INDUSTRY",
         method: "get"
-      }).then(result => {
+      }).then(result => {debugger
         if (result.status == 200) {
           //  处理维度id 既有Integer 又有 String
           // 过滤抵消差额
@@ -476,8 +479,9 @@ export default {
               }
               item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
               item.label = "(" + item.scode + ")" + item.sname
-              return item;
+              return item.cisdel != "Y";
             });
+            
             //data[0].open = true;
             // _this.expandKeys.push(data[0].scode);
             _this.treedata = tools.transformToeTreeNodes(setting, data);
@@ -510,6 +514,7 @@ export default {
     },
     // update(formName) {},
     remove(formName) {
+      // debugger
       var _this = this;
       var cur = _this.currentNode();
       if (!cur) {
@@ -520,8 +525,7 @@ export default {
         return false;
       }
       _this.opt = tools.opt[2];
-      _this
-        .$confirm("此操作将"+formName+"该公司, 是否继续?", "提示", {
+      _this.$confirm("此操作将"+formName+"该公司, 是否继续?", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -534,7 +538,7 @@ export default {
               scodes: _this.form.scode,
               cisdel: _this.form.cisdel
             }
-          }).then(result => {
+          }).then(result => { debugger
             if (result.status == 200) {
               this.forbidden = true;
 
@@ -543,7 +547,8 @@ export default {
               _this.findNodes();
               this.$message({
                 type: "success",
-                message: result.data.msg
+                message: "操作成功"
+                // message: result.data.msg
               });
             }
           });
@@ -712,7 +717,7 @@ export default {
     handClick(snode, node, el) {
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
-      this.companyOfInsNumber(snode);
+      // this.companyOfInsNumber(snode);
       this.form.sname = snode.sname; //sfullname;
       this.form.scode = snode.scode;
       this.form.spcode = snode.spcode;
@@ -727,9 +732,9 @@ export default {
         this.form.npercent = this.form.npercent * 100;
       }
       //根节点
-      if (this.form.nlevel - 0 === 1) {
-        this.form.spcode = snode.scode;
-      }
+      // if (this.form.nlevel - 0 === 1) {
+      //   this.form.spcode = snode.scode;
+      // }
       //默认为修改状态
       this.opt = tools.opt[1];
       //表单可编辑状态
@@ -743,7 +748,8 @@ export default {
      * @author szc 2019年4月12日15:27:27
      */
     companyOfInsNumber (snode) {
-      let me = this,sign = 'R',sindcodesAll = this.sindcodesAll;
+      debugger
+      let me = this,sign = 'R',sindcodesAll = me.sindcodesAll;
       if(snode && snode.stype == sign){
         me.sindcodes = sindcodesAll;
       }else {

@@ -52,12 +52,14 @@
         "type": "string",
         "width":"200",
         "fixed":true,
+        "align": "left",
         "text": "公司编码"
     },
     {
         "id": "sname",
         "type": "string",
         "width":"360px",
+        "align": "left",
         "fixed":true,
         "text": "公司名称"
     },{
@@ -73,11 +75,13 @@
                     "id": "zcze_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "zcze_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -88,11 +92,13 @@
                     "id": "hbzj_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "hbzj_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -103,11 +109,13 @@
                     "id": "ch_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "ch_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -118,11 +126,13 @@
                     "id": "yszk_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "yszk_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             }
@@ -140,11 +150,13 @@
                     "id": "fzze_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "fzze_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -155,11 +167,13 @@
                     "id": "dqjk_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "dqjk_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -170,11 +184,13 @@
                     "id": "yfzk_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "yfzk_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             },{
@@ -185,11 +201,13 @@
                     "id": "cqjk_b",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "本期"
                 },{
                     "id": "cqjk_a",
                     "type": "decimal",
                     "width":"170px",
+                    "align": "right",
                     "text": "期初"
                 }]
             }
@@ -203,11 +221,13 @@
             "id": "syzqy_b",
             "type": "decimal",
             "width":"170px",
+            "align": "right",
             "text": "本期"
         },{
             "id": "syzqy_a",
             "type": "decimal",
             "width":"170px",
+            "align": "right",
             "text": "期初"
         }]
     },
@@ -220,12 +240,14 @@
             "type": "decimal",
             "width":"130px",
             "text": "本期",
+            "align": "right",
             "conversion":"%"
         },{
             "id": "zcfzl_a",
             "type": "decimal",
             "width":"130px",
             "text": "期初",
+            "align": "right",
             "conversion":"%"
         }]
     },

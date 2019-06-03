@@ -58,7 +58,7 @@
             ></el-date-picker>
           </el-form-item>
 
-          <el-form-item label="性质" prop="vartype">
+          <el-form-item label="数据源" prop="vartype">
             <el-checkbox-group v-model="form.vartype">
               <el-checkbox label="EAS"  border>EAS</el-checkbox>
               <!-- <el-checkbox label="YS"  border>预算</el-checkbox> -->

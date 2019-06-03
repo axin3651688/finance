@@ -235,40 +235,30 @@
           <el-form-item label="邮箱" prop="semail">
             <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
           </el-form-item>
-
+          <!-- 新增用户的 -->
           <el-form-item label="政治面貌" prop="landscape">
             <el-select v-model="addUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option>
+              <el-option v-for="item in landscapes" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="教育程度" prop="education">
             <el-select v-model="addUserForm.education" placeholder="请选择教育程度" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <el-option label="小学" value="0"></el-option>
-              <el-option label="初中" value="1"></el-option>
-              <el-option label="高中" value="2"></el-option>
-              <el-option label="本科" value="3"></el-option>
-              <el-option label="硕士" value="4"></el-option>
-              <el-option label="博士" value="5"></el-option>
+              <el-option v-for="item in educations" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="专业职称" prop="professionalTitle">
             <el-select v-model="addUserForm.professionalTitle" placeholder="请选择专业职称" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <!-- <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option> -->
+              <el-option v-for="item in professionalTitles" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
+              
             </el-select>
           </el-form-item>
 
           <el-form-item label="现任职务" prop="currentPosition">
             <el-select v-model="addUserForm.currentPosition" placeholder="请选择现任职务" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <!-- <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option> -->
+              <el-option v-for="item in currentPositions" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
+              
             </el-select>
           </el-form-item>
         </el-form>
@@ -403,38 +393,27 @@
           <el-input v-model="editUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
         </el-form-item>
         <el-form-item label="政治面貌" prop="landscape">
-            <el-select v-model="editUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option>
-            </el-select>
-          </el-form-item>
+          <el-select v-model="editUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
+            <el-option v-for="item in landscapes" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>             
+          </el-select>
+        </el-form-item>
 
           <el-form-item label="教育程度" prop="education">
             <el-select v-model="editUserForm.education" placeholder="请选择教育程度" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <el-option label="小学" value="0"></el-option>
-              <el-option label="初中" value="1"></el-option>
-              <el-option label="高中" value="2"></el-option>
-              <el-option label="本科" value="3"></el-option>
-              <el-option label="硕士" value="4"></el-option>
-              <el-option label="博士" value="5"></el-option>
+              <el-option v-for="item in educations" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
+              
             </el-select>
           </el-form-item>
 
           <el-form-item label="专业职称" prop="professionalTitle">
             <el-select v-model="editUserForm.professionalTitle" placeholder="请选择专业职称" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <!-- <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option> -->
+              <el-option v-for="item in professionalTitles" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="现任职务" prop="currentPosition">
             <el-select v-model="editUserForm.currentPosition" placeholder="请选择现任职务" style="width:300px">
-              <!-- <el-option v-for="item in landscapes" :key="item.id" :label="item.text" :value="item.id"></el-option> -->
-              <!-- <el-option label="团员" value="0"></el-option>
-              <el-option label="党员" value="1"></el-option> -->
+              <el-option v-for="item in currentPositions" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
         </el-form-item>
       </el-form>
@@ -609,6 +588,12 @@ export default {
       }
     };
     return {
+      // sjz -- 添加弹出框的
+      landscapes: [] ,         // 政治面貌
+      educations: [] ,         // 教育程度
+      professionalTitles: [],  // 专业职称
+      currentPositions: [] ,   // 现任职务
+      /**--------------------------------------------------------------- */
       //修改用户的图片。
       editPhotoUrl:"",
       //新增用户时的图片地址
@@ -652,20 +637,25 @@ export default {
 
       showNodes:[],//选中的节点（公司授权）
       searchForm: {},
+      // 新添弹出框
       addUserForm: {
-        suser: "",
-        struename: "",
-        spassword: "",
-        spassword2: "",
-        csex: "男",
-        roleid: "",
-        sphone: "",
-        semail: "",
-        cisenabled: "Y",
-        cauthorize: "Y",
-        company: "",
-        department: null,
-        value: ""
+        suser: "",            // 用户名
+        struename: "",        // 真实姓名
+        spassword: "",        // 密码
+        spassword2: "",       // 确认密码
+        csex: "男",           // 性别
+        roleid: "",           // 角色
+        sphone: "",           // 电话
+        semail: "",           // 邮箱
+        cisenabled: "Y",      // 启用/禁用
+        cauthorize: "Y",      // 授权
+        company: "",          // 公司
+        department: null,     // 部门
+        value: "",            // 角色的value
+        landscape: "",        // 政治面貌
+        education: "",        // 教育程度
+        professionalTitle: "",  // 专业职称
+        currentPosition: "" ,   // 现任职务
       },
       // usercompany:null,//用户所属公司编码
       //修改密码
@@ -673,18 +663,23 @@ export default {
         spassword: "",
         spassword2: ""
       },
+      // 修改弹出框
       editUserForm: {
-        suser: "",
-        struename: "",
-        csex: "",
-        roleid: "",
-        sphone: "",
-        cisenabled: "Y",
-        cauthorize: "Y",
-        semail: "",
-        company: "",
-        department: null ,
-        avatar:""
+        suser: "",          // 用户名      
+        struename: "",      // 真实姓名
+        csex: "",           // 性别
+        roleid: "",         // 角色
+        sphone: "",         // 电话
+        cisenabled: "Y",    // 禁用/启用
+        cauthorize: "Y",    // 授权
+        semail: "",         // 邮箱
+        company: "",        // 公司
+        department: null ,  // 部门
+        landscape: "",      // 政治面貌
+        education: "",      // 教育程度
+        professionalTitle: "",  // 专业职称
+        currentPosition: "" ,   // 现任职务
+        avatar:""           // 图片
       },
       userdata: [],
       maxHeight: 600,
@@ -956,7 +951,7 @@ export default {
       }).then(result => { 
         if (result.status == 200) {
           if (result.data.code == 200) { 
-            debugger
+            // debugger
             me.$message({message:'查询成功', type:"success"});
             //封装树对象数据
             const setting = {
@@ -997,6 +992,54 @@ export default {
           }
         }
       });
+    },
+    // 政治面貌请求
+    getLandscape(){
+      let me = this ;
+      request({
+        url: "/zjb/politicalstatus/query_all",
+        method: "get",
+      }).then(wsx => {
+        if(wsx.data.code === 200){
+          me.landscapes = wsx.data.data ;
+        }
+      })
+    },
+    // 教育程度请求 
+    getEducation(){ 
+      let me = this ;
+      request({
+        url: "/zjb/educationlevel/query_all",
+        method: "get",
+      }).then(edc => { 
+        if(edc.data.code === 200){
+          me.educations = edc.data.data ;
+        }
+      })
+    },
+    // 专业职称请求
+    getProfessionalTitle(){
+      let me = this ;
+      request({
+        url: "/zjb/professionaltitle/query_all",
+        method: "get",
+      }).then(rfv => { 
+        if(rfv.data.code === 200){ 
+          me.professionalTitles = rfv.data.data ;
+        }
+      })
+    },
+    // 现任职务请求 
+    getCurrentPosition(){
+      let me = this ;
+      request({
+        url: "/zjb/currentjob/query_all",
+        method: "get",
+      }).then(qaz => { 
+        if(qaz.data.code === 200){
+          me.currentPositions = qaz.data.data ;
+        }
+      })
     },
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
@@ -1116,18 +1159,22 @@ export default {
             url: "/zjb/sys/user/add",
             method: "post",
             data: {
-              suser: addUserForm.suser,
-              struename: addUserForm.struename,
-              spassword: addUserForm.spassword,
-              spassword2: addUserForm.spassword2,
-              csex: addUserForm.csex,
-              roleid: addUserForm.roleid,
-              sphone: addUserForm.sphone,
-              semail: addUserForm.semail,
-              cisenabled: addUserForm.cisenabled,
-              cauthorize: addUserForm.cauthorize,
-              company: addUserForm.company,
-              sdepartmentid: addUserForm.department
+              suser: addUserForm.suser,             // 用户名
+              struename: addUserForm.struename,     // 真实姓名
+              spassword: addUserForm.spassword,     // 密码
+              spassword2: addUserForm.spassword2,   // 确认密码
+              csex: addUserForm.csex,               // 性别
+              roleid: addUserForm.roleid,           // 角色
+              sphone: addUserForm.sphone,           // 电话
+              semail: addUserForm.semail,           // 邮箱
+              cisenabled: addUserForm.cisenabled,   // 禁用/启用
+              cauthorize: addUserForm.cauthorize,   // 授权
+              company: addUserForm.company,         // 公司
+              sdepartmentid: addUserForm.department,// 部门
+              landscape: addUserForm.landscape,     // 政治面貌
+              education: addUserForm.education,     // 教育程度
+              professionalTitle: addUserForm.professionalTitle,        // 专业职称
+              currentPosition: addUserForm.currentPosition             // 现任职务     
             }
           }).then(result => {
             // if (result.status == 200) {
@@ -1211,10 +1258,7 @@ export default {
       //判断表单中的内容是不是修改、改变了。
       let changeFlag = this.changeOfFormEdit();
       if(changeFlag){
-        this.$message({
-          message: "没有修改内容！",
-          type: "warning"
-        });
+        this.$message({ message: "没有修改内容！", type: "warning" });
         return;
       }
       this.$refs[formName].validate(valid => { 
@@ -1226,16 +1270,20 @@ export default {
             url: "/zjb/sys/user/update",
             method: "post",
             data: {
-              suser: editUserForm.suser,
-              struename: editUserForm.struename,
-              csex: editUserForm.csex,
-              roleid: editUserForm.roleid,
-              sphone: editUserForm.sphone,
-              semail: editUserForm.semail,
-              cisenabled: editUserForm.cisenabled,
-              cauthorize: editUserForm.cauthorize,
-              company: editUserForm.company,
-              sdepartmentid: editUserForm.department
+              suser: editUserForm.suser,                  // 用户名
+              struename: editUserForm.struename,          // 真实姓名
+              csex: editUserForm.csex,                    // 性别
+              roleid: editUserForm.roleid,                // 角色
+              sphone: editUserForm.sphone,                // 电话
+              semail: editUserForm.semail,                // 邮箱
+              cisenabled: editUserForm.cisenabled,        // 禁用/启用
+              cauthorize: editUserForm.cauthorize,        // 授权
+              company: editUserForm.company,              // 公司
+              sdepartmentid: editUserForm.department,     // 部门
+              landscape: editUserForm.landscape,          // 政治面貌 
+              education: editUserForm.education,          // 教育程度
+              professionalTitle: editUserForm.professionalTitle,        // 专业职称
+              currentPosition: editUserForm.currentPosition             // 现任职务     
             }
           }).then(result => {
             if (result.status == 200) {
@@ -1340,7 +1388,16 @@ export default {
       this.dialogAddUserVisible = true;
       this.opt = tools.opt[0];
       let vax = this.comtree[0] ;
+      // 部门请求方法
       this.getCompanyRight(vax);
+      // 政治面貌请求方法
+      this.getLandscape() ;
+      // 教育程度请求
+      this.getEducation() ;     
+      // 专业职称请求    
+      this.getProfessionalTitle(); 
+      // 现任职务请求 
+      this.getCurrentPosition() ;   
     },
     /**
      * @description 修改用户
@@ -1348,7 +1405,11 @@ export default {
     handleEdit(index, row) { 
       debugger
       let vax = { id : row.company } ;
-      this.getCompanyRight(vax);
+      this.getCompanyRight(vax);    // 部门请求
+      this.getLandscape() ;         // 政治面貌请求
+      this.getEducation() ;         // 教育程度请求
+      this.getProfessionalTitle();  // 专业职称请求
+      this.getCurrentPosition() ;   // 现任职务请求
       this.title = tools.opt[1].text;
       this.dialogEditUserVisible = true;
       this.opt = tools.opt[1];
@@ -1362,7 +1423,11 @@ export default {
       this.editUserForm.semail = row.semail;
       this.editUserForm.company = row.company;
       this.editUserForm.avatar = row.avatar;
-      this.editUserForm.department = row.sdepartmentid
+      this.editUserForm.department = row.sdepartmentid;
+      // 到时修改--------
+      // this.editUserForm.education = row.seducation ;    // 教育程度
+      // this.editUserForm.professionalTitle = row.sprofessionalTitle ;    // 专业职称
+      // this.editUserForm.currentPosition = row.scurrentPosition ;        // 现任职务
       //修改头像图片
       this.editPhotoUrl = row.avatar;
       //把当前点击的用户绑定到this上

@@ -187,6 +187,9 @@ export default {
             reporttype: 0,          // 全局控制报告类型，0不显示，1显示
             isReportType: false,    // 控制报告类型的显示与隐藏
 
+            textShow: false ,           //提示的显示与隐藏
+            html: "" ,                  //文字 
+
             isCheckbox: true ,      // 控制下达选择按钮的显示与隐藏（注：单体公司无法下达故此隐藏，合并公司可以下达故此显示）
             // 
             rules2:{
@@ -546,9 +549,10 @@ export default {
          * @event (3)添加/提交请求接口（注：修改弹出框的按钮）
          */
         modify_riskdistinguishRequest(params){ 
-            // debugger
+            debugger
             let me = this ;
             riskdistinguish_update(params).then(res => { 
+                debugger
                 if(res.data.code === 200){
                     if(params[0].sissubmit == "Y")me.readonly2 = false ;    //注：提交之后才可以下达
                     me.$message({message: res.data.msg, type: "success"}) ;

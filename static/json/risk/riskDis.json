@@ -2,7 +2,8 @@
     "id": "riskDis",
     "text": "风险识别",
     "config":{
-        "sql": "select a.nid as id, dim_company as company, b.sname as companyname, dim_period as period, dim_department as department, c.sname as departmentname, sriskname, sfilluser, screatetime, sriskdescription, nprobability, d.sname as probabilityname, ninfluence, e.sname as influencename, nscore, ngrade, f.sname as gradename, colormark as gradecolor, srisktype, g.sname as srisktypename,sreporttype, h.sname as sreporttypename, sissubmit, smeasures, sproposal, ssubmituser, ssubmittime,SORIGIN from(select * from risk_distinguish where (substr(screatetime,1,4) ||  substr(screatetime,6,2) ) :permissionDate and dim_company = :company) a left join dw_dimcompany b on a.dim_company = b.scode left join dw_dimdepartment c on a.dim_department = c.scode left join RISK_PROBABILITY d on a.nprobability = d.nid left join RISK_INFLUENCE_DEGREE e on a.ninfluence = e.nid left join RISK_MATRIX f on a.ngrade = f.nid left join RISK_TYPE g on a.srisktype = g.scode left join RISKREPORT_TYPE h on a.sreporttype = h.scode "
+        // "sql": "select a.nid as id, dim_company as company, b.sname as companyname, dim_period as period, dim_department as department, c.sname as departmentname, sriskname, sfilluser, screatetime, sriskdescription, nprobability, d.sname as probabilityname, ninfluence, e.sname as influencename, nscore, ngrade, f.sname as gradename, colormark as gradecolor, srisktype, g.sname as srisktypename,sreporttype, h.sname as sreporttypename, sissubmit, smeasures, sproposal, ssubmituser, ssubmittime,SORIGIN from(select * from risk_distinguish where (substr(screatetime,1,4) ||  substr(screatetime,6,2) ) :permissionDate and dim_company = :company) a left join dw_dimcompany b on a.dim_company = b.scode left join dw_dimdepartment c on a.dim_department = c.scode left join RISK_PROBABILITY d on a.nprobability = d.nid left join RISK_INFLUENCE_DEGREE e on a.ninfluence = e.nid left join RISK_MATRIX f on a.ngrade = f.nid left join RISK_TYPE g on a.srisktype = g.scode left join RISKREPORT_TYPE h on a.sreporttype = h.scode "
+        "sql": "SELECT a.nid AS id, dim_company AS company, b.sname AS companyname, dim_period AS period, dim_department AS department, c.sname AS departmentname, sriskname, sfilluser, screatetime, sriskdescription, nprobability, d.sname AS probabilityname, ninfluence, e.sname AS influencename, nscore, ngrade, f.sname AS gradename, colormark AS gradecolor, srisktype, g.sname AS srisktypename, sreporttype, h.sname AS sreporttypename, sissubmit, smeasures, sproposal, ssubmituser, ssubmittime, SORIGIN FROM( SELECT * FROM risk_distinguish WHERE ( SUBSTR(screatetime,1,4) || SUBSTR(screatetime,6,2)) :permissionDate AND dim_company = :company) a LEFT JOIN dw_dimcompany b ON a.dim_company = b.scode LEFT JOIN dw_dimdepartment c ON a.dim_department = c.scode and c.scomcode = a.dim_company LEFT JOIN RISK_PROBABILITY d ON a.nprobability = d.nid LEFT JOIN RISK_INFLUENCE_DEGREE e ON a.ninfluence = e.nid LEFT JOIN RISK_MATRIX f ON a.ngrade = f.nid LEFT JOIN RISK_TYPE g ON a.srisktype = g.scode LEFT JOIN RISKREPORT_TYPE h ON a.sreporttype = h.scode"
     },
     "columns": [
         {
@@ -103,7 +104,7 @@
             "width": "160"
         },
         {
-            "id": "sreporttype",
+            "id": "sreporttypename",
             "text": "报告类型",
             "type": "string",
             "determine": false,
@@ -125,7 +126,7 @@
         }
     ],
     "rows": [
-        { "fxdj": "重大" },{ "fxdj": "重要" }
+
     ],
     "queryDataBefore": function(params, obj, $this){
         // debugger
