@@ -81,12 +81,14 @@
         "type": "string",
         "width": "200",
         "fixed": true,
+        "align": "left",
         "text": "公司编码"
     }, {
         "id": "gsmc",
         "type": "string",
         "width": "360px",
         "fixed": true,
+        "align": "left",
         "text": "公司名称"
     }, {
         "id": "",
@@ -96,20 +98,24 @@
             "id": "qnmb01",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "全年目标"
         }, {
             "id": "ljsj01",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "本期"
         }, {
             "id": "sntq01",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "同期"
         }, {
             "id": "tbzje01",
             "type": "decimal",
+            "align": "right",
             "width": "170px",
             "text": "同比增减额"
         }, {
@@ -117,12 +123,14 @@
             "type": "decimal",
             "width": "120px",
             "conversion": "%",
+            "align": "right",
             "text": "同比增减率(%)"
         }, {
             "id": "wcl01",
             "type": "decimal",
             "width": "130px",
             "conversion": "%",
+            "align": "right",
             "text": "累计完成进度(%)"
         }]
     }, {
@@ -133,33 +141,39 @@
             "id": "qnmb02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "全年目标"
         }, {
             "id": "ljsj02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "本期"
         }, {
             "id": "sntq02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "同期"
         }, {
             "id": "tbzje02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "同比增减额"
         }, {
             "id": "tbzjl02",
             "type": "decimal",
             "width": "120px",
             "conversion": "%",
+            "align": "right",
             "text": "同比增减率(%)"
         }, {
             "id": "wcl02",
             "type": "decimal",
             "width": "130px",
             "conversion": "%",
+            "align": "right",
             "text": "累计完成进度(%)"
         }]
     }, {
@@ -170,11 +184,13 @@
             "id": "dys01",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "本期"
         }, {
             "id": "tqs01",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "同期"
         }]
     },
@@ -186,11 +202,13 @@
             "id": "dys02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "本期"
         }, {
             "id": "tqs02",
             "type": "decimal",
             "width": "170px",
+            "align": "right",
             "text": "同期"
         }]
     }

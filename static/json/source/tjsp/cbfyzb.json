@@ -49,6 +49,7 @@
             "type": "string",
             "width": "200",
             "fixed":true,
+            "align": "left",
             "text": "公司编码"
         },
         {
@@ -56,6 +57,7 @@
             "type": "string",
             "fixed":true,
             "width": "360px",
+            "align": "left",
             "text": "公司名称"
         },
         {
@@ -67,12 +69,14 @@
                     "id" : "yycb_bn",
                     "type" : "decimal",
                     "text" : "本期",
+                    "align": "right",
                     "width": "170px"
                 },
                 {
                     "id" : "yycb_sn",
                     "type" : "decimal",
                     "text" : "上年同期",
+                    "align": "right",
                     "width": "170px"
                 },
                 {
@@ -80,6 +84,7 @@
                     "type" : "decimal",
                     "text" : "增减（%）",
                     "width": "130px",
+                    "align": "right",
                     "conversion":"%"
                 }
             ]
@@ -94,6 +99,7 @@
                     "type" : "decimal",
                     "text" : "本期",
                     "width": "150px",
+                    "align": "right",
                     "conversion":"%"
                 },
                 {
@@ -101,6 +107,7 @@
                     "type" : "decimal",
                     "text" : "上年同期",
                     "width": "150px",
+                    "align": "right",
                     "conversion":"%"
                 }
             ]
@@ -114,12 +121,14 @@
                     "id" : "xsfy_bn",
                     "type" : "decimal",
                     "text" : "本期",
+                    "align": "right",
                     "width": "170px"
                 },
                 {
                     "id" : "xsfy_sn",
                     "type" : "decimal",
                     "text" : "上年同期",
+                    "align": "right",
                     "width": "170px"
                 }
             ]
@@ -133,12 +142,14 @@
                     "id" : "glfy_bn",
                     "type" : "decimal",
                     "text" : "本期",
+                    "align": "right",
                     "width": "170px"
                 },
                 {
                     "id" : "glfy_sn",
                     "type" : "decimal",
                     "text" : "上年同期",
+                    "align": "right",
                     "width": "170px"
                 }
             ]
@@ -152,12 +163,14 @@
                     "id" : "cwfy_bn",
                     "type" : "decimal",
                     "text" : "本期",
+                    "align": "right",
                     "width": "170px"
                 },
                 {
                     "id" : "cwfy_sn",
                     "type" : "decimal",
                     "text" : "上年同期",
+                    "align": "right",
                     "width": "170px"
                 }
             ]
@@ -172,6 +185,7 @@
                     "type" : "decimal",
                     "text" : "本期",
                     "width": "130px",
+                    "align": "right",
                     "conversion":"%"
                 },
                 {
@@ -179,6 +193,7 @@
                     "type" : "decimal",
                     "text" : "上年同期",
                     "width": "130px",
+                    "align": "right",
                     "conversion":"%"
                 }
             ]

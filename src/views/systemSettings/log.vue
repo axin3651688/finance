@@ -19,7 +19,7 @@
                 <div class="input-refresh">
                     <el-form :inline="true" :model="searchForm" class="user-form-inline">
                         <el-form-item>
-                            <el-input v-model="searchForm.fuzzySearch" placeholder="请根据用户名/真实姓名/日期模糊查询" clearable style="width: 400px"></el-input>
+                            <el-input v-model="searchForm.fuzzySearch" placeholder="请根据用户名/真实姓名模糊查询" clearable style="width: 400px"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="text" @click="handleDelete">清除</el-button>
@@ -89,7 +89,7 @@
 
 <script>
 import Vue from 'vue';
-import { dataRequest } from '~api/cube';
+import { dataRequest, dataLikeRequest } from '~api/cube';
 // import request from "utils/http";
 export default {
     data(){
@@ -164,17 +164,16 @@ export default {
             let me = this;
             // item：传的参数
             let item = {
-                // "page": currentPage,
                 "pageNum": currentPage,
-                "pageSize": pagesize,
-                // "type":me.searchForm.stype,
-                // "username": me.searchForm.username
+                "pageSize": pagesize
             };
             dataRequest(item).then(res => {
                 // debugger
                 //获取总数据
+                if(me.allNum > 0)me.allNum = 0 ;
                 me.allNum = res.data.data.total;
                 //获取行信息渲染
+                if(me.tableData.length > 0)me.tableData = [] ;
                 me.tableData = res.data.data.datas;
             }); 
         },
@@ -184,7 +183,13 @@ export default {
         handleSizeChange: function(size) {
             // debugger
             this.pagesize = size;
-            this.requestDataRendering(this.currentPage,this.pagesize);
+            // 如果搜索框为空，总查询接口，否则走搜索接口
+            if(this.searchForm.fuzzySearch === ""){
+                this.requestDataRendering(this.currentPage,this.pagesize);
+            }else{
+                this.requestDataLikeRendering(this.currentPage,this.pagesize,this.searchForm.fuzzySearch) ;
+            }
+            
         },
         /**
          * 分页： currentPage改变时会触发 <1 2 3...>
@@ -192,7 +197,11 @@ export default {
         handleCurrentChange: function(currentPage) {
             // debugger
             this.currentPage = currentPage;
-            this.requestDataRendering(this.currentPage,this.pagesize);
+            if(this.searchForm.fuzzySearch === ""){
+                this.requestDataRendering(this.currentPage,this.pagesize);
+            }else{
+                this.requestDataLikeRendering(this.currentPage,this.pagesize,this.searchForm.fuzzySearch) ;
+            }
         },
         /**
          * 点击 “清除” 按钮时触发
@@ -209,7 +218,7 @@ export default {
          * 点击 “查询” 按钮时触发 根据表单的输入字段来匹配数据渲染
          */
         handleSearch(){
-            debugger
+            // debugger
             const me = this;
             //初始化
             me.isSearchForm = false;
@@ -219,9 +228,6 @@ export default {
             for(let key in searchForm){
                 if(searchForm[key] == '' || searchForm[key].length == 0){
                     Vue.delete(searchForm,key);
-                    // if(!me.isSearchForm){
-                    //     me.isSearchForm = false;
-                    // }
                 }else{
                     me.isSearchForm = true ;
                 }
@@ -231,14 +237,41 @@ export default {
             // 友情提示  没有数据供请求查询  反之 重新请求得到数据
             if(!me.isSearchForm){
                 this.$message({
-                    message: '警告哦，请根据用户名称、真实姓名或者类型查询！',
+                    message: '友情提示：请根据用户名称、真实姓名模糊查询！',
                     type: 'warning'
                 });
             }else{
                 // 每次查询都是从第一页开始。
                 me.currentPage = 1 ;
-                me.requestDataRendering(me.currentPage,me.pagesize);     
+                me.requestDataLikeRendering(me.currentPage, me.pagesize, searchForm.fuzzySearch) ;
+                // me.requestDataRendering(me.currentPage,me.pagesize);     
             }                
+        },
+        // 模糊搜索请求接口
+        requestDataLikeRendering(currentPage, pagesize, inputValue){
+            // debugger
+            let me = this ;
+            let canshu = {
+                pageNum: currentPage,
+                pageSize: pagesize,
+                suser: inputValue,
+                soperatetime: ""
+            }
+            dataLikeRequest(canshu).then(red => {
+                // debugger
+                if(red.data.code === 200){
+                    // 分页的总数据
+                    if(me.allNum > 0)me.allNum = 0 ;
+                    me.allNum = red.data.data.total ;
+                    // 行数据
+                    if(me.tableData.length>0)me.tableData = [] ;
+                    me.tableData = red.data.data.datas ;
+                    // 成功提示
+                    me.$message({ message: red.data.msg, type: "success" }) ;
+                }else{
+                    me.$message({ message: red.data.msg, type: "warning" }) ;
+                }
+            });
         },
         /**
          * 点击 “刷新” 按钮时触发 初始化
