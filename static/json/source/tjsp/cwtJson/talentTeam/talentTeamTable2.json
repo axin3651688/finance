@@ -1,0 +1,149 @@
+{
+  "code": 200,
+  "id": "talentSelected",
+  "text": "筛选人才表格",
+  "columns": [
+    {
+      "id": "companyname",
+      "type": "string",
+      "text": "公司名称",
+      "align": "left",
+      "width":400
+    },
+    {
+      "id": "department",
+      "type": "string",
+      "text": "部门",
+      "align": "left"
+    },
+    {
+      "id": "username",
+      "type": "string",
+      "text": "姓名",
+      "align": "left"
+    },
+    {
+      "id": "politicalstatus",
+      "type": "string",
+      "text": "政治面貌",
+      "align": "left"
+    },
+    {
+      "id": "education",
+      "type": "string",
+      "text": "教育程度",
+      "align": "left"
+    },
+    {
+      "id": "professional",
+      "type": "number",
+      "text": "专业职称",
+      "align": "left"
+    },
+    {
+      "id": "current",
+      "type": "string",
+      "text": "现任职务",
+      "align": "left"
+    }
+  ],
+  "rows": [
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },{
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },{
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },{
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    },
+    {
+      "scode": "101",
+      "companyname": "公司1",
+      "department": "纪检部",
+      "username": "张三",
+      "politicalstatus": "中国共青团员",
+      "education":"中专",
+      "professional":"自动化",
+      "current":"车间流水线"
+    }
+  ]
+}
