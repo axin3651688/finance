@@ -734,7 +734,7 @@ export default {
       }
       //根节点
       if (this.form.nlevel - 0 === 1) {
-        this.form.spcode = snode.scode;
+        this.form.spcode = 0 ;
       }
       //默认为修改状态
       this.opt = tools.opt[1];

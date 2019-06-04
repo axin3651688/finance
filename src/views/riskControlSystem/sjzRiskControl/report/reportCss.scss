@@ -1,0 +1,185 @@
+/*最外层的*/
+#reportComponent{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    color:#606266;
+}
+/*里层的*/
+.reportComponent_div{
+    width: 100%;
+    height: 100%;
+}
+/*布局的头部（按钮的那一块）*/
+.container_header{
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    text-align: right;
+    background-color: #D3DCE6;
+}
+/*左边的部分（目录一块）*/
+.container_aside{
+    width: 200px;
+    height: 100%;
+    border: 1px solid #dcdfe6;
+}
+/*右边的部分（正文一块）*/
+.container_main {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #dcdfe6;
+    overflow: auto;
+}
+/*警告弹出框（查看按钮时提示用的）*/
+.container_alert{
+    color: #e6a23c;
+    width: 250px;
+    height: 40px;
+    margin-left: 40%;
+    float: left;
+}
+/*按钮（查看按钮时提示用的）*/
+.container_btn{
+    float: right ;
+    height: 40px;
+    width: 150px;
+}
+.el-menu-vertical-demo{
+    background-color: #F0F2F5;
+}
+.el-menu-vertical_title{
+    font-size: 20px;
+    margin-left: 30px;
+}
+/*
+ * 目录部分（暂无数据提示！）的样式
+ */
+.aside_title_message {
+    text-align:center;
+    margin-top:20px;
+}
+/*
+ * 目录字体设置
+ */
+.aside_title{
+    font-size: 28px;
+    font-weight: 100;
+    letter-spacing: 10px;
+    text-align: center;
+    margin-top: 50px;
+    color:#606266;
+}
+/*
+ * 正文部分（标题）的样式
+ */
+.container_main_title {
+    text-align:center;
+    font-size:25px;
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+/*
+ * 正文部分（总述）的样式
+ */
+.container_main_overview {
+    width:100%;
+    background:#ddd;
+    margin-bottom: 10px;
+    padding: 10px 0 10px 0;
+    font-size:22px;
+    font-weight: 200;
+}
+/*
+ * 正文部分（总述-[暂无数据提示]）的样式
+ */
+.container_main_overview_error {
+    margin-bottom: 10px;
+    text-indent: 2em;
+}
+/*
+ * 正文部分（总述-[有数据的正文描述]）的样式
+ */
+ .container_main_overview_success {
+    margin-bottom: 10px;
+    text-indent: 2em;
+    line-height:25px;
+ }
+/*
+ * 正文部分（风险类型）的样式
+ */
+.container_main_risk_name {
+    width:100%;
+    background:#ddd;
+    margin: 20px 0px 20px 0;
+    padding: 10px 0 10px 0;
+    font-size:20px;
+    font-weight: 200;
+}
+.container_main_risk_dd {
+    // width: 100%;
+    margin-bottom: 30px;
+} 
+/*
+ * 正文部分（社会责任风险一行）的样式
+ */
+.container_main_risk_text {
+    font-weight: 550 ;
+    font-size: 18px;
+    color: #303133;
+    font-family: '黑体';
+}
+.textTitle {
+    margin-left: 20px;
+} 
+/*
+ * 正文部分（社会责任风险一行）的有颜色样式
+ */  
+.container_main_risk_color_one {
+    font-family: '宋体';
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 30px 5px 30px;
+    margin: 0 10px 0px 10px;
+    background-color: rgba(255, 0, 153, 1);
+    border-radius: 12px;
+    cursor: pointer;
+}
+.container_main_risk_color_two {
+    font-family: '宋体';
+    color: #fff;
+    font-size: 14px;
+    padding: 5px 30px 5px 30px;
+    margin: 0 10px 0px 10px;
+    background-color: rgba(153, 153, 153, 1);
+    border-radius: 12px;
+    cursor: pointer;
+}
+.container_main_risk_color_one:hover, .container_main_risk_color_two:hover {
+    background-color: rgba(0, 218, 236, 1);
+}
+/*
+ * 正文部分（一些评估、建议、措施...）的样式
+ */
+.container_main_risk_ff {
+    margin-bottom: 30px;
+}
+.textTitle2 {
+    margin-bottom: 20px;
+}
+.textTitle3 {
+    text-indent: 2em ;
+}
+.container_main_risk_btn {
+    margin-left: 10px;
+    width: 120px;
+    background-color: #F0F2F5;
+    color: red ;
+}
+.container_main_risk_btn2 {
+    text-align: right ;
+    position: fixed ;
+    z-index: 2;
+    bottom: 0.42rem;
+    right: 20px;
+}

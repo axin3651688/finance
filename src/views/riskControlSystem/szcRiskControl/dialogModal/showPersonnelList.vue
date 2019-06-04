@@ -56,6 +56,8 @@ import {
             }
         },
         created() {
+            debugger
+            let cc = this.dptUserConfig ;
         },
         mounted() {
         },
