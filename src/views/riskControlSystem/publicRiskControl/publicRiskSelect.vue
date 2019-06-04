@@ -2,7 +2,7 @@
     <div>
 
         <span class="select-name">部门选择:</span>
-        <keep-alive>
+        <!--<keep-alive>-->
             <el-select
                     v-model="selectedValue"
                     placeholder="请选择"
@@ -16,7 +16,7 @@
                 >
                 </el-option>
             </el-select>
-        </keep-alive>
+        <!--</keep-alive>-->
 
     </div>
 </template>
@@ -62,6 +62,7 @@
                 requestParams['company'] = company;
 
                 getDepartments(requestParams).then(res => {
+                    debugger;
                     if (res.data.code === 200) {
                         _this.options = res.data.data;
                     }

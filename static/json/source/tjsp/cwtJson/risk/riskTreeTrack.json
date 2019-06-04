@@ -5,28 +5,39 @@
   "columns": [
     {
       "text": "公司名称",
-      "value": "companyName",
+      "value": "companyname",
       "align": "left",
-      "width": 600
+      "width": 500
     },
     {
-      "text": "状态",
-      "value": "status",
+      "text": "上报状态",
+      "value": "sb_status",
       "width": 200
     },
     {
       "text": "上报人",
       "value": "sb_user",
-      "width": 200
+      "width": 100
+    },
+    {
+      "text": "批示状态",
+      "value": "ps_status",
+      "width": 100
     },
     {
       "text": "批示人",
       "value": "ps_user",
-      "width": 200
+      "width": 100
+    },
+    {
+      "text": "反馈状态",
+      "value": "fk_status",
+      "width": 100
     },
     {
       "text": "反馈人",
-      "value": "fk_user"
+      "value": "fk_user",
+      "width": 100
     },
     {
       "text": "操作",
@@ -36,10 +47,12 @@
   "rows": [
     {
       "scode": "1001",
-      "companyName": "(1001)天津食品集团有限公司(合并)",
-      "status": "未上报",
+      "companyname": "(1001)天津食品集团有限公司(合并)",
+      "sb_status": "未上报",
       "sb_user": "",
+      "ps_status": "未批示",
       "ps_user": "",
+      "fk_status": "未反馈",
       "fk_user": "",
       "operation": [
         {
@@ -51,10 +64,12 @@
       "children": [
         {
           "scode": "100101",
-          "companyName": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
-          "status": "未上报",
+          "companyname": "(100101)天津农垦渤海农业集团有限公司(托管汇总)",
+          "sb_status": "未上报",
           "sb_user": "",
+          "ps_status": "未批示",
           "ps_user": "",
+          "fk_status": "未反馈",
           "fk_user": "",
           "operation": [
             {
@@ -66,10 +81,12 @@
           "children": [
             {
               "scode": "10010101",
-              "companyName": "(10010101)天津农垦渤海农业集团有限公司(合并)",
-              "status": "已上报",
-              "sb_user": "张三",
+              "companyname": "(10010101)天津农垦渤海农业集团有限公司(合并)",
+              "sb_status": "未上报",
+              "sb_user": "",
+              "ps_status": "未批示",
               "ps_user": "",
+              "fk_status": "未反馈",
               "fk_user": "",
               "operation": [
                 {
@@ -81,10 +98,12 @@
               "children": [
                 {
                   "scode": "1001010101",
-                  "companyName": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
-                  "status": "已上报",
-                  "sb_user": "李四",
-                  "ps_user": "王五",
+                  "companyname": " (1001010101)天津农垦渤海农业集团有限公司(本部)",
+                  "sb_status": "未上报",
+                  "sb_user": "",
+                  "ps_status": "未批示",
+                  "ps_user": "",
+                  "fk_status": "未反馈",
                   "fk_user": "",
                   "operation": [
                     {
@@ -96,10 +115,12 @@
                 },
                 {
                   "scode": "1001010102",
-                  "companyName": "(1001010102)天津农垦龙天畜牧养殖有限公司",
-                  "status": "未上报",
+                  "companyname": "(1001010102)天津农垦龙天畜牧养殖有限公司",
+                  "sb_status": "未上报",
                   "sb_user": "",
+                  "ps_status": "未批示",
                   "ps_user": "",
+                  "fk_status": "未反馈",
                   "fk_user": "",
                   "operation": [
                     {
@@ -113,11 +134,13 @@
             },
             {
               "scode": "10010102",
-              "companyName": "(10010102)天津市宝德包装有限公司",
-              "status": "已上报",
-              "sb_user": "赵六",
-              "ps_user": "钱八",
-              "fk_user": "周九儿",
+              "companyname": "(10010102)天津市宝德包装有限公司",
+              "sb_status": "未上报",
+              "sb_user": "",
+              "ps_status": "未批示",
+              "ps_user": "",
+              "fk_status": "未反馈",
+              "fk_user": "",
               "operation": [
                 {
                   "id": "1",
