@@ -62,8 +62,8 @@
           >{{item.title}}</el-checkbox>
           <!-- </el-checkbox-group> -->
           <span slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="Download">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
           </span>
         </el-dialog>
         <el-upload
