@@ -39,3 +39,15 @@ export function riskFeedControl(params) {
         data: params
     })
 }
+
+/**
+ * 风险反馈的风险批示人员的下达。
+ * @author cwt
+ */
+export function getAllPerson(params) {
+    return request({
+        url: '/zjb/riskreportstate/update_bynrelateids',
+        method: 'post',
+        data: params
+    })
+}

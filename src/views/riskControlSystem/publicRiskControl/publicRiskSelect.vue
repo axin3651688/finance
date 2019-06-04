@@ -1,23 +1,19 @@
 <template>
     <div>
-
         <span class="select-name">部门选择:</span>
-        <!--<keep-alive>-->
-            <el-select
-                    v-model="selectedValue"
-                    placeholder="请选择"
-                    @change="selectDepartment"
+        <el-select
+                v-model="selectedValue"
+                placeholder="请选择"
+                @change="selectDepartment"
+        >
+            <el-option
+                    v-for="item in options"
+                    :key="item.scode"
+                    :label="item.sname"
+                    :value="item.scode"
             >
-                <el-option
-                        v-for="item in options"
-                        :key="item.scode"
-                        :label="item.sname"
-                        :value="item.scode"
-                >
-                </el-option>
-            </el-select>
-        <!--</keep-alive>-->
-
+            </el-option>
+        </el-select>
     </div>
 </template>
 
@@ -62,7 +58,6 @@
                 requestParams['company'] = company;
 
                 getDepartments(requestParams).then(res => {
-                    debugger;
                     if (res.data.code === 200) {
                         _this.options = res.data.data;
                     }

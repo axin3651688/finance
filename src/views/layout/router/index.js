@@ -124,6 +124,28 @@ const router = new Router({
                     name: 'riskInstructions',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskTrack/riskTrack.vue')
+                },
+
+                //人才队伍
+                {
+                    path: '/talentTeam',
+                    name: 'talentTeam',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/talentTeam/talentTeam.vue')
+                },
+                //风险制度
+                {
+                    path: '/riskSystem',
+                    name: 'riskSystem',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/riskSystem/riskSystem.vue')
+                },
+                //组织架构
+                {
+                    path: '/organization',
+                    name: 'organization',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/organization/organization.vue')
                 }
             ]
         },
