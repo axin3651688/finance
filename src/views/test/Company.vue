@@ -715,7 +715,6 @@ export default {
      * @param el 节点组件本身
      *  */
     handClick(snode, node, el) {
-      debugger
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);

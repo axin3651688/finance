@@ -1,0 +1,107 @@
+{
+  "code": 200,
+  "id": "talentSelected",
+  "text": "筛选人才表格",
+  "columns": [
+    {
+      "id": "politicalstatus",
+      "type": "string",
+      "text": "政治面貌",
+      "align": "left",
+      "width":400
+    },
+    {
+      "id": "department",
+      "type": "string",
+      "text": "部门",
+      "align": "left",
+      "width":400
+    },
+    {
+      "id": "talentcount",
+      "type": "number",
+      "text": "人员数量",
+      "align": "right",
+      "width":200
+    },
+    {
+      "id": "proportion",
+      "type": "string",
+      "text": "占比",
+      "align": "right",
+      "width":200
+    }
+  ],
+  "rows": [
+    {
+      "scode": "101",
+      "politicalstatus": "中国共产党党员",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "102",
+      "politicalstatus": "中国共青团员",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "103",
+      "politicalstatus": "中国人民群众",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "104",
+      "politicalstatus": "中国合法公民",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "105",
+      "politicalstatus": "中国合法公民",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "101",
+      "politicalstatus": "中国共产党党员",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "102",
+      "politicalstatus": "中国共青团员",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "103",
+      "politicalstatus": "中国人民群众",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "104",
+      "politicalstatus": "中国合法公民",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    },
+    {
+      "scode": "105",
+      "politicalstatus": "中国合法公民",
+      "department": "纪检部",
+      "talentcount": 20,
+      "proportion": "20%"
+    }
+  ]
+}

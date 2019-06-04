@@ -177,6 +177,7 @@ export default {
                 }
             }
             me.queryDataOfInstructions(selectItem,judgeParams);
+            me.queryDepartMent();
         },
         /**
          * 处理tab切换点击事件。

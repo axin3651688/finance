@@ -211,9 +211,9 @@
             /**
              * 选择部门的时候触发的事件
              * @param item
-             * @param params
              */
             selectChanged(item) {
+                debugger;
                 this.selectedItem = item;
                 this.getRiskTrackData(item);
             },
@@ -260,7 +260,7 @@
                 } else {
                     period = year + "0" + month;
                 }
-                let requestParams = {
+                return {
                     company: company,
                     // year: year,
                     // month: month,
@@ -268,7 +268,6 @@
                     departId: selectedOption ? selectedOption : "01",
                     sql: ""
                 };
-                return requestParams;
             },
 
             /**

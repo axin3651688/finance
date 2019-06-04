@@ -684,13 +684,14 @@ export default {
         handlerTypeOfValue (scope) {
             let me = this,selectTable = me.selectTable;
             let value = scope.row[scope.column.property];
-            if(selectTable && selectTable.valueLabel == "7"){
+            if(value && selectTable && selectTable.valueLabel == "7"){
                 if(scope.column.property == "B" || scope.column.property == "C"){
                     return value.toFixed(4);
                 }else {
                     return value.toFixed(2);
                 }
             }
+            value = 0; 
             return value.toFixed(2);
         },
         /**

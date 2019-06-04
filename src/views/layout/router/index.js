@@ -124,6 +124,77 @@ const router = new Router({
                     name: 'riskInstructions',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskTrack/riskTrack.vue')
+                },
+
+                //人才队伍
+                {
+                    path: '/talentTeam',
+                    name: 'talentTeam',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/talentTeam/talentTeam.vue')
+                },
+                //风险制度
+                {
+                    path: '/riskSystem',
+                    name: 'riskSystem',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/riskSystem/riskSystem.vue')
+                },
+                //组织架构
+                {
+                    path: '/organization',
+                    name: 'organization',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/organization/organization.vue')
+                }
+            ]
+        },
+        {
+            path: '/',
+            name: '集团对标',
+            component: () =>
+                import ('@v/layout/BorderPage'),
+            children: [{
+                    path: '/insideBenchmarking',
+                    name: '内部对标',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/insideBenchmarking.vue'),
+                },
+                {
+                    path: '/comprehensiveRating',
+                    name: '综合评级',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/comprehensiveRating.vue'),
+                },
+                {
+                    path: '/profitability',
+                    name: '盈利能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/profitability.vue'),
+                },
+                {
+                    path: '/developmentAbility',
+                    name: '发展能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/developmentAbility.vue'),
+                },
+                {
+                    path: '/operationQuality',
+                    name: '运营能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/operationQuality.vue'),
+                },
+                {
+                    path: '/debtRisk',
+                    name: '债务风险',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/debtRisk.vue'),
+                },
+                {
+                    path: '/listingBenchmarking',
+                    name: '上市对标',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking.vue'),
                 }
             ]
         },

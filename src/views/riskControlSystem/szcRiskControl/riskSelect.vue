@@ -17,12 +17,23 @@
 export default {
     name:"riskSelect",
     props:{
-        selectConfig:Object
+        selectConfig:{
+            type: Object,
+            required: true
+        }
     },
     data () {
         return {
             options: [],
-            value:"董事会"
+            value:""
+        }
+    },
+    watch: {
+        selectConfig:{
+            handler(newValue,oldValue){
+                this.value = newValue.options[0]? newValue.options[0].sname:"";
+            },
+            deep:true
         }
     },
     /**
@@ -30,6 +41,7 @@ export default {
      */
     created () {
         let me = this;
+        this.value = me.selectConfig.options[0]? me.selectConfig.newValue.options[0].sname:"";
         // me.options = selectConfig.options;
         // this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
         //     console.log(res);
