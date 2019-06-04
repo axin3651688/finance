@@ -38,6 +38,8 @@ export default {
             queryDeparts(company).then(res => {
                 if (res.data.code == 200) {
                     me.selectConfig.options = res.data.data;
+                } else if (res.data.code == 1001) {
+                    me.selectConfig.options = [];
                 }
             });
         },

@@ -151,6 +151,49 @@ const router = new Router({
         },
         {
             path: '/',
+            name: '集团对标',
+            component: () =>
+                import ('@v/layout/BorderPage'),
+            children: [{
+                    path: '/insideBenchmarking',
+                    name: '内部对标',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/insideBenchmarking.vue'),
+                },
+                {
+                    path: '/comprehensiveRating',
+                    name: '综合评级',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/comprehensiveRating.vue'),
+                },
+                {
+                    path: '/profitability',
+                    name: '盈利能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/profitability.vue'),
+                },
+                {
+                    path: '/developmentAbility',
+                    name: '发展能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/developmentAbility.vue'),
+                },
+                {
+                    path: '/operationQuality',
+                    name: '运营能力',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/operationQuality.vue'),
+                },
+                {
+                    path: '/debtRisk',
+                    name: '债务风险',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/debtRisk.vue'),
+                }
+            ]
+        },
+        {
+            path: '/',
             name: '各种charts',
             component: () =>
                 import ('@v/layout/BorderPage'),
