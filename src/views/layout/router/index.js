@@ -167,6 +167,12 @@ const router = new Router({
                     name: '债务风险',
                     component: () =>
                         import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/debtRisk.vue'),
+                },
+                {
+                    path: '/listingBenchmarking',
+                    name: '上市对标',
+                    component: () =>
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking.vue'),
                 }
             ]
         },
