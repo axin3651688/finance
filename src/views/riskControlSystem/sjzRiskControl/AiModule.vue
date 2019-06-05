@@ -43,10 +43,9 @@
             :data="reportRow"></report-component>
         </div>
         <!-- dialog弹出框 -->
-        <!-- <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
+        <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible2">               
             <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-            <dialog-component :treeName="treeName"></dialog-component>
-        </el-dialog>--> 
+        </el-dialog> 
     </div>
     
 </template>
@@ -79,6 +78,7 @@ export default {
     data(){
         return {
             dialogVisible: false,
+            dialogVisible2:false,
             treeName: "",
             title: "",
             columns:[],             // 树表的列
@@ -138,6 +138,7 @@ export default {
                 sisreport = 2 ;
             }else{
                 sisreport = 0 ;
+                me.dialogVisible2 = !me.dialogVisible2 ;
                 me.$message({ message: "催报成功！已通知到对方！", type: "success" })
                 return false ;
             }
@@ -165,7 +166,7 @@ export default {
          * 【上报按钮】【查看按钮】
          */ 
         showreportdetailp(params,scope){ 
-            debugger
+            // debugger
                 this.paramsArray = {} ;
                 this.paramsArray = params ;
             

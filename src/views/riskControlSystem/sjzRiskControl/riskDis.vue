@@ -70,6 +70,7 @@
                 :prop="element.id" 
                 :label="element.text"
                 :width="element.width"
+                :show-overflow-tooltip="element.showOverflow"
                 align="center" 
                 >
                 </el-table-column>

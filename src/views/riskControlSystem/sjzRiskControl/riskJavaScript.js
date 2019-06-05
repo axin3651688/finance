@@ -59,10 +59,10 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        // debugger
+        debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode || 0 ;
-        let ngrade, sissubmit, nid ;
+        let ngrade, sissubmit, nid, screatetime ;
         // 风险等级编码获取
         if(me.optiong.length){
             ngrade = me.optiong[0].nid ;
@@ -75,7 +75,6 @@ export default {
         }
         
         // ngrade = me.form.gradename > 0? me.form.gradename : 0 ;
-        let time = this.getTimers() ;                   // 获取时间
         if(me.newThis.modify_btn == 1){                 // 修改弹出框
             if(me.newThis.view_row.sissubmit == "已提交"){
                 sissubmit = "Y" ;
@@ -88,7 +87,14 @@ export default {
             sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
             nid = 0 ;
         }
+        let time = this.getTimers() ;                   // 获取时间
         if(value == "sub3")nid = me.newThis.view_row.id ;
+        // 说明为添加的数据（第一次）
+        if(nid === 0){
+            screatetime = this.getTimers() ;
+        }else{
+            screatetime = me.form.screatetime ;
+        }
         let ssubmituser = me.$store.getters.user.user.userName ;
         // let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;me.form.sfilluser
         let params = 
@@ -110,8 +116,8 @@ export default {
                 "sproposal": me.form.sproposal,           
                 "sissubmit": sissubmit,                  
                 "sorigin": "添加",                        
-                "screatetime": time,                      
-                "ssubmittime": time,
+                "screatetime": screatetime,     // 创建时间（死的-创建后就不变了，除非删除风险）              
+                "ssubmittime": time,            // 提交时间（动态）
                 "sisclose": "",
                 "ssubmituser": ssubmituser
             }];

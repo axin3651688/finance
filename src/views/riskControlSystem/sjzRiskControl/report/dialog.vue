@@ -30,7 +30,19 @@
             </el-form-item>
             <el-form-item label="风险类型：" prop="srisktype">
                 <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input">
-                    <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option>
+                    <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
+                    <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
+                        <el-tree                                 
+                            id="tree-option"
+                            ref="selectTree"
+                            :accordion="accordion"
+                            :data="options"
+                            :props="defaultProps"
+                            :node-key="defaultProps.scode"    
+                            :default-expanded-keys="defaultExpandedKey"
+                            @node-click="handleNodeClick">
+                        </el-tree>
+                    </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="填报部门："> 
@@ -150,8 +162,9 @@ export default {
                 nprobability: "",           // 风险发生概率
                 ninfluence: "",             // 风险影响程度
                 nscore: "",                 // 风险分值（只读，自动计算，根据R=L*S）
-                ngradename: "",              // 风险等级（只读）
-                sreporttype: ""             // 报告类型
+                ngradename: "",             // 风险等级（只读）
+                sreporttype: "",            // 报告类型
+                screatetime: ""             // 创建时间
             },
             num: "", title: "",
             optionl: [], // 风险发生概率下拉选数据 
@@ -160,6 +173,12 @@ export default {
             options: [], // 风险类型下拉选数据
             optiong: [], // 风险等级下拉选数据
             elements : [],  tableData: [], 
+            defaultProps: {
+                children: 'children',
+                label: 'sname',
+                value: 'scode'
+            },
+            valueTitle : "" , defaultExpandedKey: [], accordion: true,
         }
     },
     created(){
@@ -195,6 +214,20 @@ export default {
         descInput_sriskdescription(){},
         descInput_smeasures(){},
         descInput_sproposal(){},
+        // 切换选项[风险类型]
+        handleNodeClick(node){
+            // debugger
+            this.valueTitle = node[this.defaultProps.label]
+            this.form.srisktype = node[this.defaultProps.value]
+            this.$emit('getValue',this.valueId)
+            this.defaultExpandedKey = []
+        },
+        // 清除下拉选【风险类型】的
+        clearHandle(){
+            this.valueTitle = ''
+            this.defaultExpandedKey = []
+            this.$emit('getValue',null)
+        },
         /**
          * 提交
          */
@@ -255,9 +288,10 @@ export default {
         getFormInformation(){ 
             // debugger
             let cc = this.newThis.view_row ;
+            this.valueTitle = cc.srootrisktypename ;
             // for(let key in this.data){
             //     this.form[key] = this.data[key]
-            // }
+            // } SCREATETIME
             for(let key in this.form){
                 this.form[key] = this.data[key]
             }
@@ -326,7 +360,8 @@ export default {
             let me = this ;
             risktype().then(res => {
                 if(res.data.code === 200){
-                    me.options = res.data.data ;
+                    // me.options = res.data.data ;
+                    me.options = mini.elementUI_tree(res.data.data, me, "1") ;
                 }else{
                     me.$message.error("风险类型请求失败，请联系开发人员哦！")
                 }
@@ -366,5 +401,17 @@ export default {
     min-width: 180px;
     max-width: 810px;
     /* width: 100%; */
+}
+</style>
+<style>
+#tree-option .el-tree-node__label:hover{
+    color: #409EFF;
+}
+#tree-option .is-current > .el-tree-node__content{
+    /* font-weight: 100px; */
+}
+#tree-option .el-tree-node__label{
+    font-size: 15px;
+    font-family: "宋体";
 }
 </style>

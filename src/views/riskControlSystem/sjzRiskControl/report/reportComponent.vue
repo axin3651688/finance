@@ -262,10 +262,12 @@ export default {
         onClick(){
             // debugger
             let me = this ;
+            // 选中的那一行的公司id信息
+            let companyId = me.newThis.paramsArray.row.row.id ;
             me.nisShow = !me.nisShow ;
             let $params = me.$store.state.prame.command;
             let _sql = this.newThis.config.sql2 ;
-            _sql = _sql.replace(/:company/g,"'"+$params.company+"'");
+            _sql = _sql.replace(/:company/g,"'"+companyId+"'");
             let params = {
                 cubeId: 4,
                 sql: encodeURI(_sql)
