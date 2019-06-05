@@ -59,9 +59,9 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        // debugger
+        debugger
         let $params = me.$store.state.prame.command;
-        let departmentname = me.$store.getters.user.dept[0].scode ;
+        let departmentname = me.$store.getters.user.dept[0].scode || 0 ;
         let ngrade, sissubmit, nid ;
         // 风险等级编码获取
         if(me.optiong.length){
@@ -88,6 +88,7 @@ export default {
             sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
             nid = 0 ;
         }
+        if(value == "sub3")nid = me.newThis.view_row.id ;
         let ssubmituser = me.$store.getters.user.user.userName ;
         // let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;me.form.sfilluser
         let params = 
@@ -219,42 +220,50 @@ export default {
     getCompanyTree_request(_this,me, params){
         eva_city_Request(params).then(red => {
             if(red.data.code === 200){
-                //封装树对象数据
-                const setting = {
-                    data: {
-                        simpleData: {
-                            enable: true,
-                            idKey: "scode",
-                            pIdKey: "spcode"
-                        },
-                        key: {
-                            name: "scode",
-                            children: "children"
-                        }
-                    }
-                };
-                var data = red.data.data;
-                if (Array.isArray(data) && data.length > 0) {
-                    data = tools.sortByKey(data, "scode");
-                    data = data.filter(function(item) {
-                        item.id = item.scode;
-                        item.label = "(" + item.scode + ") " + item.sname;
-                        return item;
-                    });
-                    data.forEach((ress, index) => {
-                        if(index === 0 || ress.id=="1001")ress.disabled = true ;
-                    })
-                    me.comtree2 = data;
-                    me.comtree2 = tools.transformToeTreeNodes(setting, data);
-                    // return me.getCompanyTree_set(me.comtree2);
-                    return me.comtree2
-                }
+                _this.elementUI_tree(red.data.data,me,null) ;
             }else{
-                _this.$message.error(red.data.msg) ;
+                me.$message.error(red.data.msg) ;
                 // return me.getCompanyTree_set(me.comtree2);
                 return me.comtree2
             }
         })
+    },
+    elementUI_tree(data,me, vax){ 
+        //封装树对象数据
+        const setting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "scode",
+                    pIdKey: "spcode"
+                },
+                key: {
+                    name: "scode",
+                    children: "children"
+                }
+            }
+        };
+        // var data = red.data.data;
+        if (Array.isArray(data) && data.length > 0) {
+            data = tools.sortByKey(data, "scode");
+            data = data.filter(function(item) {
+                item.id = item.scode;
+                item.label = "(" + item.scode + ") " + item.sname;
+                return item;
+            });
+            if(vax === null){
+                data.forEach((ress, index) => {
+                    if(index === 0 || ress.id=="1001")ress.disabled = true ;
+                })
+                me.comtree2 = data;
+                me.comtree2 = tools.transformToeTreeNodes(setting, data);
+                console.log('树形',me.comtree2) ;
+                return me.comtree2
+            }else{
+                data = tools.transformToeTreeNodes(setting, data);
+                return data ;
+            }
+        }
     },
     /**
      * @author sjz
@@ -291,12 +300,12 @@ export default {
      * @name 【风险报告页面引用】
      * @param {*} directory 
      */
-    getReportOverviewText(directory){
-        debugger
+    getReportOverviewText(data){
+        // debugger
         let dd = [] ;
         let html = "" ;
-        directory.forEach((ffq, index) => {
-            let fuhao = directory.length==index+1?"；": "，";
+        data.forEach((ffq, index) => {
+            let fuhao = data.length==index+1?"；": "，";
             ffq.html = ffq.sname + ffq.ncount + '条' + fuhao ;
             dd[index] = ffq.html ;
         });
@@ -305,5 +314,70 @@ export default {
             html += dd[i] ;
         }
         return html ;
+    },
+    /**
+     * @author sjz
+     * @event 等级切割
+     * @name 【风险报告页面引用】
+     * @param {*} value 
+     */
+    currency(value){
+        // debugger
+        let cc = value.slice(0,2) ;//截取第一个到第二个之间的字符 **
+        return cc ;
+    },
+    /**
+     * @author sjz
+     * @event 文字加前缀加序号
+     * @name 【风险报告页面引用】
+     * @param {*} value 
+     */
+    currency_text(value){
+        let cc = "1、" + value ;
+        return cc ;
+    },
+    /**
+     * @author sjz
+     * @event 上报页面的上报按钮的弹出框
+     * @name 【风险报告页面引用】
+     * @param {*} data 
+     */
+    reportDataTree(data){
+        let objRes = {};
+        if(data && data.length > 0) {
+            data.forEach(item => {
+                if(!objRes[item.scode]){
+                    objRes[item.scode] = item.scode;
+                }
+            });
+        }
+        let dptUser = [];
+        for(let key in objRes){
+            let objDptUser = {
+                id:"",
+                label:"",
+                children:[]
+            };
+            for(let i = 0;i < data.length;i ++){
+                let item = data[i];
+                if(item.scode == key){
+                    if(item.usernid){
+                        let objItem = {
+                            id:item.suser,
+                            label:item.username
+                        };
+                        objDptUser.id = item.scode;
+                        objDptUser.label = item.sname;
+                        objDptUser.children.push(objItem);
+                    }else {
+                        objDptUser.id = item.scode;
+                        objDptUser.label = item.sname;
+                    }
+                }
+            }
+            dptUser.push(objDptUser);
+        }
+        return dptUser ;
     }
+
 }

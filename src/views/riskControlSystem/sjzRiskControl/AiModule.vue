@@ -26,7 +26,7 @@
         :data="data" 
         :item="item"
         @showreportdetailp="showreportdetailp"
-        @viewreportdetailp="viewreportdetailp"  
+        @backreportdetailp="backreportdetailp"
         >
         </tree-table>
         <!-- 
@@ -65,7 +65,7 @@ import { mapGetters, mapActions } from "vuex";
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口
 import { 
-    riskreportstate_query_riskreport
+    riskreportstate_query_riskreport,riskreportstate_update_remindback
     } from "~api/cube.js";
 // 引用 js 方法
 import tools from "utils/tools";
@@ -124,20 +124,42 @@ export default {
     },
     methods: {
         /** 树表子组件 传过来 的值
-         *  可点击的列 点击之后跳转到父组件的 showFromChild的方法
+         *  可点击的列 点击之后跳转到父组件的 backreportdetailp的方法
+         * 【退回按钮】【催报按钮】
          */ 
-        // showFromChild(data){
-        //     // debugger
-        //     let me = this ;
-        //     me.dialogVisible = true ;
-        //     me.title = "关于【" + data + "】的追踪" ; 
-        //     me.treeName = me.item.id ;
-        // },
+        backreportdetailp(scope, val){
+            debugger
+            let me = this ;
+            let sisreport ;
+            let $params = me.$store.state.prame.command; 
+            let sfilluser = me.$store.getters.user.user.userName;
+            if(val === "2"){
+                sisreport = 2 ;
+            }else{
+                sisreport = 0 ;
+                return false ;
+            }
+            let params = {
+                company: scope.row.id,
+                period: $params.year + mini.getPeriod($params),
+                sisreport: sisreport ,
+                sreporttime: mini.getTimers(),
+                sreportuser: sfilluser
+            }
+            riskreportstate_update_remindback(params).then(ddf => {
+                if(ddf.data.code === 200){
+                    me.$message({ message: ddf.data.msg, type: "success" }) ;
+                    me.setTreeTableRequest() ;
+                }else{
+                    me.$message.error(ddf.data.msg) ;
+                }
+            });
+        },
         /** 
          * 树表子组件 传过来 的值
          * 可点击的列 点击之后跳转到父组件的 showreportdetailp 方法
          * 组件引用： reportComponent.vue
-         * 【上报按钮】
+         * 【上报按钮】【查看按钮】
          */ 
         showreportdetailp(params,scope){ 
             // debugger
@@ -150,8 +172,11 @@ export default {
             }
             const me = this ;
             riskreportstate_query_riskreport(sparam).then(her => { 
+                // 报告页面显示
                 me.isShow = true ;
-                me.numOpen = 1 ;
+                // stype：状态；等于 1 即上报状态；等于 0 即查看状态 。
+                if(params.stype === "1")me.numOpen = 1 ;
+                if(params.stype === "0")me.numOpen = 0 ;
                 me.dataSource = params ;
                 if(her.data.code === 200){
                     me.reportRow = her.data.data ;
@@ -160,17 +185,6 @@ export default {
                     
                 }
             });
-        },
-        /**
-         * 树表子组件 传过来 的值
-         * 可点击的列 点击之后跳转到父组件的 viewreportdetailp 方法
-         * 组件引用： reportComponent.vue
-         * 【查看按钮】
-         */
-        viewreportdetailp(params,scope){
-            this.isShow = true ;
-            this.numOpen = 0 ;
-            this.dataSource = params ;
         },
         // 获取树表的json信息
         setTreeTableRequest(){ 
@@ -212,7 +226,8 @@ export default {
             // 看看json里有没有配置【queryDataBefore】数据获取之前拦截的方法
             if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
                 datas = me.item.queryDataBefore(datas, me);
-            }else if(datas.sql){
+            }
+            if(datas.sql){
                 me.setData(me.item, datas);
             }else if(me.rows.length){
                 me.queryDataAfter(me.item,me.rows);

@@ -122,84 +122,44 @@
                                 </div>
 
                                 <div class="container-right-loop-foot">
-
-
                                     <div class="schedule-title">
                                         风险追踪
                                     </div>
-                                    <div  class="schedule-list">
-                                        <div  class="risk-content">
-                                            <div class="risk-num">
-                                                进度一
-                                            </div>
-                                            <div class="risk-name">
-                                                <span class="title-left">名称 :</span>
-                                                <span class="content-right">风险上报</span>
-                                            </div>
-                                            <div class="risk-state">
-                                                <span class="title-left">状态 :</span>
-                                                <span class="content-right">未上报</span>
-                                            </div>
+                                    <div class="schedule-list">
+                                        <template v-for="item in risk.scheduleList">
                                             <div class="risk-content">
-                                                <span class="title-left">内容 :</span>
-                                                <span class="content-right">请尽快上报</span>
+                                                <div class="risk-num">
+                                                    {{item.risk_count}}
+                                                </div>
+                                                <div class="risk-name">
+                                                    <span class="title-left">名称 :</span>
+                                                    <span class="content-right">{{item.risk_name}}</span>
+                                                </div>
+                                                <div class="risk-state">
+                                                    <span class="title-left">状态 :</span>
+                                                    <span class="content-right">{{item.state}}</span>
+                                                </div>
+                                                <div class="risk-content">
+                                                    <span class="title-left">内容 :</span>
+                                                    <span class="content-right">{{item.content}}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </template>
 
-
-                                    <!--<div v-if="contentDown.title" class="schedule-title">
-                                        {{ contentDown.title }}
                                     </div>
-                                    <div v-for="(item,index) in contentDown.content" :key="index" class="schedule-list">
-                                        <div :key="index" class="risk-content">
-                                            <div class="risk-num">
-                                                {{ item.schedule }}
-                                            </div>
-                                            <div class="risk-name">
-                                                <span class="title-left">名称 :</span>
-                                                <span class="content-right">{{ item.text }}</span>
-                                            </div>
-                                            <div class="risk-state">
-                                                <span class="title-left">状态 :</span>
-                                                <span class="content-right">{{ item.state }}</span>
-                                            </div>
-                                            <div class="risk-content">
-                                                <span class="title-left">内容 :</span>
-                                                <span class="content-right">{{ item.content }}</span>
-                                            </div>
-                                        </div>
-                                    </div>-->
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="container-right-foot">
-                        <el-button
-                                type="primary"
-                                @click="showPersonnelListClicked"
-                        >
-                            反馈上报
-                        </el-button>
-                    </div>
-
-
                 </div>
             </div>
         </el-container>
 
-        <show-personnel-list
-                :personnelListShow="personnelListShow"
-                @personSureBtnClicked="personSureBtnClicked"
-        >
-        </show-personnel-list>
 
     </div>
 </template>
 
 <script>
-    import showPersonnelList from '../../publicRiskControl/showPersonnelList'
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
@@ -207,7 +167,7 @@
         name: "riskFeedReportComponent",
         mixins: [cwtPublicJS],
         components: {
-            showPersonnelList
+            // showPersonnelList
         },
         props: {
             reportData: Object,
@@ -225,7 +185,6 @@
                 riskCount: {},
                 risksptype: "战略风险",
                 riskdetaildata: [],
-                personnelListShow: false,
                 pageHeight: document.body.offsetHeight
             }
         },
@@ -312,11 +271,38 @@
              * @param riskFeedDataList
              */
             getReportCenterData(riskFeedDataList) {
+                debugger;
                 let _this = this;
                 let riskTpyeId = this.selectedNode === '' ? 'flfx' : this.selectedNode;
                 let allriskFeedDataList = riskFeedDataList[riskTpyeId];
                 _this.risksptype = allriskFeedDataList.risksptype;
                 _this.riskdetaildata = allriskFeedDataList.riskdetaildata;
+
+
+
+                for(let i = 0,len = _this.riskdetaildata.length; i < len; i++){
+                    let _scheduleList = _this.riskdetaildata[i].scheduleList;
+                    for (let key in _scheduleList) {
+                        let _risk = _scheduleList[key];
+                        if (key === 'risk_sb') {
+                            if (_risk.state === '已上报') {
+                                _risk.content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
+                            } else {
+                                _risk.content = '请尽快上报'
+                            }
+                        } else {
+                            if (_risk.state === '已批示') {
+                                _risk.content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
+                            } else if (_risk.state === '未批示') {
+                                _risk.content = '请尽快批示'
+                            } else if (_risk.state === '已反馈') {
+                                _risk.content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
+                            } else if (_risk.state === '未反馈') {
+                                _risk.content = '请尽快反馈'
+                            }
+                        }
+                    }
+                }
             },
 
             /**
@@ -328,84 +314,6 @@
                 this.selectedNode = key;
                 this.reportDataFormat();
             },
-
-            /**
-             * 反馈上报按钮点击
-             */
-            showPersonnelListClicked() {
-                this.personnelListShow = !this.personnelListShow;
-            },
-
-
-            /**
-             * 点击了人员列表里面的确认上报
-             * 这里已经获取了参数，
-             * 传递给下一个发送请求的方法就行了
-             */
-            personSureBtnClicked(nodes) {
-                let _this = this,
-                    store = _this.$store.getters,
-                    company = store.company,
-                    user = store.user.user;
-
-                let arrUser = [],
-                    userStr = "";
-                if (nodes && nodes.length > 0) {
-                    nodes.forEach(item => {
-                        arrUser.push(item.id);
-                    });
-                    userStr = arrUser.join(',');
-                }
-
-                let params = {
-                    riskReportStateDtos: [],
-                    users: [
-                        userStr
-                    ]
-                };
-                let _riskdetaildata = _this.riskdetaildata;
-
-                _riskdetaildata.forEach((item) => {
-                    let singleRiskData = {
-                        company: '',
-                        nrelateid: '',
-                        period: _this.publicGetPeriodMethod(),
-                        scompanyname: user.companyName,
-                        sfeedbackscontent: '',
-                        sfeedbackuser: user.userName,
-                        sfeedbackusername: user.trueName,
-                        sisfeedback: "1",
-                        sriskname: '',
-                    };
-                    singleRiskData.company = company;
-                    singleRiskData.nrelateid = item.riskid;
-                    singleRiskData.sfeedbackscontent = item.risk_feed_content;
-                    singleRiskData.sriskname = item.riskname;
-                    params.riskReportStateDtos.push(singleRiskData);
-                });
-                debugger;
-                _this.riskFeedSend(params);
-            },
-
-            /**
-             * 反馈上报发送请求
-             * @param params
-             */
-            riskFeedSend(params) {
-                let _this = this;
-                updateInstruction(params).then(res => {
-                    if (res.data.code === 200) {
-                        _this.$message({
-                            message: "反馈成功。",
-                            type: "success"
-                        });
-                    } else {
-                        _this.$message({
-                            message: "反馈失败！请联系开发人员"
-                        })
-                    }
-                });
-            }
 
         }
     }
@@ -562,6 +470,7 @@
     .container-right-foot {
         text-align: right;
     }
+
     .schedule-title, .risk-num, .title-left {
         font-family: '微软雅黑 Bold', '微软雅黑';
         font-weight: 700;
@@ -583,10 +492,12 @@
     .title-left {
         margin-left: 10px;
     }
+
     .content-right {
         margin-left: 10px;
     }
-    .risk-state .content-right{
+
+    .risk-state .content-right {
         color: white;
         background: red;
         padding: 0 12px;

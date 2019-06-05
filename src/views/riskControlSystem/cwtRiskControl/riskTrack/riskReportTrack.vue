@@ -17,6 +17,7 @@
             </div>
             <risk-track-report-component
                     :reportData="reportData"
+                    :dataFresh="dataFresh"
             >
             </risk-track-report-component>
         </div>
@@ -101,11 +102,34 @@
                                                 ]
                                             }
                                         ],
-                                        risk_ps: {
-                                            risk_ps_cl: '5',
-                                            risk_ps_content: '6'
-                                        },
-                                        risk_feed_content: '7'
+
+                                        scheduleList: {
+                                            risk_sb: {
+                                                risk_count: '进度一',
+                                                risk_name: '风险上报',
+                                                user_name: '',
+                                                time: '',
+                                                state: '未上报',
+                                                content: ''
+                                            },
+                                            risk_ps: {
+                                                risk_count: '进度二',
+                                                risk_name: '风险批示',
+                                                user_name: '',
+                                                time: '2019年3月',
+                                                state: '已批示',
+                                                content: ''
+                                            },
+                                            risk_fq: {
+                                                risk_count: '进度三',
+                                                risk_name: '风险反馈',
+                                                user_name: '',
+                                                time: '2019年3月',
+                                                state: '已反馈',
+                                                content: ''
+                                            }
+                                        }
+
                                     }
                                 ],
                             },
@@ -160,7 +184,6 @@
              * 获取报告页面表格展现数据
              */
             getReportData() {
-                debugger;
                 let _this = this;
                 let requestParams = _this.getQueryParameter();
                 let sqlObj = '',
@@ -274,7 +297,7 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '004'
+                            return item.id === '006'
                         })
                     }
                     sql = sqlObj[0].sql;
@@ -314,7 +337,7 @@
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
-
+                debugger;
                 /**
                  * 根据大的风险类型分成七个部分
                  */
@@ -398,14 +421,13 @@
                             let riskModel = _this.getEmptyRiskTpl();
                             let riskModel_riskdetaildata = riskModel.riskdetaildata;
                             let riskModel_riskdetaildata_risk_pg_gs_cs_jy = riskModel_riskdetaildata.risk_pg_gs_cs_jy;
-                            let riskModel_riskdetaildata_risk_ps = riskModel_riskdetaildata.risk_ps;
+                            let riskModel_riskdetaildata_scheduleList = riskModel_riskdetaildata.scheduleList;
 
                             riskModel.risksptype = item.risksptype;
 
                             riskModel_riskdetaildata.risklevel = item.risklevel;
                             riskModel_riskdetaildata.riskcompany = item.riskcompany;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
-                            riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
                             riskModel_riskdetaildata['riskid'] = item.nid;
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
@@ -415,8 +437,22 @@
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_cs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_jy;
 
-                            riskModel_riskdetaildata_risk_ps['risk_ps_cl'] = item.risk_ps_cl;
-                            riskModel_riskdetaildata_risk_ps['risk_ps_content'] = item.risk_ps_content;
+                            riskModel_riskdetaildata_scheduleList.risk_sb.state = item['risk_sb_state'];
+                            riskModel_riskdetaildata_scheduleList.risk_sb.user_name = item['risk_sb_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_sb.time = item['risk_sb_time'];
+                            // riskModel_riskdetaildata_scheduleList.risk_sb.content = item['risk_sb_state'] === '已上报' ? '上报人： ' +
+
+                            riskModel_riskdetaildata_scheduleList.risk_ps.state = item['risk_ps_state'];
+                            riskModel_riskdetaildata_scheduleList.risk_ps.user_name = item['risk_ps_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_ps.time = item['risk_ps_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_ps.content = item['risk_ps_content'];
+
+                            riskModel_riskdetaildata_scheduleList.risk_fk.state = item['risk_fk_state'];
+                            riskModel_riskdetaildata_scheduleList.risk_fk.user_name = item['risk_fk_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_fk.time = item['risk_fk_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'];
+
+
 
                             emptyData['risksptype'] = riskModel.risksptype;
 
@@ -469,11 +505,32 @@
                                     ]
                                 }
                             ],
-                            risk_ps: {
-                                risk_ps_cl: '5',
-                                risk_ps_content: '6'
-                            },
-                            risk_feed_content: '7'
+                            scheduleList: {
+                                risk_sb: {
+                                    risk_count: '进度一',
+                                    risk_name: '风险上报',
+                                    user_name: '',
+                                    time: '',
+                                    state: '未上报',
+                                    content: ''
+                                },
+                                risk_ps: {
+                                    risk_count: '进度二',
+                                    risk_name: '风险批示',
+                                    user_name: '',
+                                    time: '2019年3月',
+                                    state: '已批示',
+                                    content: ''
+                                },
+                                risk_fk: {
+                                    risk_count: '进度三',
+                                    risk_name: '风险反馈',
+                                    user_name: '',
+                                    time: '2019年3月',
+                                    state: '已反馈',
+                                    content: ''
+                                }
+                            }
                         }
                 };
             },

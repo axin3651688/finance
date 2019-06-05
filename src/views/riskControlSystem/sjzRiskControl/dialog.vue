@@ -35,8 +35,20 @@
                     <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" :readonly="readonly" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险类型：" prop="srisktype">
-                    <el-select v-model="form.srisktype" :disabled="readonly" placeholder="请选择风险类型" class="input">
-                        <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option>
+                    <el-select v-model="form.srisktype" :disabled="readonly" placeholder="请选择风险类型" class="input" clearable @clear="clearHandle">
+                        <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
+                        <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
+                            <el-tree                                 
+                                id="tree-option"
+                                ref="selectTree"
+                                :accordion="accordion"
+                                :data="options"
+                                :props="defaultProps"
+                                :node-key="defaultProps.scode"    
+                                :default-expanded-keys="defaultExpandedKey"
+                                @node-click="handleNodeClick">
+                            </el-tree>
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="填报部门："> 
@@ -148,6 +160,12 @@ export default {
     data(){
         
         return {
+            defaultProps: {
+                children: 'children',
+                label: 'sname',
+                value: 'scode'
+            },
+            valueId : "", valueTitle : "" , defaultExpandedKey: [], accordion: true,
             riskProbability: false,
             readonly: false ,       // 只读属性（查看按钮触发时用到）
             readonly2: false,       // 下达专用
@@ -245,12 +263,13 @@ export default {
             // debugger
             // this.$message('132');
             this.addDialog() ;
+            this.clearHandle() ;
         }
     },
     computed: {
         // 监听事件（区分查看状态和添加状态）
         flager: function(){
-            // debugger
+            debugger
             let viewRow = {} ;
             let viewBtn = this.newThis.view_btn ;
             let modifyBtn = this.newThis.modify_btn ;
@@ -275,7 +294,8 @@ export default {
                 }
             }
             if(modifyBtn || viewBtn){
-                viewRow = this.newThis.view_row ; 
+                viewRow = this.newThis.view_row ;
+                this.valueTitle = viewRow.srisktypename ;
                 for(let key in this.form){
                     this.form[key] = "" ;
                 }               
@@ -289,6 +309,23 @@ export default {
         }
     },
     methods: {
+        // 切换选项[风险类型]
+        handleNodeClick(node){
+            // debugger
+            this.valueTitle = node[this.defaultProps.label]
+            this.valueId = node[this.defaultProps.value]
+            this.form.srisktype = this.valueId ;
+            this.$emit('getValue',this.valueId)
+            this.defaultExpandedKey = []
+        },
+        // 清除下拉选【风险类型】的
+        clearHandle(){
+            this.valueTitle = ''
+            this.valueId = null
+            this.defaultExpandedKey = []
+            this.$emit('getValue',null)
+        },
+
         addDialog(){
             // debugger
             // 0合并公司/ 1单体公司
@@ -385,7 +422,8 @@ export default {
             let me = this ;
             risktype().then(res => {
                 if(res.data.code === 200){
-                    me.options = res.data.data ;
+                    // me.options = res.data.data ;
+                    me.options = mini.elementUI_tree(res.data.data, this, "1") ;
                 }else{
                     me.$message.error("风险类型请求失败，请联系开发人员哦！")
                 }
@@ -428,7 +466,7 @@ export default {
          * @event (1)保存按钮/提交按钮
          */
         saveClick(value, value2,value3,value4,value5){ 
-            debugger
+            // debugger
             let me = this ;
             let viewTrue = false ;
             // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
@@ -463,7 +501,7 @@ export default {
          * @event 修改弹出框页面/保存+提交的事件（已提交的风险）yes
          */
         modify_add_yes(me, params){ 
-            debugger
+            // debugger
             // 有没有空的
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
@@ -549,7 +587,7 @@ export default {
          * @event (3)添加/提交请求接口（注：修改弹出框的按钮）
          */
         modify_riskdistinguishRequest(params){ 
-            debugger
+            // debugger
             let me = this ;
             riskdistinguish_update(params).then(res => { 
                 debugger
@@ -604,6 +642,10 @@ export default {
 }
 </script>
 <style scoped>
+#tree-option {
+    color:#606266;
+    font-weight: 500 ;
+}
 .title1 {
     color: blue;
     font-size: 20px;
@@ -630,5 +672,16 @@ export default {
 }
 .input2 {
     width: 260px;
+}
+</style>
+<style>
+.el-tree-node__label:hover{
+    color: #409EFF;
+}
+#tree-option .is-current > .el-tree-node__content{
+    font-weight: 500px;
+}
+#tree-option .el-tree-node__label{
+    font-size: 16px;
 }
 </style>

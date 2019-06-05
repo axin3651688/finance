@@ -272,3 +272,27 @@ export function riskreportstate_query_riskreport(data){
         data: data
     })
 }
+// 
+/**13.
+ * name: sjz
+ * 说明：风险报告的【报告页面-上报按钮】接口 /riskreportstate/add
+ */
+export function riskreportstate_add(data){
+    return request({
+        url: '/zjb/riskreportstate/add',
+        method: 'post',
+        data: data
+    })
+}
+//
+/**14.
+ * name: sjz
+ * 说明：风险报告的【报告页面-退回按钮】接口 /riskreportstate/update_remindback
+ */
+export function riskreportstate_update_remindback(data){
+    return request({
+        url: '/zjb/riskreportstate/update_remindback',
+        method: 'post',
+        data: data
+    })
+}

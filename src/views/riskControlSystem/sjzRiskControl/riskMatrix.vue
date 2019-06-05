@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <td :style="styles" :rowspan="3" :colspan="3">风险值：R=L*S</td>
-                <td v-for="item in item2" :style="stylee">{{ item.id }}</td>
+                <td v-for="item in item2" :style="stylee">{{ item.nscore }}</td>
             </tr>
             <tr>
                 <td v-for="item in item2" :style="item.width">{{ item.sname }}</td>
@@ -76,7 +76,9 @@ export default {
             this.items = this.fsgl.rows.filter((res,index) => { return index > 0 });
         },
         secondDemo(){
+            // debugger
             this.item2 = this.yxcd.rows ;
+            this.item2.reverse();
         },
         thirdDemo(){
             let me = this ;
