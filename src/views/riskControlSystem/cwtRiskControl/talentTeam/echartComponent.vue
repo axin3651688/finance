@@ -12,7 +12,15 @@
         components: {
             Echart
         },
-        props: {},
+        props: {
+            tableData: Array,
+            dataFresh: Boolean
+        },
+        watch:{
+            dataFresh(){
+                this.initEchart();
+            }
+        },
         data() {
             return {}
         },
@@ -22,7 +30,24 @@
             this.initEchart();
         },
         methods: {
+
+
+
             initEchart() {
+                debugger;
+                let _this = this;
+                let data = _this.tableData;
+                let echartData = [];
+                data.forEach((item)=>{
+                    let emptyData = {
+                        value:0,
+                        name:''
+                    };
+                    emptyData.value = item.num;
+                    emptyData.name = item.dim;
+                    echartData.push(emptyData);
+                });
+
 
                 let myChart = Echart.init(document.getElementById('echart-content'));
 
@@ -34,7 +59,7 @@
                     },*/
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        // formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     /*legend: {
                         orient: 'vertical',
@@ -47,13 +72,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 335, name: '直接访问'},
-                                {value: 310, name: '邮件营销'},
-                                {value: 234, name: '联盟广告'},
-                                {value: 135, name: '视频广告'},
-                                {value: 1548, name: '搜索引擎'}
-                            ],
+                            data: echartData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,
