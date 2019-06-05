@@ -10,6 +10,7 @@
             v-bind="$attrs"
             :height="tableHeight"
             :header-cell-style="headerRowStyle"
+            class="public_class"
     >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
@@ -38,14 +39,14 @@
                         <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                         <i v-else class="el-icon-minus"></i>
                     </span>
-                    <!--<span
-                        v-if="column.value === 'companyName'"
-                        @click="showReportDetail()"
+                    <span
+                        v-if="column.optType === 'click'"
+                        @click="drillItemSname(scope)"
                         style="color: dodgerblue;cursor: pointer">
                         {{scope.row[column.value]}}
-                    </span>-->
+                    </span>
                     <span
-                            v-if="column.value === 'companyName'"
+                            v-else-if="column.value === 'companyName'"
                     >
                         {{scope.row[column.value]}}
                     </span>
@@ -153,8 +154,15 @@
              */
             btnHandler (scope,btnItem,index) {
                 let me = this;
-                me.$emit("buttonHandler",scope,btnItem)
-            }   
+                me.$emit("buttonHandler",scope,btnItem);
+            },
+            /**
+             * 指标名字的钻取。
+             */
+            drillItemSname (scope) {
+                let me = this;
+                me.$emit("drillItemSname",scope);
+            }  
         }
     }
 </script>
@@ -209,5 +217,12 @@
         cursor: pointer;
         color: $color-blue;
         margin-left: -$space-width;
+    }
+</style>
+<style lang="scss">
+    .public_class {
+        .el-table__body-wrapper {
+            overflow-y: auto !important;
+        }
     }
 </style>
