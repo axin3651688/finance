@@ -98,7 +98,6 @@
             },
             // 显示第几页
             handleCurrentChange(val) {
-                debugger;
                 // 改变默认的页数
                 this.currentPage = val;
                 // 切换页码时，要获取每页显示的条数

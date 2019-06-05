@@ -208,7 +208,6 @@
              * 维度选择确认按钮
              */
             dimSelected() {
-                debugger;
                 this.getSelectedData();
                 let _selectedColumns = this.selectedColumns;
                 _selectedColumns[0].text = this.assortSelectedValue.sname
@@ -229,7 +228,6 @@
              * @param value
              */
             assortSelect(value) {
-                debugger;
                 this.assortSelectedValue.scode = value;
 
                 let _allAssortOptions = this.assortOptions;
@@ -245,7 +243,6 @@
              * @param value
              */
             departmentSelect(value) {
-                debugger;
                 this.departmentOptions.scode = value;
             },
 
@@ -270,7 +267,6 @@
             },
 
             currentChange(value) {
-                debugger;
                 let _this = this;
                 let params = {
                     page: value

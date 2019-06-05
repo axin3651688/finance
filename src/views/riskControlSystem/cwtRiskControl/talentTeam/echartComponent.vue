@@ -30,11 +30,7 @@
             this.initEchart();
         },
         methods: {
-
-
-
             initEchart() {
-                debugger;
                 let _this = this;
                 let data = _this.tableData;
                 let echartData = [];
