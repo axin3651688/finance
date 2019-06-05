@@ -37,7 +37,7 @@
                         :current-page="currentPage"
                         :page-sizes="pageSizes"
                         :page-size="PageSize"
-                        :total="10"
+                        :total="total"
                         layout=" prev, pager, next, jumper"
                 >
                 </el-pagination>
@@ -67,6 +67,9 @@
                 pageSizes: [1, 2, 3, 4],
                 // 默认每页显示的条数（可修改）
                 PageSize: 1,
+
+                //一共多少叶
+                total:10
             }
         },
         created() {
@@ -84,43 +87,21 @@
                     return "";
                 }
             },
-            // 将页码，及每页显示的条数以参数传递提交给后台
-            getData(n1,n2){
-                // 这里使用axios，使用时请提前引入
-                axios.post(url,{
-                        orgCode:1,
-                        // 每页显示的条数
-                        PageSize:n1,
-                        // 显示第几页
-                        currentPage:n2,
-                    },{emulateJSON: true},
-                    {
-                        headers:{"Content-Type": "application/x-www-form-urlencoded;charset=utf-8",}
-                    }
-                ).then(reponse=>{
-                    console.log(reponse)
-                    // 将数据赋值给tableData
-                    this.tableData=data.data.body
-                    // 将数据的长度赋值给totalCount
-                    this.totalCount=data.data.body.length
-                })
-            },
-            // 分页
+
             // 每页显示的条数
             handleSizeChange(val) {
                 // 改变每页显示的条数
-                this.PageSize = val
+                this.PageSize = val;
                 // 点击每页显示的条数时，显示第一页
-                this.getData(val, 1)
                 // 注意：在改变每页显示的条数时，要将页码显示到第一页
-                this.currentPage = 1
+                this.currentPage = 1;
             },
             // 显示第几页
             handleCurrentChange(val) {
                 // 改变默认的页数
-                this.currentPage = val
+                this.currentPage = val;
                 // 切换页码时，要获取每页显示的条数
-                this.getData(this.PageSize, (val) * (this.pageSize))
+                this.$emit("currentChange",val);
             },
         }
 
@@ -128,5 +109,7 @@
 </script>
 
 <style scoped>
-
+.tabListPage{
+    margin-bottom: 50px;
+}
 </style>

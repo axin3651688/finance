@@ -5,7 +5,7 @@
                 <el-col :span="6">
                     <div>
                         <label for="">公司选择：</label>
-                        <el-select v-model="value" placeholder="请选择">
+                        <el-select v-model="value" placeholder="请选择" class="select_all">
                             <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -18,7 +18,7 @@
                 <el-col :span="6">
                     <div>
                         <label for="">公司选择：</label>
-                        <el-select v-model="value" placeholder="请选择">
+                        <el-select v-model="value" placeholder="请选择" class="select_all">
                             <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -45,7 +45,7 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="14">
+                        <el-col :span="24">
                             <div>
                                 <label for="">公司选择：</label>
                                 <el-select v-model="value" placeholder="请选择">
@@ -56,10 +56,6 @@
                                     :value="item.value">
                                     </el-option>
                                 </el-select>
-                            </div>
-                        </el-col>
-                        <el-col :span="10">
-                            <div>
                                 <el-select v-model="value" placeholder="请选择">
                                     <el-option
                                     v-for="item in options"
@@ -133,6 +129,11 @@
         methods: {}
     };
 </script>
-<style>
-
+<style scoped>
+    .select_all {
+        width: 55%;
+    }
+    .select_company {
+        width: 55%;
+    }
 </style>

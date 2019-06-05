@@ -4,7 +4,7 @@
             <el-row>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugesLeft" :key="index">
-                        <groupGauge></groupGauge>
+                        <groupGauge :chartData.sync="chartDataLeft"></groupGauge>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -14,7 +14,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugesRight" :key="index">
-                        <groupGauge></groupGauge>
+                        <groupGauge :chartData.sync="chartDataRight"></groupGauge>
                     </div>
                 </el-col>
             </el-row>
@@ -51,7 +51,9 @@
                 gaugesLeft:['1','2'],
                 gaugesRight:['3','4'],
                 tableData:[],
-                columns:[]
+                columns:[],
+                chartDataLeft:{},
+                chartDataRight:{}
             }
         },
         created() {

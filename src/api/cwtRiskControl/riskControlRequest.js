@@ -41,13 +41,25 @@ export function riskFeedControl(params) {
 }
 
 /**
- * 风险反馈的风险批示人员的下达。
+ * 人才队伍所有数据查询
  * @author cwt
  */
 export function getAllPerson(params) {
     return request({
-        url: '/zjb/riskreportstate/update_bynrelateids',
+        url: '/zjb/risk_talent/query',
         method: 'post',
-        data: params
+        params: params
+    })
+}
+
+/**
+ * 人才队伍分页数据查询
+ * @author cwt /risk_talent/query_user
+ */
+export function getCurrentPageData(params) {
+    return request({
+        url: '/zjb/risk_talent/query_user',
+        method: 'post',
+        params: params
     })
 }
