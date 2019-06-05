@@ -691,7 +691,7 @@ export default {
                     return value.toFixed(2);
                 }
             }
-            value = 0; 
+            value = value? value:0; 
             return value.toFixed(2);
         },
         /**
