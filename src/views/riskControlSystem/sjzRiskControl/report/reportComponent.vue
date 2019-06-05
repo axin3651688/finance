@@ -93,7 +93,7 @@
         <!-- 上报的弹出框组件 -->
         <report-dialog v-show="nisShow" :data="comtree2" :newThis="me"></report-dialog>
         <!-- 修改弹出框组件 -->
-        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="960px" style="marginTop: -15vh;">
+        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :before-close="handleClose" :close-on-click-modal="false" width="960px" style="marginTop: -15vh;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <dia-log :data="view_row" :newThis="me" :number="number" :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2"
              >
@@ -278,10 +278,17 @@ export default {
         },
         // 修改按钮
         modifyBtn(tool){
+            // debugger
             this.view_row = tool ;
             this.view_row.id = this.view_row.nid ;
             this.number = 1 ;
             this.dialogFormVisible = true ;
+        },
+        // 弹出框的 右上角的 ×
+        handleClose(done){
+            this.dialogFormVisible = false ;
+            this.number = 0 ;
+            done() ;
         },
         // 2.获取【风险矩阵】的json信息
         axiosRequest(){ 

@@ -154,8 +154,12 @@ export default {
                 sreporttype: ""             // 报告类型
             },
             num: "", title: "",
-            optionl: [], tableData: [], optione: [],            // 报告类型数组（请求的数据）
-            optiond: [], elements : [], optiong: [], options: []
+            optionl: [], // 风险发生概率下拉选数据 
+            optione: [], // 报告类型数组（请求的数据）
+            optiond: [], // 风险影响程度下拉选数据
+            options: [], // 风险类型下拉选数据
+            optiong: [], // 风险等级下拉选数据
+            elements : [],  tableData: [], 
         }
     },
     created(){
@@ -195,16 +199,20 @@ export default {
          * 提交
          */
         saveClick(value){
-            debugger
+            // debugger
             let me = this ;
             let params = mini.getParams(me, value) ;               // 获取请求参数
             // 有没有空的  
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
             } else {
+            // 没有改动的提示一下，不给保存，浪费资源
+                if(mini.getForChange(me))me.$message({ message: '暂无改动！', type: 'warning' }) ;
+            }   
             // 提交
-                me.riskdistinguishRequest(params) ;      
-            }      
+            if(me.isEmpty(me) && !mini.getForChange(me)){
+                me.riskdistinguishRequest(params) ;    
+            }               
         },
         // empty 判断提交的时候有没有空的  空则不提交  并且提示
         isEmpty(me){
@@ -219,14 +227,19 @@ export default {
         riskdistinguishRequest(params){
             let me = this ;
             riskdistinguish_update(params).then(res => { 
-                debugger
+                // debugger
                 if(res.data.code === 200){
                     me.$message({message: res.data.msg, type: "success"}) ;
                     me.newThis.newThis.setTreeTableRequest() ;
+                    let cc = me.newThis.view_row ;
+                    me.newThis.number = 0 ;
+                    me.newThis.dialogFormVisible = false;
+                    // me.newThis.setReportBack("1") ;
+                    let paramser = me.newThis.newThis.paramsArray ;
+                    me.newThis.newThis.showreportdetailp(paramser,null);
                 }else{
                     me.$message.error(res.data.msg) ;
                 }
-                // me.newThis.axiosJson() ;
             });
         },
         /**
@@ -240,7 +253,12 @@ export default {
          * 赋值
          */
         getFormInformation(){ 
-            for(let key in this.data){
+            // debugger
+            let cc = this.newThis.view_row ;
+            // for(let key in this.data){
+            //     this.form[key] = this.data[key]
+            // }
+            for(let key in this.form){
                 this.form[key] = this.data[key]
             }
         },
@@ -271,15 +289,15 @@ export default {
         /**
          * 风险等级请求 
          */
-        riskmatrixRequest(num){
+        riskmatrixRequest(num){ 
             let me = this ;
             let params = {
                 score : num
             }
-            riskmatrix(params).then(res => {
+            riskmatrix(params).then(res => { 
                 if(res.data.code === 200){ 
                     me.optiong = res.data.data ;
-                    me.form.gradename = res.data.data[0].sname ;
+                    me.form.ngradename = res.data.data[0].sname ;
                 }
             });
         },

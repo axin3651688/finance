@@ -59,7 +59,7 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        debugger
+        // debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode || 0 ;
         let ngrade, sissubmit, nid ;
@@ -284,8 +284,8 @@ export default {
      * @param {*} $this     this对象
      * @param {*} sparam    请求参数={ cubeId：4，sql：sql }
      */
-    getSql_quertData_all($this, sparam){
-        eva_city_Request(sparam).then(rec => {
+    getSql_quertData_all($this, sparam){ 
+        eva_city_Request(sparam).then(rec => { 
             if(rec.data.code === 200){
                 let data = rec.data.data ;
                 return $this.setSql_quertData_all(data);
