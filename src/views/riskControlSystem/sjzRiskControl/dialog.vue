@@ -269,7 +269,7 @@ export default {
     computed: {
         // 监听事件（区分查看状态和添加状态）
         flager: function(){
-            debugger
+            // debugger
             let viewRow = {} ;
             let viewBtn = this.newThis.view_btn ;
             let modifyBtn = this.newThis.modify_btn ;
@@ -675,13 +675,14 @@ export default {
 }
 </style>
 <style>
-.el-tree-node__label:hover{
+#tree-option .el-tree-node__label:hover{
     color: #409EFF;
 }
 #tree-option .is-current > .el-tree-node__content{
-    font-weight: 500px;
+    font-weight: 200px;
 }
 #tree-option .el-tree-node__label{
-    font-size: 16px;
+    font-size: 15px;
+    font-family: "宋体";
 }
 </style>

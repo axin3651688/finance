@@ -144,7 +144,15 @@
             },
             "queryDataAfter": function(data, $vue){
                 // debugger
+                let suer_information = $vue.$store.getters.user.user ;
                 let cc = this ; 
+                data.forEach(res => {
+                    if(res.scode === suer_information.companyId){
+                        res.companyId = "Y" ;
+                    }else{
+                        res.companyId = "N" ;
+                    }
+                })
                 return data; 
             },
             "drillProperties": ["srepotstate"],

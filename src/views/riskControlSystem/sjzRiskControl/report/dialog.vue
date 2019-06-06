@@ -30,7 +30,19 @@
             </el-form-item>
             <el-form-item label="风险类型：" prop="srisktype">
                 <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input">
-                    <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option>
+                    <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
+                    <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
+                        <el-tree                                 
+                            id="tree-option"
+                            ref="selectTree"
+                            :accordion="accordion"
+                            :data="options"
+                            :props="defaultProps"
+                            :node-key="defaultProps.scode"    
+                            :default-expanded-keys="defaultExpandedKey"
+                            @node-click="handleNodeClick">
+                        </el-tree>
+                    </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="填报部门："> 
@@ -150,12 +162,23 @@ export default {
                 nprobability: "",           // 风险发生概率
                 ninfluence: "",             // 风险影响程度
                 nscore: "",                 // 风险分值（只读，自动计算，根据R=L*S）
-                ngradename: "",              // 风险等级（只读）
-                sreporttype: ""             // 报告类型
+                ngradename: "",             // 风险等级（只读）
+                sreporttype: "",            // 报告类型
+                screatetime: ""             // 创建时间
             },
             num: "", title: "",
-            optionl: [], tableData: [], optione: [],            // 报告类型数组（请求的数据）
-            optiond: [], elements : [], optiong: [], options: []
+            optionl: [], // 风险发生概率下拉选数据 
+            optione: [], // 报告类型数组（请求的数据）
+            optiond: [], // 风险影响程度下拉选数据
+            options: [], // 风险类型下拉选数据
+            optiong: [], // 风险等级下拉选数据
+            elements : [],  tableData: [], 
+            defaultProps: {
+                children: 'children',
+                label: 'sname',
+                value: 'scode'
+            },
+            valueTitle : "" , defaultExpandedKey: [], accordion: true,
         }
     },
     created(){
@@ -191,20 +214,38 @@ export default {
         descInput_sriskdescription(){},
         descInput_smeasures(){},
         descInput_sproposal(){},
+        // 切换选项[风险类型]
+        handleNodeClick(node){
+            // debugger
+            this.valueTitle = node[this.defaultProps.label]
+            this.form.srisktype = node[this.defaultProps.value]
+            this.$emit('getValue',this.valueId)
+            this.defaultExpandedKey = []
+        },
+        // 清除下拉选【风险类型】的
+        clearHandle(){
+            this.valueTitle = ''
+            this.defaultExpandedKey = []
+            this.$emit('getValue',null)
+        },
         /**
          * 提交
          */
         saveClick(value){
-            debugger
+            // debugger
             let me = this ;
             let params = mini.getParams(me, value) ;               // 获取请求参数
             // 有没有空的  
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
             } else {
+            // 没有改动的提示一下，不给保存，浪费资源
+                if(mini.getForChange(me))me.$message({ message: '暂无改动！', type: 'warning' }) ;
+            }   
             // 提交
-                me.riskdistinguishRequest(params) ;      
-            }      
+            if(me.isEmpty(me) && !mini.getForChange(me)){
+                me.riskdistinguishRequest(params) ;    
+            }               
         },
         // empty 判断提交的时候有没有空的  空则不提交  并且提示
         isEmpty(me){
@@ -219,14 +260,19 @@ export default {
         riskdistinguishRequest(params){
             let me = this ;
             riskdistinguish_update(params).then(res => { 
-                debugger
+                // debugger
                 if(res.data.code === 200){
                     me.$message({message: res.data.msg, type: "success"}) ;
                     me.newThis.newThis.setTreeTableRequest() ;
+                    let cc = me.newThis.view_row ;
+                    me.newThis.number = 0 ;
+                    me.newThis.dialogFormVisible = false;
+                    // me.newThis.setReportBack("1") ;
+                    let paramser = me.newThis.newThis.paramsArray ;
+                    me.newThis.newThis.showreportdetailp(paramser,null);
                 }else{
                     me.$message.error(res.data.msg) ;
                 }
-                // me.newThis.axiosJson() ;
             });
         },
         /**
@@ -240,7 +286,13 @@ export default {
          * 赋值
          */
         getFormInformation(){ 
-            for(let key in this.data){
+            // debugger
+            let cc = this.newThis.view_row ;
+            this.valueTitle = cc.srootrisktypename ;
+            // for(let key in this.data){
+            //     this.form[key] = this.data[key]
+            // } SCREATETIME
+            for(let key in this.form){
                 this.form[key] = this.data[key]
             }
         },
@@ -271,15 +323,15 @@ export default {
         /**
          * 风险等级请求 
          */
-        riskmatrixRequest(num){
+        riskmatrixRequest(num){ 
             let me = this ;
             let params = {
                 score : num
             }
-            riskmatrix(params).then(res => {
+            riskmatrix(params).then(res => { 
                 if(res.data.code === 200){ 
                     me.optiong = res.data.data ;
-                    me.form.gradename = res.data.data[0].sname ;
+                    me.form.ngradename = res.data.data[0].sname ;
                 }
             });
         },
@@ -308,7 +360,8 @@ export default {
             let me = this ;
             risktype().then(res => {
                 if(res.data.code === 200){
-                    me.options = res.data.data ;
+                    // me.options = res.data.data ;
+                    me.options = mini.elementUI_tree(res.data.data, me, "1") ;
                 }else{
                     me.$message.error("风险类型请求失败，请联系开发人员哦！")
                 }
@@ -348,5 +401,17 @@ export default {
     min-width: 180px;
     max-width: 810px;
     /* width: 100%; */
+}
+</style>
+<style>
+#tree-option .el-tree-node__label:hover{
+    color: #409EFF;
+}
+#tree-option .is-current > .el-tree-node__content{
+    /* font-weight: 100px; */
+}
+#tree-option .el-tree-node__label{
+    font-size: 15px;
+    font-family: "宋体";
 }
 </style>

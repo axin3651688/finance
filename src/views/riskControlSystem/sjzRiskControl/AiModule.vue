@@ -43,10 +43,9 @@
             :data="reportRow"></report-component>
         </div>
         <!-- dialog弹出框 -->
-        <!-- <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible">               
+        <el-dialog :title="title" width="56%" top="40px" :visible.sync="dialogVisible2">               
             <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-            <dialog-component :treeName="treeName"></dialog-component>
-        </el-dialog>--> 
+        </el-dialog> 
     </div>
     
 </template>
@@ -79,6 +78,7 @@ export default {
     data(){
         return {
             dialogVisible: false,
+            dialogVisible2:false,
             treeName: "",
             title: "",
             columns:[],             // 树表的列
@@ -92,6 +92,7 @@ export default {
             isShow: false ,         // 报告页面的隐藏与显示
             numOpen: null ,         // 区分【查看】【上报】两个按钮的状态，监控用的
             reportRow: {} ,         // 请求的数据
+            paramsArray: {},        // 存储请求信息用的（☆）
         }
     },
     created(){ 
@@ -137,6 +138,8 @@ export default {
                 sisreport = 2 ;
             }else{
                 sisreport = 0 ;
+                me.dialogVisible2 = !me.dialogVisible2 ;
+                me.$message({ message: "催报成功！已通知到对方！", type: "success" })
                 return false ;
             }
             let params = {
@@ -144,7 +147,8 @@ export default {
                 period: $params.year + mini.getPeriod($params),
                 sisreport: sisreport ,
                 sreporttime: mini.getTimers(),
-                sreportuser: sfilluser
+                sreportuser: sfilluser,
+                toUsers: []
             }
             riskreportstate_update_remindback(params).then(ddf => {
                 if(ddf.data.code === 200){
@@ -163,8 +167,11 @@ export default {
          */ 
         showreportdetailp(params,scope){ 
             // debugger
+                this.paramsArray = {} ;
+                this.paramsArray = params ;
+            
             let $params = this.$store.state.prame.command;
-            let company = scope.row.id ;
+            let company = params.row.row.id ;
             let sparam = {
                 company: company,
                 period: $params.year + mini.getPeriod($params) ,

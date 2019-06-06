@@ -49,7 +49,11 @@
 
         <div class="talent-team-center">
             <div class="center-echart">
-                <echart-component></echart-component>
+                <echart-component
+                        :tableData="selectedTableData"
+                        :dataFresh="dataFresh"
+                >
+                </echart-component>
             </div>
             <div class="center-table">
                 <talent-table
@@ -67,6 +71,7 @@
                     :tableData="allTableData"
                     :columns="allColumns"
                     :tableType="allTableType"
+                    @currentChange="currentChange"
             >
             </talent-table>
         </div>
@@ -77,7 +82,7 @@
     import echartComponent from './echartComponent'
     import talentTable from "./talentTable";
     import {findThirdPartData} from "~api/interface"
-    import {getDepartments, getAllPerson} from '~api/cwtRiskControl/riskControlRequest'
+    import {getAllPerson, getDepartments, getCurrentPageData} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "talentTeam",
@@ -90,32 +95,31 @@
             return {
                 assortOptions: [
                     {
-                        scode: '001',
+                        scode: 'SPOLITICSSTATUS',
                         sname: '政治面貌'
                     },
                     {
-                        scode: '002',
+                        scode: 'SQUALIFICATIONS',
                         sname: '教育程度'
                     },
                     {
-                        scode: '003',
+                        scode: 'SPROFESSIONALTITLE',
                         sname: '专业职称'
                     },
                     {
-                        scode: '004',
+                        scode: 'SPRESENTPOST',
                         sname: '现任职务'
                     }
                 ],
                 departmentOptions: [],
                 assortSelectedValue: {
-                    scode: '001',
+                    scode: 'SPOLITICSSTATUS',
                     sname: '政治面貌'
                 },
                 departmentSelectedValue: {
                     scode: '',
                     sname: ''
                 },
-
 
                 selectedTableData: [],
                 selectedColumns: [],
@@ -130,13 +134,14 @@
                     type: 'currentPage',
                     height: 550
                 },
+                dataFresh: false
             }
         },
         created() {
             let _this = this;
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/talentTeam/talentTeamTable1.json").then(res => {
                 if (res.data.code === 200) {
-                    _this.selectedTableData = res.data.rows;
+                    // _this.selectedTableData = res.data.rows;
                     _this.selectedColumns = res.data.columns
                 }
             });
@@ -144,14 +149,15 @@
 
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/talentTeam/talentTeamTable2.json").then(res => {
                 if (res.data.code === 200) {
-                    _this.allTableData = res.data.rows;
+                    // _this.allTableData = res.data.rows;
                     _this.allColumns = res.data.columns
                 }
             });
 
             this.setDepartmentOptions();
 
-            this.getSelectedData();
+
+            // this.getSelectedData();
             this.getAllData();
 
         },
@@ -190,7 +196,10 @@
              * 获取所有数据
              */
             getAllData() {
-                let params = {};
+                let params = {
+                    dim: 'SPOLITICSSTATUS',
+                    deptId: ''
+                };
                 params['type'] = 'all';
                 this.getSelectedPersonRequestSend(params);
             },
@@ -199,16 +208,18 @@
              * 维度选择确认按钮
              */
             dimSelected() {
-                debugger;
                 this.getSelectedData();
+                let _selectedColumns = this.selectedColumns;
+                _selectedColumns[0].text = this.assortSelectedValue.sname
+
             },
             /**
              * 获取维度参数数据
              */
             getDimParams() {
                 return {
-                    assort: this.assortSelectedValue.scode,
-                    department: this.departmentOptions.scode
+                    dim: this.assortSelectedValue.scode,
+                    deptId: this.departmentOptions.scode
                 }
             },
 
@@ -217,8 +228,14 @@
              * @param value
              */
             assortSelect(value) {
-                debugger;
                 this.assortSelectedValue.scode = value;
+
+                let _allAssortOptions = this.assortOptions;
+                let _selectedOption = _allAssortOptions.filter((item) => {
+                    return item.scode === value;
+                });
+
+                this.assortSelectedValue.sname = _selectedOption[0].sname;
             },
 
             /**
@@ -226,7 +243,6 @@
              * @param value
              */
             departmentSelect(value) {
-                debugger;
                 this.departmentOptions.scode = value;
             },
 
@@ -234,19 +250,33 @@
              * 获取人员列表请求发送
              * @param params
              */
-            getSelectedPersonRequestSend(params){
+            getSelectedPersonRequestSend(params) {
                 let _this = this;
                 getAllPerson(params).then(res => {
                     if (res.data.code === 200) {
-                        debugger;
-                        if(params.type === 'all'){
-                            _this.allTableData = res.data.data;
-                        }else if(params.type === 'selected'){
-                            _this.selectedTableData = res.data.data;
+                        if (params.type === 'all') {
+                            _this.selectedTableData = res.data.data.ratio;
+                            _this.allTableData = res.data.data.detail;
+                        } else {
+                            _this.selectedTableData = res.data.data.ratio;
                         }
                     }
+                    this.dataFresh = !this.dataFresh;
                 });
+
             },
+
+            currentChange(value) {
+                let _this = this;
+                let params = {
+                    page: value
+                };
+                getCurrentPageData(params).then(res => {
+                    if (res.data.code === 200) {
+                        _this.allTableData = res.data.data;
+                    }
+                });
+            }
         }
     }
 </script>

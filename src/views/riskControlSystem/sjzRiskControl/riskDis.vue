@@ -21,7 +21,7 @@
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
-                        <el-button type="primary" plain>下达记录查询</el-button>
+                        <el-button type="primary" plain @click="orderRecord">下达记录查询</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
@@ -70,6 +70,7 @@
                 :prop="element.id" 
                 :label="element.text"
                 :width="element.width"
+                :show-overflow-tooltip="element.showOverflow"
                 align="center" 
                 >
                 </el-table-column>
@@ -101,6 +102,12 @@
             :numOpen="numOpen">
             </dia-log>
         </el-dialog>
+        <!-- 下达记录弹出框 -->
+        <el-dialog title="下达记录" :visible.sync="dialogFormVisible2" width="960px" style="marginTop: -8vh;height:600px;overflow: hidden;">
+            <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
+            <order-dialog :data="orderData"></order-dialog>
+        </el-dialog>
+        
     </div>
 </template>
 <script>
@@ -108,6 +115,8 @@
 import bulkOrdersers from "@v/riskControlSystem/sjzRiskControl/bulkOrdersers";
 // 引用弹出框组件
 import diaLog from "@v/riskControlSystem/sjzRiskControl/dialog";
+// 引用弹出框组件2(下达记录)
+import orderDialog from "@v/riskControlSystem/sjzRiskControl/orderDialog";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口1.（获取数据）
@@ -118,7 +127,8 @@ import {
     risk_influence_degree,
     deleteRiskdistinguish,
     riskmatrix_tovo,
-    eva_city_Request
+    eva_city_Request,
+    riskdistinguish_query_release
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -126,7 +136,8 @@ import { debounce } from '../../../utils';
 export default {
     components: {
         diaLog,
-        bulkOrdersers
+        bulkOrdersers,
+        orderDialog
     },
     name: "riskDis",
     data(){
@@ -139,6 +150,8 @@ export default {
             elements: [],       // 表格的列
             items: [],          // 控制列显示【作用于列选择按钮】
             dialogFormVisible: false,   // 默认弹出框不显示
+            dialogFormVisible2:false,   // 下达记录弹出框不显示
+            orderData: [],
             // 
             riskTableRow:[],    // 风险矩阵的数据信息
             tableDemo1:[],      //【参照按钮-发生概率】的json信息
@@ -264,7 +277,7 @@ export default {
             }
         },
         // 1.2 获取请求的数据
-        setData(params){ debugger
+        setData(params){ 
             let me = this ;
             findThirdPartData(params).then(res => { 
                 // debugger
@@ -519,6 +532,25 @@ export default {
                     me.riskRelease = !me.riskRelease ;
                 }
             }
+        },
+        /**
+         * @event 下达记录按钮
+         */
+        orderRecord(){
+            this.dialogFormVisible2 = true ;
+            let me = this ;
+            let $params = me.$store.state.prame.command; 
+            let params = {
+                company: $params.company,
+                period: $params.year + mini.getPeriod($params) 
+            }
+            riskdistinguish_query_release(params).then(www => {
+                if(www.data.code === 200){
+                    me.orderData = www.data.data ;
+                }else{
+                    me.$message.error(www.data.msg) ;
+                }
+            })
         },
         handleCommand(command){},
         
