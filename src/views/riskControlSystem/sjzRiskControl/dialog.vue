@@ -6,7 +6,7 @@
 -->
     <div id="dialog" :flag="flager" :addOpen="numOpen">
         <!-- 内层弹出框 -->
-        <el-dialog width="660px" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
+        <el-dialog width="1396px" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
             <!-- 下划线 -->
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <!-- 内层表格（供参考使用） -->

@@ -11,28 +11,29 @@
         {
             "id": "label",
             "text": "公司名称",
-            "tepe": "string",
+            "type": "string",
             "align": "left",
-            "width": "460"
+            "width": "500"
         },
         {
             "id": "srepotstate",
             "text": "报告状态",
-            "tepe": "string",
+            "type": "string",
             "align": "center",
             "width": "160"
         },
         {
             "id": "sreportuser",
             "text": "上报人",
-            "tepe": "string",
+            "type": "string",
             "align": "center",
             "width": "160"
         },
         {
             "id": "cz",
             "text": "操作",
-            "align": "center"
+            "align": "center",
+            "width": "460"
         }
     ],
     "rows": [
@@ -152,6 +153,7 @@
                     }else{
                         res.companyId = "N" ;
                     }
+                    if(res.children && res.children.length>0)cc.queryDataAfter(res.children, $vue) ;
                 })
                 return data; 
             },

@@ -4,7 +4,7 @@
     说明： 下达记录弹出框
 -->
     <div id="orderDialog">
-        <el-table :data="tableData" height="420px" style="width: 100%;" border>
+        <el-table :data="tableData" height="380px" style="width: 100%;" border>
             <el-table-column type="index" width="60" align="center"></el-table-column>
             <el-table-column prop="sriskname" label="风险名称" width="180" align="center"></el-table-column>
             <el-table-column prop="srisktypename" label="风险类型" width="150" align="center"></el-table-column>
