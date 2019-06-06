@@ -261,8 +261,8 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    let interval = setInterval(() => this.getMessage(),10000);
-    this.interval = interval;
+    // let interval = setInterval(() => this.getMessage(),10000);
+    // this.interval = interval;
   },
   computed: {
     ...mapGetters([
