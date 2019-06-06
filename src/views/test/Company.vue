@@ -108,8 +108,8 @@
           <el-form-item label="行业" prop="sindcode">
             <el-select v-model="form.sindcode" placeholder="请选择行业">
               <el-option
-                v-for=" item in sindcodes "
-                :key="item.id"
+                v-for=" (item,index) in sindcodes "
+                :key="index"
                 :label="item.text"
                 :value="item.id"
               ></el-option>
@@ -119,8 +119,8 @@
           <el-form-item label="是否重点单位" prop="property1">
             <el-select v-model="form.property1">
               <el-option
-                v-for=" item in property1s "
-                :key="item.id"
+                v-for=" (item ,index) in property1s "
+                :key="index"
                 :label="item.text"
                 :value="item.id"
               ></el-option>
@@ -411,12 +411,12 @@ export default {
     },
 
     //请求维度信息
-    findDim() { debugger
+    findDim() { 
       const _this = this;
       request({
         url: "/zjb/dict/query/INDUSTRY",
         method: "get"
-      }).then(result => {debugger
+      }).then(result => {
         if (result.status == 200) {
           //  处理维度id 既有Integer 又有 String
           // 过滤抵消差额

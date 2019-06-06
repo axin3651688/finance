@@ -3,7 +3,9 @@
 </template>
 <script>
     export default {
-        props: {},
+        props: {
+            chartData:Object
+        },
         data() {
             return {
                 receive : {
@@ -41,18 +43,30 @@
                             {
                                 value : [4300, 10000, 28000, 35000, 50000, 19000],
                                 name : '预算分配（Allocated Budget）'
-                            },
-                            //  {
-                            //     value : [5000, 14000, 28000, 31000, 42000, 21000],
-                            //     name : '实际开销（Actual Spending）'
-                            // }
+                            }
                         ]
                     }]
                 }
             };
         },
         mounted() {},
-        watch: {},
-        methods: {}
+        watch: {
+            chartData:{
+                handler(){
+                    debugger;
+                    this.updateData();
+                },
+                deep:true
+            }
+        },
+        methods: {
+            /**
+             * 更新数据
+             */
+            updateData () {
+                debugger;
+                this.receive =  this.chartData.receive;
+            }
+        }
     };
 </script>

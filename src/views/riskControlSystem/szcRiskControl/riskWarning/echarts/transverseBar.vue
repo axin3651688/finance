@@ -79,7 +79,6 @@ export default {
     },
     methods: {
         updateData(){
-            debugger;
             let me = this;
             if(me.chartData){
                 let datas = me.chartData,yDatas = [],seriesData = [];

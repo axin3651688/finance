@@ -1443,7 +1443,12 @@ export default {
       }
       if (this.templateId == 8) {
         //资金集中可编辑的列，现在要改成存款余额说明填报 2019年5月30日11:54:32
-        cellMeta.readOnly = this.capitalConcentration(row,columns);
+        // cellMeta.readOnly = this.capitalConcentration(row,columns);
+        if(columns == 5){
+          cellMeta.readOnly = false;
+        }else {
+          cellMeta.readOnly = true;
+        }
         //资金集中度的填写限制 改成第一行可编辑
         // if ((columns == 0 || columns == 2)) {
         //   cellMeta.readOnly = false;
@@ -1943,6 +1948,20 @@ export default {
      * 资金集中情况表的存款说明处理。
      */
     explainColumnTable08(){
+      debugger;
+      let me = this;
+      let data = me.settings.data,flag = true;
+      for(let i = 0;i < data.length;i ++){
+        let item = data[i];
+        if(item.B && item.B != 0 && !item.sdesc){
+          flag = false;
+          break;
+        }
+      }
+      return flag;
+    },
+    explainColumnTable08_old(){
+      debugger;
       let me = this;
       let data = me.settings.data,tableData = me.tableData,dataFill = 0,flag = false;
       data.forEach(item => {

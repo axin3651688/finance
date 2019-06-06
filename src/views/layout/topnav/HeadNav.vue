@@ -98,9 +98,9 @@
               <i class="manage"></i>
               <span>管理互动</span>
             </el-dropdown-item> -->
-            <el-dropdown-item command="info">
+            <el-dropdown-item command="aboutSoftware">
               <i class="about"></i>
-              <span>关于软件</span>
+              <span @aboutSoftware="aboutSoftware">关于软件</span>
             </el-dropdown-item>
             <el-dropdown-item command="info" class="icon-bottom">
               <i class="help"></i>
@@ -154,9 +154,40 @@
       </el-row>
       <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
+    <!-- <el-dialog
+      custom-class="info-dialog"
+      :visible.sync="aboutShow"
+      v-if="aboutShow"
+      :modal-append-to-body="false"
+    >
+      <div>
+        <span>产品信息：</span>
+        <span>智能财务顾问决策分析系统</span>
+      </div>
+      <div>
+        <span>产品版本：</span>
+        <span>V2.0</span>
+      </div>
+    </el-dialog> -->
   </header>
+  <div>
+    <el-dialog
+      title="版本信息"
+      :visible.sync="aboutShow"
+      :modal-append-to-body="false"
+      width="30%">
+      <div class="about_class">
+        <span>产品信息：</span>
+        <span>智能财务顾问决策分析系统</span>
+      </div>
+      <div class="about_class">
+        <span>产品版本：</span>
+        <span>V2.0</span>
+      </div>
+    </el-dialog>
+  </div>
   <div class="messageCtn">
-    <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig"></SRModal>
+    <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig" v-on:publicHandler="publicHandler"></SRModal>
   </div>
 </div>
 </template>
@@ -187,6 +218,7 @@ export default {
       companyName_cache: "",
       treeInfo: {},
       isShow: false,
+      aboutShow:false,
       dialogVisible: false,
       isCollapse: true,
       yearCount: 4,
@@ -286,7 +318,32 @@ export default {
   //   }
   // },
   methods: {
-    
+    /**
+     * 关于软件。
+     * @author szc 2019年6月6日09:36:28
+     */
+    aboutSoftware() {
+      debugger;
+      let me = this;
+      me.aboutShow = true;
+    },
+    /**
+     * 分页
+     */
+    publicHandler (pageParams) {
+      let me = this,storeParams = me.$store.getters;
+      let params = {
+        pageNum:pageParams.page,
+        pageSize:20,
+        account:storeParams.user.user.userName
+      };
+      smallBell(params).then(res => {
+        if(res.data.code == 200){
+          // console.log("ddddddd",res.data);
+          this.showCkeckContent(res.data.data);
+        }
+      });
+    },
     handleAvatarSuccess (e) {
       if(e && e.data.code == 200){
         //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
@@ -361,6 +418,7 @@ export default {
       "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
+      debugger;
       //    console.log(cmdItem)
       switch (cmdItem) {
         case "info":
@@ -369,6 +427,9 @@ export default {
           break;
         case "logout":
           this.logout();
+          break;
+        case "aboutSoftware":
+          this.aboutSoftware();
           break;
       }
     },
@@ -417,6 +478,7 @@ export default {
       this.dialogVisible = false;
     },
     sayhidden() {
+      debugger;
       this.isShow = true;
     },
     /**
@@ -534,7 +596,10 @@ export default {
      * @author szc 2019年4月2日20:22:36
      */
     showCkeckContent (data) {
-      let me = this;
+      let me = this,num = 0;
+      if(me.messageValue){
+        num = me.messageValue/20 + (me.messageValue%20 > 0? 1:0);
+      }
       this.modalConfig = {
         title:"报表审阅",//modal框标题
         rowListener:"checkfilldata",//事件监听方法名
@@ -543,6 +608,7 @@ export default {
         type:"s-table",//要显示的类型
         id:'userReport',//modal框的id
         datas: {
+          dataCount:parseInt(num),
           tHeader:[
             {
               prop:"sfromuser",
@@ -696,6 +762,10 @@ export default {
       height: 178px;
       display: block;
     }
+  }
+  .about_class {
+    font-size: 16px;
+    line-height: 25px;
   }
   
 </style>

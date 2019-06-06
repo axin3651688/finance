@@ -35,7 +35,6 @@
             }
         },
         created() {
-            debugger;
             let me = this;
             me.axios.get('/cnbi/json/source/tjsp/szcJson/risk/insideBenchmarking.json').then(res => {
                 if(res.data.code == 200){
@@ -58,7 +57,6 @@
             let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 80;
             $div[0].children[0].style.height = heightNum + "px";
             window.onresize = function temp(){
-                debugger;
                 bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 80;
                 $div[0].children[0].style.height = heightNum + "px";
             }
@@ -91,7 +89,6 @@
                         me.sqlList = res.data.sqlList;
                         params = me.paramsOfSql(params,res.data.sqlList,curSqlId);
                         findThirdPartData(params).then(res => {
-                            debugger;
                             if(res.data.code == 200){
                                 me.chartData = res.data.data;
                                 me.treeData = me.transformationTreeData(res.data.data);
@@ -176,7 +173,6 @@
              * @author szc 2019年6月4日19:19:23
              */
             drillItemSname (scope) {
-                debugger;
                 let me = this;
                 me.$router.push("/comprehensiveRating");
             }

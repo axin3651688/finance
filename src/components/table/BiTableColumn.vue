@@ -44,7 +44,7 @@
     :width="col.width"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id]+''" placement="right">
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
@@ -63,7 +63,7 @@
     <!-- :align="col.align||'center'" -->
     <!-- v-bind:class="getLevel(col._level||col.level||1) == 2 ? 'item2':'item3'"  [getLevel(col._level||col.level||1) == 2 ? 'item2':'item3']-->
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id] + ''" placement="right">
         <span>{{scope.row[col.id]}}</span>
         <!-- <span v-if="scope.row.balance!=0">
             <el-button type="text">{{ scope.row[col.id] }}</el-button>
@@ -83,7 +83,7 @@
     :width="col.width"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id] + ''" placement="right">
         <span>{{scope.row[col.id]}}</span>
       </el-tooltip>
     </template>
@@ -105,7 +105,7 @@
       >
         <span
           v-if="tableData.datas"
-        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows)}}</span>
+        >{{ getCellValues(tableData.datas,col,scope,tableData.config.rows) }}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -117,7 +117,7 @@
     :align="col.align|| 'left'"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id] + ''" placement="right">
         <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
@@ -129,7 +129,7 @@
     :align="col.align|| 'left'"
   >
     <template slot-scope="scope">
-      <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
+      <el-tooltip class="item" effect="light" :content="scope.row[col.id] + ''" placement="top-start">
         <span v-if="tableData.datas">--</span>
       </el-tooltip>
     </template>
