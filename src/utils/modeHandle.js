@@ -8,18 +8,19 @@ import {
 import store from '@/store'
 export default function modeHandle(e) {
     if (!e.sourceId && !e.url) {
-        let msg = "未定义[" + e.text + e.id + "]模块的标识！";
+        // let msg = "未定义[" + e.text + e.id + "]模块的标识！";
+        let msg = `此模块正在拼命开发中...`;
         console.error(msg);
         // debugger
         Notification.error({
-            title: "错误",
+            title: "温馨提示",
             message: msg
         });
         //
         return;
     }
     // e.url = "cnbi/json/source/jsnk/zbfx.json";
-    // e.url = "cnbi/json/source/jsnk/zfbb/zczefdtjb.json";
+    // e.url = "cnbi/json/source/jsnk/zfbg/cbsb.json";
 
     debugger
     console.log(e.url);

@@ -30,7 +30,7 @@ import {
 
 } from "~api/interface";
 export default {
-  name: "Cbsb",
+  name: "Sqth",
   components: {},
   props: {},
   data() {
@@ -80,7 +80,7 @@ export default {
     textarea() {
       let company = this.$store.getters.showDialog.params.title;
       let time = `${this.$store.getters.year}年${this.$store.getters.month}月`;
-      return time + company + "财务分析报告未及时上报，请上报！";
+      return time + company + "财务分析报告需要退回，请您批准！";
     },
     ...mapActions(["ShowMeluList", "ShowDialog"]),
     /**

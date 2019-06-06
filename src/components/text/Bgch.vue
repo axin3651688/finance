@@ -17,7 +17,6 @@
 <script type="text/ecmascript-6">
 import { mapActions, mapGetters } from "vuex";
 import {
-  ACK_MODULE_MSG,
   SAVE_MODULE_MSG,
   FIND_USER_ACCOUNT
 } from "~api/interface";
@@ -92,18 +91,14 @@ export default {
       SAVE_MODULE_MSG(datas).then(res => {
         let data = res.data.data;
         // console.log(data);
-        ACK_MODULE_MSG(data)
-          .then(res => {
-            this.$message({
+         this.$message({
               message: "消息已经发送成功！",
               type: "success"
             });
+            this.ShowDialog({ isShow: false });         
+      }).catch(res => {
             this.ShowDialog({ isShow: false });
-          })
-          .catch(res => {
-            this.ShowDialog({ isShow: false });
-          });
-      });
+          });;
     }
   }
 };

@@ -344,18 +344,6 @@
                 "id": "235",
                 "text": "营业预算执行率",
                 "weight": 6,
-                "listeners": [{
-                    "type": "click",
-                    "way": "addTab",
-                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysryszxl.json",
-                    "handler": ($vue, params) => {
-                        let itemBean = {
-                            id: $vue.item.id,
-                            text: $vue.item.text
-                        };
-                        localStorage.item = JSON.stringify(itemBean);
-                    }
-                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "gauge",
@@ -373,7 +361,7 @@
                         "row": {
                             "ids": {
                                 "items": [
-                                    "235"
+                                    "1416001xy"
                                 ]
                             }
                         }
@@ -391,18 +379,6 @@
                 "id": "236",
                 "text": "利润总额预算执行率",
                 "weight": 6,
-                "listeners": [{
-                    "type": "click",
-                    "way": "addTab",
-                    "sourceApi": "cnbi/json/source/jsnk/zbfx/lrzzyszxl.json",
-                    "handler": ($vue, params) => {
-                        let itemBean = {
-                            id: $vue.item.id,
-                            text: $vue.item.text
-                        };
-                        localStorage.item = JSON.stringify(itemBean);
-                    }
-                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "gauge",
@@ -508,6 +484,19 @@
                 "id": "23945",
                 "text": "应收款项周转率",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        debugger;
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -543,6 +532,18 @@
                 "id": "45457",
                 "text": "归属于母公司所有者权益",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -578,6 +579,18 @@
                 "id": "1111401",
                 "text": "存货",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -613,6 +626,18 @@
                 "id": "274",
                 "text": "三项费用合计",
                 "weight": 6,
+                "listeners": [{
+                    "type": "click",
+                    "way": "addTab",
+                    "sourceApi": "cnbi/json/source/jsnk/zbfx/yysr.json",
+                    "handler": ($vue, params) => {
+                        let itemBean = {
+                            id: $vue.item.id,
+                            text: $vue.item.text
+                        };
+                        localStorage.item = JSON.stringify(itemBean);
+                    }
+                }],
                 "options": {
                     "type": "advancechart",
                     "subType": "bar",
@@ -699,7 +724,7 @@
                     "_cube": {
                         "subject": "0002",
                         "dims": {
-                            "itemperiod": "1416001,1403100,1400111",
+                            "itemperiod": "1416001,1403100,1400111,194,235,236,238,19,23945,45457,1111401,274,240,1436701,141600101,14264010101,14264010102,1426405,1436601,1436602,143660201",
                             "period": 0
                         },
                         "dimName": "period",

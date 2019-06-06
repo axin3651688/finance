@@ -17,10 +17,10 @@
         "style": {
             "height": "812px"
         },
-        "optionColumnClick": function ($vue, row) {
+        "optionColumnClick": function($vue, row) {
             return row;
         },
-        "queryDataBefore": function (params, b) {
+        "queryDataBefore": function(params, b) {
             params.comId = params.company;
             params.property = "scode";
             return params;
@@ -126,8 +126,19 @@
                             },
                             {
                                 "value": "sqth",
-                                "label": "申请退回"
-
+                                "label": "申请退回",
+                                "listeners": [{
+                                    "type": "click",
+                                    "way": "openDialog",
+                                    "config": {
+                                        "width": 660, //弹窗的宽高写到这里
+                                        "height": 460
+                                    },
+                                    "sourceApi": "cnbi/json/source/jsnk/zfbg/sqth.json",
+                                    "handler": ($vue, params) => {
+                                        return params;
+                                    }
+                                }]
                             },
                             {
                                 "value": "daochu",

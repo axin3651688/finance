@@ -12,6 +12,7 @@ export default {
     debugger;
   },
   components: {
+    Sqth: () => import("./text/Sqth.vue"),//申请退回
     Cbsb: () => import("./text/Cbsb.vue"),//催报
     Bgch: () => import("./text/Bgch.vue"),//报告撤回
     Zjl: () => import("./text/Zjl.vue")

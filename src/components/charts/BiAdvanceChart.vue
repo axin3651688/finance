@@ -53,9 +53,18 @@ export default {
     } else this.upData(this.item);
   },
   computed: {
-    isShow() {
-      let flag = Cnbi.isEmpty(this.item.datas[0]);
+    // isShow() {
+    //   let flag = Cnbi.isEmpty(this.item.datas[0]);
+    //   return flag;
+    // },
+    isShow: {
+      get() {
+        let flag = Cnbi.isEmpty(this.item.datas[0]);
       return flag;
+      },
+      set(val) {
+        return val
+      }
     },
     divHeight() {
       return this.chartOptions.height_s ? this.chartOptions.height_s : "294px";
@@ -114,7 +123,6 @@ export default {
 
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
-      debugger;
       // console.log(this.item.options.datas);
 
       if (chartType === 1) {
@@ -126,16 +134,12 @@ export default {
         /**
          * 单独系列数据的图形 说白了就是series.length = 1
          */
-        debugger;
         if (subType == "pie") {
           let chartDatas = [],
             datas = this.item.datas[0];
-          debugger;
           this.chartOptions.legend.data = this.item.options.getData.columns.map(
             item => {
-              debugger;
               Object.keys(datas).forEach(keys => {
-                debugger;
                 if (item.id == keys) {
                   chartDatas.push({ value: datas[keys], name: item.text });
                 }
@@ -145,6 +149,7 @@ export default {
           );
           this.chartOptions.series[0].data = chartDatas;
         } else if (subType == "gauge") {
+          // debugger
           // this.chartOptions.series[0].data = [
           //   { value: this.item.options.datas[0].value }
           // ];

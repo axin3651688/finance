@@ -78,6 +78,7 @@
     :label="col.text"
     :align="col.align|| 'right'"
     :min-width="col.width||140"
+    @cell-style="cellStyle"
   >
     <template slot-scope="scope">
       <el-tooltip
@@ -122,7 +123,7 @@
 <script>
 import EventMixins from "../mixins/EventMixins";
 import TreeItem from "./TreeItem";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations} from "vuex";
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
@@ -149,6 +150,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['mutationSetCompanyId']),
     isShow() {
       // debugger;
       if (this.classObj.mobile) {
@@ -166,11 +168,16 @@ export default {
     },
 
     columnClick(column, scope) {
-      debugger;
+
       if (column.listeners || column.menu.list[0].listeners[0]) {
         // console.log(column.menu.list[0]);
         // console.log(column.menu.list[0].listeners[0]);
         this.commonHandler(column.listeners[0], column, scope);
+        let companyId = scope.row.id;
+        if(!companyId){
+          companyId = 1;
+        }
+        this.mutationSetCompanyId(companyId)
       }
     },
 
@@ -236,6 +243,10 @@ export default {
       // 千分位  保留两位小数
       value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       return value;
+    },
+    cellStyle () {
+      debugger;
+      let me = this;
     }
   }
 };
