@@ -373,3 +373,47 @@ listeners:[
     mainDim：""//主维度，决定rows行项目里配制的是什么维度
     needDims:["year","month","company"]//所依赖可变化的维度：只有当config依赖的属性变了，数据才会变，视图才会跟着变！
 }
+
+
+## 新资源区json格式
+
+
+
+## 新仪表盘json格式
+{
+    id:0,
+    text:"",
+    "layout":{
+       "type":"grid"
+    }
+    "items": [
+    {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 2,
+        "i": 0,
+        "data": {
+        "type": 3,
+        "textConfig": {
+            "color": "red",
+            "fontSize": "30px",
+            "fontFamily": "Microsoft YaHei"
+        },
+        "text": "默认文本默认文本默认文本默认文本默认文本"
+        }
+    },
+    {
+        "x": 0,
+        "y": 2,
+        "w": 6,
+        "h": 10,
+        "i": 2,
+        "data": {
+            "type": 1,//数据集的表和图
+            "sourceId": 196
+        }
+        }
+    ]
+
+}

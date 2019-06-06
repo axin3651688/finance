@@ -359,7 +359,7 @@ export default {
       this.activeTabName = "0";
       // api = "cnbi/json/source/ts.json";
       if (!api) {
-        api = "cnbi/json/source/jsnk/zbfx.json";
+        api = "./cnbi/json/source/jsnk/zbfx.json";
       }
       if (!api) {
         api = localStorage.module_api_cache;

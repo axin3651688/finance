@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(57,119,234,0);
+      }
+
+      .cls-2 {
+        fill: rgba(0,0,0,0.4);
+      }
+    </style>
+  </defs>
+  <g id="zuixiaohua" transform="translate(-1163 -720)">
+    <rect id="矩形_52" data-name="矩形 52" class="cls-1" width="22" height="22" rx="2" transform="translate(1163 720)"/>
+    <path id="路径_178" data-name="路径 178" class="cls-2" d="M66.333,64.932a1,1,0,0,0-1.415,1.415l9.905,9.909a1,1,0,0,0,1.415-1.415Z" transform="translate(1074.186 731.01) rotate(-45)"/>
+  </g>
+</svg>

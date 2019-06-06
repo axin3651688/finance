@@ -22,6 +22,8 @@ export function getClientParams(url) {
   for (let key in bean) {
     if (!isNaN(bean[key])) {
       bean[key] = bean[key] - 0;
+    } else if(key === "compare_type"){
+       bean[key] = bean[key].replace("$","&");
     }
   }
   return bean;

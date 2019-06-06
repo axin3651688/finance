@@ -1,16 +1,18 @@
+import { getClientParams } from "./index";
+let urlParams = getClientParams();
 let config = {
     comparePeriod:"0&-1",//环比
     tb:"-1&0",
     comparePeriodCount:2,
 }
-
-let periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
-let halfPeriod =  [{id:"H1",text:"上半年"},{id:"H2",text:"下半年"}];
+let yearText = "年";
+let periodText = {m:"月",q:"季度",h:"半"+yearText,nd:yearText+"度"};
+let halfPeriod =  [{id:"H1",text:"上半"+yearText},{id:"H2",text:"下半"+yearText}];
 let chineseTextArr = ["一","二","三","四","五","六","七","八","九","十"];
-function getMonthName (months){
+export function getMonthName (months){
     //  因为这样获取不到，所以注释掉了，直接赋值。
     //  var periodText = periodText;
-        var periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
+       // var periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
          if(months.length == 6){
              months = months.substring(4,6);
          }
@@ -108,10 +110,10 @@ function getPeriodName1(year,month){
             if(mId < 1){
                 return year.text+month.text;
             }else if(mId == 1){
-                return year.text+""+mId+"月";
+                return year.text+""+mId+periodText.m;
             
             }else{
-                return year.text+"1-"+mId+"月";
+                return year.text+"1-"+mId+periodText.m;
             }
         }else{
             return year.text+month.text;
@@ -122,7 +124,7 @@ function getPeriodName1(year,month){
  */
 function getPeriodName(period){
     period = period+"";
-    var year = period.substring(0,4),month = period.substring(4,6),text = year+"年";
+    var year = period.substring(0,4),month = period.substring(4,6),text = year+yearText;
     var m  = getMonthName(month);
     if(m == ""){
         m =periodText.nd;
@@ -149,14 +151,40 @@ function getPeriodBean(period,_formualr){
   * fomular:同比=  -1&0或环比 = 0&-1
   * year = {id:2017,text:"年"}
   * month = {id:"01","月"}
+  * urlParams= 浏览器的查询参数
   */
-export function generatePeriod(count,fomular,year,month,reverse){
+export function generatePeriod(count,fomular,year,month,reverse,urlParams){
+    debugger
     if(!fomular)fomular = config.comparePeriod;
+    //test start...
+    if(fomular == 1){
+        fomular = config.comparePeriod
+    }else if(fomular == 2){
+        fomular = config.tb
+    }
+     //test end...
     if(!count)count = config.comparePeriodCount;
+    if(!year &&  urlParams && urlParams.year){
+        year = {id:urlParams.year,text:urlParams.year+yearText};
+    }
+    if(!month && urlParams && urlParams.month){
+        month = {id: urlParams.month,text: urlParams.month+periodText.m};
+    }
+    if(!year){
+        let date = new Date(),yearId = date.getFullYear();
+        year = {id:yearId,text:yearId+yearText};
+    }
+    if(!month){
+        let date = new Date(),monthId = date.getMonth()+1;
+        month = {id:monthId,text:monthId+periodText.m};
+    }
+    if(month.id - 0 < 10){
+        month.id = "0"+(month.id - 0 );
+    }
     var p=year.id+""+month.id;
-    var periodName =  year.id+year.text+month.id+month.text;//Cnbi.getPeriodName(p);
+    var periodName =  year.text+month.text;//Cnbi.getPeriodName(p);
     var arr=[{text:periodName,id:p}],fomularArr = fomular.split("&");
-    var yearF = fomularArr[0],monthF =fomularArr[1]; 
+    //var yearF = fomularArr[0],monthF =fomularArr[1]; 
     var tMonth = month.id,tYear = year.id;
     for(var i=0;i<count-1;i++){
         var _formualr = fomular;
