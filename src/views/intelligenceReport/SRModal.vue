@@ -42,6 +42,16 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div>
+            <el-pagination
+            background
+            layout="prev, pager, next"
+            @prev-click="prevClick"
+            @next-click="nextClick"
+            @current-change="currentChange"
+            :page-count="totalValue">
+            </el-pagination>
+        </div>
     </div>
     <span v-if="modalConfig.footConfig && modalConfig.footConfig.footBtn" slot="footer" class="dialog-footer">
         <el-button type="primary" @click="confirmHandle">确认</el-button>
@@ -63,7 +73,8 @@ export default {
             props:{
                 label:"",
                 children:""
-            }
+            },
+            totalValue:"3"
         }
     },
     created() {
@@ -72,7 +83,18 @@ export default {
     mounted() {
         let me = this;
     },
+    watch: {
+        modalConfig:{
+            handler(){
+                this.updateData();
+            },
+            deep:true
+        }
+    },
     methods: {
+        updateData() {
+            this.totalValue = this.modalConfig.datas.dataCount;
+        },
         /**
          * 更新数据。
          */
@@ -102,7 +124,6 @@ export default {
          * @author szc 2019年4月3日14:26:49
          */
         confirmHandle () {
-            debugger;
             let me = this,eventListener = this.modalConfig.eventListener;
             let nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
             if(eventListener){
@@ -118,6 +139,36 @@ export default {
             if(eventListener){
                 this.$emit(eventListener,row.row,sign);
             }
+        },
+        /**
+         * 上一页
+         */
+        prevClick (page) {
+            let me = this,parmas = {
+                page:page,
+                sign:"pre"
+            };
+            this.$emit("publicHandler",parmas);
+        },
+        /**
+         * 下一页
+         */
+        nextClick (page) {
+            let me = this,parmas = {
+                page:page,
+                sign:"next"
+            };
+            this.$emit("publicHandler",parmas);
+        },
+        /**
+         * 当前页改变
+         */
+        currentChange (page) {
+            let me = this,parmas = {
+                page:page,
+                sign:"current"
+            };
+            this.$emit("publicHandler",parmas);
         }
     }
     

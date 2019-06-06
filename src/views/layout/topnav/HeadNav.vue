@@ -156,7 +156,7 @@
     </el-dialog>
   </header>
   <div class="messageCtn">
-    <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig"></SRModal>
+    <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig" v-on:publicHandler="publicHandler"></SRModal>
   </div>
 </div>
 </template>
@@ -181,7 +181,7 @@ export default {
     return {
       showCompanyDilog:false,
       modalConfig:{},//审阅展示的modal配置
-      messageValue:0,//消息数
+      messageValue:1,//消息数
       // avarUrl:"",
       companyId: "",
       companyName_cache: "",
@@ -261,8 +261,8 @@ export default {
         companyName: treeInfo.codename
       });
     }
-    // let interval = setInterval(() => this.getMessage(),10000);
-    // this.interval = interval;
+    let interval = setInterval(() => this.getMessage(),10000);
+    this.interval = interval;
   },
   computed: {
     ...mapGetters([
@@ -286,7 +286,23 @@ export default {
   //   }
   // },
   methods: {
-    
+    /**
+     * 分页
+     */
+    publicHandler (pageParams) {
+      let me = this,storeParams = me.$store.getters;
+      let params = {
+        pageNum:pageParams.page,
+        pageSize:20,
+        account:storeParams.user.user.userName
+      };
+      smallBell(params).then(res => {
+        if(res.data.code == 200){
+          // console.log("ddddddd",res.data);
+          this.showCkeckContent(res.data.data);
+        }
+      });
+    },
     handleAvatarSuccess (e) {
       if(e && e.data.code == 200){
         //因为有一个地方设置的是缓存的内容，所以这边统一一下，缓存的内容，不然的话，找不到会报错。
@@ -534,7 +550,10 @@ export default {
      * @author szc 2019年4月2日20:22:36
      */
     showCkeckContent (data) {
-      let me = this;
+      let me = this,num = 0;
+      if(me.messageValue){
+        num = me.messageValue/20 + (me.messageValue%20 > 0? 1:0);
+      }
       this.modalConfig = {
         title:"报表审阅",//modal框标题
         rowListener:"checkfilldata",//事件监听方法名
@@ -543,6 +562,7 @@ export default {
         type:"s-table",//要显示的类型
         id:'userReport',//modal框的id
         datas: {
+          dataCount:parseInt(num),
           tHeader:[
             {
               prop:"sfromuser",
