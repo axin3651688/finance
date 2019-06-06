@@ -98,9 +98,9 @@
               <i class="manage"></i>
               <span>管理互动</span>
             </el-dropdown-item> -->
-            <el-dropdown-item command="info">
+            <el-dropdown-item command="aboutSoftware">
               <i class="about"></i>
-              <span>关于软件</span>
+              <span @aboutSoftware="aboutSoftware">关于软件</span>
             </el-dropdown-item>
             <el-dropdown-item command="info" class="icon-bottom">
               <i class="help"></i>
@@ -154,7 +154,38 @@
       </el-row>
       <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
+    <!-- <el-dialog
+      custom-class="info-dialog"
+      :visible.sync="aboutShow"
+      v-if="aboutShow"
+      :modal-append-to-body="false"
+    >
+      <div>
+        <span>产品信息：</span>
+        <span>智能财务顾问决策分析系统</span>
+      </div>
+      <div>
+        <span>产品版本：</span>
+        <span>V2.0</span>
+      </div>
+    </el-dialog> -->
   </header>
+  <div>
+    <el-dialog
+      title="版本信息"
+      :visible.sync="aboutShow"
+      :modal-append-to-body="false"
+      width="30%">
+      <div class="about_class">
+        <span>产品信息：</span>
+        <span>智能财务顾问决策分析系统</span>
+      </div>
+      <div class="about_class">
+        <span>产品版本：</span>
+        <span>V2.0</span>
+      </div>
+    </el-dialog>
+  </div>
   <div class="messageCtn">
     <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig" v-on:publicHandler="publicHandler"></SRModal>
   </div>
@@ -181,12 +212,13 @@ export default {
     return {
       showCompanyDilog:false,
       modalConfig:{},//审阅展示的modal配置
-      messageValue:1,//消息数
+      messageValue:0,//消息数
       // avarUrl:"",
       companyId: "",
       companyName_cache: "",
       treeInfo: {},
       isShow: false,
+      aboutShow:false,
       dialogVisible: false,
       isCollapse: true,
       yearCount: 4,
@@ -287,6 +319,15 @@ export default {
   // },
   methods: {
     /**
+     * 关于软件。
+     * @author szc 2019年6月6日09:36:28
+     */
+    aboutSoftware() {
+      debugger;
+      let me = this;
+      me.aboutShow = true;
+    },
+    /**
      * 分页
      */
     publicHandler (pageParams) {
@@ -377,6 +418,7 @@ export default {
       "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
+      debugger;
       //    console.log(cmdItem)
       switch (cmdItem) {
         case "info":
@@ -385,6 +427,9 @@ export default {
           break;
         case "logout":
           this.logout();
+          break;
+        case "aboutSoftware":
+          this.aboutSoftware();
           break;
       }
     },
@@ -433,6 +478,7 @@ export default {
       this.dialogVisible = false;
     },
     sayhidden() {
+      debugger;
       this.isShow = true;
     },
     /**
@@ -716,6 +762,10 @@ export default {
       height: 178px;
       display: block;
     }
+  }
+  .about_class {
+    font-size: 16px;
+    line-height: 25px;
   }
   
 </style>

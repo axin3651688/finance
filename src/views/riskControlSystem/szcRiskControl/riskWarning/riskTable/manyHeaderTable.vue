@@ -12,53 +12,38 @@
                     <template v-if="item.children">
                         <el-table-column
                             :key="index"
-                            :label="item.label"
+                            :label="item.text"
                         >
                             <template v-for="(childItem,childIndex) in item.children">
-                                <el-table-column
-                                :align="childItem.align || 'left'"
-                                :key="childIndex"
-                                :show-overflow-tooltip="true"
-                                :prop="childItem.id"
-                                header-align="center"
-                                :label="childItem.text"
-                                :width="childItem.width">
-                                    <template slot-scope="scope">
-
-                                        <template v-if="childItem.id  === 'operation'">
-                                            <template v-for="(it,index) in scope.row[childItem.id]">
-                                                <el-button
-                                                        v-if="it.btnShow"
-                                                        :key="index"
-                                                        size="mini"
-                                                        @click="handleClickBtn(scope,it,index)"
-                                                >
-                                                    {{ it.text }}
-                                                </el-button>
-                                            </template>
-                                        </template>
-
-                                        <div
-                                                v-else-if="childItem.htmlType && scope.row.htmlType && scope.row.htmlType === 'text'"
-                                                :style="styleHandler(scope.row)"
-                                                :class="textClassHandler(scope.row)"
-                                        >
-                                            {{ scope.row[scope.column.property] }}
-                                        </div>
-                                        <span
-                                                v-else-if="childItem.action && childItem.action==='click'"
-                                                style="color: dodgerblue;cursor: pointer"
-                                                @click="clickItemNameHandler(scope,scope.$index)"
-                                        >
-                                            <!-- <el-button @click="elButton(scope)"></el-button> -->
-                                            {{ scope.row[scope.column.property] }}
-                                        </span>
-                                        <span v-else>
-                                            <!-- <el-button @click="elButton(scope)"></el-button> -->
-                                            {{ scope.row[scope.column.property] }}
-                                        </span>
+                                <template v-if="childItem.children">
+                                    <el-table-column
+                                        :key="childIndex"
+                                        :label="childItem.text"
+                                    >
+                                    <template v-for="(childrenTwo,indexTwo) in childItem.children">
+                                        <el-table-column
+                                        :align="childItem.align || 'left'"
+                                        :key="indexTwo"
+                                        :show-overflow-tooltip="true"
+                                        :prop="childItem.id"
+                                        header-align="center"
+                                        :label="childItem.text"
+                                        :width="childItem.width">
+                                        </el-table-column>
                                     </template>
-                                </el-table-column>
+                                    </el-table-column>
+                                </template>
+                                <template v-else>
+                                    <el-table-column
+                                        :align="item.align || 'left'"
+                                        :key="childIndex"
+                                        :show-overflow-tooltip="true"
+                                        :prop="item.id"
+                                        header-align="center"
+                                        :label="item.text"
+                                        :width="item.width">
+                                    </el-table-column>
+                                </template>
                             </template>
                         </el-table-column>
                     </template>
