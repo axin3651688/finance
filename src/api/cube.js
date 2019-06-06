@@ -296,3 +296,14 @@ export function riskreportstate_update_remindback(data){
         data: data
     })
 }
+/**15.
+ * name: sjz
+ * 说明：风险识别的【下达记录按钮】接口 /riskdistinguish/query_release
+ */
+export function riskdistinguish_query_release(data){
+    return request({
+        url: '/zjb/riskdistinguish/query_release',
+        method: 'get',
+        params: data
+    })
+}

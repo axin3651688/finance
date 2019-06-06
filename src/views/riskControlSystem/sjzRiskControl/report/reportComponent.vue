@@ -93,7 +93,7 @@
         <!-- 上报的弹出框组件 -->
         <report-dialog v-show="nisShow" :data="comtree2" :newThis="me"></report-dialog>
         <!-- 修改弹出框组件 -->
-        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="960px" style="marginTop: -15vh;">
+        <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :before-close="handleClose" :close-on-click-modal="false" width="960px" style="marginTop: -15vh;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <dia-log :data="view_row" :newThis="me" :number="number" :riskTableRow="riskTableRow" :fsgl="tableDemo1" :yxcd="tableDemo2"
              >
@@ -262,10 +262,12 @@ export default {
         onClick(){
             // debugger
             let me = this ;
+            // 选中的那一行的公司id信息
+            let companyId = me.newThis.paramsArray.row.row.id ;
             me.nisShow = !me.nisShow ;
             let $params = me.$store.state.prame.command;
             let _sql = this.newThis.config.sql2 ;
-            _sql = _sql.replace(/:company/g,"'"+$params.company+"'");
+            _sql = _sql.replace(/:company/g,"'"+companyId+"'");
             let params = {
                 cubeId: 4,
                 sql: encodeURI(_sql)
@@ -278,10 +280,17 @@ export default {
         },
         // 修改按钮
         modifyBtn(tool){
+            // debugger
             this.view_row = tool ;
             this.view_row.id = this.view_row.nid ;
             this.number = 1 ;
             this.dialogFormVisible = true ;
+        },
+        // 弹出框的 右上角的 ×
+        handleClose(done){
+            this.dialogFormVisible = false ;
+            this.number = 0 ;
+            done() ;
         },
         // 2.获取【风险矩阵】的json信息
         axiosRequest(){ 

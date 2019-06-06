@@ -3,12 +3,18 @@
 </template>
 <script>
     export default {
-        props: {},
+        props: {
+            chartData:Object
+        },
         data() {
             return {
+                gValue:50,
                 receive : {
                     tooltip : {
-                        formatter: "{a} <br/>{b} : {c}%"
+                        // formatter: "{a} <br/>{b} : {c}%"
+                        formatter:function(a,b,c){
+                            return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
+                        }
                     },
                     series: [
                         {
@@ -41,15 +47,38 @@
                                 length: "50%",
                                 width: 5
                             },
-                            detail: {formatter:'{value}%'},
-                            data: [{value: 50, name: '盈利能力'}]
+                            detail: {
+                                formatter: function(a,b,c){
+                                    return Math.decimalToLocalString(a) + "%";
+                                },
+                            },
+                            data: [{value: this.chartData.qyfz || 0, name: this.chartData.zbmc || ""}]
                         }
                     ]
                 }
             };
         },
-        mounted() {},
-        watch: {},
-        methods: {}
+        created() {
+            
+        },
+        mounted() {
+            let me = this;
+        },
+        watch: {
+            chartData:{
+                handler(newValue,oldValue){
+                    this.updateData();
+                },
+                deep:true
+            }
+        },
+        methods: {
+            updateData () {
+                let me = this;
+                me.receive.series[0].data[0].value = me.chartData.qyfz;
+                me.receive.series[0].data[0].name = me.chartData.zbmc;
+                // me.gValue = me.chartData.qyfz;
+            }
+        }
     };
 </script>

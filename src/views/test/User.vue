@@ -791,9 +791,9 @@ export default {
           // { required: true, message: "必填项", trigger: "blur" },
           { required: true, message: "必选项" }
         ],
-        department: [
-          { required: true, message: "必选项" }
-        ],
+        // department: [
+        //   { required: true, message: "必选项" }
+        // ],
         sphone: [
           { required: true, message: "必填项", trigger: "blur" },
           {

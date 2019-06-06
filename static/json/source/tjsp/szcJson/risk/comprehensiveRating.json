@@ -1,0 +1,116 @@
+{
+    "code": 200,
+    "id": "riskControl",
+    "text": "风险管控",
+    "columns": [{
+            "id": "zbmc",
+            "type": "string",
+            "text": "指标名称",
+            "align": "center",
+            "width": "180"
+        },
+        {
+            "id": "A",
+            "type": "string",
+            "text": "优秀值",
+            "align": "center",
+            "width": "180"
+        },
+        {
+            "id": "B",
+            "type": "string",
+            "text": "良好值",
+            "align": "center",
+            "htmlType": "text",
+            "width": "90"
+        },
+        {
+            "id": "C",
+            "type": "string",
+            "text": "平均值"
+        },
+        {
+            "id": "D",
+            "type": "string",
+            "text": "较低值",
+            "width": "180"
+        },
+        {
+            "id": "E",
+            "type": "string",
+            "text": "较差值",
+            "align": "center",
+            "width": "90"
+        },
+        {
+            "id": "qyfz",
+            "type": "string",
+            "text": "企业分值",
+            "width": "180"
+        },
+        {
+            "id": "pj",
+            "type": "string",
+            "text": "评级",
+            "align": "center"
+        }
+    ],
+    "rows": [],
+    "manyColumns": [{
+            "id": "xm",
+            "type": "string",
+            "text": "项目",
+            "align": "center",
+            "width": "180"
+        },
+        {
+            "id": "zhdf",
+            "type": "string",
+            "text": "综合得分预警评分标准",
+            "align": "center",
+            "width": "180",
+            "children": [{
+                    "id": "A",
+                    "type": "string",
+                    "text": "优秀值",
+                    "align": "center",
+                    "width": "180"
+                },
+                {
+                    "id": "B",
+                    "type": "string",
+                    "text": "良好值",
+                    "align": "center",
+                    "htmlType": "text",
+                    "width": "90"
+                },
+                {
+                    "id": "C",
+                    "type": "string",
+                    "text": "平均值"
+                },
+                {
+                    "id": "D",
+                    "type": "string",
+                    "text": "较低值",
+                    "width": "180"
+                },
+                {
+                    "id": "E",
+                    "type": "string",
+                    "text": "较差值",
+                    "align": "center",
+                    "width": "90"
+                }
+            ]
+        }
+    ],
+    "manyRows": [{
+        "xm": "综合得分（V）标准",
+        "A": "V>=9.0",
+        "B": "V>=8.0",
+        "C": "V>=7.0",
+        "D": "V>=6.0",
+        "E": "V>=5.0"
+    }]
+}

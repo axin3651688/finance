@@ -429,6 +429,7 @@ export default {
                         return arr.indexOf(item.id) == -1;
                     });
                     me.columns = columns;
+                    let parseItems = ['4','5','6'];
                     //加个融资情况表的判断。
                     if(params.templateId && params.templateId == "7"){
                         let itemNames = [//guarantee repaysource
@@ -440,7 +441,15 @@ export default {
                         ];
                         me.parseNumberToString(itemNames,res.data.data.rows);
                         me.tableData = me.handleFinancingCompany(res.data.data.rows);
-                    }else {
+                    }else if(params.templateId && parseItems.indexOf(params.templateId) != -1) {
+                        let itemNames = [//guarantee repaysource isnormal
+                            {"text":"isinside","type":"single"},
+                            {"text":"isnormal","type":"single"},
+                            {"text":"isnature","type":"MSeries","root":"dataDict"}
+                        ];
+                        this.parseNumberToString(itemNames,res.data.data.rows);
+                        me.tableData = res.data.data.rows;
+                    } else{
                         me.tableData = res.data.data.rows;
                     }
                 }
