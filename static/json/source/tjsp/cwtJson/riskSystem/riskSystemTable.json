@@ -1,0 +1,97 @@
+{
+  "code": 200,
+  "id": "riskSystem",
+  "text": "风险制度表格",
+  "columns": [
+    {
+      "id": "id",
+      "type": "string",
+      "text": "序号",
+      "align": "center",
+      "width": 60
+    },
+    {
+      "id": "title",
+      "type": "string",
+      "text": "标题",
+      "align": "left"
+    },
+    {
+      "id": "issuedNumber",
+      "type": "string",
+      "text": "发文字号",
+      "align": "left"
+    },
+    {
+      "id": "writtenDate",
+      "type": "string",
+      "text": "成文日期",
+      "align": "left"
+    },
+    {
+      "id": "releaseDate",
+      "type": "string",
+      "text": "发布日期",
+      "align": "left"
+    },
+    {
+      "id": "publishDept",
+      "type": "string",
+      "text": "发布部门",
+      "align": "left"
+    },
+    {
+      "id": "publishUser",
+      "type": "string",
+      "text": "发布人",
+      "align": "left"
+    },
+    {
+      "id": "suggest",
+      "type": "string",
+      "text": "建议内容",
+      "align": "center"
+    },
+    {
+      "id": "operation",
+      "type": "string",
+      "text": "操作",
+      "align": "center"
+    }
+  ],
+  "rows": [
+    {
+      "id": "iddd",
+      "title": "title",
+      "issuedNumber": "issuedNumberdd",
+      "writtenDate": "writtenDatedd",
+      "releaseDate":"releaseDatedd",
+      "publishDept":"publishDeptdd",
+      "publishUser":"publishUserdd",
+      "suggest":"suggestdd",
+      "operation":"operationdd"
+    },
+    {
+      "id": "idff",
+      "title": "titleff",
+      "issuedNumber": "issuedNumberff",
+      "writtenDate": "writtenDateff",
+      "releaseDate":"releaseDateff",
+      "publishDept":"publishDeptff",
+      "publishUser":"publishUserff",
+      "suggest":"suggestff",
+      "operation":"operationff"
+    },
+    {
+      "id": "idgg",
+      "title": "titlegg",
+      "issuedNumber": "issuedNumbergg",
+      "writtenDate": "writtenDategg",
+      "releaseDate":"releaseDategg",
+      "publishDept":"publishDeptgg",
+      "publishUser":"publishUsergg",
+      "suggest":"suggestgg",
+      "operation":"operationgg"
+    }
+  ]
+}
