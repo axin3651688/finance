@@ -114,7 +114,7 @@ export default {
                 return ((record.A - record.asntq)*100/record.A).toFixed(2)+"%";
             },
         }],
-    rows:[],
+    rows:[{id:"1100110",text:"营业收入",fomular:"0001!A$111011+0003!B$111002"}],
    //"dataHandlerBefore":"funName",//执行后置函数 单位转换，再执行列运算，如有配制有行计算的话，则执行calcRows
    filters:[{   
           calcSymbol:">",
