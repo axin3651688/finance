@@ -6,7 +6,7 @@
         { "id": "nscore" , "type": "number","text": "评分估值", "width": "100", "align": "center" },
         { "id": "sname" , "type": "string", "text": "可能性", "width": "120", "align": "center" },
         { "id": "valuerange" , "type": "string","text": "概率值", "width": "160", "align": "center" },
-        { "id": "sdescription" , "type": "string", "text": "说 明" , "width": "360", "align": "left" }
+        { "id": "sdescription" , "type": "string", "text": "说 明" , "width": "915", "align": "left" }
     ],
     "rows":[
         // { "pfgz": 5, "knx": "几乎肯定", "glz": "(75%,100]", "sm": "在未来12个月内，这项风险几乎肯定会出现至少1次" },

@@ -78,6 +78,13 @@
             "width": "160"
         },
         {
+            "id": "fxzt",
+            "text": "风险状态",
+            "type": "string",
+            "determine": false,
+            "width": "120"
+        },
+        {
             "id": "sriskdescription",
             "text": "风险概述",
             "type": "string",

@@ -21,7 +21,7 @@
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
-                        <el-button type="primary" plain @click="orderRecord">下达记录查询</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
                         <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
@@ -30,7 +30,7 @@
                 <div class="elbtn" style="float: left;lineHeight: 40px;marginLeft: 10px">
                     <span>共</span><span style="color: #409EFF; margin: 0 5px 0px 5px;fontSize: 15px">{{ tableLength }}</span><span>条风险：</span>
                     <span style="color: #409EFF; fontSize: 14px;margin: 0 0 0 10px;textDecoration:underline" 
-                    v-for="(element, index) in elementui" :key="element.id" v-html="element.html">
+                    v-for="(element, index) in elementui" :key="element.id" v-html="element.html" @click="textClick(element)">
                     </span>
                 </div>
 
@@ -53,7 +53,7 @@
         <div class="table">
             <el-table
             class="table-call"
-            :data="tableData"
+            :data="tableData2.length > 0 ? tableData2: tableData"
             stripe
             highlight-current-row
             style="width: 100%;"
@@ -171,7 +171,8 @@ export default {
             riskRelease: false,     // 批量下达按钮的监听事件，打开弹出框用的
             comtree2: [],          // 批量下达按钮公司树数据
             modify_btn: 0 ,
-            modifyReadonly: false
+            modifyReadonly: false,
+            tableData2: []
         }
     },
     created(){
@@ -320,6 +321,15 @@ export default {
                 me.elementui = [] ;
             }
         },
+        // 点击文字触发检索功能
+        textClick(element){
+            debugger
+            this.tableData2 = [] ;
+            let risk = element.html.slice(3,7) ;
+            this.tableData2 = this.tableData.filter(res => {
+                if(res.gradename === risk)return res ;
+            }) ;
+        },
         // 2.获取【风险矩阵】的json信息
         axiosRequest(){ 
             let me = this ;
@@ -451,6 +461,7 @@ export default {
          */
         refreshRow(){
             this.selection = [] ;
+            this.tableData2= [] ;
             this.loadModuleBefore() ;
         },
         /**
