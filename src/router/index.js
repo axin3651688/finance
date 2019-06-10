@@ -93,13 +93,19 @@ const router = new Router({
           name: 'cube',
           component: () =>
             import('@v/test/Cube.vue')
-        }
+        },
+        {
+            path: '/cubes',
+            name: 'cubes',
+            component: () =>
+              import('@v/test/CubeClass.vue')
+          }
       ]
     },
 
     {
       path: '/',
-      name: '各种charts',
+      name: '各种charts',//
       component: () =>
         import('@v/layout/BorderPage'),
       children: [{
