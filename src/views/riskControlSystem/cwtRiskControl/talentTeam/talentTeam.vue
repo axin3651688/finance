@@ -71,6 +71,7 @@
                     :tableData="allTableData"
                     :columns="allColumns"
                     :tableType="allTableType"
+                    :dataFresh="dataFresh"
                     @currentChange="currentChange"
             >
             </talent-table>
@@ -257,6 +258,9 @@
                         if (params.type === 'all') {
                             _this.selectedTableData = res.data.data.ratio;
                             _this.allTableData = res.data.data.detail.list;
+
+                            _this.allTableType.lastPage = res.data.data.detail.lastPage;
+
                         } else {
                             _this.selectedTableData = res.data.data.ratio;
                         }
@@ -273,7 +277,8 @@
                 };
                 getCurrentPageData(params).then(res => {
                     if (res.data.code === 200) {
-                        _this.allTableData = res.data.data;
+                        _this.allTableData = res.data.data.list;
+                        _this.allTableType.lastPage = res.data.data.lastPage;
                     }
                 });
             }
