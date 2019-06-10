@@ -35,10 +35,11 @@
                     <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" :readonly="readonly" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险类型：" prop="srisktype">
-                    <el-select v-model="form.srisktype" :disabled="readonly" placeholder="请选择风险类型" class="input" clearable @clear="clearHandle">
+                    <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input" @focus="focusClick" :disabled="readonly">
                         <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
                         <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
-                            <el-tree                                 
+                            <el-tree 
+                                v-show="isFocus"                                
                                 id="tree-option"
                                 ref="selectTree"
                                 :accordion="accordion"
@@ -60,7 +61,7 @@
             </el-form>
             <el-form :model="form" :inline="false" :rules="rules3" ref="sub3" label-width="120px">
                 <el-form-item label="风险概述：" prop="sriskdescription">
-                    <el-input type="textarea" v-model="form.sriskdescription" maxlength="1000" :readonl="readonly2" @change="descInput_sriskdescription" placeholder="请输入风险概述..."></el-input>
+                    <el-input type="textarea" v-model="form.sriskdescription" maxlength="1000" :readonly="readonly2" @change="descInput_sriskdescription" placeholder="请输入风险概述..."></el-input>
                 </el-form-item>
             </el-form>
         <!-- 2 -->
@@ -142,10 +143,14 @@ import {
     } from "~api/cube.js";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
+// 树形选择框组件
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
     components:{
         riskMatrix,
-        bulkOrderser
+        bulkOrderser,
+        Treeselect
     },
     // props:["riskTableRow","fsgl","yxcd","newThis","fsgl"],
     props: {
@@ -165,7 +170,7 @@ export default {
                 label: 'sname',
                 value: 'scode'
             },
-            valueId : "", valueTitle : "" , defaultExpandedKey: [], accordion: true,
+            eleTree:null,
             riskProbability: false,
             readonly: false ,       // 只读属性（查看按钮触发时用到）
             readonly2: false,       // 下达专用
@@ -175,6 +180,7 @@ export default {
             title: "",
             heights: "300px",
             type: null,
+            defaultExpandedKey: [],accordion:true,
             tableData: [],
             elements: [],
             options: [],            // 风险类型的数组（请求的数据）
@@ -187,10 +193,11 @@ export default {
             riskbulkOrderser: false,        // 下达弹出框的状态（显示与隐藏）
             addOpen: "",
             riskRelease: "",
+            valueTitle: "",isFocus:true,
             // form2: {},
             form: {
                 sriskname: "",              // 风险名称
-                srisktype: "",              // 风险类型
+                srisktype: null,            // 风险类型
                 departmentname: "",         // 填报部门（只读）
                 sfilluser: "",              // 填报人（只读）
                 sriskdescription: "",       // 风险概述
@@ -263,7 +270,7 @@ export default {
             // debugger
             // this.$message('132');
             this.addDialog() ;
-            this.clearHandle() ;
+            this.eleTree = null ;
         }
     },
     computed: {
@@ -295,7 +302,8 @@ export default {
             }
             if(modifyBtn || viewBtn){
                 viewRow = this.newThis.view_row ;
-                this.valueTitle = viewRow.srisktypename ;
+                let $cc = viewRow.srisktypename ;
+                this.valueTitle = $cc ;
                 for(let key in this.form){
                     this.form[key] = "" ;
                 }               
@@ -313,19 +321,22 @@ export default {
         handleNodeClick(node){
             // debugger
             this.valueTitle = node[this.defaultProps.label]
-            this.valueId = node[this.defaultProps.value]
-            this.form.srisktype = this.valueId ;
+            this.form.srisktype = node[this.defaultProps.value]
             this.$emit('getValue',this.valueId)
             this.defaultExpandedKey = []
+            this.isFocus = false 
+            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
         },
         // 清除下拉选【风险类型】的
         clearHandle(){
             this.valueTitle = ''
-            this.valueId = null
             this.defaultExpandedKey = []
             this.$emit('getValue',null)
         },
-
+        // 下拉框的焦点聚焦事件【风险类型】的
+        focusClick(event){
+            this.isFocus = true ;
+        },
         addDialog(){
             // debugger
             // 0合并公司/ 1单体公司

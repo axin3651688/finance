@@ -185,6 +185,7 @@ export default {
         if(document.body.offsetWidth <= 1200 )this.widths = "540px" ;
     },
     mounted(){
+        this.showDimsControl(); // 日期的控制显示
         this.setClientHeight(); // 自适应高度
         this.axiosJson();       // 获取表格json的信息
         this.axiosRequest();    // 获取【风险矩阵】的json信息
@@ -222,9 +223,17 @@ export default {
         }   
     },
     computed: {
-        ...mapGetters(["year", "month", "company", "conversion"])
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
     },
     methods: {
+        // 日期的控制显示
+        showDimsControl(){
+            let me = this,showDims = this.showDims;
+            showDims.year = true;
+            showDims.month = true;
+            showDims.company = true;
+        },
         // 自适应高度
         setClientHeight(){
             this.heights = document.documentElement.offsetHeight - 20 - 42 -64;

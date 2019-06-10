@@ -254,7 +254,8 @@ export default {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
                 item.id = item.scode;
-                item.label = "(" + item.scode + ") " + item.sname;
+                // item.label = "(" + item.scode + ") " + item.sname;
+                item.label = item.sname;
                 return item;
             });
             if(vax === null){

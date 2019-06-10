@@ -29,10 +29,11 @@
                 <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
             </el-form-item>
             <el-form-item label="风险类型：" prop="srisktype">
-                <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input">
+                <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input" @focus="focusClick">
                     <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
                     <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
-                        <el-tree                                 
+                        <el-tree 
+                            v-show="isFocus"                                
                             id="tree-option"
                             ref="selectTree"
                             :accordion="accordion"
@@ -178,7 +179,7 @@ export default {
                 label: 'sname',
                 value: 'scode'
             },
-            valueTitle : "" , defaultExpandedKey: [], accordion: true,
+            valueTitle : "" , defaultExpandedKey: [], accordion: true,isFocus:true
         }
     },
     created(){
@@ -221,12 +222,18 @@ export default {
             this.form.srisktype = node[this.defaultProps.value]
             this.$emit('getValue',this.valueId)
             this.defaultExpandedKey = []
+            this.isFocus = false 
+            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
         },
         // 清除下拉选【风险类型】的
         clearHandle(){
             this.valueTitle = ''
             this.defaultExpandedKey = []
             this.$emit('getValue',null)
+        },
+        // 下拉框的焦点聚焦事件【风险类型】的
+        focusClick(event){
+            this.isFocus = true ;
         },
         /**
          * 提交

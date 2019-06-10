@@ -51,6 +51,8 @@
     
 </template>
 <script>
+// 引用Vue方法
+import Vue from "vue";
 // 引用树表
 import treeTable from "@v/riskControlSystem/sjzRiskControl/treeTable";
 // 引用接口（获取数据）
@@ -70,6 +72,9 @@ import {
 // 引用 js 方法
 import tools from "utils/tools";
 import { param } from '../../../utils';
+Vue.directive('my-directive', function (){
+    return '123' ;
+});
 export default {
     name: 'treeTableDemo',
     components: {
@@ -133,6 +138,7 @@ export default {
         backreportdetailp(scope, val){
             debugger
             let me = this ;
+            let myDirective = Vue.directive('my-directive')
             let sisreport , params , _sql ;
             let $params = me.$store.state.prame.command; 
             let sfilluser = me.$store.getters.user.user.userName;
@@ -151,13 +157,13 @@ export default {
                 // mini.getSql_quertData_all( me, params );
                 return false ;
             }
-            me.backreportdetailp_request(params) ;
+            me.backreportdetailp_request(params, me) ;
             
         },
         /**
          * 【退回按钮】【催报按钮】请求方法
          */
-        backreportdetailp_request(params){
+        backreportdetailp_request(params, me){
             riskreportstate_update_remindback(params).then(ddf => {
                 if(ddf.data.code === 200){
                     me.$message({ message: ddf.data.msg, type: "success" }) ;
