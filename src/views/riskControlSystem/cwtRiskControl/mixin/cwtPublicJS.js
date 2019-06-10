@@ -1,4 +1,4 @@
-import { findThirdPartData } from "~api/interface";
+import {findThirdPartData} from "~api/interface";
 
 export default {
     methods: {
@@ -66,5 +66,39 @@ export default {
                 }
             }
         },
+
+
+        /**
+         * 获取当前时间   年月日时分秒
+         * @returns {string}
+         */
+        getDateNowYMDHMS(data) {
+            let date = data || new Date();
+            let Y = date.getFullYear() + '-';
+            let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+            let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+            let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+            let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+            return Y + M + D + h + m + s;
+        },
+
+        /**
+         * 获取当前时间   年月日
+         * @returns {string}
+         */
+        getDateNowYMD(data) {
+
+            if(typeof data === 'string'){
+                data = data.replace(/-/g, '/');
+                data = new Date(data);
+            }
+
+            let date = data || new Date();
+            let Y = date.getFullYear() + '-';
+            let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+            return Y + M + D;
+        }
     },
 }

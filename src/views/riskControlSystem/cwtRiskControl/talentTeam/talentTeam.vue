@@ -256,7 +256,7 @@
                     if (res.data.code === 200) {
                         if (params.type === 'all') {
                             _this.selectedTableData = res.data.data.ratio;
-                            _this.allTableData = res.data.data.detail;
+                            _this.allTableData = res.data.data.detail.list;
                         } else {
                             _this.selectedTableData = res.data.data.ratio;
                         }
