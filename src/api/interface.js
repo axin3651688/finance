@@ -57,25 +57,24 @@ export function findSideBar(userId, code) {
  * 获取第三方数据
  */
 export function findThirdPartData(params) {
-    debugger
     console.log("paramsparams", params)
     if (!params.cubeId) {
         params.cubeId = JSON.parse(localStorage.database).license.id;
     }
-
     return request({
         method: "post",
         url: params.url || "/api/api/find_cube_map/",
         params: params
     })
 }
+
 /**
  * 模块数据请求
  * 1:如果有sourceId刚按sourceId 约定的地址加载
  * 2：否则从url中直接加载
  */
 export function findDesignSource(sourceId, url) {
-    //为了兼容马军写的module_api_cache而写的,后期可优化掉的 
+    //为了兼容马军写的module_api_cache而写的,后期可优化掉的
     console.log("sourceId", sourceId, "url", url)
     if (isNaN(sourceId)) {
         // debugger
@@ -94,7 +93,7 @@ export function findDesignSource(sourceId, url) {
 }
 /**
  * 组织成员列表
- * 
+ *
  */
 export function companyContactList(companyId) {
     console.log("调用成员接口");
@@ -156,7 +155,7 @@ export function queryCellDetail(datas) {
 /**
  * 成员信息查询是否存在
  * 可以根据usename,邮箱,id查询
- * 
+ *
  */
 export function FIND_USER_ACCOUNT(use) {
     console.log("调用成员接口");
