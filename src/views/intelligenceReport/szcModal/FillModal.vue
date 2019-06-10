@@ -429,6 +429,7 @@ export default {
                         return arr.indexOf(item.id) == -1;
                     });
                     me.columns = columns;
+                    res.data.data.rows = me.queryDataAfter(res.data.data.rows,params);
                     let parseItems = ['4','5','6'];
                     //加个融资情况表的判断。
                     if(params.templateId && params.templateId == "7"){
@@ -454,6 +455,19 @@ export default {
                     }
                 }
             });
+        },
+        /**
+         * 查询数据之后。
+         * @author szc 2019年6月6日11:50:16
+         */
+        queryDataAfter (data,params) {
+            let me = this;
+            if(params.templateId == 8){
+                data = data.filter(item => {
+                    return item.accountbanks != "";
+                });
+            }
+            return data;
         },
         /**
          * 融资的类型转换。
@@ -692,7 +706,11 @@ export default {
          */
         handlerTypeOfValue (scope) {
             let me = this,selectTable = me.selectTable;
-            let value = scope.row[scope.column.property];
+            let value = scope.row[scope.column.property],unit = "";
+            if(typeof value == "string" && value.indexOf("%") != -1){
+                unit = "%";
+                value = value.replace("%","") - 0;
+            }
             if(value && selectTable && selectTable.valueLabel == "7"){
                 if(scope.column.property == "B" || scope.column.property == "C"){
                     return value.toFixed(4);
@@ -700,8 +718,8 @@ export default {
                     return value.toFixed(2);
                 }
             }
-            value = value? value:0; 
-            return value.toFixed(2);
+            value = value.toFixed(2); 
+            return unit? value + unit:value;
         },
         /**
          * 转换融资的 融资类型的转换

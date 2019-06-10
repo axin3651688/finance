@@ -59,7 +59,7 @@ export default {
      * @param {*} value 
      */
     getParams(me, value){ 
-        debugger
+        // debugger
         let $params = me.$store.state.prame.command;
         let departmentname = me.$store.getters.user.dept[0].scode || 0 ;
         let ngrade, sissubmit, nid, screatetime ;
@@ -254,7 +254,8 @@ export default {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
                 item.id = item.scode;
-                item.label = "(" + item.scode + ") " + item.sname;
+                // item.label = "(" + item.scode + ") " + item.sname;
+                item.label = item.sname;
                 return item;
             });
             if(vax === null){
@@ -277,10 +278,14 @@ export default {
      * @name 【风险报告页面引用】
      * @param {*} data 
      */
-    getOpenbyDefault(data){
-        data.forEach(quo2 => {
-            quo2._expanded = true ;           
-        });
+    getOpenbyDefault(data){ 
+        let isTrue = false ;
+        data.forEach(quo2 => { if(quo2.scode === "1001")isTrue = true ; });
+        if(isTrue){
+            data.forEach(quo2 => { if(quo2.scode==="1001"){quo2._expanded = true}else{quo2._expanded = false} }) ;
+        }else{
+            data.forEach(quo2 => { quo2._expanded = true ; }) ;
+        }
         return data ;
     },
     /**
@@ -384,6 +389,25 @@ export default {
             dptUser.push(objDptUser);
         }
         return dptUser ;
+    },
+    /**
+     * @author sjz
+     * @event 上报页面的【退回】【催报】的参数
+     * @name 【风险报告页面引用】
+     * @param {*} data 
+     */
+    getBackreportdetailp(me, scope, sisreport, user){
+        // debugger
+        let $params = me.$store.state.prame.command; 
+        let sfilluser = me.$store.getters.user.user.userName;
+        let params = {
+            company: scope.row.id,
+            period: $params.year + this.getPeriod($params),
+            sisreport: sisreport ,
+            sreporttime: this.getTimers(),
+            sreportuser: sfilluser,
+            toUsers: []
+        }
+        return params ;
     }
-
 }

@@ -31,7 +31,7 @@
             return {
                 treeData:[],
                 columns:[],
-                chartData:{}
+                chartData:[]
             }
         },
         created() {

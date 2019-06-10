@@ -47,12 +47,13 @@
         components: {
             groupGauge,
             groupRadar,
-            singleTable
+            singleTable,
+            manyHeaderTable
         },
         data() {
             return {
                 gaugesLeft:[{},{}],
-                gaugesRight:['3','4'],
+                gaugesRight:[{},{}],
                 tableData:[],
                 columns:[],
                 chartDataLeft:{},
@@ -70,6 +71,8 @@
                 if(res.data.code == 200) {
                     // me.tableData = res.data.rows;
                     me.columns = res.data.columns;
+                    me.manyColumns = res.data.manyColumns;
+                    me.ManyTableData = res.data.manyRows;
                     let judgeParams = {
                         sqlId:"106"
                     };
@@ -77,8 +80,7 @@
                 }
             });
         },
-        mounted() {
-        },
+        mounted() {},
         methods: {
             /**
              * 查询数据的入口
@@ -117,7 +119,6 @@
                         });
                     }
                 });
-
             },
             /**
              * 请求参数上添加sql语句。
