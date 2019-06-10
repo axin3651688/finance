@@ -5,7 +5,7 @@
 export default {
     name:"",
     props:{
-        chartData:Object
+        chartData:Array
     },
     data() {
         return {

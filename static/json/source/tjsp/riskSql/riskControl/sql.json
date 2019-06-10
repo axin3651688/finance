@@ -29,6 +29,11 @@
             "id": "106",
             "text": "综合评级的sql",
             "sql": "SELECT t1.scode,t1.sname,t1.spcode,t4.scode as zbid,t4.sname as zbmc, '10' as a, '7' as b, '5' as c, '4' as d, '2' as e, SCORE as qyfz,t3.sname as pj fROM( select SCORE,DIM_COMPANY,DIM_GRADE,DIM_INDICATOR from DW_FACTINDICATOR where DIM_FACT='A' and DIM_INDICATOR in ( 'qypj','zwfx', 'yyzl', 'fznl', 'ylnl')and DIM_PERIOD='201808' and DIM_COMPANY='1001') t2 left join (select scode,sname,spcode from dw_dimcompany where CISDEL='N') t1 on t1.scode=t2.DIM_COMPANY left join DW_DIMGRADE t3 on t2.DIM_GRADE=t3.scode left join DW_DIMINDICATOR t4 on t2.DIM_INDICATOR=t4.scode"
+        },
+        {
+            "id": "107",
+            "text": "盈利能力的sql",
+            "sql": "with t1 as( SELECT t1.scode,t1.sname,t1.spcode,VAL,DIM_INDICATOR, t3.sname as pj,SCORE as qyfz fROM ( select SCORE,DIM_COMPANY,DIM_GRADE,DIM_INDICATOR,VAL from DW_FACTINDICATOR where DIM_FACT='A' and DIM_INDICATOR in ( '22','50','24','129','132') and DIM_PERIOD='201808' and DIM_COMPANY='1001') t2 left join (select scode,sname,spcode from dw_dimcompany where CISDEL='N')t1 on t1.scode=t2.DIM_COMPANY left join DW_DIMGRADE t3 on t2.DIM_GRADE=t3.scode), t2 as ( SELECT '1001' as scode , INDSPARA, A, B, C, D, E FROM DW_FACTINDUSTRY WHERE INDSPARA IN ( '22','50','24','129','132') AND INDSYEAR='2018' AND INDSCLASSIFY=(select SINDCODEDETAIL from dw_dimcompany where scode='1001') AND INDSRANGE=(select SINDSRANGE from dw_dimcompany where scode='1001')) select t1.scode,t1.sname,t3.sname,t1.DIM_INDICATOR, a,b,c,d,e, t1.val,t1.pj,t1.qyfz from t1 left join t2 on t1.scode=t2.scode and t1.DIM_INDICATOR=t2.INDSPARA left join DW_DIMINDEX t3 on t1.DIM_INDICATOR=t3.SCODE"
         }
     ]
 }
