@@ -5,7 +5,8 @@
                     :data="tableData"
                     border
                     stripe
-                    :header-cell-style="headerRowStyle"
+                    :header-cell-style="headerCellStyle"
+                    :header-row-style="headerRowStyle"
                     class="risk_table"
                     style="width: 100%">
                 <template v-for="(item,index) in columns">
@@ -22,26 +23,27 @@
                                     >
                                     <template v-for="(childrenTwo,indexTwo) in childItem.children">
                                         <el-table-column
-                                        :align="childItem.align || 'left'"
+                                        :align="childrenTwo.align || 'left'"
                                         :key="indexTwo"
                                         :show-overflow-tooltip="true"
-                                        :prop="childItem.id"
+                                        :prop="childrenTwo.id"
                                         header-align="center"
-                                        :label="childItem.text"
-                                        :width="childItem.width">
+                                        :label="childrenTwo.text"
+                                        class="last_class"
+                                        :width="childrenTwo.width">
                                         </el-table-column>
                                     </template>
                                     </el-table-column>
                                 </template>
                                 <template v-else>
                                     <el-table-column
-                                        :align="item.align || 'left'"
+                                        :align="childItem.align || 'left'"
                                         :key="childIndex"
                                         :show-overflow-tooltip="true"
-                                        :prop="item.id"
+                                        :prop="childItem.id"
                                         header-align="center"
-                                        :label="item.text"
-                                        :width="item.width">
+                                        :label="childItem.text"
+                                        :width="childItem.width">
                                     </el-table-column>
                                 </template>
                             </template>
@@ -140,16 +142,26 @@
             // this.setPageAdaptive();
         },
         methods: {
+            headerRowStyle (row,col) {
+                debugger;
+                let me = this;
+                if (row.rowIndex === 2) {
+                    return 'display:none';
+                } else {
+                    return "background:rgb(240, 248, 255)";
+                }
+            },
             /**
              * 表头样式。
              */
-            headerRowStyle(row) {
+            headerCellStyle(row,col,aa) {
                 let me = this;
-                if (row.rowIndex === 0) {
-                    return 'background:rgb(240, 248, 255)';
-                } else {
-                    return "";
-                }
+                return 'background:rgb(240, 248, 255);text-align:center;';
+                // if (row.rowIndex === 0) {
+                //     return 'background:rgb(240, 248, 255)';
+                // } else {
+                //     return "";
+                // }
             },
             /**
              *
@@ -213,6 +225,9 @@
 </script>
 
 <style scoped>
+    .last_class {
+        display: none;
+    }
     .risk_table {
         height: 100%;
     }

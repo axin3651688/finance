@@ -4,14 +4,14 @@
             <el-row>
                 <el-col v-for="(item,index) in gaugeTop" :key="index" :span="item">
                     <div>
-                        <groupGauge></groupGauge>
+                        <groupGaugePublic></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeMiddleLeft" :key="index">
-                        <groupGauge></groupGauge>
+                        <groupGaugePublic></groupGaugePublic>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -21,7 +21,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeMiddleRight" :key="index">
-                        <groupGauge></groupGauge>
+                        <groupGaugePublic></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
@@ -44,9 +44,12 @@
 </template>
 <script>
     import groupGauge from "./../echarts/groupGauge.vue"
+    import groupGaugePublic from "./../echarts/groupGaugePublic.vue"
     import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
+    import publicMarking from "./../minix/publicMarking.js"
     export default {
+        mixins:[publicMarking],
         name: "treeTableDemo",
         components: {
             groupGauge,
@@ -55,19 +58,25 @@
         },
         data() {
             return {
-                gaugeTop:[8,8,8],
-                gaugeMiddleLeft:[8,8],
-                gaugeMiddleRight:[8,8],
+                gaugeTop:[{},{},{}],
+                gaugeMiddleLeft:[{},{}],
+                gaugeMiddleRight:[{},{}],
                 tableData:[],
                 columns:[]
             }
         },
         created() {
-            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/profitability.json";
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
                     me.tableData = res.data.rows;
-                    me.columns = res.data.columns
+                    me.columns = res.data.columns;
+                    let judgeParams = {
+                        id:"profitability",
+                        text:"盈利能力",
+                        sqlId:"107"
+                    };
+                    me.queryDataPublic(judgeParams);
                 }
             });
         },
