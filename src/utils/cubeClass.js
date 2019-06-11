@@ -7,6 +7,7 @@ import {createRandomDatas} from './random';
 import {http} from './http';
 import {findThirdPartData, findDesignSource} from '~api/interface';
 import {timingSafeEqual} from 'crypto';
+import {FIND_DATA_CUBE} from '~api/cube';
 
 let urlParams = getClientParams();
 /**
@@ -79,6 +80,26 @@ class CnbiCube {
       // TODO 如果传参是ID，找缓存数据，如果没有，则根据id号请求cube数据
     }
   }
+
+
+  static async getCubeById(id, isInit) {
+    let res = await FIND_DATA_CUBE(id);
+    let cube = res.data.code == 200 ? res.data.data : null;
+    if (cube) {
+      let cubeObj = new CnbiCube(cube);
+      if (isInit) {
+        await cubeObj.init()
+      }
+      debugger
+      return cubeObj
+    } else {
+      console.warn('可能传入了错误的cubeId');
+      return null;
+    }
+
+  }
+
+
 
   /**
    * 设置参数
@@ -185,6 +206,7 @@ class CnbiCube {
   }
 
   getDataHandler(scope) {
+    debugger
     if (!this.dataCube) {
       this.dataCube = new DataHandler(scope);
     }
@@ -255,8 +277,8 @@ class CnbiCube {
     await this.excuteFunctions(prefixExcuteFunctionNames, scope);
     await this.getModelDatas(scope);
     await this.excuteFunctions(subfixExcuteFunctionNames, scope);
-    let data = this.datas;
-    return this.datas;
+    let datas = this.datas;
+    return datas;
   }
 
   static getFunTemplate(exp) {
@@ -283,12 +305,8 @@ class CnbiCube {
     console.log(exp, typeof exp);
     return this.datas.filter(data => {
       // 如果过滤异常，直接返回原数据
-      try {
-        eval('(' + exp + ')');
-        return true;
-      } catch (e) {
-        console.log('数据过滤异常:', e);
-        return true;
+      if(eval("("+exp+")")){
+        return data;
       }
     });
   }
@@ -327,7 +345,7 @@ class CnbiCube {
  */
 class DataHandler {
   constructor(cube) {
-    this.cube = cube;
+    // this.cube = cube; // jhb注释，出现循环引用
   }
 
   /**

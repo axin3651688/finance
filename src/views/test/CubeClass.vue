@@ -17,7 +17,7 @@
     </div>
     <el-table
       v-if="cubeObject && cube && cube.datas"
-      :data="cubeObject.filter(cube.filters)|| cube.datas"
+      :data="cubeObject.filter(cube.filters.filters)|| cube.datas"
       style="float:right;width:65%;">
       <el-table-column v-for="col in cube.columns" v-bind:key="col.id"
                        :prop="col.id"
@@ -177,17 +177,17 @@ export default {
       debugger;
       console.log('改变', newyear);
       this.cube.needDims.year = {id: newyear, text: newyear + '年'};
-      this.initView();
+      // this.initView();
     },
     month(newmonth) {
       debugger;
       console.log('改变', newmonth);
       this.cube.needDims.month = {id: newmonth, text: newmonth + '月'};
-      this.initView();
+      // this.initView();
     },
     company(newId) {
       console.log('改变', newId);
-      this.updateView('company');
+      // this.updateView('company');
     }
   },
   computed: {
@@ -250,9 +250,9 @@ export default {
 
 
     async initView() {
-      this.cube = await this.requestCube(24);
-      this.cubeObject = new CnbiCube(this.cube);
-      this.cube.datas = await this.cubeObject.init();
+      this.cubeObject = await CnbiCube.getCubeById(24, true);
+      this.cube= this.cubeObject;
+      debugger
       this.jsonCube = JSON.stringify(this.cube, this.functionReplacer, 4);//使用四个空格缩进;
       this.replaceVar(this.jsonCube);
 
@@ -263,7 +263,9 @@ export default {
       val = val.replace(reg, '\n');
       this.cube = JSON.parse(val, this.functionReviver);
       Cnbi.apply(this.cubeObject, this.cube);
-      this.initView();
+      // this.initView();
+      debugger
+      this.cubeObject.init()
       let a = {
         id: 1,
         text: 52,
