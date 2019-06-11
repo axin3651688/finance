@@ -54,7 +54,13 @@
         props: {
             columns: Array,
             tableData: Array,
-            tableType: Object
+            tableType: Object,
+            dataFresh: Boolean
+        },
+        watch:{
+            dataFresh(){
+                this.initData();
+            }
         },
         data() {
             return {
@@ -69,10 +75,11 @@
                 PageSize: 1,
 
                 //一共多少叶
-                total:10
+                total: null
             }
         },
         created() {
+            // this.initData();
         },
         mounted() {
         },
@@ -101,7 +108,11 @@
                 // 改变默认的页数
                 this.currentPage = val;
                 // 切换页码时，要获取每页显示的条数
-                this.$emit("currentChange",val);
+                this.$emit("currentChange", val);
+            },
+
+            initData() {
+                this.total = this.tableType['lastPage'];
             },
         }
 
@@ -109,7 +120,7 @@
 </script>
 
 <style scoped>
-.tabListPage{
-    margin-bottom: 50px;
-}
+    .tabListPage {
+        margin-bottom: 50px;
+    }
 </style>

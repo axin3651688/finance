@@ -380,7 +380,8 @@ export default {
                     changeDatas[i].nfill2 = 0;
                     changeDatas[i].nrep2 = 0;
                     changeDatas[i].nper2 = 0;
-                    changeDatas[i].nwarn2 = 0; 
+                    changeDatas[i].nwarn2 = 0;
+                    changeDatas[i].nreview2 = 0;  
                     changeDatas[i].scode2 = null; 
                 } 
            }
@@ -470,6 +471,7 @@ export default {
         // row.nrep2 = 0;
         // row.nper2 = 0;
         // row.nwarn2 = 0; 
+        // row.nreview2 = 0;
         _this.rightDatas = changeDatas;
       
     },
@@ -565,6 +567,12 @@ export default {
                         item.rightsVal.push("预警");
                     }
                   }
+                  if(item.nreview && item.nreview === 1 ){
+                    item.rights.push("审阅");
+                    if(item.nreview2 === 1){
+                        item.rightsVal.push("审阅");
+                    }
+                  }
                   if(item.scode && item.scode2){
                         item._isChecked = true;
                   }else{
@@ -657,7 +665,7 @@ export default {
             if(!row._isChecked)row._isChecked = true;
          }
 
-       }else {
+       }else if(val == "预警"){
          if(row.nwarn2 ===1){
            row.nwarn2 = 0;
          }else{
@@ -665,6 +673,13 @@ export default {
             if(!row._isChecked)row._isChecked = true;
          }
 
+       }else {
+         if(row.nreview2 ===1){
+           row.nreview2 = 0;
+         }else{
+            row.nreview2 = 1;
+            if(!row._isChecked)row._isChecked = true;
+         }
        }
         if(rightDatas && rightDatas.length > 0){
           for(let i = 0;i < rightDatas.length;i++){
@@ -693,7 +708,7 @@ export default {
               if(rightDatas[i].id == item.id){              
                   if(rightDatas[i].nadd2  != item.nadd2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].nupdate2  != item.nupdate2
                    || rightDatas[i].nexp2  != item.nexp2 || rightDatas[i].nimp2  != item.nimp2 || rightDatas[i].nfill2  != item.nfill2 || rightDatas[i].nrep2  != item.nrep2
-                    || rightDatas[i].nper2  != item.nper2 || rightDatas[i].nwarn2  != item.nwarn2 || rightDatas[i].scode2  != item.scode2){
+                    || rightDatas[i].nper2  != item.nper2 || rightDatas[i].nwarn2  != item.nwarn2 || rightDatas[i].nreview2  != item.nreview2 || rightDatas[i].scode2  != item.scode2){
                       return item;
 
                   }
@@ -726,6 +741,7 @@ export default {
                     nrep: rightDatas[i].nrep2,
                     nupdate: rightDatas[i].nupdate2,
                     nwarn: rightDatas[i].nwarn2,
+                    nreview: rightDatas[i].nreview2,
                     roleid: rightDatas[i].roleid2,
                     scode: rightDatas[i].scode2 
                 }
