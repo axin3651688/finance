@@ -251,8 +251,8 @@ export default {
 
     async initView() {
       this.cubeObject = await CnbiCube.getCubeById(24, true);
-      this.cube= this.cubeObject;
-      debugger
+      this.cube = this.cubeObject;
+      debugger;
       this.jsonCube = JSON.stringify(this.cube, this.functionReplacer, 4);//使用四个空格缩进;
       this.replaceVar(this.jsonCube);
 
@@ -264,8 +264,7 @@ export default {
       this.cube = JSON.parse(val, this.functionReviver);
       Cnbi.apply(this.cubeObject, this.cube);
       // this.initView();
-      debugger
-      this.cubeObject.init()
+      this.cubeObject.init();
       let a = {
         id: 1,
         text: 52,
