@@ -63,6 +63,8 @@
             @select-all="handleSelectionChange"
             :cell-class-name="cellClassName"
             border>
+                <el-table-column type="index" width="55" label="序号" align="center" ></el-table-column>
+                <el-table-column type="selection" width="55" align="center" ></el-table-column>
                 <el-table-column 
                 v-for="element in elements"
                 v-if="!element.determine"
@@ -72,7 +74,7 @@
                 :label="element.text"
                 :width="element.width"
                 :show-overflow-tooltip="element.showOverflow"
-                align="center" 
+                align="center"                 
                 >
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
@@ -148,6 +150,7 @@ export default {
             elementui: [],           // 文字
             tableLength: 0,          // 共多少条数据
             tableData: [],      // 表格的数据
+            tableData_new: [],  // 表格的复制数据
             elements: [],       // 表格的列
             items: [],          // 控制列显示【作用于列选择按钮】
             dialogFormVisible: false,   // 默认弹出框不显示
@@ -176,6 +179,7 @@ export default {
             modify_btn: 0 ,
             modifyReadonly: false,
             tableData2: [],
+            htmlText: "",
             
         }
     },
@@ -233,9 +237,20 @@ export default {
     methods: {
         // 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
         cellClassName({row, column, rowIndex, columnIndex}){
-            if(column.property === "isclosename"){
-                return  row.isclosename=="未关闭"?"is-closename-no":"is-closename-yes" ;
-            }
+            // debugger
+            if(column.property == "gradename"){
+                if(row.gradename == "中等风险"){
+                    return "gradename_yellow" ;
+                }else if(row.gradename == "重大风险"){
+                    return "gradename_orange" ;
+                }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
+                    return "gradename_red" ;
+                }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
+                    return "gradename_green" ;
+                }else {
+                    return "gradename_blue" ;
+                }               
+            }   
         },
         // 日期的控制显示
         showDimsControl(){
@@ -321,6 +336,7 @@ export default {
             let nisleaf = this.$store.getters.treeInfo.nisleaf ;
             if(obj.queryDataAfter && typeof obj.queryDataAfter == "function"){
                 me.tableData = obj.queryDataAfter(datas, me);
+                me.tableData_new = me.tableData ;
             }
             me.tableLength = me.tableData.length ;
             // 必须要有数据
@@ -360,7 +376,7 @@ export default {
                 me.isbtnModify = false ;
             }
         },
-        // 点击文字触发检索功能
+        // 点击文字触发检索功能（☆）
         textClick(element){
             // debugger
             let len = element.html.length , risk = "" ;
@@ -368,7 +384,10 @@ export default {
             if(len == 12)risk = element.html.slice(3,6) ;
             if(len == 13)risk = element.html.slice(3,7) ;
             if(len == 14)risk = element.html.slice(3,8) ;
-            this.tableData2 = this.tableData.filter(res => {
+            // this.tableData2 = this.tableData.filter(res => {
+            //     if(res.gradename == risk)return res ;
+            // }) ;
+            this.tableData = this.tableData_new.filter(res => {
                 if(res.gradename == risk)return res ;
             }) ;
         },
@@ -643,24 +662,39 @@ export default {
 /* .el-dialog__wrapper{
     overflow: hidden;
 } */
-</style>
-<style>
-/* 表格的【未关闭】的样式 */
-.table-call .is-closename-no .cell {
-    color: red ;
-    font-weight: bold;
-    /* background: red ;
-    width: 80px;
+.table-call .gradename_red .cell {
+    color: #fff ;
+    background: red ;
+    width: 90px;
     border-radius: 11px ;
-    margin: 0 auto ; */
+    margin: 0 auto ;
 }
-/* 表格的【已关闭】的样式 */
-.table-call .is-closename-yes .cell {
-    color: green ;
-    font-weight: bold;
-    /* background: green ;
-    width: 80px;
+.table-call .gradename_green .cell {
+    color: #fff ;
+    background-color: rgb(19, 215, 8);
+    width: 90px;
     border-radius: 11px ;
-    margin: 0 auto ; */
+    margin: 0 auto ;
+}
+.table-call .gradename_yellow .cell {
+    color: #fff ;
+    background-color: rgb(227, 212, 10);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_orange .cell {
+    color: #fff ;
+    background-color: rgb(227, 183, 10);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_blue .cell {
+    color: #fff ;
+    background-color: rgb(10, 149, 227);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
 }
 </style>

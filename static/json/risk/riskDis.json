@@ -7,19 +7,19 @@
         "sql": "SELECT a.nid AS id, dim_company AS company, b.sname AS companyname, a.dim_period AS period, a.dim_department AS department, NVL(c.sname, '无部门') AS departmentname, a.sriskname, a.sfilluser, a.screatetime, a.sriskdescription, a.nprobability, d.sname AS probabilityname, a.ninfluence, e.sname AS influencename, a.nscore, a.ngrade, f.sname AS gradename, colormark AS gradecolor, srisktype, g.sname AS srisktypename, a.sreporttype, h.sname AS sreporttypename, a.sissubmit, a.smeasures, a.sproposal, a.ssubmituser, a.ssubmittime, a.SORIGIN,a.sisclose as isclosename FROM( SELECT * FROM risk_distinguish WHERE ( SUBSTR(screatetime,1,4) || SUBSTR(screatetime,6,2)) :permissionDate AND dim_company = :company) a LEFT JOIN dw_dimcompany b ON a.dim_company = b.scode LEFT JOIN dw_dimdepartment c ON a.dim_department = c.scode AND c.scomcode = a.dim_company LEFT JOIN RISK_PROBABILITY d ON a.nprobability = d.nid LEFT JOIN RISK_INFLUENCE_DEGREE e ON a.ninfluence = e.nid LEFT JOIN RISK_MATRIX f ON a.ngrade = f.nid LEFT JOIN RISK_TYPE g ON a.srisktype = g.scode LEFT JOIN RISKREPORT_TYPE h ON a.sreporttype = h.scode"
     },
     "columns": [
-        {
-            "id": "index",
-            "text": "序号",
-            "type": "index",
-            "determine": false,
-            "width": "60"
-        },
-        {
-            "id": "selection",
-            "determine": false,
-            "type": "selection",
-            "width": "60"
-        },
+        // {
+        //     "id": "index",
+        //     "text": "序号",
+        //     "type": "index",
+        //     "determine": false,
+        //     "width": "60"
+        // },
+        // {
+        //     "id": "selection",
+        //     "determine": false,
+        //     "type": "selection",
+        //     "width": "60"
+        // },
         {
             "id": "isclosename",
             "text": "风险状态",
@@ -136,6 +136,13 @@
             "showOverflow": true,
             "width": "160"
         }
+        // {
+        //     "id": "cz",
+        //     "text": "操作",
+        //     "type": "string",
+        //     "width": "160",
+        //     "fixed": "right"
+        // }
     ],
     "rows": [
 
@@ -183,6 +190,12 @@
                 let drill = "color: red; fontWeight: bold;" ;
                 return css + drill ;
             }else if(row[pro] == "已提交"){
+                let drill = "color: green; fontWeight: bold;" ;
+                return css + drill ;
+            }else if(row[pro] == "未关闭"){
+                let drill = "color: red; fontWeight: bold;" ;
+                return css + drill ;
+            }else if(row[pro] == "已关闭"){
                 let drill = "color: green; fontWeight: bold;" ;
                 return css + drill ;
             }
