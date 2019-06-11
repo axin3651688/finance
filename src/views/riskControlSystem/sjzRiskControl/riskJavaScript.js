@@ -76,12 +76,12 @@ export default {
         
         // ngrade = me.form.gradename > 0? me.form.gradename : 0 ;
         if(me.newThis.modify_btn == 1){                 // 修改弹出框
-            if(me.newThis.view_row.sissubmit == "已提交"){
-                sissubmit = "Y" ;
-            }else{
+            // if(me.newThis.view_row.sissubmit == "已提交"){
+            //     sissubmit = "Y" ;
+            // }else{
                 // sissubmit = "N" ;
                 sissubmit = value == "save"? "N" : "Y" ;
-            }           
+            // }           
             nid = me.newThis.view_row.id ;
         }else{
             sissubmit = value == "save"? "N" : "Y" ;    // 是否是添加按钮还是提交按钮
@@ -95,31 +95,32 @@ export default {
         }else{
             screatetime = me.form.screatetime ;
         }
-        let ssubmituser = me.$store.getters.user.user.userName ;
+        let ssubmituser = me.$store.getters.user.user.trueName ;
+        // debugger
         // let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;me.form.sfilluser
         let params = 
             [{
                 "id": nid,                                  
-                "period": $params.year + this.getPeriod($params),
-                "company": $params.company,               
-                "department": departmentname,             
-                "sfilluser": ssubmituser,           
-                "sriskname": me.form.sriskname,           
-                "srisktype": me.form.srisktype,           
-                "sriskdescription": me.form.sriskdescription,     
-                "nprobability": me.form.nprobability,     
-                "ninfluence": me.form.ninfluence,         
-                "nscore": me.form.nscore,                 
-                "ngrade": ngrade,                         
-                "sreporttype": me.form.sreporttype,       
-                "smeasures": me.form.smeasures,           
-                "sproposal": me.form.sproposal,           
-                "sissubmit": sissubmit,                  
+                "period": $params.year + this.getPeriod($params),   // 日期
+                "company": $params.company,                         // 公司              
+                "department": departmentname,                       // 部门           
+                "sfilluser": ssubmituser,                           // 用户名          
+                "sriskname": me.form.sriskname,                     // 风险名称        
+                "srisktype": me.form.srisktype,                     // 风险类型         
+                "sriskdescription": me.form.sriskdescription,       // 风险概述    
+                "nprobability": me.form.nprobability,               // 风险发生概率
+                "ninfluence": me.form.ninfluence,                   // 风险影响等级     
+                "nscore": me.form.nscore,                           // 风险分值              
+                "ngrade": ngrade,                                   // 风险等级
+                "sreporttype": me.form.sreporttype,                 // 报告类型      
+                "smeasures": me.form.smeasures,                     // 采取措施       
+                "sproposal": me.form.sproposal,                     // 应对建议
+                "sissubmit": sissubmit,                             // 提交状态                 
                 "sorigin": "添加",                        
                 "screatetime": screatetime,     // 创建时间（死的-创建后就不变了，除非删除风险）              
                 "ssubmittime": time,            // 提交时间（动态）
                 "sisclose": "",
-                "ssubmituser": ssubmituser
+                "ssubmituser": ssubmituser      // 提交人
             }];
         return params ;
     },
@@ -396,7 +397,7 @@ export default {
      * @name 【风险报告页面引用】
      * @param {*} data 
      */
-    getBackreportdetailp(me, scope, sisreport, user){
+    getBackreportdetailp(me, scope, sisreport, toUsers){
         // debugger
         let $params = me.$store.state.prame.command; 
         let sfilluser = me.$store.getters.user.user.userName;
@@ -406,7 +407,7 @@ export default {
             sisreport: sisreport ,
             sreporttime: this.getTimers(),
             sreportuser: sfilluser,
-            toUsers: []
+            toUsers
         }
         return params ;
     }

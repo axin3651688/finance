@@ -17,13 +17,13 @@
                 <div class="elbtn" style="float: left">
                     <!-- 按钮 -->
                     <el-button-group class="iconbtn">
-                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="addClick">添加</el-button>
-                        <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
+                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain v-show="isbtnShow2" @click="addClick">添加</el-button>
+                        <el-button type="primary" icon="el-icon-circle-close-outline" plain v-show="isbtnShow2" @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
-                        <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
                 <!-- 文字 -->
@@ -61,6 +61,7 @@
             :cell-style="cellStyle"
             @select="handleSelectionChange"
             @select-all="handleSelectionChange"
+            :cell-class-name="cellClassName"
             border>
                 <el-table-column 
                 v-for="element in elements"
@@ -77,7 +78,7 @@
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
-                        <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
+                        <el-button type="text" size="small" v-show="isbtnModify" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -160,6 +161,8 @@ export default {
             periodtype: 0,      // 全局控制选择的日期类型
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
+            isbtnShow2: true,   // 其他按钮的显示与隐藏
+            isbtnModify: true,  // 修改按钮的显示与隐藏
             selection: [],      // 存储 Checkbox 选中的行信息 （注：用于删除时 和 下达时） 
             me: this,
             // 
@@ -172,7 +175,8 @@ export default {
             comtree2: [],          // 批量下达按钮公司树数据
             modify_btn: 0 ,
             modifyReadonly: false,
-            tableData2: []
+            tableData2: [],
+            
         }
     },
     created(){
@@ -227,6 +231,12 @@ export default {
         ...mapGetters(["device", "user","showDims"])
     },
     methods: {
+        // 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
+        cellClassName({row, column, rowIndex, columnIndex}){
+            if(column.property === "isclosename"){
+                return  row.isclosename=="未关闭"?"is-closename-no":"is-closename-yes" ;
+            }
+        },
         // 日期的控制显示
         showDimsControl(){
             let me = this,showDims = this.showDims;
@@ -305,6 +315,10 @@ export default {
             // debugger
             let me = this ;
             let obj = me.objer ;
+            let $params = me.$store.state.prame.command;
+            let information = me.$store.getters.user.user ;
+            // 查看公司的信息
+            let nisleaf = this.$store.getters.treeInfo.nisleaf ;
             if(obj.queryDataAfter && typeof obj.queryDataAfter == "function"){
                 me.tableData = obj.queryDataAfter(datas, me);
             }
@@ -329,14 +343,33 @@ export default {
             }else{
                 me.elementui = [] ;
             }
+            // 本属公司才能操作按钮，切换到非本属公司只能刷新和查看。单体公司不显示下达(2个)按钮，
+            if($params.company === information.companyId){
+                if(nisleaf){
+                    me.isbtnShow = false ;
+                    me.isbtnShow2= true ;
+                    me.isbtnModify = true ;
+                }else{
+                    me.isbtnShow = true ;
+                    me.isbtnShow2= true ;
+                    me.isbtnModify = true ;
+                }
+            }else{
+                me.isbtnShow = false ;
+                me.isbtnShow2= false ;
+                me.isbtnModify = false ;
+            }
         },
         // 点击文字触发检索功能
         textClick(element){
-            debugger
+            // debugger
+            let len = element.html.length , risk = "" ;
             this.tableData2 = [] ;
-            let risk = element.html.slice(3,7) ;
+            if(len == 12)risk = element.html.slice(3,6) ;
+            if(len == 13)risk = element.html.slice(3,7) ;
+            if(len == 14)risk = element.html.slice(3,8) ;
             this.tableData2 = this.tableData.filter(res => {
-                if(res.gradename === risk)return res ;
+                if(res.gradename == risk)return res ;
             }) ;
         },
         // 2.获取【风险矩阵】的json信息
@@ -610,4 +643,24 @@ export default {
 /* .el-dialog__wrapper{
     overflow: hidden;
 } */
+</style>
+<style>
+/* 表格的【未关闭】的样式 */
+.table-call .is-closename-no .cell {
+    color: red ;
+    font-weight: bold;
+    /* background: red ;
+    width: 80px;
+    border-radius: 11px ;
+    margin: 0 auto ; */
+}
+/* 表格的【已关闭】的样式 */
+.table-call .is-closename-yes .cell {
+    color: green ;
+    font-weight: bold;
+    /* background: green ;
+    width: 80px;
+    border-radius: 11px ;
+    margin: 0 auto ; */
+}
 </style>

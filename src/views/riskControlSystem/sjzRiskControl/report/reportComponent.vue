@@ -64,7 +64,10 @@
                                                 <span>风险评估</span>
                                                 <el-button v-show="isShow" @click="modifyBtn(tool)" class="container_main_risk_btn textFloat" size="medium "><i class="iconfont icon-xiugai"></i>修改</el-button>
                                             </div>                                           
-                                            <div class="textTitle3">{{ tool.scontrolmeasure|TextIndex }}</div>
+                                            <!-- <div class="textTitle3">{{ tool.scontrolmeasure|TextIndex }}</div> -->
+                                            <!-- <div class="textTitle3">{{ tool.scontrolmeasure|TextIndex }}</div> -->
+                                            <div class="textTitle3">{{ tool.text1 }}</div>
+                                            <div class="textTitle3">{{ tool.text2 }}</div>
                                         </div>
                                         <div class="container_main_risk_ff">
                                             <div class="container_main_risk_text textTitle2">风险概述</div>
@@ -204,6 +207,7 @@ export default {
         cancelBtn(){
             this.newThis.numOpen = null ;
             this.newThis.isShow = false ;
+            this.nisShow = false ;
         },
         // 导出按钮
         exportBtn(){
@@ -212,7 +216,7 @@ export default {
         // 1. 上报（修改）按钮触发 
         // 0. 查看（不能修改）按钮触发
         setReportBack(number){
-            // debugger
+            debugger
             if(number==null)return false ;
             // number=1，为上报状态；number=0，为查看状态。
             if(number){
@@ -234,11 +238,15 @@ export default {
             // 前缀+序号的（大写的）
             this.directory.forEach((res, index) => { res.text = this.numArray[index] + res.sname; res.id = '#'+res.scode }) ;
             //   评估
-            this.dataReport.forEach(loli => { 
-                this.gradeData.forEach(lopi => { 
-                    if(loli.ngradename == lopi.sname)loli.scontrolmeasure = lopi.scontrolmeasure ;
-                });
-            }) ;    
+                // this.dataReport.forEach(loli => { 
+                //     this.gradeData.forEach(lopi => { 
+                //         if(loli.ngradename == lopi.sname)loli.scontrolmeasure = lopi.scontrolmeasure ;
+                //     });
+                // }) ;
+            this.dataReport.forEach(loli => {
+                loli.text1 = "1、风险发生概率：" + loli.nprobabilityname ;
+                loli.text2 = "2、风险影响程度：" + loli.ninfluencename ;
+            }) ;
             // 
 
             // 获取从父组件传递过来的表格信息数据

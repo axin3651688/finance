@@ -63,13 +63,13 @@
             <el-form :model="form" :inline="true" ref="sub4" label-width="120px">
                 <el-form-item label="风险发生概率：" prop="nprobability">
                     <el-select v-model="form.nprobability" @change="selectChange" placeholder="请选择风险概率" class="input2">
-                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：" prop="ninfluence">
                     <el-select v-model="form.ninfluence" @change="selectChange2" placeholder="请选择风险影响" class="input2">
-                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
@@ -168,11 +168,13 @@ export default {
                 screatetime: ""             // 创建时间
             },
             num: "", title: "",
-            optionl: [], // 风险发生概率下拉选数据 
-            optione: [], // 报告类型数组（请求的数据）
-            optiond: [], // 风险影响程度下拉选数据
-            options: [], // 风险类型下拉选数据
-            optiong: [], // 风险等级下拉选数据
+            optionl: [],        // 风险发生概率下拉选数据 
+            optionl_nscore: "", // 风险发生概率分值
+            optione: [],        // 报告类型数组（请求的数据）
+            optiond: [],        // 风险影响程度下拉选数据
+            optionl_nscore: "", // 风险影响程度分值
+            options: [],        // 风险类型下拉选数据
+            optiong: [],        // 风险等级下拉选数据
             elements : [],  tableData: [], 
             defaultProps: {
                 children: 'children',
@@ -307,12 +309,18 @@ export default {
          * 发生概率选择器  触发
          */
         selectChange(val){ 
+            let dd = this.optionl.filter(res => { return res.id == val }) ;
+            if(this.optionl_nscore!="")this.optionl_nscore = "" ;
+            this.optionl_nscore = dd[0].nscore ;
             this.nscoreCalculate();
         },
         /**
          * 影响程度选择器  触发
          */ 
         selectChange2(val){
+            let dd = this.optiond.filter(res => { return res.id == val }) ;
+            if(this.optiond_nscore!="")this.optiond_nscore = "" ;
+            this.optiond_nscore = dd[0].nscore ;
             this.nscoreCalculate();
         },
         /** 
@@ -322,7 +330,8 @@ export default {
             if(this.form.nprobability == '' || this.form.ninfluence == ''){
                 this.form.nscore = "" ;
             }else{
-                this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                // this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                this.form.nscore = this.optionl_nscore * this.optiond_nscore ;
                 // 风险等级请求 
                 this.riskmatrixRequest(this.form.nscore) ;
             }
