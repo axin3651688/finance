@@ -39,13 +39,13 @@
         -->
         <div v-show="isShow">
             <report-component 
-            :dataSource="dataSource" :newThis="this" :numOpen="numOpen"
+            :dataSource="dataSource" :newThis="me" :numOpen="numOpen"
             :data="reportRow"></report-component>
         </div>
         <!-- dialog弹出框 -->
         <el-dialog title="催报" width="56%" top="40px" :visible.sync="dialogVisible2">               
             <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-
+            <rush-dialog :newThis="me" :data="comtree2" @rushRequest="rushRequest"></rush-dialog>
         </el-dialog> 
     </div>
     
@@ -57,8 +57,8 @@ import Vue from "vue";
 import treeTable from "@v/riskControlSystem/sjzRiskControl/treeTable";
 // 引用接口（获取数据）
 import { findThirdPartData, findDesignSource } from "~api/interface";
-// 引用弹出框组件
-// import dialogComponent from "@v/riskControlSystem/publicRiskControl/dialogComponent"
+// 引用【催报】弹出框组件
+import rushDialog from "@v/riskControlSystem/sjzRiskControl/report/rushDialog"
 // 引用跳转的报告页面
 import reportComponent from "@v/riskControlSystem/sjzRiskControl/report/reportComponent"
 // 引用vuex
@@ -72,20 +72,19 @@ import {
 // 引用 js 方法
 import tools from "utils/tools";
 import { param } from '../../../utils';
-Vue.directive('my-directive', function (){
-    return '123' ;
-});
 export default {
     name: 'treeTableDemo',
     components: {
         treeTable,
-        reportComponent
+        reportComponent,
+        rushDialog
     },
     props: ["jsonAdress","tableHeight"],
     data(){
         return {
             dialogVisible: false,
             dialogVisible2:false,
+            me: this ,
             treeName: "",
             title: "",
             columns:[],             // 树表的列
@@ -100,6 +99,10 @@ export default {
             numOpen: null ,         // 区分【查看】【上报】两个按钮的状态，监控用的
             reportRow: {} ,         // 请求的数据
             paramsArray: {},        // 存储请求信息用的（☆）
+            //催报弹框
+            comtree2: [], 
+            comObj: {}
+
         }
     },
     created(){ 
@@ -136,28 +139,31 @@ export default {
          * 【退回按钮】【催报按钮】
          */ 
         backreportdetailp(scope, val){
-            debugger
+            // debugger
             let me = this ;
-            let myDirective = Vue.directive('my-directive')
-            let sisreport , params , _sql ;
+            let sisreport , params , _sql, toUsers=[] , companyId;
             let $params = me.$store.state.prame.command; 
             let sfilluser = me.$store.getters.user.user.userName;
             if(val === "2"){
                 sisreport = 2 ;
-                params = mini.getBackreportdetailp(me, scope, sisreport, null) ; // 请求参数
+                params = mini.getBackreportdetailp(me, scope, sisreport, toUsers) ; // 请求参数
+                me.backreportdetailp_request(params, me) ;
             }else{
-                sisreport = 0 ;
+                me.comObj = {} ;
+                me.comObj = {
+                    sisreport : 0 ,
+                    scope : scope
+                }                
+                companyId = scope.row.id ;
                 me.dialogVisible2 = !me.dialogVisible2 ;
-                // _sql = me.config.sql2 ;
-                // _sql = _sql.replace(/:company/g,"'"+companyId+"'");
-                // let paramser = {
-                //     cubeId: 4,
-                //     sql: encodeURI(_sql)
-                // }
-                // mini.getSql_quertData_all( me, params );
-                return false ;
-            }
-            me.backreportdetailp_request(params, me) ;
+                _sql = me.config.sql2 ;
+                _sql = _sql.replace(/:company/g,"'"+companyId+"'");
+                let paramser = {
+                    cubeId: 4,
+                    sql: encodeURI(_sql)
+                }
+                mini.getSql_quertData_all( me, paramser );
+            }          
             
         },
         /**
@@ -166,12 +172,35 @@ export default {
         backreportdetailp_request(params, me){
             riskreportstate_update_remindback(params).then(ddf => {
                 if(ddf.data.code === 200){
-                    me.$message({ message: ddf.data.msg, type: "success" }) ;
+                    if(params.sisreport==0)me.$message({ message: "催报成功！", type: "success" }) ;
+                    if(params.sisreport==2)me.$message({ message: "退回成功！", type: "success" }) ;
                     me.setTreeTableRequest() ;
+                    me.dialogVisible2 = false ;
                 }else{
                     me.$message.error(ddf.data.msg) ;
                 }
             });
+        },
+        /**
+         * 【催报请求人员部门数据】
+         */
+        setSql_quertData_all(data){
+            this.comtree2 = mini.reportDataTree(data) ;
+        },
+        /**
+         * 【催报确认请求】子组件（rushdialog）的确认按钮
+         */
+        rushRequest(nodes){
+            // debugger
+            let toUsers = [] ;
+            let sisreport = this.comObj.sisreport ;
+            let scope = this.comObj.scope ;
+            nodes.forEach(res => {
+                toUsers.push(res.id) ;
+            });
+            let params = mini.getBackreportdetailp(this, scope, sisreport, toUsers) ; // 请求参数
+            this.backreportdetailp_request(params, this) ;
+
         },
         /** 
          * 树表子组件 传过来 的值
