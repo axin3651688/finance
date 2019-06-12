@@ -83,74 +83,75 @@
 
                     <div class="container-right-center">
 
-                        <div class="container-right-loop-title">
-                            {{risksptype}}
-                        </div>
 
-                        <div class="container-right-loop">
+                        <template v-for="(riskfeed, key) in riskFeedDataList">
 
-                            <div v-for="risk in riskdetaildata" class="container-right-loop-list">
 
-                                <div class="container-right-loop-top">
-                                    <div class="container-top-left">
+                            <div class="container-right-loop-title">
+                                {{riskfeed.risksptype}}
+                            </div>
+
+                            <div class="container-right-loop">
+
+                                <div v-for="risk in riskfeed.riskdetaildata" class="container-right-loop-list">
+                                    <div class="container-right-loop-top">
+                                        <div class="container-top-left">
                                     <span class="left_1">
-                                        {{ risk.riskname }}
+                                        {{ risk.risktype }}
                                     </span>
-                                        <span class="left_2">
+                                            <span class="left_2">
                                         {{ risk.risklevel }}
                                     </span>
-                                    </div>
-                                    <div class="container-top-right">
+                                        </div>
+                                        <div class="container-top-right">
                                         <span class="left_1">
                                          {{ risk.riskcompany }}
                                         </span>
-                                        <span class="left_2">
+                                            <span class="left_2">
                                     识别人：{{ risk.risksbuser }}
                                         </span>
-                                    </div>
-                                </div>
-
-                                <div class="container-right-loop-center">
-                                    <div v-for="item in risk.risk_pg_gs_cs_jy">
-                                        <div>
-                                            {{ item.title }}
                                         </div>
-                                        <p>
-                                            {{item.content}}
-                                        </p>
                                     </div>
-                                </div>
-
-                                <div class="container-right-loop-foot">
-                                    <div class="schedule-title">
-                                        风险追踪
-                                    </div>
-                                    <div class="schedule-list">
-                                        <template v-for="item in risk.scheduleList">
-                                        <div class="risk-content">
-                                            <div class="risk-num">
-                                                {{item.risk_count}}
+                                    <div class="container-right-loop-center">
+                                        <div v-for="item in risk.risk_pg_gs_cs_jy">
+                                            <div>
+                                                {{ item.title }}
                                             </div>
-                                            <div class="risk-name">
-                                                <span class="title-left">名称 :</span>
-                                                <span class="content-right">{{item.risk_name}}</span>
-                                            </div>
-                                            <div class="risk-state">
-                                                <span class="title-left">状态 :</span>
-                                                <span class="content-right">{{item.state}}</span>
-                                            </div>
-                                            <div class="risk-content">
-                                                <span class="title-left">内容 :</span>
-                                                <span class="content-right">{{item.content}}</span>
-                                            </div>
+                                            <p>
+                                                {{item.content}}
+                                            </p>
                                         </div>
-                                        </template>
                                     </div>
                                 </div>
                             </div>
+                        </template>
 
 
-
+                        <div class="container-right-loop-foot">
+                            <div class="schedule-title">
+                                风险追踪
+                            </div>
+                            <div class="schedule-list">
+                                <template v-for="item in riskScheduleData">
+                                    <div class="risk-content">
+                                        <div class="risk-num">
+                                            {{item.risk_count}}
+                                        </div>
+                                        <div class="risk-name">
+                                            <span class="title-left">名称 :</span>
+                                            <span class="content-right">{{item.risk_name}}</span>
+                                        </div>
+                                        <div class="risk-state">
+                                            <span class="title-left">状态 :</span>
+                                            <span class="content-right">{{item.state}}</span>
+                                        </div>
+                                        <div class="risk-content">
+                                            <span class="title-left">内容 :</span>
+                                            <span class="content-right">{{item.content}}</span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -187,7 +188,10 @@
                 riskCount: {},
                 risksptype: "战略风险",
                 riskdetaildata: [],
-                pageHeight: document.body.offsetHeight
+                pageHeight: document.body.offsetHeight,
+
+                riskFeedDataList: {},
+                riskScheduleData:[]
             }
         },
         watch: {
@@ -237,8 +241,18 @@
             reportDataFormat() {
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
-                    riskFeedDataList = _reportData.riskFeedDataList;
-                _this.getReportCenterData(riskFeedDataList);
+                    _list = _reportData.riskFeedDataList;
+
+                let _riskFeedDataList = {};
+                for (let key in _list) {
+                    if (_list[key].riskdetaildata && _list[key].riskdetaildata.length > 0) {
+                        _riskFeedDataList[key] = _list[key];
+
+                        _this.getRiskScheduleData(_list[key]);
+                    }
+                }
+                debugger;
+                this.riskFeedDataList = _riskFeedDataList;
             },
 
             /**
@@ -270,42 +284,38 @@
 
             /**
              * 获取报告中间部分数据
-             * @param riskFeedDataList
+             * @param item
              */
             //fixme  修改显示内容为所有风险
-            getReportCenterData(riskFeedDataList) {
-                debugger;
+            getRiskScheduleData(item) {
                 let _this = this;
-                let riskTpyeId = this.selectedNode === '' ? 'flfx' : this.selectedNode;
-                let allriskFeedDataList = riskFeedDataList[riskTpyeId];
-                _this.risksptype = allriskFeedDataList.risksptype;
-                _this.riskdetaildata = allriskFeedDataList.riskdetaildata;
+                let _scheduleList = item.riskdetaildata[0].scheduleList;
 
+                _this.riskScheduleData = _scheduleList;
 
-
-                for(let i = 0,len = _this.riskdetaildata.length; i < len; i++){
-                    let _scheduleList = _this.riskdetaildata[i].scheduleList;
                     for (let key in _scheduleList) {
                         let _risk = _scheduleList[key];
                         if (key === 'risk_sb') {
                             if (_risk.state === '已上报') {
-                                _risk.content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
+                                _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
                             } else {
-                                _risk.content = '请尽快上报'
+                                _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
+                                _this.riskScheduleData['risk_ps'].content = '请尽快批示';
+                                _this.riskScheduleData['risk_sb'].content = '请尽快上报';
+                                return;
                             }
                         } else {
                             if (_risk.state === '已批示') {
-                                _risk.content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
+                                _this.riskScheduleData[key].content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
                             } else if (_risk.state === '未批示') {
-                                _risk.content = '请尽快批示'
+                                _this.riskScheduleData[key].content = '请尽快批示'
                             } else if (_risk.state === '已反馈') {
-                                _risk.content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
+                                _this.riskScheduleData[key].content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
                             } else if (_risk.state === '未反馈') {
-                                _risk.content = '请尽快反馈'
+                                _this.riskScheduleData[key].content = '请尽快反馈'
                             }
                         }
                     }
-                }
             },
 
             /**
@@ -467,7 +477,7 @@
     }
 
     .container-right-loop-list {
-        margin-bottom: 100px;
+        margin-bottom: 50px;
     }
 
     .container-right-foot {
