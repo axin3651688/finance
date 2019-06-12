@@ -17,12 +17,12 @@
                 <div class="elbtn" style="float: left">
                     <!-- 按钮 -->
                     <el-button-group class="iconbtn">
-                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain v-show="isbtnShow2" @click="addClick">添加</el-button>
+                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain v-show="isbtnShow3" @click="addClick">添加</el-button>
                         <el-button type="primary" icon="el-icon-circle-close-outline" plain v-show="isbtnShow2" @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow4"><i class="iconfont icon-daoru"></i>导入</el-button>
                         <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
@@ -164,7 +164,9 @@ export default {
             periodtype: 0,      // 全局控制选择的日期类型
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
-            isbtnShow2: true,   // 其他按钮的显示与隐藏
+            isbtnShow2: true,   // 其他（导出、删除）按钮的显示与隐藏
+            isbtnShow3: true,   // 添加按钮的显示与隐藏
+            isbtnShow4: true,   // 导入按钮的显示与隐藏
             isbtnModify: true,  // 修改按钮的显示与隐藏
             selection: [],      // 存储 Checkbox 选中的行信息 （注：用于删除时 和 下达时） 
             me: this,
@@ -349,41 +351,58 @@ export default {
                 let five = me.tableData.filter(fifth => { return fifth.gradename == "巨大风险" }) ;
                 let six = me.tableData.filter(sixth => { return sixth.gradename == "最低风险" }) ;
                 let seven = me.tableData.filter(seventh => { return seventh.gradename == "高风险" }) ;
-                if(one.length > 0)me.elementui.push({ html: "<a>可接受风险"+one.length+"条</a>" }) ;
-                if(two.length > 0)me.elementui.push({ html: "<a>一般风险"+two.length+"条</a>" }) ;
-                if(three.length > 0)me.elementui.push({ html: "<a>中等风险"+three.length+"条</a>" }) ;
-                if(four.length > 0)me.elementui.push({ html: "<a>重大风险"+four.length+"条</a>" }) ;
-                if(five.length > 0)me.elementui.push({ html: "<a>巨大风险"+five.length+"条</a>" }) ;
-                if(six.length > 0)me.elementui.push({ html: "<a>最低风险"+six.length+"条</a>" }) ;
-                if(seven.length > 0)me.elementui.push({ html: "<a>高风险"+seven.length+"条</a>" }) ;
+                if(one.length > 0)me.elementui.push({ text: "可接受风险", html: "<a>可接受风险"+one.length+"条</a>" }) ;
+                if(two.length > 0)me.elementui.push({ text: "一般风险", html: "<a>一般风险"+two.length+"条</a>" }) ;
+                if(three.length > 0)me.elementui.push({ text: "中等风险", html: "<a>中等风险"+three.length+"条</a>" }) ;
+                if(four.length > 0)me.elementui.push({ text: "重大风险", html: "<a>重大风险"+four.length+"条</a>" }) ;
+                if(five.length > 0)me.elementui.push({ text: "巨大风险", html: "<a>巨大风险"+five.length+"条</a>" }) ;
+                if(six.length > 0)me.elementui.push({ text: "最低风险", html: "<a>最低风险"+six.length+"条</a>" }) ;
+                if(seven.length > 0)me.elementui.push({ text: "高风险", html: "<a>高风险"+seven.length+"条</a>" }) ;
             }else{
                 me.elementui = [] ;
             }
             // 本属公司才能操作按钮，切换到非本属公司只能刷新和查看。单体公司不显示下达(2个)按钮，
             if($params.company === information.companyId){
                 if(nisleaf){
-                    me.isbtnShow = false ;
-                    me.isbtnShow2= true ;
+                    me.isbtnShow = false ;      me.isbtnShow3 = true ;
+                    me.isbtnShow2= true ;       me.isbtnShow4 = true ;
                     me.isbtnModify = true ;
                 }else{
-                    me.isbtnShow = true ;
-                    me.isbtnShow2= true ;
+                    me.isbtnShow = true ;       me.isbtnShow3 = true ;
+                    me.isbtnShow2= true ;       me.isbtnShow4 = true ;
                     me.isbtnModify = true ;
                 }
+                // 上报状态下当前月的识别无添加、导入、修改按钮
+                if(me.tableData.length > 0){
+                    // debugger
+                    let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;    // 过滤出来提交的风险
+                    let isTrue = submit.some(ee => { return ee.sisreport == 1 }) ;                  // 一真即真 1为上报状态
+                    // 为上报状态
+                    if(isTrue){
+                        me.isbtnModify = false ;    // 修改按钮隐藏
+                        me.isbtnShow3 = false ;     // 添加按钮隐藏
+                        me.isbtnShow4 = false ;     // 导入按钮隐藏
+                    }else{
+                        me.isbtnModify = true ;     // 修改按钮显示
+                        me.isbtnShow3 = true ;      // 添加按钮显示
+                        me.isbtnShow4 = true ;      // 导入按钮显示
+                    }
+                }
             }else{
-                me.isbtnShow = false ;
-                me.isbtnShow2= false ;
+                me.isbtnShow = false ;          me.isbtnShow3 = false ;
+                me.isbtnShow2= false ;          me.isbtnShow4 = false ;
                 me.isbtnModify = false ;
             }
+            
         },
         // 点击文字触发检索功能（☆）
         textClick(element){
             // debugger
-            let len = element.html.length , risk = "" ;
+            let len = element.html.length , risk = element.text ;
             this.tableData2 = [] ;
-            if(len == 12)risk = element.html.slice(3,6) ;
-            if(len == 13)risk = element.html.slice(3,7) ;
-            if(len == 14)risk = element.html.slice(3,8) ;
+            // if(len == 12)risk = element.html.slice(3,6) ;
+            // if(len == 13)risk = element.html.slice(3,7) ;
+            // if(len == 14)risk = element.html.slice(3,8) ;
             // this.tableData2 = this.tableData.filter(res => {
             //     if(res.gradename == risk)return res ;
             // }) ;
@@ -664,7 +683,7 @@ export default {
 } */
 .table-call .gradename_red .cell {
     color: #fff ;
-    background: red ;
+    background-color: rgb(219, 43, 8);
     width: 90px;
     border-radius: 11px ;
     margin: 0 auto ;
