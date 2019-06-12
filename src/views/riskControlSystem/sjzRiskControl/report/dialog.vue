@@ -308,9 +308,9 @@ export default {
          * 赋值
          */
         getFormInformation(){ 
-            // debugger
+            debugger
             let cc = this.newThis.view_row ;
-            this.valueTitle = cc.srootrisktypename ;
+            this.valueTitle = cc.srisktypename ;
             // for(let key in this.data){
             //     this.form[key] = this.data[key]
             // } SCREATETIME
