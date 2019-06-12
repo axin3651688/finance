@@ -2,26 +2,26 @@
     <div>
         <div>
             <el-row>
-                <el-col v-for="(item,index) in gaugeTop" :key="index" :span="item">
+                <el-col v-for="(item,index) in gaugeTop" :key="index" :span="8">
                     <div>
-                        <groupGaugePublic></groupGaugePublic>
+                        <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeMiddleLeft" :key="index">
-                        <groupGaugePublic></groupGaugePublic>
+                        <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div>
-                        <groupRadar></groupRadar>
+                        <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
                     </div>
                 </el-col>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeMiddleRight" :key="index">
-                        <groupGaugePublic></groupGaugePublic>
+                        <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
@@ -33,7 +33,7 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col>
+                <el-col :span="24">
                     <div>
                         <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
                     </div>
@@ -45,7 +45,7 @@
 <script>
     import groupGauge from "./../echarts/groupGauge.vue"
     import groupGaugePublic from "./../echarts/groupGaugePublic.vue"
-    import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
+    import singleTable from "./../riskTable/riskTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import publicMarking from "./../minix/publicMarking.js"
     export default {
@@ -54,13 +54,17 @@
         components: {
             groupGauge,
             singleTable,
-            groupRadar
+            groupRadar,
+            groupGaugePublic
         },
         data() {
             return {
                 gaugeTop:[{},{},{}],
                 gaugeMiddleLeft:[{},{}],
                 gaugeMiddleRight:[{},{}],
+                chartDataRadar:{
+                    receive:{}
+                },
                 tableData:[],
                 columns:[]
             }
@@ -77,11 +81,22 @@
                         sqlId:"107"
                     };
                     me.queryDataPublic(judgeParams);
+                    
+                    // me.createEcharts();
                 }
             });
         },
         mounted() {},
-        methods: {}
+        methods: {
+            /**
+             * 制造echart图形。
+             * @author szc 2019年6月10日11:08:45
+             */
+            createEcharts(){
+                let me = this;
+
+            }
+        }
     };
 </script>
 <style>

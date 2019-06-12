@@ -1,16 +1,25 @@
 <template>
     <div>
         <div class="report-title">
-            {{this.company}}{{this.period}}风险预警报告
+            {{this.company}}{{this.periodStr}}风险预警报告
         </div>
         <span class="zs">
             总述
         </span>
         <p class="describe">
-            截止2019年3月份，经风险评估分析，{{this.company}}在风险方面共存在{{this.dataList.data1}}条，从风险类型来看，
-            其中战略风险{{this.dataList.data2}}条，投资风险{{this.dataList.data3}}条，运营风险{{this.dataList.data4}}条，
-            财务风险{{this.dataList.data5}}条，法律风险{{this.dataList.data6}}条，廉洁风险{{this.dataList.data7}}条；
-            从风险等级来看，其中重大风险{{this.dataList.data8}}条，重要风险{{this.dataList.data9}}条，一般风险{{this.dataList.data10}}条
+            截止{{ this.periodStr }}份，经风险评估分析，{{this.company}}
+            在风险方面共存在{{ this.dataList.data1?this.dataList.data1:0 }}条，
+            从风险类型来看，
+            其中战略风险{{this.dataList.data2?this.dataList.data2:0}}条，
+            投资风险{{this.dataList.data3?this.dataList.data3:0}}条，
+            运营风险{{this.dataList.data4?this.dataList.data4:0}}条，
+            财务风险{{this.dataList.data5?this.dataList.data5:0}}条，
+            法律风险{{this.dataList.data6?this.dataList.data6:0}}条，
+            廉洁风险{{this.dataList.data7?this.dataList.data7:0}}条；
+            从风险等级来看，
+            其中重大风险{{this.dataList.data8?this.dataList.data8:0}}条，
+            重要风险{{this.dataList.data9?this.dataList.data9:0}}条，
+            一般风险{{this.dataList.data10?this.dataList.data10:0}}条
         </p>
     </div>
 </template>
@@ -25,6 +34,7 @@
         data() {
             return {
                 period: '2019年3月',
+                periodStr:'',
                 company:'',
                 dataList:{}
             }
@@ -40,8 +50,25 @@
              * 期间应该也是获取的，但是还没有写，接口已经完成
              */
             getAllData(){
+                // this.period = this.getPeriod();
+                this.periodStr = this.getPeriodStr();
                 this.company = this.reportHeaderData['reportCompanyName'];
                 this.dataList = this.reportHeaderData['dataList'];
+            },
+            getPeriod () {
+                let me = this,storeParams = me.$store.getters,year = storeParams.year,month = storeParams.month,period = "";
+                if(month > 9){
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                return period;
+            },
+            getPeriodStr () {
+                let me = this,storeParams = me.$store.getters,year = storeParams.year,
+                    month = storeParams.month,
+                    period = period = year + "年" + month + "月"; 
+                return period;
             }
         }
     }

@@ -13,7 +13,9 @@
                             class="risk-items"
                             @click="riskTypeChange(key)"
                     >
-                        {{value}}
+                        <a :href="'#' + key">
+                            {{value}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -179,7 +181,12 @@
              * 指定的人员的下达。
              */
             personSureBtnClicked (nodes) {
-                let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData;
+                debugger;
+                let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData,riskCount = 0;
+                //因为要全部显示，所以要遍历相加。
+                middleData.forEach(item => {
+                    riskCount += item.riskCount;
+                });
                 if(instructionsRpt && middleData){
                     if(instructionsRpt.length == 0){
                         me.$message({
@@ -188,7 +195,7 @@
                         });
                         return;
                     }
-                    if(instructionsRpt.length == middleData.riskCount){
+                    if(instructionsRpt.length == riskCount){
                         me.saveInstructionsRpt(instructionsRpt,nodes);
                     }else {
                         me.$message({
@@ -274,18 +281,21 @@
              */
             afterInstructionRpt (afterParams) {
                 let me = this,middleData = me.middleData;
-                let content = middleData.contentUp.content;
-                for(let i = 0;i < content.length;i++){
-                    let item = content[i];
-                    if(item.contentDown){
-                        item.contentDown.rowItem = item.contentDown.instructionObj;
-                        for(let j = 0;j < afterParams.length;j ++){
-                            let afterParamsItem = afterParams[j];
-                            if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
-                                item.contentDown.rowItem.cstrategy = afterParamsItem.instructionValues;
-                                item.contentDown.rowItem.instructionid = "1";
-                                item.contentDown.rowItem.psnr = afterParamsItem.instruction;
-                                break;
+                for(let k = 0;k < middleData.length;k++){
+                    let itemMiddle = middleData[k];
+                    let content = itemMiddle.contentUp.content;
+                    for(let i = 0;i < content.length;i++){
+                        let item = content[i];
+                        if(item.contentDown){
+                            item.contentDown.rowItem = item.contentDown.instructionObj;
+                            for(let j = 0;j < afterParams.length;j ++){
+                                let afterParamsItem = afterParams[j];
+                                if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
+                                    item.contentDown.rowItem.cstrategy = afterParamsItem.instructionValues;
+                                    item.contentDown.rowItem.instructionid = "1";
+                                    item.contentDown.rowItem.psnr = afterParamsItem.instruction;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -295,8 +305,8 @@
                     delete me.$store.instructionsRpt;
                 }
                 me.instructionRelease = false;
-                middleData.contentUp.content = content;
-                middleData.changeValue = Math.floor(Math.random()*1000);
+                // middleData.contentUp.content = content;
+                // middleData.changeValue = Math.floor(Math.random()*1000);
                 me.middleData = middleData;
                 me.personnelListShow = !me.personnelListShow;
                 me.reportConventional = false;
@@ -333,6 +343,7 @@
              * 获取目录的数据
              */
             getDirectoryData(){
+                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData;
                 reportDataList.forEach((report)=>{
@@ -357,6 +368,7 @@
              * 报告中间的数据。
              */
             createDataOfMiddle () {
+                debugger;
                 let me = this,reportData = me.reportData,contentData = [];
                 if(reportData.type == "0"){
                     me.instructionRelease = true
@@ -366,15 +378,16 @@
                 if(reportData.reportDataContent && reportData.reportDataContent.riskFeedData) {
                     me.showComponent = "riskControl";
                     contentData = reportData.reportDataContent.riskFeedData;
-                    let length = contentData.length;
-                    for(let i = 0; i < length; i++){
-                        let item = contentData[i];
-                        if(item.show){
-                            me.middleData = item;
-                            me.contentDown = item.contentDown;
-                            break;
-                        }
-                    }
+                    me.middleData = contentData;
+                    // let length = contentData.length;
+                    // for(let i = 0; i < length; i++){
+                    //     let item = contentData[i];
+                    //     if(item.show){
+                    //         me.middleData = item;
+                    //         me.contentDown = item.contentDown;
+                    //         break;
+                    //     }
+                    // }
                 }
             }
 

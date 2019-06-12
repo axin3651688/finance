@@ -267,12 +267,13 @@ export default {
          * @author szc 2019年5月27日16:56:28
          */
         showDataOfInstruction(lookData, data) {
+            debugger;
             let me = this,
                 objLook = {},
                 objItems = [];
             lookData.forEach(item => {
-                if (item.riskscode && !objLook[item.riskscode]) {
-                    objLook[item.riskscode] = item.riskscode;
+                if (item.riskspcode && !objLook[item.riskspcode]) {
+                    objLook[item.riskspcode] = item.riskspcode;
                     //取出每不同行的唯一一行。
                     objItems.push(item);
                 }
@@ -307,17 +308,21 @@ export default {
             for (let i = 0; i < objItems.length; i++) {
                 let item = objItems[i];
                 let objItem = {
-                    id: item.riskscode,
+                    id: item.riskspcode,
                     show: true,
                     riskCount: 0,
-                    text: item.risktype,
+                    text: item.riskspname,
                     contentUp: {
                         content: []
                     }
                 };
                 for (let j = 0; j < lookData.length; j++) {
                     let lookItem = lookData[j];
-                    let objUpContentFXPG = {
+                    let objUpContentFXMC = {
+                            title: "风险名称",
+                            content: []
+                        },
+                        objUpContentFXPG = {
                             title: "风险评估",
                             content: []
                         },
@@ -351,17 +356,19 @@ export default {
                             label: "风险策略为：",
                             options: []
                         };
-                    if (item.riskscode == lookItem.riskscode) {
+                    if (item.riskspcode == lookItem.riskspcode) {
                         if (lookItem.instructionid == '1') {
                             contentLast.contentDown.rowItem = lookItem;
                         } else {
                             contentLast.contentDown.instructionObj = lookItem;
                         }
                         //上报人、等级、类型
-                        contentLast.responsibility.text = lookItem.sriskname;
+                        contentLast.responsibility.text = lookItem.risktype;
                         contentLast.responsibility.level = lookItem.levelsname || "暂无等级";
                         contentLast.responsibility.company = company;
                         contentLast.responsibility.identificationUser = lookItem.reportuser;
+                        //风险名称。
+                        objUpContentFXMC.content.push(lookItem.sriskname);
                         //风险评估。
                         objUpContentFXPG.content.push(lookItem.nprobability);
                         objUpContentFXPG.content.push(lookItem.ninfluence);
@@ -377,6 +384,7 @@ export default {
                         //下拉选放进去。
                         contentLast.contentDown.content.push(objDownContent);
                         //内容装进去。
+                        contentLast.content.push(objUpContentFXMC);
                         contentLast.content.push(objUpContentFXPG);
                         contentLast.content.push(objUpContentFXGS);
                         contentLast.content.push(objUpContentCQCS);
@@ -403,15 +411,29 @@ export default {
                 company: company,
                 period: me.parsePeriod(),
                 sisinstructions: "0",
-                sinstructionsuser: scope.row.sinstructionsuser
+                sinstructionsuser: user
             };
             let requertParams = {
                 data: params,
                 success: "提醒成功！",
                 error: "提醒失败！"
             };
-            me.publicUpdateInstruction(requertParams);
+            me.publicUpdateInstructionAll(requertParams);
+            // me.publicUpdateInstruction(requertParams);
         },
+        // publicUpdate (requertParams) {
+        //     let me = this;
+        //     updateInstruction(params.data).then(res => {
+        //         if (res.data.code == 200) {
+        //             me.$message({
+        //                 message: params.success ? params.success : "操作成功！",
+        //                 type: "success",
+        //             });
+        //         } else {
+        //             me.$message.error(params.error ? params.error : "操作失败！");
+        //         }
+        //     });
+        // },
         /**
          * 风险管控汇总树表的退回功能。
          * @author szc 2019年5月29日16:49:22

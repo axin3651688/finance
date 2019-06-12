@@ -55,15 +55,40 @@ export default {
         queryDataAfter(datas, judgeParams) {
             debugger;
             let me = this;
-            if (judgeParams.text == "profitability") {
+            if (judgeParams.id == "profitability") {
                 let arr = [{
                     id: 'gaugeTop',
-                    content: ['', '', '']
-                }, 'gaugeMiddleLeft', 'gaugeMiddleRight'];
+                    field: 'dim_indicator',
+                    gaugeSname: 'sname',
+                    gaugeField: 'val',
+                    content: ['19', '20', '21']
+                }, {
+                    id: 'gaugeMiddleLeft',
+                    field: 'dim_indicator',
+                    gaugeSname: 'sname',
+                    gaugeField: 'val',
+                    content: ['121', '133']
+                }, {
+                    id: 'gaugeMiddleRight',
+                    field: 'dim_indicator',
+                    gaugeSname: 'sname',
+                    gaugeField: 'val',
+                    content: ['53', '120']
+                }];
                 for (let i = 0; i < arr.length; i++) {
-                    me[arr[i]] = [];
+                    me[arr[i].id] = [];
                 }
                 me.transData(datas, arr);
+                me.createGauges(arr);
+                //雷达图的数据格式。
+                let radarConfig = {
+                    id: 'profitability',
+                    radarField: 'dim_indicator',
+                    radarSname: 'sname',
+                    radarValue: 'qyfz',
+                    content: ['19', '20', '21', '121', '133', '53', '120']
+                };
+                me.transRadarData(datas, radarConfig);
             }
         },
         /**
@@ -88,19 +113,171 @@ export default {
          * @author szc 2019年6月5日11:23:51
          */
         transData(datas, arrList) {
-            let me = this,
-                arrLeft = [],
-                arrRight = [];
-            for (let i = 0; i < datas.length; i++) {
-                let item = datas[i];
-                if (item.zbid == "ylnl" || item.zbid == "fznl") {
-                    arrLeft.push(item);
-                } else if (item.zbid == "zwfx" || item.zbid == "yyzl") {
-                    arrRight.push(item);
+            let me = this;
+            for (let i = 0; i < arrList.length; i++) {
+                let item = arrList[i];
+                if (item.content && item.content.length > 0) {
+                    let contentLength = item.content.length;
+                    for (let k = 0; k < contentLength; k++) {
+                        let itemCnt = item.content[k];
+                        for (let j = 0; j < datas.length; j++) {
+                            let itemArr = datas[j];
+                            if (itemArr[item.field] == itemCnt) {
+                                me[item.id].push(itemArr);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-            me.gaugesLeft = arrLeft;
-            me.gaugesRight = arrRight;
         },
+        /**
+         * 生成仪表盘的公共方法。
+         * @author szc 2019年6月10日11:16:14
+         */
+        createGauges(arr) {
+            debugger;
+            let me = this;
+            arr.forEach(item => {
+                if (me[item.id] && me[item.id].length > 0) {
+                    for (let i = 0; i < me[item.id].length; i++) {
+                        let itemCnt = me[item.id][i];
+                        me.createOptions(itemCnt, item);
+                    }
+                }
+                // me.createOptions(item);
+            });
+        },
+        /**
+         * options 仪表盘
+         */
+        createOptions(itemCnt, item) {
+            let options = {
+                tooltip: {
+                    formatter: function(a, b, c) {
+                        return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
+                    }
+                },
+                series: [{
+                    name: '业务指标',
+                    type: 'gauge',
+                    min: 0,
+                    max: 200, //设置最大刻度
+                    splitNumber: 8,
+                    //设置仪表盘的园的程度，这里设置的是半圆
+                    startAngle: 170,
+                    endAngle: 10,
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            // 属性lineStyle控制线条样式
+                            color: [
+                                [0.25, "#F24764"],
+                                [0.5, "#FBCE14"],
+                                [0.75, "#11C3C2"],
+                                [1, "#2FC35B"]
+                            ],
+                            width: 20 //表盘宽度
+                        }
+                    },
+                    center: ["50%", "50%"], //整体的位置设置
+                    radius: "85%", //仪表盘大小
+                    //设置指针样式
+                    pointer: {
+                        show: true,
+                        length: "50%",
+                        width: 5
+                    },
+                    detail: {
+                        formatter: function(a, b, c) {
+                            return Math.decimalToLocalString(a) + "%";
+                        },
+                    },
+                    data: [{ value: itemCnt[item.gaugeField] || 0, name: itemCnt[item.gaugeSname] || "" }]
+                }]
+            };
+            itemCnt.options = options;
+        },
+        /**
+         * 雷达图的数据转换。
+         * @author szc 2019年6月5日14:14:05
+         */
+        transRadarData(datas, radarConfig) {
+            debugger;
+            let me = this,
+                values = [],
+                indicator = [];
+            let indicatorCfg = me.getIndicator(datas, radarConfig);
+            indicator = indicatorCfg.indicator;
+            values = indicatorCfg.values;
+            let receive = {
+                    title: {
+                        text: '企业综合评价对标雷达图',
+                        left: '30%',
+                        top: '10px'
+                    },
+                    tooltip: {},
+                    legend: {
+                        // data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+                    },
+                    radar: {
+                        // shape: 'circle',
+                        name: {
+                            textStyle: {
+                                color: '#fff',
+                                backgroundColor: '#999',
+                                borderRadius: 3,
+                                padding: [3, 5]
+                            }
+                        },
+                        indicator: indicator,
+                        center: ['50%', '50%']
+                    },
+                    series: [{
+                        name: '',
+                        type: 'radar',
+                        // areaStyle: {normal: {}},
+                        data: [{
+                            value: values,
+                            name: ''
+                        }]
+                    }]
+                }
+                // indicator = indicatorCfg.indicator;
+                // values = indicatorCfg.values;
+                // data.forEach(item => {
+                //     values.push(item.qyfz ? item.qyfz : 0);
+                // });
+            me.chartDataRadar.receive = receive;
+        },
+        /**
+         * 获取雷达图的指标
+         * @author szc 2019年6月10日13:49:56
+         */
+        getIndicator(datas, radarConfig) {
+            let indicator = [],
+                values = [],
+                resObj = {},
+                maxValue = 10;
+            datas.forEach(item => {
+                for (let i = 0; i < radarConfig.content.length; i++) {
+                    let itemradar = radarConfig.content[i];
+                    if (item[radarConfig.radarField] == itemradar) {
+                        let itemObj = {};
+                        itemObj.name = item[radarConfig.radarSname];
+                        //暂时写成10
+                        itemObj.max = maxValue;
+                        indicator.push(itemObj);
+                        values.push(item[radarConfig.radarValue] ? item[radarConfig.radarValue] : 0)
+                        break;
+                    }
+                }
+            });
+            resObj = {
+                indicator: indicator,
+                values: values
+            };
+            return resObj;
+        }
     }
 }

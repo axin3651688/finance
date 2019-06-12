@@ -66,6 +66,12 @@ const router = new Router({
                         import ('@v/intelligenceReport/HTandtable.vue')
                 },
                 {
+                    path: '/interaction',
+                    name: 'interaction',
+                    component: () =>
+                        import ('@v/intelligenceReport/Interaction.vue')
+                },
+                {
                     path: '/SFillTable',
                     name: 'SFillTable',
                     component: () =>
