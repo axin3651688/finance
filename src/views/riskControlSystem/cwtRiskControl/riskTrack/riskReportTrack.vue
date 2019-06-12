@@ -337,7 +337,6 @@
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
-                debugger;
                 /**
                  * 根据大的风险类型分成七个部分
                  */
@@ -425,22 +424,25 @@
 
                             riskModel.risksptype = item.risksptype;
 
+                            riskModel_riskdetaildata.riskname = item.riskname;
+                            riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
-                            riskModel_riskdetaildata.riskcompany = item.riskcompany;
+                            riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata['riskid'] = item.nid;
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
 
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.risk_pg;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_gs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_cs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_jy;
+
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
 
                             riskModel_riskdetaildata_scheduleList.risk_sb.state = item['risk_sb_state'];
                             riskModel_riskdetaildata_scheduleList.risk_sb.user_name = item['risk_sb_user_name'];
                             riskModel_riskdetaildata_scheduleList.risk_sb.time = item['risk_sb_time'];
-                            // riskModel_riskdetaildata_scheduleList.risk_sb.content = item['risk_sb_state'] === '已上报' ? '上报人： ' +
 
                             riskModel_riskdetaildata_scheduleList.risk_ps.state = item['risk_ps_state'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.user_name = item['risk_ps_user_name'];
@@ -480,19 +482,23 @@
                             risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
-                                    title: '',
+                                    title: '风险名称',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '风险评估',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '风险概述',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '采取措施',
+                                    content: []
+                                },
+                                {
+                                    title: '应对建议',
                                     content: []
                                 }
                             ],

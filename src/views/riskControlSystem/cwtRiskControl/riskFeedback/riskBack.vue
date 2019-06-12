@@ -234,7 +234,6 @@
              * @constructor
              */
             RiskBackDataQuery(params) {
-                debugger;
                 let _this = this,
                     _getter = _this.$store.getters,
                     company = _getter.company,

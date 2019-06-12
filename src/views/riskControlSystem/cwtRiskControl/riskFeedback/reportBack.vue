@@ -209,7 +209,6 @@
              * @constructor
              */
             RiskBackDataQuery(params) {
-                debugger;
                 let _this = this,
                     _getter = _this.$store.getters,
                     company = _getter.company,
@@ -224,8 +223,7 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
-                                debugger;
-                                if(company !== userCompany){
+                                if (company !== userCompany) {
                                     data.operation = '1-查看'
                                 }
                                 let operations = data.operation.split(',');
@@ -315,7 +313,6 @@
              * @author cwt
              */
             reportPageDataFormat(data) {
-                debugger;
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
@@ -323,7 +320,7 @@
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
-
+                debugger;
                 /**
                  * 根据大的风险类型分成七个部分
                  */
@@ -411,18 +408,21 @@
 
                             riskModel.risksptype = item.risksptype;
 
+                            riskModel_riskdetaildata.riskname = item.riskname;
+                            riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
-                            riskModel_riskdetaildata.riskcompany = item.riskcompany;
+                            riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
                             riskModel_riskdetaildata['riskid'] = item.nid;
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
 
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.risk_pg;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_gs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_cs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_jy;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
 
                             riskModel_riskdetaildata_risk_ps['risk_ps_cl'] = item.risk_ps_cl;
                             riskModel_riskdetaildata_risk_ps['risk_ps_content'] = item.risk_ps_content;
@@ -448,24 +448,29 @@
                     riskdetaildata:
                         {
                             riskname: '',
+                            risktype: '',
                             risklevel: '',
                             riskcompany: '',
                             risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
-                                    title: '',
+                                    title: '风险名称',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '风险评估',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '风险概述',
                                     content: []
                                 },
                                 {
-                                    title: '',
+                                    title: '采取措施',
+                                    content: []
+                                },
+                                {
+                                    title: '应对建议',
                                     content: []
                                 }
                             ],
