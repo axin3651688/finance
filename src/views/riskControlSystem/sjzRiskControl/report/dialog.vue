@@ -227,12 +227,18 @@ export default {
         // 切换选项[风险类型]
         handleNodeClick(node){
             // debugger
-            this.valueTitle = node[this.defaultProps.label]
-            this.form.srisktype = node[this.defaultProps.value]
-            this.$emit('getValue',this.valueId)
-            this.defaultExpandedKey = []
-            this.isFocus = false 
-            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+            if(node.children && node.children.length > 0){
+                this.valueTitle = "" ; 
+                this.form.srisktype = "" ;
+                this.isFocus = true ; 
+            }else{
+                this.valueTitle = node[this.defaultProps.label]
+                this.form.srisktype = node[this.defaultProps.value]
+                this.$emit('getValue',this.valueId)
+                this.defaultExpandedKey = []
+                this.isFocus = false 
+                this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+            }
         },
         // 清除下拉选【风险类型】的
         clearHandle(){

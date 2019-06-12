@@ -58,6 +58,10 @@
                                         <span class="container_main_risk_text textTitle">{{ textTitle }}</span>
                                         <span class="container_main_risk_color_two">识别人：{{ tool.ssubmituser }}</span>
                                     </div>
+                                    <div class="container_main_risk_ff">
+                                        <div class="container_main_risk_text textTitle2">风险名称</div>
+                                        <div class="textTitle3">{{ tool.sriskname }}</div>
+                                    </div>
                                     <div >
                                         <div class="container_main_risk_ff">
                                             <div class="container_main_risk_text textTitle2 textFloat">
