@@ -44,8 +44,8 @@
                 treeData: [],
                 columns: [],
                 reportData: {
-                    reportcompanyname: '天津食品集团有限公司(合并)',
-                    reportperiod: '2019年3月',
+                    reportcompanyname: '',
+                    reportperiod: '',
                     reportDataContent: {
                         headerData: {
                             riskLevelCountArray: {
@@ -67,44 +67,36 @@
                         },
                         riskFeedDataList: {
                             flfx: {
-                                risksptype: '战略风险',
+                                risksptype: '',
                                 riskdetaildata: [
                                     {
-                                        riskname: '天津食品集团风险',
-                                        risklevel: '严重',
-                                        riskcompany: '天津食品集团',
-                                        risksbuser: '德玛西亚',
+                                        riskname: '',
+                                        risklevel: '',
+                                        riskcompany: '',
+                                        risksbuser: '',
                                         risk_pg_gs_cs_jy: [
                                             {
-                                                title: '风险评估',
-                                                content: [
-                                                    '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下'
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '风险概述',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '采取措施',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '应对建议',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             }
                                         ],
                                         risk_ps: {
-                                            risk_ps_cl: '5',
-                                            risk_ps_content: '6'
+                                            risk_ps_cl: '',
+                                            risk_ps_content: ''
                                         },
-                                        risk_feed_content: '7'
+                                        risk_feed_content: ''
                                     }
                                 ],
                             },
@@ -205,11 +197,10 @@
                 } else {
                     period = year + "0" + month;
                 }
-                let requestParams = {
+                return {
                     company: company,
                     period: period,
                 };
-                return requestParams;
             },
 
             /**
@@ -218,7 +209,11 @@
              * @constructor
              */
             RiskBackDataQuery(params) {
-                let _this = this;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    userCompany = _getter.user.company.id;
+
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
                         /**
@@ -228,6 +223,9 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
+                                if (company !== userCompany) {
+                                    data.operation = '1-查看'
+                                }
                                 let operations = data.operation.split(',');
                                 for (let i = 0, len = operations.length; i < len; i++) {
                                     let emptyBtn = {
@@ -315,7 +313,6 @@
              * @author cwt
              */
             reportPageDataFormat(data) {
-                debugger;
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
@@ -323,7 +320,7 @@
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
-
+                debugger;
                 /**
                  * 根据大的风险类型分成七个部分
                  */
@@ -411,18 +408,21 @@
 
                             riskModel.risksptype = item.risksptype;
 
+                            riskModel_riskdetaildata.riskname = item.riskname;
+                            riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
-                            riskModel_riskdetaildata.riskcompany = item.riskcompany;
+                            riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
                             riskModel_riskdetaildata['riskid'] = item.nid;
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
 
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.risk_pg;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_gs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_cs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_jy;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
 
                             riskModel_riskdetaildata_risk_ps['risk_ps_cl'] = item.risk_ps_cl;
                             riskModel_riskdetaildata_risk_ps['risk_ps_content'] = item.risk_ps_content;
@@ -444,45 +444,41 @@
              */
             getEmptyRiskTpl() {
                 return {
-                    risksptype: '战略风险',
+                    risksptype: '',
                     riskdetaildata:
                         {
-                            riskname: '天津食品集团风险',
-                            risklevel: '严重',
-                            riskcompany: '天津食品集团',
-                            risksbuser: '德玛西亚',
+                            riskname: '',
+                            risktype: '',
+                            risklevel: '',
+                            riskcompany: '',
+                            risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
+                                    title: '风险名称',
+                                    content: []
+                                },
+                                {
                                     title: '风险评估',
-                                    content: [
-                                        '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
-                                        '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '风险概述',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '采取措施',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '应对建议',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 }
                             ],
                             risk_ps: {
-                                risk_ps_cl: '5',
-                                risk_ps_content: '6'
+                                risk_ps_cl: '',
+                                risk_ps_content: ''
                             },
-                            risk_feed_content: '7'
+                            risk_feed_content: ''
                         }
                 };
             }

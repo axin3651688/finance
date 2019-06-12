@@ -239,7 +239,7 @@ export default {
         }
     },
     created(){ 
-        // debugger
+        debugger
         let viewBtn = this.newThis.view_btn ;
         let $params = this.$store.state.prame.command;
         let sfilluser = this.$store.getters.user.user.trueName;
@@ -265,8 +265,9 @@ export default {
                 let d2 = this.newThis.view_row.ninfluence ;
                 let c1 = this.fsgl.rows.filter(rel => { return rel.id == d1 }) ;
                 let c2 = this.yxcd.rows.filter(red => { return red.id == d2 }) ;
-                this.optionl_nscore = c1[0].nscore ;
-                this.optiond_nscore = c2[0].nscore ; 
+                    this.optionl_nscore = c1[0].nscore ;
+                    this.optiond_nscore = c2[0].nscore ; 
+                
             } 
     },
     mounted(){

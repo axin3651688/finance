@@ -337,7 +337,6 @@
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
-                debugger;
                 /**
                  * 根据大的风险类型分成七个部分
                  */
@@ -425,22 +424,25 @@
 
                             riskModel.risksptype = item.risksptype;
 
+                            riskModel_riskdetaildata.riskname = item.riskname;
+                            riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
-                            riskModel_riskdetaildata.riskcompany = item.riskcompany;
+                            riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata['riskid'] = item.nid;
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
 
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.risk_pg;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_gs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_cs;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_jy;
+
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
 
                             riskModel_riskdetaildata_scheduleList.risk_sb.state = item['risk_sb_state'];
                             riskModel_riskdetaildata_scheduleList.risk_sb.user_name = item['risk_sb_user_name'];
                             riskModel_riskdetaildata_scheduleList.risk_sb.time = item['risk_sb_time'];
-                            // riskModel_riskdetaildata_scheduleList.risk_sb.content = item['risk_sb_state'] === '已上报' ? '上报人： ' +
 
                             riskModel_riskdetaildata_scheduleList.risk_ps.state = item['risk_ps_state'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.user_name = item['risk_ps_user_name'];
@@ -471,63 +473,58 @@
              */
             getEmptyRiskTpl() {
                 return {
-                    risksptype: '战略风险',
+                    risksptype: '',
                     riskdetaildata:
                         {
-                            riskname: '天津食品集团风险',
-                            risklevel: '严重',
-                            riskcompany: '天津食品集团',
-                            risksbuser: '德玛西亚',
+                            riskname: '',
+                            risklevel: '',
+                            riskcompany: '',
+                            risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
+                                    title: '风险名称',
+                                    content: []
+                                },
+                                {
                                     title: '风险评估',
-                                    content: [
-                                        '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
-                                        '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '风险概述',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '采取措施',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 },
                                 {
                                     title: '应对建议',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    content: []
                                 }
                             ],
                             scheduleList: {
                                 risk_sb: {
-                                    risk_count: '进度一',
-                                    risk_name: '风险上报',
+                                    risk_count: '',
+                                    risk_name: '',
                                     user_name: '',
                                     time: '',
-                                    state: '未上报',
+                                    state: '',
                                     content: ''
                                 },
                                 risk_ps: {
-                                    risk_count: '进度二',
-                                    risk_name: '风险批示',
+                                    risk_count: '',
+                                    risk_name: '',
                                     user_name: '',
-                                    time: '2019年3月',
-                                    state: '已批示',
+                                    time: '',
+                                    state: '',
                                     content: ''
                                 },
                                 risk_fk: {
-                                    risk_count: '进度三',
-                                    risk_name: '风险反馈',
+                                    risk_count: '',
+                                    risk_name: '',
                                     user_name: '',
-                                    time: '2019年3月',
-                                    state: '已反馈',
+                                    time: '',
+                                    state: '',
                                     content: ''
                                 }
                             }

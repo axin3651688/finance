@@ -7,7 +7,7 @@
       "id": "riskname",
       "type": "string",
       "text": "风险名称",
-      "align": "center",
+      "align": "left",
       "width": "600"
     },
     {

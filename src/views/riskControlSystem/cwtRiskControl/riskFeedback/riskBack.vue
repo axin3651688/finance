@@ -234,7 +234,10 @@
              * @constructor
              */
             RiskBackDataQuery(params) {
-                let _this = this;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    userCompany = _getter.user.company.id;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
 
@@ -244,6 +247,11 @@
                         let datas = res.data.data;
                         let _operations = [];
                         datas.forEach((data) => {
+
+                            if(company !== userCompany){
+                                data.operation = '1-查看';
+                            }
+
                             let operations = data.operation.split(',');
                             for (let i = 0, len = operations.length; i < len; i++) {
                                 let emptyBtn = {
@@ -252,9 +260,8 @@
                                     text: ''
                                 };
                                 let btnDes = operations[i].split('-');
-                                let btnId = btnDes[0],
-                                    btnText = btnDes[1];
-                                emptyBtn.id = btnId;
+                                let btnText = btnDes[1];
+                                emptyBtn.id = btnDes[0];
                                 emptyBtn.text = btnText;
 
                                 _operations.push(emptyBtn);
@@ -285,7 +292,7 @@
                 } else {
                     period = year + "0" + month;
                 }
-                let requestParams = {
+                return {
                     company: company,
                     // year: year,
                     // month: month,
@@ -293,7 +300,6 @@
                     departId: selectedOption ? selectedOption : "01",
                     sql: ""
                 };
-                return requestParams;
             },
 
             /**
@@ -364,7 +370,7 @@
 
             /**
              * 切换上一条下一条
-             * @param flag
+             * @param obj
              */
             dataMessageChange(obj) {
                 // $message 可传入的type的值

@@ -334,8 +334,9 @@ export default {
      */
     currency(value) {
         // debugger
-        let cc = value.slice(0, 2); //截取第一个到第二个之间的字符 **
-        return cc;
+        let cc ;
+        // cc = value.slice(0, 2); //截取第一个到第二个之间的字符 **
+        return value;
     },
     /**
      * @author sjz

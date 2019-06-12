@@ -83,66 +83,72 @@
 
                     <div class="container-right-center">
 
-                        <div class="container-right-loop-title">
-                            {{risksptype}}
-                        </div>
 
-                        <div class="container-right-loop">
+                        <template v-for="(riskfeed, key) in riskFeedDataList">
 
-                            <div v-for="risk in riskdetaildata" class="container-right-loop-list">
+                            <div class="container-right-loop-title">
+                                {{riskfeed.risksptype}}
+                            </div>
 
-                                <div class="container-right-loop-top">
-                                    <div class="container-top-left">
+                            <div class="container-right-loop">
+
+                                <div v-for="risk in riskfeed.riskdetaildata" class="container-right-loop-list">
+
+                                    <div class="container-right-loop-top">
+                                        <div class="container-top-left">
                                     <span class="left_1">
-                                        {{ risk.riskname }}
+                                        {{ risk.risktype}}
                                     </span>
-                                        <span class="left_2">
+                                            <span class="left_2">
                                         {{ risk.risklevel }}
                                     </span>
-                                    </div>
-                                    <div class="container-top-right">
+                                        </div>
+                                        <div class="container-top-right">
                                         <span class="left_1">
                                          {{ risk.riskcompany }}
                                         </span>
-                                        <span class="left_2">
+                                            <span class="left_2">
                                     识别人：{{ risk.risksbuser }}
                                         </span>
-                                    </div>
-                                </div>
-
-                                <div class="container-right-loop-center">
-                                    <div v-for="item in risk.risk_pg_gs_cs_jy">
-                                        <div>
-                                            {{ item.title }}
-                                        </div>
-                                        <p>
-                                            {{item.content}}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="container-right-loop-foot">
-                                    <div class="top-form-contents" style="margin-top: 30px">
-                                        <span>领导批示</span>
-                                        <div class="top-form-contents" style="margin-bottom: 0">
-                                            <p style="min-width: 98px;width: 150px;margin-left: 30px">风险策略为：</p>
-                                            <el-input v-model="risk.risk_ps.risk_ps_cl" disabled></el-input>
                                         </div>
                                     </div>
-                                    <div class="top-form-contents">
-                                        <span style="min-width: 194px;width: 194px"></span>
-                                        <el-input type="textarea" :rows="3" v-model="risk.risk_ps.risk_ps_content"
-                                                  disabled></el-input>
-                                    </div>
 
-                                    <div class="top-form-contents">
-                                        <span style="min-width: 194px;width: 194px">风险反馈</span>
-                                        <el-input type="textarea" :rows="4" v-model="risk.risk_feed_content"
-                                                  placeholder="请填写反馈内容。。。"></el-input>
+                                    <div class="container-right-loop-center">
+                                        <div v-for="item in risk.risk_pg_gs_cs_jy">
+                                            <div>
+                                                {{ item.title }}
+                                            </div>
+                                            <p>
+                                                {{item.content}}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </template>
+
+                        <div class="container-right-loop-foot">
+                            <div class="top-form-contents" style="margin-top: 30px">
+                                <span>领导批示</span>
+                                <div class="top-form-contents" style="margin-bottom: 0">
+                                    <p style="min-width: 98px;width: 150px;margin-left: 30px">风险策略为：</p>
+                                    <el-input v-model="writeData.risk_ps.risk_ps_cl" disabled></el-input>
+                                </div>
+                            </div>
+                            <div class="top-form-contents">
+                                <span style="min-width: 194px;width: 194px"></span>
+                                <el-input type="textarea" :rows="3" v-model="writeData.risk_ps.risk_ps_content"
+                                          disabled></el-input>
+                            </div>
+
+                            <div class="top-form-contents">
+                                <span style="min-width: 194px;width: 194px">风险反馈</span>
+                                <el-input type="textarea" :rows="4" v-model="writeData.risk_feed_content"
+                                          placeholder="请填写反馈内容。。。"></el-input>
+                            </div>
                         </div>
+
+
                     </div>
 
                     <div class="container-right-foot">
@@ -187,16 +193,24 @@
             return {
                 leftNode: {},
                 selectedNode: '',
-                companyname: '天津食品集团有限公司(合并)',
-                riskname: '1',
-                risklevel: '2',
-                riskcompany: '3',
-                risksbuser: '4',
+                companyname: '',
+                riskname: '',
+                risklevel: '',
+                riskcompany: '',
+                risksbuser: '',
                 riskCount: {},
-                risksptype: "战略风险",
+                risksptype: "",
                 riskdetaildata: [],
                 personnelListShow: false,
-                pageHeight: document.body.offsetHeight
+                pageHeight: document.body.offsetHeight,
+
+
+                riskFeedDataList: {},
+                writeData: {
+                    risk_ps:{},
+                    risk_feed_content:''
+                },
+
             }
         },
         watch: {
@@ -244,10 +258,25 @@
             },
 
             reportDataFormat() {
+                debugger;
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
-                    riskFeedDataList = _reportData.riskFeedDataList;
-                _this.getReportCenterData(riskFeedDataList);
+                    _list = _reportData.riskFeedDataList;
+                let _riskFeedDataList = {};
+                for (let key in _list) {
+                    if (_list[key].riskdetaildata && _list[key].riskdetaildata.length > 0) {
+                        _riskFeedDataList[key] = _list[key];
+
+                        debugger;
+                        _this.writeData['risk_ps']['risk_ps_cl'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_cl;
+                        _this.writeData['risk_ps']['risk_ps_content'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_content;
+                        _this.writeData['risk_feed_content'] = _list[key].riskdetaildata[0].risk_feed_content;
+
+                    }
+                }
+                this.riskFeedDataList = _riskFeedDataList;
+
+
             },
 
             /**
@@ -353,7 +382,6 @@
                     singleRiskData.sriskname = item.riskname;
                     params.riskReportStateDtos.push(singleRiskData);
                 });
-                debugger;
                 _this.riskFeedSend(params);
             },
 
@@ -526,7 +554,7 @@
     }
 
     .container-right-loop-list {
-        margin-bottom: 100px;
+        margin-bottom: 50px;
     }
 
     .container-right-foot {
