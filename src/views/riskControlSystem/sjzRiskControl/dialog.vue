@@ -254,11 +254,20 @@ export default {
         // 自动获取登录人作为填报人
             // this.form.sfilluser = sfilluser ;
         // 自动获取当前用户的所属部门
-            // this.form.departmentname = departmentname ;;
+            // this.form.departmentname = departmentname ;;view_row
         // 风险发生概率下拉框数据
             this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
-            this.optiond = this.yxcd.rows ;
+            this.optiond = this.yxcd.rows ;  
+        // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
+            if(this.optionl_nscore == "" || this.optiond_nscore == ""){
+                let d1 = this.newThis.view_row.nprobability ;
+                let d2 = this.newThis.view_row.ninfluence ;
+                let c1 = this.fsgl.rows.filter(rel => { return rel.id == d1 }) ;
+                let c2 = this.yxcd.rows.filter(red => { return red.id == d2 }) ;
+                this.optionl_nscore = c1[0].nscore ;
+                this.optiond_nscore = c2[0].nscore ; 
+            } 
     },
     mounted(){
         // 风险类型请求
@@ -315,8 +324,8 @@ export default {
                 }               
                 for(let key in viewRow){
                     this.form[key] = viewRow[key] ;
-                }               
-                
+                }  
+                // debugger            
             }else{
                 this.valueTitle = "";
                 this.isAddParse = 0 ;
@@ -330,12 +339,18 @@ export default {
         // 切换选项[风险类型]
         handleNodeClick(node){
             // debugger
-            this.valueTitle = node[this.defaultProps.label]
-            this.form.srisktype = node[this.defaultProps.value]
-            this.$emit('getValue',this.valueId)
-            this.defaultExpandedKey = []
-            this.isFocus = false 
-            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+            if(node.children && node.children.length > 0){
+                this.valueTitle = "" ; 
+                this.form.srisktype = "" ;
+                this.isFocus = true ; 
+            }else{
+                this.valueTitle = node[this.defaultProps.label]
+                this.form.srisktype = node[this.defaultProps.value]
+                this.$emit('getValue',this.valueId)
+                this.defaultExpandedKey = []
+                this.isFocus = false 
+                this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+            }
         },
         // 清除下拉选【风险类型】的
         clearHandle(){
@@ -407,7 +422,7 @@ export default {
         },
         // 发生概率选择器  触发
         selectChange(val){ 
-
+            // debugger
             let cc = this.optionl.filter(res => { return res.id == val }) ;
             if(this.optionl_nscore!="")this.optionl_nscore = "" ;
             this.optionl_nscore = cc[0].nscore ;

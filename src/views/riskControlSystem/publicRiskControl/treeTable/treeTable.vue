@@ -75,7 +75,7 @@
 
 <script>
     import treeToArray from './eval'
-
+    import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
     export default {
         name: 'treeTable',
         props: {
@@ -117,7 +117,9 @@
                 }
                 const func = this.evalFunc || treeToArray;
                 const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
-                return func.apply(null, args)
+                // return func.apply(null, args)
+                const lyuo = func.apply(null, args) ;
+                return mini.getOpenbyDefault(lyuo ) //默认全部展开
             }
         },
         methods: {

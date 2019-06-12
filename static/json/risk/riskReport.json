@@ -13,7 +13,7 @@
             "id": "label",
             "text": "公司名称",
             "type": "string",
-            "align": "left",
+            "align": "left !important",
             "width": "500"
         },
         {

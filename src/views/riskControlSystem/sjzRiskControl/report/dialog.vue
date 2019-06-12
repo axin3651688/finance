@@ -192,6 +192,13 @@ export default {
             this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
             this.optiond = this.yxcd.rows ;
+        // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
+            let d1 = this.form.nprobability ;
+            let d2 = this.form.ninfluence ;
+            let c1 = this.optionl.filter(rel => { return rel.id == d1 }) ;
+            let c2 = this.optiond.filter(red => { return red.id == d2 }) ;
+            this.optionl_nscore = c1[0].nscore ;
+            this.optiond_nscore = c2[0].nscore ; 
     },
     mounted(){
         // 风险类型请求
@@ -304,6 +311,7 @@ export default {
             for(let key in this.form){
                 this.form[key] = this.data[key]
             }
+            
         },
         /**
          * 发生概率选择器  触发

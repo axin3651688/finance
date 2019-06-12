@@ -21,7 +21,7 @@
             </el-dropdown-menu>
           </el-dropdown>
           <div class="left">
-            <el-button @click="saveData" class="button">保存</el-button>
+            <el-button @click="saveData" class="button" v-show="showSaveButton">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
           <div class="right">
@@ -39,6 +39,7 @@
         <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
+        <div v-if="settings.data && settings.data.length>0" class="convert_class">单位：{{ convert }}</div>
         <hot-table
           v-if="settings.data && settings.data.length>0"
           :settings="settings"
@@ -61,8 +62,8 @@
           >{{item.title}}</el-checkbox>
           <!-- </el-checkbox-group> -->
           <span slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="Download">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
           </span>
         </el-dialog>
         <el-upload
@@ -132,6 +133,7 @@ export default {
   },
   data() {
     return {
+      convert:"元",//报表的单位问题。
       fillModalConfig: {},//审阅的弹出框。
       buttonsOperation:[],//包含上报、审阅等操作按钮。
       //上报人员的modal框的显示。
@@ -144,6 +146,7 @@ export default {
       financingOptions: [],
       dialogVisible: false,
       showAddButton: false,//新增按钮的显示与否
+      showSaveButton: false,//保存按钮的显示与否
       values: null, //填报的数据
       datas: null, //存储查询要传递的数据
       columns: [], //存储请求返回回来的列
@@ -193,7 +196,7 @@ export default {
         maxCols: 20,
         rowHeaders: true, //行表头
         colHeaders: true, //表头数据
-        // nestedHeaders: [],//多表头
+        nestedHeaders: [],//多表头
         autoWrapRow: true, //自动换行
         fillHandle: false, //选中拖拽复制  true, false
         fixedColumnsLeft: 0, //固定左边列数
@@ -239,7 +242,9 @@ export default {
       this.tableData = [];
     },
     year(val) {
+      //清楚以前的数据。
       if (this.activeName2 == "second") {
+        this.clearDataOfBefore();
         this.tableData = [];
         let period = this.datas.period;
         let year = period.substring(0, 4);
@@ -250,7 +255,9 @@ export default {
       }
     },
     month(val) {
+      //清楚以前的数据。
       if (this.activeName2 == "second") {
+        this.clearDataOfBefore();
         this.tableData = [];
         let period = this.datas.period;
         let date;
@@ -277,6 +284,8 @@ export default {
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
       this.divShow = false;
       this.fillShow = true;
+      //清楚以前的数据。
+      this.clearDataOfBefore();
       if (this.activeName2 == "second") {
         this.tableData = [];
         let company = this.datas? this.datas.company:oldVal;
@@ -318,6 +327,11 @@ export default {
       {
         id: "2005",
         text: "定金",
+        pid: "20"
+      },
+      {
+        id: "2006",
+        text: "信用",
         pid: "20"
       },
       {
@@ -606,17 +620,55 @@ export default {
       };
       this.modalConfig.datas = this.queryUserByCompany();
     },
+    getCurrentSider(){
+      let me = this,itemmenu;
+      let storeParams = me.$store.getters,
+          menupermisson = storeParams.user.menupermisson;
+      let siderState = JSON.parse(localStorage.siderState);
+      if(siderState && siderState.code) {
+        itemmenu = menupermisson.filter(item => {
+          return item.scode == siderState.code;
+        });
+        me.currentSider = itemmenu;
+      }
+      return itemmenu;
+    },
     /**
      * 操作按钮显示的内容。
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
       let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
-          spcode = this.$store.getters.treeInfo.spcode;
-      if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){
-        me.buttonsOperation = [];
-        return
+          spcode = this.$store.getters.treeInfo.spcode,companyname = this.$store.getters.treeInfo.sname;
+      let currentSider = me.currentSider;
+      if(!currentSider){
+        currentSider = me.getCurrentSider();
       }
+      this.axios.get("/cnbi/json/source/tjsp/szcJson/fillButtons.json").then(res => {
+        buttons = res.data;
+        if(isleaf == 1 && currentSider[0].nrep){
+          let arr1 = ['2','1','5'];
+          buttons = buttons.filter(item => {
+            return arr1.indexOf(item.id) != -1;
+          });
+          me.buttonsOperation = buttons;
+        }else {
+          //集团年度目标考核建议值，没有上报等按钮
+          // let arr0 = ['2','1','5','0','4'];
+          // buttons = buttons.filter(item => {
+          //   return arr0.indexOf(item.id) == -1;
+          // });
+          me.buttonsOperation = [];
+        }
+      });
+    },
+    contentOfButtons_old (flag) {
+      let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
+          spcode = this.$store.getters.treeInfo.spcode,companyname = this.$store.getters.treeInfo.sname;
+      // if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){
+      //   me.buttonsOperation = [];
+      //   return
+      // }
       // //集团年度目标考核值。
       // let arrTems = ['10'];
       // if(arrTems.indexOf(this.templateId) != -1){
@@ -627,15 +679,26 @@ export default {
         buttons = res.data;
         if(isleaf == 1){
           let arr1 = ['2','1','5'];
+          if(companyname.indexOf("本部") != -1){
+            if(me.reportHeader == "请选择"){
+              arr1 = ['3']
+            }else {
+              arr1 = ['2','1','5','3'];
+            }
+          }else if (me.reportHeader == "请选择"){
+            buttons = [];
+          }
           buttons = buttons.filter(item => {
             return arr1.indexOf(item.id) != -1;
           });
           me.buttonsOperation = buttons;
         }else {
+          // let arr0 = ['2','1','5','0','4'];
+          // if(me.reportHeader != "请选择"){
+          //   arr0 = ['0','4'];
+          // }
+          //集团年度目标考核建议值，没有上报等按钮
           let arr0 = ['2','1','5','0','4'];
-          if(me.reportHeader != "请选择" && spcode != "0"){
-            arr0 = ['0','4'];
-          }
           buttons = buttons.filter(item => {
             return arr0.indexOf(item.id) == -1;
           });
@@ -648,7 +711,6 @@ export default {
      * @author szc 2019年4月26日13:40:45
      */
     contentOfCompany () {
-      debugger;
       let me = this;
       let listSelects = this.list,flag = false;
       let currentSelects = this.parseResultOfCompany(this.listOld);
@@ -842,7 +904,7 @@ export default {
      */
     queryUserByCompany(){
       
-      let me = this,companyId = this.$store.getters.treeInfo.spcode,userData = [];
+      let me = this,companyId = this.$store.getters.treeInfo.scode,userData = [];
       let params = {company:companyId};
       queryUserByCompany(params).then(res => {
         if(res.data.code == 200){
@@ -963,10 +1025,24 @@ export default {
         source.push(item.text);
       });
       let record = this.settings.data[row];
+      if(!record){
+        record =  this.judgeAddRowsData(row);
+      }
       if (record.cismenu === "否" || record.cismenu == 0) {
         return;
       }
       return source;
+    },
+    judgeAddRowsData (row) {
+      let me = this,tableData = me.tableData,resItem = {};
+      for(let i = 0;i < tableData.length;i++){
+        let item = tableData[i];
+        if(item.index == row){
+          resItem = item;
+          break;
+        }
+      }
+      return resItem;
     },
     resizeTable() {
       this.heights = document.body.offsetHeight - 360;
@@ -1013,8 +1089,8 @@ export default {
     handleStateOfPeriod(rowData, rowIndex) {
       // 
       let me = this,
-        startIndex = 4,
-        repaymentIndex = 10,
+        startIndex = 5,
+        repaymentIndex = 11,
         month = this.$store.getters.month,
         year = this.$store.getters.year;
       let startPeriod = rowData[startIndex],
@@ -1064,7 +1140,7 @@ export default {
       }
       this.$refs.hotTableComponent.hotInstance.setDataAtCell(
         rowIndex,
-        12,
+        13,
         stateStr
       );
     },
@@ -1269,6 +1345,21 @@ export default {
             return true;
           }
         }
+        if(columns == 8){
+          let record = this.settings.data[row];
+          if(!record){
+            return true;
+          }
+          if (record.isnormal === "是" || record.isnormal == 1) {
+            // if(record.isnormal){
+            //   delete record.isnormal;
+            // }
+            //如果是是或是1，清空后面的内容。
+            let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            this.clearRowOfAfter(row,arrItems,columns);
+          }
+          //如果选择是否内部
+        }
         if (columns > 8) {
           //isnature isnormal
           let record = this.settings.data[row];
@@ -1303,8 +1394,11 @@ export default {
     paymentLimit(row, columns) {
       let me = this;
       if (this.templateId == 7) {
-        if (columns == 11) {
+        if (columns == 12) {
           let record = this.settings.data[row];
+          if(!record){
+            record = me.judgeAddRowsData(row);
+          }
           if(!record){
             return true;
           }
@@ -1313,6 +1407,17 @@ export default {
             this.clearRepayDate(row,arrItems,columns);
             return true;
           }
+        }
+      }
+      if(columns == 10){
+        let record = this.settings.data[row];
+        if(!record){
+          return true;
+        }
+        if (record.cisguarantee && (record.cisguarantee == '0' || record.cisguarantee == '否')) {
+          // let arrItems = ['repaysource'];
+          // this.clearRepayDate(row,arrItems,columns);
+          return true;
         }
       }
       return false;
@@ -1371,28 +1476,35 @@ export default {
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
         cellMeta.readOnly = this.paymentLimit(row, columns);
-        if (columns == 1) {
+        if (columns == 2) {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
         }
-        if (columns == 2) {
+        if (columns == 3) {
           // 
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           // this.getCellEditor = this.settings.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
         }
-        if (columns == 12) {
+        if (columns == 13) {
           cellMeta.readOnly = true;
         }
       }
       if (this.templateId == 8) {
-        //资金集中度的填写限制 改成第一行可编辑
-        if ((columns == 0 || columns == 2)) {
+        //资金集中可编辑的列，现在要改成存款余额说明填报 2019年5月30日11:54:32
+        // cellMeta.readOnly = this.capitalConcentration(row,columns);
+        if(columns == 5){
           cellMeta.readOnly = false;
-        } else {
+        }else {
           cellMeta.readOnly = true;
         }
+        //资金集中度的填写限制 改成第一行可编辑
+        // if ((columns == 0 || columns == 2)) {
+        //   cellMeta.readOnly = false;
+        // } else {
+        //   cellMeta.readOnly = true;
+        // }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
@@ -1415,14 +1527,60 @@ export default {
           cellMeta.readOnly = false;
         }
       }
-      [1,2].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+      //根据用户的权限来设置报表的状态。
+      cellMeta = me.operationsOfUser(cellMeta,tableState);
+      // [1,2,3].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
+    },
+    /**
+     * 用户的权限。
+     * @author szc 2019年6月10日15:29:52
+     */
+    operationsOfUser(cellMeta,tableState){
+      let me = this,itemmenu = {};
+      if(me.currentSider){
+        itemmenu = me.currentSider;
+      }else {
+        let storeParams = me.$store.getters,
+            menupermisson = storeParams.user.menupermisson;
+        let siderState = JSON.parse(localStorage.siderState);
+        if(siderState && siderState.code) {
+          itemmenu = menupermisson.filter(item => {
+            return item.scode == siderState.code;
+          });
+        }
+        me.currentSider = itemmenu;
+      }
+      if(!itemmenu[0].nfill){
+        cellMeta.readOnly = true;
+        return cellMeta;
+      }else if (itemmenu[0].nrep && itemmenu[0].nfill) {
+        [1,2,3].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
+        return cellMeta;
+      }
+      return cellMeta;
+    },
+    /**
+     * 资金集中的余额说明的填报。
+     * @author szc 2019年5月30日11:55:26
+     */
+    capitalConcentration (row,column) {
+      let me = this;
+      if(column == 5){
+        let record = this.settings.data[row];
+        if(!record){return true}
+        if(record.B && record.B != 0){
+          return false;
+        }
+      }
+      return true;
     },
     /**
      * 填报表的列与列之间的限制的判断添加。
      * 2019年3月29日14:06:43  szc
      */
     limitItemOfFill (row,columns) {
+      
       let me = this;
       if (this.fixed == 0) {
         if (columns > 7) {
@@ -1438,6 +1596,9 @@ export default {
         if (columns > 8) {
           let record = this.settings.data[row];
           if (record.isnormal === "是" || record.isnormal == 1) {
+            //如果是是或是1，清空后面的内容。
+            let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            this.clearRowOfAfter(row,arrItems,columns);
             return true;
           }
         }
@@ -1455,6 +1616,18 @@ export default {
         }
       }
       return "text";
+    },
+    /**
+     * 处理一些自定义的格式。
+     * @author szc 2019年5月31日11:17:28
+     */
+    changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
+      td.style.textAlign = "center"
+      // if (!value) {
+      //   td.innerHTML = companyname;
+      //   return;
+      // }
+      td.innerHTML = value;
     },
     // 判断是decimal类型的加上千分两位小数显示
     decimalDefaultRenderer(
@@ -1474,13 +1647,17 @@ export default {
       //添加一个市管企业的户数，不用格式化数据。
       let arr = ['12'];
       if (value != null && !isNaN(value)) {
-        flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
+        if(this.templateId == "7" && (prop == "B" || prop == "C")){
+          flagElement.innerText = value == ""? "":value.toFixed(4);
+        }else {
+          flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
+        }
         td.appendChild(flagElement);
       }
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      let me = this,arrTem = ['9','12','10'],tableState = me.tableState;
+      let me = this,arrTem = ['8','9','12','10','11'],tableState = me.tableState;
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
@@ -1505,64 +1682,68 @@ export default {
             cc.renderer = col.renderer;
             cc.source = col.source;
           } else {
-            // if (col.type === "decimal") {
-            //   cc.renderer = this.decimalDefaultRenderer;
-            // } else if (col.id === "caozuo") {
-            //   cc.renderer = this.flags;
-            //   cc.readOnly = true;
-            // } else if (col.id === "isnature") {// 客商性质
-            //   cc.source = this.getDropDownSource("1400");
-            //   cc.renderer = this.flagrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "isinside") {//isinside
-            //   cc.source = this.getDropDownSource("1700");
-            //   cc.renderer = this.flagrenderer;
-            //   // cc.type = "autocomplete";
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            //   console.log(rows);
-            // } else if (col.id === "isnormal") {// 是否正常
-            //   cc.source = this.getDropDownSource("1800");
-            //   cc.renderer = this.flagrenderer;
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontenta") {// 非正常分类
-            //   cc.source = this.getDropDownSource("1500");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            //   cc.readOnly = false;
-            // } else if (col.id === "scontentb") {// 债务人状况
-            //   cc.source = this.getDropDownSource("1600");
-            //   // cc.renderer = this.flagrenderer
-            //   cc.type = "dropdown";
-            // } else if (col.id === "guarantee") {
-            //   cc.source = this.financingOptionsData("20");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "repaysource") {
-            //   cc.source = this.financingOptionsData("21");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "sstartdate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "senddate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "srepaydate") {
-            //   (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
-            // } else if (col.id === "cismenu") {
-              
-            //   cc.source = this.financingOptionsData("1700");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "cisguarantee") {
-            //   cc.source = this.financingOptionsData("1800");
-            //   cc.renderer = this.financingrenderer;
-            //   cc.type = "dropdown";
-            // } else if (col.id === "finance") {
-            //   cc.source = this.typeOfFinancing();
-            //   cc.type = "dropdown";
-            // }
-            // //资金集中情况表的render方法重新写里面的内容。
+            if (col.type === "decimal") {
+              cc.renderer = this.decimalDefaultRenderer;
+            } else if(col.type === "number"){
+              cc.renderer = this.changeFormatOfTable;
+            }else if (col.id === "caozuo") {
+              cc.renderer = this.flags;
+              cc.readOnly = true;
+            } else if (col.id === "isnature") {// 客商性质
+              cc.source = this.getDropDownSource("1400");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "isinside") {//isinside
+              cc.source = this.getDropDownSource("1700");
+              cc.renderer = this.flagrenderer;
+              // cc.type = "autocomplete";
+              cc.type = "dropdown";
+              cc.readOnly = false;
+              console.log(rows);
+            } else if (col.id === "isnormal") {// 是否正常
+              cc.source = this.getDropDownSource("1800");
+              cc.renderer = this.flagrenderer;
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontenta") {// 非正常分类
+              cc.source = this.getDropDownSource("1500");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+              cc.readOnly = false;
+            } else if (col.id === "scontentb") {// 债务人状况
+              cc.source = this.getDropDownSource("1600");
+              // cc.renderer = this.flagrenderer
+              cc.type = "dropdown";
+            } else if (col.id === "guarantee") {
+              cc.source = this.financingOptionsData("20");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "repaysource") {
+              cc.source = this.financingOptionsData("21");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "sstartdate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "senddate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "srepaydate") {
+              (cc.type = "date"), (cc.dateFormat = "YYYY/MM/DD");
+            } else if (col.id === "cismenu") {
+              cc.source = this.financingOptionsData("1700");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "cisguarantee") {
+              cc.source = this.financingOptionsData("1800");
+              cc.renderer = this.financingrenderer;
+              cc.type = "dropdown";
+            } else if (col.id === "finance") {
+              cc.source = this.typeOfFinancing();
+              cc.type = "dropdown";
+            }
+            if(this.templateId == "7" && col.id == "companyname"){
+              cc.renderer = this.handleTemplate7;
+            }
+            //资金集中情况表的render方法重新写里面的内容。
             // if(this.templateId == "8"){
             //   let arr = ['B'];
             //   if(arr.indexOf(col.id) != -1){
@@ -1653,6 +1834,13 @@ export default {
         this.parseNumberToString(itemNames,rows);
       }
       this.settings.data = rows;
+      //添加左侧固定的列。
+      let fixdTemplates = ['4','5','6','7'];
+      if(fixdTemplates.indexOf(this.templateId) != -1) {
+        this.settings.fixedColumnsLeft = 1;
+      }else {
+        this.settings.fixedColumnsLeft = 0;
+      }
       //资金集中情况表，数据为0 的设置为空,为了填报的时候，避免出现零。
       // if(this.templateId == "8" && rows && rows.length > 0){
       //   if(rows[0]){
@@ -1665,6 +1853,13 @@ export default {
       //   });
       // }
       rows = rows && rows.length > 0? rows:[{}];
+      //融资情况明细表添加公司字段名称。
+      if(this.templateId == "7" && rows && rows.length > 0){
+        let companyname = this.$store.getters.companyName;
+        rows.forEach(item => {
+          item.companyname = item.companyname? item.companyname:companyname;
+        });
+      }
       //有待修复
       me.settings.data = rows;
       setTimeout(() => {
@@ -1686,6 +1881,14 @@ export default {
         });
         me.settings.data = rows;
       }, 100);
+    },
+    handleTemplate7 (instance, td, row, col, prop, value, cellProperties) {
+      let me = this,companyname = me.$store.getters.companyName;
+      if (!value) {
+        td.innerHTML = companyname;
+        return;
+      }
+      td.innerHTML = value;
     },
     /**
      * 处理资金集中情况表。
@@ -1821,6 +2024,35 @@ export default {
     setDataAtCell() {
       
     },
+    /**
+     * 资金集中情况表的存款说明处理。
+     */
+    explainColumnTable08(){
+      let me = this;
+      let data = me.settings.data,flag = true;
+      for(let i = 0;i < data.length;i ++){
+        let item = data[i];
+        if(item.B && item.B != 0 && !item.sdesc){
+          flag = false;
+          break;
+        }
+      }
+      return flag;
+    },
+    explainColumnTable08_old(){
+      let me = this;
+      let data = me.settings.data,tableData = me.tableData,dataFill = 0,flag = false;
+      data.forEach(item => {
+        if(item.B && item.B != 0){
+          dataFill++;
+        }
+      });
+      if(dataFill == tableData.length){
+        flag = true;
+        return flag;
+      }
+      return flag;
+    }, 
     //点击保存数据
     saveData() {
       let that = this;
@@ -1831,6 +2063,17 @@ export default {
           type: 'warning'
         });
         return;
+      }
+      //如果是资金集中情况表。如果有“其中：银行存款”为零，则必须要填写相应的说明。
+      if(this.templateId == "8"){
+        let flag08 = that.explainColumnTable08();
+        if(!flag08){
+          this.$message({
+            message:"【其中：银行存款】不为零的，必须都要填写【银行存款余额说明】！",
+            type:"warning"
+          });
+          return;
+        }
       }
       let arrTems = ['4','5','6'];
       this.tableData.forEach(item => {
@@ -2066,11 +2309,40 @@ export default {
       this.$store.curParams = this.datas;
       //按钮新增的显示与否
       this.showOrHideOfButtonForAdd(index,item);
+      //切换到集团年度目标考核建议值时，隐藏月份。
+      this.hideMonthByTableId();
       //三张主表加十三个审计月。
       this.mainTableMonth();
+      //清楚以前的数据。
+      this.clearDataOfBefore();
       this.reportData(this.datas);
       //上报、审阅按钮的内容。
       this.contentOfButtons();
+    },
+    /**
+     * 档切换到集团年度目标考核建议值的时候隐藏month。
+     * @author szc 2019年5月30日15:08:41
+     */
+    hideMonthByTableId () {
+      let me = this,showDims = me.showDims;
+      if(me.templateId == "10"){
+          showDims.company = true,
+          showDims.year = true,
+          showDims.month = false,
+          showDims.conversion = false;
+      }else {
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = true,
+        showDims.conversion = false;
+      }
+    },
+    /**
+     * 清楚以前的数据。
+     */
+    clearDataOfBefore () {
+      let me = this;
+      me.settings.colHeaders = [],me.settings.columns = [],me.settings.data = [];
     },
     /**
      * 三张主表加十三个审计月。
@@ -2091,7 +2363,8 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','9','12','10'],flag = true;
+      let arr = ['0','1','2','3','8','9','12','10','11'],flag = true,saveFlag = true,
+          currentSider = me.currentSider;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){
@@ -2099,7 +2372,16 @@ export default {
           break;
         }
       }
+      //根据权限设置按钮的显示与否。
+      if(!currentSider){
+        currentSider = me.getCurrentSider();
+      }
+      if(!currentSider[0].nfill){
+        flag = false;
+        saveFlag = false;
+      }
       this.showAddButton = flag;
+      this.showSaveButton = saveFlag;
     },
     //请求获取填报页面
     reportData(datas) {
@@ -2482,6 +2764,18 @@ export default {
               templateId: me.templateId
             };
             console.log("ee", row, data);
+            //判断有没有操作报表的权限。没有权限的话就不能删除行。
+            let currentSider = me.currentSider;
+            if(!currentSider){
+              currentSider = me.getCurrentSider();
+            }
+            if(!currentSider[0].nfill){
+              me.$message({
+                message:'你没有操作此报表的权限！',
+                type:'warning'
+              });
+              return;
+            }
             me.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
               confirmButtonText: "确定",
               cancelButtonText: "取消",
@@ -2611,7 +2905,9 @@ export default {
   margin-right: 20px;
 }
 .input {
-  width: 220px;
+  /* width: 220px; */
+  width: 240px;
+  margin-left: -3px;
 }
 .checkbox {
   display: block;
@@ -2685,6 +2981,14 @@ export default {
   }
   .handsontable td.htInvalid {
     background-color: transparent !important;
+  }
+  //报表的单位样式。
+  .convert_class {
+    font-weight: bold;
+    margin-top: 20px;
+    float: right;
+    margin-right: 100px;
+    font-size: 18px;
   }
 
   //   .el-input__inner {

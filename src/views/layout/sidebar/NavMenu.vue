@@ -126,6 +126,7 @@ export default {
       this.closeMessageOfExtra();
     },
     shownavMenu(e) {
+      debugger;
       localStorage.removeItem("navmenuCall");
       localStorage.setItem("navmenuCall",JSON.stringify(e));
       //在此加一个页面上面的title。2019年3月26日11:47:15 szc

@@ -3,7 +3,7 @@
     "id": "riskControl",
     "text": "风险管控",
     "columns": [{
-            "id": "zbmc",
+            "id": "sname",
             "type": "string",
             "text": "指标名称",
             "align": "center",
@@ -52,6 +52,12 @@
             "id": "pj",
             "type": "string",
             "text": "评级",
+            "align": "center"
+        },
+        {
+            "id": "val",
+            "type": "string",
+            "text": "得分",
             "align": "center"
         }
     ],
