@@ -42,7 +42,6 @@
                             :contentDown.sync="contentDown"
                     >
                     </report-instruction>
-
                     <!--报告跳转界面关于追踪的进度的内容-->
                     <report-schedule
                             v-if="this.scheduleShow"
@@ -178,9 +177,14 @@
                 this.personnelListShow = !this.personnelListShow;
             },
             /**
-             * 指定的人员的下达。
+             * 指定的人员的下达。只有一个批示，ly说的。2019年6月12日15:36:37
              */
             personSureBtnClicked (nodes) {
+                debugger;
+                let me = this,instructionsRpt = me.$store.instructionsRpt,allData = me.reportData.allData;
+                me.saveInstructionsRpt(instructionsRpt,nodes,allData);
+            },
+            personSureBtnClicked_old (nodes) {
                 debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData,riskCount = 0;
                 //因为要全部显示，所以要遍历相加。
@@ -213,7 +217,7 @@
             /**
              * 批示保存批示信息。
              */
-            saveInstructionsRpt (instructionsRpt,nodes) {
+            saveInstructionsRpt (instructionsRpt,nodes,allData) {
                 let me = this,storeParams = me.$store.getters,
                     company = storeParams.company,
                     user = storeParams.user.user.userName;
@@ -229,10 +233,10 @@
                         userStr
                     ]
                 };
-                instructionsRpt.forEach(item => {
+                allData.forEach(item => {
                     let riskReportState = {
                         id: 0,
-                        company:company,
+                        company:item.company,
                         nrelateid: "",
                         sinstructionsuser:user,
                         cstrategy:"",
@@ -241,9 +245,9 @@
                         sisfeedback:"-1",
                         sisinstructions:"1"
                     }
-                    riskReportState.nrelateid = item.id;
-                    riskReportState.cstrategy = item.instructionValues;
-                    riskReportState.sinstructscontent = item.instruction;
+                    riskReportState.nrelateid = item.nrelateid;
+                    riskReportState.cstrategy = instructionsRpt[0].instructionValues;
+                    riskReportState.sinstructscontent = instructionsRpt[0].instruction;
                     params.riskReportStateDtos.push(riskReportState);
                 });
                 let requertParams = {
@@ -280,6 +284,39 @@
              * @author szc 2019年5月29日14:15:01
              */
             afterInstructionRpt (afterParams) {
+                let me = this,middleData = me.middleData;
+                let itemMiddle = middleData[middleData.length - 1];
+                let content = itemMiddle.contentUp.content;
+                for(let i = 0;i < content.length;i++){
+                    let item = content[i];
+                    if(item.contentDown && i == content.length - 1){
+                        item.contentDown.rowItem = item.contentDown.instructionObj;
+                        for(let j = 0;j < afterParams.length;j ++){
+                            let afterParamsItem = afterParams[j];
+                            if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
+                                item.contentDown.rowItem.cstrategy = afterParamsItem.instructionValues;
+                                item.contentDown.rowItem.instructionid = "1";
+                                item.contentDown.rowItem.psnr = afterParamsItem.instruction;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //删除添加到全局对象上的批示内容
+                if(me.$store.instructionsRpt){
+                    delete me.$store.instructionsRpt;
+                }
+                me.instructionRelease = false;
+                // middleData.contentUp.content = content;
+                // middleData.changeValue = Math.floor(Math.random()*1000);
+                me.middleData = middleData;
+                me.personnelListShow = !me.personnelListShow;
+                me.reportConventional = false;
+                me.$nextTick(()=>{
+                    me.reportConventional = true;
+                })
+            },
+            afterInstructionRpt_old (afterParams) {
                 let me = this,middleData = me.middleData;
                 for(let k = 0;k < middleData.length;k++){
                     let itemMiddle = middleData[k];

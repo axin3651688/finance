@@ -41,6 +41,17 @@
                 </div>
             </el-dialog>
         </div>
+        <div>
+            <el-dialog
+                :title="'提醒'"
+                :visible.sync="publicVisible"
+                width="50%"
+                top="50px">
+                <div>
+                    <remindReport :data.sync="dptDatas" :prtParams.sync="prtParams" v-on:remindHandler="remindHandler"></remindReport>
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -52,15 +63,18 @@ import reportContent from "../publicRiskControl/reportComponent"
 // import dialogContent from '../publicRiskControl/dialogComponent'
 import dialogContent from '../publicRiskControl/dialogComponentS'
 import basicsModal from "./dialogModal/basicsModal"
+//提醒的弹出框内容。
+import remindReport from "./dialogModal/remindReport"
 import deptSelect from "./mixin/deptSelectHandler"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 import {
     queryInstructions,
-    queryCopingStrategies
+    queryCopingStrategies,
+    queryUserOfCompany
 } from "~api/szcRiskControl/riskControl"
 import { findThirdPartData } from "~api/interface"
 import { mapGetters } from "vuex";
-
+import publicTools from './../sjzRiskControl/riskJavaScript.js'
 export default {
     mixins: [deptSelect],
     name: "riskControl",
@@ -70,7 +84,8 @@ export default {
         treeTable,
         reportContent,
         dialogContent,
-        basicsModal
+        basicsModal,
+        remindReport
     },
     data() {
         return {
@@ -95,7 +110,10 @@ export default {
                 id:"101",
                 text:"",
                 options:[]
-            }//下拉框的内容配置
+            },//下拉框的内容配置
+            publicVisible:false,
+            dptDatas:[],//部门人员的数据
+            prtParams:{}
         }
     },
     /**
@@ -240,6 +258,9 @@ export default {
                 departId:item? item:"01",
                 sql:""
             };
+            if(judgeParams.params){
+                params = judgeParams.params;
+            }
             me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                 if(res.data.code == 200){
                     let curSqlId = judgeParams? judgeParams.sqlId:"101";
@@ -259,6 +280,8 @@ export default {
                                 me.tableData = resData;
                             }else if (judgeParams.id == "lookInstruc"){
                                 me.lookInstructionRes(res.data.data);
+                            }else if (judgeParams.queryAfter) {
+                                me[judgeParams.queryAfter](res.data.data,judgeParams);
                             }
                         }
                     });
@@ -331,6 +354,8 @@ export default {
                 if(res.data.code == 200) {
                     // me.reportData = res.data.reportData;
                     res.data.reportData.reportCompanyName = company;
+                    //把所有的数据放上去。
+                    res.data.reportData.allData = lookData;
                     me.showDataOfInstruction(lookData,res.data.reportData);
                     // me.reportData = res.data.reportData;
                     // me.treeTableShow = false;
