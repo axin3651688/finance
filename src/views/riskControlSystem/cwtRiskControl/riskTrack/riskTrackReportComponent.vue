@@ -127,28 +127,30 @@
                                     </div>
                                     <div class="schedule-list">
                                         <template v-for="item in risk.scheduleList">
-                                            <div class="risk-content">
-                                                <div class="risk-num">
-                                                    {{item.risk_count}}
-                                                </div>
-                                                <div class="risk-name">
-                                                    <span class="title-left">名称 :</span>
-                                                    <span class="content-right">{{item.risk_name}}</span>
-                                                </div>
-                                                <div class="risk-state">
-                                                    <span class="title-left">状态 :</span>
-                                                    <span class="content-right">{{item.state}}</span>
-                                                </div>
-                                                <div class="risk-content">
-                                                    <span class="title-left">内容 :</span>
-                                                    <span class="content-right">{{item.content}}</span>
-                                                </div>
+                                        <div class="risk-content">
+                                            <div class="risk-num">
+                                                {{item.risk_count}}
                                             </div>
+                                            <div class="risk-name">
+                                                <span class="title-left">名称 :</span>
+                                                <span class="content-right">{{item.risk_name}}</span>
+                                            </div>
+                                            <div class="risk-state">
+                                                <span class="title-left">状态 :</span>
+                                                <span class="content-right">{{item.state}}</span>
+                                            </div>
+                                            <div class="risk-content">
+                                                <span class="title-left">内容 :</span>
+                                                <span class="content-right">{{item.content}}</span>
+                                            </div>
+                                        </div>
                                         </template>
-
                                     </div>
                                 </div>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -270,6 +272,7 @@
              * 获取报告中间部分数据
              * @param riskFeedDataList
              */
+            //fixme  修改显示内容为所有风险
             getReportCenterData(riskFeedDataList) {
                 debugger;
                 let _this = this;

@@ -279,6 +279,7 @@
                 let _this = this;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
+                        debugger;
                         /**
                          * 获取数据之后进行的数据处理
                          */

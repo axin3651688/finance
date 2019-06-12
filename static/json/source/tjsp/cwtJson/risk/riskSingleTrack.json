@@ -7,11 +7,11 @@
       "id": "riskname",
       "type": "string",
       "text": "风险名称",
-      "align": "center",
+      "align": "left",
       "width": "500"
     },
     {
-      "id": "riskstate",
+      "id": "risk_status",
       "type": "string",
       "text": "状态",
       "align": "center",

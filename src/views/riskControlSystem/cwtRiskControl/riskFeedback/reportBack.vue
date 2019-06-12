@@ -44,8 +44,8 @@
                 treeData: [],
                 columns: [],
                 reportData: {
-                    reportcompanyname: '天津食品集团有限公司(合并)',
-                    reportperiod: '2019年3月',
+                    reportcompanyname: '',
+                    reportperiod: '',
                     reportDataContent: {
                         headerData: {
                             riskLevelCountArray: {
@@ -67,44 +67,36 @@
                         },
                         riskFeedDataList: {
                             flfx: {
-                                risksptype: '战略风险',
+                                risksptype: '',
                                 riskdetaildata: [
                                     {
-                                        riskname: '天津食品集团风险',
-                                        risklevel: '严重',
-                                        riskcompany: '天津食品集团',
-                                        risksbuser: '德玛西亚',
+                                        riskname: '',
+                                        risklevel: '',
+                                        riskcompany: '',
+                                        risksbuser: '',
                                         risk_pg_gs_cs_jy: [
                                             {
-                                                title: '风险评估',
-                                                content: [
-                                                    '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下'
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '风险概述',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '采取措施',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '应对建议',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             }
                                         ],
                                         risk_ps: {
-                                            risk_ps_cl: '5',
-                                            risk_ps_content: '6'
+                                            risk_ps_cl: '',
+                                            risk_ps_content: ''
                                         },
-                                        risk_feed_content: '7'
+                                        risk_feed_content: ''
                                     }
                                 ],
                             },
@@ -205,11 +197,10 @@
                 } else {
                     period = year + "0" + month;
                 }
-                let requestParams = {
+                return {
                     company: company,
                     period: period,
                 };
-                return requestParams;
             },
 
             /**
@@ -218,7 +209,12 @@
              * @constructor
              */
             RiskBackDataQuery(params) {
-                let _this = this;
+                debugger;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    userCompany = _getter.user.company.id;
+
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
                         /**
@@ -228,6 +224,10 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
+                                debugger;
+                                if(company !== userCompany){
+                                    data.operation = '1-查看'
+                                }
                                 let operations = data.operation.split(',');
                                 for (let i = 0, len = operations.length; i < len; i++) {
                                     let emptyBtn = {
@@ -444,45 +444,36 @@
              */
             getEmptyRiskTpl() {
                 return {
-                    risksptype: '战略风险',
+                    risksptype: '',
                     riskdetaildata:
                         {
-                            riskname: '天津食品集团风险',
-                            risklevel: '严重',
-                            riskcompany: '天津食品集团',
-                            risksbuser: '德玛西亚',
+                            riskname: '',
+                            risklevel: '',
+                            riskcompany: '',
+                            risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
-                                    title: '风险评估',
-                                    content: [
-                                        '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下',
-                                        '2、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失'
-                                    ]
+                                    title: '',
+                                    content: []
                                 },
                                 {
-                                    title: '风险概述',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    title: '',
+                                    content: []
                                 },
                                 {
-                                    title: '采取措施',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    title: '',
+                                    content: []
                                 },
                                 {
-                                    title: '应对建议',
-                                    content: [
-                                        '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                    ]
+                                    title: '',
+                                    content: []
                                 }
                             ],
                             risk_ps: {
-                                risk_ps_cl: '5',
-                                risk_ps_content: '6'
+                                risk_ps_cl: '',
+                                risk_ps_content: ''
                             },
-                            risk_feed_content: '7'
+                            risk_feed_content: ''
                         }
                 };
             }

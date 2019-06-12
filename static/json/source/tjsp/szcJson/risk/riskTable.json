@@ -6,14 +6,14 @@
             "id": "fxmc",
             "type": "string",
             "text": "风险名称",
-            "align": "center",
+            "align": "left",
             "width": "180"
         },
         {
             "id": "fxlx",
             "type": "string",
             "text": "风险类型",
-            "align": "center",
+            "align": "left",
             "width": "180"
         },
         {
@@ -33,6 +33,7 @@
             "id": "fxly",
             "type": "string",
             "text": "风险来源",
+            "align": "left",
             "width": "180"
         },
         {
@@ -46,6 +47,7 @@
             "id": "cjsj",
             "type": "string",
             "text": "创建时间",
+            "align": "center",
             "width": "180"
         },
         {

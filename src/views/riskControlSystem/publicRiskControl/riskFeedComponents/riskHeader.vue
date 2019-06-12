@@ -7,6 +7,8 @@
                     <el-input
                             v-model="formData['risktype'].text"
                             :disabled="formData['risktype'].disableEdit"
+                            style="color: white"
+                            class="el-input-text"
                             placeholder="风险类型"
                     >
                     </el-input>
@@ -18,6 +20,7 @@
                     <el-input
                             v-model="formData['riskprobability'].text"
                             :disabled="formData['riskprobability'].disableEdit"
+                            class="el-input-text"
                             placeholder="风险发生概率"
                     >
                     </el-input>
@@ -29,6 +32,7 @@
                     <el-input
                             v-model="formData['riskdegree'].text"
                             :disabled="formData['riskdegree'].disableEdit"
+                            class="el-input-text"
                             placeholder="风险影响程度"
                     >
                     </el-input>
@@ -38,7 +42,7 @@
                 <div class="top-form-contents" style="height: 40px;justify-content: space-around;">
                     <span style="min-width: 70px;width: 70px">风险等级：</span>
                     <div class="risk-level">
-                        <span>{{this.formData['risklevel'].text}}</span>
+                        <span style="color: #606266">{{this.formData['risklevel'].text}}</span>
                     </div>
                 </div>
             </el-col>
@@ -102,7 +106,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .top-form-contents {
         display: flex;
         align-items: center;
@@ -121,5 +125,11 @@
         border-radius: 10px;
         text-align: center;
         background: red;
+        padding: 5px 10px;
     }
+
+    .el-input-text input {
+        color: #606266 !important;
+    }
+
 </style>

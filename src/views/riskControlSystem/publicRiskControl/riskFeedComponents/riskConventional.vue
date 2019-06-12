@@ -9,6 +9,7 @@
                             :rows="4"
                             v-model="formData['riskoverview'].text"
                             :disabled="formData['riskoverview'].disableEdit"
+                            class="el-input-text"
                     >
                     </el-input>
                 </div>
@@ -21,6 +22,8 @@
                             :rows="4"
                             v-model="formData['riskmeasure'].text"
                             :disabled="formData['riskmeasure'].disableEdit"
+                            class="el-input-text"
+
                     >
                     </el-input>
                 </div>
@@ -33,6 +36,7 @@
                             :rows="4"
                             v-model="formData['risksuggest'].text"
                             :disabled="formData['risksuggest'].disableEdit"
+                            class="el-input-text"
                     >
                     </el-input>
                 </div>
@@ -93,7 +97,7 @@
     }
 </script>
 
-<style scoped>
+<style >
     .top-form-contents {
         display: flex;
         align-items: center;
@@ -104,5 +108,9 @@
         font-size: 14px;
         color: #606266;
         font-weight: 700;
+    }
+
+    .el-input-text textarea {
+        color: #606266 !important;
     }
 </style>
