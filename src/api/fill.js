@@ -242,3 +242,14 @@ export function queryUrgeUsers(params) {
         method: 'get'
     })
 }
+/**
+ * 报表互动的查询
+ * @author szc 2019年5月8日08:59:35
+ */
+export function queryInteraction(params) {
+    return request({
+        url: '/zjb/sys/Msg/query_table_interact?pageNum=' + params.pageNum + '&pageSize=' + params.pageSize + '&company=' +
+            params.company + '&period=' + params.period + '&susercompany=' + params.susercompany + '&nreview=' + params.nreview,
+        method: 'get'
+    })
+}

@@ -74,7 +74,7 @@
         },
         methods: {
             updateData () {
-                this.receive = this.chartData.receive;
+                this.receive = this.chartData.options;
             }
         }
     };

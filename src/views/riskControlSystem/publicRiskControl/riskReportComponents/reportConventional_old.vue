@@ -1,76 +1,66 @@
 <template>
-    <div>
+    <div v-if="renderFlag">
         <div class="conventional-container">
             <div class="container-title">
-                一、战略风险
+                {{ middleData.text }}
             </div>
-
-            <div class="container-top">
-                <div class="container-top-left">
-                    <span class="left_1">
-                        社会责任风险
-                    </span>
-                    <span class="left_2">
-                        重要
-                    </span>
-                </div>
-                <div class="container-top-right">
-                    <span class="left_1">
-                        {{this.reportCompanyNameShow}}
-                    </span>
-                    <span class="left_2">
-                        识别人：{{this.discernPeople}}
-                    </span>
-                </div>
-            </div>
-
-            <div>
-                <div class="container-center">
-                    <div>
-                        风险评估
+            <template v-if="middleData.contentUp && middleData.contentUp.content.length > 0">
+                <template v-for="(item,indexCnt) in middleData.contentUp.content">
+                    <div class="container-top" :key="indexCnt">
+                        <div class="container-top-left">
+                            <span class="left_1">
+                                {{ item.responsibility.text }}
+                            </span>
+                            <span class="left_2">
+                                {{ item.responsibility.level }}
+                            </span>
+                        </div>
+                        <div class="container-top-right">
+                            <span class="left_1">
+                                {{ item.responsibility.company }}
+                            </span>
+                            <span class="left_2">
+                                识别人：{{ item.responsibility.identificationUser }}
+                            </span>
+                        </div>
                     </div>
-                    <p v-for="item in this.riskContainer['risk_pg']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        风险概述
+                    <div :key="indexCnt + 10">
+                        <template v-if="item.content && item.content.length > 0">
+                            <div v-for="(itemLast,index) in item.content" :key="index">
+                                <div :key="index" class="container-center">
+                                    <div>
+                                        {{ itemLast.title }}
+                                    </div>
+                                    <template v-if="itemLast.content && itemLast.content.length > 0">
+                                        <p v-for="(cntItem,cntIndex) in itemLast.content" :key="cntIndex">
+                                            {{ cntItem }}
+                                        </p>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
                     </div>
-                    <p v-for="item in this.riskContainer['risk_gs']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        采取措施
-                    </div>
-                    <p v-for="item in this.riskContainer['risk_cs']">
-                        {{item}}
-                    </p>
-                </div>
-                <div class="container-center">
-                    <div>
-                        应对建议
-                    </div>
-                    <p v-for="item in this.riskContainer['risk_jy']">
-                        {{item}}
-                    </p>
-                </div>
-            </div>
+                    <reportControlInstruction v-if="showComponent && showComponent == 'riskControl'" :key="indexCnt + 20" :contentDown="item.contentDown"></reportControlInstruction>
+                </template>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
+    import reportControlInstruction from './reportControlInstruction'
     export default {
         name: "reportConventional",
-        components: {},
+        components: {
+            reportControlInstruction
+        },
         props: {
-            reportCompanyNameShow: String
+            middleData:Object,
+            showComponent:String
         },
         data() {
             return {
+                renderFlag:true,
                 discernPeople: '***',
                 riskContainer: {
                     risk_pg: [
@@ -89,9 +79,35 @@
                 }
             }
         },
+        watch: {
+            middleData :{
+                handler(newValue,oldValue){
+                    // debugger;
+                    let me = this;
+
+                    // me.renderFlag = false;
+                    // this.$nextTick(()=>{
+                    
+                    //     this.reFresh = true
+                    // })
+                    // this.getChange();
+                },
+                deep:true
+            }
+        },
         created() {
+            let me = this;
+            // debugger;
+            // this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
+            //     debugger;
+            //     if(res.data.code == 200) {
+            //         debugger;
+            //         me.middleData = res.data.reportData.reportDataContent.riskFeedData[0];
+            //     }
+            // });
         },
         mounted() {
+            let me = this;
         },
         methods: {}
     }

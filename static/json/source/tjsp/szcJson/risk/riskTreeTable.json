@@ -14,12 +14,12 @@
         },
         {
             "text": "上报人",
-            "value": "reportuser",
+            "value": "sreportuser",
             "width": 200
         },
         {
             "text": "上报时间",
-            "value": "reporttime",
+            "value": "sreporttime",
             "width": 200
         },
         {
