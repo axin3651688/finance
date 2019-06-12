@@ -17,13 +17,13 @@
                 <div class="elbtn" style="float: left">
                     <!-- 按钮 -->
                     <el-button-group class="iconbtn">
-                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain @click="addClick">添加</el-button>
-                        <el-button type="primary" icon="el-icon-circle-close-outline" plain @click="deleteRow">删除</el-button>
+                        <el-button type="primary" icon="el-icon-circle-plus-outline" plain v-show="isbtnShow2" @click="addClick">添加</el-button>
+                        <el-button type="primary" icon="el-icon-circle-close-outline" plain v-show="isbtnShow2" @click="deleteRow">删除</el-button>
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
-                        <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
                 <!-- 文字 -->
@@ -61,7 +61,10 @@
             :cell-style="cellStyle"
             @select="handleSelectionChange"
             @select-all="handleSelectionChange"
+            :cell-class-name="cellClassName"
             border>
+                <el-table-column type="index" width="55" label="序号" align="center" ></el-table-column>
+                <el-table-column type="selection" width="55" align="center" ></el-table-column>
                 <el-table-column 
                 v-for="element in elements"
                 v-if="!element.determine"
@@ -71,13 +74,13 @@
                 :label="element.text"
                 :width="element.width"
                 :show-overflow-tooltip="element.showOverflow"
-                align="center" 
+                align="center"                 
                 >
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
                         <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
-                        <el-button type="text" size="small" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
+                        <el-button type="text" size="small" v-show="isbtnModify" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -147,6 +150,7 @@ export default {
             elementui: [],           // 文字
             tableLength: 0,          // 共多少条数据
             tableData: [],      // 表格的数据
+            tableData_new: [],  // 表格的复制数据
             elements: [],       // 表格的列
             items: [],          // 控制列显示【作用于列选择按钮】
             dialogFormVisible: false,   // 默认弹出框不显示
@@ -160,6 +164,8 @@ export default {
             periodtype: 0,      // 全局控制选择的日期类型
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
+            isbtnShow2: true,   // 其他按钮的显示与隐藏
+            isbtnModify: true,  // 修改按钮的显示与隐藏
             selection: [],      // 存储 Checkbox 选中的行信息 （注：用于删除时 和 下达时） 
             me: this,
             // 
@@ -172,7 +178,9 @@ export default {
             comtree2: [],          // 批量下达按钮公司树数据
             modify_btn: 0 ,
             modifyReadonly: false,
-            tableData2: []
+            tableData2: [],
+            htmlText: "",
+            
         }
     },
     created(){
@@ -185,6 +193,7 @@ export default {
         if(document.body.offsetWidth <= 1200 )this.widths = "540px" ;
     },
     mounted(){
+        this.showDimsControl(); // 日期的控制显示
         this.setClientHeight(); // 自适应高度
         this.axiosJson();       // 获取表格json的信息
         this.axiosRequest();    // 获取【风险矩阵】的json信息
@@ -222,9 +231,34 @@ export default {
         }   
     },
     computed: {
-        ...mapGetters(["year", "month", "company", "conversion"])
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
     },
     methods: {
+        // 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
+        cellClassName({row, column, rowIndex, columnIndex}){
+            // debugger
+            if(column.property == "gradename"){
+                if(row.gradename == "中等风险"){
+                    return "gradename_yellow" ;
+                }else if(row.gradename == "重大风险"){
+                    return "gradename_orange" ;
+                }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
+                    return "gradename_red" ;
+                }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
+                    return "gradename_green" ;
+                }else {
+                    return "gradename_blue" ;
+                }               
+            }   
+        },
+        // 日期的控制显示
+        showDimsControl(){
+            let me = this,showDims = this.showDims;
+            showDims.year = true;
+            showDims.month = true;
+            showDims.company = true;
+        },
         // 自适应高度
         setClientHeight(){
             this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
@@ -296,8 +330,13 @@ export default {
             // debugger
             let me = this ;
             let obj = me.objer ;
+            let $params = me.$store.state.prame.command;
+            let information = me.$store.getters.user.user ;
+            // 查看公司的信息
+            let nisleaf = this.$store.getters.treeInfo.nisleaf ;
             if(obj.queryDataAfter && typeof obj.queryDataAfter == "function"){
                 me.tableData = obj.queryDataAfter(datas, me);
+                me.tableData_new = me.tableData ;
             }
             me.tableLength = me.tableData.length ;
             // 必须要有数据
@@ -320,14 +359,36 @@ export default {
             }else{
                 me.elementui = [] ;
             }
+            // 本属公司才能操作按钮，切换到非本属公司只能刷新和查看。单体公司不显示下达(2个)按钮，
+            if($params.company === information.companyId){
+                if(nisleaf){
+                    me.isbtnShow = false ;
+                    me.isbtnShow2= true ;
+                    me.isbtnModify = true ;
+                }else{
+                    me.isbtnShow = true ;
+                    me.isbtnShow2= true ;
+                    me.isbtnModify = true ;
+                }
+            }else{
+                me.isbtnShow = false ;
+                me.isbtnShow2= false ;
+                me.isbtnModify = false ;
+            }
         },
-        // 点击文字触发检索功能
+        // 点击文字触发检索功能（☆）
         textClick(element){
-            debugger
+            // debugger
+            let len = element.html.length , risk = "" ;
             this.tableData2 = [] ;
-            let risk = element.html.slice(3,7) ;
-            this.tableData2 = this.tableData.filter(res => {
-                if(res.gradename === risk)return res ;
+            if(len == 12)risk = element.html.slice(3,6) ;
+            if(len == 13)risk = element.html.slice(3,7) ;
+            if(len == 14)risk = element.html.slice(3,8) ;
+            // this.tableData2 = this.tableData.filter(res => {
+            //     if(res.gradename == risk)return res ;
+            // }) ;
+            this.tableData = this.tableData_new.filter(res => {
+                if(res.gradename == risk)return res ;
             }) ;
         },
         // 2.获取【风险矩阵】的json信息
@@ -601,4 +662,39 @@ export default {
 /* .el-dialog__wrapper{
     overflow: hidden;
 } */
+.table-call .gradename_red .cell {
+    color: #fff ;
+    background: red ;
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_green .cell {
+    color: #fff ;
+    background-color: rgb(19, 215, 8);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_yellow .cell {
+    color: #fff ;
+    background-color: rgb(227, 212, 10);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_orange .cell {
+    color: #fff ;
+    background-color: rgb(227, 183, 10);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
+.table-call .gradename_blue .cell {
+    color: #fff ;
+    background-color: rgb(10, 149, 227);
+    width: 90px;
+    border-radius: 11px ;
+    margin: 0 auto ;
+}
 </style>

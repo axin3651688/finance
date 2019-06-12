@@ -78,7 +78,7 @@ export default {
         secondDemo(){
             // debugger
             this.item2 = this.yxcd.rows ;
-            this.item2.reverse();
+            // this.item2.reverse();
         },
         thirdDemo(){
             let me = this ;

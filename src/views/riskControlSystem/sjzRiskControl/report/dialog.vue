@@ -29,10 +29,11 @@
                 <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
             </el-form-item>
             <el-form-item label="风险类型：" prop="srisktype">
-                <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input">
+                <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input" @focus="focusClick">
                     <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
                     <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
-                        <el-tree                                 
+                        <el-tree 
+                            v-show="isFocus"                                
                             id="tree-option"
                             ref="selectTree"
                             :accordion="accordion"
@@ -62,13 +63,13 @@
             <el-form :model="form" :inline="true" ref="sub4" label-width="120px">
                 <el-form-item label="风险发生概率：" prop="nprobability">
                     <el-select v-model="form.nprobability" @change="selectChange" placeholder="请选择风险概率" class="input2">
-                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：" prop="ninfluence">
                     <el-select v-model="form.ninfluence" @change="selectChange2" placeholder="请选择风险影响" class="input2">
-                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
@@ -167,18 +168,20 @@ export default {
                 screatetime: ""             // 创建时间
             },
             num: "", title: "",
-            optionl: [], // 风险发生概率下拉选数据 
-            optione: [], // 报告类型数组（请求的数据）
-            optiond: [], // 风险影响程度下拉选数据
-            options: [], // 风险类型下拉选数据
-            optiong: [], // 风险等级下拉选数据
+            optionl: [],        // 风险发生概率下拉选数据 
+            optionl_nscore: "", // 风险发生概率分值
+            optione: [],        // 报告类型数组（请求的数据）
+            optiond: [],        // 风险影响程度下拉选数据
+            optionl_nscore: "", // 风险影响程度分值
+            options: [],        // 风险类型下拉选数据
+            optiong: [],        // 风险等级下拉选数据
             elements : [],  tableData: [], 
             defaultProps: {
                 children: 'children',
                 label: 'sname',
                 value: 'scode'
             },
-            valueTitle : "" , defaultExpandedKey: [], accordion: true,
+            valueTitle : "" , defaultExpandedKey: [], accordion: true,isFocus:true
         }
     },
     created(){
@@ -189,6 +192,13 @@ export default {
             this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
             this.optiond = this.yxcd.rows ;
+        // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
+            let d1 = this.form.nprobability ;
+            let d2 = this.form.ninfluence ;
+            let c1 = this.optionl.filter(rel => { return rel.id == d1 }) ;
+            let c2 = this.optiond.filter(red => { return red.id == d2 }) ;
+            this.optionl_nscore = c1[0].nscore ;
+            this.optiond_nscore = c2[0].nscore ; 
     },
     mounted(){
         // 风险类型请求
@@ -221,12 +231,18 @@ export default {
             this.form.srisktype = node[this.defaultProps.value]
             this.$emit('getValue',this.valueId)
             this.defaultExpandedKey = []
+            this.isFocus = false 
+            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
         },
         // 清除下拉选【风险类型】的
         clearHandle(){
             this.valueTitle = ''
             this.defaultExpandedKey = []
             this.$emit('getValue',null)
+        },
+        // 下拉框的焦点聚焦事件【风险类型】的
+        focusClick(event){
+            this.isFocus = true ;
         },
         /**
          * 提交
@@ -295,17 +311,24 @@ export default {
             for(let key in this.form){
                 this.form[key] = this.data[key]
             }
+            
         },
         /**
          * 发生概率选择器  触发
          */
         selectChange(val){ 
+            let dd = this.optionl.filter(res => { return res.id == val }) ;
+            if(this.optionl_nscore!="")this.optionl_nscore = "" ;
+            this.optionl_nscore = dd[0].nscore ;
             this.nscoreCalculate();
         },
         /**
          * 影响程度选择器  触发
          */ 
         selectChange2(val){
+            let dd = this.optiond.filter(res => { return res.id == val }) ;
+            if(this.optiond_nscore!="")this.optiond_nscore = "" ;
+            this.optiond_nscore = dd[0].nscore ;
             this.nscoreCalculate();
         },
         /** 
@@ -315,7 +338,8 @@ export default {
             if(this.form.nprobability == '' || this.form.ninfluence == ''){
                 this.form.nscore = "" ;
             }else{
-                this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                // this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                this.form.nscore = this.optionl_nscore * this.optiond_nscore ;
                 // 风险等级请求 
                 this.riskmatrixRequest(this.form.nscore) ;
             }

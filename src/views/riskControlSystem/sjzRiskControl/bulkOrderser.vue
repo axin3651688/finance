@@ -47,7 +47,9 @@ export default {
     name: "bulkOrderser",
     props: {
         data: Array,
-        newThis: Object
+        newThis: Object,
+        isAddParse: Number,
+        nthis: Object
     },
     data(){
         return {
@@ -106,23 +108,45 @@ export default {
          * @event 确认下达按钮
          */
         determineBtn(){
-            debugger
+            // debugger
             let me = this ;
+            let is = me.nthis ;
             let params = {} ;
             let rowId = me.newThis.view_row.id ;
             let $params = me.$store.state.prame.command;
             if(me.deet.length === 0){
                 me.$message({ message: "温馨提示：由于您没有选择公司，无法下达！", type: "warning" }) ;
             }else{
-                params = {
-                    companys:  me.deet ,
-                    ids: [ rowId ],
-                    period: $params.year + mini.getPeriod($params) 
+                if(is.isAddParse){
+                    params = {
+                        companys:  me.deet ,
+                        ids: [ rowId ],
+                        period: $params.year + mini.getPeriod($params) 
+                    }
+                }else{ // 添加弹出框的下达
+                    params = {
+                        companys: me.deet ,
+                        ids: [ 0 ] ,
+                        period: $params.year + mini.getPeriod($params) ,
+                        riskDistinguishDto: {
+                            company: is.params_cloning[0].company ,
+                            department: is.params_cloning[0].department ,
+                            screatetime: is.params_cloning[0].screatetime ,
+                            sfilluser: is.params_cloning[0].sfilluser ,
+                            sreporttype: is.params_cloning[0].sreporttype ,
+                            sriskname: is.params_cloning[0].sriskname ,
+                            period: is.params_cloning[0].period ,
+                            srisktype: is.params_cloning[0].srisktype
+                        }
+
+                    }
                 }
                 riskdistinguish_risk_release(params).then(res => {
                     if(res.data.code === 200){
                         me.deet = [] ;
-                        me.$message({ message: "下达成功!", type: "success" }) ;
+                        me.$message({ message: "下达成功!", type: "success" }) ;                        
+                        me.nthis.checkbox = false ;
+                        me.nthis.riskReleaseVo();
                     }else{
                         me.$message.error("下达失败!");
                         

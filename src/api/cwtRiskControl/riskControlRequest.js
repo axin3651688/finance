@@ -63,3 +63,77 @@ export function getCurrentPageData(params) {
         params: params
     })
 }
+
+/**
+ * 风险制度分页数据查询
+ * @author cwt /risk_talent/query_user
+ */
+export function getRiskSystemTableData(params) {
+    return request({
+        url: '/zjb/risk_sys/query_all',
+        method: 'post',
+        params: params
+    })
+}
+
+
+/**
+ * 风险制度分页数据查询
+ * @author cwt /risk_talent/query_user
+ */
+export function riskSystemAdd(params) {
+    return request({
+        url: '/zjb/risk_sys/add',
+        method: 'post',
+        params: params
+    })
+}
+
+/**
+ * 风险制度风险建议添加  /risk_sys/query_by_filed
+ * @author cwt /risk_talent/query_user
+ */
+export function riskSystemSuggestAdd(params) {
+    return request({
+        url: '/zjb/risk_sys/add_advice',
+        method: 'post',
+        params: params
+    })
+}
+
+
+/**
+ * 风险制度迷糊查询 /risk_sys/query_by_filed
+ * @author cwt /risk_talent/query_user
+ */
+export function getQueryByFiledTableData(params) {
+    return request({
+        url: '/zjb/risk_sys/query_by_filed',
+        method: 'post',
+        params: params
+    })
+}
+
+/**
+ * 风险制度删除 /risk_sys/query_by_filed
+ * @author cwt /risk_talent/query_user
+ */
+export function riskSystemDelete(params) {
+    return request({
+        url: '/zjb/risk_sys/delete',
+        method: 'post',
+        params: params
+    })
+}
+
+/**
+ * 风险制度风险建议详情查询 /risk_sys/query_by_filed
+ * @author cwt /risk_talent/query_user
+ */
+export function riskSystemSuggestDetailQuery(params) {
+    return request({
+        url: '/zjb/risk_sys/query_advice',
+        method: 'post',
+        params: params
+    })
+}

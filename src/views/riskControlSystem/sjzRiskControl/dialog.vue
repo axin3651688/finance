@@ -35,10 +35,11 @@
                     <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" :readonly="readonly" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
                 </el-form-item>
                 <el-form-item label="风险类型：" prop="srisktype">
-                    <el-select v-model="form.srisktype" :disabled="readonly" placeholder="请选择风险类型" class="input" clearable @clear="clearHandle">
+                    <el-select v-model="form.srisktype"  placeholder="请选择风险类型" class="input" @focus="focusClick" :disabled="readonly">
                         <!-- <el-option v-for="(option,index) in options" :key="option.id" :label="option.sname" :value="option.scode"></el-option> -->
                         <el-option :value="form.srisktype " :label="valueTitle " style="height: 200px;overflow: auto;background-color: #fff;">
-                            <el-tree                                 
+                            <el-tree 
+                                v-show="isFocus"                                
                                 id="tree-option"
                                 ref="selectTree"
                                 :accordion="accordion"
@@ -60,7 +61,7 @@
             </el-form>
             <el-form :model="form" :inline="false" :rules="rules3" ref="sub3" label-width="120px">
                 <el-form-item label="风险概述：" prop="sriskdescription">
-                    <el-input type="textarea" v-model="form.sriskdescription" maxlength="1000" :readonl="readonly2" @change="descInput_sriskdescription" placeholder="请输入风险概述..."></el-input>
+                    <el-input type="textarea" v-model="form.sriskdescription" maxlength="1000" :readonly="readonly" @change="descInput_sriskdescription" placeholder="请输入风险概述..."></el-input>
                 </el-form-item>
             </el-form>
         <!-- 2 -->
@@ -68,13 +69,13 @@
             <el-form :model="form" :inline="true" :rules="rules4" ref="sub4" label-width="120px">
                 <el-form-item label="风险发生概率：" prop="nprobability">
                     <el-select v-model="form.nprobability" :disabled="readonly" @change="selectChange" placeholder="请选择风险概率" class="input2">
-                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_first" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
                 <el-form-item label="风险影响程度：" prop="ninfluence">
                     <el-select v-model="form.ninfluence" :disabled="readonly" @change="selectChange2" placeholder="请选择风险影响" class="input2">
-                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.nscore"></el-option>
+                        <el-option v-for="(option,index) in optiond" :key="option.id" :label="option.sname" :value="option.id"></el-option>
                     </el-select>
                     <el-button type="success" @click="probability_second" plain>参照</el-button><!-- 内层弹框 -->
                 </el-form-item>
@@ -105,7 +106,7 @@
                 <el-input type="textarea" placeholder="请输入应对建议..." maxlength="1000" :readonly="readonly" @change="descInput_sproposal" v-model="form.sproposal"></el-input>
             </el-form-item>
             <div v-show="isCheckbox" style="marginLeft: 38px;marginBottom: 15px;">
-                <bulk-orderser v-show="riskbulkOrderser" :data="comtree2" :newThis="newThis"></bulk-orderser>
+                <bulk-orderser v-show="riskbulkOrderser" :data="comtree2" :newThis="newThis" :isAddParse="isAddParse" :nthis="nthis"></bulk-orderser>
                 <el-checkbox :disabled="readonly2" v-model="checkbox" @change="riskReleaseVo">下达</el-checkbox>
             </div>          
         </el-form>
@@ -142,10 +143,14 @@ import {
     } from "~api/cube.js";
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
+// 树形选择框组件
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
     components:{
         riskMatrix,
-        bulkOrderser
+        bulkOrderser,
+        Treeselect
     },
     // props:["riskTableRow","fsgl","yxcd","newThis","fsgl"],
     props: {
@@ -165,8 +170,7 @@ export default {
                 label: 'sname',
                 value: 'scode'
             },
-            valueId : "", valueTitle : "" , defaultExpandedKey: [], accordion: true,
-            riskProbability: false,
+            riskProbability: false, nthis: this ,
             readonly: false ,       // 只读属性（查看按钮触发时用到）
             readonly2: false,       // 下达专用
             isBtn: true,            // 保存 按钮的显示与隐藏
@@ -175,11 +179,14 @@ export default {
             title: "",
             heights: "300px",
             type: null,
+            defaultExpandedKey: [],accordion:true,
             tableData: [],
             elements: [],
             options: [],            // 风险类型的数组（请求的数据）
             optionl: [],            // 风险发生概率数组（请求的数据）
+            optionl_nscore: "",
             optiond: [],            // 风险影响程度数组（请求的数据）
+            optiond_nscore: "",
             optione: [],            // 报告类型数组（请求的数据）
             optiong: [],
             comtree2: [],           // 下达的树形数据
@@ -187,10 +194,11 @@ export default {
             riskbulkOrderser: false,        // 下达弹出框的状态（显示与隐藏）
             addOpen: "",
             riskRelease: "",
-            // form2: {},
+            valueTitle: "",isFocus:true,params_cloning:{},
+
             form: {
                 sriskname: "",              // 风险名称
-                srisktype: "",              // 风险类型
+                srisktype: null,            // 风险类型
                 departmentname: "",         // 填报部门（只读）
                 sfilluser: "",              // 填报人（只读）
                 sriskdescription: "",       // 风险概述
@@ -207,7 +215,7 @@ export default {
 
             textShow: false ,           //提示的显示与隐藏
             html: "" ,                  //文字 
-
+            isAddParse: 0,
             isCheckbox: true ,      // 控制下达选择按钮的显示与隐藏（注：单体公司无法下达故此隐藏，合并公司可以下达故此显示）
             // 
             rules2:{
@@ -234,7 +242,7 @@ export default {
         // debugger
         let viewBtn = this.newThis.view_btn ;
         let $params = this.$store.state.prame.command;
-        let sfilluser = this.$store.getters.user.user.userName;
+        let sfilluser = this.$store.getters.user.user.trueName;
         let departmentname = this.$store.getters.user.dept[0].sname ;
         // 全局控制选择的报告类型0不显示，1显示
             this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
@@ -246,11 +254,20 @@ export default {
         // 自动获取登录人作为填报人
             // this.form.sfilluser = sfilluser ;
         // 自动获取当前用户的所属部门
-            // this.form.departmentname = departmentname ;;
+            // this.form.departmentname = departmentname ;;view_row
         // 风险发生概率下拉框数据
             this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
-            this.optiond = this.yxcd.rows ;
+            this.optiond = this.yxcd.rows ;  
+        // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
+            if(this.optionl_nscore == "" || this.optiond_nscore == ""){
+                let d1 = this.newThis.view_row.nprobability ;
+                let d2 = this.newThis.view_row.ninfluence ;
+                let c1 = this.fsgl.rows.filter(rel => { return rel.id == d1 }) ;
+                let c2 = this.yxcd.rows.filter(red => { return red.id == d2 }) ;
+                this.optionl_nscore = c1[0].nscore ;
+                this.optiond_nscore = c2[0].nscore ; 
+            } 
     },
     mounted(){
         // 风险类型请求
@@ -261,9 +278,11 @@ export default {
     watch: {
         numOpen(){
             // debugger
-            // this.$message('132');
+            this.valueTitle = "";
+            this.isAddParse = 0 ;
+            this.riskbulkOrderser = false ;
+            this.checkbox = false ;
             this.addDialog() ;
-            this.clearHandle() ;
         }
     },
     computed: {
@@ -294,16 +313,24 @@ export default {
                 }
             }
             if(modifyBtn || viewBtn){
+                this.isAddParse = 1 ;
+                this.riskbulkOrderser = false ;
+                this.checkbox = false ;
                 viewRow = this.newThis.view_row ;
-                this.valueTitle = viewRow.srisktypename ;
+                let $cc = viewRow.srisktypename ;
+                this.valueTitle = $cc ;
                 for(let key in this.form){
                     this.form[key] = "" ;
                 }               
                 for(let key in viewRow){
                     this.form[key] = viewRow[key] ;
-                }               
-                
+                }  
+                // debugger            
             }else{
+                this.valueTitle = "";
+                this.isAddParse = 0 ;
+                this.riskbulkOrderser = false ;
+                this.checkbox = false ;
                 this.addDialog() ;
             }
         }
@@ -313,19 +340,22 @@ export default {
         handleNodeClick(node){
             // debugger
             this.valueTitle = node[this.defaultProps.label]
-            this.valueId = node[this.defaultProps.value]
-            this.form.srisktype = this.valueId ;
+            this.form.srisktype = node[this.defaultProps.value]
             this.$emit('getValue',this.valueId)
             this.defaultExpandedKey = []
+            this.isFocus = false 
+            this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
         },
         // 清除下拉选【风险类型】的
         clearHandle(){
             this.valueTitle = ''
-            this.valueId = null
             this.defaultExpandedKey = []
             this.$emit('getValue',null)
         },
-
+        // 下拉框的焦点聚焦事件【风险类型】的
+        focusClick(event){
+            this.isFocus = true ;
+        },
         addDialog(){
             // debugger
             // 0合并公司/ 1单体公司
@@ -386,10 +416,17 @@ export default {
         },
         // 发生概率选择器  触发
         selectChange(val){ 
+            // debugger
+            let cc = this.optionl.filter(res => { return res.id == val }) ;
+            if(this.optionl_nscore!="")this.optionl_nscore = "" ;
+            this.optionl_nscore = cc[0].nscore ;
             this.nscoreCalculate();
         },
         // 影响程度选择器  触发
         selectChange2(val){
+            let cc = this.optiond.filter(res => { return res.id == val }) ;
+            if(this.optiond_nscore!="")this.optiond_nscore = "" ;
+            this.optiond_nscore = cc[0].nscore ;
             this.nscoreCalculate();
         },
         // 风险分值自动计算
@@ -397,7 +434,8 @@ export default {
             if(this.form.nprobability == '' || this.form.ninfluence == ''){
                 this.form.nscore = "" ;
             }else{
-                this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                // this.form.nscore = this.form.nprobability * this.form.ninfluence ;
+                this.form.nscore = this.optionl_nscore * this.optiond_nscore ;
                 // 风险等级请求 
                 this.riskmatrixRequest(this.form.nscore) ;
             }
@@ -471,6 +509,7 @@ export default {
             let viewTrue = false ;
             // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
             let params = mini.getParams(me, value) ;               // 获取请求参数
+            this.params_cloning = params ;
             // 添加页面的保存与提交
             if(me.newThis.modify_btn !== 1){
                 if(value != "save"){
@@ -539,12 +578,12 @@ export default {
                 
             }
         },
-        // empty 判断提交的时候有没有空的  空则不提交  并且提示
+        // empty 判断提交的时候有没有空的  空则不提交  并且提示(★☆)
         isEmpty(me){
             // debugger
             // 有没有空的  
             for(let keys in me.form){
-                if(!me.form[keys] && (me.form[keys]=="" || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
+                if((!me.form[keys] || me.form["department"]!="") && ((me.form[keys]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
                     return false ;
                 }
             }
@@ -590,7 +629,7 @@ export default {
             // debugger
             let me = this ;
             riskdistinguish_update(params).then(res => { 
-                debugger
+                // debugger
                 if(res.data.code === 200){
                     if(params[0].sissubmit == "Y")me.readonly2 = false ;    //注：提交之后才可以下达
                     me.$message({message: res.data.msg, type: "success"}) ;
@@ -634,9 +673,11 @@ export default {
          * @event (5)取消按钮
          */
         resetClick(value, value2,value3,value4,value5){
-            
+            this.riskbulkOrderser = false ;
             this.newThis.viewReadonly = false ;
             this.newThis.dialogFormVisible = false ;
+            this.checkbox = false ;
+            this.params_cloning = {} ;
         }
     }
 }

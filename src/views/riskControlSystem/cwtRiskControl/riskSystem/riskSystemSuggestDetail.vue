@@ -3,7 +3,7 @@
         <template v-for="item in riskSystemSuggestDetailData">
             <div class="suggest-detail">
                 <span class="suggest-detail-date">{{item.proposedDate}}</span>
-                <span class="suggest-detail-user">【{{item.publishDept}}】{{item.proposedUser}}</span>
+                <span class="suggest-detail-user">{{item.proposedUser}}</span>
             </div>
             <div>
                 <el-input
@@ -31,10 +31,18 @@
             return {}
         },
         created() {
+            this.getLoopData();
         },
         mounted() {
         },
-        methods: {}
+        methods: {
+            /**
+             * 获取数据
+             */
+            getLoopData() {
+                this.data = this.riskSystemSuggestDetailData;
+            }
+        }
     }
 </script>
 

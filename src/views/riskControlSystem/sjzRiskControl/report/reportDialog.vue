@@ -76,6 +76,9 @@ export default {
             let nodes = this.$refs.tree2.getCheckedNodes();
             if(nodes && nodes.length > 0){
                 this.getriskreportstate_add(nodes) ;
+                this.newThis.nisShow = false ;
+            }else{
+                this.$message({ message: "请选择上报人！", type: "warning" }) ;
             }
         },
         getriskreportstate_add(nodes) {
@@ -110,7 +113,7 @@ export default {
             }
             riskreportstate_add(params).then(red => { 
                 if(red.data.code === 200){
-                    me.$message({ message: red.data.msg, type: "success" }) ;
+                    me.$message({ message: "上报成功！", type: "success" }) ;
                     me.newThis.newThis.setTreeTableRequest() ;
                 }else{
                     me.$message.error(red.data.msg);                   
@@ -143,7 +146,7 @@ export default {
     background: white;
         width: 200px;
         margin-top: 10px;
-        border: 1px solid #606266;;
+        border: 1px solid #606266;
         padding: 5px;
         position: absolute;
         bottom: 80px;
