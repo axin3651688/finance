@@ -10,7 +10,7 @@ import {
     queryCopingStrategies,
     updateInstructionAll
 } from '~api/szcRiskControl/riskControl.js'
-import { findThirdPartData } from "~api/interface";
+import { findThirdPartData } from "~api/interface"
 
 export default {
     methods: {
@@ -366,7 +366,7 @@ export default {
                         contentLast.responsibility.text = lookItem.risktype;
                         contentLast.responsibility.level = lookItem.levelsname || "暂无等级";
                         contentLast.responsibility.company = company;
-                        contentLast.responsibility.identificationUser = lookItem.reportuser;
+                        contentLast.responsibility.identificationUser = lookItem.sfilluser;
                         //风险名称。
                         objUpContentFXMC.content.push(lookItem.sriskname);
                         //风险评估。
@@ -403,15 +403,61 @@ export default {
          * @author szc 2019年5月29日12:57:35
          */
         remindTreeInstruction(scope) {
+            debugger;
+            let judgeParams = {
+                id: "remind",
+                sqlId: "108",
+                scope: scope,
+                queryAfter: "remindAfterHandler",
+                params: {
+                    company: scope.row.scode
+                }
+            };
+            this.queryDataOfInstructions("", judgeParams);
+            // let me = this,
+            //     storeParams = me.$store.getters,
+            //     company = storeParams.company,
+            //     user = storeParams.user.user.userName;
+            // let params = {
+            //     company: company,
+            //     period: me.parsePeriod(),
+            //     sisinstructions: "0",
+            //     sinstructionsuser: user
+            // };
+            // let requertParams = {
+            //     data: params,
+            //     success: "提醒成功！",
+            //     error: "提醒失败！"
+            // };
+            // me.publicUpdateInstructionAll(requertParams);
+            // me.publicUpdateInstruction(requertParams);
+        },
+        /**
+         * 汇总提醒查询之后
+         * @author szc 2019年6月12日14:15:06
+         */
+        remindAfterHandler(data, judgeParams) {
+            let me = this;
+            me.dptDatas = me.reportDataTree(data);
+            me.prtParams = judgeParams;
+            me.publicVisible = true;
+        },
+        remindHandler(nodes, prtParams) {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
-                user = storeParams.user.user.userName;
+                user = storeParams.user.user.userName,
+                arr = [];
+            nodes.forEach(item => {
+                arr.push(item.id);
+            });
             let params = {
-                company: company,
+                company: prtParams.params ? prtParams.params.company : company,
                 period: me.parsePeriod(),
                 sisinstructions: "0",
-                sinstructionsuser: user
+                sinstructionsuser: user,
+                toUsers: arr
             };
             let requertParams = {
                 data: params,
@@ -419,21 +465,8 @@ export default {
                 error: "提醒失败！"
             };
             me.publicUpdateInstructionAll(requertParams);
-            // me.publicUpdateInstruction(requertParams);
+            me.publicVisible = false;
         },
-        // publicUpdate (requertParams) {
-        //     let me = this;
-        //     updateInstruction(params.data).then(res => {
-        //         if (res.data.code == 200) {
-        //             me.$message({
-        //                 message: params.success ? params.success : "操作成功！",
-        //                 type: "success",
-        //             });
-        //         } else {
-        //             me.$message.error(params.error ? params.error : "操作失败！");
-        //         }
-        //     });
-        // },
         /**
          * 风险管控汇总树表的退回功能。
          * @author szc 2019年5月29日16:49:22
@@ -477,6 +510,43 @@ export default {
                     me.$message.error(params.error ? params.error : "操作失败！");
                 }
             });
+        },
+        reportDataTree(data) {
+            let objRes = {};
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    if (!objRes[item.scode]) {
+                        objRes[item.scode] = item.scode;
+                    }
+                });
+            }
+            let dptUser = [];
+            for (let key in objRes) {
+                let objDptUser = {
+                    id: "",
+                    label: "",
+                    children: []
+                };
+                for (let i = 0; i < data.length; i++) {
+                    let item = data[i];
+                    if (item.scode == key) {
+                        if (item.usernid) {
+                            let objItem = {
+                                id: item.suser,
+                                label: item.username
+                            };
+                            objDptUser.id = item.scode;
+                            objDptUser.label = item.sname;
+                            objDptUser.children.push(objItem);
+                        } else {
+                            objDptUser.id = item.scode;
+                            objDptUser.label = item.sname;
+                        }
+                    }
+                }
+                dptUser.push(objDptUser);
+            }
+            return dptUser;
         },
     },
 }

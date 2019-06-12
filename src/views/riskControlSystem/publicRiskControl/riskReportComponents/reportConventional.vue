@@ -42,7 +42,11 @@
                                     </div>
                                 </template>
                             </div>
-                            <reportControlInstruction v-if="showComponent && showComponent == 'riskControl'" :key="indexCnt + 20" :contentDown="item.contentDown"></reportControlInstruction>
+                            <reportControlInstruction v-if="showComponent && 
+                                showComponent == 'riskControl' 
+                                && firstIndex == middleData.length-1 && 
+                                indexCnt == firstItem.contentUp.content.length-1" :key="indexCnt + 20" :contentDown="item.contentDown">
+                            </reportControlInstruction>
                         </template>
                     </template>
                 </div>
