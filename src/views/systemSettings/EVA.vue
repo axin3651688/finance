@@ -292,7 +292,7 @@
               </tr>
               <tr>
                 <td class="bd">EVA</td>
-                <td colspan="3" class="bd">无息流动负债-资本占用×资本成本率</td>
+                <td colspan="3" class="bd">税后净营业利润-资本占用×资本成本率</td>
                 <td class="br">
                   <!-- <input v-model="exps.shjlr" readonly class="exps"> -->
                   <span class="expsv">{{exps.shjlr|NumFormat}}</span>
@@ -892,8 +892,10 @@ export default {
         this.exps.v1222711_tz +
         this.exps.znhfy_tz;
       // 无息流动负债 =  税后净营业利润-资本占用×资本成本率
-      this.exps.shjlr =
-        this.exps.wxldfz_tz - (this.exps.zbzyje * (this.vars[1].value / 100));     
+      // this.exps.shjlr =
+      //   this.exps.wxldfz_tz - (this.exps.zbzyje * (this.vars[1].value / 100));  
+      this.exps.shjlr = 
+        this.exps.yywsrlrA_tz - (this.exps.zbzyje * (this.vars[1].value / 100)); 
     },
     updatePjsData(arr, code) {
       arr.forEach(element => {
