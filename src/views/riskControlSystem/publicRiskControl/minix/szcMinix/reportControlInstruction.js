@@ -10,11 +10,12 @@ export default {
          * @author szc 2019年5月28日20:02:13
          */
         instructionContent(param) {
+            debugger
             let me = this,
                 instructionsRpt = me.$store.instructionsRpt || [],
                 contentDown = me.contentDown,
                 instructionObj = contentDown.instructionObj;
-            if (instructionsRpt && instructionsRpt.length > 0) {
+            if (instructionsRpt && instructionsRpt.length > 0 && instructionObj) {
                 let flag = false;
                 for (let i = 0; i < instructionsRpt.length; i++) {
                     let item = instructionsRpt[i];
@@ -35,7 +36,7 @@ export default {
                     instructionsRpt.push(obj);
                 }
                 me.$store.instructionsRpt = instructionsRpt;
-            } else {
+            } else if (instructionObj) {
                 // me.createPropOfInstru("instructionsRpt");
                 let obj = {
                     id: instructionObj.nrelateid,

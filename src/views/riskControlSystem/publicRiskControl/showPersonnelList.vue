@@ -12,6 +12,7 @@
                 node-key="id"
                 default-expand-all
                 :filter-node-method="filterNode"
+                :check-strictly="true"
                 ref="tree"
                 :props="defaultProps">
             </el-tree>
@@ -134,6 +135,7 @@
              * @author szc 2019年5月22日11:45:56
              */
             checkboxChange (item,paramsEvent) {
+                debugger;
                 let me = this,storeParams = me.$store.getters,
                     company = storeParams.company;
                 if(item){
@@ -182,6 +184,7 @@
                     let objDptUser = {
                         id:"",
                         label:"",
+                        disabled:true,
                         children:[]
                     };
                     for(let i = 0;i < data.length;i ++){

@@ -33,7 +33,7 @@
             "id": "fxly",
             "type": "string",
             "text": "风险来源",
-            "align": "left",
+            "align": "center",
             "width": "180"
         },
         {

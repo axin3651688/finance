@@ -17,10 +17,22 @@
                     </div>
                     <div v-else>
                         <el-row>
-                            <el-col :span="24">
-                                <div>
+                            <el-col :span="24" style="border:1px solid #ccc;">
+                                <!-- <div>
                                     <el-button @click="returnCurrentClick">返回</el-button>
-                                </div>
+                                </div> -->
+                                <el-header class="container_header">
+                                    <div class="container_alert" v-if="isAlertShow">
+                                        <span><i class="el-icon-warning"></i>查看页面，无法操作此页面！</span>
+                                    </div>
+                                    <div class="container_alert" v-else>
+                                        <span>报告批示</span>
+                                    </div>
+                                    <div class="container_btn">
+                                        <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                                        <el-button type="primary" plain @click="returnCurrentClick">返回</el-button>       
+                                    </div>                                
+                                </el-header>
                                 <reportContent :reportData="reportData"></reportContent>
                             </el-col>
                         </el-row>
@@ -37,7 +49,7 @@
                 :before-close="beforeClose">
                 <div>
                     <!-- <dialogContent :dialogData="dialogData"></dialogContent> -->
-                    <basicsModal :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler" ref="riskModal"/>
+                    <basicsModal v-if="basicsDiv" :formConfig.sync="modalData" v-on:changMessage="changMessage" v-on:eventHandler="eventHandler" ref="riskModal"/>
                 </div>
             </el-dialog>
         </div>
@@ -113,7 +125,8 @@ export default {
             },//下拉框的内容配置
             publicVisible:false,
             dptDatas:[],//部门人员的数据
-            prtParams:{}
+            prtParams:{},
+            basicsDiv:true
         }
     },
     /**
@@ -337,7 +350,7 @@ export default {
             data.forEach(item => {
                 if(item.psztid == "1"){
                     item.operation = btns01;
-                }else if (item.psztid == "-1") {
+                }else if (item.psztid == "-1" || item.psztid == "0" || item.psztid == "2" || item.psztid == null) {
                     item.operation = btns02;
                 }
             });
@@ -591,5 +604,25 @@ export default {
     .riskNameContent {
         max-height: 600px;
         overflow: auto;
+    }
+    .container_header{
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: right;
+        background-color: #D3DCE6;
+    }
+    .container_alert{
+        color: #e6a23c;
+        width: 250px;
+        height: 40px;
+        margin-left: 40%;
+        float: left;
+    }
+    /*按钮（查看按钮时提示用的）*/
+    .container_btn{
+        float: right ;
+        height: 40px;
+        width: 150px;
     }
 </style>

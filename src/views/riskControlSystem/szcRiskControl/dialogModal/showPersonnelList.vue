@@ -12,6 +12,7 @@
                     node-key="id"
                     default-expand-all
                     :filter-node-method="filterNode"
+                    :check-strictly="true"
                     ref="tree"
                     :props="defaultProps">
             </el-tree>
