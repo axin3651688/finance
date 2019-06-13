@@ -545,23 +545,67 @@ export default {
             this.tableData2= [] ;
             this.loadModuleBefore() ;
         },
+        // 添加 + 修改的  ......
+        reportType_quest(vax,index, tableData){
+            // debugger
+            let me = this ;
+            let $params = me.$store.state.prame.command;
+            let _sql = me.objer.config.sql2 ;
+            _sql = _sql.replace(/:company/g, "'"+ $params.company +"'").replace(/:period/g, "'"+ $params.year + mini.getPeriod($params) +"'");
+            let params = {
+                cubeId: 4 ,
+                sql: encodeURI(_sql)
+            }
+            eva_city_Request(params).then(res => {
+                // debugger
+                if(res.data.code === 200){
+                    let isTrue = res.data.data.some(ree => { return ree.sisreport == 1 }) ; // 已上报
+                    if(isTrue){
+                        me.dialogFormVisible = false ;
+                        me.isbtnModify = false ;    // 修改按钮隐藏
+                        me.isbtnShow3 = false ;     // 添加按钮隐藏
+                        me.isbtnShow4 = false ;     // 导入按钮隐藏
+                        me.$message("风险已上报，无法添加和修改！")
+                    }else{
+                        if(vax === "add"){
+                            me.view_row = [] ;
+                            me.view_btn = 0 ;
+                            me.modify_btn = 0 ;
+                            if(me.numOpen===0){
+                                me.numOpen = 1 ;
+                            }else{
+                                me.numOpen = 0 ;
+                            }
+                            me.viewReadonly = !me.viewReadonly;
+                            me.dialogFormVisible = true ;
+                        }else if(vax === "modify"){
+                            me.modify_btn = 1 ;
+                            me.view_btn = 0 ;
+                            me.view_row = [] ;
+                            me.view_row = tableData[index] ;
+                            me.dialogFormVisible = true ;
+                        }
+                    }
+                }
+            })
+        },
         /**
          * @event 添加按钮
          */
         addClick(){
-            debugger
-            this.axiosJson() ;
+            // debugger
+            this.reportType_quest("add") ;
             
-            this.view_row = [] ;
-            this.view_btn = 0 ;
-            this.modify_btn = 0 ;
-            if(this.numOpen===0){
-                this.numOpen = 1 ;
-            }else{
-                this.numOpen = 0 ;
-            }
-            this.viewReadonly = !this.viewReadonly;
-            this.dialogFormVisible = true ;
+            // this.view_row = [] ;
+            // this.view_btn = 0 ;
+            // this.modify_btn = 0 ;
+            // if(this.numOpen===0){
+            //     this.numOpen = 1 ;
+            // }else{
+            //     this.numOpen = 0 ;
+            // }
+            // this.viewReadonly = !this.viewReadonly;
+            // this.dialogFormVisible = true ;
         },
         /**
          * @event 查看按钮
@@ -581,12 +625,13 @@ export default {
          */
         modifyRow(index, tableData){
             // debugger
-            let me = this ;
-            me.modify_btn = 1 ;
-            me.view_btn = 0 ;
-            me.view_row = [] ;
-            me.view_row = tableData[index] ;
-            me.dialogFormVisible = true ;
+            this.reportType_quest("modify",index, tableData) ;
+            // let me = this ;
+            // me.modify_btn = 1 ;
+            // me.view_btn = 0 ;
+            // me.view_row = [] ;
+            // me.view_row = tableData[index] ;
+            // me.dialogFormVisible = true ;
         },
         /**
          * @event 关闭前的回调，会暂停-Dialog-的关闭

@@ -85,6 +85,7 @@ export default {
             dialogVisible: false,
             dialogVisible2:false,
             me: this ,
+            periodtype: 0,          // 全局控制选择的日期类型
             treeName: "",
             title: "",
             columns:[],             // 树表的列
@@ -107,6 +108,8 @@ export default {
     },
     created(){ 
         // debugger
+        // 全局控制选择的日期类型
+        this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
         this.biYear = this.$store.getters.year;
         this.biMonth= this.$store.getters.month;
         this.biCompany = this.$store.getters.company;
@@ -268,7 +271,7 @@ export default {
             let datas = {
                 sql: me.config.sql,
                 year: params.year ,
-                month: params.month,
+                month: mini.getPeriod(params),
                 company: params.company,
                 period: params.year + mini.getPeriod(params),
                 comparePeriod: params.year -1 + mini.getPeriod(params),
@@ -342,6 +345,9 @@ export default {
     }
 }
 </script>
-<style scoped>
-
+<style >
+/* 表格背景统一 */
+#riskReport .el-table{
+    background: #F0F2F5 ;
+}
 </style>

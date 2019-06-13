@@ -22,7 +22,7 @@
                             <el-col v-else-if="it.type == 'textarea'" :span="it.span || 12" :key="itIndex">
                                 <el-form-item :label="it.label || '没有配置'" :prop="it.text" :key="itIndex">
                                     <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
-                                    <el-input type="textarea" v-model="it[it.text]" :disabled="it.disabled"></el-input>
+                                    <el-input type="textarea" v-model="it[it.text]" :disabled="it.disabled" class="basics_textarea"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col v-else-if="it.type == 'labelSelect'" :span="it.span || 12" :key="itIndex">
@@ -64,7 +64,7 @@
                                             <span>指定下达人员</span>
                                         </span>
                                         <!-- <el-checkbox v-model="releasePeople" @change="checkboxChange" :checked="checked" ref="peopleCheckbox">指定下达人员</el-checkbox> -->
-                                        <div class="footDiv">批示下达</div>
+                                        <!-- <div class="footDiv">批示下达</div> -->
                                     </div>
                                 </el-form-item>
                             </el-col>
@@ -103,14 +103,16 @@ export default {
         }
     },
     watch: {
-        formConfig (newValue,oldValue) {
-            debugger;
-            let me = this,rowData = newValue.rowData;
-            me.publicDisabled = undefined;
-            me.selectDsiabled = undefined;
-            if(rowData){
-                me.copingStrategies(rowData);
-            }
+        formConfig:{
+            handler(newValue,oldValue){
+                let me = this,rowData = newValue.rowData;
+                me.publicDisabled = undefined;
+                me.selectDsiabled = undefined;
+                if(rowData){
+                    me.copingStrategies(rowData);
+                }
+            },
+            deep:true
         }
     },
     /**
@@ -146,6 +148,7 @@ export default {
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
+            debugger;
             let me = this;
             if (it.nlevel) {
                 if (it.nlevel == "1") {
@@ -154,6 +157,8 @@ export default {
                     return "textClass02";
                 } else if (it.nlevel == "3") {
                     return "textClass03";
+                }else {
+                    return "textClass01";
                 }
             } else {
                 return "";
@@ -184,7 +189,7 @@ export default {
         setDefaultValue(){
             debugger;
             let me = this;
-            me.selectValues = [];
+            // me.selectValues = [];
             me.dptUserConfig = {
                 id:"dptUser",
                 show:false,
@@ -312,6 +317,7 @@ export default {
                 let objDptUser = {
                     id:"",
                     label:"",
+                    disabled:true,
                     children:[]
                 };
                 for(let i = 0;i < data.length;i ++){
@@ -354,7 +360,7 @@ export default {
                     arrUser.push(item.id);
                 });
                 // let selectStr = me.selectValues.join(',');
-                let selectStr = me.selectValues[0];
+                let selectStr = me.selectValues.toString;
                 userStr = arrUser.join(',');
                 let params = {
                     riskReportStateDtos:[
@@ -436,9 +442,16 @@ export default {
          */
         copingStrategies (rowData) {
             debugger;
-            let me = this,fxydcl = rowData.fxydcl;
-            let arr = fxydcl.split(',');
-            me.selectValues = arr;
+            let me = this,fxydcl = rowData.fxydcl + "";
+            if(rowData.psztid != 1){
+                me.instructions = "";
+                me.selectValues = [];
+            }else {
+                let arr = fxydcl.split(',');
+                me.instructions = rowData.fxydclnr;
+                me.selectValues = arr;
+            }
+            
         }
     },
 }
@@ -506,6 +519,12 @@ export default {
         height: 30px;
         line-height: 30px;
         text-align: center;
+    }
+    .basics_textarea {
+        textarea {
+            height: 80px;
+            max-height: 80px;
+        }
     }
 }
     

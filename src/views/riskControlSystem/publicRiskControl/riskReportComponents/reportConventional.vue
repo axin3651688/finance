@@ -181,5 +181,6 @@
         font-size: 16px;
         color: #333;
         padding: 5px;
+        line-height: 30px;
     }
 </style>

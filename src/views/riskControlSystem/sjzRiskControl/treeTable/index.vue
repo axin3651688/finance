@@ -37,7 +37,7 @@
                     <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i>
                 </span>
                 {{scope.row[column.id]}}
-                <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span>
+                <!-- <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span> -->
                 <!-- sjz 按钮 -->
                 <span v-if="column.id === 'cz' && item.tableBtn.length>0">
                     <!-- 上报 -->
@@ -56,9 +56,23 @@
                     </el-button>
                     <!-- 查看 退回 -->
                     <el-button
-                    v-if="scope.row.srepotstate == '已上报'"          
+                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='Y'"          
                     v-for="(btn,index) in item.tableBtn"
                     v-show="btn.show && (btn.id==2 || btn.id==3)"
+                    style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
+                    :key="btn.id"
+                    :class="btn.icon"
+                    @click="btnClick(btn,scope)"
+                    size="mini"
+                    type="primary" 
+                    plain>
+                        {{ btn.text }}
+                    </el-button>
+                    <!-- 查看 -->
+                    <el-button
+                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='N'"          
+                    v-for="(btn,index) in item.tableBtn"
+                    v-show="btn.show && btn.id==2"
                     style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
                     :key="btn.id"
                     :class="btn.icon"
@@ -85,7 +99,7 @@
                 </span>
             </template>
         </el-table-column>
-        <slot></slot>
+        <!-- <slot></slot> -->
     </el-table>
 </template>
 
@@ -255,5 +269,9 @@
     .el-table__body tr, .el-table__body td {
         padding: 0;
         height: 32px;
+    }
+    /* 小尾巴背景化 */
+    .has-gutter tr .gutter {
+        background-color : #F0F2F5 !important;
     }
 </style>

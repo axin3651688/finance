@@ -389,6 +389,7 @@ export default {
             }
             dptUser.push(objDptUser);
         }
+        dptUser.forEach(rep => { rep.disabled = true }) ;
         return dptUser;
     },
     /**
