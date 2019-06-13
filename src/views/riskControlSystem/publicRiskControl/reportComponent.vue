@@ -7,7 +7,14 @@
             <div class="container-left">
                 <div class="container-left-inner">
                     <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;">目&nbsp&nbsp录</h1>
-                    <div
+                    <div>
+                        <el-menu :default-active="leftNode[0].id" class="el-menu-vertical-demo">
+                            <el-menu-item class="el-menu-vertical_title" v-for="(item,key) in leftNode" :key="key" :index="item.id">
+                                <a :href="'#' + item.id" slot="title">{{ item.text }}</a>
+                            </el-menu-item>
+                        </el-menu>
+                    </div>
+                    <!-- <div
                             v-for="(value,key) in leftNode"
                             :key="key"
                             class="risk-items"
@@ -16,7 +23,7 @@
                         <a :href="'#' + key">
                             {{value}}
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -63,7 +70,7 @@
 
         </el-container>
 
-        <show-personnel-list :personnelListShow="personnelListShow" v-on:personSureBtnClicked="personSureBtnClicked"></show-personnel-list>
+        <show-personnel-list v-if="personRender" :personnelListShow="personnelListShow" v-on:personSureBtnClicked="personSureBtnClicked"></show-personnel-list>
     </div>
 </template>
 
@@ -103,12 +110,13 @@
                 scheduleShow: true,
 
                 //目录信息，在下面进行赋值了
-                leftNode: {},
+                leftNode: [],
 
                 //传到头部reportHeader的数据
                 reportHeaderData:{},
                 middleData:{},//报告中间的数据
-                contentDown:{}//报告的不同的内容的数据。
+                contentDown:{},//报告的不同的内容的数据。
+                personRender:true
             }
         },
         created() {
@@ -174,6 +182,11 @@
              * @author szc 2019年5月28日17:54:02
              */
             instructionHandle () {
+                let me = this;
+                // this.personRender = false;
+                // this.$nextTick(()=>{
+                //     me.personRender = true;
+                // })
                 this.personnelListShow = !this.personnelListShow;
             },
             /**
@@ -182,6 +195,13 @@
             personSureBtnClicked (nodes) {
                 debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,allData = me.reportData.allData;
+                if(!instructionsRpt){
+                    me.$message({
+                        message:"请选择应对策略！",
+                        type:"warning"
+                    });
+                    return
+                }
                 me.saveInstructionsRpt(instructionsRpt,nodes,allData);
             },
             personSureBtnClicked_old (nodes) {
@@ -242,7 +262,6 @@
                         cstrategy:"",
                         period: me.parsePeriod(),
                         sinstructscontent:"",
-                        sisfeedback:"-1",
                         sisinstructions:"1"
                     }
                     riskReportState.nrelateid = item.nrelateid;
@@ -291,6 +310,7 @@
                     let item = content[i];
                     if(item.contentDown && i == content.length - 1){
                         item.contentDown.rowItem = item.contentDown.instructionObj;
+                        delete item.contentDown.instructionObj;
                         for(let j = 0;j < afterParams.length;j ++){
                             let afterParamsItem = afterParams[j];
                             if(item.contentDown.rowItem.nrelateid == afterParamsItem.id){
@@ -382,11 +402,25 @@
             getDirectoryData(){
                 debugger;
                 let data = this.reportData,
-                    reportDataList = data.reportDataContent.riskFeedData;
-                reportDataList.forEach((report)=>{
+                    reportDataList = data.reportDataContent.riskFeedData,
+                    numCh = {
+                        1:'一、',
+                        2:'二、',
+                        3:'三、',
+                        4:'四、',
+                        5:'五、',
+                        6:'六、',
+                        7:'七、'
+                    };
+                reportDataList.forEach((report,index)=>{
                     let _id = report.id,
                         _text = report.text;
-                    this.leftNode[_id] = _text;
+                    let obj = {
+                        id:_id,
+                        text:numCh[index + 1] + _text
+                    };
+                    this.leftNode.push(obj);
+                    // this.leftNode[_id] = _text;
                 });
                 // console.log(this.leftNode);
             },
@@ -395,11 +429,61 @@
              *获取报告头部那些数字数据的方法
              */
             getReportHeaderData(){
+                debugger;
                 let data = this.reportData,
-                    headerData = data.reportDataContent.headerData;
+                    headerData = data.reportDataContent.headerData,allData = data.allData,
+                    headerReport = {
+                        totalCount:allData.length,
+                        contentType:[],
+                        contentLevel:[]
+                    };
+                if(allData && allData.length > 0){
+                    let objParent = {},objLevel = {};
+                    allData.forEach(item => {
+                        if(item.riskspcode && !objParent[item.riskspcode]){
+                            objParent[item.riskspcode] = item.riskspname;
+                            // objParent.riskspname = item.riskspname;
+                        }
+                        if(item.levelnid && !objLevel[item.levelnid]){
+                            objLevel[item.levelnid] = item.levelsname;
+                        }
+                    });
+                    // headerReport.totalCount = allData.length;
+                    //风险类型
+                    for(let key in objParent){
+                        let itemObj = {
+                            count:0,
+                            text:""
+                        };
+                        allData.forEach(item => {
+                            if(item.riskspcode == key){
+                                itemObj.count ++;
+                                itemObj.text = objParent[key];
+                            }
+                        });
+                        headerReport.contentType.push(itemObj);
+                    }
+                    //风险等级
+                    for(let key in objLevel){
+                        let itemObj = {
+                            count:0,
+                            text:""
+                        };
+                        allData.forEach(item => {
+                            if(item.levelnid == key){
+                                itemObj.count ++;
+                                itemObj.text = objLevel[key];
+                            }
+                        });
+                        headerReport.contentLevel.push(itemObj);
+                    }
+                    // headerData.headerReport = headerReport;
+                }
                 this.reportHeaderData['reportCompanyName'] = data.reportCompanyName;
                 // this.reportHeaderData['period'] = data.period;
                 this.reportHeaderData['dataList'] = headerData;
+                this.reportHeaderData['headerReport'] = headerReport;
+
             },
             /**
              * 报告中间的数据。
@@ -440,7 +524,8 @@
         flex-basis: auto;
         box-sizing: border-box;
         min-width: 0;
-        border: 1px solid;
+        border: 1px solid #ccc;
+        /* border: 1px solid; */
     }
 
     .container-left-inner {
@@ -458,7 +543,7 @@
         flex-grow: 0;
         flex-shrink: 0;
         width: 250px;
-        /*border-right: 1px solid;*/
+        border-right: 1px solid #ccc;
     }
 
     .container-left .risk-items {
@@ -471,6 +556,14 @@
     .container-right {
         width: 100%;
         padding: 20px;
-        border-left: 1px solid;
+        /* border-left: 1px solid; */
+    }
+    .el-menu-vertical_title {
+        margin-left: 0px;
+        font-size: 20px;
+    }
+    .el-menu-vertical-demo {
+        background-color: #f0f2f5;
+        border: 0px;
     }
 </style>

@@ -472,6 +472,7 @@ export default {
          * @author szc 2019年5月29日16:49:22
          */
         returnInstruction(scope) {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -490,7 +491,8 @@ export default {
             let requertParams = {
                 data: params,
                 success: "退回成功！",
-                error: "退回失败！"
+                error: "退回失败！",
+                queryAfter: "returnAfterHandler"
             };
             me.publicUpdateInstructionAll(requertParams);
         },
@@ -502,6 +504,9 @@ export default {
             let me = this;
             updateInstructionAll(params.data).then(res => {
                 if (res.data.code == 200) {
+                    if (params.queryAfter) {
+                        me[params.queryAfter]();
+                    }
                     me.$message({
                         message: params.success ? params.success : "操作成功！",
                         type: "success",
@@ -510,6 +515,16 @@ export default {
                     me.$message.error(params.error ? params.error : "操作失败！");
                 }
             });
+        },
+        /**
+         * 退回之后的处理。
+         * 2019年6月12日17:44:41
+         */
+        returnAfterHandler() {
+            let me = this;
+            let selectItem = me.selectItem,
+                judgeParams = me.getJudgeParams();
+            me.queryDataOfInstructions(selectItem, judgeParams);
         },
         reportDataTree(data) {
             let objRes = {};
