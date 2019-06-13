@@ -99,8 +99,12 @@ export default {
         // 获取树表的json信息
         this.setTreeTableRequest();
     },
+    mounted(){
+        this.showDimsControl(); // 日期的控制显示
+    },
     computed: {
-        ...mapGetters(["year", "month", "company", "conversion"])
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
     },
     watch: {
         // 切换年触发
@@ -134,6 +138,14 @@ export default {
         }
     },
     methods: {
+        // 日期的控制显示
+        showDimsControl(){
+            let me = this,showDims = this.showDims;
+            showDims.year = true;
+            showDims.month = true;
+            showDims.company = true;
+            showDims.conversion = true ;
+        },
         /**
          * @event 获取json信息
          */
