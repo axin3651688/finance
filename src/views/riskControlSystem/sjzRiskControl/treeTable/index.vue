@@ -37,7 +37,7 @@
                     <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i>
                 </span>
                 {{scope.row[column.id]}}
-                <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span>
+                <!-- <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span> -->
                 <!-- sjz 按钮 -->
                 <span v-if="column.id === 'cz' && item.tableBtn.length>0">
                     <!-- 上报 -->
@@ -99,7 +99,7 @@
                 </span>
             </template>
         </el-table-column>
-        <slot></slot>
+        <!-- <slot></slot> -->
     </el-table>
 </template>
 
@@ -240,7 +240,7 @@
     }
 
     .processContainer {
-        // width: 100%;
+        width: 100%;
         height: 100%;
     }
 
@@ -269,5 +269,9 @@
     .el-table__body tr, .el-table__body td {
         padding: 0;
         height: 32px;
+    }
+    /* 小尾巴背景化 */
+    .has-gutter tr .gutter {
+        background-color : #F0F2F5 !important;
     }
 </style>

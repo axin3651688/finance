@@ -30,7 +30,8 @@
             "type": "string",
             "align": "center",
             "width": "160"
-        },
+        }
+        ,
         {
             "id": "cz",
             "text": "操作",

@@ -100,12 +100,13 @@
 
     .describe {
         margin-top: 10px;
-        line-height: 50px;
+        line-height: 30px;
         font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 16px;
         text-align: left;
         margin-bottom: 20px;
+        text-indent: 2em ;
     }
 </style>

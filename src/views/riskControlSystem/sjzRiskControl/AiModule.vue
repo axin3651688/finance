@@ -345,6 +345,9 @@ export default {
     }
 }
 </script>
-<style scoped>
-
+<style >
+/* 表格背景统一 */
+#riskReport .el-table{
+    background: #F0F2F5 ;
+}
 </style>
