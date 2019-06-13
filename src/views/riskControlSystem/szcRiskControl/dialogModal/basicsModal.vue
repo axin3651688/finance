@@ -148,6 +148,7 @@ export default {
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
+            debugger;
             let me = this;
             if (it.nlevel) {
                 if (it.nlevel == "1") {
@@ -156,6 +157,8 @@ export default {
                     return "textClass02";
                 } else if (it.nlevel == "3") {
                     return "textClass03";
+                }else {
+                    return "textClass01";
                 }
             } else {
                 return "";
