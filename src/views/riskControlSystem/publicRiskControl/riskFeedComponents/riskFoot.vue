@@ -14,8 +14,10 @@
                             <el-checkbox
                                     label="指定反馈人员"
                                     name="type"
-                                    :disabled="this.formData['isFeed']"
+                                    ref="checkBox"
+                                    :disabled="dialogState !== 'fk'"
                                     class="form-foot-right-check"
+                                    id="form-foot-right-check"
                                     @change="handleCheckedChange"
                             ></el-checkbox>
                             <el-button type="primary" @click="riskSend()">反馈上报</el-button>
@@ -54,14 +56,13 @@
         props: {
             dialogData: Object,
             dataChanged: Boolean,
-            riskFeedSuccess: Boolean
+            riskFeedSuccess: Boolean,
+            dialogState: String
         },
         data() {
             return {
                 personnelListShow: false,
-                formData: {
-                    isFeed: null
-                }
+
             }
         },
         created() {
@@ -74,7 +75,9 @@
                 this.getFormData();
             },
             riskFeedSuccess(newValue, oldValue) {
-                this.personnelListShow = false;
+                this.checkBoxDisabledChange(newValue);
+            },
+            dialogState(newValue, oldValue){
             }
         },
         methods: {
@@ -110,7 +113,6 @@
              * 指定反馈人员选中监听
              */
             handleCheckedChange() {
-                // alert("反馈上报。。。")
                 this.personnelListShow = !this.personnelListShow;
             },
             /**
@@ -123,12 +125,12 @@
              *导出按钮
              */
             pageExport() {
-                // alert('报告导出事件')
                 this.$message({
                     message: '导出事件接口',
                     type: 'success'
                 })
             },
+
             /**
              * 确认下达按钮
              */
@@ -141,7 +143,15 @@
              */
             getFormData() {
                 let _this = this;
-                _this.formData['isFeed'] = _this.dialogData['isFeeded']
+                _this.personnelListShow = false;
+            },
+
+            checkBoxDisabledChange(newValue){
+                let _this = this;
+                setTimeout(function () {
+                    _this.personnelListShow = false;
+                    document.getElementById("form-foot-right-check").childNodes[0].classList.add("is-checked");
+                },100);
             }
         }
     }

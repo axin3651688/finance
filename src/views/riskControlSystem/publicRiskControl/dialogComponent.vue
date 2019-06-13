@@ -46,8 +46,8 @@
                     <!--弹出层底部按钮-->
                     <risk-foot
                             :dialogData="dialogData"
-                            :dataChanged="dataChanged"
                             :riskFeedSuccess="riskFeedSuccess"
+                            :dialogState="dialogState"
                             @closeTrackDialogContent="closeTrackDialogContent"
                             @messageChange="messageChange"
                             @personSureBtnClicked="personSureBtnClicked"
@@ -67,7 +67,7 @@
     import riskInstruction from './riskFeedComponents/riskInstruction'
     import riskSchedule from './riskFeedComponents/riskSchedule'
     import riskFoot from './riskFeedComponents/riskFoot'
-    import {updateInstruction} from "~api/szcRiskControl/riskControl"
+    import {riskFeedControl} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "dialogComponent",
@@ -80,7 +80,8 @@
         },
         props: {
             dialogData: Object,
-            dataChanged: Boolean
+            dataChanged: Boolean,
+            dialogState: String
         },
         data() {
             return {
@@ -90,7 +91,10 @@
                 dialogScheduleData: {},
                 sureBtnClick: false,
                 riskInstructionData: '',
-                riskFeedSuccess: false
+
+                riskFeedSuccess: false,
+
+                // rislFootControl:true
             }
         },
         created() {
@@ -103,11 +107,16 @@
         },
         watch: {
             dataChanged(newValue, oldValue) {
+                this.riskFeedSuccess = false;
                 this.getDialogHeaderData();
                 this.getDialogMiddleData();
                 this.getDialogInstructionData();
                 this.getDialogScheduleData();
             },
+
+
+
+
             deep: true
         },
         methods: {
@@ -121,33 +130,29 @@
              * 获取弹窗界面头部数据
              */
             getDialogHeaderData() {
-                let data = this.dialogData,
-                    headerData = data.contentHeader;
-                this.dialogHeaderData = headerData;
+                let data = this.dialogData;
+                this.dialogHeaderData = data.contentHeader;
             },
             /**
              * 获取弹窗中间的内容
              */
             getDialogMiddleData() {
-                let data = this.dialogData,
-                    middleData = data.contentMiddle;
-                this.dialogMiddleData = middleData;
+                let data = this.dialogData;
+                this.dialogMiddleData = data.contentMiddle;
             },
             /**
              * 获取领带批示数据
              */
             getDialogInstructionData() {
-                let data = this.dialogData,
-                    footData = data.contentFoot;
-                this.dialogInstructionData = footData;
+                let data = this.dialogData;
+                this.dialogInstructionData = data.contentFoot;
             },
             /**
              * 获取追踪进度的相关数据
              */
             getDialogScheduleData() {
-                let data = this.dialogData,
-                    footData = data.contentFoot;
-                this.dialogScheduleData = footData;
+                let data = this.dialogData;
+                this.dialogScheduleData = data.contentFoot;
             },
             /**
              * 上一条下一条
@@ -179,28 +184,25 @@
                     let _riskInstructionData = _this.riskInstructionData;
 
                     let params = {
-                        riskReportStateDtos:[
+                        riskReportStateDtos: [
                             {
                                 company: company,
-                                nrelateid: _this.dialogData['riskid'],
                                 period: _this.parsePeriod(),
-                                scompanyname: user.companyName,
-                                sfeedbackscontent: _riskInstructionData,
-                                sfeedbackuser: user.userName,
-                                sfeedbackusername: user.trueName,
                                 sisfeedback: "1",
-                                sriskname: _this.dialogData['riskname'],
+                                sfeedbacksuser: user.userName,
+                                sfeedbackscontent: _riskInstructionData,
+                                nrelateid: _this.dialogData['riskid'],
 
                             },
-                        
                         ],
-                        users:[
+                        users: [
                             userStr
                         ]
                     };
-                    updateInstruction(params).then(res => {
+
+                    riskFeedControl(params).then(res => {
                         if (res.data.code === 200) {
-                            _this.riskFeedSuccess = !_this.riskFeedSuccess;
+                            _this.riskFeedSuccess = true;
 
                             _this.$emit("riskFeedSuccess");
 
