@@ -265,8 +265,8 @@ export default {
                 let d2 = this.newThis.view_row.ninfluence ;
                 let c1 = this.fsgl.rows.filter(rel => { return rel.id == d1 }) ;
                 let c2 = this.yxcd.rows.filter(red => { return red.id == d2 }) ;
-                    this.optionl_nscore = c1[0].nscore ;
-                    this.optiond_nscore = c2[0].nscore ; 
+                if(c1 && c1.length > 0)this.optionl_nscore = c1[0].nscore ;
+                if(c2 && c2.length > 0)this.optiond_nscore = c2[0].nscore ; 
                 
             } 
     },

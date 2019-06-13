@@ -56,9 +56,23 @@
                     </el-button>
                     <!-- 查看 退回 -->
                     <el-button
-                    v-if="scope.row.srepotstate == '已上报'"          
+                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='Y'"          
                     v-for="(btn,index) in item.tableBtn"
                     v-show="btn.show && (btn.id==2 || btn.id==3)"
+                    style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
+                    :key="btn.id"
+                    :class="btn.icon"
+                    @click="btnClick(btn,scope)"
+                    size="mini"
+                    type="primary" 
+                    plain>
+                        {{ btn.text }}
+                    </el-button>
+                    <!-- 查看 -->
+                    <el-button
+                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='N'"          
+                    v-for="(btn,index) in item.tableBtn"
+                    v-show="btn.show && btn.id==2"
                     style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
                     :key="btn.id"
                     :class="btn.icon"
@@ -226,7 +240,7 @@
     }
 
     .processContainer {
-        width: 100%;
+        // width: 100%;
         height: 100%;
     }
 
