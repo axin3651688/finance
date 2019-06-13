@@ -11,10 +11,15 @@
 
 
         <div class="report-component-content" v-if="reportBackDetail">
-            <div style="text-align: right; padding-right: 4px;">
-                <el-button type="primary" @click="pageExport">导出</el-button>
-                <el-button @click="pageBack">返回</el-button>
-            </div>
+            <el-header class="container_header">
+                <div class="container_alert">
+                    <span><i class="el-icon-warning"></i>查看页面，无法操作此页面！</span>
+                </div>
+                <div class="container_btn">
+                    <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                    <el-button type="primary" plain @click="pageBack">返回</el-button>
+                </div>
+            </el-header>
             <risk-track-report-component
                     :reportData="reportData"
                     :dataFresh="dataFresh"
@@ -465,7 +470,6 @@
                             riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'];
 
 
-
                             emptyData['risksptype'] = riskModel.risksptype;
 
                             emptyData['riskdetaildata'].push(riskModel_riskdetaildata);
@@ -553,5 +557,25 @@
 </script>
 
 <style scoped>
+    .container_header {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: right;
+        background-color: #D3DCE6;
+    }
 
+    .container_alert {
+        color: #e6a23c;
+        width: 250px;
+        height: 40px;
+        margin-left: 40%;
+        float: left;
+    }
+
+    .container_btn {
+        float: right;
+        height: 40px;
+        width: 150px;
+    }
 </style>

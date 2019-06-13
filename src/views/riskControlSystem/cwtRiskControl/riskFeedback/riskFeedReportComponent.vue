@@ -11,9 +11,9 @@
                             v-for="(value,key) in leftNode"
                             :key="key"
                             class="risk-items"
-                            @click="riskTypeChange(key)"
                     >
-                        {{value}}
+                        <!--{{value}}-->
+                        <a :href="'#' + key" slot="title">{{value}}</a>
                     </div>
                 </div>
             </div>
@@ -84,9 +84,9 @@
                     <div class="container-right-center">
 
 
-                        <template v-for="(riskfeed, key) in riskFeedDataList">
+                        <template v-for="(riskfeed, key) in riskFeedDataList" >
 
-                            <div class="container-right-loop-title">
+                            <div class="container-right-loop-title" :id="key">
                                 {{riskfeed.risksptype}}
                             </div>
 
@@ -198,7 +198,6 @@
         data: function () {
             return {
                 leftNode: {},
-                selectedNode: '',
                 companyname: this.$store.getters.companyName,
                 riskname: '',
                 risklevel: '',
@@ -213,8 +212,8 @@
 
                 riskFeedDataList: {},
                 writeData: {
-                    risk_ps:{},
-                    risk_feed_content:''
+                    risk_ps: {},
+                    risk_feed_content: ''
                 },
                 period: this.$store.getters.year + '年' + this.$store.getters.month + '月'
 
@@ -250,7 +249,6 @@
              * 更新数据
              */
             updateData() {
-                debugger;
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
                     riskFeedDataList = _reportData.riskFeedDataList;
@@ -267,7 +265,7 @@
                 let offsetHeight = document.body.offsetHeight,//页面整体高度
                     buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                     tabHeight = 39,//tab标签高度
-                    gapHeight = 32,//间隙的高度
+                    gapHeight = 54,//间隙的高度
                     pageHeaderHeight = 64;//导航栏高度
                 let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
                 this.$refs.containerAll.$el.style.height = tableHeight + 'px';
@@ -284,7 +282,7 @@
                 let _riskFeedDataList = {};
                 for (let key in _list) {
                     if (_list[key].riskdetaildata && _list[key].riskdetaildata.length > 0) {
-                        if(_list[key].risksptype !== ''){
+                        if (_list[key].risksptype !== '') {
                             _riskFeedDataList[key] = _list[key];
 
                             _this.writeData['risk_ps']['risk_ps_cl'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_cl;
@@ -293,7 +291,6 @@
                         }
                     }
                 }
-                debugger;
                 this.riskFeedDataList = _riskFeedDataList;
             },
 
@@ -328,22 +325,22 @@
              * 获取报告中间部分数据
              * @param riskFeedDataList
              */
-            getReportCenterData(riskFeedDataList) {
+            /*getReportCenterData(riskFeedDataList) {
                 let _this = this;
                 let riskTpyeId = this.selectedNode === '' ? 'flfx' : this.selectedNode;
                 let allriskFeedDataList = riskFeedDataList[riskTpyeId];
                 _this.risksptype = allriskFeedDataList.risksptype;
                 _this.riskdetaildata = allriskFeedDataList.riskdetaildata;
-            },
+            },*/
 
             /**
              * 切换风险类型按钮---点击目录选项
              * @param key
              */
             riskTypeChange(key) {
-                if (this.selectedNode === key) return;
-                this.selectedNode = key;
-                this.reportDataFormat();
+                // if (this.selectedNode === key) return;
+                // this.selectedNode = key;
+                // this.reportDataFormat();
             },
 
             /**
@@ -360,7 +357,6 @@
              * 传递给下一个发送请求的方法就行了
              */
             personSureBtnClicked(nodes) {
-                debugger;
                 let _this = this,
                     store = _this.$store.getters,
                     company = store.company,
@@ -417,9 +413,6 @@
                         })
                     }
                 });*/
-
-
-
 
 
                 _riskdetaildata.forEach((item) => {

@@ -254,7 +254,6 @@
                     userCompany = _getter.user.company.id;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
-                        debugger;
                         /**
                          * 获取数据之后进行的数据处理
                          */
@@ -526,7 +525,6 @@
              * @param scope
              */
             getRiskNoticeParams(scope) {
-                debugger;
                 let rowData = scope.row,
                     nRelateId = rowData.scode,
                     risksbuser = rowData.risksbuser;

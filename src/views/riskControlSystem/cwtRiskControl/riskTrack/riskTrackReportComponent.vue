@@ -11,9 +11,9 @@
                             v-for="(value,key) in leftNode"
                             :key="key"
                             class="risk-items"
-                            @click="riskTypeChange(key)"
                     >
-                        {{value}}
+                        <!--{{value}}-->
+                        <a :href="'#' + key" slot="title">{{value}}</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                         <template v-for="(riskfeed, key) in riskFeedDataList">
 
 
-                            <div class="container-right-loop-title">
+                            <div class="container-right-loop-title" :id="key">
                                 {{riskfeed.risksptype}}
                             </div>
 
@@ -186,12 +186,12 @@
                 selectedNode: '',
                 companyname: this.$store.getters.companyName,
                 period: this.$store.getters.year + '年' + this.$store.getters.month + '月',
-                riskname: '1',
-                risklevel: '2',
-                riskcompany: '3',
-                risksbuser: '4',
+                riskname: '',
+                risklevel: '',
+                riskcompany: '',
+                risksbuser: '',
                 riskCount: {},
-                risksptype: "战略风险",
+                risksptype: "",
                 riskdetaildata: [],
                 pageHeight: document.body.offsetHeight,
 
@@ -245,7 +245,7 @@
                 let offsetHeight = document.body.offsetHeight,//页面整体高度
                     buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                     tabHeight = 39,//tab标签高度
-                    gapHeight = 32,//间隙的高度
+                    gapHeight = 54,//间隙的高度
                     pageHeaderHeight = 64;//导航栏高度
                 let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
                 this.$refs.containerAll.$el.style.height = tableHeight + 'px';
@@ -340,11 +340,11 @@
              * 切换风险类型按钮---点击目录选项
              * @param key
              */
-            riskTypeChange(key) {
+            /*riskTypeChange(key) {
                 if (this.selectedNode === key) return;
                 this.selectedNode = key;
                 this.reportDataFormat();
-            },
+            },*/
 
         }
     }
