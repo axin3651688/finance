@@ -158,7 +158,7 @@
                     }
                 },
                 dataChanged: false,
-                dialogState:'',
+                dialogState: '',
             }
         },
         created() {
@@ -204,6 +204,7 @@
 
                     this.dialogState = 'tx';
 
+                    this.noticeSendEvent(scope, it);
                     alert('提醒操作')
                 }
             },
@@ -253,7 +254,6 @@
                     userCompany = _getter.user.company.id;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
-
                         /**
                          * 获取数据之后进行的数据处理
                          */
@@ -261,7 +261,7 @@
                         let _operations = [];
                         datas.forEach((data) => {
 
-                            if(company !== userCompany){
+                            if (company !== userCompany) {
                                 data.operation = '1-查看';
                             }
 
@@ -461,8 +461,10 @@
              */
             getRiskFeedbackParams(scope) {
                 let rowData = scope.row,
-                    nRelateId = rowData.scode;
+                    nRelateId = rowData.scode,
+                    risksbuser = rowData.risksbuser;
                 let backUser = 'cwt';
+                backUser = risksbuser || backUser;
                 let _this = this,
                     _getter = _this.$store.getters,
                     user = _getter.user.user,
@@ -473,7 +475,7 @@
                 let _month = month > 9 ? month : '0' + month;
 
                 period = year + _month + '';
-                let param = {
+                return {
                     "riskReportStateDtos": [
                         {
                             "company": company,
@@ -490,9 +492,69 @@
                         backUser
                     ]
                 };
+            },
 
-                return param;
+            /**
+             * 提醒操作
+             * @param scope
+             * @param it
+             */
+            noticeSendEvent(scope, it) {
+                let _this = this;
+                let params = _this.getRiskNoticeParams(scope);
 
+                updateInstruction(params).then(res => {
+                    if (res.data.code === 200) {
+
+                        _this.updateView();
+
+                        _this.$message({
+                            message: "成功提醒批示人员尽快反馈",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "提醒失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            /**
+             * 获取风险提醒的参数
+             * @param scope
+             */
+            getRiskNoticeParams(scope) {
+                let rowData = scope.row,
+                    nRelateId = rowData.scode,
+                    risksbuser = rowData.risksbuser;
+                let backUser = 'cwt';
+                backUser = risksbuser || backUser;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    user = _getter.user.user,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                let _month = month > 9 ? month : '0' + month;
+
+                period = year + _month + '';
+
+                return {
+                    "riskReportStateDtos": [
+                        {
+                            "company": company,
+                            "nrelateid": nRelateId,
+                            "period": period,
+                            "sfeedbacksuser": user.userName,
+                            "sisfeedback": "2",
+                        }
+                    ],
+                    "users": [
+                        backUser
+                    ]
+                };
             }
         }
     }

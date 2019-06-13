@@ -11,10 +11,15 @@
 
 
         <div class="report-component-content" v-if="reportBackDetail">
-            <div style="text-align: right; padding-right: 4px;">
-                <el-button type="primary" @click="pageExport">导出</el-button>
-                <el-button @click="pageBack">返回</el-button>
-            </div>
+            <el-header class="container_header">
+                <div class="container_alert">
+                    <span><i class="el-icon-warning"></i>查看页面，无法操作此页面！</span>
+                </div>
+                <div class="container_btn">
+                    <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                    <el-button type="primary" plain @click="pageBack">返回</el-button>
+                </div>
+            </el-header>
             <risk-track-report-component
                     :reportData="reportData"
                     :dataFresh="dataFresh"
@@ -31,6 +36,7 @@
     import riskTrackReportComponent from './riskTrackReportComponent'
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "riskReportTrack",
@@ -38,6 +44,23 @@
         components: {
             treeTable,
             riskTrackReportComponent
+        },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.getReportData();
+            },
+            year(newValue, oldValue) {
+                this.getReportData();
+            },
+            month(newValue, oldValue) {
+                this.getReportData();
+            }
         },
         props: {},
         data() {
@@ -69,63 +92,55 @@
                         },
                         riskFeedDataList: {
                             flfx: {
-                                risksptype: '战略风险',
+                                risksptype: '',
                                 riskdetaildata: [
                                     {
-                                        riskname: '天津食品集团风险',
-                                        risklevel: '严重',
-                                        riskcompany: '天津食品集团',
-                                        risksbuser: '德玛西亚',
+                                        riskname: '',
+                                        risklevel: '',
+                                        riskcompany: '',
+                                        risksbuser: '',
                                         risk_pg_gs_cs_jy: [
                                             {
-                                                title: '风险评估',
-                                                content: [
-                                                    '1、风险可能性为高(50-75%)，对业务和目标的影响额为500万元以下'
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '风险概述',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '采取措施',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             },
                                             {
-                                                title: '应对建议',
-                                                content: [
-                                                    '1、此风险对声誉的影响：负面消息或在行业范围内流传，被地方媒体报道、关注，对声誉造成一定损失',
-                                                ]
+                                                title: '',
+                                                content: []
                                             }
                                         ],
 
                                         scheduleList: {
                                             risk_sb: {
-                                                risk_count: '进度一',
-                                                risk_name: '风险上报',
+                                                risk_count: '',
+                                                risk_name: '',
                                                 user_name: '',
                                                 time: '',
-                                                state: '未上报',
+                                                state: '',
                                                 content: ''
                                             },
                                             risk_ps: {
-                                                risk_count: '进度二',
-                                                risk_name: '风险批示',
+                                                risk_count: '',
+                                                risk_name: '',
                                                 user_name: '',
-                                                time: '2019年3月',
-                                                state: '已批示',
+                                                time: '',
+                                                state: '',
                                                 content: ''
                                             },
                                             risk_fq: {
-                                                risk_count: '进度三',
-                                                risk_name: '风险反馈',
+                                                risk_count: '',
+                                                risk_name: '',
                                                 user_name: '',
-                                                time: '2019年3月',
-                                                state: '已反馈',
+                                                time: '',
+                                                state: '',
                                                 content: ''
                                             }
                                         }
@@ -455,7 +470,6 @@
                             riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'];
 
 
-
                             emptyData['risksptype'] = riskModel.risksptype;
 
                             emptyData['riskdetaildata'].push(riskModel_riskdetaildata);
@@ -543,5 +557,25 @@
 </script>
 
 <style scoped>
+    .container_header {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: right;
+        background-color: #D3DCE6;
+    }
 
+    .container_alert {
+        color: #e6a23c;
+        width: 250px;
+        height: 40px;
+        margin-left: 40%;
+        float: left;
+    }
+
+    .container_btn {
+        float: right;
+        height: 40px;
+        width: 150px;
+    }
 </style>
