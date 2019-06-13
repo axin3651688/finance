@@ -38,7 +38,7 @@
             </div>
         </div>
         <div>
-            <reviewModal :modalConfig.sync="modalConfig" ref="reviewModal"></reviewModal>
+            <reviewModal :modalConfig.sync="modalConfig" ref="reviewModal" v-on:publicEvent="publicEvent"></reviewModal>
         </div>
     </div>
 </template>
@@ -185,7 +185,7 @@
                         templateId: scope.row.templateid
                     };
                     me.modalConfig = {
-                        title:'审阅',
+                        title:scope.row.nopratebuttonname,
                         dialogVisible:true,
                         templateParams:itemTmp[0],
                         requestParams:params,
@@ -298,6 +298,13 @@
                     }
                 });
             },
+            /**
+             * 子组件传过来的事件。
+             * @author szc 2019年6月13日16:50:41
+             */
+            publicEvent (params) {
+                this.updateData();
+            }
         }
     };
 </script>
