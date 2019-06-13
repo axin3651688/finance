@@ -31,6 +31,7 @@
                 <dialog-component
                         :dialogData.sync="dialogData"
                         :dataChanged="dataChanged"
+                        :dialogState="dialogState"
                         @riskFeedSuccess="riskFeedSuccess"
                         @dataMessageChange="dataMessageChange"
                 >
@@ -156,7 +157,8 @@
                         ]
                     }
                 },
-                dataChanged: false
+                dataChanged: false,
+                dialogState:'',
             }
         },
         created() {
@@ -179,18 +181,29 @@
                 if (it.id === '0') {
                     //反馈操作
                     this.dialogVisible = true;
+
+                    this.dialogState = 'fk';
+
                     this.getDialogData(scope, it);
                 } else if (it.id === '1') {
                     //查看操作
                     this.dialogVisible = true;
+
+                    this.dialogState = 'ck';
+
                     this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
+
+                    this.dialogState = 'th';
 
                     this.riskFeedBackEvent(scope, it);
                     // alert('退回流程操作')
                 } else if (it.id === '3') {
                     //提醒操作
+
+                    this.dialogState = 'tx';
+
                     alert('提醒操作')
                 }
             },
@@ -340,6 +353,10 @@
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
                 _dialogData.isFeeded = data['backstate'] === '已反馈';
+
+                //todo  dialogState 状态改变
+                // this.dialogState = '';
+
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
