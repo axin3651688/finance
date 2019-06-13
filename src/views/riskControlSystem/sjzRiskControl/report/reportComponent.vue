@@ -53,10 +53,14 @@
                                 </div>
                                 <div  v-for="(tool, index) in dataReport" v-if="too.sname == tool.srootrisktypename">
                                     <div class="container_main_risk_dd">
-                                        <span class="container_main_risk_text">社会责任风险</span>
+                                        <span class="container_main_risk_text">{{ tool.srisktypename }}</span>
                                         <span class="container_main_risk_color_one">{{ tool.ngradename|TextFormat }}</span>
                                         <span class="container_main_risk_text textTitle">{{ textTitle }}</span>
                                         <span class="container_main_risk_color_two">识别人：{{ tool.ssubmituser }}</span>
+                                    </div>
+                                    <div class="container_main_risk_ff">
+                                        <div class="container_main_risk_text textTitle2">风险名称</div>
+                                        <div class="textTitle3">{{ tool.sriskname }}</div>
                                     </div>
                                     <div >
                                         <div class="container_main_risk_ff">
@@ -216,7 +220,7 @@ export default {
         // 1. 上报（修改）按钮触发 
         // 0. 查看（不能修改）按钮触发
         setReportBack(number){
-            debugger
+            // debugger
             if(number==null)return false ;
             // number=1，为上报状态；number=0，为查看状态。
             if(number){

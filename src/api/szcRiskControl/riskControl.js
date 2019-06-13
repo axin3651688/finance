@@ -67,3 +67,12 @@ export function updateInstructionAll(params) {
             // dataType: 'json'
     })
 }
+/**
+ * 汇总提醒查询人员的请求
+ */
+export function queryUserOfCompany(data) {
+    return request({
+        url: '/zjb/zjb/find_data?cubeId=' + data.cubeId + "&sql=" + data.sql,
+        method: 'get'
+    })
+}

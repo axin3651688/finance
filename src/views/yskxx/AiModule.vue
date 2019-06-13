@@ -328,7 +328,7 @@ export default {
             let me = this;
             let tabs = me.tabsDataArray;
             me.tabsDataArray = tabs.filter(tab => !tab.closable);           
-            me.tableDataValue = me.tabsDataArray[0].name;
+            if(me.tabsDataArray.length > 0)me.tableDataValue = me.tabsDataArray[0].name;
             me.objer = me.objer2 ;
             me.loadModuleBefore() ;
         },

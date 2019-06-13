@@ -382,6 +382,7 @@ export default {
                         me.isbtnModify = false ;    // 修改按钮隐藏
                         me.isbtnShow3 = false ;     // 添加按钮隐藏
                         me.isbtnShow4 = false ;     // 导入按钮隐藏
+                        me.$message({ message: "温馨提示：风险已上报！", type: "warning" }) ;
                     }else{
                         me.isbtnModify = true ;     // 修改按钮显示
                         me.isbtnShow3 = true ;      // 添加按钮显示
@@ -548,7 +549,9 @@ export default {
          * @event 添加按钮
          */
         addClick(){
-            // debugger
+            debugger
+            this.axiosJson() ;
+            
             this.view_row = [] ;
             this.view_btn = 0 ;
             this.modify_btn = 0 ;
