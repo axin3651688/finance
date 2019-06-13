@@ -342,10 +342,8 @@ export default {
     }
 }
 </script>
-<style scoped>
-/*@import '~@s/public/system.scss';*/
-@import '~@v/riskControlSystem/sjzRiskControl/report/reportCss.scss';
-</style>
+<style lang="scss" scoped src="./reportCss.scss"></style>
+
 <style>
 .container_main_risk_btn .icon-xiugai {
     margin-right: 10px;
