@@ -30,6 +30,7 @@
     import riskFeedReportComponent from './riskFeedReportComponent'
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
+    import {mapGetters} from "vuex"
 
     export default {
         mixins: [cwtPublicJS],
@@ -37,6 +38,23 @@
         components: {
             treeTable,
             riskFeedReportComponent
+        },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.getReportData();
+            },
+            year(newValue, oldValue) {
+                this.getReportData();
+            },
+            month(newValue, oldValue) {
+                this.getReportData();
+            }
         },
         data() {
             return {

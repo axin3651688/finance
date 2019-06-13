@@ -25,8 +25,8 @@
                     <div class="container-right-top">
 
                         <div class="report-title">
-                            {{this.companyname}}2019年3月
-                            <!--{{this.period}}-->
+                            {{this.companyname}}
+                            {{this.period}}
                             风险预警报告
                         </div>
                         <span class="zs">总述</span>
@@ -37,25 +37,25 @@
                             </template>
 
                             <template v-if="riskCount.riskStypeCountArray.cwfx > 0">
-                                财务风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                财务风险 {{riskCount.riskStypeCountArray.cwfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.flfx > 0">
                                 法律风险 {{riskCount.riskStypeCountArray.flfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.ljfx > 0">
-                                廉洁风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                廉洁风险 {{riskCount.riskStypeCountArray.ljfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.scfx > 0">
-                                市场风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                市场风险 {{riskCount.riskStypeCountArray.scfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.syfx > 0">
-                                声誉风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                声誉风险 {{riskCount.riskStypeCountArray.syfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.yyfx > 0">
-                                运营风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                运营风险 {{riskCount.riskStypeCountArray.yyfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.zlfx > 0">
-                                战略风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                战略风险 {{riskCount.riskStypeCountArray.zlfx}} 条，
                             </template>
 
 
@@ -179,11 +179,17 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
+    import {riskFeedControl} from '~api/cwtRiskControl/riskControlRequest'
+    import {mapGetters} from "vuex"
+
     export default {
         name: "riskFeedReportComponent",
         mixins: [cwtPublicJS],
         components: {
             showPersonnelList
+        },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
         },
         props: {
             reportData: Object,
@@ -193,7 +199,7 @@
             return {
                 leftNode: {},
                 selectedNode: '',
-                companyname: '',
+                companyname: this.$store.getters.companyName,
                 riskname: '',
                 risklevel: '',
                 riskcompany: '',
@@ -210,11 +216,24 @@
                     risk_ps:{},
                     risk_feed_content:''
                 },
+                period: this.$store.getters.year + '年' + this.$store.getters.month + '月'
 
             }
         },
         watch: {
             dataFresh() {
+                this.updateData();
+            },
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.updateData();
+            },
+            year(newValue, oldValue) {
+                this.updateData();
+            },
+            month(newValue, oldValue) {
                 this.updateData();
             }
         },
@@ -231,6 +250,7 @@
              * 更新数据
              */
             updateData() {
+                debugger;
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
                     riskFeedDataList = _reportData.riskFeedDataList;
@@ -258,25 +278,23 @@
             },
 
             reportDataFormat() {
-                debugger;
                 let _this = this,
                     _reportData = _this.reportData.reportDataContent,
                     _list = _reportData.riskFeedDataList;
                 let _riskFeedDataList = {};
                 for (let key in _list) {
                     if (_list[key].riskdetaildata && _list[key].riskdetaildata.length > 0) {
-                        _riskFeedDataList[key] = _list[key];
+                        if(_list[key].risksptype !== ''){
+                            _riskFeedDataList[key] = _list[key];
 
-                        debugger;
-                        _this.writeData['risk_ps']['risk_ps_cl'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_cl;
-                        _this.writeData['risk_ps']['risk_ps_content'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_content;
-                        _this.writeData['risk_feed_content'] = _list[key].riskdetaildata[0].risk_feed_content;
-
+                            _this.writeData['risk_ps']['risk_ps_cl'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_cl;
+                            _this.writeData['risk_ps']['risk_ps_content'] = _list[key].riskdetaildata[0].risk_ps.risk_ps_content;
+                            _this.writeData['risk_feed_content'] = _list[key].riskdetaildata[0].risk_feed_content;
+                        }
                     }
                 }
+                debugger;
                 this.riskFeedDataList = _riskFeedDataList;
-
-
             },
 
             /**
@@ -342,6 +360,7 @@
              * 传递给下一个发送请求的方法就行了
              */
             personSureBtnClicked(nodes) {
+                debugger;
                 let _this = this,
                     store = _this.$store.getters,
                     company = store.company,
@@ -363,6 +382,45 @@
                     ]
                 };
                 let _riskdetaildata = _this.riskdetaildata;
+
+
+                /*let params = {
+                    riskReportStateDtos: [
+                        {
+                            company: company,
+                            period: _this.parsePeriod(),
+                            sisfeedback: "1",
+                            sfeedbacksuser: user.userName,
+                            sfeedbackscontent: _riskInstructionData,
+                            nrelateid: _this.dialogData['riskid'],
+
+                        },
+                    ],
+                    users: [
+                        userStr
+                    ]
+                };
+
+                riskFeedControl(params).then(res => {
+                    if (res.data.code === 200) {
+                        _this.riskFeedSuccess = true;
+
+                        _this.$emit("riskFeedSuccess");
+
+                        _this.$message({
+                            message: "反馈成功。",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "反馈失败！请联系开发人员"
+                        })
+                    }
+                });*/
+
+
+
+
 
                 _riskdetaildata.forEach((item) => {
                     let singleRiskData = {
