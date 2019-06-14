@@ -34,8 +34,9 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                    <div v-if="ManyTableData && ManyTableData.length > 0" style="margin:20px 0px;">
+                        <!-- <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable> -->
+                        <threeHeaderTable :tableData.sync="ManyTableData" :columns.sync="manyColumns" :allData.sync="resData"></threeHeaderTable>
                     </div>
                 </el-col>
             </el-row>
@@ -46,6 +47,7 @@
     import groupGauge from "./../echarts/groupGauge.vue"
     import groupGaugePublic from "./../echarts/groupGaugePublic.vue"
     import singleTable from "./../riskTable/riskTable.vue"
+    import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import publicMarking from "./../minix/publicMarking.js"
     export default {
@@ -55,7 +57,8 @@
             groupGauge,
             singleTable,
             groupRadar,
-            groupGaugePublic
+            groupGaugePublic,
+            threeHeaderTable
         },
         data() {
             return {
@@ -66,15 +69,22 @@
                     receive:{}
                 },
                 tableData:[],
-                columns:[]
+                columns:[],
+                ManyTableData:[],//多表头数据
+                manyColumns:[],//多表头列配置
+                resData:{}
             }
         },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/profitability.json";
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
+                    debugger;
                     me.tableData = res.data.rows;
                     me.columns = res.data.columns;
+                    me.manyColumns = res.data.manyColumns;
+                    me.ManyTableData = res.data.manyRows;
+                    me.resData = res.data;
                     let judgeParams = {
                         id:"profitability",
                         text:"盈利能力",

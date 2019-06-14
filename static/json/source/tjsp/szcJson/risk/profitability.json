@@ -63,32 +63,56 @@
     ],
     "rows": [],
     "manyColumns": [{
-            "id": "xm",
+        "id": "sm",
+        "type": "string",
+        "text": "正向单项指标打分及计算说明",
+        "align": "center",
+        "children": [{
+            "id": "fxqsj",
             "type": "string",
-            "text": "项目",
+            "text": "分析期数据=X,行业参数：优秀值=Y1，良好值=Y2，平均值=Y3，较低值=Y4，较差值=Y5",
             "align": "center",
-            "width": "180"
-        },
-        {
-            "id": "zhdf",
-            "type": "string",
-            "text": "综合得分预警评分标准",
-            "align": "center",
-            "width": "180",
             "children": [{
+                    "id": "E",
+                    "type": "string",
+                    "text": "较差值",
+                    "align": "center",
+                    "width": "90",
+                    "children": [{
+                            "id": "E2",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "E1",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        }
+                    ]
+                },
+                {
+                    "id": "xm",
+                    "type": "string",
+                    "text": "",
+                    "align": "center",
+                    "width": "180"
+                },
+                {
                     "id": "A",
                     "type": "string",
                     "text": "优秀值",
                     "align": "center",
                     "width": "180",
                     "children": [{
-                            "id": "A1",
+                            "id": "A2",
                             "type": "string",
                             "text": "",
                             "align": "center"
                         },
                         {
-                            "id": "A2",
+                            "id": "A1",
                             "type": "string",
                             "text": "",
                             "align": "center"
@@ -103,13 +127,13 @@
                     "htmlType": "text",
                     "width": "90",
                     "children": [{
-                            "id": "B1",
+                            "id": "B2",
                             "type": "string",
                             "text": "良好值",
                             "align": "center"
                         },
                         {
-                            "id": "B2",
+                            "id": "B1",
                             "type": "string",
                             "text": "良好值",
                             "align": "center"
@@ -121,12 +145,12 @@
                     "type": "string",
                     "text": "平均值",
                     "children": [{
-                            "id": "C1",
+                            "id": "C2",
                             "type": "string",
                             "text": "平均值"
                         },
                         {
-                            "id": "C2",
+                            "id": "C1",
                             "type": "string",
                             "text": "平均值"
                         }
@@ -138,78 +162,46 @@
                     "text": "较低值",
                     "width": "180",
                     "children": [{
-                            "id": "D1",
-                            "type": "string",
-                            "text": "较低值"
-                        },
-                        {
                             "id": "D2",
                             "type": "string",
                             "text": "较低值"
-                        }
-                    ]
-                },
-                {
-                    "id": "E",
-                    "type": "string",
-                    "text": "较差值",
-                    "align": "center",
-                    "width": "90",
-                    "children": [{
-                            "id": "E1",
-                            "type": "string",
-                            "text": "较差值",
-                            "align": "center"
                         },
                         {
-                            "id": "E2",
+                            "id": "D1",
                             "type": "string",
-                            "text": "较差值",
-                            "align": "center"
+                            "text": "较低值"
                         }
                     ]
                 }
             ]
-        }
-    ],
+        }]
+    }],
+    "displayRow": 3,
     "manyRows": [{
-            "xm": "综合得分（V）标准",
-            "A1": "V>=9.0",
-            "A2": "V>=9.0",
-            "B1": "V>=8.0",
-            "B2": "V>=8.0",
-            "C1": "V>=7.0",
-            "C2": "V>=7.0",
-            "D1": "V>=6.0",
-            "D2": "V>=6.0",
-            "E1": "V>=5.0",
-            "E2": "V>=5.0"
+            "xm": "区间",
+            "A1": "X>Y1",
+            "A2": "X=Y1",
+            "B1": "Y2<X<Y1",
+            "B2": "X=Y2",
+            "C1": "Y3<X<Y2",
+            "C2": "X=Y3",
+            "D1": "Y4<X<Y3",
+            "D2": "X=Y4",
+            "E1": "Y5<X<Y4",
+            "E2": "X=Y5"
         },
         {
-            "xm": "评级标准",
-            "A1": "A++",
-            "A2": "A+",
-            "B1": "A",
-            "B2": "A",
-            "C1": "B",
-            "C2": "B",
-            "D1": "C",
-            "D2": "C",
-            "E1": "D",
-            "E2": "D"
-        },
-        {
-            "xm": "文字结论",
-            "A1": "优秀",
-            "A2": "优秀",
-            "B1": "良好",
-            "B2": "良好",
-            "C1": "中等",
-            "C2": "中等",
-            "D1": "较差",
-            "D2": "较差",
-            "E1": "差",
-            "E2": "差"
+            "xm": "分数",
+            "A1": "10",
+            "A2": "9",
+            "B1": "8",
+            "B2": "7",
+            "C1": "6",
+            "C2": "5",
+            "D1": "4",
+            "D2": "3",
+            "E1": "2",
+            "E2": "1"
         }
     ]
 }
