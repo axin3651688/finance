@@ -1,26 +1,28 @@
 <template>
     <div>
-        <div class="personnel-list" v-if="personnelListShow">
+        <div class="personnel-list" v-if="componentShow">
             <el-input
                     placeholder="输入关键字进行过滤"
                     v-model="filterText">
             </el-input>
             <el-tree
-                class="filter-tree"
-                :data="dptUserConfig.userDatas"
-                show-checkbox
-                node-key="id"
-                default-expand-all
-                :filter-node-method="filterNode"
-                :check-strictly="true"
-                ref="tree"
-                :props="defaultProps">
+                    class="filter-tree"
+                    :data="dptUserConfig.userDatas"
+                    show-checkbox
+                    node-key="id"
+                    default-expand-all
+                    :filter-node-method="filterNode"
+                    :check-strictly="true"
+                    :default-checked-keys="this.defalutCheckedKey"
+                    ref="tree"
+                    :props="defaultProps">
             </el-tree>
             <div class="btn-sure">
                 <el-button
                         type="primary"
                         @click="checkedSure"
-                >确定</el-button>
+                >确定
+                </el-button>
 
                 <el-button @click="resetChecked">重置</el-button>
             </div>
@@ -30,60 +32,31 @@
 
 <script>
     import riskPublic from "@/utils/riskPublic"
-    import { findThirdPartData } from "~api/interface"
+    import {findThirdPartData} from "~api/interface"
+
     export default {
         name: "showPersonnelList",
         components: {},
         props: {
-            personnelListShow: Boolean
+            personnelListShow: Boolean,
+            defaultData: String,
+            dataChanged: Boolean
         },
+
         data() {
             return {
-                dptUserConfig:{},
+                dptUserConfig: {},
+                defalutCheckedKey: [],
                 personnelList: [
                     {
                         id: 1,
-                        label: '部门A',
-                        children: [
-                            {
-                                id: 3,
-                                label: '人员A-1'
-                            },
-                            {
-                                id: 4,
-                                label: '人员A-2'
-                            },
-                            {
-                                id: 5,
-                                label: '人员A-3'
-                            },
-                            {
-                                id: 6,
-                                label: '人员A-4'
-                            }
-                        ]
+                        label: '',
+                        children: []
                     },
                     {
                         id: 2,
-                        label: '部门B',
-                        children: [
-                            {
-                                id: 7,
-                                label: '人员B-1'
-                            },
-                            {
-                                id: 8,
-                                label: '人员B-2'
-                            },
-                            {
-                                id: 9,
-                                label: '人员B-3'
-                            },
-                            {
-                                id: 10,
-                                label: '人员B-4'
-                            }
-                        ]
+                        label: '',
+                        children: []
                     }
                 ],
                 defaultProps: {
@@ -91,17 +64,30 @@
                     label: 'label'
                 },
 
-                filterText: ''
+                filterText: '',
+
+                componentShow: false
+
             }
         },
         created() {
-            this.checkboxChange(true)
+            this.checkboxChange(true);
+            this.setDefaultSelect(this.defaultData);
         },
         mounted() {
         },
         watch: {
             filterText(val) {
                 this.$refs.tree.filter(val);
+            },
+            dataChanged() {
+                this.setDefaultSelect(this.defaultData);
+                this.componentShow = false;
+            },
+            personnelListShow(value) {
+                this.defalutCheckedKey = [];
+                this.componentShow = this.personnelListShow;
+                this.setDefaultSelect(this.defaultData);
             }
         },
         methods: {
@@ -123,10 +109,10 @@
                 let nodes = this.$refs.tree.getCheckedNodes();
                 if (nodes && nodes.length > 0) {
                     this.$emit("personSureBtnClicked", nodes)
-                }else{
+                } else {
                     this.$message({
-                        message:"没有选择人员!",
-                        type:"warning"
+                        message: "没有选择人员!",
+                        type: "warning"
                     });
                 }
             },
@@ -134,20 +120,19 @@
              * checkBox改变的回调。
              * @author szc 2019年5月22日11:45:56
              */
-            checkboxChange (item,paramsEvent) {
-                debugger;
-                let me = this,storeParams = me.$store.getters,
+            checkboxChange(item, paramsEvent) {
+                let me = this, storeParams = me.$store.getters,
                     company = storeParams.company;
-                if(item){
+                if (item) {
                     let params = {
-                        company:company
+                        company: company
                     };
                     me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
-                        if(res.data.code == 200){
-                            params = riskPublic.paramsOfSql(params,res.data.sqlList,"102");
+                        if (res.data.code == 200) {
+                            params = riskPublic.paramsOfSql(params, res.data.sqlList, "102");
                             findThirdPartData(params).then(res => {
-                                if(res.data.code == 200) {
-                                    me.parseTreeData(me.dptUserConfig,res.data.data);
+                                if (res.data.code == 200) {
+                                    me.parseTreeData(me.dptUserConfig, res.data.data);
                                 }
                             });
                         }
@@ -158,11 +143,11 @@
                     //     show:true,
                     //     userDatas:[]
                     // };
-                }else {
+                } else {
                     me.dptUserConfig = {
-                        id:"dptUser",
-                        show:false,
-                        userDatas:[]
+                        id: "dptUser",
+                        show: false,
+                        userDatas: []
                     };
                 }
             },
@@ -170,35 +155,35 @@
              * 指定下达人员是树表。
              * @author szc 2019年5月22日14:30:25
              */
-            parseTreeData (dptUserConfig,data) {
-                let me = this,objRes = {};
-                if(data && data.length > 0) {
+            parseTreeData(dptUserConfig, data) {
+                let me = this, objRes = {};
+                if (data && data.length > 0) {
                     data.forEach(item => {
-                        if(!objRes[item.scode]){
+                        if (!objRes[item.scode]) {
                             objRes[item.scode] = item.scode;
                         }
                     });
                 }
                 let dptUser = [];
-                for(let key in objRes){
+                for (let key in objRes) {
                     let objDptUser = {
-                        id:"",
-                        label:"",
-                        disabled:true,
-                        children:[]
+                        id: "",
+                        label: "",
+                        disabled: true,
+                        children: []
                     };
-                    for(let i = 0;i < data.length;i ++){
+                    for (let i = 0; i < data.length; i++) {
                         let item = data[i];
-                        if(item.scode == key){
-                            if(item.usernid){
+                        if (item.scode == key) {
+                            if (item.usernid) {
                                 let objItem = {
-                                    id:item.suser,
-                                    label:item.username
+                                    id: item.suser,
+                                    label: item.username
                                 };
                                 objDptUser.id = item.scode;
                                 objDptUser.label = item.sname;
                                 objDptUser.children.push(objItem);
-                            }else {
+                            } else {
                                 objDptUser.id = item.scode;
                                 objDptUser.label = item.sname;
                             }
@@ -208,11 +193,27 @@
                 }
                 // me.dptUserConfig.userDatas = dptUser;
                 me.dptUserConfig = {
-                    id:"dptUser",
-                    show:true,
-                    userDatas:dptUser
+                    id: "dptUser",
+                    show: true,
+                    userDatas: dptUser
                 };
             },
+
+
+            setDefaultSelect(defaultData) {
+
+                let _defaultChecked = this.defalutCheckedKey;
+                this.componentShow = false;//销毁组件
+                this.$nextTick(() => {
+                    this.componentShow = this.personnelListShow;//重建组件
+                });
+                if(defaultData){
+                    let keyArray = defaultData.split(',');
+                    keyArray.forEach((key) => {
+                        _defaultChecked.push(key);
+                    })
+                }
+            }
         }
     }
 </script>
@@ -240,6 +241,7 @@
         border-radius: 16px;
         padding: 8px 16px;
     }
+
     .filter-tree {
         max-height: 250px;
         overflow: auto;

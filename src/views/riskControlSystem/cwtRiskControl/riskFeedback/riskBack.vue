@@ -19,11 +19,12 @@
             </div>
         </div>
 
-        <div class="risk-back-dialog">
+        <div class="risk-back-dialog" v-if="pageDataFresh">
             <el-dialog
                     :title="getDialogTitle()"
                     width="56%"
                     top="50px"
+                    @close="dialogCloseEvent"
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
@@ -159,6 +160,7 @@
                 },
                 dataChanged: false,
                 dialogState: '',
+                pageDataFresh:true
             }
         },
         created() {
@@ -348,11 +350,17 @@
              * @param data
              */
             dataFormat(data) {
+                this.pageDataFresh = false;//销毁组件
+                this.$nextTick(() => {
+                    this.pageDataFresh = true;//重建组件
+                });
+
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
                 _dialogData.isFeeded = data['backstate'] === '已反馈';
+                _dialogData.stouser = data.stouser;
 
                 //todo  dialogState 状态改变
                 // this.dialogState = '';
@@ -555,6 +563,13 @@
                         backUser
                     ]
                 };
+            },
+
+            /**
+             * 弹出层关闭事件
+             */
+            dialogCloseEvent(){
+                //关闭弹出层的时候该反法调用，这里可以处理一些事情
             }
         }
     }

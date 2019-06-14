@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" v-if="pageDataFresh">
         <tree-table
                 border
                 :data.sync="treeData"
@@ -26,6 +26,8 @@
             <risk-feed-report-component
                     :reportData.sync="reportData"
                     :dataFresh="dataFresh"
+                    :dialogState="dialogState"
+                    @reportFeedSuccess="reportFeedSuccess"
             >
             </risk-feed-report-component>
         </div>
@@ -39,6 +41,7 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
+    import {riskBackAndNotice} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         mixins: [cwtPublicJS],
@@ -137,6 +140,9 @@
                     },
                 },
                 dataFresh: false,
+                pageDataFresh: true,
+
+                dialogState: ''
             }
         },
         created() {
@@ -158,14 +164,21 @@
                 let _id = btnItem.id;
                 if (_id === '0') {
                     //风险报告反馈
+                    this.dialogState = 'fk';
+
                     this.reportPageOpen(scope);
                 } else if (_id === '1') {
+                    this.dialogState = 'ck';
                     //显示报告详情
                     this.reportPageOpen(scope);
                 } else if (_id === '2') {
+                    this.dialogState = 'th';
                     //风险报告退回
+                    this.reportFeedBackEvent();
                 } else if (_id === '3') {
+                    this.dialogState = 'tx';
                     //风险报告提醒
+                    this.reportFeedNoticeEvent();
                 }
             },
 
@@ -283,6 +296,8 @@
              */
             reportPageOpen(scope) {
                 this.reportBackDetail = true;
+                let isFeeded = scope.row.status;
+                this.isPageReadOnly = isFeeded === '已反馈';
                 this.getReportHandleData(scope);
             },
 
@@ -507,6 +522,83 @@
                             risk_feed_content: ''
                         }
                 };
+            },
+
+            /**
+             * 反馈成功以后页面刷新
+             */
+            reportFeedSuccess() {
+
+                this.isPageReadOnly = true;
+                this.getReportData();
+            },
+
+            /**
+             * 报告反馈退回事件
+             */
+            reportFeedBackEvent(){
+                let _this = this;
+                let params = this.getTUTXParams();
+                params.sisfeedback = '2';
+
+                riskBackAndNotice(params).then(res => {
+                    if (res.data.code === 200) {
+                        _this.$message({
+                            message: "退回成功",
+                            type: "success"
+                        });
+                        this.getReportData();
+
+                    } else {
+                        _this.$message({
+                            message: "退回失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            /**
+             * 提醒功能
+             */
+            reportFeedNoticeEvent(){
+                let _this = this;
+                let params = this.getTUTXParams();
+                params.sisfeedback = '0';
+
+                riskBackAndNotice(params).then(res => {
+                    if (res.data.code === 200) {
+                        _this.$message({
+                            message: "提醒成功",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "提醒失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            getTUTXParams(){
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    user = _getter.user.user,
+                    period = "";
+                if (month > 9) {
+                    period = year + "" + month;
+                } else {
+                    period = year + "0" + month;
+                }
+
+                return {
+                    company: company,
+                    period: period,
+                    sfeedbacksuser: user.userName,
+                    sisfeedback: "2",
+                }
             }
 
         }
