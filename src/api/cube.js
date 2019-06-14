@@ -28,6 +28,28 @@ export function report(item) {
 }
 /**
  * name: sjz
+ * 说明：组织管理 部门添加请求接口 /department/add
+ */
+export function department_add(data) {
+    return request({
+        url: '/zjb/department/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：组织管理 部门删除请求接口 /department/delete
+ */
+export function department_delete(data) {
+    return request({
+        url: '/zjb/department/delete',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz
  * 说明：日志管理数据对的请求接口
  * time: 2019/1/18 10:00:00 礼拜五
  * @param {*} data 
