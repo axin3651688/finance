@@ -315,7 +315,7 @@
                     let _risk = _scheduleList[key];
                     if (key === 'risk_sb') {
                         if (_risk.state === '已上报') {
-                            _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
+                            _this.riskScheduleData[key].content = '。 上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
                         } else {
                             _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
                             _this.riskScheduleData['risk_ps'].content = '请尽快批示';
@@ -324,11 +324,11 @@
                         }
                     } else {
                         if (_risk.state === '已批示') {
-                            _this.riskScheduleData[key].content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
+                            _this.riskScheduleData[key].content = '批示内容： ' + _risk.content + '。 批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
                         } else if (_risk.state === '未批示') {
                             _this.riskScheduleData[key].content = '请尽快批示'
                         } else if (_risk.state === '已反馈') {
-                            _this.riskScheduleData[key].content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
+                            _this.riskScheduleData[key].content = '反馈内容： ' + _risk.content + '。 反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
                         } else if (_risk.state === '未反馈') {
                             _this.riskScheduleData[key].content = '请尽快反馈'
                         }
