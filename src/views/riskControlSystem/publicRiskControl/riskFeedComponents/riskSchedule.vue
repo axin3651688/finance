@@ -111,21 +111,16 @@
                 }
 
                 if (risk_ps.state === '未批示') {
-                    risk_ps.content = '请尽快上报';
-                    // risk_fq.content = '请尽快上报';
+                    risk_ps.content = '请尽快批示';
                 } else {
-                    risk_ps.content = '批示内容：' + risk_ps.risk_up_content + '。  上报人：' + risk_ps.risk_up_user + "。   上报时间：" + risk_ps.risk_up_time;
+                    risk_ps.content = '批示内容：' + risk_ps.risk_up_content + '。  批示人：' + risk_ps.risk_up_user + "。   批示时间：" + risk_ps.risk_up_time;
                 }
 
                 if (risk_fq.state === '未反馈') {
-                    risk_fq.content = '请尽快上报';
+                    risk_fq.content = '请尽快反馈';
                 } else {
-                    risk_fq.content = '批示内容：' + risk_fq.risk_up_content + '。   上报人：' + risk_fq.risk_up_user + "。   上报时间：" + risk_fq.risk_up_time;
+                    risk_fq.content = '反馈内容：' + risk_fq.risk_up_content + '。   反馈人：' + risk_fq.risk_up_user + "。   反馈时间：" + risk_fq.risk_up_time;
                 }
-                // _this.formData['risk_sb'] = risk_sb;
-                // _this.formData['risk_ps'] = risk_ps;
-                // _this.formData['risk_fq'] = risk_fq;
-
             }
         }
     }
