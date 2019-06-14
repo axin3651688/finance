@@ -3,6 +3,7 @@
         <el-container
                 class="container-all"
                 ref="containerAll"
+                v-if="pageDataFresh"
         >
             <div class="container-left">
                 <div class="container-left-inner">
@@ -12,7 +13,6 @@
                             :key="key"
                             class="risk-items"
                     >
-                        <!--{{value}}-->
                         <a :href="'#' + key" slot="title">{{value}}</a>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="container-right-center">
 
 
-                        <template v-for="(riskfeed, key) in riskFeedDataList" >
+                        <template v-for="(riskfeed, key) in riskFeedDataList">
 
                             <div class="container-right-loop-title" :id="key">
                                 {{riskfeed.risksptype}}
@@ -143,8 +143,13 @@
 
                             <div class="top-form-contents">
                                 <span style="min-width: 194px;width: 194px">风险反馈</span>
-                                <el-input type="textarea" :rows="4" v-model="writeData.risk_feed_content"
-                                          placeholder="请填写反馈内容。。。"></el-input>
+                                <el-input
+                                        type="textarea"
+                                        :rows="4"
+                                        v-model="writeData.risk_feed_content"
+                                        placeholder="请填写反馈内容。。。"
+                                        :disabled="reportState !== 'fk'"
+                                ></el-input>
                             </div>
                         </div>
 
@@ -152,6 +157,15 @@
                     </div>
 
                     <div class="container-right-foot">
+                        <el-checkbox
+                                label="指定反馈人员"
+                                name="type"
+                                ref="checkBox"
+                                class="form-foot-right-check"
+                                id="form-foot-right-check"
+                                :disabled="reportState !== 'fk'"
+                                @change="handleCheckedChange"
+                        ></el-checkbox>
                         <el-button
                                 type="primary"
                                 @click="showPersonnelListClicked"
@@ -193,7 +207,8 @@
         },
         props: {
             reportData: Object,
-            dataFresh: Boolean
+            dataFresh: Boolean,
+            dialogState: String
         },
         data: function () {
             return {
@@ -215,8 +230,9 @@
                     risk_ps: {},
                     risk_feed_content: ''
                 },
-                period: this.$store.getters.year + '年' + this.$store.getters.month + '月'
-
+                period: this.$store.getters.year + '年' + this.$store.getters.month + '月',
+                pageDataFresh:true,
+                reportState: this.dialogState
             }
         },
         watch: {
@@ -255,6 +271,7 @@
                 _this.getReportTitleData(_reportData);
                 this.getDirectoryData(riskFeedDataList);
                 this.reportDataFormat();
+                this.reportState = this.dialogState
             },
 
             /**
@@ -337,17 +354,25 @@
              * 切换风险类型按钮---点击目录选项
              * @param key
              */
-            riskTypeChange(key) {
+            /*riskTypeChange(key) {
                 // if (this.selectedNode === key) return;
                 // this.selectedNode = key;
                 // this.reportDataFormat();
-            },
+            },*/
 
             /**
              * 反馈上报按钮点击
              */
             showPersonnelListClicked() {
-                this.personnelListShow = !this.personnelListShow;
+                if (this.dialogState !== 'kf') {
+                    this.$message({
+                        message: "请勿重复反馈"
+                    });
+                    return;
+                }
+                // this.personnelListShow = !this.personnelListShow;
+                let _stoUser = this.reportData['stouser'];
+                this.personSureBtnClicked(null, _stoUser);
             },
 
 
@@ -356,7 +381,7 @@
              * 这里已经获取了参数，
              * 传递给下一个发送请求的方法就行了
              */
-            personSureBtnClicked(nodes) {
+            personSureBtnClicked(nodes, defaultUser) {
                 let _this = this,
                     store = _this.$store.getters,
                     company = store.company,
@@ -369,6 +394,8 @@
                         arrUser.push(item.id);
                     });
                     userStr = arrUser.join(',');
+                } else {
+                    userStr = defaultUser;
                 }
 
                 let params = {
@@ -377,62 +404,22 @@
                         userStr
                     ]
                 };
-                let _riskdetaildata = _this.riskdetaildata;
+                let _riskFeedDataList = _this.riskFeedDataList;
 
-
-                /*let params = {
-                    riskReportStateDtos: [
-                        {
+                for (let key in _riskFeedDataList) {
+                    let detailData = _riskFeedDataList[key].riskdetaildata;
+                    detailData.forEach((item) => {
+                        let emptyData = {
                             company: company,
-                            period: _this.parsePeriod(),
+                            period: _this.getPeriod(),
                             sisfeedback: "1",
                             sfeedbacksuser: user.userName,
-                            sfeedbackscontent: _riskInstructionData,
-                            nrelateid: _this.dialogData['riskid'],
-
-                        },
-                    ],
-                    users: [
-                        userStr
-                    ]
-                };
-
-                riskFeedControl(params).then(res => {
-                    if (res.data.code === 200) {
-                        _this.riskFeedSuccess = true;
-
-                        _this.$emit("riskFeedSuccess");
-
-                        _this.$message({
-                            message: "反馈成功。",
-                            type: "success"
-                        });
-                    } else {
-                        _this.$message({
-                            message: "反馈失败！请联系开发人员"
-                        })
-                    }
-                });*/
-
-
-                _riskdetaildata.forEach((item) => {
-                    let singleRiskData = {
-                        company: '',
-                        nrelateid: '',
-                        period: _this.publicGetPeriodMethod(),
-                        scompanyname: user.companyName,
-                        sfeedbackscontent: '',
-                        sfeedbackuser: user.userName,
-                        sfeedbackusername: user.trueName,
-                        sisfeedback: "1",
-                        sriskname: '',
-                    };
-                    singleRiskData.company = company;
-                    singleRiskData.nrelateid = item.riskid;
-                    singleRiskData.sfeedbackscontent = item.risk_feed_content;
-                    singleRiskData.sriskname = item.riskname;
-                    params.riskReportStateDtos.push(singleRiskData);
-                });
+                            sfeedbackscontent: _this.writeData.risk_feed_content,
+                            nrelateid: item.riskid,
+                        };
+                        params.riskReportStateDtos.push(emptyData);
+                    })
+                }
                 _this.riskFeedSend(params);
             },
 
@@ -448,13 +435,22 @@
                             message: "反馈成功。",
                             type: "success"
                         });
+                        _this.reportState = '';
+                        _this.personnelListShow = false;
+
+                        _this.$emit("reportFeedSuccess")
+
                     } else {
                         _this.$message({
                             message: "反馈失败！请联系开发人员"
                         })
                     }
                 });
-            }
+            },
+
+            handleCheckedChange() {
+                this.personnelListShow = !this.personnelListShow;
+            },
 
         }
     }
@@ -610,5 +606,9 @@
 
     .container-right-foot {
         text-align: right;
+    }
+
+    .form-foot-right-check {
+        margin-right: 20px;
     }
 </style>

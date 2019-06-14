@@ -54,7 +54,7 @@ export function getAllPerson(params) {
 
 /**
  * 人才队伍分页数据查询
- * @author cwt /risk_talent/query_user
+ * @author cwt
  */
 export function getCurrentPageData(params) {
     return request({
@@ -66,7 +66,7 @@ export function getCurrentPageData(params) {
 
 /**
  * 风险制度分页数据查询
- * @author cwt /risk_talent/query_user
+ * @author cwt
  */
 export function getRiskSystemTableData(params) {
     return request({
@@ -79,7 +79,7 @@ export function getRiskSystemTableData(params) {
 
 /**
  * 风险制度分页数据查询
- * @author cwt /risk_talent/query_user
+ * @author cwt
  */
 export function riskSystemAdd(params) {
     return request({
@@ -90,8 +90,8 @@ export function riskSystemAdd(params) {
 }
 
 /**
- * 风险制度风险建议添加  /risk_sys/query_by_filed
- * @author cwt /risk_talent/query_user
+ * 风险制度风险建议添加
+ * @author cwt
  */
 export function riskSystemSuggestAdd(params) {
     return request({
@@ -103,8 +103,8 @@ export function riskSystemSuggestAdd(params) {
 
 
 /**
- * 风险制度迷糊查询 /risk_sys/query_by_filed
- * @author cwt /risk_talent/query_user
+ * 风险制度迷糊查询
+ * @author cwt
  */
 export function getQueryByFiledTableData(params) {
     return request({
@@ -115,8 +115,8 @@ export function getQueryByFiledTableData(params) {
 }
 
 /**
- * 风险制度删除 /risk_sys/query_by_filed
- * @author cwt /risk_talent/query_user
+ * 风险制度删除
+ * @author cwt
  */
 export function riskSystemDelete(params) {
     return request({
@@ -127,12 +127,25 @@ export function riskSystemDelete(params) {
 }
 
 /**
- * 风险制度风险建议详情查询 /risk_sys/query_by_filed
- * @author cwt /risk_talent/query_user
+ * 风险制度风险建议详情查询
+ * @author cwt
  */
 export function riskSystemSuggestDetailQuery(params) {
     return request({
         url: '/zjb/risk_sys/query_advice',
+        method: 'post',
+        params: params
+    })
+}
+
+
+/**
+ * 风险反馈树表退回  提醒功能接口
+ * @author cwt
+ */
+export function riskBackAndNotice(params) {
+    return request({
+        url: '/zjb/riskreportstate/update_remindback',
         method: 'post',
         params: params
     })

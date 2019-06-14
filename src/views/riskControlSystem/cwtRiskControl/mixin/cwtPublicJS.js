@@ -32,10 +32,10 @@ export default {
                 treeData = [],
                 rootItem = {};
             rootItem = data.filter(item => {
-                return item.scode == root;
+                return item.scode === root;
             });
             data = data.filter(item => {
-                return item.scode != company;
+                return item.scode !== company;
             });
             let rootItemData = rootItem[0];
             me.recursionData(data, rootItemData);
@@ -99,6 +99,25 @@ export default {
             let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
             let D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
             return Y + M + D;
-        }
+        },
+
+
+        /**
+         * 获取期间
+         * @returns {string|string}
+         */
+        getPeriod() {
+            let _this = this,
+                _getter = _this.$store.getters,
+                year = _getter.year,
+                month = _getter.month,
+                period = "";
+            if (month > 9) {
+                period = year + "" + month;
+            } else {
+                period = year + "0" + month;
+            }
+            return period;
+        },
     },
 }
