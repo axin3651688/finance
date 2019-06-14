@@ -981,7 +981,7 @@ export default {
         if (result.status == 200) {
           if (result.data.code == 200) { 
             // debugger
-            me.$message({message:'查询成功', type:"success"});
+            // me.$message({message:'查询成功', type:"success"});
             //封装树对象数据
             const setting = {
               data: {
