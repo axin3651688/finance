@@ -22,7 +22,7 @@
             "text": "风险等级",
             "align": "center",
             "htmlType": "text",
-            "width": "90"
+            "width": "160"
         },
         {
             "id": "fxms",

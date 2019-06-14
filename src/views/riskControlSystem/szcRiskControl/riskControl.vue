@@ -55,12 +55,15 @@
         </div>
         <div>
             <el-dialog
-                :title="'提醒'"
+                :title="publicTitle"
                 :visible.sync="publicVisible"
                 width="50%"
                 top="50px">
-                <div>
+                <div v-if="false">
                     <remindReport :data.sync="dptDatas" :prtParams.sync="prtParams" v-on:remindHandler="remindHandler"></remindReport>
+                </div>
+                <div v-if="referenceShow">
+                    <referenceModal></referenceModal>
                 </div>
             </el-dialog>
         </div>
@@ -77,12 +80,14 @@ import dialogContent from '../publicRiskControl/dialogComponentS'
 import basicsModal from "./dialogModal/basicsModal"
 //提醒的弹出框内容。
 import remindReport from "./dialogModal/remindReport"
+import referenceModal from "./dialogModal/reference"
 import deptSelect from "./mixin/deptSelectHandler"
 // import reportContent from "@v/riskControlSystem/publicRiskControl/riskReportComponents/reportConventional"
 import {
     queryInstructions,
     queryCopingStrategies,
-    queryUserOfCompany
+    queryUserOfCompany,
+    queryReference
 } from "~api/szcRiskControl/riskControl"
 import { findThirdPartData } from "~api/interface"
 import { mapGetters } from "vuex";
@@ -97,12 +102,14 @@ export default {
         reportContent,
         dialogContent,
         basicsModal,
-        remindReport
+        remindReport,
+        referenceModal
     },
     data() {
         return {
             // showComponent:""//控制显示报告下面的组件批示
             dialogTitle:"关于【风险名称】的批示",
+            publicTitle:"参照",
             fixedTitle:"关于【风险名称】的批示",
             tableData:[],
             columns:[],
@@ -126,7 +133,9 @@ export default {
             publicVisible:false,
             dptDatas:[],//部门人员的数据
             prtParams:{},
-            basicsDiv:true
+            basicsDiv:true,
+            isAlertShow:false,
+            referenceShow:false//参照显示与否。
         }
     },
     /**
@@ -143,12 +152,15 @@ export default {
          * 监听公司
          */
         company (newValue,oldValue) {
+            this.treeTableShow = true;
             this.updateView();
         },
         year (newValue,oldValue) {
+            this.treeTableShow = true;
             this.updateView();
         },
         month (newValue,oldValue) {
+            this.treeTableShow = true;
             this.updateView();
         }
     },
@@ -218,6 +230,7 @@ export default {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
             if(tab.name == "second"){
                 url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+                me.treeTableShow = true;
             }
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
@@ -578,12 +591,27 @@ export default {
          * @author szc 2019年5月22日19:39:07
          */
         eventHandler (params) {
+            debugger;
             let me = this,selectItem = me.selectItem;
             //10401 自定义的 表示批示下达之后要进行的操作。
             if(params.id == "10401"){
                 let judgeParams = me.getJudgeParams();
                 me.queryDataOfInstructions(selectItem,judgeParams);
+            }else if (params.id == "reference") {
+                me.reference();
             }
+        },
+        /**
+         * 参照按钮事件  /riskstrategy/query_all
+         */
+        reference () {
+            this.publicVisible = true;
+            this.referenceShow = true;
+            // queryReference().then(res => {
+            //     if(res.data.code == 200) {
+
+            //     }
+            // });
         },
         /**
          * 关闭modal框的回调。

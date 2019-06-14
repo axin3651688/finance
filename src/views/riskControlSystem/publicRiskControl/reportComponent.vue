@@ -7,7 +7,7 @@
             <div class="container-left">
                 <div class="container-left-inner">
                     <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center">目&nbsp&nbsp录</h1>
-                    <div>
+                    <div v-if="leftNode && leftNode.length > 0">
                         <el-menu :default-active="leftNode[0].id" class="el-menu-vertical-demo">
                             <el-menu-item class="el-menu-vertical_title" v-for="(item,key) in leftNode" :key="key" :index="item.id">
                                 <a :href="'#' + item.id" slot="title">{{ item.text }}</a>
@@ -134,7 +134,7 @@
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                 tabHeight = 39,//tab标签高度
-                gapHeight = 32,//间隙的高度
+                gapHeight = 54,//间隙的高度
                 pageHeaderHeight = 64;//导航栏高度
             let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
 
@@ -246,12 +246,10 @@
                 nodes.forEach(item => {
                     arr.push(item.id)
                 });
-                userStr = arr.join(',');
+                // userStr = arr.join(',');
                 let params = {
                     riskReportStateDtos:[],
-                    users:[
-                        userStr
-                    ]
+                    users:arr
                 };
                 allData.forEach(item => {
                     let riskReportState = {
@@ -490,8 +488,8 @@
              */
             createDataOfMiddle () {
                 debugger;
-                let me = this,reportData = me.reportData,contentData = [];
-                if(reportData.type == "0"){
+                let me = this,reportData = me.reportData,contentData = [],leftNode = me.leftNode;
+                if(reportData.type == "0" && leftNode && leftNode.length > 0){
                     me.instructionRelease = true
                 }else {
                     me.instructionRelease = false

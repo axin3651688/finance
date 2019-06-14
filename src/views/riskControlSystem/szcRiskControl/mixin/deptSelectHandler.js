@@ -438,11 +438,37 @@ export default {
          */
         remindAfterHandler(data, judgeParams) {
             let me = this;
-            me.dptDatas = me.reportDataTree(data);
-            me.prtParams = judgeParams;
-            me.publicVisible = true;
+            me.remindHandler(judgeParams);
+            // me.dptDatas = me.reportDataTree(data);
+            // me.prtParams = judgeParams;
+            // me.publicVisible = true;
         },
-        remindHandler(nodes, prtParams) {
+        /**
+         * 树表提醒的请求。
+         * @param {*} nodes 
+         * @param {*} prtParams 
+         */
+        remindHandler(judgeParams) {
+            debugger;
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                user = storeParams.user.user.userName;
+            let params = {
+                company: judgeParams.params ? judgeParams.params.company : company,
+                period: me.parsePeriod(),
+                sisinstructions: "0",
+                sinstructionsuser: user,
+                toUsers: []
+            };
+            let requertParams = {
+                data: params,
+                success: "提醒成功！",
+                error: "提醒失败！"
+            };
+            me.publicUpdateInstructionAll(requertParams);
+        },
+        remindHandler_old(nodes, prtParams) {
             debugger;
             let me = this,
                 storeParams = me.$store.getters,

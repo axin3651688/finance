@@ -45,7 +45,7 @@
                 </el-table>
             </div>
             <!-- 审阅批示的显示的内容 -->
-            <div v-if="tableData && tableData.length > 0 && reviewShow">
+            <!-- <div v-if="tableData && tableData.length > 0 && reviewShow && modalConfig.row.nopratebuttonname != '查看'">
                 <el-form :model="form" label-width="80px" :inline="true">
                     <el-form-item label="审阅结果">
                         <el-select v-model="form.result" placeholder="请选择">
@@ -60,8 +60,12 @@
                         <el-button type="primary" @click="submitForm">确定</el-button>
                     </el-form-item>
                 </el-form>
-            </div>
+            </div> -->
         </div>
+        <span slot="footer" class="dialog-footer" v-if="tableData && tableData.length > 0 && reviewShow && modalConfig.row.nopratebuttonname != '查看'">
+            <!-- <el-button @click="centerDialogVisible = false">取 消</el-button> -->
+            <el-button type="primary" @click="submitForm">通过</el-button>
+        </span>
     </el-dialog>
 </template>
 <script>
@@ -103,7 +107,19 @@ export default {
             inputValue:""//输入框的内容
         }
     },
-    created() {},
+    created() {
+        let me = this;
+        this.axios.get("/cnbi/json/source/tjsp/szcJson/fillModal/financing.json").then(res => {
+            if(res.data.code == 200){
+                me.financing = res.data.financing;
+                me.dataDict = res.data.dataDict;
+            }
+        });
+        let params = 10;
+        financingDown(params).then(res => {
+            this.financingOptions = res.data.data;
+        });
+    },
     mounted() {},
     watch : {},
     methods: {
@@ -238,39 +254,38 @@ export default {
          */
         submitForm (form) {
             debugger;
-            let me = this,formData = me.form,requestParams = me.modalConfig.requestParams,storeParams = me.$store.getters,
+            let me = this,requestParams = me.modalConfig.requestParams,storeParams = me.$store.getters,
                 row = me.modalConfig.row;
-            if(formData){
                 // me.queryStateOfTable();/zjb/update_fill_message
-                let params = {
-                    "company": requestParams.company,
-                    "id": 0,
-                    "nreportnum": 0,
-                    "period": requestParams.period,
-                    "scompanyname": row.companyname,
-                    "screatetime": new Date(),
-                    "screateuser": storeParams.user.user.userName,
-                    "statemun": formData.result,
-                    "supdateuser": storeParams.user.user.userName,
-                    "templateid": requestParams.templateId
-                }
-                let inputMsg = "已审阅";
-                if(formData.result == 4){
-                    inputMsg = "已退回";
-                }
-                saveReview(params).then(res => {
-                    if(res.data.code == 200){
-                        me.inputValue = inputMsg;
-                        me.reviewShow = false;
-                        me.$message({
-                            message: formData.result == 3? "审阅成功！":"退回成功！",
-                            type: "success"
-                        });
-                        me.form.result = "";
-                        me.form.explain = "";
-                    }
-                });
+            let params = {
+                "company": requestParams.company,
+                "id": 0,
+                "nreportnum": 0,
+                "period": requestParams.period,
+                "scompanyname": row.companyname,
+                "screatetime": new Date(),
+                "screateuser": storeParams.user.user.userName,
+                "statemun": 3,
+                "supdateuser": storeParams.user.user.userName,
+                "templateid": requestParams.templateId
             }
+            let inputMsg = "已审阅";
+            // if(formData.result == 4){
+            //     inputMsg = "已退回";
+            // }
+            saveReview(params).then(res => {
+                if(res.data.code == 200){
+                    me.inputValue = inputMsg;
+                    me.reviewShow = false;
+                    me.$message({
+                        message: formData.result == 3? "审阅成功！":"退回成功！",
+                        type: "success"
+                    });
+                    me.$emit("publicEvent",me.modalConfig.row)
+                    // me.form.result = "";
+                    // me.form.explain = "";
+                }
+            });
         },
         /**
          * 选择相应的表来进行催报。

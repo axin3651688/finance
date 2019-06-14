@@ -76,3 +76,12 @@ export function queryUserOfCompany(data) {
         method: 'get'
     })
 }
+/**
+ * 风险单个批示的参照。
+ */
+export function queryReference() {
+    return request({
+        url: '/zjb/riskstrategy/query_all',
+        method: 'get'
+    })
+}
