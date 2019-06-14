@@ -23,10 +23,16 @@
         option.closeTabTaget(newconversion,option);
     },
     "__queryDataAfter":function(data, $vue){
+        // debugger;
         let arr = []; 
-        let array = new Array();
-        // let array2= {sname: "流动负债:"};
-        for(let i=0; i < 23; i++){ data.splice(48,0,array); }
+        // let array = new Array();
+        let array = {} ;
+
+        for(let i=0; i < 23; i++){  
+            array = { nevel: i } ;
+            data.splice(48,0,array); 
+        }
+        debugger;
         // data.splice(72,0,array2); 
         data.forEach((res,index) => { res.row = index+1 });
         let data_left = data.filter((res,index) => { return index < 72 ; });
@@ -50,7 +56,7 @@
             arr[index].B2 = res.B || 0;
             arr[index].level2 = res.nlevel;
         });
-        debugger
+        // debugger
         return arr ;
     },
     "config":{
