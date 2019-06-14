@@ -364,7 +364,7 @@
              * 反馈上报按钮点击
              */
             showPersonnelListClicked() {
-                if (this.dialogState !== 'kf') {
+                if (this.dialogState === 'ck') {
                     this.$message({
                         message: "请勿重复反馈"
                     });
