@@ -24,6 +24,7 @@
                     :title="getDialogTitle()"
                     width="56%"
                     top="50px"
+                    @close="dialogCloseEvent"
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
@@ -562,6 +563,13 @@
                         backUser
                     ]
                 };
+            },
+
+            /**
+             * 弹出层关闭事件
+             */
+            dialogCloseEvent(){
+                //关闭弹出层的时候该反法调用，这里可以处理一些事情
             }
         }
     }

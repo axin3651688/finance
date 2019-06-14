@@ -110,7 +110,8 @@
              * 反馈上报
              */
             riskSend() {
-                alert("反馈上报。。。")
+                // alert("反馈上报。。。")
+                this.$emit("defaultUserRiskFeed")
             },
             /**
              * 指定反馈人员选中监听
