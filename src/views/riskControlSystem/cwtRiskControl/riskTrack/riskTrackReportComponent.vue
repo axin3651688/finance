@@ -11,9 +11,9 @@
                             v-for="(value,key) in leftNode"
                             :key="key"
                             class="risk-items"
-                            @click="riskTypeChange(key)"
                     >
-                        {{value}}
+                        <!--{{value}}-->
+                        <a :href="'#' + key" slot="title">{{value}}</a>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,8 @@
                     <div class="container-right-top">
 
                         <div class="report-title">
-                            {{this.companyname}}2019年3月
-                            <!--{{this.period}}-->
+                            {{this.companyname}}
+                            {{this.period}}
                             风险预警报告
                         </div>
                         <span class="zs">总述</span>
@@ -37,25 +37,25 @@
                             </template>
 
                             <template v-if="riskCount.riskStypeCountArray.cwfx > 0">
-                                财务风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                财务风险 {{riskCount.riskStypeCountArray.cwfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.flfx > 0">
                                 法律风险 {{riskCount.riskStypeCountArray.flfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.ljfx > 0">
-                                廉洁风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                廉洁风险 {{riskCount.riskStypeCountArray.ljfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.scfx > 0">
-                                市场风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                市场风险 {{riskCount.riskStypeCountArray.scfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.syfx > 0">
-                                声誉风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                声誉风险 {{riskCount.riskStypeCountArray.syfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.yyfx > 0">
-                                运营风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                运营风险 {{riskCount.riskStypeCountArray.yyfx}} 条，
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.zlfx > 0">
-                                战略风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                战略风险 {{riskCount.riskStypeCountArray.zlfx}} 条，
                             </template>
 
 
@@ -87,7 +87,7 @@
                         <template v-for="(riskfeed, key) in riskFeedDataList">
 
 
-                            <div class="container-right-loop-title">
+                            <div class="container-right-loop-title" :id="key">
                                 {{riskfeed.risksptype}}
                             </div>
 
@@ -165,12 +165,16 @@
 <script>
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {updateInstruction} from "~api/szcRiskControl/riskControl"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "riskFeedReportComponent",
         mixins: [cwtPublicJS],
         components: {
             // showPersonnelList
+        },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
         },
         props: {
             reportData: Object,
@@ -180,22 +184,35 @@
             return {
                 leftNode: {},
                 selectedNode: '',
-                companyname: '天津食品集团有限公司(合并)',
-                riskname: '1',
-                risklevel: '2',
-                riskcompany: '3',
-                risksbuser: '4',
+                companyname: this.$store.getters.companyName,
+                period: this.$store.getters.year + '年' + this.$store.getters.month + '月',
+                riskname: '',
+                risklevel: '',
+                riskcompany: '',
+                risksbuser: '',
                 riskCount: {},
-                risksptype: "战略风险",
+                risksptype: "",
                 riskdetaildata: [],
                 pageHeight: document.body.offsetHeight,
 
                 riskFeedDataList: {},
-                riskScheduleData:[]
+                riskScheduleData: []
             }
         },
         watch: {
             dataFresh() {
+                this.updateData();
+            },
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.updateData();
+            },
+            year(newValue, oldValue) {
+                this.updateData();
+            },
+            month(newValue, oldValue) {
                 this.updateData();
             }
         },
@@ -228,7 +245,7 @@
                 let offsetHeight = document.body.offsetHeight,//页面整体高度
                     buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                     tabHeight = 39,//tab标签高度
-                    gapHeight = 32,//间隙的高度
+                    gapHeight = 54,//间隙的高度
                     pageHeaderHeight = 64;//导航栏高度
                 let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
                 this.$refs.containerAll.$el.style.height = tableHeight + 'px';
@@ -246,12 +263,13 @@
                 let _riskFeedDataList = {};
                 for (let key in _list) {
                     if (_list[key].riskdetaildata && _list[key].riskdetaildata.length > 0) {
-                        _riskFeedDataList[key] = _list[key];
+                        if (_list[key].risksptype !== '') {
+                            _riskFeedDataList[key] = _list[key];
 
-                        _this.getRiskScheduleData(_list[key]);
+                            _this.getRiskScheduleData(_list[key]);
+                        }
                     }
                 }
-                debugger;
                 this.riskFeedDataList = _riskFeedDataList;
             },
 
@@ -293,40 +311,40 @@
 
                 _this.riskScheduleData = _scheduleList;
 
-                    for (let key in _scheduleList) {
-                        let _risk = _scheduleList[key];
-                        if (key === 'risk_sb') {
-                            if (_risk.state === '已上报') {
-                                _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
-                            } else {
-                                _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
-                                _this.riskScheduleData['risk_ps'].content = '请尽快批示';
-                                _this.riskScheduleData['risk_sb'].content = '请尽快上报';
-                                return;
-                            }
+                for (let key in _scheduleList) {
+                    let _risk = _scheduleList[key];
+                    if (key === 'risk_sb') {
+                        if (_risk.state === '已上报') {
+                            _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
                         } else {
-                            if (_risk.state === '已批示') {
-                                _this.riskScheduleData[key].content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
-                            } else if (_risk.state === '未批示') {
-                                _this.riskScheduleData[key].content = '请尽快批示'
-                            } else if (_risk.state === '已反馈') {
-                                _this.riskScheduleData[key].content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
-                            } else if (_risk.state === '未反馈') {
-                                _this.riskScheduleData[key].content = '请尽快反馈'
-                            }
+                            _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
+                            _this.riskScheduleData['risk_ps'].content = '请尽快批示';
+                            _this.riskScheduleData['risk_sb'].content = '请尽快上报';
+                            return;
+                        }
+                    } else {
+                        if (_risk.state === '已批示') {
+                            _this.riskScheduleData[key].content = '批示内容： ' + _risk.content + '批示人： ' + _risk.user_name + '。 批示时间： ' + _risk.time;
+                        } else if (_risk.state === '未批示') {
+                            _this.riskScheduleData[key].content = '请尽快批示'
+                        } else if (_risk.state === '已反馈') {
+                            _this.riskScheduleData[key].content = '反馈内容： ' + _risk.content + '反馈人： ' + _risk.user_name + '。 反馈时间： ' + _risk.time;
+                        } else if (_risk.state === '未反馈') {
+                            _this.riskScheduleData[key].content = '请尽快反馈'
                         }
                     }
+                }
             },
 
             /**
              * 切换风险类型按钮---点击目录选项
              * @param key
              */
-            riskTypeChange(key) {
+            /*riskTypeChange(key) {
                 if (this.selectedNode === key) return;
                 this.selectedNode = key;
                 this.reportDataFormat();
-            },
+            },*/
 
         }
     }

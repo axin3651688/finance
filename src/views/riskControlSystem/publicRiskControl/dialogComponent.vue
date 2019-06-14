@@ -48,9 +48,11 @@
                             :dialogData="dialogData"
                             :riskFeedSuccess="riskFeedSuccess"
                             :dialogState="dialogState"
+                            :defaultData="dialogData.stouser"
                             @closeTrackDialogContent="closeTrackDialogContent"
                             @messageChange="messageChange"
                             @personSureBtnClicked="personSureBtnClicked"
+                            @defaultUserRiskFeed="defaultUserRiskFeed"
                     >
                     </risk-foot>
 
@@ -115,8 +117,6 @@
             },
 
 
-
-
             deep: true
         },
         methods: {
@@ -161,10 +161,23 @@
             messageChange(flag) {
                 this.$emit("dataMessageChange", flag)
             },
+
+
+            /**
+             * 默认人员反馈
+             */
+            defaultUserRiskFeed() {
+                let _dialogData = this.dialogData;
+                let _stouser = _dialogData.stouser;
+
+                this.personSureBtnClicked(null, _stouser);
+            },
+
+
             /**
              * 确认下达处理
              */
-            personSureBtnClicked(nodes) {
+            personSureBtnClicked(nodes, defaultUser) {
                 this.sureBtnClick = !this.sureBtnClick;
                 let _this = this,
                     store = _this.$store.getters,
@@ -173,16 +186,19 @@
 
                 let arrUser = [],
                     userStr = "";
+
+
                 if (nodes && nodes.length > 0) {
                     nodes.forEach(item => {
                         arrUser.push(item.id);
                     });
                     userStr = arrUser.join(',');
+                } else {
+                    userStr = defaultUser;
                 }
 
                 setTimeout(function () {
                     let _riskInstructionData = _this.riskInstructionData;
-
                     let params = {
                         riskReportStateDtos: [
                             {

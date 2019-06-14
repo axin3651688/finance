@@ -2,7 +2,7 @@
     <div>
         <el-row>
             <el-col>
-                <div class="form-foot">
+                <div class="form-foot" v-if="pageDataFresh">
                     <div class="form-foot-left">
                         <el-form-item>
                             <el-button type="primary" @click="lastMessage()">上一条</el-button>
@@ -37,6 +37,8 @@
 
         <show-personnel-list
                 :personnelListShow="personnelListShow"
+                :defaultData="defaultData"
+                :dataChanged="dataChanged"
                 @personSureBtnClicked="personSureBtnClicked"
 
         >
@@ -57,12 +59,13 @@
             dialogData: Object,
             dataChanged: Boolean,
             riskFeedSuccess: Boolean,
-            dialogState: String
+            dialogState: String,
+            defaultData: String
         },
         data() {
             return {
                 personnelListShow: false,
-
+                pageDataFresh:true
             }
         },
         created() {
@@ -107,7 +110,8 @@
              * 反馈上报
              */
             riskSend() {
-                alert("反馈上报。。。")
+                // alert("反馈上报。。。")
+                this.$emit("defaultUserRiskFeed")
             },
             /**
              * 指定反馈人员选中监听
@@ -144,6 +148,10 @@
             getFormData() {
                 let _this = this;
                 _this.personnelListShow = false;
+                _this.pageDataFresh = false;//销毁组件
+                _this.$nextTick(() => {
+                    _this.pageDataFresh = true;//重建组件
+                });
             },
 
             checkBoxDisabledChange(newValue){

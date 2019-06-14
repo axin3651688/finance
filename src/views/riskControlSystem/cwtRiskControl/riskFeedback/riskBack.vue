@@ -19,11 +19,12 @@
             </div>
         </div>
 
-        <div class="risk-back-dialog">
+        <div class="risk-back-dialog" v-if="pageDataFresh">
             <el-dialog
                     :title="getDialogTitle()"
                     width="56%"
                     top="50px"
+                    @close="dialogCloseEvent"
                     :visible.sync="dialogVisible"
             >
                 <!--<span>{{ diaData }}}</span>-->
@@ -158,7 +159,8 @@
                     }
                 },
                 dataChanged: false,
-                dialogState:'',
+                dialogState: '',
+                pageDataFresh:true
             }
         },
         created() {
@@ -204,6 +206,7 @@
 
                     this.dialogState = 'tx';
 
+                    this.noticeSendEvent(scope, it);
                     alert('提醒操作')
                 }
             },
@@ -253,7 +256,6 @@
                     userCompany = _getter.user.company.id;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
-
                         /**
                          * 获取数据之后进行的数据处理
                          */
@@ -261,7 +263,7 @@
                         let _operations = [];
                         datas.forEach((data) => {
 
-                            if(company !== userCompany){
+                            if (company !== userCompany) {
                                 data.operation = '1-查看';
                             }
 
@@ -348,11 +350,17 @@
              * @param data
              */
             dataFormat(data) {
+                this.pageDataFresh = false;//销毁组件
+                this.$nextTick(() => {
+                    this.pageDataFresh = true;//重建组件
+                });
+
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
                 _dialogData.isFeeded = data['backstate'] === '已反馈';
+                _dialogData.stouser = data.stouser;
 
                 //todo  dialogState 状态改变
                 // this.dialogState = '';
@@ -461,8 +469,10 @@
              */
             getRiskFeedbackParams(scope) {
                 let rowData = scope.row,
-                    nRelateId = rowData.scode;
+                    nRelateId = rowData.scode,
+                    risksbuser = rowData.risksbuser;
                 let backUser = 'cwt';
+                backUser = risksbuser || backUser;
                 let _this = this,
                     _getter = _this.$store.getters,
                     user = _getter.user.user,
@@ -473,7 +483,7 @@
                 let _month = month > 9 ? month : '0' + month;
 
                 period = year + _month + '';
-                let param = {
+                return {
                     "riskReportStateDtos": [
                         {
                             "company": company,
@@ -490,9 +500,76 @@
                         backUser
                     ]
                 };
+            },
 
-                return param;
+            /**
+             * 提醒操作
+             * @param scope
+             * @param it
+             */
+            noticeSendEvent(scope, it) {
+                let _this = this;
+                let params = _this.getRiskNoticeParams(scope);
 
+                updateInstruction(params).then(res => {
+                    if (res.data.code === 200) {
+
+                        _this.updateView();
+
+                        _this.$message({
+                            message: "成功提醒批示人员尽快反馈",
+                            type: "success"
+                        });
+                    } else {
+                        _this.$message({
+                            message: "提醒失败！请联系开发人员"
+                        })
+                    }
+                });
+            },
+
+            /**
+             * 获取风险提醒的参数
+             * @param scope
+             */
+            getRiskNoticeParams(scope) {
+                let rowData = scope.row,
+                    nRelateId = rowData.scode,
+                    risksbuser = rowData.risksbuser;
+                let backUser = 'cwt';
+                backUser = risksbuser || backUser;
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    user = _getter.user.user,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                let _month = month > 9 ? month : '0' + month;
+
+                period = year + _month + '';
+
+                return {
+                    "riskReportStateDtos": [
+                        {
+                            "company": company,
+                            "nrelateid": nRelateId,
+                            "period": period,
+                            "sfeedbacksuser": user.userName,
+                            "sisfeedback": "2",
+                        }
+                    ],
+                    "users": [
+                        backUser
+                    ]
+                };
+            },
+
+            /**
+             * 弹出层关闭事件
+             */
+            dialogCloseEvent(){
+                //关闭弹出层的时候该反法调用，这里可以处理一些事情
             }
         }
     }

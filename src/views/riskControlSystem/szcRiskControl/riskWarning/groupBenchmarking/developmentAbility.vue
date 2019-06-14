@@ -42,7 +42,9 @@
     import groupGauge from "./../echarts/groupGauge.vue"
     import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
+    import publicMarking from "./../minix/publicMarking.js"
     export default {
+        mixins:[publicMarking],
         name: "treeTableDemo",
         components: {
             groupGauge,
@@ -59,13 +61,19 @@
             }
         },
         created() {
-            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
-            this.axios.get(url).then(res => {
-                if(res.data.code == 200) {
-                    me.tableData = res.data.rows;
-                    me.columns = res.data.columns
-                }
-            });
+            let judgeParams = {
+                id:"development",
+                text:"盈利能力",
+                sqlId:"107"
+            };
+            this.queryDataOfBackstage();
+            // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            // this.axios.get(url).then(res => {
+            //     if(res.data.code == 200) {
+            //         me.tableData = res.data.rows;
+            //         me.columns = res.data.columns
+            //     }
+            // });
         },
         mounted() {},
         methods: {}

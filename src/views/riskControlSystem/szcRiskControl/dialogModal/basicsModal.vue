@@ -40,7 +40,9 @@
                                         </el-select>
                                     </template>
                                     <div v-if="it.button" style="display:inline-block">
-                                        <el-button v-if="it.button.show" :disabled="it.disabled || publicDisabled">{{ it.button.text }}</el-button>
+                                        <el-button v-if="it.button.show" 
+                                            :disabled="it.disabled || publicDisabled" 
+                                            @click="reference">{{ it.button.text }}</el-button>
                                     </div>
                                     <!-- <el-input type="textarea" v-model="ruleForm.desc"></el-input> -->
                                     <!-- <div class="selectTextarea">
@@ -148,6 +150,7 @@ export default {
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
+            debugger;
             let me = this;
             if (it.nlevel) {
                 if (it.nlevel == "1") {
@@ -156,6 +159,8 @@ export default {
                     return "textClass02";
                 } else if (it.nlevel == "3") {
                     return "textClass03";
+                }else {
+                    return "textClass01";
                 }
             } else {
                 return "";
@@ -449,6 +454,17 @@ export default {
                 me.selectValues = arr;
             }
             
+        },
+        /**
+         * 参照按钮
+         * @author szc 2019年6月13日19:54:59
+         */
+        reference () {
+            let params = {
+               id:"reference",
+               text:"参照按钮事件" 
+            };
+            this.$emit("eventHandler",params);
         }
     },
 }
