@@ -48,6 +48,7 @@
                             :dialogData="dialogData"
                             :riskFeedSuccess="riskFeedSuccess"
                             :dialogState="dialogState"
+                            :defaultData="dialogData.stouser"
                             @closeTrackDialogContent="closeTrackDialogContent"
                             @messageChange="messageChange"
                             @personSureBtnClicked="personSureBtnClicked"
@@ -115,8 +116,6 @@
             },
 
 
-
-
             deep: true
         },
         methods: {
@@ -182,7 +181,6 @@
 
                 setTimeout(function () {
                     let _riskInstructionData = _this.riskInstructionData;
-
                     let params = {
                         riskReportStateDtos: [
                             {

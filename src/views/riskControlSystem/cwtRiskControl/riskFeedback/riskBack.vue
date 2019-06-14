@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="risk-back-dialog">
+        <div class="risk-back-dialog" v-if="pageDataFresh">
             <el-dialog
                     :title="getDialogTitle()"
                     width="56%"
@@ -159,6 +159,7 @@
                 },
                 dataChanged: false,
                 dialogState: '',
+                pageDataFresh:true
             }
         },
         created() {
@@ -348,11 +349,17 @@
              * @param data
              */
             dataFormat(data) {
+                this.pageDataFresh = false;//销毁组件
+                this.$nextTick(() => {
+                    this.pageDataFresh = true;//重建组件
+                });
+
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
                 _dialogData.isFeeded = data['backstate'] === '已反馈';
+                _dialogData.stouser = data.stouser;
 
                 //todo  dialogState 状态改变
                 // this.dialogState = '';
