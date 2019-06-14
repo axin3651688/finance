@@ -59,11 +59,17 @@ const router = new Router({
                     component: () =>
                         import ('@v/test/Role.vue')
                 },
+                // {
+                //     path: '/fillData',
+                //     name: 'fillData',
+                //     component: () =>
+                //         import ('@v/intelligenceReport/HTandtable.vue')
+                // },
                 {
                     path: '/fillData',
                     name: 'fillData',
                     component: () =>
-                        import ('@v/intelligenceReport/HTandtable.vue')
+                        import ('@v/intelligenceReport/HTandtable1.vue')
                 },
                 {
                     path: '/interaction',
