@@ -594,7 +594,6 @@
                 }
 
                 return {
-                    id: 0,
                     company: company,
                     period: period,
                     sfeedbacksuser: user.userName,

@@ -14,7 +14,7 @@
     {
       "id": "003",
       "text": "风险反馈树表数据查询",
-      "sql": "SELECT a.scode AS scode, a.sname AS companyname, a.spcode AS spcode, sstate as status, operation, a.nleaf, a.nlevel FROM ( SELECT scode, sname, spcode, connect_by_isleaf AS nleaf, level AS nlevel FROM dw_dimcompany START WITH scode = :company CONNECT BY prior scode = spcode) a LEFT JOIN ( SELECT DIM_COMPANY, CASE WHEN bj>'0' THEN '未反馈' ELSE '已反馈' END AS sstate, case WHEN bj='0' THEN '1-查看,2-退回' ELSE '0-反馈,3-提醒' end as operation FROM ( SELECT DIM_COMPANY, sum((case when SISFEEDBACK='-1' then '1' else '0' end)) as bj FROM RISK_REPORTSTATE WHERE NRELATEID IN ( SELECT nid FROM risk_distinguish WHERE dim_company = :company AND SUBSTR(screatetime,1,6) <= :period ) AND SISFEEDBACK in ('-1','1' ) group by DIM_COMPANY ) ) c ON a.scode = c.dim_company"
+      "sql": "select a.scode as scode, a.sname as companyname, a.spcode as spcode, sstate as status, operation, a.nleaf, a.nlevel from ( select scode, sname, spcode, connect_by_isleaf as nleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode) a left join ( select DIM_COMPANY, case when bj>'0' then '未反馈' else '已反馈' end as sstate, case when bj='0' then '1-查看,2-退回' else '0-反馈,3-提醒' end as operation from ( select DIM_COMPANY, sum(( case when SISFEEDBACK in ('-1','0','2') then '1' else '0' end)) as bj from RISK_REPORTSTATE where NRELATEID in ( select nid from risk_distinguish where dim_company = :company and substr(screatetime,1,6) <= :period ) group by DIM_COMPANY ) ) c on a.scode = c.dim_company"
     },
     {
       "id": "004",

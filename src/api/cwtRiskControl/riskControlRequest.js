@@ -147,6 +147,6 @@ export function riskBackAndNotice(params) {
     return request({
         url: '/zjb/riskreportstate/update_remindback',
         method: 'post',
-        params: params
+        data: params
     })
 }
