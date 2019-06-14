@@ -364,6 +364,7 @@ export default {
           "从localStorage.module_api_cache获取了模块加载地址：" + api
         );
       }
+      console.info('加载的api是：'+api)
       if (!api) {
         let msg = "未能获取需要加载的模块，请检查！";
         console.error(msg);
