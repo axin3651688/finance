@@ -7,7 +7,7 @@
         type="textarea"
         placeholder="请输入内容"
         v-model="jsonCube"
-        maxlength="15000"
+        maxlength="35000"
         rows="38"
         @change="(oldval, newval) => cubeChange(oldval, newval)"
         show-word-limit
@@ -16,8 +16,8 @@
       </el-input>
     </div>
     <el-table
-      v-if="cubeObject && cube && cube.datas"
-      :data="cubeObject.filter(cube.filters.filters)|| cube.datas"
+      v-if="cubeObject && cubeObject.datas"
+      :data="cubeObject.filter(cube.filters.filters)|| cubeObject.datas"
       style="float:right;width:65%;">
       <el-table-column v-for="col in cube.columns" v-bind:key="col.id"
                        :prop="col.id"
@@ -53,14 +53,14 @@ import CnbiCube from 'utils/cubeClass';
 import {mapGetters, mapActions} from 'vuex';
 import store from '@/store';
 import {FIND_DATA_CUBE} from '~api/cube';
-
+import { getClientParams } from "../../utils/index";
 export default {
   name: '',
   components: {},
   data() {
     return {
-      cube: {//http://192.168.2.245:8005/api/find_data_cube?id=24
-        id: '1000',
+      cube: {//http://192.168.2.245:8005/api/find_data_cube?cubeId=24
+        id: 24,
         text: '营业收入趋势分析表',
         dataType: 'random',//类型【sql,cube,defined,random】
         config: {
@@ -169,6 +169,10 @@ export default {
     };
   },
   created() {
+    let bean = getClientParams();
+    if(bean.id){
+      this.cube.id = bean.id;
+    }
     this.initView(); // 初始化视图
   },
   watch: {
@@ -220,6 +224,9 @@ export default {
         return;
 
       }
+      if(key === "datas"){
+        return ;
+      }
       return value;
     },
 
@@ -250,9 +257,14 @@ export default {
 
 
     async initView() {
-      this.cubeObject = await CnbiCube.getCubeById(24, true);
-      this.cube = this.cubeObject;
-      debugger;
+      this.cube =  await CnbiCube.getCubeById(this.cube.id);
+     // if(this.cube.id === 288){
+        this.cube.fixed = 1;
+      //}
+      this.cubeObject = new CnbiCube(this.cube)
+      await this.cubeObject.init();
+      document.title = this.cube.text;
+      //this.cube.datas = this.cubeObject.datas;
       this.jsonCube = JSON.stringify(this.cube, this.functionReplacer, 4);//使用四个空格缩进;
       this.replaceVar(this.jsonCube);
 

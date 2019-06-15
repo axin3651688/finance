@@ -79,7 +79,10 @@ function getRandomRowDatas(row, cols, range, rowIndex,needDims) {
         if (col.type === "number") {
             value = rowIndex;
         } else if (col.type === "string") {
-            value = row[col.id] || "未知";
+            value = row[col.id];
+            if(value == ""){
+                 value = "--";//以往项目的套路
+             }
             let ba = needDims[col.id];
             if(ba){
                 value = ba.text;

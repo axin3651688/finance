@@ -33,7 +33,7 @@ export function report(item) {
  */
 export function FIND_DATA_CUBE(id) {
   return request({
-    url: '/245_8005/find_data_cube',
+    url: '/api/api/find_data_cube',
     method: 'get',
     params:{id}
   })
