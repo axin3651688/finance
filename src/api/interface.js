@@ -72,6 +72,7 @@ export function findThirdPartData(params) {
  * 模块数据请求
  * 1:如果有sourceId刚按sourceId 约定的地址加载
  * 2：否则从url中直接加载
+ * 
  */
 export function findDesignSource(sourceId, url) {
     //为了兼容马军写的module_api_cache而写的,后期可优化掉的
@@ -81,8 +82,12 @@ export function findDesignSource(sourceId, url) {
         url = sourceId;
         sourceId = 0;
     }
-    let num = url.indexOf("zbfx.json");
-    let api = num == -1 && sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
+    //By张杰：由于在刚接触这个项目的时候，对整体功能熟悉不够，当时为了实现一个新的功能，
+    //在原有的代码上添加了新的代码，新的功能实现了，但是也影响了之前的部分重要功能，
+    //以此为鉴，这样的错误以后努力不会再犯
+    //let num = url.indexOf("zbfx.json");
+    //let api = num == -1 && sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
+    let api = sourceId ? "/api/api/find_design_source?id=" + sourceId : url;
     return request({
         url: api,
         method: 'get',

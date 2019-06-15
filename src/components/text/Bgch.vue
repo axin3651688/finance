@@ -79,7 +79,7 @@ export default {
 
     sendMsg() {
       let datas = {
-        action: 3, //1：催上报，2：上报通知，3：退回通知，4：修改通知
+        action: 5, //1：催上报，2：上报通知，3：退回通知，4：修改通知, 5:申请退回
         companyId: this.companyId, //公司id
         content: this.textContent, //发送内容
         moduleId: 1,
