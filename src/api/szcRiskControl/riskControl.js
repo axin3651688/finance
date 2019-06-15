@@ -92,6 +92,6 @@ export function groupQuery(params) {
     return request({
         url: '/zjb/select/query',
         method: 'post',
-        data: params
+        params: params
     })
 }

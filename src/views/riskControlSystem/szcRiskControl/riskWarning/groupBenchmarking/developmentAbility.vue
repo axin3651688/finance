@@ -34,8 +34,8 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                    <div v-if="ManyTableData && ManyTableData.length > 0" style="margin:20px 0px;">
+                        <threeHeaderTable :tableData.sync="ManyTableData" :columns.sync="manyColumns" :allData.sync="resData"></threeHeaderTable>
                     </div>
                 </el-col>
             </el-row>
@@ -45,7 +45,8 @@
 <script>
     import groupGauge from "./../echarts/groupGauge.vue"
     import groupGaugePublic from "./../echarts/groupGaugePublic.vue"
-    import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
+    import singleTable from "./../riskTable/riskTable.vue"
+    import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import publicMarking from "./../minix/publicMarking.js"
     export default {
@@ -55,7 +56,8 @@
             groupGauge,
             singleTable,
             groupRadar,
-            groupGaugePublic
+            groupGaugePublic,
+            threeHeaderTable
         },
         data() {
             return {
@@ -69,11 +71,33 @@
                 // gaugeMiddleLeft:[8,8],
                 // gaugeMiddleRight:[8,8],
                 tableData:[],
-                columns:[]
+                columns:[],
+                ManyTableData:[],//多表头数据
+                manyColumns:[]//多表头列配置
             }
         },
         created() {
-            this.updateData();
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/development.json";
+            this.axios.get(url).then(res => {
+                if(res.data.code == 200) {
+                    debugger;
+                    me.tableData = res.data.rows;
+                    me.columns = res.data.columns;
+                    me.manyColumns = res.data.manyColumns;
+                    me.ManyTableData = res.data.manyRows;
+                    me.resData = res.data;
+                    let judgeParams = {
+                        id:"development",
+                        text:"发展能力",
+                        sqlId:"107"
+                    };
+                    // me.queryDataPublic(judgeParams);
+                    me.updateData();
+                    
+                    // me.createEcharts();
+                }
+            });
+            // this.updateData();
             // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
             // this.axios.get(url).then(res => {
             //     if(res.data.code == 200) {
