@@ -160,7 +160,7 @@
                 },
                 dataChanged: false,
                 dialogState: '',
-                pageDataFresh:true
+                pageDataFresh: true
             }
         },
         created() {
@@ -183,33 +183,23 @@
                 if (it.id === '0') {
                     //反馈操作
                     this.dialogVisible = true;
-
                     this.dialogState = 'fk';
-
                     this.getDialogData(scope, it);
                 } else if (it.id === '1') {
                     //查看操作
                     this.dialogVisible = true;
-
                     this.dialogState = 'ck';
-
                     this.getDialogData(scope, it);
                 } else if (it.id === '2') {
                     //退回流程操作
-
                     this.dialogState = 'th';
-
                     this.riskFeedBackEvent(scope, it);
-                    // alert('退回流程操作')
                 } else if (it.id === '3') {
                     //提醒操作
-
                     this.dialogState = 'tx';
-
                     this.noticeSendEvent(scope, it);
-                    alert('提醒操作')
                 }
-            },
+            },  
 
             /**
              * 获取当前弹出框title
@@ -568,7 +558,7 @@
             /**
              * 弹出层关闭事件
              */
-            dialogCloseEvent(){
+            dialogCloseEvent() {
                 //关闭弹出层的时候该反法调用，这里可以处理一些事情
             }
         }

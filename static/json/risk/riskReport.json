@@ -29,7 +29,7 @@
             "text": "上报人",
             "type": "string",
             "align": "center",
-            "width": "160"
+            "width": "180"
         }
         ,
         {
