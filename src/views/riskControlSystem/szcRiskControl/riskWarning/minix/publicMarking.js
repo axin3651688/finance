@@ -1,9 +1,75 @@
 /**
  * 集团对标
  */
+import {
+    groupQuery
+} from '~api/szcRiskControl/riskControl.js'
 import { findThirdPartData } from "~api/interface"
 export default {
     methods: {
+        /**
+         * 后台接口直接查询数据。
+         */
+        queryDataOfBackstage(judgeParams) {
+            debugger;
+            let params = judgeParams.params;
+            groupQuery(params).then(res => {
+                if (res.data.code == 200) {
+                    me.tableData = res.data.data;
+                    me.queryBackstageDataAfter(res.data.data, judgeParams);
+                } else if (res.data.code == 1001) {
+                    me.tableData = [];
+                    me.queryBackstageDataAfter([], judgeParams);
+                }
+            });
+        },
+        /**
+         * 查询数据之后的处理。
+         */
+        queryBackstageDataAfter(datas, judgeParams) {
+            debugger;
+            if (judgeParams.id == "development") {
+                me.developmentData(datas);
+            }
+        },
+        /**
+         * 处理发展能力数据的方法。
+         */
+        developmentData(datas) {
+            let arr = [{
+                id: 'gaugeTopLeft',
+                field: 'dim_indicator',
+                gaugeSname: 'sname',
+                gaugeField: 'val',
+                content: ['19', '20', '21']
+            }, {
+                id: 'gaugeTopRight',
+                field: 'dim_indicator',
+                gaugeSname: 'sname',
+                gaugeField: 'val',
+                content: ['121', '133']
+            }, {
+                id: 'gaugeMiddle',
+                field: 'dim_indicator',
+                gaugeSname: 'sname',
+                gaugeField: 'val',
+                content: ['53', '120']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'development',
+                radarField: 'dim_indicator',
+                radarSname: 'sname',
+                radarValue: 'qyfz',
+                content: ['19', '20', '21', '121', '133', '53', '120']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
         /**
          * 查询数据的入口
          * @author szc 2019年6月4日16:55:40
