@@ -412,7 +412,7 @@ setItemParams(rows,params){
         //   await cubes.forEach(cc=>{
         //   CnbiCube.getCubeById(cc,true);
         //  })
-        //  for(let i=0,len = cubes.legnth;i<len;i++){
+        //  for(let i=0,len = cubes.length;i<len;i++){
         //   await CnbiCube.getCubeById(cubes[i],true);
         //  }
         await CnbiCube.getCubeById(cubes[0],true);
