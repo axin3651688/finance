@@ -1,7 +1,7 @@
 {
     "code": 200,
-    "id": "riskControl",
-    "text": "风险管控",
+    "id": "debtRisk",
+    "text": "债务风险",
     "columns": [{
             "id": "sname",
             "type": "string",
@@ -13,38 +13,40 @@
             "id": "a",
             "type": "string",
             "text": "优秀值",
-            "align": "center"
+            "align": "center",
+            "width": "180"
         },
         {
             "id": "b",
             "type": "string",
             "text": "良好值",
             "align": "center",
-            "htmlType": "text"
+            "htmlType": "text",
+            "width": "90"
         },
         {
             "id": "c",
             "type": "string",
-            "text": "平均值",
-            "align": "center"
+            "text": "平均值"
         },
         {
             "id": "d",
             "type": "string",
             "text": "较低值",
-            "align": "center"
+            "width": "180"
         },
         {
             "id": "e",
             "type": "string",
             "text": "较差值",
-            "align": "center"
+            "align": "center",
+            "width": "90"
         },
         {
             "id": "v",
             "type": "string",
             "text": "企业分值",
-            "align": "center"
+            "width": "180"
         },
         {
             "id": "grade",
@@ -145,14 +147,12 @@
                     "children": [{
                             "id": "C2",
                             "type": "string",
-                            "text": "平均值",
-                            "align": "center"
+                            "text": "平均值"
                         },
                         {
                             "id": "C1",
                             "type": "string",
-                            "text": "平均值",
-                            "align": "center"
+                            "text": "平均值"
                         }
                     ]
                 },
@@ -164,14 +164,12 @@
                     "children": [{
                             "id": "D2",
                             "type": "string",
-                            "text": "较低值",
-                            "align": "center"
+                            "text": "较低值"
                         },
                         {
                             "id": "D1",
                             "type": "string",
-                            "text": "较低值",
-                            "align": "center"
+                            "text": "较低值"
                         }
                     ]
                 }

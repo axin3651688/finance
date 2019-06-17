@@ -40,7 +40,6 @@
          * 组件生成的回调。
          */
         created() {
-            debugger;
             let me = this;
             /**
              * 计算表格高度
@@ -63,7 +62,6 @@
         },
         methods: {
             headerRowStyle (row,col) {
-                debugger;
                 let me = this,allData = me.allData;
                 if(allData.displayRow && row.rowIndex == allData.displayRow){
                     return 'display:none';
@@ -128,7 +126,6 @@
                 }
             },
             styleHandler (row) {
-                debugger;
                 let me = this;
                 if(row && row.fxlxcolor){
                     return "background-color:" + row.fxlxcolor;

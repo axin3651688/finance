@@ -40,7 +40,6 @@
          * 组件生成的回调。
          */
         created() {
-            debugger;
             let me = this;
         },
         /**

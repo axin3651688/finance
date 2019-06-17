@@ -12,6 +12,7 @@ export default {
          */
         queryDataOfBackstage(judgeParams) {
             debugger;
+            let me = this;
             let params = judgeParams.params;
             groupQuery(params).then(res => {
                 if (res.data.code == 200) {
@@ -28,31 +29,36 @@ export default {
          */
         queryBackstageDataAfter(datas, judgeParams) {
             debugger;
-            if (judgeParams.id == "development") {
+            let me = this;
+            if (judgeParams.id == "profitability") {
+                me.profitabilityData(datas);
+            } else if (judgeParams.id == "development") {
                 me.developmentData(datas);
+            } else if (judgeParams.id == "operationQuality") {
+                me.operationData(datas);
+            } else if (judgeParams.id == "debtRisk") {
+                me.debtRiskData(datas);
             }
         },
-        /**
-         * 处理发展能力数据的方法。
-         */
-        developmentData(datas) {
+        profitabilityData(datas) {
+            let me = this;
             let arr = [{
-                id: 'gaugeTopLeft',
-                field: 'dim_indicator',
+                id: 'gaugeTop',
+                field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'val',
+                gaugeField: 'score',
                 content: ['19', '20', '21']
             }, {
-                id: 'gaugeTopRight',
-                field: 'dim_indicator',
+                id: 'gaugeMiddleLeft',
+                field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'val',
+                gaugeField: 'score',
                 content: ['121', '133']
             }, {
-                id: 'gaugeMiddle',
-                field: 'dim_indicator',
+                id: 'gaugeMiddleRight',
+                field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'val',
+                gaugeField: 'score',
                 content: ['53', '120']
             }];
             for (let i = 0; i < arr.length; i++) {
@@ -62,11 +68,122 @@ export default {
             me.createGauges(arr);
             //雷达图的数据格式。
             let radarConfig = {
-                id: 'development',
-                radarField: 'dim_indicator',
+                id: 'profitability',
+                radarField: 'scode',
                 radarSname: 'sname',
-                radarValue: 'qyfz',
-                content: ['19', '20', '21', '121', '133', '53', '120']
+                radarValue: 'score',
+                content: ['19', '20', '53', '120', '21', '121', '133']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 处理发展能力数据的方法。
+         */
+        developmentData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeTopLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['128']
+            }, {
+                id: 'gaugeTopRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['128']
+            }, {
+                id: 'gaugeMiddle',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['50', '129', '132']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'development',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['51', '50', '128', '129', '132']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 运营质量的数据处理。
+         */
+        operationData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['52', '122', '124']
+            }, {
+                id: 'gaugeRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['123', '131', '31']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'operationQuality',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['52', '122', '31', '123', '124', '131']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 债务风险数据的处理。
+         */
+        debtRiskData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeTopLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['3']
+            }, {
+                id: 'gaugeTopRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['125']
+            }, {
+                id: 'gaugeMiddle',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['16', '17', '126']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'debtRisk',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['3', '17', '16', '125', '126']
             };
             me.transRadarData(datas, radarConfig);
         },
