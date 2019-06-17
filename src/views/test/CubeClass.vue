@@ -259,7 +259,7 @@ export default {
     async initView() {
       this.cube =  await CnbiCube.getCubeById(this.cube.id);
      // if(this.cube.id === 288){
-        this.cube.fixed = 1;
+       // this.cube.fixed = 1;
       //}
       this.cubeObject = new CnbiCube(this.cube)
       await this.cubeObject.init();
