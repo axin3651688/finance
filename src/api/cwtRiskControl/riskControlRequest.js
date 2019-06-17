@@ -163,3 +163,26 @@ export function departmentClickEvent(params) {
         params: params
     })
 }
+
+/**
+ * 获取行业对标中的指标选项
+ * @author cwt
+ */
+export function getAllHYZB(params) {
+    return request({
+        url: '/zjb/dim_target/queryall_bystype?stype=' + params,
+        method: 'get'
+    })
+}
+
+/**
+ * 获取行业对标柱状图数据
+ * @author cwt
+ */
+export function getHYZBData(params) {
+    return request({
+        url: '/zjb/select/query',
+        method: 'post',
+        params: params
+    })
+}

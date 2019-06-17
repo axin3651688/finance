@@ -119,5 +119,28 @@ export default {
             }
             return period;
         },
+        /**
+         * 获取期间
+         * @returns {string|string}
+         */
+        getYear() {
+            let _this = this,
+                _getter = _this.$store.getters;
+            return _getter.year;
+        },/**
+         * 获取期间
+         * @returns {string|string}
+         */
+        getMonth() {
+            let _this = this,
+                _getter = _this.$store.getters,
+                month = _getter.month;
+            if (month > 9) {
+                month = "" + month;
+            } else {
+                month = "0" + month;
+            }
+            return month;
+        },
     },
 }

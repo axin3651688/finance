@@ -1,0 +1,79 @@
+{
+  "code": 200,
+  "id": "table1",
+  "text": "风险预警报告中的第一个表格",
+  "columns": [
+    {
+      "id": "sname",
+      "type": "string",
+      "text": "指标名称",
+      "align": "left",
+      "width":400
+    },
+    {
+      "id": "sjs",
+      "type": "string",
+      "text": "实际值",
+      "align": "right"
+    },
+    {
+      "id": "zgz",
+      "type": "string",
+      "text": "最高值",
+      "align": "right"
+    },
+    {
+      "id": "pjz",
+      "type": "string",
+      "text": "平均值",
+      "align": "right"
+    },
+    {
+      "id": "zdz",
+      "type": "string",
+      "text": "最低值",
+      "align": "right"
+    },
+    {
+      "id": "zgznf",
+      "type": "string",
+      "text": "最高值年份",
+      "align": "left"
+    },
+    {
+      "id": "zdznf",
+      "type": "string",
+      "text": "最低值年份",
+      "align": "left"
+    }
+  ],
+  "rows": [
+    {
+      "sname": "净利润增长率（%）",
+      "sjs": "100",
+      "zgz": "200",
+      "pjz": "150",
+      "zdz": "100",
+      "zgznf": "201902",
+      "zdznf": "201906"
+    },
+    {
+      "sname": "净资产收益率（%）",
+      "sjs": "55",
+      "zgz": "47",
+      "pjz": "74",
+      "zdz": "52",
+      "zgznf": "201912",
+      "zdznf": "201906"
+    },
+    {
+      "sname": "存货周转率（%）",
+      "sjs": "3",
+      "zgz": "24500",
+      "pjz": "15760",
+      "zdz": "76",
+      "zgznf": "201802",
+      "zdznf": "201806"
+    }
+  ]
+}
