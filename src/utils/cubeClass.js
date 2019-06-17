@@ -74,50 +74,51 @@ let subfixExcuteFunctionNames = ['interceptorAfter', 'dataHandlerAfter'];
 class CnbiCube {
   //return Object.create(null);
 
-  static cubeProperty = "cube"
+  static cubeProperty = 'cube';
 
 
   constructor(cube) {
     //this.cubeProperty = "cube";
-    if (typeof (cube) === 'object') {
+    if (typeof (cube)==='object') {
       Cnbi.apply(this, cube);
     } else {
       // TODO 如果传参是ID，找缓存数据，如果没有，则根据id号请求cube数据
     }
   }
 
-  static getCubePropertyById(id){
-    return CnbiCube.cubeProperty+"_"+id;
+  static getCubePropertyById(id) {
+    return CnbiCube.cubeProperty + '_' + id;
   }
 
-  static getCube(id){
+  static getCube(id) {
     let key = CnbiCube.getCubePropertyById(id);
     return Cnbi[key];
   }
 
 
-  static async getCubeById(id, isInit) {
+  static async getCubeById(id, isInit = false) {
     let res = await FIND_DATA_CUBE(id);
-    let cube = res.data.code == 200 ? res.data.data : null;
+    let cube = res.data.code==200 ? res.data.data : null;
     if (cube) {
-       if(cube.rows.legnth> 0){
-           cube.fixed = 1;//李宁忘了，我暂时在这里写上这一行！
-       }
-      
-      if(!isInit){
+      if (cube.rows && cube.rows.length>0) {
+        cube.fixed = 1;//李宁忘了，我暂时在这里写上这一行！
+      }
+
+      if (!isInit) {
         return cube;
       }
       let cubeObj = new CnbiCube(cube);
       if (isInit) {
-        await cubeObj.init(cube)
+        await cubeObj.init(cube);
       }
-      return cubeObj
+      return cubeObj;
     } else {
       console.warn('可能传入了错误的cubeId');
       return null;
     }
 
   }
+
   /**
    * 设置参数
    */
@@ -131,7 +132,7 @@ class CnbiCube {
     let nds = this.needDims, ge = this.generater;
     if (ge && ge.varName) {
       let ds = null;
-      if (nds.year && nds.month ) {
+      if (nds.year && nds.month) {
         //年与月二维组成的合并维度 year+month = period,改变任一year或month都会调到这儿来的
         ds = generatePeriod(ge.periodCount, ge.compareType, nds.year, nds.month, nds.reverse, urlParams);//count,fomular,year,month,reverse
       } else if (nds.company) {
@@ -177,80 +178,82 @@ class CnbiCube {
       }
     });
   }
-/**
- * 设置列项目数据
- */
-setFactParams(columns){
-  let arr = [];
-  //  debugger;
-  columns.filter(item=>{
-      if(!item.render && !item.ignore && item.type === "decimal" && item.id){
-      let ss = (item.id+"").indexOf("_")
-      if(ss == -1){
-          arr.push(item.id);
-      }
 
-  }
-});
-  return arr.join(",");
-}
   /**
- * 设置行项目数据
- */
-setItemParams(rows,params){
-  let arr = [];
-  rows.filter(item=>{
-      if(!item.ignore && item.id){
-      let id = Cnbi.varReplace(item.id+"",params);
-      arr.push(id);
-      if(item.id_){
-          arr.push(item.id_);
+   * 设置列项目数据
+   */
+  setFactParams(columns) {
+    let arr = [];
+    //  debugger;
+    columns.filter(item => {
+      if (!item.render && !item.ignore && item.type==='decimal' && item.id) {
+        let ss = (item.id + '').indexOf('_');
+        if (ss== -1) {
+          arr.push(item.id);
+        }
+
       }
+    });
+    return arr.join(',');
   }
 
-});
-  return arr.join(",");
-}
+  /**
+   * 设置行项目数据
+   */
+  setItemParams(rows, params) {
+    let arr = [];
+    rows.filter(item => {
+      if (!item.ignore && item.id) {
+        let id = Cnbi.varReplace(item.id + '', params);
+        arr.push(id);
+        if (item.id_) {
+          arr.push(item.id_);
+        }
+      }
+
+    });
+    return arr.join(',');
+  }
 
   /**
    * {"cubes": [292], "dimName": "itemperiod", "subject": "0002", "calculabled": 1, "datasourceId": "68"}
    * 从后端拿数据
    */
-  async findData(params, needDims,rows,columns) {
-    let  dimName = params.dimName;//生成行项目的属性东东
-    if(!dimName){
-        throw new Error("没有配制行主维度【dimName】信息！");
+  async findData(params, needDims, rows, columns) {
+    let dimName = params.dimName;//生成行项目的属性东东
+    if (!dimName) {
+      throw new Error('没有配制行主维度【dimName】信息！');
     }
-    if(!params.dims){
-        params.dims = {};
+    if (!params.dims) {
+      params.dims = {};
     }
-    for(let key in needDims){
-      if(key != "unit" && key != dimName){
+    for (let key in needDims) {
+      if (key!='unit' && key!=dimName) {
         params[key] = needDims[key].id;
       }
     }
-    if(params.year && params.month){
-      let mm = params.month - 0 ; 
-      if(mm< 10){
-         mm = "0"+mm;
-         params.month = mm;
+    if (params.year && params.month) {
+      let mm = params.month - 0;
+      if (mm<10) {
+        mm = '0' + mm;
+        params.month = mm;
       }
-      params.period = params.year+""+mm;
+      params.period = params.year + '' + mm;
     }
-    if(!params.cubeId){
-       params.cubeId = 2; //写了一个临时的
-       delete params.dimName;
+    if (!params.cubeId) {
+      params.cubeId = 2; //写了一个临时的
+      delete params.dimName;
     }
-    if(!params.dims[dimName]){ //如果参数里没有主维度信息，就从rows里生成
-      params.dims[dimName] = this.setItemParams(rows,params);
+    if (!params.dims[dimName]) { //如果参数里没有主维度信息，就从rows里生成
+      params.dims[dimName] = this.setItemParams(rows, params);
     }
-    if(!params.fact){ //如果参数里没有主度量信息，就从columns里生成
-        params.fact = this.setFactParams(columns);
+    if (!params.fact) { //如果参数里没有主度量信息，就从columns里生成
+      params.fact = this.setFactParams(columns);
     }
-    console.log(this.text+"的参数是：",params)
+    console.log(this.text + '的参数是：', params);
     let res = await findThirdPartData(params);
     console.log('从后端拿数据res:', res);
-    return res.data.code == 200 ? res.data.data : null;
+    return res.data.code==200 ? res.data.data : null;
   }
 
   /**
@@ -259,14 +262,14 @@ setItemParams(rows,params){
   async getModelDatas(scope) {
     let type = scope.dataType || scope.config.dataType;
     let params = {};
-    Cnbi.copyDatas(params,scope.config);
+    Cnbi.copyDatas(params, scope.config);
     switch (type) {
       case 'sql':
-        scope.datas = await this.findData(params, scope.needDims,scope.rows,scope.columns);
+        scope.datas = await this.findData(params, scope.needDims, scope.rows, scope.columns);
         console.info(scope);
         break;
       case 'cube':
-        scope.datas = await this.findData(params, scope.needDims,scope.rows,scope.columns);
+        scope.datas = await this.findData(params, scope.needDims, scope.rows, scope.columns);
         break;
       case 'defined':
         break;
@@ -280,7 +283,7 @@ setItemParams(rows,params){
   }
 
   getDataHandler(scope) {
-   // debugger
+    // debugger
     if (!this.dataCube) {
       this.dataCube = new DataHandler(scope);
     }
@@ -338,9 +341,9 @@ setItemParams(rows,params){
   dataHandlerAfter() {
     let dataCube = this.getDataHandler(this);
     let type = this.dataType || this.config.dataType;
-    if (type != 'defined') {
+    if (type!='defined') {
       dataCube.configRowAdapt(this);
-      if (type != 'calculate') {
+      if (type!='calculate') {
         dataCube.cubeDataHandler(this);//列计算的，以后还要加行计算的
       }
     }
@@ -365,11 +368,11 @@ setItemParams(rows,params){
    */
   filter(filters) {
     filters = filters || this.filters;
-    if (!filters || filters.length == 0) return;
+    if (!filters || filters.length==0) return;
     let exp = '';
     filters.forEach((filter, index) => {
       let val = isNaN(filter.value) ? '\'' + filter.value + '\'' : filter.value;
-      if (index > 0) {
+      if (index>0) {
         exp += ' && ';
       }
       exp += 'data.' + filter.field + ' ' + filter.calcSymbol + ' ' + val;
@@ -378,7 +381,7 @@ setItemParams(rows,params){
     console.log(exp, typeof exp);
     return this.datas.filter(data => {
       // 如果过滤异常，直接返回原数据
-      if(eval("("+exp+")")){
+      if (eval('(' + exp + ')')) {
         return data;
       }
     });
@@ -399,23 +402,26 @@ setItemParams(rows,params){
     this[key] = value;
     return this.init();
   }
+
   /**
    * 初始化
    */
   async init(cube) {
-    if(cube){
+    if (cube) {
       Cnbi.apply(this, cube);
     }
     let cubes = this.config.cubes;
-    if(cubes && Array.isArray(cubes)){
-      
-        //   await cubes.forEach(cc=>{
-        //   CnbiCube.getCubeById(cc,true);
-        //  })
-        //  for(let i=0,len = cubes.legnth;i<len;i++){
-        //   await CnbiCube.getCubeById(cubes[i],true);
-        //  }
-        await CnbiCube.getCubeById(cubes[0],true);
+    if (cubes && Array.isArray(cubes)) {
+      // await cubes.forEach(cc=>{
+      //   CnbiCube.getCubeById(cc,true);
+      //  })
+
+      for (let i = 0, len = cubes.length; i<len; i++) {
+        let cubeData = await CnbiCube.getCubeById(cubes[i], true);
+        debugger
+        // by:jhb 这里 cubeData 用来干嘛？
+      }
+
     }
     await this.setParams();                       // 设置参数
     await this.generateProperties();              // 生成变量,行，列，单表头，多表头，行列转置逻辑
@@ -423,7 +429,7 @@ setItemParams(rows,params){
     let datas = await this.setModelDatas(this);   // 统一取数数据
     let key = CnbiCube.getCubePropertyById(this.id);//置入全局统一对象管理中，一个数据集，只创建一次，其它都只做update操作
     Cnbi[key] = this;
-    console.log("初始化了:"+key, Cnbi[key] )
+    console.log('初始化了:' + key, Cnbi[key]);
     return datas;
   }
 }
@@ -442,14 +448,14 @@ class DataHandler {
    */
   sortTableDatas(cube) {
     let rows = cube.rows;
-    if (rows.length > 1) {
+    if (rows.length>1) {
       let tempDatas = [], datas = cube.datas;
       rows.forEach(row => {
-        let record = datas.filter(data => data.id === row.id)[0];
+        let record = datas.filter(data => data.id===row.id)[0];
         if (record)
           tempDatas.push(record);
       });
-      if (tempDatas.length > 0) {
+      if (tempDatas.length>0) {
         cube.datas = tempDatas;
       }
     }
@@ -460,20 +466,20 @@ class DataHandler {
    */
   setRecordPropertis(cube) {
     let configRows = cube.rows;
-    if(cube.id === 288){//资产负责表恶心的表
-        let rows = configRows;
-        cube.dbDatas = cube.datas;
-        let tempRows = [];
-        rows.forEach(row => {
-          tempRows.push(row);
-        });
-        cube.datas = tempRows;
-        return
+    if (cube.id===288) {//资产负责表恶心的表
+      let rows = configRows;
+      cube.dbDatas = cube.datas;
+      let tempRows = [];
+      rows.forEach(row => {
+        tempRows.push(row);
+      });
+      cube.datas = tempRows;
+      return;
     }
     debugger;
     cube.datas.forEach(data => {
       if (data.id) {
-        let configRow = configRows.filter(row => row.id === data.id)[0];
+        let configRow = configRows.filter(row => row.id===data.id)[0];
         if (configRow) {
           Cnbi.applyIf(data, configRow);//使配制的属性一致
           if (!cube.useDbName && configRow.text) {//不使用数据库的名称,即使用配制的名称
@@ -488,9 +494,9 @@ class DataHandler {
    * 数据与模版顺序一致
    */
   configRowAdapt(cube) {
-    if(cube.fixed && cube.dataType === "random"){
-      return ;//如果是固定模版
-   }
+    if (cube.fixed && cube.dataType==='random') {
+      return;//如果是固定模版
+    }
     this.setRecordPropertis(cube);
     this.sortTableDatas(cube);
   }
@@ -499,14 +505,14 @@ class DataHandler {
    * 列单位转换
    */
   convertUnit(new_unit, datas, columns, older_unit) {
-    if (new_unit == 1 && (!older_unit || older_unit == 1)) {
+    if (new_unit==1 && (!older_unit || older_unit==1)) {
       return datas;
     }
     datas.forEach(record => {
       columns.forEach(col => {
-        if (!col.unit && record[col.id] && col.type === 'decimal') {
+        if (!col.unit && record[col.id] && col.type==='decimal') {
           if (older_unit) {
-            if (new_unit > older_unit) {
+            if (new_unit>older_unit) {
               record[col.id] = record[col.id] / (new_unit / older_unit);
             } else {
               record[col.id] = record[col.id] * (older_unit / new_unit);
@@ -530,7 +536,7 @@ class DataHandler {
         columns.filter(col => {
           if (col.render && true) {
             //debugger;record,value,col,scope
-            if (typeof col.render == 'string') {
+            if (typeof col.render=='string') {
               col.render = eval('(' + col.render + ')');
             }
             data[col.id] = col['render'].call(this, data, data[col.id], col, table);
@@ -569,39 +575,39 @@ class DataHandler {
 
   calcRowData(cube) {
     this.dataCalculator = this.getDataCalculator(cube);
-    let rows = cube.rows, datas = cube.datas, columns = cube.columns,dbDatas = cube.dbDatas;
- //   debugger;
+    let rows = cube.rows, datas = cube.datas, columns = cube.columns, dbDatas = cube.dbDatas;
+    //   debugger;
     datas.forEach(data => {
-      if(data.id){
-          let configRow = this.dataCalculator.getRecordById(rows, data.id);//看下配制行中是不是有配制的公式,为了简化配制而设定的,不建议这么配制，但为了兼容以前的项目，还是加上解析吧！
-          columns.forEach(col => {
-            if(col.type === "decimal"){
-              let val = data[col.id];
-              if(isNaN(val)){
-                if (configRow && configRow.fomular) {
-                  //如果是在行上配制的公式[3501+3502]，在这里动态给其组装成完整的公式
-                  val = this.dataCalculator.rowFomularParser(datas, configRow.fomular, rows, col.id);
-                } else {//如果是配制单元格公式的这么办很OK
-                  val = this.dataCalculator.getRealValue(val,datas, rows);
-                }
-              }else if(!val){
-                  if(cube.id === 288 && dbDatas ){
-                    let cLen = col.id.length,rId = "id",rcolId = col.id;
-                    if(cLen > 1){
-                       rId+=this.dataCalculator.dubbleSubfix;
-                       rcolId = rcolId.substring(0,cLen-this.dataCalculator.dubbleSubfix.length)
-                    }
-                    let record =  this.dataCalculator.getRecordById(dbDatas,configRow[rId]);
-                    if(record){
-                      val = record[rcolId];
-                    }else{
-                      console.warn("没有真实数据【"+rId+"】");
-                    }
-                  }
+      if (data.id) {
+        let configRow = this.dataCalculator.getRecordById(rows, data.id);//看下配制行中是不是有配制的公式,为了简化配制而设定的,不建议这么配制，但为了兼容以前的项目，还是加上解析吧！
+        columns.forEach(col => {
+          if (col.type==='decimal') {
+            let val = data[col.id];
+            if (isNaN(val)) {
+              if (configRow && configRow.fomular) {
+                //如果是在行上配制的公式[3501+3502]，在这里动态给其组装成完整的公式
+                val = this.dataCalculator.rowFomularParser(datas, configRow.fomular, rows, col.id);
+              } else {//如果是配制单元格公式的这么办很OK
+                val = this.dataCalculator.getRealValue(val, datas, rows);
               }
-              data[col.id] = val;
+            } else if (!val) {
+              if (cube.id===288 && dbDatas) {
+                let cLen = col.id.length, rId = 'id', rcolId = col.id;
+                if (cLen>1) {
+                  rId += this.dataCalculator.dubbleSubfix;
+                  rcolId = rcolId.substring(0, cLen - this.dataCalculator.dubbleSubfix.length);
+                }
+                let record = this.dataCalculator.getRecordById(dbDatas, configRow[rId]);
+                if (record) {
+                  val = record[rcolId];
+                } else {
+                  console.warn('没有真实数据【' + rId + '】');
+                }
+              }
             }
-          });
+            data[col.id] = val;
+          }
+        });
       }
     });
   }
@@ -621,7 +627,7 @@ class DataHandler {
    *
    */
   cubeDataHandler(cube) {
-    if (cube.datas.length != cube.rows.length) {
+    if (cube.datas.length!=cube.rows.length) {
       console.warn('查询出的数据与预期的数据长度不一致，还没有处理！' + cube.datas.length + ' VS ' + cube.rows.length);
     }
     if (cube.needDims.unit) {//单位转换
@@ -650,7 +656,7 @@ class DataHandler {
     Cnbi.apply(total, sum);
     delete total.type;
     table.columns.forEach(col => {
-      if (col.type === type && !col.render) {
+      if (col.type===type && !col.render) {
         total[col.id] = table.datas.reduce(function (prev, cur) {
           return cur[col.id] + prev;
         }, 0);
@@ -672,20 +678,22 @@ class DataHandler {
 class DataCalculator {
 
   constructor(cube) {
-   // this.cube = cube;
-    this.recordIndex = "id";
+    // this.cube = cube;
+    this.recordIndex = 'id';
   }
-  dubbleSubfix = "_"
+
+  dubbleSubfix = '_';
+
   /**
    * 供给动态计算给的临时对象
    */
-  getDubbleRealDatas(record,dubbleSubfix){
+  getDubbleRealDatas(record, dubbleSubfix) {
     let data = {};
-    for(let key in record){
-      let len = key.length,lastStr = key.substring(len-1,len);
-     // debugger;
-      if(lastStr === dubbleSubfix || lastStr === "2"){
-        data[key.substring(0,len-1)] = record[key] ; 
+    for (let key in record) {
+      let len = key.length, lastStr = key.substring(len - 1, len);
+      // debugger;
+      if (lastStr===dubbleSubfix || lastStr==='2') {
+        data[key.substring(0, len - 1)] = record[key];
       }
     }
     return data;
@@ -695,15 +703,15 @@ class DataCalculator {
    * 获取配制行
    */
   getRecordById(rows, rowId) {
-    let record =  rows.filter(item => item[this.recordIndex] === rowId)[0];
-    if(!record){
+    let record = rows.filter(item => item[this.recordIndex]===rowId)[0];
+    if (!record) {
       //双列表格的中国式报表
-      let dubbleSubfix = "_";
-      let property = this.recordIndex+dubbleSubfix;
-     // debugger;
-      record =  rows.filter(item => item[property] === rowId)[0];
-      if(record){
-        return this.getDubbleRealDatas(record,dubbleSubfix);
+      let dubbleSubfix = '_';
+      let property = this.recordIndex + dubbleSubfix;
+      // debugger;
+      record = rows.filter(item => item[property]===rowId)[0];
+      if (record) {
+        return this.getDubbleRealDatas(record, dubbleSubfix);
       }
     }
     return record;
@@ -731,26 +739,26 @@ class DataCalculator {
   /**
    * 获取公式一个参数的值并在公式中进行替换操作
    */
-   getParamsValue(param, fomular, datas, colId, rowId, rows, cubeId) {
+  getParamsValue(param, fomular, datas, colId, rowId, rows, cubeId) {
     let val = 0.00;
     if (!cubeId) {
       val = this.getCellValue(datas, colId, rowId, rows);
     } else {
-      let cube =  CnbiCube.getCube(cubeId);
-      val = this.getCellValue(cube.datas, colId, rowId,cube.rows);
-      console.log(rowId+'【'+this.getRecordById(rows,rowId).text+'】跨表参数【' + cubeId+"!"+colId+"$"+ rowId+ '】=='+val+'公式解析成功');
+      let cube = CnbiCube.getCube(cubeId);
+      val = this.getCellValue(cube.datas, colId, rowId, cube.rows);
+      console.log(rowId + '【' + this.getRecordById(rows, rowId).text + '】跨表参数【' + cubeId + '!' + colId + '$' + rowId + '】==' + val + '公式解析成功');
     }
-    if (val < 0) {
+    if (val<0) {
       val = '(' + val + ')';
     }
     if (!val) {
-      console.error(rowId+'【'+this.getRecordById(rows,rowId).text+'】请检查公式的配制，去找搞这个公式的人核实更改去吧：' + fomular);
+      console.error(rowId + '【' + this.getRecordById(rows, rowId).text + '】请检查公式的配制，去找搞这个公式的人核实更改去吧：' + fomular);
       val = 0;
-    }else{
-     //console.info(colId+"$"+rowId+"==>"+fomular+"=="+val);
+    } else {
+      //console.info(colId+"$"+rowId+"==>"+fomular+"=="+val);
     }
-   fomular = fomular.replace(param, val);
-   fomular = fomular.replace(param, val);
+    fomular = fomular.replace(param, val);
+    fomular = fomular.replace(param, val);
     return fomular.replace(param, val);
   }
 
@@ -765,13 +773,13 @@ class DataCalculator {
       let cubeId = 0;
       params.forEach(item => {
         let array = item.split('$'), len = array.length;
-        if (len < 3) {
+        if (len<3) {
           let tempColId = colId, rowId = array[0];
-          if (len == 2) {
+          if (len==2) {
             tempColId = array[0];
             rowId = array[1];
-            let cubeArray = tempColId.split("!");
-            if (cubeArray.length > 1) {
+            let cubeArray = tempColId.split('!');
+            if (cubeArray.length>1) {
               //alert("有跨表的来了："+fomular);
               cubeId = cubeArray[0];
               tempColId = cubeArray[1];
@@ -856,11 +864,11 @@ class DataCalculator {
     if (!isNaN(cell)) {
       return cell - 0;
     }
-    if (datas[cell] || datas[cell] === 0) {
+    if (datas[cell] || datas[cell]===0) {
       console.info(cell + '==>' + datas[cell]);
       return datas[cell];
     }
-    if (!datas || datas.length == 0) {
+    if (!datas || datas.length==0) {
       return 0;
     }
     let val = this.fomularParser(datas, cell, rows);
