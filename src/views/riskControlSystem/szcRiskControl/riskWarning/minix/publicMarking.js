@@ -1,9 +1,213 @@
 /**
  * 集团对标
  */
+import {
+    groupQuery
+} from '~api/szcRiskControl/riskControl.js'
+import { mapGetters } from "vuex";
 import { findThirdPartData } from "~api/interface"
 export default {
+    /**
+     * 计算属性。
+     */
+    computed: {
+        ...mapGetters(["year", "month", "company"])
+    },
+    watch: {
+        /**
+         * 监听公司
+         */
+        company(newValue, oldValue) {
+            this.updateData();
+        },
+        year(newValue, oldValue) {
+            this.updateData();
+        },
+        month(newValue, oldValue) {
+            this.updateData();
+        }
+    },
     methods: {
+        /**
+         * 后台接口直接查询数据。
+         */
+        queryDataOfBackstage(judgeParams) {
+            debugger;
+            let me = this;
+            let params = judgeParams.params;
+            groupQuery(params).then(res => {
+                if (res.data.code == 200) {
+                    me.tableData = res.data.data;
+                    me.queryBackstageDataAfter(res.data.data, judgeParams);
+                } else if (res.data.code == 1001) {
+                    me.tableData = [];
+                    me.queryBackstageDataAfter([], judgeParams);
+                }
+            });
+        },
+        /**
+         * 查询数据之后的处理。
+         */
+        queryBackstageDataAfter(datas, judgeParams) {
+            debugger;
+            let me = this;
+            if (judgeParams.id == "profitability") {
+                me.profitabilityData(datas);
+            } else if (judgeParams.id == "development") {
+                me.developmentData(datas);
+            } else if (judgeParams.id == "operationQuality") {
+                me.operationData(datas);
+            } else if (judgeParams.id == "debtRisk") {
+                me.debtRiskData(datas);
+            }
+        },
+        profitabilityData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeTop',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['19', '20', '21']
+            }, {
+                id: 'gaugeMiddleLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['121', '133']
+            }, {
+                id: 'gaugeMiddleRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['53', '120']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'profitability',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['19', '20', '53', '120', '21', '121', '133']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 处理发展能力数据的方法。
+         */
+        developmentData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeTopLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['128']
+            }, {
+                id: 'gaugeTopRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['128']
+            }, {
+                id: 'gaugeMiddle',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['50', '129', '132']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'development',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['51', '50', '128', '129', '132']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 运营质量的数据处理。
+         */
+        operationData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['52', '122', '124']
+            }, {
+                id: 'gaugeRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['123', '131', '31']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'operationQuality',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['52', '122', '31', '123', '124', '131']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
+        /**
+         * 债务风险数据的处理。
+         */
+        debtRiskData(datas) {
+            let me = this;
+            let arr = [{
+                id: 'gaugeTopLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['3']
+            }, {
+                id: 'gaugeTopRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['125']
+            }, {
+                id: 'gaugeMiddle',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['16', '17', '126']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'debtRisk',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['3', '17', '16', '125', '126']
+            };
+            me.transRadarData(datas, radarConfig);
+        },
         /**
          * 查询数据的入口
          * @author szc 2019年6月4日16:55:40

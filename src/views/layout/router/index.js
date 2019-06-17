@@ -158,6 +158,12 @@ const router = new Router({
                     name: 'organization',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/organization/organization.vue')
+                },
+                {
+                    path: '/warningReport',
+                    name: 'warningReport',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/warningReport/warningReport.vue')
                 }
             ]
         },

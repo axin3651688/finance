@@ -85,12 +85,13 @@
                     me.manyColumns = res.data.manyColumns;
                     me.ManyTableData = res.data.manyRows;
                     me.resData = res.data;
-                    let judgeParams = {
-                        id:"profitability",
-                        text:"盈利能力",
-                        sqlId:"107"
-                    };
-                    me.queryDataPublic(judgeParams);
+                    // let judgeParams = {
+                    //     id:"profitability",
+                    //     text:"盈利能力",
+                    //     sqlId:"107"
+                    // };
+                    // me.queryDataPublic(judgeParams);
+                    me.updateData();
                     
                     // me.createEcharts();
                 }
@@ -99,12 +100,43 @@
         mounted() {},
         methods: {
             /**
-             * 制造echart图形。
-             * @author szc 2019年6月10日11:08:45
+             * 更新数据。
              */
-            createEcharts(){
-                let me = this;
-
+            updateData(){
+                let me = this,storeParams = me.$store.getters,company = storeParams.company,
+                    year = storeParams.year,month = storeParams.month;
+                if(month > 9){
+                    month = month + "";
+                }else {
+                    month = "0" + month;
+                }
+                let judgeParams = {
+                    id:"profitability",
+                    text:"盈利能力",
+                    params:{
+                        company:company,
+                        period:me.getPeriod(),
+                        indicator:"'19','20','53','120','21','121','133'",
+                        fact:'B',
+                        year:year,
+                        month:month,
+                        sqlKey:"RiskWarning.fzhpj"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
+            },
+            /**
+             * 获取日期。
+             */
+            getPeriod () {
+                let me = this,storeParams = me.$store.getters,year = storeParams.year,
+                    month = storeParams.month,period = "";
+                if(month > 9){
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                return period;
             }
         }
     };

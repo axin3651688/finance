@@ -458,8 +458,7 @@ export default {
                 company: judgeParams.params ? judgeParams.params.company : company,
                 period: me.parsePeriod(),
                 sisinstructions: "0",
-                sinstructionsuser: user,
-                toUsers: []
+                sinstructionsuser: user
             };
             let requertParams = {
                 data: params,
