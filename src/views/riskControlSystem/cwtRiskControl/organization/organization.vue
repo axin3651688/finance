@@ -53,11 +53,104 @@
             </div>
         </div>
 
+        <div class="risk-back-dialog" v-if="dialogVisible">
+            <el-dialog
+                    :title="getDialogTitle()"
+                    width="950px"
+                    top="70px"
+
+                    @close="dialogCloseEvent"
+                    :visible.sync="dialogVisible"
+            >
+                <div style="height:2px;border:1px solid #606266; margin-top: -15px;"></div>
+
+                <div class="content-all">
+                    <div class="content-div">
+                        <el-table
+                                :data="responsibility"
+                                :span-method="objectSpanMethod"
+                                :max-height='tableHeight'
+                                :header-cell-style="headerRowStyle"
+                                border
+                                style="width: 100%; margin-top: 20px">
+                            <el-table-column
+                                    prop="responsibility"
+                                    label="部门职责"
+                                    align="center"
+                                    width="400"
+                            >
+                            </el-table-column>
+
+                        </el-table>
+                    </div>
+                    <div class="content-table">
+                        <el-table
+                                :data="tableData"
+                                :span-method="objectSpanMethod"
+                                :max-height='tableHeight'
+                                :header-cell-style="headerRowStyle"
+                                border
+                                style="width: 100%; margin-top: 20px">
+
+
+                            <el-table-column
+                                    prop="ROW_ID"
+                                    label="序号"
+                                    width="60"
+                                    align="center"
+                            >
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="userId"
+                                    label="用户名"
+                                    width="110"
+                            >
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="userName"
+                                    label="姓名"
+                                    width="110"
+                            >
+                            </el-table-column>
+
+                            <el-table-column
+                                    prop="position"
+                                    label="职位"
+                                    width="200"
+                            >
+                            </el-table-column>
+                        </el-table>
+
+
+                        <div class="tabListPage">
+                            <el-pagination
+                                    background
+                                    @size-change="handleSizeChange"
+                                    @current-change="handleCurrentChange"
+                                    :current-page="currentPage"
+                                    :page-sizes="pageSizes"
+                                    :page-size="PageSize"
+                                    :total="total"
+                                    layout=" prev, pager, next, jumper"
+                            >
+                            </el-pagination>
+                        </div>
+
+
+                    </div>
+                </div>
+            </el-dialog>
+        </div>
+
 
     </div>
 </template>
 
 <script>
+    import {departmentClickEvent} from '~api/cwtRiskControl/riskControlRequest'
+
     export default {
         name: "organization",
         components: {},
@@ -66,61 +159,61 @@
             return {
                 leaderList: {
                     dsh: {
-                        id: '001',
+                        id: '01',
                         value: '董事会'
                     },
                     dshbgs: {
-                        id: '001',
+                        id: '0101',
                         value: '董事会办公室'
                     },
                     fxglwyh: {
-                        id: '001',
+                        id: '0102',
                         value: '风险管理委员会'
                     },
                     jyc: {
-                        id: '001',
+                        id: '0103',
                         value: '经营层'
                     },
                     fxglldxz: {
-                        id: '001',
+                        id: '0104',
                         value: '风险管理领导小组'
                     },
                 },
                 deptList: {
                     dwbgs: {
-                        id: '001',
+                        id: '010301',
                         value: '党委办公室'
                     },
                     zzb: {
-                        id: '001',
+                        id: '010302',
                         value: '组织部'
                     },
                     xcb: {
-                        id: '001',
+                        id: '010303',
                         value: '宣传部（企业文化部）'
                     },
                     jjjcs: {
-                        id: '001',
+                        id: '010304',
                         value: '纪检监察室'
                     },
                     gh: {
-                        id: '001',
+                        id: '010305',
                         value: '工会'
                     },
                     tzb: {
-                        id: '001',
+                        id: '010306',
                         value: '统战部'
                     },
                     tw: {
-                        id: '001',
+                        id: '010307',
                         value: '团委'
                     },
                     lgbfwb: {
-                        id: '001',
+                        id: '010308',
                         value: '老干部服务部'
                     },
                     xzbgs: {
-                        id: '001',
+                        id: '010309',
                         value: '行政办公室'
                     },
                     fwb: {
@@ -128,39 +221,39 @@
                         value: '法务部'
                     },
                     cwb: {
-                        id: '001',
+                        id: '010310',
                         value: '财务部（财务风控办公室）'
                     },
                     ghytzb: {
-                        id: '001',
+                        id: '010311',
                         value: '规划与投资部'
                     },
                     zcglb: {
-                        id: '001',
+                        id: '010312',
                         value: '资产管理部'
                     },
                     tdfcb: {
-                        id: '001',
+                        id: '010313',
                         value: '土地房产部'
                     },
                     qyyyb: {
-                        id: '001',
+                        id: '010314',
                         value: '企业运营部'
                     },
                     nksyb: {
-                        id: '001',
+                        id: '010315',
                         value: '农垦事业部'
                     },
                     rlzyb: {
-                        id: '001',
+                        id: '010316',
                         value: '人力资源部'
                     },
                     ajb: {
-                        id: '001',
+                        id: '010317',
                         value: '安技部'
                     },
                     bwbxfb: {
-                        id: '001',
+                        id: '010318',
                         value: '保安部、信访办'
                     },
                     sjb: {
@@ -168,14 +261,33 @@
                         value: '审计部'
                     },
                     zgcsbgs: {
-                        id: '001',
+                        id: '010319',
                         value: '总工程师办公室'
                     },
                     fxgkb: {
-                        id: '001',
+                        id: '010320',
                         value: '风险管控部'
                     }
-                }
+                },
+                dialogVisible: false,
+                tableHeight: 550,
+                clickedDepart: null,
+                tableData: [],
+                responsibility:[],
+
+
+
+                // 默认显示第几页
+                currentPage: 1,
+                // 总条数，根据接口获取数据长度(注意：这里不能为空)
+                totalCount: 1,
+                // 个数选择器（可修改）
+                pageSizes: [1, 2, 3, 4],
+                // 默认每页显示的条数（可修改）
+                PageSize: 1,
+
+                //一共多少叶
+                total: null
             }
         },
         created() {
@@ -188,8 +300,125 @@
              * @param params
              */
             deptClick(params) {
-                // debugger;
-            }
+                this.dialogVisible = true;
+                this.clickedDepart = params;
+
+                this.getAllData();
+            },
+
+
+            /**
+             * 翻页事件
+             * @param pagenum
+             */
+            getAllData(pagenum){
+                let _this = this;
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+                let deptId = this.clickedDepart.id;
+
+                let sendParams = {
+                    dept: deptId,
+                    com: company,
+                    page: pagenum || 1,
+                    size: 10
+                };
+
+                departmentClickEvent(sendParams).then((res) => {
+                    if (res.data.code === 200) {
+                        let _data = res.data.data;
+
+                        _this.total = _data.users.lastPage;
+
+                        _this.responsibility = _data['deptDesc'];
+                        _this.tableData = _data.users.list;
+                    }
+                })
+            },
+
+            /**
+             * 获取弹窗title的犯方法
+             */
+            getDialogTitle() {
+                // return "fffffffff";
+                let _clickedDepart = this.clickedDepart;
+                let sname = _clickedDepart.value;
+                return '【' + sname + '】部门详细信息'
+            },
+
+            /**
+             * 弹窗关闭的时候调用的方法
+             */
+            dialogCloseEvent() {
+
+            },
+
+            /**
+             * 格式化行列格式
+             * @param row
+             * @param column
+             * @param rowIndex
+             * @param columnIndex
+             * @returns {{rowspan: number, colspan: number}}
+             */
+            objectSpanMethod({row, column, rowIndex, columnIndex}) {
+                /*let _dataLength = this.tableData.length;
+                if (columnIndex === 0) {
+                    if (rowIndex === 0) {
+                        return {
+                            rowspan: _dataLength,
+                            colspan: 1
+                        };
+                    } else {
+                        return {
+                            rowspan: 0,
+                            colspan: 0
+                        };
+                    }
+                }*/
+            },
+
+            /**
+             * 改变表头样式
+             */
+            headerRowStyle(row) {
+                if (row.rowIndex === 0) {
+                    return 'background:rgb(240, 248, 255)';
+                } else {
+                    return "";
+                }
+            },
+
+            /**
+             * 部门职责单元格格式化
+             * @param row
+             * @param column
+             * @param cellValue
+             * @param index
+             */
+            /*responsibilityDataFormatter(row, column, cellValue, index) {
+                // return row.responsibility;
+                let html = '<span style="max-height: 400px">' + row.responsibility + '</span>';
+                return html;
+            }*/
+
+
+
+            // 每页显示的条数
+            handleSizeChange(val) {
+                // 改变每页显示的条数
+                this.PageSize = val;
+                // 点击每页显示的条数时，显示第一页
+                // 注意：在改变每页显示的条数时，要将页码显示到第一页
+                this.currentPage = 1;
+            },
+            // 显示第几页
+            handleCurrentChange(val) {
+                // 改变默认的页数
+                this.currentPage = val;
+                // 切换页码时，要获取每页显示的条数
+                this.getAllData(val)
+            },
         }
     }
 </script>
@@ -237,8 +466,9 @@
     }
 
     .fxglldxz {
-        top: 300px;
+        top: 306px;
         left: 560px;
+        z-index: 2;
     }
 
     .first-svg, .second-svg, .single-dept {
@@ -268,4 +498,12 @@
         border-radius: 3px;
         cursor: pointer;
     }
+    .content-all{
+        display: inline-flex;
+    }
+    /*.content-div{
+        border: 1px solid red;
+        width: 200px;
+        height: 420px;
+    }*/
 </style>

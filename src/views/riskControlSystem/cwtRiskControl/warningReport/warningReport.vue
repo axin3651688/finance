@@ -1,12 +1,12 @@
 <template>
-    <div>
-        ceshi
-    </div>
+    <div>this is warningReport</div>
 </template>
+
 <script>
     export default {
-        name: "treeTableDemo",
+        name: "warningReport",
         components: {},
+        props: {},
         data() {
             return {}
         },
@@ -15,8 +15,9 @@
         mounted() {
         },
         methods: {}
-    };
+    }
 </script>
-<style>
+
+<style scoped>
 
 </style>
