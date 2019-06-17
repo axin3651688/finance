@@ -150,3 +150,16 @@ export function riskBackAndNotice(params) {
         data: params
     })
 }
+
+
+/**
+ * 组织架构图中点击部门展现详细信息请求
+ * @author cwt
+ */
+export function departmentClickEvent(params) {
+    return request({
+        url: '/zjb/risk/organization/get_data',
+        method: 'post',
+        params: params
+    })
+}
