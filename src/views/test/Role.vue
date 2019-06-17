@@ -1118,6 +1118,9 @@ div.select {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+.pagination .el-pagination {
+    text-align: right ;
+}
 /* 表头背景颜色的设定 */
     .has-gutter tr th {
         background-color: rgb(240, 248, 255) !important;

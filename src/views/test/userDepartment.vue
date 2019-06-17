@@ -7,7 +7,7 @@
         <!-- 查找过滤 -->
         <el-input placeholder="输入关键字进行过滤" v-model="filterText" clearable></el-input>
         <!-- 公司 文字提示 -->
-        <el-tooltip :content="text" placement="top" effect="light">
+        <el-tooltip :content="text" placement="bottom" effect="light">
             <!-- <el-input class="filter_company" @contextmenu.prevent="handleContextMenu" v-model="text" readonly></el-input> -->
             <!-- <p class="filter_company" @contextmenu.prevent="handleContextMenu">{{ text }}</p> -->
             <input type="text"  class="filter_company" @contextmenu.prevent="titleClick" v-model="text" value="1" readonly>
@@ -19,13 +19,13 @@
         :props="defaultProps"
         :default-expand-all="defaultExpandAll"
         :filter-node-method="filterNode"
-        :highlight-current="true"
-        :expand-on-click-node="true"
+        :expand-on-click-node="false"
+        @node-click="nodeClick"
         @node-contextmenu="handleContextMenu"
         ref="tree2">
         </el-tree>
         <!-- 右键菜单 -->
-        <div v-show="menuVisible">
+        <div v-show="menuVisible" class="menuVisible">
             <ul id="menu" class="menu">
                 <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li>
                 <li class="menu__item" v-show="stype != 0" @click="modifyClick"><i class="el-icon-edit-outline modify"></i>修改</li>
@@ -64,8 +64,8 @@
     </div>
 </template>
 <script>
-// 引入部门添加、删除接口
-import {department_add, department_delete} from "~api/cube.js" ;
+// 引入部门添加、删除、修改接口
+import {department_add, department_delete, department_update} from "~api/cube.js" ;
 export default {
     props: {
         text: String,       // 公司文字
@@ -73,6 +73,35 @@ export default {
         newThis: Object     // 父组件的this对象
     },
     data(){
+        // 验证--部门编码 + 部门名称
+        var scodeValue = (rule, value, callback) => { 
+            if (!value) {
+                callback(new Error('部门编码不能为空'));
+            }else{
+                let data = [], is ;
+                data = this.getDataArray(data, this.data) ;
+                is = data.some(res => { return res.id === value }) ;
+                if(is){
+                    callback(new Error('部门编码以重复')); 
+                }else{
+                    callback();
+                }
+            }
+        };
+        var snameValue = (rule, value, callback) => {
+            if (!value) {
+                callback(new Error('部门名称不能为空'));
+            }else{
+                let data = [], is ;
+                data = this.getDataArray(data, this.data) ;
+                is = data.some(res => { return res.sname === value }) ;
+                if(is){
+                    callback(new Error('部门编码以重复')); 
+                }else{
+                    callback();
+                }
+            }
+        };
         return {
             filterText: "",
             defaultExpandAll: true,     // 是否默认全部展开 false：否/ true：是
@@ -97,8 +126,10 @@ export default {
             },
             // 验证
             rules: {
-                scode: [{ required: true, message: '请输入部门编码', trigger: 'blur' }],
-                sname: [{ required: true, message: '请输入部门名称', trigger: 'blur' }]
+                // scode: [{ required: true, message: '请输入部门编码', trigger: 'blur' }],
+                // sname: [{ required: true, message: '请输入部门名称', trigger: 'blur' }]
+                scode: [ { required: true, validator: scodeValue, trigger: 'blur' } ],
+                sname: [ { required: true, validator: snameValue, trigger: 'blur' } ]
             }
         }
     },
@@ -111,6 +142,16 @@ export default {
         }
     },
     methods: {
+        /**
+         * 对树形数据的处理 都放在一个数组里 即把children里的数组数据拿出来
+         */
+        getDataArray(data, ary){
+            ary.forEach(res => {
+                data.push(res) ;
+                if(res.children && res.children.length > 0)this.getDataArray(data, res.children) ;
+            });
+            return data ;
+        },
         /**
          * 对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏
          */
@@ -160,7 +201,7 @@ export default {
             }
             this.form.scode = "" ;
             this.form.sname = "" ;
-            this.form.desc = "" ;
+            this.form.sdesc = "" ;
             this.readonly = false ;
             this.stype = 1 ;
             this.title = "部门添加" ;
@@ -169,13 +210,13 @@ export default {
         /**
          * @description 2. 鼠标右键 菜单 修改按钮
          */
-        modifyClick(MouseEvent){ debugger
+        modifyClick(MouseEvent){ 
             let node = this.nodeValue ;
             if(node != undefined){
                 this.form.spcode = node.spcode || 0 ;
                 this.form.scode = node.scode || 0 ;
                 this.form.sname = node.sname ;
-                this.form.desc = node.sdesc ;
+                this.form.sdesc = node.sdesc || "" ;
             }else {
                 this.form.spcode = 0 ;
             }
@@ -218,6 +259,7 @@ export default {
          */
         riskClick(MouseEvent){
             this.stype = 4 ;
+            this.$message('暂无此功能！')
         },
         /**
          * @description 5. 鼠标右键 菜单 弹框 确认按钮
@@ -267,17 +309,73 @@ export default {
             });
         },
         // 修改确认
-        modifyClick_new(val){
+        modifyClick_new(val){ 
             let node = this.nodeValue ;
             let form = this.form ;
             let $params = this.$store.state.prame.command;
             let me = this ;
-            me.$refs[val].validate((valid) => {
+            me.$refs[val].validate((valid) => { 
                 if (valid) {
-
+                    let vax = { id: $params.company } ;
+                    if(me.getmodifyValue(node,form)){   // true
+                        me.$message({ message: "暂无改动!", type: "warning"}) ;
+                        return false ;
+                    }else{
+                        let data = {
+                            spcode: form.spcode,      // 部门父级
+                            sname: form.sname,        // 部门名称
+                            scode: form.scode,        // 部门编码
+                            scomcode: $params.company,// 所属公司编码
+                            sdesc: form.sdesc         // 部门职责
+                        }
+                        department_update(data).then(res => { 
+                            if(res.data.code === 200){
+                                me.$message({ message: res.data.msg, type: "success" }) ;
+                                me.newThis.getCompanyRight(vax) ;
+                                me.cancelClikc('form') ;
+                            }else{
+                                me.$message.error(res.data.msg) ;
+                            }
+                        }) ;
+                    }
                 } else {
                     return false;
                 }
+            });
+        },
+        // 修改确认 是否有变动 没有变动提示‘ 暂无改动！ ’，有变动则可以修改
+        getmodifyValue(node, form){ 
+            let isTrue = true, isFalse = false ;
+            for(let key in form){
+                if(node["spcode"] == null)node["spcode"] = 0 ;
+                if(node[key] == form[key]) {
+                    isTrue = true ;
+                } else {
+                    return false ;
+                }
+            }
+            return true ;
+        },
+        // 节点被点击时的回调,共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身。
+        nodeClick(data, node, $this){
+            debugger
+            let ary = [], ary2 = [] ;
+            data = [data];
+            this.getnodeClick(data, ary) ;
+            let userArray = this.newThis.userdata ;                  // 父组件用户表的数据
+            let userArray_cloning = this.newThis.userdata_cloning ;  // 父组件用户表数据的克隆体
+            userArray_cloning.forEach((res, index) => {
+                ary.forEach((red, index) => { 
+                    if(res.sdepartmentid == red)ary2.push(res) ;
+                }) ;
+            }) ;
+            this.newThis.userdata = ary2 ;
+        },
+        // 得到点击的节点数据，并且拿出children的数据，如果没有children，则拿自己
+        getnodeClick(data, ary) {
+            data.forEach((res, index) => {
+                ary.push(res.id) ;
+                if(res.children && res.children.length > 0)this.getnodeClick(res.children, ary) ;
             });
         }
     }

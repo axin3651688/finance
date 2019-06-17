@@ -50,6 +50,17 @@ export function department_delete(data) {
 }
 /**
  * name: sjz
+ * 说明：组织管理 部门修改请求接口 /department/update 
+ */
+export function department_update(data) {
+    return request({
+        url: '/zjb/department/update',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
  * 说明：日志管理数据对的请求接口
  * time: 2019/1/18 10:00:00 礼拜五
  * @param {*} data 

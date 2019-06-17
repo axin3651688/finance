@@ -5,7 +5,7 @@
   <div class="userM">
     <el-container class="userM_main">
       <el-aside class="aside" width="350px" :style="asideHeight">
-        <user-department :text="company_title" :data="comtree2" :newThis="me"></user-department>
+        <user-department ref="department" :text="company_title" :data="comtree2" :newThis="me"></user-department>
       </el-aside>
       <el-main>    
 
@@ -62,9 +62,9 @@
           show-overflow-tooltip
         ></el-table-column>
         <template v-if="delButten !== 0 && editButten !== 0  && authorizeButten !== 0" >
-          <el-table-column label="操作" header-align="center" width="380px" align="left">
+          <el-table-column label="操作" header-align="center" align="center">
             <template slot-scope="scope">
-              <template v-if="delButten === 1">
+              <!-- <template v-if="delButten === 1">
                 <template v-if="scope.row.cisenabled === 'Y'">
                   <el-button size="mini" @click="handleDisable(scope.$index, scope.row)" type="warning" plain>禁用</el-button>
                 </template>
@@ -76,20 +76,34 @@
                 <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" type="primary" plain>修改</el-button>
               </template>
               <template v-if="editButten === 1"> 
-                <el-button
-                  size="mini"
-                  @click="handleEditPassword(scope.$index, scope.row)"
-                  type="primary" plain
-                >修改密码</el-button>
+                <el-button size="mini" @click="handleEditPassword(scope.$index, scope.row)" type="primary" plain>修改密码</el-button>
               </template>
-              <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
               <template v-if="authorizeButten === 1"> 
-                <el-button
-                  size="mini"
-                  @click="handleAuthorizeCompany(scope.$index, scope.row)"
-                  type="primary" plain
-                >公司授权</el-button>
-              </template>
+                <el-button size="mini" @click="handleAuthorizeCompany(scope.$index, scope.row)" type="primary" plain>公司授权</el-button>
+              </template> -->
+              <!-- @click="handleEdit(scope.$index, scope.row)" -->
+              <el-dropdown>
+                <span class="el-dropdown-link">
+                  <i class="el-icon-menu el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="el-dropdown-click">
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'Y'" @click.native="handleDisable(scope.$index, scope.row)">
+                      <span ><i class="iconfont icon-jinyong "></i>禁用</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'N'" @click.native="handleAble(scope.$index, scope.row)">
+                      <span ><i class="iconfont icon-qiyong"></i>启用</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEdit(scope.$index, scope.row)">
+                      <span ><i class="el-icon-edit-outline"></i>修改</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEditPassword(scope.$index, scope.row)"> 
+                      <span ><i class="iconfont icon-mima"></i>修改密码</span>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="authorizeButten === 1" @click.native="handleAuthorizeCompany(scope.$index, scope.row)">
+                      <span ><i class="iconfont icon-shouquan"></i>公司授权</span>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
@@ -113,6 +127,9 @@
         :visible.sync="dialogAddUserVisible"
         width="901.5px"
         max-height="60%"
+        :close-on-click-modal="false"
+        :show-close="true"
+        @before-close="cancelClick"
         @close="closeDilog('addUserForm')"
       > 
         <div class="dialog-body">
@@ -155,7 +172,7 @@
                 <el-upload
                 style="lineHeight: 130px;float: left;"
                 class="upload-demo"
-                action="avar/upload/avar"
+                action="/zjb/upload/avar"
                 :auto-upload="false"
                 :show-file-list="false"
                 :data="{suser:addUserForm.suser}"
@@ -273,7 +290,7 @@
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitAddUserForm('addUserForm')">确 定</el-button>
-          <el-button @click="dialogAddUserVisible = false">取 消</el-button>
+          <el-button @click="cancelClick">取 消</el-button>
         </div>
       </el-dialog>
 
@@ -324,14 +341,14 @@
               <el-upload
               style="lineHeight: 130px;float: left;"
               class="upload-demo"
-              action="avar/upload/avar"
+              action="/zjb/upload/avar"
               :auto-upload="false"
               :show-file-list="false"
-              :data="{suser:addUserForm.suser}"
+              :data="{suser:editUserForm.suser}"
               :on-success="handleAvatarSuccess"
               :on-change="changeFile"
               :before-upload="beforeAvatarUpload"
-              ref="uploadPhoto"
+              ref="editPhoto"
               >
                 <el-button size="small" type="primary" plain>点击上传</el-button>
                 <span style="color: #909399 ; fontSize: 12px; marginLeft: 15px;">支持png、jpeg、jpg文件</span>
@@ -642,6 +659,7 @@ export default {
         education: "",        // 教育程度
         professionalTitle: "",  // 专业职称
         currentPosition: "" ,   // 现任职务
+        avatar:""               // 图片
       },
       // usercompany:null,//用户所属公司编码
       //修改密码
@@ -667,7 +685,8 @@ export default {
         currentPosition: "" ,   // 现任职务
         avatar:""           // 图片
       },
-      userdata: [],
+      userdata: [],         // 用户表数据
+      userdata_cloning: [], // 用户表数据克隆
       maxHeight: 600,
       dialogAddUserVisible: false,
       dialogEditPasswordVisible: false,
@@ -777,9 +796,9 @@ export default {
           // { required: true, message: "必填项", trigger: "blur" },
           { required: true, message: "必选项" }
         ],
-        // department: [
-        //   { required: true, message: "必选项" }
-        // ],
+        department: [
+          { required: true, message: "必选项" }
+        ],
         sphone: [
           { required: true, message: "必填项", trigger: "blur" },
           {
@@ -940,7 +959,7 @@ export default {
     this.getCompanyRight(vax) ;
     // 页面大小改变时触发  主要用来自适应页面的布局的 注：一个组件只能写一个页面触发，写多个也只有一个生效
     window.onresize = () => {
-      return (() => { debugger
+      return (() => { 
         window.offsetHeight = document.body.offsetHeight;
         this.offsetHeight = window.offsetHeight;
         this.inputRefresh = document.getElementsByClassName( "input-refresh" )[0].offsetHeight;
@@ -978,7 +997,7 @@ export default {
           scomcode: vax.id 
         }
       }).then(result => { 
-        if (result.status == 200) {
+        if (result.status == 200) { 
           if (result.data.code == 200) { 
             // debugger
             // me.$message({message:'查询成功', type:"success"});
@@ -1083,7 +1102,7 @@ export default {
     /**
      * 文件改变时的回调。
      */
-    changeFile (file,fileList) {
+    changeFile (file,fileList) { 
       //限制上传的图片的大小。
       let me = this,photoUrl = "";
       let imgFile = file.raw;
@@ -1122,7 +1141,7 @@ export default {
     /**
      * 上传头像成功之后的回调
      */
-    handleAvatarSuccess (file) {
+    handleAvatarSuccess (file) { 
       let me = this;
       if(file && file.data.code == 200){
         if(me.editUserForm.suser === this.user.user.userName){
@@ -1180,7 +1199,7 @@ export default {
     submitAddUserForm(formName) {
       //上传图片的请求。
       // this.submitPhotoOfAdd();
-      this.$refs[formName].validate(valid => { debugger
+      this.$refs[formName].validate(valid => { 
         if (valid) {
           const _this = this;
           let addUserForm = _this.addUserForm;
@@ -1200,10 +1219,11 @@ export default {
               cauthorize: addUserForm.cauthorize,   // 授权
               company: addUserForm.company,         // 公司
               sdepartmentid: addUserForm.department,// 部门
-              landscape: addUserForm.landscape,     // 政治面貌
-              education: addUserForm.education,     // 教育程度
-              professionalTitle: addUserForm.professionalTitle,        // 专业职称
-              currentPosition: addUserForm.currentPosition             // 现任职务     
+              /**------------- */
+              spoliticsstatus: addUserForm.landscape,     // 政治面貌
+              squalifications: addUserForm.education,     // 教育程度
+              sprofessionaltitle: addUserForm.professionalTitle,    // 专业职称
+              spresentpost: addUserForm.currentPosition             // 现任职务     
             }
           }).then(result => {
             // if (result.status == 200) {
@@ -1218,14 +1238,12 @@ export default {
               if (result.data.code === 0) {
                 _this.$message.error(result.data.msg);
               } else {
-                _this.$message({
-                  type: "success",
-                  message: result.data.msg
-                });
+                _this.$message({ type: "success", message: result.data.msg });
                 // //上传图片的请求。
                 _this.submitPhotoOfAdd();
                 //重新加载
-                _this.dialogAddUserVisible = false;
+                // _this.dialogAddUserVisible = false;
+                _this.cancelClick() ;
                 _this.fetchRemoteData(_this.currentPage, _this.pagesize);
               }
             } else {
@@ -1248,10 +1266,11 @@ export default {
     /**
      * 新增用户时，上传图片的请求
      */
-    submitPhotoOfAdd () {
+    submitPhotoOfAdd () { 
       let me = this,$refId = "";
       if(this.dialogEditUserVisible){
         $refId = "editPhoto"
+        // $refId = "uploadPhoto";
       }else if (this.dialogAddUserVisible) {
         $refId = "uploadPhoto";
       }
@@ -1290,15 +1309,16 @@ export default {
         this.$message({ message: "没有修改内容！", type: "warning" });
         return;
       }
-      this.$refs[formName].validate(valid => { 
+      this.$refs[formName].validate(valid => {  
         if (valid) {
           const _this = this;
           let editUserForm = _this.editUserForm;
-          // return false;
+          // return false;this.editPhotoUrl = row.avatar;
           request({
             url: "/zjb/sys/user/update",
             method: "post",
             data: {
+              // avatar: _this.editPhotoUrl,                 // 图片
               suser: editUserForm.suser,                  // 用户名
               struename: editUserForm.struename,          // 真实姓名
               csex: editUserForm.csex,                    // 性别
@@ -1309,20 +1329,18 @@ export default {
               cauthorize: editUserForm.cauthorize,        // 授权
               company: editUserForm.company,              // 公司
               sdepartmentid: editUserForm.department,     // 部门
-              landscape: editUserForm.landscape,          // 政治面貌 
-              education: editUserForm.education,          // 教育程度
-              professionalTitle: editUserForm.professionalTitle,        // 专业职称
-              currentPosition: editUserForm.currentPosition             // 现任职务     
+              /**-------------- */ 
+              spoliticsstatus: editUserForm.landscape,     // 政治面貌
+              squalifications: editUserForm.education,     // 教育程度
+              sprofessionaltitle: editUserForm.professionalTitle,    // 专业职称
+              spresentpost: editUserForm.currentPosition             // 现任职务      
             }
           }).then(result => {
             if (result.status == 200) {
               if (result.data.code === 0) {
                 _this.$message.error(result.data.msg);
               } else {
-                _this.$message({
-                  type: "success",
-                  message: result.data.msg
-                });
+                _this.$message({ type: "success", message: result.data.msg });
                 //修改图片的请求。
                 _this.submitPhotoOfAdd();
                 //重新加载
@@ -1409,6 +1427,19 @@ export default {
       this.editActiveForm? this.editActiveForm[field] = nowVal:this.editActiveForm = {},this.editActiveForm[field] = nowVal;
     },
     /**
+     * 添加弹出框取消按钮 dialogAddUserVisible = false
+     */
+    cancelClick(){
+      let cc = this.addUserForm ;
+      for(let key in cc){
+        if(key!="cauthorize" && key!="cisenabled" && key!="company" && key!="csex" && key!="department") {
+            cc[key] = "" ;
+        }
+      }
+      this.$refs["addUserForm"].resetFields();
+      this.dialogAddUserVisible = false;
+    },
+    /**
      * @description 添加用户
      */
     handleAdd() {
@@ -1456,9 +1487,10 @@ export default {
       this.editUserForm.avatar = row.avatar;
       this.editUserForm.department = row.sdepartmentid;
       // 到时修改--------
-      // this.editUserForm.education = row.seducation ;    // 教育程度
-      // this.editUserForm.professionalTitle = row.sprofessionalTitle ;    // 专业职称
-      // this.editUserForm.currentPosition = row.scurrentPosition ;        // 现任职务
+      this.editUserForm.landscape = row.spoliticsstatus ;     // 政治面貌
+      this.editUserForm.education = row.squalifications ;     // 教育程度
+      this.editUserForm.professionalTitle = row.sprofessionaltitle ;    // 专业职称
+      this.editUserForm.currentPosition = row.spresentpost ;            // 现任职务
       //修改头像图片
       this.editPhotoUrl = row.avatar;
       //把当前点击的用户绑定到this上
@@ -1473,16 +1505,21 @@ export default {
         semail: row.semail,
         company: row.company,
         department: row.sdepartmentid,
-        avatar: this.imgFile || row.avatar
+        avatar: this.imgFile || row.avatar,
+        landscape: row.spoliticsstatus ,     // 政治面貌
+        education: row.squalifications ,     // 教育程度
+        professionalTitle: row.sprofessionaltitle ,    // 专业职称
+        currentPosition: row.spresentpost              // 现任职务
       };
     },
     /**
      * @description 刷新
      */
-    handleRefresh() {
+    handleRefresh() { debugger
       let _this = this;
       this.searchForm.search = "";
       _this.findAll(_this.currentPage, _this.pagesize);
+      let cc = this.$refs["department"] ;
     },
     /**
      * @description 修改密码 zb
@@ -1774,6 +1811,7 @@ export default {
           if(result.data.data){
             const data = result.data.data;
             _this.userdata = data.datas;
+            _this.userdata_cloning = _this.userdata ;
             _this.allNum = data.total;
           }else{
             _this.userdata = [];
@@ -1952,6 +1990,21 @@ export default {
     margin-top: 10px;
     padding-top: 21px;
 }
+.pagination .el-pagination {
+    text-align: right ;
+}
+.el-dropdown-link .el-icon--right {
+    font-size: 18px ;
+    cursor: pointer	;
+}
+.el-dropdown-link .el-icon--right:hover { color: #1790ff }
+/* 表格里的按钮图标 */
+.el-dropdown-click li span i { padding-right: 5px; }
+.el-dropdown-click li span .icon-jinyong { color: #ffd04b; }
+.el-dropdown-click li span .icon-qiyong { color: #179800; }
+.el-dropdown-click li span .el-icon-edit-outline { color: #ff0000; }
+.el-dropdown-click li span .icon-mima { color: #ffd000; }
+.el-dropdown-click li span .icon-shouquan { color: #1790ff; }
 /* 表头背景颜色的设定 */
     .has-gutter tr th {
         background-color: rgb(240, 248, 255) !important;
