@@ -159,7 +159,7 @@ export default {
                     return "textClass02";
                 } else if (it.nlevel == "3") {
                     return "textClass03";
-                }else {
+                } else {
                     return "textClass01";
                 }
             } else {

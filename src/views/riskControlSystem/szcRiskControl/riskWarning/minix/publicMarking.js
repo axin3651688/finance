@@ -4,8 +4,29 @@
 import {
     groupQuery
 } from '~api/szcRiskControl/riskControl.js'
+import { mapGetters } from "vuex";
 import { findThirdPartData } from "~api/interface"
 export default {
+    /**
+     * 计算属性。
+     */
+    computed: {
+        ...mapGetters(["year", "month", "company"])
+    },
+    watch: {
+        /**
+         * 监听公司
+         */
+        company(newValue, oldValue) {
+            this.updateData();
+        },
+        year(newValue, oldValue) {
+            this.updateData();
+        },
+        month(newValue, oldValue) {
+            this.updateData();
+        }
+    },
     methods: {
         /**
          * 后台接口直接查询数据。

@@ -72,7 +72,7 @@
             <el-row>
                 <el-col :span="24">
                     <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                        <threeHeaderTable :tableData.sync="ManyTableData" :columns.sync="manyColumns" :allData.sync="resData"></threeHeaderTable>
                     </div>
                 </el-col>
             </el-row>
@@ -81,14 +81,16 @@
 </template>
 <script>
     import groupGauge from "./../echarts/groupGauge.vue"
-    import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
+    // import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
+    import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     export default {
         name: "treeTableDemo",
         components: {
             groupGauge,
-            singleTable,
-            groupRadar
+            // singleTable,
+            groupRadar,
+            threeHeaderTable
         },
         data() {
             return {
@@ -113,17 +115,32 @@
                 gaugeMiddleLeft:[8,8],
                 gaugeMiddleRight:[8,8],
                 tableData:[],
-                columns:[]
+                columns:[],
+                ManyTableData:[],//多表头数据
+                manyColumns:[],//多表头列配置
+                resData:{}
             }
         },
         created() {
-            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
+                    debugger;
                     me.tableData = res.data.rows;
-                    me.columns = res.data.columns
+                    me.columns = res.data.columns;
+                    me.manyColumns = res.data.manyColumns;
+                    me.ManyTableData = res.data.manyRows;
+                    me.resData = res.data;
+                    // me.updateData();
                 }
             });
+            // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            // this.axios.get(url).then(res => {
+            //     if(res.data.code == 200) {
+            //         me.tableData = res.data.rows;
+            //         me.columns = res.data.columns
+            //     }
+            // });
         },
         mounted() {},
         methods: {}
@@ -136,4 +153,39 @@
     .select_company {
         width: 55%;
     }
+</style>
+<style lang="scss" scoped>
+  .el-table thead.is-group th {
+    background: none;
+  }
+  .el-table thead.is-group tr:first-of-type th:first-of-type {
+    border-bottom: none;
+  }
+  .el-table thead.is-group tr:first-of-type th:first-of-type:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 75px; /*这里需要自己调整，根据td的宽度和高度*/
+    top: 0;
+    left: 0;
+    background-color: grey;
+    opacity: 0.3;
+    display: block;
+    transform: rotate(-53deg); /*这里需要自己调整，根据线的位置*/
+    transform-origin: top;
+  }
+  .el-table thead.is-group tr:nth-child(2) th:first-of-type:before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 75px; /*这里需要自己调整，根据td的宽度和高度*/
+    bottom: 0;
+    right: 0;
+    background-color: grey;
+    opacity: 0.3;
+    display: block;
+    transform: rotate(-54deg); /*这里需要自己调整，根据线的位置*/
+    transform-origin: bottom;
+    // background:red;
+  }
 </style>

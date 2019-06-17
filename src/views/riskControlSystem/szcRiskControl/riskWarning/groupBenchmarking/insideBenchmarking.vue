@@ -20,6 +20,9 @@
     import treeTable from "@v/riskControlSystem/publicRiskControl/treeTable/treeTable.vue"
     // import router from "@v/layout/router"
     import transverseBar from "./../echarts/transverseBar.vue"
+    import {
+        groupQuery
+    } from '~api/szcRiskControl/riskControl.js'
     import { findThirdPartData } from "~api/interface"
     export default {
         name: "treeTableDemo",
@@ -39,10 +42,11 @@
             me.axios.get('/cnbi/json/source/tjsp/szcJson/risk/insideBenchmarking.json').then(res => {
                 if(res.data.code == 200){
                     me.columns = res.data.columns;
-                    let judgeParams = {
-                        sqlId:"105"
-                    };
-                    me.queryDataPublic(judgeParams);
+                    me.updateData();
+                    // let judgeParams = {
+                    //     sqlId:"105"
+                    // };
+                    // me.queryDataPublic(judgeParams);
                     // findThirdPartData().then(res => {
                     //     if(res.data.code == 200){
 
@@ -62,6 +66,53 @@
             }
         },
         methods: {
+            /**
+             * 后台接口直接查询数据。
+             */
+            queryDataOfBackstage(judgeParams) {
+                debugger;
+                let me = this;
+                let params = judgeParams.params;
+                groupQuery(params).then(res => {
+                    if (res.data.code == 200) {
+                        me.tableData = res.data.data;
+                        me.chartData = res.data.data;
+                        me.treeData = me.transformationTreeData(res.data.data);
+                        // me.queryBackstageDataAfter(res.data.data, judgeParams);
+                    } else if (res.data.code == 1001) {
+                        me.tableData = [];
+                        me.queryBackstageDataAfter([], judgeParams);
+                    }
+                });
+            },
+            /**
+             * 更新数据。
+             */
+            updateData(){
+                let me =this,storeParams = me.$store.getters,company = storeParams.company,year = storeParams.year,
+                    month = storeParams.month,period = "",monthStr = "";
+                if(month > 9) {
+                    period = year + "" + month;
+                    monthStr = "" + month;
+                }else {
+                    period = year + "0" + month;
+                    monthStr = "0" + month;
+                }
+                let judgeParams = {
+                    id:"insideBenchmarking",
+                    text:"内部对标",
+                    params:{
+                        company:company,
+                        period:period,
+                        indicator:"'19','20','53','120','21','121','133'",
+                        fact:'B',
+                        year:year,
+                        month:monthStr,
+                        sqlKey:"RiskWarning.nbdbs"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
+            },
             /**
              * 查询数据的入口
              * @author szc 2019年6月4日16:55:40
