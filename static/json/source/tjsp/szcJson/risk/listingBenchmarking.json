@@ -1,0 +1,222 @@
+{
+    "code": 200,
+    "id": "riskControl",
+    "text": "风险管控",
+    "columns": [{
+            "id": "sname",
+            "type": "string",
+            "text": "指标名称",
+            "align": "center",
+            "width": "180"
+        },
+        {
+            "id": "a",
+            "type": "string",
+            "text": "优秀值",
+            "align": "center"
+        },
+        {
+            "id": "b",
+            "type": "string",
+            "text": "良好值",
+            "align": "center",
+            "htmlType": "text"
+        },
+        {
+            "id": "c",
+            "type": "string",
+            "text": "平均值",
+            "align": "center"
+        },
+        {
+            "id": "d",
+            "type": "string",
+            "text": "较低值",
+            "align": "center"
+        },
+        {
+            "id": "e",
+            "type": "string",
+            "text": "较差值",
+            "align": "center"
+        },
+        {
+            "id": "v",
+            "type": "string",
+            "text": "企业分值",
+            "align": "center"
+        },
+        {
+            "id": "grade",
+            "type": "string",
+            "text": "评级",
+            "align": "center"
+        },
+        {
+            "id": "score",
+            "type": "string",
+            "text": "得分",
+            "align": "center"
+        }
+    ],
+    "rows": [],
+    "manyColumns": [{
+            "id": "sm",
+            "type": "string",
+            "text": "正向单项指标打分及计算说明",
+            "align": "center",
+            "children": [{
+                "id": "fxqsj",
+                "type": "string",
+                "text": "分析期数据=X,行业参数：优秀值=Y1，良好值=Y2，平均值=Y3，较低值=Y4，较差值=Y5",
+                "align": "center",
+                "children": [{
+                        "id": "E",
+                        "type": "string",
+                        "text": "较差值",
+                        "align": "center",
+                        "width": "90",
+                        "children": [{
+                                "id": "E2",
+                                "type": "string",
+                                "text": "较差值",
+                                "align": "center"
+                            },
+                            {
+                                "id": "E1",
+                                "type": "string",
+                                "text": "较差值",
+                                "align": "center"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "xm",
+                        "type": "string",
+                        "text": "",
+                        "align": "center",
+                        "width": "180"
+                    },
+                    {
+                        "id": "A",
+                        "type": "string",
+                        "text": "优秀值",
+                        "align": "center",
+                        "width": "180",
+                        "children": [{
+                                "id": "A2",
+                                "type": "string",
+                                "text": "",
+                                "align": "center"
+                            },
+                            {
+                                "id": "A1",
+                                "type": "string",
+                                "text": "",
+                                "align": "center"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "B",
+                        "type": "string",
+                        "text": "良好值",
+                        "align": "center",
+                        "htmlType": "text",
+                        "width": "90",
+                        "children": [{
+                                "id": "B2",
+                                "type": "string",
+                                "text": "良好值",
+                                "align": "center"
+                            },
+                            {
+                                "id": "B1",
+                                "type": "string",
+                                "text": "良好值",
+                                "align": "center"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "C",
+                        "type": "string",
+                        "text": "平均值",
+                        "children": [{
+                                "id": "C2",
+                                "type": "string",
+                                "text": "平均值",
+                                "align": "center"
+                            },
+                            {
+                                "id": "C1",
+                                "type": "string",
+                                "text": "平均值",
+                                "align": "center"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "D",
+                        "type": "string",
+                        "text": "较低值",
+                        "width": "180",
+                        "children": [{
+                                "id": "D2",
+                                "type": "string",
+                                "text": "较低值",
+                                "align": "center"
+                            },
+                            {
+                                "id": "D1",
+                                "type": "string",
+                                "text": "较低值",
+                                "align": "center"
+                            }
+                        ]
+                    }
+                ]
+            }]
+        },
+        {
+            "id": "cs01",
+            "type": "string",
+            "text": "测试01",
+            "align": "center",
+            "children": [{
+                "id": "cs",
+                "type": "string",
+                "text": "测试",
+                "align": "center"
+            }]
+        }
+    ],
+    "displayRow": 3,
+    "manyRows": [{
+            "xm": "区间",
+            "A1": "X>Y1",
+            "A2": "X=Y1",
+            "B1": "Y2<X<Y1",
+            "B2": "X=Y2",
+            "C1": "Y3<X<Y2",
+            "C2": "X=Y3",
+            "D1": "Y4<X<Y3",
+            "D2": "X=Y4",
+            "E1": "Y5<X<Y4",
+            "E2": "X=Y5"
+        },
+        {
+            "xm": "分数",
+            "A1": "10",
+            "A2": "9",
+            "B1": "8",
+            "B2": "7",
+            "C1": "6",
+            "C2": "5",
+            "D1": "4",
+            "D2": "3",
+            "E1": "2",
+            "E2": "1"
+        }
+    ]
+}

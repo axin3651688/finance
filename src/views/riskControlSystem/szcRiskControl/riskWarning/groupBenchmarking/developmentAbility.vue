@@ -86,11 +86,11 @@
                     me.manyColumns = res.data.manyColumns;
                     me.ManyTableData = res.data.manyRows;
                     me.resData = res.data;
-                    let judgeParams = {
-                        id:"development",
-                        text:"发展能力",
-                        sqlId:"107"
-                    };
+                    // let judgeParams = {
+                    //     id:"development",
+                    //     text:"发展能力",
+                    //     sqlId:"107"
+                    // };
                     // me.queryDataPublic(judgeParams);
                     me.updateData();
                     
