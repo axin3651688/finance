@@ -88,6 +88,12 @@ const router = new Router({
                 import ('@v/layout/login/Login'),
         },
         {
+            path: '/cubes',
+            name: 'cubes',
+            component: () =>
+                import ('@v/test/CubeClass'),
+        },
+        {
             path: '*',
             name: '/404',
             component: () =>

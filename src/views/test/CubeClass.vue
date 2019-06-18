@@ -257,7 +257,7 @@ export default {
 
 
     async initView() {
-      this.cube =  await CnbiCube.getCubeById(this.cube.id);
+      this.cube =  await CnbiCube.getCubeById(295 || this.cube.id); // 用295测试
      // if(this.cube.id === 288){
        // this.cube.fixed = 1;
       //}
