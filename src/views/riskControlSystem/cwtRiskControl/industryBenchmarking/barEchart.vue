@@ -1,6 +1,6 @@
 <template>
     <div>
-        <chart :options.sync="option"/>
+        <chart :options.sync="option" style="height: 500px; width: 90%"/>
     </div>
 
 </template>
@@ -12,7 +12,8 @@
         props: {
             barData: Array,
             dataFresh: Boolean,
-            selectedName: String
+            selectedName: String,
+            barChartType: String
         },
         watch: {
             dataFresh() {
@@ -25,7 +26,7 @@
                     color: ['#3398DB'],
                     title: {
                         show: true,                                                //显示策略，默认值true,可选为：true（显示） | false（隐藏）
-                        text: '行业排名情况',                                       //主标题文本，'\n'指定换行
+                        text: '',                                                  //主标题文本，'\n'指定换行
                         x: 'center',                                               //水平安放位置，默认为'left'，可选为：'center' | 'left' | 'right' | {number}（x坐标，单位px）
                         y: 'top',                                                  //垂直安放位置，默认为top，可选为：'top' | 'bottom' | 'center' | {number}（y坐标，单位px）
                         backgroundColor: 'rgba(0,0,0,0)',                          //标题背景颜色，默认'rgba(0,0,0,0)'透明
@@ -44,7 +45,7 @@
                     grid: {
                         left: '3%',
                         right: '4%',
-                        bottom: '3%',
+                        bottom: '1%',
                         containLabel: true
                     },
                     xAxis: {
@@ -60,14 +61,31 @@
                         name: '指标数值',
                     },
                     series: {
-                        name: '直接访问',
+                        name: '',
                         type: 'bar',
                         barWidth: '60%',
-                        label: {   // 图形上的文本标签
-                            show: true,
-                            position: 'insideTop', // 相对位置
-                            rotate: 0,  // 旋转角度
-                            color: '#eee'
+                        // barMinHeight: 10,//柱状图的最小高度
+                        itemStyle: {
+                            normal: {
+                                label: {   // 图形上的文本标签
+                                    show: true,
+                                    position: 'top', // 相对位置
+                                    rotate: 0,  // 旋转角度
+                                    color: '#000',
+                                    fontSize:16,
+
+                                    /**
+                                     *
+                                     * 这里的处理将柱状图上方显示的数值改成对应的index+ 1 用来显示排序，
+                                     * 不过要在数据查询的时候添加了排序处理，不然就是乱的
+                                     * */
+                                    formatter(data){
+                                        debugger;
+                                        let _index = data.dataIndex;
+                                        return _index + 1;
+                                    }
+                                },
+                            }
                         },
                         data: []//数据
                     }
@@ -84,8 +102,6 @@
              * 初始化柱状图
              */
             initBarChart() {
-                debugger;
-
                 this.option.xAxis.data = [];
                 this.option.series.data = [];
 
@@ -100,7 +116,15 @@
                         yAxisData.push(item.fact_a)
                     }
                 });
-                _this.option.title.text = _this.selectedName + '行业排名情况';
+
+                if (this.barChartType === 'city') {
+                    _this.option.title.text = _this.selectedName + '市企排名情况';
+                    _this.option.xAxis.name = '集团';
+                } else {
+                    _this.option.title.text = _this.selectedName + '行业排名情况';
+                    _this.option.xAxis.name = '省份';
+                }
+                _this.option.series.name = _this.selectedName;
             }
         }
     }

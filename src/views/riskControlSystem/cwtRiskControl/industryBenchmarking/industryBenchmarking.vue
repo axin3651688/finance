@@ -4,7 +4,7 @@
             <span>指标选择：</span>
             <div class="top-select">
                 <el-select
-                        v-model="selectedOption.sname"
+                        v-model="selectedName"
                         placeholder="请选择"
                         @change="optionChanged"
                 >
@@ -23,6 +23,7 @@
                 :barData="barData"
                 :dataFresh="dataFresh"
                 :selectedName="selectedName"
+                :barChartType="barChartType"
         >
         </bar-echart>
     </div>
@@ -31,7 +32,8 @@
 <script>
     import {getAllHYZB, getHYZBData} from '~api/cwtRiskControl/riskControlRequest'
     import cwtPublicJS from "../mixin/cwtPublicJS"
-    import barEchart from './barEchart'
+    import barEchart from '../industryBenchmarking/barEchart'
+    import {mapGetters} from "vuex"
 
     export default {
         name: "industryBenchmarking",
@@ -39,18 +41,40 @@
         components: {
             barEchart
         },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                // this.getAllIndustry();
+                this.optionChanged();
+            },
+            year(newValue, oldValue) {
+                // this.getAllIndustry();
+                this.optionChanged();
+            },
+            month(newValue, oldValue) {
+                // this.getAllIndustry();
+                this.optionChanged();
+            }
+        },
         props: {},
         data() {
             return {
-                selectedOption: {},
                 options: [],
                 barData: [],
                 dataFresh: false,
-                selectedName: ''
+                selectedscode: '',
+                selectedName: '利润总额',
+                barChartType:'ndustry'
             }
         },
         created() {
-            this.getAllIndustry()
+            this.getAllIndustry();
+            this.optionChanged();
         },
         mounted() {
         },
@@ -61,14 +85,19 @@
              * @param value
              */
             optionChanged(value) {
-                debugger;
-                let params = this.getSendParams(value);
+                this.selectedscode = value;
+
+                let _scode = this.selectedscode || '1001';
+                let params = this.getSendParams(_scode);
                 this.getBarData(params);
 
                 let _selectedOption = this.options.filter((item) => {
-                    return item.scode === value;
+                    return item.scode === _scode;
                 });
-                this.selectedName = _selectedOption[0].sname;
+                if(_selectedOption[0]){
+                    this.selectedName = _selectedOption[0].sname;
+                }
+
             },
 
             /**

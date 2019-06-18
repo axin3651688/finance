@@ -186,3 +186,16 @@ export function getHYZBData(params) {
         params: params
     })
 }
+
+
+/**
+ * 获取预警报告中表格一的数据
+ * @author cwt
+ */
+export function getwarningReportTable1Data(params) {
+    return request({
+        url: '/zjb/risk_warning_report/query_data',
+        method: 'post',
+        params: params
+    })
+}
