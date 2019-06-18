@@ -29,14 +29,23 @@
             >
                 <!--<span>{{ diaData }}}</span>-->
                 <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
-                <dialog-component
+                <!--<dialog-component
                         :dialogData.sync="dialogData"
                         :dataChanged="dataChanged"
                         :dialogState="dialogState"
                         @riskFeedSuccess="riskFeedSuccess"
                         @dataMessageChange="dataMessageChange"
                 >
-                </dialog-component>
+                </dialog-component>-->
+
+                <risk-feed-back-component
+                        :dialogData.sync="dialogData"
+                        :dataChanged="dataChanged"
+                        @dataMessageChange="dataMessageChange"
+                        @riskFeedSuccess="riskFeedSuccess"
+                >
+                </risk-feed-back-component>
+
             </el-dialog>
         </div>
     </div>
@@ -50,13 +59,16 @@
     import {findThirdPartData} from "~api/interface"
     import {updateInstruction} from "~api/szcRiskControl/riskControl"
 
+    import riskFeedBackComponent from './riskFeedBackComponent'
+
 
     export default {
         name: "riskBack",
         components: {
             dialogComponent,
             stable,
-            publicRiskSelect
+            publicRiskSelect,
+            riskFeedBackComponent
         },
         computed: {
             ...mapGetters(["year", "month", "company"])
@@ -340,10 +352,10 @@
              * @param data
              */
             dataFormat(data) {
-                this.pageDataFresh = false;//销毁组件
-                this.$nextTick(() => {
-                    this.pageDataFresh = true;//重建组件
-                });
+                // this.pageDataFresh = false;//销毁组件
+                // this.$nextTick(() => {
+                //     this.pageDataFresh = true;//重建组件
+                // });
 
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
