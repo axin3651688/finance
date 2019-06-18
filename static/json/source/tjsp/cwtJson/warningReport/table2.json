@@ -1,0 +1,42 @@
+{
+  "code": 200,
+  "id": "table2",
+  "text": "风险预警报告中的第二个表格",
+  "columns": [
+    {
+      "id": "sname",
+      "type": "string",
+      "text": "综合评级",
+      "align": "left",
+      "width":400
+    },
+    {
+      "id": "num",
+      "type": "string",
+      "text": "公司数量",
+      "align": "right",
+      "width":200
+    },
+    {
+      "id": "zb",
+      "type": "string",
+      "text": "占比",
+      "align": "right",
+      "width":200
+    },
+    {
+      "id": "company",
+      "type": "string",
+      "text": "明细",
+      "align": "center"
+    }
+  ],
+  "rows": [
+    {
+      "sname": "非常良好[B+]",
+      "num": "100",
+      "zb": "20%",
+      "company": "公司A,公司B"
+    }
+  ]
+}

@@ -159,11 +159,26 @@ const router = new Router({
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/organization/organization.vue')
                 },
+                //预警报告
                 {
                     path: '/warningReport',
                     name: 'warningReport',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/warningReport/warningReport.vue')
+                },
+                //行业对标
+                {
+                    path: '/industryBenchmarking',
+                    name: 'industryBenchmarking',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/industryBenchmarking/industryBenchmarking.vue')
+                },
+                //市企对标
+                {
+                    path: '/cityBenchmarking',
+                    name: 'cityBenchmarking',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/cityBenchmarking/cityBenchmarking.vue')
                 }
             ]
         },
