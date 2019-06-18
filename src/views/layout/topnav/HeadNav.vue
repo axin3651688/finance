@@ -78,7 +78,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="messageValue" @click.native="messageHandle">
+      <el-badge :value="messageValue" @click.native="messageHandle" v-if="false">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
       <span class="username">

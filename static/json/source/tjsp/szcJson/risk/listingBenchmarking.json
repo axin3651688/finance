@@ -61,136 +61,123 @@
     ],
     "rows": [],
     "manyColumns": [{
-            "id": "sm",
+        "id": "sm",
+        "type": "string",
+        "text": "正向单项指标打分及计算说明",
+        "align": "center",
+        "children": [{
+            "id": "fxqsj",
             "type": "string",
-            "text": "正向单项指标打分及计算说明",
+            "text": "分析期数据=X,行业参数：优秀值=Y1，良好值=Y2，平均值=Y3，较低值=Y4，较差值=Y5",
             "align": "center",
             "children": [{
-                "id": "fxqsj",
-                "type": "string",
-                "text": "分析期数据=X,行业参数：优秀值=Y1，良好值=Y2，平均值=Y3，较低值=Y4，较差值=Y5",
-                "align": "center",
-                "children": [{
-                        "id": "E",
-                        "type": "string",
-                        "text": "较差值",
-                        "align": "center",
-                        "width": "90",
-                        "children": [{
-                                "id": "E2",
-                                "type": "string",
-                                "text": "较差值",
-                                "align": "center"
-                            },
-                            {
-                                "id": "E1",
-                                "type": "string",
-                                "text": "较差值",
-                                "align": "center"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "xm",
-                        "type": "string",
-                        "text": "",
-                        "align": "center",
-                        "width": "180"
-                    },
-                    {
-                        "id": "A",
-                        "type": "string",
-                        "text": "优秀值",
-                        "align": "center",
-                        "width": "180",
-                        "children": [{
-                                "id": "A2",
-                                "type": "string",
-                                "text": "",
-                                "align": "center"
-                            },
-                            {
-                                "id": "A1",
-                                "type": "string",
-                                "text": "",
-                                "align": "center"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "B",
-                        "type": "string",
-                        "text": "良好值",
-                        "align": "center",
-                        "htmlType": "text",
-                        "width": "90",
-                        "children": [{
-                                "id": "B2",
-                                "type": "string",
-                                "text": "良好值",
-                                "align": "center"
-                            },
-                            {
-                                "id": "B1",
-                                "type": "string",
-                                "text": "良好值",
-                                "align": "center"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "C",
-                        "type": "string",
-                        "text": "平均值",
-                        "children": [{
-                                "id": "C2",
-                                "type": "string",
-                                "text": "平均值",
-                                "align": "center"
-                            },
-                            {
-                                "id": "C1",
-                                "type": "string",
-                                "text": "平均值",
-                                "align": "center"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "D",
-                        "type": "string",
-                        "text": "较低值",
-                        "width": "180",
-                        "children": [{
-                                "id": "D2",
-                                "type": "string",
-                                "text": "较低值",
-                                "align": "center"
-                            },
-                            {
-                                "id": "D1",
-                                "type": "string",
-                                "text": "较低值",
-                                "align": "center"
-                            }
-                        ]
-                    }
-                ]
-            }]
-        },
-        {
-            "id": "cs01",
-            "type": "string",
-            "text": "测试01",
-            "align": "center",
-            "children": [{
-                "id": "cs",
-                "type": "string",
-                "text": "测试",
-                "align": "center"
-            }]
-        }
-    ],
+                    "id": "E",
+                    "type": "string",
+                    "text": "较差值",
+                    "align": "center",
+                    "width": "90",
+                    "children": [{
+                            "id": "E2",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "E1",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        }
+                    ]
+                },
+                {
+                    "id": "xm",
+                    "type": "string",
+                    "text": "",
+                    "align": "center",
+                    "width": "180"
+                },
+                {
+                    "id": "A",
+                    "type": "string",
+                    "text": "优秀值",
+                    "align": "center",
+                    "width": "180",
+                    "children": [{
+                            "id": "A2",
+                            "type": "string",
+                            "text": "",
+                            "align": "center"
+                        },
+                        {
+                            "id": "A1",
+                            "type": "string",
+                            "text": "",
+                            "align": "center"
+                        }
+                    ]
+                },
+                {
+                    "id": "B",
+                    "type": "string",
+                    "text": "良好值",
+                    "align": "center",
+                    "htmlType": "text",
+                    "width": "90",
+                    "children": [{
+                            "id": "B2",
+                            "type": "string",
+                            "text": "良好值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "B1",
+                            "type": "string",
+                            "text": "良好值",
+                            "align": "center"
+                        }
+                    ]
+                },
+                {
+                    "id": "C",
+                    "type": "string",
+                    "text": "平均值",
+                    "children": [{
+                            "id": "C2",
+                            "type": "string",
+                            "text": "平均值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "C1",
+                            "type": "string",
+                            "text": "平均值",
+                            "align": "center"
+                        }
+                    ]
+                },
+                {
+                    "id": "D",
+                    "type": "string",
+                    "text": "较低值",
+                    "width": "180",
+                    "children": [{
+                            "id": "D2",
+                            "type": "string",
+                            "text": "较低值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "D1",
+                            "type": "string",
+                            "text": "较低值",
+                            "align": "center"
+                        }
+                    ]
+                }
+            ]
+        }]
+    }],
     "displayRow": 3,
     "manyRows": [{
             "xm": "区间",
