@@ -26,22 +26,20 @@
                                 :width="item.width"
                         >
                             <template slot-scope="scope">
-                                <!--<template v-if="item.id === 'company'">
-                                    <a style="color: #2d8cf0" @click="companyClickEvent(scope)">{{ scope.row[scope.column.property] }}</a>
-                                </template>-->
-
                                 <template v-if="item.id === 'company'">
-                                    <template v-for="(com, index) of scope.row[scope.column.property].split(',')">
-                                        &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com}}</a>
+
+                                    <template v-if="scope.row[scope.column.property]">
+                                        <template v-for="(com, index) of scope.row[scope.column.property].split(',')">
+                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com}}</a>
+                                        </template>
                                     </template>
+
                                 </template>
 
                                 <template v-else>
                                     {{ scope.row[scope.column.property] }}
                                 </template>
                             </template>
-
-
                         </el-table-column>
                     </template>
                 </el-table-column>

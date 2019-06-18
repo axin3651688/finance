@@ -20,7 +20,7 @@ export default {
         let me = this;
         let xtype = me.item && me.item.xtype;
         if (me.item && me.item.listeners) {
-            debugger;
+            // debugger;
             me.item.listeners.forEach(listener => {
                 if (listener.type) {
                     if (xtype === "chart" || xtype === "bi-chart") {
@@ -78,7 +78,7 @@ export default {
          * 图形事件处理
          */
         chartEventHandler(listener) {
-            debugger;
+            // debugger;
             let me = this,
                 tabTitleObj = "";
             this.$children[0].chart.on(listener.type, function(params) {
@@ -140,7 +140,7 @@ export default {
          * unshift()方法是向数组的开头添加一个或多个元素
          */
         addTab(params, listener, bb) {
-            debugger;
+            // debugger;
             let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
             //判断指标分析的穿透
             if (!module.items) {

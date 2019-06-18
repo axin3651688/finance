@@ -89,7 +89,7 @@ export default {
          */
         getDateNowYMD(data) {
 
-            if(typeof data === 'string'){
+            if (typeof data === 'string') {
                 data = data.replace(/-/g, '/');
                 data = new Date(data);
             }
@@ -127,7 +127,7 @@ export default {
             let _this = this,
                 _getter = _this.$store.getters;
             return _getter.year;
-        },/**
+        }, /**
          * 获取期间
          * @returns {string|string}
          */
@@ -142,5 +142,30 @@ export default {
             }
             return month;
         },
+
+
+        /**
+         * 将阿拉伯数字转成中文数字
+         * @param num
+         */
+        numberToChineseString(num) {
+            let changeNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']; //changeNum[0] = "零"
+            let unit = ["", "十", "百", "千", "万"];
+            num = parseInt(num);
+            let getWan = (temp) => {
+                let strArr = temp.toString().split("").reverse();
+                let newNum = "";
+                for (var i = 0; i < strArr.length; i++) {
+                    newNum = (i === 0 && strArr[i] === 0 ? "" : (i > 0 && strArr[i] === 0 && strArr[i - 1] === 0 ? "" : changeNum[strArr[i]] + (strArr[i] === 0 ? unit[0] : unit[i]))) + newNum;
+                }
+                return newNum;
+            };
+            let overWan = Math.floor(num / 10000);
+            let noWan = num % 10000;
+            if (noWan.toString().length < 4) noWan = "0" + noWan;
+            return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
+        }
+
+
     },
 }

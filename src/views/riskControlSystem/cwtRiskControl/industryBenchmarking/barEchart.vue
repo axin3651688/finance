@@ -80,7 +80,6 @@
                                      * 不过要在数据查询的时候添加了排序处理，不然就是乱的
                                      * */
                                     formatter(data){
-                                        debugger;
                                         let _index = data.dataIndex;
                                         return _index + 1;
                                     }
