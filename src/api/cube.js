@@ -50,6 +50,17 @@ export function department_delete(data) {
 }
 /**
  * name: sjz
+ * 说明：组织管理 部门修改请求接口 /department/update 
+ */
+export function department_update(data) {
+    return request({
+        url: '/zjb/department/update',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
  * 说明：日志管理数据对的请求接口
  * time: 2019/1/18 10:00:00 礼拜五
  * @param {*} data 
@@ -327,5 +338,26 @@ export function riskdistinguish_query_release(data){
         url: '/zjb/riskdistinguish/query_release',
         method: 'get',
         params: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：系统设置的【全局参数控制】查询接口 /globalparam/query_all
+ */
+export function globalparam_all(){
+    return request({
+        url: '/zjb/globalparam/query_all',
+        method: 'get'
+    })
+}
+/**
+ * name: sjz
+ * 说明：系统设置的【全局参数控制】修改添加接口 /globalparam/add
+ */
+export function globalparam_add(data){
+    return request({
+        url: '/zjb/globalparam/add',
+        method: 'post',
+        data: data
     })
 }

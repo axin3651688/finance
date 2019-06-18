@@ -66,7 +66,7 @@ export default {
       }
     },
     setFlagState() {
-      debugger;
+      // debugger;
       if(this.item.watchValue){
         let jFlag= this.judgeValue();
         this.flag = jFlag;
@@ -83,7 +83,7 @@ export default {
       let dataRes = this.item.datas,fFlag = false;
       if(dataRes && dataRes.length > 0){
         for(let i = 0;i < dataRes.length;i ++){
-          debugger;
+          // debugger;
           let item = dataRes[i];
           for(let key in item){
             if(typeof item[key] == "number" && item[key] != 0){
@@ -113,7 +113,7 @@ export default {
         });
       }
       for(let i = 0;i < resDatas.length;i ++){
-        debugger;
+        // debugger;
         let itemData = resDatas[i];
         itemNames.forEach(item => {
           if(typeof itemData[item] == "number" && itemData[item] != 0){

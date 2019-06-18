@@ -159,11 +159,26 @@ const router = new Router({
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/organization/organization.vue')
                 },
+                //预警报告
                 {
                     path: '/warningReport',
                     name: 'warningReport',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/warningReport/warningReport.vue')
+                },
+                //行业对标
+                {
+                    path: '/industryBenchmarking',
+                    name: 'industryBenchmarking',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/industryBenchmarking/industryBenchmarking.vue')
+                },
+                //市企对标
+                {
+                    path: '/cityBenchmarking',
+                    name: 'cityBenchmarking',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/cityBenchmarking/cityBenchmarking.vue')
                 }
             ]
         },
@@ -324,37 +339,43 @@ const router = new Router({
                     component: () =>
                         import ('@v/systemSettings/cityResults2')
                 },
-                { //EVA表
+                { //EVA表（sjz）
                     path: '/eva',
                     name: 'eva',
                     component: () =>
                         import ('@v/systemSettings/EVA')
                 },
-                { // 维度管理
+                { // 图片管理（sjz）
                     path: '/dimension',
                     name: 'dimension',
                     component: () =>
                         import ('@v/systemSettings/dimension')
                 },
-                { // 应收账款
+                { // 全局控制（sjz）globalControl
+                    path: '/globalControl',
+                    name: 'globalControl',
+                    component: () =>
+                        import ('@v/systemSettings/globalControl')
+                },
+                { // 应收账款（sjz）
                     path: '/yszk',
                     name: 'yszk',
                     component: () =>
                         import ('@v/yskxx/yszk')
                 },
-                { // 预付账款
+                { // 预付账款（sjz）
                     path: '/yfzk',
                     name: 'yfzk',
                     component: () =>
                         import ('@v/yskxx/yfzk.vue')
                 },
-                { // 其他应收款
+                { // 其他应收款（sjz）
                     path: '/qtysk',
                     name: 'qtysk',
                     component: () =>
                         import ('@v/yskxx/qtysk.vue')
                 },
-                { //数据抽取
+                { //数据抽取（sjz）
                     path: '/extradata',
                     name: 'extradata',
                     component: () =>
