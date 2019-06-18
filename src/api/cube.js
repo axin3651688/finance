@@ -340,3 +340,24 @@ export function riskdistinguish_query_release(data){
         params: data
     })
 }
+/**
+ * name: sjz
+ * 说明：系统设置的【全局参数控制】查询接口 /globalparam/query_all
+ */
+export function globalparam_all(){
+    return request({
+        url: '/zjb/globalparam/query_all',
+        method: 'get'
+    })
+}
+/**
+ * name: sjz
+ * 说明：系统设置的【全局参数控制】修改添加接口 /globalparam/add
+ */
+export function globalparam_add(data){
+    return request({
+        url: '/zjb/globalparam/add',
+        method: 'post',
+        data: data
+    })
+}

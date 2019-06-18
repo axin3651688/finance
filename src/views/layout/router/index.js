@@ -339,37 +339,43 @@ const router = new Router({
                     component: () =>
                         import ('@v/systemSettings/cityResults2')
                 },
-                { //EVA表
+                { //EVA表（sjz）
                     path: '/eva',
                     name: 'eva',
                     component: () =>
                         import ('@v/systemSettings/EVA')
                 },
-                { // 维度管理
+                { // 图片管理（sjz）
                     path: '/dimension',
                     name: 'dimension',
                     component: () =>
                         import ('@v/systemSettings/dimension')
                 },
-                { // 应收账款
+                { // 全局控制（sjz）globalControl
+                    path: '/globalControl',
+                    name: 'globalControl',
+                    component: () =>
+                        import ('@v/systemSettings/globalControl')
+                },
+                { // 应收账款（sjz）
                     path: '/yszk',
                     name: 'yszk',
                     component: () =>
                         import ('@v/yskxx/yszk')
                 },
-                { // 预付账款
+                { // 预付账款（sjz）
                     path: '/yfzk',
                     name: 'yfzk',
                     component: () =>
                         import ('@v/yskxx/yfzk.vue')
                 },
-                { // 其他应收款
+                { // 其他应收款（sjz）
                     path: '/qtysk',
                     name: 'qtysk',
                     component: () =>
                         import ('@v/yskxx/qtysk.vue')
                 },
-                { //数据抽取
+                { //数据抽取（sjz）
                     path: '/extradata',
                     name: 'extradata',
                     component: () =>
