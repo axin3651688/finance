@@ -120,7 +120,7 @@ export default {
     },
     upData(item) {
       // console.log(item);
-
+      debugger;
       let chartType = item.options.getData.type,
         subType = this.item.options.subType;
       // console.log(this.item.options.datas);
@@ -156,6 +156,7 @@ export default {
           // 为了做演示,先搞个1-100的随机取数
           this.chartOptions.series[0].data = [
             { value: (Math.random() * 100).toFixed(2) }
+            // {value: 100.00}
           ];
         } else if (subType == "funnel") {
           // console.info(this.item);
@@ -163,6 +164,13 @@ export default {
 
           this.chartOptions.series[0].data = this.item.options.datas;
         } else {
+          let arr = item.options.datas[1];
+          if(arr[0] > arr[1]){
+            let value = arr[0];
+            arr[0] = arr[1];
+            arr[1] = value;
+          }
+          item.options.datas[1] = arr;
           let datas = item.options.datas;
           this.chartOptions.xAxis.data = datas[0];
           this.chartOptions.series[0].data = datas[1];

@@ -10,7 +10,7 @@
     </el-row>
     <div class="input_title">消息内容</div>
     <el-input type="textarea" :rows="7" class="input" resize="none" v-model="textContent"></el-input>
-    <el-button @click="sendMsg" type="primary" class="send">发 送</el-button>
+    <el-button @click="sendMsg" type="primary" class="send01">发 送</el-button>
   </div>
 </template>
 
@@ -103,6 +103,13 @@ export default {
   }
 };
 </script>
-
+<style lang="scss" scoped>
+.send01 {
+    width: 80px;
+    position: relative;
+    bottom: -13px;
+    left: 541px;
+}
+</style>
 
 

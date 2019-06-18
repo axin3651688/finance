@@ -19,10 +19,10 @@
       <!-- <button @click="radio" v-if="showDialog.button">{{showDialog.button}}</button> -->
       <span>{{showDialog.tittle}}</span>
     </span>
-    <!-- <audio ref="bobao" style="margin-bottom:30px" @click="radio" v-if="showDialog.button" controls>
+    <audio ref="bobao" style="margin-bottom:30px" @click="radio" v-if="showDialog.button" controls>
       <source src="./1_201606_1-1416001.mp3" type="audio/mpeg">
         您的浏览器不支持 audio 元素。
-    </audio> -->
+    </audio>
     <BiModule v-if="showDialog.isShow" :dialogData="showDialog.api"></BiModule>
     
   </el-dialog>

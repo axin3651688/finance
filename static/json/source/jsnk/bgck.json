@@ -62,7 +62,7 @@
                                     "type": "click", //openDialog
                                     "way": "openDialog",
                                     "config": {
-                                        "width": 800,
+                                        "width": 660,
                                         "height": 750
                                     },
                                     "sourceApi": "cnbi/json/source/chart/bar1.json",
@@ -79,7 +79,7 @@
                                     "type": "click",
                                     "way": "openDialog",
                                     "config": {
-                                        "width": 800,
+                                        "width": 660,
                                         "height": 750
                                     },
                                     "sourceApi": "cnbi/json/source/jsnk/zfbg/cbsb.json",
