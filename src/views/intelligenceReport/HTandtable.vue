@@ -624,6 +624,7 @@ export default {
      * @author szc 2019年4月29日14:14:09
      */
     contentOfButtons (flag) {
+      debugger;
       let me = this,buttons = [],isleaf = this.$store.getters.treeInfo.nisleaf,tableState = me.tableState,
           spcode = this.$store.getters.treeInfo.spcode,companyname = this.$store.getters.treeInfo.sname;
       // if((!this.templateId || (typeof(flag) != "undefined" && !flag)) && isleaf != 0){

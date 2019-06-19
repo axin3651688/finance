@@ -95,3 +95,12 @@ export function groupQuery(params) {
         params: params
     })
 }
+/**
+ * 风险模块集团对标的总查询入口
+ */
+export function ipoRatio(params) {
+    return request({
+        url: '/zjb/select/ipo_ratio',
+        method: 'get'
+    })
+}

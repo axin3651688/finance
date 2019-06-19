@@ -648,6 +648,9 @@ export default {
         buttons = res.data;
         if(isleaf == 1 && currentSider[0].nrep){
           let arr1 = ['2','1','5'];
+          if(me.reportHeader == "请选择"){
+            arr1 = []
+          }
           buttons = buttons.filter(item => {
             return arr1.indexOf(item.id) != -1;
           });
