@@ -164,7 +164,38 @@ export default {
             let noWan = num % 10000;
             if (noWan.toString().length < 4) noWan = "0" + noWan;
             return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
-        }
+        },
+
+
+        /**
+         * 设置数据格式为标准格式
+         * @param num
+         * @param isNotNumber
+         */
+        setNumberToStander(num, isNotNumber) {
+            if (!isNotNumber) {
+                if (num && num !== null) {
+                    num = Math.round(num * 100) / 100;
+                    let str = num.toLocaleString();
+                    let valueArr = str.split(".");
+                    if (valueArr.length === 1) {
+                        str = str + ".00";
+                    }else{
+                        if(valueArr[1].length === 1){
+                            valueArr[1] = valueArr[1] + '0';
+                            str = valueArr[0] + '.' + valueArr[1]
+                        }
+                    }
+                    return str;
+                } else if (num === 0) {
+                    return '0.00';
+                } else {
+                    return "";
+                }
+            } else {
+                return num;
+            }
+        },
 
 
     },

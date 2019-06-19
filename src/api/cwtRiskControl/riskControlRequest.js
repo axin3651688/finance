@@ -199,3 +199,16 @@ export function getwarningReportTable1Data(params) {
         params: params
     })
 }
+
+
+/**
+ * 获取预警报告中表格一点击公司之后第四部分数据的重新渲染
+ * @author cwt
+ */
+export function getwarningReportBottomData(params) {
+    return request({
+        url: '/zjb/risk_warning_report/query',
+        method: 'post',
+        params: params
+    })
+}
