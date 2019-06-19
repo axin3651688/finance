@@ -6,47 +6,45 @@
             "id": "zbmc",
             "type": "string",
             "text": "指标名称",
-            "align": "center",
-            "width": "180"
+            "action": "click",
+            "align": "center"
         },
         {
             "id": "A",
             "type": "string",
             "text": "优秀值",
-            "align": "center",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "B",
             "type": "string",
             "text": "良好值",
             "align": "center",
-            "htmlType": "text",
-            "width": "90"
+            "htmlType": "text"
         },
         {
             "id": "C",
             "type": "string",
-            "text": "平均值"
+            "text": "平均值",
+            "align": "center"
         },
         {
             "id": "D",
             "type": "string",
             "text": "较低值",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "E",
             "type": "string",
             "text": "较差值",
-            "align": "center",
-            "width": "90"
+            "align": "center"
         },
         {
             "id": "qyfz",
             "type": "string",
             "text": "企业分值",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "pj",
