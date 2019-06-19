@@ -212,3 +212,15 @@ export function getwarningReportBottomData(params) {
         params: params
     })
 }
+
+/**
+ * 获取集团指标数据
+ * @author cwt
+ */
+export function getGroupIndicatorsData(params) {
+    return request({
+        url: '/zjb/select/query',
+        method: 'post',
+        params: params
+    })
+}
