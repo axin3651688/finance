@@ -112,7 +112,7 @@ export function getModuleParams(item, changeDim) {
     if (!val && element === "company") {
       val = params[element + "Id"];
     }
-    if (element != "conversion") {
+    if (element != "conversion" || element != "unit") {
       datas[element] = val;
     }
   });

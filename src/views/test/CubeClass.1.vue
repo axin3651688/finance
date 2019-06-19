@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <h2>{{cube.text}}</h2>
     <div style="padding-right:15px;float:left;width:35%;">
@@ -60,8 +61,8 @@ export default {
     return {
       cube: {//http://192.168.2.245:8005/api/find_data_cube?cubeId=24
         id: 24,
-        text: '资产总额分段表',
-        dataType: 'defined',//类型【sql,cube,defined,random】
+        text: '营业收入趋势分析表',
+        dataType: 'random',//类型【sql,cube,defined,random】
         config: {
           type: 1,//"/1/2", //数据源组装类型 [1:数组类型,2对象cell类型],必选项目
           hidden: true,
@@ -128,7 +129,7 @@ export default {
         }],
          render: function (record, value, col, scope) {//根据条件动态执行的函数
             return (record.A - record.asntq).toFixed(2);
-          }
+          },
         }, {
           id: 'zjv',
           text: '增减率(%)',
@@ -138,19 +139,19 @@ export default {
              target:1,//url  -->当是url时，参数可以带在里面{}
              params:[{
                 id:"参数的名字，也就是target=1里面的 needDims里的字段，比如：company,item,year,month,period",
-                value:"${value}",//record[params.id]
+                value:`${value}`,//record[params.id]
              }],
           },
           drill:{//下钻，点击到目标资源，并选择指定指定，带入到目标资源
              target:1,//url  -->当是url时，参数可以带在里面{}
              params:[{
                 id:"参数的名字，也就是target=1里面的 needDims里的字段，比如：company,item,year,month,period",
-                value:"${value}",//record[params.id]
+                value:`${value}`,//record[params.id]
              }]
           },
-          render: function (record,value) {//
+          render: function (record,value) {
             return value+ '%';
-          }
+          },
         },{
           id: 'hj',
           type: 'decimal',
@@ -158,7 +159,7 @@ export default {
          "fomular":"(A-asntq)*100/A",
           hidden: false
         }],
-        rows: [{id: '1', text: '营业收入'}],
+        rows: [{id: '1100110', text: '营业收入', fomular: '0001!A$111011+0003!B$111002'}],
         //"dataHandlerBefore":"funName",//执行后置函数 单位转换，再执行列运算，如有配制有行计算的话，则执行calcRows
         filters: [{
           calcSymbol: '>=',
@@ -175,14 +176,14 @@ export default {
 
         }],//生成的filters
         warnFilters: [],//预警的filters,
-        datas: [//数据的排法，此对象没有的话
+        datas: [
           {"A":"0","C":null,"E":"0","G":null,"I":"49","K":"9432.03","M":"46","O":"8778.67"},
           {"A":"9","C":"28832.13","E":"9","G":"26880.63","I":"38","K":"86649.9","M":"39","O":"86110.13"},
           {"A":"2","C":"15172.62","E":"4","G":"35129.05","I":"20","K":"150235.25","M":"18","O":"135155.11"},
           {"A":"21","C":"714542.44","E":"19","G":"660478.82","I":"32","K":"1029764.35","M":"31","O":"848674.66"},
           {"A":"5","C":"2740693.62","E":"5","G":"2557783.63","I":"6","K":"1974248.89","M":"7","O":"2025478.27"}
           ],//初始化后的数据，渲染表，图，文字的数据来源
-        cube: { 
+        cube: { //数据的排法，此对象没有的话
           dims: [{id: 'period', text: '期间'}],//维度
           facts: [//默认为columns  总列数 =  2 *2 *3 + dims.length == drill_columns.length
             {id: 'ogtType', index: 1, items: [{text:"二级企业"},{text:"三级企业"}]},
@@ -194,8 +195,10 @@ export default {
                   {id: 'C', text: '金额'}]
               ,pid:"period"
             }
-          ]//度量
+          ],//度量
+
         },
+
         needDims: {//sql==>params==>{commpany:1,period:201805}  保存sql的时候，根据sql参数表拼装sfilter字段{commpany:1,period:201805}，查询sql时，把filters一起查出来！
           //data_dash_json表加了一个sfilter字段
           year: {id: '2018', text: '2018年', datas: []},
@@ -216,7 +219,6 @@ export default {
     };
   },
   created() {
-    debugger;
     let bean = getClientParams();
     if(bean.id){
       this.cube.id = bean.id;

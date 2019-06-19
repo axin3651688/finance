@@ -411,17 +411,6 @@ class CnbiCube {
       Cnbi.apply(this, cube);
     }
     let cubes = this.config.cubes;
-<<<<<<< HEAD
-    if(cubes && Array.isArray(cubes)){
-      
-        //   await cubes.forEach(cc=>{
-        //   CnbiCube.getCubeById(cc,true);
-        //  })
-        //  for(let i=0,len = cubes.length;i<len;i++){
-        //   await CnbiCube.getCubeById(cubes[i],true);
-        //  }
-        await CnbiCube.getCubeById(cubes[0],true);
-=======
     if (cubes && Array.isArray(cubes)) {
       // await cubes.forEach(cc=>{
       //   CnbiCube.getCubeById(cc,true);
@@ -433,7 +422,6 @@ class CnbiCube {
         // by:jhb 这里 cubeData 用来干嘛？
       }
 
->>>>>>> d87f28c97bdeba8d9086b071a1744d6bff537e04
     }
     await this.setParams();                       // 设置参数
     await this.generateProperties();              // 生成变量,行，列，单表头，多表头，行列转置逻辑
