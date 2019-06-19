@@ -53,12 +53,18 @@
              * 监听公司， 年， 月
              */
             company(newValue, oldValue) {
+                this.echartsData = [];
+                this.tableData = [];
                 this.getAllData();
             },
             year(newValue, oldValue) {
+                this.echartsData = [];
+                this.tableData = [];
                 this.getAllData();
             },
             month(newValue, oldValue) {
+                this.echartsData = [];
+                this.tableData = [];
                 this.getAllData();
             }
         },
@@ -68,7 +74,7 @@
                 tableData: [],
                 tableColumns: [],
                 tableTitle: '指标明细表',
-                dataChange:false
+                dataChange: false,
             }
         },
         created() {
@@ -92,8 +98,8 @@
             getAllData() {
                 let _this = this;
                 let params = _this.getParams();
-                getGroupIndicatorsData(params).then((res)=>{
-                    if(res.data.code === 200){
+                getGroupIndicatorsData(params).then((res) => {
+                    if (res.data.code === 200) {
                         let _data = res.data.data;
                         _this.dataFormatter(_data);
                     }
@@ -122,17 +128,24 @@
              * 格式化发送到echart组件中的数据，同时也格式化发送到表格组件中的数据
              * @param data
              */
-            dataFormatter(data){
+            dataFormatter(data) {
                 let _this = this;
                 let _echartsData = _this.echartsData;
                 let _year = _this.getYear();
-                data.forEach((item)=>{
-                    let emptyData = {
-                        sname:'',
-                        sunit:'',
-                        sdata:{}
-                    };
+                let _month = _this.getMonth();
 
+
+                // _this.echartsData = [];
+
+                // _this.tableData = [];
+
+
+                data.forEach((item) => {
+                    let emptyData = {
+                        sname: '',
+                        sunit: '',
+                        sdata: {}
+                    };
                     let emptyTableData = {
                         pjz: item.pjz,
                         sjz: item.sjz,
@@ -145,18 +158,18 @@
 
                     emptyData['sname'] = item.sname;
                     emptyData['sunit'] = item.sunit;
-                    emptyData.sdata[_year] = item['bn'];
-                    emptyData.sdata[_year-1] = item['sn1'];
-                    emptyData.sdata[_year-2] = item['sn2'];
-                    emptyData.sdata[_year-3] = item['sn3'];
-                    emptyData.sdata[_year-4] = item['sn4'];
+                    emptyData.sdata[_year + _month] = item['bn'];
+                    emptyData.sdata[(_year - 1) + _month] = item['sn1'];
+                    emptyData.sdata[(_year - 2) + _month] = item['sn2'];
+                    emptyData.sdata[(_year - 3) + _month] = item['sn3'];
+                    emptyData.sdata[(_year - 4) + _month] = item['sn4'];
 
                     _echartsData.push(emptyData);
 
                     _this.tableData.push(emptyTableData);
 
                 });
-                this.dataChange = !this.dataChange;
+                _this.dataChange = !_this.dataChange;
             },
         }
     }

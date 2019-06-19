@@ -124,6 +124,9 @@
 
                 _this.echartOption.series.name = _echartData.sname;
 
+                let _unit = _echartData.sunit;
+                _this.echartOption.yAxis.name += _unit ? '（'+_unit+'）' : '（万元）';
+
                 if(_echartData.sunit === '%'){
                     _this.echartOption.series.type = 'line';
                 }else{
