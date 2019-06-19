@@ -32,13 +32,13 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}{{item.sname}}为 {{item.sjz}}。较以往五年数据相比，与最高值相比
+                        {{companyname}},{{showperiod}}{{item.sname}}为 {{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比
                         <template v-if="item.yzgzxc>=0">多出</template>
                         <template v-if="item.yzgzxc<0">相差</template>
-                        {{item.yzgzxc}}个百分点，与平均值相比
+                        {{setNumberToStander(item.yzgzxc)}}个百分点，与平均值相比
                         <template v-if="item.ypjzxc>=0">多出</template>
                         <template v-if="item.ypjzxc<0">相差</template>
-                        {{item.ypjzxc}}
+                        {{setNumberToStander(item.ypjzxc)}}
                     </p>
                 </template>
             </div>
@@ -76,11 +76,11 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}，{{item.sname}}为 {{item.val}}。处于行业 {{item.grade}} 水平，与行业值
-                        {{item.val_1}} 相比
+                        {{companyname}},{{showperiod}}，{{item.sname}}为 {{setNumberToStander(item.val)}}。处于行业 {{item.grade}} 水平，与行业值
+                        {{setNumberToStander(item.val_1)}} 相比
                         <template v-if="item.cz>=0">多出</template>
                         <template v-if="item.cz<0">相差</template>
-                        {{item.cz}}个百分点。
+                        {{setNumberToStander(item.cz)}}个百分点。
                     </p>
                 </template>
             </div>
@@ -94,7 +94,7 @@
     import warningReportTable from './warningReportTable'
     import {mapGetters} from "vuex"
     import cwtPublicJS from "../mixin/cwtPublicJS"
-    import {getwarningReportTable1Data} from '~api/cwtRiskControl/riskControlRequest'
+    import {getwarningReportTable1Data, getwarningReportBottomData} from '~api/cwtRiskControl/riskControlRequest'
 
 
     export default {
@@ -161,16 +161,21 @@
         mounted() {
         },
         methods: {
-
-
             /**
              * 表格内公司点击事件触发函数
              * @param scope
              */
             companyClicked(scope) {
-                this.$message({
-                    message: scope,
-                    type: 'success'
+                let _this = this;
+                let params = {
+                    year:this.getYear(),
+                    month:this.getMonth(),
+                    company: scope
+                };
+                getwarningReportBottomData(params).then((res)=>{
+                    if(res.data.code === 200){
+                        _this.loopData2 = res.data.data[3];
+                    }
                 })
             },
 
@@ -225,6 +230,7 @@
         font-size: 26px;
         font-weight: 600;
         margin-bottom: 20px;
+        margin-top: 30px;
     }
 
     .content-up-title {

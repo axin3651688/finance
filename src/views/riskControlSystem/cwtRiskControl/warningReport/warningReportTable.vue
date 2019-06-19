@@ -9,8 +9,6 @@
                     :header-cell-style="headerRowStyle"
                     style="width: 100%"
             >
-
-
                 <el-table-column
                         :label="tabletitle"
                         align="center"
@@ -30,15 +28,29 @@
 
                                     <template v-if="scope.row[scope.column.property]">
                                         <template v-for="(com, index) of scope.row[scope.column.property].split(',')">
-                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com}}</a>
+                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com.split('-')[1])">{{com.split('-')[0]}}</a>
                                         </template>
                                     </template>
 
                                 </template>
 
-                                <template v-else>
-                                    {{ scope.row[scope.column.property] }}
+                                <template v-else-if="item.id === 'sjz'">
+                                    {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
+                                <template v-else-if="item.id === 'zgz'">
+                                    {{ setNumberToStander(scope.row[scope.column.property], false) }}
+                                </template>
+                                <template v-else-if="item.id === 'pjz'">
+                                    {{ setNumberToStander(scope.row[scope.column.property], false) }}
+                                </template>
+                                <template v-else-if="item.id === 'zdz'">
+                                    {{ setNumberToStander(scope.row[scope.column.property], false) }}
+                                </template>
+
+                                <template v-else>
+                                    {{ setNumberToStander(scope.row[scope.column.property], true) }}
+                                </template>
+
                             </template>
                         </el-table-column>
                     </template>
@@ -49,8 +61,10 @@
 </template>
 
 <script>
+    import cwtPublicJS from '../mixin/cwtPublicJS'
     export default {
         name: "warningReportTable",
+        mixins:[cwtPublicJS],
         components: {},
         props: {
             tableheight: Number,
