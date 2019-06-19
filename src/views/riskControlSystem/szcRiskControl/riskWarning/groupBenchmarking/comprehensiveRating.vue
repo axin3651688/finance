@@ -254,6 +254,16 @@
             clickItemName (scope, index, row) {
                 debugger;
                 let me = this;
+                let rowItem = scope.row,zbid = rowItem.zbid;
+                if(zbid == "zwfx"){
+                    me.$router.push("/debtRisk");
+                }else if (zbid == "fznl") {
+                    me.$router.push("/developmentAbility");
+                }else if (zbid == "ylnl") {
+                    me.$router.push("/profitability");
+                }else if (zbid == "yyzl") {
+                    me.$router.push("/operationQuality");
+                }
             }
         }
     };
