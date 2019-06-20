@@ -208,6 +208,10 @@
                     _colorStr.push(emptyArray);
                 });
                 _axisLine.lineStyle.color = _colorStr;
+
+                // [[0.1, "rgba(255,0,0,0.8)"], [0.8, "rgba(0,255,255,0.8)"], [1, "rgba(0,255,0,0.8)"]]
+
+
             }
         },
     }
