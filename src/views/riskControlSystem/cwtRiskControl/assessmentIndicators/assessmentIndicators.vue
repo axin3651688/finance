@@ -331,7 +331,7 @@
 
     .left-content-num {
         border: 1px solid #555555;
-        width: 100px;
+        width: 60px;
         text-align: center;
     }
 
