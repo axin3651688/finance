@@ -180,7 +180,7 @@ export default {
           return ele.id == GItemScoded;
         }); //bnlj bnmb
       }
-      // debugger
+      debugger
       let titleText = this.item.text.replace("（%）","");
       if (tempData && tempData.length > 0) {
         this.receive.tooltip.formatter =

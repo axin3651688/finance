@@ -7,7 +7,10 @@
     :before-close="beforeClose"
     >
         <div>
-            <div class="fillSelect">
+            <div>
+                <span class="dialog-footer" v-if="tableData && tableData.length > 0 && reviewShow && modalConfig.row.nopratebuttonname != '查看'">
+                    <el-button type="primary" @click="submitForm">{{ modalConfig.row.nopratebuttonname == '退回'? '退回':'通过' }}</el-button>
+                </span>
             </div>
             <div class="modalTable">
                 <el-table v-if="tableData && tableData.length > 0"
@@ -62,10 +65,6 @@
                 </el-form>
             </div> -->
         </div>
-        <span slot="footer" class="dialog-footer" v-if="tableData && tableData.length > 0 && reviewShow && modalConfig.row.nopratebuttonname != '查看'">
-            <!-- <el-button @click="centerDialogVisible = false">取 消</el-button> -->
-            <el-button type="primary" @click="submitForm">{{ modalConfig.row.nopratebuttonname == '退回'? '退回':'通过' }}</el-button>
-        </span>
     </el-dialog>
 </template>
 <script>
@@ -145,7 +144,6 @@ export default {
          * @author szc 2019年5月8日16:50:13
          */
         queryDataOfTable (params) {
-            debugger;
             let me = this;
             inquire(params).then(res => {
                 if(res.data.code == 200){
@@ -253,7 +251,6 @@ export default {
          * @author szc 2019年5月7日19:07:24
          */
         submitForm (form) {
-            debugger;
             let me = this,requestParams = me.modalConfig.requestParams,storeParams = me.$store.getters,
                 row = me.modalConfig.row,statemunStr = me.modalConfig.row.nopratebuttonname == '退回'? 4:3;
                 // me.queryStateOfTable();/zjb/update_fill_message
@@ -480,6 +477,10 @@ export default {
             //     width: 60%;
             // }
         }
+    }
+    .dialog-footer {
+        float: right;
+        margin-bottom: 10px;
     }
 </style>
 

@@ -89,6 +89,7 @@
             }
         },
         created() {
+            
             this.updateData();
         },
         mounted() {},
@@ -113,7 +114,6 @@
              * @author szc 2019年6月11日14:01:23
              */
             updateData() {
-                debugger;
                 let me = this,storeParams = me.$store.getters,
                     company = storeParams.company,year = storeParams.year,month = storeParams.month,
                     susercompany = storeParams.user.user.companyId,period = "";
@@ -171,7 +171,6 @@
              * @author szc 2019年6月11日09:21:28
              */
             queryHandler (scope) {
-                debugger;
                 let me = this;
                 me.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
                     let list = res.data.data;
