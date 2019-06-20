@@ -45,6 +45,7 @@ export default {
     }
   },
   created() {
+    debugger;
     this.showDetail();
   },
 
@@ -83,6 +84,7 @@ export default {
         debugger;
         let data = res.data.data[0];
         if(data){
+          debugger;
           this.showData = data.cause;
         } else {
           this.noData = true
