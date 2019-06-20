@@ -224,3 +224,17 @@ export function getGroupIndicatorsData(params) {
         params: params
     })
 }
+
+
+
+/**
+ * 获取国资委指标指标数据
+ * @author cwt
+ */
+export function getAssessmentIndicatorsData(params) {
+    return request({
+        url: '/zjb/select/query',
+        method: 'post',
+        params: params
+    })
+}
