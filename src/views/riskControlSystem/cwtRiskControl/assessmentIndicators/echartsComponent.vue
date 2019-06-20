@@ -130,9 +130,9 @@
                                 offsetCenter: [0, "40%"],// 相对于仪表盘中心的偏移位置，数组第一项是水平方向的偏移，第二项是垂直方向的偏移。可以是绝对的数值，也可以是相对于仪表盘半径的百分比。
                                 color: "auto",          // 文字的颜色,默认 auto。
                                 fontSize: 25,           // 文字的字体大小,默认 15。
-                                formatter: "{value}%",  // 格式化函数或者字符串
+                                formatter: "",  // 格式化函数或者字符串
                             },
-                            data: [{value: 50, name: '完成率'}]
+                            data: [{value: 0, name: ''}]
                         }
                     ]
                 }
@@ -170,7 +170,12 @@
 
                 let _data = _series.data[0];
                 _data.name = _rightData.zbsname;
-                _data.value = _rightData.v;
+                _data.value = _this.setNumberToStander(_rightData.v);
+
+                let _detail = _series.detail;
+                _detail.formatter = '{value}' + _rightData.unit;
+
+
 
                 let _axisLine = _series.axisLine;
 
