@@ -308,6 +308,33 @@
              */
             renderTableOfDatas (datas) {
                 let me = this;
+                me.ManyTableData = datas;
+            },
+            /**
+             * 渲染查询table的数据。不用转换了
+             */
+            renderTableOfDatas_old (datas) {
+                let me = this,value = me.value,indicatorNames = me.indicatorNames,listedCompany = me.listedCompany;
+                let companyItem,resArr = [];
+                datas.forEach(item => {
+                    for(let i = 0; i < indicatorNames.length;i ++){
+                        let indicatorItem = indicatorNames[i];
+                        if(item.comscode == value && indicatorItem == item.sindicator && !companyItem){
+                            companyItem = item;
+                        }else if (item.comscode == value && indicatorItem == item.sindicator) {
+                            for(let key in item){
+                                if(typeof(item[key]) == 'number'){
+                                    companyItem[key] = item[key];
+                                }
+                            }
+                            // companyItem[item.sindicator]
+                        }
+                    }
+                    for(let j = 0;j < listedCompany.length;j ++){
+                        let listItem = listedCompany[j];
+                    }
+                });
+                resArr.push(companyItem);
 
             },
             /**

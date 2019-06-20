@@ -9,8 +9,9 @@ export default {
         createMoreHeader() {
             debugger;
             let me = this,
+                year = me.$store.getters.year,
                 manyColumns = [],
-                ManyTableData = me.ManyTableData,
+                yearValue = me.yearValue,
                 monthValue = me.monthValue,
                 indicatorNames = me.indicatorNames,
                 indicatorOptions = me.indicatorOptions;
@@ -24,7 +25,7 @@ export default {
             let objHead02 = {
                 id: "year",
                 type: "string",
-                text: "2019年",
+                text: (yearValue ? yearValue : year) + "年",
                 align: "center"
             };
             let monthObjs = [{
@@ -77,23 +78,28 @@ export default {
                 },
                 {
                     id: "Q1",
-                    text: "第一季度"
+                    text: "第一季度",
+                    type: "q1"
                 },
                 {
                     id: "Q2",
-                    text: "第二季度"
+                    text: "第二季度",
+                    type: "q2"
                 },
                 {
                     id: "Q3",
-                    text: "第三季度"
+                    text: "第三季度",
+                    type: "q3"
                 },
                 {
                     id: "Q4",
-                    text: "第四季度"
+                    text: "第四季度",
+                    type: "q4"
                 },
                 {
-                    id: "Y1",
-                    text: "年度"
+                    id: "N",
+                    text: "年度",
+                    type: "q1"
                 }
             ];
             monthValue.forEach(item => {
@@ -108,13 +114,20 @@ export default {
                         id: "",
                         type: "string",
                         text: "",
-                        align: "center"
+                        align: "right"
                     };
                     for (let j = 0; j < indicatorOptions.length; j++) {
                         let itTwo = indicatorOptions[j];
                         if (it == itTwo.scode) {
-                            objTwo.id = it;
-                            objTwo.text = itTwo.sname;
+                            if (typeof(item - 0) == 'number') {
+                                objTwo.id = 'm' + (item - 0) + '_' + it;
+                                objTwo.text = itTwo.sname;
+                                objTwo.type = 'number';
+                            } else {
+                                let itemNew = item.replace(item[0], item[0].toLowerCase());
+                                objTwo.id = itemNew + '_' + it;
+                                objTwo.text = itTwo.sname;
+                            }
                             break;
                         }
                     }
@@ -155,6 +168,7 @@ export default {
                 manyColumns.push(dele_value);
             }
             me.manyColumns = manyColumns;
+            console.log(manyColumns);
         }
     },
 }
