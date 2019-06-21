@@ -38,7 +38,7 @@
                 </el-pagination>
             </div>
         </div>
-        <div>
+        <div v-if="reviewFlag">
             <reviewModal :modalConfig.sync="modalConfig" ref="reviewModal" v-on:publicEvent="publicEvent"></reviewModal>
         </div>
     </div>
@@ -87,7 +87,8 @@
                        prop:"operation",
                        label:'操作' 
                     }
-                ]
+                ],
+                reviewFlag:true
             }
         },
         created() {
@@ -174,6 +175,10 @@
              */
             queryHandler (scope) {
                 let me = this;
+                // me.reviewFlag = false;
+                // me.$nextTick(() => {
+                //     me.reviewFlag = true;
+                // });
                 me.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
                     let list = res.data.data;
                     let itemTmp = list.filter(item => {
