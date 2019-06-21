@@ -118,7 +118,11 @@ export default {
                   company: data.company.customerId,
                   companyName: data.company.text
                 });
-                // debugger;
+                debugger;
+                //不要再删了，这个只是一个重新登录用的，碍你啥事了，真的无伤大雅
+                this.GetSideMid({
+                  module_api: './cnbi/json/source/jsnk/zbfx.json'
+                });
                 // 页面跳转
                 router.push("/main");
               } else {
