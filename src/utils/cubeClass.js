@@ -99,6 +99,9 @@ class CnbiCube {
     static async getCubeById(id, isInit = false) {
         let res = await FIND_DATA_CUBE(id);
         let cube = res.data.code == 200 ? res.data.data : null;
+        if(null  == cube){
+          cube = res.data;
+        }
         if (cube) {
             if (cube.rows && cube.rows.length > 0) {
                 cube.fixed = 1; //李宁忘了，我暂时在这里写上这一行！
@@ -272,6 +275,7 @@ class CnbiCube {
                 scope.datas = await this.findData(params, scope.needDims, scope.rows, scope.columns);
                 break;
             case 'defined':
+                debugger;
                 break;
             case 'calculate':
                 Cnbi.Msg.info(scope.id + '表配制了跨表计算的');

@@ -21,7 +21,7 @@ import {
 
 export default {
     mounted() {
-        debugger
+        // debugger
         let me = this;
         if (me.item && me.item.listeners) {
             this.eventHandler(me.item.listeners);
@@ -36,7 +36,7 @@ export default {
         },
 
         eventFire(listener, params, bb) {
-            debugger
+            // debugger
             let xtype = this.item.xtype;
             if (listener.type) {
                 if (xtype === "chart" || xtype === "bi-chart") {
@@ -57,7 +57,7 @@ export default {
          * 事件通用处理
          */
         commonHandler(listener, params, bb) {
-            debugger
+            // debugger
             let me = this;
             if (listener.handler) {
                 listener.handler(me, params);
@@ -75,7 +75,7 @@ export default {
          * 图形事件处理
          */
         chartEventHandler(listener) {
-            debugger
+            // debugger
             let me = this;
             this.$children[0].chart.on(listener.type, function(params) {
                 if (listener.clickBefore && typeof listener.clickBefore == "function") {
@@ -111,7 +111,7 @@ export default {
         },
         // api: listener.sourceApi,1
         openDialog(params, listener, bb) {
-            debugger
+            // debugger
             if (listener.sourceApi !== "cnbi/json/source/jsnk/zbfx/zjl.json") {
                 this.ShowDialog({
                     params: params,
@@ -123,7 +123,7 @@ export default {
                     height: listener.config.height + "px",
                 });
             } else {
-                debugger;
+                // debugger;
                 this.ShowDialog({
                     params: params,
                     api: listener.sourceApi,
@@ -141,7 +141,7 @@ export default {
          * unshift()方法是向数组的开头添加一个或多个元素
          */
         addTab(params, listener, bb) {
-            debugger;
+            // debugger;
             //let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
             //判断指标分析的穿透
             // if (!module.items) {
@@ -160,7 +160,7 @@ export default {
                 module = this.$root.$children[0].$children[0].$children[4].$children[0];
                 console.log(module.items);
             }
-            debugger;
+            // debugger;
             let text = bb.text;
 
 

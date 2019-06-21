@@ -7,7 +7,12 @@ import {
 const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [{
+    routes: [ {
+        path: '/cubes',
+        name: 'cubes',
+        component: () =>
+            import ('@v/test/CubeClass'),
+    },{
 
             path: '/',
             name: '我的工作台',
@@ -87,12 +92,7 @@ const router = new Router({
             component: () =>
                 import ('@v/layout/login/Login'),
         },
-        {
-            path: '/cubes',
-            name: 'cubes',
-            component: () =>
-                import ('@v/test/CubeClass'),
-        },
+       
         {
             path: '*',
             name: '/404',
