@@ -96,7 +96,7 @@
     import riskSystemAddChange from './riskSystemAddChange'
     import riskSystemSuggestDetail from './riskSystemSuggestDetail'
     import riskSystemSuggestAdd from './riskSystemSuggestAdd'
-
+    import {mapGetters} from "vuex"
 
     import {
         getRiskSystemTableData,
@@ -116,6 +116,23 @@
             riskSystemSuggestAdd
         },
         props: {},
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.getTableData();
+            },
+            year(newValue, oldValue) {
+                this.getTableData();
+            },
+            month(newValue, oldValue) {
+                this.getTableData();
+            }
+        },
         data() {
             return {
                 searchData: {
@@ -318,6 +335,7 @@
                 riskSystemDelete(sendParams).then(res => {
                     if (res.data.code === 200) {
                         // debugger;
+                        this.getTableData();
                     }
                 })
             },
