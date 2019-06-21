@@ -1,0 +1,105 @@
+body {
+    margin-bottom: 24px;
+}
+.pane-content {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    overflow: auto;
+    padding: 0 8px;
+    white-space: pre;
+    max-height: 350px;
+}
+
+.pane-content code {
+    background-color: #fff;
+    color: #000;
+    padding: 0;
+}
+
+/* set default chart style */
+.wj-flexchart {
+    height: 400px;
+    background-color: white;
+    padding: 8px;
+    margin-bottom: 12px;
+    display:block;
+    overflow:visible;
+}
+    .wj-flexchart .wj-title {
+        font-weight: bold;
+    }
+    .wj-flexchart .wj-header .wj-title {
+        font-size: 18pt;
+        fill: #80044d;
+    }
+    .wj-flexchart .wj-footer .wj-title {
+        fill: #80044d;
+    }
+    .wj-flexchart .wj-axis-x .wj-title,
+    .wj-flexchart .wj-axis-y .wj-title {
+        font-style: italic;
+    }
+
+/* custom chart theme */
+.custom-flex-chart {
+    height: 400px;
+    background-color: white;
+    box-shadow: 4px 4px 10px 0px rgba(50, 50, 50, 0.75);
+    padding: 8px;
+    margin-bottom: 12px;
+    display:block;
+}
+
+.custom-flex-chart .wj-axis-x .wj-label {
+    font-family: Courier New, Courier, monospace;
+    font-weight: bold;
+}
+.custom-flex-chart .wj-legend .wj-label {
+    font-family: Courier New, Courier, monospace;
+    font-weight: bold;
+}
+.custom-flex-chart .wj-legend > rect {
+    fill: #f8f8f8;
+    stroke: #c0c0c0;
+}
+.custom-flex-chart .wj-plot-area > rect {
+    fill: #f8f8f8;
+    stroke: #c0c0c0;
+}
+
+/* some extra spacing between the items */
+.row {
+    margin-top: 40px;
+    margin-bottom: 25px;
+}
+
+.wj-flexchart {
+    border: none;
+    font-size: 12px;
+    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+    padding: 0px;
+    margin: 0px;
+    touch-action:none;
+    -ms-touch-action: none;
+}
+
+.wj-flexchart .wj-plot-area {
+    stroke: lightgray;
+    stroke-width: 1px;
+        touch-action:none;
+}
+
+.wj-flexchart .wj-axis-y .wj-title {
+    font-style: normal;
+}
+
+#chart2 .wj-chart-linemarker-vline {
+    margin-top: -99px;
+}
+
+#chart3 .wj-chart-linemarker-vline {
+    margin-top: -220px;
+}

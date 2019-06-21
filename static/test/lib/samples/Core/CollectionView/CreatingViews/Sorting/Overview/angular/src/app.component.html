@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <label>
+        <input type="radio" name="sort" value="" checked="true" />
+        No Sort
+    </label>
+    <label>
+        <input type="radio" name="sort" value="country" />
+        Sort by Country
+    </label>
+    <label>
+        <input type="radio" name="sort" value="country,sales" />
+        Sort by Country and Sales
+    </label>
+    <label>
+        <input type="radio" name="sort" value="country,sales,downloads" />
+        Sort by Country, Sales, and Downloads
+    </label>
+
+    <p>
+        Result:
+    </p>
+    <wj-flex-grid [itemsSource]="view" [showSort]="true" [allowSorting]="false" [alternatingRowStep]="0"
+        [headersVisibility]="'Column'">
+    </wj-flex-grid>
+</div>

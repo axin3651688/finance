@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <wj-flex-grid #grid [itemsSource]="workers" [autoGenerateColumns]=false [headersVisibility]="'Column'"
+    [selectionMode]="'Row'" [childItemsPath]="['checks','earnings']" (loadedRows)="onLoadedRows(grid,$event)"
+    (beginningEdit)="onBeginningEdit(grid, $event)">
+    <wj-flex-grid-column [binding]="'name'" [isReadOnly]=true></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'hours'" [dataType]="'Number'" [format]="'n2'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'rate'" [dataType]="'Number'" [format]="'n2'"></wj-flex-grid-column>
+  </wj-flex-grid>
+</div>

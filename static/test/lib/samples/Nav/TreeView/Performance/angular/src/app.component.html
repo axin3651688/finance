@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <label for="cmbLevels">
+                Levels:
+            </label>
+            <wj-combo-box #cmbLevels [itemsSource]="levels" [selectedValue]="2">
+            </wj-combo-box>
+            <br />
+            <label for="cmbLevels">
+                Nodes/Level:
+            </label>
+            <wj-combo-box #cmbNodesPerLevel [itemsSource]="nodesPerLevel" [selectedValue]="5">
+            </wj-combo-box>
+            <br />
+            <label></label>
+            <button class="btn btn-primary" id="bind" (click)="refresh()">
+                Bind Tree
+            </button>
+            <div id="bindingMsg" [innerHtml]="bindingMsg"></div>
+        </div>
+        <div class="col-xs-6">
+            <wj-tree-view #theTree [itemsSource]="treeData" [displayMemberPath]="'header'" [childItemsPath]="'items'">
+            </wj-tree-view>
+        </div>
+    </div>
+</div>

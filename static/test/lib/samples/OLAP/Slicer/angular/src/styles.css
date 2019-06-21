@@ -1,0 +1,11 @@
+.wj-pivotgrid {
+	max-height: 300px;
+}
+.wj-slicer {
+	display: block;
+  max-height: 200px;
+  margin: 12px;
+}
+body {
+	margin-bottom: 48px;
+}

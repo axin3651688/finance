@@ -1,0 +1,24 @@
+#buttons {
+    display: flex;
+    margin-bottom: 6px;
+}
+    
+#buttons .btn {
+    margin: 6px;
+    white-space: normal;
+}
+    
+.output {
+    display: flex;
+    justify-content: center;
+    margin: 6px;
+}
+    
+#pivotGrid {
+    width: auto;
+    max-height: 300px;
+}
+    
+body {
+    margin-bottom: 36pt;
+}

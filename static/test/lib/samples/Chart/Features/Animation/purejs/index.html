@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Animation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container-fluid well">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <select id="chartType">
+                        <option value="Bar">Bar</option>
+                        <option value="Column">Column</option>
+                        <option value="Area">Area</option>
+                        <option value="Line">Line</option>
+                        <option value="LineSymbols">LineSymbols</option>
+                        <option value="Spline">Spline</option>
+                        <option value="SplineSymbols">SplineSymbols</option>
+                        <option value="SplineArea">SplineArea</option>
+                        <option value="Scatter">Scatter</option>
+                    </select>
+                    <select id="chartAnimationMode">
+                        <option value="Point">Point</option>
+                        <option value="Series">Series</option>
+                        <option value="All">All</option>
+                    </select>
+                    <select id="chartEasing">
+                        <option value="Linear">Linear</option>
+                        <option value="Swing">Swing</option>
+                        <option value="EaseInQuad">EaseInQuad</option>
+                        <option value="EaseOutQuad">EaseOutQuad</option>
+                        <option value="EaseInOutQuad">EaseInOutQuad</option>
+                        <option value="EaseInCubic">EaseInCubic</option>
+                        <option value="EaseOutCubic">EaseOutCubic</option>
+                        <option value="EaseInOutCubic">EaseInOutCubic</option>
+                        <option value="EaseInQuart">EaseInQuart</option>
+                        <option value="EaseOutQuart">EaseOutQuart</option>
+                        <option value="EaseInOutQuart">EaseInOutQuart</option>
+                        <option value="EaseInQuint">EaseInQuint</option>
+                        <option value="EaseOutQuint">EaseOutQuint</option>
+                        <option value="EaseInOutQuint">EaseInOutQuint</option>
+                        <option value="EaseInSine">EaseInSine</option>
+                        <option value="EaseOutSine">EaseOutSine</option>
+                        <option value="EaseInOutSine">EaseInOutSine</option>
+                        <option value="EaseInExpo">EaseInExpo</option>
+                        <option value="EaseOutExpo">EaseOutExpo</option>
+                        <option value="EaseInOutExpo">EaseInOutExpo</option>
+                        <option value="EaseInCirc">EaseInCirc</option>
+                        <option value="EaseOutCirc">EaseOutCirc</option>
+                        <option value="EaseInOutCirc">EaseInOutCirc</option>
+                        <option value="EaseInBack">EaseInBack</option>
+                        <option value="EaseOutBack">EaseOutBack</option>
+                        <option value="EaseInOutBack">EaseInOutBack</option>
+                        <option value="EaseInBounce">EaseInBounce</option>
+                        <option value="EaseOutBounce">EaseOutBounce</option>
+                        <option value="EaseInOutBounce">EaseInOutBounce</option>
+                        <option value="EaseInElastic">EaseInElastic</option>
+                        <option value="EaseOutElastic">EaseOutElastic</option>
+                        <option value="EaseInOutElastic">EaseInOutElastic</option>
+                    </select>
+                    <label id="chartLabelDuration" for="chartDuration">Duration:</label>
+                    <input id="chartDuration" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 flexchart">
+                    <button id="chartResetData" type="button" class="btn btn-default">reset data</button>
+                    <select id="chartAddMenu">
+                        <option value="addSeries">Add Series</option>
+                        <option value="addFirstPoint">Add First Point</option>
+                        <option value="addLastPoint">Add Last Point</option>
+                    </select>
+                    <select id="chartRemoveMenu">
+                        <option value="removeSeries">Remove Series</option>
+                        <option value="removeFirstPoint">Remove First Point</option>
+                        <option value="removeLastPoint">Remove Last Point</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="theChart"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<div class="container-fluid">
+    <wj-tab-panel #ribbon (click)="onTabPanelClick($event)">
+        <wj-tab>
+            <a>Format</a>
+            <div>
+                <div class="wj-group">
+                    <div class="wj-content">
+                        <div class="wj-column">
+                            <button id="save" class="wj-btn wj-btn-large">
+                                <i class="material-icons">save</i>
+                                <br />
+                                Save
+                            </button>
+                        </div>
+                        <div class="wj-column">
+                            <div class="wj-row">
+                                <button id="undo" class="wj-btn" aria-label="Undo">
+                                    <i class="material-icons">undo</i>
+                                </button>
+                                <button id="redo" class="wj-btn" aria-label="Redo">
+                                    <i class="material-icons">redo</i>
+                                </button>
+                                <button id="preview" class="wj-btn" aria-label="Preview">
+                                    <i class="material-icons">pageview</i>
+                                </button>
+                                <button id="removeFormat" class="wj-btn" aria-label="Remove Format">
+                                    <i class="material-icons">format_clear</i>
+                                </button>
+                            </div>
+                            <div class="wj-row">
+                                <button id="cut" class="wj-btn" aria-label="Cut">
+                                    <i class="material-icons">&#x2702;</i>
+                                </button>
+                                <button id="copy" class="wj-btn" aria-label="Copy">
+                                    <i class="material-icons">&#xE14D;</i>
+                                </button>
+                                <button id="paste" class="wj-btn" aria-label="Paste">
+                                    <i class="material-icons">&#xE85D;</i>
+                                </button>
+                                <button id="selectAll" class="wj-btn" aria-label="Select All">
+                                    <i class="material-icons">select_all</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wj-header">Actions</div>
+                </div>
+                <div class="wj-group">
+                    <div class="wj-content">
+                        <div class="wj-row">
+                            <wj-combo-box #fontFace aria-label="Font Face"
+                                [itemsSource]="['Arial', 'Courier New', 'Garamond', 'Tahoma', 'Times', 'Verdana', 'WingDings']"
+                                (textChanged)="execCommand('fontName', fontFace.text)"></wj-combo-box>
+                            <wj-combo-box #fontSize aria-label="Font Size"
+                                [itemsSource]="['Very Small', 'Smaller', 'Small', 'Medium', 'Large', 'Larger', 'Very Large']"
+                                [selectedIndex]="3" (textChanged)="execCommand('fontSize', fontSize.selectedIndex + 1)">
+                            </wj-combo-box>
+
+                            <wj-color-picker #bkgPicker style="display: none"
+                                (valueChanged)="execCommand('backColor', bkgPicker.value); hidePicker(bkgPicker);"
+                                (lostFocus)="hidePicker(bkgPicker)"></wj-color-picker>
+                            <button id="background" class="wj-btn" aria-label="Background Color"
+                                (click)="showPicker(bkgPicker, $event)">
+                                <i class="material-icons">format_color_fill</i>
+                            </button>
+
+                            <wj-color-picker #clrPicker style="display: none"
+                                (valueChanged)="execCommand('foreColor', clrPicker.value); hidePicker(clrPicker);"
+                                (lostFocus)="hidePicker(clrPicker)"></wj-color-picker>
+                            <button id="color" class="wj-btn" aria-label="Text Color"
+                                (click)="showPicker(clrPicker, $event)">
+                                <i class="material-icons">format_color_text</i>
+                            </button>
+                        </div>
+                        <div class="wj-row">
+                            <button id="bold" class="wj-btn" aria-label="Bold">
+                                <i class="material-icons">format_bold</i>
+                            </button>
+                            <button id="italic" class="wj-btn" aria-label="Italic">
+                                <i class="material-icons">format_italic</i>
+                            </button>
+                            <button id="underline" class="wj-btn" aria-label="Underline">
+                                <i class="material-icons">format_underline</i>
+                            </button>
+                            <button id="strikethrough" class="wj-btn" aria-label="Strikethrough">
+                                <i class="material-icons">format_strikethrough</i>
+                            </button>
+                            <button id="subscript" class="wj-btn" aria-label="Subscript">
+                                <i class="material-icons">vertical_align_bottom</i>
+                            </button>
+                            <button id="superscript" class="wj-btn" aria-label="Superscript">
+                                <i class="material-icons">vertical_align_top</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="wj-header">Font</div>
+                </div>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Custom Tab</a>
+            <div>
+                <div class="wj-group">
+                    <div class="wj-content">
+                        <div class="wj-column">
+                            <button id="click-me" class="wj-btn wj-btn-large">
+                                Click Me
+                            </button>
+                        </div>
+                    </div>
+                    <div class="wj-header">Custom Group</div>
+                </div>
+            </div>
+        </wj-tab>
+    </wj-tab-panel>
+    <div #editor id="editor" contenteditable="true">
+        <b>Lorem Ipsum</b> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+        industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+        scrambled it to make a type specimen book.
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <wj-pdf-viewer #pdfViewer
+                [serviceUrl]="'https://demos.componentone.com/ASPNET/c1webapi/4.0.20172.105/api/pdf'"
+                [filePath]="'PdfRoot/DefaultDocument.pdf'">
+            </wj-pdf-viewer>
+        </div>
+        <br />
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="continuousViewMode" />
+                                Continuous View Mode
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <wj-menu [(value)]="pdfViewer.mouseMode" [header]="'Mouse Mode'">
+                            <wj-menu-item [value]="0">SelectTool</wj-menu-item>
+                            <wj-menu-item [value]="1">MoveTool</wj-menu-item>
+                            <wj-menu-item [value]="2">RubberbandTool</wj-menu-item>
+                            <wj-menu-item [value]="3">MagnifierTool</wj-menu-item>
+                        </wj-menu>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="pdfViewer.fullScreen" /> Full Screen
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-mod-4">
+                        <label class="col-md-2 control-label">Zoom Factor</label>
+                        <div class="col-md-2">
+                            <wj-input-number [(value)]="pdfViewer.zoomFactor" [min]="0.05" [max]="10" [step]=".1"
+                                [format]="'n2'">
+                            </wj-input-number>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

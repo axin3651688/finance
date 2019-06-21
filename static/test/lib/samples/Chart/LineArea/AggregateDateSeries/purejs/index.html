@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Aggregate Date Series</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="options">
+            <select id="aggType">
+                <option value="None">None</option>
+                <option value="Sum">Sum</option>
+                <option value="Cnt">Count</option>
+                <option value="Avg" selected="true">Average</option>
+                <option value="Max">Max</option>
+                <option value="Min">Min</option>
+                <option value="Rng">Range</option>
+                <option value="Std">Std</option>
+                <option value="StdPop">StdPop</option>
+                <option value="Var">Var</option>
+                <option value="VarPop">VarPop</option>
+            </select>
+        </div>
+        <div id="theChart"></div>
+        <div id="theChartSelector" class="chart-selector"></div>
+    </div>
+
+</body>
+
+</html>

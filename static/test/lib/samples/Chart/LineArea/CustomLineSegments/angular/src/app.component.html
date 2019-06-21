@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" [bindingX]="'country'" [itemFormatter]="itemFormatter">
+        <wj-flex-chart-series [binding]="'sales'" [name]="'Sales'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'expenses'" [name]="'Expenses'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'downloads'" [name]="'Downloads'" [chartType]="'Line'"></wj-flex-chart-series>
+    </wj-flex-chart>
+</div>

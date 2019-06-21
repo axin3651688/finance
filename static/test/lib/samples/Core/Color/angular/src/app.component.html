@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div>
+        <wj-input-color #clrStart [value]="'purple'" (valueChanged)="interpolate(clrStart.value, clrEnd.value)"></wj-input-color>
+        <wj-input-color #clrEnd [value]="'red'" (valueChanged)="interpolate(clrStart.value, clrEnd.value)"></wj-input-color>
+    </div>
+    <table>
+        <tr>
+             <td *ngFor="let color of gradient" [style.background-color]=color>&nbsp;</td>
+        </tr>
+    </table>
+    <div id="theColor">
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'" (selectedItemChanged)="onSelectedItemChanged()"></wj-tree-view>
+        </div>
+        <div class="col-xs-8">
+            <button id="btnRemove" class="btn btn-default" (click)="onRemoveClick()">
+                Remove Selected Node
+            </button>
+        </div>
+    </div>
+</div>

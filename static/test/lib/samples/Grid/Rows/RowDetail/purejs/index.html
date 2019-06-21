@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Row Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+  <h3>
+    HTML in Row Details</h3>
+  <p>
+    This grid shows product categories on each row. Expanding
+    the rows shows an HTML element with information about 
+    the products in that category:</p>
+  <div id="htmlDetail"></div>
+
+  <h3>
+    Grids in Row Details</h3>
+  <p>
+    You can add anything you want to the detail rows, 
+    including other grids. This example shows the same
+    categories, but the detail row uses another grid
+    to show the products:</p>
+  <div id="gridDetail"></div>
+</div>
+</body>
+</html>

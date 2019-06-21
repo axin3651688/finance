@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div id="output" [style.background]="background">
+        Select a background for me!
+    </div>
+
+    <div class="form-group">
+        <label for="theInputColor">Default:</label>
+        <wj-input-color id="theInputColor" [placeholder]="'Select the color'" [(value)]="background"></wj-input-color>
+    </div>
+
+    <p>
+        You can customize the InputColor using the <b>colorPicker</b> property, which exposes the color picker
+        drop-down:
+    </p>
+
+    <div class="form-check">
+        <label for="showAlphaChannel">showAlphaChannel:</label>
+        <input id="showAlphaChannel" type="checkbox" [(ngModel)]="showAlphaChannel">
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="thePalette">palette:</label>
+        <wj-combo-box #thePalette id="thePalette" [itemsSource]="palettes" [displayMemberPath]="'name'"
+            (selectedIndexChanged)="changePalette(thePalette.selectedValue)"></wj-combo-box>
+    </div>
+
+    <div class="form-group">
+        <label for="theInputColorCst">Custom:</label>
+        <wj-input-color #theInputColorCst id="theInputColorCst" [(value)]="background"></wj-input-color>
+    </div>
+</div>

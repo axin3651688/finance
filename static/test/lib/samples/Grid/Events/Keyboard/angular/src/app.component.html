@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [allowAddNew]="true"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+    </wj-flex-grid>
+    <wj-popup #popup class="modal-content">
+        <div class="modal-header">
+            Deleting Row
+        </div>
+        <div  class="modal-body" tabindex="-1">
+            Do you really want to delete this row?
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary wj-hide-ok">Yes</button>
+            <button class="btn btn-default wj-hide">No</button>
+        </div>
+    </wj-popup>
+</div>

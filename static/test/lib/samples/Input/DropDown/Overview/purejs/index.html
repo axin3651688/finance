@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity DropDown Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-check">
+                    <label for="isAnimated" class="form-check-label">isAnimated:</label>
+                    <input id="isAnimated" type="checkbox">
+                </div>
+                <div class="form-check">
+                    <label for="isDroppedDown" class="form-check-label">isDroppedDown:</label>
+                    <input id="isDroppedDown" type="checkbox">
+                </div>
+                <div class="form-check">
+                    <label for="dropDownCssClass" class="form-check-label">dropDownCssClass:</label>
+                    <input id="dropDownCssClass" type="checkbox">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div id="theComboBox"></div>
+                <br />
+                <div id="theInputDate"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

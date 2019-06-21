@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="form-group">
+                <wj-multi-select #theMultiSelect [placeholder]="'Countries'" [headerFormat]="'{count:n0} countries'"
+                    [displayMemberPath]="'country'" [itemsSource]="data"></wj-multi-select>
+            </div>
+            <div class="form-group">
+                <label>
+                    Show "Select All" box
+                    <input id="selectAll" type="checkbox" [(ngModel)]="theMultiSelect.showSelectAllCheckbox">
+                </label>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <p>
+                <b>Checked Items:</b>
+            </p>
+            <ul>
+                <li *ngFor="let item of theMultiSelect.checkedItems">
+                    {{ item.country }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

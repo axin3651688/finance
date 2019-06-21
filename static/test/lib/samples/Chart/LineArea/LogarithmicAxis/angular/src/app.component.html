@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" [header]="'Logarithmic Axis'" [bindingX]="'x'" [chartType]="'Scatter'"
+        [palette]="palette">
+        <wj-flex-chart-series [binding]="'y'"></wj-flex-chart-series>
+        <wj-flex-chart-trend-line name="Trendline" binding="y" [sampleCount]="100"></wj-flex-chart-trend-line>
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [logBase]="10"></wj-flex-chart-axis>
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

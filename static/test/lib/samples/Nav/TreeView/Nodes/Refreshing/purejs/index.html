@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo TreeView Nodes Refreshing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div id="theTree">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <button id="btnItemData" class="btn btn-default">
+                    Refresh with given item data
+                </button><br />
+                <button id="btnItemsSource" class="btn btn-default">
+                    Refresh with changed itemsSource
+                </button><br />
+                <button id="btnReload" class="btn btn-default">
+                    Re-load the TreeView
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

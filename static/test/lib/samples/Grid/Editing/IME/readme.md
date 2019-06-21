@@ -1,0 +1,4 @@
+IME (Input Method Editor)
+=========================
+
+IME is an abbreviation of [Input Method Editor](https://en.wikipedia.org/wiki/Input_method). IME allows any data, such as keyboard strokes or mouse movements, to be received as input. In this way users can enter characters and symbols not found on their input devices. IME is obligatory for languages such as Japanese, Chinese, Korean, and Taiwanese. The FlexGrid supports IME through its **imeEnabled** property. For example, the grid below has **imeEnabled** set to true. If you set the keyboard language to Japanese or Chinese and enable IME, the grid will honor that setting and will allow you to edit cells using the selected IME mode by typing directly into the cells:

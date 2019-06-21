@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <wj-multi-select #theMultiSelect [placeholder]="'Devices'" [displayMemberPath]="'item.name'"
+                [checkedMemberPath]="'checked'" [itemsSource]="data"></wj-multi-select>
+        </div>
+        <div class="col-xs-7">
+            <p>
+                <b>Checked Items:</b>
+            </p>
+            <p *ngIf="theMultiSelect.checkedItems.length > 0">
+                {{ getCheckedItems(theMultiSelect) }}
+            </p>
+        </div>
+    </div>
+</div>

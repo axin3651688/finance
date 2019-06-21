@@ -1,0 +1,4 @@
+CollectionView Validation
+=========================
+
+The FlexGrid works with the **CollectionView** class to provide item and collection-level validation. To use this feature, set **getError** to a function that takes two parameters containing the data item being validated and the property to validate, and returns a string describing the error condition (or null if there are no errors).The grid below has as data source that implements a **getError** function that ensures the 'Sales' and 'Expenses' properties of the items contain positive values. To see how the validation works, try entering negative values in either column.

@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <p>
+        By default, the ComboBox displays one item per line in its drop-down list:
+    </p>
+    <div class="form-group">
+        <label for="theCombo">Default:</label>
+        <wj-combo-box [displayMemberPath]="'country'" [itemsSource]="data"></wj-combo-box>
+    </div>
+
+    <p>
+        If you have many short items, it may be interesting to use multiple columns in the drop-down. You can
+        accomplish this with a little CSS and the <b>dropDownCssClass</b> property:
+    </p>
+    <div class="form-group">
+        <label for="theComboCSS">Three Columns:</label>
+        <wj-combo-box [dropDownCssClass]="'cb-flex'" [displayMemberPath]="'country'" [itemsSource]="data">
+        </wj-combo-box>
+    </div>
+
+    <p>
+        If the items are complex objects, you may want to render a single item per line, but with additional detail,
+        as in a table or grid. You can accomplish this with the <b>formatItem</b> event and <b>headerPath</b>
+        property:
+    </p>
+    <div class="form-group">
+        <label for="theComboTable">Table-Style:</label>
+        <wj-combo-box [headerPath]="'country'" [displayMemberPath]="'country'" [itemsSource]="data"
+            (formatItem)="formatComboTableItem($event)"></wj-combo-box>
+    </div>
+</div>

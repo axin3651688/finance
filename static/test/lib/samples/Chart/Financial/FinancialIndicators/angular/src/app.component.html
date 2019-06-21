@@ -1,0 +1,171 @@
+<div class="container-fluid">
+    <div id="settingsBody" class="panel-collapse collapse in">
+        <div class="panel-body">
+            <!-- Indicator Selector -->
+            <ul class="list-inline">
+                <li>
+                    <label>Indicator Type</label>
+                    <wj-combo-box [itemsSource]="indicators"
+                                    selectedValuePath="abbreviation"
+                                    displayMemberPath="name"
+                                    [(selectedValue)]="selectedIndicator">
+                    </wj-combo-box>
+                </li>
+            </ul>
+
+            <!-- ATR Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'atr'">
+                <li>
+                    <label>Period</label>
+                    <wj-input-number #iptAtrPeriod (valueChanged)="atrPeriodChanged(iptAtrPeriod)"
+                                        [value]="14"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.atrPeriod"
+                                        [step]="1" format="n0">
+                    </wj-input-number>
+                </li>
+            </ul>
+
+            <!-- RSI Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'rsi'">
+                <li>
+                    <label>Period</label>
+                    <wj-input-number #iptRsiPeriod (valueChanged)="rsiPeriodChanged(iptRsiPeriod)"
+                                        [value]="14"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.rsiPeriod"
+                                        [step]="1" format="n0">
+                    </wj-input-number>
+                </li>
+            </ul>
+
+            <!-- CCI Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'cci'">
+                <li>
+                    <label>Period</label>
+                    <wj-input-number  #iptCciPeriod (valueChanged)="cciPeriodChanged(iptCciPeriod)"
+                                        [value]="20"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.cciPeriod"
+                                        [step]="1" format="n0">
+                    </wj-input-number>
+                </li>
+            </ul>
+
+            <!-- Williams %R Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'williamsR'">
+                <li>
+                    <label>Period</label>
+                    <wj-input-number  #iptWRPeriod (valueChanged)="wrPeriodChanged(iptWRPeriod)"
+                                        [value]="14"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.williamsRPeriod"
+                                        [step]="1" format="n0">
+                    </wj-input-number>
+                </li>
+            </ul>
+
+            <!-- MACD & MACD Histogram Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'macd'">
+                <li>
+                    <label>Fast Period</label>
+                    <wj-input-number #fastPeriod
+                                        [(value)]="properties.fastPeriod"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.fastPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="fastSlowPeriodChanged()">
+                    </wj-input-number>
+                </li>
+                <li>
+                    <label>Slow Period</label>
+                    <wj-input-number [(value)]="properties.slowPeriod"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.slowPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="fastSlowPeriodChanged()">
+                    </wj-input-number>
+                </li>
+                <li>
+                    <label>Signal Smoothing Period</label>
+                    <wj-input-number [(value)]="properties.smoothingPeriod"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.smoothingPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="smoothingPeriodChanged()">
+                    </wj-input-number>
+                </li>
+            </ul>
+
+            <!-- Fast Stochastic Properties -->
+            <ul class="list-inline" *ngIf="selectedIndicator === 'stoch'">
+                <li>
+                    <label>K Period</label>
+                    <wj-input-number [(value)]="properties.stochKPeriod"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.stochKPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="stochKPeriodChanged()">
+                    </wj-input-number>
+                </li>
+                <li>
+                    <label>D Period</label>
+                    <wj-input-number [(value)]="properties.stochDPeriod"
+                                        [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.stochDPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="stochDPeriodChanged()">
+                    </wj-input-number>
+                </li>
+                <li>
+                    <label>Smoothing Period</label>
+                    <wj-input-number #stochSmoothingInput [value]="1"
+                                        [min]="1" [max]="data.length > 0 ? data.length - 1 : properties.stochSmoothingPeriod"
+                                        [step]="1" format="n0"
+                                        (valueChanged)="stochSmoothingPeriodChanged(stochSmoothingInput)">
+                    </wj-input-number>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- FinancialChart -->
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" [palette]="palette" [tooltipContent]="tooltip">
+        <wj-financial-chart-series binding="close" name="Box Inc"></wj-financial-chart-series>
+        <wj-flex-chart-legend position="Top"></wj-flex-chart-legend>
+        <wj-flex-chart-axis wjProperty="axisX" [labelAngle]="0" [axisLine]="true"></wj-flex-chart-axis>
+    </wj-financial-chart>
+    <!-- Indicators Chart -->
+    <wj-financial-chart #indicatorChart [itemsSource]="data" style="height: 200px" bindingX="date" [palette]="palette" 
+            [tooltipContent]="tooltip" rendered="chartRendered()">
+        <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+        <wj-flex-chart-axis wjProperty="axisX" [labelAngle]="0" [axisLine]="true"></wj-flex-chart-axis>
+        <wj-flex-chart-atr binding="high,low,open,close" name="ATR"
+                           [period]="properties.atrPeriod"
+                           [visibility]="selectedIndicator === 'atr' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-atr>
+        <wj-flex-chart-rsi binding="close" name="RSI"
+                           [period]="properties.rsiPeriod"
+                           [visibility]="selectedIndicator === 'rsi' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-rsi>
+        <wj-flex-chart-cci binding="high,low,open,close" name="CCI"
+                           [period]="properties.cciPeriod"
+                           [visibility]="selectedIndicator === 'cci' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-cci>
+        <wj-flex-chart-williams-r binding="high,low,open,close" name="Williams %R"
+                            [period]="properties.williamsRPeriod"
+                            [visibility]="selectedIndicator === 'williamsR' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-williams-r>
+        <wj-flex-chart-macd binding="close" name="MACD,Signal"
+                            [styles]="properties.macdStyles"
+                            [fastPeriod]="properties.fastPeriod"
+                            [slowPeriod]="properties.slowPeriod"
+                            [smoothingPeriod]="properties.smoothingPeriod"
+                            [visibility]="selectedIndicator === 'macd' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-macd>
+        <wj-flex-chart-macd-histogram binding="close" name="MACD Histogram"
+                            [fastPeriod]="properties.fastPeriod"
+                            [slowPeriod]="properties.slowPeriod"
+                            [smoothingPeriod]="properties.smoothingPeriod"
+                            [visibility]="selectedIndicator === 'macd' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-macd-histogram>
+        <wj-flex-chart-stochastic binding="high,low,open,close" name="%K,%D"
+                            [kPeriod]="properties.stochKPeriod"
+                            [dPeriod]="properties.stochDPeriod"
+                            [smoothingPeriod]="properties.stochSmoothingPeriod"
+                            [visibility]="selectedIndicator === 'stoch' ? 'Visible' : 'Hidden'"
+                            [styles]="properties.stochStyles">
+        </wj-flex-chart-stochastic>
+    </wj-financial-chart>
+</div>

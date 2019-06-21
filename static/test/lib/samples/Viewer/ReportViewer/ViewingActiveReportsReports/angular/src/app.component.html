@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row report-names">
+        <label for="reports">Selected ActiveReports Report:</label>
+        <select id="reports" class="combobox" [(ngModel)]="filePath">
+            <ng-template ngFor let-cat [ngForOf]="categories">
+                <optgroup *ngIf="cat.reports" label="{{cat.name}}">
+                    <option *ngFor="let rep of cat.reports" [value]="rep.filePath">
+                        {{rep.reportName}}
+                    </option>
+                </optgroup>
+            </ng-template>
+        </select>
+    </div>
+
+    <wj-report-viewer
+        [serviceUrl]="'https://ardemos.grapecity.com/AR12-ReportsGallery/ActiveReports.ReportService.asmx'"
+        [filePath]="filePath">
+    </wj-report-viewer>
+</div>

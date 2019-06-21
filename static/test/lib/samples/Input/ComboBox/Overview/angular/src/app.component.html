@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theComboString">Strings:</label>
+        <wj-combo-box #theComboString id="theComboString" [itemsSource]="strings"></wj-combo-box>
+    </div>
+    <p>
+        The current value is: <b>{{ theComboString.text }}</b>.
+    </p>
+
+    <hr />
+
+    <div class="form-group">
+        <label for="theComboObject">Objects:</label>
+        <wj-combo-box #theComboObject id="theComboObject" [displayMemberPath]="'country'" [itemsSource]="objects"></wj-combo-box>
+    </div>
+    <p>
+        The current value is:
+        <b *ngIf="theComboObject.selectedValue as s">
+            {{ s.country }} (sales: {{ s.sales | currency:undefined:undefined:'2.0-0' }}, expenses {{ s.expenses | currency:undefined:undefined:'2.0-0' }})
+        </b>
+    </p>
+</div>

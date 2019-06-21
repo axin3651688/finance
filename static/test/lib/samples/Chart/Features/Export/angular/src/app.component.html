@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <p>
+            Save as:
+            <button class="btn btn-default" (click)="export('png')">PNG</button>
+            <button class="btn btn-default" (click)="export('jpeg')">JPEG</button>
+            <button class="btn btn-default" (click)="export('svg')">SVG</button>
+        </p>
+        <wj-flex-chart #theChart header="Phase II Test Results" chartType="Scatter">
+            <wj-flex-chart-series name="Experiment 1" [itemsSource]="data1" bindingX="x" binding="y"></wj-flex-chart-series>
+            <wj-flex-chart-series name="Experiment 2" [itemsSource]="data2" bindingX="x" binding="y"></wj-flex-chart-series>
+            <wj-flex-chart-series name="Experiment 3" [itemsSource]="data3" bindingX="x" binding="y"></wj-flex-chart-series>
+            <wj-flex-chart-axis wjProperty="axisY" [axisLine]="true"></wj-flex-chart-axis>
+        </wj-flex-chart>
+    </div>
+</div>

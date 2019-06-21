@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexSheet Formatting Cells</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="formatSheet"></div>
+        <div id="inputColor" style="display:none;position:fixed;z-index:100"></div>
+        <div class="well well-lg">
+            <div>
+                Format:
+                <select id="formatMenu">
+                    <option value="0">Decimal Format</option>
+                    <option value="n2">Number Format</option>
+                    <option value="p2">Percentage Format</option>
+                    <option value="c2">Currency Format</option>
+                    <option></option>
+                    <option value="d">Short Date</option>
+                    <option value="D">Long Date</option>
+                    <option value="f">Full Date/TIme (short time)</option>
+                    <option value="F">Full Date/TIme (long time)</option>
+                </select>
+            </div>
+            <div>
+                Font:
+                <div id="fonts" style="width: 120px"></div>
+                <div id="fontSize" style="width: 80px"></div>
+                <div class="btn-group">
+                    <button id="applyBoldStyle" type="button" class="btn btn-default">Bold</button>
+                    <button id="applyItalicStyle" type="button" class="btn btn-default">Italic</button>
+                    <button id="applyUnderlineStyle" type="button" class="btn btn-default">Underline</button>
+                </div>
+            </div>
+            <div>
+                Color:
+                <div class="btn-group">
+                    <button id="foreColor" type="button" class="btn btn-default">Fore Color</button>
+                    <button id="fillColor" type="button" class="btn btn-default">Fill Color</button>
+                </div>
+                Alignment:
+                <div class="btn-group">
+                    <button id="applyCellTextLeftAlign" type="button" class="btn btn-default">Left</button>
+                    <button id="applyCellTextCenterAlign" type="button" class="btn btn-default">Center</button>
+                    <button id="applyCellTextRightAlign" type="button" class="btn btn-default">Right</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

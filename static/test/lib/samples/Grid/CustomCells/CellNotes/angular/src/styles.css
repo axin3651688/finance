@@ -1,0 +1,22 @@
+.wj-flexgrid {
+  height: 350px;
+}
+.wj-cell {
+  border-color: #e0e0e0;
+}
+.wj-cell.wj-has-notes:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  right: 0;
+  top: -10px;
+  border: 10px solid transparent;
+  border-right: 10px solid red;
+  opacity: .5;
+}
+.wj-cell.wj-has-notes:hover:after {
+  opacity: 1;
+}
+body {
+  margin-bottom: 24pt
+}

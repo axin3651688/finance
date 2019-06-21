@@ -1,0 +1,4 @@
+OData and Virtual Data
+======================
+
+The **ODataCollectionView** class provides a simple way to connect controls to OData sources. When you create an **ODataCollectionView**, it starts loading the data in the source. The **ODataVirtualCollectionView** extends **ODataCollectionView** to provide **on-demand** loading of data. It does not load the data from the server automatically. Instead, it relies on the **setWindow** method to load data fragments (windows) on demand. The grids below show how both classes work. Notice how the grid on the left shows the data being loaded gradually. The grid on the right shows the full record count immediately, but the data will not be loaded until you scroll down.

@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Glyph</th>
+                <th>Markup</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let glyph of glyphs">
+                <td>{{glyph}}</td>
+                <td style="font-size:125%;">
+                    <span class="wj-glyph-{{glyph}}"></span>
+                </td>
+                <td>
+                    <code>&lt;span class="wj-glyph-{{glyph}}"&gt;&lt;/span&gt;</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

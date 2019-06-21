@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Custom cell content</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Export button -->
+        <div class="row">
+            <button class="btn btn-default" id="btnExport1">Export (customCellContent = false)</button>
+            <button class="btn btn-default" id="btnExport2">Export (customCellContent = true)</button>
+            <button class="btn btn-default" id="btnExport3">Export (customCellContent = false +
+                formatItem callback)</button>
+        </div>
+
+        <!-- FlexGrid -->
+        <div id="flexGrid" class="grid"></div>
+    </div>
+</body>
+
+</html>

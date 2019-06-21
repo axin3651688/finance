@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="form-check">
+        <label for="showRanges" class="form-check-label">showRanges:</label>
+        <input id="showRanges" type="checkbox" class="form-check-input" [(ngModel)]="showRanges">
+    </div>
+
+    <wj-radial-gauge #theRadialGauge [min]="0" [max]="100" [(value)]="gaugeValue" [isReadOnly]="false" [step]="10"
+        [showRanges]="showRanges">
+        <wj-range [wjProperty]="'pointer'" [thickness]="radThickness" [color]="'black'"></wj-range>
+        <wj-range [name]="'low'" [min]="0" [max]="25" [color]="'rgba(255,0,0,0.4)'"></wj-range>
+        <wj-range [name]="'med'" [min]="25" [max]="50" [color]="'rgba(255,255,0,0.4)'"></wj-range>
+        <wj-range [name]="'high'" [min]="50" [max]="75" [color]="'rgba(255,125,0,0.4)'"></wj-range>
+        <wj-range [name]="'top'" [min]="75" [max]="100" [color]="'rgba(0,255,0,0.4)'"></wj-range>
+    </wj-radial-gauge>
+
+    <wj-linear-gauge #theLinearGauge [min]="0" [max]="100" [(value)]="gaugeValue" [isReadOnly]="false" [step]="10"
+        [showRanges]="showRanges">
+        <wj-range [wjProperty]="'pointer'" [thickness]="linThickness" [color]="'black'"></wj-range>
+        <wj-range [name]="'low'" [min]="0" [max]="25" [color]="'rgba(255,0,0,0.4)'"></wj-range>
+        <wj-range [name]="'med'" [min]="25" [max]="50" [color]="'rgba(255,255,0,0.4)'"></wj-range>
+        <wj-range [name]="'high'" [min]="50" [max]="75" [color]="'rgba(255,125,0,0.4)'"></wj-range>
+        <wj-range [name]="'top'" [min]="75" [max]="100" [color]="'rgba(0,255,0,0.4)'"></wj-range>
+    </wj-linear-gauge>
+</div>

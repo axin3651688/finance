@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <div>
+        <label>
+            Bottom Border
+            <input id="customCSS" type="checkbox" checked="true" (click)="onCustomCSSClick($event)">
+        </label>
+    </div>
+    <wj-tree-view #theTree class="custom-tree" [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"></wj-tree-view>
+</div>

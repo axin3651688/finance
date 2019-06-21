@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <button (click)="scrollIntoView()" class="btn btn-default">
+        Scroll Row 100 Into View 
+    </button>
+    <button (click)="scrollToTop()" class="btn btn-default">
+        Set Top Cell to Row 100
+    </button>
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <p>Raw data:</p>
+            <wj-flex-grid [itemsSource]="ng.collectionView"></wj-flex-grid>
+        </div>
+        <div class="col-xs-7">
+            <p>
+                Amount spent by each buyer on each expense type.
+            </p>
+            <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+        </div>
+    </div>
+    <p>
+        The view is live. If you edit the raw data, the summary
+        view is automatically updated.
+    </p>
+    <p>
+        The pivot grid shows how much each person spent on each
+        type of expense. If you double-click any cell, you will
+        see a detail dialog showing the items that make up the
+        total.
+    </p>
+</div>

@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const wijmo_react_base_1=require("wijmo/wijmo.react.base"),wjcChartAnalytics=require("wijmo/wijmo.chart.analytics");class FlexChartTrendLine extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.TrendLine,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartTrendLine=FlexChartTrendLine;class FlexChartMovingAverage extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.MovingAverage,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartMovingAverage=FlexChartMovingAverage;class FlexChartYFunctionSeries extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.YFunctionSeries,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartYFunctionSeries=FlexChartYFunctionSeries;class FlexChartParametricFunctionSeries extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.ParametricFunctionSeries,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartParametricFunctionSeries=FlexChartParametricFunctionSeries;class FlexChartWaterfall extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.Waterfall,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent","intermediateTotalPositions","intermediateTotalLabels","styles"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartWaterfall=FlexChartWaterfall;class FlexChartBoxWhisker extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.BoxWhisker,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent","meanLineStyle","meanMarkerStyle"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartBoxWhisker=FlexChartBoxWhisker;class FlexChartErrorBar extends wijmo_react_base_1.ComponentBase{constructor(e){super(e,wjcChartAnalytics.ErrorBar,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent","errorBarStyle","value"]}),this._parentProp="series",this._siblingId="series"}}exports.FlexChartErrorBar=FlexChartErrorBar;

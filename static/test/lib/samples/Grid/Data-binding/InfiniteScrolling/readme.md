@@ -1,0 +1,4 @@
+Virtualization
+==============
+
+The main job of the FlexGrid is to convert JavaScript data objects into DOM elements that the user can interact with. In many cases, the data consists of large arrays with many thousands of items. Creating DOM elements for each of these items would make for large and slow pages.  Virtualization is the process of keeping track of which portions of the data are visible and rendering only those parts. This reduces the number of DOM elements in the document tree and improves performance dramatically. The FlexGrid exposes the visible part of the data through the **viewRange** property. Whenever the user resizes the screen or scrolls the grid, the **viewRange** is updated and the grid updates its child DOM elements.

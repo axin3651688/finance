@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <wj-tab-panel #dPanel (selectedIndexChanged)="selectTab(dPanel)">
+        <wj-tab>
+            <a>Africa</a>
+            <div>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>America</a>
+            <div>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Asia</a>
+            <div>
+            </div>
+
+        </wj-tab>
+        <wj-tab>
+            <a>Europe</a>
+            <div>
+            </div>
+
+        </wj-tab>
+        <wj-tab>
+            <a>Oceania</a>
+            <div>
+            </div>
+
+        </wj-tab>
+    </wj-tab-panel>
+    <p></p>
+    <div class="panel panel-success">
+        <!-- separate div to show the content -->
+        <div class="panel-heading">
+            <h3 id="detachedContent" class="panel-title" [innerHtml]="selectedTabContent"></h3>
+        </div>
+    </div>
+</div>

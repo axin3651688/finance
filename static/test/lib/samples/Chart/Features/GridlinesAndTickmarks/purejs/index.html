@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Gridlines and Tickmarks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h4>
+            Gridlines
+        </h4>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>
+                    <input id="customGridlines" type="checkbox" checked="checked">
+                    Custom CSS
+                </label><br />
+                <label>
+                    <input id="customUnits" type="checkbox" checked="checked">
+                    Custom Units
+                </label>
+            </div>
+            <div class="col-xs-4">
+                <label>
+                    <input id="x-major" type="checkbox" checked="checked">
+                    X Major
+                </label><br />
+                <label>
+                    <input id="x-minor" type="checkbox" checked="checked">
+                    X Minor
+                </label>
+            </div>
+            <div class="col-xs-4">
+                <label>
+                    <input id="y-major" type="checkbox" checked="checked">
+                    Y Major
+                </label><br />
+                <label>
+                    <input id="y-minor" type="checkbox" checked="checked">
+                    Y Minor
+                </label>
+            </div>
+        </div>
+
+        <div id="theChart" class="custom-gridlines"></div>
+    </div>
+</body>
+
+</html>

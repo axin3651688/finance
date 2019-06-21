@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-menu [(value)]="selectionMode" header="Selection Mode" [text]="selectionMode">
+            <wj-menu-item value="Point">Point</wj-menu-item>
+            <wj-menu-item value="Series">Series</wj-menu-item>
+            <wj-menu-item value="None">None</wj-menu-item>
+        </wj-menu>
+        <wj-flex-chart header="Country GDP" bindingX="country" [selectionMode]="selectionMode" [itemsSource]="data" [palette]="palette">
+            <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+            <wj-flex-chart-series binding="2014" name="2014"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2015" name="2015"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2016" name="2016"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

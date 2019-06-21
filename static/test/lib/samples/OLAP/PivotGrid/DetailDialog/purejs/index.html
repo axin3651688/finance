@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Grapecity Wijmo OLAP Pivot Grid Detail Dialog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <p>
+        <button id="showDetail" class="btn btn-primary">
+                Show Detail Dialog
+            </button>
+      </p>
+      <p>
+        The grid exposes the detail dialog through its
+        <b>detailDialog</b> property, which can be used to customize
+        the dialog as shown in this example.
+      </p>
+      <p>
+        <label>
+          Custom Detail Dialog
+          <input id="customDetails" type="checkbox" checked="checked">
+        </label>
+      </p>
+      <div id="pivotGrid"></div>
+    </div>
+
+</body>
+</html>

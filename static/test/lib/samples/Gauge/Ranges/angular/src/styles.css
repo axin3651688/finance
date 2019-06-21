@@ -1,0 +1,13 @@
+.wj-gauge {
+    margin: 20px auto;
+    width: 50%;
+    max-width: 250px;
+}
+
+body {
+    margin-bottom: 24pt;
+}
+
+label {
+    margin-right: 3px;
+}

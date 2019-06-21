@@ -1,0 +1,7 @@
+.form-group {
+    margin-right: 8px;
+}
+
+.form-group > label {
+    margin-right: 3px;
+}

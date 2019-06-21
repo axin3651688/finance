@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <wj-flex-chart #chart [itemsSource]="data" [plotMargin]="'NaN 60 NaN 60'" [bindingX]="'date'" [chartType]="'Area'"
+        [palette]="palette">
+        <wj-flex-chart-legend [position]="'None'"></wj-flex-chart-legend>
+        <wj-flex-chart-series [binding]="'low,high,open,close'" [name]="'Alphabet Inc'"></wj-flex-chart-series>
+    </wj-flex-chart>
+
+    <wj-flex-chart class="chart-selector" [itemsSource]="data" [plotMargin]="'NaN 60 NaN 60'" [tooltipContent]="''"
+        [bindingX]="'date'" [chartType]="'Area'" [palette]="palette">
+        <wj-flex-chart-legend [position]="'None'"></wj-flex-chart-legend>
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [position]="'None'"></wj-flex-chart-axis>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [position]="'None'"></wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'close'" [name]="'Alphabet Inc'"></wj-flex-chart-series>
+
+        <wj-flex-chart-range-selector #rangeSelector [minScale]="0.05" [maxScale]="0.75"
+            (rangeChanged)="rangeChanged(rangeSelector, chart)">
+        </wj-flex-chart-range-selector>
+    </wj-flex-chart>
+</div>

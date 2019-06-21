@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Sample</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="theTree"></div>
+
+        <h2>
+            Selecting a default item</h2>
+        <p>
+            If you select an item when the tree loads, it will
+            automatically ensure the selected node is visible,
+            expanding the tree and scrolling as needed.
+            In this case, we selected the 'Solar Panel' item:</p>
+        <div id="theTreeSelected"></div>
+
+        <h2>
+            Collapsing to a given Level</h2>
+        <p>
+            Use the <b>collapseToLevel</b> method to collapse or expand
+            the tree to a given level when it loads. For example, the
+            trees below start totally collapsed and totally expanded:</p>
+        <div id="theTreeCollapsed"></div>
+        <div id="theTreeExpanded"></div>
+
+    </div>
+</body>
+
+</html>

@@ -16,13 +16,15 @@
       </el-input>
     </div>
     <el-table
-      :data="cube.datas"
+      :data="cubeObject.filter(cube.filters)|| cubeObject.datas"
        border
       :stripe="true"
+      :cell-style="cellStyle"
+      @cell-click="onCellClick"
       style="float:right;width:65%;"
     >
       <el-tag v-for="cc in cube.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData.sync="cube" ref="tchild" v-if="!cc.hidden"/>
+        <bi-table-column-tree :col="cc" :cube.sync="cubeObject" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>
     </el-table> 
   </div>
@@ -33,7 +35,7 @@ import {mapGetters, mapActions} from 'vuex';
 import store from '@/store';
 import {FIND_DATA_CUBE} from '~api/cube';
 import { getClientParams } from "../../utils/index";
-import BiTableColumnTree from "@c/table/BiTableColumnTree";
+import BiTableColumnTree from "@c/table/BiTableColumnTree1";
 export default {
   name: 'cubes',
   components: {
@@ -111,8 +113,52 @@ export default {
       return res.data.code == 200 ? res.data.data : null;
     },
 
+
+     /**
+     * 单元格样式处理，自己可以在自己的item里配制默认实现
+     */
+    cellStyle({row, column, rowIndex, columnIndex}) {
+       let col = this.cubeObject.getColumnById(column.property);
+       if(col && col.render){
+           let bean = col.render(row[col.id],col);
+           if(bean && bean.css){
+             return bean.css;
+           }
+       }
+       if(col && col.drill){
+           return "cursor:point;color:blue;";
+       }
+
+      if (this.cube.cellStyle && typeof this.cube.cellStyle == "function") {
+        return this.cube.cellStyle(scope, this);
+      }
+    },
+
+      /**
+     * 单元格单击默认事件
+     */
+    onCellClickDefault(row, column, cell, event) {
+      debugger;
+      let col = this.cubeObject.getColumnById(column.property);
+      let listener = col._drill || col.drill;
+      if (col && listener) {
+         alert("想干点啥："+JSON.stringify(listener)+"\n"+JSON.stringify(row));
+      } else {
+        console.info("没有设置事件");
+      }
+    },
+
+     /**
+     * 单元格单击事件
+     */
+    onCellClick(row, column, cell, event) {
+      if (this.cube.onCellClick && typeof this.cube.onCellClick == "function") {
+        return this.cube.onCellClick(row, column, cell, event, this);
+      }
+      this.onCellClickDefault(row, column, cell, event);
+    },
+
     fun2String() {
-      console.info();
     },
 
     //深拷贝

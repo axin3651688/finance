@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [isReadOnly]="true"
+        [selectionMode]="'Row'"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="50" [isReadOnly]="true"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'" [isRequired]="true" [dataMap]="countries"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [format]="'n2'"></wj-flex-grid-column>
+    </wj-flex-grid>
+
+    <!-- the popup editor -->
+    <wj-popup #popup class="modal-content">
+        <div class="modal-header">
+            <button type="button" tabindex="-1" class="close wj-hide">
+                &times;
+            </button>
+            <h4 class="modal-title">Edit Item {{editingItem != null ? editingItem.id : ''}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="wj-labeled-input" >
+                <wj-combo-box #cboCountry 
+                    id="country"
+                    [itemsSource]="countries">
+                </wj-combo-box>
+                <label for="country">Country</label>
+            </div>
+            <div class="wj-labeled-input" >
+                <wj-input-number #numberSales
+                    id="sales"
+                    [format]="'n2'"
+                    [min]="0"
+                    [step]="100">
+                </wj-input-number>
+                <label for="sales">Sales</label>
+            </div>
+            <div class="wj-labeled-input" >
+                <wj-input-number #numberExpenses
+                    id="expenses"
+                    [format]="'n2'"
+                    [min]="0"
+                    [step]="100">
+                </wj-input-number>
+                <label for="expenses">Expenses</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary wj-hide-ok">OK</button>
+                <button type="button" class="btn btn-default wj-hide">Cancel</button>
+            </div>
+        </div>
+    </wj-popup>
+</div>

@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <div style="position:relative">
+            <wj-flex-chart #theChart [itemsSource]="data" bindingX="country" [palette]="palette"></wj-flex-chart>
+            <div id="pickerButton" (click)="pickerClick($event)">
+                <span class="column-picker-icon glyphicon glyphicon-cog"></span>
+            </div>
+        </div>
+        <div style="display:none">
+            <wj-list-box #theSeriesPicker [itemsSource]="this.theChart.series" checkedMemberPath="visible" displayMemberPath="name"
+                (lostFocus)="lostFocus()" (checkedItemsChanged)="checkedItemsChanged(theSeriesPicker)"></wj-list-box>
+        </div>
+    </div>
+</div>

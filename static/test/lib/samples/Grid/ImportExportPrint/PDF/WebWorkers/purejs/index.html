@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Web Workers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            This sample demonstrates the "Simple single grid export" scenario and shows how to export FlexGrid in
+            a background thread.
+        </p>
+        <button class="btn btn-default" id="btnExport1">Export</button>
+        <span id="txtProgress1">0%</span>
+        <div id="flexGrid1" class="grid"></div>
+
+        <hr />
+
+        <p>
+            This sample demonstrates the "Custom document generation" scenario and shows how to export FlexPie
+            (as a SVG image), FlexGrid and PNG image to a PDF in a background thread.
+        </p>
+        <p>
+            The <a href="https://www.npmjs.com/package/xmldom">xmldom</a> library is used here to bring DOM
+            support to the server to be able to draw SVG.
+        </p>
+        <button class="btn btn-default" id="btnExport2">Export</button>
+        <span id="txtProgress2">0%</span>
+        <p></p>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="flexPie"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="flexGrid2" class="grid"></div>
+            </div>
+        </div>
+
+        <hr />
+
+        <p>
+            This sample demonstrates the "Low-level usage of Web Workers API" scenario and shows how to export
+            FlexGrid to a PDF in a background thread a background thread using Web Workers API.
+        </p>
+        <button class="btn btn-default" id="btnExport3">Export</button>
+        <span id="txtProgress3">0%</span>
+        <div id="flexGrid3" class="grid"></div>
+    </div>
+</body>
+
+</html>

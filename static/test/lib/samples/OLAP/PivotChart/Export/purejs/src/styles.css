@@ -1,0 +1,12 @@
+.wj-pivotchart {
+  margin: auto;
+  max-width: 600px;
+}
+.wj-pivotchart .wj-flexchart {
+  border: none;
+  height: 300px;
+}
+
+body {
+  margin-bottom: 48pt;
+}

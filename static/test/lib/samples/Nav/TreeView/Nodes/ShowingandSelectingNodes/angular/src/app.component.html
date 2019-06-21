@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <button id="btnShow" class="btn btn-primary" (click)="onShowNode()">
+        Show 'Work Table' Node
+    </button>
+    <button id="btnSelect" class="btn btn-primary" (click)="onSelectNode()">
+        Select 'Work Table' Node
+    </button>
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"></wj-tree-view>
+</div>

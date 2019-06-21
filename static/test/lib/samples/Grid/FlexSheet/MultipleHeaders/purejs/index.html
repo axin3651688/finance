@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexSheet Multiple Headers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="multiHeadersSheet"></div>
+        <div class="row well well-lg">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="addRowHeader">Add Row Header</button>
+                <button type="button" class="btn btn-default" id="removeRowHeader">Remove Row Header</button>
+                <button type="button" class="btn btn-default" id="addColumnHeader">Add Column Header</button>
+                <button type="button" class="btn btn-default" id="removeColumnHeader">Remove Column Header</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

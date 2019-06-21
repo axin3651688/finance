@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <div *ngFor="let fmt of ['d', 'D', 'M', 'd/M/yy', 'MMMM dd, yyyy']; index as i;" class="form-group">
+        <label for="theInputDateF{{i}}">{{fmt}}:</label>
+        <wj-input-date id="theInputDateF{{i}}" [format]="fmt"></wj-input-date>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+    <div style="display:none">
+        <wj-list-box #columnPicker class="column-picker"></wj-list-box>
+    </div>
+
+    <p>
+        You can use the grid's <b>columnLayout</b> property to allow users
+        to save and restore column layouts. Click the buttons below
+        to see how this works:</p>
+    <button (click)="saveLayout()" class="btn btn-default">Save Layout</button>
+    <button (click)="loadLayout()" class="btn btn-default">Restore Layout</button>
+</div>

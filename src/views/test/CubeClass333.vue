@@ -14,13 +14,14 @@
 
       </el-input>
     </div>
+     <!--
         <el-table
       :data="cube.datas"
        border
       :stripe="true"
       style="float:right;width:65%;"
     >
-    <!--
+   
       <el-tag v-for="cc in cube.columns" v-bind:key="cc.id">
         <bi-table-column-tree :col="cc" :tableData.sync="cube" ref="tchild" v-if="!cc.hidden"/>
       </el-tag>

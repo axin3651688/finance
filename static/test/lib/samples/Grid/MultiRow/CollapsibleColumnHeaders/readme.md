@@ -1,0 +1,4 @@
+Collapsible Column Headers
+==========================
+
+By default, the **MultiRow** control creates column headers that span multiple rows and shows the header for each cell defined in the **layoutDefinition**. In some cases, you may want to collapse the column headers to a single line, showing only the group names rather than individual cells. This saves space at the expense of having individual cell headers. To collapse the column headers, set the **collapsedHeaders** property to true. In these scenarios, remember to set the **header** property on the groups in order to avoid empty column headers.

@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <p>
+                Here is the PivotPanel:
+            </p>
+            <wj-pivot-panel [itemsSource]="ngPanel"></wj-pivot-panel>
+        </div>
+        <div class="col-xs-6">
+            <p>
+                And here is the output view:
+            </p>
+            <wj-pivot-grid [itemsSource]="ngPanel"></wj-pivot-grid>
+        </div>
+    </div>
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            IE11 support for CSS Grid layouts is outdated and will
+            not be updated, but you can use
+            <a href="https://autoprefixer.github.io/">AutoPrefixer</a>
+            to add the IE11 support to your CSS automatically.
+        </div>
+    </div>
+</div>

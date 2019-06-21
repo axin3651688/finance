@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity ComboBox Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="theComboString">Strings:</label>
+            <div id="theComboString"></div>
+        </div>
+        <p>
+            The current value is: <b id="theComboStringCurrent"></b>.
+        </p>
+
+        <hr />
+
+        <div class="form-group">
+            <label for="theComboObject">Objects:</label>
+            <div id="theComboObject"></div>
+        </div>
+        <p>
+            The current value is: <b id="theComboObjectCurrent"></b>.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Tooltips</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            This paragraph has a <b id="span1">span with a tooltip</b>.
+        </p>
+        <p>
+            This paragraph has a <b id="span2">span with a tooltip</b>
+            whose content is taken from another element.
+        </p>
+        <p>
+            The button below also have tooltip:
+        </p>
+        <button id="btnAddNew" class="btn btn-default">
+            addNew
+        </button>
+
+        <div id="span2Tooltip" style="display:none">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Title
+                </div>
+                <div class="panel-body">
+                    This is the second span.
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

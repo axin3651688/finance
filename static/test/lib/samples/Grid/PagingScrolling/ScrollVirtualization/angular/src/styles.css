@@ -1,0 +1,9 @@
+ .wj-flexgrid {
+  height: 250px; 
+ }
+ #rowCount, #cellCount {
+   font-weight: bold;
+ }
+ body {
+   margin-bottom: 24pt;
+ }

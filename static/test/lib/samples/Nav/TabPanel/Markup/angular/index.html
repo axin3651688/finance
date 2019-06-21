@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo TabPanel Markup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Polyfills -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.min.js"></script>
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        // workaround to load 'rxjs/operators' from the rxjs bundle
+        System.import('rxjs').then(function (m) {
+            System.set(SystemJS.resolveSync('rxjs/operators'), System.newModule(m.operators));
+            System.import('./src/app.component');
+        });
+    </script>
+</head>
+<body>
+    <app-component></app-component>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<div class="container-fluid">
+    <wj-popup #thePopup [style.width]="small.checked ? '20%' : '40%'" [ngClass]="clsDialog.text || 'wj-dialog'" role="dialog">
+        <div [ngClass]="clsHeader.text || 'wj-dialog-header'">
+            <h4>{{ header.text }}</h4>
+        </div>
+        <div [ngClass]="clsBody.text || 'wj-dialog-body'">
+            <p>{{ body.text }}</p>
+            <input *ngIf="type.text == 'Prompt'" class="{{ clsInput.text || 'form-control' }}">
+        </div>
+        <div [ngClass]="clsFooter.text || 'wj-dialog-footer'">
+            <button class="{{ clsOK.text || 'wj-btn' }} wj-hide-ok">{{ ok.text || "OK" }}</button>
+            <button class="{{ clsCancel.text || 'wj-btn' }} wj-hide">{{ cancel.text || "Cancel" }}</button>
+        </div>
+    </wj-popup>
+
+    <div class="form-group">
+        <label for="btnShow">Show</label>
+        <button id="btnShow" class="btn btn-primary" (click)="type.text == 'Alert' ? showAlert(thePopup) : showPrompt(thePopup)">
+            Show {{ type.text }}
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <!-- important options -->
+            <div class="form-group">
+                <label for="type">Type</label>
+                <wj-combo-box #type id="type" [itemsSource]="['Alert', 'Prompt']"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="header">Header</label>
+                <wj-combo-box #header id="header" [text]="'Header'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <wj-combo-box #body id="body" [text]="'Dialog message.'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="small">Small</label>
+                <input #small id="small" type="checkbox">
+            </div>
+            <div class="form-group">
+                <label for="ok">OK Text</label>
+                <wj-combo-box #ok id="ok" [text]="'OK'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="cancel">Cancel Text</label>
+                <wj-combo-box #cancel id="cancel" [text]="'Cancel'"></wj-combo-box>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <!-- details -->
+            <div class="form-group">
+                <label for="clsDialog">Dialog Class</label>
+                <wj-combo-box #clsDialog id="clsDialog" [text]="'modal-dialog'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsHeader">Header Class</label>
+                <wj-combo-box #clsHeader id="clsHeader" [text]="'modal-header'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsBody">Body Class</label>
+                <wj-combo-box #clsBody id="clsBody" [text]="'modal-body'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsInput">Input Class</label>
+                <wj-combo-box #clsInput id="clsInput" [text]="'form-control'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsFooter">Footer Class</label>
+                <wj-combo-box #clsFooter id="clsFooter" [text]="'modal-footer'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsOK">OK Class</label>
+                <wj-combo-box #clsOK id="clsOK" [text]="'btn btn-primary'"></wj-combo-box>
+            </div>
+            <div class="form-group">
+                <label for="clsCancel">Cancel Class</label>
+                <wj-combo-box #clsCancel id="clsCancel" [text]="'btn btn-default'"></wj-combo-box>
+            </div>
+        </div>
+    </div>
+</div>

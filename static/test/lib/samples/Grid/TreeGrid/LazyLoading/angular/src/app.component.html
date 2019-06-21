@@ -1,0 +1,14 @@
+<div class="container-fluid">
+
+  <wj-flex-grid #theGrid [itemsSource]="data" [headersVisibility]="'Column'" [autoGenerateColumns]=false
+    [childItemsPath]="'children'" (groupCollapsedChanged)="onGroupCollapsedChanged(theGrid,$event)">
+    <wj-flex-grid-column [binding]="'name'" [header]="'Customer Name'" [width]="'*'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [align]="'center'" [cssClass]="'id-column'">
+    </wj-flex-grid-column>
+
+  </wj-flex-grid>
+  <p>
+    The grid currently has <b id="rowCount" [innerHTML]="rowCountText"></b> rows.
+  </p>
+
+</div>

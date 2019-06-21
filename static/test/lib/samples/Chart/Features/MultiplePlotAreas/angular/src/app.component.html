@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart [itemsSource]="data" header="Sales, Expenses, and Downloads" bindingX="country" [palette]="palette">
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="expenses" name="Expenses"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="downloads" name="Downloads" chartType="LineSymbols">
+                <wj-flex-chart-axis wjProperty="axisY" position="Left" [plotArea]="plot"></wj-flex-chart-axis>
+            </wj-flex-chart-series>
+            <wj-flex-chart-plot-area [row]="0" name="amounts" height="2*"></wj-flex-chart-plot-area>
+            <wj-flex-chart-plot-area [row]="1" name="spacer" [height]="25"></wj-flex-chart-plot-area>
+            <wj-flex-chart-plot-area #plot [row]="2" name="quantities" height="*"></wj-flex-chart-plot-area>
+        </wj-flex-chart>
+    </div>
+</div>

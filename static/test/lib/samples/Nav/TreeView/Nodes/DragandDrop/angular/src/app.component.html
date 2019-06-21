@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <label>
+        <input type="checkbox" checked="checked" [(ngModel)]="theTree.allowDragging">
+        allow dragging
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" [(ngModel)]="allowDraggingParentNodes">
+        allow dragging parent nodes
+    </label>
+    <br />
+    <label>
+        <input type="checkbox" [(ngModel)]="allowDroppingIntoEmpty">
+        allow dropping into empty nodes
+    </label>
+
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"
+        [imageMemberPath]="'img'" [showCheckboxes]=true [allowDragging]=true (dragStart)="onDragStart($event)"
+        (dragOver)="onDragOver($event)"></wj-tree-view>
+</div>

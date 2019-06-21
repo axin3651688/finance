@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexSheet Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="tableSheet"></div>
+        <div id="tableSettings" class="well well-lg" style="display: none;">
+            <h4>Table Style Options</h4>
+            <div>
+                <label>
+                    <input id="showHeaderRow" class="form-check-input" type="checkbox">
+                    Header Row
+                </label>
+                <label>
+                    <input id="showTotalRow" class="form-check-input" type="checkbox">
+                    Total Row
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input id="showBandedRows" class="form-check-input" type="checkbox">
+                    Banded Rows
+                </label>
+                <label>
+                    <input id="showBandedColumns" class="form-check-input" type="checkbox">
+                    Banded Columns
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input id="alterFirstColumn" class="form-check-input" type="checkbox">
+                    First Column
+                </label>
+                <label>
+                    <input id="alterLastColumn" class="form-check-input" type="checkbox">
+                    Last Column
+                </label>
+            </div>
+            <div>
+                <label style="width:auto">
+                    Built-in Styles:
+                </label>
+                <div id="tableStyles"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

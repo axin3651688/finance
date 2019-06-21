@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theAutoComplete">AutoComplete:</label>
+        <wj-auto-complete #theAutoComplete id="theAutoComplete" [placeholder]="'Product Name'" [displayMemberPath]="'ProductName'"
+            [itemsSourceFunction]="getItemBySearch">
+        </wj-auto-complete>
+    </div>
+    <p>
+        Selected product:
+        <b *ngIf="theAutoComplete.selectedItem as s; else none">
+            {{ s.ProductName }} (ID: {{ s.ProductID }})
+        </b>
+        <ng-template #none><b>None</b></ng-template>
+    </p>
+</div>

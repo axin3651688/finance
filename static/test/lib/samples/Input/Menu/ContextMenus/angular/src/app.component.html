@@ -1,0 +1,45 @@
+<div class="container-fluid">
+    <div class="owners">
+        <div id="first" [wjContextMenu]="ctxMenu" style="background:#f0a0a0">
+            I have a Context Menu.
+        </div>
+        <div id="second" [wjContextMenu]="ctxMenu" style="background:#a0f0a0">
+            I have the same Context Menu.
+        </div>
+    </div>
+
+    <h4>
+        The same approach works with all Wijmo controls:
+    </h4>
+
+    <p>
+        FlexChart with ContextMenu
+    </p>
+    <wj-flex-chart id="theChart" [itemsSource]="data" [bindingX]="'country'" [wjContextMenu]="ctxMenu">
+        <wj-flex-chart-series [binding]="'sales'" [name]="'Sales'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'expenses'" [name]="'Expenses'"></wj-flex-chart-series>
+    </wj-flex-chart>
+
+    <p>
+        FlexGrid with ContextMenu
+    </p>
+    <wj-flex-grid id="theGrid" [itemsSource]="data" [wjContextMenu]="ctxMenu"></wj-flex-grid>
+
+    <!-- Menu -->
+    <wj-menu #ctxMenu style="display:none" [header]="'Context Menu'" [selectedValuePath]="'cmd'"
+        [dropDownCssClass]="'ctx-menu'" (itemClicked)="menuItemClicked(ctxMenu)">
+        <wj-menu-item cmd="cmdNew">
+            <span class="glyphicon glyphicon-asterisk"></span>&nbsp;&nbsp;New
+        </wj-menu-item>
+        <wj-menu-item cmd="cmdOpen">
+            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Open
+        </wj-menu-item>
+        <wj-menu-item cmd="cmdSave">
+            <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Save
+        </wj-menu-item>
+        <wj-menu-separator></wj-menu-separator>
+        <wj-menu-item cmd="cmdExit">
+            <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Exit
+        </wj-menu-item>
+    </wj-menu>
+</div>

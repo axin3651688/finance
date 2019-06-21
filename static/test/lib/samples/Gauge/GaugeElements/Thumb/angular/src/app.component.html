@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="theColor">Color:</label>
+                <wj-input-color id="theColor" [(value)]="theGauge.pointer.color"></wj-input-color>
+            </div>
+            <div class="form-group">
+                <label for="theThumbSize">Thumb Size:</label>
+                <wj-input-number id="theThumbSize" [min]="0" [max]="50" [step]="5" [format]="'n0'"
+                    [(value)]="thumbSize">
+                </wj-input-number>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-radial-gauge #theGauge [isReadOnly]="false" [hasShadow]="false" [showText]="'All'" [startAngle]="-30"
+                [sweepAngle]="240" [value]="50" [thumbSize]="thumbSize">
+                <wj-range [wjProperty]="'pointer'" [thickness]="0.15" [color]="'#0085c7'"></wj-range>
+            </wj-radial-gauge>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div id="log">
+        please move the mouse over the grid
+    </div>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data" 
+        (formatItem)="formatFlexGrid(flex, $event)"
+        (initialized)="flexInitialized(flex)">
+    </wj-flex-grid>
+</div>

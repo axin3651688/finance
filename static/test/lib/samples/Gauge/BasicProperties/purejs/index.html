@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gauge Basics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="min">min:</label>
+                    <div id="min"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="max">max:</label>
+                    <div id="max"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="value">value:</label>
+                    <div id="value"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="showText">showText:</label>
+                    <div id="showText"></div>
+                </div>
+
+                <div class="form-check">
+                    <label for="isReadOnly">isReadOnly:</label>
+                    <input id="isReadOnly" type="checkbox" checked="checked" class="form-check-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="step">step:</label>
+                    <div id="step"></div>
+                </div>
+
+                <div class="form-check">
+                    <label for="isAnimated">isAnimated:</label>
+                    <input id="isAnimated" type="checkbox" checked="checked" class="form-check-input">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div id="theRadialGauge"></div>
+                <div id="theLinearGauge"></div>
+                <div id="theBulletGraph"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theAutoComplete">Default:</label>
+        <wj-auto-complete id="theAutoComplete" [displayMemberPath]="'country'" [itemsSource]="data">
+        </wj-auto-complete>
+    </div>
+    <div class="form-group">
+        <label for="theAutoCompleteCustom">Custom:</label>
+        <wj-auto-complete id="theAutoCompleteCustom" [displayMemberPath]="'country'"
+            [itemsSourceFunction]="itemsSourceFunction">
+        </wj-auto-complete>
+    </div>
+</div>

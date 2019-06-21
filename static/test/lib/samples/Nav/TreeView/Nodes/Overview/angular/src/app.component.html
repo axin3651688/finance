@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'" (loadedItems)="onLoadedItems()">
+            </wj-tree-view>
+        </div>
+        <div class="col-xs-7">
+            <div id="scan" class="btn btn-primary" (click)="scanNode()">
+                Scan Visible Nodes
+            </div>
+            <h4>
+                Visible Nodes:
+            </h4>
+            <div id="result" [innerHtml]="scanResult"></div>
+        </div>
+    </div>
+</div>

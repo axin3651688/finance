@@ -1,0 +1,13 @@
+.wj-flexgrid {
+  max-height: 200px;
+  margin-bottom: 12px;
+}
+.log {
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 10px;
+  opacity: .5;
+}
+body {
+   margin-bottom: 24px;
+}

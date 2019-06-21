@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart [itemsSource]="data" chartType="Line" bindingX="date">
+            <wj-flex-chart-series binding="sale"></wj-flex-chart-series>
+            <wj-flex-chart-legend position="Left"></wj-flex-chart-legend>
+            <wj-flex-chart-annotation-layer control="al">
+                <wj-flex-chart-annotation-circle [radius]="40" [offset]="{x: 0, y: -15}" [seriesIndex]="0"
+                                                    [pointIndex]="33" content="DataIndex" position="Center" attachment="DataIndex"
+                                                    tooltip="This is Circle annotation. &lt;/br&gt; radius: 40 &lt;/br&gt; pointIndex: 33 &lt;/br&gt; attachment: DataIndex"
+                                                    [style]="{ 'fill': '#a3d1a7', 'stroke': '#7b9e7e', 'fill-opacity': 1, 'stroke-width': 2, 'stroke-opacity': 1 }"></wj-flex-chart-annotation-circle>
+                <wj-flex-chart-annotation-square [length]="80" [offset]="{x: 0, y: -15}" [seriesIndex]="0"
+                                                    [pointIndex]="45" content="DataIndex" position="Center" attachment="DataIndex"
+                                                    tooltip="This is square annotation. &lt;/br&gt;length: 80 &lt;/br&gt; pointIndex: 45 &lt;/br&gt; attachment: DataIndex"
+                                                    [style]="{ 'fill': '#c4af71', 'stroke': '#918254', 'fill-opacity': 1, 'stroke-width': 2, 'stroke-opacity': 1 }"></wj-flex-chart-annotation-square>
+                <wj-flex-chart-annotation-line content="Absolute" position="Center" [start]="{x: 50, y: 150}" [end]="{x: 350, y: 300}"
+                                                tooltip="This is line annotation. &lt;/br&gt; start: { x: 50, y: 150 } end: { x: 350, y: 300 } &lt;/br&gt; attachment: Absolute"
+                                                [style]="{ 'fill': '#FE2E2E', 'stroke': '#01A9DB', 'fill-opacity': 2, 'stroke-width': 4, 'stroke-opacity': 1 }"></wj-flex-chart-annotation-line>
+                <wj-flex-chart-annotation-text attachment="Relative" text="Relative" position="Center" [point]="{x:0.55, y:0.15}"
+                                                tooltip="This is text annotation.&lt;/br&gt;point: { x: 0.55, y: 0.15 }&lt;/br&gt; attachment: Relative"
+                                                [style]="{ 'fill': '#bbbbbb', 'font-size': '26px' }"></wj-flex-chart-annotation-text>
+                <wj-flex-chart-annotation-ellipse content="Relative" position="Center" attachment="Relative" [point]="{x:0.4,y:0.5}"
+                                                    tooltip="This is ellipse annotation.&lt;/br&gt;point: { x: 0.4, y: 0.45 }&lt;/br&gt; attachment: Relative"
+                                                    [style]="{ 'fill': '#f5bc78', 'stroke': '#c2955f', 'fill-opacity': 1, 'stroke-width': 2, 'stroke-opacity': 1 }"></wj-flex-chart-annotation-ellipse>
+                <wj-flex-chart-annotation-rectangle content="DataCoordinate" position="Center" attachment="DataCoordinate" [point]="{x: basic.rectDate, y: 30}"
+                                                    tooltip="This is rectangle annotation.&lt;/br&gt;point:{ x: new Date(2014, 1, 10), y: 40 }&lt;/br&gt; attachment: DataCoordinate"
+                                                    [style]="{ 'fill': '#c5aacd', 'stroke': '#937f99', 'fill-opacity': 1, 'stroke-width': 2, 'stroke-opacity': 1 }"></wj-flex-chart-annotation-rectangle>
+                <wj-flex-chart-annotation-image position="Center" attachment="DataCoordinate" href="resources/wijmo5-flexible.png" [point]="{x: basic.imageDate, y: 30}"
+                                                tooltip="This is image annotation.&lt;/br&gt;point:{x: new Date(2014, 0, 25), y: 20}&lt;/br&gt; attachment: DataCoordinate"
+                                                [style]="{ 'fill': '#01DFD7', 'stroke': '#000000', 'fill-opacity': 1, 'stroke-width': 1, 'stroke-opacity': 1}"></wj-flex-chart-annotation-image>
+                <wj-flex-chart-annotation-polygon content="Absolute" position="Center"
+                                                    tooltip="This is polygon annotation.&lt;/br&gt;paths: [(200,0),(150,50),(175,100),(255,100),(250, 50)]&lt;/br&gt; attachment: Absolute"
+                                                    [style]="{ 'fill': '#FE2E2E', 'stroke': '#01A9DB', 'fill-opacity': 2, 'stroke-width': 4, 'stroke-opacity': 1 }">
+                    <wj-flex-chart-data-point wjProperty="points" [x]="200" [y]="0"></wj-flex-chart-data-point>
+                    <wj-flex-chart-data-point wjProperty="points" [x]="150" [y]="50"></wj-flex-chart-data-point>
+                    <wj-flex-chart-data-point wjProperty="points" [x]="175" [y]="100"></wj-flex-chart-data-point>
+                    <wj-flex-chart-data-point wjProperty="points" [x]="225" [y]="100"></wj-flex-chart-data-point>
+                    <wj-flex-chart-data-point wjProperty="points" [x]="250" [y]="50"></wj-flex-chart-data-point>
+                </wj-flex-chart-annotation-polygon>
+            </wj-flex-chart-annotation-layer>
+        </wj-flex-chart>
+    </div>
+</div>

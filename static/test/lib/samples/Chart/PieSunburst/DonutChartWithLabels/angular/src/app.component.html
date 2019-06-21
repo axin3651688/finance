@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-flex-pie [header]="'Best-selling Mobile Phones Brands of 2017'" [bindingName]="'brand'" [binding]="'sales'"
+        [innerRadius]="0.5" [itemsSource]="data"
+        [palette]="['rgba(42,159,214,1)', 'rgba(119,179,0,1)', 'rgba(153,51,204,1)', 'rgba(255,136,0,1)', 'rgba(204,0,0,1)', 'rgba(0,204,163,1)', 'rgba(61,109,204,1)', 'rgba(82,82,82,1)', 'rgba(0,0,0,1)']">
+        <wj-flex-pie-data-label [position]="'Outside'" [content]="getLabelContent"></wj-flex-pie-data-label>
+    </wj-flex-pie>
+</div>

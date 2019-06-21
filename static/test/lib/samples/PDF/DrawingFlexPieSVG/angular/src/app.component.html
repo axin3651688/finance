@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <wj-flex-pie #flexPie [binding]="'value'" [bindingName]="'name'" [innerRadius]="0.75" [itemsSource]="data">
+        <wj-flex-pie-data-label [content]="'{value:c1}'" [position]="'Inside'"></wj-flex-pie-data-label>
+    </wj-flex-pie>
+
+    <!-- Export button -->
+    <button class="btn btn-default" (click)="export()">Export</button>
+</div>

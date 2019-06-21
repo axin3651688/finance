@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <p>
+        For example, the grid below does not allow dragging
+        the 'country' column to the last or first positions:</p>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data" 
+        (initialized)="flexInitialized(flex)">
+    </wj-flex-grid>
+</div>

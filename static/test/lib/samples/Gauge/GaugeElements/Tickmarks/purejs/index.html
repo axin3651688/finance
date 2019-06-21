@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tickmarks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-check">
+                    <label for="showTicks" class="form-check-label">Tickmarks:</label>
+                    <input id="showTicks" type="checkbox" checked="checked" class="form-check-input">
+                </div>
+                <div class="form-group">
+                    <label for="tickSpacing">Spacing:</label>
+                    <div id="tickSpacing"></div>
+                </div>
+                <div class="form-group">
+                    <label for="tickWidth">Width:</label>
+                    <div id="tickWidth"></div>
+                </div>
+                <div class="form-group">
+                    <label for="tickColor">Color:</label>
+                    <div id="tickColor"></div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div id="theGauge"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

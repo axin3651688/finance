@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <label>
+        newRowAtTop
+        <input [(ngModel)]="grid.newRowAtTop" type="checkbox">
+    </label>
+    <wj-flex-grid #flex
+        [allowAddNew]="true" 
+        [allowDelete]="true" 
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>

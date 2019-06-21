@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- the grid -->
+        <wj-flex-grid #flex
+            [(itemsSource)]="data"
+            (initialized)="initializeFlexSheet(flex)">
+            <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Start Date" binding="start" format="d"></wj-flex-grid-column>
+                <wj-flex-grid-column header="End Date" binding="end" format="d"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Color" binding="color" [width]="70">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-cell="cell" *ngIf="customContent">
+                        <div [ngStyle]="{color: cell.item.color.toLowerCase()}">
+                            {{cell.item.color}}
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+                <wj-flex-grid-column header="Amount" binding="amount" format="c" aggregate="Sum"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Pending" binding="amount2" format="c2" aggregate="Sum"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Discount" binding="discount" format="p1" aggregate="Avg"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Active" binding="active" [width]="170">
+                    <ng-template wjFlexGridCellTemplate [cellType]="'Group'" let-cell="cell" *ngIf="customContent">
+                        <div style="text-align:left">
+                            Amount/Pending: {{ cell.row.grid.getCellData(cell.row.index, 'amount', false) /
+                            cell.row.grid.getCellData(cell.row.index, 'amount2', false) | number:'1.2-2' }}
+                        </div>
+                    </ng-template>
+                </wj-flex-grid-column>
+        </wj-flex-grid>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <div class="form-inline well well-lg">
+                <input type="file" class="form-control" style="width: 250px;" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12" />
+                <button (click)="load()" class="btn btn-default">Import</button>
+                <div class="checkbox">
+                    <label>
+                        <input [(ngModel)]="includeColumnHeader" type="checkbox"> Include Column Header
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="form-inline well well-lg">
+                <button (click)="save()" class="btn btn-default">Export</button>
+                <div class="checkbox">
+                    <label>
+                        <input [(ngModel)]="includeColumnHeader" type="checkbox"> Include Column Header
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input [(ngModel)]="customContent" type="checkbox"> Custom Cell Content
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

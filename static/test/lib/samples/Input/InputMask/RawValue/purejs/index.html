@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity InputMask rawValue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="theSSN">Social Security Number</label>
+            <input id="theSSN">
+            <span id="theSSNRaw"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="theZip">Zip Code</label>
+            <input id="theZip">
+            <span id="theZipRaw"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="theZip4">Zip Code + 4</label>
+            <input id="theZip4">
+            <span id="theZip4Raw"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="thePhone">Phone Number</label>
+            <input id="thePhone">
+            <span id="thePhoneRaw"></span>
+        </div>
+    </div>
+</body>
+
+</html>

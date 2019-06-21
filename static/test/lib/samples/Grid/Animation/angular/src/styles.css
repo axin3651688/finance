@@ -1,0 +1,12 @@
+.wj-flexgrid .wj-marquee,
+.wj-flexgrid .wj-header,
+.wj-flexgrid .wj-cell {
+  transition: all .4s;
+  
+  /* want to play? -> http://cubic-bezier.com */
+  transition-timing-function: cubic-bezier(.5,0,.5,1)
+}
+.wj-flexgrid {
+  max-height: 250px;
+  margin-bottom: 24px;
+}

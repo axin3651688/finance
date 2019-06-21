@@ -101,6 +101,9 @@ class CnbiCube {
         let cube = res.data.code == 200 ? res.data.data : null;
         if(null  == cube){
           cube = res.data;
+          if(typeof cube === "string"){
+             cube = eval("("+cube+")");
+          }
         }
         if (cube) {
             if (cube.rows && cube.rows.length > 0) {
@@ -153,6 +156,52 @@ class CnbiCube {
         }
     }
 
+     //进行格式化操作
+    colFormatter(value,col){
+      let formatter = col.formatter;
+      if(formatter && formatter[col.type]){
+          let fors = formatter[col.type];
+          if(fors.millesimal){ //如果配制了千分位  保留两位小数
+              value =  Math.get_thousand_num(value.toFixed(fors.digit||2));
+          }
+          if(fors.prefix){//如果有前缀
+              value = fors.prefix+value;
+          }
+          if(fors.subfix){//如果有后缀
+              value = value+fors.subfix;
+          }
+            
+      }
+      return value;
+    }
+
+    getValue(value,col){
+       if(col.render){
+          let val = col.render(value);
+          return val || value;
+       }
+       return this.colFormatter(value,col);
+
+    }
+
+    getColumnById(colId){
+      return this.columns.filter(col=>{
+         if(col.id == colId){
+           return col;
+         }
+      })[0];
+    }
+
+    /**
+     * 根据col.renderFormatter动态生成render函数，这个函数在执行格式化之后
+     */
+    generateRender(col){
+      let filters = col.renderFormatter;
+      let exp = CnbiCube.getFormatterFilterConditions(filters,"value");
+      col.render = eval('(' + exp + ')');
+      debugger;
+    }
+
     /**
      * 设置列属性
      * @param scope
@@ -164,8 +213,8 @@ class CnbiCube {
             if (Array.isArray(col)) {
                 this.setCloumnType(col);
                 deli = true;
-            } else {
-
+            } else if(col.renderFormatter){
+                this.generateRender(col);
             }
         });
         if (!deli) scope.grantType = true;
@@ -355,11 +404,109 @@ class CnbiCube {
         await this.excuteFunctions(prefixExcuteFunctionNames, scope);
         await this.getModelDatas(scope);
         await this.excuteFunctions(subfixExcuteFunctionNames, scope);
+        //TODO parseCube();
         return this.datas;
     }
 
-    static getFunTemplate(exp) {
-        return 'function (data){if(' + exp + '){ return data ; }}(data)';
+    static getFunTemplate(exp,content,params,execute) {
+        let sb = '('+params+')';
+        let fun =  'function '+sb+'{if(' + exp + '){   '+content+' ; }}';
+        if(execute){//是否执行
+          fun = fun+sb;
+        }
+        return fun;
+    }
+    /**
+     * 获取列函数
+     */
+    static getFunReturn(filter){
+      let type = filter.type;
+      let bean = {};
+      if(type && type.icon){
+        bean.icon =  type.icon;
+      }
+      if(type && type.css){
+        bean.css =  type.css;
+      }
+      return bean;
+
+    }
+    static logic = {
+      "and":" && ",
+       "or":" || "
+    }
+
+    static getFrontLogicSymbol(filter){
+      if(!filter.logicSymbol){
+        return  CnbiCube.logic.and;
+      }
+      return CnbiCube.logic[filter.logicSymbol];
+    }
+     
+   /**
+    * 获取多条件合并的表达式
+    * type && type == 1 ==> (ss> 0 && bb < 0 )
+    */
+    static getChildrenFilterTemplate(filters,params,type){
+      let exp = '';
+      filters.forEach((filter, index) => {
+        if (index > 0) {
+          exp += CnbiCube.getFrontLogicSymbol(filter);
+        }
+        let pp = params;
+        if(type){
+          pp = pp+filter.field
+        }
+        exp+= CnbiCube.getTempFun(filter,pp);
+      });
+      return exp;
+    }
+
+    /**
+     * 获取 bb = 334 的表达式
+     */
+    static getTempFun(filter,params){
+      let val = isNaN(filter.value) ? '\'' + filter.value + '\'' : filter.value;
+      return  params +  filter.calcSymbol + ' ' + val;
+    }
+
+    /**
+     * 动态生成格式化函数 formatter
+     */
+    static getFormatterFilterConditions(filters,params){
+      if (!filters || filters.length == 0) return;
+      let tempArr = [];
+      filters.forEach((filter, index) => {
+          let children = filter.children,temp = "";
+          if(children && children.length > 0 ){
+            temp = CnbiCube.getChildrenFilterTemplate(children,params);  //if(ss> 0 && bb < 0 ){}
+          }else{
+            temp = CnbiCube.getTempFun(filter,params);
+          }
+          tempArr.push('if(' + temp + '){     return '+JSON.stringify(CnbiCube.getFunReturn(filter))+' ; }');
+      });
+      let exp = tempArr.join(";");
+      return  "function("+params+"){"+exp+"}";
+    }
+    /**
+     * 获取cube.filters的条件 
+     */
+    static getFilterConditions(filters,params){
+      if (!filters || filters.length == 0) return;
+        let exp = '';
+        filters.forEach((filter, index) => {
+            if (index > 0) {
+                exp+= CnbiCube.getFrontLogicSymbol(filter);
+            }
+            let children = filter.children;
+            if(children && children.length > 0 ){//ss> 0 && bb < 0 )
+              exp+= "("+CnbiCube.getChildrenFilterTemplate(children,params,1)+")";  //if(ss> 0 && bb < 0 ){} 
+            }else{
+              exp+= CnbiCube.getTempFun(filter,params+filter.field);
+            }
+            
+        });
+        return exp;
     }
 
     /**
@@ -367,20 +514,16 @@ class CnbiCube {
      * var Fn = Function;  //一个变量指向Function，防止有些前端编译工具报错
      *  return new Fn('return ' + fn)();
      */
-    filter(filters) {
-        filters = filters || this.filters;
-        if (!filters || filters.length == 0) return;
-        let exp = '';
-        filters.forEach((filter, index) => {
-            let val = isNaN(filter.value) ? '\'' + filter.value + '\'' : filter.value;
-            if (index > 0) {
-                exp += ' && ';
-            }
-            exp += 'data.' + filter.field + ' ' + filter.calcSymbol + ' ' + val;
-        });
-        exp = CnbiCube.getFunTemplate(exp);
+    filter(filters,datas) {
+        let valueVarName = "data";
+        let exp = CnbiCube.getFilterConditions(filters || this.filters,valueVarName+".");
+        if(!exp){
+          return ;
+        }
+        exp = CnbiCube.getFunTemplate(exp," return "+valueVarName,valueVarName,1);
         console.log(exp, typeof exp);
-        return this.datas.filter(data => {
+        datas = datas || this.datas;//马军要加的
+        return datas.filter(data => {
             // 如果过滤异常，直接返回原数据
             if (eval('(' + exp + ')')) {
                 return data;
@@ -529,7 +672,7 @@ class DataHandler {
     }
 
     /**
-     * 列配制项处理
+     * 列配制项处理  value,record,cube
      */
     colRenderHandler(table) {
         try {
@@ -562,6 +705,24 @@ class DataHandler {
         return this.dataCalculator;
     }
 
+
+    /**
+     * 列计算功能
+     * (A-asntq)*100/A
+     */
+    calcColData(cube){
+      this.dataCalculator = this.getDataCalculator(cube);
+      let  columns = cube.columns;
+      cube.datas.forEach(record => {
+        columns.forEach(col => {
+          if (col.type === 'decimal' && col.fomular) {
+            //datas,fomular,record,rows
+              let val =  this.dataCalculator.colFomularParser(cube.datas,col.fomular,record,cube.rows);
+              record[col.id] = val;
+          }
+        });  
+      });
+    }
     /**
      * 功能描述：
      *    (1):表内行与行之间的计算
@@ -649,7 +810,8 @@ class DataHandler {
         if (cube.config.cellCalculabled) { //配制了单元格计算的
             //this.calcRowData(cube);
         }
-        this.colRenderHandler(cube); //表内列计算
+        //this.colRenderHandler(cube);
+        this.calcColData(cube); //表内列计算
 
 
     }
@@ -733,16 +895,32 @@ class DataCalculator {
         let setObj = new Set(fomular.match(reg, ''));
         return Array.from(setObj).sort((a, b) => {
             return b.length - a.length;
-        });
+        }); //match(/[a-zA-Z_]+[\w]*/g,"")
     }
 
     /**
      * 配制行公式来的
      * "[1101+1102]".match(/(\d+)/g, "")
-     */
+     *
+     **/
     rowFomularParser(datas, fomular, rows, colId) {
         let params = this.getFomularParams(fomular, (/(\d+)/g));
         return this.fomularHandler(params, fomular, datas, colId, rows);
+    }
+    /**
+     * 配制列公式来的
+     * (A-asntq)/asntq*100
+     * 变形成单元格函数
+     */
+    colFomularParser(datas,fomular,record,rows){
+      let params = this.getFomularParams(fomular,/[a-zA-Z_]+[\w]*/g);
+      params.forEach(item => {
+        //fomular = fomular.replaceAll(item,item+"$"+record.id);
+        fomular = fomular.replaceAll(item,"record."+item);
+      });
+      //再次按单元格公式获取数据
+      //return this.fomularParser(datas,fomular,rows);
+      return eval("("+fomular+")");
     }
 
     /**
@@ -766,9 +944,9 @@ class DataCalculator {
         } else {
             //console.info(colId+"$"+rowId+"==>"+fomular+"=="+val);
         }
-        fomular = fomular.replace(param, val);
-        fomular = fomular.replace(param, val);
-        return fomular.replace(param, val);
+        val =  fomular.replace(param, val);
+        alert(val)
+        return val;
     }
 
     /**

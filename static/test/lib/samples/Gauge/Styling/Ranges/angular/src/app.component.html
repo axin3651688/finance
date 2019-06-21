@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <wj-linear-gauge [isReadOnly]="false" [hasShadow]="false" [value]="50" [showRanges]="true">
+        <wj-range [wjProperty]="'pointer'" [thickness]="0.5"></wj-range>
+        <wj-range [min]="0" [max]="33" [color]="'red'"></wj-range>
+        <wj-range [min]="33" [max]="66" [color]="'yellow'"></wj-range>
+        <wj-range [min]="66" [max]="100" [color]="'green'"></wj-range>
+    </wj-linear-gauge>
+
+    <wj-radial-gauge [isReadOnly]="false" [hasShadow]="false" [value]="50" [showRanges]="true" [showText]="'Value'">
+        <wj-range [wjProperty]="'pointer'" [thickness]="0.5"></wj-range>
+        <wj-range [min]="0" [max]="33" [color]="'red'"></wj-range>
+        <wj-range [min]="33" [max]="66" [color]="'yellow'"></wj-range>
+        <wj-range [min]="66" [max]="100" [color]="'green'"></wj-range>
+    </wj-radial-gauge>
+</div>

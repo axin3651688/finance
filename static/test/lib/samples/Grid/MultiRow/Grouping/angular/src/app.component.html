@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <wj-multi-row #groupMultirow [itemsSource]="groupedOrders" [layoutDefinition]="threeLines" [showGroups]=true
+        [groupHeaderFormat]="'{name}: <b>{value} </b>({count:n0} items)'"></wj-multi-row>
+    <button class="btn" (click)="onCollapseClick()">
+        Collapse All
+    </button> 
+    <button class="btn" (click)="onExpandClick()">
+        Expand All
+    </button> 
+    <label>
+        <input type="checkbox" checked (click)="onShowGroupClick($event)"> 
+        Show Groups
+    </label>
+</div>

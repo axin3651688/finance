@@ -1,0 +1,21 @@
+.wj-pivotchart {
+    margin: auto;
+}
+
+.wj-pivotchart .wj-flexchart {
+    border: none;
+    height: 300px;
+}
+  
+.wj-combobox {
+    margin-left: 10px;
+}
+
+#inputShowChartTitle {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+body {
+    margin-bottom: 48pt;
+}

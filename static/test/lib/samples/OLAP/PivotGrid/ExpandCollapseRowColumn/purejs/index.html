@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Grapecity Wijmo OLAP Pivot Grid Row Column Expand Collapse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-5">
+          <div id="pivotPanel"></div>
+        </div>
+        <div class="col-xs-7">
+          <div id="pivotGrid"></div>
+        </div>
+      </div>
+    	<p>
+    		You can configure the <b>PivotEngine</b> to show the subtotals
+    		before or after the data using the <b>totalsBeforeData</b>
+    		property:
+    	</p>
+    	<label>
+    		totalsBeforeData:
+    		<input id="totalsBeforeData" type="checkbox">
+    	</label>
+    	<p>
+    		You can configure the <b>PivotGrid</b> to make row and column
+    		groups collapsible using the <b>collapsibleSubtotals</b>
+    		property:
+    	</p>
+    	<label>
+    		collapsibleSubtotals:
+    		<input id="collapsibleSubtotals" type="checkbox" checked>
+    	</label>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity InputColor Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="output">
+            Select a background for me!
+        </div>
+
+        <div class="form-group">
+            <label for="theInputColor">Default:</label>
+            <div id="theInputColor"></div>
+        </div>
+
+        <p>
+            You can customize the InputColor using the <b>colorPicker</b> property, which exposes the color picker
+            drop-down:</p>
+        <div class="form-check">
+            <label for="showAlphaChannel">showAlphaChannel:</label>
+            <input id="showAlphaChannel" type="checkbox" checked="checked">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="thePalette">palette:</label>
+            <div id="thePalette"></div>
+        </div>
+        <div class="form-group">
+            <label for="theInputColorCst">Custom:</label>
+            <div id="theInputColorCst"></div>
+        </div>
+    </div>
+</body>
+
+</html>

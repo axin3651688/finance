@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        [headersVisibility]="'Column'"
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+    <wj-collection-view-pager [cv]="flex.collectionView">
+    </wj-collection-view-pager>
+</div>

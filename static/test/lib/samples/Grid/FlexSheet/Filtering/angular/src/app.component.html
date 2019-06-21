@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'Country'" [(itemsSource)]="data"></wj-sheet>
+    </wj-flex-sheet>
+    <button (click)="showFilter()" type="button" class="btn btn-default">Show Filter</button>
+</div>

@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-flex-chart #theChart [itemsSource]="data" bindingX="date" chartType="HighLowOpenClose" [palette]="palette" tooltipContent="">
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-chart-series binding="high,low,open,close" name="Box Inc"></wj-flex-chart-series>
+        <wj-flex-line-marker lines="Both" interaction="Move" [isVisible]="lmVisible" [content]="markerContent"></wj-flex-line-marker>
+    </wj-flex-chart>
+</div>

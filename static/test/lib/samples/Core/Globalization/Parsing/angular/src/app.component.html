@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <p>
+        <wj-menu [(value)]="culture" [header]="'Culture'">
+            <wj-menu-item [value]="'en'">English (US)</wj-menu-item>
+            <wj-menu-item [value]="'en-GB'">English (UK)</wj-menu-item>
+            <wj-menu-item [value]="'es'">Spanish</wj-menu-item>
+            <wj-menu-item [value]="'de'">German</wj-menu-item>
+            <wj-menu-item [value]="'it'">Italian</wj-menu-item>
+            <wj-menu-item [value]="'fr'">French</wj-menu-item>
+            <wj-menu-item [value]="'pt'">Portuguese</wj-menu-item>
+            <wj-menu-item [value]="'ru'">Russian</wj-menu-item>
+            <wj-menu-item [value]="'ja'">Japanese</wj-menu-item>
+            <wj-menu-item [value]="'ko'">Korean</wj-menu-item>
+            <wj-menu-item [value]="'zh'">Chinese</wj-menu-item>
+        </wj-menu>
+    </p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Dates</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label id="dateFormat">Input format:</label>
+                <input #dateFormat id="dateFormat" value="d">
+            </div>
+
+            <div class="form-group">
+                <label for="dateInput">Input string:</label>
+                <input #dateInput id="dateInput" value="12/31/2016">
+            </div>
+
+            <button class="btn btn-default" (click)="parseDate(dateInput.value, dateFormat.value)" >
+                Parse Date
+            </button>
+
+            <span>
+                {{ dateResult }}
+            </span>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Numbers</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="numberFormat">Input format:</label>
+                <input #numberFormat id="numberFormat" value="n2">
+            </div>
+
+            <div class="form-group">
+                <label for="numberInput">Input string:</label>
+                <input #numberInput id="numberInput" value="123.456">
+            </div>
+
+            <button class="btn btn-default" (click)="parseNumber(numberInput.value, numberFormat.value)">
+                Parse Number
+            </button>
+            
+            <span>
+                {{ numberResult }}
+            </span>
+        </div>
+    </div>
+</div>

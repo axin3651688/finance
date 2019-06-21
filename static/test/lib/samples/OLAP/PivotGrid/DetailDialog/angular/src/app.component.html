@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <p>
+    <button id="showDetail" class="btn btn-primary" (click)="onShowDetailClick()">
+      Show Detail Dialog
+    </button>
+  </p>
+  <p>
+    The grid exposes the detail dialog through its
+    <b>detailDialog</b> property, which can be used to customize
+    the dialog as shown in this example.
+  </p>
+  <p>
+    <label>
+      Custom Detail Dialog
+      <input id="customDetails" type="checkbox" checked="checked">
+    </label>
+  </p>
+  <wj-pivot-grid #grid [itemsSource]="ngFmt" [isReadOnly]=true (formatItem)="formatItem($event)"></wj-pivot-grid>
+</div>

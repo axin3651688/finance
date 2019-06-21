@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [isReadOnly]="true"
+        [allowResizing]="'None'"
+        [allowDragging]="'None'"
+        [allowSorting]="false"
+        [selectionMode]="'RowRange'"
+        [alternatingRowStep]="0"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="50"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [width]="80" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'salesDiff'" [header]="'Diff'" [dataType]="'Number'" [width]="80" [format]="'p0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [width]="80" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expensesDiff'" [header]="'Diff'" [dataType]="'Number'" [width]="80" [format]="'p0'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

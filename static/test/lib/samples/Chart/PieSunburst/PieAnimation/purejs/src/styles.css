@@ -1,0 +1,19 @@
+body {
+    margin-bottom: 24px;
+}
+
+.row {
+    margin: 10px -15px;
+}
+
+#pieAnimationMode {
+    width: 220px;
+}
+
+#pieEasing {
+    width: 220px;
+}
+
+#pieDuration, #pieInnerRadius {
+    width: 180px;
+}

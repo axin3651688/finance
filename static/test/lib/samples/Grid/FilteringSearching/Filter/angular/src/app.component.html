@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="input-group">
+        <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>    
+        <input (input)="filter($event)" class="form-control" placeholder="Country Filter">
+    </div>    
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,18 @@
+.container-fluid .wj-gauge {
+    padding: 4px;
+    width: 80%;
+    margin: 6px auto 36px auto;
+}
+
+.container-fluid .wj-radialgauge {
+    height: 200px;
+}
+
+label {
+    width: 120px;
+    text-align: right;
+}   
+
+body {
+    margin-bottom: 24pt;
+}

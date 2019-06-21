@@ -1,0 +1,22 @@
+.container-fluid .wj-gauge {
+    width: 50%;
+    margin: 20px auto;
+}
+
+.container-fluid .wj-gauge .wj-face path {
+    fill: #fefefe;
+    stroke: #e0e0e0;
+}
+
+.container-fluid .wj-gauge.wj-state-focused .wj-pointer {
+    fill: red;
+}
+
+.container-fluid .wj-gauge.wj-state-focused circle.wj-pointer {
+    stroke-width: 4px;
+    stroke: red;
+}
+
+.container-fluid .wj-radialgauge {
+    height: 120px;
+}

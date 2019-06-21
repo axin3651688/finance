@@ -1,0 +1,11 @@
+.wj-flexchart {
+    height: 500px;
+}
+
+body {
+    margin-bottom: 24pt;
+}
+
+#rsChart {
+    height: 100px;
+}

@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'Country'" [(itemsSource)]="data"></wj-sheet>
+        <wj-sheet [name]="'Unbound'" [rowCount]="20" [columnCount]="8"></wj-sheet>
+    </wj-flex-sheet>
+    <div class="form-inline well well-lg">
+        <input type="file" class="form-control" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <button class="btn btn-default" (click)="load()">Load</button>
+    </div>
+    <div class="form-inline well well-lg">
+        File Name:
+        <input type="text" class="form-control" [(ngModel)]="fileName" />
+        <button class="btn btn-default" (click)="save()">Save</button>
+    </div>
+</div>

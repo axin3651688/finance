@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+    <h2>Custom Behaviors</h2>
+    <wj-flex-grid #customFlex
+        [alternatingRowStep]="0"
+        [(itemsSource)]="data"
+        (initialized)="initializeCustomGrid(customFlex)">
+    </wj-flex-grid>
+</div>

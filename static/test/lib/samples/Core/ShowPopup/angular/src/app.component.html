@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <wj-flex-grid #theGrid [itemsSource]="data">
+        <ng-template wjFlexGridCellTemplate [cellType]="'TopLeft'">
+            <span #pickerIcon class="column-picker-icon glyphicon glyphicon-cog" (mousedown)="showPicker(picker, pickerIcon, $event)"></span>
+        </ng-template>
+    </wj-flex-grid>
+    <div style="display:none">
+        <wj-list-box #picker class="column-picker" [itemsSource]="theGrid.columns" [checkedMemberPath]="'visible'"
+            [displayMemberPath]="'header'" (lostFocus)="hidePicker(picker)">
+        </wj-list-box>
+    </div>
+
+    <button class="btn btn-default" (click)="saveLayout(theGrid)">
+        Save Layout
+    </button>
+    <button class="btn btn-default" (click)="restoreLayout(theGrid)">
+        Restore Layout
+    </button>
+</div>

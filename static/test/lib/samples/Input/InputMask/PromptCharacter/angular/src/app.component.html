@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theSSN">Social Security Number</label>
+        <wj-input-mask id="theSSN" [mask]="'000-00-0000'" [promptChar]="'*'"></wj-input-mask>
+    </div>
+
+    <div class="form-group">
+        <label for="theZip">Zip Code</label>
+        <wj-input-mask id="theZip" [mask]="'00000'" [promptChar]="'^'"></wj-input-mask>
+    </div>
+
+    <div class="form-group">
+        <label for="theZip4">Zip Code + 4</label>
+        <wj-input-mask id="theZip4" [mask]="'00000-0000'" [promptChar]="'#'"></wj-input-mask>
+    </div>
+
+    <div class="form-group">
+        <label for="thePhone">Phone Number</label>
+        <wj-input-mask id="thePhone" [mask]="'(999) 000-0000'" [promptChar]="' '"></wj-input-mask>
+    </div>
+</div>

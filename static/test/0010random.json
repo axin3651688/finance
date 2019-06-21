@@ -11,46 +11,131 @@
             "id": "period"
         },
         "sum": {
-            "id": "00",
+            "id": "100",
             "text": "行合计"
+        },
+        "colSum":{
+            "id": "200",
+            "text": "列合计",
+            "type":"sum"
         }
     },
-    "columns": [{
-            "id": "id",
-            "text": "编码",
-            "type": "index",
-            "hidden": true
-        },
+    "columns": [
         {
             "id": "text",
             "type": "string",
+            "fixed": true,
             "text": "期间"
+            ,"drill":{
+                "targetId":"002",
+                "type":"cellclick",
+                "way":"addTab",
+                "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
+                 "location":"before"
+               
+            }
+        },{
+            "id": "id",
+            "text": "编码",
+            "type": "index",
+            "fixed": true,
+            "hidden": false
         },
         {
             "id": "itemperiod",
             "type": "string",
             "text": "项目"
+           
         },
         {
             "id": "A",
             "text": "本期",
             "sort": "asc",
+            "align":"left",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": true
+                }
+            },
             "type": "decimal"
         },
         {
             "id": "asntq",
             "type": "decimal",
             "text": "本期上年同期",
-            "hidden": true
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": false
+                }
+            },
+            "hidden": false
         },
         {
             "id": "azje",
             "text": "增减额",
+            "fomular": "(A-asntq)",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": true
+                },
+                "divit": {
+                    "digit": 2
+                }
+            },
             "type": "decimal"
         },
         {
             "id": "zjv",
             "text": "增减率(%)",
+            "fomular": "(A-asntq)*100/A",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "%",
+                    "millesimal": true
+                }
+            },
+            "renderFormatter": [{
+                "field": "zjv",
+                "id": 1,
+                "type": {
+                    "css": "color:blue;font-size:20px;"
+                },
+                "children":[{
+                    "calcSymbol": ">",
+                    "field": "zjv",
+                    "id": 2,
+                    "value": 0
+                },{
+                    "calcSymbol": "<=",
+                    "field": "zjv",
+                    "logicSymbol": "and",
+                    "id": 2,
+                    "value": 50
+                }]
+            },{
+                "calcSymbol": ">",
+                "field": "zjv",
+                "id": 2,
+                "type": {
+                    "icon": "el-icon-time"
+                },
+                "value": 51
+            },{
+                "calcSymbol": "<",
+                "field": "zjv",
+                "id": 2,
+                "type": {
+                    "css": "color:red;font-size:15px;"
+                },
+                "value": 0
+            }],
             "type": "decimal"
         }
     ],
@@ -60,18 +145,31 @@
         "fomular": "0001!A$111011+0003!B$111002"
     }],
     "filters": [{
-            "calcSymbol": ">=",
-            "field": "id",
             "id": 1,
             "type": 1,
-            "value": "201801"
+            "children":[{
+                "calcSymbol": ">=",
+                "field": "id",
+                "id": 1,
+                "type": 1,
+                "value": "201701"
+            },
+            {
+                "calcSymbol": "<",
+                "field": "id",
+                "id": 2,
+                 "logicSymbol":"and",
+                "type": 1,
+                "value": "201906"
+            }]
         },
         {
             "calcSymbol": "<",
             "field": "id",
             "id": 2,
+            "logicSymbol":"and",
             "type": 1,
-            "value": "201804"
+            "value": "2019010"
         }
     ],
     "datas": [],
@@ -114,8 +212,8 @@
     },
     "needDims": {
         "year": {
-            "id": "2018",
-            "text": "2018年",
+            "id": "2019",
+            "text": "2019年",
             "datas": []
         },
         "month": {
@@ -135,7 +233,7 @@
         }
     },
     "generater": {
-        "periodCount": 6,
+        "periodCount": 16,
         "compareType": "0&-1",
         "varName": "rows",
         "reverse": false

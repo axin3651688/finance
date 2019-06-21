@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Grapecity Wijmo OLAP Pivot Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SystemJS -->
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>
+    System.import('./src/app');
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div id="buttons">
+      <button id="10k" class="btn btn-primary">
+        10k items
+      </button>
+      <button id="100k" class="btn btn-primary" disabled>
+        100k items
+      </button>
+      <button id="500k" class="btn btn-primary" disabled>
+        500k items
+      </button>
+      <button id="1M" class="btn btn-primary" disabled>
+        One Million items
+      </button>
+    </div>
+
+    <p id="result">
+    </p>
+    <div class="output">
+      <div id="pivotGrid"></div>
+    </div>
+
+    <p>
+      If you deal with massive data sets, with millions of records,
+      you should consider using server-side OLAP providers like
+      SSAS cubes or ComponentOne Data Services.
+      The <b>PivotEngine</b> can connect to either.
+    </p>
+  </div>
+
+</body>
+
+</html>

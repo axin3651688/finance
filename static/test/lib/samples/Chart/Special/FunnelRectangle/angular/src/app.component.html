@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" bindingX="stage" chartType="Funnel"
+        [options]="{ funnel: { type: 'rectangle' } }" labelContent="{item.count}" [palette]="palette">
+        <wj-flex-chart-series binding="count" name="Sales Pipeline"></wj-flex-chart-series>
+    </wj-flex-chart>
+</div>

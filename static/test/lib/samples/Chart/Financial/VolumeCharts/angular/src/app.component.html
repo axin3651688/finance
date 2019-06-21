@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" chartType="ColumnVolume" [palette]="palette" [tooltipContent]="tooltip">
+        <wj-financial-chart-series binding="close,volume" name="Column Volume" chartType="ColumnVolume"></wj-financial-chart-series>
+        <wj-financial-chart-series binding="high,low,open,close,volume" name="Equi Volume" chartType="EquiVolume">
+            <wj-flex-chart-axis #axis1 wjProperty="axisY" position="Left" [plotArea]="plot1"></wj-flex-chart-axis>
+        </wj-financial-chart-series>
+        <wj-financial-chart-series binding="high,low,open,close,volume" name="Candle Volume" chartType="CandleVolume">
+            <wj-flex-chart-axis #axis2 wjProperty="axisY" position="Left" [plotArea]="plot2"></wj-flex-chart-axis>
+        </wj-financial-chart-series>
+        <wj-financial-chart-series binding="high,low,open,close,volume" name="Arms CandleVolume" chartType="ArmsCandleVolume">
+            <wj-flex-chart-axis #axis3 wjProperty="axisY" position="Left" [plotArea]="plot3"></wj-flex-chart-axis>
+        </wj-financial-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-chart-plot-area [row]="0" [height]="100"></wj-flex-chart-plot-area>
+        <wj-flex-chart-plot-area #plot1 [row]="1" [height]="100"></wj-flex-chart-plot-area>
+        <wj-flex-chart-plot-area #plot2 [row]="2" [height]="100"></wj-flex-chart-plot-area>
+        <wj-flex-chart-plot-area #plot3 [row]="3" [height]="100"></wj-flex-chart-plot-area>
+    </wj-financial-chart>
+    <wj-financial-chart id="rsChart" #rsChart [itemsSource]="data" bindingX="date" 
+            chartType="ColumnVolume" tooltipContent="" (rendered)="rsRendered(selector, rsChart)">
+        <wj-financial-chart-series binding="close,volume" name="Box Inc" chartType="ColumnVolume"></wj-financial-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-chart-axis wjProperty="axisX" [labels]="false"></wj-flex-chart-axis>
+        <wj-flex-chart-axis wjProperty="axisY" [labels]="false" [majorGrid]="false"></wj-flex-chart-axis>
+        <wj-flex-chart-range-selector #selector [seamless]="true" (rangeChanged)="rangeChanged(selector, theChart, axis1, axis2, axis3)">
+        </wj-flex-chart-range-selector>
+    </wj-financial-chart>
+</div>

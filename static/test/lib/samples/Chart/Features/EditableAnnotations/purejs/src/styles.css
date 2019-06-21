@@ -1,0 +1,53 @@
+.wj-flexchart {
+    margin: 10px 0;
+}
+
+body {
+    margin-bottom: 24pt;
+}
+
+.wj-flexchart .wjanno-editable-layer .wjanno-container {
+    fill: #eee;
+    stroke: #666;
+    stroke-width: 1;
+}
+
+.wj-flexchart .wjanno-editable-layer .wjanno-dc-icon .wjanno-container {
+    fill: #eee;
+}
+
+.wj-flexchart .wjanno-editable-layer .wjanno-icon-selected .wjanno-container {
+    fill: #89E;
+}
+
+.no-selection {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.wj-flexchart {
+    padding-bottom: 25px;
+}
+/****  Axis Scrollbar Css *****/
+.wj-flexchart .wj-axis-scrollbar-container {
+    position: relative;
+}
+
+.wj-flexchart .wj-axis-scrollbar-container .wj-chart-rangeslider {
+    border: 1px solid #EAEAEA;    
+    background-color: #EAEAEA;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.wj-flexchart .wj-axis-scrollbar-container .wj-chart-hrangeslider {
+    height: 20px;
+}
+
+.wj-flexchart .wj-axis-scrollbar-container .wj-chart-vrangeslider {
+    width: 20px;
+}

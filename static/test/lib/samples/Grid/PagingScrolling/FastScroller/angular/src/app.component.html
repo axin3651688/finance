@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex 
+        [headersVisibility]="'None'"
+        [alternatingRowStep]="0"
+        [isReadOnly]="true"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'last'" [width]="'*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

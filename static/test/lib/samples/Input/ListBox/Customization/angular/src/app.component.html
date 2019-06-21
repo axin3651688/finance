@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-list-box #theListBox [itemsSource]="glyphs" (formatItem)="formatItem($event)"></wj-list-box>
+        </div>
+        <div class="col-xs-8">
+            <h1>
+                <span class="wj-glyph-{{theListBox.selectedItem}}"></span>
+            </h1>
+        </div>
+    </div>
+</div>

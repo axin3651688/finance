@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-check">
+                <label for="showTicks" class="form-check-label">Tickmarks:</label>
+                <input id="showTicks" type="checkbox" [(ngModel)]="showTicks" class="form-check-input">
+            </div>
+
+            <div class="form-group">
+                <label for="tickSpacing">Spacing</label>
+                <wj-input-number id="tickSpacing" [min]="0" [max]="100" [step]="5" [format]="'n0'"
+                    [(value)]="tickSpacing">
+                </wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="tickWidth">Width:</label>
+                <wj-input-number #tickWidth id="tickWidth" [min]="0" [max]="5" [step]="0.25" [format]="'n1'" [value]="2"
+                    (valueChanged)="changeTickWidth(theGauge, tickWidth.value)"></wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="tickColor">Color:</label>
+                <wj-input-color #tickColor id="tickColor" [value]="'white'"
+                    (valueChanged)="changeTickColor(theGauge, tickColor.value)"></wj-input-color>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-radial-gauge #theGauge [isReadOnly]="false" [hasShadow]="false" [showText]="'All'"
+                [showTicks]="showTicks" [tickSpacing]="tickSpacing" [startAngle]="-30" [sweepAngle]="240" [value]="50">
+                <wj-range [wjProperty]="'pointer'" [thickness]="0.5"></wj-range>
+            </wj-radial-gauge>
+        </div>
+    </div>
+</div>

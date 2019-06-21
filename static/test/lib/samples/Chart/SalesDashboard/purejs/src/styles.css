@@ -1,0 +1,20 @@
+body {
+    margin-bottom: 24px;
+}
+
+.wj-flexchart {
+    border: none;
+}
+
+.col {
+    float:left;
+    width: 50%;
+}
+
+li {
+    list-style-type: none;
+}
+
+.wj-gauge {
+    margin: 17px 1em;
+}

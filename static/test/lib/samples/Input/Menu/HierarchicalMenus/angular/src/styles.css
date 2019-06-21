@@ -1,0 +1,56 @@
+label {
+    margin-bottom: 15px;
+    margin-right: 25px;
+}
+
+/* element affected by the menu commands */
+#menuTarget {
+    font-size: 18pt;
+    text-align: center;
+    padding: 16px;
+    margin: 6px 0;
+    background: #00c1d5;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, .25);
+}
+
+/* bar containing the menus */
+.menubar {
+    position: sticky;
+    display: flex;
+    background: #fddfa7;
+    padding: 12px;
+    top: 0;
+}
+
+/* customize wijmo default styles */
+.wj-state-selected {
+    color: black;
+    background: orange;
+}
+
+.wj-menu {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+}
+
+.wj-menu:hover,
+.wj-menu.wj-state-focused {
+    background: rgba(0, 0, 0, .05);
+}
+
+.wj-menu .wj-input-group .wj-input-group-btn {
+    /* hide the menu's drop-down buttons */
+    display: none;
+}
+
+.wj-listbox.wj-menu-items {
+    min-width: 8em;
+    border: none;
+    background: #fddfa7;
+}
+
+.wj-listbox.wj-menu-items .wj-listbox-item:not(.wj-separator) {
+    padding: 6px 12px;
+}

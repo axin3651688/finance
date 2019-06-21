@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Dialogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <button id="btnLogin" class="btn btn-primary">
+            Log In
+        </button>
+
+        <button id="btnCreateAccount" class="btn btn-primary">
+            Create Account
+        </button>
+
+        <button id="btnEditAccount" class="btn btn-primary">
+            Edit Account
+        </button>
+
+        <!-- Log In form -->
+        <form id="frmLogin">
+            <h4 class="modal-header">
+                Log in
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+            </h4>
+            <div class="modal-body">
+                <label>
+                    Email:
+                    <input class="form-control" required type="email" />
+                </label>
+                <br />
+                <label>
+                    Password:
+                    <input class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+                <br />
+                <label>
+                    Remember Me
+                    <input type="checkbox" />
+                </label>
+                <br />
+                <a href="" class="wj-hide-create">Don't have an account yet?</a>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">
+                    Log in
+                </button>
+            </div>
+        </form>
+
+        <!-- Create Account form -->
+        <form id="frmCreateAccount">
+            <h4 class="modal-header">
+                Create Account
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+            </h4>
+            <div class="modal-body">
+                <label>
+                    Name:
+                    <input id="name" class="form-control" required pattern=".{2,}"
+                        title="Please enter 2 characters or more." />
+                </label>
+                <br />
+                <label>
+                    Email:
+                    <input id="email" class="form-control" type="email" required />
+                </label>
+                <br />
+                <label>
+                    Password:
+                    <input id="password" class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+                <br />
+                <label>
+                    Confirm Password:
+                    <input id="confirm" class="form-control" type="password" />
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">
+                    Create Account
+                </button>
+            </div>
+        </form>
+
+        <!-- Edit Account form -->
+        <form id="frmEditAccount">
+            <h4 class="modal-header">
+                Edit Account
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+            </h4>
+            <div class="modal-body">
+                <label>
+                    Email:
+                    <input id="edit-email" class="form-control" required type="email" />
+                </label>
+                <br />
+                <label>
+                    Current Password:
+                    <input id="current-password" class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+                <br />
+                <label>
+                    New Name:
+                    <input id="new-name" class="form-control" required pattern=".{2,}"
+                        title="Please enter 2 characters or more." />
+                </label>
+                <br />
+                <label>
+                    New Password:
+                    <input id="new-password" class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+                <br />
+                <label>
+                    Confirm New Password:
+                    <input id="confirm-password" class="form-control" type="password" />
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">
+                    Update Account
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

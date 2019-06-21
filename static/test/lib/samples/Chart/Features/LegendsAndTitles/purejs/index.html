@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Legends and Titles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <label for="header">Header: </label>
+        <div id="header"></div><br>
+        <label for="footer">Footer: </label>
+        <div id="footer"></div><br>
+        <label for="xTitle">X-Axis Title: </label>
+        <div id="xTitle"></div><br>
+        <label for="yTitle">Y-Axis Title: </label>
+        <div id="yTitle"></div>
+        <div>
+            <label for="customTitles">Custom Titles: </label>
+            <input id="customTitles" type="checkbox" checked="true">
+        </div>
+        <div>
+            <label for="customLegend">Custom Legend: </label>
+            <input id="customLegend" type="checkbox" checked="true">
+        </div>
+        <label for="legendPosition">Legend Position: </label>
+        <div id="legendPosition"></div>
+        <div class="custom-titles custom-legend" id="theChart"></div>
+    </div>
+</body>
+
+</html>

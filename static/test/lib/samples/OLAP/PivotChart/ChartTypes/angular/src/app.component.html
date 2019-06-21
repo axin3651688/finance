@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-pivot-chart #pivotChart [itemsSource]="ngChart" [showTitle]=true [showLegend]="'Auto'"></wj-pivot-chart>
+    <label>
+        Chart Type <wj-combo-box #chartTypesCombo [itemsSource]="chartTypes" (textChanged)="onChartTypeChanged(chartTypesCombo)"></wj-combo-box>
+    </label>
+</div>

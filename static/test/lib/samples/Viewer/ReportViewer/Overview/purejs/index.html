@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="row">
+                <div id="reportViewer"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <div class="checkbox">
+                                <label>
+                                    <input id="cbContinuousViewMode" type="checkbox" /> Continuous View Mode
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="lbMouseMode">
+                                <option value="SelectTool" selected>SelectTool</option>
+                                <option value="MoveTool">MoveTool</option>
+                                <option value="RubberbandTool">RubberbandTool</option>
+                                <option value="MagnifierTool">MagnifierTool</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input id="cbFullScreen" type="checkbox" /> Full Screen
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-mod-4"> <label class="col-md-2 control-label">Zoom Factor</label>
+                            <div class="col-md-2">
+                                <input id="txtZoomFactor" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

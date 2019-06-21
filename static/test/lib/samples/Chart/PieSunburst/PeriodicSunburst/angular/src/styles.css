@@ -1,0 +1,85 @@
+.wj-flexchart {
+    width: 800px;
+    height: 800px;
+    margin: 0;
+    display: block;
+    position: relative;
+    font-size: 0.75em;
+    border: none;
+    background: transparent;
+    background-color: transparent;
+}
+
+.wj-flexchart .wj-state-selected {
+    stroke-width: 3px;
+    stroke-linecap: square;
+    stroke-dasharray: 0;
+}
+
+.wj-tooltip {
+    display: none;
+}
+
+.wj-flexchart .wj-data-labels .wj-data-label {
+    fill: white;
+}
+
+/* The properties tile that goes in the center of the chart */
+
+.properties-tile {
+    display: block;
+    position: absolute;
+    background: transparent;
+    visibility: hidden;
+    text-align: center;
+}
+
+.properties-tile > div > div {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.properties-tile > div > div > span {
+    display: block;
+} 
+
+/* Specific info pane styling */
+
+.element-symbol {
+    font-size: 2em;
+    margin-bottom: 5px;
+}
+
+.element-name {
+    font-size: 1.25em;
+    margin-bottom: 20px;
+}
+
+.group-name {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.subgroups-title {
+    font-weight: 500;
+}
+
+.num-elements {
+    font-weight: 400;
+}
+
+.subGroup-name {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.element-number-overview {
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.characteristics-title {
+    font-weight: 500;
+}

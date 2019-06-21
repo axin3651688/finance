@@ -1,0 +1,16 @@
+.wj-radialgauge {
+    height: 250px;
+    padding: 24pt;
+    margin: auto auto;
+}
+
+.wj-radialgauge .needle {
+    fill: orange;
+    stroke: black;
+    stroke-width: 1px;
+    transition: transform 400ms;
+}
+
+body {
+    margin-bottom: 24pt;
+}

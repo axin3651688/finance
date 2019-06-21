@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <p>
+            Sort by:
+            <button id="btnNone" class="btn btn-default" (click)="sortOnClick(null)">None</button>
+            <button id="btnCountry" class="btn btn-default" (click)="sortOnClick('country')">Country</button>
+            <button id="btnSales" class="btn btn-default" (click)="sortOnClick('sales')">Sales</button>
+            <button id="btnExpenses" class="btn btn-default" (click)="sortOnClick('expenses')">Expenses</button>
+            <button id="btnDownloads" class="btn btn-default" (click)="sortOnClick('downloads')">Downloads</button>
+        </p>
+        <wj-flex-chart #theChart [itemsSource]="data" bindingX="country">
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="expenses" name="Expenses"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="downloads" name="Downloads"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

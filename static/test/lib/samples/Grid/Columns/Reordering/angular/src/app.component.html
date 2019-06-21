@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [header]="'ID'" [binding]="'id'" [allowDragging]="false"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Country'" [binding]="'country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Downloads'" [binding]="'downloads'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Sales'" [binding]="'sales'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Expenses'" [binding]="'expenses'"></wj-flex-grid-column>
+    </wj-flex-grid>
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            Wijmo uses the HTML5 drag/drop API for column reordering.
+            Unfortunately, most mobile devices do not support this API.
+            If you want to support column reordering on mobile devices,
+            we suggest you use the 
+            <a href="https://github.com/Bernardo-Castilho/dragdroptouch" target="_blank">
+                DragDropTouch polyfill
+            </a>.
+        </div>
+    </div>
+</div>

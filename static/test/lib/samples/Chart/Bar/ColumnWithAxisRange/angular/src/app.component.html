@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <wj-flex-chart [header]="'World Population(in millions)'" [bindingX]="'year'" [itemsSource]="data"
+        [palette]="palette">
+        <wj-flex-chart-legend [position]="'None'">
+        </wj-flex-chart-legend>
+
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [min]="4000">
+        </wj-flex-chart-axis>
+
+        <wj-flex-chart-series [name]="'Population'" [binding]="'population'">
+        </wj-flex-chart-series>
+
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

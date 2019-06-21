@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="value">value:</label>
+                <wj-input-number id="value" [(min)]="theGauge.min" [(max)]="theGauge.max" [(step)]="theGauge.step"
+                    [(value)]="theGauge.value"></wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="direction">direction:</label>
+                <wj-combo-box #direction id="direction" [itemsSource]="['Left', 'Right', 'Up', 'Down']" [text]="'Right'"
+                    (textChanged)="setDirection(theGauge, direction.text)">
+                </wj-combo-box>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="gauge-holder">
+                <wj-linear-gauge #theGauge [isReadOnly]="false" [min]="0" [max]="100" [step]="5" [value]="75"
+                    [showRanges]="false">
+                    <wj-range [min]="0" [max]="33" [color]="'red'"></wj-range>
+                    <wj-range [min]="33" [max]="66" [color]="'yellow'"></wj-range>
+                    <wj-range [min]="66" [max]="100" [color]="'green'"></wj-range>
+                </wj-linear-gauge>
+            </div>
+        </div>
+    </div>
+</div>

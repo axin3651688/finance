@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theInputDateTime">InputDateTime:</label>
+        <wj-input-date-time #theInputDateTime id="theInputDateTime" [value]="date">
+        </wj-input-date-time>
+    </div>
+    <p>
+        The current date/time is:<b>{{ theInputDateTime.value | date:'EEEE, MMMM d, y, h:mm:ss a'}}</b>.
+    </p>
+</div>

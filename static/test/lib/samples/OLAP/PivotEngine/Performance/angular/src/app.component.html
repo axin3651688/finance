@@ -1,0 +1,29 @@
+<div class="container-fluid">
+    <div id="buttons" (click)="onButtonClick($event)">
+        <button id="10k" class="btn btn-primary">
+            10k items
+        </button>
+        <button id="100k" class="btn btn-primary" [disabled]="enable100K">
+            100k items
+        </button>
+        <button id="500k" class="btn btn-primary" [disabled]="enable500K">
+            500k items
+        </button>
+        <button id="1M" class="btn btn-primary" [disabled]="enable1M">
+            One Million items
+        </button>
+    </div>
+
+    <p id="result" [innerHtml]="result">
+    </p>
+    <div class="output">
+        <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+    </div>
+
+    <p>
+        If you deal with massive data sets, with millions of records,
+        you should consider using server-side OLAP providers like
+        SSAS cubes or ComponentOne Data Services.
+        The <b>PivotEngine</b> can connect to either.
+    </p>
+</div>

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theCombo">Select an item:</label>
+        <wj-combo-box #theCombo id="theCombo" [displayMemberPath]="'country'" [itemsSource]="data"></wj-combo-box>
+    </div>
+    <div *ngIf="theCombo.collectionView?.currentItem as c">
+        <div>Country: <b>{{ c.country }}</b></div>
+        <div>GDP (M$/yr): <b>{{ c.gdpm | currency:undefined:undefined:'2.0-0' }}</b></div>
+        <div>Population (thousands): <b>{{ c.popk | number:'1.0-0' }}</b></div>
+        <div>GRP/Capita: <b>{{ c.gdpcap | currency:undefined:undefined:'2.0-0' }}</b></div>
+        <div>Rank: <b>{{ c.id }}</b></div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity CollectionView International Sort</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <button id="asc" class="btn">Sort Ascending</button>
+        <button id="desc" class="btn">Sort Descending</button>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <h4>
+                    JavaScript array.sort:
+                </h4>
+                <ol id="ol-js">
+                </ol>
+            </div>
+            <div class="col-xs-6">
+                <h4>
+                    CollectionView.sort:
+                </h4>
+                <ol id="ol-cv">
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

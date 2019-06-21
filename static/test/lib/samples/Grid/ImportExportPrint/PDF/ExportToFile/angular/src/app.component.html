@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <!-- Export settings -->
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    Export Settings
+                </h4>
+            </div>
+            <div class="panel-body">
+                <ul class="list-inline">
+                    <li>
+                        <wj-menu [(value)]="scaleMode" header="Scale mode">
+                            <wj-menu-item [value]="ScaleModeEnum.ActualSize">ActualSize</wj-menu-item>
+                            <wj-menu-item [value]="ScaleModeEnum.PageWidth">PageWidth</wj-menu-item>
+                            <wj-menu-item [value]="ScaleModeEnum.SinglePage">SinglePage</wj-menu-item>
+                        </wj-menu>
+                    </li>
+                    <li>
+                        <wj-menu [(value)]="orientation" header="Orientation">
+                            <wj-menu-item [value]="PdfPageOrientationEnum.Portrait">Portrait</wj-menu-item>
+                            <wj-menu-item [value]="PdfPageOrientationEnum.Landscape">Landscape</wj-menu-item>
+                        </wj-menu>
+                    </li>
+                    <li>
+                        <wj-menu [(value)]="exportMode" header="Export mode">
+                            <wj-menu-item [value]="ExportModeEnum.All">All</wj-menu-item>
+                            <wj-menu-item [value]="ExportModeEnum.Selection">Selection</wj-menu-item>
+                        </wj-menu>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export button -->
+    <button class="btn btn-default" (click)="export()">Export</button>
+
+    <!-- FlexGrid -->
+    <wj-flex-grid class="grid" #flexGrid [autoGenerateColumns]="false" selectionMode="ListBox" headersVisibility="All"
+        [itemsSource]="data">
+        <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Start Date" binding="start" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="End Date" binding="end" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Amount" binding="amount" format="c" aggregate="Sum"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Color" binding="color"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Pending" binding="amount2" format="c2"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Discount" binding="discount" format="p1"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Active" binding="active"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

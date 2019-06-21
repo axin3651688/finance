@@ -1,0 +1,128 @@
+<div class="container-fluid">
+    <!-- search box -->
+    <div class="row">
+        <div class="col-md-6 col-xs-4">
+            <input type="text" class="form-control app-pad" placeholder="Filter" [(ngModel)]="filter" />
+        </div>
+        <div class="col-md-6 col-xs-8">
+            <wj-collection-view-navigator [cv]="flex.collectionView" class="pull-right">
+            </wj-collection-view-navigator>
+        </div>
+    </div>
+
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        class="grid"
+        [allowResizing]="'Both'"
+        [itemsSource]="data"
+        [allowMerging]="'All'"
+        [stickyHeaders]="true"
+        (itemsSourceChanged)="itemsSourceChangedHandler()">
+    </wj-flex-grid>
+
+    <!-- commands -->
+    <div class="well">
+        <div class="grid-sort-group">
+
+            <!-- current selection -->
+            <p>Selection: <b>{{flex.selection | cellRange}}</b></p>
+
+            <!-- data size -->
+            <wj-menu [(value)]="itemCount" [header]="'Items'">
+                <wj-menu-item [value]="5">5</wj-menu-item>
+                <wj-menu-item [value]="50">50</wj-menu-item>
+                <wj-menu-item [value]="500">500</wj-menu-item>
+                <wj-menu-item [value]="5000">5,000</wj-menu-item>
+                <wj-menu-item [value]="50000">50,000</wj-menu-item>
+                <wj-menu-item [value]="100000">100,000</wj-menu-item>
+                <wj-menu-item [value]="500000">500,000</wj-menu-item>
+                <wj-menu-item [value]="1000000">1,000,000</wj-menu-item>
+            </wj-menu>
+
+            <!-- allow add new -->
+            <wj-menu [(value)]="flex.allowAddNew" [header]="'Allow Add'">
+                <wj-menu-item [value]="true">True</wj-menu-item>
+                <wj-menu-item [value]="false">False</wj-menu-item>
+            </wj-menu>
+
+            <!-- selection mode -->
+            <wj-menu [(value)]="flex.selectionMode" [header]="'Selection'">
+                <wj-menu-item [value]="0">None</wj-menu-item>
+                <wj-menu-item [value]="1">Cell</wj-menu-item>
+                <wj-menu-item [value]="2">CellRange</wj-menu-item>
+                <wj-menu-item [value]="3">Row</wj-menu-item>
+                <wj-menu-item [value]="4">RowRange</wj-menu-item>
+                <wj-menu-item [value]="5">ListBox</wj-menu-item>
+            </wj-menu>
+
+            <!-- headers visibility -->
+            <wj-menu [(value)]="flex.headersVisibility" [header]="'Headers Visibility'">
+                <wj-menu-item [value]="0">None</wj-menu-item>
+                <wj-menu-item [value]="1">Column</wj-menu-item>
+                <wj-menu-item [value]="2">Row</wj-menu-item>
+                <wj-menu-item [value]="3">All</wj-menu-item>
+            </wj-menu>
+
+            <!-- highlight headers -->
+            <wj-menu [(value)]="flex.showSelectedHeaders" [header]="'Show Selected Headers'">
+                <wj-menu-item [value]="0">None</wj-menu-item>
+                <wj-menu-item [value]="1">Column</wj-menu-item>
+                <wj-menu-item [value]="2">Row</wj-menu-item>
+                <wj-menu-item [value]="3">All</wj-menu-item>
+            </wj-menu>
+
+            <!-- show marquee -->
+            <wj-menu [(value)]="flex.showMarquee" [header]="'Show Marquee'">
+                <wj-menu-item [value]="true">Yes</wj-menu-item>
+                <wj-menu-item [value]="false">No</wj-menu-item>
+            </wj-menu>
+
+            <!-- data maps -->
+            <wj-menu [(value)]="dataMaps" [header]="'Data Maps'">
+                <wj-menu-item [value]="true">On</wj-menu-item>
+                <wj-menu-item [value]="false">Off</wj-menu-item>
+            </wj-menu>
+
+            <!-- formatting -->
+            <wj-menu [(value)]="formatting" [header]="'Formatting'">
+                <wj-menu-item [value]="true">On</wj-menu-item>
+                <wj-menu-item [value]="false">Off</wj-menu-item>
+            </wj-menu>
+
+            <!-- culture -->
+            <!-- <wj-menu [(value)]="culture" [header]="'Culture'">
+                <wj-menu-item [value]="'en'">English</wj-menu-item>
+                <wj-menu-item [value]="'de'">German</wj-menu-item>
+                <wj-menu-item [value]="'it'">Italian</wj-menu-item>
+                <wj-menu-item [value]="'fr'">French</wj-menu-item>
+                <wj-menu-item [value]="'pt'">Portuguese</wj-menu-item>
+                <wj-menu-item [value]="'ru'">Russian</wj-menu-item>
+                <wj-menu-item [value]="'ja'">Japanese</wj-menu-item>
+                <wj-menu-item [value]="'ko'">Korean</wj-menu-item>
+            </wj-menu> -->
+
+            <br />
+            <br />
+
+            <!-- testing the object model -->
+            <button class="btn btn-default" (click)="toggleColumnVisibility()">
+                Show/Hide Column
+            </button>
+            <button class="btn btn-default" (click)="changeColumnSize()">
+                Resize Column
+            </button>
+            <button class="btn btn-default" (click)="toggleRowVisibility()">
+                Show/Hide Row
+            </button>
+            <button class="btn btn-default" (click)="changeRowSize()">
+                Resize Row
+            </button>
+            <button class="btn btn-default" (click)="changeDefaultRowSize()">
+                Default Row Size
+            </button>
+            <button class="btn btn-default" (click)="changeScrollPosition()">
+                Scroll Position
+            </button>
+        </div>
+    </div>
+</div>

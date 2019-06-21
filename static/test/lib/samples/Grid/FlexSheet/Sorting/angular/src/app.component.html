@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'Country'" [(itemsSource)]="data"></wj-sheet>
+    </wj-flex-sheet>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 50%;">Column</th>
+                <th class="text-center" style="width: 50%;">Order</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="sortManager">
+            <tr *ngFor="let sortItem of sortManager.sortDescriptions.items"
+                (click)="sortManager.sortDescriptions.moveCurrentTo(sortItem)"
+                [ngClass]="{success: sortItem === sortManager.sortDescriptions.currentItem}">
+                <td>
+                    <select class="form-control" (change)="applySortColumnIndex($event, sortItem)">
+                        <option value=-1></option>
+                        <option *ngFor="let column of columns; let i = index" [selected]="i === sortItem.columnIndex"
+                                value={{i}}>
+                            {{column}}
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" (change)="applySortAscending($event, sortItem)">
+                        <option [value]="true" [selected]="sortItem.ascending">Ascending</option>
+                        <option [value]="false" [selected]="!sortItem.ascending">Descending</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" (click)="addSortLevel()">
+            Add Level
+        </button>
+        <button type="button" class="btn btn-default" (click)="deleteSortLevel()">
+            Delete Level
+        </button>
+        <button type="button" class="btn btn-default" (click)="copySortLevel()">
+            Copy Level
+        </button>
+    </div>
+    <div class="btn-group">
+        <button id="moveup" type="button"
+                class="btn btn-default"
+                [disabled]="sortManager && sortManager.sortDescriptions.currentPosition <= 0"
+                (click)="moveSortLevel(-1)">
+            <span class="glyphicon glyphicon-arrow-up"></span>
+        </button>
+        <button id="movedown" type="button"
+                class="btn btn-default"
+                [disabled]="sortManager && sortManager.sortDescriptions.currentPosition >= sortManager.sortDescriptions.itemCount - 1"
+                (click)="moveSortLevel(1)">
+            <span class="glyphicon glyphicon-arrow-down"></span>
+        </button>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" (click)="commitSort()">OK</button>
+        <button type="button" class="btn btn-default" (click)="cancelSort()">Cancel</button>
+    </div>
+</div>

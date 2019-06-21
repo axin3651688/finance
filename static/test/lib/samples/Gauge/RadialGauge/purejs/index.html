@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Radial Gauges</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="value">value:</label>
+                    <div id="value"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="startAngle">startAngle:</label>
+                    <div id="startAngle"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sweepAngle">sweepAngle:</label>
+                    <div id="sweepAngle"></div>
+                </div>
+
+                <div class="form-check">
+                    <label for="autoScale" class="form-check-label">autoScale:</label>
+                    <input id="autoScale" type="checkbox" checked="checked" class="form-check-input">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="gauge-holder">
+                    <div id="theGauge"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

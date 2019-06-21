@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <div [innerHTML]="logText" class="log">
+    </div>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data" 
+        (initialized)="flexInitialized(flex)">
+    </wj-flex-grid>
+</div>

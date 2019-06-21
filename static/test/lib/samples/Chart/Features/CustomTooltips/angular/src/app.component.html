@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart bindingX="country" [itemsSource]="data" [palette]="palette" [tooltipContent]="tooltipContent">
+            <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="downloads" name="Downloads"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

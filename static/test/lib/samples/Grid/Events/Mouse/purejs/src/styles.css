@@ -1,0 +1,19 @@
+.wj-flexgrid {
+  max-height: 220px; 
+}
+#log {
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 10px;
+  opacity: .5;
+}
+.my-button {
+  opacity: .5;
+  margin: 0 6px;
+}
+.my-button:hover {
+  color: orange;  
+}
+body {
+   margin-bottom: 24px;
+}

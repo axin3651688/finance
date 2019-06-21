@@ -1,0 +1,16 @@
+body {
+    margin-bottom: 24px;
+}
+
+.wj-flexchart .wj-data-labels .wj-data-label {
+    font-size: 10pt;
+    fill: white;
+}
+
+.wj-flexchart .wj-legend .wj-label {
+    font-size: 12pt;
+}
+
+.wj-flexchart .wj-label {
+    font-size: 14pt;
+}

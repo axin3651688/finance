@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <h4>
+            Gridlines
+        </h4>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>
+                    <input #cgl id="customGridlines" type="checkbox" (change)="customGridLine(cgl)">
+                    Custom CSS
+                </label><br />
+                <label>
+                    <input #cu id="customUnits" type="checkbox" checked="checked" (change)="customUnits(cu)">
+                    Custom Units
+                </label>
+            </div>
+            <div class="col-xs-4">
+                <label>
+                    <input #xmajor id="x-major" type="checkbox" checked="checked" (change)="theChart.axisX.majorGrid=xmajor.checked">
+                    X Major
+                </label><br />
+                <label>
+                    <input #xminor id="x-minor" type="checkbox" checked="checked" (change)="theChart.axisX.minorGrid=xminor.checked">
+                    X Minor
+                </label>
+            </div>
+            <div class="col-xs-4">
+                <label>
+                    <input #ymajor id="y-major" type="checkbox" checked="checked" (change)="theChart.axisY.majorGrid=ymajor.checked">
+                    Y Major
+                </label><br />
+                <label>
+                    <input #yminor id="y-minor" type="checkbox" checked="checked" (change)="theChart.axisY.minorGrid=yminor.checked">
+                    Y Minor
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <wj-flex-chart #theChart [itemsSource]="data" bindingX="date" chartType="Candlestick" [palette]="palette">
+            <wj-flex-chart-series binding="high,low,open,close" name="Alphabet Inc"></wj-flex-chart-series>
+            <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+            <wj-flex-chart-axis wjProperty="axisX" format="MMM dd" [majorGrid]="true" majorTickMarks="Cross" [axisLine]="true"
+                [majorUnit]="7" [minorGrid]="true" minorTickMarks="None" [minorUnit]="1"></wj-flex-chart-axis>
+            <wj-flex-chart-axis [min]="790" [max]="860" wjProperty="axisY" format="c0" [majorGrid]="true" majorTickMarks="Cross"
+                [majorUnit]="20" [minorGrid]="true" [axisLine]="true" minorTickMarks="None" [minorUnit]="5"></wj-flex-chart-axis>
+        </wj-flex-chart>
+    </div>
+</div>

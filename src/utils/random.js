@@ -67,7 +67,7 @@ function createRandomCellData(rows, cols, range) {
  * 是否去生成数据的判断
  */
 function isGetData(col, row) {
-    return (!col.render && !row.hasOwnProperty(col.id)) || row[col.id] === 0;
+    return (!col.fomular && !row.hasOwnProperty(col.id)) || row[col.id] === 0;
 }
 /**
  * 获取表格行数据
@@ -87,7 +87,7 @@ function getRandomRowDatas(row, cols, range, rowIndex,needDims) {
             if(ba){
                 value = ba.text;
             }
-        } else if (isGetData(col, row)) {
+        }else if (isGetData(col, row)) {
             value = getRandomValue(col, range);
         }
         record[col.id] = value || 0;

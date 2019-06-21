@@ -1,0 +1,5 @@
+<div class="container-fluid">
+    <label>Layout option: <wj-combo-box [itemsSource]="layoutDefs" [displayMemberPath]="'name'" (selectedIndexChanged)="selectedIndexChanged()"></wj-combo-box></label>
+    <p [innerHTML]="layoutDescription"></p>
+    <wj-multi-row #multirow [itemsSource]="orders" [(layoutDefinition)]="layoutDefs.currentItem.def"></wj-multi-row>
+</div>

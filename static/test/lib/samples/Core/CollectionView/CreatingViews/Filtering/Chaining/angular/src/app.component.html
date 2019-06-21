@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="form-group row">
+        <div class="col-xs-2">
+            <input #theFilter class="form-control" placeholder="country filter"
+                (input)="updateFilter(theFilter.value.toLowerCase())" />
+        </div>
+    </div>
+
+    <p>
+        Result ({{ view2.items.length | number:0 }} items):
+    </p>
+
+    <wj-flex-grid [itemsSource]="view2" [alternatingRowStep]="0" [headersVisibility]="'Column'">
+        <wj-flex-grid-filter></wj-flex-grid-filter>
+    </wj-flex-grid>
+</div>

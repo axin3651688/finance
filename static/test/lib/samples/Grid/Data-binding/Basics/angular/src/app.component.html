@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <p [innerHTML]="selectedItem"></p>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data" 
+        (initialized)="flexInitialized(flex)">
+        <wj-flex-grid-column [header]="'Country'" [binding]="'country'" width="2*"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Sales'" [binding]="'sales'" width="*" format="n2"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Expenses'" [binding]="'expenses'" width="*" format="n2"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

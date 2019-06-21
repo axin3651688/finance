@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity ComboBox with Strings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            The <b>text</b> property gets or sets the user's input:
+        </p>
+        <div class="form-group">
+            <label for="theComboNoSrc">Any string:</label>
+            <div id="theComboNoSrc"></div>
+        </div>
+        <p>
+            You have typed this: <b id="theComboText"></b>.
+        </p>
+
+        <h4>
+            Choosing from Lists
+        </h4>
+        <p>
+            If you want to provide a list of strings for users to choose from, set the <b>itemsSource</b> property to an
+            array containing those items and users will be able to select one of them:
+        </p>
+        <div class="form-group">
+            <label for="theCombo">Select a Country:</label>
+            <div id="theCombo"></div>
+        </div>
+        <p>
+            You have selected this country: <b id="theComboValue"></b>.
+        </p>
+
+        <h4>
+            Simple Customizations
+        </h4>
+        <p>
+            By default, the ComboBox will force users to select one of the items on the list. Users will not be able to
+            leave the combo empty or to enter values that are not on the list.
+        </p>
+        <p>
+            You can change these behaviors by setting the <b>isRequired</b> and <b>isEditable</b> properties:</p>
+        <p>
+            <label>
+                <input id="isRequired" type="checkbox">
+                isRequired
+            </label>
+        </p>
+        <p>
+            <label>
+                <input id="isEditable" type="checkbox" checked="checked">
+                isEditable
+            </label>
+        </p>
+        <div class="form-group">
+            <label for="theComboCustom">Select a Country:</label>
+            <div id="theComboCustom"></div>
+        </div>
+        <p>
+            You have selected this country: <b id="theComboCustomValue"></b>.
+        </p>
+    </div>
+</body>
+
+</html>

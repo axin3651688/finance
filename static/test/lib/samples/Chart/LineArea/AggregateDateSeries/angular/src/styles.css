@@ -1,0 +1,42 @@
+.wj-flexchart {
+    height: 300px;
+}
+
+.wj-flexchart {
+    margin: 10px 0;
+}
+
+.wj-flexchart .wj-chart-rangeselector-container .wj-chart-hrangeslider .wj-rangeslider-minhandle,
+.wj-flexchart .wj-chart-rangeselector-container .wj-chart-hrangeslider .wj-rangeslider-maxhandle {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid hsla(0, 0%, 50.2%, 0.75);
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: hsl(0, 0%, 50.2%);
+    background: #d3d3d3;
+    opacity: 1;
+}
+
+.wj-flexchart .wj-chart-rangeselector-container .wj-chart-hrangeslider .wj-rangeslider-minhandle:after,
+.wj-flexchart .wj-chart-rangeselector-container .wj-chart-hrangeslider .wj-rangeslider-maxhandle:after {
+    content: "‖";
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-55%);
+    opacity: 0.75;
+}
+
+.chart-selector {
+    height: 60px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

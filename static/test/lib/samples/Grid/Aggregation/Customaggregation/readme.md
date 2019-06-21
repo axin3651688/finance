@@ -1,0 +1,4 @@
+Custom Aggregates
+=================
+
+The FlexGrid columns have an **aggregate** property that allows you to show data summaries for the whole grid or for each group. In some cases, however, the **aggregate** property is not flexible enough, and you may need to calculate aggregates using custom code. The grid below includes a 'Profit' column that shows the difference between 'Sales' and 'Expenses'. The 'Profit' column is calculated in the **formatItem** event. The profit for regular data items is based on the actual data items. The profit for groups is calculated using the group's **getAggregate** method.

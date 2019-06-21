@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <wj-flex-grid [itemsSource]="data" [headersVisibility]="'Column'" [childItemsPath]="'products'" [treeIndent]=25
+    [autoGenerateColumns]=false>
+    <wj-flex-grid-column [binding]="'name'" [header]="'Name'" [width]="'3*'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [dataType]="'String'" [width]="'*'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'price'" [header]="'Unit Price'" [format]="'n2'" [dataType]="'Number'"
+      [width]="'*'"></wj-flex-grid-column>
+  </wj-flex-grid>
+</div>

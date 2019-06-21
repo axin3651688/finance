@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Scrolling and View Range</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">    
+      <button id="scrollIntoView" class="btn btn-default">
+        Scroll Row 100 Into View 
+      </button>
+      <button id="scrollToTop" class="btn btn-default">
+        Set Top Cell to Row 100
+      </button>
+      <div id="theGrid">
+      </div>
+    </div>
+</body>
+</html>

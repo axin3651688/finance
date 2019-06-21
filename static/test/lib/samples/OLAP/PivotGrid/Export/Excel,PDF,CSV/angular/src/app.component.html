@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-5">
+      <wj-pivot-panel [itemsSource]="ng"></wj-pivot-panel>
+    </div>
+    <div class="col-xs-7">
+      <wj-pivot-grid #grid [itemsSource]="ng"></wj-pivot-grid>
+    </div>
+  </div>
+  <p>
+    Export Grid to:
+    <button id="csv" class="btn btn-primary" (click)="export('csv')">
+      CSV
+    </button>
+    <button id="xlsx" class="btn btn-primary" (click)="export('xlsx')">
+      XLSX
+    </button>
+    <button id="pdf" class="btn btn-primary" (click)="export('pdf')">
+      PDF
+    </button>
+    <button id="pdfdoc" class="btn btn-primary" (click)="export('pdfdoc')">
+      PDF Document
+    </button>
+  </p>
+</div>

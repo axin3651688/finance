@@ -1,0 +1,22 @@
+.wj-flexgrid {
+    height: 150px;
+    margin-top:10px;
+}
+
+.wj-flexchart {
+    height: 300px;
+}
+
+.wj-data-label {
+    font-size: 75%;
+    opacity: .9;
+}
+
+label {
+    width: 150px;
+    text-align: right;
+}
+
+.wj-control {
+   margin-bottom: 3px;
+}

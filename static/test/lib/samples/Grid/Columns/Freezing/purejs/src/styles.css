@@ -1,0 +1,14 @@
+.wj-flexgrid {
+    max-height: 250px; 
+    max-width: 800px;
+    margin: 10px 0;
+}
+body {
+    margin-bottom: 20px;
+}
+  
+/* style frozen cells */
+.wj-cell.wj-frozen:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected),
+.wj-cell.wj-frozen.wj-alt:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+    background: rgb(255,255,125);
+}

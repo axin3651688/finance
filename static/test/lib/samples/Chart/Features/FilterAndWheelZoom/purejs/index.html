@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Filter and Wheel Zoom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            <b>Filter: </b>
+            <input id="theMonth">
+            <button id="btnResetFilter" class="btn btn-default">Reset</button>
+        </p>
+        <p>
+            <b>Zoom: </b>
+            <button id="btnZoomIn" class="btn btn-default">In</button>
+            <button id="btnZoomOut" class="btn btn-default">Out</button>
+            <button id="btnResetZoom" class="btn btn-default">Reset</button>
+            <span>You can also zoom with ctrl+mouse wheel.</span>
+        </p>
+        <div id="theChart"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-4 panel">
+
+      <h4>
+        Sort Dimension fields
+      </h4>
+      <label>
+        Country: <wj-combo-box #countryCombo [itemsSource]="sortOptions" (selectedIndexChanged)='onSelectedIndexChanged(countryCombo, "Country")'></wj-combo-box>
+      </label>
+      <label>
+        Product: <wj-combo-box #productCombo [itemsSource]="sortOptions" (selectedIndexChanged)='onSelectedIndexChanged(productCombo, "Product")'></wj-combo-box>
+
+      </label>
+
+      <h4>
+        Sort Measure fields
+      </h4>
+      <label>
+        Sales: <wj-combo-box #sortSales [itemsSource]="sortOptions2" (selectedIndexChanged)="updateMeasureSort()"></wj-combo-box>
+      </label>
+      <label>
+        Expenses: <wj-combo-box #sortExpenses [itemsSource]="sortOptions2" (selectedIndexChanged)="updateMeasureSort()"></wj-combo-box>
+      </label>
+
+      <label>
+        Subtotals: <input id="subtotals" type="checkbox" (click)="onSubtotalsClick($event)">
+      </label>
+
+    </div>
+
+    <div class="col-xs-8">
+      <wj-pivot-grid #theGrid [itemsSource]="ng"></wj-pivot-grid>
+    </div>
+
+  </div>
+
+</div>

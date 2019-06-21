@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <wj-multi-row #orderManagement [itemsSource]="items" [layoutDefinition]="layoutDefinition"></wj-multi-row>
+
+    <div class="pull-right btn-group">
+        <button class="btn btn-default" (click)="onGotoPageClick('first')" id="first">
+            <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('previous')" id="previous">
+            <span class="glyphicon glyphicon-backward"></span>
+        </button>
+        <button id="current" type="button" class="btn" disabled style="width:100px" [innerHTML]="currentDescription">
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('next')" id="next">
+            <span class="glyphicon glyphicon-forward"></span>
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('last')" id="last">
+            <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default" (click)="onExportXlsxClick()">
+            Export to Excel
+        </button>
+        <button class="btn btn-default" (click)="onExportPdfClick()">
+            Export to PDF
+        </button>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <label>
+        <input id="dragWithin" type="checkbox" checked="checked">
+        allow dragging within trees
+    </label>
+    <br />
+    <label>
+        <input id="dragBetween" type="checkbox" checked="checked">
+        allow dragging between trees
+    </label>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <wj-tree-view #firstTree class="short-tree" [itemsSource]="data" [displayMemberPath]="'header'"
+                [childItemsPath]="'items'" [allowDragging]=true (dragOver)="onDragOverBetweenTrees(firstTree, $event)"></wj-tree-view>
+        </div>
+        <div class="col-xs-6">
+            <wj-tree-view #secondTree class="short-tree" [itemsSource]="anotherData" [displayMemberPath]="'header'"
+                [childItemsPath]="'items'" [allowDragging]=true (dragOver)="onDragOverBetweenTrees(secondTree, $event)"></wj-tree-view>
+        
+        </div>
+    </div>
+</div>

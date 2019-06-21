@@ -1,0 +1,36 @@
+.container-fluid .gauges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+
+.container-fluid .wj-gauge {
+    width: 200px;
+    height: 200px;
+}
+
+.container-fluid .wj-gauge .wj-pointer {
+    display: none;
+}
+
+.container-fluid .wj-gauge .wj-ranges path {
+    stroke: #f5f5f5;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    opacity: .75;
+}
+
+.container-fluid .gauges .wj-lineargauge {
+    height: 60px;
+}
+
+.container-fluid .gauges .vertical {
+    height: 120px;
+    width: 60px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

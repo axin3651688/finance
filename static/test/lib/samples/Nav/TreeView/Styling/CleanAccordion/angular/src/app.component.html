@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <p>
+        Selected item: <b><span id="selected"></span></b>
+    </p>
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'detail'" (formatItem)="onFormatItem(theTree, $event)"
+        (selectedItemChanged)="onSelectedItemChanged()"></wj-tree-view>
+</div>

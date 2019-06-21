@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Column Width</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+  <h4>
+		Example 1:</h4>
+	<p>
+		This grid has four columns. The first is 80 pixels wide and can be resized between
+		40 and 160 pixels. The other three have widths of 2*, *, and *, and cannot be
+		resized using the mouse. </p>
+	<p>
+		Notice that the second column is twice as wide as the third and fourth columns, and that
+		they keep these proportions even as you resize the first column or the whole grid.</p>
+	<div id="theFirstGrid"></div>
+	<br />
+	<br />
+	<h4>
+		Example 2:</h4>
+	<p>
+		This grid shows how you can make any column stretch to fill the available space. In this case,
+		we set the width of the second column to * to achieve that effect.</p>
+	<p>
+		We also set the minimum width of the second column to 100 pixels in order to prevent it from
+		getting too narrow when the other columns in the grid are resized, and we prevent users from 
+        resizing this column with the mouse.</p>
+  <div id="theSecondGrid"></div>
+	<br />
+	<br />
+	<h4>
+		Example 3:</h4>
+	<p>
+		This example sets all widths to *, which means the space available is divided equally among them.
+		Resize the browser and notice how the grid resizes and the columns fill it up equally. </p>
+    <p>
+        Also, unlike the other examples, this one sets the allowResizing property of the entire grid rather 
+        than an individual column. We set this one to None, but you may also choose Columns, Rows, or Both.</p>
+  <div id="theThirdGrid"></div>
+</div>
+</body>
+</html>

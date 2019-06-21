@@ -1,0 +1,19 @@
+body {
+    margin-bottom: 24px;
+}
+
+.container h4 {
+    text-align: center;
+}
+
+.container a {
+    cursor: pointer;
+}
+
+.container .wj-flexchart {
+    border: none;
+}
+
+.container {
+    border: 1px solid #e4e4e4;
+}

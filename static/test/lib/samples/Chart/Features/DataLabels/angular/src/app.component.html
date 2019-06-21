@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="labelPosition">Label Position: </label>
+        <wj-combo-box #cb [itemsSource]="comboData" (textChanged)="textChanged(cb)" text="Top"></wj-combo-box><br />
+        <label for="linesAndBorders">Lines/Borders: </label>
+        <input #lb id="linesAndBorders" type="checkbox" (click)="lbClick(lb)" /><br />
+        <label for="downloadsOnly">2016 Only: </label>
+        <input #do id="downloadsOnly" type="checkbox" [(ngModel)]="downloadsOnly" (click)="doClick(do)" />
+    </div>
+    <div class="form-group">
+        <wj-flex-chart #theChart [itemsSource]="data" bindingX="country" tooltipContent="" header="Country GDP" [palette]="palette" [options]="{ groupWidth : '90%' }">
+            <wj-flex-chart-series binding="2014" name="2014"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2015" name="2015"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2016" name="2016"></wj-flex-chart-series>
+            <wj-flex-chart-data-label content="{value:n0,,}T" position="Top"></wj-flex-chart-data-label>
+        </wj-flex-chart>
+    </div>
+</div>

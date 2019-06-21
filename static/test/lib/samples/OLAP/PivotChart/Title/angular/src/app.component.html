@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-pivot-chart #pivotChart [itemsSource]="ngChart" [showTitle]=true [showLegend]="'Auto'"></wj-pivot-chart>
+    <label>
+        Show Chart Title <input id="showTitle" type="checkbox" checked="checked" (click)="onShowTitleClick($event)">
+    </label>
+</div>

@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <p>
+        <button class="btn btn-default" (click)="printDoc()">Print with PrintDocument</button>
+        <button class="btn btn-default" (click)="printDirect()">Print directly</button>
+    </p>
+
+    <p>Radial gauges:</p>
+    <table id="tblGauge">
+        <tr>
+            <td>
+                <wj-radial-gauge [value]="20" [isReadOnly]="false"></wj-radial-gauge>
+            </td>
+            <td>
+                <wj-radial-gauge [value]="80" [isReadOnly]="false"></wj-radial-gauge>
+            </td>
+        </tr>
+    </table>
+
+    <p>FlexGrid:</p>
+    <wj-flex-grid #theGrid [itemsSource]="data"></wj-flex-grid>
+</div>

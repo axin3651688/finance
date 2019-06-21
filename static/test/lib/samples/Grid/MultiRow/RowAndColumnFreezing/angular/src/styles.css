@@ -1,0 +1,10 @@
+.wj-multirow {
+  height: 400px;
+  width: 600px;
+  margin: 6px 0;
+}
+
+/* custom styling for frozen cells */
+.wj-flexgrid .wj-cell.wj-frozen:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+  background-color: #f3fbcc;
+}

@@ -1,0 +1,9 @@
+.initial {
+	color: white;
+	background: #707070;
+	font-weight: 900;
+	border-radius: 4px;
+	padding: 2px;
+	transform: scale(1.5, 1);
+	margin-right: 5px;
+}

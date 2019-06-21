@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'downloads'" [header]="'Downloads'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'active'" [header]="'Active'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [format]="'n0'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

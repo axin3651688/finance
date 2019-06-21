@@ -1,0 +1,26 @@
+{
+    "name": "sample-ts",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "lite-server",
+        "setup": "node -r @grapecity/build-tools feature-sample-setup",
+        "preinstall": "Don't use npm install! Use 'npm run setup' instead."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@grapecity/wijmo.styles": "5.20191.603-rc",
+        "@grapecity/wijmo": "5.20191.603-rc",
+        "@grapecity/wijmo.input": "5.20191.603-rc",
+        "bootstrap": "3.3.7",
+        "systemjs": "0.19.40",
+        "plugin-typescript": "8.0.0",
+        "typescript": "3.1.2",
+        "systemjs-plugin-css": "0.1.37"
+    },
+    "devDependencies": {
+        "lite-server": "2.4.0"
+    }
+}

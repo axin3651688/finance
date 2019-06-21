@@ -1,0 +1,4 @@
+<div class="container-fluid">
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'" [isReadOnly]=false
+        (nodeEditStarting)="onNodeEditStarting(theTree, $event)"></wj-tree-view>
+</div>

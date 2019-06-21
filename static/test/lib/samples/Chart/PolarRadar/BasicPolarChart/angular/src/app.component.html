@@ -1,0 +1,7 @@
+<div class="container-fluid">
+  <wj-flex-radar #chart [itemsSource]="data" [bindingX]="'longitude'">
+    <wj-flex-radar-axis [wjProperty]="'axisY'" [min]="0" [max]="100" [majorUnit]="25"></wj-flex-radar-axis>
+    <wj-flex-radar-series [binding]="'latitude1'"></wj-flex-radar-series>
+    <wj-flex-radar-series [binding]="'latitude2'"></wj-flex-radar-series>
+  </wj-flex-radar>
+</div>

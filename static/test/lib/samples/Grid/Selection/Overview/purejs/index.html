@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Seletion Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <label>
+        selectionMode
+        <div id="selectionMode"></div>
+      </label>
+      <div id="theGrid"></div>
+      <p>
+        Current selection: <span id="currSel"></span>.
+      </p>
+      <div>
+        <button id="btnSelect" class="btn btn-default">
+          Select the first four cells
+        </button> <button id="btnListSelect" class="btn btn-default">
+          Select rows 0, 2, and 4
+        </button>
+      </div>        
+    </div>
+</body>
+</html>

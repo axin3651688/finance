@@ -1,0 +1,7 @@
+<div class="container-fluid">
+   <wj-tree-view #theTree [itemsSource]="data" [childItemsPath]="['items']" (selectedItemChanged)="selectedItemChanged(theTree)" (itemClicked)="itemClicked(theTree)"></wj-tree-view>
+    <div id="theTree"></div>
+      
+    <div id="selection" [innerHtml]="selectionInnerHtml"></div>
+    <div id="click" [innerHtml]="clickInnerHtml"></div>
+</div>

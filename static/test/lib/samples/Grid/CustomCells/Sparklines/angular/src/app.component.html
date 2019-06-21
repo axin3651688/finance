@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [isReadOnly]="true"
+        [allowResizing]="'None'"
+        [alternatingRowStep]="0"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'rank'" [header]="'#'" [width]="50"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'title'" [header]="'Title'" [width]="'2*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'rating'" [header]="'Rating'" [align]="'center'" [cssClass]="'cell-rating'" [width]="'*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'attendance'" [header]="'Attendance'" [cssClass]="'cell-attendance'" [width]="'2*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'revenue'" [header]="'Revenue'" [cssClass]="'cell-revenue'" [width]="'2*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

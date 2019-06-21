@@ -1,0 +1,21 @@
+label {
+    width: 150px;
+    text-align: right;
+    margin-right: 3px;
+}
+
+.wj-inputnumber,
+.wj-combobox {
+    width: 140px;
+}
+
+.wj-gauge {
+    margin: 20px auto;
+}
+.wj-radialgauge {
+    height: 100px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

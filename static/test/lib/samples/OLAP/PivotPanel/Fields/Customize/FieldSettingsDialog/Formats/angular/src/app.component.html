@@ -1,0 +1,7 @@
+<div class="container-fluid">
+   <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+    <p>
+      Customize the "Period" field by changing its format:
+    </p>
+    <wj-combo-box #combo [itemsSource]="formats" [displayMemberPath]="'name'" [selectedValuePath]="'value'" (textChanged)="onTextChanged(combo)"></wj-combo-box>
+</div>

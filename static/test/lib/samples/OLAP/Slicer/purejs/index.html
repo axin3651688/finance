@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Grapecity Wijmo OLAP Slicer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <p>Slicer:</p>
+          <div id="slicer"></div>
+        </div>
+        <div class="col-xs-6">
+          <p>
+            Amount spent by each buyer.
+          </p>
+          <div id="pivotGrid"></div>
+        </div>
+      </div>
+    	<p>
+    		You can customize the <b>Slicer</b> control to hide or show
+    		a header, and to hide or show checkboxes next to each item:
+    	</p>
+      <label>
+      	Show Header
+        <input id="showHeader" type="checkbox" checked>
+    	</label>
+      <br/>
+      <label>
+      	Show Checkboxes
+        <input id="showCheckboxes" type="checkbox" >
+    	</label>
+    	<p>
+    		If you change the <b>format</b> property of the field
+    		being filtered by the <b>Slicer</b>, the value list
+    		is updated automatically:
+    	</p>
+    	<button class="btn btn-primary" id="editfield">
+      	Edit Date Field...
+    	</button>
+    	
+    </div>
+
+</body>
+</html>

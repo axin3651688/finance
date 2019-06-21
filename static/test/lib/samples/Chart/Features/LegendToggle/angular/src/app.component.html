@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="legendToggle">Legend Toggle: </label>
+        <input id="legendToggle" type="checkbox" [(ngModel)]="legendToggle">
+
+        <wj-flex-chart [itemsSource]="data" bindingX="country" [palette]="palette" [legendToggle]="legendToggle">
+            <wj-flex-chart-series binding="2014" name="2014"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2015" name="2015"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2016" name="2016"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

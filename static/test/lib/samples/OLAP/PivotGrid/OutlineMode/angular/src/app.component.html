@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <label>
+    outlineMode
+    <input id="outline" type="checkbox" [(ngModel)]="outlineMode" (change)="outlineModeChanged()"/>
+  </label><br/>
+  <label>
+    custom style
+    <input id="style" type="checkbox" [(ngModel)]="customStyle"/>
+  </label><br/>
+  <label>
+    totalsBeforeData
+    <input id="before" type="checkbox" [(ngModel)]="ng.totalsBeforeData"/>
+  </label><br/>
+  <label>
+    showRowFieldHeaders
+    <input id="headers" type="checkbox" [(ngModel)]="showRowFieldHeaders"/>
+  </label><br/>
+  <div class="row">
+    <div class="col-xs-5">
+      <wj-pivot-panel
+        [itemsSource]="ng">
+      </wj-pivot-panel>
+    </div>
+    <div class="col-xs-7">
+      <wj-pivot-grid #grid
+        [class.outline]="customStyle"
+        [itemsSource]="ng"
+        [outlineMode]="outlineMode"
+        [showRowFieldHeaders]="showRowFieldHeaders">
+      </wj-pivot-grid>
+      <button class="btn btn-primary" (click)="exportToCsv(grid)">
+        Export to CSV
+      </button>
+    </div>
+  </div>
+</div>

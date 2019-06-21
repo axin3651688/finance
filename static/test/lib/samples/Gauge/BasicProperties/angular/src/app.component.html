@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="min">min:</label>
+                <wj-input-number id="min" [step]="10" [(value)]="gauge.min"></wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="max">max:</label>
+                <wj-input-number id="max" [step]="10" [(value)]="gauge.max"></wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="value">value:</label>
+                <wj-input-number id="value" [step]="10" [(value)]="gauge.value"></wj-input-number>
+            </div>
+
+            <div class="form-group">
+                <label for="showText">showText:</label>
+                <wj-combo-box id="showText" [(text)]="gauge.showText"
+                    [itemsSource]="['None','Value','MinMax','All']">
+                </wj-combo-box>
+            </div>
+
+            <div class="form-check">
+                <label for="isReadOnly">isReadOnly:</label>
+                <input id="isReadOnly" type="checkbox" class="form-check-input" [(ngModel)]="gauge.isReadOnly">
+            </div>
+
+            <div class="form-group">
+                <label for="step">step:</label>
+                <wj-input-number id="step" [min]="1" [step]="1" [(value)]="gauge.step"></wj-input-number>
+            </div>
+
+            <div class="form-check">
+                <label for="isAnimated">isAnimated:</label>
+                <input id="isAnimated" type="checkbox" class="form-check-input" [(ngModel)]="gauge.isAnimated">
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-radial-gauge [min]="gauge.min" [max]="gauge.max" [(value)]="gauge.value" [showText]="gauge.showText"
+                [step]="gauge.step" [isReadOnly]="gauge.isReadOnly" [isAnimated]="gauge.isAnimated"></wj-radial-gauge>
+            <wj-linear-gauge [min]="gauge.min" [max]="gauge.max" [(value)]="gauge.value" [showText]="gauge.showText"
+                [step]="gauge.step" [isReadOnly]="gauge.isReadOnly" [isAnimated]="gauge.isAnimated"></wj-linear-gauge>
+            <wj-bullet-graph [min]="gauge.min" [max]="gauge.max" [(value)]="gauge.value" [showText]="gauge.showText"
+                [step]="gauge.step" [isReadOnly]="gauge.isReadOnly" [isAnimated]="gauge.isAnimated" [target]="60"
+                [bad]="50" [good]="70"></wj-bullet-graph>
+        </div>
+    </div>
+</div>

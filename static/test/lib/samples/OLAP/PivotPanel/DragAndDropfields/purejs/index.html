@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Grapecity Wijmo OLAP Pivot Panel Drag and Drop Fields</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-5">
+          <p>
+            Drag and drop fields to build views:
+          </p>
+          <div id="pivotPanel"></div>
+          <p>
+            For example, drag the "Buyer" field from the "Rows" list 
+            to the "Columns" list.
+          </p>
+        </div>
+        <div class="col-xs-7">
+          <p>
+            Summary for the current view definition:
+          </p>
+          <div id="pivotPanelGrid"></div>
+          <div id="pivotPanelChart"></div>
+        </div>
+      </div>
+      <p>
+        View definitions can be saved and restored using the 
+        PivotEngine's <b>viewDefinition</b> property:
+      </p>
+      <button id="saveView" class="btn btn-default">
+        Save View
+      </button>
+      <button id="restoreView" class="btn btn-default">
+        Restore View
+      </button>
+    </div>
+
+</body>
+</html>

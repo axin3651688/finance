@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-menu #menu [isButton]="true" [displayMemberPath]="'header'" [selectedValuePath]="'value'"
+        [header]="menu.selectedItem ? 'Run: <b>' + menu.selectedItem.header + '</b>' : menu.header" [itemsSource]="data"
+        (itemClicked)="itemClicked(menu)" [selectedValue]="'FFX'">
+    </wj-menu>
+</div>

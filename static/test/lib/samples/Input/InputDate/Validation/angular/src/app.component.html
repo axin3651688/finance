@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-input-date #theInputDate [itemValidator]="validator" (initialized)="customizeCalendar(theInputDate.calendar)"></wj-input-date>
+    <div>
+        The current date is <b>{{ theInputDate.value | date:'fullDate'}}</b>.
+    </div>
+</div>

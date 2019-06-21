@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <wj-flex-chart [header]="'Balance of trade in 2015 ($Billions) of the United States'" [bindingX]="'product'"
+        [itemsSource]="data">
+        <wj-flex-chart-legend [position]="'Bottom'">
+        </wj-flex-chart-legend>
+
+        <wj-flex-chart-series [name]="'Exports'" [binding]="'exports'">
+        </wj-flex-chart-series>
+        <wj-flex-chart-series [name]="'Imports'" [binding]="'imports'">
+        </wj-flex-chart-series>
+        <wj-flex-chart-series [name]="'Difference'" [binding]="'difference'">
+        </wj-flex-chart-series>
+
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

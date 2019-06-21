@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity CollectionView Change Tracking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="theGrid">
+        </div>
+
+        <h3>Edited Items:</h3>
+        <div id="edited" class="changed edited"></div>
+
+        <h3>Added Items:</h3>
+        <div id="added" class="changed added"></div>
+
+        <h3>Removed Items:</h3>
+        <div id="removed" class="changed removed"></div>
+    </div>
+</body>
+
+</html>

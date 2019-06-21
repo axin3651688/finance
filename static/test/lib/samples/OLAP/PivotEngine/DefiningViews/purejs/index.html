@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Grapecity Wijmo OLAP Pivot Engine  Defining Views</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- SystemJS -->
+	<script src="node_modules/systemjs/dist/system.src.js"></script>
+	<script src="systemjs.config.js"></script>
+	<script>
+		System.import('./src/app');
+	</script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div id="buttons" class="buttons">
+			<button id="who" class="btn">
+				How much was spent by each person?
+			</button>
+			<button id="what" class="btn">
+				How much was spent on each expense type?
+			</button>
+			<button id="who-what" class="btn">
+				What did each person spend money on?
+			</button>
+			<button id="when" class="btn">
+				When were these expenses made?
+			</button>
+		</div>
+
+		<p>
+			Use these buttons to save and load views:
+		</p>
+		<div class="buttons">
+			<button id="save" class="btn btn-primary">
+				Save View
+			</button>
+			<button id="load" class="btn btn-primary">
+				Load View
+			</button>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6">
+				<p>
+					Use the <b>PivotPanel</b> control to edit the view:
+				</p>
+				<div id="pivotPanel"></div>
+			</div>
+			<div class="col-xs-6">
+				<p>
+					Use the <b>PivotGrid</b> control to see the results:
+				</p>
+				<div id="pivotGrid"></div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

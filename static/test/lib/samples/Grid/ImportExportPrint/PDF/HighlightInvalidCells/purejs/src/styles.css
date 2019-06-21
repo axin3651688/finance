@@ -1,0 +1,12 @@
+body {
+    margin-bottom: 24px;
+}
+
+.grid {
+    margin-top: 20px;
+    height: 300px;
+}
+
+label {
+    margin-right: 3px;
+}

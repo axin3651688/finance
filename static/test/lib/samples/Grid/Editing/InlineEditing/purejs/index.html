@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Inline Editing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+    
+      <div id="theGrid">
+      </div>
+    
+      <!-- template for buttons on items in view mode -->
+      <div id="tplBtnViewMode" style="display:none">
+        <button id="btnEdit" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-pencil"></span> Edit
+        </button>
+        <button id="btnDelete" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-remove"></span> Delete
+        </button>
+      <div>
+    
+      <!-- template for buttons on items in edit mode -->
+      <div id="tplBtnEditMode" style="display:none">
+        <button id="btnOK" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-ok"></span> OK
+        </button>
+        <button id="btnCancel" class="btn btn-warning btn-sm">
+          <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+        </button>
+      </div>
+    
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theSSN">Social Security Number</label>
+        <wj-input-mask #theSSN id="theSSN" [mask]="'000-00-0000'"></wj-input-mask>
+        <span *ngIf="theSSN.rawValue"> rawValue: {{ theSSN.rawValue }}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="theZip">Zip Code</label>
+        <wj-input-mask #theZip id="theZip" [mask]="'00000'"></wj-input-mask>
+        <span *ngIf="theZip.rawValue"> rawValue: {{ theZip.rawValue }}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="theZip4">Zip Code + 4</label>
+        <wj-input-mask #theZip4 id="theZip4" [mask]="'00000-0000'"></wj-input-mask>
+        <span *ngIf="theZip4.rawValue"> rawValue: {{ theZip4.rawValue }}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="thePhone">Phone Number</label>
+        <wj-input-mask #thePhone id="thePhone" [mask]="'(999) 000-0000'"></wj-input-mask>
+        <span *ngIf="thePhone.rawValue"> rawValue: {{ thePhone.rawValue }}</span>
+    </div>
+</div>

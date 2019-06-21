@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Popup Editors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="theGrid">
+        </div>
+
+        <!-- the popup editor -->
+        <div id="popup" class="modal-content">
+            <div class="modal-header">
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+                <h4 class="modal-title">Edit Item <span id="item-id"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="wj-labeled-input">
+                    <input id="country" />
+                    <label for="country">Country</label>
+                </div>
+                <div class="wj-labeled-input">
+                    <input id="sales" />
+                    <label for="sales">Sales</label>
+                </div>
+                <div class="wj-labeled-input">
+                    <input id="expenses" />
+                    <label for="expenses">Expenses</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary wj-hide-ok">OK</button>
+                    <button type="button" class="btn btn-default wj-hide">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

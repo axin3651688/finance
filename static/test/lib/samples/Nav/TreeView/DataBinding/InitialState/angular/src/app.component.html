@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <wj-tree-view [itemsSource]="data"></wj-tree-view>
+
+    <h2>
+        Selecting a default item</h2>
+    <p>
+        If you select an item when the tree loads, it will
+        automatically ensure the selected node is visible,
+        expanding the tree and scrolling as needed.
+        In this case, we selected the 'Solar Panel' item:</p>
+    <wj-tree-view #theTreeSelected [itemsSource]="data" (loadedItems)="onTreeSelectedLoadedItems(theTreeSelected)">
+    </wj-tree-view>
+
+    <h2>
+        Collapsing to a given Level</h2>
+    <p>
+        Use the <b>collapseToLevel</b> method to collapse or expand
+        the tree to a given level when it loads. For example, the
+        trees below start totally collapsed and totally expanded:</p>
+    <wj-tree-view #theTreeCollapsed [itemsSource]="data" (loadedItems)="onTreeCollapsedLoadedItems(theTreeCollapsed)">
+    </wj-tree-view>
+    <wj-tree-view #theTreeExpanded [itemsSource]="data" (loadedItems)="onTreeExpandedLoadedItems(theTreeExpanded)">
+    </wj-tree-view>
+</div>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>GrapeCity Wijmo TabPanel Styling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SystemJS -->
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>
+    System.import('./src/app');
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <div id="theTabPanel" class="custom-tab">
+      <div>
+        <a>Africa</a>
+        <div>
+          <ul>
+            <li>Algeria</li>
+            <li>Angola</li>
+            <li>Benin</li>
+            <li>Botswana</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <a>America</a>
+        <div>
+          <ul>
+            <li>Canada</li>
+            <li>Chile</li>
+            <li>Mexico</li>
+            <li>United States</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <a>Asia</a>
+        <div>
+          <ul>
+            <li>China</li>
+            <li>Korea</li>
+            <li>India</li>
+            <li>Japan</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <a>Europe</a>
+        <div>
+          <ul>
+            <li>Austria</li>
+            <li>England</li>
+            <li>France</li>
+            <li>Germany</li>
+            <li>Netherlands</li>
+            <li>Switzerland</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <a>Oceania</a>
+        <div>
+          <ul>
+            <li>Australia</li>
+            <li>Fiji</li>
+            <li>New Zealand</li>
+            <li>Samoa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h4>
+      Options
+    </h4>
+    <div>
+      <label for="tabPosition">
+        Tab Position
+      </label>
+      <div id="tabPosition"></div>
+    </div>
+    <div>
+      <label for="tabAlign">
+        Tab Alignment
+      </label>
+      <div id="tabAlign"></div>
+    </div>
+    <div>
+      <label for="isAnimated">
+        isAnimated
+      </label>
+      <input id="isAnimated" type="checkbox" checked="checked">
+    </div>
+    <div>
+      <label for="customHeaders">
+        Custom Headers
+      </label>
+      <input id="customHeaders" type="checkbox">
+    </div>
+
+
+  </div>
+</body>
+
+</html>

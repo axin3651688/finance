@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+var __extends=this&&this.__extends||function(){var t=function(e,r){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,e){t.__proto__=e}||function(t,e){for(var r in e)e.hasOwnProperty(r)&&(t[r]=e[r])})(e,r)};return function(e,r){function n(){this.constructor=e}t(e,r),e.prototype=null===r?Object.create(r):(n.prototype=r.prototype,new n)}}();import{ComponentBase}from"wijmo/wijmo.react.base";import*as wjcChart from"wijmo/wijmo.chart";var FlexChart=function(t){function e(e){return t.call(this,e,wjcChart.FlexChart,{objectProps:["palette","plotMargin","footerStyle","headerStyle","itemsSource","options","selection"]})||this}return __extends(e,t),e}(ComponentBase);export{FlexChart};var FlexPie=function(t){function e(e){return t.call(this,e,wjcChart.FlexPie,{objectProps:["palette","plotMargin","footerStyle","headerStyle","itemsSource"]})||this}return __extends(e,t),e}(ComponentBase);export{FlexPie};var FlexChartAxis=function(t){function e(e){var r=t.call(this,e,wjcChart.Axis,{objectProps:["plotArea","itemsSource"]})||this;return r._parentProp="axes",r}return __extends(e,t),e}(ComponentBase);export{FlexChartAxis};var FlexChartLegend=function(t){function e(e){var r=t.call(this,e,wjcChart.Legend)||this;return r._parentProp="legend",r._parentInCtor=!0,r}return __extends(e,t),e}(ComponentBase);export{FlexChartLegend};var FlexChartDataLabel=function(t){function e(e){var r=t.call(this,e,wjcChart.DataLabel,{objectProps:["content"]})||this;return r._parentProp="dataLabel",r}return __extends(e,t),e}(ComponentBase);export{FlexChartDataLabel};var FlexPieDataLabel=function(t){function e(e){var r=t.call(this,e,wjcChart.PieDataLabel,{objectProps:["content"]})||this;return r._parentProp="dataLabel",r}return __extends(e,t),e}(ComponentBase);export{FlexPieDataLabel};var FlexChartSeries=function(t){function e(e){var r=t.call(this,e,wjcChart.Series,{objectProps:["axisX","axisY","style","altStyle","symbolStyle","itemsSource","tooltipContent"]})||this;return r._parentProp="series",r._siblingId="series",r}return __extends(e,t),e}(ComponentBase);export{FlexChartSeries};var FlexChartLineMarker=function(t){function e(e){var r=t.call(this,e,wjcChart.LineMarker)||this;return r._parentInCtor=!0,r}return __extends(e,t),e}(ComponentBase);export{FlexChartLineMarker};var FlexChartDataPoint=function(t){function e(e){var r=t.call(this,e,wjcChart.DataPoint)||this;return r._parentProp="",r}return __extends(e,t),e}(ComponentBase);export{FlexChartDataPoint};var FlexChartPlotArea=function(t){function e(e){var r=t.call(this,e,wjcChart.PlotArea,{objectProps:["style"]})||this;return r._parentProp="plotAreas",r}return __extends(e,t),e}(ComponentBase);export{FlexChartPlotArea};

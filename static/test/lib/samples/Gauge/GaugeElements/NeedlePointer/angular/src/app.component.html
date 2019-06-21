@@ -1,0 +1,68 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-radial-gauge [min]="0" [max]="100" [value]="25" [isReadOnly]="false">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge [min]="0" [max]="100" [value]="25" [startAngle]="-45" [sweepAngle]="270" [isReadOnly]="false">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge [min]="0" [max]="500" [value]="100" [startAngle]="-45" [sweepAngle]="-270" [isReadOnly]="false">
+            </wj-radial-gauge>
+        </div>
+    </div>
+
+    <p>
+        If you prefer a more traditional needle-style pointer, you can add an extra SVG shape to the control and apply
+        a transform to move the needle. Here is an example that adds a drop-shaped needle pointer:
+    </p>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeR1 [min]="0" [max]="100" [value]="25" [showTicks]="true" [tickSpacing]="10"
+                [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false" (initialized)="initializeNeedleRounded(theGaugeR1)"
+                (valueChanged)="updateNeedleRounded(theGaugeR1)">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeR2 [min]="0" [max]="100" [value]="25" [startAngle]="-45" [sweepAngle]="270"
+                [showTicks]="true" [tickSpacing]="10" [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false"
+                (initialized)="initializeNeedleRounded(theGaugeR2)" (valueChanged)="updateNeedleRounded(theGaugeR2)">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeR3 [min]="0" [max]="500" [value]="100" [startAngle]="-45" [sweepAngle]="-270"
+                [showTicks]="true" [tickSpacing]="25" [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false"
+                (initialized)="initializeNeedleRounded(theGaugeR3)" (valueChanged)="updateNeedleRounded(theGaugeR3)">
+            </wj-radial-gauge>
+        </div>
+    </div>
+
+    <p>
+        Because the pointer is just an SVG path, you can customize it very easily by changing the path parameters
+        and/or the CSS associated with the needle element:
+    </p>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeP1 [min]="0" [max]="100" [value]="25" [showTicks]="true" [tickSpacing]="10"
+                [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false" (initialized)="initializeNeedlePointed(theGaugeP1)"
+                (valueChanged)="updateNeedlePointed(theGaugeP1)">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeP2 [min]="0" [max]="100" [value]="25" [startAngle]="45" [sweepAngle]="270"
+                [showTicks]="true" [tickSpacing]="10" [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false"
+                (initialized)="initializeNeedlePointed(theGaugeP2)" (valueChanged)="updateNeedlePointed(theGaugeP2)">
+            </wj-radial-gauge>
+        </div>
+        <div class="col-xs-4">
+            <wj-radial-gauge #theGaugeP3 [min]="0" [max]="500" [value]="100" [startAngle]="-45" [sweepAngle]="-270"
+                [showTicks]="true" [tickSpacing]="25" [thickness]="0.1" [showText]="'MinMax'" [isReadOnly]="false"
+                (initialized)="initializeNeedlePointed(theGaugeP3)" (valueChanged)="updateNeedlePointed(theGaugeP3)">
+            </wj-radial-gauge>
+        </div>
+    </div>
+</div>

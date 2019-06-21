@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Financial Indicators</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Settings -->
+        <div class="panel-group" id="settingsShort">
+            <div class="panel panel-default">
+                <div id="settingsBody" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <!-- Indicator Selector -->
+                        <ul class="list-inline ul-indicators">
+                            <li>
+                                <label>Indicator Type</label>
+                                <input id="indicators" />
+                            </li>
+                        </ul>
+        
+                        <!-- ATR Properties -->
+                        <ul class="list-inline ul-properties ul-atr">
+                            <li>
+                                <label>Period</label>
+                                <input id="atrPeriod" />
+                            </li>
+                        </ul>
+        
+                        <!-- RSI Properties -->
+                        <ul class="list-inline ul-properties ul-rsi">
+                            <li>
+                                <label>Period</label>
+                                <input id="rsiPeriod" />
+                            </li>
+                        </ul>
+        
+                        <!-- CCI Properties -->
+                        <ul class="list-inline ul-properties ul-cci">
+                            <li>
+                                <label>Period</label>
+                                <input id="cciPeriod" />
+                            </li>
+                        </ul>
+        
+                        <!-- Williams %R Properties -->
+                        <ul class="list-inline ul-properties ul-williams-r">
+                            <li>
+                                <label>Period</label>
+                                <input id="williamsRPeriod" />
+                            </li>
+                        </ul>
+        
+                        <!-- MACD & MACD Histogram Properties -->
+                        <ul class="list-inline ul-properties ul-macd">
+                            <li>
+                                <label>Fast Period</label>
+                                <input id="macdFastPeriod" />
+                            </li>
+                            <li>
+                                <label>Slow Period</label>
+                                <input id="macdSlowPeriod" />
+                            </li>
+                            <li>
+                                <label>Signal Smoothing Period</label>
+                                <input id="macdSmoothingPeriod" />
+                            </li>
+                        </ul>
+        
+                        <!-- Fast Stochastic Properties -->
+                        <ul class="list-inline ul-properties ul-stochastic">
+                            <li>
+                                <label>K Period</label>
+                                <input id="stochasticKPeriod" />
+                            </li>
+                            <li>
+                                <label>D Period</label>
+                                <input id="stochasticDPeriod" />
+                            </li>
+                            <li>
+                                <label>Smoothing Period</label>
+                                <input id="stochasticSmoothingPeriod" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="theChart"></div>
+        <div id="iChart"></div>
+    </div>
+</body>
+
+</html>

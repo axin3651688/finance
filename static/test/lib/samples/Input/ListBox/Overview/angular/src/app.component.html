@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4">
+            <wj-list-box #theListBox [displayMemberPath]="'country'" [itemsSource]="data"></wj-list-box>
+        </div>
+        <div class="col-xs-8">
+            <p *ngIf="theListBox.selectedItem as s">
+                <b>Selection:</b><br/>
+                Index: <b>{{ theListBox.selectedIndex }}</b><br/>
+                Country: <b>{{ s.country }}</b><br/>
+                GDP (US$M): <b>{{ s.gdpm | number:'1.0-0' }}</b><br/>
+                Population: <b>{{ s.popk * 1000 | number:'1.0-0' }}</b>
+            </p>
+        </div>
+    </div>
+</div>

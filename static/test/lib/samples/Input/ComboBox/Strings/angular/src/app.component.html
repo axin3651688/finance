@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <p>
+        The <b>text</b> property gets or sets the user's input:
+    </p>
+    <div class="form-group">
+        <label for="theComboNoSrc">Any string:</label>
+        <wj-combo-box #theComboNoSrc id="theComboNoSrc"></wj-combo-box>
+    </div>
+    <p>
+        You have typed this: <b>{{ theComboNoSrc.text }}</b>.
+    </p>
+
+    <h4>
+        Choosing from Lists
+    </h4>
+    <p>
+        If you want to provide a list of strings for users to choose from, set the <b>itemsSource</b> property to an
+        array containing those items and users will be able to select one of them:
+    </p>
+    <div class="form-group">
+        <label for="theCombo">Select a Country:</label>
+        <wj-combo-box #theCombo id="theCombo" [itemsSource]="countries"></wj-combo-box>
+    </div>
+    <p>
+        You have selected this country: <b>{{ theCombo.selectedValue }}</b>.
+    </p>
+
+    <h4>
+        Simple Customizations
+    </h4>
+    <p>
+        By default, the ComboBox will force users to select one of the items on the list. Users will not be able to
+        leave the combo empty or to enter values that are not on the list.
+    </p>
+    <p>
+        You can change these behaviors by setting the <b>isRequired</b> and <b>isEditable</b> properties:</p>
+    <p>
+        <label>
+            <input id="isRequired" type="checkbox" [(ngModel)]="theComboCustom.isRequired">
+            isRequired
+        </label>
+    </p>
+    <p>
+        <label>
+            <input id="isEditable" type="checkbox" [(ngModel)]="theComboCustom.isEditable">
+            isEditable
+        </label>
+    </p>
+    <div class="form-group">
+        <label for="theComboCustom">Select a Country:</label>
+        <wj-combo-box #theComboCustom id="theComboCustom" [isRequired]="false" [isEditable]="true"
+            [placeholder]="'No Country Selected'" [itemsSource]="countries"></wj-combo-box>
+    </div>
+    <p>
+        You have selected this country: <b>{{ theComboCustom.text }}</b>.
+    </p>
+</div>

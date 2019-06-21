@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <wj-group-panel style="display: block;"
+        [grid]="flex"
+        [placeholder]="'Drag columns here to create groups'">
+    </wj-group-panel>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="60" [isReadOnly]="true"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'product'" [header]="'Product'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [aggregate]="'Sum'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [aggregate]="'Sum'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

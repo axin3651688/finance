@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Globalization/Formatting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="theCulture">Culture:</label>
+            <div id="theCulture">
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Dates</h4>
+            </div>
+            <div class="panel-body">
+                <table id="tblDates" class="table table-condensed">
+                    <thead>
+                        <th>format</th>
+                        <th>description</th>
+                        <th>result</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>d</b></td>
+                            <td>Short Date Pattern</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>D</b></td>
+                            <td>Long Date Pattern</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>f</b></td>
+                            <td>Full Date/Time Pattern (short time)</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>F</b></td>
+                            <td>Full Date/Time Pattern (long time)</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>t</b></td>
+                            <td>Short Time Pattern</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>T</b></td>
+                            <td>Long Time Pattern</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>'Q'Q yyyy</b></td>
+                            <td>Quarter/Year</td>
+                            <td>xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>MMMM dd, yyyy</b></td>
+                            <td>Custom format</td>
+                            <td>xx</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Numbers</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="theValue">Value</label>
+                    <div id="theValue">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="thePrecision">Precision</label>
+                    <div id="thePrecision">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <table id="tblNumbers" class="table table-condensed">
+                    <thead>
+                        <th>specifier</th>
+                        <th>description</th>
+                        <th class="text-right">result</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>n*</b></td>
+                            <td>Number</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>n*,</b></td>
+                            <td>Number (thousands)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>n*,,</b></td>
+                            <td>Number (millions)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>f*</b></td>
+                            <td>Fixed-point</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>g*</b></td>
+                            <td>General (no trailing zeros)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>d*</b></td>
+                            <td>Decimal (integers)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>x*</b></td>
+                            <td>Hexadecimal (integers)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>c*</b></td>
+                            <td>Currency</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>c*€</b></td>
+                            <td>Currency (explicit currency symbol)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>c*&#x200b;</b></td> <!-- &#x200b; is a zero-width space -->
+                            <td>Currency (no currency symbol)</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                        <tr>
+                            <td><b>p*</b></td>
+                            <td>Percent</td>
+                            <td class="text-right">xx</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

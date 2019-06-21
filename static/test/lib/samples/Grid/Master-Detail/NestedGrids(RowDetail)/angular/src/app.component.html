@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <h3>
+        HTML in Row Details</h3>
+    <p>
+        This grid shows product categories on each row. Expanding
+        the rows shows an HTML element with information about
+        the products in that category:</p>
+    <wj-flex-grid [itemsSource]="categories" [isReadOnly]="true">
+        <wj-flex-grid-column [header]="'Name'" [binding]="'CategoryName'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Description'" [binding]="'Description'" [width]="'*'"></wj-flex-grid-column>
+        <ng-template wjFlexGridDetail [isAnimated]=true let-item="item">
+            ID: <b>{{item.CategoryID}}</b><br />
+            Name: <b>{{item.CategoryName}}</b><br />
+            Description: <b>{{item.Description}}</b><br />
+            Products: <b>{{getProducts(item.CategoryID).length}} items</b><br />
+            <ol>
+                <li *ngFor="let p of getProducts(item.CategoryID)">{{p.ProductName}}</li>
+            </ol>
+        </ng-template>
+    </wj-flex-grid>
+    <h3>
+        Grids in Row Details</h3>
+    <p>
+        You can add anything you want to the detail rows,
+        including other grids. This example shows the same
+        categories, but the detail row uses another grid
+        to show the products:</p>
+    <wj-flex-grid #gridDetail [autoGenerateColumns]=false [itemsSource]="categories" [isReadOnly]=true>
+        <wj-flex-grid-column [header]="'Category Name'" [binding]="'CategoryName'" [width]="'*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Description'" [binding]="'Description'" [width]="'2*'"></wj-flex-grid-column>
+        <ng-template wjFlexGridDetail [maxHeight]="250" let-item="item">
+            <wj-flex-grid [itemsSource]="getProducts(item.CategoryID)" [isReadOnly]="true"
+                [headersVisibility]="'Column'">
+                <wj-flex-grid-column [header]="'ID'" [binding]="'ProductID'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Name'" [binding]="'ProductName'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Qty/Unit'" [binding]="'QuantityPerUnit'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Unit Price'" [binding]="'UnitPrice'"></wj-flex-grid-column>
+                <wj-flex-grid-column [header]="'Discontinued'" [binding]="'Discontinued'"></wj-flex-grid-column>
+            </wj-flex-grid>
+        </ng-template>
+    </wj-flex-grid>
+</div>

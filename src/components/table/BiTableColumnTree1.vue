@@ -5,18 +5,18 @@
         v-if="cc.children && cc.children.length > 0 "
         :col="cc"
         :key="cc.text"
-        :tableData.sync="tableData"
+        :cube.sync="cube"
       />
-      <bi-table-column v-else :col="cc" :tableData.sync="tableData" :key="cc.text" ref="tcol"/>
+      <bi-table-column v-else :col="cc" :cube.sync="cube" :key="cc.text" ref="tcol"/>
     </template>
   </el-table-column>
-  <bi-table-column v-else :col="col" :key="col.text" :tableData.sync="tableData" ref="tcol"/>
+  <bi-table-column v-else :col="col" :key="col.text" :cube.sync="cube" ref="tcol"/>
 </template>
 <script>
 import BiTableColumn from "./BiTableColumn1";
 export default {
   name: "BiTableColumnTree",
-  props: ["col", "tableData"],
+  props: ["col", "cube"],
   components: {
     BiTableColumn
   },
@@ -28,8 +28,8 @@ export default {
   created() {},
   methods: {
     upData(item) {
-      this.$set(this, "tableData", item);
-      this.$set(this.tableData, "datas", item.datas);
+      this.$set(this, "cube", item);
+      this.$set(this.cube, "datas", item.datas);
       let refs = this.$refs;
 
       if (refs) {

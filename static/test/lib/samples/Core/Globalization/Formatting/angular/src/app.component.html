@@ -1,0 +1,73 @@
+<div class="container-fluid">
+    <p>
+        <wj-menu [(value)]="culture" [header]="'Culture'">
+            <wj-menu-item [value]="'en'">English (US)</wj-menu-item>
+            <wj-menu-item [value]="'en-GB'">English (UK)</wj-menu-item>
+            <wj-menu-item [value]="'es'">Spanish</wj-menu-item>
+            <wj-menu-item [value]="'de'">German</wj-menu-item>
+            <wj-menu-item [value]="'it'">Italian</wj-menu-item>
+            <wj-menu-item [value]="'fr'">French</wj-menu-item>
+            <wj-menu-item [value]="'pt'">Portuguese</wj-menu-item>
+            <wj-menu-item [value]="'ru'">Russian</wj-menu-item>
+            <wj-menu-item [value]="'ja'">Japanese</wj-menu-item>
+            <wj-menu-item [value]="'ko'">Korean</wj-menu-item>
+            <wj-menu-item [value]="'zh'">Chinese</wj-menu-item>
+        </wj-menu>
+    </p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Dates</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-condensed">
+                <thead>
+                    <th>format</th>
+                    <th>description</th>
+                    <th>result</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of dateSamples">
+                        <td><b>{{ item.format }}</b></td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ formatDate(item.format) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Numbers</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="theValue">Value</label>
+                <wj-input-number id="theValue" [(value)]="numValue" [step]="1">
+                </wj-input-number>
+            </div>
+            <div class="form-group">
+                <label for="thePrecision">Precision</label>
+                <wj-input-number id="thePrecision" [(value)]="precision" [step]="1" [min]="0" [max]="10">
+                </wj-input-number>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-condensed">
+                <thead>
+                    <th>specifier</th>
+                    <th>description</th>
+                    <th class="text-right">result</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of numberSamples">
+                        <td><b>{{ item.specifier }}</b></td>
+                        <td>{{ item.description }}</td>
+                        <td class="text-right">{{ formatNumber(item.specifier) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

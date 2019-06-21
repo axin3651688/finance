@@ -1,0 +1,34 @@
+<div class="container-fluid">
+    <button class="btn btn-primary btn-space" (click)="frmLoginPopup.show(true)">
+        Log In
+    </button>
+
+    <!-- Log In form -->
+    <wj-popup #frmLoginPopup class="custom-animation" [fadeIn]="false" (shown)="shown(frmLoginPopup)"
+        (hiding)="hiding(frmLoginPopup)">
+        <form>
+            <h4 class="modal-header">
+                Log in
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+            </h4>
+            <div class="modal-body">
+                <label>
+                    Email:
+                    <input class="form-control" required type="email" />
+                </label>
+                <br />
+                <label>
+                    Password:
+                    <input class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+                <br />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">
+                    Log in
+                </button>
+            </div>
+        </form>
+    </wj-popup>
+</div>

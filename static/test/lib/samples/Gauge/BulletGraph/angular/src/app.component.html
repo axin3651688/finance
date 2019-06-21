@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div id="dashboard">
+        <table>
+            <ng-template ngFor let-item [ngForOf]="dashboard">
+                <tr>
+                    <td>
+                        <div class="heading">{{item.heading}}</div>
+                        <div class="sub">{{item.sub}}</div>
+                    </td>
+                    <td>
+                        <span *ngIf="item.actual < item.target" class="glyphicon glyphicon-thumbs-down warning"></span>
+                    </td>
+                    <td>
+                        <wj-bullet-graph [value]="item.actual" [target]="item.target" [max]="item.max" [bad]="item.bad"
+                            [good]="item.good"></wj-bullet-graph>
+                    </td>
+                    <td>
+                        <div class="max">{{item.max | number:'1.0-0'}}</div>
+                    </td>
+                </tr>
+            </ng-template>
+        </table>
+    </div>
+</div>

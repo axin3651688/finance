@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="fitType">Trendline Type: </label>
+        <wj-combo-box #cb [isRequired]="false" placeholder="None" [itemsSource]="cbData" (textChanged)="textChanged(cb)"></wj-combo-box><br />
+        <label for="order">Order: </label>
+        <wj-input-number #orderIpt [step]="1" [min]="1" [max]="6" [(value)]="order" (valueChanged)="showEquation()"></wj-input-number><br />
+        <label>Equation: </label>
+        <div #eqEle id="equation" class="equation"></div><br />
+        <label for="btnRandomize">Randomize Data</label>
+        <button id="btnRandomize" class="btn btn-default" (click)="randomData()">
+            Go
+        </button>
+        
+        <wj-flex-chart [itemsSource]="data" chartType="Scatter" bindingX="x">
+            <wj-flex-chart-axis wjProperty="axisY" [axisLine]="true"></wj-flex-chart-axis>
+            <wj-flex-chart-series name="Raw Data" binding="y"></wj-flex-chart-series>
+            <wj-flex-chart-trend-line #trendline binding="y" [order]="order" [style]="{stroke:'darkred',strokeWidth:3}" visibility="Hidden"></wj-flex-chart-trend-line>
+        </wj-flex-chart>
+    </div>
+</div>

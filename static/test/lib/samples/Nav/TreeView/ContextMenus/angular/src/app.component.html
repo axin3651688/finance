@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <wj-tree-view [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"
+        (contextmenu)="showContextMenu($event)">
+    </wj-tree-view>
+    <wj-menu #theMenu (itemClicked)="menuItemClick(theMenu)" style="display: none">
+        <wj-menu-item value="option1">Option 1</wj-menu-item>
+        <wj-menu-item value="option2">Option 2</wj-menu-item>
+        <wj-menu-separator></wj-menu-separator>
+        <wj-menu-item value="option3">Option 3</wj-menu-item>
+        <wj-menu-item value="option4">Option 4</wj-menu-item>
+    </wj-menu>
+</div>

@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <p>Slicer:</p>
+            <wj-slicer #slicer [field]="fldDate"></wj-slicer>
+        </div>
+        <div class="col-xs-6">
+            <p>
+                Amount spent by each buyer.
+            </p>
+            <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+        </div>
+    </div>
+    <p>
+        You can customize the <b>Slicer</b> control to hide or show
+        a header, and to hide or show checkboxes next to each item:
+    </p>
+    <label>
+        Show Header
+        <input id="showHeader" type="checkbox" checked (click)="onShowHeaderClick($event)">
+    </label>
+    <br />
+    <label>
+        Show Checkboxes
+        <input id="showCheckboxes" type="checkbox" (click)="onShowCheckboxesClick($event)">
+    </label>
+    <p>
+        If you change the <b>format</b> property of the field
+        being filtered by the <b>Slicer</b>, the value list
+        is updated automatically:
+    </p>
+    <button class="btn btn-primary" id="editfield" (click)="onEditFieldClick($event)">
+        Edit Date Field...
+    </button>
+
+</div>

@@ -1,0 +1,160 @@
+<div class="container-fluid" *ngIf="portfolio">
+    <div class="panel panel-default">
+        <div class="panel-heading">Portfolio</div>
+        <div class="table-responsive" style="overflow-y:visible">
+            <table class="table table-condensed">
+                <thead (click)="portfolio.view.moveCurrentTo(null)">
+                    <tr>
+                        <th class="text-left" style="width:23px"><app-sorter [view]="portfolio.view" binding="name">Name</app-sorter></th>
+                        <th class="text-left"><app-sorter [view]="portfolio.view" binding="symbol">Symbol</app-sorter></th>
+                        <th class="text-center"><app-sorter [view]="portfolio.view" binding="chart">Chart</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="lastPrice">Last Price</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="change">Change</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="shares">Shares</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="purchasePrice">Price</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="costBasis">Cost Basis</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="marketValue">Market Value</app-sorter></th>
+                        <th class="text-right"><app-sorter [view]="portfolio.view" binding="gain">Gain</app-sorter></th>
+                        <th class="text-center">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="cursor: pointer"
+                        *ngFor="let item of portfolio.view.items"
+                        [ngClass]="{active: item?.symbol == portfolio.view.currentItem?.symbol}"
+                        (click)="portfolio.view.moveCurrentTo(item)">
+                        <td class="clipCell">
+                            <span [ngStyle]="{'background-color' : item.color}">
+                                &nbsp;&nbsp;&nbsp;
+                            </span>
+                            &nbsp;
+                            {{item.name}}
+                        </td>
+                        <td>
+                            <a [attr.href]="'https://www.quandl.com/data/WIKI/' + item?.symbol" target="_blank">
+                                {{item?.symbol}}
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" [(ngModel)]="item.chart" />
+                        </td>
+                        <td class="text-right">
+                            {{item.lastPrice | glbz:'n2'}}
+                        </td>
+                        <td class="text-right">
+                            <span [ngStyle]="{color: getAmountColor(item.change)}">
+                                {{item.changePercent | glbz:'p2'}}
+                            </span>
+                        </td>
+                        <td class="text-right inputCell" style="padding: 2px;">
+                            <wj-input-number [(value)]="item.shares"
+                                             [isRequired]="false"
+                                             [min]="0"
+                                             [format]="'n0'">
+                            </wj-input-number>
+                        </td>
+                        <td class="text-right inputCell" style="padding: 2px;">
+                            <wj-input-number [(value)]="item.purchasePrice"
+                                             [isRequired]="false"
+                                             [min]="0"
+                                             [format]="'n2'">
+                            </wj-input-number>
+                        </td>
+                        <td class="text-right">
+                            {{item.costBasis | glbz:'n2'}}
+                        </td>
+                        <td class="text-right">
+                            {{item.marketValue | glbz:'n2'}}
+                        </td>
+                        <td class="text-right">
+                            <span [ngStyle]="{color: getAmountColor(item.gain)}">
+                                {{item.gainPercent | glbz:'p2'}}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a  (click)="portfolio.removeItem(item?.symbol)">
+                                <span class="glyphicon glyphicon-remove" style="color:#D14836"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- table footer -->
+                <tfoot>
+                    <tr class="panel-footer"
+                        (click)="portfolio.view.moveCurrentTo(null)">
+                        <td class="text-right">
+                            <b>Add to portfolio:</b>
+                        </td>
+                        <td colspan="4">
+                            <div class="input-group">
+                                <wj-auto-complete [itemsSourceFunction]="searchCompany"
+                                                  [displayMemberPath]="'symbolName'"
+                                                  [selectedValuePath]="'symbol'"
+                                                  [(selectedValue)]="portfolio.newItemSymbol"
+                                                  [showDropDownButton]="false"
+                                                  [placeholder]="'company name or symbol'"
+                                                  [cssMatch]="'match'">
+                                </wj-auto-complete>
+                                <span>
+                                    <button type="button" class="btn btn-primary"
+                                            (click)="portfolio.addNewItem()"
+                                            [disabled]="!portfolio.canAddNewItem()">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="text-right" colspan="2">
+                            <b>Total:</b>
+                        </td>
+                        <td class="text-right">
+                            <b>{{portfolio.cost | glbz:'n2'}}</b>
+                        </td>
+                        <td class="text-right">
+                            <b>{{portfolio.value | glbz:'n2'}}</b>
+                        </td>
+                        <td class="text-right">
+                            <span [ngStyle]="{color: getAmountColor(portfolio.gain)}">
+                                <b>{{portfolio.gainPercent | glbz:'p2'}}</b>
+                            </span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- chart -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Chart
+            <div class="btn-group btn-group-xs pull-right">
+                <button type="button" style="visibility: hidden" class="btn btn-default" (click)="portfolio.chartPeriod=0" [ngClass]="{active: portfolio.chartPeriod == 0}">YTD</button>
+                <button type="button" style="visibility: hidden" class="btn btn-default" (click)="portfolio.chartPeriod=1" [ngClass]="{active: portfolio.chartPeriod == 1}">6m</button>
+                <button type="button" class="btn btn-default" (click)="portfolio.chartPeriod=2" [ngClass]="{active: portfolio.chartPeriod == 2}">12m</button>
+                <button type="button" class="btn btn-default" (click)="portfolio.chartPeriod=3" [ngClass]="{active: portfolio.chartPeriod == 3}">24m</button>
+                <button type="button" class="btn btn-default" (click)="portfolio.chartPeriod=4" [ngClass]="{active: portfolio.chartPeriod == 4}">36m</button>
+                <button type="button" class="btn btn-default" (click)="portfolio.chartPeriod=5" [ngClass]="{active: portfolio.chartPeriod == 5}">All</button>
+            </div>
+        </div>
+        <wj-flex-chart [binding]="'change'"
+                       [bindingX]="'date'"
+                       [chartType]="'Line'"
+                       [selectionMode]="'Series'"
+                       (selectionChanged)="selectionChanged(chart)"
+                       #chart
+                       style="height:300px;margin:14px;border:none">
+            <wj-flex-chart-series *ngFor="let item of portfolio.view.items"
+                                  [itemsSource]="item.chartData"
+                                  [name]="item?.symbol"
+                                  [style]="{ 'stroke' : item.color }"
+                                  [visibility]="item.chart ? 'Visible' : 'Hidden'">
+            </wj-flex-chart-series>
+            <wj-flex-chart-axis wjProperty="axisY" format="p0"></wj-flex-chart-axis>
+            <wj-flex-chart-axis wjProperty="axisX" format="MMM-yyyy"></wj-flex-chart-axis>
+            <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        </wj-flex-chart>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="input-group">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+        </div>
+        <input type="text" class="form-control" id="filter" placeholder="filter">
+    </div>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        [selectionMode]="'ListBox'"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,91 @@
+body {
+    background-color: #f8f8f8;
+    font-family: -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system-font, 'Segoe UI Light', 'Segoe UI', 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+.header {
+    background-color: #00C1D5;
+    margin-bottom: 14px;
+    padding: 12px 0;
+    color: #dcf3f6;
+}
+
+.header h1 {
+    font-size: 40px;
+    line-height: 1;
+    margin: 8px 0 5px 0;
+    color: #fff;
+}
+
+.header img {
+     float: left;
+     margin: 0 10px 5px 0;
+}
+
+h2 {
+    margin: 15px 0 30px -12px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #026974;
+}
+
+
+.wj-flexchart {
+    border: none;
+    font-size: 12px;
+    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
+    padding: 0px;
+    margin: 0px;
+    touch-action:none;
+    -ms-touch-action: none;
+    overflow:visible;
+}
+
+    .wj-flexchart .wj-plot-area {
+        stroke: lightgray;
+        stroke-width: 1px;
+         touch-action:none;
+    }
+
+    .wj-flexchart .wj-axis-y .wj-title {
+        font-style: normal;
+    }
+
+@media(max-width: 991px) {
+    .header h1 {
+        font-size: 22px;
+        line-height: 1;
+        margin-top: 7px;
+        color: #fff;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin: 10px 0 25px 0;
+    }
+
+    h4 {
+        display: none;
+    }
+}
+
+@media(max-width: 767px) {
+    code {
+        white-space: normal;
+    }
+}
+
+#chart2 .wj-chart-linemarker-vline {
+    margin-top: -99px;
+}
+
+#chart3 .wj-chart-linemarker-vline {
+    margin-top: -220px;
+}
+

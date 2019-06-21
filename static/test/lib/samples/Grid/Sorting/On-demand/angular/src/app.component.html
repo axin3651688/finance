@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>
