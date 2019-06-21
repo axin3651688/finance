@@ -131,7 +131,8 @@ import {
     deleteRiskdistinguish,
     riskmatrix_tovo,
     eva_city_Request,
-    riskdistinguish_query_release
+    riskdistinguish_query_release,
+    globalparam_all
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -162,6 +163,8 @@ export default {
             tableDemo2:[],      //【参照按钮-影响程度】的json信息 
             // 
             periodtype: 0,      // 全局控制选择的日期类型
+            reporttype: 0,      // 全局控制风险类型显示与隐藏
+            // 
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
             isbtnShow2: true,   // 其他（导出、删除）按钮的显示与隐藏
@@ -189,6 +192,7 @@ export default {
         // debugger
         // 全局控制选择的日期类型
         this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
+        this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
         // 点进节点时默认计算的高度
         this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
         // 弹出框===如果屏幕 <= 1200px 宽度自动变更为 540px；如果 >1200px 宽度为默认宽度 960px
@@ -589,12 +593,25 @@ export default {
                 }
             })
         },
+        // 风险类型全局查询
+        globalparam_request(vax,index, tableData){
+            let me = this ;
+            globalparam_all().then(res => {  //debugger
+                if(res.data.code === 200) {
+                    me.reporttype = res.data.data[0].reporttype ;
+                    me.reportType_quest(vax,index, tableData) ;
+                }else{
+                    me.$message.error(res.data.msg) ;
+                }
+            });
+        },
         /**
          * @event 添加按钮
          */
         addClick(){
             // debugger
-            this.reportType_quest("add") ;
+            this.globalparam_request("add") ;
+            // this.reportType_quest("add") ;
             
             // this.view_row = [] ;
             // this.view_btn = 0 ;
@@ -625,7 +642,8 @@ export default {
          */
         modifyRow(index, tableData){
             // debugger
-            this.reportType_quest("modify",index, tableData) ;
+            this.globalparam_request("modify", index, tableData) ;
+            // this.reportType_quest("modify",index, tableData) ;
             // let me = this ;
             // me.modify_btn = 1 ;
             // me.view_btn = 0 ;

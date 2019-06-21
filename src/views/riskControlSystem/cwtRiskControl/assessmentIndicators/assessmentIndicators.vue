@@ -1,19 +1,74 @@
 <template>
     <div>
         <div class="all-echarts-content">
-            <el-row>
+
+            <el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>
+            <el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>
+            <el-button type="primary" @click="pageStyleChange('3')">样式三</el-button>
+
+            <el-row v-if="showPageFlag === '1'">
                 <el-col
                         :span="8"
                         class="echarts-content"
-                        v-for="(item) in echartsData"
+                        v-for="(item, index) in echartsData"
+                        :key="index"
                 >
-
                     <div class="dic-title">
                         <span>{{item.echartsrightdata['zbsname']}}</span>
                     </div>
-
                     <div class="content-all">
 
+
+                        <div class="left-content-all">
+                            <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
+                                <div class="left-content-num" :style="{'background-color':left.color, width:'14px'}">
+
+                                </div>
+                                <div class="left-content-text" style="font-size: 12px; margin-left: 10px;">
+                                    {{left.val}}
+                                </div>
+                            </div>
+
+                            <div class="" style="display: inline-flex; margin-left: 10px; margin-top: 10px">
+                                <div class="left-content-num" style="background-color:black; width:14px; height: 14px">
+
+                                </div>
+                                <div class="left-content-text" style="font-size: 12px; margin-left: 10px;width: 500px">
+                                    {{item.echartsrightdata.expression}}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="right-content" style="width: 64%">
+
+                            <div class="right-content-name" :style="{'color':item.echartsrightdata.color}">
+                                {{item.echartsrightdata.grade}}
+                            </div>
+                            <div class="right-content-value" :style="{'color':item.echartsrightdata.color}">
+                                当期值：{{setNumberToStander(item.echartsrightdata.v)}}{{item.echartsrightdata.unit}}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-row v-else-if="showPageFlag === '3'">
+                <el-col
+                        :span="8"
+                        class="echarts-content"
+                        v-for="(item, index) in echartsData"
+                        :key="index"
+                >
+                    <div class="dic-title">
+                        <span>{{item.echartsrightdata['zbsname']}}</span>
+                    </div>
+                    <div class="content-all">
                         <div class="left-content-all">
                             <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
                                 <div class="left-content-text">
@@ -25,7 +80,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="right-content">
                             <echarts-component
                                     :echartData="item"
@@ -33,10 +87,43 @@
                             >
                             </echarts-component>
                         </div>
-
                     </div>
                 </el-col>
             </el-row>
+
+            <el-row v-else>
+                <el-col
+                        :span="8"
+                        class="echarts-content"
+                        v-for="(item, index) in echartsData"
+                        :key="index"
+                >
+                    <div class="dic-title">
+                        <span>{{item.echartsrightdata['zbsname']}}</span>
+                    </div>
+                    <div class="content-all">
+                        <div class="left-content-all">
+                            <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
+                                <div class="left-content-text">
+                                    {{left.pjname}}
+                                </div>
+
+                                <div class="left-content-num" :style="{'background-color':left.color}">
+                                    {{left.val}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right-content">
+                            <echarts-component
+                                    :echartData="item"
+                                    :dataChange="dataChange"
+                            >
+                            </echarts-component>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+
         </div>
     </div>
 </template>
@@ -74,10 +161,12 @@
         data() {
             return {
                 echartsData: [],
-                dataChange: false
+                dataChange: false,
+                showPageFlag: 1
             }
         },
         created() {
+            this.showPageFlag = 1;
             this.getAllData();
         },
         mounted() {
@@ -121,19 +210,79 @@
                 let _this = this;
                 data.forEach((item) => {
                     let _leftData = item['echartsleftdata'];
-                    let _rightData = item['echartsrightdata'];
-                    item.echartsrightdata = _rightData[0];
+                    let _rightData = item['echartsrightdata'][0];
+
+                    for(let key in _rightData){
+                        if(key === 'color'){
+                            _rightData[key] = '#' + _rightData[key];
+                        }
+                    }
+                    item.echartsrightdata = _rightData;
+
+                    let pjArray = [];
+
                     _leftData.forEach((_data) => {
+                        let pjObj = {};
                         for (let key in _data) {
                             if (key === 'color') {
                                 _data[key] = '#' + _data[key];
                             }
+
+                            if (key === 'pjname' || key === 'val') {
+                                pjObj[key] = _data[key];
+                            }
                         }
+                        pjArray.push(pjObj);
                     });
+
+                    if (_this.showPageFlag === '1') {
+                        let newArray = [],
+                            ii = '';
+                        pjArray.forEach((item, index) => {
+
+                            let emptyVlaue = {
+                                pjname: item.pjname,
+                                value: ''
+                            };
+
+                            if (index === 0) {
+                                emptyVlaue.value = ' V >= ' + item.val;
+                            } else if (index === 1) {
+                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                            } else if (index === 2) {
+                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                            } else if (index === 3) {
+                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                            } else if (index === 4) {
+                                emptyVlaue.value = ' V <= ' + item.val;
+                            }
+                            ii = item.val;
+                            newArray.push(emptyVlaue)
+                        });
+
+                        _leftData.forEach((_data, index) => {
+                            for (let key in _data) {
+                                if (key === 'val') {
+                                    _data[key] = newArray[index].value;
+                                }
+                            }
+                        });
+                    }
                 });
+                debugger;
                 _this.echartsData = data;
                 _this.dataChange = !_this.dataChange;
             },
+
+            /**
+             * 切换页面展现样式
+             * @param style
+             */
+            pageStyleChange(style) {
+                this.showPageFlag = style;
+                this.getAllData();
+            }
+
         }
     }
 </script>
@@ -149,10 +298,17 @@
 
     .all-echarts-content {
         padding-right: 20px;
+
+    }
+
+    .echarts-content {
+        /*border: 1px solid black;*/
     }
 
     .content-all {
         display: inline-flex;
+        width: 100%;
+
     }
 
     .echarts-content {
@@ -175,12 +331,28 @@
 
     .left-content-num {
         border: 1px solid #555555;
-        width: 100px;
+        width: 60px;
         text-align: center;
     }
 
     .right-content {
-        width: 380px;
-        height: 248px;
+        /*width: 380px;*/
+        /*height: 248px;*/
+        /*padding-left: 50px;*/
+        text-align: center;
+        padding: 20px 30px 10px 0;
+    }
+
+    .right-content-name {
+        font-size: 60px;
+        font-family: monospace;
+    }
+
+    .right-content-value {
+        margin-top: 20px;
+        font-size: 20px;
+        padding-right: 10px;
+        text-align: right;
+        font-family: monospace;
     }
 </style>

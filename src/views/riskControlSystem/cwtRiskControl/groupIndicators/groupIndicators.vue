@@ -5,7 +5,8 @@
                 <el-col
                         :span="8"
                         class="echarts-content"
-                        v-for="(item) in echartsData"
+                        v-for="(item, index) in echartsData"
+                        :key="index"
                 >
                     <echarts-component
                             :echartData="item"

@@ -239,17 +239,17 @@ export default {
         }
     },
     created(){ 
-        debugger
+        // debugger
         let viewBtn = this.newThis.view_btn ;
         let $params = this.$store.state.prame.command;
         let sfilluser = this.$store.getters.user.user.trueName;
         let departmentname = this.$store.getters.user.dept[0].sname ;
-        // 全局控制选择的报告类型0不显示，1显示
+        // 全局控制选择的报告类型0显示，1不显示
             this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
             if(this.reporttype){
-                this.isReportType = true ;
-            }else{
                 this.isReportType = false ;
+            }else{
+                this.isReportType = true ;
             }
         // 自动获取登录人作为填报人
             // this.form.sfilluser = sfilluser ;
@@ -293,6 +293,11 @@ export default {
             let viewRow = {} ;
             let viewBtn = this.newThis.view_btn ;
             let modifyBtn = this.newThis.modify_btn ;
+            if(this.newThis.reporttype){
+                this.isReportType = false ;
+            }else{
+                this.isReportType = true ;
+            }
             if(viewBtn){
                 this.$message({ message: '温馨小提示，只能查看哦！不能编辑！', type: "warning" }) ;
                 this.readonly = true ;      // 只读/禁用

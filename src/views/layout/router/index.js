@@ -363,7 +363,37 @@ const router = new Router({
                     path: '/dimension',
                     name: 'dimension',
                     component: () =>
-                        import ('@v/systemSettings/dimension')
+                        import ('@v/systemSettings/Image_management/dimension')
+                },
+                { // 参数设置---【集团指标数据维护】 （sjz）
+                    path: '/groupSetting',
+                    name: 'groupSetting',
+                    component: () =>
+                        import ('@v/systemSettings/parameterSetting/group_management/groupSetting')
+                },
+                { // 参数设置---【国资指标数据维护】 （sjz）
+                    path: '/assets',
+                    name: 'assets' ,
+                    component: () =>
+                        import ('@v/systemSettings/parameterSetting/assets_management/assetsSetting')
+                },
+                { // 参数设置---【行业指标数据维护】 （sjz）
+                    path: '/industry',
+                    name: 'industry' ,
+                    component: () =>
+                        import ('@v/systemSettings/parameterSetting/industry_management/industrySetting')
+                },
+                { // 参数设置---【市企指标数据维护】 （sjz）
+                    path: '/enterprise',
+                    name: 'enterprise' ,
+                    component: () =>
+                        import ('@v/systemSettings/parameterSetting/city_management/citySetting')
+                },
+                { // 参数设置---【上市指标数据维护】 （sjz）
+                    path: '/listed',
+                    name: 'listed' ,
+                    component: () =>
+                        import ('@v/systemSettings/parameterSetting/listed_management/listedSetting')
                 },
                 { // 全局控制（sjz）globalControl
                     path: '/globalControl',
@@ -440,8 +470,7 @@ const router = new Router({
                     name: 'Fill',
                     component: () =>
                         import ('@v/test/Fill.vue')
-                },
-
+                }
             ]
         },
         {
