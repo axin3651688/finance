@@ -294,7 +294,9 @@
             systemDelete() {
 
                 let _deleteSyatemList = this.deleteSyatemList;
-                let params = [];
+                //let params = {};
+                // let
+                let vos = [];
                 _deleteSyatemList.forEach((item) => {
                     let emptyData = {
                         nid: '',
@@ -302,11 +304,20 @@
                     };
                     emptyData.nid = item.nid;
                     emptyData.savePath = item.savePath;
-                    params.push(emptyData);
+                    vos.push(emptyData);
                 });
 
-                riskSystemDelete(params).then(res => {
+                //params['vos'] = vos;
+
+                //params = JSON.stringify(vos);
+
+                let sendParams = JSON.stringify(vos);
+
+
+
+                riskSystemDelete(sendParams).then(res => {
                     if (res.data.code === 200) {
+                        // debugger;
                     }
                 })
             },

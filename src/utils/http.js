@@ -38,6 +38,7 @@ axios.interceptors.request.use(config => {
         if (localStorage.authorization) {
             // 设置统一请求头 todo 暂时屏蔽
             config.headers.Authorization = localStorage.authorization;
+            // config.headers['Content-Type'] = 'application/json; charset=UTF-8';
         }
         if (localStorage.authorization) {
             config.headers.Authentication = localStorage.authorization;

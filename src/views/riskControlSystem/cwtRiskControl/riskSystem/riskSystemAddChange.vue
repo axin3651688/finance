@@ -50,6 +50,7 @@
                                 action="/zjb/risk_sys/add"
                                 :auto-upload="autoUpload"
                                 :data="this.formData"
+                                :on-success="onSuccess"
                                 :on-change="handleChange"
                         >
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -127,7 +128,7 @@
                 params.writtenDate = this.getDateNowYMD(this.formData.writtenDate);
                 params.releaseDate = this.getDateNowYMD(this.formData.releaseDate);
 
-                if(_this.$refs.upload.$el.innerText === '选取文件'){
+                if (_this.$refs.upload.$el.innerText === '选取文件') {
                     // 'success' | 'warning' | 'info' | 'error'
                     this.$message({
                         message: '请录入完整信息',
@@ -151,13 +152,12 @@
                 // }else{
                 //     _this.$refs.upload.submit();
                 // }
-
                 _this.$refs.upload.submit();
 
 
-                this.$emit("addSuccess", 'systemAdd');
 
-                this.$emit("pageClose", 'systemAdd')
+
+
 
             },
 
@@ -185,7 +185,15 @@
                 _formData.releaseDate = _riskSystemSingleData['releaseDate'];
                 _formData.nid = _riskSystemSingleData['nid'];
                 _formData.savePath = _riskSystemSingleData['savePath'];
-            }
+            },
+
+            /**
+             * 上传成功的回调
+             */
+            onSuccess(){
+                this.$emit("addSuccess", 'systemAdd');
+                this.$emit("pageClose", 'systemAdd');
+            },
         }
     }
 </script>
