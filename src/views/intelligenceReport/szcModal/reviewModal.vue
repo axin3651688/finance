@@ -436,14 +436,16 @@ export default {
          * @author szc 2019年5月8日16:20:16
          */
         beforeClose (done) {
-            let me = this,selectOps = me.selectOps;
-            selectOps.forEach(item => {
-                item.valueLabel = "";
-            });
-            me.inputValue = "";
-            me.valueLabel ="";
-            me.tableData = [];
-            me.auditMonth = false;
+            // let me = this,selectOps = me.selectOps;
+            // selectOps.forEach(item => {
+            //     item.valueLabel = "";
+            // });
+            // me.inputValue = "";
+            // me.valueLabel ="";
+            // me.tableData = [];
+            // me.auditMonth = false;
+            let me = this;
+            me.reviewShow = true;
             done();
         }
     }

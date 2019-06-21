@@ -38,6 +38,8 @@ export default {
             queryDeparts(company).then(res => {
                 if (res.data.code == 200) {
                     me.selectConfig.options = res.data.data;
+                    //上次选择的数据。
+                    me.selectConfig.currentSelect = me.selectItem;
                 } else if (res.data.code == 1001) {
                     me.selectConfig.options = [];
                 }
@@ -69,24 +71,32 @@ export default {
                 storeParams = me.$store.getters,
                 company = storeParams.company,
                 userStr = storeParams.user.user.userName;
+            // let params = {
+            //     riskReportStateDtos: [{
+            //         company: company,
+            //         id: 0,
+            //         nrelateid: row.row.id,
+            //         sisinstructions: "-1",
+            //         period: me.parsePeriod()
+            //     }],
+            //     users: [
+            //         userStr
+            //     ]
+            // };
             let params = {
-                riskReportStateDtos: [{
-                    company: company,
-                    id: 0,
-                    nrelateid: row.row.id,
-                    sisinstructions: "-1",
-                    period: me.parsePeriod()
-                }],
-                users: [
-                    userStr
-                ]
+                company: company,
+                period: me.parsePeriod(),
+                nrelateid: row.row.id,
+                sisinstructions: "0",
+                sinstructionsuser: row.row.sinstructionsuser
             };
             let requertParams = {
                 data: params,
                 success: "提醒成功！",
                 error: "提醒失败！"
             };
-            me.publicUpdateInstruction(requertParams);
+            me.publicUpdateInstructionAll(requertParams);
+            // me.publicUpdateInstruction(requertParams);
         },
         /**
          * 退回风险批示。
@@ -97,27 +107,34 @@ export default {
                 storeParams = me.$store.getters,
                 company = storeParams.company,
                 user = storeParams.user.user.userName;
+            // let params = {
+            //     riskReportStateDtos: [{
+            //         id: 0,
+            //         company: company,
+            //         nrelateid: row.row.id,
+            //         sinstructionsuser: row.row.sinstructionsuser,
+            //         // cstrategy:selectStr,
+            //         period: me.parsePeriod(),
+            //         // sinstructscontent:me.instructions,
+            //         sisinstructions: "-1"
+            //     }],
+            //     users: []
+            // };
             let params = {
-                riskReportStateDtos: [{
-                    id: 0,
-                    company: company,
-                    nrelateid: row.row.id,
-                    sinstructionsuser: user,
-                    // cstrategy:selectStr,
-                    period: me.parsePeriod(),
-                    // sinstructscontent:me.instructions,
-                    sisinstructions: "-1"
-                }],
-                users: [
-                    row.row.sinstructionsuser
-                ]
+                id: 0,
+                company: company,
+                nrelateid: row.row.id,
+                period: me.parsePeriod(),
+                sisinstructions: "2",
+                sinstructionsuser: row.row.sinstructionsuser
             };
             let requertParams = {
                 data: params,
                 success: "退回成功！",
                 error: "退回失败！"
             };
-            me.publicUpdateInstruction(requertParams);
+            // me.publicUpdateInstruction(requertParams);
+            me.publicUpdateInstructionAll(requertParams);
             let selectItem = me.selectItem,
                 judgeParams = me.getJudgeParams();
             me.queryDataOfInstructions(selectItem, judgeParams);
@@ -267,7 +284,6 @@ export default {
          * @author szc 2019年5月27日16:56:28
          */
         showDataOfInstruction(lookData, data) {
-            debugger;
             let me = this,
                 objLook = {},
                 objItems = [];
@@ -403,7 +419,6 @@ export default {
          * @author szc 2019年5月29日12:57:35
          */
         remindTreeInstruction(scope) {
-            debugger;
             let judgeParams = {
                 id: "remind",
                 sqlId: "108",
@@ -449,7 +464,6 @@ export default {
          * @param {*} prtParams 
          */
         remindHandler(judgeParams) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -468,7 +482,6 @@ export default {
             me.publicUpdateInstructionAll(requertParams);
         },
         remindHandler_old(nodes, prtParams) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -497,7 +510,6 @@ export default {
          * @author szc 2019年5月29日16:49:22
          */
         returnInstruction(scope) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.company,
@@ -537,7 +549,7 @@ export default {
                         type: "success",
                     });
                 } else {
-                    me.$message.error(params.error ? params.error : "操作失败！");
+                    me.$message.error(res.data.msg ? res.data.msg : (params.error ? params.error : "操作失败！"));
                 }
             });
         },
