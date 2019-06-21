@@ -248,8 +248,9 @@ export function queryUrgeUsers(params) {
  */
 export function queryInteraction(params) {
     return request({
-        url: '/zjb/sys/Msg/query_table_interact?pageNum=' + params.pageNum + '&pageSize=' + params.pageSize + '&company=' +
-            params.company + '&period=' + params.period + '&susercompany=' + params.susercompany + '&nreview=' + params.nreview,
+        url: '/zjb/sys/Msg/query_table_interact?pageNum=' + params.pageNum + '&pageSize=' + params.pageSize +
+            '&period=' + params.period + '&susercompany=' + params.susercompany +
+            '&nrep=' + params.nrep + '&nreview=' + params.nreview,
         method: 'get'
     })
 }

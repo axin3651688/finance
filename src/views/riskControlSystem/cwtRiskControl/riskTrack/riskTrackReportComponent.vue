@@ -8,12 +8,12 @@
                 <div class="container-left-inner">
                     <h1 style="font-size: 28px;margin-bottom: 26px;">目&nbsp&nbsp录</h1>
                     <div
-                            v-for="(value,key) in leftNode"
+                            v-for="(value, key, index) in leftNode"
                             :key="key"
                             class="risk-items"
                     >
                         <!--{{value}}-->
-                        <a :href="'#' + key" slot="title">{{value}}</a>
+                        <a :href="'#' + key" slot="title">{{numberToChineseString(index + 1)}}、{{value}}</a>
                     </div>
                 </div>
             </div>
@@ -315,7 +315,7 @@
                     let _risk = _scheduleList[key];
                     if (key === 'risk_sb') {
                         if (_risk.state === '已上报') {
-                            _this.riskScheduleData[key].content = '。 上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
+                            _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
                         } else {
                             _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
                             _this.riskScheduleData['risk_ps'].content = '请尽快批示';

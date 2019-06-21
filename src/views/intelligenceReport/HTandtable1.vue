@@ -648,6 +648,9 @@ export default {
         buttons = res.data;
         if(isleaf == 1 && currentSider[0].nrep){
           let arr1 = ['2','1','5'];
+          if(me.reportHeader == "请选择"){
+            arr1 = []
+          }
           buttons = buttons.filter(item => {
             return arr1.indexOf(item.id) != -1;
           });
@@ -835,7 +838,48 @@ export default {
      * 上报的处理按钮。
      * @author szc 2019年4月2日16:29:19
      */
-    reportHandle () {
+    reportHandle(){
+      let me = this,
+          item = this.currentItem,
+          id = this.templateId,
+          storeParams = this.$store.getters,
+          company = storeParams.company,
+          period = '',
+          year = storeParams.year,
+          month = storeParams.month,
+          companyname = storeParams.companyName,
+          fromuser = storeParams.user.user.userName,
+          statemun = item.id;
+      if (month > 9) {
+          period = year + "" + month;
+      } else {
+          period = year + "0" + month;
+      }
+      let tableFillInfoDto = {
+          "company": company,
+          "id": 0,
+          "nreportnum": 1,
+          "period": period,
+          "scompanyname": companyname,
+          "screatetime": new Date(),
+          "screateuser": fromuser,
+          "statemun": statemun,
+          // "stouser": fromuser,
+          "templateid": id
+      };
+      saveReport(tableFillInfoDto).then(res => {
+        if (res.data.code == 200) {
+          me.reportData(me.datas);
+          me.$message({
+              message: "上报成功！",
+              type: "success"
+          });
+        } else {
+          me.$message.error(res.data.msg);
+        }
+      });
+    },
+    reportHandle_old () {
       // return;
       let me = this;
       //判断如果没有保存，提示他去保存。

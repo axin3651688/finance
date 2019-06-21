@@ -18,13 +18,21 @@
                     header-align="center"
                     :label="item.text"
                     :width="item.width">
+                    <template slot-scope="scope">
+                        <span v-if="item.type == 'number'">
+                            {{ getCellValues(scope,item) }}
+                        </span>
+                        <span v-else>
+                            {{ scope.row[scope.column.property] }}
+                        </span>
+                    </template>
                 </el-table-column>
             </template>
         </template>
     </div>
 </template>
 <script>
-
+    import tools from '@/utils/tools.js'
     export default {
         name: "tableColumn",
         // comments:{
@@ -46,7 +54,20 @@
          * 页面渲染之后的回调。
          */
         mounted() {},
-        methods: {}
+        methods: {
+            /**
+             * 格式化数字内容。
+             */
+            getCellValues (scope,item) {
+                debugger;
+                let me = this,value = scope.row[item.id];
+                if(value){
+                    return tools.currency(value,'',2);
+                }else {
+                    return tools.currency(0,'',2);
+                }
+            }
+        }
     };
 </script>
 

@@ -179,6 +179,20 @@ const router = new Router({
                     name: 'cityBenchmarking',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/cityBenchmarking/cityBenchmarking.vue')
+                },
+                //集团指标
+                {
+                    path: '/groupIndicators',
+                    name: 'groupIndicators',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/groupIndicators/groupIndicators.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/assessmentIndicators',
+                    name: 'assessmentIndicators',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/assessmentIndicators/assessmentIndicators.vue')
                 }
             ]
         },

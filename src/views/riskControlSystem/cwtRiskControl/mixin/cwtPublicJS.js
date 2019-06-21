@@ -89,7 +89,7 @@ export default {
          */
         getDateNowYMD(data) {
 
-            if(typeof data === 'string'){
+            if (typeof data === 'string') {
                 data = data.replace(/-/g, '/');
                 data = new Date(data);
             }
@@ -127,7 +127,7 @@ export default {
             let _this = this,
                 _getter = _this.$store.getters;
             return _getter.year;
-        },/**
+        }, /**
          * 获取期间
          * @returns {string|string}
          */
@@ -142,5 +142,61 @@ export default {
             }
             return month;
         },
+
+
+        /**
+         * 将阿拉伯数字转成中文数字
+         * @param num
+         */
+        numberToChineseString(num) {
+            let changeNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']; //changeNum[0] = "零"
+            let unit = ["", "十", "百", "千", "万"];
+            num = parseInt(num);
+            let getWan = (temp) => {
+                let strArr = temp.toString().split("").reverse();
+                let newNum = "";
+                for (var i = 0; i < strArr.length; i++) {
+                    newNum = (i === 0 && strArr[i] === 0 ? "" : (i > 0 && strArr[i] === 0 && strArr[i - 1] === 0 ? "" : changeNum[strArr[i]] + (strArr[i] === 0 ? unit[0] : unit[i]))) + newNum;
+                }
+                return newNum;
+            };
+            let overWan = Math.floor(num / 10000);
+            let noWan = num % 10000;
+            if (noWan.toString().length < 4) noWan = "0" + noWan;
+            return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
+        },
+
+
+        /**
+         * 设置数据格式为标准格式
+         * @param num
+         * @param isNotNumber
+         */
+        setNumberToStander(num, isNotNumber) {
+            if (!isNotNumber) {
+                if (num && num !== null) {
+                    num = Math.round(num * 100) / 100;
+                    let str = num.toLocaleString();
+                    let valueArr = str.split(".");
+                    if (valueArr.length === 1) {
+                        str = str + ".00";
+                    }else{
+                        if(valueArr[1].length === 1){
+                            valueArr[1] = valueArr[1] + '0';
+                            str = valueArr[0] + '.' + valueArr[1]
+                        }
+                    }
+                    return str;
+                } else if (num === 0) {
+                    return '0.00';
+                } else {
+                    return "";
+                }
+            } else {
+                return num;
+            }
+        },
+
+
     },
 }

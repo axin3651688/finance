@@ -186,3 +186,55 @@ export function getHYZBData(params) {
         params: params
     })
 }
+
+
+/**
+ * 获取预警报告中表格一的数据
+ * @author cwt
+ */
+export function getwarningReportTable1Data(params) {
+    return request({
+        url: '/zjb/risk_warning_report/query_data',
+        method: 'post',
+        params: params
+    })
+}
+
+
+/**
+ * 获取预警报告中表格一点击公司之后第四部分数据的重新渲染
+ * @author cwt
+ */
+export function getwarningReportBottomData(params) {
+    return request({
+        url: '/zjb/risk_warning_report/query',
+        method: 'post',
+        params: params
+    })
+}
+
+/**
+ * 获取集团指标数据
+ * @author cwt
+ */
+export function getGroupIndicatorsData(params) {
+    return request({
+        url: '/zjb/select/query',
+        method: 'post',
+        params: params
+    })
+}
+
+
+
+/**
+ * 获取国资委指标指标数据
+ * @author cwt
+ */
+export function getAssessmentIndicatorsData(params) {
+    return request({
+        url: '/zjb/select/query',
+        method: 'post',
+        params: params
+    })
+}

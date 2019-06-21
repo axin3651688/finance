@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="tableData && tableData.length > 0">
+        <div v-if="columns && columns.length > 0">
             <el-table
                 :data="tableData"
                 border
@@ -40,6 +40,7 @@
          * 组件生成的回调。
          */
         created() {
+            debugger;
             let me = this;
             /**
              * 计算表格高度

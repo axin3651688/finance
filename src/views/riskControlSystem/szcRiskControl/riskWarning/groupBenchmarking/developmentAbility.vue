@@ -77,6 +77,7 @@
             }
         },
         created() {
+            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/development.json";
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {

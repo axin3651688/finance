@@ -9,11 +9,11 @@
                 <div class="container-left-inner">
                     <h1 style="font-size: 28px;margin-bottom: 26px;">目&nbsp&nbsp录</h1>
                     <div
-                            v-for="(value,key) in leftNode"
+                            v-for="(value, key, index) in leftNode"
                             :key="key"
                             class="risk-items"
                     >
-                        <a :href="'#' + key" slot="title">{{value}}</a>
+                        <a :href="'#' + key" slot="title">{{numberToChineseString(index + 1)}}、{{value}}</a>
                     </div>
                 </div>
             </div>

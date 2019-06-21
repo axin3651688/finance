@@ -201,7 +201,6 @@
 
 
             setDefaultSelect(defaultData) {
-
                 let _defaultChecked = this.defalutCheckedKey;
                 this.componentShow = false;//销毁组件
                 this.$nextTick(() => {

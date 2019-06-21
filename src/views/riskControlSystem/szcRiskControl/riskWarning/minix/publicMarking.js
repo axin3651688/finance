@@ -59,7 +59,43 @@ export default {
                 me.operationData(datas);
             } else if (judgeParams.id == "debtRisk") {
                 me.debtRiskData(datas);
+            } else if (judgeParams.id == "comprehensiveRating") {
+                me.comprehensiveData(datas);
             }
+        },
+        /**
+         * 综合评级。
+         */
+        comprehensiveData(datas) {
+            debugger;
+            let me = this;
+            let arr = [{
+                id: 'gaugesLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['19', '20', '21']
+            }, {
+                id: 'gaugesRight',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['121', '133']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.transData(datas, arr);
+            me.createGauges(arr);
+            //雷达图的数据格式。
+            let radarConfig = {
+                id: 'profitability',
+                radarField: 'scode',
+                radarSname: 'sname',
+                radarValue: 'score',
+                content: ['19', '20', '53', '120', '21', '121', '133']
+            };
+            me.transRadarData(datas, radarConfig);
         },
         profitabilityData(datas) {
             let me = this;
@@ -357,6 +393,22 @@ export default {
          */
         createOptions(itemCnt, item) {
             let options = {
+                title: {
+                    // 	padding:[410,0,0,0],    //标题相对于容器边距
+                    text: itemCnt[item.gaugeSname] || "",
+                    link: false,
+                    top: "10",
+                    x: "center", //标题块相对于容器位置
+                    // y:260,
+                    textAlign: "left",
+                    textStyle: {
+                        // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        // fontWeight: 'bold',
+                        fontSize: 16,
+                        color: "#8796B0",
+                        align: "center"
+                    }
+                },
                 tooltip: {
                     formatter: function(a, b, c) {
                         return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
@@ -384,7 +436,7 @@ export default {
                             width: 20 //表盘宽度
                         }
                     },
-                    center: ["50%", "50%"], //整体的位置设置
+                    center: ["50%", "60%"], //整体的位置设置
                     radius: "85%", //仪表盘大小
                     //设置指针样式
                     pointer: {
@@ -397,7 +449,7 @@ export default {
                             return Math.decimalToLocalString(a) + "%";
                         },
                     },
-                    data: [{ value: itemCnt[item.gaugeField] || 0, name: itemCnt[item.gaugeSname] || "" }]
+                    data: [{ value: itemCnt[item.gaugeField] || 0 }]
                 }]
             };
             itemCnt.options = options;

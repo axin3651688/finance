@@ -89,6 +89,7 @@
             }
         },
         created() {
+            
             this.updateData();
         },
         mounted() {},
@@ -170,7 +171,6 @@
              * @author szc 2019年6月11日09:21:28
              */
             queryHandler (scope) {
-                debugger;
                 let me = this;
                 me.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
                     let list = res.data.data;

@@ -29,7 +29,7 @@ export default {
         }
     },
     created() {
-        debugger;
+        // debugger;
         let me = this;
     },
     mounted() {

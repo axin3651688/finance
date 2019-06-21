@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="8">
                     <div style="height:500px;">
-                        <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
+                        <groupRadar :chartData.sync="chartDataRadar" style="height:100%;"></groupRadar>
                     </div>
                 </el-col>
                 <el-col :span="8">
@@ -21,7 +21,7 @@
             <el-row>
                 <el-col :span="24">
                     <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                        <singleTable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></singleTable>
                     </div>
                 </el-col>
             </el-row>
@@ -42,7 +42,9 @@
     import manyHeaderTable from "./../riskTable/manyHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import { findThirdPartData } from "~api/interface"
+    import publicMarking from "./../minix/publicMarking.js"
     export default {
+        mixins:[publicMarking],
         name: "treeTableDemo",
         components: {
             groupGauge,
@@ -77,11 +79,51 @@
                         sqlId:"106"
                     };
                     me.queryDataPublic(judgeParams);
+                    // me.updateData();
                 }
             });
         },
         mounted() {},
         methods: {
+            /**
+             * 更新数据。
+             */
+            updateData(){
+                let me = this,storeParams = me.$store.getters,company = storeParams.company,
+                    year = storeParams.year,month = storeParams.month;
+                if(month > 9){
+                    month = month + "";
+                }else {
+                    month = "0" + month;
+                }
+                let judgeParams = {
+                    id:"comprehensiveRating",
+                    text:"综合评级",
+                    params:{
+                        company:company,
+                        period:me.getPeriod(),
+                        indicator:"'qypj','zwfx','yyzl','fznl','ylnl'",
+                        fact:'B',
+                        year:year,
+                        month:month,
+                        sqlKey:"RiskWarning.fzhpj"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
+            },
+            /**
+             * 获取日期。
+             */
+            getPeriod () {
+                let me = this,storeParams = me.$store.getters,year = storeParams.year,
+                    month = storeParams.month,period = "";
+                if(month > 9){
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                return period;
+            },
             /**
              * 查询数据的入口
              * @author szc 2019年6月4日16:55:40
@@ -205,6 +247,23 @@
                     values.push(item.qyfz? item.qyfz:0);
                 });
                 me.chartDataRadar.receive = receive;
+            },
+            /**
+             * 名称点击的钻取。
+             */
+            clickItemName (scope, index, row) {
+                debugger;
+                let me = this;
+                let rowItem = scope.row,zbid = rowItem.zbid;
+                if(zbid == "zwfx"){
+                    me.$router.push("/debtRisk");
+                }else if (zbid == "fznl") {
+                    me.$router.push("/developmentAbility");
+                }else if (zbid == "ylnl") {
+                    me.$router.push("/profitability");
+                }else if (zbid == "yyzl") {
+                    me.$router.push("/operationQuality");
+                }
             }
         }
     };
