@@ -1,7 +1,25 @@
 import {findThirdPartData} from "~api/interface";
-
+import {mapGetters} from "vuex"
 export default {
+
+    computed: {
+        ...mapGetters(["device", "user","showDims"])
+    },
+
     methods: {
+
+        /**
+         * 页面上的维度展示是否
+         */
+        doNotShowDim(isShow){
+            let _this = this;
+            let _showDims = _this.showDims;
+            _showDims.company= isShow;
+            _showDims.month= isShow;
+            _showDims.year= isShow;
+        },
+
+
         /**
          * 获取当前日期
          */
@@ -155,7 +173,7 @@ export default {
             let getWan = (temp) => {
                 let strArr = temp.toString().split("").reverse();
                 let newNum = "";
-                for (var i = 0; i < strArr.length; i++) {
+                for (let i = 0; i < strArr.length; i++) {
                     newNum = (i === 0 && strArr[i] === 0 ? "" : (i > 0 && strArr[i] === 0 && strArr[i - 1] === 0 ? "" : changeNum[strArr[i]] + (strArr[i] === 0 ? unit[0] : unit[i]))) + newNum;
                 }
                 return newNum;

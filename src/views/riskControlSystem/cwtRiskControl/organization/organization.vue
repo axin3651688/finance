@@ -150,9 +150,13 @@
 
 <script>
     import {departmentClickEvent} from '~api/cwtRiskControl/riskControlRequest'
+    // import { mapGetters } from "vuex";
+    import cwtPublicJS from '../mixin/cwtPublicJS'
+
 
     export default {
         name: "organization",
+        mixins:[cwtPublicJS],
         components: {},
         props: {},
         data() {
@@ -293,6 +297,7 @@
         created() {
         },
         mounted() {
+            this.doNotShowDim(false);
         },
         methods: {
             /**
@@ -305,7 +310,6 @@
 
                 this.getAllData();
             },
-
 
             /**
              * 翻页事件
@@ -401,8 +405,6 @@
                 let html = '<span style="max-height: 400px">' + row.responsibility + '</span>';
                 return html;
             }*/
-
-
 
             // 每页显示的条数
             handleSizeChange(val) {

@@ -519,7 +519,7 @@
                             scheduleList: {
                                 risk_sb: {
                                     risk_count: '',
-                                    risk_name: '',
+                                    risk_name: '风险上报',
                                     user_name: '',
                                     time: '',
                                     state: '',
@@ -527,7 +527,7 @@
                                 },
                                 risk_ps: {
                                     risk_count: '',
-                                    risk_name: '',
+                                    risk_name: '风险批示',
                                     user_name: '',
                                     time: '',
                                     state: '',
@@ -535,7 +535,7 @@
                                 },
                                 risk_fk: {
                                     risk_count: '',
-                                    risk_name: '',
+                                    risk_name: '风险反馈',
                                     user_name: '',
                                     time: '',
                                     state: '',
