@@ -21,7 +21,7 @@
       "id": "num",
       "type": "number",
       "text": "人员数量",
-      "align": "right",
+      "align": "center",
       "width":200
     },
     {

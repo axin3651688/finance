@@ -57,7 +57,7 @@
     import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
     import {mapGetters} from "vuex"
     import {findThirdPartData} from "~api/interface"
-    import {updateInstruction} from "~api/szcRiskControl/riskControl"
+    import {riskBackAndNotice} from '~api/cwtRiskControl/riskControlRequest'
 
     import riskFeedBackComponent from './riskFeedBackComponent'
 
@@ -447,7 +447,7 @@
             riskFeedBackEvent(scope, it) {
                 let _this = this;
                 let params = _this.getRiskFeedbackParams(scope);
-                updateInstruction(params).then(res => {
+                riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         // _this.$emit("riskFeedBackSuccess");
 

@@ -84,13 +84,33 @@
     import talentTable from "./talentTable";
     import {findThirdPartData} from "~api/interface"
     import {getAllPerson, getDepartments, getCurrentPageData} from '~api/cwtRiskControl/riskControlRequest'
-
+    import {mapGetters} from "vuex"
+    import cwtPublicJS from '../mixin/cwtPublicJS'
     export default {
         name: "talentTeam",
+        mixins:[cwtPublicJS],
         components: {
             echartComponent,
             talentTable
         },
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.getAllData();
+            },
+            year(newValue, oldValue) {
+                this.getAllData();
+            },
+            month(newValue, oldValue) {
+                this.getAllData();
+            }
+        },
+
         props: {},
         data() {
             return {
@@ -163,6 +183,7 @@
 
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
             /**
@@ -270,6 +291,10 @@
 
             },
 
+            /**
+             * 分页切换
+             * @param value
+             */
             currentChange(value) {
                 let _this = this;
                 let params = {
@@ -281,7 +306,8 @@
                         _this.allTableType.lastPage = res.data.data.lastPage;
                     }
                 });
-            }
+            },
+
         }
     }
 </script>

@@ -157,7 +157,7 @@
                                         <el-button type="primary" @click="nextMessage()">下一条</el-button>
                                     </el-form-item>
                                 </div>
-                                <div class="form-foot-right">
+                                <div class="form-foot-right" v-if="!riskFeedSuccess">
                                     <el-form-item>
                                         <el-checkbox
                                                 label="指定反馈人员"
@@ -344,6 +344,10 @@
                         _this.$message({
                             message: "反馈成功。",
                             type: "success"
+                        });
+                    } else if (res.data.code === '0') {
+                        _this.$message({
+                            message: res.data.msg
                         });
                     } else {
                         _this.$message({
