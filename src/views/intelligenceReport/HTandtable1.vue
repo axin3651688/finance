@@ -1399,12 +1399,13 @@ export default {
             //   delete record.isnormal;
             // }
             //如果是是或是1，清空后面的内容。
-            let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            // let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            let arrItems = ['scontenta','scontentb'];
             this.clearRowOfAfter(row,arrItems,columns);
           }
           //如果选择是否内部
         }
-        if (columns > 8) {
+        if (columns > 8 && columns < 11) {
           //isnature isnormal
           let record = this.settings.data[row];
           if (record.isnormal === "是" || record.isnormal == 1) {
@@ -1440,9 +1441,9 @@ export default {
       if (this.templateId == 7) {
         if (columns == 12) {
           let record = this.settings.data[row];
-          if(!record){
-            record = me.judgeAddRowsData(row);
-          }
+          // if(!record){
+          //   record = me.judgeAddRowsData(row);
+          // }
           if(!record){
             return true;
           }
@@ -1453,17 +1454,17 @@ export default {
           }
         }
       }
-      if(columns == 10){
-        let record = this.settings.data[row];
-        if(!record){
-          return true;
-        }
-        if (record.cisguarantee && (record.cisguarantee == '0' || record.cisguarantee == '否')) {
-          // let arrItems = ['repaysource'];
-          // this.clearRepayDate(row,arrItems,columns);
-          return true;
-        }
-      }
+      // if(columns == 10){
+      //   let record = this.settings.data[row];
+      //   if(!record){
+      //     return true;
+      //   }
+      //   if (record.cisguarantee && (record.cisguarantee == '0' || record.cisguarantee == '否')) {
+      //     // let arrItems = ['repaysource'];
+      //     // this.clearRepayDate(row,arrItems,columns);
+      //     return true;
+      //   }
+      // }
       return false;
     },
     /**
@@ -1519,20 +1520,21 @@ export default {
       }
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
-        cellMeta.readOnly = this.paymentLimit(row, columns);
-        if (columns == 2) {
+        if(columns == 10 || columns == 12){
+          cellMeta.readOnly = this.paymentLimit(row, columns);
+        }else if (columns == 2) {
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
-        }
-        if (columns == 3) {
+        }else if (columns == 3) {
           // 
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           // this.getCellEditor = this.settings.getCellEditor(row,columns);
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
-        }
-        if (columns == 13) {
+        }else if (columns == 13) {
           cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
         }
       }
       if (this.templateId == 8) {
@@ -1637,11 +1639,12 @@ export default {
             return true;
           }
         }
-        if (columns > 8) {
+        if (columns > 8 && columns < 11) {
           let record = this.settings.data[row];
           if (record.isnormal === "是" || record.isnormal == 1) {
             //如果是是或是1，清空后面的内容。
-            let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            // let arrItems = ['scontenta','scontentb','E','F','G','H'];
+            let arrItems = ['scontenta','scontentb'];
             this.clearRowOfAfter(row,arrItems,columns);
             return true;
           }
