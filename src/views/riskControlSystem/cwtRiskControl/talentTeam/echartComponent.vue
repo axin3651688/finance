@@ -16,8 +16,8 @@
             tableData: Array,
             dataFresh: Boolean
         },
-        watch:{
-            dataFresh(){
+        watch: {
+            dataFresh() {
                 this.initEchart();
             }
         },
@@ -34,14 +34,21 @@
                 let _this = this;
                 let data = _this.tableData;
                 let echartData = [];
-                data.forEach((item)=>{
+                data.forEach((item) => {
+
+
                     let emptyData = {
-                        value:0,
-                        name:''
+                        value: 0,
+                        name: ''
                     };
                     emptyData.value = item.num;
                     emptyData.name = item.dim;
-                    echartData.push(emptyData);
+
+                    debugger;
+
+                    if (item.dim !== '合计') {
+                        echartData.push(emptyData);
+                    }
                 });
 
 

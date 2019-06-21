@@ -19,7 +19,7 @@
                 </el-select>
             </div>
 
-            <div class="top-department-select">
+            <div class="top-department-select" v-if="false">
                 <el-select
                         v-model="departmentSelectedValue.sname"
                         placeholder="请选择"
