@@ -46,7 +46,7 @@
                 <el-button @click="returnMainContent">返回</el-button>
             </div>
             <div>
-                <detailedIndicator></detailedIndicator>
+                <detailedIndicator :detailedData.sync="drillContent"></detailedIndicator>
             </div>
         </div>
     </div>
@@ -84,7 +84,8 @@
                 manyColumns:[],//多表头列配置
                 resData:{},
                 detailedIndicator:false,
-                mainContent:true
+                mainContent:true,
+                drillContent:{}
             }
         },
         created() {
@@ -155,8 +156,27 @@
              */
             clickItemName (scope, index, row) {
                 debugger;
-                let me = this;
-                // let rowItem = scope.row,zbid = rowItem.zbid;
+                let me = this,storeParams = me.$store.getters,company = storeParams.company,
+                    year = storeParams.year,month = storeParams.month;
+                if(month > 9){
+                    month = month + "";
+                }else {
+                    month = "0" + month;
+                }
+                let judgeParams = {
+                    id:"ylnl_xz",
+                    text:"盈利能力单指标下钻",
+                    params:{
+                        company:company,
+                        period:me.getPeriod(),
+                        indicator:scope.row.scode,
+                        fact:'B',
+                        year:year,
+                        month:month,
+                        sqlKey:"RiskWarning.nldzb_xz"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
                 me.detailedIndicator = true;
                 me.mainContent = false;
             },
@@ -165,6 +185,7 @@
              */
             returnMainContent () {
                 let me = this;
+                me.updateData();
                 me.detailedIndicator = false;
                 me.mainContent = true;
             }

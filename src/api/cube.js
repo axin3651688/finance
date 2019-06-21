@@ -361,3 +361,199 @@ export function globalparam_add(data){
         data: data
     })
 }
+/**
+ * name: sjz
+ * 说明：系统设置的【集团指标】添加弹出框选择器指标接口/dimIndex/queryzb_by_stype
+ */
+export function dimIndex_queryzb_by_stype(data){
+    return request({
+        url: '/zjb/dimIndex/queryzb_by_stype',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz /dimIndex/add
+ * 说明：系统设置的【集团指标】表格展现接口 /dimIndex/query_by_stype
+ */
+export function dimIndex_query_by_stype(data){
+    return request({
+        url: '/zjb/dimIndex/query_by_stype',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【集团指标】添加接口 /dimIndex/add
+ */
+export function dimIndex_add(data){
+    return request({
+        url: '/zjb/dimIndex/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【集团指标】删除接口 /dimIndex/delete
+ */
+export function dimIndex_delete(data, vax){
+    return request({
+        url: '/zjb/dimIndex/delete?stype='+ vax,
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【集团指标】数据维护表格展现接口 /dimIndex/queryfact_bystype
+ */
+export function dimIndex_queryfact_bystype(data){
+    return request({
+        url: '/zjb/dimIndex/queryfact_bystype',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【行业指标】查询指标接口 /dim_target/queryall_bystype
+ */
+export function dim_target_queryall_bystype(data){
+    return request({
+        url: '/zjb/dim_target/queryall_bystype',
+        method: 'get',
+        params: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【行业指标】添加指标接口 /dim_target/add
+ */
+export function dim_target_add(data){
+    return request({
+        url: '/zjb/dim_target/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【行业指标】删除指标接口 /dim_target/delete
+ */
+export function dim_target_delete(data,vax){
+    return request({
+        url: '/zjb/dim_target/delete?stype='+ vax,
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【行业指标】数据维护表格展现接口 /dim_trade/query_all
+ */
+export function fcattarget_query_by_fcattarget(data){
+    return request({
+        url: '/zjb/fcattarget/query_by_fcattarget',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【行业指标】数据维护保存接口 /fcattarget/add
+ */
+export function fcattarget_add(data){
+    return request({
+        url: '/zjb/fcattarget/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【市企指标】企业维护查询数据接口 /dim_cityenterprise/query_all
+ */
+export function dim_cityenterprise_query_all(){
+    return request({
+        url: '/zjb/dim_cityenterprise/query_all',
+        method: 'get'
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【市企指标】企业维护添加企业接口 /dim_cityenterprise/add
+ */
+export function dim_cityenterprise_add(data){
+    return request({
+        url: '/zjb/dim_cityenterprise/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【市企指标】企业维护删除企业接口 /dim_cityenterprise/delete
+ */
+export function dim_cityenterprise_delete(data){
+    return request({
+        url: '/zjb/dim_cityenterprise/delete',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【市企指标】企业维护修改企业接口 /dim_cityenterprise/update
+ */
+export function dim_cityenterprise_update(data){
+    return request({
+        url: '/zjb/dim_cityenterprise/update',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【上市指标】信息维护查询接口 /dim_listedcompany/query_all
+ */
+export function dim_listedcompany_query_all(){
+    return request({
+        url: '/zjb/dim_listedcompany/query_all',
+        method: 'get'
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【上市指标】信息维护删除接口 /dim_listedcompany/delete
+ */
+export function dim_listedcompany_delete(data){
+    return request({
+        url: '/zjb/dim_listedcompany/delete',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【上市指标】信息维护添加接口 /dim_listedcompany/add
+ */
+export function dim_listedcompany_add(data){
+    return request({
+        url: '/zjb/dim_listedcompany/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz 
+ * 说明：系统设置的【上市指标】信息维护修改接口 /dim_listedcompany/update
+ */
+export function dim_listedcompany_update(data){
+    return request({
+        url: '/zjb/dim_listedcompany/update',
+        method: 'post',
+        data: data
+    })
+}

@@ -15,6 +15,7 @@
                 :show-overflow-tooltip="true"
                 v-bind:key="index"
                 v-bind:index="index"
+                :width="item.width"
                 >
                     <template  slot-scope="scope">
                         <span v-if="item.prop == 'operation' && scope.row['nopratebuttonname']">
@@ -63,7 +64,8 @@
                 columns:[
                     {
                        prop:"companyname",
-                       label:'公司' 
+                       label:'公司',
+                       width:"380",
                     },
                     {
                        prop:"stablename",

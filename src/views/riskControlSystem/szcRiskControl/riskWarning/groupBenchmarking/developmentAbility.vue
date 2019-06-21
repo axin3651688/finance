@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div v-if="mainContent">
             <el-row>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeTopLeft" :key="index">
@@ -28,7 +28,7 @@
             <el-row>
                 <el-col :span="24">
                     <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                        <singleTable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></singleTable>
                     </div>
                 </el-col>
             </el-row>
@@ -40,6 +40,14 @@
                 </el-col>
             </el-row>
         </div>
+        <div v-if="detailedIndicator">
+            <div>
+                <el-button @click="returnMainContent">返回</el-button>
+            </div>
+            <div>
+                <detailedIndicator :detailedData.sync="drillContent"></detailedIndicator>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -49,6 +57,7 @@
     import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import publicMarking from "./../minix/publicMarking.js"
+    import detailedIndicator from "./detailedIndicators"
     export default {
         mixins:[publicMarking],
         name: "treeTableDemo",
@@ -57,7 +66,8 @@
             singleTable,
             groupRadar,
             groupGaugePublic,
-            threeHeaderTable
+            threeHeaderTable,
+            detailedIndicator
         },
         data() {
             return {
@@ -73,7 +83,11 @@
                 tableData:[],
                 columns:[],
                 ManyTableData:[],//多表头数据
-                manyColumns:[]//多表头列配置
+                manyColumns:[],//多表头列配置
+                resData:{},
+                detailedIndicator:false,
+                mainContent:true,
+                drillContent:{}
             }
         },
         created() {
@@ -144,6 +158,44 @@
                     period = year + "0" + month;
                 }
                 return period;
+            },
+            /**
+             * 名称点击的钻取。
+             */
+            clickItemName (scope, index, row) {
+                debugger;
+                let me = this,storeParams = me.$store.getters,company = storeParams.company,
+                    year = storeParams.year,month = storeParams.month;
+                if(month > 9){
+                    month = month + "";
+                }else {
+                    month = "0" + month;
+                }
+                let judgeParams = {
+                    id:"ylnl_xz",
+                    text:"盈利能力单指标下钻",
+                    params:{
+                        company:company,
+                        period:me.getPeriod(),
+                        indicator:scope.row.scode,
+                        fact:'B',
+                        year:year,
+                        month:month,
+                        sqlKey:"RiskWarning.nldzb_xz"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
+                me.detailedIndicator = true;
+                me.mainContent = false;
+            },
+            /**
+             * 返回上一级。
+             */
+            returnMainContent () {
+                let me = this;
+                me.updateData();
+                me.detailedIndicator = false;
+                me.mainContent = true;
             }
         }
     };

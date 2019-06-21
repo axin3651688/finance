@@ -141,7 +141,7 @@
                 }
             ],
             "queryDataBefore": function(data, $vue){
-                debugger
+                // debugger
                 // let html = "" ;
                 // if($vue.periodtype){
                 //     html = "= :period" ; 
@@ -152,7 +152,7 @@
                 return data ;
             },
             "queryDataAfter": function(data, $vue){
-                debugger
+                // debugger
                 let suer_information = $vue.$store.getters.user.user ;
                 let cc = this ; 
                 data.forEach(res => {
