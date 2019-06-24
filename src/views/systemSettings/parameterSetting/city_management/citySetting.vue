@@ -51,6 +51,8 @@ export default {
     mounted(){
         // 高度自适应
         this.getClientHeight() ;
+        // 导航栏显现
+        this.getShowDims() ;
     },
     watch: {
         // 切换年触发
@@ -67,6 +69,13 @@ export default {
         }
     },
     methods: {
+        // 导航栏显现
+        getShowDims(){
+            let dims = this.showDims ;
+            dims.company = true ;
+            dims.year = true ;
+            dims.month= true ;
+        },
         // 高度自适应
         getClientHeight(){
             this.height = document.body.offsetHeight - 168 ;
@@ -87,7 +96,8 @@ export default {
                 // val.$children[0].options = cc ;
                 val.$children[0].dimIndex_query_by_stypeA() ;
             }else{
-                let cc = this.$refs.index.tableData ;
+                // this.$refs.city.dimIndex_query_by_stypeA() ;
+                let cc = this.$refs.city.tableData ;
                 val.$children[0].options = cc ;
                 val.$children[0].gettableData_request() ;
             }

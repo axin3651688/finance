@@ -92,7 +92,7 @@ export default {
         }
     },
     created(){
-        debugger
+        // debugger
         let ate = this.item ;
         let offsetHeight = document.body.offsetHeight ;
         // 得到初始的高度
@@ -109,7 +109,7 @@ export default {
     },
     computed: {
         // 格式化数据源
-        data: function () { debugger
+        data: function () { //debugger
             let me = this
             let parent,level ;
             if (me.treeStructure) {

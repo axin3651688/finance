@@ -14,6 +14,7 @@
             if(property == "0"){
                 data = [] ; 
                 me.items[0].property = true; 
+                $vue.$message({ message: "该公司不是重点单位", type: "warning" })
             }else{
                 me.items[0].property = false; 
             }
@@ -209,12 +210,13 @@
             "isUnfold": true,// 自动展开的配置
             "levelProperties": { gsbm: "_level" },
             "queryDataAfter":function(data, $vue){
-                debugger
+                // debugger
                 // 是否为重点单位，只展示为“是”的公司，“否”不展示（空表）；0=否｜1=是
                 let property = $vue.$store.getters.treeInfo.property1 ;                
                 if(property == "0"){
                     data = [] ;
                     $vue.items[0].property = true; 
+                    $vue.$message({ message: "该公司不是重点单位", type: "warning" })
                 }else{
                     $vue.items[0].property = false; 
                 }

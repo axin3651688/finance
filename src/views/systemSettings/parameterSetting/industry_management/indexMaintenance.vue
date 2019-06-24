@@ -157,7 +157,7 @@ export default {
          */
         determineClick(form){
             let me = this ;
-            me.$refs[form].validate((valid) => { debugger
+            me.$refs[form].validate((valid) => { 
                 if (valid && !me.isTrue) {
                     let params = [{
                         scode: me.inform[0].scode ,
