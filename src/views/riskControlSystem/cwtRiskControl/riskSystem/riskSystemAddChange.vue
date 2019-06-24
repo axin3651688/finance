@@ -51,6 +51,7 @@
                                 :auto-upload="autoUpload"
                                 :data="this.formData"
                                 :on-success="onSuccess"
+                                :on-error="onError"
                                 :on-change="handleChange"
                         >
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -145,19 +146,7 @@
                     delete params.savePath
                 }
 
-                // if(params.nid){
-                //     riskSystemAdd().then(res=>{
-                //
-                //     })
-                // }else{
-                //     _this.$refs.upload.submit();
-                // }
                 _this.$refs.upload.submit();
-
-
-
-
-
 
             },
 
@@ -190,10 +179,33 @@
             /**
              * 上传成功的回调
              */
-            onSuccess(){
-                this.$emit("addSuccess", 'systemAdd');
-                this.$emit("pageClose", 'systemAdd');
+            onSuccess(ee) {
+                if (ee.code === '0') {
+                    this.$message({
+                        message: '添加失败',
+                        type: 'error'
+                    });
+                }else{
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.$emit("addSuccess", 'systemAdd');
+                    this.$emit("pageClose", 'systemAdd');
+                }
+
+
             },
+
+            /**
+             * 制度添加失败的提示
+             */
+            onError() {
+                this.$message({
+                    message: '添加失败'
+                });
+            }
+
         }
     }
 </script>

@@ -309,10 +309,16 @@
              * 制度删除
              */
             systemDelete() {
+                if (this.deleteSyatemList.length === 0) {
+                    this.$message({
+                        message: '请选择要删除的制度',
+                        type: 'warning'
+                    });
+                    return;
+                }
 
+                let _this = this;
                 let _deleteSyatemList = this.deleteSyatemList;
-                //let params = {};
-                // let
                 let vos = [];
                 _deleteSyatemList.forEach((item) => {
                     let emptyData = {
@@ -324,18 +330,24 @@
                     vos.push(emptyData);
                 });
 
-                //params['vos'] = vos;
-
-                //params = JSON.stringify(vos);
 
                 let sendParams = JSON.stringify(vos);
-
 
 
                 riskSystemDelete(sendParams).then(res => {
                     if (res.data.code === 200) {
                         // debugger;
+                        _this.$message({
+                            message:'删除成功',
+                            type:'success'
+                        });
+
                         this.getTableData();
+                    }else{
+                        _this.$message({
+                            message:'删除失败',
+                            type:'error'
+                        });
                     }
                 })
             },
@@ -377,6 +389,7 @@
              * 模糊查询获取表格数据
              */
             getQueryByFiledTableData(val) {
+                debugger;
                 let _this = this,
                     _getters = _this.$store.getters,
                     company = _getters.company;
@@ -425,8 +438,8 @@
                 params.filed = _searchData.searchMessage;
                 params.startDate = this.getDateNowYMD(_searchData.searchDate1);
                 params.endDate = this.getDateNowYMD(_searchData.searchDate2);
-                params.startDate = _searchData.searchDate1 === '' ? '' : params.startDate;
-                params.endDate = _searchData.searchDate2 === '' ? '' : params.endDate;
+                params.startDate =  _searchData.searchDate1 === null ? '' : params.startDate;
+                params.endDate = _searchData.searchDate2 === null ? '' : params.endDate;
                 return params;
             },
 
