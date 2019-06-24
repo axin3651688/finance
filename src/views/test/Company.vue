@@ -115,44 +115,44 @@
               <el-option
                 v-for=" (item,index) in sindcodes "
                 :key="index"
-                :label="item.text"
-                :value="item.id"
+                :label="item.sname"
+                :value="item.scode"
               ></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="国资委行业" prop="gzw">
-            <el-select class="elform" v-model="form.gzw" placeholder="请选择行业">
+          <el-form-item label="国资委行业" prop="sindcodedetail">
+            <el-select class="elform" v-model="form.sindcodedetail" placeholder="请选择行业">
               <el-option
                 v-for=" (item,index) in sindcodee "
                 :key="index"
-                :label="item.text"
-                :value="item.id"
+                :label="item.sname"
+                :value="item.scode"
               ></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="公司规模" prop="gsgm">
-            <el-select class="elform" v-model="form.gsgm" placeholder="请选择规模类型">
+          <el-form-item label="公司规模" prop="sindsrange">
+            <el-select class="elform" v-model="form.sindsrange" placeholder="请选择规模类型">
               <el-option
                 v-for=" (item,index) in sindcoded "
                 :key="index"
-                :label="item.text"
-                :value="item.id"
+                :label="item.sname"
+                :value="item.scode"
               ></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="企业法人" prop="qyfr">
-            <el-input class="elform" v-model="form.qyfr" placeholder="输入姓名"></el-input>
+          <el-form-item label="企业法人" prop="scorporation">
+            <el-input class="elform" v-model="form.scorporation" placeholder="输入姓名"></el-input>
           </el-form-item>
 
-          <el-form-item label="联系电话" prop="lxdh">
-            <el-input class="elform" v-model="form.lxdh" placeholder="输入有效的电话"></el-input>
+          <el-form-item label="联系电话" prop="scorporatetel">
+            <el-input class="elform" v-model="form.scorporatetel" placeholder="输入有效的电话"></el-input>
           </el-form-item>
 
-          <el-form-item label="公司地址" prop="gsdz">
-            <el-input class="elform" v-model="form.gsdz" placeholder="最大字符200"></el-input>
+          <el-form-item label="公司地址" prop="saddress">
+            <el-input class="elform" v-model="form.saddress" placeholder="最大字符200"></el-input>
           </el-form-item>
 
           <el-form-item label="是否重点单位" prop="property1">
@@ -242,13 +242,19 @@ export default {
       sindcodesAll: [],
       property1s: [{ id: "1", text: "是" }, { id: "0", text: "否" }],
       wformArr: [
-        "scode",
-        "sname",
-        "spcode",
-        "sindcode",
-        "property1",
-        "npercent",
-        "ssrccode"
+        "scode",            // 公司编码
+        "sfullname",        // 公司全称
+        "spcode",           // 父级编码
+        "sindcode",         // 内部行业
+        "property1",        // 重点单位
+        "npercent",         // 集团合计持股比例
+        "ssrccode",         // EAS公司源编码
+        "sindcodedetail",   // 国资委行业
+        "scorporation",     // 企业法人
+        "sindsrange",       // 公司规模
+        "scorporatetel",    // 联系电话
+        "saddress",         // 公司地址
+        "sname"             // 公司简称
       ],
       //表单对象
       form: {
@@ -313,12 +319,18 @@ export default {
           }
         ],
         sfullname: [
-          { required: true, message: "必填项", trigger: "blur" },
+          // { required: true, message: "必填项", trigger: "blur" },
+          // { min: 1, max: 100, message: "长度在 1 到 100 个字符"}
           {
-            min: 1,
-            max: 100,
-            message: "长度在 1 到 100 个字符"
-            // trigger: "blur"
+            validator: (rule, value, callback) => { //debugger
+              if(!value){
+                callback(new Error("必填项"));
+              }else{
+                callback();
+              }
+            },
+            required: true,
+            trigger: "change"
           }
         ],
         ssrccode: [{ required: true, message: "必填项" }],
@@ -329,7 +341,7 @@ export default {
         sindcode: [
           {
             //除虚拟汇总外，为必录项
-            validator: (rule, value, callback) => {
+            validator: (rule, value, callback) => { //debugger
               var ssrccode = this.form.ssrccode;
               if (ssrccode !== "0" && !value) {
                 callback(new Error("必填项"));
@@ -337,6 +349,7 @@ export default {
                 callback();
               }
             },
+            required: true,
             trigger: "change"
           }
         ],
@@ -424,15 +437,9 @@ export default {
     }
     this.setTreeHeight();
     // 公司规模数据请求
-    this.getSindsrange();
+    // this.getSindsrange();
   },
   methods: {
-    /**
-     * @description 公司规模数据请求
-     */
-    getSindsrange(){
-      
-    },
     /***
      * 
      * 节点自定义操作
@@ -471,18 +478,21 @@ export default {
     findDim() { 
       const _this = this;
       request({
-        url: "/zjb/dict/query/INDUSTRY",
-        method: "get"
+        url: "/zjb/select/query",
+        method: "get",
+        params: {
+          sqlKey:"Dim.companyParamMenus"
+        }
       }).then(result => {
-        if (result.status == 200) {
-          //  处理维度id 既有Integer 又有 String
-          // 过滤抵消差额
-          _this.sindcodesAll = result.data.data;
-          _this.sindcodes = _.filter(result.data.data, function(element) {
-            element.id = element.id + "";
-            // return element.id != "12";
-            return element;
-          });
+        if (result.status == 200) { //debugger
+          if(result.data.code === 200){
+            // 国资委行业
+            _this.sindcodee = result.data.data[0].indsclassify ;
+            // 内部行业
+            _this.sindcodes = result.data.data[0].industry ;
+            // 公司规模
+            _this.sindcoded = result.data.data[0].indsrange ;
+          }
         }
       });
     },
@@ -505,7 +515,7 @@ export default {
       request({
         url: "/zjb/sys/dimcompany/query_all",
         method: "get"
-      }).then(result => { debugger
+      }).then(result => { //debugger
         console.log(result);
         if (result.status == 200 && result.data.code == 200) {
           //封装树对象数据
@@ -522,20 +532,20 @@ export default {
               }
             }
           };
-
+          // debugger
           var data = result.data.data;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
             //找到根节点。
             // let roots = this.parseRootOfTree(data);
-            data = data.filter(function(item) {
+            data = data.filter(function(item) { //debugger
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
                 item.open = true; //展开此节点
                 _this.expandKeys.push(item.scode);
               }
-              item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
-              item.label = "(" + item.scode + ")" + item.sname
+              item.codename = "(" + item.scode + ")" + item.sfullname; //拼写公司编码+公司名称
+              item.label = "(" + item.scode + ")" + item.sfullname
               return item.cisdel != "Y";
             });
             
@@ -554,11 +564,11 @@ export default {
      * @description 处理添加功能
      * 注意问题：当前选中公司的状态，后台处理
      */
-    add(formName) {
+    add(formName) { //debugger
       //clear 表单
       this.form.spcode = this.form.scode;   // 父级编码
       this.form.scode = "";         // 公司编码
-      this.form.sname = "";         // 公司名称
+      this.form.sname = "";         // 公司简称
       this.form.sindcode = "";      // 内部行业
       this.form.property1 = "";     // 重点单位
       this.form.npercent = 0;       // 集团合计持股比例
@@ -568,7 +578,7 @@ export default {
       this.form.sindsrange = "";      // 公司规模
       this.form.scorporatetel = "";   // 联系电话
       this.form.saddress = "";        // 公司地址
-      this.form.sfullname = "";       // 公司简称
+      this.form.sfullname = "";       // 公司全称
       this.form.nlevel = this.form.nlevel + 1;  // 层级
 
       //处理添加
@@ -602,7 +612,7 @@ export default {
               scodes: _this.form.scode,
               cisdel: _this.form.cisdel
             }
-          }).then(result => { debugger
+          }).then(result => { //debugger
             if (result.status == 200) {
               this.forbidden = true;
 
@@ -652,17 +662,20 @@ export default {
       if (_this.opt && _this.opt.url === "save") {
         _this.opt.url = "add";
       }
-      if (_this.currentNode() && _.isEmpty(this.activeForm)) {
-        _this.$message({
-          type: "warning",
-          message: "未做修改"
-        });
+      // if (_this.currentNode() && _.isEmpty(this.activeForm)) {
+      //   _this.$message({
+      //     type: "warning",
+      //     message: "未做修改"
+      //   });
+      //   return;
+      // }
+      // sjz 无更改不需要保存修改
+      if(_this.isEmpty(form, cur)){
+        _this.$message({ type: "warning", message: "未做修改" })
         return;
-      }
-
+      }   
       //验证
-      _this.$refs[formName].validate(
-        valid => {
+      _this.$refs[formName].validate(valid => { //debugger
           if (valid) {
             //保存操作
             var obj = _.cloneDeep(_this.activeForm);
@@ -701,7 +714,7 @@ export default {
                 sfullname: form.sfullname             // 公司简称
                 // }
               }
-            }).then(result => {
+            }).then(result => { //debugger
               // resolve(response.data);
               this.forbidden = true;
               this.scodeDisabled = false;
@@ -771,7 +784,19 @@ export default {
         }
       );
     },
-
+    // 是否有更改
+    isEmpty(form, cur){
+      // debugger
+      let isTrue ; 
+      for(let key in form){
+          if(form[key] == cur[key]) {
+              isTrue = true ;
+          } else {
+              return false ;
+          }
+      }
+      return isTrue ;
+    },
     //过滤节点
     filterNode(value, data) {
       if (!value) return true;
@@ -785,7 +810,7 @@ export default {
      * @param node tree 节点对象
      * @param el 节点组件本身
      *  */
-    handClick(snode, node, el) { debugger
+    handClick(snode, node, el) { //debugger
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);
