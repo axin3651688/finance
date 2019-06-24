@@ -128,6 +128,7 @@ export default {
             selectConfig:{
                 id:"101",
                 text:"",
+                currentSelect:"",
                 options:[]
             },//下拉框的内容配置
             publicVisible:false,
@@ -169,6 +170,7 @@ export default {
      */
     created() {
         let me = this;
+        me.queryDepartMent();
         if(me.activeName == "second") {
             let selectItem = me.selectItem;
             let judgeParams = {
@@ -183,7 +185,6 @@ export default {
                 }
             })
         }
-        me.queryDepartMent();
         //请求table的数据。
         // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
         // if(me.activeName == "second"){
@@ -281,7 +282,7 @@ export default {
                 year:year,
                 month:monthStr,
                 period:period,
-                departId:item? item:"01",
+                departId:"",
                 sql:""
             };
             if(judgeParams.params){
@@ -292,6 +293,11 @@ export default {
                     let curSqlId = judgeParams? judgeParams.sqlId:"101";
                     me.sqlList = res.data.sqlList;
                     params = me.paramsOfSql(params,res.data.sqlList,curSqlId);
+                    //如果没有选择部门默认是第一个。
+                    if(!params.departId){
+                        let options = me.selectConfig.options;
+                        params.departId = item? item:(options[0]? options[0]:"01")
+                    }
                     findThirdPartData(params).then(res => {
                         if(res.data.code == 200) {
                             if(judgeParams.id == "treeTable"){
@@ -376,7 +382,6 @@ export default {
         lookInstructionRes (lookData) {
             let me = this,company = me.$store.getters.companyName;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
-                debugger;
                 if(res.data.code == 200) {
                     // me.reportData = res.data.reportData;
                     res.data.reportData.reportCompanyName = company;
@@ -591,7 +596,6 @@ export default {
          * @author szc 2019年5月22日19:39:07
          */
         eventHandler (params) {
-            debugger;
             let me = this,selectItem = me.selectItem;
             //10401 自定义的 表示批示下达之后要进行的操作。
             if(params.id == "10401"){

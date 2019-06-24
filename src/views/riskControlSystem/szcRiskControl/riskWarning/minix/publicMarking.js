@@ -61,6 +61,8 @@ export default {
                 me.debtRiskData(datas);
             } else if (judgeParams.id == "comprehensiveRating") {
                 me.comprehensiveData(datas);
+            } else if (judgeParams.id == 'ylnl_xz') {
+                me.singleIndicatorDrill(datas);
             }
         },
         /**
@@ -411,11 +413,12 @@ export default {
                 },
                 tooltip: {
                     formatter: function(a, b, c) {
-                        return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
+                        debugger;
+                        return a.seriesName + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
                     }
                 },
                 series: [{
-                    name: '业务指标',
+                    name: itemCnt[item.gaugeSname] || '业务指标',
                     type: 'gauge',
                     min: 0,
                     max: 200, //设置最大刻度
@@ -453,6 +456,7 @@ export default {
                 }]
             };
             itemCnt.options = options;
+            return options;
         },
         /**
          * 雷达图的数据转换。
@@ -534,6 +538,153 @@ export default {
                 values: values
             };
             return resObj;
+        },
+        /**
+         * 单指标下钻。
+         */
+        singleIndicatorDrill_old() {
+            debugger;
+            let me = this;
+            let arr = [{
+                id: 'gaugesLeft',
+                field: 'scode',
+                gaugeSname: 'sname',
+                gaugeField: 'score',
+                content: ['19', '20', '21']
+            }];
+            for (let i = 0; i < arr.length; i++) {
+                me[arr[i].id] = [];
+            }
+            me.createGauges(arr);
+        },
+        singleIndicatorDrill(datas) {
+            let me = this,
+                storeParams = me.$store.getters,
+                year = storeParams.year,
+                month = storeParams.month;
+            let obj = {},
+                drillContent = {
+                    gaugeConfig: {
+                        options: {}
+                    },
+                    lineConfig: {
+                        options: {}
+                    },
+                    allData: datas
+                };
+            if (datas && datas.length > 0) {
+                for (let j = 0; j < datas.length; j++) {
+                    let item = datas[j];
+                    if (year == item.cyear) {
+                        item.wd = "本期";
+                    } else if (item.cyear == (year - 1)) {
+                        item.wd = "上年同期";
+                    }
+                }
+                for (let i = 0; i < datas.length; i++) {
+                    let item = datas[i];
+                    if (year == item.cyear) {
+                        obj = item;
+                        break;
+                    }
+                }
+                let gaugeConfig = {
+                    gaugeSname: "sindicatorname",
+                    gaugeField: 'm' + month
+                };
+                drillContent.gaugeConfig.options = me.createOptions(obj, gaugeConfig);
+                drillContent.lineConfig.options = me.createLineChart(datas);
+            }
+            me.drillContent = drillContent;
+        },
+        /**
+         * 制造线性chart图。
+         */
+        createLineChart(datas) {
+            debugger;
+            let me = this;
+            let arrItem = me.getValueOfDatas(datas);
+            let option = {
+                title: {
+                    text: '趋势图'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['本期数', '上年同期']
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} %'
+                    }
+                },
+                series: [{
+                        name: '本期数',
+                        type: 'line',
+                        data: arrItem.bq || [11, 11, 15, 13, 12, 13, 10, 11, 11, 15, 13, 12],
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: '最大值' },
+                                { type: 'min', name: '最小值' }
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                { type: 'average', name: '平均值' }
+                            ]
+                        }
+                    },
+                    {
+                        name: '上年同期',
+                        type: 'line',
+                        data: arrItem.sntq || [1, -2, 2, 5, 3, 2, 0, 11, 11, 15, 13, 12],
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: '最大值' },
+                                { type: 'min', name: '最小值' }
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                { type: 'average', name: '平均值' }
+                            ]
+                        }
+                    }
+                ]
+            }
+            return option;
+        },
+        /**
+         * 获取数据的格式。
+         */
+        getValueOfDatas(datas) {
+            let arr = {},
+                arr1 = [],
+                arr2 = [];
+            let me = this,
+                storeParams = me.$store.getters,
+                year = storeParams.year;
+            datas.forEach(item => {
+                if (item.cyear == year) {
+                    for (let i = 0; i < 12; i++) {
+                        arr1.push(item['m' + (i + 1)]);
+                    }
+                    arr.bq = arr1;
+                } else if (item.cyear == (year - 1)) {
+                    for (let i = 0; i < 12; i++) {
+                        arr2.push(item['m' + (i + 1)]);
+                    }
+                    arr.sntq = arr2;
+                }
+            });
+            return arr;
         }
     }
 }

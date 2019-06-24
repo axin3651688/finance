@@ -31,7 +31,9 @@ export default {
     watch: {
         selectConfig:{
             handler(newValue,oldValue){
-                this.value = newValue.options[0]? newValue.options[0].sname:"";
+                // this.value = newValue.options[0]? newValue.options[0].sname:"";
+                let currentSelect = this.selectConfig.currentSelect;
+                this.value = currentSelect? currentSelect:(newValue.options[0]? newValue.options[0].sname:"");
             },
             deep:true
         }
@@ -41,7 +43,10 @@ export default {
      */
     created () {
         let me = this;
+        // let currentSelect = me.selectConfig.currentSelect;
+        // this.value = currentSelect? currentSelect:(me.selectConfig.options[0]? me.selectConfig.newValue.options[0].sname:"");
         this.value = me.selectConfig.options[0]? me.selectConfig.newValue.options[0].sname:"";
+
         // me.options = selectConfig.options;
         // this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/riskSelectOps.json").then(res => {
         //     console.log(res);
@@ -61,7 +66,6 @@ export default {
          * @author szc 2019年5月17日11:43:00
          */
         changeOption(item,param){
-            debugger;
             let me = this;
             this.$emit("changeOption",item,param);
         }

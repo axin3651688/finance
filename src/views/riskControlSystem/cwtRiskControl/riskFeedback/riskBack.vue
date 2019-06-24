@@ -57,7 +57,7 @@
     import publicRiskSelect from '../../publicRiskControl/publicRiskSelect'
     import {mapGetters} from "vuex"
     import {findThirdPartData} from "~api/interface"
-    import {updateInstruction} from "~api/szcRiskControl/riskControl"
+    import {riskBackAndNotice} from '~api/cwtRiskControl/riskControlRequest'
 
     import riskFeedBackComponent from './riskFeedBackComponent'
 
@@ -447,7 +447,7 @@
             riskFeedBackEvent(scope, it) {
                 let _this = this;
                 let params = _this.getRiskFeedbackParams(scope);
-                updateInstruction(params).then(res => {
+                riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         // _this.$emit("riskFeedBackSuccess");
 
@@ -457,7 +457,11 @@
                             message: "退回成功",
                             type: "success"
                         });
-                    } else {
+                    } else if(res.data.code === '0'){
+                        _this.$message({
+                            message: res.data.msg
+                        });
+                    }else {
                         _this.$message({
                             message: "退回失败！请联系开发人员"
                         })
@@ -486,21 +490,21 @@
 
                 period = year + _month + '';
                 return {
-                    "riskReportStateDtos": [
-                        {
+                    // "riskReportStateDtos": [
+                    //     {
                             "company": company,
                             "nrelateid": nRelateId,
                             "period": period,
-                            "scompanyname": user.companyName,
+                            // "scompanyname": user.companyName,
                             "sfeedbacksuser": user.userName,
-                            "sfeedbacksusername": user.trueName,
-                            "sisfeedback": "-1",
-                            "sriskname": rowData.riskname
-                        }
-                    ],
-                    "users": [
-                        backUser
-                    ]
+                            // "sfeedbacksusername": user.trueName,
+                            "sisfeedback": "2"
+                            // "sriskname": rowData.riskname
+                    //     }
+                    // ],
+                    // "users": [
+                    //     backUser
+                    // ]
                 };
             },
 
@@ -513,7 +517,7 @@
                 let _this = this;
                 let params = _this.getRiskNoticeParams(scope);
 
-                updateInstruction(params).then(res => {
+                riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
 
                         _this.updateView();
@@ -521,6 +525,10 @@
                         _this.$message({
                             message: "成功提醒批示人员尽快反馈",
                             type: "success"
+                        });
+                    }else if(res.data.code === '0'){
+                        _this.$message({
+                            message: res.data.msg
                         });
                     } else {
                         _this.$message({
@@ -552,18 +560,15 @@
                 period = year + _month + '';
 
                 return {
-                    "riskReportStateDtos": [
-                        {
+                    // "riskReportStateDtos": [
+                    //     {
                             "company": company,
                             "nrelateid": nRelateId,
                             "period": period,
                             "sfeedbacksuser": user.userName,
-                            "sisfeedback": "2",
-                        }
-                    ],
-                    "users": [
-                        backUser
-                    ]
+                            "sisfeedback": "0",
+                        // }
+                    // ]
                 };
             },
 

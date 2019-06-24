@@ -156,7 +156,7 @@
 
                     </div>
 
-                    <div class="container-right-foot">
+                    <div class="container-right-foot" v-if="this.dialogState !== 'ck'">
                         <el-checkbox
                                 label="指定反馈人员"
                                 name="type"
@@ -231,7 +231,7 @@
                     risk_feed_content: ''
                 },
                 period: this.$store.getters.year + '年' + this.$store.getters.month + '月',
-                pageDataFresh:true,
+                pageDataFresh: true,
                 reportState: this.dialogState
             }
         },
@@ -440,6 +440,10 @@
 
                         _this.$emit("reportFeedSuccess")
 
+                    } else if (res.data.code === '0') {
+                        _this.$message({
+                            message: res.data.msg
+                        });
                     } else {
                         _this.$message({
                             message: "反馈失败！请联系开发人员"

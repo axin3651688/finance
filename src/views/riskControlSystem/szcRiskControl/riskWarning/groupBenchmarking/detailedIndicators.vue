@@ -4,19 +4,19 @@
             <el-row>
                 <el-col :span="8">
                     <div>
-                        <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
+                        <groupGaugePublic :chartData.sync="detailedData.gaugeConfig"></groupGaugePublic>
                     </div>
                 </el-col>
                 <el-col :span="16">
                     <div>
-                        <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
+                        <groupLine :chartData.sync="detailedData.lineConfig"></groupLine>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col>
                     <div>
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                        <singleTable :tableData.sync="detailedData.allData" :columns.sync="columns"></singleTable>
                     </div>
                 </el-col>
             </el-row>
@@ -24,94 +24,84 @@
     </div>
 </template>
 <script>
-    import groupGauge from "./../echarts/groupGauge.vue"
+
     import groupGaugePublic from "./../echarts/groupGaugePublic.vue"
+    import groupLine from "./../echarts/groupLine.vue"
     import singleTable from "./../riskTable/riskTable.vue"
-    import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
-    import groupRadar from "./../echarts/groupRadar.vue"
-    import publicMarking from "./../minix/publicMarking.js"
     export default {
-        mixins:[publicMarking],
         name: "debtRisk",
         components: {
-            groupGauge,
             singleTable,
-            groupRadar,
             groupGaugePublic,
-            threeHeaderTable
+            groupLine
+        },
+        props:{
+            detailedData:Object
         },
         data() {
             return {
-                gaugeTopLeft:[{}],
-                radarMiddle:[{}],
-                gaugeTopRight:[{}],
-                gaugeMiddle:[{},{},{}],
-                chartDataRadar:{
-                    receive:{}
-                },
-                // gaugeMiddleLeft:[8,8],
-                // gaugeMiddleRight:[8,8],
                 tableData:[],
-                columns:[],
-                ManyTableData:[],//多表头数据
-                manyColumns:[]//多表头列配置
+                columns:[
+                    {
+                        id:"wd",
+                        text:"维度"
+                    },
+                    {
+                        id:"m1",
+                        text:"一月"
+                    },
+                    {
+                        id:"m2",
+                        text:"二月"
+                    },
+                    {
+                        id:"m3",
+                        text:"三月"
+                    },
+                    {
+                        id:"m4",
+                        text:"四月"
+                    },
+                    {
+                        id:"m5",
+                        text:"五月"
+                    },
+                    {
+                        id:"m6",
+                        text:"六月"
+                    },
+                    {
+                        id:"m7",
+                        text:"七月"
+                    },
+                    {
+                        id:"m8",
+                        text:"八月"
+                    },
+                    {
+                        id:"m9",
+                        text:"九月"
+                    },
+                    {
+                        id:"m10",
+                        text:"十月"
+                    },
+                    {
+                        id:"m11",
+                        text:"十一月"
+                    },
+                    {
+                        id:"m12",
+                        text:"十二月"
+                    }
+                ],
+                gaugeChartData:{},
+                lineChartData:{}
             }
         },
-        created() {
-            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/debtRisk.json";
-            this.axios.get(url).then(res => {
-                if(res.data.code == 200) {
-                    debugger;
-                    me.tableData = res.data.rows;
-                    me.columns = res.data.columns;
-                    me.manyColumns = res.data.manyColumns;
-                    me.ManyTableData = res.data.manyRows;
-                    me.resData = res.data;
-                    // let judgeParams = {
-                    //     id:"debtRisk",
-                    //     text:"发展能力",
-                    //     sqlId:"107"
-                    // };
-                    // me.queryDataPublic(judgeParams);
-                    me.updateData();
-                    
-                    // me.createEcharts();
-                }
-            });
-            // this.updateData();
-            // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
-            // this.axios.get(url).then(res => {
-            //     if(res.data.code == 200) {
-            //         me.tableData = res.data.rows;
-            //         me.columns = res.data.columns
-            //     }
-            // });
-        },
+        created() {},
         mounted() {},
         methods: {
-            updateData(){
-                let me = this,storeParams = me.$store.getters,company = storeParams.company,
-                    year = storeParams.year,month = storeParams.month;
-                if(month > 9){
-                    month = month + "";
-                }else {
-                    month = "0" + month;
-                }
-                let judgeParams = {
-                    id:"debtRisk",
-                    text:"债务风险",
-                    params:{
-                        company:company,
-                        period:me.getPeriod(),
-                        indicator:"'3','17','16','125','126'",
-                        fact:'B',
-                        year:year,
-                        month:month,
-                        sqlKey:"RiskWarning.fzhpj"
-                    }
-                };
-                this.queryDataOfBackstage(judgeParams);
-            },
             /**
              * 获取日期。
              */

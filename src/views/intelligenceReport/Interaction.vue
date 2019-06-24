@@ -15,6 +15,7 @@
                 :show-overflow-tooltip="true"
                 v-bind:key="index"
                 v-bind:index="index"
+                :width="item.width"
                 >
                     <template  slot-scope="scope">
                         <span v-if="item.prop == 'operation' && scope.row['nopratebuttonname']">
@@ -37,7 +38,7 @@
                 </el-pagination>
             </div>
         </div>
-        <div>
+        <div v-if="reviewFlag">
             <reviewModal :modalConfig.sync="modalConfig" ref="reviewModal" v-on:publicEvent="publicEvent"></reviewModal>
         </div>
     </div>
@@ -63,7 +64,8 @@
                 columns:[
                     {
                        prop:"companyname",
-                       label:'公司' 
+                       label:'公司',
+                       width:"380",
                     },
                     {
                        prop:"stablename",
@@ -85,7 +87,8 @@
                        prop:"operation",
                        label:'操作' 
                     }
-                ]
+                ],
+                reviewFlag:true
             }
         },
         created() {
@@ -172,6 +175,10 @@
              */
             queryHandler (scope) {
                 let me = this;
+                // me.reviewFlag = false;
+                // me.$nextTick(() => {
+                //     me.reviewFlag = true;
+                // });
                 me.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
                     let list = res.data.data;
                     let itemTmp = list.filter(item => {
