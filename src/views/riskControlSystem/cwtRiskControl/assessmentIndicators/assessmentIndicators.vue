@@ -3,8 +3,8 @@
         <div class="all-echarts-content">
 
             <el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>
-            <el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>
-            <el-button type="primary" @click="pageStyleChange('3')">样式三</el-button>
+            <!--<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>-->
+            <el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>
 
             <el-row v-if="showPageFlag === '1'">
                 <el-col
@@ -42,7 +42,7 @@
                         </div>
 
 
-                        <div class="right-content" style="width: 64%">
+                        <div class="right-content" style="width: 64%;padding: 20px 100px 10px 0;">
 
                             <div class="right-content-name" :style="{'color':item.echartsrightdata.color}">
                                 {{item.echartsrightdata.grade}}
@@ -54,39 +54,6 @@
                         </div>
 
 
-                    </div>
-                </el-col>
-            </el-row>
-
-            <el-row v-else-if="showPageFlag === '3'">
-                <el-col
-                        :span="8"
-                        class="echarts-content"
-                        v-for="(item, index) in echartsData"
-                        :key="index"
-                >
-                    <div class="dic-title">
-                        <span>{{item.echartsrightdata['zbsname']}}</span>
-                    </div>
-                    <div class="content-all">
-                        <div class="left-content-all">
-                            <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
-                                <div class="left-content-text">
-                                    {{left.pjname}}
-                                </div>
-
-                                <div class="left-content-num" :style="{'background-color':left.color}">
-                                    {{left.val}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right-content">
-                            <echarts-component
-                                    :echartData="item"
-                                    :dataChange="dataChange"
-                            >
-                            </echarts-component>
-                        </div>
                     </div>
                 </el-col>
             </el-row>
@@ -162,7 +129,7 @@
             return {
                 echartsData: [],
                 dataChange: false,
-                showPageFlag: 1
+                showPageFlag: '1'
             }
         },
         created() {
@@ -248,11 +215,11 @@
                             if (index === 0) {
                                 emptyVlaue.value = ' V >= ' + item.val;
                             } else if (index === 1) {
-                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                                emptyVlaue.value = item.val + ' <= V < ' + ii;
                             } else if (index === 2) {
-                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                                emptyVlaue.value = item.val + ' <= V < ' + ii;
                             } else if (index === 3) {
-                                emptyVlaue.value = item.val + ' =< V < ' + ii;
+                                emptyVlaue.value = item.val + ' <= V < ' + ii;
                             } else if (index === 4) {
                                 emptyVlaue.value = ' V <= ' + item.val;
                             }
@@ -340,7 +307,7 @@
         /*height: 248px;*/
         /*padding-left: 50px;*/
         text-align: center;
-        padding: 20px 30px 10px 0;
+
     }
 
     .right-content-name {
