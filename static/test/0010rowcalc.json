@@ -7,48 +7,57 @@
         "hidden": true,
         "dimName": "itemperiod",
         "useDbName": true,
-        "group": {
-            "id": "itemperiod"
-        },
         "sum": {
             "id": "100",
             "text": "三项费用合计"
         },
-        "colSum":{
+        "colSum": {
             "id": "200",
             "text": "列合计",
-            "type":"sum"
+            "type": "sum"
         }
     },
-    "columns": [
-        {
-            "id": "text",
-            "type": "string",
-            "fixed": true,
-            "text": "项目"
-            ,"drill":{}
-        },{
-            "id": "id",
+    "columns": [{
+            "id": "index",
             "text": "编码",
             "type": "index",
             "fixed": true,
             "hidden": false
+        }, {
+            "id": "id",
+            "text": "项目编码",
+            "type": "string",
+            "fixed": true,
+            "width": 100
+        }, {
+            "id": "text",
+            "type": "string",
+            "fixed": true,
+            "text": "项目",
+            "drill": {}
+        }, {
+            "id": "company",
+            "type": "string",
+            "text": "公司"
         },
         {
             "id": "year",
             "type": "string",
-            "text": "年"
+            "text": "年",
+            "width": 80
         },
         {
             "id": "month",
             "type": "string",
-            "text": "月份"
+            "text": "月份",
+            "width": 60
         },
+
         {
             "id": "A",
             "text": "本期",
             "sort": "asc",
-            "align":"left",
+            "align": "left",
             "formatter": {
                 "decimal": {
                     "digit": 2,
@@ -104,19 +113,19 @@
                 "type": {
                     "css": "color:blue;font-size:20px;"
                 },
-                "children":[{
+                "children": [{
                     "calcSymbol": ">",
                     "field": "zjv",
                     "id": 2,
                     "value": 0
-                },{
+                }, {
                     "calcSymbol": "<=",
                     "field": "zjv",
                     "logicSymbol": "and",
                     "id": 2,
                     "value": 50
                 }]
-            },{
+            }, {
                 "calcSymbol": ">",
                 "field": "zjv",
                 "id": 2,
@@ -124,7 +133,7 @@
                     "icon": "el-icon-time"
                 },
                 "value": 51
-            },{
+            }, {
                 "calcSymbol": "<",
                 "field": "zjv",
                 "id": 2,
@@ -139,75 +148,42 @@
     "rows": [{
         "id": "1100110",
         "text": "销售费用"
-    },{
+    }, {
         "id": "1100111",
         "text": "管理费用"
-    },{
+    }, {
         "id": "1100112",
         "text": "财务费用"
     }],
-    "filters": [{
-            "id": 1,
-            "type": 1,
-            "children":[{
-                "calcSymbol": ">=",
-                "field": "id",
-                "id": 1,
-                "type": 1,
-                "value": "201701"
-            },
-            {
-                "calcSymbol": "<",
-                "field": "id",
-                "id": 2,
-                 "logicSymbol":"and",
-                "type": 1,
-                "value": "201906"
-            }]
-        },
-        {
-            "calcSymbol": "<",
-            "field": "id",
-            "id": 2,
-            "logicSymbol":"and",
-            "type": 1,
-            "value": "2019010"
-        }
-    ],
     "datas": [],
     "cube": {},
     "needDims": {
         "year": {
             "id": "2019",
-            "text": "2019年",
-            "datas": []
+            "text": "年份",
+            "datas": [{
+                "id": "2019",
+                "text": "2019年"
+            }]
         },
         "month": {
             "id": 5,
-            "text": "5月",
-            "datas": []
+            "text": "月份",
+            "datas": [{
+                "id": "5",
+                "text": "5月份"
+            }]
         },
         "company": {
             "id": 1,
-            "text": "江苏农垦",
-            "datas": []
-        },
-        "itemperiod": {
-            "id": "1100110",
-            "text": "营业收入",
+            "text": "公司",
             "datas": [{
-                "id": "1100110",
-                "text": "营业收入"
-            },{
-                "id": "1100111",
-                "text": "营业成本"
+                "id": "1",
+                "text": "江苏农垦"
+            }, {
+                "id": "2",
+                "text": "云台农场"
             }]
         }
-    },
-    "generater11": {
-        "periodCount": 16,
-        "compareType": "0&-1",
-        "varName": "rows",
-        "reverse": false
     }
 }

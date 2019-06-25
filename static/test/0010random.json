@@ -14,27 +14,13 @@
             "id": "100",
             "text": "行合计"
         },
-        "colSum":{
+        "colSum": {
             "id": "200",
             "text": "列合计",
-            "type":"sum"
+            "type": "sum"
         }
     },
-    "columns": [
-        {
-            "id": "text",
-            "type": "string",
-            "fixed": true,
-            "text": "期间"
-            ,"drill":{
-                "targetId":"002",
-                "type":"cellclick",
-                "way":"addTab",
-                "sourceApi":"/cnbi/json/source/jsnk/drillSecond.json",
-                 "location":"before"
-               
-            }
-        },{
+    "columns": [{
             "id": "id",
             "text": "编码",
             "type": "index",
@@ -42,16 +28,30 @@
             "hidden": false
         },
         {
+            "id": "text",
+            "type": "string",
+            "fixed": true,
+            "text": "期间",
+            "drill": {
+                "targetId": "002",
+                "type": "cellclick",
+                "way": "addTab",
+                "sourceApi": "/cnbi/json/source/jsnk/drillSecond.json",
+                "location": "before"
+
+            }
+        },
+        {
             "id": "itemperiod",
             "type": "string",
             "text": "项目"
-           
+
         },
         {
             "id": "A",
             "text": "本期",
             "sort": "asc",
-            "align":"left",
+            "align": "left",
             "formatter": {
                 "decimal": {
                     "digit": 2,
@@ -107,19 +107,19 @@
                 "type": {
                     "css": "color:blue;font-size:20px;"
                 },
-                "children":[{
+                "children": [{
                     "calcSymbol": ">",
                     "field": "zjv",
                     "id": 2,
                     "value": 0
-                },{
+                }, {
                     "calcSymbol": "<=",
                     "field": "zjv",
                     "logicSymbol": "and",
                     "id": 2,
                     "value": 50
                 }]
-            },{
+            }, {
                 "calcSymbol": ">",
                 "field": "zjv",
                 "id": 2,
@@ -127,7 +127,7 @@
                     "icon": "el-icon-time"
                 },
                 "value": 51
-            },{
+            }, {
                 "calcSymbol": "<",
                 "field": "zjv",
                 "id": 2,
@@ -147,27 +147,28 @@
     "filters": [{
             "id": 1,
             "type": 1,
-            "children":[{
-                "calcSymbol": ">=",
-                "field": "id",
-                "id": 1,
-                "type": 1,
-                "value": "201701"
-            },
-            {
-                "calcSymbol": "<",
-                "field": "id",
-                "id": 2,
-                 "logicSymbol":"and",
-                "type": 1,
-                "value": "201906"
-            }]
+            "children": [{
+                    "calcSymbol": ">=",
+                    "field": "id",
+                    "id": 1,
+                    "type": 1,
+                    "value": "201701"
+                },
+                {
+                    "calcSymbol": "<",
+                    "field": "id",
+                    "id": 2,
+                    "logicSymbol": "and",
+                    "type": 1,
+                    "value": "201906"
+                }
+            ]
         },
         {
             "calcSymbol": "<",
             "field": "id",
             "id": 2,
-            "logicSymbol":"and",
+            "logicSymbol": "and",
             "type": 1,
             "value": "2019010"
         }
@@ -233,9 +234,11 @@
         }
     },
     "generater": {
-        "periodCount": 16,
-        "compareType": "0&-1",
-        "varName": "rows",
-        "reverse": false
+        "period": {
+            "periodCount": 16,
+            "compareType": "0&-1",
+            "reverse": false
+        },
+        "varName": "rows"
     }
 }

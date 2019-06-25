@@ -23,6 +23,7 @@
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
+    sortable
     :align="col.align|| 'left'"
     :min-width="col.width||150"
     :fixed="col.fixed|| false"
@@ -76,6 +77,7 @@
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
+    sortable
     :align="col.align|| 'right'"
     :min-width="col.width||140"
     @cell-style="cellStyle"
@@ -174,7 +176,6 @@ export default {
        if(col.render){
          let css = col.render(val,col);
          if(css && css.icon){
-            debugger;
             return true;
          }
         
@@ -187,6 +188,10 @@ export default {
     getCellValues(col, scope) {
       let colId = col.id,row = scope.row,rowId = row.id;
       let value = row[colId];
+      // if(!value && col.fomular){
+      //    debugger;
+      //    value = this.cube.dataCube.dataCalculator.colFomularParser(col.fomular,row);
+      // }
       value = this.cube.colFormatter(value,col);
       return  value;
     },
