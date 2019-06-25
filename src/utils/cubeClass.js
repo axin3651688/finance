@@ -1,7 +1,7 @@
 import { MessageBox } from 'element-ui';
 import Vue from 'vue';
 import ld from 'lodash'; //https://lodash.com/docs/
-import { generatePeriod } from './period';
+import { generatePeriod,getYearList,getMonthList} from './period';
 import { getClientParams } from './index';
 import { createRandomDatas } from './random';
 import { http } from './http';
@@ -811,7 +811,6 @@ class DataHandler {
                         let val = data[col.id];
                         if (isNaN(val) ||  configRow.fomular) {
                             if (configRow.fomular) {
-                              debugger;
                                 //如果是在行上配制的公式[3501+3502]，在这里动态给其组装成完整的公式
                                 val = this.dataCalculator.rowFomularParser(datas, configRow.fomular, rows, col.id);
                             } else { //如果是配制单元格公式的这么办很OK
@@ -880,6 +879,60 @@ class DataHandler {
        }
       
     }
+ 
+    /**
+     * @param  dimCode维度编码  可不传
+     * @param  dim对象
+     * 通过接口拿维度数据
+     */
+    getDimDatas(dimCode,dim){
+      if(dim && dim.datas){
+        if(dim.datas && Array.isArray(dim.datas)){
+            return datas;
+        }
+      }
+      let datas = null;//通过接口拿;
+      if(datas  && datas)return datas;
+      if(dimCode === "year"){
+        return getYearList()
+      }
+      if(dimCode === "month"){
+        return getMonthList();
+      }
+
+    }
+    /**
+     * 获取维度默认值
+     * @param  dimCode维度编码
+     * @param  dim对象
+     * "year": {
+            "id": "2019",
+            "text": "年份",
+             "select":{
+
+             },
+            "datas": [{
+                "id": "2019",
+                "text": "2019年"
+            }]
+        }
+     * id or index法
+     * 返回维度数据对象{}
+     */
+    getDefaultDimValue(dimCode,dim){
+       let record = {};
+       let datas = this.getDimDatas(dimCode,dim);
+        if(dim.id){
+          return datas.filter(bb=>bb.id == id)[0];
+        }else if(dim.index){
+          return datas[dim.index];
+        }
+        console.error("通过dim["+dim.text+"]["+id+"]未能拿到值对象,默认为第0个了！"); 
+        return  datas[0];
+    }
+
+  
+
     /**
      * 行合计
      */
@@ -987,7 +1040,7 @@ class DataCalculator {
      * (A-asntq)/asntq*100
      * 变形成单元格函数
      * Math.avg("A,B,C")
-     *  /^((?!Math\.avg).)+$/.test('Math.avg(A,B,C)');
+     *  /^((?!Math\.avg).)+$/.test('Math.avg(A,B,C")');
      */
     colFomularParser(fomular,record,datas,rows){
       let params = this.getFomularParams(fomular,/[a-zA-Z_]+[\w]*/g);

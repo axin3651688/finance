@@ -138,7 +138,7 @@ export default {
   },
   watch: {
     year(newyear) {
-      let params = store.state.param.command;
+      let params = store.state.param.command;//
       debugger;
       console.log('改变', newyear);
       this.cube.needDims.year = {id: newyear, text: newyear + '年'};
@@ -159,6 +159,7 @@ export default {
     ...mapGetters(['year', 'month', 'company', 'module_api', 'conversion', 'device'])
   },
   methods: {
+
     /**
      * 获取rowspan
      */
