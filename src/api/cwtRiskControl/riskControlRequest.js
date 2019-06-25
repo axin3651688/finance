@@ -122,7 +122,9 @@ export function riskSystemDelete(params) {
     return request({
         url: '/zjb/risk_sys/delete',
         method: 'post',
-        params: params
+        // contentType: "application/json; charset=utf-8",
+        // dataType: 'json',
+        params: {vos: params}
     })
 }
 
@@ -224,7 +226,6 @@ export function getGroupIndicatorsData(params) {
         params: params
     })
 }
-
 
 
 /**

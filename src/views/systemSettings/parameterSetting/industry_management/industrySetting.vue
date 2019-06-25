@@ -47,6 +47,8 @@ export default {
     mounted(){
         // 高度自适应
         this.getClientHeight() ;
+        // 导航栏显现
+        this.getShowDims() ;
     },
     watch: {
         // 切换年触发
@@ -63,6 +65,13 @@ export default {
         }
     },
     methods: {
+        // 导航栏显现
+        getShowDims(){
+            let dims = this.showDims ;
+            dims.company = true ;
+            dims.year = true ;
+            dims.month= true ;
+        },
         // 高度自适应
         getClientHeight(){
             this.height = document.body.offsetHeight - 168 ;

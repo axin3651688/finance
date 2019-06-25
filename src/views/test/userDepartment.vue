@@ -81,7 +81,7 @@ export default {
                 let data = [], is ;
                 data = this.getDataArray(data, this.data) ;
                 is = data.some(res => { return res.id === value }) ;
-                if(is){
+                if(is && this.stype == 1){
                     callback(new Error('部门编码以重复')); 
                 }else{
                     callback();
@@ -309,35 +309,35 @@ export default {
             });
         },
         // 修改确认
-        modifyClick_new(val){ 
+        modifyClick_new(val){ debugger
             let node = this.nodeValue ;
             let form = this.form ;
             let $params = this.$store.state.prame.command;
             let me = this ;
+            if(me.getmodifyValue(node,form)){   // true
+                me.$message({ message: "暂无改动!", type: "warning"}) ;
+                return false ;
+            }
             me.$refs[val].validate((valid) => { 
                 if (valid) {
-                    let vax = { id: $params.company } ;
-                    if(me.getmodifyValue(node,form)){   // true
-                        me.$message({ message: "暂无改动!", type: "warning"}) ;
-                        return false ;
-                    }else{
-                        let data = {
-                            spcode: form.spcode,      // 部门父级
-                            sname: form.sname,        // 部门名称
-                            scode: form.scode,        // 部门编码
-                            scomcode: $params.company,// 所属公司编码
-                            sdesc: form.sdesc         // 部门职责
-                        }
-                        department_update(data).then(res => { 
-                            if(res.data.code === 200){
-                                me.$message({ message: res.data.msg, type: "success" }) ;
-                                me.newThis.getCompanyRight(vax) ;
-                                me.cancelClikc('form') ;
-                            }else{
-                                me.$message.error(res.data.msg) ;
-                            }
-                        }) ;
+                    let vax = { id: $params.company } ;                    
+                    let data = {
+                        spcode: form.spcode,      // 部门父级
+                        sname: form.sname,        // 部门名称
+                        scode: form.scode,        // 部门编码
+                        scomcode: $params.company,// 所属公司编码
+                        sdesc: form.sdesc         // 部门职责
                     }
+                    department_update(data).then(res => { 
+                        if(res.data.code === 200){
+                            me.$message({ message: res.data.msg, type: "success" }) ;
+                            me.newThis.getCompanyRight(vax) ;
+                            me.cancelClikc('form') ;
+                        }else{
+                            me.$message.error(res.data.msg) ;
+                        }
+                    }) ;
+                    
                 } else {
                     return false;
                 }
@@ -348,17 +348,18 @@ export default {
             let isTrue = true, isFalse = false ;
             for(let key in form){
                 if(node["spcode"] == null)node["spcode"] = 0 ;
+                if(node["sdesc"] == null)node["sdesc"] = "" ;
                 if(node[key] == form[key]) {
                     isTrue = true ;
                 } else {
                     return false ;
                 }
             }
-            return true ;
+            return isTrue ;
         },
         // 节点被点击时的回调,共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身。
         nodeClick(data, node, $this){
-            debugger
+            // debugger
             let ary = [], ary2 = [] ;
             data = [data];
             this.getnodeClick(data, ary) ;

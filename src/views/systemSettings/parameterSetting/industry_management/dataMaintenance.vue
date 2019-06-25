@@ -67,7 +67,7 @@ export default {
     },
     mounted(){
         // 表格展现查询
-        this.gettableData_request() ;
+        // this.gettableData_request() ;
     },
     computed: {
         heightes(){
@@ -87,13 +87,21 @@ export default {
                 stype: "HY",
                 target: me.value
             }
+            // if(me.value == ""){
+            //     me.$message({ message: "请选择指标", type: "warning" }) ;
+            //     return false ;
+            // }
             fcattarget_query_by_fcattarget(params).then(res => { 
                 if(res.data.code === 200) {
                     let data = res.data.data ;
                     data.forEach((res,index) => {
+                        if(res.fact_a == 0){
+                            res.fact_a = null ;
+                        }else{
+                            res.val = tools.currency(res.fact_a, '' , 2) ;
+                        }
                         res.scode = res.cs ;
                         res.sname = res.csmc ;
-                        res.val = tools.currency(res.fact_a, '' , 2) ;
                         res.isEdit = true ;
                     });
                     me.tableData2 = data ;
@@ -201,7 +209,7 @@ export default {
          * @description 保存按钮
          */
         saveClick(){
-            // debugger
+            debugger
             let me = this ;
             let isEdit = [] ;
             let params = [] ;

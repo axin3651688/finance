@@ -50,6 +50,8 @@
                                 action="/zjb/risk_sys/add"
                                 :auto-upload="autoUpload"
                                 :data="this.formData"
+                                :on-success="onSuccess"
+                                :on-error="onError"
                                 :on-change="handleChange"
                         >
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -127,7 +129,7 @@
                 params.writtenDate = this.getDateNowYMD(this.formData.writtenDate);
                 params.releaseDate = this.getDateNowYMD(this.formData.releaseDate);
 
-                if(_this.$refs.upload.$el.innerText === '选取文件'){
+                if (_this.$refs.upload.$el.innerText === '选取文件') {
                     // 'success' | 'warning' | 'info' | 'error'
                     this.$message({
                         message: '请录入完整信息',
@@ -144,20 +146,7 @@
                     delete params.savePath
                 }
 
-                // if(params.nid){
-                //     riskSystemAdd().then(res=>{
-                //
-                //     })
-                // }else{
-                //     _this.$refs.upload.submit();
-                // }
-
                 _this.$refs.upload.submit();
-
-
-                this.$emit("addSuccess", 'systemAdd');
-
-                this.$emit("pageClose", 'systemAdd')
 
             },
 
@@ -185,7 +174,38 @@
                 _formData.releaseDate = _riskSystemSingleData['releaseDate'];
                 _formData.nid = _riskSystemSingleData['nid'];
                 _formData.savePath = _riskSystemSingleData['savePath'];
+            },
+
+            /**
+             * 上传成功的回调
+             */
+            onSuccess(ee) {
+                if (ee.code === '0') {
+                    this.$message({
+                        message: '添加失败',
+                        type: 'error'
+                    });
+                }else{
+                    this.$message({
+                        message: '添加成功',
+                        type: 'success'
+                    });
+                    this.$emit("addSuccess", 'systemAdd');
+                    this.$emit("pageClose", 'systemAdd');
+                }
+
+
+            },
+
+            /**
+             * 制度添加失败的提示
+             */
+            onError() {
+                this.$message({
+                    message: '添加失败'
+                });
             }
+
         }
     }
 </script>

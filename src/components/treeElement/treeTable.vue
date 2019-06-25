@@ -57,16 +57,20 @@ export default {
         convertData() {
             // debugger
             let tmp;
-            if (!Array.isArray(this.item.datas)) {
-                tmp = [this.item.datas];
+            if (this.item.datas.length == 0) {
+                tmp = [] ;
             } else {
-                if (!this.item.rows.length>0) {
-                    tmp = [this.item.rows];
+                if (!Array.isArray(this.item.datas)) {
+                    tmp = [this.item.datas];
                 } else {
-                    tmp = this.item.rows ;
+                    if (!this.item.rows.length>0) {
+                        tmp = [this.item.rows];
+                    } else {
+                        tmp = this.item.rows ;
+                    }
+                    // tmp = this.item.rows;
                 }
-                // tmp = this.item.rows;
-            }
+            } 
             // const func = this.evalFunc || treeToArray;
             // const args = this.evalArgs
             //     ? Array.concat([tmp, this.expandAll], this.evalArgs)

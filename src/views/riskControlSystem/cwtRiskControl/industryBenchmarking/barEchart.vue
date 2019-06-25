@@ -52,6 +52,29 @@
                         type: 'category',
                         name: '省份',
                         data: [],//名字
+                        // nameTextStyle: {   // 坐标轴名称样式
+                        //     color: 'red',
+                        //     padding: [5, 0, 0, -5]
+                        // },
+                        axisLine: {       // 坐标轴 轴线
+                            show: true,  // 是否显示
+                            symbol: ['none', 'arrow'],  // 是否显示轴线箭头
+                            symbolSize: [8, 8], // 箭头大小
+                            symbolOffset: [0, 7],  // 箭头位置
+                            // ------   线 ---------
+                            lineStyle: {
+                                color: 'black',
+                                width: 1,
+                                type: 'solid'
+                            }
+                        },
+                        axisLabel: {    // 坐标轴标签
+                            show: true,  // 是否显示
+                            inside: false, // 是否朝内
+                            rotate: 30, // 旋转角度
+                            margin: 5, // 刻度标签与轴线之间的距离
+                            color: 'black'  // 默认取轴线的颜色
+                        },
                         axisTick: {
                             alignWithLabel: true
                         }
@@ -71,7 +94,7 @@
                                     show: true,
                                     position: 'top', // 相对位置
                                     rotate: 0,  // 旋转角度
-                                    color: '#000',
+                                    color: 'black',
                                     fontSize:16,
 
                                     /**
@@ -84,6 +107,16 @@
                                         return _index + 1;
                                     }
                                 },
+                                color: function (params){
+                                    debugger;
+
+                                    if(params.name === '天津市' || params.name === '食品集团'){
+                                        return '#FF9900'
+                                    }else{
+                                        return '#2196F3'
+                                    }
+                                }
+                                // barBorderRadius: [18, 18, 0 ,0],
                             }
                         },
                         data: []//数据
@@ -124,7 +157,7 @@
                     _this.option.xAxis.name = '省份';
                 }
                 _this.option.series.name = _this.selectedName;
-            }
+            },
         }
     }
 </script>
