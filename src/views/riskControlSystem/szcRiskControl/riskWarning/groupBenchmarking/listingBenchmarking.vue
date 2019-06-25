@@ -278,7 +278,6 @@
              * 确定按钮事件。
              */
             btnHandler () {
-                debugger;
                 let me = this,storeParams = me.$store.getters,year = storeParams.year,month = storeParams.month,
                     company = storeParams.company,params = {
                     company:company,

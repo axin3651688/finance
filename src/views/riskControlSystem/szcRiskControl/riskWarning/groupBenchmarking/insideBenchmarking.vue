@@ -1,44 +1,115 @@
 <template>
     <div>
         <div>
-            <el-row>
-                <el-col :span="14">
+            <el-tabs v-model="activeName" @tab-click="tabClick" @tab-remove="removeTab" :before-leave="beforeLeave">
+                <el-tab-pane label="内部对标" name="first">
                     <div>
-                        <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:drillItemSname="drillItemSname"></treeTable>
+                        <el-row>
+                            <el-col :span="14">
+                                <div>
+                                    <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:drillItemSname="drillItemSname"></treeTable>
+                                </div>
+                            </el-col>
+                            <el-col :span="10" style="height:100%;">
+                                <div class="transverseBar" style="height:100%;">
+                                    <transverseBar :chartData.sync="chartData"></transverseBar>
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
-                </el-col>
-                <el-col :span="10" style="height:100%;">
-                    <div class="transverseBar" style="height:100%;">
-                        <transverseBar :chartData.sync="chartData"></transverseBar>
-                    </div>
-                </el-col>
-            </el-row>
+                </el-tab-pane>
+                <template v-if="editableTabs && editableTabs.length > 0">
+                    <el-tab-pane
+                        v-for="(item, index) in editableTabs"
+                        :key="index"
+                        :label="item.title"
+                        :name="item.name"
+                        closable
+                        ref="tabChild"
+                    >
+                        <component :is="item.content" :pComponentData.sync="item.params" v-on:drillHandler="drillHandler" :ref="item.name"></component>
+                    </el-tab-pane>
+                </template>
+            </el-tabs>
         </div>
     </div>
 </template>
 <script>
     import treeTable from "@v/riskControlSystem/publicRiskControl/treeTable/treeTable.vue"
+    import comprehensiveRating from "./comprehensiveRating"
+
+    import profitability from "./profitability"
+    import developmentAbility from "./developmentAbility"
+    import operationQuality from "./operationQuality"
+    import debtRisk from "./debtRisk"
+    import detailedIndicator from "./detailedIndicators"
+
     // import router from "@v/layout/router"
     import transverseBar from "./../echarts/transverseBar.vue"
     import {
         groupQuery
     } from '~api/szcRiskControl/riskControl.js'
+    import { mapGetters,mapActions } from "vuex";
     import { findThirdPartData } from "~api/interface"
     export default {
         name: "treeTableDemo",
         components: {
             treeTable,
-            transverseBar
+            transverseBar,
+            comprehensiveRating,
+            profitability,
+            developmentAbility,
+            operationQuality,
+            debtRisk,
+            detailedIndicator
         },
         data() {
             return {
                 treeData:[],
                 columns:[],
-                chartData:[]
+                chartData:[],
+                activeName:"first",
+                editableTabs: [],
+            }
+        },
+        /**
+         * 计算属性。
+         */
+        computed: {
+            ...mapGetters(["year", "month", "company","showDims"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                this.updateTabOther();
+                this.updateData();
+            },
+            year(newValue, oldValue) {
+                this.updateTabOther();
+                this.updateData();
+            },
+            month(newValue, oldValue) {
+                this.updateTabOther();
+                this.updateData();
             }
         },
         created() {
             let me = this;
+            let showDims = this.showDims;
+            if(showDims){
+                this.ShowDims({
+                    company:true,
+                    year:true,
+                    month:true,
+                    conversion:true
+                });
+                // showDims.company = true,
+                // showDims.year = true,
+                // showDims.month = true,
+                // showDims.conversion = false;
+            }
             me.axios.get('/cnbi/json/source/tjsp/szcJson/risk/insideBenchmarking.json').then(res => {
                 if(res.data.code == 200){
                     me.columns = res.data.columns;
@@ -58,19 +129,27 @@
         },
         mounted() {
             let $div = document.getElementsByClassName("transverseBar");
-            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 80;
+            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
             $div[0].children[0].style.height = heightNum + "px";
             window.onresize = function temp(){
-                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 80;
+                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
                 $div[0].children[0].style.height = heightNum + "px";
             }
         },
         methods: {
+            ...mapActions(["ShowDims"]),
+            /**
+             * 清除後面的tab頁
+             */
+            updateTabOther () {
+                let me = this;
+                me.editableTabs = [];
+                me.activeName = "first";
+            },
             /**
              * 后台接口直接查询数据。
              */
             queryDataOfBackstage(judgeParams) {
-                debugger;
                 let me = this;
                 let params = judgeParams.params;
                 groupQuery(params).then(res => {
@@ -112,6 +191,29 @@
                     }
                 };
                 this.queryDataOfBackstage(judgeParams);
+            },
+            /**
+             * tab页的切换。
+             */
+            tabClick (tab, event) {
+                let me = this,url = me.$router.currentRoute.name,clickItemROW = me.clickItemROW;
+                if(tab.name == "first"){
+                    this.ShowDims({
+                        company:true,
+                        year:true,
+                        month:true,
+                        conversion:true
+                    });
+                    me.updateData();
+                }else {
+                    this.ShowDims({
+                        company:false,
+                        year:false,
+                        month:false,
+                        conversion:false
+                    });
+                    me.$refs[tab.name][0].updateData(clickItemROW);
+                }
             },
             /**
              * 查询数据的入口
@@ -223,9 +325,94 @@
              * 公司的名称的下钻。
              * @author szc 2019年6月4日19:19:23
              */
-            drillItemSname (scope) {
+            drillItemSname(scope){
+                let me = this,editableTabs = me.editableTabs;
+                let obj = {
+                    title: scope.row.sname,
+                    name: scope.row.scode,
+                    content: 'comprehensiveRating',
+                    params:scope.row
+                };
+                me.clickItemROW = scope.row;
+                me.activeName = scope.row.scode;
+                editableTabs.push(obj);
+                me.editableTabs = editableTabs;
+                if(me.showDims){
+                    me.ShowDims({
+                        company:false,
+                        year:false,
+                        month:false,
+                        conversion:false
+                    });
+                }
+            },
+            drillItemSname_old (scope) {
                 let me = this;
-                me.$router.push("/comprehensiveRating");
+                // me.$router.push("/comprehensiveRating");
+                me.$router.push({
+                    name: 'comprehensiveRating',
+                    // replace:true,
+                    params: {
+                        scope: scope.row
+                    }
+                });
+            },
+            /**
+             * 钻取
+             */
+            drillHandler (params) {
+                let me = this,editableTabs = me.editableTabs;
+                let obj = {
+                    title: params.row[params.tabSname],
+                    name: params.row[params.field],
+                    content: params.url,
+                    params:params.outData
+                };
+                me.activeName = params.row[params.field];
+                editableTabs.push(obj);
+                me.editableTabs = editableTabs;
+            },
+            removeTab(targetName) {
+                // this.removeOperation = "remove";
+                let tabs = this.editableTabs;
+                let activeName = this.activeName;
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                            let nextTab = tabs[index + 1] || tabs[index - 1];
+                            if (nextTab) {
+                                activeName = nextTab.name;
+                            }
+                        }
+                    });
+                }
+                this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+                if(this.editableTabs && this.editableTabs.length == 0){
+                    activeName = "first";
+                    this.ShowDims({
+                        company:true,
+                        year:true,
+                        month:true
+                    });
+                    // this.showDims.company = true;
+                    // this.showDims.year = true;
+                    // this.showDims.month = true;
+                }
+                this.activeName = activeName;
+                // this.rootRender = false;
+                // this.$nextTick(() => {
+                //     this.rootRender = true;
+                // });
+            },
+            /**
+             * 暂时没用。
+             */
+            beforeLeave (activeName, oldActiveName) {
+                let me = this,clickItemROW = me.clickItemROW;
+                if(me.$refs[activeName] && me.$refs[activeName].length > 0){
+                    me.$refs[activeName][0].updateData(clickItemROW);
+                }
+                return true;
             }
         }
     };

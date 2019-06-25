@@ -1,22 +1,25 @@
 <template>
     <div>
+        <div v-if="companyTips">
+            <p v-html="titleContent"></p>
+        </div>
         <div>
             <el-row>
                 <el-col :span="8">
                     <div>
-                        <groupGaugePublic :chartData.sync="detailedData.gaugeConfig"></groupGaugePublic>
+                        <groupGaugePublic :chartData.sync="pComponentData.gaugeConfig"></groupGaugePublic>
                     </div>
                 </el-col>
                 <el-col :span="16">
                     <div>
-                        <groupLine :chartData.sync="detailedData.lineConfig"></groupLine>
+                        <groupLine :chartData.sync="pComponentData.lineConfig"></groupLine>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col>
                     <div>
-                        <singleTable :tableData.sync="detailedData.allData" :columns.sync="columns"></singleTable>
+                        <singleTable :tableData.sync="pComponentData.allData" :columns.sync="columns"></singleTable>
                     </div>
                 </el-col>
             </el-row>
@@ -36,7 +39,7 @@
             groupLine
         },
         props:{
-            detailedData:Object
+            pComponentData:Object
         },
         data() {
             return {
@@ -96,10 +99,14 @@
                     }
                 ],
                 gaugeChartData:{},
-                lineChartData:{}
+                lineChartData:{},
+                companyTips:false,//公司提示的title内容
+                titleContent:""
             }
         },
-        created() {},
+        created() {
+            let me = this;
+        },
         mounted() {},
         methods: {
             /**

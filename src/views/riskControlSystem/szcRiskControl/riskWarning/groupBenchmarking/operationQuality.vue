@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div>
+        <div v-if="companyTips">
+            <p v-html="titleContent"></p>
+        </div>
+        <div v-if="mainContent">
             <el-row>
                 <el-col :span="8">
                     <div v-for="(item,index) in gaugeLeft" :key="index">
@@ -21,7 +24,7 @@
             <el-row>
                 <el-col :span="24">
                     <div v-if="tableData && tableData.length > 0">
-                        <singleTable :tableData.sync="tableData" :columns.sync="columns"></singleTable>
+                        <singleTable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName"></singleTable>
                     </div>
                 </el-col>
             </el-row>
@@ -33,6 +36,14 @@
                 </el-col>
             </el-row>
         </div>
+        <!-- <div v-if="detailedIndicator">
+            <div>
+                <el-button @click="returnMainContent">返回</el-button>
+            </div>
+            <div>
+                <detailedIndicator :detailedData.sync="drillContent"></detailedIndicator>
+            </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -42,6 +53,7 @@
     import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import groupRadar from "./../echarts/groupRadar.vue"
     import publicMarking from "./../minix/publicMarking.js"
+    import detailedIndicator from "./detailedIndicators"
     export default {
         mixins:[publicMarking],
         name: "treeTableDemo",
@@ -50,7 +62,11 @@
             singleTable,
             groupRadar,
             groupGaugePublic,
-            threeHeaderTable
+            threeHeaderTable,
+            detailedIndicator
+        },
+        props:{
+            pComponentData:Object
         },
         data() {
             return {
@@ -62,14 +78,23 @@
                 tableData:[],
                 columns:[],
                 ManyTableData:[],//多表头数据
-                manyColumns:[]//多表头列配置
+                manyColumns:[],//多表头列配置
+                resData:{},
+                detailedIndicator:false,
+                mainContent:true,
+                drillContent:{},
+                companyTips:false,//公司提示的title内容
+                titleContent:""
             }
         },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/development.json";
+            let row;
+            if(me.pComponentData){
+                row = me.pComponentData;
+            }
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
-                    debugger;
                     me.tableData = res.data.rows;
                     me.columns = res.data.columns;
                     me.manyColumns = res.data.manyColumns;
@@ -81,7 +106,12 @@
                         sqlId:"107"
                     };
                     // me.queryDataPublic(judgeParams);
-                    me.updateData();
+                    if(row){
+                        me.titleContent = row.sname + ";" + "所属行业：农、林、牧、渔业";
+                        me.companyTips = true;
+                        // judgeParams.row = row;
+                    }
+                    me.updateData(row);
                     
                     // me.createEcharts();
                 }
@@ -97,7 +127,7 @@
         },
         mounted() {},
         methods: {
-            updateData(){
+            updateData(row){
                 let me = this,storeParams = me.$store.getters,company = storeParams.company,
                     year = storeParams.year,month = storeParams.month;
                 if(month > 9){
@@ -109,7 +139,7 @@
                     id:"operationQuality",
                     text:"运营质量",
                     params:{
-                        company:company,
+                        company:row? row.scode:company,
                         period:me.getPeriod(),
                         indicator:"'52','122','31','123','124','131'",
                         fact:'B',
@@ -132,6 +162,53 @@
                     period = year + "0" + month;
                 }
                 return period;
+            },
+            /**
+             * 名称点击的钻取。
+             */
+            clickItemName (scope, index, row) {
+                let me = this,storeParams = me.$store.getters,company = storeParams.company,
+                    year = storeParams.year,month = storeParams.month;
+                if(month > 9){
+                    month = month + "";
+                }else {
+                    month = "0" + month;
+                }
+                let judgeParams = {
+                    id:"ylnl_xz",
+                    text:"盈利能力单指标下钻",
+                    row:scope.row,
+                    params:{
+                        company:me.pComponentData? me.pComponentData.scode:company,
+                        period:me.getPeriod(),
+                        indicator:scope.row.scode,
+                        fact:'B',
+                        year:year,
+                        month:month,
+                        sqlKey:"RiskWarning.nldzb_xz"
+                    }
+                };
+                this.queryDataOfBackstage(judgeParams);
+                let showDims = this.showDims;
+                if(showDims){
+                    this.ShowDims({
+                        company:false,
+                        year:false,
+                        month:false,
+                        conversion:false
+                    });
+                }
+                // me.detailedIndicator = true;
+                // me.mainContent = false;
+            },
+            /**
+             * 返回上一级。
+             */
+            returnMainContent () {
+                let me = this;
+                me.updateData();
+                me.detailedIndicator = false;
+                me.mainContent = true;
             }
         }
     };

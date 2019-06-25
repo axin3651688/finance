@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div v-if="companyTips">
+            <p v-html="titleContent"></p>
+        </div>
         <div>
             <el-row>
                 <el-col :span="8">
@@ -52,6 +55,9 @@
             singleTable,
             manyHeaderTable
         },
+        props:{
+            pComponentData:Object
+        },
         data() {
             return {
                 gaugesLeft:[{},{}],
@@ -64,11 +70,19 @@
                     receive:{}
                 },
                 ManyTableData:[],//多表头数据
-                manyColumns:[]//多表头列配置
+                manyColumns:[],//多表头列配置
+                companyTips:false,//公司提示的title内容
+                titleContent:""
             }
         },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/comprehensiveRating.json";
+            //路由跳转处理。这个用不到了暂时
+            // let row = me.routerTransform();
+            let row;
+            if(me.pComponentData){
+                row = me.pComponentData;
+            }
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
                     // me.tableData = res.data.rows;
@@ -78,8 +92,13 @@
                     let judgeParams = {
                         sqlId:"106"
                     };
-                    me.queryDataPublic(judgeParams);
-                    // me.updateData();
+                    if(row){
+                        me.titleContent = row.sname + ";" + "所属行业：农、林、牧、渔业";
+                        me.companyTips = true;
+                        // judgeParams.row = row;
+                    }
+                    // me.queryDataPublic(judgeParams);
+                    me.updateData(row);
                 }
             });
         },
@@ -88,7 +107,7 @@
             /**
              * 更新数据。
              */
-            updateData(){
+            updateData(row){
                 let me = this,storeParams = me.$store.getters,company = storeParams.company,
                     year = storeParams.year,month = storeParams.month;
                 if(month > 9){
@@ -100,13 +119,13 @@
                     id:"comprehensiveRating",
                     text:"综合评级",
                     params:{
-                        company:company,
+                        company:row? row.scode:company,
                         period:me.getPeriod(),
                         indicator:"'qypj','zwfx','yyzl','fznl','ylnl'",
                         fact:'B',
                         year:year,
                         month:month,
-                        sqlKey:"RiskWarning.fzhpj"
+                        sqlKey:"RiskWarning.zhpj"
                     }
                 };
                 this.queryDataOfBackstage(judgeParams);
@@ -139,7 +158,7 @@
                     monthStr = "0" + month;
                 }
                 let params = {
-                    company:company,
+                    company:judgeParams.row? judgeParams.row.scode:company,
                     year:year,
                     month:monthStr,
                     period:period,
@@ -201,7 +220,6 @@
              * @author szc 2019年6月5日14:14:05
              */
             transRadarData (data) {
-                debugger;
                 let me = this,values = [];
                 let receive = {
                     title: {
@@ -229,7 +247,7 @@
                             { name: '运营质量', max: 10},
                             { name: '债务风险', max: 10}
                         ],
-                        center: ['50%', '50%']
+                        center: ['50%', '55%']
                     },
                     series: [{
                         name: '',
@@ -251,8 +269,40 @@
             /**
              * 名称点击的钻取。
              */
-            clickItemName (scope, index, row) {
-                debugger;
+            clickItemName(scope, index, row){
+                let me = this;
+                let rowItem = scope.row,zbid = rowItem.zbid;
+                let params = {
+                    row:scope.row,
+                    outData:me.pComponentData,
+                    field:"zbid",
+                    tabSname:"zbmc"
+                };
+                if(zbid == "zwfx"){
+                    // me.$router.push("/debtRisk");
+                    params.url = "debtRisk";
+                }else if (zbid == "fznl") {
+                    // me.$router.push("/developmentAbility");
+                    params.url = "developmentAbility";
+                }else if (zbid == "ylnl") {
+                    // me.$router.push("/profitability");
+                    params.url = "profitability";
+                }else if (zbid == "yyzl") {
+                    // me.$router.push("/operationQuality");
+                    params.url = "operationQuality";
+                }
+                // let showDims = this.showDims;
+                if(this.showDims){
+                    this.ShowDims({
+                        company: false,
+                        year: false,
+                        month: false,
+                        conversion: false
+                    });
+                }
+                me.$emit("drillHandler",params);
+            },
+            clickItemName_old (scope, index, row) {
                 let me = this;
                 let rowItem = scope.row,zbid = rowItem.zbid;
                 if(zbid == "zwfx"){
@@ -264,6 +314,17 @@
                 }else if (zbid == "yyzl") {
                     me.$router.push("/operationQuality");
                 }
+            },
+            /**
+             * 路由跳转处理。
+             */
+            routerTransform () {
+                let me = this;
+                let scope = me.$router.history.current.params? me.$router.history.current.params.scope:"";
+                return scope;
+                // if(scope){
+
+                // }
             }
         }
     };
