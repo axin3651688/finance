@@ -183,7 +183,7 @@
 
         },
         mounted() {
-            this.doNotShowDim(true);
+            this.doNotShowDim(false);
         },
         methods: {
             /**
