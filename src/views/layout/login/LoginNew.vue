@@ -168,7 +168,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["GetSideMid", "GettRreeInfo"]),
+    ...mapActions(["GetSideMid", "GettRreeInfo","ShowDims"]),
     // showPwd() {
     //   if (this.pwdType === "password") {
     //     this.pwdType = "";
@@ -252,6 +252,12 @@ export default {
                   }
                 }
                 let url = "/main";
+                //初始化一个导航栏信息。
+                this.ShowDims({
+                  company:true,
+                  year:true,
+                  month:true
+                });
                 //默认加载第一个管理驾驶舱
                 localStorage.module_api_cache =
                     "/cnbi/json/source/tjsp/dash.json";
