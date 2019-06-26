@@ -532,33 +532,54 @@ export default {
             let data = [] ;
             let selection_no = me.selection.filter(res => { return res.sissubmit == "未提交" }) ;
             let selection_yes = me.selection.filter(res => { return res.sissubmit == "已提交" }) ;
-            selection_no.forEach(item => { data.push(item.id) ; }) ;
-            if(selection_no && selection_no.length > 0){
+            if(me.submitdeletetype == 0){
+                selection_no.forEach(item => { data.push(item.id) ; }) ;
+            }else{
+                me.selection.forEach(item => { data.push(item.id) ; }) ;
+            }
+            // submitdeletetype:0 => 已提交的风险不可以删除
+            if(selection_no && selection_no.length > 0 && me.submitdeletetype == 0){
                 me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteRiskdistinguish(data).then(res => { 
-                        if(res.data.code === 200){
-                            data.forEach(ris => {
-                                me.tableData = me.tableData.filter(rds => {
-                                    return ris != rds.id ;
-                                });
-                            })
-                            selection_no = [] ;
-                            me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
-                            me.$message({ type: 'success', message: '删除成功!' });
-                        }else{
-                            me.$message.error('删除失败!');
-                        }
-                    }) 
+                    // 删除请求接口
+                    me.deleteRiskdistinguish(data,selection_no) ;
+                    // deleteRiskdistinguish(data).then(res => { 
+                    //     if(res.data.code === 200){
+                    //         data.forEach(ris => {
+                    //             me.tableData = me.tableData.filter(rds => {
+                    //                 return ris != rds.id ;
+                    //             });
+                    //         })
+                    //         selection_no = [] ;
+                    //         me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
+                    //         me.$message({ type: 'success', message: '删除成功!' });
+                    //     }else{
+                    //         me.$message.error('删除失败!');
+                    //     }
+                    // }) 
                 }).catch(() => {
                     me.$message({ type: 'info', message: '已取消删除' });          
                 });
-            }else{
-                if(selection_yes && selection_yes.length > 0){
-                    me.$message({message: '温馨提示：已提交的风险不可以删除哦!',type: 'success'}) ;
+            // submitdeletetype:1 => 已提交的风险可以删除
+            }else if(me.selection && me.selection.length > 0 && me.submitdeletetype == 1){
+                me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // 删除请求接口
+                    me.deleteRiskdistinguish(data) ;
+                }).catch(() => {
+                    me.$message({ type: 'info', message: '已取消删除' });          
+                });
+            }
+            else
+            {
+                if(selection_yes && selection_yes.length > 0 && me.submitdeletetype == 0){
+                    me.$message({message: '温馨提示：已提交的风险不可以删除哦!',type: 'warning'}) ;
                 }else{
                     if(me.tableData && me.tableData.length > 0){
                         me.$message({message: '温馨提示：没有选择风险哦!无法删除!',type: 'warning'}) ;
@@ -567,6 +588,24 @@ export default {
                     }
                 }
             }
+        },
+        // 【删除按钮】删除请求接口
+        deleteRiskdistinguish(data,selection_no){
+            let me = this ;
+            deleteRiskdistinguish(data).then(res => { 
+                if(res.data.code === 200){
+                    data.forEach(ris => {
+                        me.tableData = me.tableData.filter(rds => {
+                            return ris != rds.id ;
+                        });
+                    })
+                    if(me.submitdeletetype == 0)selection_no = [] ;
+                    me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
+                    me.$message({ type: 'success', message: '删除成功!' });
+                }else{
+                    me.$message.error('删除失败!');
+                }
+            }) 
         },
         /**
          * @event 刷新按钮
