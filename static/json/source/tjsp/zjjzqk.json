@@ -127,6 +127,7 @@
       {
         "text": "原因",
         "type": "string",
+        "width": "160",
         "align": "right",
         "id": "yy"
       }
