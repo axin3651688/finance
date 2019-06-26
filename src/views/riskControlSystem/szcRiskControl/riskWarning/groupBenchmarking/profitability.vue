@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div v-if="companyTips">
+            <p v-html="titleContent"></p>
+        </div>
         <div v-if="mainContent">
             <el-row>
                 <el-col v-for="(item,index) in gaugeTop" :key="index" :span="8">
@@ -41,14 +44,14 @@
                 </el-col>
             </el-row>
         </div>
-        <div v-if="detailedIndicator">
+        <!-- <div v-if="detailedIndicator">
             <div>
                 <el-button @click="returnMainContent">返回</el-button>
             </div>
             <div>
                 <detailedIndicator :detailedData.sync="drillContent"></detailedIndicator>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -70,6 +73,9 @@
             threeHeaderTable,
             detailedIndicator
         },
+        props:{
+            pComponentData:Object
+        },
         data() {
             return {
                 gaugeTop:[{},{},{}],
@@ -85,14 +91,19 @@
                 resData:{},
                 detailedIndicator:false,
                 mainContent:true,
-                drillContent:{}
+                drillContent:{},
+                companyTips:false,//公司提示的title内容
+                titleContent:""
             }
         },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/profitability.json";
+            let row;
+            if(me.pComponentData){
+                row = me.pComponentData;
+            }
             this.axios.get(url).then(res => {
                 if(res.data.code == 200) {
-                    debugger;
                     me.tableData = res.data.rows;
                     me.columns = res.data.columns;
                     me.manyColumns = res.data.manyColumns;
@@ -104,7 +115,12 @@
                     //     sqlId:"107"
                     // };
                     // me.queryDataPublic(judgeParams);
-                    me.updateData();
+                    if(row){
+                        me.titleContent = row.sname + ";" + "所属行业：农、林、牧、渔业";
+                        me.companyTips = true;
+                        // judgeParams.row = row;
+                    }
+                    me.updateData(row);
                     
                     // me.createEcharts();
                 }
@@ -115,7 +131,7 @@
             /**
              * 更新数据。
              */
-            updateData(){
+            updateData(row){
                 let me = this,storeParams = me.$store.getters,company = storeParams.company,
                     year = storeParams.year,month = storeParams.month;
                 if(month > 9){
@@ -127,7 +143,7 @@
                     id:"profitability",
                     text:"盈利能力",
                     params:{
-                        company:company,
+                        company:row? row.scode:company,
                         period:me.getPeriod(),
                         indicator:"'19','20','53','120','21','121','133'",
                         fact:'B',
@@ -155,7 +171,6 @@
              * 名称点击的钻取。
              */
             clickItemName (scope, index, row) {
-                debugger;
                 let me = this,storeParams = me.$store.getters,company = storeParams.company,
                     year = storeParams.year,month = storeParams.month;
                 if(month > 9){
@@ -166,8 +181,9 @@
                 let judgeParams = {
                     id:"ylnl_xz",
                     text:"盈利能力单指标下钻",
+                    row:scope.row,
                     params:{
-                        company:company,
+                        company:me.pComponentData? me.pComponentData.scode:company,
                         period:me.getPeriod(),
                         indicator:scope.row.scode,
                         fact:'B',
@@ -177,8 +193,17 @@
                     }
                 };
                 this.queryDataOfBackstage(judgeParams);
-                me.detailedIndicator = true;
-                me.mainContent = false;
+                let showDims = this.showDims;
+                if(showDims){
+                    this.ShowDims({
+                        company:false,
+                        year:false,
+                        month:false,
+                        conversion:false
+                    });
+                }
+                // me.detailedIndicator = true;
+                // me.mainContent = false;
             },
             /**
              * 返回上一级。

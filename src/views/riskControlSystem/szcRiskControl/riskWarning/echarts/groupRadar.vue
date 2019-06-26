@@ -53,7 +53,6 @@
         watch: {
             chartData:{
                 handler(){
-                    debugger;
                     this.updateData();
                 },
                 deep:true
@@ -64,7 +63,6 @@
              * 更新数据
              */
             updateData () {
-                debugger;
                 this.receive =  this.chartData.receive;
             }
         }

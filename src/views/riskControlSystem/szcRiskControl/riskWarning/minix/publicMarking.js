@@ -4,35 +4,61 @@
 import {
     groupQuery
 } from '~api/szcRiskControl/riskControl.js'
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { findThirdPartData } from "~api/interface"
 export default {
     /**
      * 计算属性。
      */
     computed: {
-        ...mapGetters(["year", "month", "company"])
+        ...mapGetters(["year", "month", "company", "showDims"])
     },
     watch: {
         /**
          * 监听公司
          */
         company(newValue, oldValue) {
+            // this.updateTabOther();
+            this.removeTabOfUseless();
             this.updateData();
         },
         year(newValue, oldValue) {
+            // this.updateTabOther();
+            this.removeTabOfUseless();
             this.updateData();
         },
         month(newValue, oldValue) {
+            // this.updateTabOther();
+            this.removeTabOfUseless();
             this.updateData();
         }
+        // $route(to, form) {
+        //     debugger;
+        //     let me = this;
+        // }
     },
     methods: {
+        ...mapActions(["ShowDims"]),
+        /**
+         * 去除后面的没用的tab页。
+         */
+        removeTabOfUseless() {
+            let me = this;
+            me.$emit("removeTabOfUselessHandler");
+        },
+        /**
+         * 没有描述
+         */
+        updateTabOther() {
+            debugger;
+            let me = this;
+            me.editableTabs = [];
+            me.activeName = "first";
+        },
         /**
          * 后台接口直接查询数据。
          */
         queryDataOfBackstage(judgeParams) {
-            debugger;
             let me = this;
             let params = judgeParams.params;
             groupQuery(params).then(res => {
@@ -49,7 +75,6 @@ export default {
          * 查询数据之后的处理。
          */
         queryBackstageDataAfter(datas, judgeParams) {
-            debugger;
             let me = this;
             if (judgeParams.id == "profitability") {
                 me.profitabilityData(datas);
@@ -62,27 +87,26 @@ export default {
             } else if (judgeParams.id == "comprehensiveRating") {
                 me.comprehensiveData(datas);
             } else if (judgeParams.id == 'ylnl_xz') {
-                me.singleIndicatorDrill(datas);
+                me.singleIndicatorDrill(datas, judgeParams);
             }
         },
         /**
          * 综合评级。
          */
         comprehensiveData(datas) {
-            debugger;
             let me = this;
             let arr = [{
                 id: 'gaugesLeft',
                 field: 'scode',
-                gaugeSname: 'sname',
-                gaugeField: 'score',
-                content: ['19', '20', '21']
+                gaugeSname: 'zbmc',
+                gaugeField: 'qyfz',
+                content: ['fznl', 'ylnl']
             }, {
                 id: 'gaugesRight',
                 field: 'scode',
-                gaugeSname: 'sname',
-                gaugeField: 'score',
-                content: ['121', '133']
+                gaugeSname: 'zbmc',
+                gaugeField: 'qyfz',
+                content: ['zwfx', 'yyzl']
             }];
             for (let i = 0; i < arr.length; i++) {
                 me[arr[i].id] = [];
@@ -93,9 +117,9 @@ export default {
             let radarConfig = {
                 id: 'profitability',
                 radarField: 'scode',
-                radarSname: 'sname',
-                radarValue: 'score',
-                content: ['19', '20', '53', '120', '21', '121', '133']
+                radarSname: 'zbmc',
+                radarValue: 'qyfz',
+                content: ['zwfx', 'yyzl', 'fznl', 'ylnl']
             };
             me.transRadarData(datas, radarConfig);
         },
@@ -295,7 +319,6 @@ export default {
          * @author szc 2019年6月6日19:21:00
          */
         queryDataAfter(datas, judgeParams) {
-            debugger;
             let me = this;
             if (judgeParams.id == "profitability") {
                 let arr = [{
@@ -378,7 +401,6 @@ export default {
          * @author szc 2019年6月10日11:16:14
          */
         createGauges(arr) {
-            debugger;
             let me = this;
             arr.forEach(item => {
                 if (me[item.id] && me[item.id].length > 0) {
@@ -413,7 +435,6 @@ export default {
                 },
                 tooltip: {
                     formatter: function(a, b, c) {
-                        debugger;
                         return a.seriesName + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
                     }
                 },
@@ -463,7 +484,6 @@ export default {
          * @author szc 2019年6月5日14:14:05
          */
         transRadarData(datas, radarConfig) {
-            debugger;
             let me = this,
                 values = [],
                 indicator = [];
@@ -491,7 +511,7 @@ export default {
                             }
                         },
                         indicator: indicator,
-                        center: ['50%', '50%']
+                        center: ['50%', '60%']
                     },
                     series: [{
                         name: '',
@@ -543,7 +563,6 @@ export default {
          * 单指标下钻。
          */
         singleIndicatorDrill_old() {
-            debugger;
             let me = this;
             let arr = [{
                 id: 'gaugesLeft',
@@ -557,7 +576,8 @@ export default {
             }
             me.createGauges(arr);
         },
-        singleIndicatorDrill(datas) {
+        singleIndicatorDrill(datas, judgeParams) {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 year = storeParams.year,
@@ -596,12 +616,19 @@ export default {
                 drillContent.lineConfig.options = me.createLineChart(datas);
             }
             me.drillContent = drillContent;
+            let params = {
+                url: "detailedIndicator",
+                row: judgeParams.row,
+                outData: drillContent,
+                field: "scode",
+                tabSname: "sname"
+            };
+            this.$emit("drillHandler", params);
         },
         /**
          * 制造线性chart图。
          */
         createLineChart(datas) {
-            debugger;
             let me = this;
             let arrItem = me.getValueOfDatas(datas);
             let option = {

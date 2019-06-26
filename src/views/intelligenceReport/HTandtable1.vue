@@ -839,6 +839,14 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle(){
+      //判断如果没有保存，提示他去保存。
+      if(this.tableData && this.tableData.length > 0){
+        this.$message({
+          message:"请先保存填写的数据，再上报！",
+          type:"warning"
+        });
+        return;
+      }
       let me = this,
           item = this.currentItem,
           id = this.templateId,

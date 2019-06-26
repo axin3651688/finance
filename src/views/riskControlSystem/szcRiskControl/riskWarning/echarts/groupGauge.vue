@@ -10,6 +10,22 @@
             return {
                 gValue:50,
                 receive : {
+                    title: {
+                        // 	padding:[410,0,0,0],    //标题相对于容器边距
+                        text: this.chartData.sname || "",
+                        link: false,
+                        top: "10",
+                        x: "center", //标题块相对于容器位置
+                        // y:260,
+                        textAlign: "left",
+                        textStyle: {
+                            // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            // fontWeight: 'bold',
+                            fontSize: 16,
+                            color: "#8796B0",
+                            align: "center"
+                        }
+                    },
                     tooltip : {
                         // formatter: "{a} <br/>{b} : {c}%"
                         formatter:function(a,b,c){
@@ -39,7 +55,7 @@
                                     width: 20 //表盘宽度
                                 }
                             },
-                            center: ["50%", "50%"], //整体的位置设置
+                            center: ["50%", "60%"], //整体的位置设置
                             radius: "85%", //仪表盘大小
                             //设置指针样式
                             pointer: {
@@ -75,9 +91,12 @@
         methods: {
             updateData () {
                 let me = this;
-                me.receive.series[0].data[0].value = me.chartData.qyfz;
-                me.receive.series[0].data[0].name = me.chartData.zbmc;
-                // me.gValue = me.chartData.qyfz;
+                if(me.chartData.options){
+                    me.receive = me.chartData.options;
+                }else {
+                    me.receive.series[0].data[0].value = me.chartData.score;
+                    me.receive.series[0].data[0].name = me.chartData.zbmc;
+                }
             }
         }
     };

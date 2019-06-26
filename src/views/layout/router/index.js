@@ -209,37 +209,38 @@ const router = new Router({
                 },
                 {
                     path: '/comprehensiveRating',
-                    name: '综合评级',
+                    name: 'comprehensiveRating',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/comprehensiveRating.vue'),
+                        // import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/comprehensiveRating.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/tabShell.vue'),
                 },
                 {
                     path: '/profitability',
-                    name: '盈利能力',
+                    name: 'profitability',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/profitability.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/tabShell.vue'),
                 },
                 {
                     path: '/developmentAbility',
-                    name: '发展能力',
+                    name: 'developmentAbility',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/developmentAbility.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/tabShell.vue'),
                 },
                 {
                     path: '/operationQuality',
-                    name: '运营能力',
+                    name: 'operationQuality',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/operationQuality.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/tabShell.vue'),
                 },
                 {
                     path: '/debtRisk',
-                    name: '债务风险',
+                    name: 'debtRisk',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/debtRisk.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/tabShell.vue'),
                 },
                 {
                     path: '/listingBenchmarking',
-                    name: '上市对标',
+                    name: 'listingBenchmarking',
                     component: () =>
                         import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking.vue'),
                 }
@@ -373,25 +374,25 @@ const router = new Router({
                 },
                 { // 参数设置---【国资指标数据维护】 （sjz）
                     path: '/assets',
-                    name: 'assets' ,
+                    name: 'assets',
                     component: () =>
                         import ('@v/systemSettings/parameterSetting/assets_management/assetsSetting')
                 },
                 { // 参数设置---【行业指标数据维护】 （sjz）
                     path: '/industry',
-                    name: 'industry' ,
+                    name: 'industry',
                     component: () =>
                         import ('@v/systemSettings/parameterSetting/industry_management/industrySetting')
                 },
                 { // 参数设置---【市企指标数据维护】 （sjz）
                     path: '/enterprise',
-                    name: 'enterprise' ,
+                    name: 'enterprise',
                     component: () =>
                         import ('@v/systemSettings/parameterSetting/city_management/citySetting')
                 },
                 { // 参数设置---【上市指标数据维护】 （sjz）
                     path: '/listed',
-                    name: 'listed' ,
+                    name: 'listed',
                     component: () =>
                         import ('@v/systemSettings/parameterSetting/listed_management/listedSetting')
                 },

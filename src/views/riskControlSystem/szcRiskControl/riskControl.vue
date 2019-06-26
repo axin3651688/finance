@@ -169,6 +169,7 @@ export default {
      * 组件生成的回调。
      */
     created() {
+        debugger;
         let me = this;
         me.queryDepartMent();
         if(me.activeName == "second") {

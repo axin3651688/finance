@@ -59,7 +59,10 @@
             };
         },
         created() {
-            
+            let me = this;
+            if(me.chartData && me.chartData.options){
+                me.receive = me.chartData.options;
+            }
         },
         mounted() {
             let me = this;
