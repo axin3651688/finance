@@ -2,7 +2,7 @@
 * @Author: sjz
 * @Date:   2019-04-11 12:06:49
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-05-20 14:26:36
+ * @Last Modified time: 2019-06-21 17:41:35
 */
 
 import Vue from 'vue'
@@ -43,7 +43,7 @@ export default {
         // debugger
         let value ;        
         if(!item.stype && !item.pagination){        // 【不是】下钻的页面/ 【没有】分页功能
-            value = offsetHeight - 40 - 64 - 25 - 38 ;
+            value = offsetHeight - 40 - 64 - 25 - 45 ;
         }else if(!item.stype && item.pagination){   // 【不是】下钻的页面/ 【有】分页功能
             value = offsetHeight - 40 - 64 - 25 - 38 - 32 ;
         }else{                                      // 【是】下钻的页面
@@ -83,7 +83,7 @@ export default {
     /**
      * @event 'treeElement/treeColumns.vue'引用了此方法：树表图标的缩进
      */
-    levelProperties(item,row){ debugger
+    levelProperties(item,row){ //debugger
         let css = "padding: 4px 0;";
         let pro = row.column.property;
         if (!pro) {

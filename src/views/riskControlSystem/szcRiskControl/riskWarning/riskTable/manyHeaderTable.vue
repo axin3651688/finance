@@ -143,7 +143,6 @@
         },
         methods: {
             headerRowStyle (row,col) {
-                debugger;
                 let me = this;
                 if (row.rowIndex === 2) {
                     return 'display:none';
@@ -202,7 +201,6 @@
                 }
             },
             styleHandler (row) {
-                debugger;
                 let me = this;
                 if(row && row.fxlxcolor){
                     return "background-color:" + row.fxlxcolor;

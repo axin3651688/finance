@@ -123,7 +123,7 @@ export default {
     created(){},
     mounted(){
         // 查询表格数据
-        // this.dimIndex_query_by_stypeA() ;
+        this.dimIndex_query_by_stypeA() ;
     },
     computed: {
         heighter(){
@@ -145,7 +145,7 @@ export default {
                         me.disabled = false ;
                     }
                 }else{
-                    me.$message.error('查询数据失败！请添加企业数据！') ;
+                    // me.$message.error('查询数据失败！请添加企业数据！') ;
                 }
             });
         },

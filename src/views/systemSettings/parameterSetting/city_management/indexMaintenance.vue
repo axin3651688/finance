@@ -53,13 +53,16 @@
 <script>
 import {
     // 添加弹出框指标选择器接口
-    dim_target_queryall_bystype,
+    dimIndex_queryzb_by_stype,
     // 表格展现接口
-    dimIndex_query_by_stype,
+    // dimIndex_query_by_stype,
+    dim_target_queryall_bystype,
     // 添加接口
-    dimIndex_add,
+    // dimIndex_add,
+    dim_target_add,
     // 删除接口
-    dimIndex_delete
+    // dimIndex_delete
+    dim_target_delete
 } from '~api/cube.js'
 import { helper } from 'handsontable';
 export default {
@@ -101,7 +104,7 @@ export default {
         dimIndex_query_by_stypeA(){
             let me = this ;
             let params = { stype: "SQY" } ;
-            dimIndex_query_by_stype(params).then(res => {
+            dim_target_queryall_bystype(params).then(res => {
                 if(res.data.code === 200){
                     me.tableData = res.data.data ;
                     if(me.tableData.length >= 9){
@@ -122,7 +125,7 @@ export default {
             let me = this ;
             me.dialogVisible = true ;
             let params = { stype: "SQY" };
-            dim_target_queryall_bystype(params).then(res => {
+            dimIndex_queryzb_by_stype(params).then(res => {
                 if(res.data.code === 200){
                     me.options = res.data.data ;
                 } else {
@@ -152,9 +155,9 @@ export default {
         /**
          * @description 添加弹出框-保存按钮
          */
-        determineClick(form){
+        determineClick(form){ 
             let me = this ;
-            me.$refs[form].validate((valid) => { 
+            me.$refs[form].validate((valid) => {
                 if (valid && !me.isTrue) {
                     let params = [{
                         scode: me.inform[0].scode ,
@@ -163,11 +166,12 @@ export default {
                         sunit: me.inform[0].sunit ,
                         sdescription: me.form.sdescription
                     }]
-                    dimIndex_add(params).then(res => { 
+                    dim_target_add(params).then(res => { 
                         if(res.data.code === 200){
                             me.form.sdescription = "" ;
                             me.dimIndex_query_by_stypeA() ;
                             me.cancelClick("form") ;
+                            me.$message({ message: "添加成功!", type: "success" }) ;
                         } else {
                             me.$message.error("添加失败！") ;
                         }
@@ -198,7 +202,7 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             }).then(() => {
-                dimIndex_delete(params,"SQY").then(res => { 
+                dim_target_delete(params,"SQY").then(res => { 
                     if(res.data.code === 200){
                         me.$message({ type: "success", message: res.data.msg }) ;
                         me.dimIndex_query_by_stypeA() ;
