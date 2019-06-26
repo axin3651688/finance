@@ -10,7 +10,7 @@
                     <index-maintenance ref="index" :height="height"></index-maintenance>
                 </el-tab-pane>
                 <el-tab-pane label="数据维护" name="second">
-                    <data-maintenance ref="data" :height="height2"></data-maintenance>
+                    <data-maintenance ref="data"></data-maintenance>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -36,7 +36,7 @@ export default {
     created(){
         // debugger
         this.height = document.body.offsetHeight - 168 ;
-        this.height2 = document.body.offsetHeight - 168 ;
+        // this.height2 = document.body.offsetHeight - 168 ;
     },
     mounted(){
         // 高度自适应
@@ -46,11 +46,11 @@ export default {
         // 高度自适应
         getClientHeight(){
             this.height = document.body.offsetHeight - 168 ;
-            this.height2 = document.body.offsetHeight - 168 ;
+            // this.height2 = document.body.offsetHeight - 168 ;
             const me = this ;
             window.onresize = function temp(){ 
                 me.height = document.body.offsetHeight - 168 ;
-                me.height2 = document.body.offsetHeight - 168 ;
+                // me.height2 = document.body.offsetHeight - 168 ;
             }
         },
         // tab 被选中时触发
@@ -59,9 +59,9 @@ export default {
             if(val.name == "first") {   // 指标维护
                 val.$children[0].dimIndex_query_by_stypeA() ;
             } else {                    // 数据维护
-                // let cc = this.$refs.index.tableData ;
-                val.$children[0].gettableData_request() ;
-                // val.$children[0].options = cc ;
+                let cc = this.$refs.index.tableData ;
+                // val.$children[0].gettableData_request() ;
+                val.$children[0].itemc = cc ;
             }
         }
     }

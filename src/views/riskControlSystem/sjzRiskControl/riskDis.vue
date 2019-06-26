@@ -164,6 +164,7 @@ export default {
             // 
             periodtype: 0,      // 全局控制选择的日期类型
             reporttype: 0,      // 全局控制风险类型显示与隐藏
+            submitdeletetype:0, // 全局控制已提交的风险删除或不能删除
             // 
             objer: {},          // 对象存储
             isbtnShow: true,    // 批量下达按钮的显示与隐藏控制
@@ -191,14 +192,15 @@ export default {
     created(){
         // debugger
         // 全局控制选择的日期类型
-        this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
-        this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
+        // this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
+        // this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
         // 点进节点时默认计算的高度
         this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
         // 弹出框===如果屏幕 <= 1200px 宽度自动变更为 540px；如果 >1200px 宽度为默认宽度 960px
         if(document.body.offsetWidth <= 1200 )this.widths = "540px" ;
     },
     mounted(){
+        // this.globalparam_request() ;    // 全局参数设置请求
         this.showDimsControl(); // 日期的控制显示
         this.setClientHeight(); // 自适应高度
         this.axiosJson();       // 获取表格json的信息
@@ -206,6 +208,7 @@ export default {
         this.table1Request();   // 获取【参照按钮-发生概率】的json信息
         this.tab1e2Request();   // 获取【参照按钮-影响程度】的json信息
         // this.htmlContent();     // 获取表格信息生成文字
+        
     },
     watch: {
         // 切换年触发
@@ -306,16 +309,41 @@ export default {
                 period: $params.year + mini.getPeriod($params),
                 comparePeriod: $params.year -1 + mini.getPeriod($params),
             } ;
-            // json里的queryDataBefore的方法
-            if(obj.queryDataBefore && typeof obj.queryDataBefore == "function"){
-                params = obj.queryDataBefore(params, obj, me) ;
-            }
-            // 有：请求数据方法/ 没有：直接赋空值或者假数据（手写的）
-            if(params.sql){
-                me.setData(params) ;
-            }else{
-                me.tableData = obj.rows ;
-            }
+            this.globalparam_request(obj, params) ;    // 全局参数设置请求
+            // // json里的queryDataBefore的方法
+            // if(obj.queryDataBefore && typeof obj.queryDataBefore == "function"){
+            //     params = obj.queryDataBefore(params, obj, me) ;
+            // }
+            // // 有：请求数据方法/ 没有：直接赋空值或者假数据（手写的）
+            // if(params.sql){
+            //     me.setData(params) ;
+            // }else{
+            //     me.tableData = obj.rows ;
+            // }
+        },
+        // 风险类型全局查询
+        globalparam_request(obj, params){
+            let me = this ;
+            globalparam_all().then(res => {  //debugger
+                if(res.data.code === 200) {
+                    me.reporttype = res.data.data[0].reporttype ;       // 报告类型控制
+                    me.periodtype = res.data.data[0].periodtype ;       // 日期控制
+                    me.submitdeletetype = res.data.data[0].submitdeletetype ;   // 已提交的删除控制
+                    // json里的queryDataBefore的方法
+                    if(obj.queryDataBefore && typeof obj.queryDataBefore == "function"){
+                        params = obj.queryDataBefore(params, obj, me) ;
+                    }
+                    // 有：请求数据方法/ 没有：直接赋空值或者假数据（手写的）
+                    if(params.sql){
+                        me.setData(params) ;
+                    }else{
+                        me.tableData = obj.rows ;
+                    }
+                    // me.reportType_quest(vax,index, tableData) ;
+                }else{
+                    me.$message.error(res.data.msg) ;
+                }
+            });
         },
         // 1.2 获取请求的数据
         setData(params){ 
@@ -498,39 +526,60 @@ export default {
          * @event 删除按钮
          * @function 1.Checkbox选中时，如果row未提交则可以进行删除；如果row已提交则不能删除
          */
-        deleteRow(){
-            // debugger
+        deleteRow(){ //submitdeletetype
+            debugger
             let me = this ;
             let data = [] ;
             let selection_no = me.selection.filter(res => { return res.sissubmit == "未提交" }) ;
             let selection_yes = me.selection.filter(res => { return res.sissubmit == "已提交" }) ;
-            selection_no.forEach(item => { data.push(item.id) ; }) ;
-            if(selection_no && selection_no.length > 0){
+            if(me.submitdeletetype == 0){
+                selection_no.forEach(item => { data.push(item.id) ; }) ;
+            }else{
+                me.selection.forEach(item => { data.push(item.id) ; }) ;
+            }
+            // submitdeletetype:0 => 已提交的风险不可以删除
+            if(selection_no && selection_no.length > 0 && me.submitdeletetype == 0){
                 me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    deleteRiskdistinguish(data).then(res => { 
-                        if(res.data.code === 200){
-                            data.forEach(ris => {
-                                me.tableData = me.tableData.filter(rds => {
-                                    return ris != rds.id ;
-                                });
-                            })
-                            selection_no = [] ;
-                            me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
-                            me.$message({ type: 'success', message: '删除成功!' });
-                        }else{
-                            me.$message.error('删除失败!');
-                        }
-                    }) 
+                    // 删除请求接口
+                    me.deleteRiskdistinguish(data,selection_no) ;
+                    // deleteRiskdistinguish(data).then(res => { 
+                    //     if(res.data.code === 200){
+                    //         data.forEach(ris => {
+                    //             me.tableData = me.tableData.filter(rds => {
+                    //                 return ris != rds.id ;
+                    //             });
+                    //         })
+                    //         selection_no = [] ;
+                    //         me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
+                    //         me.$message({ type: 'success', message: '删除成功!' });
+                    //     }else{
+                    //         me.$message.error('删除失败!');
+                    //     }
+                    // }) 
                 }).catch(() => {
                     me.$message({ type: 'info', message: '已取消删除' });          
                 });
-            }else{
-                if(selection_yes && selection_yes.length > 0){
-                    me.$message({message: '温馨提示：已提交的风险不可以删除哦!',type: 'success'}) ;
+            // submitdeletetype:1 => 已提交的风险可以删除
+            }else if(me.selection && me.selection.length > 0 && me.submitdeletetype == 1){
+                me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // 删除请求接口
+                    me.deleteRiskdistinguish(data) ;
+                }).catch(() => {
+                    me.$message({ type: 'info', message: '已取消删除' });          
+                });
+            }
+            else
+            {
+                if(selection_yes && selection_yes.length > 0 && me.submitdeletetype == 0){
+                    me.$message({message: '温馨提示：已提交的风险不可以删除哦!',type: 'warning'}) ;
                 }else{
                     if(me.tableData && me.tableData.length > 0){
                         me.$message({message: '温馨提示：没有选择风险哦!无法删除!',type: 'warning'}) ;
@@ -539,6 +588,24 @@ export default {
                     }
                 }
             }
+        },
+        // 【删除按钮】删除请求接口
+        deleteRiskdistinguish(data,selection_no){
+            let me = this ;
+            deleteRiskdistinguish(data).then(res => { 
+                if(res.data.code === 200){
+                    data.forEach(ris => {
+                        me.tableData = me.tableData.filter(rds => {
+                            return ris != rds.id ;
+                        });
+                    })
+                    if(me.submitdeletetype == 0)selection_no = [] ;
+                    me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
+                    me.$message({ type: 'success', message: '删除成功!' });
+                }else{
+                    me.$message.error('删除失败!');
+                }
+            }) 
         },
         /**
          * @event 刷新按钮
@@ -593,25 +660,13 @@ export default {
                 }
             })
         },
-        // 风险类型全局查询
-        globalparam_request(vax,index, tableData){
-            let me = this ;
-            globalparam_all().then(res => {  //debugger
-                if(res.data.code === 200) {
-                    me.reporttype = res.data.data[0].reporttype ;
-                    me.reportType_quest(vax,index, tableData) ;
-                }else{
-                    me.$message.error(res.data.msg) ;
-                }
-            });
-        },
         /**
          * @event 添加按钮
          */
         addClick(){
             // debugger
-            this.globalparam_request("add") ;
-            // this.reportType_quest("add") ;
+            // this.globalparam_request("add") ;
+            this.reportType_quest("add") ;
             
             // this.view_row = [] ;
             // this.view_btn = 0 ;
@@ -642,8 +697,8 @@ export default {
          */
         modifyRow(index, tableData){
             // debugger
-            this.globalparam_request("modify", index, tableData) ;
-            // this.reportType_quest("modify",index, tableData) ;
+            // this.globalparam_request("modify", index, tableData) ;
+            this.reportType_quest("modify",index, tableData) ;
             // let me = this ;
             // me.modify_btn = 1 ;
             // me.view_btn = 0 ;

@@ -17,7 +17,7 @@
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
             <el-table-column prop="sname" label="指标名称" width="360" align="center"></el-table-column>
-            <el-table-column prop="sdescription" label="说明" align="left" show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="sdescription" label="说明" align="left" :show-overflow-tooltip="showOverflowTooltip"></el-table-column>
             <el-table-column label="操作" width="160" align="center">
                 <template slot-scope="scope">
                     <el-button class="deleteBtn" @click="deleteClick(scope)" icon="el-icon-circle-close-outline" type="warning" size="medium" plain>删除</el-button>
@@ -27,7 +27,7 @@
         <!-- 添加弹出框 -->
         <el-dialog
             class="groupSetting_dialog"
-            :title="title"
+            title="新增指标信息"
             :visible.sync="dialogVisible"
             width="25%"
             :show-close="false"
@@ -73,12 +73,13 @@ export default {
         return {
             tableData: [],              // 表格的数据
             dialogVisible: false ,      // 弹出框的控制显现与隐藏
-            title: "新增指标信息",       // 弹出框标题
+            text: "",                   // 错误提示
             options:[],                 // 弹出框指标选择器数据
             inform: [],                 // 选中值发生变化时的数据
             disabled: false,            // 控制添加按钮的禁用与启用（>9）
             disabled: false,            // 控制添加按钮的禁用与启用（>9）
             isTrue: false ,             // 判断是否重复
+            showOverflowTooltip: true,  // 当内容过长被隐藏时显示 tooltip 默认为 false
             form: {                     // form表单
                 scode: "" ,
                 sdescription: ""

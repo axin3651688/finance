@@ -147,6 +147,7 @@
     "queryDataBefore": function(params, obj, $this){
         // debugger
         let html = "" ;
+        // let mm = $this.$store.getters.user.globalparam[0].periodtype ;
         if($this.periodtype){
             html = "= :period" ; 
         }else{
