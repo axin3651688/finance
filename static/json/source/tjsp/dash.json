@@ -2,6 +2,7 @@
     "id": 1,
     "text": "智慧驾驶舱",
     "rows": [],
+    "showDims": ["year", "month", "company"],
     "rootParams": {
         "rootItem": "Y"
     },
