@@ -41,7 +41,7 @@
           header-align="center"
           align="center"
         ></el-table-column>
-        <el-table-column prop="suser" label="用户名称" width="100" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="suser" label="用户名称" width="150" header-align="center" align="center"></el-table-column>
         <el-table-column
           prop="struename"
           label="真实姓名"
@@ -51,18 +51,11 @@
         ></el-table-column>
         <el-table-column prop="sphone" label="手机号码" width="120" header-align="center" align="center"></el-table-column>
         <el-table-column prop="csex" label="性别" width="60" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="srolename" label="角色" width="180" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="semail" label="邮箱" width="180" header-align="center" align="center"></el-table-column>
-        <el-table-column
-          prop="companyname"
-          label="所属公司"
-          width="280"
-          header-align="center"
-          align="center"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="srolename" label="角色" width="180" header-align="center" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="semail" label="邮箱" width="220" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="companyname" label="所属公司" width="280" header-align="center" align="center" show-overflow-tooltip></el-table-column>
         <template v-if="delButten !== 0 && editButten !== 0  && authorizeButten !== 0" >
-          <el-table-column label="操作" header-align="center" align="center">
+          <el-table-column label="操作" width="75" header-align="center" align="center">
             <template slot-scope="scope">
               <!-- <template v-if="delButten === 1">
                 <template v-if="scope.row.cisenabled === 'Y'">

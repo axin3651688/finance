@@ -68,7 +68,7 @@ export default {
             // let mm = me.$store.getters.user.globalparam[0] ;
             globalparam_all().then(res => { 
                 if(res.data.code === 200){
-                    if(vax == "0")me.$message({ message: res.data.msg , type: "success" }) ;
+                    // if(vax == "0")me.$message({ message: res.data.msg , type: "success" }) ;
                     let data = res.data.data[0] ; // 数据
                     for(let key in data){
                         me.formLabelAlign[key] = data[key] ;
