@@ -1,7 +1,11 @@
 <template>
+    <!--
+        name:sjz
+        说明：报告页面的修改弹出框
+    -->
     <div id="dialog" :num="number">
         <!-- 内层弹出框 -->
-        <el-dialog width="660px" style="height: 560px;" append-to-body>
+        <el-dialog width="1396px" style="height: 560px;" :title="title" :visible.sync="riskProbability" append-to-body>
             <!-- 下划线 -->
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <!-- 内层表格（供参考使用） -->
@@ -308,7 +312,7 @@ export default {
          * 赋值
          */
         getFormInformation(){ 
-            debugger
+            // debugger
             let cc = this.newThis.view_row ;
             this.valueTitle = cc.srisktypename ;
             // for(let key in this.data){
@@ -366,7 +370,7 @@ export default {
             });
         },
         // 风险发生概率 按钮 的事件
-        probability_first(){
+        probability_first(){ 
             this.riskProbability = true ;
             this.title = "风险发生概率" ;
             // 列

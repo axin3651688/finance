@@ -49,7 +49,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="pageNum"
-            :page-sizes="[10, 200, 500, 1000]"
+            :page-sizes="[100, 200, 500, 1000]"
             :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="this.allNum"
@@ -188,7 +188,7 @@ export default {
       rightAllDatas:[],//模块授权原始数据
       pageNum: 1,
       // 分页---默认每页100行数据
-      pageSize: 10,
+      pageSize: 100,
       allNum:0,
       rolesData: [],
       radio1: '1',
@@ -280,20 +280,21 @@ export default {
       },
 
       props: {
-        stripe: true,
-        border: true,
-        showHeader: true,
-        showSummary: false,
-        showRowHover: true,
-        showIndex: false,
-        treeType: true,
-        isFold: true,
-        expandType: false,
-        selectionType: true
+        stripe: true,             // 是否显示间隔斑马纹 | Boolean | - | false |
+        border: true,             // 是否显示纵向边框 | Boolean | - | false |
+        showHeader: true,         // 是否显示表头 | Boolean | - | true |
+        showSummary: false,       // 是否显示表尾合计行 | Boolean | - | false |
+        showRowHover: true,       // 鼠标悬停时，是否高亮当前行 | Boolean | - | true |
+        showIndex: false,         // 是否显示数据索引 | Boolean | - | false |
+        treeType: true,           // 是否为树形表格 | Boolean | - | false |
+        isFold: true,             // 树形表格中父级是否默认折叠 | Boolean | - | true |
+        expandType: false,        // 是否为展开行类型表格（为 True 时，需要添加名称为 '$expand' 的[作用域插槽](https://cn.vuejs.org/v2/guide/components.html#作用域插槽), 它可以获取到 row, rowIndex) | Boolean | - | false |
+        selectionType: true       // 是否为多选类型表格 | Boolean | - | false |
       },
       checkedPremiss: [],
       authData: [ ],//模块授权生成树表的数据
       columns: [
+        
         {
           label: "菜单列表",
           prop: "menusname",

@@ -142,7 +142,7 @@ export default {
          * 【退回按钮】【催报按钮】
          */ 
         backreportdetailp(scope, val){
-            debugger
+            // debugger
             let me = this ;
             let sisreport , params , _sql, toUsers=[] , companyId;
             let $params = me.$store.state.prame.command; 
@@ -173,7 +173,7 @@ export default {
          * 【退回按钮】【催报按钮】请求方法
          */
         backreportdetailp_request(params, me){ 
-            riskreportstate_update_remindback(params).then(ddf => { debugger
+            riskreportstate_update_remindback(params).then(ddf => { //debugger
                 if(ddf.data.code === 200){
                     if(params.sisreport==0)me.$message({ message: "催报成功！", type: "success" }) ;
                     if(params.sisreport==2)me.$message({ message: "退回成功！", type: "success" }) ;
@@ -329,7 +329,7 @@ export default {
         },
         // 数据获取之后的拦截
         queryDataAfter(item, datas){
-            debugger
+            // debugger
             let me = this ;
             // 看看json里有没有配置【queryDataAfter】数据获取之后拦截的方法
             if(me.item.queryDataAfter && typeof me.item.queryDataAfter == "function"){

@@ -6,10 +6,10 @@
         { "id": "nscore" , "type": "number","text": "评分估值", "width": "100", "align": "center" },
         { "id": "sname" , "type": "string","text": "损失程度", "width": "100", "align": "center" },
         { "id": "srequirement" , "type": "string","text": "法律法规及其他要求", "width": "250", "align": "left" },
-        { "id": "spersonnelstate" , "type": "string","text": "人员", "width": "120", "align": "left" },
-        { "id": "valuerange" , "type": "string","text": "财产损失（万元）", "width": "140", "align": "center" },
+        { "id": "spersonnelstate" , "type": "string","text": "人员", "width": "160", "align": "left" },
+        { "id": "valuerange" , "type": "string","text": "财产损失（万元）", "width": "160", "align": "center" },
         { "id": "sshutdown" , "type": "string","text": "停工", "width": "250", "align": "left" },
-        { "id": "senterpriseimage" , "type": "string","text": "企业形象", "width": "120", "align": "left" },
+        { "id": "senterpriseimage" , "type": "string","text": "企业形象", "width": "160", "align": "left" },
         { "id": "sdescription" , "type": "string","text": "其他说明", "width": "500", "align": "left" }
     ],
     "rows":[
