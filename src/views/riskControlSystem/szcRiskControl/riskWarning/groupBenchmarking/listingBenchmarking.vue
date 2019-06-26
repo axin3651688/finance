@@ -205,6 +205,41 @@
                 renderFlag:true//重新渲染的标识。
             }
         },
+        /**
+         * 计算属性。
+         */
+        computed: {
+            ...mapGetters(["year", "month", "company","showDims"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
+            },
+            year(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
+            },
+            month(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
+            }
+        },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
             //生成需要的年月参数。
