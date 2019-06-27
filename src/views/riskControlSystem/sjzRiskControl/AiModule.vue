@@ -147,11 +147,11 @@ export default {
             let sisreport , params , _sql, toUsers=[] , companyId;
             let $params = me.$store.state.prame.command; 
             let sfilluser = me.$store.getters.user.user.userName;
-            if(val === "2"){
+            if(val === "2"){    // 退回
                 sisreport = 2 ;
                 params = mini.getBackreportdetailp(me, scope, sisreport, toUsers) ; // 请求参数
                 me.backreportdetailp_request(params, me) ;
-            }else{
+            }else{              // 催报
                 me.comObj = {} ;
                 me.comObj = {
                     sisreport : 0 ,
