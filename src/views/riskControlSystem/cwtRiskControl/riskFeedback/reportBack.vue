@@ -50,6 +50,9 @@
             treeTable,
             riskFeedReportComponent
         },
+        mounted(){
+            this.doNotShowDim(true);
+        },
         computed: {
             ...mapGetters(["year", "month", "company"])
         },

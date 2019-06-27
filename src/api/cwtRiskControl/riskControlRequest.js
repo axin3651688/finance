@@ -239,3 +239,15 @@ export function getAssessmentIndicatorsData(params) {
         params: params
     })
 }
+
+
+/**
+ * 查询当前全局控制的结果
+ * @author cwt
+ */
+export function getGlobleControlState(params) {
+    return request({
+        url: '/zjb/globalparam/query_all',
+        method: 'get',
+    })
+}
