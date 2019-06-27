@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="modalTable">
-                <el-table v-if="tableData && tableData.length > 0"
+                <el-table
                 :data="tableData"
                 border
                 style="width: 100%;height:100%;"

@@ -168,7 +168,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["GetSideMid", "GettRreeInfo"]),
+    ...mapActions(["GetSideMid", "GettRreeInfo","ShowDims"]),
     // showPwd() {
     //   if (this.pwdType === "password") {
     //     this.pwdType = "";

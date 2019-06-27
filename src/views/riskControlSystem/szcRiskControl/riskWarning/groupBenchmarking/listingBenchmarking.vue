@@ -87,6 +87,7 @@
     import {
         groupQuery
     } from "~api/szcRiskControl/riskControl"
+    import { mapGetters } from "vuex";
     // import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
     import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import listingBenchmarking from "./../minix/listingBenchmarking.js"
@@ -203,6 +204,41 @@
                 manyColumns:[],//多表头列配置
                 resData:{},
                 renderFlag:true//重新渲染的标识。
+            }
+        },
+        /**
+         * 计算属性。
+         */
+        computed: {
+            ...mapGetters(["year", "month", "company","showDims"])
+        },
+        watch: {
+            /**
+             * 监听公司
+             */
+            company(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
+            },
+            year(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
+            },
+            month(newValue, oldValue) {
+                let me = this;
+                me.createYearMonth();
+                //查询选择框的下拉选内容。
+                me.selectAllOptions();
+                //制造多表头数据格式。
+                me.createMoreHeader();
             }
         },
         created() {

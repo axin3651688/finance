@@ -179,6 +179,10 @@
         }]
     }],
     "displayRow": 3,
+    "cellColor": {
+        "rowIndex": "0",
+        "column": "allCommon"
+    },
     "manyRows": [{
             "xm": "区间",
             "A1": "X>Y1",

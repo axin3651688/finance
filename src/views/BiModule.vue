@@ -168,6 +168,11 @@ export default {
   },
 
   mounted() {
+    // debugger;
+    // let me = this;
+    // if(me.showDims){
+    //   me.ShowDims(me.showDims);
+    // }
     // this.GetSideMid({ company: 138, year: 2014, month: 2 });
   },
   computed: {
@@ -719,11 +724,11 @@ export default {
      * @author szc 2019年4月22日10:20:33
      * add：添加一个删除当前选择日期的处理 2019年4月22日10:21:09 szc
      */
-    removeTab(targetName) { debugger
+    removeTab(targetName) {
       let tabs = this.items;
       let tabName = this.activeTabName;
       if (tabName === targetName) {
-        tabs.forEach((tab, index) => { debugger
+        tabs.forEach((tab, index) => {
           if (tab.text === targetName) {
             let nextTab = tabs[index + 1] || tabs[index - 1];
             if (nextTab) {

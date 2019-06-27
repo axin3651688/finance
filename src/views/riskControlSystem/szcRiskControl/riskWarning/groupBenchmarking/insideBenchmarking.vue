@@ -103,7 +103,8 @@
                     company:true,
                     year:true,
                     month:true,
-                    conversion:true
+                    day:false,
+                    conversion:false
                 });
                 // showDims.company = true,
                 // showDims.year = true,
@@ -202,7 +203,8 @@
                         company:true,
                         year:true,
                         month:true,
-                        conversion:true
+                        day:false,
+                        conversion:false
                     });
                     me.updateData();
                 }else {
@@ -210,6 +212,7 @@
                         company:false,
                         year:false,
                         month:false,
+                        day:false,
                         conversion:false
                     });
                     me.$refs[tab.name][0].updateData(clickItemROW);
@@ -342,6 +345,7 @@
                         company:false,
                         year:false,
                         month:false,
+                        day:false,
                         conversion:false
                     });
                 }
@@ -392,7 +396,9 @@
                     this.ShowDims({
                         company:true,
                         year:true,
-                        month:true
+                        month:true,
+                        day:false,
+                        conversion:false
                     });
                     // this.showDims.company = true;
                     // this.showDims.year = true;

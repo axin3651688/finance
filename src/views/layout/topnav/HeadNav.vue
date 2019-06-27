@@ -323,7 +323,6 @@ export default {
      * @author szc 2019年6月6日09:36:28
      */
     aboutSoftware() {
-      debugger;
       let me = this;
       me.aboutShow = true;
     },
@@ -418,7 +417,6 @@ export default {
       "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
-      debugger;
       //    console.log(cmdItem)
       switch (cmdItem) {
         case "info":
@@ -426,6 +424,7 @@ export default {
           //   this.showInfoList();
           break;
         case "logout":
+          localStorage.removeItem("navmenuCall");
           this.logout();
           break;
         case "aboutSoftware":
@@ -478,7 +477,6 @@ export default {
       this.dialogVisible = false;
     },
     sayhidden() {
-      debugger;
       this.isShow = true;
     },
     /**
@@ -538,7 +536,8 @@ export default {
         this.$message({
           type: 'info',
           message: '出错了！！！'
-        });          
+        }); 
+        me.$router.push("/login");         
       });
     },
     /**
@@ -556,7 +555,8 @@ export default {
         this.$message({
           type: 'info',
           message: '出错了！'
-        });          
+        });  
+        me.$router.push("/login");        
       });
     },
     /**

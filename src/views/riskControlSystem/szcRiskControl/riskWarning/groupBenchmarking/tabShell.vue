@@ -64,7 +64,8 @@
                     company:true,
                     year:true,
                     month:true,
-                    conversion:true
+                    day:false,
+                    conversion:false
                 });
             }
             let tabItem = me.createTabName(url);
@@ -91,7 +92,8 @@
                         company:true,
                         year:true,
                         month:true,
-                        conversion:true
+                        day:false,
+                        conversion:false
                     });
                     // showDims.company = true,
                     // showDims.year = true,
@@ -121,7 +123,8 @@
                         company:true,
                         year:true,
                         month:true,
-                        conversion:true
+                        day:false,
+                        conversion:false
                     });
                     me.$refs["currentTab"].updateData();
                 }else {
@@ -129,6 +132,7 @@
                         company:false,
                         year:false,
                         month:false,
+                        day:false,
                         conversion:false
                     });
                     me.$refs[tab.name][0].updateData();
@@ -215,7 +219,9 @@
                     this.ShowDims({
                         company:true,
                         year:true,
-                        month:true
+                        month:true,
+                        day:false,
+                        conversion:false
                     });
                     // this.showDims.company = true;
                     // this.showDims.year = true;

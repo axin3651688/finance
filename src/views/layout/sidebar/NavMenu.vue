@@ -67,7 +67,6 @@ export default {
    * 组件生成之后的回调
    */
   mounted() {
-    // debugger;
     // //缓存中的侧边栏的内容。
     // let siderState = JSON.parse(localStorage.siderState);
     // if(siderState){
@@ -126,7 +125,6 @@ export default {
       this.closeMessageOfExtra();
     },
     shownavMenu(e) {
-      // debugger;
       localStorage.removeItem("navmenuCall");
       localStorage.setItem("navmenuCall",JSON.stringify(e));
       //在此加一个页面上面的title。2019年3月26日11:47:15 szc

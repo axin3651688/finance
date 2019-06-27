@@ -7,6 +7,7 @@
                 stripe
                 :header-cell-style="headerCellStyle"
                 :header-row-style="headerRowStyle"
+                :cell-style="cellStyle"
                 class="risk_table"
                 style="width: 100%">
                 <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
@@ -40,7 +41,6 @@
          * 组件生成的回调。
          */
         created() {
-            debugger;
             let me = this;
             /**
              * 计算表格高度
@@ -87,6 +87,27 @@
                 // } else {
                 //     return "";
                 // }
+            },
+            /**
+             * 颜色的添加。
+             */
+            cellStyle (row,column,rowIndex,columnIndex) {
+                debugger;
+                let me = this,allData = me.allData;
+                if(allData.cellColor && row.rowIndex == allData.cellColor.rowIndex){
+                    if(row.columnIndex > 0 && row.columnIndex < 3){
+                        return "background-color:#399E38";
+                    }else if(row.columnIndex >= 3 && row.columnIndex < 5) {
+                        return "background-color:#5CACEE";
+                    }else if(row.columnIndex >= 5 && row.columnIndex < 7) {
+                        return "background-color:#EEB422";
+                    }else if(row.columnIndex >= 7 && row.columnIndex < 9) {
+                        return "background-color:#FFDD00";
+                    }else if(row.columnIndex >= 9 && row.columnIndex < 11) {
+                        return "background-color:#EF4D4D";
+                    }
+                }
+                return "";
             },
             /**
              *

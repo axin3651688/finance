@@ -140,17 +140,28 @@ export default {
         handleClick(scope){ 
             // debugger
             let me = this ;
-            scope.row.val = scope.row.val.replace(/[^\d]/g,'') ;
-            let val = scope.row.val ;
-            val = val.replace(/[^\d]/g,'') //输入时校验 只能输入数字
-            if(val && (val != 0 && val != "")){
+            let regex = /\((.+?)\)/g ;
+            let t = scope.row.val ; // 负数用到，先把输入的值赋值
+            let options = scope.row.sname.match(regex) ; // 得到小括号内的内容 
+            scope.row.val = scope.row.val.replace(/[^\d.]/g,"");  // 清除“数字”和“.”以外的字符            
+            if(scope.row.val != "" && scope.row.val != 0){
+                let option = options[0] ; // 得到字符串                
+                let rus = option.substring(1, option.length - 1); // 得到小括号内的内容 / 截取（）取出内容                               
+                scope.row.val = scope.row.val.replace(/\.{2,}/g,"."); // 只保留第一个. 清除多余的  
+                scope.row.val = scope.row.val.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+                scope.row.val = Math.decimalToLocalString(scope.row.val) ; // 已处理好的千分位，两位小数
+                scope.row.val = scope.row.val.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');// 只能输入两个小数  
+                if(scope.row.val.indexOf(".")< 0 && scope.row.val !=""){ // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+                    scope.row.val= parseFloat(scope.row.val); 
+                }
+                if(t.charAt(0) == "-"){ // 是不是'-'开头，如果是，则拼接上，否则不是负数不予理会。
+                    scope.row.val  = '-' + scope.row.val ;
+                }
                 // 修改的省份
                 scope.row.isEdit = false ;
-                // 千分位两位小数处理
-                scope.row.val = tools.currency(val,'',2); 
-                // 输入数字
-                scope.row.fact_a = val.replace(/^0/, "") - 0;
-                // 改变字体颜色
+                // 输入数字(string => number)
+                scope.row.fact_a = t.replace(/^0/, "") - 0 ;
+                // 改变字体颜色
                 me.getStyleColor("modify", scope) ;
             }else{
                 scope.row.val = "" ;
@@ -177,7 +188,7 @@ export default {
         /**
          * @description 保存按钮
          */
-        saveClick(){ debugger
+        saveClick(){ //debugger
             let me = this ;
             let isEdit = [] ;
             let params = [] ;
