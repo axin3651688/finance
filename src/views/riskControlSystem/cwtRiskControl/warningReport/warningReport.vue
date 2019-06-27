@@ -76,7 +76,8 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}，{{item.sname}}为 {{setNumberToStander(item.val)}}。处于行业 {{item.grade}} 水平，与行业值
+                        {{companyname}},{{showperiod}}，{{item.sname}}为 {{setNumberToStander(item.val)}}。处于行业
+                        {{item.grade}} 水平，与行业值
                         {{setNumberToStander(item.val_1)}} 相比
                         <template v-if="item.cz>=0">多出</template>
                         <template v-if="item.cz<0">相差</template>
@@ -159,6 +160,7 @@
             this.getAllData();
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
             /**
@@ -168,12 +170,12 @@
             companyClicked(scope) {
                 let _this = this;
                 let params = {
-                    year:this.getYear(),
-                    month:this.getMonth(),
+                    year: this.getYear(),
+                    month: this.getMonth(),
                     company: scope
                 };
-                getwarningReportBottomData(params).then((res)=>{
-                    if(res.data.code === 200){
+                getwarningReportBottomData(params).then((res) => {
+                    if (res.data.code === 200) {
                         _this.loopData2 = res.data.data[3];
                     }
                 })

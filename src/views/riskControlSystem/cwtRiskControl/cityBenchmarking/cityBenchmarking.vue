@@ -73,9 +73,11 @@
             }
         },
         created() {
-            this.getAllIndustry()
+            this.getAllIndustry();
+            this.optionChanged();
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
 
@@ -101,11 +103,12 @@
             },
 
             /**
-             * 获取所有的行业选项
+             * 获取所有的市企选项
              */
             getAllIndustry() {
+                debugger;
                 let _this = this;
-                let param = 'HY';
+                let param = 'SQY';
                 getAllHYZB(param).then((res) => {
                     if (res.data.code === 200) {
                         _this.options = res.data.data;

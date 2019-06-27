@@ -3,10 +3,10 @@
         <div>
             <div class="risk-feed-back-top">
                 <el-tabs type="border-card">
-                    <el-tab-pane label="风险追踪">
+                    <el-tab-pane label="风险追踪" v-if="!this.isReportType">
                         <risk-single-track></risk-single-track>
                     </el-tab-pane>
-                    <el-tab-pane label="风险报告追踪">
+                    <el-tab-pane label="风险报告追踪" v-if="this.isReportType">
                         <risk-report-track></risk-report-track>
                     </el-tab-pane>
                 </el-tabs>
@@ -18,19 +18,31 @@
 <script>
     import riskReportTrack from './riskReportTrack'
     import riskSingleTrack from './riskSingleTrack'
+    import {getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
+    import cwtPublicJS from "../mixin/cwtPublicJS"
     export default {
         name: "riskTrack",
+        mixins:[cwtPublicJS],
         components: {
             riskSingleTrack,
             riskReportTrack
         },
         props: {},
         data() {
-            return {}
+            return {
+                isReportType: true
+            }
         },
         created() {
+            let _this = this;
+            getGlobleControlState().then((res)=>{
+                if(res.data.code === 200){
+                    _this.isReportType = res.data.data[0].reporttype === 0;
+                }
+            })
         },
-        mounted() {
+        mounted(){
+            this.doNotShowDim(true);
         },
         methods: {}
     }
