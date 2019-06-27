@@ -511,7 +511,8 @@ export default {
                             }
                         },
                         indicator: indicator,
-                        center: ['50%', '60%']
+                        center: ['50%', '60%'],
+                        radius: '50%'
                     },
                     series: [{
                         name: '',

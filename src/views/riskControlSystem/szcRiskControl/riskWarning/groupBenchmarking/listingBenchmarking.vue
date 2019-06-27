@@ -87,6 +87,7 @@
     import {
         groupQuery
     } from "~api/szcRiskControl/riskControl"
+    import { mapGetters } from "vuex";
     // import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
     import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import listingBenchmarking from "./../minix/listingBenchmarking.js"

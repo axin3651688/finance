@@ -7,6 +7,7 @@
                     stripe
                     :header-cell-style="headerCellStyle"
                     :header-row-style="headerRowStyle"
+                    :cell-style="cellStyle"
                     class="risk_table"
                     style="width: 100%">
                 <template v-for="(item,index) in columns">
@@ -161,6 +162,26 @@
                 // } else {
                 //     return "";
                 // }
+            },
+            /**
+             * cell样式。
+             */
+            cellStyle (row) {
+                let me = this;
+                if(row.rowIndex == 1){
+                    if(row.columnIndex > 0 && row.columnIndex < 3){
+                        return "background-color:#399E38";
+                    }else if(row.columnIndex >= 3 && row.columnIndex < 5) {
+                        return "background-color:#5CACEE";
+                    }else if(row.columnIndex >= 5 && row.columnIndex < 7) {
+                        return "background-color:#EEB422";
+                    }else if(row.columnIndex >= 7 && row.columnIndex < 9) {
+                        return "background-color:#FFDD00";
+                    }else if(row.columnIndex >= 9 && row.columnIndex < 11) {
+                        return "background-color:#EF4D4D";
+                    }
+                }
+                return "";
             },
             /**
              *

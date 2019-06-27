@@ -247,7 +247,8 @@
                             { name: '运营质量', max: 10},
                             { name: '债务风险', max: 10}
                         ],
-                        center: ['50%', '55%']
+                        center: ['50%', '55%'],
+                        radius:'60%'
                     },
                     series: [{
                         name: '',
