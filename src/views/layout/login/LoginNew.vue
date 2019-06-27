@@ -70,7 +70,7 @@
               ></el-input>
             </el-form-item>
             <div class="btn_wrapp" style="text-align:right;margin-left:80px;">
-              <el-button type="primary" class="login_button loginBtn" @click="submitForm('loginForm')">登 陆</el-button>
+              <el-button type="primary" class="login_button loginBtn" @click="submitForm('loginForm')">登  录</el-button>
             </div>
           </el-form>
           

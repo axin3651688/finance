@@ -33,7 +33,8 @@
                             { name: '客服（Customer Support）', max: 38000},
                             { name: '研发（Development）', max: 52000},
                             { name: '市场（Marketing）', max: 25000}
-                        ]
+                        ],
+                        radius: '50%'
                     },
                     series: [{
                         name: '预算 vs 开销（Budget vs spending）',

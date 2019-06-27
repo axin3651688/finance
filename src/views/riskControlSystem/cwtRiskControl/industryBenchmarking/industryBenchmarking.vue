@@ -77,6 +77,7 @@
             this.optionChanged();
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
 

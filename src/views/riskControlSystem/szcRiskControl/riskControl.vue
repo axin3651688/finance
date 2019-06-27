@@ -3,7 +3,7 @@
         <div>
             <el-tabs v-model="activeName"
             @tab-click="handleTabClick">
-                <el-tab-pane label="风险批示" name="first">
+                <el-tab-pane label="风险批示" name="first" v-if="firstFlag">
                     <div class="selectClass">
                         <RiskSelect v-on:changeOption="changeOption" :selectConfig.sync="selectConfig" />
                     </div>
@@ -11,7 +11,7 @@
                         <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName" v-on:changeShowContent="changeShowContent"></stable>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="汇总批示" name="second">
+                <el-tab-pane label="汇总批示" name="second" v-if="secondFlag">
                     <div v-if="treeTableShow">
                         <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
                     </div>
@@ -29,7 +29,7 @@
                                         <span>报告批示</span>
                                     </div>
                                     <div class="container_btn">
-                                        <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                                        <el-button type="primary" plain @click="exportBtn">导出</el-button>
                                         <el-button type="primary" plain @click="returnCurrentClick">返回</el-button>       
                                     </div>                                
                                 </el-header>
@@ -87,7 +87,8 @@ import {
     queryInstructions,
     queryCopingStrategies,
     queryUserOfCompany,
-    queryReference
+    queryReference,
+    globalparam_all
 } from "~api/szcRiskControl/riskControl"
 import { findThirdPartData } from "~api/interface"
 import { mapGetters } from "vuex";
@@ -136,7 +137,9 @@ export default {
             prtParams:{},
             basicsDiv:true,
             isAlertShow:false,
-            referenceShow:false//参照显示与否。
+            referenceShow:false,//参照显示与否。
+            firstFlag:true,
+            secondFlag:true
         }
     },
     /**
@@ -169,23 +172,62 @@ export default {
      * 组件生成的回调。
      */
     created() {
-        debugger;
         let me = this;
         me.queryDepartMent();
-        if(me.activeName == "second") {
-            let selectItem = me.selectItem;
-            let judgeParams = {
-                id:"treeTable",
-                sqlId:"103"
-            };
-            let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
-            this.axios.get(url).then(res => {
-                if(res.data.code == 200) {
-                    me.columns = res.data.columns;
-                    me.queryDataOfInstructions(selectItem,judgeParams);
+        globalparam_all().then(res => {
+            if(res.data.code == 200){
+                let resData = res.data.data[0];
+                let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+                if(resData.reporttype == 0){
+                    me.activeName = "second"
+                    me.firstFlag = false;
+                    me.secondFlag = true;
+                }else {
+                    me.activeName = "first";
+                    me.firstFlag = true;
+                    me.secondFlag = false;
+                    url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
                 }
-            })
-        }
+                let selectItem = me.selectItem;
+                let judgeParams = {
+                    id:"treeTable",
+                    sqlId:"103"
+                };
+                me.axios.get(url).then(res => {
+                    if(res.data.code == 200) {
+                        me.columns = res.data.columns;
+                        me.queryDataOfInstructions(selectItem,judgeParams);
+                    }
+                })
+            }
+        });
+        // if(me.activeName == "second") {
+        //     let selectItem = me.selectItem;
+        //     let judgeParams = {
+        //         id:"treeTable",
+        //         sqlId:"103"
+        //     };
+        //     let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
+        //     this.axios.get(url).then(res => {
+        //         if(res.data.code == 200) {
+        //             me.columns = res.data.columns;
+        //             me.queryDataOfInstructions(selectItem,judgeParams);
+        //         }
+        //     })
+        // }else {
+        //     let selectItem = me.selectItem;
+        //     let judgeParams = {
+        //         id:"treeTable",
+        //         sqlId:"103"
+        //     };
+        //     let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+        //     this.axios.get(url).then(res => {
+        //         if(res.data.code == 200) {
+        //             me.columns = res.data.columns;
+        //             me.queryDataOfInstructions(selectItem,judgeParams);
+        //         }
+        //     })
+        // }
         //请求table的数据。
         // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
         // if(me.activeName == "second"){
@@ -381,6 +423,7 @@ export default {
          * @author szc 2019年5月27日16:31:38
          */
         lookInstructionRes (lookData) {
+            debugger;
             let me = this,company = me.$store.getters.companyName;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
@@ -626,6 +669,14 @@ export default {
             let me = this;
             this.$refs.riskModal.recoveryDefault();
             done();
+        },
+        /**
+         * 报告导出。
+         */
+        exportBtn () {
+            debugger;
+            let me = this;
+            me.reportData
         }
     }
 };

@@ -209,6 +209,14 @@ export default {
         manualColumnResize: true, //手工更改列距
         manualRowResize: true, //手动更改行距
         comments: true, //添加注释
+        // colWidths:function(index){
+        //   debugger;
+        //   if(index == 2){
+        //     return 
+        //   }
+
+        // },
+        // width:500,
         stretchH: "none", //根据宽度横向扩展，last:只扩展最后一列，none：默认不扩展
         afterChange: Function,
         cells: Function
@@ -1531,12 +1539,14 @@ export default {
         if(columns == 10 || columns == 12){
           cellMeta.readOnly = this.paymentLimit(row, columns);
         }else if (columns == 2) {
+          cellMeta.width = "350px";
           cellMeta.source = this.mechanismdownData(row, columns);
           cellMeta.type = "dropdown";
         }else if (columns == 3) {
           // 
           // this.getCellEditor = this.$refs.hotTableComponent.hotInstance.getCellEditor(row,columns);
           // this.getCellEditor = this.settings.getCellEditor(row,columns);
+          cellMeta.width = "350px";
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
         }else if (columns == 13) {
@@ -1793,11 +1803,16 @@ export default {
               cc.type = "dropdown";
             } else if (col.id === "finance") {
               cc.source = this.typeOfFinancing();
+              // cc.renderer = this.financingrenderer;
+              // cc.renderer = this.handleWidth;
               cc.type = "dropdown";
             }
-            if(this.templateId == "7" && col.id == "companyname"){
+            if(this.templateId == "7" && (col.id == "companyname")){
               cc.renderer = this.handleTemplate7;
             }
+            // else if (this.templateId == "7" && col.id == "finance") {
+            //   cc.renderer = this.handleWidth;
+            // }
             //资金集中情况表的render方法重新写里面的内容。
             // if(this.templateId == "8"){
             //   let arr = ['B'];
@@ -1915,6 +1930,7 @@ export default {
           item.companyname = item.companyname? item.companyname:companyname;
         });
       }
+      //融资情况明细表有些col要固定宽度
       //有待修复
       me.settings.data = rows;
       setTimeout(() => {
@@ -1937,13 +1953,21 @@ export default {
         me.settings.data = rows;
       }, 100);
     },
+    handleWidth (instance, td, row, col, prop, value, cellProperties) {
+      td.style.width = "300px";
+    },
     handleTemplate7 (instance, td, row, col, prop, value, cellProperties) {
       let me = this,companyname = me.$store.getters.companyName;
-      if (!value) {
-        td.innerHTML = companyname;
-        return;
+      if(prop == "companyname"){
+        if (!value) {
+          td.innerHTML = companyname;
+          return;
+        }
+        td.innerHTML = value;
+      }else {
+        td.style.width = "300px";
       }
-      td.innerHTML = value;
+      
     },
     /**
      * 处理资金集中情况表。
@@ -2900,7 +2924,6 @@ export default {
     },
     //融资页面单元格下拉除机构名称的其他数据  把编码转成文字
     financingrenderer(instance, td, row, col, prop, value, cellProperties) {
-      
       if (!value) {
         td.innerHTML = "";
         return;

@@ -536,7 +536,8 @@ export default {
         this.$message({
           type: 'info',
           message: '出错了！！！'
-        });          
+        }); 
+        me.$router.push("/login");         
       });
     },
     /**
@@ -554,7 +555,8 @@ export default {
         this.$message({
           type: 'info',
           message: '出错了！'
-        });          
+        });  
+        me.$router.push("/login");        
       });
     },
     /**

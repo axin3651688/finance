@@ -320,7 +320,7 @@ export default {
         middleContentOfReport(lookData, objItems, data, optionsData) {
             let me = this,
                 storeParams = me.$store.getters,
-                company = storeParams.company;
+                company = storeParams.companyName;
             for (let i = 0; i < objItems.length; i++) {
                 let item = objItems[i];
                 let objItem = {
