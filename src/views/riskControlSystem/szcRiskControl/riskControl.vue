@@ -423,6 +423,7 @@ export default {
          * @author szc 2019年5月27日16:31:38
          */
         lookInstructionRes (lookData) {
+            debugger;
             let me = this,company = me.$store.getters.companyName;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
