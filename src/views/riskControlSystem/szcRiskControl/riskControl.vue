@@ -29,7 +29,7 @@
                                         <span>报告批示</span>
                                     </div>
                                     <div class="container_btn">
-                                        <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                                        <el-button type="primary" plain @click="exportBtn">导出</el-button>
                                         <el-button type="primary" plain @click="returnCurrentClick">返回</el-button>       
                                     </div>                                
                                 </el-header>
@@ -668,6 +668,14 @@ export default {
             let me = this;
             this.$refs.riskModal.recoveryDefault();
             done();
+        },
+        /**
+         * 报告导出。
+         */
+        exportBtn () {
+            debugger;
+            let me = this;
+            me.reportData
         }
     }
 };
