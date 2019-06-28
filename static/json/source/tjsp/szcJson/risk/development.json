@@ -51,6 +51,7 @@
             "id": "grade",
             "type": "string",
             "text": "评级",
+            "htmlType": "colColor",
             "align": "center"
         },
         {

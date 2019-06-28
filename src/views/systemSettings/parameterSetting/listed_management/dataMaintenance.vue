@@ -41,12 +41,14 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button class="listedSetting_btn2" @click="onSubmit"><i class="iconfont icon-daoru"></i>数据导入</el-button>
+                <el-button class="listedSetting_btn2" @click="downLoadOfTemplate"><i class="iconfont icon-daoru"></i>模板下载</el-button>
+                <el-button @click="onSubmit"><i class="iconfont icon-daoru"></i>数据导入</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 <script>
+import {downLoadTemplate} from "~api/cube"
 export default {
     data(){
         return {
@@ -75,6 +77,37 @@ export default {
         }
     },
     methods: {
+        downLoadOfTemplate () {
+            let me = this;
+            downLoadTemplate().then(res => {
+                const content = res.data;
+                const blob = new Blob([content], {
+                    type: "application/vnd.ms-excel"
+                });
+                let str = res.headers["content-disposition"];
+                let index = str.lastIndexOf(".");
+                let h = str.substring(index + 1, str.length);
+                // let h = "xls";
+                // let index2 = str.lastIndexOf("=");
+                // let name = str.substring(index2 + 1,index);
+                let name = "上市公司财务报表模板";
+                const fileName = name + "." + h;
+                if ("download" in document.createElement("a")) {
+                    // 非IE下载
+                    const elink = document.createElement("a");
+                    elink.download = fileName;
+                    elink.style.display = "none";
+                    elink.href = URL.createObjectURL(blob);
+                    document.body.appendChild(elink);
+                    elink.click();
+                    URL.revokeObjectURL(elink.href); // 释放URL 对象
+                    document.body.removeChild(elink);
+                } else {
+                    // IE10+下载
+                    navigator.msSaveBlob(blob, fileName);
+                }
+            });
+        },
         // 文件上传成功时的钩子
         handleSuccess(response, file, fileList){
             // debugger
@@ -153,7 +186,7 @@ export default {
     width: 300px;
 }
 .listedSetting_btn2 {
-    margin-left: 193px;
+    margin-left: 70px;
 }
 .listedSetting_btn2 .icon-daoru {
     padding-right: 10px;
