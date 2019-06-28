@@ -51,7 +51,8 @@
             "id": "grade",
             "type": "string",
             "text": "评级",
-            "align": "center"
+            "align": "center",
+            "htmlType": "colColor"
         },
         {
             "id": "score",
@@ -195,7 +196,7 @@
             "D1": "Y4<X<Y3",
             "D2": "X=Y4",
             "E1": "Y5<X<Y4",
-            "E2": "X=Y5"
+            "E2": "X<=Y5"
         },
         {
             "xm": "分数",
