@@ -75,7 +75,7 @@
                 :label="element.text"
                 :width="element.width"
                 :show-overflow-tooltip="element.showOverflow"
-                align="center"                 
+                :align="element.align"                 
                 >
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
@@ -782,7 +782,7 @@ export default {
             // this.$message('暂无此功能！')
             let me = this ;
             me.downloadLoading = true ;
-            import('./excel/SZCExport2ExcelTable').then(excel => { debugger
+            import('./excel/SJZExport2ExcelTable').then(excel => { //debugger
                  //制造一个columns格式传过去。
                 let rootColmuns = [],columns = me.objer.columns;
                 let firstItem = columns[0];
