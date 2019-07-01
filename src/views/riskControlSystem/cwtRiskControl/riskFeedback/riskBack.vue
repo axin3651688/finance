@@ -70,6 +70,9 @@
             publicRiskSelect,
             riskFeedBackComponent
         },
+        props:{
+            isPeriodNow: Boolean
+        },
         computed: {
             ...mapGetters(["year", "month", "company"])
         },
@@ -235,7 +238,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '001'
+                            if(_this.isPeriodNow){
+                                return item.id === '001_1'
+                            }else{
+                                return item.id === '001'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;

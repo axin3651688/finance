@@ -18,7 +18,7 @@
                     <span>报告反馈</span>
                 </div>
                 <div class="container_btn">
-                    <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                    <el-button type="primary" plain @click="exportBtn">导出</el-button>
                     <el-button type="primary" plain @click="pageBack">返回</el-button>
                 </div>
             </el-header>
@@ -46,11 +46,14 @@
     export default {
         mixins: [cwtPublicJS],
         name: 'reportBack',
+        props:{
+            isPeriodNow: Boolean
+        },
         components: {
             treeTable,
             riskFeedReportComponent
         },
-        mounted(){
+        mounted() {
             this.doNotShowDim(true);
         },
         computed: {
@@ -214,7 +217,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '003'
+                            if(_this.isPeriodNow){
+                                return item.id === '003_1'
+                            }else{
+                                return item.id === '003'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;
@@ -539,7 +546,7 @@
             /**
              * 报告反馈退回事件
              */
-            reportFeedBackEvent(){
+            reportFeedBackEvent() {
                 let _this = this;
                 let params = this.getTUTXParams();
                 params.sisfeedback = '2';
@@ -563,7 +570,7 @@
             /**
              * 提醒功能
              */
-            reportFeedNoticeEvent(){
+            reportFeedNoticeEvent() {
                 let _this = this;
                 let params = this.getTUTXParams();
                 params.sisfeedback = '0';
@@ -582,7 +589,11 @@
                 });
             },
 
-            getTUTXParams(){
+            /**
+             * 获取退回参数
+             * @returns {{company: *, period: (string|string), sfeedbacksuser: string, sisfeedback: string}}
+             */
+            getTUTXParams() {
                 let _this = this,
                     _getter = _this.$store.getters,
                     company = _getter.company,
@@ -602,8 +613,39 @@
                     sfeedbacksuser: user.userName,
                     sisfeedback: "2",
                 }
-            }
+            },
 
+            /**
+             *
+             * 导出事件
+             */
+            exportBtn(){
+                /*[E: \workspace\ project - scgf\.metadata\.plugins\ org.eclipse.wst.server.core\ tmp0\ wtpwebapps\ output\ cnbi_reports\ 2019\ 06\ 10502\,
+                    马鞍山首创2019年1 - 6 季度经营财务分析报告,
+                    {
+                        level:0,
+                        leaf:0
+                        "children": [
+                            {
+                                "text": "",
+
+                                "level": 1,
+                                leaf:0,
+                                "children": [{
+                                    "level": 2,
+                                    "type": "text",
+                                    "content": "",
+                                    leaf:1
+                                }]
+                            },
+                            {
+
+                            }
+                        ],
+
+                    }*/
+                let reportJSONData = [];
+            }
         }
     }
 </script>
