@@ -620,31 +620,14 @@
              * 导出事件
              */
             exportBtn(){
-                /*[E: \workspace\ project - scgf\.metadata\.plugins\ org.eclipse.wst.server.core\ tmp0\ wtpwebapps\ output\ cnbi_reports\ 2019\ 06\ 10502\,
-                    马鞍山首创2019年1 - 6 季度经营财务分析报告,
-                    {
-                        level:0,
-                        leaf:0
-                        "children": [
-                            {
-                                "text": "",
 
-                                "level": 1,
-                                leaf:0,
-                                "children": [{
-                                    "level": 2,
-                                    "type": "text",
-                                    "content": "",
-                                    leaf:1
-                                }]
-                            },
-                            {
-
-                            }
-                        ],
-
-                    }*/
+                let _this = this;
                 let reportJSONData = [];
+                this.axios.get("/cnbi/json/source/tjsp/cwtJson/reportExportJson/riskback.json").then(res => {
+                    if (res.data.code === 200) {
+
+                    }
+                });
             }
         }
     }

@@ -558,6 +558,21 @@
             },
             pageExport() {
                 alert('报告导出事件')
+            },
+
+            /**
+             *
+             * 导出事件
+             */
+            exportBtn(){
+
+                let _this = this;
+                let reportJSONData = [];
+                this.axios.get("/cnbi/json/source/tjsp/cwtJson/reportExportJson/riskback.json").then(res => {
+                    if (res.data.code === 200) {
+
+                    }
+                });
             }
         }
     }
