@@ -63,9 +63,9 @@
                 modalConfig:{},
                 columns:[
                     {
-                       prop:"companyname",
-                       label:'公司',
-                       width:"380",
+                        prop:"companyname",
+                        label:'公司',
+                        width:"380",
                     },
                     {
                        prop:"stablename",

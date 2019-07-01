@@ -1206,7 +1206,7 @@ export default {
     },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
-      let obj = {},index,key,values,reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)/,
+      let obj = {},index,key,values,reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)|(\-?)/,
           indexs,value,modify,datas = this.settings.data,row;
       //判断没有值没有改变直接返回。
       if(changes && changes[0][2] && changes[0][3] &&　changes[0][2] === changes[0][3]){

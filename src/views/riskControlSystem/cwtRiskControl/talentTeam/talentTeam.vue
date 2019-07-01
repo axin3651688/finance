@@ -36,7 +36,7 @@
             </div>
 
 
-            <div class="top-button">
+            <div class="top-button" v-if="false">
                 <el-button
                         type="primary"
                         @click="dimSelected"
@@ -258,6 +258,9 @@
                 });
 
                 this.assortSelectedValue.sname = _selectedOption[0].sname;
+
+                this.dimSelected();
+
             },
 
             /**

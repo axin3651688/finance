@@ -48,7 +48,9 @@
             dialogComponent,
             publicRiskSelect
         },
-        props: {},
+        props:{
+            isPeriodNow: Boolean
+        },
         computed: {
             ...mapGetters(["year", "month", "company"])
         },
@@ -233,7 +235,11 @@
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
                             //通过id获取对应的sql
-                            return item.id === '002'
+                            if(_this.isPeriodNow){
+                                return item.id === '002_1'
+                            }else{
+                                return item.id === '002'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;

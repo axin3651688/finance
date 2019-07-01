@@ -68,7 +68,7 @@
                 barData: [],
                 dataFresh: false,
                 selectedscode: '',
-                selectedName: '利润总额',
+                selectedName: '',
                 barChartType:'ndustry'
             }
         },
@@ -88,7 +88,7 @@
             optionChanged(value) {
                 this.selectedscode = value;
 
-                let _scode = this.selectedscode || '1001';
+                let _scode = this.selectedscode || '';
                 let params = this.getSendParams(_scode);
                 this.getBarData(params);
 
