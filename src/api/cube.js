@@ -340,6 +340,17 @@ export function riskdistinguish_query_release(data) {
         params: data
     })
 }
+/**16.
+ * name: sjz 
+ * 说明：风险识别的【导入按钮】接口 /risk_excel/excel_input
+ */
+export function risk_excel_excel_input(data) {
+    return request({
+        url: '/zjb/risk_excel/excel_input',
+        method: 'post',
+        data: data
+    })
+}
 /**
  * name: sjz
  * 说明：系统设置的【全局参数控制】查询接口 /globalparam/query_all
@@ -559,7 +570,7 @@ export function dim_listedcompany_update(data) {
 }
 /**
  * name: sjz 
- * 说明：模板下载
+ * 说明：系统设置【上市指标】数据维护模板下载
  */
 export function downLoadTemplate() {
     return request({
