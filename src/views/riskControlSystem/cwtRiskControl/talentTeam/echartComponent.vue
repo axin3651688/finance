@@ -44,7 +44,6 @@
                     emptyData.value = item.num;
                     emptyData.name = item.dim;
 
-                    debugger;
 
                     if (item.dim !== '合计') {
                         echartData.push(emptyData);
