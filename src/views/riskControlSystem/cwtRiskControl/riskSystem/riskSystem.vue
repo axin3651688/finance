@@ -336,7 +336,6 @@
 
                 riskSystemDelete(sendParams).then(res => {
                     if (res.data.code === 200) {
-                        // debugger;
                         _this.$message({
                             message:'删除成功',
                             type:'success'
@@ -389,7 +388,6 @@
              * 模糊查询获取表格数据
              */
             getQueryByFiledTableData(val) {
-                debugger;
                 let _this = this,
                     _getters = _this.$store.getters,
                     company = _getters.company;

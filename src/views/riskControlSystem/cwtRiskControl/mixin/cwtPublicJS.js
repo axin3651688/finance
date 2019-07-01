@@ -77,6 +77,7 @@ export default {
                     arr.push(item);
                 }
             }
+
             if (rootItem.children && rootItem.children.length > 0) {
                 for (let j = 0; j < rootItem.children.length; j++) {
                     let childItme = rootItem.children[j];
@@ -106,6 +107,10 @@ export default {
          * @returns {string}
          */
         getDateNowYMD(data) {
+
+            if(data === ''){
+                return '';
+            }
 
             if (typeof data === 'string') {
                 data = data.replace(/-/g, '/');
