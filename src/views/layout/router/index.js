@@ -78,6 +78,12 @@ const router = new Router({
                         import ('@v/intelligenceReport/Interaction.vue')
                 },
                 {
+                    path: '/progressStatistics',
+                    name: 'progressStatistics',
+                    component: () =>
+                        import ('@v/intelligenceReport/progressStatistics.vue')
+                },
+                {
                     path: '/SFillTable',
                     name: 'SFillTable',
                     component: () =>
