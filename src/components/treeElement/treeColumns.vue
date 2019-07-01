@@ -32,6 +32,7 @@
         :cell-style="cellStyle"
         @row-click="onRowClick"
         class="tree_table"
+        id="publicTable"
         >
             <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed">
                 <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align">
@@ -226,28 +227,54 @@ export default {
         handleDownload(vue){
             // debugger
             vue.downloadLoading = true;
-            import('@/excel/Export2Excel').then(excel => {debugger
-                const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
-                const columns = vue.item.config.columns;
-                if(columns && columns.length > 0){
-                for(let i = 0;i < columns.length;i++){
-                    if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
-                    if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
-                }
-                // tHeader.push(columns[0].text);
-                // filterVal.push(columns[0].id);
-                }
-                const list = vue.item.datas;//获取数据
-                const data = vue.formatJson(filterVal, list);//根据id获取相应的数据
-                excel.export_json_to_excel({
-                header: tHeader,
-                data,
-                filename: vue.item.text,//导出表的表名称
-                autoWidth:  "200px",
-                bookType: 'xlsx' //导出的类型
-                })
+            const me = this ;
+            import('@/excel/SZCExport2ExcelTable').then(excel => {debugger
+                // const tHeader = [],filterVal = [];//tHeader：列名称  filterVal：列id
+                // const columns = vue.item.config.columns;
+                // if(columns && columns.length > 0){
+                // for(let i = 0;i < columns.length;i++){
+                //     if(columns[i].text && !columns[i].hidden)tHeader.push(columns[i].text);//列名称存在而且列显示
+                //     if(columns[i].id && !columns[i].hidden)filterVal.push(columns[i].id);//列id存在而且列显示
+                // }
+                // // tHeader.push(columns[0].text);
+                // // filterVal.push(columns[0].id);
+                // }
+                // const list = vue.item.datas;//获取数据
+                // const data = vue.formatJson(filterVal, list);//根据id获取相应的数据
+                // excel.export_json_to_excel({
+                // header: tHeader,
+                // data,
+                // filename: vue.item.text,//导出表的表名称
+                // autoWidth:  "200px",
+                // bookType: 'xlsx' //导出的类型
+                // })
+                //制造一个columns格式传过去。
+                let rootColmuns = [],columns = me.item.config.columns;
+                let firstItem = columns[0];
+                columns = columns.filter((item,index) => {
+                    return index != 0;
+                });
+                columns.push(firstItem);
+                me.parseColmns(columns,rootColmuns);
+                excel.export_table_to_excel("publicTable",me.item.text,rootColmuns);
                 vue.downloadLoading = false
             })
+        },
+        /**
+         * 把多表头转换成一个通用的columns
+         * @author szc 2019年4月11日14:36:30
+         */
+        parseColmns (columns,rootColmuns) {
+            let me = this;
+            for(let i = 0;i < columns.length;i ++){
+                if(columns[i].children && columns[i].children.length > 0){
+                    me.parseColmns(columns[i].children,rootColmuns);
+                }else {
+                    if(!columns[i].hidden){
+                        rootColmuns.push(columns[i]);
+                    }
+                }
+            }
         },
         formatJson(filterVal, jsonData) {
             return jsonData.map(v => filterVal.map(j => {

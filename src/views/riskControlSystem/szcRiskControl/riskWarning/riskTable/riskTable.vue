@@ -39,6 +39,11 @@
                             >
                                 {{ scope.row[scope.column.property] }}
                             </div>
+                            <div v-else-if="item.htmlType && item.htmlType == 'colColor'" 
+                                :style="colStyleHandler(scope.row)"
+                            >
+                                {{ scope.row[scope.column.property] }}
+                            </div>
                             <span
                                     v-else-if="item.action && item.action==='click'"
                                     style="color: dodgerblue;cursor: pointer"
@@ -149,10 +154,16 @@
                 }
             },
             styleHandler (row) {
-                debugger;
                 let me = this;
                 if(row && row.fxlxcolor){
                     return "background-color:" + row.fxlxcolor;
+                }
+            },
+            colStyleHandler (row) {
+                debugger;
+                let me = this;
+                if(row && row.color){
+                    return "color:" + row.color;
                 }
             },
             setPageAdaptive() {

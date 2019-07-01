@@ -22,8 +22,8 @@
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <el-button type="primary" plain v-show="isbtnShow4"><i class="iconfont icon-daoru"></i>导入</el-button>
-                        <el-button type="primary" plain v-show="isbtnShow2"><i class="iconfont icon-daochu"></i>导出</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow4" @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <el-button type="primary" plain v-show="isbtnShow2" @click="exportBtn"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
                 <!-- 文字 -->
@@ -53,6 +53,7 @@
         <div class="table">
             <el-table
             class="table-call"
+            id="publicTable"
             :data="tableData2.length > 0 ? tableData2: tableData"
             stripe
             highlight-current-row
@@ -74,7 +75,7 @@
                 :label="element.text"
                 :width="element.width"
                 :show-overflow-tooltip="element.showOverflow"
-                align="center"                 
+                :align="element.align"                 
                 >
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
@@ -114,6 +115,8 @@
     </div>
 </template>
 <script>
+// 引用导出的组件
+import EventMixins from "./mixins/EventMixins";
 // 引用批量下达弹出框
 import bulkOrdersers from "@v/riskControlSystem/sjzRiskControl/bulkOrdersers";
 // 引用弹出框组件
@@ -144,6 +147,7 @@ export default {
         orderDialog
     },
     name: "riskDis",
+    mixins: [ EventMixins ],
     data(){
         return {
             heights: 0,         // 表格的高度
@@ -765,7 +769,31 @@ export default {
             })
         },
         handleCommand(command){},
-        
+        /**
+         * @description 导入按钮
+         */
+        importBtn(){
+            this.$message('暂无此功能！')
+        },
+        /**
+         * @description 导出按钮
+         */
+        exportBtn(){
+            // this.$message('暂无此功能！')
+            let me = this ;
+            me.downloadLoading = true ;
+            import('./excel/SJZExport2ExcelTable').then(excel => { //debugger
+                 //制造一个columns格式传过去。
+                let rootColmuns = [],columns = me.objer.columns;
+                let firstItem = columns[0];
+                columns = columns.filter((item,index) => {
+                    return index != 0;
+                });
+                columns.push(firstItem);
+                // me.parseColmns(columns,rootColmuns);
+                excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
+            })
+        }
     }
 }
 </script>

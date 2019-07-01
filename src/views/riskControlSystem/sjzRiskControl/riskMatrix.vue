@@ -2,24 +2,27 @@
 <!--
     name: sjz
     time: sjz 2019/5/6 9:40:00
-    说明: 风险识别弹出框里的风险矩阵的图形组件
+    说明: 风险识别弹出框里的风险矩阵的图形组件:style="item.width"{{ item["val" + todo.num] }}
 -->
     <div id="riskMatrix">
-        <table v-if="rowLength>0">
+        <table v-if="rowLength>0" >
             <tr>
                 <td :style="styles" :rowspan="rowLength">风险发生概率(L)</td>
                 <td v-for="item in item1" :style="styles">{{ item.sname }}</td>
                 <td v-for="item in item1" :style="stylee">{{ item.nscore }}</td>
                 <td v-for="item in item3" :style="item.color">{{ item.nscode }}</td>
             </tr>
-            <tr v-for="item in items" :style="item.width">
-                <td>{{ item.sname }}</td>
+            <tr id="text" v-for="item in items">
+                <td >{{ item.sname }}</td>
                 <td style="color: red;">{{ item.nscore }}</td>
-                <td :style="item.color">{{ item.text }}</td>
-                <td :style="item.color2">{{ item.text2 }}</td>
-                <td :style="item.color3">{{ item.text3 }}</td>
-                <td :style="item.color4">{{ item.text4 }}</td>
-                <td :style="item.color5">{{ item.text5 }}</td>
+                <td v-for="todo in itemc" :style="getStyles(item, todo)">{{ item["val" + todo.num] }}</td>
+
+                <!-- <td :style="item.color1">{{ item.val1 }}</td> -->
+                <!-- <td :style="item.color">{{ item.text }}</td> -->
+                <!-- <td :style="item.color2">{{ item.val2 }}</td> -->
+                <!-- <td :style="item.color3">{{ item.val3 }}</td> -->
+                <!-- <td :style="item.color4">{{ item.val4 }}</td> -->
+                <!-- <td :style="item.color5">{{ item.val5 }}</td> -->
             </tr>
             <tr>
                 <td :style="styles" :rowspan="3" :colspan="3">风险值：R=L*S</td>
@@ -45,7 +48,9 @@ export default {
     },
     data(){
         return {
-
+            itemc: [
+                // { html: "<td>1</td>" },{ html: "<td>1</td>" },{ html: "<td>1</td>" },{ html: "<td>1</td>" }
+            ],
             // 
             tableData: [],
             rowLength: 0,
@@ -102,18 +107,47 @@ export default {
             let aa = {} ;
             let dater = this.data.filter((res, index) => { return index > 0 }) ;
             let len = dater.length ;
+            
+            for(let u=0; u< me.item2.length; u++){ // debugger
+                let num = u + 1 ;
+                // let tt = "<td style=''>{{ item["+ "'"+ "val" + num + "'" + "] }}</td>" ;
+                // let tt = "<td>"+ {{ num }} +"</td>"
+                // me.itemc[u]["num"] = num ;
+                me.itemc.push({ num: num }) ;
+            }
+
             for(let i=0; i<=len; i++){
                 let num = i + 1 ;
-                dater.forEach((res, index) => { 
-                    if(i==0)aa = { text: res["val"+num], color: { backgroundColor: res["color"+num] } }
-                    if(i==1)aa = { text2: res["val"+num], color2: { backgroundColor: res["color"+num] } }
-                    if(i==2)aa = { text3: res["val"+num], color3: { backgroundColor: res["color"+num] } }
-                    if(i==3)aa = { text4: res["val"+num], color4: { backgroundColor: res["color"+num] } }
-                    if(i==4)aa = { text5: res["val"+num], color5: { backgroundColor: res["color"+num] } }
-                    Object.keys(aa).forEach(keys => { 
-                        me.items[index][keys] = aa[keys] ;
-                    })
+                dater.forEach((res, index) => { // debugger
+                    // if(i==0)aa = { "text": res["val"+num], color: { backgroundColor: res["color"+num] } }
+                    // if(i==1)aa = { text2: res["val"+num], color2: { backgroundColor: res["color"+num] } }
+                    // if(i==2)aa = { text3: res["val"+num], color3: { backgroundColor: res["color"+num] } }
+                    // if(i==3)aa = { text4: res["val"+num], color4: { backgroundColor: res["color"+num] } }
+                    // if(i==4)aa = { text5: res["val"+num], color5: { backgroundColor: res["color"+num] } }
+
+                    // aa = { mm: i, text: res["val"+num], color: { backgroundColor: res["color"+num] } }
+                    // me.itemc.push(aa) ;
+                    Object.keys(res).forEach(keys => {  // debugger
+                        me.items[index][keys] = res[keys] ;
+                    })      
+                    for(let i=0; i<me.item2.length; i++){
+                        let nub = i + 1 ;
+                        me.items[index]["background"+nub] = { backgroundColor: res["color"+nub] }  ;
+                    }              
+                    // me.items[index]["background"+num] = { backgroundColor: res["color"+num] }  ;
+                    // me.itemc = me.items ;
                 });
+            }            
+        },
+        // 表格背景颜色
+        getStyles(item, todo){
+            // debugger
+            let dd = "background" + todo.num ;
+            let is = Object.keys(item).some(keys => {
+                return dd == keys ;
+            })
+            if(is){
+                return item[dd] ;
             }
         }
     }

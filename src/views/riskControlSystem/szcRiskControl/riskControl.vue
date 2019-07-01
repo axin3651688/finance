@@ -29,7 +29,7 @@
                                         <span>报告批示</span>
                                     </div>
                                     <div class="container_btn">
-                                        <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                                        <el-button type="primary" plain @click="exportBtn">导出</el-button>
                                         <el-button type="primary" plain @click="returnCurrentClick">返回</el-button>       
                                     </div>                                
                                 </el-header>
@@ -423,6 +423,7 @@ export default {
          * @author szc 2019年5月27日16:31:38
          */
         lookInstructionRes (lookData) {
+            debugger;
             let me = this,company = me.$store.getters.companyName;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
@@ -668,6 +669,14 @@ export default {
             let me = this;
             this.$refs.riskModal.recoveryDefault();
             done();
+        },
+        /**
+         * 报告导出。
+         */
+        exportBtn () {
+            debugger;
+            let me = this;
+            me.reportData
         }
     }
 };
