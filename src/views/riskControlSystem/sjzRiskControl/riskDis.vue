@@ -75,7 +75,7 @@
                 :label="element.text"
                 :width="element.width"
                 :show-overflow-tooltip="element.showOverflow"
-                align="center"                 
+                :align="element.align"                 
                 >
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
@@ -129,13 +129,22 @@ import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 import { findThirdPartData, findDesignSource, riskdistinguish_risk_release } from "~api/interface";
 // 引用接口2.（获取数据）
 import { 
+    // 风险发生概率-参照按钮
     riskprobability, 
+    // 风险影响程度-参照按钮
     risk_influence_degree,
+    // 删除按钮
     deleteRiskdistinguish,
+    // 风险矩阵
     riskmatrix_tovo,
+    // sql查询数据接口
     eva_city_Request,
+    // 下达记录按钮
     riskdistinguish_query_release,
-    globalparam_all
+    // 全局参数控制
+    globalparam_all,
+    // 导入按钮
+    risk_excel_excel_input
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -774,6 +783,7 @@ export default {
          */
         importBtn(){
             this.$message('暂无此功能！')
+            // risk_excel_excel_input
         },
         /**
          * @description 导出按钮
@@ -782,7 +792,7 @@ export default {
             // this.$message('暂无此功能！')
             let me = this ;
             me.downloadLoading = true ;
-            import('./excel/SZCExport2ExcelTable').then(excel => { debugger
+            import('./excel/SJZExport2ExcelTable').then(excel => { //debugger
                  //制造一个columns格式传过去。
                 let rootColmuns = [],columns = me.objer.columns;
                 let firstItem = columns[0];

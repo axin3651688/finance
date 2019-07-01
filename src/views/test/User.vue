@@ -26,29 +26,16 @@
             <el-button type="primary" plain icon="el-icon-search" @click="handleSearchhandleSearch(searchForm.search)" ></el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" plain><i class="iconfont icon-daoru"></i>导入</el-button>
-            <el-button type="primary" plain><i class="iconfont icon-daochu"></i>导出</el-button> 
+            <el-button type="primary" plain @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
+            <el-button type="primary" plain @click="exportBtn"><i class="iconfont icon-daochu"></i>导出</el-button> 
           </el-form-item>
         </el-form>
       </div>
-
-      <el-table :data="userdata" style="width: 100%" :height="heights" border stripe>
-        <el-table-column
-          prop="R"
-          type="index"
-          width="50"
-          label="序列"
-          header-align="center"
-          align="center"
-        ></el-table-column>
+      <!-- 显示表格 -->
+      <el-table :data="userdata" style="width: 100%" :height="heights" border stripe id="publicTable">
+        <el-table-column prop="R" type="index" width="50" label="序列" header-align="center" align="center"></el-table-column>
         <el-table-column prop="suser" label="用户名称" width="150" header-align="center" align="center"></el-table-column>
-        <el-table-column
-          prop="struename"
-          label="真实姓名"
-          width="120"
-          header-align="center"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="struename" label="真实姓名" width="120" header-align="center" align="center"></el-table-column>
         <el-table-column prop="sphone" label="手机号码" width="120" header-align="center" align="center"></el-table-column>
         <el-table-column prop="csex" label="性别" width="60" header-align="center" align="center"></el-table-column>
         <el-table-column prop="srolename" label="角色" width="180" header-align="center" align="center" show-overflow-tooltip></el-table-column>
@@ -1926,6 +1913,31 @@ export default {
           _this.$message.error(result.statusText);
         }
       });
+    },
+
+    /**
+     * @description 导入按钮
+     */
+    importBtn(){
+        this.$message('暂无此功能！')
+    },
+    /**
+     * @description 导出按钮
+     */
+    exportBtn(){ debugger
+      let me = this ;
+      me.downloadLoading = true ;
+      import('@/excel/SZCExport2ExcelTable').then(excel => { debugger
+            //制造一个columns格式传过去。
+          // let rootColmuns = [],columns = me.objer.columns;
+          // let firstItem = columns[0];
+          // columns = columns.filter((item,index) => {
+          //     return index != 0;
+          // });
+          // columns.push(firstItem);
+          // me.parseColmns(columns,rootColmuns);
+          // excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
+      })
     }
   }
 };

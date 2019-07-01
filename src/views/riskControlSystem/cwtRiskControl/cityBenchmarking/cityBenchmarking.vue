@@ -67,8 +67,8 @@
                 options: [],
                 barData: [],
                 dataFresh: false,
-                selectedscode: '1001',
-                selectedName: '利润总额',
+                selectedscode: '',
+                selectedName: '',
                 barChartType:'city'
             }
         },
@@ -89,7 +89,7 @@
 
                 this.selectedscode = value;
 
-                let _scode = this.selectedscode || '1001';
+                let _scode = this.selectedscode || '';
                 let params = this.getSendParams(_scode);
                 this.getBarData(params);
 

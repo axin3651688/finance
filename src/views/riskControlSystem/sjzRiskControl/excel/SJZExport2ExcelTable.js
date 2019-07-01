@@ -144,13 +144,16 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                     // }
             };
             // 如果正确代表为表头 否则为数据
-            if (R < headNum) {
+            if (R < headNum) { //debugger
                 cell.s = { 
-                    font: { // 字体样式设置
+                    font: { // 字体样式设置 "#606266;"
                         name: '宋体',
                         sz: 14,
-                        color: { rgb: "#fff000" },
+                        // color: { rgb: "606266" },
                         bold: true
+                    },
+                    fill: { // 背景颜色设置
+                        fgColor: { rgb: "f0f8ff" }
                     },
                     alignment: { // 是否居中center | 左对齐left | 右对齐right
                         horizontal: "center",
@@ -158,12 +161,16 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                     }
                 };
             }else{
-                cell.s = {
-                    alignment: {
-                        horizontal: "center",
-                        vertical: "center"
-                    }
-                };
+                if((C == 10 || C == 15 || C == 16) && R>=headNum){
+                    cell.s = { alignment: { horizontal: "left",vertical: "center" } }
+                }else{
+                    cell.s = {
+                        alignment: {
+                            horizontal: "center",
+                            vertical: "center"
+                        }
+                    };
+                }
             }
             if (cell.v == null) continue;
             var cell_ref = XLSX2.utils.encode_cell({
@@ -202,20 +209,57 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                         }
                     }
                 }
-                if((C == 2 && value.replace(/[\r\n]/g,"") == "未关闭") || (C == 3 && value.replace(/[\r\n]/g,"") == "未提交")){
+                if((C == 1 && value.replace(/[\r\n]/g,"") == "未关闭") || (C == 2 && value.replace(/[\r\n]/g,"") == "未提交")){
                     cell.s = { 
-                        font: { // 字体样式设置
-                            name: '宋体',
-                            sz: 14,
-                            bold: true
-                        },
-                        // fill: { fgColor: { rgb: "33000000"}},
                         alignment: { // 是否居中center | 左对齐left | 右对齐right
                             horizontal: "center",
                             vertical: "center"
+                        },
+                        font: { 
+                            name: '宋体',       // 字体
+                            sz: 14,             // 字体大小
+                            bold: true,         // 是否粗体
+                            color: { rgb: "db2b08" }
+                            // color: { rgb: "FFFFAA00" } 
+                        }
+                        // fill: {  //<====设置xlsx单元格样式
+                            // bgColor: { indexed: 0 }, 
+                            // fgColor: { rgb: "ffffff" } "#0a95e3""#e3d40a""#db2b08""#13d708""#e3b70a" / "#f0f8ff"=="rgb(240, 248, 255);"
+                        // } 
+                    };
+                }
+                if((C == 1 && value.replace(/[\r\n]/g,"") == "已关闭") || (C == 2 && value.replace(/[\r\n]/g,"") == "已提交")){
+                    cell.s = { 
+                        alignment: { // 是否居中center | 左对齐left | 右对齐right
+                            horizontal: "center",
+                            vertical: "center"
+                        },
+                        font: { 
+                            name: '宋体',       // 字体
+                            sz: 14,             // 字体大小
+                            bold: true,         // 是否粗体
+                            color: { rgb: "13d708" }
                         }
                     };
                 }
+                if(C == 5 && (value.replace(/[\r\n]/g,"") == "巨大风险" || value.replace(/[\r\n]/g,"") == "高风险")){
+                    cell.s = { font: { name: '宋体',sz: 14,bold: false,color: { rgb: "db2b08" } }, alignment: { horizontal: "center", vertical: "center" } }
+                }
+                if(C == 5 && value.replace(/[\r\n]/g,"") == "重大风险"){
+                    cell.s = { font: { name: '宋体',sz: 14,bold: false,color: { rgb: "e3b70a" } }, alignment: { horizontal: "center", vertical: "center" } }
+                }
+                if(C == 5 && value.replace(/[\r\n]/g,"") == "中等风险"){
+                    cell.s = { font: { name: '宋体',sz: 14,bold: false,color: { rgb: "e3d40a" } }, alignment: { horizontal: "center", vertical: "center" } }
+                }
+                if(C == 5 && value.replace(/[\r\n]/g,"") == "一般风险"){
+                    cell.s = { font: { name: '宋体',sz: 14,bold: false,color: { rgb: "0a95e3" } }, alignment: { horizontal: "center", vertical: "center" } }
+                }
+                if(C == 5 && (value.replace(/[\r\n]/g,"") == "可接受风险" || value.replace(/[\r\n]/g,"") == "最低风险")){
+                    cell.s = { font: { name: '宋体',sz: 14,bold: false,color: { rgb: "13d708" } }, alignment: { horizontal: "center", vertical: "center" } }
+                }
+                // if(C == 10 || C == 15 || C == 16){
+                //     cell.s = { alignment: { horizontal: "center", vertical: "center" } }
+                // }
             }
             // debugger
             //有些数没有格式化，没有保留两位小数。
@@ -277,7 +321,7 @@ function s2ab(s) {
     return buf;
 }
 
-export function export_table_to_excel(id, name, columns) { debugger
+export function export_table_to_excel(id, name, columns) { //debugger
     // var theTable = document.getElementById(id);
     // 导出table
     var theTable = document.getElementById(id).getElementsByTagName("table");
@@ -286,6 +330,15 @@ export function export_table_to_excel(id, name, columns) { debugger
 
     /* original data */
     var data = oo[0];
+    // 去除null值与操作列
+    data[0] = data[0].filter(res => { //debugger
+        if(!res || res=="操作"){}else{ return res ;}
+    }) ;
+    for(let i=1; i<data.length; i++){
+        data[i] = data[i].filter(res => {
+            if(!res || res=="查看修改"){}else{ return res ; }
+        });
+    }
     var ws_name = "SheetJS";
     var wb = new Workbook(),
         ws = sheet_from_array_of_arrays(data, oo[2], columns);
