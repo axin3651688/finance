@@ -319,7 +319,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '006'
+                            if(_this.isPeriodNow){
+                                return item.id === '006_1'
+                            }else{
+                                return item.id === '006'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;
@@ -558,6 +562,21 @@
             },
             pageExport() {
                 alert('报告导出事件')
+            },
+
+            /**
+             *
+             * 导出事件
+             */
+            exportBtn(){
+
+                let _this = this;
+                let reportJSONData = [];
+                this.axios.get("/cnbi/json/source/tjsp/cwtJson/reportExportJson/riskback.json").then(res => {
+                    if (res.data.code === 200) {
+
+                    }
+                });
             }
         }
     }

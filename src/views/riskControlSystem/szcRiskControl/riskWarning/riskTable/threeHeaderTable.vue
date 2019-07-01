@@ -64,7 +64,7 @@
         methods: {
             headerRowStyle (row,col) {
                 let me = this,allData = me.allData;
-                if(allData.displayRow && row.rowIndex == allData.displayRow){
+                if(allData && allData.displayRow && row.rowIndex == allData.displayRow){
                     return 'display:none';
                 }else {
                     return "background:rgb(240, 248, 255)";

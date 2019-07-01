@@ -1223,6 +1223,15 @@ export default {
           index = it[0];
           key = it[1];
           values = it[3];
+          //转换复制的千分位格式。
+          if(typeof(values) == "string"){
+            values = values.replace(/,/g,"");
+            if(values == "——"){
+              values = 0;
+            }else if(!isNaN(values)){
+              values = values - 0;
+            }
+          }
           obj[key] = values;
           obj["index"] = index;
           // obj["colId"] = key;
@@ -1711,6 +1720,12 @@ export default {
       flagElement.style.textAlign = "right";
       //添加一个市管企业的户数，不用格式化数据。
       let arr = ['12'];
+      if(value && typeof(value) == "string"){
+        value = value.replace(/,/g,"");
+        if(value == "——"){
+          value = 0;
+        }
+      }
       if (value != null && !isNaN(value)) {
         if(this.templateId == "7" && (prop == "B" || prop == "C")){
           flagElement.innerText = value == ""? "":value.toFixed(4);
