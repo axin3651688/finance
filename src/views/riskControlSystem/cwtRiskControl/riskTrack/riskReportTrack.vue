@@ -16,7 +16,7 @@
                     <span><i class="el-icon-warning"></i>查看页面，无法操作此页面！</span>
                 </div>
                 <div class="container_btn">
-                    <!-- <el-button type="primary" plain @click="exportBtn">导出</el-button> -->
+                    <el-button type="primary" plain @click="exportBtn">导出</el-button>
                     <el-button type="primary" plain @click="pageBack">返回</el-button>
                 </div>
             </el-header>
@@ -41,6 +41,7 @@
     export default {
         name: "riskReportTrack",
         mixins: [cwtPublicJS],
+
         components: {
             treeTable,
             riskTrackReportComponent
@@ -62,7 +63,9 @@
                 this.getReportData();
             }
         },
-        props: {},
+        props:{
+            isPeriodNow: Boolean
+        },
         data() {
             return {
                 reportBackDetail: false,
@@ -207,7 +210,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '005'
+                            if(_this.isPeriodNow){
+                                return item.id === '005_1'
+                            }else{
+                                return item.id === '005'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;
@@ -312,7 +319,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '006'
+                            if(_this.isPeriodNow){
+                                return item.id === '006_1'
+                            }else{
+                                return item.id === '006'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;
@@ -551,6 +562,21 @@
             },
             pageExport() {
                 alert('报告导出事件')
+            },
+
+            /**
+             *
+             * 导出事件
+             */
+            exportBtn(){
+
+                let _this = this;
+                let reportJSONData = [];
+                this.axios.get("/cnbi/json/source/tjsp/cwtJson/reportExportJson/riskback.json").then(res => {
+                    if (res.data.code === 200) {
+
+                    }
+                });
             }
         }
     }

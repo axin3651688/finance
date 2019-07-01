@@ -34,15 +34,26 @@
       <!-- 显示表格 -->
       <el-table :data="userdata" style="width: 100%" :height="heights" border stripe id="publicTable">
         <el-table-column prop="R" type="index" width="50" label="序列" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="suser" label="用户名称" width="150" header-align="center" align="center"></el-table-column>
+        <el-table-column
+        v-for="item in tableColumn"
+        :key="item.id"
+        :prop="item.id"
+        :label="item.text"
+        :width="item.width"
+        :align="item.align"
+        :show-overflow-tooltip="item.showOverflow"
+        header-align="center">
+
+        </el-table-column>
+        <!-- <el-table-column prop="suser" label="用户名称" width="150" header-align="center" align="center"></el-table-column>
         <el-table-column prop="struename" label="真实姓名" width="120" header-align="center" align="center"></el-table-column>
         <el-table-column prop="sphone" label="手机号码" width="120" header-align="center" align="center"></el-table-column>
         <el-table-column prop="csex" label="性别" width="60" header-align="center" align="center"></el-table-column>
         <el-table-column prop="srolename" label="角色" width="180" header-align="center" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="semail" label="邮箱" width="220" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="companyname" label="所属公司" width="280" header-align="center" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="companyname" label="所属公司" width="280" header-align="center" align="center" show-overflow-tooltip></el-table-column> -->
         <template v-if="delButten !== 0 && editButten !== 0  && authorizeButten !== 0" >
-          <el-table-column label="操作" width="75" header-align="center" align="center">
+          <el-table-column label="操作" width="85" header-align="center" align="center">
             <template slot-scope="scope">
               <!-- <template v-if="delButten === 1">
                 <template v-if="scope.row.cisenabled === 'Y'">
@@ -665,6 +676,16 @@ export default {
         currentPosition: "" ,   // 现任职务
         avatar:""           // 图片
       },
+      tableColumn: [        // 表格列
+        { id: "suser", text: "用户名称", width: "130", align: "center" },
+        { id: "struename", text: "真实姓名", width: "130", align: "center" },
+        { id: "sphone", text: "手机号码", width: "120", align: "center" },
+        { id: "csex", text: "性别", width: "60", align: "center" },
+        { id: "srolename", text: "角色", width: "180", align: "center", showOverflow: true },
+        { id: "semail", text: "邮箱", width: "220", align: "center" },
+        { id: "companyname", text: "所属公司", width: "280", align: "center", showOverflow: true }
+      ],
+      template: "组织管理",  // 组件名称
       userdata: [],         // 用户表数据
       userdata_cloning: [], // 用户表数据克隆
       maxHeight: 600,
@@ -1924,19 +1945,19 @@ export default {
     /**
      * @description 导出按钮
      */
-    exportBtn(){ debugger
+    exportBtn(){ 
       let me = this ;
       me.downloadLoading = true ;
-      import('@/excel/SZCExport2ExcelTable').then(excel => { debugger
+      import('./excel/SJZExport2ExcelTable').then(excel => { // debugger
             //制造一个columns格式传过去。
-          // let rootColmuns = [],columns = me.objer.columns;
-          // let firstItem = columns[0];
-          // columns = columns.filter((item,index) => {
-          //     return index != 0;
-          // });
-          // columns.push(firstItem);
+          let rootColmuns = [],columns = me.tableColumn;
+          let firstItem = columns[0];
+          columns = columns.filter((item,index) => {
+              return index != 0;
+          });
+          columns.push(firstItem);
           // me.parseColmns(columns,rootColmuns);
-          // excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
+          excel.export_table_to_excel("publicTable",me.template,rootColmuns);
       })
     }
   }
