@@ -317,7 +317,7 @@
                         if (_risk.state === '已上报') {
                             _this.riskScheduleData[key].content = '上报人： ' + _risk.user_name + '。 上报时间： ' + _risk.time;
                         } else {
-                            _this.riskScheduleData['risk_fq'].content = '请尽快反馈';
+                            _this.riskScheduleData['risk_fk'].content = '请尽快反馈';
                             _this.riskScheduleData['risk_ps'].content = '请尽快批示';
                             _this.riskScheduleData['risk_sb'].content = '请尽快上报';
                             return;

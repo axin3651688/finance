@@ -319,7 +319,11 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            return item.id === '006'
+                            if(_this.isPeriodNow){
+                                return item.id === '006_1'
+                            }else{
+                                return item.id === '006'
+                            }
                         })
                     }
                     sql = sqlObj[0].sql;
