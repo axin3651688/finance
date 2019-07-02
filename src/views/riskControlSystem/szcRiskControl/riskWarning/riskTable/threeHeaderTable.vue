@@ -64,7 +64,7 @@
         methods: {
             headerRowStyle (row,col) {
                 let me = this,allData = me.allData;
-                if(allData.displayRow && row.rowIndex == allData.displayRow){
+                if(allData && allData.displayRow && row.rowIndex == allData.displayRow){
                     return 'display:none';
                 }else {
                     return "background:rgb(240, 248, 255)";
@@ -94,7 +94,7 @@
             cellStyle (row,column,rowIndex,columnIndex) {
                 debugger;
                 let me = this,allData = me.allData;
-                if(allData.cellColor && row.rowIndex == allData.cellColor.rowIndex){
+                if(allData && allData.cellColor && row.rowIndex == allData.cellColor.rowIndex){
                     if(row.columnIndex > 0 && row.columnIndex < 3){
                         return "background-color:#399E38";
                     }else if(row.columnIndex >= 3 && row.columnIndex < 5) {
