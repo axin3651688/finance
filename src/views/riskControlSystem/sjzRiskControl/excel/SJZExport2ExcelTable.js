@@ -105,9 +105,13 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                 wpx: 80
             });
         } else {
-            ws['!cols'].push({
-                wpx: 170
-            });
+            if(n == data[0].length - 1 || n == data[0].length - 2 || n == data[0].length - 7) {
+                ws['!cols'].push({ wpx: 330 }) ;
+            } else {
+                ws['!cols'].push({
+                    wpx: 170
+                });
+            }
         }
     }
     var range = {
@@ -162,9 +166,14 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                 };
             }else{
                 if((C == 10 || C == 15 || C == 16) && R>=headNum){
-                    cell.s = { alignment: { horizontal: "left",vertical: "center" } }
+                    cell.s = { font: { name: '宋体', sz: 14, bold: false }, alignment: { horizontal: "left",vertical: "center" } }
                 }else{
                     cell.s = {
+                        font: { // 字体样式设置 "#606266;"
+                        name: '宋体',
+                        sz: 14,
+                        bold: false
+                    },
                         alignment: {
                             horizontal: "center",
                             vertical: "center"
