@@ -251,3 +251,16 @@ export function getGlobleControlState(params) {
         method: 'get',
     })
 }
+
+
+/**
+ * 风险管控系统导出功能接口
+ * @author cwt
+ */
+export function riskReportExport(params) {
+    return request({
+        url: '/exp/exportDocx',
+        method: 'post',
+        params: params
+    })
+}

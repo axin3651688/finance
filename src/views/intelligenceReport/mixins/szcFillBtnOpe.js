@@ -367,11 +367,22 @@ export default {
             });
         },
         /**
-         * 申请退回
-         * @author szc 2019年5月10日17:20:05
+         * 批量上报。
          */
-        // applicationForRefund() {
-
-        // }
+        bulkReporting() {
+            debugger;
+            let me = this;
+            me.modalConfig = {
+                title: "批量上报",
+                eventListener: "sendfillmessage", //事件监听方法名
+                dialogVisible: true,
+                type: "checkbox",
+                id: 'bulkReporting',
+                datas: me.list,
+                footConfig: {
+                    footBtn: true
+                }
+            };
+        }
     }
 }

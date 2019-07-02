@@ -21,6 +21,14 @@
             :ref="modalConfig.id||'' + 'tree'"
         ></el-tree>
     </div>
+    <div v-else-if="modalConfig.type == 'checkbox'">
+        <el-checkbox
+            v-for="item of modalConfig.datas"
+            :key="item.id"
+            class="checkbox"
+            @change="changeHandler($event, item)"
+        >{{ item.title }}</el-checkbox>
+    </div>
     <div v-else-if="modalConfig.type == 's-table'">
         <el-table :data="modalConfig.datas.datas || datas">
             <el-table-column 
@@ -169,8 +177,21 @@ export default {
                 sign:"current"
             };
             this.$emit("publicHandler",parmas);
+        },
+        /**
+         * 选中的结果
+         */
+        changeHandler (event,item) {
+            let me = this;
         }
     }
-    
 }
 </script>
+<style lang="scss" scoped>
+.checkbox {
+    display: block;
+    color: #606266;
+    font-size: 24px;
+}
+</style>
+

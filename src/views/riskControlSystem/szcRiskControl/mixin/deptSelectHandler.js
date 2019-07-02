@@ -318,6 +318,7 @@ export default {
          * @param {*} data 
          */
         middleContentOfReport(lookData, objItems, data, optionsData) {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.companyName;

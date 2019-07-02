@@ -256,11 +256,21 @@ export function queryInteraction(params) {
 }
 /**
  * 报表进度统计查询。
- * @author szc 2019年5月8日08:59:35
+ * @author szc 2019年5月8日08:59:35/sys/dimcompany/query_son_byspcode
  */
 export function queryTableCensus(params) {
     return request({
         url: '/zjb/tableCensus/query_tableCensus?company=' + params.company + '&period=' + params.period,
+        method: 'get'
+    })
+}
+/**
+ * 报表进度统计查询。
+ * @author szc 2019年5月8日08:59:35
+ */
+export function queryCompanyByScode(params) {
+    return request({
+        url: '/zjb/sys/dimcompany/query_son_byspcode?scode=' + params.company,
         method: 'get'
     })
 }
