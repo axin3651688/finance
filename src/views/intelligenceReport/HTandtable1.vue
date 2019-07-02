@@ -25,6 +25,9 @@
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
           <div class="right">
+            <el-button @click="bulkReporting">
+              批量上报
+            </el-button>
             <template v-for="(item,index) in buttonsOperation">
               <el-button v-if="item.disabled" disabled class="button" :key="index" @click="buttonsHandle(item)">
                 {{ item.text }}

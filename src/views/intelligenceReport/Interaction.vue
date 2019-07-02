@@ -1,42 +1,53 @@
 <template>
     <div>
         <div>
-            <el-table :data="tableData"
-                border
-                stripe
-                :header-cell-style="headerRowStyle"
-                style="width: 100%"
-            >
-                <el-table-column 
-                v-for="(item,index) in columns" 
-                :prop="item.prop" 
-                :label="item.label" 
-                header-align="center"
-                :show-overflow-tooltip="true"
-                v-bind:key="index"
-                v-bind:index="index"
-                :width="item.width"
-                >
-                    <template  slot-scope="scope">
-                        <span v-if="item.prop == 'operation' && scope.row['nopratebuttonname']">
-                            <el-button @click="queryHandler(scope)">
-                                {{ scope.row['nopratebuttonname'] }}
-                            </el-button>
-                        </span>
-                        <span v-else> {{ scope.row[scope.column.property] }} </span>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div>
-                <el-pagination
-                background
-                layout="prev, pager, next"
-                @prev-click="prevClick"
-                @next-click="nextClick"
-                @current-change="currentChange"
-                :page-count="totalValue">
-                </el-pagination>
-            </div>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="单个审阅" name="first">
+                    <div>
+                        <el-table :data="tableData"
+                            border
+                            stripe
+                            :header-cell-style="headerRowStyle"
+                            style="width: 100%"
+                        >
+                            <el-table-column 
+                            v-for="(item,index) in columns" 
+                            :prop="item.prop" 
+                            :label="item.label" 
+                            header-align="center"
+                            :show-overflow-tooltip="true"
+                            v-bind:key="index"
+                            v-bind:index="index"
+                            :width="item.width"
+                            >
+                                <template  slot-scope="scope">
+                                    <span v-if="item.prop == 'operation' && scope.row['nopratebuttonname']">
+                                        <el-button @click="queryHandler(scope)">
+                                            {{ scope.row['nopratebuttonname'] }}
+                                        </el-button>
+                                    </span>
+                                    <span v-else> {{ scope.row[scope.column.property] }} </span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <div>
+                            <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            @prev-click="prevClick"
+                            @next-click="nextClick"
+                            @current-change="currentChange"
+                            :page-count="totalValue">
+                            </el-pagination>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="批量审阅" name="second">
+                    <div>
+                        <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
         </div>
         <div v-if="reviewFlag">
             <reviewModal :modalConfig.sync="modalConfig" ref="reviewModal" v-on:publicEvent="publicEvent"></reviewModal>
@@ -45,12 +56,18 @@
 </template>
 <script>
     import singleTable from './../riskControlSystem/publicRiskControl/table/singleTable'
+    import treeTable from './../riskControlSystem/publicRiskControl/treeTable/treeTable'
+
+    import publicTools from './mixins/publicTools'
+
     import reviewModal from './szcModal/reviewModal'
     import { mapGetters } from "vuex"
     import {
-        queryInteraction
+        queryInteraction,
+        queryCompanyByScode
     } from "~api/fill"
     export default {
+        mixins:[publicTools],
         name: "interaction",
         components: {
             singleTable,
@@ -61,6 +78,7 @@
                 tableData:[],
                 totalValue:0,
                 modalConfig:{},
+                activeName:"first",
                 columns:[
                     {
                         prop:"companyname",
@@ -88,7 +106,8 @@
                        label:'操作' 
                     }
                 ],
-                reviewFlag:true
+                reviewFlag:true,
+                treeData:[],
             }
         },
         created() {
@@ -311,6 +330,32 @@
              */
             publicEvent (params) {
                 this.updateData();
+            },
+            /**
+             * tab页的切换。
+             */
+            handleClick (tab, event) {
+                debugger;
+                let me = this,storeParams = me.$store.getters,company = storeParams.company;
+                let params = {
+                    company:company
+                };
+                if(tab.name == "first"){
+
+                }else {
+                    queryCompanyByScode(params).then(res => {
+                        if(res.data.code == 200){
+                            me.treeData = me.transformationTreeData(res.data.data);
+                        }
+                    });
+                }
+            },
+            /**
+             * 树表的审阅。
+             */
+            buttonHandler () {
+                debugger;
+                let me = this;
             }
         }
     };
