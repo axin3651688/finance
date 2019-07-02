@@ -78,16 +78,16 @@
                   <i class="el-icon-menu el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-click">
-                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'Y'" @click.native="handleDisable(scope.$index, scope.row)">
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'Y'" @click.native="handleDisable(scope.$index, scope.row)" :disabled="dropdownBoolean">
                       <span ><i class="iconfont icon-jinyong "></i>禁用</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'N'" @click.native="handleAble(scope.$index, scope.row)">
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'N'" @click.native="handleAble(scope.$index, scope.row)" :disabled="dropdownBoolean">
                       <span ><i class="iconfont icon-qiyong"></i>启用</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEdit(scope.$index, scope.row)">
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEdit(scope.$index, scope.row)" :disabled="dropdownBoolean">
                       <span ><i class="el-icon-edit-outline"></i>修改</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEditPassword(scope.$index, scope.row)"> 
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEditPassword(scope.$index, scope.row)" :disabled="dropdownBoolean"> 
                       <span ><i class="iconfont icon-mima"></i>修改密码</span>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="authorizeButten === 1" @click.native="handleAuthorizeCompany(scope.$index, scope.row)">
@@ -576,6 +576,7 @@ export default {
       }
     };
     return {
+      dropdownBoolean: false ,  // 操作列按钮的禁用与启用的控制
       me: this ,
       // sjz -- 添加弹出框的
       landscapes: [] ,         // 政治面貌
