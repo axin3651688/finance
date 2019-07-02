@@ -5,7 +5,7 @@
 -->
     <div id="orderDialog">
         <el-table :data="tableData" height="380px" style="width: 100%;" border>
-            <el-table-column type="index" width="60" align="center"></el-table-column>
+            <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
             <el-table-column prop="sriskname" label="风险名称" width="180" align="center"></el-table-column>
             <el-table-column prop="srisktypename" label="风险类型" width="150" align="center"></el-table-column>
             <el-table-column prop="ngradename" label="风险等级" width="150" align="center"></el-table-column>

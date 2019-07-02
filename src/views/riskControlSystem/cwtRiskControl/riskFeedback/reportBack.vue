@@ -41,12 +41,12 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
-    import {riskBackAndNotice} from '~api/cwtRiskControl/riskControlRequest'
+    import {riskReportExport, riskBackAndNotice} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         mixins: [cwtPublicJS],
         name: 'reportBack',
-        props:{
+        props: {
             isPeriodNow: Boolean
         },
         components: {
@@ -147,8 +147,149 @@
                 },
                 dataFresh: false,
                 pageDataFresh: true,
+                dialogState: '',
 
-                dialogState: ''
+
+                jsonDataTemplate: {
+                    "level": 0,
+                    "leaf": 0,
+                    "children": [
+                        {
+                            "text": "总述",
+                            "level": 1,
+                            "leaf": 1,
+                            "content": ""
+                        },
+                        {
+                            "text": "",
+                            "level": 1,
+                            "leaf": 0,
+                            "children": [
+                                {
+                                    "level": 2,
+                                    "leaf": 1,
+                                    "type": "text",
+                                    "content": ""
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险名称:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险评估:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险概述:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>采取措施:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>应对建议:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>领导批示:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": "风险策略为：",
+                                            "children": [
+                                                {
+                                                    "level": 4,
+                                                    "leaf": 1,
+                                                    "type": "text",
+                                                    "content": ""
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险反馈:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+
+
             }
         },
         created() {
@@ -217,9 +358,9 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            if(_this.isPeriodNow){
+                            if (_this.isPeriodNow) {
                                 return item.id === '003_1'
-                            }else{
+                            } else {
                                 return item.id === '003'
                             }
                         })
@@ -332,9 +473,9 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            if(_this.isPeriodNow){
+                            if (_this.isPeriodNow) {
                                 return item.id === '004_1'
-                            }else{
+                            } else {
                                 return item.id === '004'
                             }
                         })
@@ -623,16 +764,101 @@
              *
              * 导出事件
              */
-            exportBtn(){
-
+            exportBtn() {
                 let _this = this;
-                let reportJSONData = [];
-                this.axios.get("/cnbi/json/source/tjsp/cwtJson/reportExportJson/riskback.json").then(res => {
+                let _jsonBean = _this.getJsonData();
+                debugger;
+                _this.reportExportRequest(_jsonBean);
+            },
+
+            /**
+             * 获取完整json数据
+             * 并从页面元素中获取内容，形成完整的数据类型并格式化用来发送请求
+             *
+             */
+            getJsonData() {
+                let _this = this;
+                let _riskFeedDataList = _this.reportData.reportDataContent.riskFeedDataList;
+                let _data = [];
+                for (let key in _riskFeedDataList) {
+                    if (_riskFeedDataList[key].risksptype) {
+                        _data.push(_riskFeedDataList[key]);
+                    }
+                }
+
+                let reportJSONData = {
+                    "level": 0,
+                    "leaf": 0,
+                    "children": []
+                };
+
+                _data.forEach((item, index) => {
+                    let _jsonDataTemplate = _this.jsonDataTemplate;
+                    let _template = _jsonDataTemplate.children[1];
+                    let data = item.riskdetaildata[0];
+                    let _type = item.risksptype;
+                    let __data = _this.getreportChildrenData(data, _type, _template);
+                    reportJSONData.children.push(__data);
+                    reportJSONData.children[index].children[0].content = _this.getInnerTextByClassName("describe");
+                });
+                return reportJSONData;
+            },
+
+            /**
+             * 通过类名获取内容  innerText
+             * @param className
+             * @returns {*}
+             */
+            getInnerTextByClassName(className) {
+                return document.getElementsByClassName(className)[0].innerText;
+            },
+
+            /**
+             * 通过模板，真是数据，形成真正的json
+             * @param data
+             * @param t
+             * @param type
+             */
+            getreportChildrenData(data, type, t) {
+                let _returnT = t;
+                t.text = type;
+                let c = _returnT.children;
+                let risk_pg_gs_cs_jy = data.risk_pg_gs_cs_jy;
+                let risk_ps = data.risk_ps;
+                c.forEach((item, index) => {
+                    if (index === 6) {
+                        item.children[0].children[0].content = risk_ps.risk_ps_cl;
+                        item.children[1].content = risk_ps.risk_ps_content;
+                    } else if (index === 7) {
+                        item.children[0].content = data.risk_feed_content;
+                    } else if (index > 0) {
+                        item.children[0].content = risk_pg_gs_cs_jy[index - 1].content;
+                    }
+                });
+                return _returnT;
+            },
+
+            /**
+             * 导出请求发送
+             * @param reportJSONData
+             */
+            reportExportRequest(reportJSONData) {
+                let _this = this;
+                let _params = {
+                    jsonBean: reportJSONData,
+                    company: _this.company,
+                    year: _this.getYear(),
+                    month: _this.getMonth(),
+                    text: _this.getInnerTextByClassName('report-title')
+                };
+                riskReportExport(_params).then((res) => {
+                    debugger;
                     if (res.data.code === 200) {
 
                     }
-                });
+                })
             }
+
         }
     }
 </script>

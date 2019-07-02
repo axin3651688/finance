@@ -77,6 +77,7 @@ export default {
     },
     methods: {
         firstDemo(){
+            // let cc = this.fsgl.rows.reverse() ;
             this.item1 = this.fsgl.rows.filter((res,index) => { return index == 0 });
             this.items = this.fsgl.rows.filter((res,index) => { return index > 0 });
         },
