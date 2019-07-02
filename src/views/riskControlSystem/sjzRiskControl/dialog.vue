@@ -97,7 +97,7 @@
                 </el-form-item>
             </el-form>
         <!-- 3 -->
-        <p class="title1">风险分析</p>
+        <p class="title1">风险处理方法</p>
         <el-form :model="form" :inline="false" :rules="rules6" ref="sub6" label-width="120px">
             <el-form-item label="采取措施：" prop="smeasures">
                 <el-input type="textarea" placeholder="请输入采取措施..." maxlength="1000" :readonly="readonly" @change="descInput_smeasures" v-model="form.smeasures"></el-input>
@@ -257,8 +257,8 @@ export default {
         // 自动获取当前用户的所属部门
             // this.form.departmentname = departmentname ;;view_row
         // 风险发生概率下拉框数据
-            this.optionl = this.fsglTwo.rows.reverse() ;
-            let cc = this.fsgl.rows ;
+            // this.optionl = this.fsglTwo.rows.reverse() ;
+            this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
             this.optiond = this.yxcd.rows ;  
         // 风险发生概率 + 风险影响程度 的分值赋值（初始化）

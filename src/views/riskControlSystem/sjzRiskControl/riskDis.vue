@@ -10,7 +10,7 @@
             2. sm ≥768px 响应式栅格数或者栅格属性对象
             3. md ≥992 响应式栅格数或者栅格属性对象
             4. lg ≥1200 响应式栅格数或者栅格属性对象
-            注：全局最大为24
+            注：全局最大为24 @click="importBtn"
         -->
         <el-row :gutter="10">
             <el-col :xs="12" :md="24" :lg="24">
@@ -22,7 +22,17 @@
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <el-button type="primary" plain v-show="isbtnShow4" @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        <!-- <el-button type="primary" plain v-show="isbtnShow4" @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button> -->
+                        <el-upload
+                        class="upload_dialog upload"
+                        style="float: left"
+                        action="/zjb/risk_excel/excel_input"
+                        :show-file-list="false"
+                        :data="uploadData"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                            <el-button type="primary" plain v-show="isbtnShow4" class="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
+                        </el-upload>
                         <el-button type="primary" plain v-show="isbtnShow2" @click="exportBtn"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
@@ -200,6 +210,11 @@ export default {
             modifyReadonly: false,
             tableData2: [],
             htmlText: "",
+            uploadData: {       // 导入请求额外数据
+                company: "",
+                period: "",
+                templateScode: "risk_distinguish"
+            }  
             
         }
     },
@@ -208,6 +223,9 @@ export default {
         // 全局控制选择的日期类型
         // this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
         // this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
+        let $params = this.$store.state.prame.command;
+        this.uploadData.company = $params.company ;
+        this.uploadData.period = this.getPeriod($params) ;
         // 点进节点时默认计算的高度
         this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
         // 弹出框===如果屏幕 <= 1200px 宽度自动变更为 540px；如果 >1200px 宽度为默认宽度 960px
@@ -275,7 +293,7 @@ export default {
                 }               
             }   
         },
-        // 日期的控制显示
+        // 日期的显示控制
         showDimsControl(){
             let me = this,showDims = this.showDims;
             showDims.year = true;
@@ -541,7 +559,7 @@ export default {
          * @function 1.Checkbox选中时，如果row未提交则可以进行删除；如果row已提交则不能删除
          */
         deleteRow(){ //submitdeletetype
-            debugger
+            // debugger
             let me = this ;
             let data = [] ;
             let selection_no = me.selection.filter(res => { return res.sissubmit == "未提交" }) ;
@@ -780,11 +798,47 @@ export default {
         },
         handleCommand(command){},
         /**
-         * @description 导入按钮
+         * @description 日期处理
          */
-        importBtn(){
-            this.$message('暂无此功能！')
-            // risk_excel_excel_input
+        getPeriod($params){ 
+            if($params.month > 0 && $params.month < 10){
+                $params.month = '0' + $params.month ;
+            }
+            return $params.year + $params.month ;
+        },
+        /**
+         * @description 导入按钮 *(之前)
+         */
+        beforeAvatarUpload(file){
+            // debugger
+            let me = this ;
+            let $params = me.$store.state.prame.command; // 信息
+            let cc = file.name.split('.') ; // 以 '.' 小数点分割成数组
+            if(cc[1] === 'xlsx' || cc[1] === 'xls') {   // 判断， 如果不是xlsx || xls 为后缀的文件则提示匹配不成功， 则传参数请求
+                me.uploadData = {
+                    company: $params.company,
+                    period: me.getPeriod($params),
+                    templateScode: "risk_distinguish"
+                }
+            } else {
+                me.$message({ message: "模板不匹配！请选择匹配模板！", type: "warning" }) ;
+                return false;
+            }
+            // this.$message('暂无此功能！')
+            
+        },
+        /**
+         * @description 导入按钮 *(成功之后)文件上传成功时的钩子
+         */
+        handleAvatarSuccess(response, file, fileList){
+            // debugger
+            let me = this ; 
+            if(response.code === 200) {
+                me.$message({ message: "数据导入成功！", type: "success" }) ;
+                me.axiosJson() ;
+            } else {
+                me.$message.error('数据导入失败！请联系经邦开发人员！') ;
+            }
         },
         /**
          * @description 导出按钮
@@ -798,9 +852,9 @@ export default {
                 let rootColmuns = [],columns = me.objer.columns;
                 let firstItem = columns[0];
                 columns = columns.filter((item,index) => {
-                    return index != 0;
+                    return index != 0 ;
                 });
-                columns.push(firstItem);
+                columns.push(firstItem) ;
                 // me.parseColmns(columns,rootColmuns);
                 excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
             })
@@ -809,6 +863,9 @@ export default {
 }
 </script>
 <style scoped>
+.importBtn {
+    border-radius: 0px;
+}
 .elbtn{
     /* background-color: #fff; */
     /* width: 100%; */
