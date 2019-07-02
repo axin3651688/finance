@@ -156,6 +156,7 @@ export default {
     props: {
         riskTableRow : Array,
         fsgl: Object,
+        fsglTwo: Object,
         yxcd: Object,
         newThis: Object,
         flag: Boolean,
@@ -239,7 +240,7 @@ export default {
         }
     },
     created(){ 
-        // debugger
+        debugger
         let viewBtn = this.newThis.view_btn ;
         let $params = this.$store.state.prame.command;
         let sfilluser = this.$store.getters.user.user.trueName;
@@ -256,7 +257,8 @@ export default {
         // 自动获取当前用户的所属部门
             // this.form.departmentname = departmentname ;;view_row
         // 风险发生概率下拉框数据
-            this.optionl = this.fsgl.rows ;
+            this.optionl = this.fsglTwo.rows.reverse() ;
+            let cc = this.fsgl.rows ;
         // 风险影响程度下拉框数据
             this.optiond = this.yxcd.rows ;  
         // 风险发生概率 + 风险影响程度 的分值赋值（初始化）

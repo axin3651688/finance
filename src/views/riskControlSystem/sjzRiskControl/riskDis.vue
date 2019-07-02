@@ -93,6 +93,7 @@
                 参数名                  数据类型                作用
                 riskTableRow:           Array                  风险矩阵的数据
                 fsgl:                   Object                 发生概率参照图数据
+                fsglTwo                 Object                 发生概率第二数据
                 yxcd:                   Object                 影响程度参照图数据
                 newThis：               Object                 this对象
                 flag:                   Boolean                作为监听作用（区分查看按钮和添加按钮）
@@ -171,9 +172,9 @@ export default {
             dialogFormVisible2:false,   // 下达记录弹出框不显示
             orderData: [],
             // 
-            riskTableRow:[],    // 风险矩阵的数据信息
-            tableDemo1:[],      //【参照按钮-发生概率】的json信息
-            tableDemo2:[],      //【参照按钮-影响程度】的json信息 
+            riskTableRow: [],    // 风险矩阵的数据信息
+            tableDemo1: [],      //【参照按钮-发生概率】的json信息
+            tableDemo2: [],      //【参照按钮-影响程度】的json信息 
             // 
             periodtype: 0,      // 全局控制选择的日期类型
             reporttype: 0,      // 全局控制风险类型显示与隐藏

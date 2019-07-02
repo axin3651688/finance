@@ -54,7 +54,7 @@
                                 <div  v-for="(tool, index) in dataReport" v-if="too.sname == tool.srootrisktypename">
                                     <div class="container_main_risk_dd">
                                         <span class="container_main_risk_text">{{ tool.srisktypename }}</span>
-                                        <span class="container_main_risk_color_one">{{ tool.ngradename|TextFormat }}</span>
+                                        <span class="container_main_risk_color_one" :style="getStyleColor(tool)">{{ tool.ngradename|TextFormat }}</span>
                                         <span class="container_main_risk_text textTitle">{{ textTitle }}</span>
                                         <span class="container_main_risk_color_two">识别人：{{ tool.ssubmituser }}</span>
                                     </div>
@@ -194,6 +194,21 @@ export default {
         }
     },
     methods: {
+        /**颜色提示
+         * "#db2b08"    巨大风险
+         * "#e3b70a"    重大风险
+         * "#e3d40a"    中等风险
+         * "#0a95e3"    一般风险
+         * "#13d708"    可接受风险
+         */
+        // 背景颜色
+        getStyleColor(tool){
+            debugger
+            tool.bgColor = {
+                "backgroundColor": tool.color
+            }
+            return tool.bgColor ;
+        },
         // 自适应高度
         setClientHeight(){
             let offsetHeight = document.body.offsetHeight ;
