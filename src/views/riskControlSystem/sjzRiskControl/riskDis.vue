@@ -633,6 +633,7 @@ export default {
                     })
                     if(me.submitdeletetype == 0)selection_no = [] ;
                     me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
+                    me.axiosJson() ;
                     me.$message({ type: 'success', message: '删除成功!' });
                 }else{
                     me.$message.error('删除失败!');
@@ -801,10 +802,13 @@ export default {
          * @description 日期处理
          */
         getPeriod($params){ 
-            if($params.month > 0 && $params.month < 10){
-                $params.month = '0' + $params.month ;
+            let period, mm ;
+            if($params.month > 0 && $params.month < 10) {
+                mm = '0' + $params.month ;
+            } else {
+                mm = $params.month ;
             }
-            return $params.year + $params.month ;
+            return $params.year + mm ;
         },
         /**
          * @description 导入按钮 *(之前)

@@ -163,102 +163,6 @@
                 },
                 dataFresh: false,
 
-                jsonDataTemplate: {
-                    "level": 0,
-                    "leaf": 0,
-                    "children": [
-                        {
-                            "text": "总述",
-                            "level": 1,
-                            "leaf": 1,
-                            "content": ""
-                        },
-                        {
-                            "text": "",
-                            "level": 1,
-                            "leaf": 0,
-                            "children": [
-                                {
-                                    "level": 2,
-                                    "leaf": 1,
-                                    "type": "text",
-                                    "content": ""
-                                },
-                                {
-                                    "level": 2,
-                                    "leaf": 0,
-                                    "type": "text",
-                                    "content": "<strong>风险名称:",
-                                    "children": [
-                                        {
-                                            "level": 3,
-                                            "leaf": 1,
-                                            "type": "text",
-                                            "content": ""
-                                        }
-                                    ]
-                                },
-                                {
-                                    "level": 2,
-                                    "leaf": 0,
-                                    "type": "text",
-                                    "content": "<strong>风险评估:",
-                                    "children": [
-                                        {
-                                            "level": 3,
-                                            "leaf": 1,
-                                            "type": "text",
-                                            "content": ""
-                                        }
-
-                                    ]
-                                },
-                                {
-                                    "level": 2,
-                                    "leaf": 0,
-                                    "type": "text",
-                                    "content": "<strong>风险概述:",
-                                    "children": [
-                                        {
-                                            "level": 3,
-                                            "leaf": 1,
-                                            "type": "text",
-                                            "content": ""
-                                        }
-                                    ]
-                                },
-                                {
-                                    "level": 2,
-                                    "leaf": 0,
-                                    "type": "text",
-                                    "content": "<strong>采取措施:",
-                                    "children": [
-                                        {
-                                            "level": 3,
-                                            "leaf": 1,
-                                            "type": "text",
-                                            "content": ""
-                                        }
-                                    ]
-                                },
-                                {
-                                    "level": 2,
-                                    "leaf": 0,
-                                    "type": "text",
-                                    "content": "<strong>应对建议:",
-                                    "children": [
-                                        {
-                                            "level": 3,
-                                            "leaf": 1,
-                                            "type": "text",
-                                            "content": ""
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
 
             }
         },
@@ -670,7 +574,6 @@
 
                 let _this = this;
                 let _jsonBean = _this.getJsonData();
-                debugger;
                 _this.reportExportRequest(_jsonBean);
             },
 
@@ -691,19 +594,114 @@
                 let reportJSONData = {
                     "level": 0,
                     "leaf": 0,
-                    "children": []
+                    "text": '',
+                    "children": [
+                        {
+                            "text": "总述",
+                            "level": 1,
+                            "leaf": 1,
+                            "content": ""
+                        }
+                    ]
                 };
-
+                let _length = _data.length;
+                reportJSONData.children[0].content = _this.getInnerTextByClassName("describe");
                 _data.forEach((item, index) => {
-                    let _jsonDataTemplate = _this.jsonDataTemplate;
+                    let _jsonDataTemplate = _this.getJsonDataTemplate();
                     let _template = _jsonDataTemplate.children[1];
                     let data = item.riskdetaildata[0];
                     let _type = item.risksptype;
                     let __data = _this.getreportChildrenData(data, _type, _template);
                     reportJSONData.children.push(__data);
-                    reportJSONData.children[index].children[0].content = _this.getInnerTextByClassName("describe");
+                    // reportJSONData.children[index].children[0].content = _this.getInnerTextByClassName("describe");
+
+                    if (index === _length - 1) {
+                        let _ps = _this.getRiskPs(data);
+                        reportJSONData.children[index + 1].children.push(_ps);
+                    }
                 });
+
+                let _title = _this.getInnerTextByClassName('report-title');
+
+                let _strIndex = _title.lastIndexOf('年') - 4;
+
+                let _a = _title.split("");
+                _a.splice(_strIndex, 0, '<br>');
+                reportJSONData.text = _a.join("");
+
+
+                // reportJSONData.text = _this.getInnerTextByClassName('report-title');
                 return reportJSONData;
+            },
+
+            /**
+             * 获取底部特殊部分内容
+             * @param data
+             * @returns {*}
+             */
+            getRiskPs(data) {
+                let _this = this;
+                let _tem = {
+                    "level": 2,
+                    "leaf": 0,
+                    "type": "text",
+                    "content": "<strong>风险追踪:",
+                    "children": []
+                };
+
+
+                let scheduleList = data.scheduleList;
+
+                let _list = [];
+                for (let key in scheduleList) {
+                    let _tpl = _this.getTpl();
+                    for (let _key in scheduleList[key]) {
+                        if (_key === 'risk_name') {
+                            _tpl[0].content += scheduleList[key][_key]
+                        } else if (_key === 'state') {
+                            _tpl[1].content += scheduleList[key][_key]
+                        } else if (_key === 'content') {
+                            _tpl[2].content += scheduleList[key][_key]
+                        }
+                    }
+                    _list.push(_tpl);
+                }
+
+                _list.forEach((a)=>{
+                    a.forEach((b)=>{
+                        _tem.children.push(b);
+                    })
+                });
+
+                return _tem;
+
+            },
+            /**
+             *
+             *
+             * **/
+            getTpl() {
+                return [
+                    {
+                        "level": 3,
+                        "leaf": 1,
+                        "type": "text",
+                        "content": "名称："
+                    },
+                    {
+                        "level": 3,
+                        "leaf": 1,
+                        "type": "text",
+                        "content": "状态："
+                    },
+                    {
+                        "level": 3,
+                        "leaf": 1,
+                        "type": "text",
+                        "content": "内容："
+                    }
+                ]
+
             },
 
             /**
@@ -749,12 +747,132 @@
                     text: _this.getInnerTextByClassName('report-title')
                 };
                 riskReportExport(_params).then((res) => {
-                    debugger;
-                    if (res.data.code === 200) {
+                    // if (res.data.code === 200) {
+                    let str = res.headers['content-disposition'];
+                    // let fileName = decodeURI(str.substr(str.indexOf('=')));
+                    let fileName = reportJSONData.text + '.docx';
 
+                    let blob = new Blob([res.data], {
+                        type:
+                            "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    });
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        navigator.msSaveBlob(blob);
+                    } else {
+                        let elink = document.createElement("a");
+                        elink.download = fileName;
+                        elink.style.display = "none";
+                        elink.href = URL.createObjectURL(blob);
+                        document.body.appendChild(elink);
+                        elink.click();
+                        document.body.removeChild(elink);
                     }
+                    // }
                 })
-            }
+            },
+            /**
+             * 获取导出数据模板
+             * @returns {{level: number, leaf: number, text: string, children: *[]}}
+             */
+            getJsonDataTemplate() {
+                return {
+                    "level": 0,
+                    "leaf": 0,
+                    "text": '',
+                    "children": [
+                        {
+                            "text": "总述",
+                            "level": 1,
+                            "leaf": 1,
+                            "content": ""
+                        },
+                        {
+                            "text": "",
+                            "level": 1,
+                            "leaf": 0,
+                            "children": [
+                                {
+                                    "level": 2,
+                                    "leaf": 1,
+                                    "type": "text",
+                                    "content": ""
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险名称:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险评估:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>风险概述:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>采取措施:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                },
+                                {
+                                    "level": 2,
+                                    "leaf": 0,
+                                    "type": "text",
+                                    "content": "<strong>应对建议:",
+                                    "children": [
+                                        {
+                                            "level": 3,
+                                            "leaf": 1,
+                                            "type": "text",
+                                            "content": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
         }
     }
 </script>
