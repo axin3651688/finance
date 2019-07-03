@@ -219,7 +219,7 @@ export default {
     // 抽取数据 按钮
     extraing(formName) {
     
-      let _this = this;
+      let _this = this,storeParmas = _this.$store.getters,userName = storeParmas.user.user.userName;
       //获取选中公司
       let comtree = _this.$refs.comtree;
       let coms = comtree.getCheckedKeys();
@@ -254,7 +254,8 @@ export default {
                     ) - 0,
                   endmonth:
                     _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
-                    0
+                    0,
+                  user:userName
                 };
                 
                 extraRequest({

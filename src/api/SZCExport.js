@@ -24,3 +24,16 @@ export function exportEVAExcle(exportData) {
         data: exportData
     })
 }
+/**
+ * world导出
+ * @param {导出的参数} exportData 
+ * @author szc 2019年4月8日16:49:53
+ */
+export function exportRiskWorld(exportData) {
+    return request({
+        url: '/exp/exportDocx',
+        method: 'post',
+        responseType: 'blob',
+        params: exportData
+    })
+}

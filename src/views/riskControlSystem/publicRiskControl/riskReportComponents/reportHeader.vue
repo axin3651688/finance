@@ -7,7 +7,7 @@
             总述
         </span>
         <template>
-            <p v-if="reportHeaderData.headerReport.totalCount > 0" class="describe">
+            <p v-if="reportHeaderData.headerReport.totalCount > 0" class="describe" id="risk_report_header">
                 截止{{ this.periodStr }}份，经风险评估分析，{{this.company}}
                 在风险方面共存在{{ reportHeaderData.headerReport.totalCount || 0 }}条，
                 从风险类型来看，其中
@@ -54,7 +54,6 @@
              * 期间应该也是获取的，但是还没有写，接口已经完成
              */
             getAllData(){
-                debugger;
                 // this.period = this.getPeriod();
                 this.periodStr = this.getPeriodStr();
                 this.company = this.reportHeaderData['reportCompanyName'];
