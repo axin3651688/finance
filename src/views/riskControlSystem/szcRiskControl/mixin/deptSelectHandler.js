@@ -318,11 +318,17 @@ export default {
          * @param {*} data 
          */
         middleContentOfReport(lookData, objItems, data, optionsData) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.companyName;
             for (let i = 0; i < objItems.length; i++) {
+                //导出用到的格式。
+                let jsonItem = {
+                    text: "",
+                    level: 1,
+                    leaf: 0,
+                    children: []
+                };
                 let item = objItems[i];
                 let objItem = {
                     id: item.riskspcode,
@@ -333,7 +339,14 @@ export default {
                         content: []
                     }
                 };
+                jsonItem.text = item.riskspname;
                 for (let j = 0; j < lookData.length; j++) {
+                    let jsonTwo = {
+                        level: 2,
+                        leaf: 1,
+                        type: "text",
+                        content: ""
+                    };
                     let lookItem = lookData[j];
                     let objUpContentFXMC = {
                             title: "风险名称",
@@ -379,6 +392,9 @@ export default {
                         } else {
                             contentLast.contentDown.instructionObj = lookItem;
                         }
+                        //导出报告的内容。
+                        jsonTwo.content = lookItem.risktype + lookItem.levelsname + company + lookItem.sfilluser;
+                        jsonItem.children.push(jsonTwo);
                         //上报人、等级、类型
                         contentLast.responsibility.text = lookItem.risktype;
                         contentLast.responsibility.level = lookItem.levelsname || "暂无等级";
@@ -409,11 +425,91 @@ export default {
                         objItem.contentUp.content.push(contentLast);
                         //风险的条数。
                         objItem.riskCount++;
+                        //导出格式从第二个开始的统一格式。
+                        me.jsonFormatOfTwo(jsonItem, [objUpContentFXMC, objUpContentFXPG, objUpContentFXGS, objUpContentCQCS, objUpContentYDJY]);
+                        //领导批示内容。
+                        if (i == objItems.length - 1 && j == lookData.length - 1) {
+                            if (objItems[i].instructionid == 1) {
+                                me.instructionsContent(jsonItem, objItems[i], optionsData);
+                            }
+                        }
                     }
                 }
                 data.push(objItem);
             }
             return data;
+        },
+        /**
+         * 从第二个开始的格式。
+         */
+        jsonFormatOfTwo(jsonItem, itemArr) {
+            let me = this,
+                jsonBeanData = me.jsonBeanData;
+            itemArr.forEach(item => {
+                let jsonTwoBack = {
+                    level: 2,
+                    leaf: 0,
+                    type: "text",
+                    content: "<strong>",
+                    children: []
+                };
+                jsonTwoBack.content = jsonTwoBack.content + item.title;
+                let childItemOut = {
+                    level: 3,
+                    leaf: 1,
+                    type: "text",
+                    content: ""
+                }
+                for (let i = 0; i < item.content.length; i++) {
+                    let itemChild = item.content[i];
+                    if (i != item.content.length - 1) {
+                        itemChild += "<br>"
+                    }
+                    childItemOut.content = childItemOut.content + itemChild;
+                }
+                jsonTwoBack.children.push(childItemOut);
+                jsonItem.children.push(jsonTwoBack);
+            });
+            jsonBeanData.children.push(jsonItem);
+        },
+        /**
+         * 领导批示内容。
+         */
+        instructionsContent(jsonItem, objItem, optionsData) {
+            let me = this,
+                jsonTwoBack = {
+                    level: 2,
+                    leaf: 0,
+                    type: "text",
+                    content: "<strong>领导批示",
+                    children: [{
+                        level: 3,
+                        leaf: 1,
+                        type: "text",
+                        content: ""
+                    }]
+                };
+            if (objItem.instructionid == 1) {
+                let cstrategy = objItem.cstrategy,
+                    arr = cstrategy.split(",");
+                let cstrategySelect = "";
+                for (let i = 0; i < arr.length; i++) {
+                    let itemArr = arr[i];
+                    for (let j = 0; j < optionsData.length; j++) {
+                        let itemOption = optionsData[j];
+                        if (itemArr == itemOption.scode) {
+                            cstrategySelect += itemOption.sname;
+                            break;
+                        }
+                    }
+                    if (i != arr.length - 1) {
+                        cstrategySelect += ",";
+                    }
+                }
+                jsonTwoBack.children[0].content = "风险策略为：" + cstrategySelect + "<br>";
+                jsonTwoBack.children[0].content += objItem.psnr;
+            }
+            jsonItem.children.push(jsonTwoBack);
         },
         /**
          * 树表汇总的提醒功能。

@@ -1570,17 +1570,12 @@ export default {
       if (this.templateId == 8) {
         //资金集中可编辑的列，现在要改成存款余额说明填报 2019年5月30日11:54:32
         // cellMeta.readOnly = this.capitalConcentration(row,columns);
-        if(columns == 5){
-          cellMeta.readOnly = false;
-        }else {
-          cellMeta.readOnly = true;
-        }
-        //资金集中度的填写限制 改成第一行可编辑
-        // if ((columns == 0 || columns == 2)) {
+        // if(columns == 5){
         //   cellMeta.readOnly = false;
-        // } else {
+        // }else {
         //   cellMeta.readOnly = true;
         // }
+        cellMeta.readOnly = false;
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){

@@ -261,6 +261,7 @@ export function riskReportExport(params) {
     return request({
         url: '/exp/exportDocx',
         method: 'post',
+        responseType:'blob',
         params: params
     })
 }
