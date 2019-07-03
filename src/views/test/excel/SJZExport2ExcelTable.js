@@ -104,7 +104,7 @@ function sheet_from_array_of_arrays(data, headNum, columns) { //debugger
         if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(n) != -1) {
             ws['!cols'].push({ wpx: 80 });
         } else {
-            ws['!row'].push({ hpx: 180 }) ;
+            // ws['!row'].push({ hpx: 180 }) ;
             if(n == 0 || n == 4){
                 ws['!cols'].push({ wpx: 100 });
             }else if(n == data[0].length - 1){

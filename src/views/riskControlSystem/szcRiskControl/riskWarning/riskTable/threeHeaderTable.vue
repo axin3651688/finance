@@ -92,7 +92,6 @@
              * 颜色的添加。
              */
             cellStyle (row,column,rowIndex,columnIndex) {
-                debugger;
                 let me = this,allData = me.allData;
                 if(allData && allData.cellColor && row.rowIndex == allData.cellColor.rowIndex){
                     if(row.columnIndex > 0 && row.columnIndex < 3){

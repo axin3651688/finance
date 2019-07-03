@@ -481,6 +481,7 @@
                 // this.reportHeaderData['period'] = data.period;
                 this.reportHeaderData['dataList'] = headerData;
                 this.reportHeaderData['headerReport'] = headerReport;
+                
 
             },
             /**
