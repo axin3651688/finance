@@ -579,3 +579,15 @@ export function downLoadTemplate() {
         method: 'post'
     })
 }
+/** name : sjz
+ * 说明：风险报告页面【导出按钮】的请求接口 
+ * /exportDocx 
+ */
+export function exportDocx(data) {
+    return request({
+        url: '/exp/exportDocx',
+        method: 'post',
+        responseType:'blob',
+        data: data
+    })
+}
