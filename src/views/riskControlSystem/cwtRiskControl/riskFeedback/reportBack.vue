@@ -153,6 +153,7 @@
                 jsonDataTemplate: {
                     "level": 0,
                     "leaf": 0,
+                    "text": '',
                     "children": [
                         {
                             "text": "总述",
@@ -801,6 +802,7 @@
                     reportJSONData.children.push(__data);
                     reportJSONData.children[index].children[0].content = _this.getInnerTextByClassName("describe");
                 });
+                reportJSONData.text = _this.getInnerTextByClassName('report-title');
                 return reportJSONData;
             },
 
