@@ -3,14 +3,15 @@
  * @description 2019年7月3日08:59:11
  * @description 风险报告导出 js文件
  */
-import { exportDocx } from '~api/cube.js';
 // 引用公用 js 方法
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js";
+// Qs是axios里面自带的
 import Qs from 'qs'
 import { stringify } from 'querystring';
 export default {
     importReportWorld(me) {  
         let _this = this ;
+        // json 导出传的值（文字）
         let jsonBean = {
             "text": me.textBody2,
             "level": 0,
@@ -28,9 +29,11 @@ export default {
                 }
             ]
         }
+        // 固定显示的
         let context = ["风险名称","风险评估","风险概述","采取措施","应对建议"] ;
         // 如果目录有数据，说明报告不为空 
         if(me.directory.length > 0) {
+            // 循环目录
             for(let i=0; i<me.directory.length; i++) {
                 jsonBean.children.push({
                     text: me.directory[i].text,
@@ -41,6 +44,7 @@ export default {
                     children: []
                 });
             }
+            // 两个数据匹配，相同的放入各自的里面
             jsonBean.children.forEach((element, index) => { 
                 me.dataReport.forEach((item, index) => { 
                     let text = element.text.slice(2, element.text.length) ; 
@@ -57,6 +61,7 @@ export default {
                             children: []
                         });
                         // debugger
+                        // context 固定显示的数据就5个
                         for(let k=0; k<context.length; k++) {
                             element.children.push({
                                 text: null,
@@ -81,6 +86,7 @@ export default {
         debugger
         let $params = me.$store.state.prame.command;
         // var data = Qs.stringify({"matterIds":"1,2,3"});
+        // 参数
         let params = {
             jsonBean: JSON.stringify(jsonBean) ,
             company: $params.company ,
