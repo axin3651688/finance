@@ -74,7 +74,7 @@
             <el-input class="elform" v-model="form.sname"></el-input>
           </el-form-item> -->
 
-          <el-form-item label="公司全称" prop="sname">
+          <el-form-item label="公司名称" prop="sname">
             <el-input class="elform" v-model="form.sname" placeholder="请填写公司名称"></el-input>
           </el-form-item>
 
