@@ -74,13 +74,13 @@
             <el-input class="elform" v-model="form.sname"></el-input>
           </el-form-item> -->
 
-          <el-form-item label="公司全称" prop="sfullname">
-            <el-input class="elform" v-model="form.sfullname" placeholder="请填写公司名称"></el-input>
+          <el-form-item label="公司名称" prop="sname">
+            <el-input class="elform" v-model="form.sname" placeholder="请填写公司名称"></el-input>
           </el-form-item>
 
-          <el-form-item label="公司简称" prop="">
+          <!-- <el-form-item label="公司简称" prop="">
             <el-input class="elform" v-model="form.sname" placeholder="请填写公司简称"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="上级公司编码" prop="spcode">
             <el-input class="elform" v-model="form.spcode" disabled></el-input>
@@ -318,7 +318,7 @@ export default {
             message: "长度在 1 到 18 个字符"
           }
         ],
-        sfullname: [
+        sname: [
           // { required: true, message: "必填项", trigger: "blur" },
           // { min: 1, max: 100, message: "长度在 1 到 100 个字符"}
           {
@@ -544,8 +544,8 @@ export default {
                 item.open = true; //展开此节点
                 _this.expandKeys.push(item.scode);
               }
-              item.codename = "(" + item.scode + ")" + item.sfullname; //拼写公司编码+公司名称
-              item.label = "(" + item.scode + ")" + item.sfullname
+              item.codename = "(" + item.scode + ")" + item.sname; //拼写公司编码+公司名称
+              item.label = "(" + item.scode + ")" + item.sname
               return item.cisdel != "Y";
             });
             
@@ -986,7 +986,12 @@ export default {
   width: 420px;
 }
 .elform2 {
-  margin-left: 188px;
+  /* margin-left: 188px; */
+  text-align: right;
+}
+.comForm {
+  /* background-color: beige; */
+  width: 560px;
 }
 </style>
 

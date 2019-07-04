@@ -95,7 +95,7 @@
                 </el-form-item>
             </el-form>
         <!-- 3 -->
-        <p class="title1">风险分析</p>
+        <p class="title1">风险处理方法</p>
         <el-form :model="form" :inline="false" ref="sub6" label-width="120px">
             <el-form-item label="采取措施：" prop="smeasures">
                 <el-input type="textarea" placeholder="请输入采取措施..." maxlength="1000" @change="descInput_smeasures" v-model="form.smeasures"></el-input>
