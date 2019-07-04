@@ -25,9 +25,10 @@
         <el-checkbox
             v-for="item of modalConfig.datas"
             :key="item.id"
+            :disabled="(item.statemun == '1' || item.statemun == '2' || item.statemun == '3')? 'disabled':undefined"
             class="checkbox"
             @change="changeHandler($event, item)"
-        >{{ item.title }}</el-checkbox>
+        >{{ item.templatename }}</el-checkbox>
     </div>
     <div v-else-if="modalConfig.type == 's-table'">
         <el-table :data="modalConfig.datas.datas || datas">
@@ -82,7 +83,8 @@ export default {
                 label:"",
                 children:""
             },
-            totalValue:"3"
+            totalValue:"3",
+            checkboxValues:[]
         }
     },
     created() {
@@ -133,9 +135,28 @@ export default {
          */
         confirmHandle () {
             let me = this,eventListener = this.modalConfig.eventListener;
-            let nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
+            let parmas = {},nodes;
+            if(this.modalConfig.type == "tree"){
+                nodes = this.$refs[me.modalConfig.id].getCheckedNodes();
+                if(eventListener){
+                    this.$emit(eventListener,nodes);
+                }
+                return;
+            }else if (this.modalConfig.type == "checkbox"){
+                if(me.checkboxValues && me.checkboxValues.length == 0){
+                    me.$message({
+                        message:"请选择要批示的报表！",
+                        type:"warning"
+                    });
+                    return;
+                }
+                parmas = {
+                    id:"checkbox",
+                    tableTemplates:me.checkboxValues
+                };
+            }
             if(eventListener){
-                this.$emit(eventListener,nodes);
+                this.$emit(eventListener,parmas);
             }
         },
         /**
@@ -181,8 +202,16 @@ export default {
         /**
          * 选中的结果
          */
-        changeHandler (event,item) {
+        changeHandler (flag,item) {
+            debugger;
             let me = this;
+            if(flag){
+                me.checkboxValues.push(item);
+            }else {
+                me.checkboxValues = me.checkboxValues.filter(itemIt => {
+                    return itemIt.templateId != item.templateId;
+                });
+            }
         }
     }
 }

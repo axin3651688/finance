@@ -70,7 +70,10 @@
 
         </el-container>
 
-        <show-personnel-list v-if="personRender" :personnelListShow="personnelListShow" v-on:personSureBtnClicked="personSureBtnClicked"></show-personnel-list>
+        <show-personnel-list v-if="personRender" 
+            :personnelListShow="personnelListShow" 
+            v-on:personSureBtnClicked="personSureBtnClicked"
+            v-on:publicHandler="publicHandler"></show-personnel-list>
     </div>
 </template>
 
@@ -508,6 +511,15 @@
                     //         break;
                     //     }
                     // }
+                }
+            },
+            /**
+             * 公共的处理方式。
+             */
+            publicHandler (params) {
+                let me = this;
+                if(params.id == "close"){
+                    me.personnelListShow = false;
                 }
             }
 
