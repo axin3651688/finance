@@ -986,7 +986,12 @@ export default {
   width: 420px;
 }
 .elform2 {
-  margin-left: 188px;
+  /* margin-left: 188px; */
+  text-align: right;
+}
+.comForm {
+  /* background-color: beige; */
+  width: 560px;
 }
 </style>
 
