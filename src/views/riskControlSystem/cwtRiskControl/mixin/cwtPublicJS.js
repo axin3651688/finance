@@ -202,6 +202,12 @@ export default {
          */
         setNumberToStander(num, isNotNumber) {
             if (!isNotNumber) {
+
+                if(typeof num === 'string'){
+                    if(num.indexOf(',') !== -1){
+                        num = num.replace(',', '');
+                    }
+                }
                 if (num && num !== null) {
                     num = Math.round(num * 100) / 100;
                     let str = num.toLocaleString();
