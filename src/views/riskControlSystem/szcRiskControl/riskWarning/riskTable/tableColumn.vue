@@ -59,7 +59,6 @@
              * 格式化数字内容。
              */
             getCellValues (scope,item) {
-                debugger;
                 let me = this,value = scope.row[item.id];
                 if(value){
                     return tools.currency(value,'',2);

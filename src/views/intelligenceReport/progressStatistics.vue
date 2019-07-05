@@ -160,7 +160,6 @@ export default {
     methods: {
         ...mapActions(["ShowDims"]),
         updateData(pageParams){
-            debugger;
             let me = this,storeParams = me.$store.getters,company = storeParams.company,
                 year = storeParams.year,month = storeParams.month,period = "";
             if(month > 9){
@@ -230,7 +229,6 @@ export default {
          * 模糊查询请求。
          */
         onSubmit () {
-            debugger;
             let me = this,formInline = me.formInline,companyname = formInline.companyname,templatename = formInline.templatename;
             let params = {
                 page:1,

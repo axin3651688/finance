@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>
-            <el-row>
-                <el-col :span="6">
+            <el-row class="div_form">
+                <el-col :span="10">
                     <div>
                         <label for="">公司选择：</label>
                         <el-select v-model="value" placeholder="请选择" class="select_all">
@@ -15,7 +15,7 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="14">
                     <div>
                         <label for="">上市公司：</label>
                         <el-select v-model="listedCompany" placeholder="请选择" class="select_all" multiple>
@@ -28,7 +28,44 @@
                         </el-select>
                     </div>
                 </el-col>
-                <el-col :span="12">
+                <!-- <el-col :span="5">
+                    <div>
+                        <label for="">指标名称：</label>
+                        <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
+                            <el-option
+                            v-for="item in indicatorOptions"
+                            :key="item.value"
+                            :label="item.sname"
+                            :value="item.scode">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col :span="9">
+                    <div>
+                        <label for="">期间选择：</label>
+                        <el-select v-model="yearValue" placeholder="请选择" class="select_left">
+                            <el-option
+                            v-for="item in optionYears"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
+                            <el-option
+                            v-for="item in optionMonths"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-button @click="btnHandler">
+                            确定
+                        </el-button>
+                    </div>
+                </el-col> -->
+                <!-- <el-col :span="12">
                     <el-row>
                         <el-col :span="24">
                             <div>
@@ -70,6 +107,45 @@
                             </div>
                         </el-col>
                     </el-row>
+                </el-col> -->
+            </el-row>
+            <el-row class="div_form">
+                <el-col :span="10">
+                    <div>
+                        <label for="">指标名称：</label>
+                        <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
+                            <el-option
+                            v-for="item in indicatorOptions"
+                            :key="item.value"
+                            :label="item.sname"
+                            :value="item.scode">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col :span="14">
+                    <div>
+                        <label for="">期间选择：</label>
+                        <el-select v-model="yearValue" placeholder="请选择" class="select_left">
+                            <el-option
+                            v-for="item in optionYears"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
+                            <el-option
+                            v-for="item in optionMonths"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-button @click="btnHandler" style="margin-left:2%;">
+                            确定
+                        </el-button>
+                    </div>
                 </el-col>
             </el-row>
             <el-row>
@@ -413,7 +489,10 @@
     }
     .select_right {
         width: 25%;
-        margin-left: 25px;
+        margin-left: 5%;
+    }
+    .div_form {
+        margin: 10px 0px;
     }
 </style>
 <style lang="scss" scoped>

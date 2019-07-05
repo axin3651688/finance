@@ -287,7 +287,6 @@ export default {
       }
     },
     company(val,oldVal) {
-      debugger;
       //批量批示1001公司不显示。
       if(val == "1001"){
         this.bulkButton = false;
@@ -1589,11 +1588,12 @@ export default {
         // }else {
         //   cellMeta.readOnly = true;
         // }
-        if(columns == 4){
-          cellMeta.readOnly = true;
-        }else {
-          cellMeta.readOnly = false;
-        }
+        cellMeta.readOnly = this.capitalConcentration(row,columns);
+        // if(columns == 4){
+        //   cellMeta.readOnly = true;
+        // }else {
+        //   cellMeta.readOnly = false;
+        // }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
@@ -1655,14 +1655,15 @@ export default {
      */
     capitalConcentration (row,column) {
       let me = this;
-      if(column == 5){
-        let record = this.settings.data[row];
-        if(!record){return true}
-        if(record.B && record.B != 0){
-          return false;
-        }
+      let record = this.settings.data[row];
+      if(!record){return true}
+      if(record.ssrccode){
+        return true;
       }
-      return true;
+      if(column == 4){
+        return true;
+      }
+      return false;
     },
     /**
      * 填报表的列与列之间的限制的判断添加。
@@ -1874,6 +1875,13 @@ export default {
         });
         colHeaders = colHeaders.filter(item => {
           return item != "项目编码";
+        });
+      }else if(this.templateId == 8 && newCoulmns && newCoulmns.length > 0) {
+        newCoulmns = newCoulmns.filter(item => {
+          return item.data != "ssrccode";
+        });
+        colHeaders = colHeaders.filter(item => {
+          return item != "eas的编码";
         });
       }
       //集团经营目标不显示公司编码过滤掉
