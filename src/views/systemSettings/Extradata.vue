@@ -219,7 +219,7 @@ export default {
     // 抽取数据 按钮
     extraing(formName) {
     
-      let _this = this;
+      let _this = this,storeParmas = _this.$store.getters,userName = storeParmas.user.user.userName;
       //获取选中公司
       let comtree = _this.$refs.comtree;
       let coms = comtree.getCheckedKeys();
@@ -254,7 +254,8 @@ export default {
                     ) - 0,
                   endmonth:
                     _.replace(_this.form.endperiod, /-/g, "").substring(4, 6) -
-                    0
+                    0,
+                  user:userName
                 };
                 
                 extraRequest({
@@ -392,18 +393,20 @@ export default {
     },
 
     // 请求节点数据
-    findNodes() {
+    findNodes() { 
       const _this = this;
+      let suser = _this.$store.getters.user.user.userName ;
       // var getters = _this.$store.getters;
       //请求数据
       request({
         // url: "/tjsp/company/findAll",
-        url: "/zjb/sys/dimcompany/query_all",
-        method: "get"
-        // params: {
-        //   scode: "1001" //getters.companyId ? getters.companyId :
-        // }
-      }).then(result => {
+        url: "/zjb/sys/dimcompany/query_user",
+        // url: "/zjb/sys/dimcompany/query_all",
+        method: "get",
+        params: {
+          suser: suser //getters.companyId ? getters.companyId :
+        }
+      }).then(result => { 
         if (result.status == 200 && result.data.code == 200) {
           //封装树对象数据
           const setting = {

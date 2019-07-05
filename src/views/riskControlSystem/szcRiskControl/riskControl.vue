@@ -91,8 +91,9 @@ import {
     globalparam_all
 } from "~api/szcRiskControl/riskControl"
 import { findThirdPartData } from "~api/interface"
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 import publicTools from './../sjzRiskControl/riskJavaScript.js'
+import { exportRiskWorld } from '~api/SZCExport'
 export default {
     mixins: [deptSelect],
     name: "riskControl",
@@ -139,14 +140,27 @@ export default {
             isAlertShow:false,
             referenceShow:false,//参照显示与否。
             firstFlag:true,
-            secondFlag:true
+            secondFlag:true,
+            jsonBeanData:{
+                level:0,
+                leaf:0,
+                text:"",
+                children:[
+                    {
+                        text: "总述",
+                        level: 1,
+                        leaf: 1,
+                        content: ""
+                    }
+                ]
+            }//导出数据格式
         }
     },
     /**
      * 计算属性。
      */
     computed: {
-        ...mapGetters(["year", "month", "company"])
+        ...mapGetters(["year", "month", "company","showDims"])
     },
     /**
      * 监听属性。
@@ -173,6 +187,13 @@ export default {
      */
     created() {
         let me = this;
+        this.ShowDims({
+            company:true,
+            year:true,
+            month:true,
+            day:false,
+            conversion:false
+        });
         me.queryDepartMent();
         globalparam_all().then(res => {
             if(res.data.code == 200){
@@ -247,6 +268,7 @@ export default {
      */
     mounted () {},
     methods: {
+        ...mapActions(["ShowDims"]),
         /**
          * 更新视图。
          * @author szc 2019年5月21日19:37:42
@@ -423,7 +445,6 @@ export default {
          * @author szc 2019年5月27日16:31:38
          */
         lookInstructionRes (lookData) {
-            debugger;
             let me = this,company = me.$store.getters.companyName;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
@@ -674,9 +695,41 @@ export default {
          * 报告导出。
          */
         exportBtn () {
-            debugger;
-            let me = this;
-            me.reportData
+            let me = this,jsonBeanData = me.jsonBeanData,storeParams = me.$store.getters,
+                company = storeParams.company,year = storeParams.year,month = storeParams.month;
+            me.transformJsonBeanData(jsonBeanData);
+            let params = {
+                company:company,
+                year:year,
+                month:month > 9? month + "":"0" + month,
+                // jsonBean:JSON.stringify(jsonBeanData),
+                jsonBean:jsonBeanData,
+                text:"风险管控报告"
+            };
+            exportRiskWorld(params).then(res => {
+                if(res.status == 200){
+                    let blob = res.data;
+                    let href = window.URL.createObjectURL(blob); // 创建下载的链接
+                    let downloadElement = document.createElement('a');
+                    downloadElement.href = href;
+                    downloadElement.download = '风险管控报告.docx'; // 下载后文件名
+                    document.body.appendChild(downloadElement);
+                    downloadElement.click(); // 点击下载
+                    document.body.removeChild(downloadElement); // 下载完成移除元素
+                    window.URL.revokeObjectURL(href);
+                }
+            });
+        },
+        /**
+         * json数据格式
+         */
+        transformJsonBeanData (jsonBeanData) {
+            let me = this,storeParams = me.$store.getters,
+                companyName = storeParams.companyName,year = storeParams.year,month = storeParams.month;
+            let title = companyName + year + "年" + month + "月风险预警报告";
+            jsonBeanData.text = title;
+            let headerReport = document.getElementById("risk_report_header"),headerContent = headerReport.innerText;
+            jsonBeanData.children[0].content = headerContent;
         }
     }
 };

@@ -42,11 +42,46 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="批量审阅" name="second">
+                <!-- <el-tab-pane label="批量审阅" name="second">
                     <div>
-                        <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
+                        <el-table :data="batchTableData"
+                            border
+                            stripe
+                            :header-cell-style="headerRowStyle"
+                            style="width: 100%"
+                        >
+                            <el-table-column 
+                            v-for="(item,index) in batchColumns" 
+                            :prop="item.id" 
+                            :label="item.text" 
+                            header-align="center"
+                            :show-overflow-tooltip="true"
+                            v-bind:key="index"
+                            v-bind:index="index"
+                            :width="item.width"
+                            >
+                                <template  slot-scope="scope">
+                                    <span v-if="item.id == 'operation' && scope.row['nopratebuttonname']">
+                                        <el-button @click="batchQueryHandler(scope)">
+                                            {{ scope.row['nopratebuttonname'] }}
+                                        </el-button>
+                                    </span>
+                                    <span v-else> {{ scope.row[scope.column.property] }} </span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <div>
+                            <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            @prev-click="batchPrevClick"
+                            @next-click="batchNextClick"
+                            @current-change="batchCurrentChange"
+                            :page-count="batchTotalValue">
+                            </el-pagination>
+                        </div>
                     </div>
-                </el-tab-pane>
+                </el-tab-pane> -->
             </el-tabs>
         </div>
         <div v-if="reviewFlag">
@@ -64,7 +99,10 @@
     import { mapGetters } from "vuex"
     import {
         queryInteraction,
-        queryCompanyByScode
+        queryCompanyByScode,
+        saveBatchFillMessage,
+        queryTableBactchInteract,
+        batchRollbackReview
     } from "~api/fill"
     export default {
         mixins:[publicTools],
@@ -77,6 +115,7 @@
             return {
                 tableData:[],
                 totalValue:0,
+                batchTotalValue:0,
                 modalConfig:{},
                 activeName:"first",
                 columns:[
@@ -106,6 +145,33 @@
                        label:'操作' 
                     }
                 ],
+                batchColumns:[
+                    {
+                        id:"companyname",
+                        text:"公司名称"
+                    },
+                    {
+                        id:"stablenames",
+                        text:"报表"
+                    },
+                    {
+                        id:"statemunname",
+                        text:"类型"
+                    },
+                    // {
+                    //     id:"",
+                    //     text:"发送人"
+                    // },
+                    {
+                        id:"status",
+                        text:"状态"
+                    },
+                    {
+                        id:"operation",
+                        text:"操作"
+                    }
+                ],
+                batchTableData:[],
                 reviewFlag:true,
                 treeData:[],
             }
@@ -221,7 +287,31 @@
                     // me.queryDataOfTable(params);
                 });
             },
-
+            /**
+             * 批量审阅按钮事件。
+             */
+            batchQueryHandler (scope) {
+                debugger;
+                let me = this,storeParams = me.$store.getters,
+                    company = storeParams.company,year = storeParams.year,month = storeParams.month,
+                    userName = storeParams.user.user.userName;
+                let params = {
+                    ids: scope.row.ids,
+                    company: company,
+                    period: month > 9? year + "" + month:year + "0" + month,
+                    supdateuser: userName,
+                    statemun: 3
+                };
+                batchRollbackReview(params).then(res => {
+                    if(res.data.code == 200){
+                        me.$message({
+                            message:"审阅成功！",
+                            type:"success"
+                        });
+                        me.secondRequestHandler({page:1});
+                    }
+                });
+            },
             /**
              * 查询table的数据。
              * @author szc 2019年5月8日16:50:13
@@ -270,7 +360,7 @@
                     page:page,
                     sign:"pre"
                 };
-                me.publicHandler(page);
+                me.publicHandler(parmas);
                 // this.$emit("publicHandler",parmas);
             },
             /**
@@ -281,7 +371,7 @@
                     page:page,
                     sign:"next"
                 };
-                me.publicHandler(page);
+                me.publicHandler(parmas);
                 // this.$emit("publicHandler",parmas);
             },
             /**
@@ -292,7 +382,43 @@
                     page:page,
                     sign:"current"
                 };
-                me.publicHandler(page);
+                me.publicHandler(parmas);
+                // this.$emit("publicHandler",parmas);
+            },
+            /**
+             * 上一页
+             */
+            batchPrevClick (page) {
+                let me = this,parmas = {
+                    page:page,
+                    sign:"pre"
+                };
+                // me.publicHandler(parmas);
+                me.secondRequestHandler(parmas);
+                // this.$emit("publicHandler",parmas);
+            },
+            /**
+             * 下一页
+             */
+            batchNextClick (page) {
+                let me = this,parmas = {
+                    page:page,
+                    sign:"next"
+                };
+                // me.publicHandler(parmas);
+                me.secondRequestHandler(parmas);
+                // this.$emit("publicHandler",parmas);
+            },
+            /**
+             * 当前页改变
+             */
+            batchCurrentChange (page) {
+                let me = this,parmas = {
+                    page:page,
+                    sign:"current"
+                };
+                // me.publicHandler(parmas);
+                me.secondRequestHandler(parmas);
                 // this.$emit("publicHandler",parmas);
             },
             publicHandler (pageParams) {
@@ -337,18 +463,57 @@
             handleClick (tab, event) {
                 debugger;
                 let me = this,storeParams = me.$store.getters,company = storeParams.company;
-                let params = {
-                    company:company
-                };
+                let params = {};
                 if(tab.name == "first"){
-
+                    me.publicHandler({page:1});
                 }else {
-                    queryCompanyByScode(params).then(res => {
-                        if(res.data.code == 200){
-                            me.treeData = me.transformationTreeData(res.data.data);
-                        }
-                    });
+                    let pageParams = {
+                        page:1
+                    };
+                    me.secondRequestHandler(pageParams);
+                    // queryCompanyByScode(params).then(res => {
+                    //     if(res.data.code == 200){
+                    //         // me.treeData = me.transformationTreeData(res.data.data);
+                    //     }
+                    // });
                 }
+            },
+            /**
+             * 第二个请求。
+             */
+            secondRequestHandler(pageParams) {
+                let me = this;
+                let params = me.publicRequestParams(pageParams);
+                queryTableBactchInteract(params).then(res => {
+                    if(res.data.code == 200){
+                        me.batchTableData = res.data.data.datas;
+                        me.batchTotalValue = parseInt(res.data.data.total/20) + (res.data.data.total%20 > 0? 1:0);
+                    }
+                });
+            },
+            /**
+             * 公共参数的请求。
+             */
+            publicRequestParams (pageParams) {
+                let me = this,storeParams = me.$store.getters,
+                    company = storeParams.company,year = storeParams.year,month = storeParams.month,
+                    susercompany = storeParams.user.user.companyId,period = "";
+                if(month > 9){
+                    period = year + "" + month;
+                }else {
+                    period = year + "0" + month;
+                }
+                let currentSider = me.getCurrentSider();
+                let params = {
+                    pageNum:pageParams.page,
+                    pageSize:20,
+                    company:company,
+                    susercompany:susercompany,
+                    period:period,
+                    nrep:currentSider[0].nrep,
+                    nreview:currentSider[0].nreview
+                };
+                return params;
             },
             /**
              * 树表的审阅。

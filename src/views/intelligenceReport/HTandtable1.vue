@@ -25,9 +25,9 @@
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
           <div class="right">
-            <el-button @click="bulkReporting">
+            <!-- <el-button @click="bulkReporting">
               批量上报
-            </el-button>
+            </el-button> -->
             <template v-for="(item,index) in buttonsOperation">
               <el-button v-if="item.disabled" disabled class="button" :key="index" @click="buttonsHandle(item)">
                 {{ item.text }}
@@ -39,7 +39,9 @@
           </div>
         </div>
         <!-- 上报的人员modal -->
-        <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig"></SRModal>
+        <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig" 
+                  v-on:confirmationButton="confirmPublicHandler">
+        </SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
         <!-- <hot-table  v-if="newSettings" :settings="newSettings" ref="hotTableComponent" :height=" heights" class="table"></hot-table> -->
         <div v-if="settings.data && settings.data.length>0" class="convert_class">单位：{{ convert }}</div>
@@ -1570,17 +1572,16 @@ export default {
       if (this.templateId == 8) {
         //资金集中可编辑的列，现在要改成存款余额说明填报 2019年5月30日11:54:32
         // cellMeta.readOnly = this.capitalConcentration(row,columns);
-        if(columns == 5){
-          cellMeta.readOnly = false;
-        }else {
-          cellMeta.readOnly = true;
-        }
-        //资金集中度的填写限制 改成第一行可编辑
-        // if ((columns == 0 || columns == 2)) {
+        // if(columns == 5){
         //   cellMeta.readOnly = false;
-        // } else {
+        // }else {
         //   cellMeta.readOnly = true;
         // }
+        if(columns == 4){
+          cellMeta.readOnly = true;
+        }else {
+          cellMeta.readOnly = false;
+        }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
@@ -1740,7 +1741,7 @@ export default {
     },
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
-      let me = this,arrTem = ['8','9','12','10','11'],tableState = me.tableState;
+      let me = this,arrTem = ['9','12','10','11'],tableState = me.tableState;
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
@@ -2460,7 +2461,7 @@ export default {
      */
     showOrHideOfButtonForAdd(index,item) {
       let me = this;
-      let arr = ['0','1','2','3','8','9','12','10','11'],flag = true,saveFlag = true,
+      let arr = ['0','1','2','3','9','12','10','11'],flag = true,saveFlag = true,
           currentSider = me.currentSider;
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];

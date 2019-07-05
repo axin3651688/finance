@@ -2,7 +2,9 @@ import {
     saveReport,
     querySonByspcode,
     queryStateOfTable,
-    publicReport
+    publicReport,
+    saveBatchFillMessage,
+    queryBatchReport
 } from "~api/fill.js";
 
 /**
@@ -371,18 +373,86 @@ export default {
          */
         bulkReporting() {
             debugger;
-            let me = this;
-            me.modalConfig = {
-                title: "批量上报",
-                eventListener: "sendfillmessage", //事件监听方法名
-                dialogVisible: true,
-                type: "checkbox",
-                id: 'bulkReporting',
-                datas: me.list,
-                footConfig: {
-                    footBtn: true
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                period = me.parsePeriod(),
+                params = {
+                    company: company,
+                    period: period
+                };
+            queryBatchReport(params).then(res => {
+                if (res.data.code == 200) {
+                    me.modalConfig = {
+                        title: "批量上报",
+                        eventListener: "confirmationButton", //事件监听方法名
+                        dialogVisible: true,
+                        type: "checkbox",
+                        id: 'bulkReporting',
+                        // datas: me.list,
+                        datas: res.data.data,
+                        footConfig: {
+                            footBtn: true
+                        }
+                    };
+                } else if (res.data.code == 1001) {
+                    me.modalConfig = {
+                        title: "批量上报",
+                        eventListener: "confirmationButton", //事件监听方法名
+                        dialogVisible: true,
+                        type: "checkbox",
+                        id: 'bulkReporting',
+                        // datas: me.list,
+                        datas: [],
+                        footConfig: {
+                            footBtn: true
+                        }
+                    };
                 }
+            });
+        },
+        /**
+         * 确定按钮的公共处理。
+         */
+        confirmPublicHandler(params) {
+            debugger;
+            let me = this,
+                requestParams = {};
+            if (params.id == "checkbox") {
+                requestParams = me.checkboxParams(params.tableTemplates);
+            }
+            saveBatchFillMessage(requestParams).then(res => {
+                if (res.data.code == 200) {
+                    me.$message({
+                        message: "批量上报成功！",
+                        type: "success"
+                    });
+                    me.modalConfig.dialogVisible = false;
+                } else {
+                    me.$message.error(res.data.msg);
+                }
+            });
+        },
+        checkboxParams(params) {
+            let me = this,
+                storeParams = me.$store.getters,
+                company = storeParams.company,
+                companyName = storeParams.companyName,
+                userName = storeParams.user.user.userName,
+                period = me.parsePeriod();
+            let arr = [];
+            params.forEach(item => {
+                arr.push(item.templateid);
+            });
+            let requestParams = {
+                company: company,
+                period: period,
+                templateids: arr.toString(),
+                screateuser: userName,
+                supdateuser: userName,
+                statemun: 1,
             };
+            return requestParams;
         }
     }
 }

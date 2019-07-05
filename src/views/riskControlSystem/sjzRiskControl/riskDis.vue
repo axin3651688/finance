@@ -118,9 +118,9 @@
             </dia-log>
         </el-dialog>
         <!-- 下达记录弹出框 -->
-        <el-dialog title="下达记录" :visible.sync="dialogFormVisible2" width="960px" style="marginTop: -8vh;height:600px;overflow: hidden;">
+        <el-dialog title="下达记录" :visible.sync="dialogFormVisible2" :close-on-click-modal="false" width="960px" style="marginTop: -8vh;height:600px;overflow: hidden;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
-            <order-dialog :data="orderData"></order-dialog>
+            <order-dialog :data="orderData" :newThis="me"></order-dialog>
         </el-dialog>
         
     </div>
@@ -180,7 +180,7 @@ export default {
             items: [],          // 控制列显示【作用于列选择按钮】
             dialogFormVisible: false,   // 默认弹出框不显示
             dialogFormVisible2:false,   // 下达记录弹出框不显示
-            orderData: [],
+            orderData: {},
             // 
             riskTableRow: [],    // 风险矩阵的数据信息
             tableDemo1: [],      //【参照按钮-发生概率】的json信息
@@ -781,19 +781,26 @@ export default {
         /**
          * @event 下达记录按钮
          */
-        orderRecord(){
+        orderRecord(btn, currentPage, pageSize){ 
             this.dialogFormVisible2 = true ;
             let me = this ;
             let $params = me.$store.state.prame.command; 
+            if(!currentPage)currentPage = 1 ;
+            if(!pageSize)pageSize = 100 ;
             let params = {
+                pageNum: currentPage,
+                pageSize: pageSize,
                 company: $params.company,
                 period: $params.year + mini.getPeriod($params) 
             }
             riskdistinguish_query_release(params).then(www => {
                 if(www.data.code === 200){
                     me.orderData = www.data.data ;
-                }else{
-                    me.$message.error(www.data.msg) ;
+                } else if(www.data.code === 0) {
+                    me.orderData = {} ;
+                    me.$message({ message: www.data.msg, type: "warning"}) ;
+                } else {
+                    me.$message.error('查询失败！') ;
                 }
             })
         },

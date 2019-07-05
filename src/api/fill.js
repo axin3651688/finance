@@ -274,3 +274,47 @@ export function queryCompanyByScode(params) {
         method: 'get'
     })
 }
+/**
+ * 批量上报
+ * @author szc 2019年5月8日08:59:35
+ */
+export function saveBatchFillMessage(params) {
+    return request({
+        url: '/zjb/zjb/saveBatch_fill_message',
+        method: 'post',
+        data: params
+    })
+}
+/**
+ * 批量审阅
+ * @author szc 2019年5月8日08:59:35
+ */
+export function queryTableBactchInteract(params) {
+    return request({
+        url: '/zjb/sys/Msg/query_table_bactchInteract?pageNum=' + params.pageNum + "&pageSize=" + params.pageSize +
+            "&period=" + params.period + "&susercompany=" + params.susercompany + "&nrep=" + params.nrep +
+            "&nreview=" + params.nreview,
+        method: 'get'
+    })
+}
+/**
+ * 批量上报选择框的状态查询。
+ * @author szc 2019年5月8日08:59:35/zjb/query_batchReport
+ */
+export function queryBatchReport(params) {
+    return request({
+        url: '/zjb/zjb/query_batchReport?company=' + params.company + "&period=" + params.period,
+        method: 'get'
+    })
+}
+/**
+ * 批量审阅点击审阅按钮通过的请求
+ * @author szc 2019年5月8日08:59:35/zjb/batch_rollback_review
+ */
+export function batchRollbackReview(params) {
+    return request({
+        url: '/zjb/zjb/batch_rollback_review',
+        method: 'post',
+        data: params
+    })
+}

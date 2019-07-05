@@ -111,6 +111,8 @@
 <script>
 // 引用公用 js 方法
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js";
+// 
+import report from './import_report_world.js';
 // 引用上报的弹出框组件
 import reportDialog from "@v/riskControlSystem/sjzRiskControl/report/reportDialog.vue"
 // 引用弹出框组件
@@ -157,6 +159,7 @@ export default {
             gradeData: [] ,     // 存放等级用的
             numArray: ["一、","二、","三、","四、","五、","六、","七、"] ,
             textBody: "",
+            textBody2: "",
             html2: "",          // 没有数据的提示文字
             textTitle: "",      // 公司
             isShow: true ,      // 修改按钮的显示与隐藏 
@@ -203,7 +206,7 @@ export default {
          */
         // 背景颜色
         getStyleColor(tool){
-            debugger
+            // debugger
             tool.bgColor = {
                 "backgroundColor": tool.color
             }
@@ -230,7 +233,8 @@ export default {
         },
         // 导出按钮
         exportBtn(){
-            this.$message('暂无此功能!');
+            // this.$message('暂无此功能!');
+            report.importReportWorld(this) ;
         },
         // 1. 上报（修改）按钮触发 
         // 0. 查看（不能修改）按钮触发
@@ -273,6 +277,7 @@ export default {
             // 生成文字（正文标题）
             this.textTitle = rowData.company ;
             this.textBody = rowData.company + '' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ;
+            this.textBody2= rowData.company + '' + '<br>' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ; // 导出专用
             // 根据风险类型查出风险几条 ；
             let directory_text = mini.getReportOverviewText(this.directory) ; 
             // 根据风险等级查出风险几条 ；
