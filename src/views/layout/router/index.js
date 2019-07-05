@@ -199,6 +199,51 @@ const router = new Router({
                     name: 'assessmentIndicators',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/assessmentIndicators/assessmentIndicators.vue')
+                },
+
+
+
+                //国资委考核指标
+                {
+                    path: '/profitForecastingModel',
+                    name: 'profitForecastingModel',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/profitForecastingModel.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/assetStructurePrediction',
+                    name: 'assetStructurePrediction',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/assetStructurePrediction.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/forecastOfSolvency',
+                    name: 'forecastOfSolvency',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/forecastOfSolvency.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/duPontPredictionModel',
+                    name: 'duPontPredictionModel',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/duPontPredictionModel.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/EVAPredictionModel',
+                    name: 'EVAPredictionModel',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/EVAPredictionModel.vue')
+                },
+                //国资委考核指标
+                {
+                    path: '/capitalChainAndFinancingForecast',
+                    name: 'capitalChainAndFinancingForecast',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/predictiveModel/capitalChainAndFinancingForecast.vue')
                 }
             ]
         },

@@ -1,6 +1,9 @@
 <template>
     <div>
         <div class="personnel-list" v-if="componentShow">
+            <div>
+                <span class="close_span" @click="closeHandler"><i class="el-icon-close"></i></span>
+            </div>
             <el-input
                     placeholder="输入关键字进行过滤"
                     v-model="filterText">
@@ -212,12 +215,20 @@
                         _defaultChecked.push(key);
                     })
                 }
+            },
+            /**
+             * 关闭人员选择框。
+             */
+            closeHandler() {
+                let params = {
+                    id:"close"
+                };
+                this.$emit("publicHandler",params);
             }
         }
     }
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
     .personnel-list {
         background: white;
         width: 200px;
@@ -227,7 +238,7 @@
         position: absolute;
         bottom: 100px;
         right: 20px;
-        max-height: 354px;
+        max-height: 380px;
         overflow: auto;
     }
 
@@ -244,5 +255,16 @@
     .filter-tree {
         max-height: 250px;
         overflow: auto;
+    }
+    .close_span {
+        float: right;
+        padding: 10px 10px 10px 0px;
+    }
+    .close_span:hover {
+        cursor: pointer;
+        color: #ccc;
+    }
+    .close_div {
+        padding: 10px 0px;
     }
 </style>

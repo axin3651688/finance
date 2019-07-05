@@ -102,7 +102,8 @@ export default {
         margin-bottom: 20px;
     }
     .select_instruc {
-        min-width: 300px;
+        // min-width: 300px;
+        width: 60%;
     }
     .textarea_input {
         margin-left: -9px;
