@@ -83,7 +83,7 @@ export default {
                 });
             });
         }
-        debugger
+        // debugger
         let $params = me.$store.state.prame.command;
         // var data = Qs.stringify({"matterIds":"1,2,3"});
         // 参数

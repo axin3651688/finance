@@ -41,6 +41,9 @@
                 <!-- sjz 按钮 -->
                 <span v-if="column.id === 'cz' && item.tableBtn.length>0">
                     <!-- 上报 -->
+                    <!-- 
+                        说明：根据用户名的所属公司 并且 未上报 的来显示上报按钮
+                     -->
                     <el-button
                     v-if="scope.row.srepotstate == '未上报' && scope.row.companyId=='Y'"           
                     v-for="(btn,index) in item.tableBtn"
@@ -55,8 +58,11 @@
                         {{ btn.text }}
                     </el-button>
                     <!-- 查看 退回 -->
+                    <!-- 
+                        说明：根据用户名的所属公司 并且 已上报 的显示查看、退回按钮
+                     -->
                     <el-button
-                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='Y'"          
+                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='Y' && scope.row.permissions=='Y'"          
                     v-for="(btn,index) in item.tableBtn"
                     v-show="btn.show && (btn.id==2 || btn.id==3)"
                     style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
@@ -69,8 +75,11 @@
                         {{ btn.text }}
                     </el-button>
                     <!-- 查看 -->
+                    <!-- 
+                        说明：根据用户名的所属公司 并且 已上报 所属公司相同的 但 上报人与用户名不同的 显示查看按钮
+                     -->
                     <el-button
-                    v-if="scope.row.srepotstate == '已上报' && scope.row.companyId=='N'"          
+                    v-if="scope.row.srepotstate == '已上报' && (scope.row.companyId=='N' || scope.row.permissions=='N')"          
                     v-for="(btn,index) in item.tableBtn"
                     v-show="btn.show && btn.id==2"
                     style="fontSize: 14px;height: 30px;margin:0px 5px 0px 5px"
@@ -83,6 +92,9 @@
                         {{ btn.text }}
                     </el-button>
                     <!-- 催报 -->
+                    <!-- 
+                        说明：非所属公司
+                     -->
                     <el-button
                     v-if="scope.row.srepotstate == '未上报' && scope.row.companyId=='N'"          
                     v-for="(btn,index) in item.tableBtn"
