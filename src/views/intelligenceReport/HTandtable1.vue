@@ -25,9 +25,9 @@
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
           <div class="right">
-            <!-- <el-button @click="bulkReporting">
+            <el-button v-if="bulkButton" @click="bulkReporting">
               批量上报
-            </el-button> -->
+            </el-button>
             <template v-for="(item,index) in buttonsOperation">
               <el-button v-if="item.disabled" disabled class="button" :key="index" @click="buttonsHandle(item)">
                 {{ item.text }}
@@ -39,7 +39,7 @@
           </div>
         </div>
         <!-- 上报的人员modal -->
-        <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig" 
+        <SRModal v-if="renderFlag" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig" 
                   v-on:confirmationButton="confirmPublicHandler">
         </SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
@@ -138,6 +138,8 @@ export default {
   },
   data() {
     return {
+      renderFlag:true,
+      bulkButton:true,
       convert:"元",//报表的单位问题。
       fillModalConfig: {},//审阅的弹出框。
       buttonsOperation:[],//包含上报、审阅等操作按钮。
@@ -285,7 +287,13 @@ export default {
       }
     },
     company(val,oldVal) {
-      
+      debugger;
+      //批量批示1001公司不显示。
+      if(val == "1001"){
+        this.bulkButton = false;
+      }else {
+        this.bulkButton = true;
+      }
       //判断不是合并公司才给填报
       // let flag = this.rightOfLeafCompany();
       // if(!flag){
@@ -545,6 +553,10 @@ export default {
     this.hideConverseOfYuan();
     //操作按钮显示的内容。
     this.contentOfButtons();
+    //1001公司的不显示批量上报。
+    if(this.$store.getters.company == "1001"){
+       this.bulkButton = false;
+    }
   },
   mounted() {
     let data = 10;
