@@ -4,6 +4,7 @@
 -->
 <template>
     <div id="importDialog">
+        <!-- 弹出框 -->
         <el-dialog 
         title="风险识别导入" 
         :visible.sync="dialogFormVisible4" 
@@ -23,7 +24,7 @@
                     <el-button class="downloadBtn" type="text" @click="downloadTemplate">模板下载</el-button>
                 </el-form-item>
             </el-form>
-            <!--  -->
+            <!-- 上传 -->
             <el-upload
             class="upload_dialog upload"
             action="/zjb/risk_excel/excel_input"
@@ -36,7 +37,7 @@
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                 <div class="el-upload__tip el-upload__tishi">只能上传Excel/xlsx/xls文件，且不超过20M</div>
             </el-upload>
-            <!--  -->
+            <!-- 按钮 -->
             <div class="class_btn">
                 <el-button class="downloadBtn" size="medium" type="primary" round @click="cancelClick">确 认</el-button>
                 <el-button class="downloadBtn" size="medium" round @click="confirmClick">取 消</el-button>
@@ -56,6 +57,8 @@ export default {
             dialogFormVisible4: true ,
             isName: true ,
             isType: true ,
+            isCode: true ,
+            errMsg: "" ,
             formInline: {
                 templateA: "风险识别" ,
                 templateB: ""
@@ -76,12 +79,12 @@ export default {
         /**
          * @description 模板下载
          */
-        downloadTemplate(){
+        downloadTemplate(){ 
             const me = this ; 
             // 参数RiskDistinguish
             let params = { stype: "RiskDistinguish" } ;
             // 请求方法
-            me.axios.post('/zjb/excel_init_export', Qs.stringify(params),  {responseType:'blob'}).then((res) => { debugger
+            me.axios.post('/zjb/excel_init_export', Qs.stringify(params),  {responseType:'blob'}).then((res) => {  
                 if(res.status === 200) {
                     // let name = decodeURI(res.headers["content-disposition"]) ;
                     let blob = new Blob([res.data], {
@@ -100,6 +103,7 @@ export default {
                         me.$message({ message: "模板下载成功！", type: "success" }) ;
                     }
                 } else {
+                    // me.$message.error(res.data.msg) ;
                     me.$message.error('发生了个小意外！请联系开发人员哦！') ;
                 }
             });
@@ -142,13 +146,17 @@ export default {
         /**
          * @description 导入按钮 *(成功之后)文件上传成功时的钩子
          */
-        handleAvatarSuccess(response, file, fileList){
+        handleAvatarSuccess(response, file, fileList){ 
             let me = this ; 
             if(response.code === 200) {
                 let cc = document.getElementsByClassName('el-icon-upload')[0] ;
                 cc.style.color = "#1790ff" ;
+                me.isCode = true ;
             } else {
-                me.$message.error('数据导入失败！请联系经邦开发人员！') ;
+                me.isCode = false ;
+                me.errMsg = response.msg ;
+                me.$message.error(response.msg) ;
+                // me.$message.error('数据导入失败！请联系经邦开发人员！') ;
             }
         },
         /**
@@ -158,10 +166,12 @@ export default {
             let me = this ;
             if(!me.isName)me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
             if(!me.isType)me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
-            if(me.isName && me.isType) {
+            if(!me.isCode)me.$message(me.errMsg) ;
+            if(me.isName && me.isType && me.isCode) {
                 me.formInline.templateB = "" ;
                 me.newThis.dialogFormVisible3 = false ;
                 me.newThis.axiosJson() ;
+                me.errMsg = "" ;
                 me.$message({ message: "数据导入成功！", type: "success" }) ;
             }
         },
@@ -172,6 +182,7 @@ export default {
             let me = this ;
             me.isName = true ;
             me.isType = true ;
+            me.isCode = true ;
             me.formInline.templateB = "" ;
             me.newThis.dialogFormVisible3 = false ;
         },

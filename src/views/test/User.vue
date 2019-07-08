@@ -5,10 +5,15 @@
   <div class="userM">
     <el-container class="userM_main">
       <el-aside class="aside" width="350px" :style="asideHeight">
+        <!-- 引用组件 部门 -->
         <user-department ref="department" :text="company_title" :data="comtree2" :newThis="me"></user-department>
       </el-aside>
-      <el-main>    
-
+      <el-main>  
+      <!-- 导入弹框 -->
+      <div v-if="dialogFormVisible3">
+          <user-importDialog :newThis="me"></user-importDialog>
+      </div>   
+      <!-- 按钮 行 -->
       <div class="input-refresh" ref="elememt">
         <el-form :inline="true" :model="searchForm" class="user-form-inline" style="float: left">
           <el-form-item>
@@ -534,10 +539,13 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 // 部门
 import userDepartment from "./userDepartment"
+// 导入
+import userImportDialog from "./userImportDialog"
 export default {
   components: {
     Treeselect,
-    userDepartment
+    userDepartment,
+    userImportDialog
   },
   computed: {
     ...mapGetters([
@@ -576,7 +584,7 @@ export default {
       }
     };
     return {
-      dropdownBoolean: false ,  // 操作列按钮的禁用与启用的控制
+      dialogFormVisible3: false ,
       me: this ,
       // sjz -- 添加弹出框的
       landscapes: [] ,         // 政治面貌
@@ -1957,7 +1965,8 @@ export default {
      * @description 导入按钮
      */
     importBtn(){
-        this.$message('暂无此功能！')
+        // this.$message('暂无此功能！')
+        this.dialogFormVisible3 = true ;
     },
     /**
      * @description 导出按钮

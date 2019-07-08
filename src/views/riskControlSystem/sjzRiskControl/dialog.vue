@@ -306,7 +306,7 @@ export default {
                 this.readonly2= true ;      // 下达禁用
                 this.isBtn = false ;        // 保存 按钮的隐藏
                 this.isBtn2 = false ;       // 提交 按钮的隐藏
-                this.isBtn3 = false ;       // 风险关闭 按钮的隐藏
+                this.isBtn3 = true ;       // 风险关闭 按钮的隐藏
             }else if(modifyBtn){
                 this.readonly = false ;     // 可填写/可选择
                 this.isBtn = true ;        // 保存 按钮的显示
@@ -677,6 +677,7 @@ export default {
                 // debugger
                 if(ress.data.code === 200){
                     me.$message({ message: "关闭成功!", type: "success" });
+                    me.newThis.axiosJson() ;
                 }else{
                     me.$message({ message: "温馨提示：未批示/未反馈的风险无法关闭！", type: "warning" });
                 }
