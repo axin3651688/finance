@@ -150,7 +150,6 @@ export default {
          * @author szc 2019年5月16日19:14:07
          */
         modalTextClass (it) {
-            debugger;
             let me = this;
             if (it.nlevel) {
                 if (it.nlevel == "1") {
@@ -189,7 +188,6 @@ export default {
          * @author szc 2019年5月22日20:27:54
          */
         setDefaultValue(){
-            debugger;
             let me = this;
             // me.selectValues = [];
             me.dptUserConfig = {
