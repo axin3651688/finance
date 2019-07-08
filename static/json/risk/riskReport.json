@@ -156,11 +156,21 @@
                 // debugger
                 let suer_information = $vue.$store.getters.user.user ;
                 let cc = this ; 
-                data.forEach(res => {
-                    if(res.scode === suer_information.companyId){
+                data.forEach(res => { debugger
+                    if(res.scode === suer_information.companyId){ 
                         res.companyId = "Y" ;
+                        if(res.sreportuser && res.sreportuser != "") {
+                            let dd = res.sreportuser.match(/\((.+?)\)/g)[0] ;
+                            let ff = dd.slice(1, dd.length-1) ;
+                            if(ff === suer_information.userName) {
+                                res.permissions = "Y" ;
+                            } else {
+                                res.permissions = "N" ;
+                            }
+                        }
                     }else{
                         res.companyId = "N" ;
+                        res.permissions = "N" ;
                     }
                     if(res.children && res.children.length>0)cc.queryDataAfter(res.children, $vue) ;
                 })

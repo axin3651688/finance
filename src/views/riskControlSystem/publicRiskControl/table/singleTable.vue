@@ -149,7 +149,6 @@
                 }
             },
             styleHandler (row) {
-                debugger;
                 let me = this;
                 if(row && row.fxlxcolor){
                     return "background-color:" + row.fxlxcolor;

@@ -23,8 +23,10 @@
     </div>
     <div v-else-if="modalConfig.type == 'checkbox'">
         <el-checkbox
+            v-if="renderFlag"
             v-for="item of modalConfig.datas"
             :key="item.id"
+            :checked="item.checked? false:false"
             :disabled="(item.statemun == '1' || item.statemun == '2' || item.statemun == '3')? 'disabled':undefined"
             class="checkbox"
             @change="changeHandler($event, item)"
@@ -84,7 +86,8 @@ export default {
                 children:""
             },
             totalValue:"3",
-            checkboxValues:[]
+            checkboxValues:[],
+            renderFlag:true
         }
     },
     created() {
@@ -95,15 +98,22 @@ export default {
     },
     watch: {
         modalConfig:{
-            handler(){
-                this.updateData();
+            handler(newValue,oldValue){
+                this.updateData(newValue);
             },
             deep:true
         }
     },
     methods: {
-        updateData() {
-            this.totalValue = this.modalConfig.datas.dataCount;
+        updateData(newValue) {
+            if(newValue.type == "checkbox"){
+                this.renderFlag = false;
+                this.$nextTick(() => {
+                    this.renderFlag = true;
+                });
+            }else {
+                this.totalValue = this.modalConfig.datas.dataCount;
+            }
         },
         /**
          * 更新数据。
@@ -157,6 +167,7 @@ export default {
             }
             if(eventListener){
                 this.$emit(eventListener,parmas);
+                this.afterHandler(parmas);
             }
         },
         /**
@@ -203,7 +214,6 @@ export default {
          * 选中的结果
          */
         changeHandler (flag,item) {
-            debugger;
             let me = this;
             if(flag){
                 me.checkboxValues.push(item);
@@ -211,6 +221,22 @@ export default {
                 me.checkboxValues = me.checkboxValues.filter(itemIt => {
                     return itemIt.templateId != item.templateId;
                 });
+            }
+        },
+        /**
+         * 关闭
+         */
+        handleClose (done) {
+            let me = this;
+            me.checkboxValues = [];
+            done();
+        },
+        /**
+         * 请求之后的操作。
+         */
+        afterHandler (parmas) {
+            if(parmas.id == "checkbox"){
+                this.checkboxValues = [];
             }
         }
     }

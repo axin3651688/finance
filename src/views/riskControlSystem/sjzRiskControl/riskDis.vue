@@ -22,17 +22,7 @@
                         <el-button type="primary" icon="el-icon-refresh" plain @click="refreshRow">刷新</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="bulkOrders"><i class="iconfont icon-batch-import"></i>批量下达</el-button>
                         <el-button type="primary" plain v-show="isbtnShow" @click="orderRecord">下达记录查询</el-button>
-                        <!-- <el-button type="primary" plain v-show="isbtnShow4" @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button> -->
-                        <el-upload
-                        class="upload_dialog upload"
-                        style="float: left"
-                        action="/zjb/risk_excel/excel_input"
-                        :show-file-list="false"
-                        :data="uploadData"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                            <el-button type="primary" plain v-show="isbtnShow4" class="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
-                        </el-upload>
+                        <el-button type="primary" plain v-show="isbtnShow4" @click="importBtn"><i class="iconfont icon-daoru"></i>导入</el-button>
                         <el-button type="primary" plain v-show="isbtnShow2" @click="exportBtn"><i class="iconfont icon-daochu"></i>导出</el-button>
                     </el-button-group>
                 </div>
@@ -122,7 +112,14 @@
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
             <order-dialog :data="orderData" :newThis="me"></order-dialog>
         </el-dialog>
-        
+        <!-- 导入弹出框 -->
+        <!-- <el-dialog title="风险识别导入" :visible.sync="dialogFormVisible3" :close-on-click-modal="false" width="960px" style="marginTop: -8vh;height:600px;overflow: hidden;">
+            <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
+            <import-dialog :newThis="me"></import-dialog>
+        </el-dialog> -->
+        <div v-if="dialogFormVisible3">
+            <import-dialog :newThis="me"></import-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -134,6 +131,8 @@ import bulkOrdersers from "@v/riskControlSystem/sjzRiskControl/bulkOrdersers";
 import diaLog from "@v/riskControlSystem/sjzRiskControl/dialog";
 // 引用弹出框组件2(下达记录)
 import orderDialog from "@v/riskControlSystem/sjzRiskControl/orderDialog";
+// 引用导入弹出框组件
+import importDialog from "@v/riskControlSystem/sjzRiskControl/importDialog" ;
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口1.（获取数据）
@@ -164,7 +163,8 @@ export default {
     components: {
         diaLog,
         bulkOrdersers,
-        orderDialog
+        orderDialog,
+        importDialog
     },
     name: "riskDis",
     mixins: [ EventMixins ],
@@ -180,6 +180,7 @@ export default {
             items: [],          // 控制列显示【作用于列选择按钮】
             dialogFormVisible: false,   // 默认弹出框不显示
             dialogFormVisible2:false,   // 下达记录弹出框不显示
+            dialogFormVisible3:false,   // 导入弹出框不显示
             orderData: {},
             // 
             riskTableRow: [],    // 风险矩阵的数据信息
@@ -210,12 +211,6 @@ export default {
             modifyReadonly: false,
             tableData2: [],
             htmlText: "",
-            uploadData: {       // 导入请求额外数据
-                company: "",
-                period: "",
-                templateScode: "risk_distinguish"
-            }  
-            
         }
     },
     created(){
@@ -224,8 +219,8 @@ export default {
         // this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
         // this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
         let $params = this.$store.state.prame.command;
-        this.uploadData.company = $params.company ;
-        this.uploadData.period = this.getPeriod($params) ;
+        // this.uploadData.company = $params.company ;
+        // this.uploadData.period = this.getPeriod($params) ;
         // 点进节点时默认计算的高度
         this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
         // 弹出框===如果屏幕 <= 1200px 宽度自动变更为 540px；如果 >1200px 宽度为默认宽度 960px
@@ -766,6 +761,12 @@ export default {
                     if(res.sissubmit === "未提交")dataArray_n.push(res) ;
                     if(res.sissubmit === "已提交")dataArray_y.push(res) ;
                 });
+                let isClose = data.some(res => { return res.isclosename === "已关闭" }) ;
+                // 如果勾选了已关闭的风险，不允许下达，进行提示，并且停止继续运行
+                if(isClose) {
+                    me.$message({ message: "您勾选了已关闭的风险！无法下达！请重新勾选！", type: "warning" }) ;
+                    return false ;
+                }
                 // 如果未提交的数量 > 0 说明勾选了未提交的风险，不允许下达，进行提示，并且停止继续运行
                 if(dataArray_n.length > 0){
                     me.$message({ message: "您勾选了未提交的风险！无法下达！请重新勾选！", type: "warning" }) ;
@@ -806,50 +807,10 @@ export default {
         },
         handleCommand(command){},
         /**
-         * @description 日期处理
+         * @description 导入按钮
          */
-        getPeriod($params){ 
-            let period, mm ;
-            if($params.month > 0 && $params.month < 10) {
-                mm = '0' + $params.month ;
-            } else {
-                mm = $params.month ;
-            }
-            return $params.year + mm ;
-        },
-        /**
-         * @description 导入按钮 *(之前)
-         */
-        beforeAvatarUpload(file){
-            // debugger
-            let me = this ;
-            let $params = me.$store.state.prame.command; // 信息
-            let cc = file.name.split('.') ; // 以 '.' 小数点分割成数组
-            if(cc[1] === 'xlsx' || cc[1] === 'xls') {   // 判断， 如果不是xlsx || xls 为后缀的文件则提示匹配不成功， 则传参数请求
-                me.uploadData = {
-                    company: $params.company,
-                    period: me.getPeriod($params),
-                    templateScode: "risk_distinguish"
-                }
-            } else {
-                me.$message({ message: "模板不匹配！请选择匹配模板！", type: "warning" }) ;
-                return false;
-            }
-            // this.$message('暂无此功能！')
-            
-        },
-        /**
-         * @description 导入按钮 *(成功之后)文件上传成功时的钩子
-         */
-        handleAvatarSuccess(response, file, fileList){
-            // debugger
-            let me = this ; 
-            if(response.code === 200) {
-                me.$message({ message: "数据导入成功！", type: "success" }) ;
-                me.axiosJson() ;
-            } else {
-                me.$message.error('数据导入失败！请联系经邦开发人员！') ;
-            }
+        importBtn() {
+            this.dialogFormVisible3 = true ;
         },
         /**
          * @description 导出按钮

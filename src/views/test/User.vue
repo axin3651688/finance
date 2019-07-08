@@ -5,10 +5,15 @@
   <div class="userM">
     <el-container class="userM_main">
       <el-aside class="aside" width="350px" :style="asideHeight">
+        <!-- 引用组件 部门 -->
         <user-department ref="department" :text="company_title" :data="comtree2" :newThis="me"></user-department>
       </el-aside>
-      <el-main>    
-
+      <el-main>  
+      <!-- 导入弹框 -->
+      <div v-if="dialogFormVisible3">
+          <user-importDialog :newThis="me"></user-importDialog>
+      </div>   
+      <!-- 按钮 行 -->
       <div class="input-refresh" ref="elememt">
         <el-form :inline="true" :model="searchForm" class="user-form-inline" style="float: left">
           <el-form-item>
@@ -78,19 +83,19 @@
                   <i class="el-icon-menu el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown" class="el-dropdown-click">
-                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'Y'" @click.native="handleDisable(scope.$index, scope.row)" :disabled="dropdownBoolean">
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'Y'" @click.native="handleDisable(scope.$index, scope.row)" :disabled="getDisabled(scope)">
                       <span ><i class="iconfont icon-jinyong "></i>禁用</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'N'" @click.native="handleAble(scope.$index, scope.row)" :disabled="dropdownBoolean">
+                  <el-dropdown-item v-if="delButten === 1 && scope.row.cisenabled === 'N'" @click.native="handleAble(scope.$index, scope.row)" :disabled="getDisabled(scope)">
                       <span ><i class="iconfont icon-qiyong"></i>启用</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEdit(scope.$index, scope.row)" :disabled="dropdownBoolean">
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEdit(scope.$index, scope.row)" :disabled="getDisabled(scope)">
                       <span ><i class="el-icon-edit-outline"></i>修改</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEditPassword(scope.$index, scope.row)" :disabled="dropdownBoolean"> 
+                  <el-dropdown-item v-if="editButten === 1" @click.native="handleEditPassword(scope.$index, scope.row)" :disabled="getDisabled(scope)"> 
                       <span ><i class="iconfont icon-mima"></i>修改密码</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="authorizeButten === 1" @click.native="handleAuthorizeCompany(scope.$index, scope.row)">
+                  <el-dropdown-item v-if="authorizeButten === 1" @click.native="handleAuthorizeCompany(scope.$index, scope.row)" :disabled="getDisabled(scope)">
                       <span ><i class="iconfont icon-shouquan"></i>公司授权</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -534,10 +539,13 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 // 部门
 import userDepartment from "./userDepartment"
+// 导入
+import userImportDialog from "./userImportDialog"
 export default {
   components: {
     Treeselect,
-    userDepartment
+    userDepartment,
+    userImportDialog
   },
   computed: {
     ...mapGetters([
@@ -576,7 +584,7 @@ export default {
       }
     };
     return {
-      dropdownBoolean: false ,  // 操作列按钮的禁用与启用的控制
+      dialogFormVisible3: false ,
       me: this ,
       // sjz -- 添加弹出框的
       landscapes: [] ,         // 政治面貌
@@ -981,6 +989,22 @@ export default {
     }
   },
   methods: {
+    // sjz\
+    getDisabled(scope){
+      // debugger
+      let information = this.$store.getters.user.user ;
+      let disabled = true ;
+      if(information.roleName === "管理员") {
+          disabled = false ;
+      } else {
+          if(information.userName === scope.row.suser) {
+              disabled = false ;
+          } else {
+              disabled = true ;
+          }
+      }
+      return disabled ;
+    },
     // sjz 添加用户--选择所属公司时触发
     companyRight(vax,val){
       // debugger
@@ -1941,7 +1965,8 @@ export default {
      * @description 导入按钮
      */
     importBtn(){
-        this.$message('暂无此功能！')
+        // this.$message('暂无此功能！')
+        this.dialogFormVisible3 = true ;
     },
     /**
      * @description 导出按钮

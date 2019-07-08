@@ -1,7 +1,22 @@
 <template>
     <div>
         <div v-if="columns && columns.length > 0">
-            <el-table
+            <div v-if="allData && allData.fixedHeader">
+                <el-table
+                :data="tableData"
+                border
+                :height="tableHeight"
+                stripe
+                :header-cell-style="headerCellStyle"
+                :header-row-style="headerRowStyle"
+                :cell-style="cellStyle"
+                class="risk_table"
+                style="width: 100%">
+                    <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
+                </el-table>
+            </div>
+            <div v-else>
+                <el-table
                 :data="tableData"
                 border
                 stripe
@@ -10,8 +25,9 @@
                 :cell-style="cellStyle"
                 class="risk_table"
                 style="width: 100%">
-                <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
-            </el-table>
+                    <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
+                </el-table>
+            </div>
         </div>
     </div>
 </template>
@@ -45,12 +61,12 @@
             /**
              * 计算表格高度
              */
-            // let offsetHeight = document.body.offsetHeight,//页面整体高度
-            //     selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
-            //     tabHeight = 39,//tab标签高度
-            //     gapHeight = 32,//间隙的高度
-            //     pageHeaderHeight = 64;//导航栏高度
-            // this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
         },
         /**
          * 页面渲染之后的回调。
@@ -59,7 +75,7 @@
             /**
              * 屏幕自适应方法调用
              */
-            // this.setPageAdaptive();
+            this.setPageAdaptive();
         },
         methods: {
             headerRowStyle (row,col) {

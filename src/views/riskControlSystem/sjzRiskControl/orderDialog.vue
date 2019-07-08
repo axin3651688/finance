@@ -40,7 +40,7 @@ export default {
         }
     },
     computed: {
-        tableData: function() { debugger
+        tableData: function() { 
             let tmp;
             if(this.data.datas!=undefined) {
                 if (!Array.isArray(this.data.datas)) {

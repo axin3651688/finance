@@ -329,7 +329,7 @@ export default {
         },
         // 数据获取之后的拦截
         queryDataAfter(item, datas){
-            // debugger
+            debugger
             let me = this ;
             // 看看json里有没有配置【queryDataAfter】数据获取之后拦截的方法
             if(me.item.queryDataAfter && typeof me.item.queryDataAfter == "function"){

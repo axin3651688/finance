@@ -470,7 +470,7 @@ export default {
                     },
                     detail: {
                         formatter: function(a, b, c) {
-                            return Math.decimalToLocalString(a) + "%";
+                            return Math.decimalToLocalString(a) + (itemCnt.unit ? itemCnt.unit : "%");
                         },
                     },
                     data: [{ value: itemCnt[item.gaugeField] || 0 }]

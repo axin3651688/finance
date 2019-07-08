@@ -376,6 +376,7 @@ export default {
                                 resData = me.setOperationBtns(resData);
                                 me.tableData = resData;
                             }else if (judgeParams.id == "lookInstruc"){
+                                // res.data.data = res.data.data.sort();
                                 me.lookInstructionRes(res.data.data);
                             }else if (judgeParams.queryAfter) {
                                 me[judgeParams.queryAfter](res.data.data,judgeParams);
@@ -390,7 +391,7 @@ export default {
          * @author szc 2019年5月21日14:15:22
          */
         paramsOfSql (params,data,sqlId) {
-            let me = this;
+            let me = this,globalparam = me.$store.getters.user.globalparam[0];
             if(data && data.length > 0) {
                 for(let i = 0;i < data.length;i ++) {
                     let item = data[i];
@@ -399,6 +400,11 @@ export default {
                         break;
                     }
                 }
+            }
+            if(globalparam.periodtype && globalparam.periodtype == 1){
+                params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD = :period");
+            }else {
+                params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD <= :period");
             }
             return params;
         },
