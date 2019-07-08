@@ -20,6 +20,45 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="content-chart">
+                <div class="pie_1">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'pie'">
+                    </mchart>
+                </div>
+
+                <div class="pie_2">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'pie'">
+                    </mchart>
+                </div>
+
+                <div class="pie_3">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'pie'">
+                    </mchart>
+                </div>
+
+                <div class="pie_4">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'pie'">
+                    </mchart>
+                </div>
+
+                <div class="gauge">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'gauge'">
+                    </mchart>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -28,13 +67,15 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import mchart from './modelPublic/mchart'
 
     export default {
         name: "capitalChainAndFinancingForecast",
         mixins: [cwtPublicJs],
         components: {
             cell,
-            ccell
+            ccell,
+            mchart
         },
         props: {},
         computed: {},
@@ -158,7 +199,8 @@
                             value: this.setNumberToStander(1555.36)
                         }
                     },
-                }
+                },
+                echartData: {},
             }
         },
         created() {
@@ -250,6 +292,42 @@
 
     .cell {
 
+    }
+
+    .content-chart .pie_1 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 390px;
+        left: 40px;
+    }
+    .content-chart .pie_2 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 390px;
+        left: 400px;
+    }
+    .content-chart .pie_3 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 390px;
+        left: 760px;
+    }
+    .content-chart .pie_4 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 390px;
+        left: 1120px;
+    }
+    .content-chart .gauge {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 0;
+        left: 1210px;
     }
 
 </style>
