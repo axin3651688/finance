@@ -72,6 +72,22 @@
                     </svg>
                 </div>
             </div>
+
+            <div class="content-chart">
+                <div class="gauge_1">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'gauge'">
+                    </mchart>
+                </div>
+
+                <div class="gauge_2">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'gauge'">
+                    </mchart>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -80,13 +96,15 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import mchart from './modelPublic/mchart'
 
     export default {
         name: "duPontPredictionModel",
         mixins: [cwtPublicJs],
         components: {
             cell,
-            ccell
+            ccell,
+            mchart
         },
         props: {},
         computed: {},
@@ -278,6 +296,7 @@
                         }
                     },
                 },
+                echartData: {},
             }
         },
         created() {
@@ -435,5 +454,21 @@
     .svg-eighth {
         left: 975px;
         top: 515px
+    }
+
+    .content-chart .gauge_1 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 730px;
+        left: 770px;
+    }
+
+    .content-chart .gauge_2 {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 730px;
+        left: 1140px;
     }
 </style>

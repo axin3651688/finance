@@ -27,7 +27,6 @@
             </el-button>
         </div>
 
-
         <div class="fzjyknx" v-if="this.buttonType === 'fzjyknx'">
             <div class="content-all">
                 <div class="content-cell">
@@ -49,14 +48,26 @@
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
+
+                    <div class="svg-second-data1">
+                        <svg width="150px" height="180px">
+                            <polyline points="1,1 36,1 36,46 71,46 36,46 36,91 1,91"
+                                      fill="none" stroke="black"
+                                      stroke-width="2"></polyline>
+                        </svg>
+                    </div>
                 </div>
 
-                <div class="svg-second-data1">
-                    <svg width="150px" height="180px">
-                        <polyline points="1,1 36,1 36,46 71,46 36,46 36,91 1,91"
-                                  fill="none" stroke="black"
-                                  stroke-width="2"></polyline>
-                    </svg>
+                <div class="content-text_1">
+                    <div class="title">
+                        <span>资产结构状况</span>
+                    </div>
+
+                    <div class="content">
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,14 +93,35 @@
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
+
+                    <div class="svg-second-data2">
+                        <svg width="150px" height="200px">
+                            <polyline points="1,1 36,1  36,91 1,91 71,91 36,91 36,181 1,181 "
+                                      fill="none" stroke="black"
+                                      stroke-width="2"></polyline>
+                        </svg>
+                    </div>
                 </div>
 
-                <div class="svg-second-data2">
-                    <svg width="150px" height="200px">
-                        <polyline points="1,1 36,1  36,91 1,91 71,91 36,91 36,181 1,181 "
-                                  fill="none" stroke="black"
-                                  stroke-width="2"></polyline>
-                    </svg>
+                <div class="content-text_1">
+                    <div class="title">
+                        <span>资产结构状况</span>
+                    </div>
+
+                    <div class="content">
+                        <div class="content-title">
+                            <span>资产结构状况</span>
+                        </div>
+                        <p>
+                            总体来看，流动资产增长快
+                        </p>
+                        <div class="content-title">
+                            <span>资产结构状况</span>
+                        </div>
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,6 +148,39 @@
                         </svg>
                     </div>
                 </div>
+
+                <div class="content-text_2_1 content-text_2">
+                    <div class="title">
+                        <span>速动比率</span>
+                    </div>
+
+                    <div class="content" style="color: green">
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
+                </div>
+                <div class="content-text_2_2 content-text_2">
+                    <div class="title">
+                        <span>流动比率</span>
+                    </div>
+
+                    <div class="content" style="color: green">
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
+                </div>
+
+                <div class="content-chart content-chart-1">
+                    <div class="gauge">
+                        <mchart
+                                :echartData="echartData"
+                                :dataType="'gauge'">
+                        </mchart>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -142,6 +207,37 @@
                         </svg>
                     </div>
                 </div>
+                <div class="content-text_2_1 content-text_2 content-text_3">
+                    <div class="title">
+                        <span>短期付息能力状况</span>
+                    </div>
+
+                    <div class="content" style="color: green">
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
+                </div>
+                <div class="content-text_2_2 content-text_2 content-text_4">
+                    <div class="title">
+                        <span>长期付息能力状况</span>
+                    </div>
+
+                    <div class="content" style="color: green">
+                        <p>
+                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        </p>
+                    </div>
+                </div>
+
+                <div class="content-chart content-chart-2">
+                    <div class="gauge">
+                        <mchart
+                                :echartData="echartData"
+                                :dataType="'gauge'">
+                        </mchart>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -153,13 +249,15 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import mchart from './modelPublic/mchart'
 
     export default {
         name: "forecastOfSolvency",
         mixins: [cwtPublicJs],
         components: {
             cell,
-            ccell
+            ccell,
+            mchart
         },
         props: {},
         computed: {},
@@ -349,7 +447,8 @@
                             value: this.setNumberToStander(1555.36)
                         }
                     }
-                }
+                },
+                echartData: {},
             }
         },
         created() {
@@ -517,4 +616,91 @@
         top: 30px
     }
 
+    .content-text_1 {
+        position: absolute;
+        width: 300px;
+        height: 250px;
+        top: 50px;
+        left: 900px;
+        border: 2px solid #303133;
+        padding-top: 20px;
+    }
+
+    .content-text_1 .title {
+        font-size: 22px;
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    .content-text_1 .content {
+        font-size: 18px;
+        padding: 16px;
+        text-indent: 36px;
+        line-height: 30px;
+        color: #bd2c00;
+    }
+
+    .content-text_1 .content .title {
+        font-size: 18px;
+        text-indent: 36px;
+        line-height: 30px;
+        color: #bd2c00;
+    }
+
+    .content-text_1 .content p {
+        font-size: 16px;
+        text-indent: 36px;
+        line-height: 30px;
+        color: #bd2c00;
+    }
+
+    .content-title {
+        padding: 0;
+        text-indent: 0;
+        color: black;
+    }
+
+    .content-chart .gauge {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 0;
+        left: 550px;
+    }
+
+    .content-text_2 {
+        position: absolute;
+        width: 300px;
+        height: 70px;
+        top: 44px;
+        left: 500px;
+        border: 1px solid #303133;
+        padding: 2px 8px;
+    }
+
+    .content-text_2 p {
+        text-indent: 36px;
+    }
+
+    .content-text_2_1 {
+        top: 134px;
+    }
+
+    .content-text_3 {
+        top: 180px;
+    }
+
+    .content-text_4 {
+        top: 270px;
+    }
+
+    .content-chart-1 .gauge {
+        left: 830px;
+        top: 0;
+    }
+
+    .content-chart-2 .gauge {
+        left: 830px;
+        top: 136px;
+    }
 </style>

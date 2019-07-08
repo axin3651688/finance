@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="top-button">
             <el-button
                     class="bq"
@@ -16,6 +17,7 @@
         </div>
 
         <div class="content-all">
+
             <div class="content-cell">
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
@@ -53,7 +55,30 @@
                 </div>
 
             </div>
+
+            <div class="content-chart">
+                <div class="funnel">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'funnel'">
+                    </mchart>
+                </div>
+                <div class="pie">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'pie'">
+                    </mchart>
+                </div>
+                <div class="gauge">
+                    <mchart
+                            :echartData="echartData"
+                            :dataType="'gauge'">
+                    </mchart>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </template>
 
@@ -61,13 +86,15 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import mchart from './modelPublic/mchart'
 
     export default {
         name: "profitForecastingModel",
         mixins: [cwtPublicJs],
         components: {
             cell,
-            ccell
+            ccell,
+            mchart
         },
         props: {},
         computed: {},
@@ -197,6 +224,7 @@
                     },
                 },
                 buttonType: 'bq',
+                echartData: {},
             }
         },
         created() {
@@ -243,7 +271,7 @@
 
     }
 
-    .part1, .part2, .part3, .part4, .part5, .svg-first, .svg-second, .svg-third{
+    .part1, .part2, .part3, .part4, .part5, .svg-first, .svg-second, .svg-third {
         position: absolute;
     }
 
@@ -305,4 +333,28 @@
         left: 1100px;
         top: 30px
     }
+
+    .content-chart .funnel {
+        position: absolute;
+        width: 240px;
+        height: 500px;
+        top: 200px;
+    }
+
+    .content-chart .pie {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 455px;
+        left: 600px;
+    }
+
+    .content-chart .gauge {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 455px;
+        left: 1000px;
+    }
+
 </style>
