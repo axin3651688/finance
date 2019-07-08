@@ -13,7 +13,7 @@
                                     <span class="left_1">
                                         {{ item.responsibility.text }}
                                     </span>
-                                    <span class="left_2">
+                                    <span class="left_2" :style="levelStyleCompute(item.responsibility)">
                                         {{ item.responsibility.level }}
                                     </span>
                                 </div>
@@ -117,13 +117,25 @@
         mounted() {
             let me = this;
         },
-        methods: {}
+        methods: {
+            /**
+             * 
+             */
+            levelStyleCompute (item) {
+                if(item && item.reptcolor){
+                    return "background-color:" + item.reptcolor;
+                }
+            }
+        }
     }
 </script>
 
 <style scoped>
+    /* .conventional-container {
+
+    } */
     .container-title {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        /* font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 20px;
@@ -131,7 +143,14 @@
         height: 40px;
         line-height: 40px;
         margin-bottom: 20px;
-        background-color: rgba(228, 228, 228, 1);
+        background-color: rgba(228, 228, 228, 1); */
+        width: 100%;
+        background: #ddd;
+        margin: 20px 0px 20px 0;
+        padding: 10px 0 10px 0;
+        font-size: 20px;
+        font-weight: 200;
+        color: #606266 ;
     }
 
     .container-top {
@@ -152,35 +171,59 @@
     }
 
     .left_1 {
-        font-family: 'Arial Negreta', 'Arial';
+        /* font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-size: 16px;
-        color: #333333;
+        color: #333333; */
+        font-weight: 550;
+        font-size: 18px;
+        color: #303133;
+        font-family: '黑体';
     }
 
     .left_2 {
-        margin-left: 20px;
+        /* margin-left: 20px;
         font-size: 14px;
         padding: 2px 10px;
         font-family: 'Arial Normal', 'Arial';
         border-radius: 10px;
-        color: white;
+        color: white; */
+        font-family: '宋体';
+        color: #fff;
+        font-size: 14px;
+        padding: 5px 30px 5px 30px;
+        margin: 0 10px 0px 10px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+
+    .left_2:hover {
+        background-color: rgba(0, 218, 236, 1);
     }
 
     .container-center div {
-        font-size: 16px;
+        /* font-size: 16px;
         font-family: '微软雅黑 Bold', '微软雅黑';
         font-weight: 700;
         margin-bottom: 20px;
-        margin-top: 20px;
+        margin-top: 20px; */
+        margin-bottom: 20px;
+        font-weight: 550;
+        font-size: 18px;
+        color: #303133;
+        font-family: '黑体'
     }
 
     .container-center p {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        /* font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-size: 16px;
         color: #333;
         padding: 5px;
-        line-height: 30px;
+        line-height: 30px; */
+        color: #606266;
+        margin-bottom: 20px;
+        text-indent: 2em;
+        line-height: 25px;
     }
 </style>

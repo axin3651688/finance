@@ -107,7 +107,7 @@ export function ipoRatio(params) {
 /**
  * 
  */
-export function globalparam_all() {
+export async function globalparam_all() {
     return request({
         url: '/zjb/globalparam/query_all',
         method: 'get'

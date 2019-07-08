@@ -1,11 +1,15 @@
 <template>
-    <div>
+    <div class="reportHeader">
         <div class="report-title">
             {{this.company}}{{this.periodStr}}风险预警报告
         </div>
-        <span class="zs">
+        <!-- <span class="zs">
             总述
-        </span>
+        </span> -->
+        <!-- 正文部分总述 -->
+        <div class="zs container_main_overview">
+            <span>总述</span>
+        </div>
         <template>
             <p v-if="reportHeaderData.headerReport.totalCount > 0" class="describe" id="risk_report_header">
                 截止{{ this.periodStr }}份，经风险评估分析，{{this.company}}
@@ -76,25 +80,38 @@
             }
         }
     }
+    // <style lang="scss" scoped src="./../../sjzRiskControl/report/reportCss.scss"></style>
 </script>
-
 <style scoped>
+    .reportHeader {
+        color: #606266 ;
+    }
     .report-title {
-        padding: 20px;
+        /* padding: 20px;
         text-align: center;
         font-family: 'Arial Negreta', 'Arial';
-        font-weight: 700;
+        /* font-weight: 700; */
         font-style: normal;
-        font-size: 20px;
+        font-size: 20px; 
+        text-align:center;
+        font-size:25px;
+        font-weight: 200;
+        margin-bottom: 20px;
     }
-
+    /*总述 样式*/
     .zs {
-        font-size: 24px;
+        /* font-size: 24px;
         text-align: left;
         font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-style: normal;
-        color: #000000;
+        color: #000000; */
+        width:100%;
+        background:#ddd;
+        margin-bottom: 10px;
+        padding: 10px 0 10px 0;
+        font-size:22px;
+        font-weight: 200;
     }
 
     .describe {

@@ -250,17 +250,12 @@ export default {
          */
         setOperations(item) {
             let me = this,
+                userName = me.$store.getters.user.user.userName,
                 ops01 = [{
-                        "id": "1",
-                        "btnShow": true,
-                        "text": "查看"
-                    },
-                    {
-                        "id": "2",
-                        "btnShow": true,
-                        "text": "退回"
-                    }
-                ],
+                    "id": "1",
+                    "btnShow": true,
+                    "text": "查看"
+                }],
                 ops02 = [{
                         "id": "0",
                         "btnShow": true,
@@ -272,6 +267,14 @@ export default {
                         "text": "提醒"
                     }
                 ];
+            if (userName == item.suser) {
+                let retBtn = {
+                    "id": "2",
+                    "btnShow": true,
+                    "text": "退回"
+                }
+                ops01.push(retBtn);
+            }
             if (item.sstate == "已批示") {
                 item.operation = ops01;
             } else if (item.sstate == "未批示") {
@@ -373,6 +376,7 @@ export default {
                                 text: "社会责任风险",
                                 level: "重要",
                                 company: "",
+                                reptcolor: lookItem.reptcolor,
                                 identificationUser: "张三"
                             },
                             content: [],

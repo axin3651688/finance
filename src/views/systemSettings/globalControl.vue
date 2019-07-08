@@ -6,23 +6,23 @@
     <div id="globalControl">
         <el-form label-width="300px" :model="formLabelAlign">
             <el-form-item class="globalControl_title" label="系统全局参数控制"></el-form-item>
-            <el-form-item label="1、风险公司名称控制：">
+            <!-- <el-form-item label="1、风险公司名称控制：">
                 <el-radio class="globalControl_radioA" v-model="formLabelAlign.scompanytype" :label="0">公司全称</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.scompanytype" :label="1">公司简称</el-radio>
-            </el-form-item>
-            <el-form-item label="2、风险报告催报控制：">
+            </el-form-item> -->
+            <el-form-item label="1、风险报告催报控制：">
                 <el-radio class="globalControl_radioA" v-model="formLabelAlign.urgetoreporttype" :label="0">手动催报</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.urgetoreporttype" :label="1">自动催报</el-radio>
             </el-form-item>
-            <el-form-item label="3、风险报告类型控制：">
+            <el-form-item label="2、风险报告类型控制：">
                 <el-radio class="globalControl_radioA" v-model="formLabelAlign.reporttype" :label="0">启用</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.reporttype" :label="1">不启用</el-radio>
             </el-form-item>
-            <el-form-item label="4、风险识别期间选择：">
+            <el-form-item label="3、风险识别期间选择：">
                 <el-radio class="globalControl_radioA" v-model="formLabelAlign.periodtype" :label="0">≤ 当前期间</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.periodtype" :label="1">＝当前期间</el-radio>
             </el-form-item>
-            <el-form-item label="5、风险识别删除控制：">
+            <el-form-item label="4、风险识别删除控制：">
                 <el-radio class="globalControl_radioA" v-model="formLabelAlign.submitdeletetype" :label="0">提交不能删除</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.submitdeletetype" :label="1">提交可以删除</el-radio>
             </el-form-item>

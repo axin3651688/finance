@@ -198,6 +198,7 @@ export default {
         globalparam_all().then(res => {
             if(res.data.code == 200){
                 let resData = res.data.data[0];
+                // me.globalparam = resData;
                 let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
                 if(resData.reporttype == 0){
                     me.activeName = "second"
@@ -391,7 +392,7 @@ export default {
          * @author szc 2019年5月21日14:15:22
          */
         paramsOfSql (params,data,sqlId) {
-            let me = this,globalparam = me.$store.getters.user.globalparam[0];
+            let me = this,globalparam = me.globalparam;
             if(data && data.length > 0) {
                 for(let i = 0;i < data.length;i ++) {
                     let item = data[i];
@@ -401,7 +402,7 @@ export default {
                     }
                 }
             }
-            if(globalparam.periodtype && globalparam.periodtype == 1){
+            if(globalparam && globalparam[0].periodtype && globalparam[0].periodtype == 1){
                 params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD = :period");
             }else {
                 params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD <= :period");
@@ -413,7 +414,7 @@ export default {
          * @author szc 2019年5月24日11:08:51
          */
         setOperationBtns (data) {
-            let me = this,btns01 = [
+            let me = this,userName = me.$store.getters.user.user.userName,btns01 = [
                 {
                     "id": "1",
                     "btnShow": true,
@@ -451,7 +452,8 @@ export default {
          * @author szc 2019年5月27日16:31:38
          */
         lookInstructionRes (lookData) {
-            let me = this,company = me.$store.getters.companyName;
+            // let me = this,company = me.$store.getters.companyName;
+            let me = this,company = me.$store.getters.treeInfo.sfullname;
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
                     // me.reportData = res.data.reportData;
@@ -476,11 +478,21 @@ export default {
                 if(id == "0"){
                     //批示.
                     // me.instructionsState(scope);
-                    me.reportData.type = "0";
-                    me.lookInstructions(scope);
+                    globalparam_all().then(res => {
+                        if(res.data.code == 200){
+                            me.globalparam = res.data.data;
+                            me.reportData.type = "0";
+                            me.lookInstructions(scope);
+                        }
+                    })
                 }else if (id == "1") {
-                    me.reportData.type = "1";
-                    me.lookInstructions(scope);
+                    globalparam_all().then(res => {
+                        if(res.data.code == 200){
+                            me.globalparam = res.data.data;
+                            me.reportData.type = "1";
+                            me.lookInstructions(scope);
+                        }
+                    })
                 }else if (id == "2") {
                     me.returnInstruction(scope);
                 }else if (id == "3") {

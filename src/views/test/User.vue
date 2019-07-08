@@ -688,7 +688,7 @@ export default {
       tableColumn: [        // 表格列
         { id: "suser", text: "用户名称", width: "130", align: "center" },
         { id: "struename", text: "真实姓名", width: "130", align: "center" },
-        { id: "sphone", text: "手机号码", width: "120", align: "center" },
+        { id: "sphone", text: "联系电话", width: "120", align: "center" },
         { id: "csex", text: "性别", width: "60", align: "center" },
         { id: "srolename", text: "角色", width: "180", align: "center", showOverflow: true },
         { id: "semail", text: "邮箱", width: "220", align: "center" },

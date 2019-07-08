@@ -6,7 +6,7 @@
     <div id="userImportDialog">
         <!-- 弹出框 -->
         <el-dialog 
-        title="风险识别导入" 
+        title="组织管理人员信息导入" 
         :visible.sync="dialogFormVisible4" 
         :close-on-click-modal="false"
         :show-close="false" 
@@ -92,7 +92,7 @@ export default {
                         navigator.msSaveBlob(blob);
                     } else {
                         let elink = document.createElement("a");
-                        elink.download = '风险识别' + '.xlsx' ;
+                        elink.download = '人员管理' + '.xlsx' ;
                         elink.style.display = "none";
                         elink.href = URL.createObjectURL(blob);
                         document.body.appendChild(elink);
@@ -117,7 +117,7 @@ export default {
             // 选中的导入模板名称
             me.formInline.templateB = cc[0] ;
             // 判断模板名称是否匹配
-            if(cc[0] !== "风险识别") {
+            if(cc[0] !== "人员管理") {
                 me.isName = false ;
                 me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
             } else {
@@ -149,7 +149,8 @@ export default {
                 let cc = document.getElementsByClassName('el-icon-upload')[0] ;
                 cc.style.color = "#1790ff" ;
             } else {
-                me.$message.error('数据导入失败！请联系经邦开发人员！') ;
+                me.$message.error(response.msg) ;
+                // me.$message.error('数据导入失败！请联系经邦开发人员！') ;
             }
         },
         /**

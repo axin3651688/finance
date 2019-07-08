@@ -10,32 +10,32 @@
             "align": "center"
         },
         {
-            "id": "A",
+            "id": "a",
             "type": "string",
             "text": "优秀值",
             "align": "center"
         },
         {
-            "id": "B",
+            "id": "b",
             "type": "string",
             "text": "良好值",
             "align": "center",
             "htmlType": "text"
         },
         {
-            "id": "C",
+            "id": "c",
             "type": "string",
             "text": "平均值",
             "align": "center"
         },
         {
-            "id": "D",
+            "id": "d",
             "type": "string",
             "text": "较低值",
             "align": "center"
         },
         {
-            "id": "E",
+            "id": "e",
             "type": "string",
             "text": "较差值",
             "align": "center"

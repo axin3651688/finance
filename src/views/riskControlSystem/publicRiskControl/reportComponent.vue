@@ -59,11 +59,11 @@
                     <!-- <reportControlInstruction v-if="reportControl" :contentDown="contentDown"></reportControlInstruction> -->
 
                     <div class="sb-btn" style="text-align: right;" v-if="this.instructionShow">
-                        <el-button @click="sbRiskFeed">反馈上报</el-button>
+                        <el-button plain type="primary" @click="sbRiskFeed">反馈上报</el-button>
                     </div>
                      <!-- v-if="instructionRelease" -->
                     <div class="sb-btn" style="text-align: right;" v-if="instructionRelease">
-                        <el-button @click="instructionHandle">批示下达</el-button>
+                        <el-button plain type="primary" @click="instructionHandle">批示下达</el-button>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                 tabHeight = 39,//tab标签高度
-                gapHeight = 54,//间隙的高度
+                gapHeight = 38,//间隙的高度
                 pageHeaderHeight = 64;//导航栏高度
             let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
 
@@ -524,6 +524,13 @@
 </script>
 
 <style scoped>
+    .sb-btn {
+        /* text-align: right ; */
+        position: fixed ;
+        z-index: 2;
+        bottom: 0.42rem;
+        right: 20px;
+    }
     .container-all {
         display: flex;
         flex-direction: row;
