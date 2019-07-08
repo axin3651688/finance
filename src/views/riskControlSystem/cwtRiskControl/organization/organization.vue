@@ -29,7 +29,7 @@
             <div class="first-svg">
                 <svg width="121px" height="160px">
                     <polyline points="1,80 60,80 60,1 60,160 60,110 120,110" fill="none" stroke="black"
-                              stroke-width="2"/>
+                              stroke-width="2"></polyline>
 
                 </svg>
             </div>
@@ -37,7 +37,7 @@
             <div class="second-svg">
                 <svg width="1001px" height="120px">
                     <polyline points="20,120 20,100 500,100 500,1 500,50 560,50 500,50 500,100 985,100 985,120"
-                              fill="none" stroke="black" stroke-width="2"/>
+                              fill="none" stroke="black" stroke-width="2"></polyline>
                 </svg>
             </div>
 
@@ -105,6 +105,7 @@
                                     prop="userId"
                                     label="用户名"
                                     width="110"
+                                    align="center"
                             >
                             </el-table-column>
 
@@ -112,6 +113,7 @@
                                     prop="userName"
                                     label="姓名"
                                     width="110"
+                                    align="center"
                             >
                             </el-table-column>
 
@@ -119,6 +121,7 @@
                                     prop="position"
                                     label="职位"
                                     width="200"
+                                    align="center"
                             >
                             </el-table-column>
                         </el-table>

@@ -213,7 +213,7 @@
             this.getTableData();
         },
         mounted() {
-            this.doNotShowDim(true);
+            this.doNotShowDim(false);
         },
         methods: {
 

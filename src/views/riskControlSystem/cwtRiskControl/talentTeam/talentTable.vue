@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!--v-if="this.tableType === 'noCurrentPage'"-->
         <div
                 class=""
         >
