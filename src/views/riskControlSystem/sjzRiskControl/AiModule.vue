@@ -175,7 +175,7 @@ export default {
         /**
          * 【退回按钮】【催报按钮】请求方法
          */
-        backreportdetailp_request(params, me){ 
+        backreportdetailp_request(params, me){ //debugger
             riskreportstate_update_remindback(params).then(ddf => { //debugger
                 if(ddf.data.code === 200){
                     if(params.sisreport==0)me.$message({ message: "催报成功！", type: "success" }) ;
