@@ -25,9 +25,9 @@
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
           </div>
           <div class="right">
-            <!-- <el-button @click="bulkReporting">
+            <el-button v-if="bulkButton" @click="bulkReporting">
               批量上报
-            </el-button> -->
+            </el-button>
             <template v-for="(item,index) in buttonsOperation">
               <el-button v-if="item.disabled" disabled class="button" :key="index" @click="buttonsHandle(item)">
                 {{ item.text }}
@@ -39,7 +39,7 @@
           </div>
         </div>
         <!-- 上报的人员modal -->
-        <SRModal v-if="true" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig" 
+        <SRModal v-if="renderFlag" v-on:sendfillmessage="sendFillMessageHandle" :modalConfig.sync="modalConfig" 
                   v-on:confirmationButton="confirmPublicHandler">
         </SRModal>
         <FillModal :modalConfig.sync="fillModalConfig"></FillModal>
@@ -138,6 +138,8 @@ export default {
   },
   data() {
     return {
+      renderFlag:true,
+      bulkButton:true,
       convert:"元",//报表的单位问题。
       fillModalConfig: {},//审阅的弹出框。
       buttonsOperation:[],//包含上报、审阅等操作按钮。
@@ -285,7 +287,12 @@ export default {
       }
     },
     company(val,oldVal) {
-      
+      //批量批示1001公司不显示。
+      if(val == "1001"){
+        this.bulkButton = false;
+      }else {
+        this.bulkButton = true;
+      }
       //判断不是合并公司才给填报
       // let flag = this.rightOfLeafCompany();
       // if(!flag){
@@ -545,6 +552,10 @@ export default {
     this.hideConverseOfYuan();
     //操作按钮显示的内容。
     this.contentOfButtons();
+    //1001公司的不显示批量上报。
+    if(this.$store.getters.company == "1001"){
+       this.bulkButton = false;
+    }
   },
   mounted() {
     let data = 10;
@@ -1577,11 +1588,12 @@ export default {
         // }else {
         //   cellMeta.readOnly = true;
         // }
-        if(columns == 4){
-          cellMeta.readOnly = true;
-        }else {
-          cellMeta.readOnly = false;
-        }
+        cellMeta.readOnly = this.capitalConcentration(row,columns);
+        // if(columns == 4){
+        //   cellMeta.readOnly = true;
+        // }else {
+        //   cellMeta.readOnly = false;
+        // }
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
@@ -1643,14 +1655,15 @@ export default {
      */
     capitalConcentration (row,column) {
       let me = this;
-      if(column == 5){
-        let record = this.settings.data[row];
-        if(!record){return true}
-        if(record.B && record.B != 0){
-          return false;
-        }
+      let record = this.settings.data[row];
+      if(!record){return true}
+      if(record.ssrccode){
+        return true;
       }
-      return true;
+      if(column == 4){
+        return true;
+      }
+      return false;
     },
     /**
      * 填报表的列与列之间的限制的判断添加。
@@ -1862,6 +1875,13 @@ export default {
         });
         colHeaders = colHeaders.filter(item => {
           return item != "项目编码";
+        });
+      }else if(this.templateId == 8 && newCoulmns && newCoulmns.length > 0) {
+        newCoulmns = newCoulmns.filter(item => {
+          return item.data != "ssrccode";
+        });
+        colHeaders = colHeaders.filter(item => {
+          return item != "eas的编码";
         });
       }
       //集团经营目标不显示公司编码过滤掉

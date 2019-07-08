@@ -7,6 +7,7 @@
                         <el-table :data="tableData"
                             border
                             stripe
+                            :height="tableHeight"
                             :header-cell-style="headerRowStyle"
                             style="width: 100%"
                         >
@@ -42,11 +43,12 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <!-- <el-tab-pane label="批量审阅" name="second">
+                <el-tab-pane label="批量审阅" name="second">
                     <div>
                         <el-table :data="batchTableData"
                             border
                             stripe
+                            :height="tableHeight"
                             :header-cell-style="headerRowStyle"
                             style="width: 100%"
                         >
@@ -80,8 +82,10 @@
                             :page-count="batchTotalValue">
                             </el-pagination>
                         </div>
+                        <!-- <singleTable :tableData.sync="batchTableData" :columns.sync="batchColumns"></singleTable> -->
+                        <!-- < border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable> -->
                     </div>
-                </el-tab-pane> -->
+                </el-tab-pane>
             </el-tabs>
         </div>
         <div v-if="reviewFlag">
@@ -174,13 +178,21 @@
                 batchTableData:[],
                 reviewFlag:true,
                 treeData:[],
+                tableHeight:0
             }
         },
         created() {
-            
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
             this.updateData();
         },
-        mounted() {},
+        mounted() {
+            this.setPageAdaptive();
+        },
         computed: {
             ...mapGetters(["user", "year", "month", "company","showDims"])
         },
@@ -515,12 +527,16 @@
                 };
                 return params;
             },
-            /**
-             * 树表的审阅。
-             */
-            buttonHandler () {
-                debugger;
-                let me = this;
+            setPageAdaptive() {
+                const _this = this;
+                window.onresize = function temp() {
+                    let offsetHeight = document.body.offsetHeight,//页面整体高度
+                        selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
+                        tabHeight = 39,//tab标签高度
+                        gapHeight = 32,//间隙的高度
+                        pageHeaderHeight = 64;//导航栏高度
+                    _this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+                };
             }
         }
     };

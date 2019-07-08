@@ -6,6 +6,7 @@ import {
     saveBatchFillMessage,
     queryBatchReport
 } from "~api/fill.js";
+import { METHODS } from "http";
 
 /**
  * 填报的上报、审阅等按钮的操作。
@@ -383,6 +384,10 @@ export default {
                 };
             queryBatchReport(params).then(res => {
                 if (res.data.code == 200) {
+                    // me.renderFlag = false;
+                    // me.$nextTick(() => {
+                    //     me.renderFlag = true;
+                    // });
                     me.modalConfig = {
                         title: "批量上报",
                         eventListener: "confirmationButton", //事件监听方法名

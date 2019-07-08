@@ -260,7 +260,9 @@ export function queryInteraction(params) {
  */
 export function queryTableCensus(params) {
     return request({
-        url: '/zjb/tableCensus/query_tableCensus?company=' + params.company + '&period=' + params.period,
+        url: '/zjb/tableCensus/query_tableCensus?company=' + params.company + '&period=' + params.period +
+            "&pageNum=" + params.pageNum + "&pageSize=" + params.pageSize + "&companyLike=" + params.companyLike +
+            "&templateLike=" + params.templateLike,
         method: 'get'
     })
 }
@@ -318,3 +320,14 @@ export function batchRollbackReview(params) {
         data: params
     })
 }
+/**
+ * 报表进度统计的模糊查询。
+ * @author szc 2019年5月8日08:59:35/zjb/batch_rollback_review
+ */
+// export function fuzzyQuery(params) {
+//     return request({
+//         url: '/zjb/zjb/batch_rollback_review',
+//         method: 'post',
+//         data: params
+//     })
+// }
