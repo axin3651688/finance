@@ -196,7 +196,6 @@
              * 指定的人员的下达。只有一个批示，ly说的。2019年6月12日15:36:37
              */
             personSureBtnClicked (nodes) {
-                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,allData = me.reportData.allData;
                 if(!instructionsRpt){
                     me.$message({
@@ -208,7 +207,6 @@
                 me.saveInstructionsRpt(instructionsRpt,nodes,allData);
             },
             personSureBtnClicked_old (nodes) {
-                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,middleData = me.middleData,riskCount = 0;
                 //因为要全部显示，所以要遍历相加。
                 middleData.forEach(item => {
@@ -295,7 +293,8 @@
                             me[params.afterHandler](params.afterParams);
                         }
                     } else {
-                        me.$message.error(params.error ? params.error : "操作失败！");
+                        // me.$message.error(params.error ? params.error : "操作失败！");
+                        me.$message.error(res.data.msg? res.data.msg : (params.error ? params.error : "操作失败！"));
                     }
                 });
             },
@@ -401,7 +400,6 @@
              * 获取目录的数据
              */
             getDirectoryData(){
-                debugger;
                 let data = this.reportData,
                     reportDataList = data.reportDataContent.riskFeedData,
                     numCh = {
@@ -430,7 +428,6 @@
              *获取报告头部那些数字数据的方法
              */
             getReportHeaderData(){
-                debugger;
                 let data = this.reportData,
                     headerData = data.reportDataContent.headerData,allData = data.allData,
                     headerReport = {
@@ -491,7 +488,6 @@
              * 报告中间的数据。
              */
             createDataOfMiddle () {
-                debugger;
                 let me = this,reportData = me.reportData,contentData = [],leftNode = me.leftNode;
                 if(reportData.type == "0" && leftNode && leftNode.length > 0){
                     me.instructionRelease = true
