@@ -67,8 +67,11 @@ import { mapGetters, mapActions } from "vuex";
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
 // 引用接口
 import { 
-    riskreportstate_query_riskreport,riskreportstate_update_remindback
-    } from "~api/cube.js";
+    riskreportstate_query_riskreport,
+    riskreportstate_update_remindback,
+    // 全局参数控制
+    globalparam_all,
+} from "~api/cube.js";
 // 引用 js 方法
 import tools from "utils/tools";
 import { param } from '../../../utils';
@@ -109,7 +112,7 @@ export default {
     created(){ 
         // debugger
         // 全局控制选择的日期类型
-        this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
+        // this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
         this.biYear = this.$store.getters.year;
         this.biMonth= this.$store.getters.month;
         this.biCompany = this.$store.getters.company;
@@ -276,18 +279,36 @@ export default {
                 period: params.year + mini.getPeriod(params),
                 comparePeriod: params.year -1 + mini.getPeriod(params),
             };
+            this.globalparam_request(me, datas) ;    // 全局参数设置请求
             // 看看json里有没有配置【queryDataBefore】数据获取之前拦截的方法
-            if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
-                datas = me.item.queryDataBefore(datas, me);
-            }
-            if(datas.sql){
-                me.setData(me.item, datas);
-            }else if(me.rows.length){
-                me.queryDataAfter(me.item,me.rows);
-            }else{
-                return false ;
-            }
+            // if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
+            //     datas = me.item.queryDataBefore(datas, me);
+            // }
+            // if(datas.sql){
+            //     me.setData(me.item, datas);
+            // }else if(me.rows.length){
+            //     me.queryDataAfter(me.item,me.rows);
+            // }else{
+            //     return false ;
+            // }
 
+        },
+        // 风险类型全局查询
+        globalparam_request(me, datas){
+            globalparam_all(datas).then(res => {
+                me.periodtype = res.data.data[0].periodtype ;       // 日期控制
+                // 看看json里有没有配置【queryDataBefore】数据获取之前拦截的方法
+                if(me.item.queryDataBefore && typeof me.item.queryDataBefore == "function"){
+                    datas = me.item.queryDataBefore(datas, me);
+                }
+                if(datas.sql){
+                    me.setData(me.item, datas);
+                }else if(me.rows.length){
+                    me.queryDataAfter(me.item,me.rows);
+                }else{
+                    return false ;
+                }
+            })
         },
         // 取数总接口
         setData(item, params){ 

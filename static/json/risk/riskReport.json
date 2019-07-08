@@ -2,7 +2,7 @@
     "id": "riskReport",
     "text": "风险报告树表",
     "config": {
-        "sql": "SELECT a.scode AS scode , a.sname AS company, a.spcode AS spcode, CASE WHEN c.SISREPORT = 'Y' and c.SISREPORT is not null THEN '已上报' ELSE '未上报' END AS srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel FROM( SELECT scode, sname, spcode, connect_by_isleaf AS nleaf, level AS nlevel FROM dw_dimcompany WHERE CISDEL = 'N' START WITH scode = :company CONNECT BY prior scode = spcode) a LEFT JOIN ( SELECT DIM_COMPANY, CASE WHEN ncount > 0 THEN '已上报' ELSE '未上报' END AS srepotstate, CASE WHEN ncount > 0 THEN 'Y' ELSE 'N' END AS SISREPORT, ( SELECT concat(concat(concat('(',suser),')'),struename) FROM sys_user WHERE suser = SREPORTUSER) AS SREPORTUSER FROM ( SELECT DIM_COMPANY, SREPORTUSER, COUNT (*) AS ncount FROM RISK_REPORTSTATE WHERE NRELATEID IN ( SELECT nid FROM risk_distinguish WHERE dim_company IN ( SELECT scode FROM dw_dimcompany START WITH scode = :company CONNECT BY prior scode = spcode) AND dim_period = :period) AND SISREPORT = '1' GROUP BY DIM_COMPANY, SREPORTUSER)) c ON a.scode = c.dim_company ",
+        "sql": "SELECT a.scode AS scode , a.sname AS company, a.spcode AS spcode, CASE WHEN c.SISREPORT = 'Y' and c.SISREPORT is not null THEN '已上报' ELSE '未上报' END AS srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel FROM( SELECT scode, sname, spcode, connect_by_isleaf AS nleaf, level AS nlevel FROM dw_dimcompany WHERE CISDEL = 'N' START WITH scode = :company CONNECT BY prior scode = spcode) a LEFT JOIN ( SELECT DIM_COMPANY, CASE WHEN ncount > 0 THEN '已上报' ELSE '未上报' END AS srepotstate, CASE WHEN ncount > 0 THEN 'Y' ELSE 'N' END AS SISREPORT, ( SELECT concat(concat(concat('(',suser),')'),struename) FROM sys_user WHERE suser = SREPORTUSER) AS SREPORTUSER FROM ( SELECT DIM_COMPANY, SREPORTUSER, COUNT (*) AS ncount FROM RISK_REPORTSTATE WHERE NRELATEID IN ( SELECT nid FROM risk_distinguish WHERE dim_company IN ( SELECT scode FROM dw_dimcompany START WITH scode = :company CONNECT BY prior scode = spcode) AND dim_period :getperiod) AND SISREPORT = '1' GROUP BY DIM_COMPANY, SREPORTUSER)) c ON a.scode = c.dim_company ",
         // "sql": "select a.scode as scode , a.sname as company, a.spcode as spcode, case c.SISREPORT when 'Y' then '已上报' else '未上报' end as srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel from( select scode, sname, spcode, connect_by_isleaf as nleaf, level as nlevel from dw_dimcompany where CISDEL = 'N' start with scode = :company connect by prior scode = spcode) a left join ( select DIM_COMPANY, case when ncount > 0 then '已上报' else '未上报' end as srepotstate, case when ncount > 0 then 'Y' else 'N' end as SISREPORT, ( select concat(concat(concat('(',suser),')'),struename) from sys_user where suser = SREPORTUSER) as SREPORTUSER from ( select DIM_COMPANY, SREPORTUSER, count (*) as ncount from RISK_REPORTSTATE where NRELATEID in ( select nid from risk_distinguish where dim_company in ( select scode from dw_dimcompany start with scode = :company connect by prior scode = spcode) and (substr(screatetime,1,4) || substr(screatetime,6,2)) = :period) and SISREPORT = '1' group by DIM_COMPANY, SREPORTUSER)) c on a.scode = c.dim_company ",
         // "sql": "SELECT a.scode AS scode , a.sname AS company, a.spcode AS spcode, CASE c.SISREPORT WHEN 'Y' THEN '已上报' ELSE '未上报' END AS srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel FROM( SELECT scode, sname, spcode, connect_by_isleaf AS nleaf, level AS nlevel FROM dw_dimcompany START WITH scode = :company CONNECT BY prior scode = spcode) a LEFT JOIN ( SELECT DIM_COMPANY, CASE WHEN ncount > 0 THEN '已上报' ELSE '未上报' END AS srepotstate, CASE WHEN ncount > 0 THEN 'Y' ELSE 'N' END AS SISREPORT, (select concat(concat(concat('(',suser),')'),struename) from sys_user where suser = SREPORTUSER) as SREPORTUSER FROM ( SELECT DIM_COMPANY,SREPORTUSER, COUNT (*) AS ncount FROM RISK_REPORTSTATE WHERE NRELATEID IN ( SELECT nid FROM risk_distinguish WHERE dim_company = :company AND SUBSTR(screatetime,1,6) <= :period) AND SISREPORT = '1' GROUP BY DIM_COMPANY,SREPORTUSER)) c ON a.scode = c.dim_company",
         // "sql": "select a.scode as scode , a.sname as company,a.spcode as spcode, case c.SISREPORT when 'Y' then '已上报' else '未上报' end as srepotstate, c.SREPORTUSER, c.SISREPORT, a.nleaf, a.nlevel from(select scode, sname, spcode, connect_by_isleaf as nleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode) a left join (select DIM_COMPANY, case when ncount > 0 then '已上报' else '未上报' end as srepotstate, case when ncount > 0 then 'Y' else 'N' end as SISREPORT, :suser as SREPORTUSER from (select DIM_COMPANY, count (*) as ncount from RISK_REPORTSTATE where NRELATEID in (select nid from risk_distinguish where dim_company = :company and substr(screatetime,1,6) <= :period) and SISREPORT = '1' group by DIM_COMPANY)) c on a.scode = c.dim_company",
@@ -143,20 +143,20 @@
             ],
             "queryDataBefore": function(data, $vue){
                 // debugger
-                // let html = "" ;
-                // if($vue.periodtype){
-                //     html = "= :period" ; 
-                // }else{
-                //     html = "<= :period" ; 
-                // }
-                // data.sql = data.sql.replace(/:getperiod/g, html ) ;
+                let html = "" ;
+                if($vue.periodtype){
+                    html = "= :period" ; 
+                }else{
+                    html = "<= :period" ; 
+                }
+                data.sql = data.sql.replace(/:getperiod/g, html ) ;
                 return data ;
             },
             "queryDataAfter": function(data, $vue){
                 // debugger
                 let suer_information = $vue.$store.getters.user.user ;
                 let cc = this ; 
-                data.forEach(res => { debugger
+                data.forEach(res => { //debugger
                     if(res.scode === suer_information.companyId){ 
                         res.companyId = "Y" ;
                         if(res.sreportuser && res.sreportuser != "") {

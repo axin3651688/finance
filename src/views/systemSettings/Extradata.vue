@@ -396,6 +396,7 @@ export default {
     findNodes() { 
       const _this = this;
       let suser = _this.$store.getters.user.user.userName ;
+      let sparams = _this.$store.state.prame.command ;
       // var getters = _this.$store.getters;
       //请求数据
       request({
@@ -406,7 +407,7 @@ export default {
         params: {
           suser: suser //getters.companyId ? getters.companyId :
         }
-      }).then(result => { 
+      }).then(result => {  debugger
         if (result.status == 200 && result.data.code == 200) {
           //封装树对象数据
           const setting = {
@@ -431,9 +432,14 @@ export default {
             //     element.disabled = true;
             //   }
             // });
-            data = data.filter(function(item) {
+            let isTrue = data.some(res => { return res.scode === "1001" }) ;
+            data = data.filter(function(item) { debugger
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
+                item.open = true; //展开此节点
+                _this.expandKeys.push(item.scode);
+              } 
+              if(!isTrue) {
                 item.open = true; //展开此节点
                 _this.expandKeys.push(item.scode);
               }
