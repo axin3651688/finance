@@ -5,5 +5,7 @@ export default {
         ...mapGetters(["device", "user", "showDims"])
     },
 
-    methods: {}
+    methods: {
+
+    }
 }

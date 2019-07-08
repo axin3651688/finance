@@ -22,7 +22,13 @@
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
                         <div class="cell">
-                            <cell :cellData="item" @cellDatachange="cellDatachange"></cell>
+                            <template v-if="item.type">
+                                <ccell :cellData="item" @cellDatachange="cellDatachange"></ccell>
+                            </template>
+
+                            <template v-else>
+                                <cell :cellData="item" @cellDatachange="cellDatachange"></cell>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -87,6 +93,7 @@
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import mchart from './modelPublic/mchart'
+    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "profitForecastingModel",
@@ -106,7 +113,8 @@
                         cellData1: {
                             id: '001',
                             name: '营业收入',
-                            value: this.setNumberToStander(1555.36)
+                            value: this.setNumberToStander(1555.36),
+                            type:'c'
                         },
                         cellData2: {
                             id: '001',

@@ -1,7 +1,7 @@
 <template>
     <div class="model-public-cell-single-cell">
         <div class="model-public-cell-single-cell-all">
-            <div class="model-public-cell-single-cell-top">{{cellData.name}}</div>
+            <div class="model-public-cell-single-cell-top-ccell">{{cellData.name}}</div>
 
             <div class="model-public-cell-single-cell-bottom">
                 <el-input
@@ -68,13 +68,13 @@
         width: 170px;
     }
 
-    .model-public-cell-single-cell-top, .model-public-cell-single-cell-bottom {
+    .model-public-cell-single-cell-top-ccell, .model-public-cell-single-cell-bottom {
         padding: 8px;
         text-align: center;
     }
 
-    .model-public-cell-single-cell-top {
-        background-color: #61BFEC;
+    .model-public-cell-single-cell-top-ccell {
+        background-color: #098692;
     }
 
     .model-public-cell-single-cell-bottom {
