@@ -3,9 +3,11 @@
         <div class="report-title">
             {{this.company}}{{this.periodStr}}风险预警报告
         </div>
-        <span class="zs">
-            总述
-        </span>
+        <div class="zs">
+            <span>
+                总述
+            </span>
+        </div>
         <template>
             <p v-if="reportHeaderData.headerReport.totalCount > 0" class="describe" id="risk_report_header">
                 截止{{ this.periodStr }}份，经风险评估分析，{{this.company}}
@@ -77,15 +79,18 @@
         }
     }
 </script>
-
+<style lang="scss" scoped src="./../../sjzRiskControl/report/reportCss.scss"></style>
 <style scoped>
     .report-title {
         padding: 20px;
         text-align: center;
         font-family: 'Arial Negreta', 'Arial';
-        font-weight: 700;
+        /* font-weight: 700; */
         font-style: normal;
-        font-size: 20px;
+        /* font-size: 20px; */
+        font-size: 25px;
+        font-weight: 200;
+        color: #606266;
     }
 
     .zs {

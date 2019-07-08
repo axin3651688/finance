@@ -13,7 +13,7 @@
                                     <span class="left_1">
                                         {{ item.responsibility.text }}
                                     </span>
-                                    <span class="left_2">
+                                    <span class="left_2" :style="levelStyleCompute(item.responsibility)">
                                         {{ item.responsibility.level }}
                                     </span>
                                 </div>
@@ -117,7 +117,16 @@
         mounted() {
             let me = this;
         },
-        methods: {}
+        methods: {
+            /**
+             * 
+             */
+            levelStyleCompute (item) {
+                if(item && item.reptcolor){
+                    return "background-color:" + item.reptcolor;
+                }
+            }
+        }
     }
 </script>
 
