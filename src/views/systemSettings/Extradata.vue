@@ -407,7 +407,7 @@ export default {
         params: {
           suser: suser //getters.companyId ? getters.companyId :
         }
-      }).then(result => {  debugger
+      }).then(result => {  //debugger
         if (result.status == 200 && result.data.code == 200) {
           //封装树对象数据
           const setting = {
@@ -433,7 +433,7 @@ export default {
             //   }
             // });
             let isTrue = data.some(res => { return res.scode === "1001" }) ;
-            data = data.filter(function(item) { debugger
+            data = data.filter(function(item) { // debugger
               if (item.scode == "1001") {
                 //因为排序后的第一个不是天津食品集团，所以只能根据其编码来添加展开的问题
                 item.open = true; //展开此节点
