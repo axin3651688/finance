@@ -137,7 +137,7 @@
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
                 tabHeight = 39,//tab标签高度
-                gapHeight = 54,//间隙的高度
+                gapHeight = 38,//间隙的高度
                 pageHeaderHeight = 64;//导航栏高度
             let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
 
@@ -528,7 +528,7 @@
         /* text-align: right ; */
         position: fixed ;
         z-index: 2;
-        bottom: 1.42rem;
+        bottom: 0.42rem;
         right: 20px;
     }
     .container-all {
