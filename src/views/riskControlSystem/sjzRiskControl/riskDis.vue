@@ -761,6 +761,12 @@ export default {
                     if(res.sissubmit === "未提交")dataArray_n.push(res) ;
                     if(res.sissubmit === "已提交")dataArray_y.push(res) ;
                 });
+                let isClose = data.some(res => { return res.isclosename === "已关闭" }) ;
+                // 如果勾选了已关闭的风险，不允许下达，进行提示，并且停止继续运行
+                if(isClose) {
+                    me.$message({ message: "您勾选了已关闭的风险！无法下达！请重新勾选！", type: "warning" }) ;
+                    return false ;
+                }
                 // 如果未提交的数量 > 0 说明勾选了未提交的风险，不允许下达，进行提示，并且停止继续运行
                 if(dataArray_n.length > 0){
                     me.$message({ message: "您勾选了未提交的风险！无法下达！请重新勾选！", type: "warning" }) ;
