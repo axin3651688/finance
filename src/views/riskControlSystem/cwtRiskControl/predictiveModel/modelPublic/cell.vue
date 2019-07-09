@@ -49,7 +49,7 @@
     }
 
     .model-public-cell-single-cell-top {
-        background-color: #61BFEC;
+        background-color: #098692;
     }
 
     .model-public-cell-single-cell-bottom {

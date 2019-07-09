@@ -7,7 +7,7 @@
                 <el-input
                         :disabled=false
                         v-model="bottom"
-                        :cellid="cellData.id"
+                        :cellid="cellData.nid"
                         @blur="inputBlurEvent"
                 >
                 </el-input>
@@ -29,7 +29,6 @@
         computed: {},
         watch: {
             'cellData.value'(a, b) {
-                debugger;
                 this.initData(a);
             }
         },
@@ -49,7 +48,6 @@
                 this.bottom = this.setNumberToStander(a);
             },
             inputBlurEvent(params) {
-                debugger;
                 let _this = this;
                 let _value = params.currentTarget.value;
                 let _cellid = params.currentTarget.attributes[2].value;
@@ -74,7 +72,7 @@
     }
 
     .model-public-cell-single-cell-top-ccell {
-        background-color: #098692;
+        background-color: #61BFEC;
     }
 
     .model-public-cell-single-cell-bottom {
