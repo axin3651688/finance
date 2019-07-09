@@ -12,10 +12,15 @@
         components: {},
         props: {
             echartData: Object,
-            dataType: String
+            dataType: String,
+            dataFresh: Boolean
         },
         computed: {},
-        watch: {},
+        watch: {
+            dataFresh() {
+                this.initEchartData()
+            }
+        },
         data() {
             return {
                 option: {},
@@ -27,7 +32,7 @@
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c}%"
+                        formatter: "{a} <br/>{b} : {c}"
                     },
                     series: [
                         {
@@ -35,7 +40,6 @@
                             type: 'funnel',
                             left: '10%',
                             top: 60,
-                            //x2: 80,
                             bottom: 60,
                             width: '80%',
 
@@ -87,11 +91,11 @@
                             radius: '50%',
                             center: ['50%', '50%'],
                             data: [
-                                {value: 335, name: '直接访问'},
-                                {value: 310, name: '邮件营销'},
-                                {value: 234, name: '联盟广告'},
-                                {value: 135, name: '视频广告'},
-                                {value: 1548, name: '搜索引擎'}
+                                // {value: 335, name: '直接访问'},
+                                // {value: 310, name: '邮件营销'},
+                                // {value: 234, name: '联盟广告'},
+                                // {value: 135, name: '视频广告'},
+                                // {value: 1548, name: '搜索引擎'}
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -109,7 +113,7 @@
                         text: '成本费用利润率（%）',
                         x: 'center'
                     },
-                    tooltip : {
+                    tooltip: {
                         formatter: "{a} <br/>{b} : {c}%"
                     },
                     series: [
@@ -139,7 +143,7 @@
                                     width: 20,                  //轴线宽度,默认 30。
                                 }
                             },
-                            detail: {formatter:'{value}%'},
+                            detail: {formatter: '{value}%'},
                             data: [{value: 50, name: ''}]
                         }
                     ]
@@ -147,7 +151,6 @@
             }
         },
         created() {
-            this.initEchartData()
         },
         mounted() {
             this.initEchartData()
@@ -160,13 +163,22 @@
                 switch (_this.dataType) {
                     case 'funnel':
                         _this.option = _this.funnelOption;
+
+                        let _funnelPeries = _this.option.series;
+                        _funnelPeries[0].data = _data.data ? _data.data : [];
+
                         break;
                     case 'pie':
                         _this.option = _this.pieOption;
+
+                        let _piePeries = _this.option.series;
+                        _piePeries[0].data = _data.data ? _data.data : [];
+
                         break;
                     case 'gauge':
                         _this.option = _this.gaugeOption;
-                        break;
+                        let _gaugeSeries = _this.option.series;
+                        _gaugeSeries[0].data[0].value = _data.cellData1 ? _data.cellData1.value : 0;
                 }
             }
         }
@@ -174,13 +186,5 @@
 </script>
 
 <style scoped>
-    /*.echart-content {*/
-    /*width: 240px;*/
-    /*height: 500px;*/
-    /*}*/
 
-    /*.chart {*/
-    /*width: 240px;*/
-    /*height: 500px;*/
-    /*}*/
 </style>
