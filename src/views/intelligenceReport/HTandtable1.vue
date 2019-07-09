@@ -1562,7 +1562,8 @@ export default {
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
         if(columns == 10 || columns == 12){
-          cellMeta.readOnly = this.paymentLimit(row, columns);
+          // cellMeta.readOnly = this.paymentLimit(row, columns);
+          cellMeta.readOnly = false;
         }else if (columns == 2) {
           cellMeta.width = "350px";
           cellMeta.source = this.mechanismdownData(row, columns);
