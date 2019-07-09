@@ -358,7 +358,7 @@
                             ];
                             this.parseNumberToString(itemNames,res.data.data.rows);
                             me.tableData = res.data.data.rows;
-                        } else{
+                        }else{
                             me.tableData = res.data.data.rows;
                         }
                     }

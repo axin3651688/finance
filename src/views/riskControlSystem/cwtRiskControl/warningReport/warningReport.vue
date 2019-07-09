@@ -145,6 +145,7 @@
         },
         created() {
             let _this = this;
+            this.monthParams();
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/warningReport/table1.json").then(res => {
                 if (res.data.code === 200) {
                     // _this.table1data = res.data.rows;
@@ -163,6 +164,12 @@
             this.doNotShowDim(true);
         },
         methods: {
+            monthParams() {
+                debugger;
+                let me = this;
+                let monthConfig = {quarterCount:4,yearEnd:1};
+                me.$store.monthConfig = monthConfig;
+            },
             /**
              * 表格内公司点击事件触发函数
              * @param scope

@@ -8,7 +8,7 @@
     >
         <div>
             <div>
-                <span class="dialog-footer" v-if="tableData && tableData.length > 0 && reviewShow && modalConfig.row.nopratebuttonname != '查看'">
+                <span class="dialog-footer" v-if="tableData && (tableData.length > 0 || modalConfig.row.nopratebuttonname == '退回')&& reviewShow && modalConfig.row.nopratebuttonname != '查看'">
                     <el-button type="primary" @click="submitForm">{{ modalConfig.row.nopratebuttonname == '退回'? '退回':'通过' }}</el-button>
                 </span>
             </div>
@@ -147,7 +147,7 @@ export default {
             let me = this;
             inquire(params).then(res => {
                 if(res.data.code == 200){
-                    let columns = res.data.data.columns,arr = ['id','id_','item'];
+                    let columns = res.data.data.columns,arr = ['id','id_','item','ssrccode'];
                     columns = columns.filter(item => {
                         return arr.indexOf(item.id) == -1;
                     });
