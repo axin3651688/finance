@@ -1657,7 +1657,7 @@ export default {
       let me = this;
       let record = this.settings.data[row];
       if(!record){return true}
-      if(record.ssrccode){
+      if(record.ssrccode && column != 5){
         return true;
       }
       if(column == 4){
