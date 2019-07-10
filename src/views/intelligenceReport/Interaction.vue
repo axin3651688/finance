@@ -303,7 +303,6 @@
              * 批量审阅按钮事件。
              */
             batchQueryHandler (scope) {
-                debugger;
                 let me = this,storeParams = me.$store.getters,
                     company = storeParams.company,year = storeParams.year,month = storeParams.month,
                     userName = storeParams.user.user.userName;
@@ -312,7 +311,7 @@
                     company: company,
                     period: month > 9? year + "" + month:year + "0" + month,
                     supdateuser: userName,
-                    statemun: 3
+                    statemun: scope.row.nopratebutton - 0
                 };
                 batchRollbackReview(params).then(res => {
                     if(res.data.code == 200){
