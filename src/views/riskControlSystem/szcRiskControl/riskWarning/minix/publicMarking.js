@@ -169,7 +169,7 @@ export default {
                 field: 'scode',
                 gaugeSname: 'sname',
                 gaugeField: 'score',
-                content: ['128']
+                content: ['51']
             }, {
                 id: 'gaugeTopRight',
                 field: 'scode',

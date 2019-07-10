@@ -18,8 +18,7 @@ export default {
             let objHead = {
                 id: "comsname",
                 type: "string",
-                text: "公司",
-                align: "center"
+                text: "公司"
             };
             manyColumns.push(objHead);
             let objHead02 = {
