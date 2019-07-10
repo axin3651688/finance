@@ -145,7 +145,20 @@
                 if (typeof params.savePath === 'undefined') {
                     delete params.savePath
                 }
-
+                let _titleLength = params.title.length;
+                let _issuedNumberLength = params.issuedNumber.length;
+                if (_titleLength > 100) {
+                    this.$message({
+                        message: '制度标特不能超过100字！'
+                    });
+                    return;
+                }
+                if (_issuedNumberLength > 100) {
+                    this.$message({
+                        message: '发文字号不能超过100字！'
+                    });
+                    return;
+                }
                 _this.$refs.upload.submit();
 
             },
@@ -185,7 +198,7 @@
                         message: '添加失败',
                         type: 'error'
                     });
-                }else{
+                } else {
                     this.$message({
                         message: '添加成功',
                         type: 'success'

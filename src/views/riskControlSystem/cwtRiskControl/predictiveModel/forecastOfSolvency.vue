@@ -250,6 +250,7 @@
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import mchart from './modelPublic/mchart'
+    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "forecastOfSolvency",
@@ -623,6 +624,7 @@
         top: 50px;
         left: 900px;
         border: 2px solid #303133;
+        border-radius: 10px;
         padding-top: 20px;
     }
 
@@ -675,6 +677,7 @@
         top: 44px;
         left: 500px;
         border: 1px solid #303133;
+        border-radius: 10px;
         padding: 2px 8px;
     }
 

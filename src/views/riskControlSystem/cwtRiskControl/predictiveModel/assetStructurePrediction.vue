@@ -70,6 +70,7 @@
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import mchart from './modelPublic/mchart'
+    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "assetStructurePrediction",
@@ -218,11 +219,12 @@
     .content-text{
         position: absolute;
         width: 300px;
-        height: 250px;
-        top: 284px;
-        left: 700px;
+        height: 230px;
+        top: 300px;
+        left: 600px;
         border: 2px solid #303133;
         padding-top: 20px;
+        border-radius: 10px;
     }
 
     .content-text .title{

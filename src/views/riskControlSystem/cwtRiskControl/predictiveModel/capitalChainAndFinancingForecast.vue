@@ -59,6 +59,23 @@
                 </div>
             </div>
 
+            <div class="content-text">
+                <div class="content-text-one">
+                    投资活动是协调的
+                </div>
+                <div class="content-text-two">
+                    经营活动存在资金缺口
+                </div>
+                <div class="content-text-three">
+                    <div class="title">
+                        现金支付能力状况
+                    </div>
+                    <div class="content">
+                        协调并且有支付能力
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -68,6 +85,7 @@
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import mchart from './modelPublic/mchart'
+    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "capitalChainAndFinancingForecast",
@@ -270,6 +288,7 @@
     .part4 {
         left: 790px;
     }
+
     .part5 {
         left: 1000px;
     }
@@ -290,6 +309,10 @@
         margin-bottom: 20px;
     }
 
+    .part5cell {
+        margin-bottom: 110px;
+    }
+
     .cell {
 
     }
@@ -301,6 +324,7 @@
         top: 390px;
         left: 40px;
     }
+
     .content-chart .pie_2 {
         position: absolute;
         width: 300px;
@@ -308,6 +332,7 @@
         top: 390px;
         left: 400px;
     }
+
     .content-chart .pie_3 {
         position: absolute;
         width: 300px;
@@ -315,6 +340,7 @@
         top: 390px;
         left: 760px;
     }
+
     .content-chart .pie_4 {
         position: absolute;
         width: 300px;
@@ -322,12 +348,57 @@
         top: 390px;
         left: 1120px;
     }
+
     .content-chart .gauge {
         position: absolute;
         width: 300px;
         height: 300px;
         top: 0;
         left: 1210px;
+    }
+
+    .content-text-one, .content-text-two {
+        border: 1px solid black;
+        position: absolute;
+        padding: 6px;
+        width: 170px;
+        height: 70px;
+        border-radius: 10px;
+    }
+
+    .content-text-three {
+        border: 1px solid black;
+        position: absolute;
+        padding: 6px;
+        width: 200px;
+        height: 100px;
+        border-radius: 10px;
+    }
+
+    .content-text-one {
+        top: 90px;
+        left: 1000px;
+        color: green;
+    }
+
+    .content-text-two {
+        top: 270px;
+        left: 1000px;
+        color: green;
+    }
+
+    .content-text-three {
+        top: 270px;
+        left: 1260px;
+    }
+
+    .content-text-three .title {
+        border-bottom: 1px solid black;
+    }
+
+    .content-text-three .content {
+        margin-top: 10px;
+        color: green;
     }
 
 </style>

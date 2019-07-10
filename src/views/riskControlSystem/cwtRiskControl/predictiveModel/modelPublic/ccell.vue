@@ -1,13 +1,13 @@
 <template>
     <div class="model-public-cell-single-cell">
         <div class="model-public-cell-single-cell-all">
-            <div class="model-public-cell-single-cell-top">{{cellData.name}}</div>
+            <div class="model-public-cell-single-cell-top-ccell">{{cellData.name}}</div>
 
             <div class="model-public-cell-single-cell-bottom">
                 <el-input
                         :disabled=false
                         v-model="bottom"
-                        :cellid="cellData.id"
+                        :cellid="cellData.nid"
                         @blur="inputBlurEvent"
                 >
                 </el-input>
@@ -29,7 +29,6 @@
         computed: {},
         watch: {
             'cellData.value'(a, b) {
-                debugger;
                 this.initData(a);
             }
         },
@@ -49,7 +48,6 @@
                 this.bottom = this.setNumberToStander(a);
             },
             inputBlurEvent(params) {
-                debugger;
                 let _this = this;
                 let _value = params.currentTarget.value;
                 let _cellid = params.currentTarget.attributes[2].value;
@@ -68,12 +66,12 @@
         width: 170px;
     }
 
-    .model-public-cell-single-cell-top, .model-public-cell-single-cell-bottom {
+    .model-public-cell-single-cell-top-ccell, .model-public-cell-single-cell-bottom {
         padding: 8px;
         text-align: center;
     }
 
-    .model-public-cell-single-cell-top {
+    .model-public-cell-single-cell-top-ccell {
         background-color: #61BFEC;
     }
 

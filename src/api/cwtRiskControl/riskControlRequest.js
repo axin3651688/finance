@@ -265,3 +265,17 @@ export function riskReportExport(params) {
         params: params
     })
 }
+
+
+/**
+ * 风险预警模型
+ * @author cwt
+ */
+export function predictiveModel(params) {
+    return request({
+        url: '/exp/exportDocx',
+        method: 'post',
+        responseType:'blob',
+        params: params
+    })
+}

@@ -236,7 +236,6 @@
                         });
                     }
                 });
-                debugger;
                 _this.echartsData = data;
                 _this.dataChange = !_this.dataChange;
             },

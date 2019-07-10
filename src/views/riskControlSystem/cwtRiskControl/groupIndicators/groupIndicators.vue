@@ -91,6 +91,9 @@
 
         },
         mounted() {
+            let _this = this;
+            let _showDims = _this.showDims;
+            _showDims.conversion= false;
         },
         methods: {
             /**

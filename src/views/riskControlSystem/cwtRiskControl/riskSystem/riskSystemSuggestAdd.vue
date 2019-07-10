@@ -66,6 +66,14 @@
              */
             onSubmit() {
                 let _params = this.getSendParams();
+                let _proposedContent = _params.proposedContent;
+                let _length = _proposedContent.length;
+                if (_length > 1000) {
+                    this.$message({
+                        message: '建议内容不能超过1000字！'
+                    });
+                    return;
+                }
                 this.suggestAddRequestSend(_params);
             },
 

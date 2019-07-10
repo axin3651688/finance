@@ -1244,7 +1244,7 @@ export default {
             values = values.replace(/,/g,"");
             if(values == "——"){
               values = 0;
-            }else if(!isNaN(values)){
+            }else if(!isNaN(values) && values != ""){
               values = values - 0;
             }
           }
@@ -1254,7 +1254,7 @@ export default {
           obj["row"] = values;
           me.values = values;
           //融资的status可以传过去 空字符串 ""
-          if (values == "" && key != "status" && me.templateId != "7") {
+          if (values == "" && key != "status" && key != "accountbanks" && me.templateId != "7") {
             values = 0;
           }
           let arr = datas.filter(record => {
@@ -1562,7 +1562,8 @@ export default {
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
         if(columns == 10 || columns == 12){
-          cellMeta.readOnly = this.paymentLimit(row, columns);
+          // cellMeta.readOnly = this.paymentLimit(row, columns);
+          cellMeta.readOnly = false;
         }else if (columns == 2) {
           cellMeta.width = "350px";
           cellMeta.source = this.mechanismdownData(row, columns);
@@ -1656,8 +1657,15 @@ export default {
     capitalConcentration (row,column) {
       let me = this;
       let record = this.settings.data[row];
-      if(!record){return true}
-      if(record.ssrccode){
+      if(!record){
+        //暂时这样处理。
+        if(column == 4){
+          return true;
+        }else {
+          return false;
+        }
+      }
+      if(record.ssrccode && column != 5){
         return true;
       }
       if(column == 4){

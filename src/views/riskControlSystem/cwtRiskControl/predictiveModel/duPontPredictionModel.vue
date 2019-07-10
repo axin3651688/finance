@@ -97,6 +97,7 @@
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import mchart from './modelPublic/mchart'
+    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "duPontPredictionModel",

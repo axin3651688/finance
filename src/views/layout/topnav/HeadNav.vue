@@ -223,6 +223,8 @@ export default {
       isCollapse: true,
       yearCount: 4,
       monthCount: 12, //[4,12,16]
+      quarterCount:0,
+      yearEnd:0,
       years: [],
       months: [],
       value: "",
@@ -264,6 +266,15 @@ export default {
       let monthConfig = this.$store.monthConfig,monthValue = monthConfig.value;
       this.$set(this, "monthCount", monthValue);
     }
+    //判断有没有季度与年度。
+    if(this.$store.monthConfig){
+      let monthConfig = this.$store.monthConfig;
+      if(monthConfig.quarterCount){
+        this.$set(this, "quarterCount", monthConfig.quarterCount);
+      }else if(monthConfig.yearEnd){
+        this.$set(this, "yearEnd", monthConfig.yearEnd);
+      }
+    }
     this.months = [];
     for (let i = 1; i <= this.monthCount; i++) {
       if (this.monthCount == 4) {
@@ -275,6 +286,13 @@ export default {
           this.months.push(this.monthCount + 1 - i + "季度");
         }
       }
+    }
+    //新加的季度与年终的判断。
+    for(let j = 0; j < this.quarterCount;j++){
+      this.months.push(j + "季度");
+    }
+    if(this.yearEnd > 0){
+      this.months.push("年终");
     }
   },
   /**
@@ -387,6 +405,15 @@ export default {
         //设置一个默认的月份
         this.$set(this, "monthCount", 12);
       }
+      //判断有没有季度与年度。
+      if(this.$store.monthConfig){
+        let monthConfig = this.$store.monthConfig;
+        if(monthConfig.quarterCount){
+          this.$set(this, "quarterCount", monthConfig.quarterCount);
+        }else if(monthConfig.yearEnd){
+          this.$set(this, "yearEnd", monthConfig.yearEnd);
+        }
+      }
       this.months = [];
       for (let i = 1; i <= this.monthCount; i++) {
         if (this.monthCount == 4) {
@@ -398,6 +425,13 @@ export default {
             this.months.push(this.monthCount + 1 - i + "季度");
           }
         }
+      }
+      //新加的季度与年终的判断。
+      for(let j = 0; j < this.quarterCount;j++){
+        this.months.push(j + 1 + "季度");
+      }
+      if(this.yearEnd > 0){
+        this.months.push("年终");
       }
     },
     // 日期
