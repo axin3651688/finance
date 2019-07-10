@@ -77,7 +77,7 @@
                 pieOption: {
                     height_s: '300px',
                     title: {
-                        text: '成本费用结构图',
+                        text: '',
                         x: 'center'
                     },
                     tooltip: {
@@ -110,7 +110,7 @@
                 gaugeOption: {
                     height_s: '300px',
                     title: {
-                        text: '成本费用利润率（%）',
+                        text: '',
                         x: 'center'
                     },
                     tooltip: {
@@ -172,13 +172,20 @@
                         _this.option = _this.pieOption;
 
                         let _piePeries = _this.option.series;
+                        let _pieTitle = _this.option.title;
+                        _pieTitle.text = _data.name;
                         _piePeries[0].data = _data.data ? _data.data : [];
 
                         break;
                     case 'gauge':
                         _this.option = _this.gaugeOption;
                         let _gaugeSeries = _this.option.series;
+                        let _gaugeTitle = _this.option.title;
+                        _gaugeTitle.text = _data.cellData1 ? _data.cellData1.name : '';
                         _gaugeSeries[0].data[0].value = _data.cellData1 ? _data.cellData1.value : 0;
+                        if(_gaugeSeries[0].data[0].value === ''){
+                            _gaugeSeries[0].data[0].value = 0;
+                        }
                 }
             }
         }

@@ -273,9 +273,8 @@ export function riskReportExport(params) {
  */
 export function predictiveModel(params) {
     return request({
-        url: '/exp/exportDocx',
+        url: '/zjb/forcase/analysis',
         method: 'post',
-        responseType:'blob',
         params: params
     })
 }
