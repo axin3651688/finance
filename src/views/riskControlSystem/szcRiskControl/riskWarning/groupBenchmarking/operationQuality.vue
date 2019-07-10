@@ -11,7 +11,7 @@
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div>
+                    <div class="opera_radar">
                         <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
                     </div>
                 </el-col>
@@ -214,6 +214,8 @@
         }
     };
 </script>
-<style>
-
+<style lang="scss" scoped>
+    .opera_radar {
+        margin-top: 40%;
+    }
 </style>

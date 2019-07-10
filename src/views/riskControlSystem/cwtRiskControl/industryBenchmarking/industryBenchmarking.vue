@@ -2,7 +2,7 @@
     <div>
         <div class="top-select content-select">
             <span>指标选择：</span>
-            <div class="top-select">
+            <div class="top-select sigle_top">
                 <el-select
                         v-model="selectedName"
                         placeholder="请选择"
@@ -175,5 +175,9 @@
 
     .content-select {
         margin-left: 50px;
+    }
+    .sigle_top {
+        /* width: 20%; */
+        width: 300px;
     }
 </style>

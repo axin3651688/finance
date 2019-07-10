@@ -6,6 +6,7 @@
             "text": "公司名称",
             "value": "sname",
             "optType": "click",
+            "fieldValue": "score",
             "align": "left"
         },
         {
