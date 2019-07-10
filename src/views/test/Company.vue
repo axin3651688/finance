@@ -183,8 +183,11 @@
                 <el-button type="success" @click="remove('启用')">启用</el-button>
               </template> -->
               <template>
-                <el-button type="warning" @click="remove('禁用')">禁用</el-button>
+                <el-button type="warning" plain @click="remove('禁用')">禁用</el-button>
               </template>
+              <!-- <template>
+                <el-button type="success" plain @click="remove('启用')">启用</el-button>
+              </template> -->
             </template>
             <!-- <el-button >取消</el-button> -->
           </el-form-item>

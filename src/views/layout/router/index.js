@@ -453,6 +453,12 @@ const router = new Router({
                     component: () =>
                         import ('@v/systemSettings/globalControl')
                 },
+                { // 初始化管理
+                    path: '/initialize',
+                    name: 'initialize',
+                    component: () =>
+                        import ('@v/systemSettings/initialize')
+                },
                 { // 应收账款（sjz）
                     path: '/yszk',
                     name: 'yszk',

@@ -1832,7 +1832,7 @@ export default {
           pageNum: currentPage,
           pageSize: pageSize
         }
-      }).then(result => {
+      }).then(result => { 
         if (result.status == 200) {
           if(result.data.data){
             const data = result.data.data;

@@ -24,10 +24,10 @@
                     <el-button class="downloadBtn" type="text" @click="downloadTemplate">模板下载</el-button>
                 </el-form-item>
             </el-form>
-            <!-- 上传 -->
+            <!-- 上传  action="/zjb/risk_excel/excel_input"-->
             <el-upload
             class="upload_dialog upload"
-            action="/zjb/risk_excel/excel_input"
+            action="/zjb/excel_input"
             :show-file-list="false"
             :data="uploadData"
             drag
@@ -40,7 +40,7 @@
             <!-- 按钮 -->
             <div class="class_btn">
                 <el-button class="downloadBtn" size="medium" type="primary" round @click="cancelClick">确 认</el-button>
-                <el-button class="downloadBtn" size="medium" round @click="confirmClick">取 消</el-button>
+                <el-button class="downloadBtn" size="medium" round @click="confirmClick" :disabled="disabled">取 消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -55,16 +55,16 @@ export default {
     data() {
         return {
             dialogFormVisible4: true ,
-            isName: true ,
-            isType: true ,
+            disabled: false ,
+            isName: false ,
+            isType: false ,
+            errMsg: "" ,
             formInline: {
                 templateA: "人员管理" ,
                 templateB: ""
             },
             uploadData: {                               // 导入请求额外数据
-                company: "",
-                period: "",
-                templateScode: "risk_distinguish"
+                stype: "PersonnelManagement"
             }  
         }
     },
@@ -143,12 +143,15 @@ export default {
         /**
          * @description 导入按钮 *(成功之后)文件上传成功时的钩子
          */
-        handleAvatarSuccess(response, file, fileList){
+        handleAvatarSuccess(response, file, fileList){ 
             let me = this ; 
             if(response.code === 200) {
                 let cc = document.getElementsByClassName('el-icon-upload')[0] ;
                 cc.style.color = "#1790ff" ;
+                me.disabled = true ;
             } else {
+                me.disabled = false ;
+                me.errMsg = response.msg ;
                 me.$message.error(response.msg) ;
                 // me.$message.error('数据导入失败！请联系经邦开发人员！') ;
             }
@@ -156,16 +159,31 @@ export default {
         /**
          * @description 确认按钮
          */
-        cancelClick(){
+        cancelClick(){ 
             let me = this ;
-            if(!me.isName)me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
-            if(!me.isType)me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
-            if(me.isName && me.isType) {
+            if(!me.disabled && !me.isName && !me.isType) {
+                me.$message({ message: "请上传Excel文件", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.isName) {
+                me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.isType) {
+                me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.disabled) {
+                me.$message(me.errMsg) ;
+                return false ;
+            }
+            if(me.isName && me.isType && me.disabled) {
                 me.formInline.templateB = "" ;
                 me.newThis.dialogFormVisible3 = false ;
-                me.newThis.axiosJson() ;
+                me.disabled = false ;
+                me.newThis.findAll(1,100,null) ;
                 me.$message({ message: "数据导入成功！", type: "success" }) ;
-            }
+            } 
         },
         /**
          * @description 取消按钮
