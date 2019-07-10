@@ -42,14 +42,18 @@ export default {
         /**
          * 数据计算
          * @param data
+         * @param type
          */
-        dataCalculate(data) {
+        dataCalculate(data, type) {
             let _this = this;
             let needCNid = [];
             for (let key in data) {
                 let _a = data[key];
                 for (let _key in _a) {
                     let _b = _a[_key];
+                    if (type === 'lj') {
+                        _b.nid = parseInt(_b.nid) - 81 + '';
+                    }
                     if (_a[_key].type !== 's') {
                         needCNid.push(_b.nid);
                     }
@@ -101,6 +105,9 @@ export default {
         dataFormula(_c, _o) {
             let _x = 0;
             switch (_c) {
+                /**
+                 * 第一个
+                 */
                 case '102':
                     //毛利
                     _x = _o['100'] - _o['101'];
@@ -156,6 +163,17 @@ export default {
                     let cbfy = _o['101'] + _o['103'] + _o['104'] + _o['105'] + _o['106'];
                     _x = lrze3 / cbfy * 100;
                     break;
+
+                /**
+                 * 第二个
+                 */
+
+                // case '122':
+                //     //成本费用利润率（%）
+                //     _x = lrze3 / cbfy * 100;
+                //     break;
+
+
             }
             return _x;
         },

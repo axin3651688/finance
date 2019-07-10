@@ -40,7 +40,7 @@
             <!-- 按钮 -->
             <div class="class_btn">
                 <el-button class="downloadBtn" size="medium" type="primary" round @click="cancelClick">确 认</el-button>
-                <el-button class="downloadBtn" size="medium" round @click="confirmClick">取 消</el-button>
+                <el-button class="downloadBtn" size="medium" round @click="confirmClick" :disabled="disabled">取 消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -55,9 +55,10 @@ export default {
     data() {
         return {
             dialogFormVisible4: true ,
-            isName: true ,
-            isType: true ,
-            isCode: true ,
+            disabled: false ,
+            isName: false ,
+            isType: false ,
+            isCode: false ,
             errMsg: "" ,
             formInline: {
                 templateA: "风险识别" ,
@@ -111,7 +112,7 @@ export default {
         /**
          * @description 导入按钮 *(之前)
          */
-        beforeAvatarUpload(file){ 
+        beforeAvatarUpload(file){ //debugger
             let me = this ;
             // 信息
             let $params = me.$store.state.prame.command; 
@@ -152,8 +153,10 @@ export default {
                 let cc = document.getElementsByClassName('el-icon-upload')[0] ;
                 cc.style.color = "#1790ff" ;
                 me.isCode = true ;
+                me.disabled = true ;
             } else {
                 me.isCode = false ;
+                me.disabled = false ;
                 me.errMsg = response.msg ;
                 me.$message.error(response.msg) ;
                 // me.$message.error('数据导入失败！请联系经邦开发人员！') ;
@@ -164,9 +167,22 @@ export default {
          */
         cancelClick(){
             let me = this ;
-            if(!me.isName)me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
-            if(!me.isType)me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
-            if(!me.isCode)me.$message(me.errMsg) ;
+            if(!me.disabled && !me.isName && !me.isType && me.templateB != "") {
+                me.$message({ message: "请上传Excel文件", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.isName) {
+                me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.isType) {
+                me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
+                return false ;
+            }
+            if(!me.isCode) {
+                me.$message(me.errMsg) ;
+                return false ;
+            }
             if(me.isName && me.isType && me.isCode) {
                 me.formInline.templateB = "" ;
                 me.newThis.dialogFormVisible3 = false ;

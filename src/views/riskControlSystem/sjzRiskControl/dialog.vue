@@ -240,7 +240,7 @@ export default {
         }
     },
     created(){ 
-        debugger
+        // debugger
         let viewBtn = this.newThis.view_btn ;
         let $params = this.$store.state.prame.command;
         let sfilluser = this.$store.getters.user.user.trueName;
