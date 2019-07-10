@@ -94,7 +94,7 @@ export default {
                 let i = _a[x];
                 for (let y in i) {
                     let z = i[y];
-                    if (z.type === 's') {
+                    if (z.type === 's' || z.type === 'fc') {
                         _o[z.nid] = parseInt(z.value);
                     }
                 }
@@ -168,12 +168,26 @@ export default {
                  * 第二个
                  */
 
-                // case '122':
-                //     //成本费用利润率（%）
-                //     _x = lrze3 / cbfy * 100;
-                //     break;
-
-
+                case '25':
+                    //资产负债率
+                    _x = _o['24'] / _o['23'] * 100;
+                    break;
+                case '26':
+                    //流动资产增长率
+                    _x = (_o['20'] - _o['204']) / _o['204'] * 100;
+                    break;
+                case '27':
+                    //营业收入增长率
+                    _x = (_o['22'] - _o['205']) / _o['205'] * 100;
+                    break;
+                case '28':
+                    //总资产报酬率
+                    _x = (_o['21'] + _o['206']) / ((_o['23'] + _o['207']) / 2) * 100;
+                    break;
+                case '29':
+                    //总资产增长率
+                    _x = (_o['23'] - _o['207']) / _o['207'] * 100;
+                    break;
             }
             return _x;
         },

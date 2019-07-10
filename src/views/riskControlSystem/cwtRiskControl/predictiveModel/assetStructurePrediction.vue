@@ -6,7 +6,13 @@
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
                         <div class="cell">
-                            <cell :cellData="item" @cellDatachange="cellDatachange"></cell>
+                            <template v-if="item.type === 's'">
+                                <ccell :cellData="item" @cellDatachange="cellDatachange"></ccell>
+                            </template>
+
+                            <template v-else-if="item.type === 'c'">
+                                <cell :cellData="item"></cell>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -28,21 +34,24 @@
 
                 <div class="gauge_1">
                     <mchart
-                            :echartData="echartData"
+                            :echartData="gauge_1EchartData"
+                            :dataFresh="dataFresh"
                             :dataType="'gauge'">
                     </mchart>
                 </div>
 
                 <div class="gauge_2">
                     <mchart
-                            :echartData="echartData"
+                            :echartData="gauge_2EchartData"
+                            :dataFresh="dataFresh"
                             :dataType="'gauge'">
                     </mchart>
                 </div>
 
                 <div class="pie">
                     <mchart
-                            :echartData="echartData"
+                            :echartData="pieEchartData"
+                            :dataFresh="dataFresh"
                             :dataType="'pie'">
                     </mchart>
                 </div>
@@ -69,12 +78,13 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "assetStructurePrediction",
-        mixins: [cwtPublicJs],
+        mixins: [cwtPublicJs, dataCalculation],
         components: {
             cell,
             ccell,
@@ -135,19 +145,156 @@
                             value: this.setNumberToStander(1555.36)
                         }
                     },
+                    partx: {},
+                    party: {}
                 },
-                echartData: {},
+                gauge_1EchartData: {
+                    name: '总资产报酬率（%）',
+                    data: []
+                },
+                gauge_2EchartData: {
+                    name: '总资产增长率（%）',
+                    data: []
+                },
+                pieEchartData: {
+                    name: '资产、负债、权益构成图',
+                    data: []
+                },
+                dataFresh: false
+
             }
         },
         created() {
         },
         mounted() {
+            this.getRealData();
         },
         methods: {
 
-            cellDatachange() {
+            /**
+             * 获取真实数据
+             */
+            getRealData() {
+                let _this = this;
 
-            }
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+
+                let params = {
+                    company: company,
+                    period: _this.getPeriod(),
+                    spcode: '2'
+                };
+
+                predictiveModel(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.resDataFormatter(res.data.data);
+                    }
+                })
+            },
+
+            /**
+             * 请求回来的数据进行格式化处理
+             * @param data
+             */
+            resDataFormatter(data) {
+                let _this = this;
+
+                let _data = {
+                    part1: {},
+                    part2: {},
+                    partx: {},
+                    party: {}
+                };
+
+                data.forEach((item, index) => {
+                    // let _sort = item['SORT'];
+                    let _index = index + 1;
+                    if (item.type === 'c' || item.type === 's') {
+                        if (_index <= 6) {
+                            _data.part1['cellData' + _index] = item;
+                        } else if (_index > 6 && _index <= 9) {
+                            _data.part2['cellData' + _index] = item;
+                        }
+                    } else if (item.type === 'l') {
+                        _data.partx['cellData' + (_index - 9)] = item;
+                    } else if (item.type === 'fc') {
+                        _data.party['cellData' + _index] = item;
+                    }
+                });
+                _this.allData = _data;
+                _this.initData();
+            },
+
+            /**
+             * 初始化数据
+             */
+            initData() {
+                let _this = this;
+                let _data = _this.allData;
+                _this.allData = _this.dataCalculate(_data);
+                _this.initEchartData(_this.allData);
+                _this.dataFresh = !_this.dataFresh;
+            },
+
+            /**
+             * 初始化饼状图
+             * @param data
+             */
+            initEchartData(data) {
+                let _this = this;
+                let emptyData = [];
+                let eD = ['20', '24', '249', '250'];
+                for (let x in data) {
+                    let i = data[x];
+                    for (let y in i) {
+                        let z = i[y];
+                        if (eD.indexOf(z.nid) !== -1) {
+                            let _m = {name: '', value: 0};
+                            _m.name = z.name;
+                            _m.value = z.value;
+                            emptyData.push(_m);
+                        }
+                    }
+                }
+                _this.gauge_1EchartData.data = data.partx.cellData1;
+                _this.gauge_1EchartData.data = data.partx.cellData2;
+                _this.pieEchartData.data = emptyData;
+
+            },
+
+            /**
+             * 单元格数据发生改变
+             * @param params
+             */
+            cellDatachange(params) {
+                this.dataComputed(params);
+            },
+
+            /**
+             * 数据格式化
+             * @param params
+             */
+            dataComputed(params) {
+                let _this = this;
+                let _nid = params.id;
+                let _value = params.value;
+                let _data = _this.allData;
+
+                for (let x in _data) {
+                    let i = _data[x];
+                    for (let y in i) {
+                        let z = i[y];
+                        if (z.nid === _nid) {
+                            z.value = _value;
+                        }
+                    }
+                }
+
+                _this.allData = _this.dataCalculate(_data);
+                _this.initEchartData(_this.allData);
+                _this.dataFresh = !_this.dataFresh;
+            },
         }
     }
 </script>
@@ -216,7 +363,8 @@
         top: 0;
         left: 1000px;
     }
-    .content-text{
+
+    .content-text {
         position: absolute;
         width: 300px;
         height: 230px;
@@ -227,16 +375,17 @@
         border-radius: 10px;
     }
 
-    .content-text .title{
+    .content-text .title {
         font-size: 22px;
         text-align: left;
         padding-left: 16px;
     }
-    .content-text .content{
+
+    .content-text .content {
         font-size: 18px;
         padding: 16px;
-        text-indent:36px;
-        line-height:30px;
+        text-indent: 36px;
+        line-height: 30px;
         color: #bd2c00;
     }
 
