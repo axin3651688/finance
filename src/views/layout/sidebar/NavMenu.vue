@@ -112,11 +112,16 @@ export default {
      * @author szc 2019年4月1日16:11:42
      */
     changeBefore(e){
+      debugger;
       let me = this;
       //删除十三个月的问题
       me.$store.monthConfig? delete me.$store.monthConfig:"";
       let monthId = this.$store.getters.month;
       if(monthId == 13){
+        this.$store.dispatch("GetSideMid", {month:12});
+      }
+      //季度年度的判断。
+      if(typeof(monthId) == "string" && (monthId.indexOf("Q") != -1 || monthId.indexOf("年") != -1)){
         this.$store.dispatch("GetSideMid", {month:12});
       }
       //如果是系统设置下的节点就隐藏导航栏的切换。
