@@ -6,7 +6,7 @@
             <div class="model-public-cell-single-cell-bottom">
                 <el-input
                         :disabled = true
-                        v-model="cellData.value"
+                        v-model="cellData.value || 0.00"
                         :cellid="cellData.id"
                 >
                 </el-input>
