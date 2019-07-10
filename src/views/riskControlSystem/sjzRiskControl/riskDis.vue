@@ -557,6 +557,9 @@ export default {
             // debugger
             let me = this ;
             let data = [] ;
+            let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;    // 过滤出来提交的风险
+            let isTrue = submit.some(ee => { return ee.sisreport == 1 }) ;                  // 一真即真 1为上报状态
+            
             let selection_no = me.selection.filter(res => { return res.sissubmit == "未提交" }) ;
             let selection_yes = me.selection.filter(res => { return res.sissubmit == "已提交" }) ;
             if(me.submitdeletetype == 0){
@@ -592,6 +595,11 @@ export default {
                 });
             // submitdeletetype:1 => 已提交的风险可以删除
             }else if(me.selection && me.selection.length > 0 && me.submitdeletetype == 1){
+                // 对于已上报的风险是不能删除的
+                if(isTrue) {
+                    me.$message({ message: "已上报的风险无法删除！", type: "warning" }) ;
+                    return false ;
+                }
                 me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

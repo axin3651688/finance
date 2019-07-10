@@ -87,7 +87,7 @@
           </el-form-item>
 
           <el-form-item label="EAS账套编码" prop="ssrccode">
-            <el-input class="elform" v-model="form.ssrccode" placeholder="请填写EAS账套编码">
+            <el-input class="elform" v-model="form.ssrccode" @change="EASChange" placeholder="请填写EAS账套编码">
               <template slot="prepend" v-if="form.ssrccode === '0'">虚拟汇总</template>
               <template slot="prepend" v-else-if="form.ssrccode === '1'">虚拟录入</template>
               <template slot="prepend" v-else>EAS源编码</template>
@@ -101,6 +101,11 @@
             ></el-alert>
           </el-form-item>
 
+          <el-form-item label="EAS账套ID" prop="seascomcode">
+            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID" :disabled="easDisabled">
+              <template slot="prepend" >EAS源ID</template>
+            </el-input>
+          </el-form-item>
           <!-- <el-form-item label="集团合计持股比例" prop="npercent">
             <el-input v-model.number="form.npercent" placeholder="请填写持股比例">
               <template slot="prepend" v-if="form.npercent - 0 === -1">托管</template>
@@ -153,6 +158,17 @@
 
           <el-form-item label="公司地址" prop="saddress">
             <el-input class="elform" v-model="form.saddress" placeholder="最大字符200"></el-input>
+          </el-form-item>
+
+          <el-form-item label="是否本部单位" prop="sisbase">
+            <el-select class="elform" v-model="form.sisbase">
+              <el-option
+                v-for=" (item ,index) in property2s "
+                :key="index"
+                :label="item.text"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
 
           <el-form-item label="是否重点单位" prop="property1">
@@ -231,6 +247,8 @@ export default {
         children: "children"
         // cisdel:"cisdel"
       },
+      // EAS id 输入框是否禁用
+      easDisabled: true ,
       treedata: [],
       //默认展开节点
       expandKeys: [],
@@ -244,14 +262,17 @@ export default {
       sindcoded: [],
       sindcodesAll: [],
       property1s: [{ id: "1", text: "是" }, { id: "0", text: "否" }],
+      property2s: [{ id: "Y", text: "是" }, { id: "N", text: "否" }],
       wformArr: [
         "scode",            // 公司编码
         "sfullname",        // 公司全称
         "spcode",           // 父级编码
         "sindcode",         // 内部行业
         "property1",        // 重点单位
+        "sisbase",          // 是否本部
         "npercent",         // 集团合计持股比例
         "ssrccode",         // EAS公司源编码
+        "seascomcode",      // EAS公司id
         "sindcodedetail",   // 国资委行业
         "scorporation",     // 企业法人
         "sindsrange",       // 公司规模
@@ -266,10 +287,12 @@ export default {
         spcode: "",         // 上级公司编码
         sindcode: "",       // 行业
         property1: "",      // 重点单位
+        sisbase: "",        // 是否本部
         npercent: 0,        // 集团合计持股比例
         // cisleaf: "",     // 是否叶子节点
         nlevel: "",         // 级次
         ssrccode: "",       // EAS公司源编码
+        seascomcode: "",    // EAS公司id
         cisdel: "",         // 是否删除
         // text: ""
         sindcodedetail:"",  // 国资委行业
@@ -337,6 +360,7 @@ export default {
           }
         ],
         ssrccode: [{ required: true, message: "必填项" }],
+        // seascomcode: [{ required: true, message: "必填项" }] ,
         npercent: [
           // { required: true, message: "必填项", trigger: "blur" },
           { type: "number", message: "集团合计持股比例必须为数字" }
@@ -463,6 +487,14 @@ export default {
           124}px`;
       };
     },
+    EASChange(value){
+      debugger
+      if(value == 0 || value == 1 || value == ""){
+        this.easDisabled = true ;
+      }else {
+        this.easDisabled = false ;
+      }
+    },
     /**
      * @description 监控表单变化
      * @param 监控字段
@@ -510,7 +542,7 @@ export default {
     },
 
     //请求节点数据
-    findNodes() {
+    findNodes() { //debugger
       const _this = this;
       var getters = _this.$store.getters;
       let username = this.$store.state.user.user.user.username;
@@ -574,8 +606,10 @@ export default {
       this.form.sname = "";         // 公司简称
       this.form.sindcode = "";      // 内部行业
       this.form.property1 = "";     // 重点单位
+      this.form.sisbase = "";       // 是否本部
       this.form.npercent = 0;       // 集团合计持股比例
       this.form.ssrccode = "";      // EAS公司源编码
+      this.form.seascomcode = "";   // EAS公司id
       this.form.sindcodedetail = "";  // 国资委行业
       this.form.scorporation = "";    // 企业法人
       this.form.sindsrange = "";      // 公司规模
@@ -678,7 +712,7 @@ export default {
         return;
       }   
       //验证
-      _this.$refs[formName].validate(valid => { //debugger
+      _this.$refs[formName].validate(valid => { debugger
           if (valid) {
             //保存操作
             var obj = _.cloneDeep(_this.activeForm);
@@ -703,10 +737,12 @@ export default {
                 spcode: form.spcode, //上级公司编码
                 sindcode: form.sindcode, //内部行业
                 property1: form.property1, //重点单位
-                npercent: form.npercent === -1 ? -1 : form.npercent / 100, //集团合计持股比例
+                sisbase: form.sisbase,    // 是否本部
+                // npercent: form.npercent === -1 ? -1 : form.npercent / 100, //集团合计持股比例
                 // cisleaf: "", //是否叶子节点
                 nlevel: form.nlevel, //级次
                 ssrccode: form.ssrccode, //EAS公司源编码
+                seascomcode: form.seascomcode,  // EAS公司id
                 cisdel: form.cisdel, //是否删除
                 // 
                 sindcodedetail: form.sindcodedetail,  // 国资委行业
@@ -813,7 +849,7 @@ export default {
      * @param node tree 节点对象
      * @param el 节点组件本身
      *  */
-    handClick(snode, node, el) { //debugger
+    handClick(snode, node, el) { debugger
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);
@@ -824,9 +860,11 @@ export default {
       this.form.sindcode = snode.sindcode;  // 内部行业
       // this.form.cisleaf = snode.cisleaf;
       this.form.ssrccode = snode.ssrccode;  // EAS公司源编码
+      this.form.seascomcode = snode.seascomcode;  // EAS公司id
       this.form.cisdel = snode.cisdel;      // 是否删除
-      this.form.npercent = snode.npercent;  // 集团合计持股比例
+      // this.form.npercent = snode.npercent;  // 集团合计持股比例
       this.form.property1 = snode.property1;// 是否重点单位
+      this.form.sisbase = snode.sisbase;    // 是否本部
       this.form.sindcodedetail = snode.sindcodedetail;  // 国资委行业
       this.form.scorporation = snode.scorporation;      // 企业法人
       this.form.sindsrange = snode.sindsrange;          // 公司规模
@@ -987,6 +1025,7 @@ export default {
 <style scoped>
 .elform {
   width: 420px;
+  height: 40px;
 }
 .elform2 {
   /* margin-left: 188px; */
