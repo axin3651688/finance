@@ -109,9 +109,6 @@
         },
         props: {},
         computed: {
-            aaa() {
-
-            }
         },
         watch: {},
         data() {
@@ -357,7 +354,7 @@
 
                 _this.allData = _this.dataCalculate(_data);
 
-                _this.initPieEchartData(_this.allData);
+                _this.initEchartData(_this.allData);
                 _this.dataFresh = !_this.dataFresh;
             },
 
@@ -368,15 +365,15 @@
                 let _this = this;
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data, type);
-                _this.gaugeEchartData = _this.allData.partx;
-                _this.initPieEchartData(_this.allData);
+                // _this.gaugeEchartData = _this.allData.partx;
+                _this.initEchartData(_this.allData);
                 _this.dataFresh = !_this.dataFresh;
             },
             /**
              * 初始化饼状图
              * @param data
              */
-            initPieEchartData(data) {
+            initEchartData(data) {
                 let _this = this;
                 let emptyData = [];
                 let eD = ['101', '103', '104', '105', '106'];
@@ -392,10 +389,10 @@
                         }
                     }
                 }
-                _this.gaugeEchartData = data.partx;
+                _this.gaugeEchartData.data = data.partx;
                 _this.pieEchartData.data = emptyData;
                 _this.funnelEchartData.data = emptyData;
-
+                _this.dataFresh = !_this.dataFresh;
 
             },
 

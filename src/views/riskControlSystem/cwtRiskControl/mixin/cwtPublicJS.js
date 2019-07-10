@@ -155,7 +155,8 @@ export default {
             let _this = this,
                 _getter = _this.$store.getters;
             return _getter.year;
-        }, /**
+        },
+        /**
          * 获取期间
          * @returns {string|string}
          */
