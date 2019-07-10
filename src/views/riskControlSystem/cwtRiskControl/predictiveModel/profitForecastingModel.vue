@@ -109,9 +109,6 @@
         },
         props: {},
         computed: {
-            aaa() {
-
-            }
         },
         watch: {},
         data() {
@@ -292,11 +289,16 @@
                     },
                 },
                 buttonType: 'bq',
-                gaugeEchartData: {},
+
                 funnelEchartData: {
-                    data:[]
+                    data: []
                 },
                 pieEchartData: {
+                    name: '成本费用结构图',
+                    data: []
+                },
+                gaugeEchartData: {
+                    name: '成本费用利润率（%）',
                     data: []
                 },
                 dataFresh: false
@@ -305,7 +307,10 @@
         created() {
         },
         mounted() {
-            this.initData();
+
+            this.getRealData('bq');
+
+
         },
         methods: {
             /**
@@ -314,6 +319,7 @@
              */
             topButtonClick(type) {
                 this.buttonType = type;
+                this.getRealData(type);
             },
 
 
@@ -324,6 +330,11 @@
             cellDatachange(params) {
                 this.dataComputed(params);
             },
+
+            /**
+             * 数据格式化
+             * @param params
+             */
             dataComputed(params) {
                 let _this = this;
                 let _nid = params.id;
@@ -334,6 +345,7 @@
                     let i = _data[x];
                     for (let y in i) {
                         let z = i[y];
+                        // z.nid = toString(parseInt(z.nid) - 81);
                         if (z.nid === _nid) {
                             z.value = _value;
                         }
@@ -341,28 +353,27 @@
                 }
 
                 _this.allData = _this.dataCalculate(_data);
-                _this.gaugeEchartData = _this.allData.partx;
-                _this.initPieEchartData(_this.allData);
+
+                _this.initEchartData(_this.allData);
                 _this.dataFresh = !_this.dataFresh;
             },
 
             /**
              * 初始化数据
              */
-            initData() {
+            initData(type) {
                 let _this = this;
                 let _data = _this.allData;
-                _this.allData = _this.dataCalculate(_data);
-                _this.gaugeEchartData = _this.allData.partx;
-                _this.initPieEchartData(_this.allData);
+                _this.allData = _this.dataCalculate(_data, type);
+                // _this.gaugeEchartData = _this.allData.partx;
+                _this.initEchartData(_this.allData);
                 _this.dataFresh = !_this.dataFresh;
             },
             /**
              * 初始化饼状图
              * @param data
              */
-            initPieEchartData(data) {
-
+            initEchartData(data) {
                 let _this = this;
                 let emptyData = [];
                 let eD = ['101', '103', '104', '105', '106'];
@@ -378,9 +389,74 @@
                         }
                     }
                 }
+                _this.gaugeEchartData.data = data.partx;
                 _this.pieEchartData.data = emptyData;
                 _this.funnelEchartData.data = emptyData;
+                _this.dataFresh = !_this.dataFresh;
+
+            },
+
+            /**
+             * 请求真实数据
+             */
+            getRealData(type) {
+                let _this = this;
+
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+
+                let params = {
+                    company: company,
+                    period: _this.getPeriod(),
+                    spcode: type === 'bq' ? '1' : '1.1'
+                };
+
+                predictiveModel(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.resDataFormatter(res.data.data, type);
+                    }
+                })
+            },
+
+            /**
+             * 请求回来的数据进行格式化处理
+             * @param data
+             */
+            resDataFormatter(data, type) {
+                let _this = this;
+
+                let _data = {
+                    part1: {},
+                    part2: {},
+                    part3: {},
+                    part4: {},
+                    part5: {},
+                    partx: {}
+                };
+
+                data.forEach((item, index) => {
+                    // let _sort = item['SORT'];
+                    let _index = index + 1;
+                    if (item.type === 'c' || item.type === 's') {
+                        if (_index <= 2) {
+                            _data.part1['cellData' + _index] = item;
+                        } else if (_index > 2 && _index <= 10) {
+                            _data.part2['cellData' + _index] = item;
+                        } else if (_index > 10 && _index <= 15) {
+                            _data.part3['cellData' + _index] = item;
+                        } else if (_index > 15 && _index <= 20) {
+                            _data.part4['cellData' + _index] = item;
+                        } else if (_index > 20 && _index <= 22) {
+                            _data.part5['cellData' + _index] = item;
+                        }
+                    } else if (item.type === 'l') {
+                        _data.partx['cellData' + (_index - 22)] = item;
+                    }
+                });
+                _this.allData = _data;
+                _this.initData(type);
             }
+
         }
     }
 </script>

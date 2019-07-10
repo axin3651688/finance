@@ -48,7 +48,7 @@
           <el-dropdown-item
             v-for="(item,index) of months"
             :key="index"
-            @click.native="GetSideMid({month:item.substr(0, item.length - 1)})"
+            @click.native="changeMonthParams(item)"
           >{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -391,7 +391,38 @@ export default {
         this.changeBecauseOfNode();
       }
     },
+    /**
+     * 因为新加了季度年度，所以要
+     */
+    changeMonthParams(item){
+      debugger;
+      let me = this;
+      me.GetSideMid({month:item.substr(0, item.length - 1)});
+      // if(item.indexOf("季度") != -1){
+      //   let num = item.substr(0,item.indexOf("季")) - 0,quarterNum;
+      //   switch (num) {
+      //     case 1:
+      //       quarterNum = "Q1";
+      //       break;
+      //     case 2:
+      //       quarterNum = "Q2";
+      //       break;
+      //     case 3:
+      //       quarterNum = "Q3";
+      //       break;
+      //     case 4:
+      //       quarterNum = "Q4";
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      //   me.GetSideMid({month:quarterNum});
+      // }else {
+      //   me.GetSideMid({month:item.substr(0, item.length - 1)});
+      // }
+    },
     changeBecauseOfNode(){
+      debugger;
       let me = this;
       let bean = getClientParams();
       if (bean.monthCount && bean.monthCount > 0) {
@@ -410,7 +441,8 @@ export default {
         let monthConfig = this.$store.monthConfig;
         if(monthConfig.quarterCount){
           this.$set(this, "quarterCount", monthConfig.quarterCount);
-        }else if(monthConfig.yearEnd){
+        }
+        if(monthConfig.yearEnd){
           this.$set(this, "yearEnd", monthConfig.yearEnd);
         }
       }
