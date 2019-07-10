@@ -18,7 +18,7 @@
                     </div>
                 </el-col>
                 <el-col :span="8">
-                    <div>
+                    <div class="profit_radar">
                         <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
                     </div>
                 </el-col>
@@ -218,6 +218,8 @@
         }
     };
 </script>
-<style>
-
+<style lang="scss" scoped>
+    .profit_radar {
+        margin-top: 20%;
+    }
 </style>

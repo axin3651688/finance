@@ -163,7 +163,7 @@
     import {
         groupQuery
     } from "~api/szcRiskControl/riskControl"
-    import { mapGetters } from "vuex";
+    import { mapGetters, mapActions } from "vuex";
     // import singleTable from "@v/riskControlSystem/publicRiskControl/table/singleTable.vue"
     import threeHeaderTable from "./../riskTable/threeHeaderTable.vue"
     import listingBenchmarking from "./../minix/listingBenchmarking.js"
@@ -319,6 +319,8 @@
         },
         created() {
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
+            //隐藏公司、年、月。
+            me.hideNavInfo();
             //生成需要的年月参数。
             me.createYearMonth();
             //查询选择框的下拉选内容。
@@ -347,6 +349,18 @@
         },
         mounted() {},
         methods: {
+            ...mapActions(["ShowDims"]),
+            hideNavInfo () {
+                debugger;
+                let me = this;
+                me.ShowDims({
+                    company:false,
+                    year:false,
+                    month:false,
+                    day:false,
+                    conversion:false
+                });
+            },
             /**
              * 制造年月参数。
              */

@@ -40,7 +40,7 @@
                         <i v-else class="el-icon-minus"></i>
                     </span>
                     <span
-                        v-if="column.optType === 'click'"
+                        v-if="column.optType === 'click' && scope.row[column.fieldValue] && scope.row[column.fieldValue] > 0"
                         @click="drillItemSname(scope)"
                         style="color: dodgerblue;cursor: pointer">
                         {{scope.row[column.value]}}

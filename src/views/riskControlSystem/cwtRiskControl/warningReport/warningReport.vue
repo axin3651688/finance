@@ -145,7 +145,7 @@
         },
         created() {
             let _this = this;
-            this.monthParams();
+            // this.monthParams();
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/warningReport/table1.json").then(res => {
                 if (res.data.code === 200) {
                     // _this.table1data = res.data.rows;
