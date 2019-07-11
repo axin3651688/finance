@@ -5,7 +5,13 @@
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
                         <div class="cell">
-                            <cell :cellData="item" @cellDatachange="cellDatachange"></cell>
+                            <template v-if="item.type === 's'">
+                                <ccell :cellData="item" @cellDatachange="cellDatachange"></ccell>
+                            </template>
+
+                            <template v-else-if="item.type === 'c'">
+                                <cell :cellData="item"></cell>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -22,9 +28,10 @@
 
                 <div class="svg-second">
                     <svg width="150px" height="450px">
-                        <polyline points="36,1 71,1 36,1 36,131 71,131 36,131 36,201 1,201 36,201 36,261 71,261 36,261 36,391 71,391"
-                                  fill="none" stroke="black"
-                                  stroke-width="2"></polyline>
+                        <polyline
+                                points="36,1 71,1 36,1 36,131 71,131 36,131 36,201 1,201 36,201 36,261 71,261 36,261 36,391 71,391"
+                                fill="none" stroke="black"
+                                stroke-width="2"></polyline>
                     </svg>
                 </div>
 
@@ -89,11 +96,12 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import dataCalculation from '../mixin/dataCalculation'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "EVAPredictionModel",
-        mixins: [cwtPublicJs],
+        mixins: [cwtPublicJs, dataCalculation],
         components: {
             cell,
             ccell
@@ -290,6 +298,7 @@
         created() {
         },
         mounted() {
+            this.getRealData();
         },
         methods: {
             /**
@@ -297,8 +306,99 @@
              * @param params
              */
             cellDatachange(params) {
-                this.cellData.value = params.value;
-                this.dataComputed(params.value);
+                this.dataComputed(params);
+            },
+            /**
+             * 数据格式化
+             * @param params
+             */
+            dataComputed(params) {
+                let _this = this;
+                let _nid = params.id;
+                let _value = params.value;
+                let _data = _this.allData;
+
+                for (let x in _data) {
+                    let i = _data[x];
+                    for (let y in i) {
+                        let z = i[y];
+                        // z.nid = toString(parseInt(z.nid) - 81);
+                        if (z.nid === _nid) {
+                            z.value = _value;
+                        }
+                    }
+                }
+                _this.allData = _this.dataCalculate(_data);
+            },
+            /**
+             * 请求真实数据
+             */
+            getRealData() {
+                let _this = this;
+
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+
+                let params = {
+                    company: company,
+                    period: _this.getPeriod(),
+                    spcode: '5'
+                };
+
+                predictiveModel(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.resDataFormatter(res.data.data);
+                    }
+                })
+            },
+            /**
+             * 请求回来的数据进行格式化处理
+             * @param data
+             */
+            resDataFormatter(data) {
+                let _this = this;
+
+                let _data = {
+                    part1: {},
+                    part2: {},
+                    part3: {},
+                    part4: {},
+                    part5: {},
+                    partx: {},
+                    party: {}
+                };
+
+                data.forEach((item, index) => {
+                    // let _sort = item['SORT'];
+                    let _index = index + 1;
+                    if (item.type === 'c' || item.type === 's') {
+                        if (_index <= 1) {
+                            _data.part1['cellData' + _index] = item;
+                        } else if (_index > 1 && _index <= 4) {
+                            _data.part2['cellData' + _index] = item;
+                        } else if (_index > 4 && _index <= 12) {
+                            _data.part3['cellData' + _index] = item;
+                        } else if (_index > 12 && _index <= 20) {
+                            _data.part4['cellData' + _index] = item;
+                        } else if (_index > 20 && _index <= 34) {
+                            _data.part5['cellData' + _index] = item;
+                        }
+                    } else if (item.type === 'l') {
+                        _data.partx['cellData' + (_index - 34)] = item;
+                    } else if (item.type === 'fc') {
+                        _data.party['cellData' + (_index - 34)] = item;
+                    }
+                });
+                _this.allData = _data;
+                _this.initData();
+            },
+            /**
+             * 初始化数据
+             */
+            initData() {
+                let _this = this;
+                let _data = _this.allData;
+                _this.allData = _this.dataCalculate(_data);
             },
         }
     }
@@ -382,6 +482,7 @@
         left: 500px;
         top: 550px
     }
+
     .svg-fourth {
         left: 800px;
         top: 470px
@@ -396,6 +497,7 @@
         left: 800px;
         top: 782px
     }
+
     .svg-seventh {
         left: 800px;
         top: 936px

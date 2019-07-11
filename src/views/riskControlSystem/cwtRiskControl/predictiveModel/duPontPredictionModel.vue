@@ -6,7 +6,13 @@
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
                         <div class="cell">
-                            <cell :cellData="item" @cellDatachange="cellDatachange"></cell>
+                            <template v-if="item.type === 's'">
+                                <ccell :cellData="item" @cellDatachange="cellDatachange"></ccell>
+                            </template>
+
+                            <template v-else-if="item.type === 'c'">
+                                <cell :cellData="item"></cell>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -76,14 +82,16 @@
             <div class="content-chart">
                 <div class="gauge_1">
                     <mchart
-                            :echartData="echartData"
+                            :echartData="gauge_1EchartData"
+                            :dataFresh="dataFresh"
                             :dataType="'gauge'">
                     </mchart>
                 </div>
 
                 <div class="gauge_2">
                     <mchart
-                            :echartData="echartData"
+                            :echartData="gauge_2EchartData"
+                            :dataFresh="dataFresh"
                             :dataType="'gauge'">
                     </mchart>
                 </div>
@@ -96,12 +104,13 @@
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
     import cwtPublicJs from '../mixin/cwtPublicJS'
+    import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         name: "duPontPredictionModel",
-        mixins: [cwtPublicJs],
+        mixins: [cwtPublicJs, dataCalculation],
         components: {
             cell,
             ccell,
@@ -297,12 +306,21 @@
                         }
                     },
                 },
-                echartData: {},
+                gauge_1EchartData: {
+                    name: '速动比率行业对标预警',
+                    data: []
+                },
+                gauge_2EchartData: {
+                    name: '已获利息倍数（倍）',
+                    data: []
+                },
+                dataFresh: false
             }
         },
         created() {
         },
         mounted() {
+            this.getRealData();
         },
         methods: {
             /**
@@ -310,9 +328,149 @@
              * @param params
              */
             cellDatachange(params) {
-                this.cellData.value = params.value;
-                this.dataComputed(params.value);
+                this.dataComputed(params);
             },
+
+            /**
+             * 数据格式化
+             * @param params
+             */
+            dataComputed(params) {
+                let _this = this;
+                let _nid = params.id;
+                let _value = params.value;
+                let _data = _this.allData;
+
+                for (let x in _data) {
+                    let i = _data[x];
+                    for (let y in i) {
+                        let z = i[y];
+                        // z.nid = toString(parseInt(z.nid) - 81);
+                        if (z.nid === _nid) {
+                            z.value = _value;
+                        }
+                    }
+                }
+
+                _this.allData = _this.dataCalculate(_data);
+
+                _this.initEchartData(_this.allData);
+                _this.dataFresh = !_this.dataFresh;
+            },
+
+            /**
+             * 初始化数据
+             */
+            initData() {
+                let _this = this;
+                let _data = _this.allData;
+                _this.allData = _this.dataCalculate(_data);
+                // _this.gaugeEchartData = _this.allData.partx;
+                _this.initEchartData(_this.allData);
+                _this.dataFresh = !_this.dataFresh;
+            },
+            /**
+             * 初始化饼状图
+             * @param data
+             */
+            initEchartData(data) {
+                let _this = this;
+                // let emptyData = [];
+                // let eD = ['101', '103', '104', '105', '106'];
+                // for (let x in data) {
+                //     let i = data[x];
+                //     for (let y in i) {
+                //         let z = i[y];
+                //         if (eD.indexOf(z.nid) !== -1) {
+                //             let _m = {name: '', value: 0};
+                //             _m.name = z.name;
+                //             _m.value = z.value;
+                //             emptyData.push(_m);
+                //         }
+                //     }
+                // }
+                // _this.gaugeEchartData.data = data.partx;
+                // _this.pieEchartData.data = emptyData;
+                // _this.funnelEchartData.data = emptyData;
+                // _this.dataFresh = !_this.dataFresh;
+
+            },
+
+            /**
+             * 请求真实数据
+             */
+            getRealData() {
+                let _this = this;
+
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+
+                let params = {
+                    company: company,
+                    period: _this.getPeriod(),
+                    spcode: '4'
+                };
+
+                predictiveModel(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.resDataFormatter(res.data.data);
+                    }
+                })
+            },
+
+            /**
+             * 请求回来的数据进行格式化处理
+             * @param data
+             */
+            resDataFormatter(data) {
+                let _this = this;
+
+                let _data = {
+                    part1: {},
+                    part2: {},
+                    part3: {},
+                    part4: {},
+                    part5: {},
+                    part6: {},
+                    part7: {},
+                    part8: {},
+                    part9: {},
+                    partx: {},
+                    party: {}
+                };
+
+                data.forEach((item, index) => {
+                    // let _sort = item['SORT'];
+                    let _index = index + 1;
+                    if (item.type === 'c' || item.type === 's') {
+                        if (_index <= 1) {
+                            _data.part1['cellData' + _index] = item;
+                        } else if (_index > 1 && _index <= 3) {
+                            _data.part2['cellData' + _index] = item;
+                        } else if (_index > 3 && _index <= 5) {
+                            _data.part3['cellData' + _index] = item;
+                        } else if (_index > 5 && _index <= 9) {
+                            _data.part4['cellData' + _index] = item;
+                        } else if (_index > 9 && _index <= 14) {
+                            _data.part5['cellData' + _index] = item;
+                        }else if (_index > 14 && _index <= 23) {
+                            _data.part6['cellData' + _index] = item;
+                        }else if (_index > 23 && _index <= 27) {
+                            _data.part7['cellData' + _index] = item;
+                        }else if (_index > 27 && _index <= 30) {
+                            _data.part8['cellData' + _index] = item;
+                        }else if (_index > 30 && _index <= 33) {
+                            _data.part9['cellData' + _index] = item;
+                        }
+                    } else if (item.type === 'l') {
+                        _data.partx['cellData' + (_index - 34)] = item;
+                    }else if (item.type === 'fc') {
+                        _data.party['cellData' + (_index - 34)] = item;
+                    }
+                });
+                _this.allData = _data;
+                _this.initData();
+            }
         }
     }
 </script>
