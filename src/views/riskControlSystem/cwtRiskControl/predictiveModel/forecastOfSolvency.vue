@@ -662,7 +662,7 @@
             },
 
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {

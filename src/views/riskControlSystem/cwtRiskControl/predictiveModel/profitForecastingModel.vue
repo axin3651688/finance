@@ -370,7 +370,7 @@
                 _this.dataFresh = !_this.dataFresh;
             },
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {
