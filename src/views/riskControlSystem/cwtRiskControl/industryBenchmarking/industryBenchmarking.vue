@@ -7,6 +7,7 @@
                         v-model="selectedName"
                         placeholder="请选择"
                         @change="optionChanged"
+                        class="sigle_select"
                 >
                     <el-option
                             v-for="item in options"
@@ -179,5 +180,8 @@
     .sigle_top {
         /* width: 20%; */
         width: 300px;
+    }
+    .sigle_select {
+        width: 100%;
     }
 </style>

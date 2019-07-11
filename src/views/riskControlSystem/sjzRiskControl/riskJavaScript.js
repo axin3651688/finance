@@ -156,21 +156,30 @@ export default {
      */
     getForChange(me) {
         // debugger
-        var viewTrue = false;
-        var viewFalse = true;
         // 看有没有改动的
-        for (let keys in me.form) {
-            if (me.form[keys] == me.newThis.view_row[keys]) {
-                viewTrue = true;
-            } else {
-                viewFalse = false;
+        // 判断报告类型是否是启用/禁用状态 0=启用 | 1=不启用
+        let foom = {} ;
+        if(me.newThis.reporttype) {
+            for(let keyy in me.form) {
+                if(keyy !== "sreporttype" && keyy !== "sreporttypename")foom[keyy] = me.form[keyy] ;
+            }
+            for (let keys in foom) {
+                if (me.form[keys] == me.newThis.view_row[keys]) {
+    
+                } else {
+                    return false ;
+                }
+            }
+        } else {
+            for (let keys in me.form) {
+                if (me.form[keys] == me.newThis.view_row[keys]) {
+    
+                } else {
+                    return false ;
+                }
             }
         }
-        if (!viewFalse) {
-            return viewFalse;
-        } else {
-            return viewTrue;
-        }
+        return true ;
     },
     /**
      * @author sjz
@@ -180,22 +189,33 @@ export default {
      */
     getForChange2(me) {
         // debugger
-        let isTrue = false;
-        let isFalse = true;
-        for (let kk in me.form) {
-            if (me.form[kk] && me.form[kk] != "" && me.form[kk] != 0) {
-                if (me.form[kk] == me.newThis.view_row[kk]) {
-                    isTrue = true;
-                } else {
-                    isFalse = false;
+        // 判断报告类型是否是启用/禁用状态 0=启用 | 1=不启用
+        let foom = {} ;
+        if(me.newThis.reporttype) {
+            for(let keyy in me.form) {
+                if(keyy !== "sreporttype" && keyy !== "sreporttypename")foom[keyy] = me.form[keyy] ;
+            }
+            for (let kk in foom) {
+                if (foom[kk] && foom[kk] != "" && foom[kk] != 0) {
+                    if (foom[kk] == me.newThis.view_row[kk]) {
+    
+                    } else {
+                        return false ;
+                    }
+                }
+            }
+        } else {
+            for (let kk in me.form) {
+                if (me.form[kk] && me.form[kk] != "" && me.form[kk] != 0) {
+                    if (me.form[kk] == me.newThis.view_row[kk]) {
+    
+                    } else {
+                        return false ;
+                    }
                 }
             }
         }
-        if (!isFalse) {
-            return isFalse;
-        } else {
-            return isTrue;
-        }
+        return true ;
     },
     /**
      * @author sjz

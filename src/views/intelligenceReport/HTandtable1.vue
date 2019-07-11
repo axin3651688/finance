@@ -863,6 +863,7 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle(){
+      debugger;
       //判断如果没有保存，提示他去保存。
       if(this.tableData && this.tableData.length > 0){
         this.$message({
@@ -1254,7 +1255,7 @@ export default {
           obj["row"] = values;
           me.values = values;
           //融资的status可以传过去 空字符串 ""
-          if (values == "" && key != "status" && key != "accountbanks" && me.templateId != "7") {
+          if (values == "" && key != "status" && key != "accountbanks" && key != "cusuppliername" && me.templateId != "7") {
             values = 0;
           }
           let arr = datas.filter(record => {
@@ -2275,15 +2276,14 @@ export default {
         user: this.user.user.userName
       };
       console.log(objs);
-      let newtabledata = this.settings.data;
-      let x;
+      let arr = this.settings.data;
       let me = this;
-      let arr = newtabledata.filter(record => {
-        x = record;
-        return record.cusuppliername != null;
-      });
-
-      function res(arr) {
+      // let arr = newtabledata.filter(record => {
+      //   x = record;
+      //   return record.cusuppliername != null;
+      // });
+      // let arr = newtabledata;
+      /** function res(arr) {
         var tmp = [];
         var copy = [];
         arr.forEach(item => {
@@ -2300,6 +2300,35 @@ export default {
           }
         });
         return tmp;
+      }*/
+      function res(arr) {
+        let tem = [],namesKS = {};
+        if(me.templateId != 4 && me.templateId != 5 && me.templateId != 6){
+          return tem;
+        }
+        for(let i = 0;i < arr.length;i++){
+          let item = arr[i];
+          if(!item.cusuppliername || item.cusuppliername == ""){
+            me.$message({
+              type: "error",
+              message: "商客名称不能为空！"
+            });
+            tem.push(item);
+            break;
+          }else {
+            if(namesKS[item.cusuppliername]){
+              me.$message({
+                type: "error",
+                message: "商客名称【" + item.cusuppliername + "】重复,不可以保存，请更改"
+              });
+              tem.push(item);
+              break;
+            }else {
+              namesKS[item.cusuppliername] = item.cusuppliername;
+            }
+          }
+        }
+        return tem;
       }
       var result = res(arr);
       if (result.length === 0) {

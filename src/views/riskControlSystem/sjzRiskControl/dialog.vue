@@ -518,9 +518,18 @@ export default {
          * @event (1)保存按钮/提交按钮
          */
         saveClick(value, value2,value3,value4,value5){ 
-            // debugger
+            debugger
             let me = this ;
             let viewTrue = false ;
+            me.newThis.axiosJson() ;
+            // 查询上报状态
+            let submit = me.newThis.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;
+            let isTrue = submit.some(ee => { return ee.sisreport == 1 }) ; 
+            if(isTrue)return false ;
+            // if(isTrue) {
+            //     me.$message('风险已上报，无法添加和提交！') ;
+            //     return false ;
+            // }
             // let t1 = false,t2 = false,t3 = false,t4 = false,t5 = false ;
             let params = mini.getParams(me, value) ;               // 获取请求参数
             this.params_cloning = params ;
@@ -554,7 +563,7 @@ export default {
          * @event 修改弹出框页面/保存+提交的事件（已提交的风险）yes
          */
         modify_add_yes(me, params){ 
-            // debugger
+            debugger
             // 有没有空的
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
@@ -595,12 +604,25 @@ export default {
         // empty 判断提交的时候有没有空的  空则不提交  并且提示(★☆)
         isEmpty(me){
             // debugger
-            // 有没有空的  
-            for(let keys in me.form){
-                if((!me.form[keys] || me.form["department"]!="") && ((me.form[keys]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
-                    return false ;
+            // 有没有空的
+            // 判断报告类型是否是启用/禁用状态 0=启用 | 1=不启用
+            let foom = {} ;
+            if(me.newThis.reporttype) {
+                for(let keyy in me.form) {
+                    if(keyy !== "sreporttype" && keyy !== "sreporttypename")foom[keyy] = me.form[keyy] ;
                 }
-            }
+                for(let keys in foom){
+                    if((!me.form[keys] || me.form["department"]!="") && ((me.form[keys]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
+                        return false ;
+                    }
+                }
+            } else {
+                for(let keys in me.form){
+                    if((!me.form[keys] || me.form["department"]!="") && ((me.form[keys]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
+                        return false ;
+                    }
+                }
+            } 
             return true ;   
         },
         /**

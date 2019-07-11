@@ -41,7 +41,7 @@
       </el-dropdown>
       <el-dropdown trigger="click" v-if="showDims.month" @visible-change="dropChange">
         <el-button type="text" class="monthUnderline">
-          {{month+"月"}}
+          {{monthNum+monthUnit}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -236,7 +236,9 @@ export default {
         { id: 1000, text: "千元" },
         { id: 10000, text: "万元" },
         { id: 100000000, text: "亿元" }
-      ]
+      ],
+      monthNum:1,
+      monthUnit:"月"
     };
   },
   components: {
@@ -244,10 +246,25 @@ export default {
     CompanyTree,
     SRModal
   },
+  watch: {
+    month(newValue,oldValue) {
+      if(newValue.indexOf("Q") != -1){
+        let num = newValue.substr(newValue.indexOf("Q") + 1,newValue.indexOf("Q") + 2);
+        this.monthNum = num,this.monthUnit = "季度";
+      }else if(newValue == "Y1") {
+        this.monthNum = "",this.monthUnit = "年终";
+      }else {
+        this.monthNum = newValue,this.monthUnit = "月";
+        // me.GetSideMid({month:newValue.substr(0, item.length - 1)});
+      }
+    }
+  },
   created() {
     //头像图片显示。
     // let userCng = this.$store.getters.user.user;
     // this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
+    //月的显示。
+    this.monthNum = this.month;
     this.value = this.year + this.month + this.date;
     let bean = getClientParams();
     if (bean.yearCount && bean.yearCount > 0) {
@@ -289,7 +306,7 @@ export default {
     }
     //新加的季度与年终的判断。
     for(let j = 0; j < this.quarterCount;j++){
-      this.months.push(j + "季度");
+      this.months.push(j + 1 + "季度");
     }
     if(this.yearEnd > 0){
       this.months.push("年终");
@@ -395,31 +412,32 @@ export default {
      * 因为新加了季度年度，所以要
      */
     changeMonthParams(item){
-      debugger;
       let me = this;
-      me.GetSideMid({month:item.substr(0, item.length - 1)});
-      // if(item.indexOf("季度") != -1){
-      //   let num = item.substr(0,item.indexOf("季")) - 0,quarterNum;
-      //   switch (num) {
-      //     case 1:
-      //       quarterNum = "Q1";
-      //       break;
-      //     case 2:
-      //       quarterNum = "Q2";
-      //       break;
-      //     case 3:
-      //       quarterNum = "Q3";
-      //       break;
-      //     case 4:
-      //       quarterNum = "Q4";
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      //   me.GetSideMid({month:quarterNum});
-      // }else {
-      //   me.GetSideMid({month:item.substr(0, item.length - 1)});
-      // }
+      // me.GetSideMid({month:item.substr(0, item.length - 1)});
+      if(item.indexOf("季度") != -1){
+        let num = item.substr(0,item.indexOf("季")) - 0,quarterNum;
+        switch (num) {
+          case 1:
+            quarterNum = "Q1";
+            break;
+          case 2:
+            quarterNum = "Q2";
+            break;
+          case 3:
+            quarterNum = "Q3";
+            break;
+          case 4:
+            quarterNum = "Q4";
+            break;
+          default:
+            break;
+        }
+        me.GetSideMid({month:quarterNum});
+      }else if(item.indexOf("年") != -1){
+        me.GetSideMid({month:"Y1"});
+      }else{
+        me.GetSideMid({month:item.substr(0, item.length - 1)});
+      }
     },
     changeBecauseOfNode(){
       debugger;
@@ -435,6 +453,8 @@ export default {
       }else {
         //设置一个默认的月份
         this.$set(this, "monthCount", 12);
+        this.$set(this,"quarterCount",0);
+        this.$set(this,"yearEnd",0);
       }
       //判断有没有季度与年度。
       if(this.$store.monthConfig){

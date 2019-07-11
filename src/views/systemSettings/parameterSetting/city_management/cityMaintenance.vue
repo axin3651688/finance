@@ -139,10 +139,10 @@ export default {
             dim_cityenterprise_query_all().then(res => {
                 if(res.data.code === 200){
                     me.tableData = res.data.data ;
-                    if(me.tableData >= 9){
-                        me.disabled = true ;
-                    }else{
+                    if(me.tableData.length < 9){
                         me.disabled = false ;
+                    }else{
+                        me.disabled = true ;
                     }
                 }else{
                     // me.$message.error('查询数据失败！请添加企业数据！') ;
