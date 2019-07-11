@@ -234,7 +234,6 @@
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data);
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -253,14 +252,16 @@
                             let _m = {name: '', value: 0};
                             _m.name = z.name;
                             _m.value = z.value;
-                            emptyData.push(_m);
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.push(_m);
+                            }
                         }
                     }
                 }
                 _this.gauge_1EchartData.data = data.partx.cellData1;
                 _this.gauge_1EchartData.data = data.partx.cellData2;
                 _this.pieEchartData.data = emptyData;
-
+                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -293,7 +294,6 @@
 
                 _this.allData = _this.dataCalculate(_data);
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
         }
     }

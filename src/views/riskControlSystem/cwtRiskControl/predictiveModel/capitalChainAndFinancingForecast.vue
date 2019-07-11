@@ -231,23 +231,23 @@
                     },
                 },
                 pie_1EchartData: {
-                    name: "",
+                    name: "结构性资产占用构型图",
                     data: []
                 },
                 pie_2EchartData: {
-                    name: "",
+                    name: "结构性负债来源构成图",
                     data: []
                 },
                 pie_3EchartData: {
-                    name: "",
+                    name: "经营性资产占用构成图",
                     data: []
                 },
                 pie_4EchartData: {
-                    name: "",
+                    name: "经营性负债来源构成图",
                     data: []
                 },
                 gaugeEchartData: {
-                    name: "",
+                    name: "现金支付能力",
                     data: []
                 },
                 dataFresh: false
@@ -313,9 +313,9 @@
                             _data.part5['cellData' + _index] = item;
                         }
                     } else if (item.type === 'l') {
-                        _data.partx['cellData' + (_index - 34)] = item;
+                        _data.partx['cellData' + (_index - 18)] = item;
                     } else if (item.type === 'fc') {
-                        _data.party['cellData' + (_index - 34)] = item;
+                        _data.party['cellData' + (_index - 18)] = item;
                     }
                 });
                 _this.allData2 = _data;
@@ -328,9 +328,7 @@
                 let _this = this;
                 let _data = _this.allData2;
                 _this.allData2 = _this.dataCalculate(_data);
-                // _this.gaugeEchartData = _this.allData2.partx;
                 _this.initEchartData(_this.allData2);
-                _this.dataFresh = !_this.dataFresh;
             },
             /**
              * 初始化Echart
@@ -338,24 +336,55 @@
              */
             initEchartData(data) {
                 let _this = this;
-                // let emptyData = [];
-                // let eD = ['101', '103', '104', '105', '106'];
-                // for (let x in data) {
-                //     let i = data[x];
-                //     for (let y in i) {
-                //         let z = i[y];
-                //         if (eD.indexOf(z.nid) !== -1) {
-                //             let _m = {name: '', value: 0};
-                //             _m.name = z.name;
-                //             _m.value = z.value;
-                //             emptyData.push(_m);
-                //         }
-                //     }
-                // }
-                // _this.gaugeEchartData.data = data.partx;
-                // _this.pieEchartData.data = emptyData;
-                // _this.funnelEchartData.data = emptyData;
-                // _this.dataFresh = !_this.dataFresh;
+                let pieIndex = {
+                    index1:['81','213','215','216','217','218','219','220','221','222','223','224','225','226','227','228'],
+                    index2:['82','229','230','231','232','233','234','86','235','237','236','90','238'],
+                    index3:['83','239','240','241','87','90','242','243'],
+                    index4:['83','239','88','244','245','246','92','247','248']
+                };
+
+                let emptyData = {
+                    emptyData1: [],
+                    emptyData2: [],
+                    emptyData3: [],
+                    emptyData4: []
+                };
+
+                for(let key in data){
+                    let _data = data[key];
+                    for(let _key in _data){
+                        let __data = _data[_key];
+                        let _m = {
+                            name:__data.name,
+                            value : __data.value
+                        };
+                        if(pieIndex.index1.indexOf(__data.nid) !== -1){
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.emptyData1.push(_m);
+                            }
+                        }else if(pieIndex.index2.indexOf(__data.nid) !== -1){
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.emptyData2.push(_m);
+                            }
+                        }else if(pieIndex.index3.indexOf(__data.nid) !== -1){
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.emptyData3.push(_m);
+                            }
+                        }else if(pieIndex.index4.indexOf(__data.nid) !== -1){
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.emptyData4.push(_m);
+                            }
+                        }
+                    }
+                }
+
+                _this.pie_1EchartData.data = emptyData.emptyData1;
+                _this.pie_2EchartData.data = emptyData.emptyData2;
+                _this.pie_3EchartData.data = emptyData.emptyData3;
+                _this.pie_4EchartData.data = emptyData.emptyData4;
+                _this.gaugeEchartData.data = data.partx.cellData1;
+
+                _this.dataFresh = !_this.dataFresh;
 
             },
             /**
@@ -386,11 +415,8 @@
                         }
                     }
                 }
-
                 _this.allData2 = _this.dataCalculate(_data);
-
                 _this.initEchartData(_this.allData2);
-                _this.dataFresh = !_this.dataFresh;
             },
         }
     }

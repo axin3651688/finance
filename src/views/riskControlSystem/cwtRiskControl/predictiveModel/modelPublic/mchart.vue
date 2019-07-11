@@ -143,7 +143,11 @@
                                     width: 20,                  //轴线宽度,默认 30。
                                 }
                             },
-                            detail: {formatter: '{value}%'},
+                            detail: {
+                                formatter: '值：{value}',
+                                fontSize: '25',
+                                offsetCenter: [0, "100%"],
+                            },
                             data: [{value: 50, name: ''}]
                         }
                     ]
@@ -163,29 +167,24 @@
                 switch (_this.dataType) {
                     case 'funnel':
                         _this.option = _this.funnelOption;
-
                         let _funnelPeries = _this.option.series;
                         _funnelPeries[0].data = _data.data ? _data.data : [];
-
                         break;
                     case 'pie':
                         _this.option = _this.pieOption;
-
                         let _piePeries = _this.option.series;
                         let _pieTitle = _this.option.title;
                         _pieTitle.text = _data.name;
                         _piePeries[0].data = _data.data ? _data.data : [];
-
                         break;
                     case 'gauge':
                         _this.option = _this.gaugeOption;
                         let _gaugeSeries = _this.option.series;
                         let _gaugeTitle = _this.option.title;
-                        _gaugeTitle.text = _data.cellData1 ? _data.cellData1.name : '';
-                        _gaugeSeries[0].data[0].value = _data.cellData1 ? _data.cellData1.value : 0;
-                        if(_gaugeSeries[0].data[0].value === ''){
-                            _gaugeSeries[0].data[0].value = 0;
-                        }
+                        _gaugeTitle.text = _data ? _data.name : '';
+                        _gaugeSeries[0].data[0].value = _data.data ? _data.data.value : 0;
+                        _gaugeSeries[0].data[0].value = _gaugeSeries[0].data[0].value === '' ? 0 : _gaugeSeries[0].data[0].value;
+                        break;
                 }
             }
         }

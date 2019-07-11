@@ -307,11 +307,11 @@
                     },
                 },
                 gauge_1EchartData: {
-                    name: '速动比率行业对标预警',
+                    name: '净资产收益率（%）',
                     data: []
                 },
                 gauge_2EchartData: {
-                    name: '已获利息倍数（倍）',
+                    name: '总资产周转率（倍）',
                     data: []
                 },
                 dataFresh: false
@@ -355,7 +355,6 @@
                 _this.allData = _this.dataCalculate(_data);
 
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -367,7 +366,6 @@
                 _this.allData = _this.dataCalculate(_data);
                 // _this.gaugeEchartData = _this.allData.partx;
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
             /**
              * 初始化Echart
@@ -375,24 +373,9 @@
              */
             initEchartData(data) {
                 let _this = this;
-                // let emptyData = [];
-                // let eD = ['101', '103', '104', '105', '106'];
-                // for (let x in data) {
-                //     let i = data[x];
-                //     for (let y in i) {
-                //         let z = i[y];
-                //         if (eD.indexOf(z.nid) !== -1) {
-                //             let _m = {name: '', value: 0};
-                //             _m.name = z.name;
-                //             _m.value = z.value;
-                //             emptyData.push(_m);
-                //         }
-                //     }
-                // }
-                // _this.gaugeEchartData.data = data.partx;
-                // _this.pieEchartData.data = emptyData;
-                // _this.funnelEchartData.data = emptyData;
-                // _this.dataFresh = !_this.dataFresh;
+                _this.gauge_1EchartData.data = data.partx.cellData1;
+                _this.gauge_2EchartData.data = data.partx.cellData2;
+                _this.dataFresh = !_this.dataFresh;
 
             },
 
@@ -453,19 +436,19 @@
                             _data.part4['cellData' + _index] = item;
                         } else if (_index > 9 && _index <= 14) {
                             _data.part5['cellData' + _index] = item;
-                        }else if (_index > 14 && _index <= 23) {
+                        } else if (_index > 14 && _index <= 23) {
                             _data.part6['cellData' + _index] = item;
-                        }else if (_index > 23 && _index <= 27) {
+                        } else if (_index > 23 && _index <= 27) {
                             _data.part7['cellData' + _index] = item;
-                        }else if (_index > 27 && _index <= 30) {
+                        } else if (_index > 27 && _index <= 30) {
                             _data.part8['cellData' + _index] = item;
-                        }else if (_index > 30 && _index <= 33) {
+                        } else if (_index > 30 && _index <= 33) {
                             _data.part9['cellData' + _index] = item;
                         }
                     } else if (item.type === 'l') {
-                        _data.partx['cellData' + (_index - 34)] = item;
-                    }else if (item.type === 'fc') {
-                        _data.party['cellData' + (_index - 34)] = item;
+                        _data.partx['cellData' + (_index - 33)] = item;
+                    } else if (item.type === 'fc') {
+                        _data.party['cellData' + (_index - 33)] = item;
                     }
                 });
                 _this.allData = _data;

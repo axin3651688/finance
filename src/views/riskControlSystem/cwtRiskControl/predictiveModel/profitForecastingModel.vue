@@ -108,8 +108,7 @@
             mchart
         },
         props: {},
-        computed: {
-        },
+        computed: {},
         watch: {},
         data() {
             return {
@@ -307,10 +306,7 @@
         created() {
         },
         mounted() {
-
             this.getRealData('bq');
-
-
         },
         methods: {
             /**
@@ -345,7 +341,6 @@
                     let i = _data[x];
                     for (let y in i) {
                         let z = i[y];
-                        // z.nid = toString(parseInt(z.nid) - 81);
                         if (z.nid === _nid) {
                             z.value = _value;
                         }
@@ -355,7 +350,6 @@
                 _this.allData = _this.dataCalculate(_data);
 
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -365,9 +359,7 @@
                 let _this = this;
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data, type);
-                // _this.gaugeEchartData = _this.allData.partx;
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
             /**
              * 初始化Echart
@@ -385,11 +377,13 @@
                             let _m = {name: '', value: 0};
                             _m.name = z.name;
                             _m.value = z.value;
-                            emptyData.push(_m);
+                            if(_m.value !== '0' && _m.value !== '0.00'){
+                                emptyData.push(_m);
+                            }
                         }
                     }
                 }
-                _this.gaugeEchartData.data = data.partx;
+                _this.gaugeEchartData.data = data.partx.cellData1;
                 _this.pieEchartData.data = emptyData;
                 _this.funnelEchartData.data = emptyData;
                 _this.dataFresh = !_this.dataFresh;
