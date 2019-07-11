@@ -19,7 +19,7 @@
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.reporttype" :label="1">不启用</el-radio>
             </el-form-item>
             <el-form-item label="3、风险识别期间选择：">
-                <el-radio class="globalControl_radioA" v-model="formLabelAlign.periodtype" :label="0">≤ 当前期间</el-radio>
+                <el-radio class="globalControl_radioA" v-model="formLabelAlign.periodtype" :label="0" disabled>≤ 当前期间</el-radio>
                 <el-radio class="globalControl_radioB" v-model="formLabelAlign.periodtype" :label="1">＝当前期间</el-radio>
             </el-form-item>
             <el-form-item label="4、风险识别删除控制：">

@@ -70,6 +70,15 @@
                 </div>
             </div>
 
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
+
         </div>
     </div>
 </template>
@@ -81,6 +90,7 @@
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "assetStructurePrediction",
@@ -88,7 +98,8 @@
         components: {
             cell,
             ccell,
-            mchart
+            mchart,
+            mtable
         },
         props: {},
         computed: {},
@@ -148,6 +159,44 @@
                     partx: {},
                     party: {}
                 },
+                tableData: [
+                    {
+                        "project": "资产负债率(%)",
+                        "formula": "负债总计/资产总计*100"
+                    },
+                    {
+                        "project": "流动资产增长率(%)",
+                        "formula": "(流动资产-比较年流动资产)/比较年流动资产*100"
+                    },
+                    {
+                        "project": "营业收入增长率(%)",
+                        "formula": "(营业收入-比较年营业收入)/比较年营业收入*100"
+                    },
+                    {
+                        "project": "总资产报酬率",
+                        "formula": "(利润总额+利息支出)/((资产总计+年初资产总计)/2)*100"
+                    },
+                    {
+                        "project": "总资产增长率",
+                        "formula": "(资产总计-年初资产总计)/年初资产总计*100"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 300,
+
                 gauge_1EchartData: {
                     name: '总资产报酬率（%）',
                     data: []
@@ -234,11 +283,10 @@
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data);
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {
@@ -253,14 +301,16 @@
                             let _m = {name: '', value: 0};
                             _m.name = z.name;
                             _m.value = z.value;
-                            emptyData.push(_m);
+                            if (_m.value !== '0' && _m.value !== '0.00') {
+                                emptyData.push(_m);
+                            }
                         }
                     }
                 }
                 _this.gauge_1EchartData.data = data.partx.cellData1;
-                _this.gauge_1EchartData.data = data.partx.cellData2;
+                _this.gauge_2EchartData.data = data.partx.cellData2;
                 _this.pieEchartData.data = emptyData;
-
+                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -293,7 +343,6 @@
 
                 _this.allData = _this.dataCalculate(_data);
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
         }
     }
@@ -389,4 +438,9 @@
         color: #bd2c00;
     }
 
+    .content-table {
+        position: absolute;
+        top: 750px;
+        width: 100%;
+    }
 </style>

@@ -75,6 +75,15 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="content-table" style="top: 370px">
+                    <mtable
+                            :tableData="tableData"
+                            :columns="tableColumns"
+                            :height="tableHeight"
+                    >
+                    </mtable>
+                </div>
             </div>
         </div>
 
@@ -134,6 +143,15 @@
                             总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
                         </p>
                     </div>
+                </div>
+
+                <div class="content-table" style="top: 370px">
+                    <mtable
+                            :tableData="tableData"
+                            :columns="tableColumns"
+                            :height="tableHeight"
+                    >
+                    </mtable>
                 </div>
             </div>
         </div>
@@ -200,6 +218,15 @@
                     </div>
                 </div>
 
+                <div class="content-table" style="top: 300px">
+                    <mtable
+                            :tableData="tableData"
+                            :columns="tableColumns"
+                            :height="tableHeight"
+                    >
+                    </mtable>
+                </div>
+
             </div>
         </div>
 
@@ -264,8 +291,20 @@
                         </mchart>
                     </div>
                 </div>
+
+                <div class="content-table" style="top: 600px">
+                    <mtable
+                            :tableData="tableData"
+                            :columns="tableColumns"
+                            :height="tableHeight"
+                    >
+                    </mtable>
+                </div>
+
             </div>
         </div>
+
+
 
 
     </div>
@@ -278,6 +317,7 @@
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "forecastOfSolvency",
@@ -285,7 +325,8 @@
         components: {
             cell,
             ccell,
-            mchart
+            mchart,
+            mtable
         },
         props: {},
         computed: {},
@@ -293,6 +334,58 @@
         data() {
             return {
                 buttonType: 'fzjyknx',
+                tableData: [
+                    {
+                        "project": "付息负债",
+                        "formula": "短期借款+一年内到期的非流动负债+长期借款"
+                    },
+                    {
+                        "project": "实际借款利率(%)",
+                        "formula": "财务费用/((付息负债+(年初短期借款+年初一年内到期的非流动负债+年初长期借款))/2)*100"
+                    },
+                    {
+                        "project": "财务风险系数",
+                        "formula": "(1+付息负债/股东权益合计)*(1-(财务费用/(财务费用+利润总额)))"
+                    },
+                    {
+                        "project": "现金支付能力",
+                        "formula": "(货币资金+交易性金融资产+应收票据)-(短期借款+交易性金融负债+应付票据)"
+                    },
+                    {
+                        "project": "偿还负债支付的现金",
+                        "formula": "年初流动资产合计*(1+(营业利润/((年初流动资产+年末流动资产)/2))/流动资产合计)^((营业收入/当前月份)/((年初流动资产合计+流动资产合计)/2))"
+                    },
+                    {
+                        "project": "流动比率(%)",
+                        "formula": "流动资产/流动负债*100"
+                    },
+                    {
+                        "project": "速动比率(%)",
+                        "formula": "(流动资产合计-存货)/流动负债合计*100"
+                    },
+                    {
+                        "project": "已获利息倍数(倍)",
+                        "formula": "(利润总额+利息支出)/利息支出"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
+
+
+
                 allData: {
                     allData1: {
                         part1: {
@@ -658,17 +751,17 @@
                     _data[key] = _this.dataCalculate(_data[key]);
                 }
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {
                 let _this = this;
                 _this.gauge_1EchartData.data = data.allData3.partx.cellData5;
-                _this.gauge_1EchartData.data = data.allData4.partx.cellData8;
+                _this.gauge_2EchartData.data = data.allData4.partx.cellData8;
+                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -712,15 +805,8 @@
                     }
                 }
 
-                // _this.allData = _this.dataCalculate(_data);
-                // for (let key in _data) {
-                //     _data[key] = _this.dataCalculate(_data[key]);
-                // }
-
                 _changeData = _this.dataCalculate(_changeData);
-
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
         }
     }
@@ -745,25 +831,25 @@
     }
 
     .part1data1 {
-        left: 0;
+        left: 100px;
     }
 
     .part2data1 {
-        left: 300px;
+        left: 400px;
         top: 90px;
     }
 
     .part3data1 {
-        left: 600px;
+        left: 700px;
         top: 50px;
     }
 
     .part4data1 {
-        left: 900px;
+        left: 1000px;
     }
 
     .part5data1 {
-        left: 1200px;
+        left: 1300px;
     }
 
     .part1data2, .part2data2, .part3data2, .part4data2, .part5data2, .svg-first-data2, .svg-second-data2 {
@@ -771,25 +857,25 @@
     }
 
     .part1data2 {
-        left: 0;
+        left: 100px;
     }
 
     .part2data2 {
-        left: 300px;
+        left: 400px;
         top: 44px;
     }
 
     .part3data2 {
-        left: 600px;
+        left: 700px;
         top: 90px;
     }
 
     .part4data2 {
-        left: 900px;
+        left: 1000px;
     }
 
     .part5data2 {
-        left: 1200px;
+        left: 1300px;
     }
 
     .part1data3, .part2data3, .svg-first-data3 {
@@ -797,11 +883,11 @@
     }
 
     .part1data3 {
-        left: 0;
+        left: 100px;
     }
 
     .part2data3 {
-        left: 300px;
+        left: 400px;
         top: 44px;
     }
 
@@ -810,11 +896,11 @@
     }
 
     .part1data4 {
-        left: 0;
+        left: 100px;
     }
 
     .part2data4 {
-        left: 300px;
+        left: 400px;
         top: 180px;
     }
 
@@ -843,32 +929,32 @@
     }
 
     .svg-first-data1 {
-        left: 200px;
+        left: 300px;
         top: 30px
     }
 
     .svg-second-data1 {
-        left: 500px;
+        left: 600px;
         top: 120px
     }
 
     .svg-first-data2 {
-        left: 200px;
+        left: 300px;
         top: 30px
     }
 
     .svg-second-data2 {
-        left: 500px;
+        left: 600px;
         top: 76px
     }
 
     .svg-first-data3 {
-        left: 200px;
+        left: 300px;
         top: 30px
     }
 
     .svg-first-data4 {
-        left: 200px;
+        left: 300px;
         top: 30px
     }
 
@@ -877,7 +963,7 @@
         width: 300px;
         height: 250px;
         top: 50px;
-        left: 900px;
+        left: 1000px;
         border: 2px solid #303133;
         border-radius: 10px;
         padding-top: 20px;
@@ -922,7 +1008,7 @@
         width: 300px;
         height: 300px;
         top: 0;
-        left: 550px;
+        left: 650px;
     }
 
     .content-text_2 {
@@ -930,7 +1016,7 @@
         width: 300px;
         height: 70px;
         top: 44px;
-        left: 500px;
+        left: 600px;
         border: 1px solid #303133;
         border-radius: 10px;
         padding: 2px 8px;
@@ -953,12 +1039,17 @@
     }
 
     .content-chart-1 .gauge {
-        left: 830px;
+        left: 930px;
         top: 0;
     }
 
     .content-chart-2 .gauge {
-        left: 830px;
+        left: 930px;
         top: 136px;
+    }
+    .content-table {
+        position: absolute;
+        top: 680px;
+        width: 100%;
     }
 </style>

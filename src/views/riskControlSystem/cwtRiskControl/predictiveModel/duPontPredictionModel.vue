@@ -96,6 +96,15 @@
                     </mchart>
                 </div>
             </div>
+
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
         </div>
     </div>
 </template>
@@ -107,6 +116,7 @@
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "duPontPredictionModel",
@@ -114,13 +124,68 @@
         components: {
             cell,
             ccell,
-            mchart
+            mchart,
+            mtable
         },
         props: {},
         computed: {},
         watch: {},
         data() {
             return {
+
+                tableData: [
+                    {
+                        "project": "成本费用总额",
+                        "formula": "营业成本+营业税金及附加+销售费用+管理费用+财务费用"
+                    },
+                    {
+                        "project": "流动资产",
+                        "formula": "货币资金+交易性金融资产+应收票据+应收账款+预付款项+应收利息+应收股利+其他应收款+存货+一年内到期的非流动资产+其他流动资产"
+                    },
+                    {
+                        "project": "资产合计",
+                        "formula": "流动资产+非流动资产"
+                    },
+                    {
+                        "project": "总资产周转率(次)",
+                        "formula": "营业收入/((资产合计+年初资产总计)/2)"
+                    },
+                    {
+                        "project": "权益乘数",
+                        "formula": "1/(1-(((年初负债总计+负债总计)/2)/((年初资产总计+资产合计)/2)))"
+                    },
+                    {
+                        "project": "税后净利润",
+                        "formula": "营业收入-营业成本-营业税金及附加-销售费用-管理费用-财务费用-资产减值损失+公允价值变动收益+投资收益+营业外收入-营业外支出-所得税费用"
+                    },
+                    {
+                        "project": "销售净利率(%)",
+                        "formula": "净利润/营业收入*100"
+                    },
+                    {
+                        "project": "总资产净利率(%)",
+                        "formula": "净利润/((年初资产合计+资产合计)/2)*100"
+                    },
+                    {
+                        "project": "净资产收益率(%)",
+                        "formula": "总资产净利率*权益乘数"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
                 allData: {
                     part1: {
                         cellData1: {
@@ -307,11 +372,11 @@
                     },
                 },
                 gauge_1EchartData: {
-                    name: '速动比率行业对标预警',
+                    name: '净资产收益率（%）',
                     data: []
                 },
                 gauge_2EchartData: {
-                    name: '已获利息倍数（倍）',
+                    name: '总资产周转率（倍）',
                     data: []
                 },
                 dataFresh: false
@@ -355,7 +420,6 @@
                 _this.allData = _this.dataCalculate(_data);
 
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -367,32 +431,16 @@
                 _this.allData = _this.dataCalculate(_data);
                 // _this.gaugeEchartData = _this.allData.partx;
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {
                 let _this = this;
-                // let emptyData = [];
-                // let eD = ['101', '103', '104', '105', '106'];
-                // for (let x in data) {
-                //     let i = data[x];
-                //     for (let y in i) {
-                //         let z = i[y];
-                //         if (eD.indexOf(z.nid) !== -1) {
-                //             let _m = {name: '', value: 0};
-                //             _m.name = z.name;
-                //             _m.value = z.value;
-                //             emptyData.push(_m);
-                //         }
-                //     }
-                // }
-                // _this.gaugeEchartData.data = data.partx;
-                // _this.pieEchartData.data = emptyData;
-                // _this.funnelEchartData.data = emptyData;
-                // _this.dataFresh = !_this.dataFresh;
+                _this.gauge_1EchartData.data = data.partx.cellData1;
+                _this.gauge_2EchartData.data = data.partx.cellData2;
+                _this.dataFresh = !_this.dataFresh;
 
             },
 
@@ -453,19 +501,19 @@
                             _data.part4['cellData' + _index] = item;
                         } else if (_index > 9 && _index <= 14) {
                             _data.part5['cellData' + _index] = item;
-                        }else if (_index > 14 && _index <= 23) {
+                        } else if (_index > 14 && _index <= 23) {
                             _data.part6['cellData' + _index] = item;
-                        }else if (_index > 23 && _index <= 27) {
+                        } else if (_index > 23 && _index <= 27) {
                             _data.part7['cellData' + _index] = item;
-                        }else if (_index > 27 && _index <= 30) {
+                        } else if (_index > 27 && _index <= 30) {
                             _data.part8['cellData' + _index] = item;
-                        }else if (_index > 30 && _index <= 33) {
+                        } else if (_index > 30 && _index <= 33) {
                             _data.part9['cellData' + _index] = item;
                         }
                     } else if (item.type === 'l') {
-                        _data.partx['cellData' + (_index - 34)] = item;
-                    }else if (item.type === 'fc') {
-                        _data.party['cellData' + (_index - 34)] = item;
+                        _data.partx['cellData' + (_index - 33)] = item;
+                    } else if (item.type === 'fc') {
+                        _data.party['cellData' + (_index - 33)] = item;
                     }
                 });
                 _this.allData = _data;
@@ -629,5 +677,10 @@
         height: 300px;
         top: 730px;
         left: 1140px;
+    }
+    .content-table {
+        position: absolute;
+        top: 1050px;
+        width: 100%;
     }
 </style>
