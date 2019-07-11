@@ -658,17 +658,17 @@
                     _data[key] = _this.dataCalculate(_data[key]);
                 }
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
-             * 初始化饼状图
+             * 初始化Echart
              * @param data
              */
             initEchartData(data) {
                 let _this = this;
                 _this.gauge_1EchartData.data = data.allData3.partx.cellData5;
-                _this.gauge_1EchartData.data = data.allData4.partx.cellData8;
+                _this.gauge_2EchartData.data = data.allData4.partx.cellData8;
+                _this.dataFresh = !_this.dataFresh;
             },
 
             /**
@@ -712,15 +712,8 @@
                     }
                 }
 
-                // _this.allData = _this.dataCalculate(_data);
-                // for (let key in _data) {
-                //     _data[key] = _this.dataCalculate(_data[key]);
-                // }
-
                 _changeData = _this.dataCalculate(_changeData);
-
                 _this.initEchartData(_this.allData);
-                _this.dataFresh = !_this.dataFresh;
             },
         }
     }
