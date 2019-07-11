@@ -837,9 +837,9 @@ export default {
       return isTrue ;
     },
     //过滤节点
-    filterNode(value, data) {
+    filterNode(value, data) { 
       if (!value) return true;
-      return data.sname.indexOf(value) !== -1;
+      return data.label.indexOf(value) !== -1;
     },
 
     /**
@@ -849,7 +849,7 @@ export default {
      * @param node tree 节点对象
      * @param el 节点组件本身
      *  */
-    handClick(snode, node, el) { debugger
+    handClick(snode, node, el) { //debugger
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);

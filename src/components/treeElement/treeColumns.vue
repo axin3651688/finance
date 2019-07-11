@@ -299,6 +299,9 @@ export default {
     .el-table-icon, .iconfont{
         margin-right: 4px;
     }
+    .toolbar {
+        margin-bottom: 10px;
+    }
 </style>
 <style>
     .tree-proportion input {
