@@ -313,10 +313,14 @@
                     supdateuser: userName,
                     statemun: scope.row.nopratebutton - 0
                 };
+                let msg = "审阅成功！";
+                if(scope.row.nopratebutton == "4"){
+                    msg = "退回成功！";
+                }
                 batchRollbackReview(params).then(res => {
                     if(res.data.code == 200){
                         me.$message({
-                            message:"审阅成功！",
+                            message:msg,
                             type:"success"
                         });
                         me.secondRequestHandler({page:1});

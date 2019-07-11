@@ -28,6 +28,10 @@ export default {
         indexMaintenance
         // dataMaintenance
     },
+    computed: {
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
+    },
     data(){
         return {
             activeName: "first",
@@ -43,8 +47,39 @@ export default {
     mounted(){
         // 高度自适应
         this.getClientHeight() ;
+        // 季度
+        this.getQuarter() ;
+        // 导航栏显现
+        this.getShowDims() ;
+    },
+    watch: {
+        // 切换年触发
+        year: function(newyear){
+            // this.$refs.data.gettableData_request() ;
+        },
+        // 切换月触发
+        month: function(newmonth){
+            // this.$refs.data.gettableData_request() ;
+        },
+        // 切换公司触发
+        company: function(newcompany){
+            // this.$refs.data.gettableData_request() ;
+        }
     },
     methods: {
+        // 季度出现
+        getQuarter(){
+            let me = this ;
+            let monthConfig = { quarterCount:4, yearEnd:1 };
+            me.$store.monthConfig = monthConfig;
+        },
+        // 导航栏显现
+        getShowDims(){
+            let dims = this.showDims ;
+            dims.company = true ;
+            dims.year = true ;
+            dims.month= true ;
+        },
         // 高度自适应
         getClientHeight(){
             this.height = document.body.offsetHeight - 168 ;

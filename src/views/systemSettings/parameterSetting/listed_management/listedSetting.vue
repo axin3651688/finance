@@ -41,8 +41,15 @@ export default {
     mounted(){
         // 高度自适应
         this.getClientHeight() ;
+        this.getQuarter() ;
     },
     methods: {
+        // 季度出现
+        getQuarter(){
+            let me = this ;
+            let monthConfig = { quarterCount:4, yearEnd:1 };
+            me.$store.monthConfig = monthConfig;
+        },
         // 高度自适应
         getClientHeight(){
             this.height = document.body.offsetHeight - 168 ;
