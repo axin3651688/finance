@@ -2303,6 +2303,9 @@ export default {
       }*/
       function res(arr) {
         let tem = [],namesKS = {};
+        if(me.templateId != 4 && me.templateId != 5 && me.templateId != 6){
+          return tem;
+        }
         for(let i = 0;i < arr.length;i++){
           let item = arr[i];
           if(!item.cusuppliername || item.cusuppliername == ""){
