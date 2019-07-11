@@ -252,6 +252,7 @@ export default {
             let dataRow ;
             // 总数据
             this.dataReport = this.data.report_data ;
+            if(this.dataReport.length === 0)this.isShow = false ;
             // 这家公司有几条风险（总共）
             let len = this.dataReport.length ;
             // 过滤出有数据的等级

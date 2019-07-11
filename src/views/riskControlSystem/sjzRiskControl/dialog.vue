@@ -460,9 +460,10 @@ export default {
             let params = {
                 score : num
             }
-            riskmatrix(params).then(res => {
+            riskmatrix(params).then(res => { //debugger
                 if(res.data.code === 200){ 
                     me.optiong = res.data.data ;
+                    me.form.ngrade = res.data.data[0].nid ;
                     me.form.gradename = res.data.data[0].sname ;
                 }else{
 
@@ -540,10 +541,20 @@ export default {
                     if(!me.isEmpty(me)){
                         me.$message({message:'请填写完整再提交哦！',type: "warning"});
                     } else {
-                    // 提交
+                        // 判断风险名称是否重复，重复则提示‘风险名称已重复，不可保存或者提交！’，反之，则可以提交、保存或者修改 ；
+                        if(mini.isSriskName(me, "add")) {
+                            me.$message({ message: "风险名称已重复，不可保存或者提交！", type: "warning" }) ;
+                            return false ;
+                        }
+                        // 提交
                         me.riskdistinguishRequest(params) ;      
                     }         
-                }else{    
+                }else{
+                    // 判断风险名称是否重复，重复则提示‘风险名称已重复，不可保存或者提交！’，反之，则可以提交、保存或者修改 ；
+                    if(mini.isSriskName(me, "add")) {
+                        me.$message({ message: "风险名称已重复，不可保存或者提交！", type: "warning" }) ;
+                        return false ;
+                    }
                     // 保存 
                     me.riskdistinguishRequest(params) ;                
                 } 
@@ -551,19 +562,28 @@ export default {
             }else{
                 // 已提交的修改页面
                 if(me.form.sissubmit === "已提交"){
+                    // 判断风险名称是否重复，重复则提示‘风险名称已重复，不可保存或者提交！’，反之，则可以提交、保存或者修改 ；
+                    if(mini.isSriskName(me, "modify")) {
+                        me.$message({ message: "风险名称已重复，不可保存或者提交！", type: "warning" }) ;
+                        return false ;
+                    }
                     me.modify_add_yes(me, params) ;
                 // 未提交的修改页面
                 }else{
+                    // 判断风险名称是否重复，重复则提示‘风险名称已重复，不可保存或者提交！’，反之，则可以提交、保存或者修改 ；
+                    if(mini.isSriskName(me, "modify")) {
+                        me.$message({ message: "风险名称已重复，不可保存或者提交！", type: "warning" }) ;
+                        return false ;
+                    }
                     me.modify_add_no(me, params, value) ;
                 }
-            }
-             
+            }            
         },
         /**
          * @event 修改弹出框页面/保存+提交的事件（已提交的风险）yes
          */
         modify_add_yes(me, params){ 
-            debugger
+            // debugger
             // 有没有空的
             if(!me.isEmpty(me)){
                 me.$message({message:'请填写完整再提交哦！',type: "warning"});
@@ -617,8 +637,8 @@ export default {
                     }
                 }
             } else {
-                for(let keys in me.form){
-                    if((!me.form[keys] || me.form["department"]!="") && ((me.form[keys]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
+                for(let keyd in me.form){
+                    if((!me.form[keyd] || me.form["department"]!="") && ((me.form[keyd]=="" && me.form["department"]!="") || me.form["nprobability"]==0 || me.form["ninfluence"]==0)){
                         return false ;
                     }
                 }

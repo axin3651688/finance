@@ -125,6 +125,29 @@ export default {
     },
     /**
      * @author sjz
+     * @event 保存/提交按钮触发-判断风险名称是否重复
+     * @name 【风险识别页面引用】
+     * @param {*} me 
+     * @param {*} val
+     */
+    isSriskName(me, val){ 
+        let isName, data ;
+        let name = me.form.sriskname ;
+        let id = me.form.id ;
+        // 如果val===add，则为添加按钮弹出框；反之则为修改弹出框
+        if(val === "add") {
+            // 当name === ‘’时，则可以随意添加（要求，只要风险名称不一样就行了），反之则继续
+            if(name === "")return false ;
+            isName = me.newThis.tableData.some(res => { return res.sriskname === name ; }) ;
+        } else {
+            // 首先先过滤掉自己，防止自己也变成重复的风险名称而被限制，不能保存 + 提交
+            data = me.newThis.tableData.filter(sjk => { return sjk.id !== id ; }) ;
+            isName = data.some(item => { return item.sriskname === name ; }) ;
+        }
+        return isName ;
+    },
+    /**
+     * @author sjz
      * @event 初始化参数
      * @name 【风险识别页面引用】
      * @param {*} me 
