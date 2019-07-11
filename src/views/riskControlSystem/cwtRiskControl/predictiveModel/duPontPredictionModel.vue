@@ -399,7 +399,7 @@
             /**
              * 请求真实数据
              */
-            getRealData(type) {
+            getRealData() {
                 let _this = this;
 
                 let _getters = _this.$store.getters,

@@ -112,7 +112,7 @@ export default {
      * @author szc 2019年4月1日16:11:42
      */
     changeBefore(e){
-      debugger;
+      // debugger;
       let me = this;
       //删除十三个月的问题
       me.$store.monthConfig? delete me.$store.monthConfig:"";
