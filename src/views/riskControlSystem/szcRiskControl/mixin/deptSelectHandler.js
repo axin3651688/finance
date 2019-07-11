@@ -25,6 +25,14 @@ export default {
                 id: "stable",
                 sqlId: "101"
             };
+            // globalparam_all().then(res => {
+            //     if(res.data.code == 200){
+            //         let resData = res.data.data[0];
+            //         if(resData.reporttype == 0){
+
+            //         }
+            //     }
+            // });
             me.queryDataOfInstructions(item, judgeParams);
         },
         /**
