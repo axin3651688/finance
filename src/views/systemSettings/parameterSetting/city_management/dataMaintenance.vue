@@ -7,7 +7,7 @@
         <!-- 添加按钮 -->
         <div class="groupSetting_select">
             <span>企业选择：</span>
-            <el-select v-model="value" placeholder="请选择企业" @change="selectChange" clearable>
+            <el-select v-model="value" placeholder="请选择企业" @change="selectChange" clearable class="is_select">
                 <el-option v-for="item in options" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
             <!-- <span class="groupSetting_unit">单位：万元</span> -->
@@ -138,7 +138,7 @@ export default {
          * @description 输入数值改变时触发
          */
         handleClick(scope){ 
-            // debugger
+            debugger
             let me = this ;
             let regex = /\((.+?)\)/g ;
             let t = scope.row.val ; // 负数用到，先把输入的值赋值
@@ -154,13 +154,15 @@ export default {
                 if(scope.row.val.indexOf(".")< 0 && scope.row.val !=""){ // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
                     scope.row.val= parseFloat(scope.row.val); 
                 }
-                if(t.charAt(0) == "-"){ // 是不是'-'开头，如果是，则拼接上，否则不是负数不予理会。
+                if(t.charAt(0) == "-" && rus != "天"){ // 是不是'-'开头，如果是，则拼接上，否则不是负数不予理会。
                     scope.row.val  = '-' + scope.row.val ;
+                    // 输入数字(string => number)
+                    scope.row.fact_a = t.replace(/^0/, "") - 0 ;
+                } else {
+                    scope.row.fact_a = scope.row.val.replace(/^0/, "") - 0 ;
                 }
                 // 修改的省份
-                scope.row.isEdit = false ;
-                // 输入数字(string => number)
-                scope.row.fact_a = t.replace(/^0/, "") - 0 ;
+                scope.row.isEdit = false ;               
                 // 改变字体颜色
                 me.getStyleColor("modify", scope) ;
             }else{
@@ -178,8 +180,8 @@ export default {
             let cc = document.getElementsByClassName('data_input')[0].children[0].className ;
             if(scope!=null)index = scope.$index + 1 ;
             if(vax == "reset"){
-                for(let i=0 ; i < len ; i++){
-                    document.getElementsByClassName(cc)[i].style.color= "#000" ;                    
+                for(let i=0 ; i <= len ; i++){
+                    document.getElementsByClassName(cc)[i].style.color= "#000000" ;                    
                 }
             }else{
                 document.getElementsByClassName(cc)[index].style.color= "#ff0000" ;
@@ -252,6 +254,9 @@ export default {
 }
 </script>
 <style scoped>
+.is_select {
+    width: 300px ;
+}
 .groupSetting_select {
     margin-bottom: 10px;
     float: left;

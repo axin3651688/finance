@@ -7,7 +7,7 @@
         <!-- 添加按钮 -->
         <div class="groupSetting_select">
             <span>指标选择：</span>
-            <el-select v-model="value" placeholder="请选择" @change="selectChange" clearable>
+            <el-select v-model="value" placeholder="请选择" @change="selectChange" clearable class="is_select">
                 <el-option v-for="item in options" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
             </el-select>
             <span class="groupSetting_unit">单位：{{ sunit }}</span>
@@ -262,6 +262,9 @@ export default {
 }
 </script>
 <style scoped>
+.is_select {
+    width: 300px ;
+}
 .groupSetting_select {
     margin-bottom: 10px;
     float: left;
