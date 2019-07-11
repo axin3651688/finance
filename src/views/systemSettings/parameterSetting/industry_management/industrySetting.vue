@@ -49,7 +49,7 @@ export default {
         this.getClientHeight() ;
         // 导航栏显现
         this.getShowDims() ;
-        // 
+        // 季度
         this.getQuarter() ;
     },
     watch: {

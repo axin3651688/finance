@@ -53,6 +53,7 @@ export default {
         this.getClientHeight() ;
         // 导航栏显现
         this.getShowDims() ;
+        this.getQuarter() ;
     },
     watch: {
         // 切换年触发
@@ -69,6 +70,12 @@ export default {
         }
     },
     methods: {
+        // 季度出现
+        getQuarter(){
+            let me = this ;
+            let monthConfig = { quarterCount:4, yearEnd:1 };
+            me.$store.monthConfig = monthConfig;
+        },
         // 导航栏显现
         getShowDims(){
             let dims = this.showDims ;
