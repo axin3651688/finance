@@ -1974,17 +1974,26 @@ export default {
     exportBtn(){ 
       let me = this ;
       me.downloadLoading = true ;
-      import('./excel/SJZExport2ExcelTable').then(excel => { // debugger
-            //制造一个columns格式传过去。
-          let rootColmuns = [],columns = me.tableColumn;
-          let firstItem = columns[0];
-          columns = columns.filter((item,index) => {
-              return index != 0;
-          });
-          columns.push(firstItem);
-          // me.parseColmns(columns,rootColmuns);
-          excel.export_table_to_excel("publicTable",me.template,rootColmuns);
-      })
+      me.$confirm('是否导出该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+        import('./excel/SJZExport2ExcelTable').then(excel => { // debugger
+              //制造一个columns格式传过去。
+            let rootColmuns = [],columns = me.tableColumn;
+            let firstItem = columns[0];
+            columns = columns.filter((item,index) => {
+                return index != 0;
+            });
+            columns.push(firstItem);
+            // me.parseColmns(columns,rootColmuns);
+            excel.export_table_to_excel("publicTable",me.template,rootColmuns);
+            me.$message({ type: 'success', message: '导出成功!' });
+        })
+      }).catch(() => {
+          me.$message({ type: 'info', message: '已取消' });          
+      });
     }
   }
 };
