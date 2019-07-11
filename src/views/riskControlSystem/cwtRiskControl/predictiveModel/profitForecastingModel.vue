@@ -86,6 +86,15 @@
                 </div>
             </div>
 
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
+
         </div>
 
     </div>
@@ -94,6 +103,7 @@
 <script>
     import cell from './modelPublic/cell'
     import ccell from './modelPublic/ccell'
+    import mtable from './modelPublic/mtable'
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
@@ -103,6 +113,7 @@
         name: "profitForecastingModel",
         mixins: [cwtPublicJs, dataCalculation],
         components: {
+            mtable,
             cell,
             ccell,
             mchart
@@ -112,6 +123,64 @@
         watch: {},
         data() {
             return {
+                tableData: [
+                    {
+                        "project": "毛利",
+                        "formula": "营业收入-营业成本"
+                    },
+                    {
+                        "project": "成本费用总额 ",
+                        "formula": "营业成本+营业税金及附加+销售费用+管理费用+财务费用"
+                    },
+                    {
+                        "project": "营业利润",
+                        "formula": "(营业收入+公允价值变动收益+投资收益)-(成本费用总额+资产减值损失)"
+                    },
+                    {
+                        "project": "利润总额",
+                        "formula": "(营业收入+公允价值变动收益+投资收益+营业外收入)-(营业外支出+成本费用总额+产减值损失)"
+                    },
+                    {
+                        "project": "净利润",
+                        "formula": "利润总额-所得税费用"
+                    },
+                    {
+                        "project": "归属母公司净利润",
+                        "formula": "净利润-少数股东损益"
+                    },
+                    {
+                        "project": "三费率(%)",
+                        "formula": "(销售费用+管理费用+财务费用)/营业收入*100"
+                    },
+                    {
+                        "project": "营业利润率(%)",
+                        "formula": "营业利润/营业收入*100"
+                    },
+                    {
+                        "project": "销售净利率(%)",
+                        "formula": "净利润/营业收入*100"
+                    },
+                    {
+                        "project": "成本费用利润率(%)",
+                        "formula": "利润总额/成本费用总额*100"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
+
                 allData: {
                     part1: {
                         cellData1: {
@@ -318,7 +387,6 @@
                 this.getRealData(type);
             },
 
-
             /**
              * 单元格数据发生改变
              * @param params
@@ -361,6 +429,7 @@
                 _this.allData = _this.dataCalculate(_data, type);
                 _this.initEchartData(_this.allData);
             },
+
             /**
              * 初始化Echart
              * @param data
@@ -377,7 +446,7 @@
                             let _m = {name: '', value: 0};
                             _m.name = z.name;
                             _m.value = z.value;
-                            if(_m.value !== '0' && _m.value !== '0.00'){
+                            if (_m.value !== '0' && _m.value !== '0.00') {
                                 emptyData.push(_m);
                             }
                         }
@@ -555,4 +624,9 @@
         left: 1000px;
     }
 
+    .content-table {
+        position: absolute;
+        top: 750px;
+        width: 100%;
+    }
 </style>

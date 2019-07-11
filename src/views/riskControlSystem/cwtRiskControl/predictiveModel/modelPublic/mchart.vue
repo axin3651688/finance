@@ -23,7 +23,9 @@
         },
         data() {
             return {
-                option: {},
+                option: {
+                    height_s: '300px',
+                },
                 funnelOption: {
                     height_s: '500px',
                     title: {
@@ -172,6 +174,7 @@
                         break;
                     case 'pie':
                         _this.option = _this.pieOption;
+                        _this.option.height_s = '300px';
                         let _piePeries = _this.option.series;
                         let _pieTitle = _this.option.title;
                         _pieTitle.text = _data.name;
@@ -179,6 +182,7 @@
                         break;
                     case 'gauge':
                         _this.option = _this.gaugeOption;
+                        _this.option.height_s = '300px';
                         let _gaugeSeries = _this.option.series;
                         let _gaugeTitle = _this.option.title;
                         _gaugeTitle.text = _data ? _data.name : '';

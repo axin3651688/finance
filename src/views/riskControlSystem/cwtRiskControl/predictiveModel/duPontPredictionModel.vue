@@ -96,6 +96,15 @@
                     </mchart>
                 </div>
             </div>
+
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
         </div>
     </div>
 </template>
@@ -107,6 +116,7 @@
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "duPontPredictionModel",
@@ -114,13 +124,68 @@
         components: {
             cell,
             ccell,
-            mchart
+            mchart,
+            mtable
         },
         props: {},
         computed: {},
         watch: {},
         data() {
             return {
+
+                tableData: [
+                    {
+                        "project": "成本费用总额",
+                        "formula": "营业成本+营业税金及附加+销售费用+管理费用+财务费用"
+                    },
+                    {
+                        "project": "流动资产",
+                        "formula": "货币资金+交易性金融资产+应收票据+应收账款+预付款项+应收利息+应收股利+其他应收款+存货+一年内到期的非流动资产+其他流动资产"
+                    },
+                    {
+                        "project": "资产合计",
+                        "formula": "流动资产+非流动资产"
+                    },
+                    {
+                        "project": "总资产周转率(次)",
+                        "formula": "营业收入/((资产合计+年初资产总计)/2)"
+                    },
+                    {
+                        "project": "权益乘数",
+                        "formula": "1/(1-(((年初负债总计+负债总计)/2)/((年初资产总计+资产合计)/2)))"
+                    },
+                    {
+                        "project": "税后净利润",
+                        "formula": "营业收入-营业成本-营业税金及附加-销售费用-管理费用-财务费用-资产减值损失+公允价值变动收益+投资收益+营业外收入-营业外支出-所得税费用"
+                    },
+                    {
+                        "project": "销售净利率(%)",
+                        "formula": "净利润/营业收入*100"
+                    },
+                    {
+                        "project": "总资产净利率(%)",
+                        "formula": "净利润/((年初资产合计+资产合计)/2)*100"
+                    },
+                    {
+                        "project": "净资产收益率(%)",
+                        "formula": "总资产净利率*权益乘数"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
                 allData: {
                     part1: {
                         cellData1: {
@@ -612,5 +677,10 @@
         height: 300px;
         top: 730px;
         left: 1140px;
+    }
+    .content-table {
+        position: absolute;
+        top: 1050px;
+        width: 100%;
     }
 </style>

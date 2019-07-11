@@ -27,7 +27,6 @@
                 </div>
             </div>
 
-
             <div class="content-chart">
                 <div class="pie_1">
                     <mchart
@@ -87,6 +86,15 @@
                 </div>
             </div>
 
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
+
         </div>
     </div>
 </template>
@@ -98,6 +106,7 @@
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "capitalChainAndFinancingForecast",
@@ -105,13 +114,60 @@
         components: {
             cell,
             ccell,
-            mchart
+            mchart,
+            mtable
         },
         props: {},
         computed: {},
         watch: {},
         data() {
             return {
+
+                tableData: [
+                    {
+                        "project": "结构性资产",
+                        "formula": "可供出售金融资产+持有至到期投资+长期应收款+长期股权投资+投资性房地产+固定资产净值+在建工程+工程物资+固定资产清理+生产性生物资产+油气资产+无形资产+开发支出+商誉+长期待摊费用+递延所得税资产+其他非流动资产"
+                    },
+                    {
+                        "project": "结构性负债",
+                        "formula": "长期借款+应付债券+长期应付款+专项应付款+预计负债+递延所得税负债+其他非流动负债+实收资本+资本公积-库存股+盈余公积+未分配利润+少数股东权益"
+                    },
+                    {
+                        "project": "经营性资产",
+                        "formula": "应收账款+预付款项+应收利息+应收股利+其他应收款+存货+一年内到期的非流动资产+其他流动资产"
+                    },
+                    {
+                        "project": "经营性负债",
+                        "formula": "应付账款+预收款项+应付职工薪酬+应交税费+应付利息+应付股利+其他应付款+一年内到期的非流动负债+其他流动负债"
+                    },
+                    {
+                        "project": "营运资本",
+                        "formula": "结构性负债-结构性资产"
+                    },
+                    {
+                        "project": "营运资金需求",
+                        "formula": "经营性资产-经营性负债"
+                    },
+                    {
+                        "project": "现金支付能力",
+                        "formula": "营运资本-营运资金需求"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
                 allData1: {
                     part1: {
                         cellData1: {
@@ -230,6 +286,8 @@
                         }
                     },
                 },
+
+
                 pie_1EchartData: {
                     name: "结构性资产占用构型图",
                     data: []
@@ -584,5 +642,9 @@
         margin-top: 10px;
         color: green;
     }
-
+    .content-table {
+        position: absolute;
+        top: 700px;
+        width: 100%;
+    }
 </style>

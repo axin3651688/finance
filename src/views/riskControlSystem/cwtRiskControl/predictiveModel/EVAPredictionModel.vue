@@ -88,6 +88,15 @@
                 </div>
 
             </div>
+
+            <div class="content-table">
+                <mtable
+                        :tableData="tableData"
+                        :columns="tableColumns"
+                        :height="tableHeight"
+                >
+                </mtable>
+            </div>
         </div>
     </div>
 </template>
@@ -98,19 +107,83 @@
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import dataCalculation from '../mixin/dataCalculation'
     import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import mtable from './modelPublic/mtable'
 
     export default {
         name: "EVAPredictionModel",
         mixins: [cwtPublicJs, dataCalculation],
         components: {
             cell,
-            ccell
+            ccell,
+            mtable
         },
         props: {},
         computed: {},
         watch: {},
         data() {
             return {
+
+                tableData: [
+                    {
+                        "project": "期初无息流动负债",
+                        "formula": "(期初应付票据+期初应付账款+期初应付利息+期初预收款项+期初其他应付款+期初其他流动负债+期初应交税费)"
+                    },
+                    {
+                        "project": "期末无息流动负债",
+                        "formula": "(期末应付票据+期末应付账款+期末应付利息+期末预收款项+期末其他应付款+期末其他流动负债+期末应交税费)"
+                    },
+                    {
+                        "project": "平均无息流动负债",
+                        "formula": "(期初无息流动负债+期末无息流动负债)/2"
+                    },
+                    {
+                        "project": "所得税率",
+                        "formula": "所得税费用/利润总额*100"
+                    },
+                    {
+                        "project": "平均在建工程",
+                        "formula": "(期初在建工程+期末在建工程)/2"
+                    },
+                    {
+                        "project": "平均所有者权益",
+                        "formula": "(期初所有者权益+期末所有者权益)/2"
+                    },
+                    {
+                        "project": "平均负债",
+                        "formula": "(期初负债总额+期末负债总额)/2"
+                    },
+                    {
+                        "project": "税后净营业利润",
+                        "formula": "净利润+(研究开发+利息支出-(营业外收入-营业外支出)/2)*0.75"
+                    },
+                    {
+                        "project": "调整后资本",
+                        "formula": "平均所有者权益+平均负债-(期初无息流动负债+期末无息流动负债)/2-平均在建工程"
+                    },
+                    {
+                        "project": "平均资本成本率",
+                        "formula": "0.055*当前月份/12"
+                    },
+                    {
+                        "project": "经济增加值(EVA)",
+                        "formula": "税后净营业利润-调整后资本*平均资本成本率"
+                    }
+                ],
+                tableColumns: [
+                    {
+                        "id": "project",
+                        "type": "string",
+                        "text": "项目",
+                        "align": "left"
+                    },
+                    {
+                        "id": "formula",
+                        "type": "string",
+                        "text": "计算公式",
+                        "align": "left"
+                    }
+                ],
+                tableHeight: 500,
                 allData: {
                     part1: {
                         cellData1: {
@@ -511,5 +584,11 @@
     .svg-ninth {
         left: 1100px;
         top: 862px
+    }
+
+    .content-table {
+        position: absolute;
+        top: 1400px;
+        width: 100%;
     }
 </style>
