@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="fuzzy_query_div">
+        <!-- <div class="fuzzy_query_div">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="公司名称">
                     <el-input v-model="formInline.companyname" placeholder="请输入公司名称..."></el-input>
@@ -12,7 +12,7 @@
                     <el-button type="primary" @click="onSubmit">查询</el-button>
                 </el-form-item>
             </el-form>
-        </div>
+        </div> -->
         <headerTable :tableData.sync="tableData" :columns.sync="columns" :allData.sync="allData"></headerTable>
         <div>
             <el-pagination
@@ -59,16 +59,18 @@ export default {
                 },
                 {
                     id:"companyname",
-                    text:"公司名称"
+                    text:"公司名称",
+                    width:320
                 },
                 {
                     id:"templatename",
-                    text:"报表名称"
+                    text:"报表名称",
+                    width:180
                 },
-                {
-                    id:"",
-                    text:"进度"
-                },
+                // {
+                //     id:"",
+                //     text:"进度"
+                // },
                 {
                     id:"",
                     text:"抽取",

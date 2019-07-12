@@ -15,14 +15,16 @@
                 截止{{ this.periodStr }}份，经风险评估分析，{{this.company}}
                 在风险方面共存在{{ reportHeaderData.headerReport.totalCount || 0 }}条，
                 从风险类型来看，其中
-                <template v-for="(item) in reportHeaderData.headerReport.contentType">
+                <template v-for="(item,index) in reportHeaderData.headerReport.contentType">
                     {{ item.text }}
-                    {{ item.count }} 条，
+                    {{ item.count }} 条
+                    {{ index + 1 == reportHeaderData.headerReport.contentType.length? ";":","}}
                 </template>
                 从风险等级来看，
-                <template v-for="(item) in reportHeaderData.headerReport.contentLevel">
+                <template v-for="(item,index) in reportHeaderData.headerReport.contentLevel">
                     {{ item.text }}
-                    {{ item.count }} 条，
+                    {{ item.count }} 条
+                    {{ index + 1 == reportHeaderData.headerReport.contentLevel.length? ";":","}}
                 </template>
             </p>
             <p v-else class="describe">

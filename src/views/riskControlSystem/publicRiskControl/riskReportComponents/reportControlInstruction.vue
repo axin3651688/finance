@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="top-form-contents" style="margin-top: 30px">
-            <span>领导批示</span>
+            <span class="top_span">领导批示</span>
             <div class="top-form-contents" style="margin-bottom: 0;width:80%;">
                 <p style="min-width: 98px;width: 100px;margin-left: 30px">风险策略为：</p>
                 <template v-for="(itemCnt,index) in contentDown.content">
@@ -106,7 +106,13 @@ export default {
         width: 60%;
     }
     .textarea_input {
-        margin-left: -9px;
+        margin-left: 8px;
+    }
+    .top_span {
+        font-weight: 550;
+        font-size: 18px;
+        color: #303133;
+        font-family: '黑体';
     }
     // .top-form-contents span {
     //     font-size: 16px;

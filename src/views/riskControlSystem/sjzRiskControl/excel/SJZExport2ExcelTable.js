@@ -191,25 +191,25 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
             if (C > 0 && (typeof(value) === 'string' || !isNaN(value))) {
                 value = value + "";
                 value = value.replace(/\,/g, "");
-                if (!isNaN(value)) {
-                    value = value - 0;
-                    if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(C) != -1) {
-                        cell.s = {
-                            alignment: {
-                                horizontal: "center", //左右位置
-                                vertical: "center" //上下位置
-                            }
-                        }
-                    } else {
-                        cell.s = {
-                            alignment: {
-                                horizontal: "center", //左右位置
-                                vertical: "center" //上下位置
-                            },
-                            NumberFormatLocal: "#,##0.00"
-                        }
-                    }
-                }
+                // if (!isNaN(value)) {
+                //     value = value - 0;
+                //     if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(C) != -1) {
+                //         cell.s = {
+                //             alignment: {
+                //                 horizontal: "center", //左右位置
+                //                 vertical: "center" //上下位置
+                //             }
+                //         }
+                //     } else {
+                //         cell.s = {
+                //             alignment: {
+                //                 horizontal: "center", //左右位置
+                //                 vertical: "center" //上下位置
+                //             },
+                //             NumberFormatLocal: "#,##0.00"
+                //         }
+                //     }
+                // }
                 if (value == "--") {
                     cell.s = {
                         alignment: {
@@ -277,13 +277,13 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
             //         cell.v = cell.v.toFixed(2) + "";
             //     }
             // }
-            if (typeof cell.v === 'number' && C > 0) cell.t = 'n';
-            else if (typeof cell.v === 'boolean') cell.t = 'b';
-            else if (cell.v instanceof Date) {
-                cell.t = 'n';
-                cell.z = XLSX2.SSF._table[14];
-                cell.v = datenum(cell.v);
-            } else cell.t = 's';
+            // if (typeof cell.v === 'number' && C > 0) cell.t = 'n';
+            // else if (typeof cell.v === 'boolean') cell.t = 'b';
+            // else if (cell.v instanceof Date) {
+            //     cell.t = 'n';
+            //     cell.z = XLSX2.SSF._table[14];
+            //     cell.v = datenum(cell.v);
+            // } else cell.t = 's';
 
             // if (typeof cell.v === 'number') cell.t = 'n';
             // else if (typeof cell.v === 'boolean') cell.t = 'b';

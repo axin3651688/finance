@@ -314,6 +314,10 @@ export default {
         // console.log(this.datas);
         !flag || this.reportData(this.datas);
       }
+      //新增按钮的显示与否
+      if(this.reportHeader != "请选择"){
+        this.showOrHideOfButtonForAdd("",{templateId:this.templateId});
+      }
       //上报、审阅按钮切换公司展示 or 隐藏。
       this.contentOfButtons(flag);
     }
@@ -863,7 +867,6 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle(){
-      debugger;
       //判断如果没有保存，提示他去保存。
       if(this.tableData && this.tableData.length > 0){
         this.$message({
@@ -1590,12 +1593,13 @@ export default {
         // }else {
         //   cellMeta.readOnly = true;
         // }
-        cellMeta.readOnly = this.capitalConcentration(row,columns);
+        // cellMeta.readOnly = this.capitalConcentration(row,columns);
         // if(columns == 4){
         //   cellMeta.readOnly = true;
         // }else {
         //   cellMeta.readOnly = false;
         // }
+        cellMeta.readOnly = this.template8CellMeta(row,columns);
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
@@ -1622,6 +1626,20 @@ export default {
       cellMeta = me.operationsOfUser(cellMeta,tableState);
       // [1,2,3].indexOf(tableState) != -1? cellMeta.readOnly = true:"";
       return cellMeta;
+    },
+    /**
+     * 根据公司的eas属性来显示是否可以编辑。
+     */
+    template8CellMeta (row,columns) {
+      let me = this,ssrccode = me.$store.getters.treeInfo.ssrccode;
+      if(ssrccode && ssrccode != '1' && ssrccode != '0' && columns != 5){
+        return true;
+      }else {
+        if(columns == 4){
+          return true;
+        }
+        return false;
+      }
     },
     /**
      * 用户的权限。
@@ -1764,6 +1782,11 @@ export default {
     //把请求回来的数据生成表格给需要操作的列添加方法
     convertHansoneTableColumns(columns, rows,res) {
       let me = this,arrTem = ['9','12','10','11'],tableState = me.tableState;
+      //eas的公司标识。
+      let ssrccode = me.$store.getters.treeInfo.ssrccode;
+      if(this.templateId == '8' && ssrccode && ssrccode != '1' && ssrccode != '0'){
+        arrTem.push('8');
+      }
       if (this.fixed === 0 && arrTem.indexOf(this.templateId) == -1) {
         columns.push({ id: "caozuo", text: "操作", type: "string" });
         this.rowdata = true;
@@ -2517,9 +2540,13 @@ export default {
      * 控制按钮显示与否
      */
     showOrHideOfButtonForAdd(index,item) {
-      let me = this;
+      let me = this,ssrccode = me.$store.getters.treeInfo.ssrccode;
       let arr = ['0','1','2','3','9','12','10','11'],flag = true,saveFlag = true,
           currentSider = me.currentSider;
+      //公司的eas编码。
+      if(ssrccode && ssrccode != '0' && ssrccode != '1'){
+        arr.push("8");
+      }
       for(let i = 0;i < arr.length;i ++){
         let arrItem = arr[i];
         if(arrItem == item.templateId){

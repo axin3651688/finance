@@ -992,9 +992,10 @@ export default {
     // sjz\
     getDisabled(scope){
       // debugger
-      let information = this.$store.getters.user.user ;
+      let information = this.user.user ;
+      // let information = this.$store.getters.user.user ;
       let disabled = true ;
-      if(information.roleName === "管理员") {
+      if(information.roleName === "管理员" || information.roleName === "超级管理员") {
           disabled = false ;
       } else {
           if(information.userName === scope.row.suser) {
@@ -1361,7 +1362,7 @@ export default {
               sprofessionaltitle: editUserForm.professionalTitle,    // 专业职称
               spresentpost: editUserForm.currentPosition             // 现任职务      
             }
-          }).then(result => {
+          }).then(result => { //debugger
             if (result.status == 200) {
               if (result.data.code === 0) {
                 _this.$message.error(result.data.msg);
@@ -1819,10 +1820,11 @@ export default {
      * @param pagination
      * @returns 结果返回｛data_list: [...], total: ..｝
      */
-    findAll(currentPage, pageSize, pagination) {
+    findAll(currentPage, pageSize, pagination) { debugger
       var _this = this;
       //getters 数据
       let getters = _this.$store.getters;
+      let userId = _this.user.user ;
       request({
         // url: "/api/api/my_contact_list",
         url: "/zjb/sys/user/query_comid",
@@ -1832,13 +1834,19 @@ export default {
           pageNum: currentPage,
           pageSize: pageSize
         }
-      }).then(result => { 
-        if (result.status == 200) {
+      }).then(result => {  debugger
+        if (result.status == 200) { 
           if(result.data.data){
             const data = result.data.data;
             _this.userdata = data.datas;
             _this.userdata_cloning = _this.userdata ;
             _this.allNum = data.total;
+                            // _this.user.user.userName = 
+            _this.userdata.forEach(res => {
+              if(res.suser === userId.userName){
+                userId.roleName = res.srolename;
+              }
+            })
           }else{
             _this.userdata = [];
             _this.allNum = 0;

@@ -40,7 +40,7 @@
                         <el-button type="primary" plain icon="el-icon-menu"></el-button>
                         <el-dropdown-menu slot="dropdown" style="height: 100%; overflow: auto">
                             <el-dropdown-item  v-for="(item,index) in items" :key="index"  :command="item.id" divided>
-                                <el-checkbox v-model="!item.determine" @change="checkbox(item.id)" >{{ item.text }}</el-checkbox>
+                                <el-checkbox v-model="!item.determine" @change="checkbox(item.id)" :disabled="item.disabled">{{ item.text }}</el-checkbox>
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -356,6 +356,22 @@ export default {
                     me.reporttype = res.data.data[0].reporttype ;       // 报告类型控制
                     me.periodtype = res.data.data[0].periodtype ;       // 日期控制
                     me.submitdeletetype = res.data.data[0].submitdeletetype ;   // 已提交的删除控制
+                    if(me.reporttype) { // true 不启用
+                        // sreporttypename
+                        me.objer.columns.forEach(res => { 
+                            if(res.id === "sreporttypename" ) {
+                                res.determine = true ;
+                                res.disabled = true ;
+                            }
+                        })
+                        me.objer.columns = me.objer.columns.filter(res => {
+                            return !res.determine ;
+                        });
+                        me.elements = me.objer.columns;
+                    } else {    // false 启用
+                        me.objer.columns.forEach(res => { res.determine = false ; }) ;
+                        me.elements = me.objer.columns;
+                    }
                     // json里的queryDataBefore的方法
                     if(obj.queryDataBefore && typeof obj.queryDataBefore == "function"){
                         params = obj.queryDataBefore(params, obj, me) ;
@@ -481,7 +497,7 @@ export default {
                 if(res.data.code === 200){
                     me.riskTableRow = res.data.data;
                 }else{
-                    me.$message.error('发生了个小意外！请联系开发人员哦！') ;
+                    me.$message.error('风险矩阵请求失败，请联系开发人员！') ;
                 }
             });
         },
@@ -827,17 +843,26 @@ export default {
             // this.$message('暂无此功能！')
             let me = this ;
             me.downloadLoading = true ;
-            import('./excel/SJZExport2ExcelTable').then(excel => { //debugger
-                 //制造一个columns格式传过去。
-                let rootColmuns = [],columns = me.objer.columns;
-                let firstItem = columns[0];
-                columns = columns.filter((item,index) => {
-                    return index != 0 ;
-                });
-                columns.push(firstItem) ;
-                // me.parseColmns(columns,rootColmuns);
-                excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
-            })
+            me.$confirm('是否导出该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                import('./excel/SJZExport2ExcelTable').then(excel => { //debugger
+                    //制造一个columns格式传过去。
+                    let rootColmuns = [],columns = me.objer.columns;
+                    let firstItem = columns[0];
+                    columns = columns.filter((item,index) => {
+                        return index != 0 ;
+                    });
+                    columns.push(firstItem) ;
+                    // me.parseColmns(columns,rootColmuns);
+                    excel.export_table_to_excel("publicTable",me.objer.text,rootColmuns);
+                    me.$message({ type: 'success', message: '导出成功!' });
+                })
+            }).catch(() => {
+                me.$message({ type: 'info', message: '已取消' });          
+            });
         }
     }
 }
