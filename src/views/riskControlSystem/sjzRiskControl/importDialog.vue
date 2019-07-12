@@ -114,6 +114,7 @@ export default {
          */
         beforeAvatarUpload(file){ //debugger
             let me = this ;
+            let dd = "风险识别" ;
             // 信息
             let $params = me.$store.state.prame.command; 
             // 以 '.' 小数点分割成数组
@@ -121,12 +122,19 @@ export default {
             // 选中的导入模板名称
             me.formInline.templateB = cc[0] ;
             // 判断模板名称是否匹配
-            if(cc[0] !== "风险识别") {
+            // if(cc[0] !== "风险识别") {
+            //     me.isName = false ;
+            //     me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
+            // } else {
+            //     me.isName = true ;
+            // }
+            if(cc[0].indexOf(dd) !== -1) {
+                me.isName = true ;
+            } else {
                 me.isName = false ;
                 me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
-            } else {
-                me.isName = true ;
             }
+            // return false ;
             // 判断模板类型是否匹配
             if(cc[1] === 'xlsx' || cc[1] === 'xls') {
                 me.isType = true ;
@@ -137,7 +145,7 @@ export default {
                 }
             } else {
                 me.isType = false ;
-                me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件，且不超过20M！", type: "warning" }) ;
+                me.$message({ message: "模板类型不匹配！只能上传Excel/xlsx/xls文件！", type: "warning" }) ;
             }
             // 判断以上条件只要有一个不匹配，就不成功
             if(!me.isName || !me.isType) {

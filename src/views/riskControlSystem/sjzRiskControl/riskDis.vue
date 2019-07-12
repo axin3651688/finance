@@ -497,7 +497,7 @@ export default {
                 if(res.data.code === 200){
                     me.riskTableRow = res.data.data;
                 }else{
-                    me.$message.error('发生了个小意外！请联系开发人员哦！') ;
+                    me.$message.error('风险矩阵请求失败，请联系开发人员！') ;
                 }
             });
         },
