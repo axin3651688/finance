@@ -15,7 +15,7 @@ export default {
         numberFormatter(num) {
             if (typeof num === 'string') {
                 if (num.indexOf(',') !== -1) {
-                    num = num.replace(',', '');
+                    num = num.replace(/,/g,'');
                 }
             }
             if (num && num !== null) {
