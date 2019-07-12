@@ -209,7 +209,7 @@ export default {
                 ninfluence: "",             // 风险影响程度
                 nscore: "",                 // 风险分值（只读，自动计算，根据R=L*S）
                 gradename: "",              // 风险等级（只读）
-                sreporttype: ""             // 报告类型
+                sreporttype: "bglx01"       // 报告类型
             },
             reporttype: 0,          // 全局控制报告类型，0不显示，1显示
             isReportType: false,    // 控制报告类型的显示与隐藏
@@ -312,6 +312,7 @@ export default {
                 this.isBtn = true ;        // 保存 按钮的显示
                 this.isBtn2 = true ;       // 提交 按钮的显示
                 this.isBtn3 = true ;       // 风险关闭 按钮的显示
+                // this.sreporttypeRequest() ;
                 if(this.newThis.view_row.sissubmit == "已提交"){    // 已提交的可以风险关闭/ 未提交的不允许风险关闭
                     this.isBtn3 = true ;
                     this.readonly2= false ;      // (已提交)下达启用
@@ -340,6 +341,7 @@ export default {
                 this.riskbulkOrderser = false ;
                 this.checkbox = false ;
                 this.addDialog() ;
+                this.sreporttypeRequest() ;
             }
         }
     },
@@ -485,9 +487,10 @@ export default {
         // 报告类型请求
         sreporttypeRequest(){
             let me = this ;
-            riskreporttype().then(res => {
+            riskreporttype().then(res => { 
                 if(res.data.code === 200){
                     me.optione = res.data.data ;
+                    me.form.sreporttype = res.data.data[0].scode ;
                 }else{
                     me.$message.error("报告类型请求失败，请联系开发人员哦！")
                 }
