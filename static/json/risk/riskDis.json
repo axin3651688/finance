@@ -135,6 +135,7 @@
             "text": "报告类型",
             "type": "string",
             "determine": false,
+            "disabled": false,
             "align": "center",
             "width": "160"
         },
