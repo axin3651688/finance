@@ -364,24 +364,30 @@ export default {
                         let options = me.selectConfig.options;
                         params.departId = item? item:(options[0]? options[0]:"01")
                     }
-                    findThirdPartData(params).then(res => {
-                        if(res.data.code == 200) {
-                            if(judgeParams.id == "treeTable"){
-                                let treeDatas = me.transformationTreeData(res.data.data);
-                                me.treeData = treeDatas;
-                            }else if (judgeParams.id == "stable") {
-                                let resData = res.data.data;
-                                resData.forEach(item => {
-                                    item.htmlType = "text";
-                                });
-                                resData = me.setOperationBtns(resData);
-                                me.tableData = resData;
-                            }else if (judgeParams.id == "lookInstruc"){
-                                // res.data.data = res.data.data.sort();
-                                me.lookInstructionRes(res.data.data);
-                            }else if (judgeParams.queryAfter) {
-                                me[judgeParams.queryAfter](res.data.data,judgeParams);
-                            }
+                    globalparam_all().then(res => {
+                        if(res.data.code == 200){
+                            let resData = res.data.data[0];
+                            me.paramsSqlOfGlobal(params,resData);
+                            findThirdPartData(params).then(res => {
+                                if(res.data.code == 200) {
+                                    if(judgeParams.id == "treeTable"){
+                                        let treeDatas = me.transformationTreeData(res.data.data);
+                                        me.treeData = treeDatas;
+                                    }else if (judgeParams.id == "stable") {
+                                        let resData = res.data.data;
+                                        resData.forEach(item => {
+                                            item.htmlType = "text";
+                                        });
+                                        resData = me.setOperationBtns(resData);
+                                        me.tableData = resData;
+                                    }else if (judgeParams.id == "lookInstruc"){
+                                        // res.data.data = res.data.data.sort();
+                                        me.lookInstructionRes(res.data.data);
+                                    }else if (judgeParams.queryAfter) {
+                                        me[judgeParams.queryAfter](res.data.data,judgeParams);
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -402,12 +408,24 @@ export default {
                     }
                 }
             }
-            if(globalparam && globalparam[0].periodtype && globalparam[0].periodtype == 1){
-                params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD = :period");
-            }else {
-                params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD <= :period");
-            }
+            // if(globalparam && globalparam[0].periodtype && globalparam[0].periodtype == 1){
+            //     params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD = :period");
+            // }else {
+            //     params.sql = params.sql.replace(/:globalPeriod/g,"DIM_PERIOD <= :period");
+            // }
             return params;
+        },
+        /**
+         * sql参数的替换。
+         */
+        paramsSqlOfGlobal (params,resData) {
+            debugger;
+            let me = this;
+            if(resData.periodtype && resData.periodtype == 1){
+                params.sql = params.sql.replace(/:globalPeriod/g,"= :period");
+            }else {
+                params.sql = params.sql.replace(/:globalPeriod/g,"<= :period");
+            }
         },
         /**
          * 根据行的批示状态生成按钮。
@@ -419,11 +437,6 @@ export default {
                     "id": "1",
                     "btnShow": true,
                     "text": "查看"
-                },
-                {
-                    "id": "2",
-                    "btnShow": true,
-                    "text": "退回"
                 }
             ],
             btns02 = [
@@ -440,6 +453,14 @@ export default {
             ];
             data.forEach(item => {
                 if(item.psztid == "1"){
+                    if(item.sinstructionsuser == userName){
+                        let itemBtn = {
+                            "id": "2",
+                            "btnShow": true,
+                            "text": "退回"
+                        };
+                        btns01.push(itemBtn);
+                    }
                     item.operation = btns01;
                 }else if (item.psztid == "-1" || item.psztid == "0" || item.psztid == "2" || item.psztid == null) {
                     item.operation = btns02;
@@ -478,21 +499,25 @@ export default {
                 if(id == "0"){
                     //批示.
                     // me.instructionsState(scope);
-                    globalparam_all().then(res => {
-                        if(res.data.code == 200){
-                            me.globalparam = res.data.data;
-                            me.reportData.type = "0";
-                            me.lookInstructions(scope);
-                        }
-                    })
+                    // globalparam_all().then(res => {
+                    //     if(res.data.code == 200){
+                    //         me.globalparam = res.data.data;
+                    //         me.reportData.type = "0";
+                    //         me.lookInstructions(scope);
+                    //     }
+                    // })
+                    me.reportData.type = "0";
+                    me.lookInstructions(scope);
                 }else if (id == "1") {
-                    globalparam_all().then(res => {
-                        if(res.data.code == 200){
-                            me.globalparam = res.data.data;
-                            me.reportData.type = "1";
-                            me.lookInstructions(scope);
-                        }
-                    })
+                    // globalparam_all().then(res => {
+                    //     if(res.data.code == 200){
+                    //         me.globalparam = res.data.data;
+                    //         me.reportData.type = "1";
+                    //         me.lookInstructions(scope);
+                    //     }
+                    // })
+                    me.reportData.type = "1";
+                    me.lookInstructions(scope);
                 }else if (id == "2") {
                     me.returnInstruction(scope);
                 }else if (id == "3") {

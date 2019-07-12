@@ -360,7 +360,7 @@ export default {
                     arrUser.push(item.id);
                 });
                 // let selectStr = me.selectValues.join(',');
-                let selectStr = me.selectValues.toString;
+                let selectStr = me.selectValues.toString();
                 userStr = arrUser.join(',');
                 let params = {
                     riskReportStateDtos:[
@@ -442,7 +442,7 @@ export default {
          */
         copingStrategies (rowData) {
             debugger;
-            let me = this,fxydcl = rowData.fxydcl + "";
+            let me = this,fxydcl = (rowData.fxydcl || "") + "";
             if(rowData.psztid != 1){
                 me.instructions = "";
                 me.selectValues = [];
