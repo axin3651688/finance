@@ -382,7 +382,7 @@ export default {
                                         me.tableData = resData;
                                     }else if (judgeParams.id == "lookInstruc"){
                                         // res.data.data = res.data.data.sort();
-                                        me.lookInstructionRes(res.data.data);
+                                        me.lookInstructionRes(res.data.data,judgeParams);
                                     }else if (judgeParams.queryAfter) {
                                         me[judgeParams.queryAfter](res.data.data,judgeParams);
                                     }
@@ -419,7 +419,6 @@ export default {
          * sql参数的替换。
          */
         paramsSqlOfGlobal (params,resData) {
-            debugger;
             let me = this;
             if(resData.periodtype && resData.periodtype == 1){
                 params.sql = params.sql.replace(/:globalPeriod/g,"= :period");
@@ -472,16 +471,19 @@ export default {
          * 查看之后的查询结果。
          * @author szc 2019年5月27日16:31:38
          */
-        lookInstructionRes (lookData) {
+        lookInstructionRes (lookData,judgeParams) {
             // let me = this,company = me.$store.getters.companyName;
             let me = this,company = me.$store.getters.treeInfo.sfullname;
+            if(judgeParams && judgeParams.scope){
+                company = judgeParams.scope.row.sname;
+            }
             this.axios.get("/cnbi/json/source/tjsp/szcJson/risk/reportText.json").then(res => {
                 if(res.data.code == 200) {
                     // me.reportData = res.data.reportData;
                     res.data.reportData.reportCompanyName = company;
                     //把所有的数据放上去。
                     res.data.reportData.allData = lookData;
-                    me.showDataOfInstruction(lookData,res.data.reportData);
+                    me.showDataOfInstruction(lookData,res.data.reportData,judgeParams);
                     // me.reportData = res.data.reportData;
                     // me.treeTableShow = false;
                 }

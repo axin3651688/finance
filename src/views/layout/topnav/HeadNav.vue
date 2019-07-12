@@ -440,7 +440,6 @@ export default {
       }
     },
     changeBecauseOfNode(){
-      debugger;
       let me = this;
       let bean = getClientParams();
       if (bean.monthCount && bean.monthCount > 0) {

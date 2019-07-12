@@ -8,7 +8,9 @@
     >
         <div>
             <div>
-                <span class="dialog-footer" v-if="tableData && (tableData.length > 0 || modalConfig.row.nopratebuttonname == '退回')&& reviewShow && modalConfig.row.nopratebuttonname != '查看'">
+                <span class="dialog-footer" v-if="tableData && 
+                (tableData.length > 0 || (modalConfig.row && modalConfig.row.nopratebuttonname == '退回'))&& 
+                reviewShow && modalConfig.row.nopratebuttonname != '查看'">
                     <el-button type="primary" @click="submitForm">{{ modalConfig.row.nopratebuttonname == '退回'? '退回':'通过' }}</el-button>
                 </span>
             </div>

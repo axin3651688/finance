@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div ref="containerRightAll">
+            <div ref="containerRightAll" style="width:100%;">
                 <div class="container-right" ref="containerRight">
                     <!--报告跳转界面头部内容-->
                     <report-header
@@ -255,7 +255,7 @@
                 allData.forEach(item => {
                     let riskReportState = {
                         id: 0,
-                        company:item.company,
+                        company:item.scode || company,
                         nrelateid: "",
                         sinstructionsuser:user,
                         cstrategy:"",
