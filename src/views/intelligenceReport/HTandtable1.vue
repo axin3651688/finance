@@ -315,7 +315,9 @@ export default {
         !flag || this.reportData(this.datas);
       }
       //新增按钮的显示与否
-      this.showOrHideOfButtonForAdd("",{templateId:this.templateId});
+      if(this.reportHeader != "请选择"){
+        this.showOrHideOfButtonForAdd("",{templateId:this.templateId});
+      }
       //上报、审阅按钮切换公司展示 or 隐藏。
       this.contentOfButtons(flag);
     }
