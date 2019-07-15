@@ -1,5 +1,5 @@
 <template>
-    <div class="echart-content">
+    <div class="echart-content" v-if="mchareShow">
         <chart
                 class="chart"
                 :options.sync="option"/>
@@ -24,8 +24,9 @@
         data() {
             return {
                 option: {
-                    height_s: '300px',
+                    // height_s: '300px',
                 },
+                mchareShow:true,
                 funnelOption: {
                     height_s: '500px',
                     title: {
@@ -169,6 +170,7 @@
                 switch (_this.dataType) {
                     case 'funnel':
                         _this.option = _this.funnelOption;
+                        _this.option.height_s = '500px';
                         let _funnelPeries = _this.option.series;
                         _funnelPeries[0].data = _data.data ? _data.data : [];
                         break;
@@ -190,6 +192,12 @@
                         _gaugeSeries[0].data[0].value = _gaugeSeries[0].data[0].value === '' ? 0 : _gaugeSeries[0].data[0].value;
                         break;
                 }
+
+                _this.mchareShow = false;
+                _this.$nextTick(()=>{
+                    _this.mchareShow = true;
+                })
+
             }
         }
     }
