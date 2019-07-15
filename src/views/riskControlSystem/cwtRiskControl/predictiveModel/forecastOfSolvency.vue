@@ -98,7 +98,7 @@
 
                 <div class="content-text_1">
                     <div class="title">
-                        <span>资产结构状况</span>
+                        <span>负债经营可能性</span>
                     </div>
 
                     <div class="content">
@@ -158,18 +158,18 @@
 
                 <div class="content-text_1">
                     <div class="title">
-                        <span>资产结构状况</span>
+                        <span>支付能力状况</span>
                     </div>
 
                     <div class="content">
                         <div class="content-title">
-                            <span>资产结构状况</span>
+                            <span>从支付能力来看</span>
                         </div>
                         <p>
                             总体来看，流动资产增长快
                         </p>
                         <div class="content-title">
-                            <span>资产结构状况</span>
+                            <span>从发展角度来看</span>
                         </div>
                         <p>
                             总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
