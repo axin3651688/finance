@@ -5,17 +5,17 @@
         </div>
         <div>
             <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugesLeft" :key="index">
                         <groupGauge :chartData.sync="item"></groupGauge>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="12">
                     <div style="height:500px;">
                         <groupRadar :chartData.sync="chartDataRadar" style="height:100%;"></groupRadar>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugesRight" :key="index">
                         <groupGauge :chartData.sync="item"></groupGauge>
                     </div>
@@ -224,7 +224,7 @@
                 let receive = {
                     title: {
                         text: '企业综合评价对标雷达图',
-                        left:'30%',
+                        left:'center',
                         top:'10px'
                     },
                     tooltip: {},
