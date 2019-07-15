@@ -32,8 +32,12 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比<template v-if="item.yzgzxc>=0">多出</template><template v-if="item.yzgzxc<0">相差</template>
-                        {{setNumberToStanderABS(item.yzgzxc)}}个百分点，与平均值相比<template v-if="item.ypjzxc>=0">多出</template><template v-if="item.ypjzxc<0">相差</template>
+                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比
+                        <template v-if="item.yzgzxc>=0">多出</template>
+                        <template v-if="item.yzgzxc<0">相差</template>
+                        {{setNumberToStanderABS(item.yzgzxc)}}个百分点，与平均值相比
+                        <template v-if="item.ypjzxc>=0">多出</template>
+                        <template v-if="item.ypjzxc<0">相差</template>
                         {{setNumberToStander(item.ypjzxc)}}
                     </p>
                 </template>
@@ -63,7 +67,7 @@
 
 
             <div class="content-down-title">
-                {{companyname}}{{showyear}}国内对标情况如下
+                {{companyDownName}}{{showyear}}国内对标情况如下
             </div>
 
             <div class="content-up-loop">
@@ -72,9 +76,11 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业
+                        {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业
                         {{item.grade}}水平，与行业值
-                        {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>
+                        {{setNumberToStander(item.val_1)}}相比
+                        <template v-if="item.cz>=0">多出</template>
+                        <template v-if="item.cz<0">相差</template>
                         {{setNumberToStanderABS(item.cz)}}个百分点。
                     </p>
                 </template>
@@ -125,6 +131,7 @@
                 showyear: this.$store.getters.year + '年',
                 compareYear: parseInt(this.$store.getters.year) - 5 + '年',
                 companyname: '天津食品集团有限公司',
+                companyDownName: '天津食品集团有限公司',
 
                 table1data: [],
                 table1columns: [],
@@ -160,9 +167,8 @@
         },
         methods: {
             monthParams() {
-                debugger;
                 let me = this;
-                let monthConfig = {quarterCount:4,yearEnd:1};
+                let monthConfig = {quarterCount: 4, yearEnd: 1};
                 me.$store.monthConfig = monthConfig;
             },
             /**
@@ -170,15 +176,18 @@
              * @param scope
              */
             companyClicked(scope) {
+                let com = scope.split('-')[1];
+
                 let _this = this;
+                _this.companyDownName = scope.split('-')[0];
                 let params = {
                     year: this.getYear(),
                     month: this.getMonth(),
-                    company: scope
+                    company: com
                 };
                 getwarningReportBottomData(params).then((res) => {
                     if (res.data.code === 200) {
-                        _this.loopData2 = res.data.data[3];
+                        _this.loopData2 = res.data.data;
                     }
                 })
             },
