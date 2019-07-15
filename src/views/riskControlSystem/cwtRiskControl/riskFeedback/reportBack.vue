@@ -69,12 +69,15 @@
              */
             company(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             year(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             month(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             }
         },
         data() {
@@ -374,6 +377,7 @@
              * @author cwt
              */
             reportPageDataFormat(data) {
+                debugger;
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
@@ -471,6 +475,7 @@
                             riskModel_riskdetaildata.riskname = item.riskname;
                             riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
+                            riskModel_riskdetaildata.riskcolor = item.riskcolor;
                             riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
@@ -508,6 +513,7 @@
                     riskdetaildata:
                         {
                             riskname: '',
+                            riskcolor:'',
                             risktype: '',
                             risklevel: '',
                             riskcompany: '',
@@ -592,7 +598,8 @@
                         });
                     } else {
                         _this.$message({
-                            message: "提醒失败！请联系开发人员"
+                            message: res.data.msg,
+                            type: "error"
                         })
                     }
                 });

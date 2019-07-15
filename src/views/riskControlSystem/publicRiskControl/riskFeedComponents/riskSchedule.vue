@@ -16,7 +16,10 @@
                                 </div>
                                 <div class="risk-state">
                                     <span class="title-left">状态 :</span>
-                                    <span class="content-right">{{value.state}}</span>
+                                    <span
+                                            class="content-right"
+                                            :style="{background:value.state.substr(0,1) === '未' ? 'red' : 'green'}"
+                                    >{{value.state}}</span>
                                 </div>
                                 <div class="risk-content">
                                     <span class="title-left">内容 :</span>
@@ -164,7 +167,7 @@
 
     .risk-state .content-right {
         color: white;
-        background: red;
+        /*background: red;*/
         padding: 0 12px;
         border-radius: 10px;
     }

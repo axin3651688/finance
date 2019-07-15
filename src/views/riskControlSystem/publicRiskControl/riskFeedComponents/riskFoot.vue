@@ -26,7 +26,7 @@
 
                     <div class="form-foot-right" v-if="dialogData['dialogRiskType'] === 'riskTrack'">
                         <div style="text-align: right; padding-right: 4px;">
-                            <el-button type="primary" @click="pageExport">导出</el-button>
+                            <!--<el-button type="primary" @click="pageExport">导出</el-button>-->
                             <el-button @click="pageBack">关闭</el-button>
                         </div>
                     </div>

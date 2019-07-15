@@ -31,7 +31,7 @@
                         </div>
                         <span class="zs">总述</span>
                         <p class="describe">
-                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
+                            截止{{this.period}}份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
                             <template v-if="riskCount.allRiskCount > 0">
                                 从风险类型来看，其中
                             </template>
@@ -99,7 +99,7 @@
                                     <span class="left_1">
                                         {{ risk.risktype }}
                                     </span>
-                                            <span class="left_2">
+                                            <span class="left_2" :style="{'background-color': risk.riskcolor}">
                                         {{ risk.risklevel }}
                                     </span>
                                         </div>
@@ -143,7 +143,10 @@
                                         </div>
                                         <div class="risk-state">
                                             <span class="title-left">状态 :</span>
-                                            <span class="content-right">{{item.state}}</span>
+                                            <span
+                                                    class="content-right"
+                                                    :style="{background:item.state.substr(0,1) === '未' ? 'red' : 'green'}"
+                                            >{{item.state}}</span>
                                         </div>
                                         <div class="risk-content">
                                             <span class="title-left">内容 :</span>
@@ -443,7 +446,7 @@
     }
 
     .container-top-left .left_2 {
-        background-color: rgba(255, 0, 153, 1);
+        /*background-color: rgba(255, 0, 153, 1);*/
     }
 
     .container-top-right .left_2 {
@@ -530,7 +533,7 @@
 
     .risk-state .content-right {
         color: white;
-        background: red;
+        /*background: red;*/
         padding: 0 12px;
         border-radius: 10px;
     }
