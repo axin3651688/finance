@@ -12,32 +12,32 @@
     {
       "text": "上报状态",
       "value": "sb_status",
-      "width": 200
+      "width": 150
     },
     {
       "text": "上报人",
       "value": "sb_user",
-      "width": 100
+      "width": 150
     },
     {
       "text": "批示状态",
       "value": "ps_status",
-      "width": 100
+      "width": 150
     },
     {
       "text": "批示人",
       "value": "ps_user",
-      "width": 100
+      "width": 150
     },
     {
       "text": "反馈状态",
       "value": "fk_status",
-      "width": 100
+      "width": 150
     },
     {
       "text": "反馈人",
       "value": "fk_user",
-      "width": 100
+      "width": 150
     },
     {
       "text": "操作",

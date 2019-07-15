@@ -47,10 +47,10 @@
                             </div>
                         </el-col>
                         <el-col :span="4" style="padding-right: 0">
-                            <div class="top-form-contents" style="height: 40px;justify-content: space-around;">
+                            <div class="top-form-contents" style="height: 40px;justify-content: space-around;" >
                                 <span style="min-width: 70px;width: 70px">风险等级：</span>
-                                <div class="risk-level">
-                                    <span style="color: #606266">{{dialogHeaderData[3].text}}</span>
+                                <div class="risk-level" :style="{background: this.dialogData['riskcolor']}">
+                                    <span >{{dialogHeaderData[3].text}}</span>
                                 </div>
                             </div>
                         </el-col>
@@ -267,7 +267,7 @@
              * 获取弹窗界面头部数据
              */
             getDialogHeaderData() {
-
+                debugger;
                 let data = this.dialogData;
                 this.dialogHeaderData = data.contentHeader.content;
             },
@@ -412,7 +412,7 @@
         border: 1px solid black;
         border-radius: 10px;
         text-align: center;
-        background: red;
+        /*background: red;*/
         padding: 5px 10px;
     }
 

@@ -99,7 +99,7 @@
                                     <span class="left_1">
                                         {{ risk.risktype}}
                                     </span>
-                                            <span class="left_2">
+                                            <span class="left_2" :style="{'background-color': risk.riskcolor}">
                                         {{ risk.risklevel }}
                                     </span>
                                         </div>
@@ -553,7 +553,7 @@
     }
 
     .container-top-left .left_2 {
-        background-color: rgba(255, 0, 153, 1);
+        /*background-color: rgba(255, 0, 153, 1);*/
     }
 
     .container-top-right .left_2 {
