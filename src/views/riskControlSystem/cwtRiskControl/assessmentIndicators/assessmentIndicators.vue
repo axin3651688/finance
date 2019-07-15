@@ -96,7 +96,7 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapGetters, mapActions} from "vuex"
     import cwtPublicJS from '../mixin/cwtPublicJS'
     import {getAssessmentIndicatorsData} from '~api/cwtRiskControl/riskControlRequest'
     import echartsComponent from './echartsComponent'
@@ -134,12 +134,20 @@
         },
         created() {
             this.showPageFlag = 1;
+            this.ShowDims({
+                company:true,
+                year:true,
+                month:true,
+                day:false,
+                conversion:false
+            });
             this.getAllData();
         },
         mounted() {
             this.doNotShowDim(true);
         },
         methods: {
+            ...mapActions(["ShowDims"]),
             /**
              * 获取所有数据
              */

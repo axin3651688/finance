@@ -5,24 +5,24 @@
         </div>
         <div v-if="mainContent">
             <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeTopLeft" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="12">
                     <div>
                         <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeTopRight" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
-                <el-col v-for="(item,index) in gaugeMiddle" :key="index" :span="8">
+                <el-col v-for="(item,index) in gaugeMiddle" :key="index" :span="item.colSpan || 8">
                     <div :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>

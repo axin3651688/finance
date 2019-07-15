@@ -20,9 +20,9 @@ export default {
                         type: 'shadow'
                     }
                 },
-                legend: {
-                    // data: ['2011年', '2012年']
-                },
+                // legend: {
+                //     // data: ['2011年', '2012年']
+                // },
                 grid: {
                     left: '3%',
                     right: '4%',

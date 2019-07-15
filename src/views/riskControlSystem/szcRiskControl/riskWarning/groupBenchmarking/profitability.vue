@@ -5,24 +5,24 @@
         </div>
         <div v-if="mainContent">
             <el-row>
-                <el-col v-for="(item,index) in gaugeTop" :key="index" :span="8">
+                <el-col v-for="(item,index) in gaugeTop" :key="index" :span="item.colSpan ||8">
                     <div>
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeMiddleLeft" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="12">
                     <div class="profit_radar">
-                        <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
+                        <groupRadar :chartData.sync="chartDataRadar" style="height:75%;"></groupRadar>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeMiddleRight" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
@@ -220,6 +220,7 @@
 </script>
 <style lang="scss" scoped>
     .profit_radar {
-        margin-top: 20%;
+        // margin-top: 20%;
+        height: 600px;
     }
 </style>

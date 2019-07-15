@@ -50,7 +50,6 @@ export default {
          * 没有描述
          */
         updateTabOther() {
-            debugger;
             let me = this;
             me.editableTabs = [];
             me.activeName = "first";
@@ -127,6 +126,12 @@ export default {
             let me = this;
             let arr = [{
                 id: 'gaugeTop',
+                // indicatorId: "profitability",
+                colSpanConfig: {
+                    '19': 6,
+                    '20': 12,
+                    '21': 6
+                },
                 field: 'scode',
                 gaugeSname: 'sname',
                 gaugeField: 'score',
@@ -194,6 +199,10 @@ export default {
                 radarField: 'scode',
                 radarSname: 'sname',
                 radarValue: 'score',
+                customConfig: {
+                    title: {},
+                    radius: "65%"
+                },
                 content: ['51', '50', '128', '129', '132']
             };
             me.transRadarData(datas, radarConfig);
@@ -251,6 +260,11 @@ export default {
             }, {
                 id: 'gaugeMiddle',
                 field: 'scode',
+                colSpanConfig: {
+                    '16': 6,
+                    '17': 12,
+                    '126': 6
+                },
                 gaugeSname: 'sname',
                 gaugeField: 'score',
                 content: ['16', '17', '126']
@@ -266,6 +280,14 @@ export default {
                 radarField: 'scode',
                 radarSname: 'sname',
                 radarValue: 'score',
+                customConfig: {
+                    title: {
+                        text: '企业综合评价对标雷达图',
+                        left: 'center',
+                        top: '1%'
+                    },
+                    radius: "65%"
+                },
                 content: ['3', '17', '16', '125', '126']
             };
             me.transRadarData(datas, radarConfig);
@@ -406,6 +428,9 @@ export default {
                 if (me[item.id] && me[item.id].length > 0) {
                     for (let i = 0; i < me[item.id].length; i++) {
                         let itemCnt = me[item.id][i];
+                        if (item.colSpanConfig) {
+                            itemCnt.colSpan = item.colSpanConfig[itemCnt[item.field]];
+                        }
                         me.createOptions(itemCnt, item);
                     }
                 }
@@ -477,6 +502,7 @@ export default {
                 }]
             };
             itemCnt.options = options;
+
             return options;
         },
         /**
@@ -491,44 +517,45 @@ export default {
             indicator = indicatorCfg.indicator;
             values = indicatorCfg.values;
             let receive = {
-                    title: {
-                        text: '企业综合评价对标雷达图',
-                        left: '30%',
-                        top: '10px'
+                title: {
+                    text: '',
+                    left: 'center',
+                    top: '13%'
+                },
+                tooltip: {},
+                legend: {
+                    // data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+                },
+                radar: {
+                    // shape: 'circle',
+                    name: {
+                        textStyle: {
+                            color: '#fff',
+                            backgroundColor: '#999',
+                            borderRadius: 3,
+                            padding: [3, 5]
+                        }
                     },
-                    tooltip: {},
-                    legend: {
-                        // data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
-                    },
-                    radar: {
-                        // shape: 'circle',
-                        name: {
-                            textStyle: {
-                                color: '#fff',
-                                backgroundColor: '#999',
-                                borderRadius: 3,
-                                padding: [3, 5]
-                            }
-                        },
-                        indicator: indicator,
-                        center: ['50%', '60%'],
-                        radius: '50%'
-                    },
-                    series: [{
-                        name: '',
-                        type: 'radar',
-                        // areaStyle: {normal: {}},
-                        data: [{
-                            value: values,
-                            name: ''
-                        }]
+                    indicator: indicator,
+                    center: ['50%', '60%'],
+                    radius: radarConfig.radius || '65%'
+                },
+                series: [{
+                    name: '',
+                    type: 'radar',
+                    // areaStyle: {normal: {}},
+                    data: [{
+                        value: values,
+                        name: ''
                     }]
-                }
-                // indicator = indicatorCfg.indicator;
-                // values = indicatorCfg.values;
-                // data.forEach(item => {
-                //     values.push(item.qyfz ? item.qyfz : 0);
-                // });
+                }]
+            }
+            radarConfig.customConfig ? receive.title = radarConfig.customConfig.title : "";
+            // indicator = indicatorCfg.indicator;
+            // values = indicatorCfg.values;
+            // data.forEach(item => {
+            //     values.push(item.qyfz ? item.qyfz : 0);
+            // });
             me.chartDataRadar.receive = receive;
         },
         /**
@@ -578,7 +605,6 @@ export default {
             me.createGauges(arr);
         },
         singleIndicatorDrill(datas, judgeParams) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 year = storeParams.year,
