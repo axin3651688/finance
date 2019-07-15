@@ -747,8 +747,8 @@ export default {
                 company:company,
                 year:year,
                 month:month > 9? month + "":"0" + month,
-                // jsonBean:JSON.stringify(jsonBeanData),
-                jsonBean:jsonBeanData,
+                jsonBean:JSON.stringify(jsonBeanData),
+                // jsonBean:jsonBeanData,
                 text:"风险管控报告"
             };
             exportRiskWorld(params).then(res => {

@@ -1,4 +1,5 @@
 import request from 'utils/http'
+import QS from 'qs'
 /**
  * 数据导出的接口。
  * @author szc 2019年4月3日17:12:54
@@ -34,6 +35,6 @@ export function exportRiskWorld(exportData) {
         url: '/exp/exportDocx',
         method: 'post',
         responseType: 'blob',
-        params: exportData
+        data: QS.stringify(exportData)
     })
 }
