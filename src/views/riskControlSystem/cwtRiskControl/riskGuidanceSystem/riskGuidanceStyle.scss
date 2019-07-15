@@ -1,0 +1,55 @@
+/* 头部 */
+.guidance_header {                  /* 头部顶栏的样式 */
+    background-color: #B3C0D1;
+    text-align: right ;
+    line-height: 60px ;
+    color: #606266 ;
+}
+.header_btn {                       /* 按钮样式 */
+    height: 40px ;
+}
+.tubiao {                           /* 图标 */
+    font-size: 14px;
+    padding-right: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}
+/* 腰部 */
+.guidance_container {
+    border: 2px solid #dcdfe6 ;
+}
+.guidance_aside {                   /* 目录部分 */                 
+    width: 200px ;
+    border-right: 2px solid #dcdfe6 ;
+}
+.guidance_main {                   /* 正文部分一 */
+    padding: 0 !important;
+    height: 100%;
+}
+/*
+ * -------------------------//-----------------------------------
+ * 正文部分三块的样式
+ */
+// div块边距的设置
+.guidance_main .el-row {
+    margin-left: 10px !important;
+    margin-right: 0px !important;
+} 
+// div块背景颜色设置
+.bg-purple {
+    background: #d3dce6;
+}
+// 边框圆角设置
+.guidance_main .grid-content {
+    height: 36px;
+}
+// 最右侧的div块右内边距设置
+.guidance_main .col_C {
+    padding-right: 0px !important ;
+}
