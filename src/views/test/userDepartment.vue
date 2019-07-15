@@ -96,7 +96,7 @@ export default {
                 data = this.getDataArray(data, this.data) ;
                 is = data.some(res => { return res.sname === value }) ;
                 if(is){
-                    callback(new Error('部门编码以重复')); 
+                    callback(new Error('部门名称以重复')); 
                 }else{
                     callback();
                 }

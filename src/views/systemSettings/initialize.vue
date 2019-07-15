@@ -107,7 +107,7 @@ export default {
         },
         // 重置按钮
         resetClick(){
-            
+
         },
         // 下载模板按钮
         uploadClick(){
@@ -190,6 +190,7 @@ export default {
         float: left;
         width: 526px;
         margin-left: 10px;
+        margin-bottom: 5px ;
     }
 </style>
 <style>

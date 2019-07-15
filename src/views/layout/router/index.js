@@ -158,6 +158,13 @@ const router = new Router({
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskSystem/riskSystem.vue')
                 },
+                // 风险指引制度 sjz
+                {
+                    path: '/riskGuidanceSystem',
+                    name: 'riskGuidanceSystem',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem/riskGuidanceSystem.vue')
+                },
                 //组织架构
                 {
                     path: '/organization',
