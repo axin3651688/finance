@@ -262,7 +262,7 @@ export function riskReportExport(params) {
         url: '/exp/exportDocx',
         method: 'post',
         responseType:'blob',
-        params: params
+        data: params
     })
 }
 

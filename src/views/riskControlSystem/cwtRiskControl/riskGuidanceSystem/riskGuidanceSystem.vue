@@ -18,13 +18,13 @@
             <el-main class="guidance_main">
                 <el-row :gutter="20">
                     <el-col :span="8" class="col_A">
-                        <div class="grid-content bg-purple"></div>
+                        <div class="grid-content bg-purple col_main"></div>
                     </el-col>
                     <el-col :span="8" class="col_B">
-                        <div class="grid-content bg-purple"></div>
+                        <div class="grid-content bg-purple col_main"></div>
                     </el-col>
                     <el-col :span="8" class="col_C">
-                        <div class="grid-content bg-purple"></div>
+                        <div class="grid-content bg-purple col_main"></div>
                     </el-col>
                 </el-row>
             </el-main>
@@ -45,21 +45,23 @@ export default {
     mounted(){
         // debugger
         let viewHeight = document.body.offsetHeight ;
-        let docStyle = document.getElementsByClassName('guidance_container')[0] ;
-        let heights = viewHeight - 64 - 60 + 'px' ;
-        docStyle.style.height = heights ; 
+        // ----
+        let containerStyle = document.getElementsByClassName('guidance_container')[0] ;
+        let containerHeight = viewHeight - 64 - 60 + 'px' ;
+        containerStyle.style.height = containerHeight ;
+        // ----
         // 设置表格高度（自适应）
         this.setTableScollHeight() ;
     },
     methods: {
         // 设置表格高度（自适应）
         setTableScollHeight(){
-            let docStyle, heights ;
+            let containerStyle, containerHeight, contentStyle, contentHeight ;
             const me = this ;
             window.onresize = function temp(){ 
-                docStyle = document.getElementsByClassName('guidance_container')[0] ;   
-                heights = document.body.offsetHeight - 64 - 60 + 'px' ;
-                docStyle.style.height = heights ;       
+                containerStyle = document.getElementsByClassName('guidance_container')[0] ;   
+                containerHeight = document.body.offsetHeight - 64 - 60 + 'px' ;
+                containerHeight.style.height = containerHeight ; 
             };
         }
     }
