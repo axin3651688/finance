@@ -747,7 +747,6 @@
              * 模板保存弹窗调出
              */
             modelSave() {
-                debugger;
                 let _this = this;
                 if (_this.selectValue !== '') {
                     _this.changeDialogVisible = true;
@@ -778,7 +777,7 @@
                         }
                     ],
                     "period": _this.getPeriod(),
-                    "spcode": _this.buttonType === 'bq' ? '1' : '1.1',
+                    "spcode": '3',
                     "version": _this.modelName,
                     "versioncode": _time,
                     "status": status

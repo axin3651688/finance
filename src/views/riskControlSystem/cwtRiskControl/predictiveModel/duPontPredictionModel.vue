@@ -549,7 +549,6 @@
              * 选择模板
              */
             modelChange(p) {
-                debugger;
                 let _this = this;
                 let options = _this.selectOptions;
                 let option = options.filter((o) => {
