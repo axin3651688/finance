@@ -281,8 +281,12 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
-                                if (company !== userCompany) {
-                                    data.operation = '1-查看'
+                                if (data.scode !== userCompany) {
+                                    if (data.status === '未反馈') {
+                                        data.operation = '3-提醒';
+                                    } else {
+                                        data.operation = '1-查看';
+                                    }
                                 }
                                 let operations = data.operation.split(',');
                                 for (let i = 0, len = operations.length; i < len; i++) {
@@ -513,7 +517,7 @@
                     riskdetaildata:
                         {
                             riskname: '',
-                            riskcolor:'',
+                            riskcolor: '',
                             risktype: '',
                             risklevel: '',
                             riskcompany: '',

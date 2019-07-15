@@ -7,13 +7,13 @@
                         class="bq"
                         :type="this.buttonType === 'bq' ? 'primary' : ''"
                         @click="topButtonClick('bq')"
-                >本年实际数
+                >本期
                 </el-button>
                 <el-button
                         class="lj"
                         :type="this.buttonType === 'lj' ? 'primary' : ''"
                         @click="topButtonClick('lj')"
-                >累计实际数
+                >累计
                 </el-button>
             </div>
             <div class="button-right">

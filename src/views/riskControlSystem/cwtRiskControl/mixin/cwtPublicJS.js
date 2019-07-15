@@ -233,5 +233,44 @@ export default {
         },
 
 
+        /**
+         * 设置数据格式为标准格式
+         * @param num
+         * @param isNotNumber
+         */
+        setNumberToStanderABS(num, isNotNumber) {
+            if (!isNotNumber) {
+
+                if(typeof num === 'string'){
+                    if(num.indexOf(',') !== -1){
+                        num = num.replace(/,/g,'');
+                    }
+                }
+                if (num && num !== null) {
+                    num = Math.round(num * 100) / 100;
+                    num = Math.abs(num);
+                    let str = num.toLocaleString();
+                    let valueArr = str.split(".");
+                    if (valueArr.length === 1) {
+                        str = str + ".00";
+                    }else{
+                        if(valueArr[1].length === 1){
+                            valueArr[1] = valueArr[1] + '0';
+                            str = valueArr[0] + '.' + valueArr[1]
+                        }
+                    }
+                    return str;
+                } else if (num === 0) {
+                    return '0.00';
+                } else {
+                    return "";
+                }
+            } else {
+                return num;
+            }
+        },
+
+
+
     },
 }

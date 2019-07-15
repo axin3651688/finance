@@ -2,11 +2,11 @@
     <div>
         <div class="all-echarts-content">
 
-            <el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>
-            <!--<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>-->
-            <el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>
+            <!--<el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>-->
+            <!--&lt;!&ndash;<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>&ndash;&gt;-->
+            <!--<el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>-->
 
-            <el-row v-if="showPageFlag === '1'">
+            <el-row >
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -58,7 +58,7 @@
                 </el-col>
             </el-row>
 
-            <el-row v-else>
+            <el-row v-if="false">
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -137,6 +137,7 @@
             this.getAllData();
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
             /**
