@@ -282,7 +282,7 @@ export default {
                 radarValue: 'score',
                 customConfig: {
                     title: {
-                        text: '企业综合评价对标雷达图',
+                        text: '',
                         left: 'center',
                         top: '1%'
                     },

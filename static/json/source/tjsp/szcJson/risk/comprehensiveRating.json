@@ -50,7 +50,8 @@
             "id": "pj",
             "type": "string",
             "text": "评级",
-            "align": "center"
+            "align": "center",
+            "htmlType": "colColor"
         }
     ],
     "rows": [],
