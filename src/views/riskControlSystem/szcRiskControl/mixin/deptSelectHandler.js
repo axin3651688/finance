@@ -294,7 +294,7 @@ export default {
          * 这以下的一段是报告的查看方法处理。
          * @author szc 2019年5月27日16:56:28
          */
-        showDataOfInstruction(lookData, data) {
+        showDataOfInstruction(lookData, data, judgeParams) {
             let me = this,
                 objLook = {},
                 objItems = [];
@@ -312,7 +312,7 @@ export default {
                     let resData = res.data.data;
                     //lookData,查询的风险的所有的条数  objItems 风险的类型个数 
                     //data.reportDataContent.riskFeedData报告的展示内容 resData 下拉选的内容
-                    data.reportDataContent.riskFeedData = me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData, resData);
+                    data.reportDataContent.riskFeedData = me.middleContentOfReport(lookData, objItems, data.reportDataContent.riskFeedData, resData, judgeParams);
                     if (me.reportData.type) {
                         data.type = me.reportData.type;
                     }
@@ -328,10 +328,13 @@ export default {
          * @param {*} lookData 
          * @param {*} data 
          */
-        middleContentOfReport(lookData, objItems, data, optionsData) {
+        middleContentOfReport(lookData, objItems, data, optionsData, judgeParams) {
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.companyName;
+            if (judgeParams && judgeParams.scope) {
+                company = judgeParams.scope.row.sname;
+            }
             for (let i = 0; i < objItems.length; i++) {
                 //导出用到的格式。
                 let jsonItem = {
@@ -413,16 +416,16 @@ export default {
                         contentLast.responsibility.company = company;
                         contentLast.responsibility.identificationUser = lookItem.sfilluser;
                         //风险名称。
-                        objUpContentFXMC.content.push(lookItem.sriskname);
+                        objUpContentFXMC.content.push((objUpContentFXMC.content.length + 1 + "、") + lookItem.sriskname);
                         //风险评估。
-                        objUpContentFXPG.content.push(lookItem.nprobability);
-                        objUpContentFXPG.content.push(lookItem.ninfluence);
+                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险发生概率：" + lookItem.nprobability);
+                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险影响程度：" + lookItem.ninfluence);
                         //风险概述。
-                        objUpContentFXGS.content.push(lookItem.description);
+                        objUpContentFXGS.content.push((objUpContentFXGS.content.length + 1 + "、") + lookItem.description);
                         //采取措施。
-                        objUpContentCQCS.content.push(lookItem.cqcs);
+                        objUpContentCQCS.content.push((objUpContentCQCS.content.length + 1 + "、") + lookItem.cqcs);
                         //应对建议
-                        objUpContentYDJY.content.push(lookItem.ydjy);
+                        objUpContentYDJY.content.push((objUpContentYDJY.content.length + 1 + "、") + lookItem.ydjy);
                         //contenDown内容。
                         objDownContent.id = "10" + j;
                         objDownContent.options = optionsData;
@@ -625,7 +628,7 @@ export default {
                 user = storeParams.user.user.userName;
             let params = {
                 id: 0,
-                company: company,
+                company: scope.row.scode || company,
                 // nrelateid: row.row.id,/riskreportstate/update_remindback
                 // sinstructionsuser: user,
                 // cstrategy:selectStr,

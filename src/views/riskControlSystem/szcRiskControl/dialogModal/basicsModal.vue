@@ -213,7 +213,6 @@ export default {
          * 下拉框出现隐藏的回调。
          */
         visibleChange (item,params) {
-            debugger;
             let me = this;
             if(item){
 
@@ -224,7 +223,6 @@ export default {
          * @author szc 2019年5月23日10:14:14
          */
         customCheckbox (event) {
-            debugger;
             let me = this,storeParams = me.$store.getters,
                 company = storeParams.company;
             //判断是不是选择了应对策略。
@@ -246,7 +244,6 @@ export default {
                     if(res.data.code == 200){
                         params = riskPublic.paramsOfSql(params,res.data.sqlList,"102");
                         findThirdPartData(params).then(res => {
-                            debugger;
                             if(res.data.code == 200) {
                                 me.parseTreeData(me.dptUserConfig,res.data.data);
                             }
@@ -267,7 +264,6 @@ export default {
          * @author szc 2019年5月22日11:45:56
          */
         checkboxChange (item,paramsEvent) {
-            debugger;
             let me = this,storeParams = me.$store.getters,
                 company = storeParams.company;
             if(item){
@@ -278,7 +274,6 @@ export default {
                     if(res.data.code == 200){
                         params = riskPublic.paramsOfSql(params,res.data.sqlList,"102");
                         findThirdPartData(params).then(res => {
-                            debugger;
                             if(res.data.code == 200) {
                                 me.parseTreeData(me.dptUserConfig,res.data.data);
                             }
@@ -351,7 +346,6 @@ export default {
          * @author szc 2019年5月22日19:32:54
          */
         instructionHandler (nodes) {
-            debugger;
             let me = this,storeParams = me.$store.getters,
             company = storeParams.company,user = storeParams.user.user.userName;
             if(nodes && nodes.length > 0){
@@ -381,7 +375,6 @@ export default {
                 };
                 
                 updateInstruction(params).then(res => {
-                    debugger;
                     if(res.data.code == 200) {
                         me.checked = false;
                         me.selectDsiabled = "disabled";
@@ -397,7 +390,7 @@ export default {
                             type:"success"
                         });
                     }else {
-                        me.$message.error("批示出错！");
+                        me.$message.error(res.data.msg || "批示出错！");
                     }
                 });
             }
@@ -426,7 +419,6 @@ export default {
          * @author szc 2019年5月23日14:07:30
          */
         recoveryDefault(){
-            debugger;
             let me = this;
             me.checked = false;
             me.dptUserConfig.show = false;
@@ -441,7 +433,6 @@ export default {
          * @author szc 2019年5月23日21:02:00
          */
         copingStrategies (rowData) {
-            debugger;
             let me = this,fxydcl = (rowData.fxydcl || "") + "";
             if(rowData.psztid != 1){
                 me.instructions = "";

@@ -268,7 +268,7 @@ export function riskReportExport(params) {
 
 
 /**
- * 风险预警模型
+ * 风险预警模型数据请求
  * @author cwt
  */
 export function predictiveModel(params) {
@@ -276,5 +276,29 @@ export function predictiveModel(params) {
         url: '/zjb/forcase/analysis',
         method: 'post',
         params: params
+    })
+}
+
+/**
+ * 风险预警模型select options获取
+ * @author cwt
+ */
+export function getPredictiveModelSelect(params) {
+    return request({
+        url: '/zjb/forcase/select_versioncode_version',
+        method: 'post',
+        params: params
+    })
+}
+
+/**
+ * 风险预警模型select options保存
+ * @author cwt
+ */
+export function predictiveModelSave(params) {
+    return request({
+        url: '/zjb/forcase/insert_data',
+        method: 'post',
+        data: params
     })
 }

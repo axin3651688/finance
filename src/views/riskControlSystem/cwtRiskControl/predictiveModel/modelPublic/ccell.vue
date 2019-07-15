@@ -9,6 +9,7 @@
                         v-model="bottom"
                         :cellid="cellData.nid"
                         @blur="inputBlurEvent"
+                        @keyup.enter.native="inputBlurEvent"
                 >
                 </el-input>
             </div>
@@ -49,8 +50,10 @@
             },
             inputBlurEvent(params) {
                 let _this = this;
-                let _value = params.currentTarget.value;
-                let _cellid = params.currentTarget.attributes[2].value;
+                // let _value = params.currentTarget.value;
+                let _value = _this.bottom;
+                // let _cellid = params.currentTarget.attributes[2].value;
+                let _cellid = _this.cellData.nid;
                 let _data = {
                     id: _cellid,
                     value: _value
@@ -83,9 +86,10 @@
         background-color: #BCE9F8 !important;
         height: 22px;
         text-align: center;
-        font-size: 20px;
+        font-size: 19px;
         color: #000c17 !important;
         border: 0;
+        padding: 0;
     }
 
 </style>

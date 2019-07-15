@@ -1,6 +1,37 @@
 <template>
     <div>
 
+        <div class="top-button">
+
+            <div class="button-right">
+                <el-select
+                        v-model="selectValue"
+                        placeholder="请选择模板"
+                        class="button-right-select"
+                        value=""
+                        @change="modelChange"
+                >
+                    <el-option
+                            v-for="item in selectOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+
+                <el-button
+                        @click="modelSave"
+                >
+                    保存
+                </el-button>
+                <el-button
+                        @click="modelReset">
+                    重置
+                </el-button>
+            </div>
+
+        </div>
+
         <div class="content-all">
             <div class="content-cell">
                 <div v-for="(part, key, index) of allData" :class="key">
@@ -106,6 +137,50 @@
                 </mtable>
             </div>
         </div>
+
+        <div class="dialog-components">
+            <el-dialog
+                    :title="'模型保存参数设置'"
+                    width="40%"
+                    top="200px"
+                    :close-on-click-modal="dialogCloseByClockOther"
+                    :visible.sync="dialogVisible"
+            >
+                <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
+                <div class="model-name">
+                    <span class="model-name-title">请输入模板名称：</span>
+                    <el-input
+                            v-model="modelName"
+                            placeholder="模板名称"
+                    ></el-input>
+                </div>
+                <div class="model-button">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="modelSaveSend('0')">确 定</el-button>
+                </div>
+
+            </el-dialog>
+        </div>
+
+        <div class="dialog-components">
+            <el-dialog
+                    :title="'模型保存参数设置'"
+                    width="40%"
+                    top="200px"
+                    :close-on-click-modal="dialogCloseByClockOther"
+                    :visible.sync="changeDialogVisible"
+            >
+                <div style="height:2px;border:1px solid #606266; margin-top: -15px; margin-bottom: 20px"></div>
+                <div class="model-name">
+                    <span class="model-name-title">是否修改该模板数据</span>
+                </div>
+                <div class="model-button">
+                    <el-button @click="changeDialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="modelSaveSend('1')">确 定</el-button>
+                </div>
+
+            </el-dialog>
+        </div>
     </div>
 </template>
 
@@ -115,8 +190,13 @@
     import cwtPublicJs from '../mixin/cwtPublicJS'
     import dataCalculation from '../mixin/dataCalculation'
     import mchart from './modelPublic/mchart'
-    import {predictiveModel} from '~api/cwtRiskControl/riskControlRequest'
+    import {
+        getPredictiveModelSelect,
+        predictiveModel,
+        predictiveModelSave
+    } from '~api/cwtRiskControl/riskControlRequest'
     import mtable from './modelPublic/mtable'
+    import {mapGetters} from "vuex"
 
     export default {
         name: "duPontPredictionModel",
@@ -128,10 +208,42 @@
             mtable
         },
         props: {},
-        computed: {},
-        watch: {},
+        computed: {
+            ...mapGetters(["year", "month", "company"])
+        },
+        watch: {
+            company(newValue, oldValue) {
+                this.getRealData();
+                this.getSelectOptions();
+            },
+            year(newValue, oldValue) {
+                this.getRealData();
+                this.getSelectOptions();
+            },
+            month(newValue, oldValue) {
+                this.getRealData();
+                this.getSelectOptions();
+            }
+        },
         data() {
             return {
+                selectOptions: [
+                    {
+                        value: '模板一',
+                        lable: '001'
+                    },
+                    {
+                        value: '模板二',
+                        lable: '002'
+                    }
+                ],
+                selectValue: '',
+                dialogCloseByClockOther: false,
+                dialogVisible: false,
+                modelName: '',
+                changeDialogVisible: false,
+
+
 
                 tableData: [
                     {
@@ -176,7 +288,8 @@
                         "id": "project",
                         "type": "string",
                         "text": "项目",
-                        "align": "left"
+                        "align": "left",
+                        "width": "300"
                     },
                     {
                         "id": "formula",
@@ -186,191 +299,7 @@
                     }
                 ],
                 tableHeight: 500,
-                allData: {
-                    part1: {
-                        cellData1: {
-                            id: '001',
-                            name: '营业收入',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part2: {
-                        cellData1: {
-                            id: '001',
-                            name: '营业收入',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业成本',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part3: {
-                        cellData1: {
-                            id: '001',
-                            name: '营业收入',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业成本',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part4: {
-                        cellData1: {
-                            id: '001',
-                            name: '毛利',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业税金及附加',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '销售费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData4: {
-                            id: '001',
-                            name: '管理费用',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part5: {
-                        cellData1: {
-                            id: '001',
-                            name: '毛利',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业税金及附加',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '销售费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData4: {
-                            id: '001',
-                            name: '管理费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData5: {
-                            id: '001',
-                            name: '销售费用',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part6: {
-                        cellData1: {
-                            id: '001',
-                            name: '毛利',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业税金及附加',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '销售费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData4: {
-                            id: '001',
-                            name: '管理费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData5: {
-                            id: '001',
-                            name: '财务费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData6: {
-                            id: '001',
-                            name: '资产减值损失',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData7: {
-                            id: '001',
-                            name: '公允价值变动利益',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData8: {
-                            id: '001',
-                            name: '投资利益',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData9: {
-                            id: '001',
-                            name: '投资利益',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part7: {
-                        cellData1: {
-                            id: '001',
-                            name: '营业利润',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '营业外收入',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '营业外支出',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData4: {
-                            id: '001',
-                            name: '三废率（%）',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part8: {
-                        cellData1: {
-                            id: '001',
-                            name: '利润总额',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '所得税费用',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '少数股东损益',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                    part9: {
-                        cellData1: {
-                            id: '001',
-                            name: '净利润',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData2: {
-                            id: '001',
-                            name: '归属母公司净利润',
-                            value: this.setNumberToStander(1555.36)
-                        },
-                        cellData3: {
-                            id: '001',
-                            name: '少数股东损益',
-                            value: this.setNumberToStander(1555.36)
-                        }
-                    },
-                },
+                allData: {},
                 gauge_1EchartData: {
                     name: '净资产收益率（%）',
                     data: []
@@ -386,6 +315,7 @@
         },
         mounted() {
             this.getRealData();
+            this.getSelectOptions();
         },
         methods: {
             /**
@@ -410,8 +340,11 @@
                     let i = _data[x];
                     for (let y in i) {
                         let z = i[y];
-                        // z.nid = toString(parseInt(z.nid) - 81);
                         if (z.nid === _nid) {
+                            let __value = _value.replace(/,/g,'');
+                            if (__value === z.value) {
+                                return;
+                            }
                             z.value = _value;
                         }
                     }
@@ -447,7 +380,7 @@
             /**
              * 请求真实数据
              */
-            getRealData() {
+            getRealData(modelId) {
                 let _this = this;
 
                 let _getters = _this.$store.getters,
@@ -458,7 +391,9 @@
                     period: _this.getPeriod(),
                     spcode: '4'
                 };
-
+                if (modelId) {
+                    params['versioncode'] = modelId;
+                }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.resDataFormatter(res.data.data);
@@ -518,12 +453,151 @@
                 });
                 _this.allData = _data;
                 _this.initData();
-            }
+            },
+
+            /**
+             * 模板保存弹窗调出
+             */
+            modelSave() {
+                let _this = this;
+                if (_this.selectValue !== '') {
+                    _this.changeDialogVisible = true;
+                } else {
+                    _this.dialogVisible = true;
+                }
+            },
+
+            /**
+             * 模板保存请求发送
+             */
+            modelSaveSend(status) {
+                let _this = this;
+
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+
+                let _date = new Date();
+
+                let _time = _date.getTime();
+
+                let params = {
+                    "company": company,
+                    "list": [
+                        {
+                            "scode": 0,
+                            "val": "string"
+                        }
+                    ],
+                    "period": _this.getPeriod(),
+                    "spcode": '4',
+                    "version": _this.modelName,
+                    "versioncode": _time,
+                    "status": status
+                };
+                params.list = _this.getSaveData();
+
+                if(status === '1'){
+                    let _code = _this.selectOptions.filter((o) => {
+                        return o.value === _this.selectValue;
+                    });
+                    params.versioncode = _code[0].lable;
+                }
+
+                predictiveModelSave(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.dialogVisible = false;
+                        _this.changeDialogVisible = false;
+
+                        this.getSelectOptions();
+                        this.selectValue =  _this.modelName;
+
+                        _this.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        })
+                    }
+                })
+            },
+            /**
+             * 模板重置
+             */
+            modelReset() {
+                this.getRealData();
+            },
+
+            /**
+             * 获取select options
+             */
+            getSelectOptions() {
+                let _this = this;
+                let _getters = _this.$store.getters,
+                    company = _getters.company;
+                let params = {
+                    company: company,
+                    period: _this.getPeriod(),
+                    spcode: '4'
+                };
+                getPredictiveModelSelect(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.selectOptions = res.data.data;
+                        _this.selectOptions.push({lable:'',value:''})
+                    }
+                })
+            },
+
+            /**
+             * 选择模板
+             */
+            modelChange(p) {
+                let _this = this;
+                let options = _this.selectOptions;
+                let option = options.filter((o) => {
+                    return o.value === p;
+                });
+                let vcode = option[0].lable;
+                _this.getRealData(vcode);
+            },
+
+            /**
+             * 获取要保存的data
+             */
+            getSaveData() {
+                let _this = this;
+                let _list = [];
+                let data = _this.allData;
+                for (let key in data) {
+                    let _data = data[key];
+                    for (let _key in _data) {
+                        let __data = _data[_key];
+                        if (__data.type === 's') {
+                            let emptyData = {
+                                scode: parseInt(__data.nid),
+                                val: __data.value
+                            };
+                            _list.push(emptyData);
+                        }
+                    }
+                }
+                return _list;
+            },
         }
     }
 </script>
 
 <style scoped>
+
+    .top-button {
+        height: 50px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        margin-right: 20px;
+        padding: 0 10px;
+        align-items: center;
+        border-radius: 10px;
+        background-color: #D3DCE6 ;
+        display: flex;
+        justify-content: flex-end;
+    }
     .content-all {
         position: relative;
         margin-top: 50px;
@@ -682,5 +756,25 @@
         position: absolute;
         top: 1050px;
         width: 100%;
+    }
+    .button-right-select{
+        margin-right: 10px;
+    }
+    .model-name {
+        display: flex;
+        margin: 30px 20px;
+    }
+
+    .model-name-title {
+        width: 160px;
+        align-items: center;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+    }
+
+    .model-button {
+        display: flex;
+        justify-content: flex-end;
     }
 </style>
