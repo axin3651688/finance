@@ -1820,7 +1820,7 @@ export default {
      * @param pagination
      * @returns 结果返回｛data_list: [...], total: ..｝
      */
-    findAll(currentPage, pageSize, pagination) { debugger
+    findAll(currentPage, pageSize, pagination) { //debugger
       var _this = this;
       //getters 数据
       let getters = _this.$store.getters;
@@ -1834,7 +1834,7 @@ export default {
           pageNum: currentPage,
           pageSize: pageSize
         }
-      }).then(result => {  debugger
+      }).then(result => {  //debugger
         if (result.status == 200) { 
           if(result.data.data){
             const data = result.data.data;

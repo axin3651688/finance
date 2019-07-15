@@ -38,6 +38,8 @@
 </template>
 
 <script>
+    // Qs是axios里面自带的
+    import Qs from 'qs'
     import treeTable from "../../publicRiskControl/treeTable/treeTable"
     import riskFeedReportComponent from './riskFeedReportComponent'
     import cwtPublicJS from "../mixin/cwtPublicJS"
@@ -788,14 +790,14 @@
             reportExportRequest(reportJSONData) {
                 let _this = this;
                 let _params = {
-                    jsonBean: reportJSONData,
+                    jsonBean: JSON.stringify(reportJSONData),
                     company: _this.company,
                     year: _this.getYear(),
                     month: _this.getMonth(),
                     text: _this.getInnerTextByClassName('report-title')
                 };
 
-                riskReportExport(_params).then((res) => {
+                riskReportExport(Qs.stringify(_params)).then((res) => {
                     //str是后台返回的文件名称 放在了response header里
                     let str = res.headers['content-disposition'];
                     // let fileName = decodeURI(str.substr(str.indexOf('=')));

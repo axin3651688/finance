@@ -112,16 +112,23 @@ export default {
             let me = this ;
             // 信息
             let $params = me.$store.state.prame.command; 
+            let dd = "人员管理" ;
             // 以 '.' 小数点分割成数组
             let cc = file.name.split('.') ; 
             // 选中的导入模板名称
             me.formInline.templateB = cc[0] ;
             // 判断模板名称是否匹配
-            if(cc[0] !== "人员管理") {
+            // if(cc[0] !== "人员管理") {
+            //     me.isName = false ;
+            //     me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
+            // } else {
+            //     me.isName = true ;
+            // }
+            if(cc[0].indexOf(dd) !== -1) {
+                me.isName = true ;
+            } else {
                 me.isName = false ;
                 me.$message({ message: "模板名称不匹配，请重新选择模板！", type: "warning" }) ;
-            } else {
-                me.isName = true ;
             }
             // 判断模板类型是否匹配
             if(cc[1] === 'xlsx' || cc[1] === 'xls') {

@@ -107,7 +107,6 @@
              * 获取所有的市企选项
              */
             getAllIndustry() {
-                debugger;
                 let _this = this;
                 let param = 'SQY';
                 getAllHYZB(param).then((res) => {

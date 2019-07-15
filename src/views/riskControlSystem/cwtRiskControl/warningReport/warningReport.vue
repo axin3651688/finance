@@ -32,12 +32,8 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}{{item.sname}}为 {{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比
-                        <template v-if="item.yzgzxc>=0">多出</template>
-                        <template v-if="item.yzgzxc<0">相差</template>
-                        {{setNumberToStander(item.yzgzxc)}}个百分点，与平均值相比
-                        <template v-if="item.ypjzxc>=0">多出</template>
-                        <template v-if="item.ypjzxc<0">相差</template>
+                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比<template v-if="item.yzgzxc>=0">多出</template><template v-if="item.yzgzxc<0">相差</template>
+                        {{setNumberToStander(item.yzgzxc)}}个百分点，与平均值相比<template v-if="item.ypjzxc>=0">多出</template><template v-if="item.ypjzxc<0">相差</template>
                         {{setNumberToStander(item.ypjzxc)}}
                     </p>
                 </template>
@@ -76,11 +72,9 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}，{{item.sname}}为 {{setNumberToStander(item.val)}}。处于行业
-                        {{item.grade}} 水平，与行业值
-                        {{setNumberToStander(item.val_1)}} 相比
-                        <template v-if="item.cz>=0">多出</template>
-                        <template v-if="item.cz<0">相差</template>
+                        {{companyname}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业
+                        {{item.grade}}水平，与行业值
+                        {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>
                         {{setNumberToStander(item.cz)}}个百分点。
                     </p>
                 </template>
