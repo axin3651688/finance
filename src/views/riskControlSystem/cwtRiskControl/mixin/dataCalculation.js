@@ -89,7 +89,7 @@ export default {
                         let __data = _data[_key];
                         if (__data.nid === _c) {
                             let _n = _this.dataFormula(_c, _o);
-                            __data.value = _this.numberFormatter(_n);
+                            __data.value = __data.type === 'l' ? _n.toFixed(2) : _this.numberFormatter(_n);
                         }
                     }
                 }
@@ -104,7 +104,7 @@ export default {
                 for (let y in i) {
                     let z = i[y];
                     if (z.type === 's' || z.type === 'fc') {
-                        _o[z.nid] = parseInt(z.value);
+                        _o[z.nid] = z.value * 1;
                     }
                 }
             }
@@ -372,7 +372,11 @@ export default {
                     //净资产收益率(%)
                     let zchj3 = _o['152'] + _o['158'] + _o['159'] + _o['153'] + _o['160'] + _o['161'] + _o['162'] + _o['154'] + _o['155'] + _o['163'] + _o['164'] + _o['149'];
                     let zzcjlv1 = _o['172'] / ((_o['165'] + zchj3) / 2) * 100;
-                    let qycs1 = 1 / (1 - (((_o['261'] + _o['266']) / 2) / ((_o['165'] + zchj3) / 2)));
+
+                    //没有266科目
+                    // let qycs1 = 1 / (1 - (((_o['261'] + _o['266']) / 2) / ((_o['165'] + zchj3) / 2)));
+                    let qycs1 = 1 / (1 - (((_o['261']) / 2) / ((_o['165'] + zchj3) / 2)));
+
                     _x = zzcjlv1 * qycs1;
                     break;
                 case '157':
