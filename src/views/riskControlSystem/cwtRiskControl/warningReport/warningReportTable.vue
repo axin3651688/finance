@@ -28,7 +28,7 @@
 
                                     <template v-if="scope.row[scope.column.property]">
                                         <template v-for="(com, index) of scope.row[scope.column.property].split(',')">
-                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com.split('-')[1])">{{com.split('-')[0]}}</a>
+                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com.split('-')[0]}}</a>
                                         </template>
                                     </template>
 

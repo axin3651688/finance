@@ -69,12 +69,15 @@
              */
             company(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             year(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             month(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             }
         },
         data() {
@@ -278,8 +281,12 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
-                                if (company !== userCompany) {
-                                    data.operation = '1-查看'
+                                if (data.scode !== userCompany) {
+                                    if (data.status === '未反馈') {
+                                        data.operation = '3-提醒';
+                                    } else {
+                                        data.operation = '1-查看';
+                                    }
                                 }
                                 let operations = data.operation.split(',');
                                 for (let i = 0, len = operations.length; i < len; i++) {
@@ -471,6 +478,7 @@
                             riskModel_riskdetaildata.riskname = item.riskname;
                             riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
+                            riskModel_riskdetaildata.riskcolor = item.riskcolor;
                             riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata.risk_feed_content = item.risk_feed_content;
@@ -508,6 +516,7 @@
                     riskdetaildata:
                         {
                             riskname: '',
+                            riskcolor: '',
                             risktype: '',
                             risklevel: '',
                             riskcompany: '',
@@ -592,7 +601,8 @@
                         });
                     } else {
                         _this.$message({
-                            message: "提醒失败！请联系开发人员"
+                            message: res.data.msg,
+                            type: "error"
                         })
                     }
                 });
@@ -817,6 +827,7 @@
                         elink.click();
                         document.body.removeChild(elink);
                     }
+                    _this.$message({ type: 'success', message: '导出成功!' });
                 })
             },
 

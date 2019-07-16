@@ -70,7 +70,7 @@
             publicRiskSelect,
             riskFeedBackComponent
         },
-        props:{
+        props: {
             isPeriodNow: Boolean
         },
         computed: {
@@ -214,7 +214,7 @@
                     this.dialogState = 'tx';
                     this.noticeSendEvent(scope, it);
                 }
-            },  
+            },
 
             /**
              * 获取当前弹出框title
@@ -238,9 +238,9 @@
                     let sqlList = res.data['sqlList'];
                     if (sqlList.length > 0) {
                         sqlObj = sqlList.filter((item) => {
-                            if(_this.isPeriodNow){
+                            if (_this.isPeriodNow) {
                                 return item.id === '001_1'
-                            }else{
+                            } else {
                                 return item.id === '001'
                             }
                         })
@@ -366,6 +366,7 @@
 
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
+                _dialogData.riskcolor = data.riskcolor;
                 _dialogData.riskid = data.scode;
                 _dialogData.rownum = data.rownum;
                 _dialogData.isFeeded = data['backstate'] === '已反馈';
@@ -373,7 +374,6 @@
 
                 //todo  dialogState 状态改变
                 // this.dialogState = '';
-
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
@@ -464,11 +464,11 @@
                             message: "退回成功",
                             type: "success"
                         });
-                    } else if(res.data.code === '0'){
+                    } else if (res.data.code === '0') {
                         _this.$message({
                             message: res.data.msg
                         });
-                    }else {
+                    } else {
                         _this.$message({
                             message: "退回失败！请联系开发人员"
                         })
@@ -499,14 +499,14 @@
                 return {
                     // "riskReportStateDtos": [
                     //     {
-                            "company": company,
-                            "nrelateid": nRelateId,
-                            "period": period,
-                            // "scompanyname": user.companyName,
-                            "sfeedbacksuser": user.userName,
-                            // "sfeedbacksusername": user.trueName,
-                            "sisfeedback": "2"
-                            // "sriskname": rowData.riskname
+                    "company": company,
+                    "nrelateid": nRelateId,
+                    "period": period,
+                    // "scompanyname": user.companyName,
+                    "sfeedbacksuser": user.userName,
+                    // "sfeedbacksusername": user.trueName,
+                    "sisfeedback": "2"
+                    // "sriskname": rowData.riskname
                     //     }
                     // ],
                     // "users": [
@@ -533,7 +533,7 @@
                             message: "成功提醒批示人员尽快反馈",
                             type: "success"
                         });
-                    }else if(res.data.code === '0'){
+                    } else if (res.data.code === '0') {
                         _this.$message({
                             message: res.data.msg
                         });
@@ -569,12 +569,12 @@
                 return {
                     // "riskReportStateDtos": [
                     //     {
-                            "company": company,
-                            "nrelateid": nRelateId,
-                            "period": period,
-                            "sfeedbacksuser": user.userName,
-                            "sisfeedback": "0",
-                        // }
+                    "company": company,
+                    "nrelateid": nRelateId,
+                    "period": period,
+                    "sfeedbacksuser": user.userName,
+                    "sisfeedback": "0",
+                    // }
                     // ]
                 };
             },

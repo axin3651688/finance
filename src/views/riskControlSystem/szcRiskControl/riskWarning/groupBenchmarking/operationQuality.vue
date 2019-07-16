@@ -5,17 +5,17 @@
         </div>
         <div v-if="mainContent">
             <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeLeft" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="12">
                     <div class="opera_radar">
-                        <groupRadar :chartData.sync="chartDataRadar"></groupRadar>
+                        <groupRadar :chartData.sync="chartDataRadar" style="height:80%;"></groupRadar>
                     </div>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                     <div v-for="(item,index) in gaugeRight" :key="index">
                         <groupGaugePublic :chartData.sync="item"></groupGaugePublic>
                     </div>
@@ -216,6 +216,7 @@
 </script>
 <style lang="scss" scoped>
     .opera_radar {
-        margin-top: 40%;
+        // margin-top: 40%;
+        height: 800px;
     }
 </style>

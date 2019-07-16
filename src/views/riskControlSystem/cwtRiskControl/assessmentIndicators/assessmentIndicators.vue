@@ -2,11 +2,19 @@
     <div>
         <div class="all-echarts-content">
 
-            <el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>
-            <!--<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>-->
-            <el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>
-
-            <el-row v-if="showPageFlag === '1'">
+            <!--<el-button type="primary" @click="pageStyleChange('1')">样式一</el-button>-->
+            <!--&lt;!&ndash;<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>&ndash;&gt;-->
+            <!--<el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>-->
+            <div class="top-tip">
+                <div class="tip-tip">
+                    tips
+                </div>
+                <div class="tip-loop" v-for="(item, index) in topTip">
+                    <div class="tip-color" :style="{'background-color':item.color, width:'14px', height: '12px'}"></div>
+                    <div class="tip-text">{{item.pjname}}</div>
+                </div>
+            </div>
+            <el-row>
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -20,7 +28,7 @@
 
 
                         <div class="left-content-all">
-                            <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
+                            <div class="left-content" v-for="(left, key, index) of item['echartsleftdata']">
                                 <div class="left-content-num" :style="{'background-color':left.color, width:'14px'}">
 
                                 </div>
@@ -58,7 +66,7 @@
                 </el-col>
             </el-row>
 
-            <el-row v-else>
+            <el-row v-if="false">
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -96,7 +104,7 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapGetters, mapActions} from "vuex"
     import cwtPublicJS from '../mixin/cwtPublicJS'
     import {getAssessmentIndicatorsData} from '~api/cwtRiskControl/riskControlRequest'
     import echartsComponent from './echartsComponent'
@@ -129,16 +137,26 @@
             return {
                 echartsData: [],
                 dataChange: false,
-                showPageFlag: '1'
+                showPageFlag: '1',
+                topTip: []
             }
         },
         created() {
             this.showPageFlag = 1;
+            this.ShowDims({
+                company: true,
+                year: true,
+                month: true,
+                day: false,
+                conversion: false
+            });
             this.getAllData();
         },
         mounted() {
+            this.doNotShowDim(true);
         },
         methods: {
+            ...mapActions(["ShowDims"]),
             /**
              * 获取所有数据
              */
@@ -179,8 +197,9 @@
                     let _leftData = item['echartsleftdata'];
                     let _rightData = item['echartsrightdata'][0];
 
-                    for(let key in _rightData){
-                        if(key === 'color'){
+                    _this.topTip = [];
+                    for (let key in _rightData) {
+                        if (key === 'color') {
                             _rightData[key] = '#' + _rightData[key];
                         }
                     }
@@ -190,6 +209,7 @@
 
                     _leftData.forEach((_data) => {
                         let pjObj = {};
+                        let tipObj = {};
                         for (let key in _data) {
                             if (key === 'color') {
                                 _data[key] = '#' + _data[key];
@@ -198,34 +218,61 @@
                             if (key === 'pjname' || key === 'val') {
                                 pjObj[key] = _data[key];
                             }
+                            if (key === 'pjname' || key === 'color') {
+                                tipObj[key] = _data[key];
+                            }
                         }
                         pjArray.push(pjObj);
-                    });
+                        _this.topTip.push(tipObj)
 
-                    if (_this.showPageFlag === '1') {
+                    });
+                    let _zb = item.echartsrightdata['zb'];
+                    if (_this.showPageFlag == '1') {
                         let newArray = [],
                             ii = '';
-                        pjArray.forEach((item, index) => {
+                        if (_zb === '31') {
+                            pjArray.forEach((item, index) => {
+                                let emptyVlaue = {
+                                    pjname: item.pjname,
+                                    value: ''
+                                };
 
-                            let emptyVlaue = {
-                                pjname: item.pjname,
-                                value: ''
-                            };
+                                if (index === 0) {
+                                    emptyVlaue.value = ' V < ' + item.val;
+                                } else if (index === 1) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 2) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 3) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 4) {
+                                    emptyVlaue.value = ' V >= ' + ii;
+                                }
+                                ii = item.val;
+                                newArray.push(emptyVlaue)
+                            });
+                        } else {
+                            pjArray.forEach((item, index) => {
+                                let emptyVlaue = {
+                                    pjname: item.pjname,
+                                    value: ''
+                                };
 
-                            if (index === 0) {
-                                emptyVlaue.value = ' V >= ' + item.val;
-                            } else if (index === 1) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 2) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 3) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 4) {
-                                emptyVlaue.value = ' V <= ' + item.val;
-                            }
-                            ii = item.val;
-                            newArray.push(emptyVlaue)
-                        });
+                                if (index === 0) {
+                                    emptyVlaue.value = ' V >= ' + item.val;
+                                } else if (index === 1) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 2) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 3) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 4) {
+                                    emptyVlaue.value = ' V < ' + ii;
+                                }
+                                ii = item.val;
+                                newArray.push(emptyVlaue)
+                            });
+                        }
 
                         _leftData.forEach((_data, index) => {
                             for (let key in _data) {
@@ -320,5 +367,34 @@
         padding-right: 10px;
         text-align: right;
         font-family: monospace;
+    }
+
+    .top-tip {
+        display: flex;
+        height: 50px;
+        background-color: #D3DCE6;
+        margin-top: 20px;
+        border-radius: 10px;
+        padding-left: 20px;
+        align-items: center;
+    }
+
+    .tip-tip {
+        font-weight: 700;
+        margin-right: 20px;
+    }
+
+    .tip-loop {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+    }
+
+    .tip-color {
+        margin-right: 2px;
+    }
+
+    .tip-text {
+
     }
 </style>

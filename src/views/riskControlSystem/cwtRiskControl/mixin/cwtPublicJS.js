@@ -1,22 +1,41 @@
 import {findThirdPartData} from "~api/interface";
-import {mapGetters} from "vuex"
+import {mapGetters, mapActions} from "vuex"
+
 export default {
 
     computed: {
-        ...mapGetters(["device", "user","showDims"])
+        ...mapGetters(["device", "user", "showDims"])
+
     },
 
     methods: {
+        ...mapActions(["ShowDims"]),
 
         /**
          * 页面上的维度展示是否
          */
-        doNotShowDim(isShow){
+        doNotShowDim(isShow) {
             let _this = this;
-            let _showDims = _this.showDims;
-            _showDims.company= isShow;
-            _showDims.month= isShow;
-            _showDims.year= isShow;
+
+
+            // this.ShowDims({
+            //     company:true,
+            //     year:true,
+            //     month:true,
+            //     day:false,
+            //     conversion:false
+            // });
+            _this.ShowDims({
+                company: isShow,
+                year: isShow,
+                month: isShow,
+            });
+
+
+            // let _showDims = _this.showDims;
+            // _showDims.company= isShow;
+            // _showDims.month= isShow;
+            // _showDims.year= isShow;
         },
 
 
@@ -108,7 +127,7 @@ export default {
          */
         getDateNowYMD(data) {
 
-            if(data === ''){
+            if (data === '') {
                 return '';
             }
 
@@ -116,7 +135,6 @@ export default {
                 data = data.replace(/-/g, '/');
                 data = new Date(data);
             }
-
 
 
             let date = data || new Date();
@@ -204,9 +222,9 @@ export default {
         setNumberToStander(num, isNotNumber) {
             if (!isNotNumber) {
 
-                if(typeof num === 'string'){
-                    if(num.indexOf(',') !== -1){
-                        num = num.replace(/,/g,'');
+                if (typeof num === 'string') {
+                    if (num.indexOf(',') !== -1) {
+                        num = num.replace(/,/g, '');
                     }
                 }
                 if (num && num !== null) {
@@ -215,8 +233,46 @@ export default {
                     let valueArr = str.split(".");
                     if (valueArr.length === 1) {
                         str = str + ".00";
-                    }else{
-                        if(valueArr[1].length === 1){
+                    } else {
+                        if (valueArr[1].length === 1) {
+                            valueArr[1] = valueArr[1] + '0';
+                            str = valueArr[0] + '.' + valueArr[1]
+                        }
+                    }
+                    return str;
+                } else if (num === 0) {
+                    return '0.00';
+                } else {
+                    return "";
+                }
+            } else {
+                return num;
+            }
+        },
+
+
+        /**
+         * 设置数据格式为标准格式
+         * @param num
+         * @param isNotNumber
+         */
+        setNumberToStanderABS(num, isNotNumber) {
+            if (!isNotNumber) {
+
+                if (typeof num === 'string') {
+                    if (num.indexOf(',') !== -1) {
+                        num = num.replace(/,/g, '');
+                    }
+                }
+                if (num && num !== null) {
+                    num = Math.round(num * 100) / 100;
+                    num = Math.abs(num);
+                    let str = num.toLocaleString();
+                    let valueArr = str.split(".");
+                    if (valueArr.length === 1) {
+                        str = str + ".00";
+                    } else {
+                        if (valueArr[1].length === 1) {
                             valueArr[1] = valueArr[1] + '0';
                             str = valueArr[0] + '.' + valueArr[1]
                         }

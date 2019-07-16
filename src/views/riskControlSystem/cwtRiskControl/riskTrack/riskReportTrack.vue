@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="pageRefresh">
         <tree-table
                 border
                 :data.sync="treeData"
@@ -38,6 +38,7 @@
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
     import {riskReportExport} from '~api/cwtRiskControl/riskControlRequest'
+    import Qs from 'qs'
 
     export default {
         name: "riskReportTrack",
@@ -56,12 +57,15 @@
              */
             company(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             year(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             },
             month(newValue, oldValue) {
                 this.getReportData();
+                this.reportBackDetail = false;
             }
         },
         props: {
@@ -162,6 +166,7 @@
                     },
                 },
                 dataFresh: false,
+                pageRefresh: true
 
 
             }
@@ -455,6 +460,7 @@
                             riskModel_riskdetaildata.riskname = item.riskname;
                             riskModel_riskdetaildata.risktype = item.risktype;
                             riskModel_riskdetaildata.risklevel = item.risklevel;
+                            riskModel_riskdetaildata.riskcolor = item.riskcolor;
                             riskModel_riskdetaildata.riskcompany = item.companyname;
                             riskModel_riskdetaildata.risksbuser = item.risksbuser;
                             riskModel_riskdetaildata['riskid'] = item.nid;
@@ -506,6 +512,7 @@
                             riskname: '',
                             risklevel: '',
                             riskcompany: '',
+                            riskcolor:'',
                             risksbuser: '',
                             risk_pg_gs_cs_jy: [
                                 {
@@ -740,13 +747,13 @@
             reportExportRequest(reportJSONData) {
                 let _this = this;
                 let _params = {
-                    jsonBean: reportJSONData,
+                    jsonBean: JSON.stringify(reportJSONData),
                     company: _this.company,
                     year: _this.getYear(),
                     month: _this.getMonth(),
                     text: _this.getInnerTextByClassName('report-title')
                 };
-                riskReportExport(_params).then((res) => {
+                riskReportExport(Qs.stringify(_params)).then((res) => {
                     // if (res.data.code === 200) {
                     let str = res.headers['content-disposition'];
                     // let fileName = decodeURI(str.substr(str.indexOf('=')));
@@ -767,7 +774,7 @@
                         elink.click();
                         document.body.removeChild(elink);
                     }
-                    // }
+                    _this.$message({ type: 'success', message: '导出成功!' });
                 })
             },
             /**

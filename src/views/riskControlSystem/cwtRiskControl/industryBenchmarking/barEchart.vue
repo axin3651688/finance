@@ -108,7 +108,6 @@
                                     }
                                 },
                                 color: function (params){
-                                    debugger;
 
                                     if(params.name === '天津市' || params.name === '食品集团'){
                                         return '#FF9900'

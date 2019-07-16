@@ -177,7 +177,7 @@
                         return "background-color:#EEB422";
                     }else if(row.columnIndex >= 7 && row.columnIndex < 9) {
                         return "background-color:#FFDD00";
-                    }else if(row.columnIndex >= 9 && row.columnIndex < 11) {
+                    }else if(row.columnIndex >= 9 && row.columnIndex < 12) {
                         return "background-color:#EF4D4D";
                     }
                 }

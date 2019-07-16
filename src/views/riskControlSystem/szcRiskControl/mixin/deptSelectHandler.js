@@ -45,11 +45,26 @@ export default {
                 company = storeParams.company;
             queryDeparts(company).then(res => {
                 if (res.data.code == 200) {
+                    me.sortByPropty(res.data.data, "scode");
                     me.selectConfig.options = res.data.data;
                     //上次选择的数据。
                     me.selectConfig.currentSelect = me.selectItem;
                 } else if (res.data.code == 1001) {
                     me.selectConfig.options = [];
+                }
+            });
+        },
+        /**
+         * 数组排序
+         */
+        sortByPropty(data, prop) {
+            data = data.sort(function(a, b) {
+                if (a[prop] > b[prop]) {
+                    return 1
+                } else if (a[prop] < b[prop]) {
+                    return -1;
+                } else {
+                    return 0;
                 }
             });
         },
@@ -259,11 +274,27 @@ export default {
         setOperations(item) {
             let me = this,
                 userName = me.$store.getters.user.user.userName,
+                company = me.$store.getters.company,
                 ops01 = [{
                     "id": "1",
                     "btnShow": true,
                     "text": "查看"
                 }],
+                ops02 = [{
+                    "id": "3",
+                    "btnShow": true,
+                    "text": "提醒"
+                }];
+            if (userName == item.suser) {
+                let retBtn = {
+                    "id": "2",
+                    "btnShow": true,
+                    "text": "退回"
+                }
+                ops01.push(retBtn);
+                // ops02.push(retBtn2);
+            }
+            if (company == item.scode) {
                 ops02 = [{
                         "id": "0",
                         "btnShow": true,
@@ -275,13 +306,6 @@ export default {
                         "text": "提醒"
                     }
                 ];
-            if (userName == item.suser) {
-                let retBtn = {
-                    "id": "2",
-                    "btnShow": true,
-                    "text": "退回"
-                }
-                ops01.push(retBtn);
             }
             if (item.sstate == "已批示") {
                 item.operation = ops01;

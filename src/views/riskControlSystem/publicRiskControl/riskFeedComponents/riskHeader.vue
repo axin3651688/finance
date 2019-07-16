@@ -41,7 +41,7 @@
             <el-col :span="4" style="padding-right: 0">
                 <div class="top-form-contents" style="height: 40px;justify-content: space-around;">
                     <span style="min-width: 70px;width: 70px">风险等级：</span>
-                    <div class="risk-level">
+                    <div class="risk-level" :style="{background: this.dialogData['riskcolor']}">
                         <span style="color: #606266">{{this.formData['risklevel'].text}}</span>
                     </div>
                 </div>
@@ -56,6 +56,7 @@
         components: {},
         props: {
             dialogHeaderData: Object,
+            dialogData: Object,
             dataChanged: Boolean
         },
         data() {

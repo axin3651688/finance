@@ -184,7 +184,7 @@
                     params:{
                         company:company,
                         period:period,
-                        indicator:"'19','20','53','120','21','121','133'",
+                        indicator:"qypj",
                         fact:'B',
                         year:year,
                         month:monthStr,

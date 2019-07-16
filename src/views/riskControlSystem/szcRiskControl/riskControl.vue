@@ -198,6 +198,10 @@ export default {
         globalparam_all().then(res => {
             if(res.data.code == 200){
                 let resData = res.data.data[0];
+                let judgeParams = {
+                    id:"treeTable",
+                    sqlId:"103"
+                };
                 // me.globalparam = resData;
                 let url = "/cnbi/json/source/tjsp/szcJson/risk/riskTreeTable.json";
                 if(resData.reporttype == 0){
@@ -209,12 +213,12 @@ export default {
                     me.firstFlag = true;
                     me.secondFlag = false;
                     url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+                    judgeParams = {
+                        id:"stable",
+                        sqlId:'101'
+                    };
                 }
                 let selectItem = me.selectItem;
-                let judgeParams = {
-                    id:"treeTable",
-                    sqlId:"103"
-                };
                 me.axios.get(url).then(res => {
                     if(res.data.code == 200) {
                         me.columns = res.data.columns;
@@ -362,7 +366,7 @@ export default {
                     //如果没有选择部门默认是第一个。
                     if(!params.departId){
                         let options = me.selectConfig.options;
-                        params.departId = item? item:(options[0]? options[0]:"01")
+                        params.departId = item? item:(options[0]? options[0].scode:"01")
                     }
                     globalparam_all().then(res => {
                         if(res.data.code == 200){
@@ -431,14 +435,7 @@ export default {
          * @author szc 2019年5月24日11:08:51
          */
         setOperationBtns (data) {
-            let me = this,userName = me.$store.getters.user.user.userName,btns01 = [
-                {
-                    "id": "1",
-                    "btnShow": true,
-                    "text": "查看"
-                }
-            ],
-            btns02 = [
+            let me = this,userName = me.$store.getters.user.user.userName,btns02 = [
                 {
                     "id": "0",
                     "btnShow": true,
@@ -452,6 +449,13 @@ export default {
             ];
             data.forEach(item => {
                 if(item.psztid == "1"){
+                    let btns01 = [
+                        {
+                            "id": "1",
+                            "btnShow": true,
+                            "text": "查看"
+                        }
+                    ];
                     if(item.sinstructionsuser == userName){
                         let itemBtn = {
                             "id": "2",
@@ -636,9 +640,9 @@ export default {
                 let groups = formConfig.groups,itemData = row,psztid = row.psztid;
                 formConfig.rowData = row;
                 if(psztid == "1"){
-                    me.dialogTitle = me.fixedTitle + "--【已批示】"
+                    me.dialogTitle = row.cqcs? "关于【" + row.cqcs + "】的批示" + "--【已批示】":me.fixedTitle + "--【已批示】";
                 }else {
-                    me.dialogTitle = me.fixedTitle;
+                    me.dialogTitle = row.cqcs? "关于【" + row.cqcs + "】的批示":me.fixedTitle;
                 }
                 for(let i = 0;i < groups.length;i ++){
                     let groupItem = groups[i];
@@ -762,6 +766,13 @@ export default {
                     downloadElement.click(); // 点击下载
                     document.body.removeChild(downloadElement); // 下载完成移除元素
                     window.URL.revokeObjectURL(href);
+                    //导出提示。
+                    me.$message({
+                        message:"导出成功！",
+                        type:"success"
+                    });
+                }else {
+                    me.$message.error(res.data.msg || "导出失败！");
                 }
             });
         },

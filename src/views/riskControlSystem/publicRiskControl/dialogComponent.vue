@@ -13,6 +13,7 @@
                     <!--弹出层头部-->
                     <risk-header
                             :dialogHeaderData="dialogHeaderData"
+                            :dialogData="dialogData"
                             :dataChanged="dataChanged"
                     >
                     </risk-header>

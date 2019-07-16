@@ -20,9 +20,9 @@ export default {
                         type: 'shadow'
                     }
                 },
-                legend: {
-                    // data: ['2011年', '2012年']
-                },
+                // legend: {
+                //     // data: ['2011年', '2012年']
+                // },
                 grid: {
                     left: '3%',
                     right: '4%',
@@ -88,8 +88,8 @@ export default {
                         seriesData.push(item.score);
                     }
                 });
-                me.receive.yAxis.data = yDatas;
-                me.receive.series[0].data = seriesData;
+                me.receive.yAxis.data = yDatas.reverse();
+                me.receive.series[0].data = seriesData.reverse();
             }
         }
     },
