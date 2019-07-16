@@ -215,7 +215,6 @@
              * @param item
              */
             selectChanged(item) {
-                debugger;
                 this.selectedItem = item;
                 this.getRiskTrackData(item);
             },
@@ -340,7 +339,6 @@
              * @param data
              */
             dialogDataFormat(data) {
-                debugger;
                 let _dialogData = this.dialogData;
                 _dialogData.riskname = data.riskname;
                 _dialogData.riskid = data.scode;

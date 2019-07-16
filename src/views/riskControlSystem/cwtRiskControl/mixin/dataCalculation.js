@@ -491,6 +491,7 @@ export default {
 
             _x = typeof _x === 'number' ? _x : 0;
 
+            _x = isNaN(_x) ? 0 : _x;
             return _x;
         },
     }

@@ -374,7 +374,6 @@
 
                 //todo  dialogState 状态改变
                 // this.dialogState = '';
-                debugger;
                 let contentHeader = _dialogData.contentHeader,
                     contentMiddle = _dialogData.contentMiddle,
                     contentFoot = _dialogData.contentFoot;
