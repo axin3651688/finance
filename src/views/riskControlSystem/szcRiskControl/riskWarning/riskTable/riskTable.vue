@@ -160,7 +160,6 @@
                 }
             },
             colStyleHandler (row) {
-                debugger;
                 let me = this;
                 if(row && row.color){
                     if(row.color.indexOf("#") != -1){
