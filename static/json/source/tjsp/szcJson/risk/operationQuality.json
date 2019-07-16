@@ -6,7 +6,7 @@
             "id": "sname",
             "type": "string",
             "text": "指标名称",
-            "align": "center",
+            "align": "left",
             "width": "180"
         },
         {
