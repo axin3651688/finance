@@ -6,7 +6,7 @@
             <!--&lt;!&ndash;<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>&ndash;&gt;-->
             <!--<el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>-->
 
-            <el-row >
+            <el-row>
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -20,7 +20,7 @@
 
 
                         <div class="left-content-all">
-                            <div class="left-content" v-for="(left, key, index) of item.echartsleftdata">
+                            <div class="left-content" v-for="(left, key, index) of item['echartsleftdata']">
                                 <div class="left-content-num" :style="{'background-color':left.color, width:'14px'}">
 
                                 </div>
@@ -135,11 +135,11 @@
         created() {
             this.showPageFlag = 1;
             this.ShowDims({
-                company:true,
-                year:true,
-                month:true,
-                day:false,
-                conversion:false
+                company: true,
+                year: true,
+                month: true,
+                day: false,
+                conversion: false
             });
             this.getAllData();
         },
@@ -188,8 +188,8 @@
                     let _leftData = item['echartsleftdata'];
                     let _rightData = item['echartsrightdata'][0];
 
-                    for(let key in _rightData){
-                        if(key === 'color'){
+                    for (let key in _rightData) {
+                        if (key === 'color') {
                             _rightData[key] = '#' + _rightData[key];
                         }
                     }
@@ -211,11 +211,10 @@
                         pjArray.push(pjObj);
                     });
 
-                    if (_this.showPageFlag === '1') {
+                    if (_this.showPageFlag == '1') {
                         let newArray = [],
                             ii = '';
                         pjArray.forEach((item, index) => {
-
                             let emptyVlaue = {
                                 pjname: item.pjname,
                                 value: ''
