@@ -132,24 +132,24 @@
                                 风险追踪
                             </div>
                             <div class="schedule-list">
-                                <template v-for="item in riskScheduleData">
+                                <template v-for="(item, key, index) in riskScheduleData">
                                     <div class="risk-content">
                                         <div class="risk-num">
                                             {{item.risk_count}}
                                         </div>
                                         <div class="risk-name">
-                                            <span class="title-left">名称 :</span>
+                                            <span class="title-left">{{numberToChineseString(index + 1)}}、名称 :</span>
                                             <span class="content-right">{{item.risk_name}}</span>
                                         </div>
                                         <div class="risk-state">
-                                            <span class="title-left">状态 :</span>
+                                            <span class="title-left need-more-right">状态 :</span>
                                             <span
                                                     class="content-right"
                                                     :style="{background:item.state.substr(0,1) === '未' ? 'red' : 'green'}"
                                             >{{item.state}}</span>
                                         </div>
                                         <div class="risk-content">
-                                            <span class="title-left">内容 :</span>
+                                            <span class="title-left need-more-right">内容 :</span>
                                             <span class="content-right">{{item.content}}</span>
                                         </div>
                                     </div>
@@ -536,5 +536,9 @@
         /*background: red;*/
         padding: 0 12px;
         border-radius: 10px;
+    }
+    /*.risk-state */
+    .need-more-right{
+        margin-left: 40px;
     }
 </style>

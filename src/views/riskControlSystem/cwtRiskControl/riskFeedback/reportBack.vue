@@ -828,6 +828,7 @@
                         elink.click();
                         document.body.removeChild(elink);
                     }
+                    _this.$message({ type: 'success', message: '导出成功!' });
                 })
             },
 
