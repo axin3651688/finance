@@ -77,8 +77,8 @@
                 treeData: [],
                 columns: [],
                 reportData: {
-                    reportcompanyname: '天津食品集团有限公司(合并)',
-                    reportperiod: '2019年3月',
+                    reportcompanyname: '',
+                    reportperiod: '',
                     reportDataContent: {
                         headerData: {
                             riskLevelCountArray: {
@@ -363,6 +363,7 @@
              * @author cwt
              */
             reportPageDataFormat(data) {
+                debugger;
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
@@ -480,12 +481,12 @@
 
                             riskModel_riskdetaildata_scheduleList.risk_ps.state = item['risk_ps_state'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.user_name = item['risk_ps_user_name'];
-                            riskModel_riskdetaildata_scheduleList.risk_ps.time = item['risk_ps_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_ps.time = item['risk_ps_time'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.content = item['risk_ps_content'];
 
                             riskModel_riskdetaildata_scheduleList.risk_fk.state = item['risk_fk_state'];
                             riskModel_riskdetaildata_scheduleList.risk_fk.user_name = item['risk_fk_user_name'];
-                            riskModel_riskdetaildata_scheduleList.risk_fk.time = item['risk_fk_user_name'];
+                            riskModel_riskdetaildata_scheduleList.risk_fk.time = item['risk_fk_time'];
                             riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'];
 
 

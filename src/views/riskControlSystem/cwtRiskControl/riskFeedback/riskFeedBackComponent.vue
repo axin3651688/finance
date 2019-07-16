@@ -267,7 +267,6 @@
              * 获取弹窗界面头部数据
              */
             getDialogHeaderData() {
-                debugger;
                 let data = this.dialogData;
                 this.dialogHeaderData = data.contentHeader.content;
             },
