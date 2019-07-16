@@ -56,9 +56,8 @@
         <div class="risk-back-dialog" v-if="dialogVisible">
             <el-dialog
                     :title="getDialogTitle()"
-                    width="950px"
+                    width="1160px"
                     top="70px"
-
                     @close="dialogCloseEvent"
                     :visible.sync="dialogVisible"
             >
@@ -116,11 +115,31 @@
                                     align="center"
                             >
                             </el-table-column>
-
                             <el-table-column
-                                    prop="position"
-                                    label="职位"
-                                    width="200"
+                                    prop="political"
+                                    label="政治面貌"
+                                    width="100"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="education"
+                                    label="教育程度"
+                                    width="100"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="profession"
+                                    label="专业职称"
+                                    width="100"
+                                    align="center"
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    prop="job"
+                                    label="现任职务"
+                                    width="100"
                                     align="center"
                             >
                             </el-table-column>
@@ -140,8 +159,6 @@
                             >
                             </el-pagination>
                         </div>
-
-
                     </div>
                 </div>
             </el-dialog>

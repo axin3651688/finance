@@ -5,24 +5,24 @@
                 <div class="top-form-contents">
                     <span style="min-width: 70px;width: 70px;font-size: 14px;color: #606266;font-weight: 700;">风险追踪：</span>
                     <div class="risk-track-content">
-                        <div class="schedule-list" v-for="(value, key) of formData" :key="key">
+                        <div class="schedule-list" v-for="(value, key, index) of formData" :key="key">
                             <div class="risk-content">
                                 <div class="risk-num">
                                     {{value.schedule}}
                                 </div>
                                 <div class="risk-name">
-                                    <span class="title-left">名称 :</span>
+                                    <span class="title-left">{{numberToChineseString(index + 1)}}、名称 :</span>
                                     <span class="content-right">{{value.text}}</span>
                                 </div>
                                 <div class="risk-state">
-                                    <span class="title-left">状态 :</span>
+                                    <span class="title-left need-more-right">状态 :</span>
                                     <span
                                             class="content-right"
                                             :style="{background:value.state.substr(0,1) === '未' ? 'red' : 'green'}"
                                     >{{value.state}}</span>
                                 </div>
                                 <div class="risk-content">
-                                    <span class="title-left">内容 :</span>
+                                    <span class="title-left need-more-right">内容 :</span>
                                     <span class="content-right">{{value.content}}</span>
                                 </div>
                             </div>
@@ -177,5 +177,8 @@
         width: 100%;
         padding: 0 0 12px 12px;
         border-radius: 4px;
+    }
+    .need-more-right{
+        margin-left: 40px;
     }
 </style>

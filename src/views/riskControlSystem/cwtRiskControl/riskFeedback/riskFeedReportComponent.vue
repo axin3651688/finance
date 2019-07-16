@@ -182,6 +182,7 @@
         <show-personnel-list
                 :personnelListShow="personnelListShow"
                 @personSureBtnClicked="personSureBtnClicked"
+                @publicHandler="publicHandler"
         >
         </show-personnel-list>
 
@@ -455,6 +456,9 @@
             handleCheckedChange() {
                 this.personnelListShow = !this.personnelListShow;
             },
+            publicHandler(){
+                this.personnelListShow = false;
+            }
 
         }
     }

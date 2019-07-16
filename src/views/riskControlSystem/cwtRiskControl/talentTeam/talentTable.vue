@@ -20,7 +20,18 @@
                             :width="item.width"
                     >
                         <template slot-scope="scope">
-                            {{ scope.row[scope.column.property] }}
+                            <template v-if="scope.row[scope.column.property] === '合计'">
+                                <div style="text-align: center; font-weight: 700">
+                                    {{ scope.row[scope.column.property] }}
+                                </div>
+
+                            </template>
+                            <template v-else-if="item.id  === 'ratio'">
+                                {{ setNumberToStander(scope.row[scope.column.property]) }}
+                            </template>
+                            <template v-else>
+                                {{ scope.row[scope.column.property] }}
+                            </template>
                         </template>
                     </el-table-column>
                 </template>
@@ -45,8 +56,10 @@
 </template>
 
 <script>
+    import cwtPublicJS from "../mixin/cwtPublicJS"
     export default {
         name: "talentTable",
+        mixins: [cwtPublicJS],
         components: {},
         props: {
             columns: Array,
