@@ -766,6 +766,13 @@ export default {
                     downloadElement.click(); // 点击下载
                     document.body.removeChild(downloadElement); // 下载完成移除元素
                     window.URL.revokeObjectURL(href);
+                    //导出提示。
+                    me.$message({
+                        message:"导出成功！",
+                        type:"success"
+                    });
+                }else {
+                    me.$message.error(res.data.msg || "导出失败！");
                 }
             });
         },

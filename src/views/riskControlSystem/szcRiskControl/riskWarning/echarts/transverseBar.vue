@@ -88,8 +88,8 @@ export default {
                         seriesData.push(item.score);
                     }
                 });
-                me.receive.yAxis.data = yDatas;
-                me.receive.series[0].data = seriesData;
+                me.receive.yAxis.data = yDatas.reverse();
+                me.receive.series[0].data = seriesData.reverse();
             }
         }
     },
