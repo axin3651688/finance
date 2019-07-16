@@ -226,31 +226,53 @@
                         _this.topTip.push(tipObj)
 
                     });
-
+                    let _zb = item.echartsrightdata['zb'];
                     if (_this.showPageFlag == '1') {
                         let newArray = [],
                             ii = '';
-                        pjArray.forEach((item, index) => {
-                            debugger;
-                            let emptyVlaue = {
-                                pjname: item.pjname,
-                                value: ''
-                            };
+                        if (_zb === '31') {
+                            pjArray.forEach((item, index) => {
+                                let emptyVlaue = {
+                                    pjname: item.pjname,
+                                    value: ''
+                                };
 
-                            if (index === 0) {
-                                emptyVlaue.value = ' V >= ' + item.val;
-                            } else if (index === 1) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 2) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 3) {
-                                emptyVlaue.value = item.val + ' <= V < ' + ii;
-                            } else if (index === 4) {
-                                emptyVlaue.value = ' V < ' + ii;
-                            }
-                            ii = item.val;
-                            newArray.push(emptyVlaue)
-                        });
+                                if (index === 0) {
+                                    emptyVlaue.value = ' V < ' + item.val;
+                                } else if (index === 1) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 2) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 3) {
+                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                } else if (index === 4) {
+                                    emptyVlaue.value = ' V >= ' + ii;
+                                }
+                                ii = item.val;
+                                newArray.push(emptyVlaue)
+                            });
+                        } else {
+                            pjArray.forEach((item, index) => {
+                                let emptyVlaue = {
+                                    pjname: item.pjname,
+                                    value: ''
+                                };
+
+                                if (index === 0) {
+                                    emptyVlaue.value = ' V >= ' + item.val;
+                                } else if (index === 1) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 2) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 3) {
+                                    emptyVlaue.value = item.val + ' <= V < ' + ii;
+                                } else if (index === 4) {
+                                    emptyVlaue.value = ' V < ' + ii;
+                                }
+                                ii = item.val;
+                                newArray.push(emptyVlaue)
+                            });
+                        }
 
                         _leftData.forEach((_data, index) => {
                             for (let key in _data) {
