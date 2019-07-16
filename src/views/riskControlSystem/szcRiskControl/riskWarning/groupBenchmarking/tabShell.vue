@@ -149,6 +149,17 @@
                     content: params.url,
                     params:params.outData
                 };
+                //不能重复下钻一样的。
+                if(me.editableTabs && me.editableTabs.length > 0){
+                    let editableTabs = me.editableTabs;
+                    for(let i =0; i< editableTabs.length;i ++){
+                        let item = editableTabs[i];
+                        if(item.name == params.row[params.field]){
+                            me.activeName = item.name;
+                            return;
+                        }
+                    }
+                }
                 me.activeName = params.row[params.field];
                 editableTabs.push(obj);
                 me.editableTabs = editableTabs;
