@@ -1,3 +1,7 @@
+
+/**
+ * riskGuidanceSystem 引用
+ */
 /* 头部 */
 .guidance_header {                  /* 头部顶栏的样式 */
     background-color: #B3C0D1;
@@ -24,10 +28,32 @@
 .guidance_container {
     border: 2px solid #dcdfe6 ;
 }
+/*
+ * ------------------------------------------------------------
+ * 目录的样式
+ */
 .guidance_aside {                   /* 目录部分 */                 
-    width: 200px ;
+    width: 300px ;
     border-right: 2px solid #dcdfe6 ;
+    overflow: auto;   
+    color: #606266;   
 }
+.guidance_aside .asideA {
+    background-color: #F0F2F5 ;
+}
+.guidance_aside .asideA .asideA_item {
+    font-size: 18px;
+    font-family: '宋体';
+    font-weight: 600 ;
+}
+.aside_title_message {
+    text-align: center;
+    padding-top: 50px;
+}
+/*
+ * ------------------------------------------------------------
+ */
+
 .guidance_main {                   /* 正文部分一 */
     padding: 0 !important;
     height: 100%;
@@ -48,13 +74,121 @@
 } 
 // div块背景颜色设置
 .guidance_main .bg-purple {
-    background: #d3dce6;
+    // background: #d3dce6;
 }
 // 边框高度设置
 .col_main {
     height: 100% ;
+    border-left: 2px solid #dcdfe6 ;
+    border-right: 2px solid #dcdfe6 ;
 }
 // 最右侧的div块右内边距设置
 .guidance_main .col_C {
     padding-right: 0px !important ;
+}
+
+//------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+/**
+ * directoryDialog 引用
+ */
+// 目录弹出框的宽高及固定
+ .directoryDialog_A {
+    width: 400px ;
+    height: 330px ;
+    border: 1px solid #dcdfe6 ;
+    background-color: #ffffff ; 
+    position: fixed;
+    top: 200px; left: auto; right: auto;  bottom: auto;
+    margin-left: 20px;
+}
+// 添加弹出框的高度及固定
+.directoryDialog_A_4 {
+    width: 400px ;
+    height: 280px ;
+    border: 1px solid #dcdfe6 ;
+    background-color: #ffffff ; 
+    position: fixed;
+    top: 200px; left: 704px; right: auto;  bottom: auto;
+    margin-left: 20px;
+}
+
+// 目录弹出框头部边距样式
+.directoryDialog_A_1 {
+    padding: 10px;
+    font-size: 18px;
+}
+// 目录弹出框内容部分的高度
+.directoryDialog_A_2 {
+    height: 252px;
+}
+.directoryDialog_A_4-2 { /**/
+    // height: 202px;
+}
+// from表单
+.directoryDialog_A_4-2-form {
+    margin-top: 15px ;
+}
+// 添加弹出框 form表单 input 宽度
+.directoryDialog_A_4-2-input {
+    width: 270px ;
+}
+// 目录弹出框按钮 | 
+.directoryDialog_A_3 {
+    height: 38px;
+    text-align: right ;
+}
+// 添加弹出框按钮 高度样式
+.directoryDialog_A_4-3 {
+    text-align: right ;
+    margin-top: -8px;
+    margin-right: 14px;
+}
+// 按钮的边距
+.directoryDialog_A_3-1 {
+    margin: 5px;
+}
+// 图标的样式
+.icon-i {
+    // padding-right: 10px;
+    // padding-left: 5px ;
+    cursor: pointer;
+}
+// 目录弹出框表格内按钮的样式
+.directoryDialog_A_2-btn {
+    padding: 7px 5px !important ;
+    margin: 0 ;
+    border: 0 !important;
+}
+// 图标的hover属性，鼠标移入变色
+.icon-a:hover { color: #1790ff; }
+.icon-b:hover { color: #ffd04b; }
+.icon-c:hover { color: #ff0000; }
+
+.directoryDialog_A_4-1 {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #409EFF ;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.tableA ::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+    background-color: #f5f5f5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.tableA ::-webkit-scrollbar-track {
+-webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
+border-radius: 1px;
+background-color: #f5f5f5;
+}
+
+/*定义滑块 内阴影+圆角*/
+.tableA ::-webkit-scrollbar-thumb {
+border-radius: 1px;
+-webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
+background-color: #9fd467;
 }

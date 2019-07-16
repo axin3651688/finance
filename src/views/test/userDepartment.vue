@@ -88,20 +88,20 @@ export default {
                 }
             }
         };
-        var snameValue = (rule, value, callback) => {
-            if (!value) {
-                callback(new Error('部门名称不能为空'));
-            }else{
-                let data = [], is ;
-                data = this.getDataArray(data, this.data) ;
-                is = data.some(res => { return res.sname === value }) ;
-                if(is){
-                    callback(new Error('部门名称以重复')); 
-                }else{
-                    callback();
-                }
-            }
-        };
+        // var snameValue = (rule, value, callback) => {
+        //     if (!value) {
+        //         callback(new Error('部门名称不能为空'));
+        //     }else{
+        //         let data = [], is ;
+        //         data = this.getDataArray(data, this.data) ;
+        //         is = data.some(res => { return res.sname === value }) ;
+        //         if(is){
+        //             callback(new Error('部门名称以重复')); 
+        //         }else{
+        //             callback();
+        //         }
+        //     }
+        // };
         return {
             filterText: "",
             defaultExpandAll: true,     // 是否默认全部展开 false：否/ true：是
@@ -128,8 +128,8 @@ export default {
             rules: {
                 // scode: [{ required: true, message: '请输入部门编码', trigger: 'blur' }],
                 // sname: [{ required: true, message: '请输入部门名称', trigger: 'blur' }]
-                scode: [ { required: true, validator: scodeValue, trigger: 'blur' } ],
-                sname: [ { required: true, validator: snameValue, trigger: 'blur' } ]
+                scode: [ { required: true, validator: scodeValue, trigger: 'blur' } ]
+                // sname: [ { required: true, validator: snameValue, trigger: 'blur' } ]
             }
         }
     },
@@ -309,7 +309,7 @@ export default {
             });
         },
         // 修改确认
-        modifyClick_new(val){ debugger
+        modifyClick_new(val){ 
             let node = this.nodeValue ;
             let form = this.form ;
             let $params = this.$store.state.prame.command;
