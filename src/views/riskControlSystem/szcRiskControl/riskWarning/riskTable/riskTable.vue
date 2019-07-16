@@ -163,7 +163,10 @@
                 debugger;
                 let me = this;
                 if(row && row.color){
-                    return "color:" + row.color;
+                    if(row.color.indexOf("#") != -1){
+                        return "color:" + row.color;
+                    }
+                    return "color:#" + row.color;
                 }
             },
             setPageAdaptive() {
