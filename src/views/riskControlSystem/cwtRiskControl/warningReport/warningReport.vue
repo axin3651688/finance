@@ -21,7 +21,7 @@
                         :tableData="table1data"
                         :columns="table1columns"
                         :tabletitle="tableTitle1"
-                        :tableheight="500"
+                        :tableheight="530"
                 >
                 </warning-report-table>
             </div>
