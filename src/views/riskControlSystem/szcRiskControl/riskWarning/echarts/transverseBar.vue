@@ -39,7 +39,7 @@ export default {
                 },
                 series: [
                     {
-                        name: '2012年',
+                        name: this.$store.getters.year + '年',
                         type: 'bar',
                         itemStyle: {   
                             //通常情况下：

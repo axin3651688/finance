@@ -5,6 +5,7 @@
             <div class="top-select sigle_top">
                 <el-select
                         v-model="selectedName"
+                        filterable
                         placeholder="请选择"
                         @change="optionChanged"
                         class="sigle_select"
