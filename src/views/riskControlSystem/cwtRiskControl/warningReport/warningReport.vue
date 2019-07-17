@@ -21,7 +21,7 @@
                         :tableData="table1data"
                         :columns="table1columns"
                         :tabletitle="tableTitle1"
-                        :tableheight="500"
+                        :tableheight="530"
                 >
                 </warning-report-table>
             </div>
@@ -72,8 +72,7 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业
-                        {{item.grade}}水平，与行业值
+                        {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值
                         {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>
                         {{setNumberToStanderABS(item.cz)}}。
                     </p>
