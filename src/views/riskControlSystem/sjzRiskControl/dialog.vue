@@ -114,6 +114,7 @@
         <div slot="footer" class="dialog-footer">
             <el-row type="flex" justify="end">
                 <el-col :span="0.1">
+                    <el-button type="primary" v-show="isBtn" @click="saveClick('add')">新 增</el-button>
                     <el-button type="primary" v-show="isBtn" @click="saveClick('save')">保 存</el-button>
                     <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')">提 交</el-button>
                     <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button>
@@ -522,8 +523,25 @@ export default {
          * @event (1)保存按钮/提交按钮
          */
         saveClick(value, value2,value3,value4,value5){ 
-            debugger
             let me = this ;
+            //新增按钮的质控处理。
+            if(value == "add"){
+                me.form = {
+                    sriskname: "",              // 风险名称
+                    srisktype: null,            // 风险类型
+                    departmentname: "",         // 填报部门（只读）
+                    sfilluser: "",              // 填报人（只读）
+                    sriskdescription: "",       // 风险概述
+                    smeasures: "",              // 采取措施
+                    sproposal: "",              // 应对建议
+                    nprobability: "",           // 风险发生概率
+                    ninfluence: "",             // 风险影响程度
+                    nscore: "",                 // 风险分值（只读，自动计算，根据R=L*S）
+                    gradename: "",              // 风险等级（只读）
+                    sreporttype: "bglx01"       // 报告类型
+                }
+                return;
+            }
             let viewTrue = false ;
             me.newThis.axiosJson() ;
             // 查询上报状态
