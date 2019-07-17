@@ -64,7 +64,7 @@
                     <mchart
                             :echartData="pie_1EchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="pie1HasNagetiveData === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
 
@@ -72,7 +72,7 @@
                     <mchart
                             :echartData="pie_2EchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="pie2HasNagetiveData === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
 
@@ -80,7 +80,7 @@
                     <mchart
                             :echartData="pie_3EchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="pie3HasNagetiveData === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
 
@@ -88,7 +88,7 @@
                     <mchart
                             :echartData="pie_4EchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="pie4HasNagetiveData === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
 
@@ -235,7 +235,6 @@
                 changeDialogVisible: false,
 
 
-
                 tableData: [
                     {
                         "project": "结构性资产",
@@ -301,6 +300,10 @@
                 allData2: {},
 
 
+                pie1HasNagetiveData: false,
+                pie2HasNagetiveData: false,
+                pie3HasNagetiveData: false,
+                pie4HasNagetiveData: false,
                 pie_1EchartData: {
                     name: "结构性资产占用构型图",
                     data: []
@@ -411,12 +414,16 @@
             initEchartData(data) {
                 let _this = this;
                 let pieIndex = {
-                    index1:['81','213','215','216','217','218','219','220','221','222','223','224','225','226','227','228'],
-                    index2:['82','229','230','231','232','233','234','86','235','237','236','90','238'],
-                    index3:['83','239','240','241','87','90','242','243'],
-                    index4:['83','239','88','244','245','246','92','247','248']
+                    index1: ['81', '213', '215', '216', '217', '218', '219', '220', '221', '222', '223', '224', '225', '226', '227', '228'],
+                    index2: ['82', '229', '230', '231', '232', '233', '234', '86', '235', '237', '236', '90', '238'],
+                    index3: ['83', '239', '240', '241', '87', '90', '242', '243'],
+                    index4: ['83', '239', '88', '244', '245', '246', '92', '247', '248']
                 };
 
+                let nagetiveData1Count = 0;
+                let nagetiveData2Count = 0;
+                let nagetiveData3Count = 0;
+                let nagetiveData4Count = 0;
                 let emptyData = {
                     emptyData1: [],
                     emptyData2: [],
@@ -424,33 +431,50 @@
                     emptyData4: []
                 };
 
-                for(let key in data){
+                for (let key in data) {
                     let _data = data[key];
-                    for(let _key in _data){
+                    for (let _key in _data) {
                         let __data = _data[_key];
                         let _m = {
-                            name:__data.name,
-                            value : __data.value
+                            name: __data.name,
+                            value: __data.value
                         };
-                        if(pieIndex.index1.indexOf(__data.nid) !== -1){
-                            if(_m.value !== '0' && _m.value !== '0.00'){
+                        if (pieIndex.index1.indexOf(__data.nid) !== -1) {
+                            if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveData1Count++;
+                                }
                                 emptyData.emptyData1.push(_m);
                             }
-                        }else if(pieIndex.index2.indexOf(__data.nid) !== -1){
-                            if(_m.value !== '0' && _m.value !== '0.00'){
+                        } else if (pieIndex.index2.indexOf(__data.nid) !== -1) {
+                            if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveData2Count++;
+                                }
                                 emptyData.emptyData2.push(_m);
                             }
-                        }else if(pieIndex.index3.indexOf(__data.nid) !== -1){
-                            if(_m.value !== '0' && _m.value !== '0.00'){
+                        } else if (pieIndex.index3.indexOf(__data.nid) !== -1) {
+                            if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveData3Count++;
+                                }
                                 emptyData.emptyData3.push(_m);
                             }
-                        }else if(pieIndex.index4.indexOf(__data.nid) !== -1){
-                            if(_m.value !== '0' && _m.value !== '0.00'){
+                        } else if (pieIndex.index4.indexOf(__data.nid) !== -1) {
+                            if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveData4Count++;
+                                }
                                 emptyData.emptyData4.push(_m);
                             }
                         }
                     }
                 }
+
+                _this.pie1HasNagetiveData = nagetiveData1Count > 0;
+                _this.pie2HasNagetiveData = nagetiveData2Count > 0;
+                _this.pie3HasNagetiveData = nagetiveData3Count > 0;
+                _this.pie4HasNagetiveData = nagetiveData4Count > 0;
 
                 _this.pie_1EchartData.data = emptyData.emptyData1;
                 _this.pie_2EchartData.data = emptyData.emptyData2;
@@ -484,7 +508,7 @@
                     for (let y in i) {
                         let z = i[y];
                         if (z.nid === _nid) {
-                            let __value = _value.replace(/,/g,'');
+                            let __value = _value.replace(/,/g, '');
                             if (__value * 1 === z.value * 1) {
                                 return;
                             }
@@ -537,7 +561,7 @@
                 };
                 params.list = _this.getSaveData();
 
-                if(status === '1'){
+                if (status === '1') {
                     let _code = _this.selectOptions.filter((o) => {
                         return o.value === _this.selectValue;
                     });
@@ -550,7 +574,7 @@
                         _this.changeDialogVisible = false;
 
                         this.getSelectOptions();
-                        this.selectValue =  _this.modelName;
+                        this.selectValue = _this.modelName;
 
                         _this.$message({
                             message: '保存成功',
@@ -581,7 +605,7 @@
                 getPredictiveModelSelect(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.selectOptions = res.data.data;
-                        _this.selectOptions.push({lable:'',value:''})
+                        _this.selectOptions.push({lable: '', value: ''})
                     }
                 })
             },
@@ -635,7 +659,7 @@
         padding: 0 10px;
         align-items: center;
         border-radius: 10px;
-        background-color: #D3DCE6 ;
+        background-color: #D3DCE6;
         display: flex;
         justify-content: flex-end;
     }
@@ -800,14 +824,17 @@
         margin-top: 10px;
         color: green;
     }
+
     .content-table {
         position: absolute;
         top: 700px;
         width: 100%;
     }
-    .button-right-select{
+
+    .button-right-select {
         margin-right: 10px;
     }
+
     .model-name {
         display: flex;
         margin: 30px 20px;

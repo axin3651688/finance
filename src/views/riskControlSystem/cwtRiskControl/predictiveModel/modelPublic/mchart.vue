@@ -26,7 +26,7 @@
                 option: {
                     // height_s: '300px',
                 },
-                mchareShow:true,
+                mchareShow: true,
                 funnelOption: {
                     height_s: '500px',
                     title: {
@@ -154,6 +154,48 @@
                             data: [{value: 50, name: ''}]
                         }
                     ]
+                },
+                barOption: {
+                    title: {
+                        text: '',
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01],//[0, 0.01]
+                        axisLabel: {    // 坐标轴标签
+                            show: true,  // 是否显示
+                            inside: false, // 是否朝内
+                            rotate: 30, // 旋转角度
+                            margin: 5, // 刻度标签与轴线之间的距离
+                            color: 'black'  // 默认取轴线的颜色
+                        },
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: []
+                    },
+                    series:
+                        {
+                            name: '',
+                            type: 'bar',
+                            data: []
+                        }
+
+
                 }
             }
         },
@@ -169,6 +211,7 @@
                 let _data = _this.echartData;
                 switch (_this.dataType) {
                     case 'funnel':
+                        _this.option = {};
                         _this.option = _this.funnelOption;
                         _this.option.height_s = '500px';
                         let _funnelPeries = _this.option.series;
@@ -191,10 +234,38 @@
                         _gaugeSeries[0].data[0].value = _data.data ? _data.data.value : 0;
                         _gaugeSeries[0].data[0].value = _gaugeSeries[0].data[0].value === '' ? 0 : _gaugeSeries[0].data[0].value;
                         break;
+                    case 'funneltobar':
+                        _this.option = _this.barOption;
+                        _this.option.height_s = '500px';
+                        let _funneltobarSeriesData = _this.option.series.data;
+                        let _funneltobaryAxisData = _this.option.yAxis.data;
+                        _funneltobarSeriesData.length = 0;
+                        _funneltobaryAxisData.length = 0;
+                        let _funneltobarTitle = _this.option.title;
+                        _funneltobarTitle.text = _data ? _data.name : '';
+                        _data.data.forEach((item)=>{
+                            _funneltobarSeriesData.push(item.value * 1);
+                            _funneltobaryAxisData.push(item.name);
+                        });
+                        break;
+                    case 'bar':
+                        _this.option = _this.barOption;
+                        _this.option.height_s = '300px';
+                        let _barSeriesData = _this.option.series.data;
+                        let _baryAxisData = _this.option.yAxis.data;
+                        _barSeriesData.length = 0;
+                        _baryAxisData.length = 0;
+                        let _barTitle = _this.option.title;
+                        _barTitle.text = _data ? _data.name : '';
+                        _data.data.forEach((item)=>{
+                            _barSeriesData.push(item.value * 1);
+                            _baryAxisData.push(item.name);
+                        });
+                        break;
                 }
 
                 _this.mchareShow = false;
-                _this.$nextTick(()=>{
+                _this.$nextTick(() => {
                     _this.mchareShow = true;
                 })
 

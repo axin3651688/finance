@@ -84,7 +84,7 @@
                     <mchart
                             :echartData="pieEchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="hasNagetiveNum === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
 
@@ -260,6 +260,7 @@
                 ],
                 tableHeight: 300,
 
+                hasNagetiveNum: false,
                 gauge_1EchartData: {
                     name: '总资产报酬率（%）',
                     data: []
@@ -359,6 +360,8 @@
                 let _this = this;
                 let emptyData = [];
                 let eD = ['20', '24', '249', '250'];
+                let nagetiveDataCount = 0;
+                debugger;
                 for (let x in data) {
                     let i = data[x];
                     for (let y in i) {
@@ -368,11 +371,15 @@
                             _m.name = z.name;
                             _m.value = z.value;
                             if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveDataCount++;
+                                }
                                 emptyData.push(_m);
                             }
                         }
                     }
                 }
+                _this.hasNagetiveNum = nagetiveDataCount > 0;
                 _this.gauge_1EchartData.data = data.partx.cellData1;
                 _this.gauge_2EchartData.data = data.partx.cellData2;
                 _this.pieEchartData.data = emptyData;

@@ -104,7 +104,7 @@ export default {
                 for (let y in i) {
                     let z = i[y];
                     if (z.type === 's' || z.type === 'fc') {
-                        _o[z.nid] = z.value * 1;
+                        _o[z.nid] = z.value.replace(/,/g,'') * 1;
                     }
                 }
             }
@@ -112,6 +112,7 @@ export default {
         },
 
         dataFormula(_c, _o) {
+            debugger;
             let _x = 0;
             switch (_c) {
                 /**

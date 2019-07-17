@@ -8,10 +8,11 @@ export default  {
      * @param {*} event 
      * @param {*} me 
      */
-    dragAndDrop(event, me) { //ebugger
+    dragAndDrop(event, me) { //debugger
         let id = "" ;
         if(event.currentTarget.className === "directoryDialog_A_1")id = "A" ;
         if(event.currentTarget.className === "directoryDialog_A_4-1")id = "B" ;
+        if(event.currentTarget.className === "directoryDialog_A_5-1")id = "C" ;
         me.selectElement = document.getElementById(id) ;
         // me.selectElement = document.getElementsByClassName(event.currentTarget.className)[0] ;
         let div1 = me.selectElement
