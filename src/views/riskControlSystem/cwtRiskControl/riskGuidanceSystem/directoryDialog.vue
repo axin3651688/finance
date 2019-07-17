@@ -67,10 +67,28 @@
             </div>
         </div>
         <!-- 
-            下级弹出框
+            添加-》下级弹出框
          -->
         <div v-if="dialogFormVisible3_A">
+            <div class="directoryDialog_A_5" id="C">
+                <!-- 头部 -->
+                <div class="directoryDialog_A_5-1" @mousedown="dragA">
+                    <el-button class="directoryDialog_A_5-1-btn"><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn"><i class="iconfont icon-shanchu2"></i></el-button>
+                </div>
+                <!-- 腰部 -->
+                <div class="directoryDialog_A_5-2">
+                    <div class="directoryDialog_A_5-2-1">
+                        <span>{{ title }}</span>
+                    </div>
+                    <div class="directoryDialog_A_5-2-2">
 
+                    </div>
+                </div>
+                <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')">关 闭</el-button>
+                </div>
+            </div>
         </div>
         <div v-if="dialogFormVisible3_B">
 
@@ -103,6 +121,9 @@ export default {
     data(){
         return {
             dialogFormVisible2_A: false ,   // 添加 | 修改 的弹出框的显示|隐藏的控制
+            dialogFormVisible3_A: false ,   // 下级 1级 的弹出框的显示|隐藏的控制
+            dialogFormVisible3_B: false ,   // 下级 2级 的弹出框的显示|隐藏的控制
+            dialogFormVisible3_C: false ,   // 下级 3级 的弹出框的显示|隐藏的控制
             title: "" ,                     // 添加 | 修改 的弹出框的标题
             disabled: false ,               // 是否禁用 
             labelPosition: "right" ,        // form表单右对齐
@@ -251,12 +272,16 @@ export default {
             this.disabled = false ;
             if(val === "close")this.newThis.dialogFormVisible_A = false ;
             if(val === "cancel")this.dialogFormVisible2_A = false ;
+            if(val === "closeA")this.dialogFormVisible3_A = false ;     // 一级关闭
         },
         /**
          * 下级按钮
          */
         lowerLevelClick(scope) {
-
+            // debugger
+            this.disabled = true ;
+            this.title = scope.row.sname ;
+            this.dialogFormVisible3_A = !this.dialogFormVisible3_A ;
         },
         /**
          * 弹出框拖拽的方法
@@ -328,5 +353,54 @@ export default {
 </script>
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
 <style scoped>
-    
+/* 第一级弹框的样式 */
+    .directoryDialog_A_5 {
+        width: 450px ;
+        height: 330px ;
+        border: 1px solid #dcdfe6 ;
+        background-color: #ffffff ; 
+        position: fixed;
+        top: 200px; left: 703px; right: auto;  bottom: auto;
+        margin-left: 20px;
+    }
+/* 头部div的样式 */
+    .directoryDialog_A_5-1 {
+        height: 38px ;
+        text-align: right ;
+        border-bottom: 1px solid #dcdfe6 ;
+    }
+    /* 头部按钮的样式 */
+    .directoryDialog_A_5-1-btn {
+        border: 0px;
+        height: 36px ;
+        line-height: 38px;
+        font-size: 14px ;
+        padding: 0 ;
+        margin: 0 10px 0 0 ;
+    }
+    /* 按钮的图标大小 */
+    .directoryDialog_A_5-1 i {
+        font-size: 25px;
+    }
+/* 腰部的高度 */     
+    .directoryDialog_A_5-2 {
+        height: 252px ;
+        border-bottom: 1px solid #dcdfe6 ;
+    }
+    /* 标题部分 */
+    .directoryDialog_A_5-2-1 {
+        width: 150px;
+        height: 100%;
+        line-height: 252px;
+        background-color: aquamarine;
+        border-right: 1px solid #dcdfe6 ;
+    }
+    /* 添加部分 */
+    directoryDialog_A_5-2-2 {
+
+    }
+/* 尾部的样式 */
+    .directoryDialog_A_5-3 {
+        text-align: right ;
+    }
 </style>

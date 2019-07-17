@@ -79,6 +79,7 @@
 // 边框高度设置
 .col_main {
     height: 100% ;
+    overflow: auto;
     border-left: 2px solid #dcdfe6 ;
     border-right: 2px solid #dcdfe6 ;
 }
@@ -110,7 +111,7 @@
     border: 1px solid #dcdfe6 ;
     background-color: #ffffff ; 
     position: fixed;
-    top: 200px; left: 704px; right: auto;  bottom: auto;
+    top: 200px; left: 703px; right: auto;  bottom: auto;
     margin-left: 20px;
 }
 
