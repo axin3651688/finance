@@ -79,12 +79,34 @@
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
                     <div class="directoryDialog_A_5-2-1">
-                        <span>{{ title }}</span>
+                        <div class="A_5-a">{{ title }}</div>
+                        <div class="A_5-b">>></div>
+                        <!-- <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div> -->
                     </div>
                     <div class="directoryDialog_A_5-2-2">
-
+                        <el-table :data="tableData2" style="width: 100%" :show-header="false" border height="100%">
+                            <el-table-column type="selection" width="40" align="center"></el-table-column>
+                            <el-table-column label="内容" prop="scontent">
+                                <template slot-scope="scope">
+                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.scontent"></el-input>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" align="center">
+                                <template slot-scope="scope">
+                                    <!-- 图片按钮 -->
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled">
+                                        <i class="iconfont icon-tupian icon-b icon-i"></i>
+                                    </el-button>
+                                    <!-- 下级按钮 -->
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled">
+                                        <i class="iconfont icon-xiajicaozuo icon-b icon-i"></i>
+                                    </el-button>
+                                </template> 
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
+                <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')">关 闭</el-button>
                 </div>
@@ -127,6 +149,9 @@ export default {
             title: "" ,                     // 添加 | 修改 的弹出框的标题
             disabled: false ,               // 是否禁用 
             labelPosition: "right" ,        // form表单右对齐
+            tableData2: [
+                { scontent: "13131" }
+            ] ,
             // form表单数据
             formLabelAlign: {               
                 name: "" ,
@@ -353,54 +378,5 @@ export default {
 </script>
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
 <style scoped>
-/* 第一级弹框的样式 */
-    .directoryDialog_A_5 {
-        width: 450px ;
-        height: 330px ;
-        border: 1px solid #dcdfe6 ;
-        background-color: #ffffff ; 
-        position: fixed;
-        top: 200px; left: 703px; right: auto;  bottom: auto;
-        margin-left: 20px;
-    }
-/* 头部div的样式 */
-    .directoryDialog_A_5-1 {
-        height: 38px ;
-        text-align: right ;
-        border-bottom: 1px solid #dcdfe6 ;
-    }
-    /* 头部按钮的样式 */
-    .directoryDialog_A_5-1-btn {
-        border: 0px;
-        height: 36px ;
-        line-height: 38px;
-        font-size: 14px ;
-        padding: 0 ;
-        margin: 0 10px 0 0 ;
-    }
-    /* 按钮的图标大小 */
-    .directoryDialog_A_5-1 i {
-        font-size: 25px;
-    }
-/* 腰部的高度 */     
-    .directoryDialog_A_5-2 {
-        height: 252px ;
-        border-bottom: 1px solid #dcdfe6 ;
-    }
-    /* 标题部分 */
-    .directoryDialog_A_5-2-1 {
-        width: 150px;
-        height: 100%;
-        line-height: 252px;
-        background-color: aquamarine;
-        border-right: 1px solid #dcdfe6 ;
-    }
-    /* 添加部分 */
-    directoryDialog_A_5-2-2 {
-
-    }
-/* 尾部的样式 */
-    .directoryDialog_A_5-3 {
-        text-align: right ;
-    }
+    
 </style>
