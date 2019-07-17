@@ -102,7 +102,7 @@
           </el-form-item>
 
           <el-form-item label="EAS账套ID" prop="seascomcode">
-            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID" :disabled="easDisabled">
+            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID">
               <template slot="prepend" >EAS源ID</template>
             </el-input>
           </el-form-item>

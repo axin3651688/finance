@@ -45,7 +45,7 @@
                                 {{ scope.row[scope.column.property] }}
                             </div>
                             <span
-                                    v-else-if="item.action && item.action==='click'"
+                                    v-else-if="item.action && item.action==='click' && !scope.row['drillNo']"
                                     style="color: dodgerblue;cursor: pointer"
                                     @click="clickItemNameHandler(scope,scope.$index)"
                             >

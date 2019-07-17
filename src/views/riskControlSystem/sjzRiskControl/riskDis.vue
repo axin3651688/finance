@@ -511,12 +511,27 @@ export default {
                 me.riskprobabilityRequest(data, me) ;
             });
         },
+        /**
+         * 通过某个属性排序。
+         */
+        sortByProp(data,prop){
+            let me = this;
+            data.sort((a,b) => {
+                if(a[prop] > b[prop]){
+                    return -1;
+                }else if(a[prop] < b[prop]) {
+                    return 1;
+                }else {
+                    return 0;
+                }
+            });
+        },
         // 3.1 获取数据请求【参照按钮-发生概率】
         riskprobabilityRequest(data, me){
             riskprobability().then(res => {
-                // debugger
-                data.rows = res.data.data ;
-                me.tableDemo1 = data ;
+                this.sortByProp(res.data.data,"nscore");
+                data.rows = res.data.data;
+                me.tableDemo1 = data;
             })
         },  
         // 4.  获取【参照按钮-影响程度】的json信息
@@ -532,6 +547,8 @@ export default {
         // 4.1 获取数据请求【参照按钮-影响程度】
         risk_influence_degreeRequest(data, me){
             risk_influence_degree().then(res => {
+                debugger;
+                this.sortByProp(res.data.data,"nscore");
                 data.rows = res.data.data ;
                 me.tableDemo2 = data ;
             });
