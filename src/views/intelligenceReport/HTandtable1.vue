@@ -2773,12 +2773,10 @@ export default {
     },
     //导入按钮的点击事件调用导入
     uploadFiles() {
-      
       this.submitUpload(this.files);
     },
     // 点击导入的下拉菜单获取对应的数据
     importDropdownMenu(list, index) {
-      
       this.importHeader = list[index].title;
       this.dropdownid = list[index].templateId;
       this.subject = list[index].subject;
@@ -2788,6 +2786,7 @@ export default {
         // this.uploadfile.append("subject", this.subject);
         this.uploadfile.set("subject", this.subject);
         this.uploadfile.set("fixed", this.fixed);
+        this.uploadfile.set("user", this.$store.getters.user.user.userName);
         this.files = this.uploadfile;
         console.log("要传递的上传文件的数据", this.files);
       }
