@@ -116,12 +116,14 @@
                     "children": [{
                             "id": "C1",
                             "type": "string",
-                            "text": "平均值"
+                            "text": "平均值",
+                            "align": "center"
                         },
                         {
                             "id": "C2",
                             "type": "string",
-                            "text": "平均值"
+                            "text": "平均值",
+                            "align": "center"
                         }
                     ]
                 },
@@ -133,12 +135,14 @@
                     "children": [{
                             "id": "D1",
                             "type": "string",
-                            "text": "较低值"
+                            "text": "较低值",
+                            "align": "center"
                         },
                         {
                             "id": "D2",
                             "type": "string",
-                            "text": "较低值"
+                            "text": "较低值",
+                            "align": "center"
                         }
                     ]
                 },
@@ -209,8 +213,8 @@
             "C2": "较良好",
             "D1": "中等",
             "D2": "较中等",
-            "E1": "差",
-            "E2": "较差",
+            "E1": "较差",
+            "E2": "差",
             "E3": "很差"
         }
     ]

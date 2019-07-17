@@ -62,6 +62,7 @@ export default {
             let params = judgeParams.params;
             groupQuery(params).then(res => {
                 if (res.data.code == 200) {
+                    me.queryBackstageDataAfterBefore(res.data.data, judgeParams);
                     me.tableData = res.data.data;
                     me.queryBackstageDataAfter(res.data.data, judgeParams);
                 } else if (res.data.code == 1001) {
@@ -69,6 +70,19 @@ export default {
                     me.queryBackstageDataAfter([], judgeParams);
                 }
             });
+        },
+        /**
+         * 数据赋值之前。
+         */
+        queryBackstageDataAfterBefore(datas, judgeParams) {
+            let me = this;
+            if (judgeParams.id == "comprehensiveRating") {
+                datas.forEach(item => {
+                    if (item.zbid == "qypj") {
+                        item.drillNo = true;
+                    }
+                });
+            }
         },
         /**
          * 查询数据之后的处理。
