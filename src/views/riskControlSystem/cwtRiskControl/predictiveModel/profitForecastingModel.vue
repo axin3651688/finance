@@ -97,14 +97,14 @@
                     <mchart
                             :echartData="funnelEchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'funnel'">
+                            :dataType="hasNagetiveNum === true ? 'funneltobar' : 'funnel'">
                     </mchart>
                 </div>
                 <div class="pie">
                     <mchart
                             :echartData="pieEchartData"
                             :dataFresh="dataFresh"
-                            :dataType="'pie'">
+                            :dataType="hasNagetiveNum === true ? 'bar' : 'pie'">
                     </mchart>
                 </div>
                 <div class="gauge">
@@ -297,7 +297,14 @@
                 allData: {},
                 buttonType: 'bq',
 
+                hasNagetiveNum: false,
+
+                funneltobarEchartData: {
+                    name: '各项费用占收入比',
+                    data: []
+                },
                 funnelEchartData: {
+                    name: '各项费用占收入比',
                     data: []
                 },
                 pieEchartData: {
@@ -382,6 +389,7 @@
                 let _this = this;
                 let emptyData = [];
                 let eD = ['101', '103', '104', '105', '106'];
+                let nagetiveDataCount = 0;
                 for (let x in data) {
                     let i = data[x];
                     for (let y in i) {
@@ -391,11 +399,15 @@
                             _m.name = z.name;
                             _m.value = z.value;
                             if (_m.value !== '0' && _m.value !== '0.00') {
+                                if (parseFloat(_m.value) < 0) {
+                                    nagetiveDataCount++;
+                                }
                                 emptyData.push(_m);
                             }
                         }
                     }
                 }
+                _this.hasNagetiveNum = nagetiveDataCount > 0;
                 _this.gaugeEchartData.data = data.partx.cellData1;
                 _this.pieEchartData.data = emptyData;
                 _this.funnelEchartData.data = emptyData;
@@ -509,7 +521,7 @@
                 };
                 params.list = _this.getSaveData();
 
-                if(status === '1'){
+                if (status === '1') {
                     let _code = _this.selectOptions.filter((o) => {
                         return o.value === _this.selectValue;
                     });
@@ -523,7 +535,7 @@
 
                         this.getSelectOptions(this.buttonType);
 
-                        this.selectValue =  _this.modelName;
+                        this.selectValue = _this.modelName;
                         _this.$message({
                             message: '保存成功',
                             type: 'success'
@@ -554,7 +566,7 @@
                 getPredictiveModelSelect(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.selectOptions = res.data.data;
-                        _this.selectOptions.push({lable:'',value:''})
+                        _this.selectOptions.push({lable: '', value: ''})
                     }
                 })
             },
