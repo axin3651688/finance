@@ -705,7 +705,7 @@
 
     .content-chart .pie {
         position: absolute;
-        width: 300px;
+        width: 400px;
         height: 300px;
         top: 455px;
         left: 600px;
@@ -716,7 +716,7 @@
         width: 300px;
         height: 300px;
         top: 455px;
-        left: 1000px;
+        left: 1100px;
     }
 
     .content-table {

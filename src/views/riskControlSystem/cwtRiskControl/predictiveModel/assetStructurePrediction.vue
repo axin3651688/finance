@@ -656,7 +656,7 @@
 
     .content-table {
         position: absolute;
-        top: 750px;
+        top: 700px;
         width: 100%;
     }
     .button-right-select{
