@@ -354,7 +354,8 @@
 
                         _this.total = _data.users.lastPage;
 
-                        _this.responsibility = _data['deptDesc'];
+                        // _this.responsibility = _data['deptDesc'];
+                        _this.responsibility = [{responsibility:_data['deptDesc']}];
                         _this.tableData = _data.users.list;
                     }
                 })

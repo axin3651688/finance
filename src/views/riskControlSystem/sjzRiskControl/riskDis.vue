@@ -547,9 +547,11 @@ export default {
         // 4.1 获取数据请求【参照按钮-影响程度】
         risk_influence_degreeRequest(data, me){
             risk_influence_degree().then(res => {
-                debugger;
-                this.sortByProp(res.data.data,"nscore");
+                // this.sortByProp(res.data.data,"nscore");
                 data.rows = res.data.data ;
+                if(data.rows && data.rows.length > 0){
+                    data.rows.reverse();
+                }
                 me.tableDemo2 = data ;
             });
         },

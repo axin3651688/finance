@@ -294,6 +294,56 @@ export default {
                 ops01.push(retBtn);
                 // ops02.push(retBtn2);
             }
+            if (item.stouser == userName) {
+                ops02 = [{
+                    "id": "0",
+                    "btnShow": true,
+                    "text": "批示"
+                }];
+            }
+            // if (company == item.scode) {
+            //     ops02 = [{
+            //             "id": "0",
+            //             "btnShow": true,
+            //             "text": "批示"
+            //         },
+            //         {
+            //             "id": "3",
+            //             "btnShow": true,
+            //             "text": "提醒"
+            //         }
+            //     ];
+            // }
+            if (item.sstate == "已批示") {
+                item.operation = ops01;
+            } else if (item.sstate == "未批示") {
+                item.operation = ops02;
+            }
+
+        },
+        setOperations_Old(item) {
+            let me = this,
+                userName = me.$store.getters.user.user.userName,
+                company = me.$store.getters.company,
+                ops01 = [{
+                    "id": "1",
+                    "btnShow": true,
+                    "text": "查看"
+                }],
+                ops02 = [{
+                    "id": "3",
+                    "btnShow": true,
+                    "text": "提醒"
+                }];
+            if (userName == item.suser) {
+                let retBtn = {
+                    "id": "2",
+                    "btnShow": true,
+                    "text": "退回"
+                }
+                ops01.push(retBtn);
+                // ops02.push(retBtn2);
+            }
             if (company == item.scode) {
                 ops02 = [{
                         "id": "0",
