@@ -67,38 +67,41 @@
             </div>
         </div>
         <!-- 
-            添加-》下级弹出框
+            添加-》下级弹出框（一级）
          -->
         <div v-if="dialogFormVisible3_A">
             <div class="directoryDialog_A_5" id="C">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_5-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_5-1-btn"><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_5-1-btn"><i class="iconfont icon-shanchu2"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick"><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick"><i class="iconfont icon-shanchu2"></i></el-button>
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
                     <div class="directoryDialog_A_5-2-1">
                         <div class="A_5-a">{{ title }}</div>
-                        <div class="A_5-b">>></div>
-                        <!-- <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div> -->
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
                     </div>
                     <div class="directoryDialog_A_5-2-2">
-                        <el-table :data="tableData2" style="width: 100%" :show-header="false" border height="100%">
-                            <el-table-column type="selection" width="40" align="center"></el-table-column>
+                        <el-table
+                        :data="tableData2" style="width: 100%" :show-header="false" 
+                        border height="100%" class="tableA table-el"
+                        @selection-change="handleSelectionChange"
+                        >
+                            <el-table-column type="selection" width="40" align="center" :disabled="disabled2"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="scope.row.scontent"></el-input>
+                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
                                 <template slot-scope="scope">
                                     <!-- 图片按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled">
-                                        <i class="iconfont icon-tupian icon-b icon-i"></i>
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled2">
+                                        <i class="iconfont icon-tupian icon-a icon-i"></i>
                                     </el-button>
                                     <!-- 下级按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled">
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled2">
                                         <i class="iconfont icon-xiajicaozuo icon-b icon-i"></i>
                                     </el-button>
                                 </template> 
@@ -112,8 +115,13 @@
                 </div>
             </div>
         </div>
+        <!-- 
+            一级-》下级弹出框（二级）
+         -->
         <div v-if="dialogFormVisible3_B">
+            <div class="directoryDialog_A_5" id="D">
 
+            </div>
         </div>
         <div v-if="dialogFormVisible3_C">
 
@@ -127,7 +135,15 @@ import {
     // 目录修改接口
     riskguidecatalogUpdate,
     // 目录删除接口
-    riskguidecatalogDelete
+    riskguidecatalogDelete,
+    // 内容修改接口 
+    riskguidecontentUpdate,
+    // 内容删除接口
+    riskguidecontentDelete,
+    // 内容添加接口
+    riskguidecontentAdd,
+    // 查询总接口
+    selectAll
 } from './riskInterface.js'
 
 // 引用通用js方法
@@ -148,7 +164,12 @@ export default {
             dialogFormVisible3_C: false ,   // 下级 3级 的弹出框的显示|隐藏的控制
             title: "" ,                     // 添加 | 修改 的弹出框的标题
             disabled: false ,               // 是否禁用 
+            disabled2: false,               // 一级  是否禁用
             labelPosition: "right" ,        // form表单右对齐
+            selectionA: [] ,            // 一级勾选状态数组
+            selectionB: [] ,            // 二级勾选状态数组
+            selectionC: [] ,            // 三级勾选状态数组
+            scopeData: {} ,             // 点击(1级)下级按钮时的参数
             tableData2: [
                 { scontent: "13131" }
             ] ,
@@ -162,6 +183,7 @@ export default {
             isShow2: true ,                 // 应用于添加弹出框
             scope2: {} ,                    // 点击的信息
             number: 0 ,                     // 区分是修改弹框的确认 | 添加弹框的确认
+            number2: 0,                     // 区分是哪个下级按钮 （注：1=一级下级按钮；2=二级下级按钮）
             // 添加 | 修改 的弹出框id
             // id: "" ,                   
             // 添加 | 修改 的弹出框的值
@@ -224,9 +246,9 @@ export default {
         tableData: function() {
             let tmp;
             if (!Array.isArray(this.data)) {
-                tmp = [this.data]
+                tmp = [this.data] ;
             } else {
-                tmp = this.data
+                tmp = this.data ;
             }
             return tmp ;
         }
@@ -300,13 +322,81 @@ export default {
             if(val === "closeA")this.dialogFormVisible3_A = false ;     // 一级关闭
         },
         /**
-         * 下级按钮
+         * 下级按钮(一级)
          */
         lowerLevelClick(scope) {
-            // debugger
-            this.disabled = true ;
-            this.title = scope.row.sname ;
-            this.dialogFormVisible3_A = !this.dialogFormVisible3_A ;
+            let me = this ;
+            me.scopeData = scope ;
+            me.dialogFormVisible3_A = !me.dialogFormVisible3_A ;
+            me.disabled = true ;
+            me.title = scope.row.sname ;
+            me.number2 = 1 ;
+            me.directoryRequest() ;  
+                   
+        },
+        /**
+         * 下级按钮（二级）
+         */
+        lowerLevelClick2(scope) {
+            debugger
+        },
+        /**
+         * (一级)输入框保存
+         */
+        saveChange(scope) { //
+            if(scope.row.id === 0) {
+                let params = [{
+                    catalog_id: this.scopeData.row.id,
+                    chartpath: "",
+                    pid: this.scopeData.row.pid,
+                    scontent: scope.row.scontent 
+                }]
+                // 添加请求方法
+                this.riskguidecontentAdd_request(params) ;
+            } else {
+                let params = [{
+                    id: scope.row.id,
+                    chartpath: "",
+                    scontent: scope.row.scontent
+                }]
+                // 修改内容接口
+                this.riskguidecontentUpdate_request(params) ;
+            }
+        },
+        /**
+         * (一级)复选框点击事件-当选择项发生变化时会触发该事件
+         */
+        handleSelectionChange(selection) {
+            // 如果数组大于0，说明有勾选的状态
+            if(selection.length > 0) {
+                this.selectionA = [] ;
+                this.selectionA = selection ;
+            }
+        },
+        /**
+         * (一级)添加按钮
+         */
+        levelClick() {
+            this.tableData2.push({ id: 0, scontent: "" }) ;
+        },
+        /**
+         * (一级)删除按钮
+         */
+        deleteClick() {
+            if(this.selectionA.length > 0) {
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // 一级内容删除接口
+                    this.riskguidecontentDelete_request() ;
+                }).catch(() => {
+                    this.$message({ type: 'info', message: '已取消删除' });          
+                });
+            } else {
+                this.$message({ message: "请选择要删除的内容！", type: "warning" }) ;
+            }
         },
         /**
          * 弹出框拖拽的方法
@@ -314,6 +404,55 @@ export default {
         dragA(event) { 
             // 引用的外部js方法
             riskCommon.dragAndDrop(event, this) ;
+        },
+        /**
+         * @function 【添加内容】请求方法
+         */
+        riskguidecontentAdd_request(params) {
+            const me = this ;
+            riskguidecontentAdd(params).then(res => { 
+                if(res.data.code === 200) {
+                    me.$message({ message: res.data.msg, type: "success" }) ;
+                    me.newThis.directoryRequest() ;
+                    me.directoryRequest() ;
+                } else {
+                    me.$message.error(res.data.msg) ;
+                }
+            });
+        },
+        /**
+         * @function 【删除内容】请求方法
+         */
+        riskguidecontentDelete_request() {
+            const me = this ;
+            let params = [] ;
+            me.selectionA.forEach(item => {
+                params.push(item.id) ;
+            })
+            riskguidecontentDelete(params).then(res => {
+                if(res.data.code === 200) {
+                    me.$message({ message: res.data.msg, type: "success" }) ;
+                    me.newThis.directoryRequest() ;
+                    me.directoryRequest() ;
+                } else {
+                    me.$message.error(res.data.msg) ;
+                }
+            });
+        },
+        /**
+         * @function 【修改内容】请求方法
+         */
+        riskguidecontentUpdate_request(params) {
+            const me = this ;
+            riskguidecontentUpdate(params).then(res => {
+                if(res.data.code === 200) {
+                    me.$message({ message: res.data.msg, type: "success" }) ;
+                    me.newThis.directoryRequest() ;
+                    me.directoryRequest() ;
+                } else {
+                    me.$message.error(res.data.msg) ;
+                }
+            });
         },
         /**
          * @function 【修改目录】请求方法
@@ -371,6 +510,50 @@ export default {
                 } else {
                     me.$message.error(res.data.msg) ;
                 }
+            });
+        },
+        /**
+         * @function 目录查询接口
+         */
+        directoryRequest(){ 
+            let me = this ;
+            let data , arr;
+            let params = {
+                titleId : 1,
+                sqlKey : "RiskGuide.selectCatalog"
+            }
+            selectAll(params).then(res => {  
+                if(res.data.code === 200) {
+                    data = res.data.data ;
+                    data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
+                    arr = data.filter(item => { return item.pid === 0 }) ;
+                    me.contentRequest(arr) ; // 内容查询方法
+                } else {
+                    me.$message.error(res.data.msg) ;
+                }   
+            });
+        },
+        /**
+         * @function 内容查询接口
+         */
+        contentRequest(arr){ 
+            let me = this ;
+            let params = {
+                titleId : 1 ,
+	            sqlKey: "RiskGuide.selectContent"
+            }
+            selectAll(params).then(res => { 
+                if(res.data.code === 200) {
+                    let data = res.data.data ;
+                    let cc = res.data.data.filter(item => { 
+                        return item.catalogname == arr[0].sname ;
+                    });
+                    if(me.number2 == 1)me.tableData2 = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+                    // me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
+                    // me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+                } else {
+                    me.$message.error(res.data.msg) ;
+                }   
             });
         }
     }

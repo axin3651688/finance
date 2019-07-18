@@ -6,6 +6,7 @@
 <script>
 import treeColumns from '@c/treeElement/treeColumns.vue' ;
 import treeToArray from "../treegrid/eval";
+import tools from 'utils/tools.js'
 export default {
     props: ["item"],
     components: {

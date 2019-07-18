@@ -15,7 +15,7 @@
             <el-aside class="guidance_aside container_aside col_A">
                 <div v-if="directory.length > 0" class="col_A">
                     <el-menu :default-active="directory[0].index" class="el-menu-vertical-demo asideA col_A">
-                        <el-menu-item class="el-menu-vertical_title asideA_item col_A" v-for="(item, index) in directory" :key="item.id" :index="item.index" @click.native="directoryClick(item)">
+                        <el-menu-item class="el-menu-vertical_title asideA_item col_A" v-for="(item, index) in directory" :key="item.index" :index="item.index" @click.native="directoryClick(item)">
                             <a slot="title">{{ item.sname }}</a>
                         </el-menu-item>
                     </el-menu>
@@ -29,7 +29,7 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_A.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_A" :key="item.catalogname">
+                            <div v-else v-for="(item, index) in content_A" :key="item.id">
                                 <div class="col_class" :class="{'first': index == first}" @click="contentClick(index)">{{ item.scontent }}</div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_B.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_B" :key="item.catalogname">
+                            <div v-else v-for="(item, index) in content_B" :key="item.id">
                                 <div class="col_class" :class="{'second': index == second}" @click="contentClick2(index)">{{ item.scontent }}</div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_C.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_A" :key="item.catalogname">
+                            <div v-else v-for="(item, index) in content_C" :key="item.id">
                                 <div class="col_classA">{{ item.scontent }}</div>
                             </div>
                         </div>
@@ -82,6 +82,7 @@ export default {
             me: this ,                          // this对象
             directory: [],                      // 目录数组
             dialogFormVisible_A: false ,        // 修改按钮弹出框的显示|隐藏的控制
+            dialogFormVisible3_A:false ,
             content: [] ,                       // 总内容数组
             content_A: [] ,                     // 内容1数组
             content_B: [] ,                     // 内容2数组
@@ -107,8 +108,6 @@ export default {
         this.setTableScollHeight() ;
         // 目录查询接口
         this.directoryRequest() ;
-        // 内容查询接口
-        this.contentRequest() ;
     },
     methods: {
         /**
@@ -127,7 +126,7 @@ export default {
          * 目录查询接口
          */
         directoryRequest(){
-            const me = this ;
+            let me = this ;
             let data ;
             let params = {
                 titleId : 1,
@@ -138,6 +137,7 @@ export default {
                     data = res.data.data ;
                     data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
                     me.directory = data.filter(item => { return item.pid === 0 }) ;
+                    me.contentRequest() ; // 内容查询方法
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
@@ -147,15 +147,15 @@ export default {
          * 内容查询接口
          */
         contentRequest(){ 
-            const me = this ;
+            let me = this ;
             let params = {
                 titleId : 1 ,
 	            sqlKey: "RiskGuide.selectContent"
             }
-            selectAll(params).then(res => { 
+            selectAll(params).then(res => {  
                 if(res.data.code === 200) {
                     me.content = res.data.data ;
-                    let cc = res.data.data.filter(item => {
+                    let cc = res.data.data.filter(item => { 
                         return item.catalogname == me.directory[0].sname ;
                     });
                     me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
@@ -176,7 +176,7 @@ export default {
          * 目录点击事件
          */
         directoryClick(item) {
-            debugger
+            // debugger
             let me = this ;
             me.content_A = [] ;
             me.content_B = [] ;
