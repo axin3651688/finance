@@ -107,7 +107,7 @@
                     };
                     // me.queryDataPublic(judgeParams);
                     if(row){
-                        me.titleContent = row.sname + ";" + "所属行业：农、林、牧、渔业";
+                        me.titleContent = row.sname + ";" + "所属行业：农、林、牧、渔业;期间：（" + me.getPeriod() + "）;";
                         me.companyTips = true;
                         // judgeParams.row = row;
                     }
