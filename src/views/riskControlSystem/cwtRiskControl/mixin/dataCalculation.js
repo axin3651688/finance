@@ -112,7 +112,6 @@ export default {
         },
 
         dataFormula(_c, _o) {
-            debugger;
             let _x = 0;
             switch (_c) {
                 /**

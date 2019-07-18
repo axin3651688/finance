@@ -39,7 +39,7 @@ export default {
                 },
                 series: [
                     {
-                        name: '2012年',
+                        name: this.$store.getters.year + '年',
                         type: 'bar',
                         itemStyle: {   
                             //通常情况下：
@@ -82,15 +82,39 @@ export default {
             let me = this;
             if(me.chartData){
                 let datas = me.chartData,yDatas = [],seriesData = [];
-                datas.forEach(item => {
-                    if(item.score){
-                        yDatas.push(item.sname);
-                        seriesData.push(item.score);
-                    }
+                // datas.forEach(item => {
+                //     if(item.score){
+                //         yDatas.push(item.sname);
+                //         seriesData.push(item.score);
+                //     }
+                // });
+                let arrDatas = datas.filter(item => {
+                    return item.score;
+                });
+                if(arrDatas && arrDatas.length > 0){
+                    me.sortByProp(arrDatas,"score",-1);
+                }
+                arrDatas.forEach(item => {
+                    yDatas.push(item.sname);
+                    seriesData.push(item.score);
                 });
                 me.receive.yAxis.data = yDatas.reverse();
                 me.receive.series[0].data = seriesData.reverse();
             }
+        },
+        /**
+         * 排序
+         */
+        sortByProp (data,prop,num) {
+            data.sort((a,b) => {
+                if(a[prop] > b[prop]){
+                    return num;
+                }else if(a[prop] < b[prop]) {
+                    return -num;
+                }else {
+                    return 0;
+                }
+            });
         }
     },
 }

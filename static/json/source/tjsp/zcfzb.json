@@ -1,54 +1,60 @@
 {
-    
-    "id":"0001",
-    "text":"资产负债表",
+
+    "id": "0001",
+    "text": "资产负债表",
     "layout": {
         "xtype": "tab"
     },
-    "showDims": ["year","month","company","conversion"],
-    "monthConfig":{//显示13审计月
-        "id":"month",
-        "value":13
+    "showDims": ["year", "month", "company", "conversion"],
+    "monthConfig": { //显示13审计月
+        "id": "month",
+        "value": 13
     },
-    "changeCompanyBefore":function(newcompany,option){
-        option.closeTabTaget(newcompany,option);
+    "changeCompanyBefore": function(newcompany, option) {
+        option.closeTabTaget(newcompany, option);
     },
-    "changeYearBefore":function(newyear,option){
-        option.closeTabTaget(newyear,option);
+    "changeYearBefore": function(newyear, option) {
+        option.closeTabTaget(newyear, option);
     },
-    "changeMonthBefore":function(newmonth,option){
-        option.closeTabTaget(newmonth,option);
+    "changeMonthBefore": function(newmonth, option) {
+        option.closeTabTaget(newmonth, option);
     },
-    "changeConversionBefore":function(newconversion, option){
-        option.closeTabTaget(newconversion,option);
+    "changeConversionBefore": function(newconversion, option) {
+        option.closeTabTaget(newconversion, option);
     },
-    "__queryDataAfter":function(data, $vue){
+    "__queryDataAfter": function(data, $vue) {
         // debugger;
-        let arr = []; 
+        let arr = [];
         // let array = new Array();
-        let array = {} ;
+        let array = {};
 
-        for(let i=0; i < 23; i++){  
-            array = { nevel: i } ;
-            data.splice(48,0,array); 
+        for (let i = 0; i < 23; i++) {
+            array = { nevel: i };
+            data.splice(48, 0, array);
         }
         debugger;
         // data.splice(72,0,array2); 
-        data.forEach((res,index) => { res.row = index+1 });
-        let data_left = data.filter((res,index) => { return index < 72 ; });
+        data.forEach((res, index) => { res.row = index + 1 });
+        let data_left = data.filter((res, index) => { return index < 72; });
         data_left.forEach((res, index) => {
-            arr.push({ 
-                id: res.scode,      id2: "",
-                text1: res.sname,   text2: "",
-                row: res.row,       row2: "" ,
-                A: res.A || 0,      A2: 0 ,
-                B: res.B || 0,      B2: 0 ,
-                level: res.nlevel,  level2: 0
+            arr.push({
+                id: res.scode,
+                id2: "",
+                text1: res.sname,
+                text2: "",
+                row: res.row,
+                row2: "",
+                A: res.A || 0,
+                A2: 0,
+                B: res.B || 0,
+                B2: 0,
+                level: res.nlevel,
+                level2: 0
             })
         })
 
-        let data_right= data.filter((res,index) => { return index > 71 ; });
-        data_right.forEach((res, index) => { 
+        let data_right = data.filter((res, index) => { return index > 71; });
+        data_right.forEach((res, index) => {
             arr[index].id2 = res.scode;
             arr[index].text2 = res.sname;
             arr[index].row2 = res.row;
@@ -57,26 +63,25 @@
             arr[index].level2 = res.nlevel;
         });
         // debugger
-        return arr ;
+        return arr;
     },
-    "config":{
-        "sql":"SELECT CASE WHEN SCODE IN ('1110','1120','1210','1220','1310','1311000','1300100','1320100') THEN 0 WHEN SCODE IN('1111021','1111302','1111201','1111211','1111212','1111111','1121303','1212004','1212010','1212003','1212111','1212122','1212261','1212602','1212311','1212312','1314102','1311001','1212004','1212010','1212003') THEN 2 WHEN SCODE IN ('1111403','1148011','1212212','1212222','1228002','1314082','1314111','1314203','1131602','1131603','1314011','1314021','1314031','1314041') THEN 4 WHEN SCODE IN ('1111405','1314083','1314121') THEN 6 WHEN SCODE IN ('1314131','1314141','1314151','1314012','1314032','1212213') THEN 5.5 WHEN SCODE IN ('1100100','1120100','1110100','1210100','1220100','1200100') THEN 9 ELSE 2.5 END NLEVEL,A.SCODE,A.SNAME,B.FACT_A AS A,B.FACT_B AS B FROM( SELECT SCODE ,SNAME, NLEVEL FROM DW_DIMITEMPOINT WHERE SCODE NOT LIKE '19%' AND SCODE NOT IN('1','11') AND stype = '1' and cisdisplay = 'Y' and PROPERTY3 = '1' and SPCODE <> '1' ORDER BY SSORTBY) A LEFT JOIN (SELECT DIM_ITEMPOINT,DIM_PERIOD,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD =:period GROUP BY DIM_ITEMPOINT,DIM_PERIOD) B on A.SCODE = B.DIM_ITEMPOINT",
-        "cube":{
-            "subject":"0001",
-            "cubeId":4
+    "config": {
+        "sql": "SELECT CASE WHEN SCODE IN ('1110','1120','1210','1220','1310','1311000','1300100','1320100') THEN 0 WHEN SCODE IN('1111021','1111302','1111201','1111211','1111212','1111111','1121303','1212004','1212010','1212003','1212111','1212122','1212261','1212602','1212311','1212312','1314102','1311001','1212004','1212010','1212003') THEN 2 WHEN SCODE IN ('1111403','1148011','1212212','1212222','1228002','1314082','1314111','1314203','1131602','1131603','1314011','1314021','1314031','1314041') THEN 4 WHEN SCODE IN ('1111405','1314083','1314121') THEN 6 WHEN SCODE IN ('1314131','1314141','1314151','1314012','1314032','1212213') THEN 5.5 WHEN SCODE IN ('1100100','1120100','1110100','1210100','1220100','1200100') THEN 9 ELSE 2.5 END NLEVEL,A.SCODE,A.SNAME,B.FACT_A AS A,B.FACT_B AS B FROM( SELECT SCODE ,SNAME, NLEVEL FROM DW_DIMITEMPOINT WHERE SCODE NOT LIKE '19%' AND SCODE NOT IN('1','11') AND stype = '1' and cisdisplay = 'Y' and PROPERTY3 = '1' and SPCODE <> '1' ORDER BY SSORTBY) A LEFT JOIN (SELECT DIM_ITEMPOINT,DIM_PERIOD,SUM(NVL(FACT_A,0)) AS FACT_A,SUM(NVL(FACT_B,0)) AS FACT_B FROM DW_FACTFINANCEPOINT WHERE DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE IN('1','R') and cisdel = 'N' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE) AND DIM_PERIOD =:period GROUP BY DIM_ITEMPOINT,DIM_PERIOD) B on A.SCODE = B.DIM_ITEMPOINT",
+        "cube": {
+            "subject": "0001",
+            "cubeId": 4
         },
-        "mainDim":"itempoint",
-        "needDims":["year","month","company","conversion"],
-        "random":{"min":100,"max":100000},
-        "type":1
+        "mainDim": "itempoint",
+        "needDims": ["year", "month", "company", "conversion"],
+        "random": { "min": 100, "max": 100000 },
+        "type": 1
     },
-    "columns":[
-        {
+    "columns": [{
             "id": "A2",
             "type": "decimal",
             "text": "年初余额",
-            "subfix":"_",
-            "width":"150px"
+            "subfix": "_",
+            "width": "150px"
         },
         {
             "id": "id",
@@ -88,28 +93,28 @@
             "id": "text1",
             "type": "string",
             "text": "项目",
-            "width":"400px"
+            "width": "400px"
         },
         {
             "id": "row",
             "type": "number",
-            "align":"center",
+            "align": "center",
             "text": "行次",
-            "width":"50px"
-        },       
+            "width": "50px"
+        },
         {
             "id": "B",
             "type": "decimal",
             "text": "期末余额",
-            "width":"150px"
+            "width": "150px"
         },
         {
             "id": "A",
             "type": "decimal",
             "text": "年初余额",
-            "width":"150px"
+            "width": "150px"
         },
-        
+
         {
             "id": "id2",
             "type": "string",
@@ -120,145 +125,134 @@
             "id": "text2",
             "type": "string",
             "text": "项目",
-            "subfix":"_",
-            "width":"400px"
+            "subfix": "_",
+            "width": "400px"
         },
         {
             "id": "row2",
             "type": "number",
-            "align":"center",
+            "align": "center",
             "text": "行次",
-            "width":"60px"
+            "width": "60px"
         },
         {
             "id": "B2",
             "type": "decimal",
-            "subfix":"_",
+            "subfix": "_",
             "text": "期末余额",
-            "width":"150px"
+            "width": "150px"
         }
     ],
-    "rows":[],
-    "items":[
-        {
-            "xtype" : "bi-table",
-            "id" : "zcfzb",
-            "text" : "资产负债表",
-            "queryDataAfter":function(data, $vue){
-                debugger;
-                return $vue.__queryDataAfter();
-            },
-            "toolbar":[
-                {
-                    "id":"1",
-                    "text":"刷新",
-                    "xtype":"button",
-                    "cellStyle":{
-                        // "color":"#606266"
-                        // "background-color": "#fff"
-                    },
-                    "handler":function(vue,btn){
-                        let $vue = vue.item.$vue;
-                        $vue.closeTabTaget({}, $vue);
-                        vue.item.updateView("company");
-                    }
+    "rows": [],
+    "items": [{
+        "xtype": "bi-table",
+        "id": "zcfzb",
+        "text": "资产负债表",
+        "queryDataAfter": function(data, $vue) {
+            debugger;
+            return $vue.__queryDataAfter();
+        },
+        "toolbar": [{
+                "id": "1",
+                "text": "刷新",
+                "xtype": "button",
+                "cellStyle": {
+                    // "color":"#606266"
+                    // "background-color": "#fff"
                 },
-                {
-                    "id":"2",
-                    "text":"导出",
-                    "xtype":"button",
-                    "cellStyle":{
-                        // "color":"#606266"
-                        // "background-color": "#fff"
-                    },
-                    "handler":function(vue,btn){
-                        vue.handleDownload(vue);
-                    }
-                }
-            ],
-            "drillProperties":["text1","text2"],//有钻取，给蓝色
-            "levelProperties":{text1:"level",text2:"level2"},//加缩进 可选 table
-            "cellStyle":function(row) {
-                let datas = this.datas;
-                let record = [];
-                record = datas[row.rowIndex];
-                let css = "padding: 4px 0;";
-                let pro = row.column.property;//列id
-                if (!pro) {
-                return css;
-                }
-                let levelProperties = this.levelProperties;//缩进列获取
-                let textIndent ="";
-                let levelPro = levelProperties[pro];
-                if (levelPro && row.row[levelPro]) {
-                    let level = row.row[levelPro] || 1;
-                    textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
-                }
-                let drillProperties = this.drillProperties;//钻取列获取
-                if (pro.indexOf("text1") != -1) {//第一列项目
-                    if((record.A && record.A != 0) || (record.B && record.B != 0) ){//有数据时才显示蓝色，并且可以下钻
-                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        record.drill = true;//下钻设置
-                        return css ;
-                    }
-                    else if( !record.A && !record.B && (record.id=="1110" || record.id=="1110100" || record.id=="1120" || record.id=="1120100" || record.id=="1100100")){
-                        let drill = "text-decoration: none;color: black;";
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        return css;
-                    }
-                    else{
-                        return css+ textIndent; 
-                    }
-                }else if(pro.indexOf("text2") != -1){//第二列项目
-                    if((record.A2 && record.A2 != 0) || (record.B2 && record.B2 != 0) ){//有数据时才显示蓝色，并且可以下钻
-                        let drill = "text-decoration: none;color: #428bca;cursor: pointer;";//可以下钻的科目的颜色的设置
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        record._drill = true;//下钻设置
-                        return css;
-                    }
-                    else if(!record.A2 && !record.B2 && (record.id2=="1210" || record.id2=="1210100" || record.id2=="1220" || record.id2=="1310" || record.id2=="1300100" || record.id2=="1320100" || record.id2=="1220100" || record.id2=="1200100")){
-                        let drill = "text-decoration: none;color: black;";
-                        css = css + "font-weight:bold;" + textIndent + drill;
-                        return css;
-                    }
-                    else{
-                        return css + textIndent; 
-                    }
-                }else {
-                  return css+textIndent;
+                "handler": function(vue, btn) {
+                    let $vue = vue.item.$vue;
+                    $vue.closeTabTaget({}, $vue);
+                    vue.item.updateView("company");
                 }
             },
-            "onCellClick":function(row, column, cell, event,option){
-                debugger
-                let cv = column.property + "",
+            {
+                "id": "2",
+                "text": "导出",
+                "xtype": "button",
+                "cellStyle": {
+                    // "color":"#606266"
+                    // "background-color": "#fff"
+                },
+                "handler": function(vue, btn) {
+                    vue.handleDownload(vue);
+                }
+            }
+        ],
+        "drillProperties": ["text1", "text2"], //有钻取，给蓝色
+        "levelProperties": { text1: "level", text2: "level2" }, //加缩进 可选 table
+        "cellStyle": function(row) {
+            let datas = this.datas;
+            let record = [];
+            record = datas[row.rowIndex];
+            let css = "padding: 4px 0;";
+            let pro = row.column.property; //列id
+            if (!pro) {
+                return css;
+            }
+            let levelProperties = this.levelProperties; //缩进列获取
+            let textIndent = "";
+            let levelPro = levelProperties[pro];
+            if (levelPro && row.row[levelPro]) {
+                let level = row.row[levelPro] || 1;
+                textIndent = level > 1 ? "text-indent: " + (level - 1) * 20 + "px;" : ";";
+            }
+            let drillProperties = this.drillProperties; //钻取列获取
+            if (pro.indexOf("text1") != -1) { //第一列项目
+                if ((record.A && record.A != 0) || (record.B && record.B != 0)) { //有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    record.drill = true; //下钻设置
+                    return css;
+                } else if (!record.A && !record.B && (record.id == "1110" || record.id == "1110100" || record.id == "1120" || record.id == "1120100" || record.id == "1100100")) {
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                } else {
+                    return css + textIndent;
+                }
+            } else if (pro.indexOf("text2") != -1) { //第二列项目
+                if ((record.A2 && record.A2 != 0) || (record.B2 && record.B2 != 0)) { //有数据时才显示蓝色，并且可以下钻
+                    let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    record._drill = true; //下钻设置
+                    return css;
+                } else if (!record.A2 && !record.B2 && (record.id2 == "1210" || record.id2 == "1210100" || record.id2 == "1220" || record.id2 == "1310" || record.id2 == "1300100" || record.id2 == "1320100" || record.id2 == "1220100" || record.id2 == "1200100")) {
+                    let drill = "text-decoration: none;color: black;";
+                    css = css + "font-weight:bold;" + textIndent + drill;
+                    return css;
+                } else {
+                    return css + textIndent;
+                }
+            } else {
+                return css + textIndent;
+            }
+        },
+        "onCellClick": function(row, column, cell, event, option) {
+            debugger
+            let cv = column.property + "",
                 len = cv.length;
-                let text = row[cv];
-                let id = "" ;
-                let listener = false ; 
-                if(cv == "text1" )id = row.id;//下钻的标识
-                if(cv == "text2" )id = row.id2;//下钻的标识
-                // drill||_drill 是否下钻的标识
-                if(cv == "text1")listener = row.drill; 
-                if(cv == "text2")listener = row._drill;
-                if( this.drillProperties.indexOf(column.property) != -1 ){
-                    if(listener && (cv == "text1" || cv == "text2" )){
-                        option.commonHandler(
-                        {
-                            "type":"click",//事件类型
-                            "way":"addTab",//调用的公共方法
-                            "sourceApi":"/cnbi/json/source/tjsp/zcfzbdebug2.json",
-                            "handler":($vue,params)=>{//自定义的回调
-                                console.info(params);
-                                debugger; 
-                            } 
-                        },
-                        { row: row, column: column, cell: cell, event: event },
-                        { id: id, text: text }
-                        );                                                                   
-                    }    
-                }                
-            }   
+            let text = row[cv];
+            let id = "";
+            let listener = false;
+            if (cv == "text1") id = row.id; //下钻的标识
+            if (cv == "text2") id = row.id2; //下钻的标识
+            // drill||_drill 是否下钻的标识
+            if (cv == "text1") listener = row.drill;
+            if (cv == "text2") listener = row._drill;
+            if (this.drillProperties.indexOf(column.property) != -1) {
+                if (listener && (cv == "text1" || cv == "text2")) {
+                    option.commonHandler({
+                        "type": "click", //事件类型
+                        "way": "addTab", //调用的公共方法
+                        "sourceApi": "/cnbi/json/source/tjsp/zcfzbdebug2.json",
+                        "handler": ($vue, params) => { //自定义的回调
+                            console.info(params);
+                            debugger;
+                        }
+                    }, { row: row, column: column, cell: cell, event: event }, { id: id, text: text });
+                }
+            }
         }
-    ]
+    }]
 }

@@ -40,6 +40,25 @@
                         trigger: 'axis',
                         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        },
+                        formatter(data){
+                            let showData = data[0].value;
+                            if (showData && showData !== null) {
+                                showData = Math.round(showData * 100) / 100;
+                                let str = showData.toLocaleString();
+                                let valueArr = str.split(".");
+                                if (valueArr.length === 1) {
+                                    str = str + ".00";
+                                }else{
+                                    if(valueArr[1].length === 1){
+                                        valueArr[1] = valueArr[1] + '0';
+                                        str = valueArr[0] + '.' + valueArr[1]
+                                    }
+                                }
+                                return '<div><p>' + data[0].name + ' </p><p>' + data[0].seriesName + ': ' + str + ' </p></div>';
+                            } else if (showData === 0) {
+                                return '';
+                            }
                         }
                     },
                     grid: {

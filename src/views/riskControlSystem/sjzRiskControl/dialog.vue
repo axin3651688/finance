@@ -261,7 +261,19 @@ export default {
             // this.optionl = this.fsglTwo.rows.reverse() ;
             this.optionl = this.fsgl.rows ;
         // 风险影响程度下拉框数据
-            this.optiond = this.yxcd.rows ;  
+        //克隆一个新的数组。
+            if(this.yxcd.rows && this.yxcd.rows.length > 0){
+                let arr = this.deepClone(this.yxcd.rows);
+                // let arr = [];
+                // this.yxcd.rows.forEach(item => {
+                //     arr.push(item);
+                // });
+                arr.reverse();
+                this.optiond = arr;
+            }else {
+                this.optiond = this.yxcd.rows ;
+            }
+
         // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
             if(this.optionl_nscore == "" || this.optiond_nscore == ""){
                 let d1 = this.newThis.view_row.nprobability ;
@@ -347,6 +359,19 @@ export default {
         }
     },
     methods: {
+        deepClone(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'object') {
+                        result[key] = this.deepClone(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
         // 切换选项[风险类型]
         handleNodeClick(node){
             // debugger

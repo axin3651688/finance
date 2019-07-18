@@ -13,6 +13,15 @@
                         :label="tabletitle"
                         align="center"
                 >
+                    <template slot="header" slot-scope="slot">
+                        <div class="table-top">
+                            <div class="table-title">{{tabletitle}}</div>
+
+                            <div v-if="tabletitle.substr(0, 1) !== '2'" class="table-unit">单位：万元/次/吨/倍/%</div>
+
+                        </div>
+                    </template>
+
                     <template v-for="(item,index) in columns">
                         <el-table-column
                                 :align="item.align || 'left'"
@@ -62,9 +71,10 @@
 
 <script>
     import cwtPublicJS from '../mixin/cwtPublicJS'
+
     export default {
         name: "warningReportTable",
-        mixins:[cwtPublicJS],
+        mixins: [cwtPublicJS],
         components: {},
         props: {
             tableheight: Number,
@@ -85,7 +95,7 @@
              */
             headerRowStyle(row) {
                 if (row.rowIndex === 0) {
-                    return 'background:rgb(240, 248, 255)';
+                    return 'background:rgb(240, 248, 255); padding: 0';
                 } else {
                     return "";
                 }
@@ -97,6 +107,19 @@
              */
             companyClickEvent(scope) {
                 this.$emit("companyClicked", scope)
+            },
+
+            renderHeader(h, {column}) {
+                return h(
+                    'div',
+                    [
+                        h('span', column.label, {style: 'fontWeight: 700'}),
+                        h('i', {
+                            class: 'el-icon-location',
+                            style: 'color:#409eff;margin-left:5px;'
+                        })
+                    ],
+                );
             }
 
         }
@@ -104,5 +127,18 @@
 </script>
 
 <style scoped>
+    .table-top {
+        width: 100%;
+    }
 
+    .table-title {
+        font-size: 18px;
+
+    }
+
+    .table-unit {
+        float: right;
+        margin-top: 20px;
+        /*margin-right: 50px;*/
+    }
 </style>

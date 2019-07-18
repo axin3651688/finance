@@ -7,8 +7,11 @@
 </template>
 
 <script>
+    import dataCalculation from '../../mixin/dataCalculation'
+
     export default {
         name: "mchart",
+        mixins: [dataCalculation],
         components: {},
         props: {
             echartData: Object,
@@ -35,7 +38,26 @@
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c}"
+                        formatter(data) {
+                            let showData = data.value;
+                            if (showData && showData !== null) {
+                                showData = Math.round(showData * 100) / 100;
+                                let str = showData.toLocaleString();
+                                let valueArr = str.split(".");
+                                if (valueArr.length === 1) {
+                                    str = str + ".00";
+                                } else {
+                                    if (valueArr[1].length === 1) {
+                                        valueArr[1] = valueArr[1] + '0';
+                                        str = valueArr[0] + '.' + valueArr[1]
+                                    }
+                                }
+                                // let html = '<div><p>' + data.name +' </p><p> ' + str + ' </p></div>';
+                                return '<div><p>' + data.name + ' </p><p> ' + str + ' </p></div>';
+                            } else if (showData === 0) {
+                                return '';
+                            }
+                        }
                     },
                     series: [
                         {
@@ -85,7 +107,26 @@
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        formatter(data) {
+                            let showData = data.value;
+                            if (showData && showData !== null) {
+                                showData = Math.round(showData * 100) / 100;
+                                let str = showData.toLocaleString();
+                                let valueArr = str.split(".");
+                                if (valueArr.length === 1) {
+                                    str = str + ".00";
+                                } else {
+                                    if (valueArr[1].length === 1) {
+                                        valueArr[1] = valueArr[1] + '0';
+                                        str = valueArr[0] + '.' + valueArr[1]
+                                    }
+                                }
+                                // let html = '<div><p>' + data.name +' </p><p> ' + str + ' </p></div>';
+                                return '<div><p>' + data.name + ' </p><p> ' + str + ' </p></div>';
+                            } else if (showData === 0) {
+                                return '';
+                            }
+                        }
                     },
                     series: [
                         {
@@ -117,11 +158,11 @@
                         x: 'center'
                     },
                     tooltip: {
-                        formatter: "{a} <br/>{b} : {c}%"
+                        formatter: "{a} <br/>{b}  {c}"
                     },
-                    series: [
+                    series:
                         {
-                            name: '业务指标',
+                            name: '',
                             type: 'gauge',
                             min: 0,
                             max: 100,
@@ -147,13 +188,31 @@
                                 }
                             },
                             detail: {
-                                formatter: '值：{value}',
+                                formatter(data) {
+                                    let showData = data;
+                                    if (showData && showData !== null) {
+                                        showData = Math.round(showData * 100) / 100;
+                                        let str = showData.toLocaleString();
+                                        let valueArr = str.split(".");
+                                        if (valueArr.length === 1) {
+                                            str = str + ".00";
+                                        } else {
+                                            if (valueArr[1].length === 1) {
+                                                valueArr[1] = valueArr[1] + '0';
+                                                str = valueArr[0] + '.' + valueArr[1]
+                                            }
+                                        }
+                                        return '值：' + str ;
+                                    } else if (showData === 0) {
+                                        return '值：';
+                                    }
+                                },
                                 fontSize: '25',
-                                offsetCenter: [0, "100%"],
+                                offsetCenter: [0, "90%"],
                             },
                             data: [{value: 50, name: ''}]
                         }
-                    ]
+
                 },
                 barOption: {
                     title: {
@@ -231,8 +290,10 @@
                         let _gaugeSeries = _this.option.series;
                         let _gaugeTitle = _this.option.title;
                         _gaugeTitle.text = _data ? _data.name : '';
-                        _gaugeSeries[0].data[0].value = _data.data ? _data.data.value : 0;
-                        _gaugeSeries[0].data[0].value = _gaugeSeries[0].data[0].value === '' ? 0 : _gaugeSeries[0].data[0].value;
+                        _gaugeSeries.name = _data ? _data.name : '';
+                        _gaugeSeries.data[0].value = _data.data ? _data.data.value : 0;
+                        // _gaugeSeries.data[0].value = _data.data ? this.numberFormatter(_data.data.value) : 0;
+                        _gaugeSeries.data[0].value = _gaugeSeries.data[0].value === '' ? 0 : _gaugeSeries.data[0].value;
                         break;
                     case 'funneltobar':
                         _this.option = _this.barOption;
@@ -243,7 +304,7 @@
                         _funneltobaryAxisData.length = 0;
                         let _funneltobarTitle = _this.option.title;
                         _funneltobarTitle.text = _data ? _data.name : '';
-                        _data.data.forEach((item)=>{
+                        _data.data.forEach((item) => {
                             _funneltobarSeriesData.push(item.value * 1);
                             _funneltobaryAxisData.push(item.name);
                         });
@@ -257,7 +318,7 @@
                         _baryAxisData.length = 0;
                         let _barTitle = _this.option.title;
                         _barTitle.text = _data ? _data.name : '';
-                        _data.data.forEach((item)=>{
+                        _data.data.forEach((item) => {
                             _barSeriesData.push(item.value * 1);
                             _baryAxisData.push(item.name);
                         });
