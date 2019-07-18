@@ -150,7 +150,7 @@
 
                 if (this.barChartType === 'city') {
                     _this.option.title.text = _this.selectedName + '市企排名情况';
-                    _this.option.xAxis.name = '集团';
+                    _this.option.xAxis.name = '公司';
                 } else {
                     _this.option.title.text = _this.selectedName + '行业排名情况';
                     _this.option.xAxis.name = '省份';
