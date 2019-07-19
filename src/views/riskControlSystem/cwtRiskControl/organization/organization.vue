@@ -5,39 +5,39 @@
         <div class="parent">
             <div class="title">天津食品集团有限公司风险组织架构图</div>
 
-            <span class="dsh" @click="deptClick(leaderList.dsh)">
-                {{leaderList.dsh.value}}
+            <span class="dsh" @click="deptClick(leaderList['0'])">
+                {{leaderList['0'].value}}
             </span>
 
-            <span class="dshbgs" @click="deptClick(leaderList.dshbgs)">
-                {{leaderList.dshbgs.value}}
+            <span class="dshbgs" @click="deptClick(leaderList['1'])">
+                {{leaderList['1'].value}}
             </span>
 
-            <span class="fxglwyh" @click="deptClick(leaderList.fxglwyh)">
-                {{leaderList.fxglwyh.value}}
+            <span class="fxglwyh" @click="deptClick(leaderList['2'])">
+                {{leaderList['2'].value}}
             </span>
 
-            <span class="jyc" @click="deptClick(leaderList.jyc)">
-                {{leaderList.jyc.value}}
+            <span class="jyc" @click="deptClick(leaderList['3'])">
+                {{leaderList['3'].value}}
             </span>
 
-            <span class="fxglldxz" @click="deptClick(leaderList.fxglldxz)">
-                {{leaderList.fxglldxz.value}}
+            <span class="fxglldxz" @click="deptClick(leaderList['4'])">
+                {{leaderList['4'].value}}
             </span>
 
 
             <div class="first-svg">
                 <svg width="121px" height="160px">
-                    <polyline points="1,80 60,80 60,1 60,160 60,110 120,110" fill="none" stroke="black"
-                              stroke-width="2"></polyline>
+                    <polyline points="1,80 60,80 60,1 60,160 60,110 120,110" fill="none" stroke="#C3D8CE"
+                              stroke-width="4"></polyline>
 
                 </svg>
             </div>
 
             <div class="second-svg">
-                <svg width="1001px" height="120px">
-                    <polyline points="20,120 20,100 500,100 500,1 500,50 560,50 500,50 500,100 985,100 985,120"
-                              fill="none" stroke="black" stroke-width="2"></polyline>
+                <svg width="1005px" height="120px">
+                    <polyline points="1,120 20,100 500,100 500,1 500,50 560,50 500,50 500,100 985,100 1004,120"
+                              fill="none" stroke="#C3D8CE" stroke-width="4"></polyline>
                 </svg>
             </div>
 
@@ -169,136 +169,36 @@
 </template>
 
 <script>
-    import {departmentClickEvent} from '~api/cwtRiskControl/riskControlRequest'
+    import {departmentClickEvent, getAllDepartment} from '~api/cwtRiskControl/riskControlRequest'
     // import { mapGetters } from "vuex";
     import cwtPublicJS from '../mixin/cwtPublicJS'
 
 
     export default {
         name: "organization",
-        mixins:[cwtPublicJS],
+        mixins: [cwtPublicJS],
         components: {},
         props: {},
         data() {
             return {
-                leaderList: {
-                    dsh: {
+                leaderList: [
+                    {
                         id: '01',
                         value: '董事会'
-                    },
-                    dshbgs: {
-                        id: '0101',
-                        value: '董事会办公室'
-                    },
-                    fxglwyh: {
-                        id: '0102',
-                        value: '风险管理委员会'
-                    },
-                    jyc: {
-                        id: '0103',
-                        value: '经营层'
-                    },
-                    fxglldxz: {
-                        id: '0104',
-                        value: '风险管理领导小组'
-                    },
-                },
-                deptList: {
-                    dwbgs: {
-                        id: '010301',
-                        value: '党委办公室'
-                    },
-                    zzb: {
-                        id: '010302',
-                        value: '组织部'
-                    },
-                    xcb: {
-                        id: '010303',
-                        value: '宣传部（企业文化部）'
-                    },
-                    jjjcs: {
-                        id: '010304',
-                        value: '纪检监察室'
-                    },
-                    gh: {
-                        id: '010305',
-                        value: '工会'
-                    },
-                    tzb: {
-                        id: '010306',
-                        value: '统战部'
-                    },
-                    tw: {
-                        id: '010307',
-                        value: '团委'
-                    },
-                    lgbfwb: {
-                        id: '010308',
-                        value: '老干部服务部'
-                    },
-                    xzbgs: {
-                        id: '010309',
-                        value: '行政办公室'
-                    },
-                    fwb: {
-                        id: '001',
-                        value: '法务部'
-                    },
-                    cwb: {
-                        id: '010310',
-                        value: '财务部（财务风控办公室）'
-                    },
-                    ghytzb: {
-                        id: '010311',
-                        value: '规划与投资部'
-                    },
-                    zcglb: {
-                        id: '010312',
-                        value: '资产管理部'
-                    },
-                    tdfcb: {
-                        id: '010313',
-                        value: '土地房产部'
-                    },
-                    qyyyb: {
-                        id: '010314',
-                        value: '企业运营部'
-                    },
-                    nksyb: {
-                        id: '010315',
-                        value: '农垦事业部'
-                    },
-                    rlzyb: {
-                        id: '010316',
-                        value: '人力资源部'
-                    },
-                    ajb: {
-                        id: '010317',
-                        value: '安技部'
-                    },
-                    bwbxfb: {
-                        id: '010318',
-                        value: '保安部、信访办'
-                    },
-                    sjb: {
-                        id: '001',
-                        value: '审计部'
-                    },
-                    zgcsbgs: {
-                        id: '010319',
-                        value: '总工程师办公室'
-                    },
-                    fxgkb: {
-                        id: '010320',
-                        value: '风险管控部'
                     }
-                },
+                ],
+                deptList: [
+                    {
+                        id: '01',
+                        value: '董事会'
+                    }
+                ],
+
                 dialogVisible: false,
                 tableHeight: 550,
                 clickedDepart: null,
                 tableData: [],
-                responsibility:[],
-
+                responsibility: [],
 
 
                 // 默认显示第几页
@@ -315,6 +215,7 @@
             }
         },
         created() {
+            this.initDepartmentData();
         },
         mounted() {
             this.doNotShowDim(false);
@@ -335,7 +236,7 @@
              * 翻页事件
              * @param pagenum
              */
-            getAllData(pagenum){
+            getAllData(pagenum) {
                 let _this = this;
                 let _getters = _this.$store.getters,
                     company = _getters.company;
@@ -353,9 +254,7 @@
                         let _data = res.data.data;
 
                         _this.total = _data.users.lastPage;
-
-                        // _this.responsibility = _data['deptDesc'];
-                        _this.responsibility = [{responsibility:_data['deptDesc']}];
+                        _this.responsibility = [{responsibility: _data['deptDesc']}];
                         _this.tableData = _data.users.list;
                     }
                 })
@@ -421,11 +320,11 @@
              * @param cellValue
              * @param index
              */
-            /*responsibilityDataFormatter(row, column, cellValue, index) {
-                // return row.responsibility;
+            responsibilityDataFormatter(row, column, cellValue, index) {
+                /*// return row.responsibility;
                 let html = '<span style="max-height: 400px">' + row.responsibility + '</span>';
-                return html;
-            }*/
+                return html;*/
+            },
 
             // 每页显示的条数
             handleSizeChange(val) {
@@ -441,6 +340,21 @@
                 this.currentPage = val;
                 // 切换页码时，要获取每页显示的条数
                 this.getAllData(val)
+            },
+
+            /**
+             * 获取所有部门数据请求
+             */
+            initDepartmentData() {
+                let _this = this;
+                let params = {};
+                getAllDepartment(params).then((res) => {
+                    if (res.data.code === 200) {
+                        let _data = res.data.data;
+                        _this.leaderList = _data[0];
+                        _this.deptList = _data[1];
+                    }
+                });
             },
         }
     }
@@ -458,6 +372,8 @@
     .title {
         font-size: 30px;
         text-align: center;
+        color: #016A36;
+        font-weight: 700;
     }
 
     .dsh, .dshbgs, .fxglwyh, .jyc, .fxglldxz {
@@ -466,36 +382,43 @@
         border: 1px solid darkgray;
         border-radius: 3px;
         cursor: pointer;
+        color: #F6F6F6;
     }
 
     .dsh {
         left: 440px;
         top: 50px;
+        background: #016A36;
     }
 
     .dshbgs {
         top: 142px;
         left: 271px;
+        background-color: #4BBA62;
     }
 
     .fxglwyh {
         top: 174px;
         left: 560px;
+        background-color: #016A36;
     }
 
     .jyc {
         top: 242px;
         left: 440px;
+        background-color: #4BBA62;
     }
 
     .fxglldxz {
         top: 306px;
         left: 560px;
         z-index: 2;
+        background-color: #4BBA62;
     }
 
     .first-svg, .second-svg, .single-dept {
         position: absolute;
+        color: #439354;
     }
 
     .first-svg {
@@ -509,21 +432,25 @@
 
     .single-dept {
         display: flex;
-        top: 394px;
+        top: 400px;
+        width: 1008px;
+        justify-content: space-around;
     }
 
     .dept {
         width: 38px;
         word-wrap: break-word;
         padding: 10px;
-        margin-right: 8px;
         border: 1px solid darkgray;
         border-radius: 3px;
         cursor: pointer;
+        background-color: #ADD684;
     }
-    .content-all{
+
+    .content-all {
         display: inline-flex;
     }
+
     /*.content-div{
         border: 1px solid red;
         width: 200px;

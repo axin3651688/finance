@@ -302,3 +302,15 @@ export function predictiveModelSave(params) {
         data: params
     })
 }
+
+/**
+ * 组织架构获取所有部门请求
+ * @author cwt
+ */
+export function getAllDepartment(params) {
+    return request({
+        url: '/zjb/risk/organization/get_organization',
+        method: 'get'
+    })
+}
+
