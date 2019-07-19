@@ -87,7 +87,8 @@
              * @param value
              */
             optionChanged(value) {
-                this.selectedscode = value;
+                debugger;
+                this.selectedscode = value || this.selectedscode;
 
                 let _scode = this.selectedscode || '';
                 let params = this.getSendParams(_scode);
@@ -111,6 +112,7 @@
                 getAllHYZB(param).then((res) => {
                     if (res.data.code === 200) {
                         _this.options = res.data.data;
+                        _this.optionChanged(res.data.data[0].scode);
                     }
                 })
             },

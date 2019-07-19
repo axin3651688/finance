@@ -2,6 +2,7 @@
     <chart :options.sync="receive" auto-resize/>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
     name:"",
     props:{
@@ -63,6 +64,9 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters(["year"])
+    },
     created() {
         this.updateData();
     },
@@ -75,6 +79,9 @@ export default {
                 this.updateData();
             },
             deep:true
+        },
+        year(newValue, oldValue) {
+            this.receive.series[0].name = newValue + "年";
         }
     },
     methods: {
