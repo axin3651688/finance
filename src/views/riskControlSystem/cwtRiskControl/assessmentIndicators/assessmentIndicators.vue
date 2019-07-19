@@ -6,9 +6,9 @@
             <!--&lt;!&ndash;<el-button type="primary" @click="pageStyleChange('2')">样式二</el-button>&ndash;&gt;-->
             <!--<el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>-->
             <div class="top-tip">
-                <div class="tip-tip">
-                    tips
-                </div>
+                <!--<div class="tip-tip">-->
+                    <!--tips-->
+                <!--</div>-->
                 <div class="tip-loop" v-for="(item, index) in topTip">
                     <div class="tip-color" :style="{'background-color':item.color, width:'14px', height: '12px'}"></div>
                     <div class="tip-text">{{item.pjname}}</div>
@@ -327,6 +327,7 @@
     .echarts-content {
         height: 260px;
         margin-bottom: 20px;
+        min-width: 460px;
     }
 
     .left-content-all {
@@ -357,13 +358,15 @@
     }
 
     .right-content-name {
-        font-size: 60px;
+        font-size: 52px;
         font-family: monospace;
+        font-weight: 700;
     }
 
     .right-content-value {
         margin-top: 20px;
         font-size: 20px;
+        font-weight: 700;
         padding-right: 10px;
         text-align: right;
         font-family: monospace;
