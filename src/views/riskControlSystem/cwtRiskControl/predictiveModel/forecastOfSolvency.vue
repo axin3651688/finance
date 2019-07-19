@@ -688,9 +688,10 @@
              * @param data
              */
             initEchartData(data) {
+                debugger;
                 let _this = this;
-                _this.gauge_1EchartData.data = data.allData3.partx.cellData5;
-                _this.gauge_2EchartData.data = data.allData4.partx.cellData8;
+                _this.gauge_1EchartData.data = data.allData3.partx['cellData6'];
+                _this.gauge_2EchartData.data = data.allData4.partx['cellData9'];
                 _this.dataFresh = !_this.dataFresh;
             },
 

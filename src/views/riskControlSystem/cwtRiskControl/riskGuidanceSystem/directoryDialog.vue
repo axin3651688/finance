@@ -73,8 +73,8 @@
             <div class="directoryDialog_A_5" id="C">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_5-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick"><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick"><i class="iconfont icon-shanchu2"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2"><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2"><i class="iconfont icon-shanchu2"></i></el-button>
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
@@ -97,7 +97,7 @@
                             <el-table-column label="操作" width="80" align="center">
                                 <template slot-scope="scope">
                                     <!-- 图片按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled2">
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled2">
                                         <i class="iconfont icon-tupian icon-a icon-i"></i>
                                     </el-button>
                                     <!-- 下级按钮 -->
@@ -111,7 +111,7 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
-                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')">关 闭</el-button>
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')" :disabled="disabled2">关 闭</el-button>
                 </div>
             </div>
         </div>
@@ -119,12 +119,107 @@
             一级-》下级弹出框（二级）
          -->
         <div v-if="dialogFormVisible3_B">
-            <div class="directoryDialog_A_5" id="D">
-
+            <!-- 弹框 -->
+            <div class="directoryDialog_A_6" id="D">
+                <!-- 头部 -->
+                <div class="directoryDialog_A_6-1" @mousedown="dragA">
+                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3"><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3"><i class="iconfont icon-shanchu2"></i></el-button>
+                </div>
+                <!-- 腰部 -->
+                <div class="directoryDialog_A_6-2">
+                    <!-- 标题目录 -->
+                    <div class="directoryDialog_A_6-2-1">
+                        <div class="A_5-a">{{ title }}</div>
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
+                        <div class="A_6-c">{{ title2 }}</div>
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
+                    </div>
+                    <!-- 输入框 -->
+                    <div class="directoryDialog_A_6-2-2">
+                        <el-table
+                        :data="tableData3" style="width: 100%" :show-header="false" 
+                        border height="100%" class="tableA table-el"
+                        @selection-change="handleSelectionChange"
+                        >
+                            <el-table-column type="selection" width="40" align="center" :disabled="disabled3"></el-table-column>
+                            <el-table-column label="内容" prop="scontent">
+                                <template slot-scope="scope">
+                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" align="center">
+                                <template slot-scope="scope">
+                                    <!-- 图片按钮 -->
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled3">
+                                        <i class="iconfont icon-tupian icon-a icon-i"></i>
+                                    </el-button>
+                                    <!-- 下级按钮 -->
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled3">
+                                        <i class="iconfont icon-xiajicaozuo icon-b icon-i"></i>
+                                    </el-button>
+                                </template> 
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+                <!-- 按钮部分 -->
+                <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeB')" :disabled="disabled3">关 闭</el-button>
+                </div>
             </div>
         </div>
+        <!-- 
+            二级-》下级弹出框（三级）
+         -->
         <div v-if="dialogFormVisible3_C">
-
+                <!-- 弹框 -->
+            <div class="directoryDialog_A_7" id="E">
+                <!-- 头部 -->
+                <div class="directoryDialog_A_7-1" @mousedown="dragA">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" ><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick"><i class="iconfont icon-shanchu2"></i></el-button>
+                </div>
+                <!-- 腰部 -->
+                <div class="directoryDialog_A_6-2">
+                    <!-- 标题目录 -->
+                    <div class="directoryDialog_A_7-2-1">
+                        <div class="A_5-a">{{ title }}</div>
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
+                        <div class="A_6-c">{{ title2 }}</div>
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
+                        <div class="A_6-c">{{ title3 }}</div>
+                        <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
+                    </div>
+                    <!-- 输入框 -->
+                    <div class="directoryDialog_A_6-2-2">
+                        <el-table
+                        :data="tableData4" style="width: 100%" :show-header="false" 
+                        border height="100%" class="tableA table-el"
+                        @selection-change="handleSelectionChange"
+                        >
+                            <el-table-column type="selection" width="40" align="center"></el-table-column>
+                            <el-table-column label="内容" prop="scontent">
+                                <template slot-scope="scope">
+                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" width="80" align="center">
+                                <template slot-scope="scope">
+                                    <!-- 图片按钮 -->
+                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" >
+                                        <i class="iconfont icon-tupian icon-a icon-i"></i>
+                                    </el-button>                                   
+                                </template> 
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+                <!-- 按钮部分 -->
+                <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')">关 闭</el-button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -163,16 +258,27 @@ export default {
             dialogFormVisible3_B: false ,   // 下级 2级 的弹出框的显示|隐藏的控制
             dialogFormVisible3_C: false ,   // 下级 3级 的弹出框的显示|隐藏的控制
             title: "" ,                     // 添加 | 修改 的弹出框的标题
+            title2: "",                     // 一级下级按钮的文字
+            title3: "",                     // 二级下级按钮的文字
             disabled: false ,               // 是否禁用 
             disabled2: false,               // 一级  是否禁用
+            disabled3: false,               // 二级  是否禁用
             labelPosition: "right" ,        // form表单右对齐
             selectionA: [] ,            // 一级勾选状态数组
             selectionB: [] ,            // 二级勾选状态数组
             selectionC: [] ,            // 三级勾选状态数组
             scopeData: {} ,             // 点击(1级)下级按钮时的参数
+            scopeData2: {} ,            // 点击(2级)下级按钮时的参数
+            scopeData3: {} ,            // 点击(3级)下级按钮时的参数
             tableData2: [
-                { scontent: "13131" }
+                { scontent: "" }
             ] ,
+            tableData3: [
+                { scontent: "" }
+            ],
+            tableData4: [
+                { scontent: "" }
+            ],
             // form表单数据
             formLabelAlign: {               
                 name: "" ,
@@ -316,15 +422,31 @@ export default {
          * 关闭 | 取消 按钮
          */
         closeClick(val) {
-            this.disabled = false ;
             if(val === "close")this.newThis.dialogFormVisible_A = false ;
-            if(val === "cancel")this.dialogFormVisible2_A = false ;
-            if(val === "closeA")this.dialogFormVisible3_A = false ;     // 一级关闭
+            if(val === "cancel"){
+                this.disabled = false ;
+                this.dialogFormVisible2_A = false ;
+            }
+            if(val === "closeA"){                                       // 一级关闭
+                this.disabled = false ;
+                this.number2 = 0 ;
+                this.dialogFormVisible3_A = false ;
+            }     
+            if(val === "closeB"){                                       // 二级关闭
+                this.disabled2 = false;
+                this.number2 = 1 ;                                      
+                this.dialogFormVisible3_B = false ; 
+            } 
+            if(val === "closeC"){                                       // 三级关闭
+                this.disabled3 = false;
+                this.number2 = 2 ;                                      
+                this.dialogFormVisible3_C = false ; 
+            }    
         },
         /**
          * 下级按钮(一级)
          */
-        lowerLevelClick(scope) {
+        lowerLevelClick(scope) { //debugger
             let me = this ;
             me.scopeData = scope ;
             me.dialogFormVisible3_A = !me.dialogFormVisible3_A ;
@@ -338,17 +460,39 @@ export default {
          * 下级按钮（二级）
          */
         lowerLevelClick2(scope) {
-            debugger
+            let me = this ;
+            me.disabled2 = true ;
+            me.scopeData2 = scope ;
+            me.title2 = scope.row.scontent ;
+            me.number2 = 2 ;
+            me.dialogFormVisible3_B = !me.dialogFormVisible3_B ;
+            me.directoryRequest() ; 
+        },
+        /**
+         * 下级按钮（三级）
+         */
+        lowerLevelClick3(scope) {
+            let me = this ;
+            me.disabled3 = true ;
+            me.scopeData3 = scope ;
+            me.title3 = scope.row.scontent ;
+            me.number2 = 3 ;
+            me.dialogFormVisible3_C = !me.dialogFormVisible3_C ;
+            me.directoryRequest() ; 
         },
         /**
          * (一级)输入框保存
          */
-        saveChange(scope) { //
+        saveChange(scope) { //debugger
+            let id ;
+            if(this.number2 == 1)id = this.scopeData.row.pid;
+            if(this.number2 == 2)id = this.scopeData2.row.id;
+            if(this.number2 == 3)id = this.scopeData3.row.id;
             if(scope.row.id === 0) {
                 let params = [{
                     catalog_id: this.scopeData.row.id,
                     chartpath: "",
-                    pid: this.scopeData.row.pid,
+                    pid: id,
                     scontent: scope.row.scontent 
                 }]
                 // 添加请求方法
@@ -376,8 +520,10 @@ export default {
         /**
          * (一级)添加按钮
          */
-        levelClick() {
-            this.tableData2.push({ id: 0, scontent: "" }) ;
+        levelClick() { //debugger
+            if(this.number2=== 1)this.tableData2.push({ id: 0, scontent: "" }) ;
+            if(this.number2=== 2)this.tableData3.push({ id: 0, scontent: "" }) ;
+            if(this.number2=== 3)this.tableData4.push({ id: 0, scontent: "" }) ;
         },
         /**
          * (一级)删除按钮
@@ -538,6 +684,8 @@ export default {
          */
         contentRequest(arr){ 
             let me = this ;
+            let index = me.scopeData.$index ;
+            let aa, bb ;
             let params = {
                 titleId : 1 ,
 	            sqlKey: "RiskGuide.selectContent"
@@ -546,11 +694,19 @@ export default {
                 if(res.data.code === 200) {
                     let data = res.data.data ;
                     let cc = res.data.data.filter(item => { 
-                        return item.catalogname == arr[0].sname ;
+                        return item.catalogname == arr[index].sname ;
                     });
                     if(me.number2 == 1)me.tableData2 = cc.filter(item2 => { return item2.nlevel === 1 }) ;
-                    // me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
-                    // me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+                    if(me.number2 == 2){
+                        aa = me.scopeData2.row ;
+                        bb = cc.filter(item3 => { return item3.nlevel === 2 }) ;
+                        me.tableData3 = bb.filter(item33 => { return aa.id === item33.pid }) ;
+                    }
+                    if(me.number2 == 3){
+                        aa = me.scopeData3.row ;
+                        bb = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+                        me.tableData4 = bb.filter(item44 => { return aa.id === item44.pid }) ;
+                    }
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
@@ -560,6 +716,36 @@ export default {
 }
 </script>
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
-<style scoped>
-    
+<style>
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.tableA ::-webkit-scrollbar {
+    width:1px; 
+    height:10px; 
+    background-color:transparent;
+} 
+::-webkit-scrollbar {
+    width:1px; 
+    height:10px; 
+    background-color:transparent;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.tableA ::-webkit-scrollbar-track {
+    background-color:#f0f6ff;  
+} 
+::-webkit-scrollbar {
+    /* background-color:#f0f6ff;   */
+}
+/*定义滑块 内阴影+圆角*/
+.tableA ::-webkit-scrollbar-thumb {
+    background-color: #9fd467;
+    border-radius:1px;
+}
+::-webkit-scrollbar {
+    background-color: #f5f5f5;
+    border-radius:1px;
+} 
+
+.scrollbarHide::-webkit-scrollbar{display: none}
+.scrollbarShow::-webkit-scrollbar{display: block}
+
 </style>
