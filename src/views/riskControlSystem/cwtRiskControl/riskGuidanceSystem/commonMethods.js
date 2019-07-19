@@ -13,6 +13,8 @@ export default  {
         if(event.currentTarget.className === "directoryDialog_A_1")id = "A" ;
         if(event.currentTarget.className === "directoryDialog_A_4-1")id = "B" ;
         if(event.currentTarget.className === "directoryDialog_A_5-1")id = "C" ;
+        if(event.currentTarget.className === "directoryDialog_A_6-1")id = "D" ;
+        if(event.currentTarget.className === "directoryDialog_A_7-1")id = "E" ;
         me.selectElement = document.getElementById(id) ;
         // me.selectElement = document.getElementsByClassName(event.currentTarget.className)[0] ;
         let div1 = me.selectElement

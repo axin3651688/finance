@@ -15,7 +15,7 @@
             <el-aside class="guidance_aside container_aside col_A">
                 <div v-if="directory.length > 0" class="col_A">
                     <el-menu :default-active="directory[0].index" class="el-menu-vertical-demo asideA col_A">
-                        <el-menu-item class="el-menu-vertical_title asideA_item col_A" v-for="(item, index) in directory" :key="item.id" :index="item.index" @click.native="directoryClick(item)">
+                        <el-menu-item class="el-menu-vertical_title asideA_item col_A" v-for="(item, index) in directory" :key="item.index" :index="item.index" @click.native="directoryClick(item)">
                             <a slot="title">{{ item.sname }}</a>
                         </el-menu-item>
                     </el-menu>
@@ -29,8 +29,8 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_A.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_A" :key="item.catalogname">
-                                <div class="col_class" :class="{'first': index == first}" @click="contentClick(index)">{{ item.scontent }}</div>
+                            <div v-else v-for="(item, index) in content_A" :key="item.id">
+                                <div class="col_class" :class="{'first': index == first}" @click="contentClick(item,index)">{{ item.scontent }}</div>
                             </div>
                         </div>
                     </el-col>
@@ -38,8 +38,8 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_B.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_B" :key="item.catalogname">
-                                <div class="col_class" :class="{'second': index == second}" @click="contentClick2(index)">{{ item.scontent }}</div>
+                            <div v-else v-for="(item, index) in content_B" :key="item.id">
+                                <div class="col_class" :class="{'second': index == second}" @click="contentClick2(item,index)">{{ item.scontent }}</div>
                             </div>
                         </div>
                     </el-col>
@@ -47,7 +47,7 @@
                     <el-col :span="8" class="col_A">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_C.length == 0">暂无数据显示！</div>
-                            <div v-else v-for="(item, index) in content_A" :key="item.catalogname">
+                            <div v-else v-for="(item, index) in content_C" :key="item.id">
                                 <div class="col_classA">{{ item.scontent }}</div>
                             </div>
                         </div>
@@ -73,6 +73,7 @@ import {
 
 // 引用 * 目录修改 * 弹出框组件
 import directoryDialog from './directoryDialog.vue' ;
+import { debounce } from '../../../../utils/index.js';
 export default {
     components: {
         directoryDialog
@@ -82,6 +83,7 @@ export default {
             me: this ,                          // this对象
             directory: [],                      // 目录数组
             dialogFormVisible_A: false ,        // 修改按钮弹出框的显示|隐藏的控制
+            dialogFormVisible3_A:false ,
             content: [] ,                       // 总内容数组
             content_A: [] ,                     // 内容1数组
             content_B: [] ,                     // 内容2数组
@@ -107,8 +109,6 @@ export default {
         this.setTableScollHeight() ;
         // 目录查询接口
         this.directoryRequest() ;
-        // 内容查询接口
-        this.contentRequest() ;
     },
     methods: {
         /**
@@ -127,7 +127,7 @@ export default {
          * 目录查询接口
          */
         directoryRequest(){
-            const me = this ;
+            let me = this ;
             let data ;
             let params = {
                 titleId : 1,
@@ -138,6 +138,7 @@ export default {
                     data = res.data.data ;
                     data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
                     me.directory = data.filter(item => { return item.pid === 0 }) ;
+                    me.contentRequest() ; // 内容查询方法
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
@@ -147,24 +148,35 @@ export default {
          * 内容查询接口
          */
         contentRequest(){ 
-            const me = this ;
+            let me = this ;
             let params = {
                 titleId : 1 ,
 	            sqlKey: "RiskGuide.selectContent"
             }
-            selectAll(params).then(res => { 
+            selectAll(params).then(res => {  
                 if(res.data.code === 200) {
                     me.content = res.data.data ;
-                    let cc = res.data.data.filter(item => {
+                    let cc = res.data.data.filter(item => { 
                         return item.catalogname == me.directory[0].sname ;
                     });
-                    me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
-                    me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
-                    me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+                    // 内容的处理
+                    me.contentsProcessing(cc) ;
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
             });
+        },
+        /**
+         * 内容的处理
+         */
+        contentsProcessing(cc){
+            let me = this ;
+            let aa, bb ;
+            me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+            aa = cc.filter(item3 => { return item3.nlevel === 2 }) ;
+            bb = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+            me.content_B = aa.filter(item33 => { return me.content_A[0].id == item33.pid }) ;
+            me.content_C = bb.filter(item44 => { return me.content_B[0].id == item44.pid }) ;
         },
         /**
          * 修改按钮
@@ -176,7 +188,7 @@ export default {
          * 目录点击事件
          */
         directoryClick(item) {
-            debugger
+            // debugger
             let me = this ;
             me.content_A = [] ;
             me.content_B = [] ;
@@ -184,18 +196,42 @@ export default {
             let cc = me.content.filter(res => {
                 return res.catalogname == item.sname ;
             });
-            me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
-            me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
-            me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
+            // 内容的处理
+            me.contentsProcessing(cc) ;
+            // me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+            // me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
+            // me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
         },
         /**
          * 内容点击按钮
          */
-        contentClick(index) {    // 一级 
+        contentClick(item, index) { debugger   // 一级 
+            let $index ; 
             this.first = index;
+            this.content_B = this.content.filter(res => {
+                return res.pid == item.id ;
+            });
+            if(this.content_B.length === 0){
+                this.content_C = [] ;
+                return false ;
+            } else if(this.content_B.length === 1){
+                $index = 0 ;
+            } else {
+                $index = this.second ;
+            }
+            this.content_C = this.content.filter(res => {
+                return res.pid == this.content_B[$index].id ;
+            });
         },
-        contentClick2(index) {   // 二级
+        contentClick2(item, index) {   // 二级
             this.second = index;
+            if(this.content_B.length === 0){
+                this.content_C = [] ;
+                return false ;
+            }
+            this.content_C = this.content.filter(res => {
+                return res.pid == item.id ;
+            });
         },
         /**
          * 导出按钮

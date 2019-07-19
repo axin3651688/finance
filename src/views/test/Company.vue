@@ -127,14 +127,28 @@
           </el-form-item>
 
           <el-form-item label="国资委行业" prop="sindcodedetail">
-            <el-select class="elform" v-model="form.sindcodedetail" placeholder="请选择行业">
+            <!-- <el-select class="elform" v-model="form.sindcodedetail" placeholder="请选择行业">
               <el-option
                 v-for=" (item,index) in sindcodee "
                 :key="index"
                 :label="item.sname"
                 :value="item.scode"
               ></el-option>
-            </el-select>
+            </el-select> -->
+            <treeselect
+              class=" elform"
+              v-model="form.sindcodedetail"
+              :options="sindcodee"
+              :disabled="disabled2"
+              placeholder="请选择所属部门"              
+            ></treeselect>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="新增公司时 此行业默认为 综合行业 可修改"
+              show-icon
+              :closable="false"
+            ></el-alert>
           </el-form-item>
 
           <el-form-item label="公司规模" prop="sindsrange">
@@ -146,6 +160,13 @@
                 :value="item.scode"
               ></el-option>
             </el-select>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="新增公司时 公司规模默认为 小型企业 可修改"
+              show-icon
+              :closable="false"
+            ></el-alert>
           </el-form-item>
 
           <el-form-item label="企业法人" prop="scorporation">
@@ -229,7 +250,12 @@ import request from "utils/http";
 import tools from "utils/tools";
 import axios from "axios";
 import Vue from "vue";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
+  components: {
+    Treeselect
+  },
   created() {
     this.findNodes();
     this.findDim();
@@ -249,6 +275,8 @@ export default {
       },
       // EAS id 输入框是否禁用
       easDisabled: true ,
+      // 国资委行业是否禁用
+      disabled2: false ,
       treedata: [],
       //默认展开节点
       expandKeys: [],
@@ -295,7 +323,7 @@ export default {
         seascomcode: "",    // EAS公司id
         cisdel: "",         // 是否删除
         // text: ""
-        sindcodedetail:"",  // 国资委行业
+        sindcodedetail:null,// 国资委行业
         scorporation: "",   // 企业法人
         sindsrange:"",      // 公司规模
         scorporatetel:"",   // 联系电话
@@ -522,12 +550,40 @@ export default {
         if (result.status == 200) { //debugger
           if(result.data.code === 200){
             // 国资委行业
-            _this.sindcodee = result.data.data[0].indsclassify ;
+            // _this.sindcodee = result.data.data[0].indsclassify ;
+            let data = result.data.data[0].indsclassify ;
             // 内部行业
             _this.sindcodes = result.data.data[0].industry ;
             // 公司规模
             _this.sindcoded = result.data.data[0].indsrange ;
-          }
+            const setting = {
+              data: {
+                simpleData: {
+                  enable: true,
+                  idKey: "scode",
+                  pIdKey: "spcode"
+                },
+                key: {
+                  name: "scode",
+                  children: "children"
+                }
+              }
+            };
+            if (Array.isArray(data) && data.length > 0) {
+              data = tools.sortByKey(data, "scode");
+              data = data.filter(function(item) {
+                item.id = item.scode;
+                item.label = "(" + item.scode + ") " + item.sname;
+                // item.sname = item.label;
+                return item;
+              });
+              _this.sindcodee = data;
+              // data[0].open = true;
+              // _this.expandKeys.push(data[0].scode);
+              _this.sindcodee = tools.transformToeTreeNodes(setting, data);
+              // me.addUserForm.department = me.comtree2[0].id ;
+            }
+          }         
         }
       });
     },
@@ -600,6 +656,10 @@ export default {
      * 注意问题：当前选中公司的状态，后台处理
      */
     add(formName) { //debugger
+      // 新增公司时，国资委行业默认为 综合行业 ； 公司规模默认为 小型企业 可手动修改
+      let cc = this.sindcodee.filter(res => { return res.scode == "Z" }) ;
+      let dd = this.sindcoded.filter(rss => { return rss.scode == "4" }) ;
+      // return false ;
       //clear 表单
       this.form.spcode = this.form.scode;   // 父级编码
       this.form.scode = "";         // 公司编码
@@ -610,12 +670,12 @@ export default {
       this.form.npercent = 0;       // 集团合计持股比例
       this.form.ssrccode = "";      // EAS公司源编码
       this.form.seascomcode = "";   // EAS公司id
-      this.form.sindcodedetail = "";  // 国资委行业
-      this.form.scorporation = "";    // 企业法人
-      this.form.sindsrange = "";      // 公司规模
-      this.form.scorporatetel = "";   // 联系电话
-      this.form.saddress = "";        // 公司地址
-      this.form.sfullname = "";       // 公司全称
+      this.form.sindcodedetail = cc[0].scode; // 国资委行业-
+      this.form.scorporation = "";            // 企业法人
+      this.form.sindsrange = dd[0].scode;     // 公司规模-
+      this.form.scorporatetel = "";           // 联系电话
+      this.form.saddress = "";                // 公司地址
+      this.form.sfullname = "";               // 公司全称
       this.form.nlevel = this.form.nlevel + 1;  // 层级
 
       //处理添加
@@ -712,7 +772,7 @@ export default {
         return;
       }   
       //验证
-      _this.$refs[formName].validate(valid => { debugger
+      _this.$refs[formName].validate(valid => { //debugger
           if (valid) {
             //保存操作
             var obj = _.cloneDeep(_this.activeForm);
@@ -766,6 +826,7 @@ export default {
                     type: "success",
                     message: result.data.msg
                   });
+                  _this.disabled2 = true ;
                   //重新加载
                   _this.findNodes();
                 }
@@ -885,6 +946,7 @@ export default {
       this.scodeDisabled = true;
       this.activeForm = {};
       this.addDisabled = false;
+      this.disabled2 = false ;
     },
     /**
      * 根据公司生成不同的行业条数，差额公司的行业有差额。
@@ -1041,7 +1103,9 @@ export default {
 span.company_cisdel {
   color: rgb(255, 0, 0); 
 }
-
+.elform .vue-treeselect__menu-container {
+  color: #606266;
+}
 </style>
 <style scoped>
 .companyM {

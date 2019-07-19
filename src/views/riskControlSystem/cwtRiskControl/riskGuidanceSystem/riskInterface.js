@@ -175,3 +175,15 @@ export function riskguidecontentAll() {
         method: 'get'
     })
 }
+/**
+ * name:sjz
+ * 说明：风险指引制度
+ *      【图片】接口（注：应用内容）
+ */
+export function riskguidecontentPicture(data) {
+    return request({
+        url: '/zjb/riskguidecontent/upload_chart',
+        method: 'post',
+        data: data
+    })
+}

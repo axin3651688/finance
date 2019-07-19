@@ -2,6 +2,7 @@
     <chart :options.sync="receive" auto-resize/>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
     name:"",
     props:{
@@ -63,6 +64,9 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters(["year"])
+    },
     created() {
         this.updateData();
     },
@@ -75,6 +79,9 @@ export default {
                 this.updateData();
             },
             deep:true
+        },
+        year(newValue, oldValue) {
+            this.receive.series[0].name = newValue + "年";
         }
     },
     methods: {
@@ -82,15 +89,39 @@ export default {
             let me = this;
             if(me.chartData){
                 let datas = me.chartData,yDatas = [],seriesData = [];
-                datas.forEach(item => {
-                    if(item.score){
-                        yDatas.push(item.sname);
-                        seriesData.push(item.score);
-                    }
+                // datas.forEach(item => {
+                //     if(item.score){
+                //         yDatas.push(item.sname);
+                //         seriesData.push(item.score);
+                //     }
+                // });
+                let arrDatas = datas.filter(item => {
+                    return item.score;
+                });
+                if(arrDatas && arrDatas.length > 0){
+                    me.sortByProp(arrDatas,"score",-1);
+                }
+                arrDatas.forEach(item => {
+                    yDatas.push(item.sname);
+                    seriesData.push(item.score);
                 });
                 me.receive.yAxis.data = yDatas.reverse();
                 me.receive.series[0].data = seriesData.reverse();
             }
+        },
+        /**
+         * 排序
+         */
+        sortByProp (data,prop,num) {
+            data.sort((a,b) => {
+                if(a[prop] > b[prop]){
+                    return num;
+                }else if(a[prop] < b[prop]) {
+                    return -num;
+                }else {
+                    return 0;
+                }
+            });
         }
     },
 }
