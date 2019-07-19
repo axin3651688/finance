@@ -10,8 +10,8 @@
                     <el-button @click="uploadClick">模 板 下 载</el-button>
                 </el-form-item>
                 <el-form-item label="模板匹配：">
-                    <el-select class="form_select" v-model="form.moduleMatching" placeholder="请选择匹配模板">
-                        <el-option v-for="item in items" :key="item.id" :label="item.text" :value="item.name"></el-option>
+                    <el-select class="form_select" v-model="form.moduleMatching" placeholder="请选择匹配模板" @change="changeOption">
+                        <el-option v-for="item in items" :key="item.id" :label="item.text" :value="item.type"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="本地文件：">
@@ -24,15 +24,17 @@
                     :data="uploadData"
                     drag
                     :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
+                    :before-upload="beforeAvatarUpload"
+                    ref="upload"
+                    >
                         <i class="el-icon-upload"></i>
                         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                        <div class="el-upload__tip el-upload__tishi">只能上传Excel/xlsx/xls文件，且不超过20M</div>
+                        <div class="el-upload__tip el-upload__tishi">只能上传Excel/xlsx/xls文件</div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item class="form_btn">
                     <el-button type="primary" plain @click="importClick">导 入</el-button>
-                    <el-button type="warning" plain @click="resetClick">重 置</el-button>
+                    <!-- <el-button type="warning" plain @click="resetClick">重 置</el-button> -->
                 </el-form-item>
             </el-form>
             <!-- 
@@ -59,6 +61,10 @@
 <script>
 // Qs是axios里面自带的
 import Qs from 'qs'
+import { importInitExcel } from '~api/SZCExport.js'
+// import {
+//     importInitExcel
+// } from "@/api/SZCExport.js";
 export default {
     data() {
         return {
@@ -75,11 +81,11 @@ export default {
             },
             // 模板匹配下拉选数组
             items: [
-                { id: "1", text: "人员管理模板", type: "PersonnelManagement", name: "人员管理" },
-                { id: "2", text: "风险发生概率", type: "q", name: "风险发生概率" },
-                { id: "3", text: "风险影响程度", type: "s", name: "风险影响程度" },
-                { id: "4", text: "风险策略模板", type: "RiskStrategy", name: "风险策略" },
-                { id: "5", text: "风险类型模板", type: "RiskTypes", name: "风险类型" }
+                { id: "1", text: "人员管理", type: "PersonnelManagement", name: "人员管理" },
+                { id: "2", text: "风险发生概率", type: "RiskProbability", name: "风险发生概率" },
+                { id: "3", text: "风险影响程度", type: "RiskInfluenceDegree", name: "风险影响程度" },
+                { id: "4", text: "风险策略", type: "RiskStrategy", name: "风险策略" },
+                { id: "5", text: "风险类型", type: "RiskTypes", name: "风险类型" }
             ],
             // 上传的参数
             uploadData: {
@@ -93,17 +99,72 @@ export default {
 
     },
     methods: {
+        /**
+         * 选择框的改变。
+         */
+        changeOption (value) {
+            this.selectType = value;
+        },
         // 上传之前的钩子
         beforeAvatarUpload(file){
-
+            let me = this,storeParams = me.$store.getters;
+            me.form.moduleLocal = file.name;
+            this.files = file;
+            // this.uploadData = {
+            //     company: storeParams.company,
+            //     period: storeParams.year + (storeParams.month > 9? "" + storeParams.month:"0" + storeParams.month),
+            //     // templateScode: ""
+            //     stype:""
+            // };
         },
         // 文件上传成功时的钩子
         handleAvatarSuccess(response, file, fileList){
-
+            
         },
         // 导入按钮
         importClick(){
-
+            let me = this,form = me.form,fileName = form.moduleLocal,files = me.files;
+            let regExp = /([\u4e00-\u9fa5]+)/gi;
+            let fileStr = fileName.match(regExp);
+            //获取名称
+            let moduleMatching = me.items.filter(item => {
+                return item.type == form.moduleMatching;
+            });
+            if(moduleMatching[0].text != fileStr[0]){
+                this.$message({
+                    message: "模板名字不匹配",
+                    type: "error"
+                });
+            }else {
+                let fd = new FormData();
+                fd.set('file',files);
+                fd.set('stype',this.selectType);
+                this.$confirm('此操作将覆盖以前的数据内容, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // me.axios.post('/zjb/excel_input', params).then((res) => {
+                    importInitExcel(fd).then((res) => {
+                        if (res.data.code === 200) {
+                            this.$message({
+                                message: "模板匹配 导入成功",
+                                type: "success"
+                            });
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: "error"
+                            });
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已撤回导入！'
+                    });          
+                });
+            }
         },
         // 重置按钮
         resetClick(){

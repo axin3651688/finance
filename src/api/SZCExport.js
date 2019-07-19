@@ -38,3 +38,14 @@ export function exportRiskWorld(exportData) {
         data: QS.stringify(exportData)
     })
 }
+/**
+ * 初始化信息。
+ */
+export function importInitExcel(params) {
+    return request({
+        url: '/zjb/excel_input',
+        method: 'post',
+        // data: QS.stringify(params)
+        data: params
+    })
+}

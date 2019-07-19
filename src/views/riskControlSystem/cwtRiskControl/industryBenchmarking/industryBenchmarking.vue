@@ -6,6 +6,7 @@
                 <el-select
                         v-model="selectedName"
                         placeholder="请选择"
+                        filterable
                         @change="optionChanged"
                         class="sigle_select"
                 >
