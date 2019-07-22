@@ -15,8 +15,16 @@
             <el-aside class="guidance_aside container_aside col_A">
                 <div v-if="directory.length > 0" class="col_A">
                     <el-menu :default-active="directory[0].index" class="el-menu-vertical-demo asideA col_A">
-                        <el-menu-item class="el-menu-vertical_title asideA_item col_A" v-for="(item, index) in directory" :key="item.index" :index="item.index" @click.native="directoryClick(item)">
-                            <a slot="title">{{ item.sname }}</a>
+                        <el-menu-item 
+                        class="el-menu-vertical_title asideA_item col_A" 
+                        v-for="(item, index) in directory" 
+                        :key="item.index" 
+                        :index="item.index" 
+                        @click.native="directoryClick(item)"
+                        >
+                            <div class="el-menu-vertical_title asideA_item col_A" @contextmenu.prevent="contentRightClick">
+                                <a slot="title" >{{ item.sname }}</a>
+                            </div>
                         </el-menu-item>
                     </el-menu>
                 </div>
@@ -30,7 +38,10 @@
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_A.length == 0">暂无数据显示！</div>
                             <div v-else v-for="(item, index) in content_A" :key="item.id">
-                                <div class="col_class" :class="{'first': index == first}" @click="contentClick(item,index)">{{ item.scontent }}</div>
+                                <div class="col_class" :class="{'first': index == first}" 
+                                @click="contentClick(item,index)" @contextmenu.prevent="contentRightClick">
+                                    {{ item.scontent }}
+                                </div>
                             </div>
                         </div>
                     </el-col>
@@ -55,6 +66,17 @@
                 </el-row>
             </el-main>
         </el-container>
+        <!-- 
+            右键按钮弹出框
+         -->
+        <!-- 右键菜单 -->
+        <div v-show="menuVisible" class="menuVisible">
+            <ul id="menu" class="menu">
+                <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li>
+                <!-- <li class="menu__item" v-show="stype != 0" @click="modifyClick"><i class="el-icon-edit-outline modify"></i>修改</li> -->
+                <!-- <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-circle-close-outline delete"></i>删除</li> -->
+            </ul>
+        </div>
         <!-- 
             弹出框部分(☆☆★◆♣▁㈱㊣™™)
          -->
@@ -88,9 +110,11 @@ export default {
             content_A: [] ,                     // 内容1数组
             content_B: [] ,                     // 内容2数组
             content_C: [] ,                     // 内容3数组
-            first: 0 ,
-            second:0 ,
-            third: 0 ,        
+            first: 0 ,                          // 第一层次内容的index
+            second:0 ,                          // 第二层次内容的index
+            third: 0 ,                          // 第三层次内容的index
+            menuVisible: false ,                // 右键点击按钮的弹出框 默认为关闭状态   
+            directoryObj: {} ,                  // 目录点击的信息存放
         }
     },
     created(){
@@ -124,6 +148,32 @@ export default {
             };
         },
         /**
+         * 
+         */
+        contentRightClick(MouseEvent, object){
+            debugger
+            this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
+            this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
+            var menu = document.querySelector('#menu')
+            let aaa = document.getElementsByClassName('col_main')[0] ;
+            menu.style.left = MouseEvent.clientX -150 + 'px'
+            // menu.style.left = "234px" ;
+            // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
+            document.addEventListener('click', this.foo) 
+            menu.style.top = MouseEvent.clientY - 10 + 'px'
+        },
+        /**
+         * @description 取消鼠标监听事件 菜单栏
+         */
+        foo() { 
+            this.menuVisible = false
+            // 要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
+            document.removeEventListener('click', this.foo) 
+        },
+        addClick(){
+            
+        },
+        /**
          * 目录查询接口
          */
         directoryRequest(){
@@ -138,6 +188,7 @@ export default {
                     data = res.data.data ;
                     data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
                     me.directory = data.filter(item => { return item.pid === 0 }) ;
+                    me.directoryObj = me.directory[0] ;
                     me.contentRequest() ; // 内容查询方法
                 } else {
                     me.$message.error(res.data.msg) ;
@@ -171,9 +222,17 @@ export default {
          */
         contentsProcessing(cc){
             let me = this ;
-            let aa, bb ;
+            let aa, bb, $index ;
+            me.content_A = [] ;
+            me.content_B = [] ;
+            me.content_C = [] ;
+            // 第一层次内容
             me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+            if(me.me.content_A.length === 0)return false ;
+            // 第二层次内容
             aa = cc.filter(item3 => { return item3.nlevel === 2 }) ;
+            if(aa.length === 0)return false ;
+            // 第三层次内容
             bb = cc.filter(item4 => { return item4.nlevel === 3 }) ;
             me.content_B = aa.filter(item33 => { return me.content_A[0].id == item33.pid }) ;
             me.content_C = bb.filter(item44 => { return me.content_B[0].id == item44.pid }) ;
@@ -188,8 +247,13 @@ export default {
          * 目录点击事件
          */
         directoryClick(item) {
-            // debugger
             let me = this ;
+            if(me.directoryObj.id !== item.id){
+                me.directoryObj = item ;
+                me.first = 0 ;
+                me.second= 0 ;
+                me.third = 0 ;
+            }            
             me.content_A = [] ;
             me.content_B = [] ;
             me.content_C = [] ;
@@ -198,15 +262,12 @@ export default {
             });
             // 内容的处理
             me.contentsProcessing(cc) ;
-            // me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
-            // me.content_B = cc.filter(item3 => { return item3.nlevel === 2 }) ;
-            // me.content_C = cc.filter(item4 => { return item4.nlevel === 3 }) ;
         },
         /**
          * 内容点击按钮
          */
-        contentClick(item, index) { debugger   // 一级 
-            let $index ; 
+        contentClick(item, index) {    // 一级 
+            let $index = 0 ; 
             this.first = index;
             this.content_B = this.content.filter(res => {
                 return res.pid == item.id ;
@@ -214,11 +275,7 @@ export default {
             if(this.content_B.length === 0){
                 this.content_C = [] ;
                 return false ;
-            } else if(this.content_B.length === 1){
-                $index = 0 ;
-            } else {
-                $index = this.second ;
-            }
+            } 
             this.content_C = this.content.filter(res => {
                 return res.pid == this.content_B[$index].id ;
             });
@@ -245,6 +302,27 @@ export default {
 
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
 <style scoped>
+.menu {
+    /* height: 120px; */
+    width: 150px;
+    list-style:none	;
+    text-align: left;
+    cursor: pointer;
+    position: absolute;
+    background-color: #fff ;
+}
+.menu li {
+    cursor: pointer;
+    position: relative;
+    display: block;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125)
+}
+.menu li i {
+    margin-right: 5px ;
+}
     /* 内容的样式设置 */
     .col_class, .col_classA {
         margin-bottom: 10px;
