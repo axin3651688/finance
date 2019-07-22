@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapGetters, mapActions} from "vuex"
     import echartsComponent from './echartsComponent'
     import tableComponent from '../warningReport/warningReportTable'
     import cwtPublicJS from '../mixin/cwtPublicJS'
@@ -47,7 +47,7 @@
         },
         props: {},
         computed: {
-            ...mapGetters(["year", "month", "company"])
+            ...mapGetters(["year", "month", "company","showDims"])
         },
         watch: {
             /**
@@ -80,6 +80,13 @@
         },
         created() {
             let _this = this;
+            this.ShowDims({
+                company:true,
+                year:true,
+                month:true,
+                day:false,
+                conversion:false
+            });
             this.axios.get("/cnbi/json/source/tjsp/cwtJson/warningReport/table1.json").then(res => {
                 if (res.data.code === 200) {
                     // _this.tableData = res.data.rows;
@@ -96,6 +103,7 @@
             _showDims.conversion= false;
         },
         methods: {
+            ...mapActions(["ShowDims"]),
             /**
              * 获取所有数据
              */

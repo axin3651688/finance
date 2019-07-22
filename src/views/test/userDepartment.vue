@@ -358,7 +358,22 @@ export default {
             return isTrue ;
         },
         // 节点被点击时的回调,共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点对应的 Node、节点组件本身。
+        //修改成点击哪个显示哪个部门的人员，不包含它的孩子。
         nodeClick(data, node, $this){
+            // debugger
+            let ary = [], ary2 = [] ;
+            // this.getnodeClick(data, ary) ;
+            ary.push(data.id);
+            let userArray = this.newThis.userdata ;                  // 父组件用户表的数据
+            let userArray_cloning = this.newThis.userdata_cloning ;  // 父组件用户表数据的克隆体
+            userArray_cloning.forEach((res, index) => {
+                ary.forEach((red, index) => { 
+                    if(res.sdepartmentid == red)ary2.push(res) ;
+                }) ;
+            }) ;
+            this.newThis.userdata = ary2 ;
+        },
+        nodeClick_old(data, node, $this){
             // debugger
             let ary = [], ary2 = [] ;
             data = [data];

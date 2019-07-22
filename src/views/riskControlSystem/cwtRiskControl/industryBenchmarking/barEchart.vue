@@ -82,6 +82,9 @@
                     yAxis: {
                         type: 'value',
                         name: '指标数值',
+                        nameTextStyle:{
+                            padding:15
+                        }
                     },
                     series: {
                         name: '',
