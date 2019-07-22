@@ -15,14 +15,14 @@
                     <el-form-item label="时间搜索">
                         <el-col :span="11">
                             <el-form-item prop="date1">
-                                <el-date-picker type="date" v-model="searchData.searchDate1" placeholder="选择日期"
+                                <el-date-picker type="date" v-model="searchData.searchDate1" placeholder="选择发布日期"
                                                 style="width: 100%;"></el-date-picker>
                             </el-form-item>
                         </el-col>
                         <el-col class="line" :span="2">至</el-col>
                         <el-col :span="11">
                             <el-form-item prop="date2">
-                                <el-date-picker type="date" v-model="searchData.searchDate2" placeholder="选择日期"
+                                <el-date-picker type="date" v-model="searchData.searchDate2" placeholder="选择发布日期"
                                                 style="width: 100%;"></el-date-picker>
                             </el-form-item>
                         </el-col>

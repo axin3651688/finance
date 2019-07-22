@@ -11,7 +11,7 @@
             </div>
             <!-- 内容部分 -->
             <div class="directoryDialog_A_2">
-                <el-table :data="tableData" height="252px" border :show-header="false" class="tableA table-el">
+                <el-table :data="tableData" height="100%" :show-header="false" class="tableA table-el">
                     <el-table-column prop="sname" label="目录" width="276"></el-table-column>
                     <el-table-column label="操作" width="121" align="center">
                         <template slot-scope="scope">
@@ -73,8 +73,8 @@
             <div class="directoryDialog_A_5" id="C">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_5-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2"><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2"><i class="iconfont icon-shanchu2"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
@@ -84,14 +84,15 @@
                     </div>
                     <div class="directoryDialog_A_5-2-2">
                         <el-table
+                        ref="multipleTable"
                         :data="tableData2" style="width: 100%" :show-header="false" 
-                        border height="100%" class="tableA table-el"
+                        height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
                         >
-                            <el-table-column type="selection" width="40" align="center" :disabled="disabled2"></el-table-column>
+                            <el-table-column type="selection" width="40" align="center" :selectable="selectableA" :disabled="disabledSelection"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -123,8 +124,8 @@
             <div class="directoryDialog_A_6" id="D">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_6-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3"><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3"><i class="iconfont icon-shanchu2"></i></el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -138,14 +139,15 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
+                        ref="multipleTable"
                         :data="tableData3" style="width: 100%" :show-header="false" 
-                        border height="100%" class="tableA table-el"
+                        height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
                         >
-                            <el-table-column type="selection" width="40" align="center" :disabled="disabled3"></el-table-column>
+                            <el-table-column type="selection" width="40" align="center" :selectable="selectableB" :disabled="disabledSelection2"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -177,8 +179,8 @@
             <div class="directoryDialog_A_7" id="E">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_7-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" ><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick"><i class="iconfont icon-shanchu2"></i></el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -194,14 +196,15 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
+                        ref="multipleTable"
                         :data="tableData4" style="width: 100%" :show-header="false" 
-                        border height="100%" class="tableA table-el"
+                        height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
                         >
                             <el-table-column type="selection" width="40" align="center"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" autosize placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -263,6 +266,8 @@ export default {
             disabled: false ,               // 是否禁用 
             disabled2: false,               // 一级  是否禁用
             disabled3: false,               // 二级  是否禁用
+            disabledSelection: false,       // 一级复选框是否禁用
+            disabledSelection2:false,       // 二级复选框是否禁用
             labelPosition: "right" ,        // form表单右对齐
             selectionA: [] ,            // 一级勾选状态数组
             selectionB: [] ,            // 二级勾选状态数组
@@ -419,6 +424,24 @@ export default {
             });
         },
         /**
+         * 1. 表格复选框禁用问题(一级)
+         * 2. 表格复选框禁用问题(二级)
+         */
+        selectableA(row, index){
+            if(!this.disabledSelection){
+                return 1 ;
+            }else {
+                return 0 ;
+            }
+        },
+        selectableB(row, index){
+            if(!this.disabledSelection2){
+                return 1 ;
+            }else {
+                return 0 ;
+            }
+        },
+        /**
          * 关闭 | 取消 按钮
          */
         closeClick(val) {
@@ -434,11 +457,13 @@ export default {
             }     
             if(val === "closeB"){                                       // 二级关闭
                 this.disabled2 = false;
+                this.disabledSelection = false ;
                 this.number2 = 1 ;                                      
                 this.dialogFormVisible3_B = false ; 
             } 
             if(val === "closeC"){                                       // 三级关闭
                 this.disabled3 = false;
+                this.disabledSelection2 = false ;
                 this.number2 = 2 ;                                      
                 this.dialogFormVisible3_C = false ; 
             }    
@@ -462,10 +487,12 @@ export default {
         lowerLevelClick2(scope) {
             let me = this ;
             me.disabled2 = true ;
+            me.disabledSelection = true ;
             me.scopeData2 = scope ;
             me.title2 = scope.row.scontent ;
             me.number2 = 2 ;
             me.dialogFormVisible3_B = !me.dialogFormVisible3_B ;
+            me.$refs.multipleTable.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -474,10 +501,12 @@ export default {
         lowerLevelClick3(scope) {
             let me = this ;
             me.disabled3 = true ;
+            me.disabledSelection2 = true ;
             me.scopeData3 = scope ;
             me.title3 = scope.row.scontent ;
             me.number2 = 3 ;
             me.dialogFormVisible3_C = !me.dialogFormVisible3_C ;
+            me.$refs.multipleTable.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -508,13 +537,25 @@ export default {
             }
         },
         /**
-         * (一级)复选框点击事件-当选择项发生变化时会触发该事件
+         * ()复选框点击事件-当选择项发生变化时会触发该事件
          */
-        handleSelectionChange(selection) {
-            // 如果数组大于0，说明有勾选的状态
-            if(selection.length > 0) {
+        handleSelectionChange(selection) {  
+            if (selection.length === 0) { // 判断selection是否有值存在
+                return false ;
+            } else {
+                let selected ;
+                let len = selection.length - 1 ;
                 this.selectionA = [] ;
-                this.selectionA = selection ;
+                // selection = selection.filter((res, index) => { return index == len }) ;
+                selection.forEach((row, index) => {
+                    if(index === len){
+                        selected = true ;
+                    }else {
+                        selected = false ;
+                    }
+                    this.$refs.multipleTable.toggleRowSelection(row, selected);
+                })
+                this.selectionA = selection.filter((res, index) => { return index == len }) ; ;
             }
         },
         /**
@@ -526,9 +567,15 @@ export default {
             if(this.number2=== 3)this.tableData4.push({ id: 0, scontent: "" }) ;
         },
         /**
-         * (一级)删除按钮
+         * ()删除按钮
          */
-        deleteClick() {
+        deleteClick() { //debugger
+            let cc = this.newThis.content ;
+            let dd = cc.some(res => { return res.pid === this.selectionA[0].id }) ;
+            if(dd){
+                this.$message('存在下级，无法删除！') ;
+                return false ;
+            }
             if(this.selectionA.length > 0) {
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -731,6 +778,7 @@ export default {
 /*定义滚动条轨道 内阴影+圆角*/
 .tableA ::-webkit-scrollbar-track {
     background-color:#f0f6ff;  
+    /* background-color: #fff ; */
 } 
 ::-webkit-scrollbar {
     /* background-color:#f0f6ff;   */
@@ -741,7 +789,8 @@ export default {
     border-radius:1px;
 }
 ::-webkit-scrollbar {
-    background-color: #f5f5f5;
+    /* background-color: #f5f5f5; */
+    background-color: #fff ;
     border-radius:1px;
 } 
 

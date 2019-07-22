@@ -230,7 +230,7 @@
                     if (_this.showPageFlag == '1') {
                         let newArray = [],
                             ii = '';
-                        if (_zb === '31') {
+                        if (_zb === '31' || _zb === '126') {
                             pjArray.forEach((item, index) => {
                                 let emptyVlaue = {
                                     pjname: item.pjname,

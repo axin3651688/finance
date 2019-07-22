@@ -63,7 +63,7 @@ export default {
                     if (type && type === 'lj') {
                         _b.nid = parseInt(_b.nid) - 81 + '';
                     }
-                    if (_a[_key].type !== 's') {
+                    if (_a[_key].type === 'c' || _a[_key].type === 'l') {
                         needCNid.push(_b.nid);
                     }
                 }
