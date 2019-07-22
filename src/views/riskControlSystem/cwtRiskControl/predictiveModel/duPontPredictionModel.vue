@@ -304,7 +304,7 @@
                     data: []
                 },
                 gauge_2EchartData: {
-                    name: '总资产周转率（倍）',
+                    name: '总资产周转率（次）',
                     data: []
                 },
                 dataFresh: false
