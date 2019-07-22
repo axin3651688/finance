@@ -38,10 +38,14 @@
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_A.length == 0">暂无数据显示！</div>
                             <div v-else v-for="(item, index) in content_A" :key="item.id">
-                                <div class="col_class" :class="{'first': index == first}" 
-                                @click="contentClick(item,index)" @contextmenu.prevent="contentRightClick">
-                                    {{ item.scontent }}
-                                </div>
+                                <viewer :images="content_A">
+                                    <div class="col_class" :class="{'first': index == first}" 
+                                    @click="contentClick(item,index)" 
+                                    v-html="item.html">
+                                        <!-- {{ item.scontent }} @contextmenu.prevent="contentRightClick"-->
+                                        <!-- <img :src="item.chartpath" width="50"> -->
+                                    </div>
+                                </viewer>
                             </div>
                         </div>
                     </el-col>
@@ -50,7 +54,11 @@
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_B.length == 0">暂无数据显示！</div>
                             <div v-else v-for="(item, index) in content_B" :key="item.id">
-                                <div class="col_class" :class="{'second': index == second}" @click="contentClick2(item,index)">{{ item.scontent }}</div>
+                                <viewer :images="content_A">
+                                    <div class="col_class" :class="{'second': index == second}" @click="contentClick2(item,index)" v-html="item.html">
+                                        <!-- {{ item.scontent }} -->
+                                    </div>
+                                </viewer>
                             </div>
                         </div>
                     </el-col>
@@ -59,7 +67,11 @@
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_C.length == 0">暂无数据显示！</div>
                             <div v-else v-for="(item, index) in content_C" :key="item.id">
-                                <div class="col_classA">{{ item.scontent }}</div>
+                                <viewer :images="content_A">
+                                    <div class="col_classA" v-html="item.html">
+                                        <!-- {{ item.scontent }} -->
+                                    </div>
+                                </viewer>
                             </div>
                         </div>
                     </el-col>
@@ -70,13 +82,13 @@
             右键按钮弹出框
          -->
         <!-- 右键菜单 -->
-        <div v-show="menuVisible" class="menuVisible">
-            <ul id="menu" class="menu">
-                <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li>
+        <!-- <div v-show="menuVisible" class="menuVisible"> -->
+            <!-- <ul id="menu" class="menu"> -->
+                <!-- <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li> -->
                 <!-- <li class="menu__item" v-show="stype != 0" @click="modifyClick"><i class="el-icon-edit-outline modify"></i>修改</li> -->
                 <!-- <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-circle-close-outline delete"></i>删除</li> -->
-            </ul>
-        </div>
+            <!-- </ul> -->
+        <!-- </div> -->
         <!-- 
             弹出框部分(☆☆★◆♣▁㈱㊣™™)
          -->
@@ -84,6 +96,7 @@
         <div class="diolag_A" v-if="dialogFormVisible_A">
             <directory-dialog :newThis="me" :data="directory"></directory-dialog>
         </div>
+
     </div>
 </template>
 <script>
@@ -206,8 +219,10 @@ export default {
             }
             selectAll(params).then(res => {  
                 if(res.data.code === 200) {
-                    me.content = res.data.data ;
-                    let cc = res.data.data.filter(item => { 
+                    let dd = res.data.data ;
+                    dd.forEach(res2 => { res2.html = res2.scontent }) ;
+                    me.content = dd ;
+                    let cc = dd.filter(item => { 
                         return item.catalogname == me.directory[0].sname ;
                     });
                     // 内容的处理
@@ -220,7 +235,7 @@ export default {
         /**
          * 内容的处理
          */
-        contentsProcessing(cc){
+        contentsProcessing(cc){ debugger
             let me = this ;
             let aa, bb, $index ;
             me.content_A = [] ;
@@ -228,6 +243,8 @@ export default {
             me.content_C = [] ;
             // 第一层次内容
             me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+            // me.content_A[0].chartpath = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=85690711,3884201894&fm=27&gp=0.jpg' ;
+
             if(me.me.content_A.length === 0)return false ;
             // 第二层次内容
             aa = cc.filter(item3 => { return item3.nlevel === 2 }) ;
@@ -344,24 +361,24 @@ export default {
 
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-.col_A ::-webkit-scrollbar {
+/* .col_A ::-webkit-scrollbar {
     width: 0px;
     height: 0px;
     background-color: #f5f5f5;
-}
+} */
 
 /*定义滚动条轨道 内阴影+圆角*/
-.col_A ::-webkit-scrollbar-track {
+/* .col_A ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
     border-radius: 1px;
     background-color: #f5f5f5;
-}
+} */
 
 /*定义滑块 内阴影+圆角*/
-.col_A ::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
+/* .col_A ::-webkit-scrollbar-thumb { */
+    /* border-radius: 0px; */
+    /* -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3); */
     /* background-color: #9fd467; */
-    background-color: #dcdfe6;
-}
+    /* background-color: #dcdfe6; */
+/* } */
 </style>

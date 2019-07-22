@@ -16,6 +16,27 @@ import VueQriously from 'vue-qriously' // 二维码生成 https://github.com/the
 import Blob from '@/excel/Blob.js'
 import Export2Excel from '@/excel/Export2Excel.js'
 import { Script } from 'vm';
+import Viewer from 'v-viewer'
+Vue.use(Viewer);
+Viewer.setDefaults({
+    Options: { 
+        "inline": true, 
+        "button": true, 
+        "navbar": true, 
+        "title": true, 
+        "toolbar": true, 
+        "tooltip": true, 
+        "movable": true, 
+        "zoomable": true, 
+        "rotatable": true, 
+        "scalable": true, 
+        "transition": true, 
+        "fullscreen": true, 
+        "keyboard": true, 
+        "url": "data-source" 
+    }
+});
+import 'viewerjs/dist/viewer.css'
 import '@a/iconfont/iconfont.css'
 Vue.use(ZkTable)
 Vue.config.productionTip = false

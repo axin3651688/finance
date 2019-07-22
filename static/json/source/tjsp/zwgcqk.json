@@ -49,7 +49,9 @@
         {
             "id": "zhcb",
             "type": "decimal",
-            "text": "加权平均融资成本"
+            "decimal_four": true,
+            "width": "180",
+            "text": "加权平均融资成本（%）"
         },
       {
         "id": "xh",
