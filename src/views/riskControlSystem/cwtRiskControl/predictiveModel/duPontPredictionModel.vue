@@ -244,7 +244,6 @@
                 changeDialogVisible: false,
 
 
-
                 tableData: [
                     {
                         "project": "成本费用总额",
@@ -342,7 +341,7 @@
                     for (let y in i) {
                         let z = i[y];
                         if (z.nid === _nid) {
-                            let __value = _value.replace(/,/g,'');
+                            let __value = _value.replace(/,/g, '');
                             if (__value * 1 === z.value * 1) {
                                 return;
                             }
@@ -383,7 +382,6 @@
              */
             getRealData(modelId) {
                 let _this = this;
-
                 let _getters = _this.$store.getters,
                     company = _getters.company;
 
@@ -497,7 +495,7 @@
                 };
                 params.list = _this.getSaveData();
 
-                if(status === '1'){
+                if (status === '1') {
                     let _code = _this.selectOptions.filter((o) => {
                         return o.value === _this.selectValue;
                     });
@@ -510,7 +508,7 @@
                         _this.changeDialogVisible = false;
 
                         this.getSelectOptions();
-                        this.selectValue =  _this.modelName;
+                        this.selectValue = _this.modelName;
 
                         _this.$message({
                             message: '保存成功',
@@ -541,7 +539,7 @@
                 getPredictiveModelSelect(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.selectOptions = res.data.data;
-                        _this.selectOptions.push({lable:'',value:''})
+                        _this.selectOptions.push({lable: '', value: ''})
                     }
                 })
             },
@@ -595,10 +593,11 @@
         padding: 0 10px;
         align-items: center;
         border-radius: 10px;
-        background-color: #D3DCE6 ;
+        background-color: #D3DCE6;
         display: flex;
         justify-content: flex-end;
     }
+
     .content-all {
         position: relative;
         margin-top: 50px;
@@ -753,14 +752,17 @@
         top: 730px;
         left: 1140px;
     }
+
     .content-table {
         position: absolute;
         top: 1050px;
         width: 100%;
     }
-    .button-right-select{
+
+    .button-right-select {
         margin-right: 10px;
     }
+
     .model-name {
         display: flex;
         margin: 30px 20px;
