@@ -56,7 +56,7 @@
                                 {{item.echartsrightdata.grade}}
                             </div>
                             <div class="right-content-value" :style="{'color':item.echartsrightdata.color}">
-                                当期值：{{setNumberToStander(item.echartsrightdata.v)}}{{item.echartsrightdata.unit}}
+                                当期值：{{item.echartsrightdata.v.toFixed(4)}}{{item.echartsrightdata.unit}}
                             </div>
 
                         </div>
