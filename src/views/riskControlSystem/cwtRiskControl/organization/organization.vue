@@ -5,25 +5,31 @@
         <div class="parent">
             <div class="title">天津食品集团有限公司风险组织架构图</div>
 
-            <span class="dsh" @click="deptClick(leaderList['0'])">
-                {{leaderList['0'].value}}
-            </span>
+            <!--<span class="dsh" @click="deptClick(leaderList['0'])">-->
+            <!--{{leaderList['0'].value}}-->
+            <!--</span>-->
 
-            <span class="dshbgs" @click="deptClick(leaderList['1'])">
-                {{leaderList['1'].value}}
-            </span>
+            <!--<span class="dshbgs" @click="deptClick(leaderList['1'])">-->
+            <!--{{leaderList['1'].value}}-->
+            <!--</span>-->
 
-            <span class="fxglwyh" @click="deptClick(leaderList['2'])">
-                {{leaderList['2'].value}}
-            </span>
+            <!--<span class="fxglwyh" @click="deptClick(leaderList['2'])">-->
+            <!--{{leaderList['2'].value}}-->
+            <!--</span>-->
 
-            <span class="jyc" @click="deptClick(leaderList['3'])">
-                {{leaderList['3'].value}}
-            </span>
+            <!--<span class="jyc" @click="deptClick(leaderList['3'])">-->
+            <!--{{leaderList['3'].value}}-->
+            <!--</span>-->
 
-            <span class="fxglldxz" @click="deptClick(leaderList['4'])">
-                {{leaderList['4'].value}}
-            </span>
+            <!--<span class="fxglldxz" @click="deptClick(leaderList['4'])">-->
+            <!--{{leaderList['4'].value}}-->
+            <!--</span>-->
+
+            <template v-for="item in leaderList">
+                <span :class="'leaderList' + item.id" @click="deptClick(item)">
+                    {{item.value}}
+                    </span>
+            </template>
 
 
             <div class="first-svg">
@@ -376,7 +382,7 @@
         font-weight: 700;
     }
 
-    .dsh, .dshbgs, .fxglwyh, .jyc, .fxglldxz {
+    .leaderList01, .leaderList0101, .leaderList0102, .leaderList0103, .leaderList0104 {
         position: absolute;
         padding: 8px 36px;
         border: 1px solid darkgray;
@@ -385,31 +391,31 @@
         color: #F6F6F6;
     }
 
-    .dsh {
+    .leaderList01 {
         left: 440px;
         top: 50px;
         background: #016A36;
     }
 
-    .dshbgs {
+    .leaderList0101 {
         top: 142px;
         left: 271px;
         background-color: #4BBA62;
     }
 
-    .fxglwyh {
+    .leaderList0102 {
         top: 174px;
         left: 560px;
         background-color: #016A36;
     }
 
-    .jyc {
+    .leaderList0103 {
         top: 242px;
         left: 440px;
         background-color: #4BBA62;
     }
 
-    .fxglldxz {
+    .leaderList0104 {
         top: 306px;
         left: 560px;
         z-index: 2;
