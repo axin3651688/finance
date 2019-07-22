@@ -371,6 +371,7 @@ export default {
                     if(res.sdepartmentid == red)ary2.push(res) ;
                 }) ;
             }) ;
+            this.newThis.allNum = ary2.length;
             this.newThis.userdata = ary2 ;
         },
         nodeClick_old(data, node, $this){
