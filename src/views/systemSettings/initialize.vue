@@ -85,7 +85,8 @@ export default {
                 { id: "2", text: "风险发生概率", type: "RiskProbability", name: "风险发生概率" },
                 { id: "3", text: "风险影响程度", type: "RiskInfluenceDegree", name: "风险影响程度" },
                 { id: "4", text: "风险策略", type: "RiskStrategy", name: "风险策略" },
-                { id: "5", text: "风险类型", type: "RiskTypes", name: "风险类型" }
+                { id: "5", text: "风险类型", type: "RiskTypes", name: "风险类型" },
+                { id: "6", text: "风险等级", type: "RiskLevel", name: "风险等级" }
             ],
             // 上传的参数
             uploadData: {

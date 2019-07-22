@@ -148,6 +148,8 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
+                }else if (res.data.code == 1001){
+                    me.tableData = [];
                 }else{
                     me.$message.error('查询数据失败！请添加企业数据！') ;
                 }
@@ -188,6 +190,7 @@ export default {
          * @description 删除按钮
          */
         deleteClick(scope){
+            debugger;
             let me = this ;
             let params = [scope.row.scode] ;
             me.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
