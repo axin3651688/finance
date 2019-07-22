@@ -361,7 +361,6 @@
                 let emptyData = [];
                 let eD = ['20', '24', '249', '250'];
                 let nagetiveDataCount = 0;
-                debugger;
                 for (let x in data) {
                     let i = data[x];
                     for (let y in i) {

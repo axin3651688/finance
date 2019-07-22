@@ -270,8 +270,8 @@
                 let _this = this,
                     _getter = _this.$store.getters,
                     company = _getter.company,
-                    userCompany = _getter.user.company.id;
-
+                    userCompany = _getter.user.company.id,
+                    userName = _getter.user.user.userName;
                 findThirdPartData(params).then(res => {
                     if (res.data.code) {
                         /**
@@ -288,6 +288,17 @@
                                         data.operation = '1-查看';
                                     }
                                 }
+                                // todo 批示人和当前登录的人不是同一个人的时候，按钮部分只显示提醒或者是查看
+                                //down
+                                if (data.stouser !== userName) {
+                                    if (data.status === '未反馈') {
+                                        data.operation = '3-提醒';
+                                    } else {
+                                        data.operation = '1-查看';
+                                    }
+                                }
+
+
                                 let operations = data.operation.split(',');
                                 for (let i = 0, len = operations.length; i < len; i++) {
                                     let emptyBtn = {
@@ -827,7 +838,7 @@
                         elink.click();
                         document.body.removeChild(elink);
                     }
-                    _this.$message({ type: 'success', message: '导出成功!' });
+                    _this.$message({type: 'success', message: '导出成功!'});
                 })
             },
 

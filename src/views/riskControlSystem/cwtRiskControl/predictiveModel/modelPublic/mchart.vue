@@ -108,6 +108,7 @@
                     tooltip: {
                         trigger: 'item',
                         formatter(data) {
+                            debugger;
                             let showData = data.value;
                             if (showData && showData !== null) {
                                 showData = Math.round(showData * 100) / 100;
@@ -122,7 +123,7 @@
                                     }
                                 }
                                 // let html = '<div><p>' + data.name +' </p><p> ' + str + ' </p></div>';
-                                return '<div><p>' + data.name + ' </p><p> ' + str + ' </p></div>';
+                                return '<div><p>' + data.name + ' </p><p> ' + str + ' </p><p> ' + '占比：'+ data.percent+ ' % </p></div>';
                             } else if (showData === 0) {
                                 return '';
                             }
