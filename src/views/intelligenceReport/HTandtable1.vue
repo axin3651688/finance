@@ -287,8 +287,9 @@ export default {
       }
     },
     company(val,oldVal) {
+      debugger;
       //批量批示1001公司不显示。
-      if(val == "1001"){
+      if(this.$store.getters.treeInfo.nisleaf == '0'){
         this.bulkButton = false;
       }else {
         this.bulkButton = true;
@@ -557,8 +558,8 @@ export default {
     //操作按钮显示的内容。
     this.contentOfButtons();
     //1001公司的不显示批量上报。
-    if(this.$store.getters.company == "1001"){
-       this.bulkButton = false;
+    if(this.$store.getters.company == "1001" || this.$store.getters.treeInfo.nisleaf == '0'){
+      this.bulkButton = false;
     }
   },
   mounted() {

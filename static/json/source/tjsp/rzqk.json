@@ -46,7 +46,7 @@
             "type": "string",
             "text": "公司名称",
             "fixed": true,
-            "width": "330px"
+            "width": "380px"
         },
         {
             "id": "jrjg",
@@ -86,6 +86,7 @@
             "id": "zhcb",
             "type": "decimal",
             "text": "综合成本（%）*",
+            "decimal_four": true,
             "conversion": "%"
         }, {
             "id": "sfjtdb",
