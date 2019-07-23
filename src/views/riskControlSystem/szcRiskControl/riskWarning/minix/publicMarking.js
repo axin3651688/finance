@@ -1,6 +1,7 @@
 /**
  * 集团对标
  */
+import tools from '@/utils/tools.js'
 import {
     groupQuery
 } from '~api/szcRiskControl/riskControl.js'
@@ -75,6 +76,7 @@ export default {
          * 数据赋值之前。
          */
         queryBackstageDataAfterBefore(datas, judgeParams) {
+            debugger;
             let me = this;
             if (judgeParams.id == "comprehensiveRating") {
                 datas.forEach(item => {
@@ -82,7 +84,30 @@ export default {
                         item.drillNo = true;
                     }
                 });
+                me.retainDecimalOfTwo(datas, "qyfz");
+            } else {
+                //保留一位小数。arr = [a,b,c,d,e]
+                me.retainDecimalOfOne(datas, ['a', 'b', 'c', 'd', 'e']);
+                //企业分值保留两位小数。
+                me.retainDecimalOfTwo(datas, "v");
             }
+            //企业分值保留两位小数。
+            // me.retainDecimalOfTwo(datas);
+        },
+        retainDecimalOfOne(datas, inItems) {
+            debugger;
+            datas.forEach(item => {
+                inItems.forEach(it => {
+                    item[it] = item[it] ? tools.currency(item[it], "", 1) : 0.0;
+                });
+            });
+        },
+        retainDecimalOfTwo(datas, prop) {
+            datas.forEach(item => {
+                if (item[prop] || item[prop] == 0) {
+                    item[prop] = Math.decimalToLocalString(item[prop]);
+                }
+            });
         },
         /**
          * 查询数据之后的处理。
@@ -148,19 +173,19 @@ export default {
                 },
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['19', '20', '21']
             }, {
                 id: 'gaugeMiddleLeft',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['121', '133']
             }, {
                 id: 'gaugeMiddleRight',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['53', '120']
             }];
             for (let i = 0; i < arr.length; i++) {
@@ -187,19 +212,19 @@ export default {
                 id: 'gaugeTopLeft',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['51']
             }, {
                 id: 'gaugeTopRight',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['128']
             }, {
                 id: 'gaugeMiddle',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['50', '129', '132']
             }];
             for (let i = 0; i < arr.length; i++) {
@@ -230,13 +255,13 @@ export default {
                 id: 'gaugeLeft',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['52', '122', '124']
             }, {
                 id: 'gaugeRight',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['123', '131', '31']
             }];
             for (let i = 0; i < arr.length; i++) {
@@ -263,13 +288,13 @@ export default {
                 id: 'gaugeTopLeft',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['3']
             }, {
                 id: 'gaugeTopRight',
                 field: 'scode',
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['125']
             }, {
                 id: 'gaugeMiddle',
@@ -280,7 +305,7 @@ export default {
                     '126': 6
                 },
                 gaugeSname: 'sname',
-                gaugeField: 'score',
+                gaugeField: 'v',
                 content: ['16', '17', '126']
             }];
             for (let i = 0; i < arr.length; i++) {
@@ -473,6 +498,7 @@ export default {
                     }
                 },
                 tooltip: {
+                    confine: true,
                     formatter: function(a, b, c) {
                         return a.seriesName + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
                     }
