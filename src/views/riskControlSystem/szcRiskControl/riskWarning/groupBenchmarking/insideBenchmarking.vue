@@ -130,10 +130,10 @@
         },
         mounted() {
             let $div = document.getElementsByClassName("transverseBar");
-            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
+            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 130;
             $div[0].children[0].style.height = heightNum + "px";
             window.onresize = function temp(){
-                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
+                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 130;
                 $div[0].children[0].style.height = heightNum + "px";
             }
         },

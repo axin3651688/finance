@@ -27,21 +27,50 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    // bottom: '6%',
                     containLabel: true
                 },
                 xAxis: {
                     type: 'value',
-                    boundaryGap: [0, 0.01]
+                    boundaryGap: [0, 0.1]
                 },
                 yAxis: {
                     type: 'category',
                     data: []
                 },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        startValue:10,
+                        endValue:16,
+                        handleSize: 10,
+                        yAxisIndex:0,
+                        orient:'horizontal',
+                    },
+                    // {
+                    //     type: 'inside',
+                    //     start: 94,
+                    //     end: 100,
+                    //     orient:'horizontal'
+                    // },
+                    // {
+                    //     type: 'slider',
+                    //     show: true,
+                    //     yAxisIndex: 0,
+                    //     filterMode: 'empty',
+                    //     width: 12,
+                    //     height: '70%',
+                    //     handleSize: 8,
+                    //     showDataShadow: false,
+                    //     left: '93%'
+                    // }
+                ],
                 series: [
                     {
                         name: this.$store.getters.year + '年',
                         type: 'bar',
+                        barWidth:'50',
                         itemStyle: {   
                             //通常情况下：
                             normal:{  
