@@ -95,7 +95,7 @@ export default {
         } else {
             screatetime = me.form.screatetime;
         }
-        let ssubmituser = me.$store.getters.user.user.trueName;
+        let ssubmituser = me.$store.getters.user.user.userName;
         // debugger
         // let ssubmituser = value == "save"? me.form.sfilluser : me.$store.getters.user.user.userName ;me.form.sfilluser
         let params = [{
