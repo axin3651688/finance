@@ -47,10 +47,17 @@
                             <span
                                     v-else-if="item.action && item.action==='click' && !scope.row['drillNo']"
                                     style="color: dodgerblue;cursor: pointer"
+                                    title="000"
                                     @click="clickItemNameHandler(scope,scope.$index)"
                             >
+                                <el-tooltip placement="top">
+                                    <div slot="content">暂无指标计算说明</div>
+                                    <span>
+                                        {{ scope.row[scope.column.property] }}
+                                    </span>
+                                </el-tooltip>
                                 <!-- <el-button @click="elButton(scope)"></el-button> -->
-                                {{ scope.row[scope.column.property] }}
+                                <!-- {{ scope.row[scope.column.property] }} -->
                             </span>
                             <span v-else>
                                 <!-- <el-button @click="elButton(scope)"></el-button> -->
