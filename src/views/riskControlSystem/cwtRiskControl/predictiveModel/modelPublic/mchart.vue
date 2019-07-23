@@ -108,7 +108,6 @@
                     tooltip: {
                         trigger: 'item',
                         formatter(data) {
-                            debugger;
                             let showData = data.value;
                             if (showData && showData !== null) {
                                 showData = Math.round(showData * 100) / 100;
