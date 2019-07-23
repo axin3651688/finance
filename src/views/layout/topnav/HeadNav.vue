@@ -181,8 +181,27 @@
         <span>智能财务顾问决策分析系统</span>
       </div>
       <div class="about_class">
-        <span>产品版本：</span>
+        <span>主版本号：</span>
         <span>V2.0</span>
+      </div>
+      <div class="about_class">
+        <div>
+          <span>产品更新</span>
+        </div>
+        <div>
+          <span>更新时间：</span>
+          <span>2019年7月23日</span>
+        </div>
+        <div>
+          <span>更新版本：</span>
+          <span>V2.3.4.1</span>
+        </div>
+        <div>
+          <p>更新内容：</p>
+          <p>
+            <span>1、更新了填报模块的集团公司去除批量上报</span>
+          </p>
+        </div>
       </div>
     </el-dialog>
   </div>

@@ -5,12 +5,12 @@
                 <el-tab-pane label="内部对标" name="first">
                     <div>
                         <el-row>
-                            <el-col :span="14">
+                            <el-col :span="12">
                                 <div>
                                     <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:drillItemSname="drillItemSname"></treeTable>
                                 </div>
                             </el-col>
-                            <el-col :span="10" style="height:100%;">
+                            <el-col :span="12" style="height:100%;">
                                 <div class="transverseBar" style="height:100%;">
                                     <transverseBar :chartData.sync="chartData"></transverseBar>
                                 </div>
@@ -130,10 +130,10 @@
         },
         mounted() {
             let $div = document.getElementsByClassName("transverseBar");
-            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
+            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
             $div[0].children[0].style.height = heightNum + "px";
             window.onresize = function temp(){
-                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 100;
+                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
                 $div[0].children[0].style.height = heightNum + "px";
             }
         },
@@ -156,7 +156,7 @@
                 groupQuery(params).then(res => {
                     if (res.data.code == 200) {
                         me.tableData = res.data.data;
-                        me.chartData = res.data.data;
+                        me.chartData = me.deepCopy(res.data.data);
                         me.treeData = me.transformationTreeData(res.data.data);
                         // me.queryBackstageDataAfter(res.data.data, judgeParams);
                     } else if (res.data.code == 1001) {
@@ -164,6 +164,19 @@
                         me.queryBackstageDataAfter([], judgeParams);
                     }
                 });
+            },
+            deepCopy (obj) { //深拷贝
+                let result = Array.isArray(obj) ? [] : {};
+                for (let key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        if (typeof obj[key] === 'object') {
+                            result[key] = this.deepCopy(obj[key]); //递归复制
+                        } else {
+                            result[key] = obj[key];
+                        }
+                    }
+                }
+                return result;
             },
             /**
              * 更新数据。
