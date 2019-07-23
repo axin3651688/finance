@@ -288,6 +288,40 @@ export default {
             }
         },
 
+        /**
+         * 将数据转换成数据形式
+         * @param data
+         */
+        setDataToList(data) {
+            let arr = [];
+            for (let x in data) {
+                let _a = data[x];
+                for (let x1 in _a) {
+                    let _b = _a[x1];
+                    for (let x2 in _b) {
+                        arr.push(_b[x2]);
+                    }
+                }
+            }
+            return arr;
+        },
+
+        /**
+         * 将数据转换成数据形式
+         * @param data
+         */
+        setDataToList1(data) {
+            let arr = [];
+            for (let x in data) {
+                let _a = data[x];
+                for (let x1 in _a) {
+                    let _b = _a[x1];
+                    arr.push(_b);
+                }
+            }
+            return arr;
+        },
+
 
     },
 }

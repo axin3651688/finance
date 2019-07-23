@@ -96,9 +96,9 @@
                 </div>
 
                 <template>
-                    <div class="content" :style="{color:getConclusion(allData, 'assetStructurePrediction').color}">
+                    <div class="content" :style="{color:conclusionData.color}">
                         <p>
-                            {{getConclusion(allData, 'assetStructurePrediction').content}}
+                            {{conclusionData.content}}
                         </p>
                     </div>
                 </template>
@@ -176,11 +176,10 @@
     } from '~api/cwtRiskControl/riskControlRequest'
     import mtable from './modelPublic/mtable'
     import {mapGetters} from "vuex"
-    import dataConclusion from '../mixin/dataConclusion'
 
     export default {
         name: "assetStructurePrediction",
-        mixins: [cwtPublicJs, dataCalculation, dataConclusion],
+        mixins: [cwtPublicJs, dataCalculation],
         components: {
             cell,
             ccell,
@@ -222,6 +221,45 @@
                 dialogVisible: false,
                 modelName: '',
                 changeDialogVisible: false,
+
+                conclusionData:{
+                    color:'',
+                    content:''
+                },
+
+                aAssetStructurePrediction: {
+                    clu1: {
+                        color: 'black',
+                        //流动资产增长率>营业收入增长率,总资产报酬率>总资产报酬率的比较期
+                        content: '总体来看，虽流动资产增长快于主营业务收入增长，但资产的盈利能力有所提高,资产结构趋于改善。'
+                    },
+                    clu2: {
+                        color: 'black',
+                        //流动资产增长率>营业收入增长率,总资产报酬率<总资产报酬率的比较期
+                        content: '总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高,资产结构趋于恶化。'
+                    },
+                    clu3: {
+                        color: 'black',
+                        //流动资产增长率<营业收入增长率,总资产报酬率>总资产报酬率的比较期
+                        content: '总体来看，流动资产增长慢于主营业务收入增长，并且资产的盈利能力有所提高,资产结构趋于改善。'
+                    },
+                    clu4: {
+                        color: 'black',
+                        //流动资产增长率<营业收入增长率,总资产报酬率<总资产报酬率的比较期
+                        content: '总体来看，虽流动资产增长慢于主营业务收入增长，但资产的盈利能力没有提高,资产结构趋于恶化。'
+                    },
+                    clu5: {
+                        color: 'black',
+                        //流动资产增长率=营业收入增长率,总资产报酬率>总资产报酬率的比较期
+                        content: '总体来看，流动资产与主营业务收入同比变化。但资产的盈利能力有所提高,资产结构趋于改善。'
+                    },
+                    clu6: {
+                        color: 'black',
+                        //流动资产增长率=营业收入增长率,总资产报酬率<总资产报酬率的比较期
+                        content: '总体来看，流动资产与主营业务收入同比变化。但资产的盈利能力没有提高,资产结构趋于恶化。'
+                    }
+
+                },
 
 
                 allData: {},
@@ -308,7 +346,7 @@
                 }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
-                        _this.resDataFormatter(res.data.data);
+                        _this.resDataFormatter(res.data.data[1]);
                     }
                 })
             },
@@ -353,6 +391,7 @@
                 let _this = this;
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data);
+                this.getConclusionData();
                 _this.initEchartData(_this.allData);
             },
 
@@ -550,6 +589,15 @@
                 }
                 return _list;
             },
+
+
+            /**
+             * 获取文字评论
+             */
+            getConclusionData(){
+                let _this = this;
+                // _this.conclusionData = _this.getConclusion(_this.allData, 'assetStructurePrediction')
+            }
         }
     }
 </script>

@@ -41,7 +41,7 @@ export default {
          * 获取期间
          * @returns {string|string}
          */
-        getMonth() {
+        getCMonth() {
             let _this = this,
                 _getter = _this.$store.getters;
             return _getter.month;
@@ -233,7 +233,7 @@ export default {
                     // 1 + (营业利润 / ((年初流动资产 + 年末流动资产) / 2)) / 流动资产合计
                     // (营业收入/当前月份)/((年初流动资产合计+流动资产合计)/2)
                     // 年初流动资产合计*()^()
-                    let _month = this.getMonth();
+                    let _month = this.getCMonth();
                     let _aa = 0;
                     let _bb = 0;
 
@@ -410,7 +410,7 @@ export default {
                     let qmwuldfz2 = _o['39'] + _o['40'] + _o['41'] + _o['42'] + _o['43'] + _o['44'] + _o['45'];
                     let tzhzb = _x = (_o['13'] + _o['14']) / 2 + (_o['15'] + _o['16']) / 2 - (qcwuldfz2 + qmwuldfz2) / 2 - (_o['30'] + _o['31']) / 2;
 
-                    let _month2 = this.getMonth();
+                    let _month2 = this.getCMonth();
                     let pjzbcbl = 0.055 * _month2 / 12;
 
                     _x = shjyylr - tzhzb * pjzbcbl;
@@ -428,7 +428,7 @@ export default {
                     break;
                 case '4':
                     //平均资本成本率
-                    let _month1 = this.getMonth();
+                    let _month1 = this.getCMonth();
                     _x = 0.055 * _month1 / 12;
                     break;
                 case '8':
