@@ -98,9 +98,21 @@
                             <el-table-column label="操作" width="80" align="center">
                                 <template slot-scope="scope">
                                     <!-- 图片按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled2">
+                                    <!-- <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerPictureClick(scope)" :disabled="disabled2">
                                         <i class="iconfont icon-tupian icon-a icon-i"></i>
-                                    </el-button>
+                                    </el-button> -->
+                                    <el-upload
+                                    class="upload-demo directoryDialog_A_2-btn2"
+                                    action="/zjb/riskguidecontent/upload_chart"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-success="onSuccess"
+                                    :on-error="onError"
+                                    :data="dataUpload"
+                                    >
+                                        <el-button size="mini" class="directoryDialog_A_2-btn2" @click="lowerPictureClick(scope)" :disabled="disabled2">
+                                            <i class="iconfont icon-tupian icon-a icon-i"></i>
+                                        </el-button>
+                                    </el-upload>
                                     <!-- 下级按钮 -->
                                     <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick2(scope)" :disabled="disabled2">
                                         <i class="iconfont icon-xiajicaozuo icon-b icon-i"></i>
@@ -153,9 +165,18 @@
                             <el-table-column label="操作" width="80" align="center">
                                 <template slot-scope="scope">
                                     <!-- 图片按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled3">
-                                        <i class="iconfont icon-tupian icon-a icon-i"></i>
-                                    </el-button>
+                                    <el-upload
+                                    class="upload-demo directoryDialog_A_2-btn2"
+                                    action="/zjb/riskguidecontent/upload_chart"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-success="onSuccess"
+                                    :on-error="onError"
+                                    :data="dataUpload"
+                                    >
+                                        <el-button size="mini" class="directoryDialog_A_2-btn2" @click="lowerPictureClick(scope)" :disabled="disabled3">
+                                            <i class="iconfont icon-tupian icon-a icon-i"></i>
+                                        </el-button>
+                                    </el-upload>
                                     <!-- 下级按钮 -->
                                     <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" :disabled="disabled3">
                                         <i class="iconfont icon-xiajicaozuo icon-b icon-i"></i>
@@ -210,9 +231,18 @@
                             <el-table-column label="操作" width="80" align="center">
                                 <template slot-scope="scope">
                                     <!-- 图片按钮 -->
-                                    <el-button size="mini" class="directoryDialog_A_2-btn" @click="lowerLevelClick3(scope)" >
-                                        <i class="iconfont icon-tupian icon-a icon-i"></i>
-                                    </el-button>                                   
+                                    <el-upload
+                                    class="upload-demo directoryDialog_A_2-btn2"
+                                    action="/zjb/riskguidecontent/upload_chart"
+                                    :before-upload="beforeAvatarUpload"
+                                    :on-success="onSuccess"
+                                    :on-error="onError"
+                                    :data="dataUpload"
+                                    >
+                                        <el-button size="mini" class="directoryDialog_A_2-btn2" @click="lowerPictureClick(scope)">
+                                            <i class="iconfont icon-tupian icon-a icon-i"></i>
+                                        </el-button>
+                                    </el-upload>                                
                                 </template> 
                             </el-table-column>
                         </el-table>
@@ -290,6 +320,10 @@ export default {
                 modifyname: "" ,
                 addname: ""
             },
+            dataUpload: {                   // 上传图片时的额外参数
+                oldFilePath: ""
+            },
+            picArray: {} ,                  // 存放图片的行信息
             isShow : true ,                 // 应用于修改弹出框
             isShow2: true ,                 // 应用于添加弹出框
             scope2: {} ,                    // 点击的信息
@@ -599,6 +633,49 @@ export default {
             riskCommon.dragAndDrop(event, this) ;
         },
         /**
+         * 图片上传按钮
+         */
+        lowerPictureClick(scope){ debugger
+            this.picArray = {} ;
+            this.picArray = scope ;
+        },
+        lowerPictureClick2(scope){debugger
+            this.picArray = {} ;
+            this.picArray = scope ;
+        },
+        /**
+         * 图片上传按钮   上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传
+         */
+        beforeAvatarUpload(file){
+            const isJPG = file.type === 'image/jpeg';
+            const isPNG = file.type === 'image/png' ;
+            if(!isJPG && !isPNG) {
+                this.$message({ message: "图片只能上传 JPG 格式 或者 PNG 格式！", type: "warning" }) ;
+                return false ;
+            }
+        },
+        /**
+         * 图片上传按钮   文件上传成功时的钩子
+         */
+        onSuccess(response, file, fileList){ 
+            if(response.code === 200) {
+                if(response.data.code === 200) {
+                    this.$message({ message: response.data.msg, type: "success" }) ;
+                    let img = "<img style='width:50px; height:30px;' src='"+ response.data.data +"'>" ;
+                    this.picArray.row.scontent = this.picArray.row.scontent + img;
+                    this.saveChange(this.picArray) ;
+                } else {
+                    this.$message({ message: response.data.msg, type: "warning" }) ;
+                }
+            } 
+        },
+        /**
+         * 图片上传按钮   文件上传失败时的钩子
+         */
+        onError(err, file, fileList){ debugger
+
+        },
+        /**
          * @function 【添加内容】请求方法
          */
         riskguidecontentAdd_request(params) {
@@ -740,6 +817,7 @@ export default {
             selectAll(params).then(res => { 
                 if(res.data.code === 200) {
                     let data = res.data.data ;
+                    // dd.forEach(res2 => { res2.html = res2.scontent }) ;
                     let cc = res.data.data.filter(item => { 
                         return item.catalogname == arr[index].sname ;
                     });
@@ -763,7 +841,7 @@ export default {
 }
 </script>
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
-<style>
+<style scoped>
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 .tableA ::-webkit-scrollbar {
     width:1px; 

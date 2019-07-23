@@ -145,7 +145,8 @@
 </template>
 <script>
 //import EventMixins from "../mixins/EventMixins";
-//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&
+//import {getCellValue} from "../../utils/math"  scope.row.hasOwnProperty(col.id) &&、
+import tools from 'utils/tools.js'
 export default {
   name: "BiTableColumn",
   props: ["col", "tableData"],
@@ -199,10 +200,10 @@ export default {
     /**
      * 获取单元格数据
      */
-    getCellValues(datas, col, scope, rows) {
+    getCellValues(datas, col, scope, rows) { 
       let me = this,tableid = me.tableData.id;
       let colId = col.id,
-        row = scope.row;
+          row = scope.row;
       let rowId = row.id || row.nid;
       let union = false;
       if (rowId && isNaN(rowId)) {
@@ -242,8 +243,13 @@ export default {
         return "--";
       }
       // value = ((value - 0) / 10000).toLocaleString();
-      // 千分位  保留两位小数
-      value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+      if(!col.decimal_four){
+        // 千分位  保留两位小数
+        value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+      } else {
+        // 千分位  保留四位小数
+        value = tools.currency(value,'',4)
+      }
 
       return value;
     },

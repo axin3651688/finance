@@ -95,11 +95,14 @@
                     <span>资产结构状况</span>
                 </div>
 
-                <div class="content">
-                    <p>
-                        总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
-                    </p>
-                </div>
+                <template>
+                    <div class="content" :style="{color:getConclusion(allData, 'assetStructurePrediction').color}">
+                        <p>
+                            {{getConclusion(allData, 'assetStructurePrediction').content}}
+                        </p>
+                    </div>
+                </template>
+
             </div>
 
             <div class="content-table">
@@ -173,10 +176,11 @@
     } from '~api/cwtRiskControl/riskControlRequest'
     import mtable from './modelPublic/mtable'
     import {mapGetters} from "vuex"
+    import dataConclusion from '../mixin/dataConclusion'
 
     export default {
         name: "assetStructurePrediction",
-        mixins: [cwtPublicJs, dataCalculation],
+        mixins: [cwtPublicJs, dataCalculation, dataConclusion],
         components: {
             cell,
             ccell,
