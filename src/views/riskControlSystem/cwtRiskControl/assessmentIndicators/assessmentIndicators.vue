@@ -7,7 +7,7 @@
             <!--<el-button type="primary" @click="pageStyleChange('3')">样式二</el-button>-->
             <div class="top-tip">
                 <!--<div class="tip-tip">-->
-                    <!--tips-->
+                <!--tips-->
                 <!--</div>-->
                 <div class="tip-loop" v-for="(item, index) in topTip">
                     <div class="tip-color" :style="{'background-color':item.color, width:'14px', height: '12px'}"></div>
@@ -56,8 +56,10 @@
                                 {{item.echartsrightdata.grade}}
                             </div>
                             <div class="right-content-value" :style="{'color':item.echartsrightdata.color}">
-                                当期值：{{item.echartsrightdata.v.toFixed(4)}}{{item.echartsrightdata.unit}}
+                                <!--当期值：{{item.echartsrightdata.v.toFixed(4)}}{{item.echartsrightdata.unit}}-->
+                                当期值：{{item.echartsrightdata.v?item.echartsrightdata.v.toFixed(4):'0.0000'}}{{item.echartsrightdata.unit}}
                             </div>
+
 
                         </div>
 
@@ -230,7 +232,7 @@
                     if (_this.showPageFlag == '1') {
                         let newArray = [],
                             ii = '';
-                        if (_zb === '31' || _zb === '126') {
+                        if (_rightData.a < _rightData.b) {
                             pjArray.forEach((item, index) => {
                                 let emptyVlaue = {
                                     pjname: item.pjname,
@@ -238,15 +240,15 @@
                                 };
 
                                 if (index === 0) {
-                                    emptyVlaue.value = ' V < ' + item.val;
+                                    emptyVlaue.value = ' V <= ' + item.val;
                                 } else if (index === 1) {
-                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                    emptyVlaue.value = item.val + ' >= V > ' + ii;
                                 } else if (index === 2) {
-                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                    emptyVlaue.value = item.val + ' >= V > ' + ii;
                                 } else if (index === 3) {
-                                    emptyVlaue.value = item.val + ' > V >= ' + ii;
+                                    emptyVlaue.value = item.val + ' >= V > ' + ii;
                                 } else if (index === 4) {
-                                    emptyVlaue.value = ' V >= ' + ii;
+                                    emptyVlaue.value = ' V > ' + ii;
                                 }
                                 ii = item.val;
                                 newArray.push(emptyVlaue)

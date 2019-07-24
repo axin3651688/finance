@@ -88,7 +88,6 @@
              * @param value
              */
             optionChanged(value) {
-                debugger;
                 this.selectedscode = value || this.selectedscode;
 
                 let _scode = this.selectedscode || '';

@@ -9,6 +9,7 @@
                     :header-cell-style="headerRowStyle"
                     @selection-change="handleSelectionChange"
                     style="width: 100%"
+                    empty-text="暂无风险制度"
             >
                 <el-table-column
                         type="selection"
