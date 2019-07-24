@@ -11,6 +11,7 @@
                 gValue:50,
                 receive : {
                     tooltip : {
+                        confine: true,
                         // formatter: "{a} <br/>{b} : {c}%"
                         formatter:function(a,b,c){
                             return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";

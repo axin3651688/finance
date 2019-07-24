@@ -49,8 +49,14 @@
                                     style="color: dodgerblue;cursor: pointer"
                                     @click="clickItemNameHandler(scope,scope.$index)"
                             >
+                                <el-tooltip placement="top">
+                                    <div slot="content">暂无指标计算说明</div>
+                                    <span>
+                                        {{ scope.row[scope.column.property] }}
+                                    </span>
+                                </el-tooltip>
                                 <!-- <el-button @click="elButton(scope)"></el-button> -->
-                                {{ scope.row[scope.column.property] }}
+                                <!-- {{ scope.row[scope.column.property] }} -->
                             </span>
                             <span v-else>
                                 <!-- <el-button @click="elButton(scope)"></el-button> -->

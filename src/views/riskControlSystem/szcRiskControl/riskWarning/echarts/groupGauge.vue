@@ -30,7 +30,8 @@
                         // formatter: "{a} <br/>{b} : {c}%"
                         formatter:function(a,b,c){
                             return a.seriesName + "<br/>" + a.name + "：" + Math.decimalToLocalString(a.value) + "%";
-                        }
+                        },
+                        confine: true
                     },
                     series: [
                         {

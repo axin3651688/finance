@@ -54,7 +54,7 @@ export default {
                     {
                         name: this.$store.getters.year + '年',
                         type: 'bar',
-                        barWidth:'50',
+                        // barWidth:'50',
                         itemStyle: {   
                             //通常情况下：
                             normal:{

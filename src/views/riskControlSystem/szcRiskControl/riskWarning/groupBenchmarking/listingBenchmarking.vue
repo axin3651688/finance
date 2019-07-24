@@ -3,7 +3,20 @@
         <div>
             <el-row class="div_form">
                 <el-col :span="10">
-                    <div>
+                    <!-- <div>
+                        <label for="">公司选择：</label>
+                        <el-select v-model="value" placeholder="请选择" class="select_all">
+                            <el-option
+                            :key="121212"
+                            :label="'1212'"
+                            :value="'item.scode'">
+                            <el-tree :data="treeData" :props="defaultProps">
+
+                            </el-tree>
+                            </el-option>
+                        </el-select>
+                    </div> -->
+                    <!-- <div>
                         <label for="">公司选择：</label>
                         <el-select v-model="value" placeholder="请选择" class="select_all">
                             <el-option
@@ -13,6 +26,16 @@
                             :value="item.scode">
                             </el-option>
                         </el-select>
+                    </div> -->
+                    <div class="tree_spcompany">
+                        <label for="" class="tree_company_label">公司选择：</label>
+                        <div class="tree_company">
+                            <treeselect
+                                v-model="value"
+                                :options="comtree2"
+                                placeholder="请选择所属公司"
+                            />
+                        </div>
                     </div>
                 </el-col>
                 <el-col :span="14">
@@ -28,86 +51,6 @@
                         </el-select>
                     </div>
                 </el-col>
-                <!-- <el-col :span="5">
-                    <div>
-                        <label for="">指标名称：</label>
-                        <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
-                            <el-option
-                            v-for="item in indicatorOptions"
-                            :key="item.value"
-                            :label="item.sname"
-                            :value="item.scode">
-                            </el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="9">
-                    <div>
-                        <label for="">期间选择：</label>
-                        <el-select v-model="yearValue" placeholder="请选择" class="select_left">
-                            <el-option
-                            v-for="item in optionYears"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
-                            <el-option
-                            v-for="item in optionMonths"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <el-button @click="btnHandler">
-                            确定
-                        </el-button>
-                    </div>
-                </el-col> -->
-                <!-- <el-col :span="12">
-                    <el-row>
-                        <el-col :span="24">
-                            <div>
-                                <label for="">指标名称：</label>
-                                <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
-                                    <el-option
-                                    v-for="item in indicatorOptions"
-                                    :key="item.value"
-                                    :label="item.sname"
-                                    :value="item.scode">
-                                    </el-option>
-                                </el-select>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="24">
-                            <div>
-                                <label for="">期间选择：</label>
-                                <el-select v-model="yearValue" placeholder="请选择" class="select_left">
-                                    <el-option
-                                    v-for="item in optionYears"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>
-                                <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
-                                    <el-option
-                                    v-for="item in optionMonths"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>
-                                <el-button @click="btnHandler">
-                                    确定
-                                </el-button>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </el-col> -->
             </el-row>
             <el-row class="div_form">
                 <el-col :span="10">
@@ -159,6 +102,10 @@
     </div>
 </template>
 <script>
+    import Treeselect from "@riophae/vue-treeselect";
+    // import the styles
+    import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+    import tools from '@/utils/tools.js'
     import groupGauge from "./../echarts/groupGauge.vue"
     import {
         groupQuery
@@ -175,26 +122,29 @@
             groupGauge,
             // singleTable,
             groupRadar,
-            threeHeaderTable
+            threeHeaderTable,
+            Treeselect
         },
         data() {
             return {
+                treeData: [{
+                    label: '一级 1',
+                    children: [{
+                        label: '二级 1-1',
+                        children: [{
+                        label: '三级 1-1-1'
+                        }]
+                    }]
+                }],
+                defaultProps: {
+                children: 'children',
+                label: 'label'
+                },
+                comtree2:[],
                 options: [{
                         value: '选项1',
                         label: '黄金糕'
-                    }, {
-                        value: '选项2',
-                        label: '双皮奶'
-                    }, {
-                        value: '选项3',
-                        label: '蚵仔煎'
-                    }, {
-                        value: '选项4',
-                        label: '龙须面'
-                    }, {
-                        value: '选项5',
-                        label: '北京烤鸭'
-                }],
+                    }],
                 companyOptions:[],
                 companyipoOptions:[],
                 indicatorOptions:[],
@@ -351,7 +301,6 @@
         methods: {
             ...mapActions(["ShowDims"]),
             hideNavInfo () {
-                debugger;
                 let me = this;
                 me.ShowDims({
                     company:false,
@@ -367,8 +316,9 @@
             createYearMonth () {
                 let me = this,storeParams = me.$store.getters,year = storeParams.year,month = storeParams.month;
                 let yearCount = 5;
+                let date = new Date(),yearNew = date.getFullYear(); 
                 for(let i = 0;i < yearCount;i++){
-                    let yearDemo = year - 0 - i;
+                    let yearDemo = yearNew - 0 - i;
                     let obj = {
                         value: yearDemo + "",
                         label: yearDemo + ""
@@ -396,9 +346,40 @@
              */
             renderSelectOptions (datas) {
                 let me = this;
-                me.companyOptions = datas[0].company;
+                // me.companyOptions = datas[0].company;
+                me.treeCompanyFormat(datas[0].company);
                 me.companyipoOptions = datas[0].companyipo;
                 me.indicatorOptions = datas[0].indicator;
+            },
+            treeCompanyFormat(data){
+                let me = this;
+                let setting = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "scode",
+                            pIdKey: "spcode"
+                        },
+                        key: {
+                            name: "scode",
+                            children: "children"
+                        }
+                    }
+                };
+                if (Array.isArray(data) && data.length > 0) {
+                    data = tools.sortByKey(data, "scode");
+                    data = data.filter(function(item) {
+                        item.id = item.scode;
+                        item.label = item.sname;
+                        // item.sname = item.label;
+                        return item;
+                    });
+                    me.comtree2 = data;
+                    data[0].open = true;
+                    // me.expandKeys.push(data[0].scode);
+                    me.comtree2 = tools.transformToeTreeNodes(setting, data);
+                    me.value = me.comtree2[0].id ;
+                }   
             },
             /**
              * 确定按钮事件。
@@ -406,7 +387,7 @@
             btnHandler () {
                 let me = this,storeParams = me.$store.getters,year = storeParams.year,month = storeParams.month,
                     company = storeParams.company,params = {
-                    company:company,
+                    company:me.value || company,
                     periodSpace:me.getPeriodSpace(),
                     period:me.getPeriod(),
                     companyIPO:me.listedCompany.toString(),
@@ -510,6 +491,20 @@
     }
 </style>
 <style lang="scss" scoped>
+    .tree_spcompany {
+        display: flex;
+    }
+    .tree_company {
+        display: inline-block;
+        width: 55%;
+    }
+    .tree_company_label {
+        align-self: center;
+    }
+    .tree_company {
+        align-self: center;
+    }
+
   .el-table thead.is-group th {
     background: none;
   }

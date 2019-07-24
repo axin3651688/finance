@@ -32,8 +32,12 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比<template v-if="item.yzgzxc>=0">多出</template><template v-if="item.yzgzxc<0">相差</template>
-                        {{setNumberToStanderABS(item.yzgzxc)}}，与平均值相比<template v-if="item.ypjzxc>=0">多出</template><template v-if="item.ypjzxc<0">相差</template>
+                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比
+                        <template v-if="item.yzgzxc>=0">多出</template>
+                        <template v-if="item.yzgzxc<0">相差</template>
+                        {{setNumberToStanderABS(item.yzgzxc)}}，与平均值相比
+                        <template v-if="item.ypjzxc>=0">多出</template>
+                        <template v-if="item.ypjzxc<0">相差</template>
                         {{setNumberToStanderABS(item.ypjzxc)}}
                     </p>
                 </template>
@@ -67,16 +71,35 @@
             </div>
 
             <div class="content-up-loop">
-                <template v-for="(item, index) of loopData2">
-                    <div class="loop-title">
-                        {{numberToChineseString(index + 1)}}、{{item.sname}}
-                    </div>
-                    <p class="loop-content">
-                        {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值
-                        {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>
-                        {{setNumberToStanderABS(item.cz)}}。
-                    </p>
+                <template v-if="loopData2.length > 0">
+                    <template v-for="(item, index) of loopData2">
+                        <div class="loop-title">
+                            {{numberToChineseString(index + 1)}}、{{item.sname}}
+                        </div>
+
+
+                        <template v-if="item.val === 0 && item.val_1 === 0 && item.cz === 0 && item.grade === '不予评级'">
+                            <p>此期间无数据</p>
+                        </template>
+
+                        <template v-else>
+                            <p class="loop-content">
+                                {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值
+                                {{setNumberToStander(item.val_1)}}相比
+                                <template v-if="item.cz>=0">多出</template>
+                                <template v-if="item.cz<0">相差</template>
+                                {{setNumberToStanderABS(item.cz)}}。
+                            </p>
+                        </template>
+
+                    </template>
                 </template>
+                <template v-else>
+                    <div>
+                        暂无数据
+                    </div>
+                </template>
+
             </div>
 
         </div>
@@ -192,6 +215,7 @@
                 let _this = this;
                 let params = this.getTableData('table1');
                 getwarningReportTable1Data(params).then((res) => {
+                    debugger;
                     if (res.data.code === 200) {
                         _this.table1data = res.data.data[0];
 

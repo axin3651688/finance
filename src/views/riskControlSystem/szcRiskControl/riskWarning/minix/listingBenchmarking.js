@@ -24,7 +24,7 @@ export default {
             let objHead02 = {
                 id: "year",
                 type: "string",
-                text: (yearValue ? yearValue : year) + "年",
+                text: yearValue ? yearValue + "年" : "",
                 align: "center"
             };
             let monthObjs = [{

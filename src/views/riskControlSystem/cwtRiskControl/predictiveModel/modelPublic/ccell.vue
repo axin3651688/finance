@@ -3,15 +3,24 @@
         <div class="model-public-cell-single-cell-all">
             <div class="model-public-cell-single-cell-top-ccell">{{cellData.name}}</div>
 
-            <div class="model-public-cell-single-cell-bottom">
-                <el-input
+            <div class="model-public-ccell-single-cell-bottom">
+                <!--<el-input
                         :disabled=false
                         v-model="bottom"
                         :cellid="cellData.nid"
                         @blur="inputBlurEvent"
                         @keyup.enter.native="inputBlurEvent"
                 >
-                </el-input>
+                </el-input>-->
+
+                <input
+                        :disabled=false
+                        v-model="bottom"
+                        :style="{color: cellData.value.replace(/,/g, '') * 1 >= 0 ? 'black' : '#e1251b'}"
+                        :cellid="cellData.nid"
+                        @blur="inputBlurEvent"
+                        @keyup.enter.native="inputBlurEvent"
+                >
             </div>
         </div>
     </div>
@@ -69,7 +78,7 @@
         width: 170px;
     }
 
-    .model-public-cell-single-cell-top-ccell, .model-public-cell-single-cell-bottom {
+    .model-public-cell-single-cell-top-ccell, .model-public-ccell-single-cell-bottom {
         padding: 8px;
         text-align: center;
     }
@@ -78,18 +87,30 @@
         background-color: #61BFEC;
     }
 
-    .model-public-cell-single-cell-bottom {
+    .model-public-ccell-single-cell-bottom {
         background-color: #BCE9F8;
     }
 
-    .model-public-cell-single-cell-bottom .el-input__inner {
-        background-color: #BCE9F8 !important;
+    /*.model-public-ccell-single-cell-bottom .el-input__inner {
+        background-color: #BCE9F8 ;
         height: 22px;
         text-align: center;
         font-size: 19px;
-        color: #000c17 !important;
+        color: #000c17 ;
         border: 0;
         padding: 0;
+    }*/
+
+
+    .model-public-ccell-single-cell-bottom input {
+        background-color: #BCE9F8 ;
+        height: 22px;
+        text-align: center;
+        font-size: 19px;
+        color: #000c17 ;
+        border: 0;
+        padding: 0;
+        width: 100%;
     }
 
 </style>

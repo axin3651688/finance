@@ -102,18 +102,18 @@
             </div>
 
             <div class="content-text">
-                <div class="content-text-one">
-                    投资活动是协调的
+                <div class="content-text-one" :style="{color: conclusionData.f1.color}">
+                    {{conclusionData.f1.content}}
                 </div>
-                <div class="content-text-two">
-                    经营活动存在资金缺口
+                <div class="content-text-two" :style="{color: conclusionData.f2.color}">
+                    {{conclusionData.f2.content}}
                 </div>
                 <div class="content-text-three">
                     <div class="title">
                         现金支付能力状况
                     </div>
-                    <div class="content">
-                        协调并且有支付能力
+                    <div class="content" :style="{color: conclusionData.f3.color}">
+                        {{conclusionData.f3.content}}
                     </div>
                 </div>
             </div>
@@ -324,7 +324,83 @@
                     name: "现金支付能力",
                     data: []
                 },
-                dataFresh: false
+                dataFresh: false,
+
+
+                conclusionData: {
+                    f1: {
+                        color: '',
+                        content: ''
+                    },
+                    f2: {
+                        color: '',
+                        content: ''
+                    },
+                    f3: {
+                        color: '',
+                        content: ''
+                    }
+                },
+
+                cCapitalChainAndFinancingForecast: {
+                    f1: {
+                        clu1: {
+                            color: 'black',
+                            //营运资本>0
+                            content: '投融资活动是协调的'
+                        },
+                        clu2: {
+                            color: 'black',
+                            //else
+                            content: '投融资活动存在资金缺口，并需要占用流动资金为：round'
+                        }
+                    },
+                    f2: {
+                        clu1: {
+                            color: 'black',
+                            //营运资金需求<0
+                            content: '经营活动是协调的'
+                        },
+                        clu2: {
+                            color: 'black',
+                            //else
+                            content: '经营活动存在资金缺口为:round'
+                        }
+                    },
+                    f3: {
+                        clu1: {
+                            color: 'black',
+                            //现金支付能力>0, 营运资金需求>0, 营运资本>0, 营运资本>营运资金需求
+                            content: '协调且有支付能力'
+                        },
+                        clu2: {
+                            color: 'black',
+                            //AND(现金支付能力>0,营运资金需求<0, 营运资本>0
+                            content: '资金大量富裕'
+                        },
+                        clu3: {
+                            color: 'black',
+                            //现金支付能力>0,营运资金需求<0, 营运资本<0, ABS(营运资本)<ABS(营运资金需求)
+                            content: '不协调但能够维持'
+                        },
+                        clu4: {
+                            color: 'black',
+                            //现金支付能力<0, 营运资金需求<0, 营运资本<0,ABS(营运资本)>ABS(营运资金需求)
+                            content: '不协调'
+                        },
+                        clu5: {
+                            color: 'black',
+                            //现金支付能力<0,营运资金需求>0,营运资本>0,营运资本<营运资金需求
+                            content: '协调但有支付困难'
+                        },
+                        clu6: {
+                            color: 'black',
+                            //else
+                            content: '严重不协调'
+                        }
+                    }
+                }
+
             }
         },
         created() {
@@ -353,7 +429,7 @@
                 }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
-                        _this.resDataFormatter(res.data.data);
+                        _this.resDataFormatter(res.data.data[1]);
                     }
                 })
             },
@@ -481,6 +557,8 @@
                 _this.pie_3EchartData.data = emptyData.emptyData3;
                 _this.pie_4EchartData.data = emptyData.emptyData4;
                 _this.gaugeEchartData.data = data.partx.cellData1;
+
+                this.getConclusionData();
 
                 _this.dataFresh = !_this.dataFresh;
 
@@ -645,6 +723,82 @@
                 }
                 return _list;
             },
+
+
+            /**
+             * 获取文字评论
+             */
+            getConclusionData() {
+                let _this = this;
+                let _conclusionData = _this.conclusionData;
+                let _cCapitalChainAndFinancingForecast = _this.cCapitalChainAndFinancingForecast;
+                let _newData = _this.setDataToList1(_this.allData2);
+                let _needData = {
+                    yyzb: '97',
+                    yyzjxq: '98',
+                    xjzfnl: '99'
+
+                };
+                for (let _x in _needData) {
+                    let _a = _needData[_x];
+                    let _va = _newData.filter((i) => {
+                        return i.nid === _a;
+                    });
+                    _needData[_x] = _va[0].value.replace(/,/g, '') * 1;
+
+                }
+
+                let _flag = 0;
+                for (let k1 in _conclusionData) {
+                    if (k1 === 'f1') {
+
+                        if (_needData.yyzb > 0) {
+                            _flag = 1;
+                        } else {
+                            _flag = 2;
+                        }
+
+                    } else if (k1 === 'f2') {
+                        if (_needData.yyzjxq < 0) {
+                            _flag = 1;
+                        } else {
+                            _flag = 2;
+                        }
+                    } else if (k1 === 'f3') {
+                        if (_needData.xjzfnl > 0 && _needData.yyzjxq > 0 && _needData.yyzb > 0 && _needData.yyzb > _needData.yyzjxq) {
+                            _flag = 1;
+                        } else if (_needData.xjzfnl > 0 && _needData.yyzb > 0 && _needData.yyzjxq < 0) {
+                            _flag = 2;
+                        } else if (_needData.xjzfnl > 0 && _needData.yyzjxq < 0 && _needData.yyzb < 0 && Math.abs(_needData.yyzb) < Math.abs(_needData.yyzjxq)) {
+                            _flag = 3;
+                        } else if (_needData.xjzfnl < 0 && _needData.yyzjxq > 0 && _needData.yyzb < 0 && Math.abs(_needData.yyzb) > Math.abs(_needData.yyzjxq)) {
+                            _flag = 4;
+                        } else if (_needData.xjzfnl < 0 && _needData.yyzjxq > 0 && _needData.yyzb > 0 && _needData.yyzb < _needData.yyzjxq) {
+                            _flag = 5;
+                        } else {
+                            _flag = 6;
+                        }
+
+                    }
+
+                    let _index = 'clu' + _flag;
+                    _conclusionData[k1].color = _cCapitalChainAndFinancingForecast[k1][_index].color;
+                    _conclusionData[k1].content = _cCapitalChainAndFinancingForecast[k1][_index].content;
+                    if (k1 === 'f1') {
+                        if (_conclusionData[k1].content.indexOf('round') !== -1) {
+                            let _n = _this.setNumberToStander(_needData.yyzb);
+                            _conclusionData[k1].content = _conclusionData[k1].content.replace('round', _n);
+                        }
+
+                    } else if (k1 === 'f2') {
+                        if (_conclusionData[k1].content.indexOf('round') !== -1) {
+                            let _m = _this.setNumberToStander(_needData.yyzjxq);
+                            _conclusionData[k1].content = _conclusionData[k1].content.replace('round', _m);
+                        }
+                    }
+                }
+
+            }
         }
     }
 </script>

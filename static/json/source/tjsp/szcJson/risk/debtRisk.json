@@ -43,7 +43,7 @@
         {
             "id": "v",
             "type": "string",
-            "text": "企业分值",
+            "text": "指标实际值",
             "align": "center"
         },
         {

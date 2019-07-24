@@ -358,7 +358,7 @@
                 }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
-                        _this.resDataFormatter(res.data.data);
+                        _this.resDataFormatter(res.data.data[1]);
                     }
                 })
             },
