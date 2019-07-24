@@ -28,7 +28,6 @@
                 </el-button>
             </div>
 
-
             <div class="button-right">
                 <el-select
                         v-model="selectValue"
@@ -55,8 +54,6 @@
                     重置
                 </el-button>
             </div>
-
-
         </div>
 
         <div class="fzjyknx" v-if="this.buttonType === 'fzjyknx'">
@@ -101,9 +98,9 @@
                         <span>负债经营可能性</span>
                     </div>
 
-                    <div class="content">
+                    <div class="content" :style="{color:conclusionData.f1.s1.color}">
                         <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                            {{conclusionData.f1.s1.content}}
                         </p>
                     </div>
                 </div>
@@ -165,14 +162,14 @@
                         <div class="content-title">
                             <span>从支付能力来看</span>
                         </div>
-                        <p>
-                            总体来看，流动资产增长快
+                        <p :style="{color:conclusionData.f2.s1.color}">
+                            {{conclusionData.f2.s1.content}}
                         </p>
                         <div class="content-title">
                             <span>从发展角度来看</span>
                         </div>
-                        <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        <p :style="{color:conclusionData.f2.s2.color}">
+                            {{conclusionData.f2.s2.content}}
                         </p>
                     </div>
                 </div>
@@ -223,8 +220,8 @@
                     </div>
 
                     <div class="content" style="color: green">
-                        <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        <p :style="{color:conclusionData.f3.s1.color}">
+                            {{conclusionData.f3.s1.content}}
                         </p>
                     </div>
                 </div>
@@ -234,8 +231,8 @@
                     </div>
 
                     <div class="content" style="color: green">
-                        <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        <p :style="{color:conclusionData.f3.s2.color}">
+                            {{conclusionData.f3.s2.content}}
                         </p>
                     </div>
                 </div>
@@ -297,8 +294,8 @@
                     </div>
 
                     <div class="content" style="color: green">
-                        <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                        <p :style="{color:conclusionData.f4.s1.color}">
+                            {{conclusionData.f4.s1.content}}
                         </p>
                     </div>
                 </div>
@@ -307,9 +304,9 @@
                         <span>长期付息能力状况</span>
                     </div>
 
-                    <div class="content" style="color: green">
-                        <p>
-                            总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高。资产结构还有改善空间
+                    <div class="content">
+                        <p :style="{color:conclusionData.f4.s2.color}">
+                            {{conclusionData.f4.s2.content}}
                         </p>
                     </div>
                 </div>
@@ -413,6 +410,7 @@
             company(newValue, oldValue) {
                 this.getRealData();
                 this.getSelectOptions();
+
             },
             year(newValue, oldValue) {
                 this.getRealData();
@@ -425,8 +423,47 @@
         },
         data() {
             return {
-                buttonType: 'fzjyknx',
 
+                conclusionData: {
+                    f1: {
+                        s1: {
+                            color: '',
+                            content: ''
+                        },
+                    },
+                    f2: {
+                        s1: {
+                            color: '',
+                            content: ''
+                        },
+                        s2: {
+                            color: '',
+                            content: ''
+                        }
+                    },
+                    f3: {
+                        s1: {
+                            color: '',
+                            content: ''
+                        },
+                        s2: {
+                            color: '',
+                            content: ''
+                        }
+                    },
+                    f4: {
+                        s1: {
+                            color: '',
+                            content: ''
+                        },
+                        s2: {
+                            color: '',
+                            content: ''
+                        }
+                    },
+                },
+
+                buttonType: 'fzjyknx',
 
                 selectOptions: [
                     {
@@ -496,7 +533,6 @@
                 ],
                 tableHeight: 500,
 
-
                 allData: {},
 
                 echartData: {},
@@ -508,6 +544,152 @@
                 gauge_2EchartData: {
                     name: '已获利息倍数（倍）',
                     data: []
+                },
+
+
+                cForecastOfSolvency: {
+                    f1: {
+                        s1: {
+                            clu1: {
+                                color: 'red',
+                                //付息负债的期末数=0
+                                content: '本公司无付息负债，不存在负债经营风险。'
+                            },
+                            clu2: {
+                                color: 'red',
+                                //净利润的累计数<=0
+                                content: '公司净利润为负，负债经营是否可行，取决于能否扭亏为盈。'
+                            },
+                            clu3: {
+                                color: 'red',
+                                //净利润的累计数>0,财务风险系数<1
+                                content: '从公司当期资本结构、借款利率和盈利水平三者的关系来看，公司增加负债不会增加公司的盈利水平，相反会降低公司现在的盈利水平。'
+                            },
+                            clu4: {
+                                color: 'red',
+                                //净利润的累计数>0,财务风险系数>=1
+                                content: '从公司当期资本结构、借款利率和盈利水平三者的关系来看，公司增加负债能够给企业带来利润的增加，负债经营可行。'
+                            }
+                        }
+                    },
+                    f2: {
+                        s1: {
+                            clu1: {
+                                color: 'green',
+                                //现金支付能力<=0,短期借款的期末余额>应付票据的期末余额
+                                content: '从支付能力来看，日常现金支付资金比较紧张，主要依靠短期借款。'
+                            },
+                            clu2: {
+                                color: 'green',
+                                //现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
+                                content: '从支付能力来看，日常现金支付资金比较紧张，主要依靠应付票据。'
+                            },
+                            clu3: {
+                                color: 'green',
+                                //else
+                                content: '有现金支付能力的。'
+                            }
+                        },
+                        s2: {
+                            clu1: {
+                                color: 'black',
+                                //偿还流动负债的资金<(1/2*流动负债合计的期末余额
+                                content: '从发展角度来看，按照当前资产的周转速度和盈利水平，公司短期债务的偿还没有充足的资金保证，需要依靠借新债还旧债。'
+                            },
+                            clu2: {
+                                color: 'black',
+                                //else
+                                content: '从发展角度来看，按照当前资产的周转速度和盈利水平，公司有能力偿还短期借款。'
+                            }
+                        }
+                    },
+                    f3: {
+                        s1: {
+                            clu1: {
+                                color: 'blue',
+                                //流动比率<=0.8
+                                content: '当期流动比率过低，如果经营形势没有大的变化，偿还流动负债比较困难。'
+                            },
+                            clu2: {
+                                color: 'blue',
+                                //0.8<流动比率<1.2
+                                content: '流动资产处于相对较低水平，流动比率不太合理。'
+                            },
+                            clu3: {
+                                color: 'blue',
+                                //else
+                                content: '用当期流动资产偿还流动负债，没有困难，流动比率比较合理。'
+                            }
+                        },
+                        s2: {
+                            clu1: {
+                                color: 'black',
+                                //速动比率<=0.6
+                                content: '速动资产过低，速动比率不太合理。'
+                            },
+                            clu2: {
+                                color: 'black',
+                                //0.6<速动比率<1
+                                content: '速动资产处于相对较低水平。'
+                            },
+                            clu3: {
+                                color: 'black',
+                                //else
+                                content: '速动资产充足，速动比率合理。'
+                            }
+                        }
+                    },
+                    f4: {
+                        s1: {
+                            clu1: {
+                                color: 'purpule',
+                                //现金支付能力<=0,短期借款期末数>应付票据期末数
+                                content: '从短期来看，公司经营活动的资金主要依靠短期借款。全部偿还短期债务本息会有一定困难。'
+                            },
+                            clu2: {
+                                color: 'purpule',
+                                //现金支付能力<=0, 短期借款期末数<应付票据期末数
+                                content: '从短期来看，公司经营活动的资金主要依靠应付票据。全部偿还短期债务本息会有一定困难。'
+                            },
+                            clu3: {
+                                color: 'purpule',
+                                //else
+                                content: '从短期来看，公司拥有支付利息的能力。'
+                            }
+                        },
+                        s2: {
+                            clu1: {
+                                color: 'black',
+                                //财务费用累计数<=0
+                                content: '本期财务费用为负，无法进行长期付息能力判断。'
+                            },
+                            clu2: {
+                                color: 'black',
+                                //财务费用累计数>0,利润总额累计数<0
+                                content: '本期亏损，利息支出没有保障。'
+                            },
+                            clu3: {
+                                color: 'black',
+                                //财务费用累计数>0,利润总额累计数=0
+                                content: '本期没有实现盈利，利息支出没有保障。'
+                            },
+                            clu4: {
+                                color: 'black',
+                                //财务费用累计数>0,利润总额累计数>0,利息保障倍数>=4
+                                content: '从盈利情况来看，公司盈利对利息的保障倍数为"&ROUNDDOWN(利息保障倍数,1)&"倍。从实现利润和利息的关系来看，公司盈利能力较强，利息支付有保证。'
+                            },
+                            clu5: {
+                                color: 'black',
+                                //财务费用累计数>0,利润总额累计数>0,1<=利息保障倍数<4
+                                content: '从盈利情况来看，公司盈利对利息的保障倍数为lxbzbs倍。公司盈利能力对利息的保障程度偏低。'
+                            },
+                            clu6: {
+                                color: 'black',
+                                //财务费用累计数>0,利润总额累计数>0,利息保障倍数<=1
+                                content: '从盈利情况来看，公司盈利对利息的保障倍数为"&利息保障倍数&"倍。公司盈利能力对利息的保障程度比较差。'
+                            }
+                        }
+                    },
                 },
             }
         },
@@ -544,7 +726,7 @@
                 }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
-                        _this.resDataFormatter(res.data.data);
+                        _this.resDataFormatter(res.data.data[1]);
                     }
                 })
             },
@@ -680,6 +862,8 @@
                 for (let key in _data) {
                     _data[key] = _this.dataCalculate(_data[key]);
                 }
+                debugger;
+                this.getConclusionData();
                 _this.initEchartData(_this.allData);
             },
 
@@ -730,7 +914,7 @@
                     for (let y in i) {
                         let z = i[y];
                         if (z.nid === _nid) {
-                            let __value = _value.replace(/,/g,'');
+                            let __value = _value.replace(/,/g, '');
                             if (__value * 1 === z.value * 1) {
                                 return;
                             }
@@ -783,7 +967,7 @@
                     "status": status
                 };
                 params.list = _this.getSaveData();
-                if(status === '1'){
+                if (status === '1') {
                     let _code = _this.selectOptions.filter((o) => {
                         return o.value === _this.selectValue;
                     });
@@ -794,7 +978,7 @@
                         _this.dialogVisible = false;
                         _this.changeDialogVisible = false;
                         this.getSelectOptions();
-                        this.selectValue =  _this.modelName;
+                        this.selectValue = _this.modelName;
                         _this.$message({
                             message: '保存成功',
                             type: 'success'
@@ -824,7 +1008,7 @@
                 getPredictiveModelSelect(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.selectOptions = res.data.data;
-                        _this.selectOptions.push({value: '',lable: ''})
+                        _this.selectOptions.push({value: '', lable: ''})
                     }
                 })
             },
@@ -911,6 +1095,135 @@
                 }
                 return _list;
             },
+
+            /**
+             * 获取文字评论
+             */
+            getConclusionData() {
+                let _this = this;
+                // _this.conclusionData = _this.getConclusion(_this.allData, 'forecastOfSolvency', _this.conclusionData)
+                let _conclusionData = _this.conclusionData;
+                let _cForecastOfSolvency = _this.cForecastOfSolvency;
+                let _newData = _this.setDataToList(_this.allData);
+                let _needData = {
+                    fxfz: '56',
+                    jlr: '281',
+                    fxxs: '58',
+                    xjzfnl: '66',
+                    dqjk: '253',
+                    yfpj: '65',
+                    chzj: '67',
+                    fzhj: '69',
+                    ldbl: '71',
+                    sdbl: '72',
+                    cwfy: '51',
+                    lrze: '78',
+                    lxbz: '80'
+
+                };
+                for (let _x in _needData) {
+                    let _a = _needData[_x];
+                    let _va = _newData.filter((i) => {
+                        return i.nid === _a;
+                    });
+                    _needData[_x] = _va[0].value.replace(/,/g, '') * 1;
+
+                }
+
+                let _flag = 0;
+                for (let k1 in _conclusionData) {    // x 是  f
+                    let _v = _conclusionData[k1];
+                    for (let k2 in _v) {        // y 是  s
+                        let _b = _v[k2];
+
+                        if (k1 === 'f1') {
+
+                            if (_needData.fxfz === '0') {
+                                _flag = 1;
+                            } else if (_needData.jlr <= 0) {
+                                _flag = 2;
+                            } else if (_needData.jlr > 0 && _needData.fxxs < 1) {
+                                _flag = 3;
+                            } else if (_needData.jlr > 0 && _needData.fxxs >= 1) {
+                                _flag = 4;
+                            }
+
+                        } else if (k1 === 'f2') {
+                            if (k2 === 's1') {
+                                if (_needData.xjzfnl <= 0 && _needData.dqjk > _needData.yfpj) {//现金支付能力<=0,短期借款的期末余额>应付票据的期末余额
+                                    _flag = 1;
+                                } else if (_needData.xjzfnl <= 0 && _needData.dqjk < _needData.yfpj) {//现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
+                                    _flag = 2;
+                                } else {//现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
+                                    _flag = 3;
+                                }
+                            } else if (k2 === 's2') {//偿还流动负债的资金<(1/2*流动负债合计的期末余额
+                                if (_needData.chzj < (1 / 2 * _needData.fzhj)) {
+                                    _flag = 1;
+                                } else {
+                                    _flag = 2;
+                                }
+                            }
+                        } else if (k1 === 'f3') {
+                            if (k2 === 's1') {
+                                if (_needData.ldbl <= 0.8) {//流动比率<=0.8
+                                    _flag = 1;
+                                } else if (_needData.ldbl > 0.8 && _needData.ldbl < 1.2) {
+                                    _flag = 2;
+                                } else {
+                                    _flag = 3;
+                                }
+                            } else if (k2 === 's2') {
+                                if (_needData.sdbl <= 0.6) {//流动比率<=0.8
+                                    _flag = 1;
+                                } else if (_needData.sdbl > 0.6 && _needData.sdbl < 1) {
+                                    _flag = 1;
+                                } else {
+                                    _flag = 3;
+                                }
+                            }
+                        } else if (k1 === 'f4') {
+                            if (k2 === 's1') {
+                                if (_needData.xjzfnl <= 0 && _needData.dqjk > _needData.yfpj) {//现金支付能力<=0,短期借款的期末余额>应付票据的期末余额
+                                    _flag = 1;
+                                } else if (_needData.xjzfnl <= 0 && _needData.dqjk < _needData.yfpj) {//现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
+                                    _flag = 2;
+                                } else {//现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
+                                    _flag = 3;
+                                }
+                            } else if (k2 === 's2') {
+                                if (_needData.cwfy <= 0) {
+                                    _flag = 1;
+                                } else if (_needData.cwfy > 0 && _needData.lrze < 0) {
+                                    _flag = 2;
+                                } else if (_needData.cwfy > 0 && _needData.lrze === 0) {
+                                    _flag = 3;
+                                } else if (_needData.cwfy > 0 && _needData.lrze > 0 && _needData.lxbz >= 4) {
+                                    _flag = 4;
+                                } else if (_needData.cwfy > 0 && _needData.lrze > 0 && _needData.lxbz >= 1 && _needData.lxbz < 4) {
+                                    _flag = 5;
+                                } else if (_needData.cwfy > 0 && _needData.lrze > 0 && _needData.lxbz <= 1) {
+                                    _flag = 6;
+                                }
+                            }
+                        }
+
+                        let _index = 'clu' + _flag;
+                        _conclusionData[k1][k2].color = _cForecastOfSolvency[k1][k2][_index].color;
+                        _conclusionData[k1][k2].content = _cForecastOfSolvency[k1][k2][_index].content;
+
+                        if(k1 === 'f4' && k2 === 's2'){
+                            if(_conclusionData[k1][k2].content.indexOf('lxbzbs') !== -1){
+                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs',_needData.lxbz);
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+
         }
     }
 </script>
@@ -924,7 +1237,7 @@
         padding: 0 10px;
         align-items: center;
         border-radius: 10px;
-        background-color: #D3DCE6 ;
+        background-color: #D3DCE6;
         display: flex;
         justify-content: space-between;
     }
@@ -1073,7 +1386,7 @@
     .content-text_1 {
         position: absolute;
         width: 300px;
-        height: 250px;
+        height: 280px;
         top: 50px;
         left: 1000px;
         border: 2px solid #303133;
@@ -1092,21 +1405,21 @@
         padding: 16px;
         text-indent: 36px;
         line-height: 30px;
-        color: #bd2c00;
+        /*color: #bd2c00;*/
     }
 
     .content-text_1 .content .title {
         font-size: 18px;
         text-indent: 36px;
         line-height: 30px;
-        color: #bd2c00;
+        /*color: #bd2c00;*/
     }
 
     .content-text_1 .content p {
         font-size: 16px;
         text-indent: 36px;
         line-height: 30px;
-        color: #bd2c00;
+        /*color: #bd2c00;*/
     }
 
     .content-title {
@@ -1165,9 +1478,11 @@
         top: 680px;
         width: 100%;
     }
-    .button-right-select{
+
+    .button-right-select {
         margin-right: 10px;
     }
+
     .model-name {
         display: flex;
         margin: 30px 20px;
