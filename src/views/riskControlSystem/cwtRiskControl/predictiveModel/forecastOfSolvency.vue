@@ -862,8 +862,6 @@
                 for (let key in _data) {
                     _data[key] = _this.dataCalculate(_data[key]);
                 }
-                debugger;
-                this.getConclusionData();
                 _this.initEchartData(_this.allData);
             },
 
@@ -875,6 +873,7 @@
                 let _this = this;
                 _this.gauge_1EchartData.data = data.allData3.partx['cellData6'];
                 _this.gauge_2EchartData.data = data.allData4.partx['cellData9'];
+                this.getConclusionData();
                 _this.dataFresh = !_this.dataFresh;
             },
 

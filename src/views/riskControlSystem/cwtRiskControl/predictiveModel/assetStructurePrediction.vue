@@ -222,9 +222,9 @@
                 modelName: '',
                 changeDialogVisible: false,
 
-                conclusionData:{
-                    color:'',
-                    content:''
+                conclusionData: {
+                    color: '',
+                    content: ''
                 },
 
                 aAssetStructurePrediction: {
@@ -260,6 +260,9 @@
                     }
 
                 },
+
+                lastYeatData: {},
+                thisYearData: {},
 
 
                 allData: {},
@@ -346,7 +349,10 @@
                 }
                 predictiveModel(params).then((res) => {
                     if (res.data.code === 200) {
+                        _this.lastYearData = res.data.data[0];
+                        _this.thisYearData = res.data.data[1];
                         _this.resDataFormatter(res.data.data[1]);
+
                     }
                 })
             },
@@ -391,7 +397,7 @@
                 let _this = this;
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data);
-                this.getConclusionData();
+
                 _this.initEchartData(_this.allData);
             },
 
@@ -425,6 +431,9 @@
                 _this.gauge_1EchartData.data = data.partx.cellData1;
                 _this.gauge_2EchartData.data = data.partx.cellData2;
                 _this.pieEchartData.data = emptyData;
+
+                this.getConclusionData();
+
                 _this.dataFresh = !_this.dataFresh;
             },
 
@@ -451,7 +460,7 @@
                     for (let y in i) {
                         let z = i[y];
                         if (z.nid === _nid) {
-                            let __value = _value.replace(/,/g,'');
+                            let __value = _value.replace(/,/g, '');
                             if (__value * 1 === z.value * 1) {
                                 return;
                             }
@@ -505,7 +514,7 @@
                 };
                 params.list = _this.getSaveData();
 
-                if(status === '1'){
+                if (status === '1') {
                     let _code = _this.selectOptions.filter((o) => {
                         return o.value === _this.selectValue;
                     });
@@ -518,7 +527,7 @@
                         _this.changeDialogVisible = false;
 
                         this.getSelectOptions();
-                        this.selectValue =  _this.modelName;
+                        this.selectValue = _this.modelName;
 
                         _this.$message({
                             message: '保存成功',
@@ -549,7 +558,7 @@
                 getPredictiveModelSelect(params).then((res) => {
                     if (res.data.code === 200) {
                         _this.selectOptions = res.data.data;
-                        _this.selectOptions.push({lable:'',value:''})
+                        _this.selectOptions.push({lable: '', value: ''})
                     }
                 })
             },
@@ -594,9 +603,48 @@
             /**
              * 获取文字评论
              */
-            getConclusionData(){
+            getConclusionData() {
                 let _this = this;
-                // _this.conclusionData = _this.getConclusion(_this.allData, 'assetStructurePrediction')
+                let _lastData = _this.lastYearData;
+                let _thisData = _this.thisYearData;
+                //21, 206 , 23, 207===   1, 11,  4, 14
+                //(利润总额+利息支出)/((资产总计+年初资产总计)/2)*100
+
+                // 流动资产增长率(%)
+                // (流动资产-比较年流动资产)/比较年流动资产*100
+                // 营业收入增长率(%)
+                // (营业收入-比较年营业收入)/比较年营业收入*100
+
+                let _lastzzcbcl = (_lastData[1].value * 1 + _lastData[11].value * 1) / ((_lastData[4].value * 1 + _lastData[14].value * 1) / 2) * 100;
+                let _thiszzcbcl = (_thisData[1].value * 1 + _thisData[11].value * 1) / ((_thisData[4].value * 1 + _thisData[14].value * 1) / 2) * 100;
+
+                let ldzcazzl = (_thisData[3].value * 1 - _thisData[12].value * 1) / (_thisData[12].value * 1) * 100;
+                let yysrzzl = (_thisData[0].value * 1 - _thisData[13].value * 1) / (_thisData[13].value * 1) * 100;
+
+                _lastzzcbcl = isNaN(_lastzzcbcl) ? 0 : _lastzzcbcl;
+                _thiszzcbcl = isNaN(_thiszzcbcl) ? 0 : _thiszzcbcl;
+                ldzcazzl = isNaN(ldzcazzl) ? 0 : ldzcazzl;
+                yysrzzl = isNaN(yysrzzl) ? 0 : yysrzzl;
+
+                let flag = 0;
+                if (yysrzzl > ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    flag = 1;
+                } else if (yysrzzl > ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    flag = 2;
+                } else if (yysrzzl < ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    flag = 3;
+                } else if (yysrzzl < ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    flag = 4;
+                } else if (yysrzzl = ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    flag = 5;
+                } else if (yysrzzl = ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    flag = 6;
+                }
+
+                let _index = 'clu' + flag;
+                _this.conclusionData.color = _this.aAssetStructurePrediction[_index].color;
+                _this.conclusionData.content = _this.aAssetStructurePrediction[_index].content;
+
             }
         }
     }
@@ -612,7 +660,7 @@
         padding: 0 10px;
         align-items: center;
         border-radius: 10px;
-        background-color: #D3DCE6 ;
+        background-color: #D3DCE6;
         display: flex;
         justify-content: flex-end;
     }
@@ -710,9 +758,11 @@
         top: 700px;
         width: 100%;
     }
-    .button-right-select{
+
+    .button-right-select {
         margin-right: 10px;
     }
+
     .model-name {
         display: flex;
         margin: 30px 20px;
