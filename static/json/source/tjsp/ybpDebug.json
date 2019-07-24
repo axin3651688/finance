@@ -314,15 +314,22 @@
                 }
             }],
             "cellStyle": function(row, that) {
+                debugger;
                 let me = this;
                 if (row.columnIndex == 0 && row.row.hymc != "合计" && row.row.hymc != "其他") {
                     let css = "color: #428bca;cursor: pointer;";
-                    return css;
+                    if (row.row.ljwc) {
+                        return css;
+                    }
                 }
             },
             "onCellClick": function(row, column, cell, event, option) {
                 debugger;
                 let me = this;
+                //没有数据的不给下钻。ljwc
+                if (!row.ljwc) {
+                    return;
+                }
                 if (cell.cellIndex != 0 || cell.innerText == "合计" || cell.innerText == "其他") {
                     return;
                 };
@@ -334,7 +341,7 @@
                 option.commonHandler(listeners, params, textObj);
             },
             "config": {
-                "sql": "WITH TMP AS( SELECT T.SINDCODE AS INDSCODE, C.SNAME AS HYMC, ( CASE WHEN T.DIM_ITEMPERIOD='1416001' THEN NVL(D.FACT_A,0) ELSE NVL(D.FACT_B,0) END) AS BNJY, LJWC, SNLJWC FROM ( SELECT SCODE, SINDCODE, DIM_ITEMPERIOD, SUM( CASE WHEN B.DIM_PERIOD=:period THEN NVL(B.FACT_B,0) ELSE 0 END) AS LJWC, SUM( CASE WHEN B.DIM_PERIOD=:comparePeriod THEN NVL(B.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD B ON B.DIM_COMPANY=A.SCODE AND B.DIM_PERIOD IN(:period, :comparePeriod) AND DIM_ITEMPERIOD=:itemscode WHERE A.SCODE IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE= SPCODE) GROUP BY SCODE, SINDCODE, DIM_ITEMPERIOD) T INNER JOIN DW_DIMINDUSTRY C ON T.SINDCODE=C.SCODE LEFT JOIN DW_FACTTARGETASSESSMENT D ON T.SCODE=D.DIM_COMPANY AND D.DIM_PERIOD =:year||'00') , TMP0 AS ( SELECT INDSCODE, HYMC, BNJY, LJWC, SNLJWC, LJWC-SNLJWC AS TBZJE FROM TMP ) , tmp1 AS ( SELECT INDSCODE, HYMC, SUM(NVL(BNJY,0)) bnjy, SUM(NVL(LJWC,0)) ljwc, SUM(NVL(SNLJWC,0)) snljwc, SUM(NVL(TBZJE,0)) tbzje FROM TMP0 GROUP BY INDSCODE, HYMC ORDER BY ljwc DESC ) , tmp2 AS ( SELECT rownum xx, indscode, hymc, bnjy, ljwc, ( CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL, snljwc, tbzje, ( CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM tmp1 ) SELECT INDSCODE, HYMC, BNJY, LJWC, ljwcl, SNLJWC, tbzje, tbzjl FROM tmp2 UNION ALL SELECT '9999' AS INDSCODE, '合计' AS HYMC, SUM(BNJY) AS BNJY, SUM(LJWC) AS LJWC, ( CASE WHEN SUM(BNJY)=0 THEN 0 ELSE ROUND(SUM(LJWC)/SUM(BNJY)*100,2) END) AS LJWCL, SUM(SNLJWC) AS SNLJWC, SUM(LJWC)-SUM(SNLJWC) AS TBZJE, ( CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2) END ) AS TBZJL FROM TMP ",
+                "sql": "WITH TMP AS( SELECT c.scode AS INDSCODE, C.SNAME AS HYMC, ( CASE WHEN T.DIM_ITEMPERIOD='1416001' THEN NVL(D.FACT_A,0) ELSE NVL(D.FACT_B,0) END) AS BNJY, LJWC, SNLJWC FROM ( SELECT SCODE, SINDCODE, DIM_ITEMPERIOD, SUM( CASE WHEN B.DIM_PERIOD=:period THEN NVL(B.FACT_B,0) ELSE 0 END) AS LJWC, SUM( CASE WHEN B.DIM_PERIOD=:comparePeriod THEN NVL(B.FACT_B,0) ELSE 0 END) AS SNLJWC FROM DW_DIMCOMPANY A INNER JOIN DW_FACTFINANCEPERIOD B ON B.DIM_COMPANY=A.SCODE AND B.DIM_PERIOD IN(:period, :comparePeriod) AND DIM_ITEMPERIOD=:itemscode WHERE A.SCODE IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE SINDCODE IS NOT NULL START WITH SCODE=:company CONNECT BY PRIOR SCODE= SPCODE) GROUP BY SCODE, SINDCODE, DIM_ITEMPERIOD) T right JOIN (select scode, sname from DW_DIMINDUSTRY where scode <>'12') C ON T.SINDCODE=C.SCODE LEFT JOIN DW_FACTTARGETASSESSMENT D ON T.SCODE=D.DIM_COMPANY AND D.DIM_PERIOD =:year||'00') , TMP0 AS ( SELECT INDSCODE, HYMC, BNJY, LJWC, SNLJWC, LJWC-SNLJWC AS TBZJE FROM TMP ) , tmp1 AS ( SELECT INDSCODE, HYMC, SUM(NVL(BNJY,0)) bnjy, SUM(NVL(LJWC,0)) ljwc, SUM(NVL(SNLJWC,0)) snljwc, SUM(NVL(TBZJE,0)) tbzje FROM TMP0 GROUP BY INDSCODE, HYMC ORDER BY ljwc DESC ) , tmp2 AS ( SELECT rownum xx, indscode, hymc, bnjy, ljwc, ( CASE WHEN BNJY=0 THEN 0 ELSE ROUND(LJWC/BNJY*100,2) END) AS LJWCL, snljwc, tbzje, ( CASE WHEN SNLJWC=0 THEN 0 ELSE ROUND((LJWC-SNLJWC)/SNLJWC*100,2) END) AS TBZJL FROM tmp1 order by to_number(INDSCODE) ) SELECT INDSCODE, HYMC, BNJY, LJWC, ljwcl, SNLJWC, tbzje, tbzjl FROM tmp2 UNION ALL SELECT '9999' AS INDSCODE, '合计' AS HYMC, SUM(BNJY) AS BNJY, SUM(LJWC) AS LJWC, ( CASE WHEN SUM(BNJY)=0 THEN 0 ELSE ROUND(SUM(LJWC)/SUM(BNJY)*100,2) END) AS LJWCL, SUM(SNLJWC) AS SNLJWC, SUM(LJWC)-SUM(SNLJWC) AS TBZJE, ( CASE WHEN SUM(SNLJWC)=0 THEN 0 ELSE ROUND((SUM(LJWC)-SUM(SNLJWC))/SUM(SNLJWC)*100,2) END ) AS TBZJL FROM TMP",
                 "_cube": {
                     "subject": "0001",
                     "cubeId": 4
