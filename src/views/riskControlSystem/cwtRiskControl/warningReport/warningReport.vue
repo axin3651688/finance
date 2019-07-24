@@ -95,7 +95,7 @@
                     </template>
                 </template>
                 <template v-else>
-                    <div>
+                    <div style="width: 100%; text-align: center">
                         暂无数据
                     </div>
                 </template>
