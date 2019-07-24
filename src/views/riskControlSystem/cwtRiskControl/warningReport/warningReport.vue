@@ -215,7 +215,6 @@
                 let _this = this;
                 let params = this.getTableData('table1');
                 getwarningReportTable1Data(params).then((res) => {
-                    debugger;
                     if (res.data.code === 200) {
                         _this.table1data = res.data.data[0];
 
