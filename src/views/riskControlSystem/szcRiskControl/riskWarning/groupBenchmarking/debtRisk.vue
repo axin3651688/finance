@@ -154,6 +154,7 @@
                         period:me.getPeriod(),
                         indicator:"'3','17','16','125','126'",
                         fact:'B',
+                        type:'zwfx',
                         year:year,
                         month:month,
                         sqlKey:"RiskWarning.fzhpj"

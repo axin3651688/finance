@@ -146,6 +146,7 @@
                         company:row? row.scode:company,
                         period:me.getPeriod(),
                         indicator:"'19','20','53','120','21','121','133'",
+                        type:'ylnl',
                         fact:'B',
                         year:year,
                         month:month,
