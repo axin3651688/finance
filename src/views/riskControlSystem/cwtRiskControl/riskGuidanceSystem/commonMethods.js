@@ -32,5 +32,18 @@ export default  {
             document.onmouseup = null
             div1.style.cursor = 'default'
         }
+    },
+    /**
+     * 月份处理
+     * @param {*} $params 
+     */
+    getPeriod($params) {
+        let mm ;
+        if($params.month > 0 && $params.month < 10) {
+            mm = '0' + $params.month ;
+        } else {
+            mm = $params.month ;
+        }
+        return mm ;
     }
 }

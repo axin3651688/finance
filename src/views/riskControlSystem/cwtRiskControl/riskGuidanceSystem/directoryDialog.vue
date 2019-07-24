@@ -11,7 +11,7 @@
             </div>
             <!-- 内容部分 -->
             <div class="directoryDialog_A_2">
-                <el-table :data="tableData" height="100%" :show-header="false" class="tableA table-el">
+                <el-table :data="tableData" height="100%" :show-header="false" class="tableA table-el-A">
                     <el-table-column prop="sname" label="目录" width="276"></el-table-column>
                     <el-table-column label="操作" width="121" align="center">
                         <template slot-scope="scope">
@@ -92,7 +92,8 @@
                             <el-table-column type="selection" width="40" align="center" :selectable="selectableA" :disabled="disabledSelection"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
+                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -145,7 +146,8 @@
                     <div class="directoryDialog_A_6-2-1">
                         <div class="A_5-a">{{ title }}</div>
                         <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
-                        <div class="A_6-c">{{ title2 }}</div>
+                        <!-- <div class="A_6-c">{{ title2 }}</div> -->
+                        <div class="A_6-c" v-html="title2"></div>
                         <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
                     </div>
                     <!-- 输入框 -->
@@ -159,7 +161,8 @@
                             <el-table-column type="selection" width="40" align="center" :selectable="selectableB" :disabled="disabledSelection2"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
+                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -209,9 +212,11 @@
                     <div class="directoryDialog_A_7-2-1">
                         <div class="A_5-a">{{ title }}</div>
                         <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
-                        <div class="A_6-c">{{ title2 }}</div>
+                        <!-- <div class="A_6-c">{{ title2 }}</div> -->
+                        <div class="A_6-c" v-html="title2"></div>
                         <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
-                        <div class="A_6-c">{{ title3 }}</div>
+                        <!-- <div class="A_6-c">{{ title3 }}</div> -->
+                        <div class="A_6-c" v-html="title3"></div>
                         <div class="A_5-b"><i class="iconfont icon-youjiantou"></i></div>
                     </div>
                     <!-- 输入框 -->
@@ -225,7 +230,8 @@
                             <el-table-column type="selection" width="40" align="center"></el-table-column>
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
-                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input>
+                                    <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
+                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -305,6 +311,8 @@ export default {
             scopeData: {} ,             // 点击(1级)下级按钮时的参数
             scopeData2: {} ,            // 点击(2级)下级按钮时的参数
             scopeData3: {} ,            // 点击(3级)下级按钮时的参数
+            contenteditable: true,      // 一级输入框是否禁用 true|能输入  false|不能输入
+            contenteditable2:true,      // 二级输入框是否禁用 true|能输入  false|不能输入
             tableData2: [
                 { scontent: "" }
             ] ,
@@ -329,6 +337,7 @@ export default {
             scope2: {} ,                    // 点击的信息
             number: 0 ,                     // 区分是修改弹框的确认 | 添加弹框的确认
             number2: 0,                     // 区分是哪个下级按钮 （注：1=一级下级按钮；2=二级下级按钮）
+            contentData: [],                // 内容总数组存放               
             // 添加 | 修改 的弹出框id
             // id: "" ,                   
             // 添加 | 修改 的弹出框的值
@@ -492,12 +501,14 @@ export default {
             if(val === "closeB"){                                       // 二级关闭
                 this.disabled2 = false;
                 this.disabledSelection = false ;
+                this.contenteditable = true;
                 this.number2 = 1 ;                                      
                 this.dialogFormVisible3_B = false ; 
             } 
             if(val === "closeC"){                                       // 三级关闭
                 this.disabled3 = false;
                 this.disabledSelection2 = false ;
+                this.contenteditable2 = true;
                 this.number2 = 2 ;                                      
                 this.dialogFormVisible3_C = false ; 
             }    
@@ -518,10 +529,11 @@ export default {
         /**
          * 下级按钮（二级）
          */
-        lowerLevelClick2(scope) {
+        lowerLevelClick2(scope) { 
             let me = this ;
             me.disabled2 = true ;
             me.disabledSelection = true ;
+            me.contenteditable = false;     // 一级输入框是否禁用            
             me.scopeData2 = scope ;
             me.title2 = scope.row.scontent ;
             me.number2 = 2 ;
@@ -536,6 +548,7 @@ export default {
             let me = this ;
             me.disabled3 = true ;
             me.disabledSelection2 = true ;
+            me.contenteditable2 = false;
             me.scopeData3 = scope ;
             me.title3 = scope.row.scontent ;
             me.number2 = 3 ;
@@ -547,28 +560,43 @@ export default {
          * (一级)输入框保存
          */
         saveChange(scope) { //debugger
-            let id ;
+            let id, params ;
+            let idContent = document.getElementById(scope.row.id) ;
+            if(this.enterJudgment(scope, idContent)){
+                // this.$message('NO');
+                return false ;
+            }           
             if(this.number2 == 1)id = this.scopeData.row.pid;
             if(this.number2 == 2)id = this.scopeData2.row.id;
             if(this.number2 == 3)id = this.scopeData3.row.id;
             if(scope.row.id === 0) {
-                let params = [{
+                params = [{
                     catalog_id: this.scopeData.row.id,
                     chartpath: "",
                     pid: id,
-                    scontent: scope.row.scontent 
+                    scontent: idContent.innerHTML || scope.row.scontent 
                 }]
                 // 添加请求方法
                 this.riskguidecontentAdd_request(params) ;
             } else {
-                let params = [{
+                params = [{
                     id: scope.row.id,
                     chartpath: "",
-                    scontent: scope.row.scontent
+                    scontent: idContent.innerHTML || scope.row.scontent
                 }]
                 // 修改内容接口
                 this.riskguidecontentUpdate_request(params) ;
             }
+        },
+        /**
+         * 输入框判定 是否一样，如果一样就不走请求了，如果不一样，就走请求
+         */
+        enterJudgment(scope, idContent){ 
+            // debugger
+            // let idContent = document.getElementById(scope.row.id) ;
+            let dd = this.contentData.filter(res => { return res.id === scope.row.id }) ;
+            let isTrue = dd.some(ress => { return ress.scontent === idContent.innerHTML }) ;
+            return isTrue ;
         },
         /**
          * ()复选框点击事件-当选择项发生变化时会触发该事件
@@ -635,11 +663,11 @@ export default {
         /**
          * 图片上传按钮
          */
-        lowerPictureClick(scope){ debugger
+        lowerPictureClick(scope){ //debugger
             this.picArray = {} ;
             this.picArray = scope ;
         },
-        lowerPictureClick2(scope){debugger
+        lowerPictureClick2(scope){//debugger
             this.picArray = {} ;
             this.picArray = scope ;
         },
@@ -659,10 +687,13 @@ export default {
          */
         onSuccess(response, file, fileList){ 
             if(response.code === 200) {
-                if(response.data.code === 200) {
+                if(response.data.code === 200) {  //debugger
                     this.$message({ message: response.data.msg, type: "success" }) ;
-                    let img = "<img style='width:50px; height:30px;' src='"+ response.data.data +"'>" ;
-                    this.picArray.row.scontent = this.picArray.row.scontent + img;
+                    let idContent = document.getElementById(this.picArray.row.id) ;
+                    let img = "<img style='verticalAlign:text-bottom;width:25px; height:18px;' src='"+ response.data.data +"'>" ;
+                    // this.picArray.row.scontent = this.picArray.row.scontent + img;
+                    idContent.innerHTML = idContent.innerHTML + img ;
+                    this.picArray.row.scontent = idContent.innerHTML + img ;
                     this.saveChange(this.picArray) ;
                 } else {
                     this.$message({ message: response.data.msg, type: "warning" }) ;
@@ -672,7 +703,7 @@ export default {
         /**
          * 图片上传按钮   文件上传失败时的钩子
          */
-        onError(err, file, fileList){ debugger
+        onError(err, file, fileList){ //debugger
 
         },
         /**
@@ -816,7 +847,7 @@ export default {
             }
             selectAll(params).then(res => { 
                 if(res.data.code === 200) {
-                    let data = res.data.data ;
+                    me.contentData = res.data.data ;
                     // dd.forEach(res2 => { res2.html = res2.scontent }) ;
                     let cc = res.data.data.filter(item => { 
                         return item.catalogname == arr[index].sname ;
@@ -841,6 +872,14 @@ export default {
 }
 </script>
 <style scoped lang="scss" src="./riskGuidanceStyle.scss"></style>
+<style>
+/** 这是对表行的行高设置*/
+.table-el-A .el-table__body tr, .el-table__body td {
+    padding: 0;
+    height: 55px;
+}
+</style>
+
 <style scoped>
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 .tableA ::-webkit-scrollbar {
