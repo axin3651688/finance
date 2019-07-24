@@ -676,7 +676,7 @@
                             clu4: {
                                 color: 'black',
                                 //财务费用累计数>0,利润总额累计数>0,利息保障倍数>=4
-                                content: '从盈利情况来看，公司盈利对利息的保障倍数为"&ROUNDDOWN(利息保障倍数,1)&"倍。从实现利润和利息的关系来看，公司盈利能力较强，利息支付有保证。'
+                                content: '从盈利情况来看，公司盈利对利息的保障倍数为lxbzbsdown倍。从实现利润和利息的关系来看，公司盈利能力较强，利息支付有保证。'
                             },
                             clu5: {
                                 color: 'black',
@@ -862,8 +862,6 @@
                 for (let key in _data) {
                     _data[key] = _this.dataCalculate(_data[key]);
                 }
-                debugger;
-                this.getConclusionData();
                 _this.initEchartData(_this.allData);
             },
 
@@ -875,6 +873,7 @@
                 let _this = this;
                 _this.gauge_1EchartData.data = data.allData3.partx['cellData6'];
                 _this.gauge_2EchartData.data = data.allData4.partx['cellData9'];
+                this.getConclusionData();
                 _this.dataFresh = !_this.dataFresh;
             },
 
@@ -1212,9 +1211,15 @@
                         _conclusionData[k1][k2].color = _cForecastOfSolvency[k1][k2][_index].color;
                         _conclusionData[k1][k2].content = _cForecastOfSolvency[k1][k2][_index].content;
 
+                        //"&ROUNDDOWN(利息保障倍数,1)&"
+
                         if(k1 === 'f4' && k2 === 's2'){
                             if(_conclusionData[k1][k2].content.indexOf('lxbzbs') !== -1){
                                 _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs',_needData.lxbz);
+                            }
+                            if(_conclusionData[k1][k2].content.indexOf('lxbzbsdown') !== -1){
+                                let __d = _needData.lxbz.split('.')[0];
+                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs',__d);
                             }
 
                         }

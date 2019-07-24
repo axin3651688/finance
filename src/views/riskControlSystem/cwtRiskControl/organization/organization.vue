@@ -5,25 +5,6 @@
         <div class="parent">
             <div class="title">天津食品集团有限公司风险组织架构图</div>
 
-            <!--<span class="dsh" @click="deptClick(leaderList['0'])">-->
-            <!--{{leaderList['0'].value}}-->
-            <!--</span>-->
-
-            <!--<span class="dshbgs" @click="deptClick(leaderList['1'])">-->
-            <!--{{leaderList['1'].value}}-->
-            <!--</span>-->
-
-            <!--<span class="fxglwyh" @click="deptClick(leaderList['2'])">-->
-            <!--{{leaderList['2'].value}}-->
-            <!--</span>-->
-
-            <!--<span class="jyc" @click="deptClick(leaderList['3'])">-->
-            <!--{{leaderList['3'].value}}-->
-            <!--</span>-->
-
-            <!--<span class="fxglldxz" @click="deptClick(leaderList['4'])">-->
-            <!--{{leaderList['4'].value}}-->
-            <!--</span>-->
 
             <template v-for="item in leaderList">
                 <span :class="'leaderList' + item.id" @click="deptClick(item)">
@@ -371,7 +352,7 @@
         position: relative;
         width: 1000px;
         height: 800px;
-        margin-left: 200px;
+        margin-left: 260px;
         margin-top: 50px;
     }
 

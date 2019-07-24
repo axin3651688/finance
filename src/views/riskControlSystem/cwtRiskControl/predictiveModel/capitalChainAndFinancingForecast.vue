@@ -481,7 +481,6 @@
                 let _this = this;
                 let _data = _this.allData2;
                 _this.allData2 = _this.dataCalculate(_data);
-                this.getConclusionData();
                 _this.initEchartData(_this.allData2);
             },
             /**
@@ -558,6 +557,8 @@
                 _this.pie_3EchartData.data = emptyData.emptyData3;
                 _this.pie_4EchartData.data = emptyData.emptyData4;
                 _this.gaugeEchartData.data = data.partx.cellData1;
+
+                this.getConclusionData();
 
                 _this.dataFresh = !_this.dataFresh;
 
