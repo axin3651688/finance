@@ -178,7 +178,7 @@
       width="30%">
       <div class="about_class">
         <span>产品信息：</span>
-        <span>智能财务顾问决策分析系统</span>
+        <span>智能风控防范预警系统</span>
       </div>
       <div class="about_class">
         <span>主版本号：</span>
