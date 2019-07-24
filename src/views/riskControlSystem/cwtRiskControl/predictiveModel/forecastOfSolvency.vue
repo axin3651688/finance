@@ -1213,13 +1213,14 @@
 
                         //"&ROUNDDOWN(利息保障倍数,1)&"
 
-                        if(k1 === 'f4' && k2 === 's2'){
-                            if(_conclusionData[k1][k2].content.indexOf('lxbzbs') !== -1){
-                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs',_needData.lxbz);
+                        if (k1 === 'f4' && k2 === 's2') {
+                            if (_conclusionData[k1][k2].content.indexOf('lxbzbs') !== -1) {
+                                let __f = _this.setNumberToStander(_needData.lxbz);
+                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs', __f);
                             }
-                            if(_conclusionData[k1][k2].content.indexOf('lxbzbsdown') !== -1){
-                                let __d = _needData.lxbz.split('.')[0];
-                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs',__d);
+                            if (_conclusionData[k1][k2].content.indexOf('lxbzbsdown') !== -1) {
+                                let __d = _this.setNumberToStander(_needData.lxbz);
+                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs', __d);
                             }
 
                         }

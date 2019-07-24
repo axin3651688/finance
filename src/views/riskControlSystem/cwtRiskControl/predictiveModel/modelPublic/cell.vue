@@ -4,12 +4,18 @@
             <div class="model-public-cell-single-cell-top">{{cellData.name}}</div>
 
             <div class="model-public-cell-single-cell-bottom">
-                <el-input
+                <!--<el-input
                         :disabled = true
                         v-model="cellData.value || 0.00"
                         :cellid="cellData.id"
                 >
-                </el-input>
+                </el-input>-->
+                <input
+                        :disabled = true
+                        :style="{color: cellData.value.replace(/,/g, '') * 1 >= 0 ? 'black' : '#e1251b'}"
+                        v-model="cellData.value || 0.00"
+                        :cellid="cellData.id"
+                >
             </div>
         </div>
     </div>
@@ -56,13 +62,24 @@
         background-color: #BCE9F8;
     }
 
-    .model-public-cell-single-cell-bottom .el-input__inner {
+    /*.model-public-cell-single-cell-bottom .el-input__inner {
         background-color: #BCE9F8 !important;
         height: 22px;
         text-align: center;
         font-size: 20px;
         color: #000c17 !important;
         border: 0;
+    }*/
+    .model-public-cell-single-cell-bottom input {
+        background-color: #BCE9F8 ;
+        height: 22px;
+        text-align: center;
+        font-size: 19px;
+        color: #000c17 ;
+        border: 0;
+        padding: 0;
+        width: 100%;
+        cursor: pointer;
     }
 
 </style>

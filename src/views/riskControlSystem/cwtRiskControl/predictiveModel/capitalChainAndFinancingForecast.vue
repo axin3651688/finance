@@ -785,14 +785,14 @@
                     _conclusionData[k1].color = _cCapitalChainAndFinancingForecast[k1][_index].color;
                     _conclusionData[k1].content = _cCapitalChainAndFinancingForecast[k1][_index].content;
                     if (k1 === 'f1') {
-                        let _n = Math.round(_needData.yyzb, 2);
                         if (_conclusionData[k1].content.indexOf('round') !== -1) {
+                            let _n = _this.setNumberToStander(_needData.yyzb);
                             _conclusionData[k1].content = _conclusionData[k1].content.replace('round', _n);
                         }
 
                     } else if (k1 === 'f2') {
-                        let _m = Math.round(_needData.yyzjxq, 2);
                         if (_conclusionData[k1].content.indexOf('round') !== -1) {
+                            let _m = _this.setNumberToStander(_needData.yyzjxq);
                             _conclusionData[k1].content = _conclusionData[k1].content.replace('round', _m);
                         }
                     }
