@@ -47,7 +47,6 @@
                             <span
                                     v-else-if="item.action && item.action==='click' && !scope.row['drillNo']"
                                     style="color: dodgerblue;cursor: pointer"
-                                    title="000"
                                     @click="clickItemNameHandler(scope,scope.$index)"
                             >
                                 <el-tooltip placement="top">
