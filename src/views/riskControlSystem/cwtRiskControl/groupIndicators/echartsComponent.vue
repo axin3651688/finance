@@ -43,6 +43,7 @@
                         },
                         formatter(data){
                             let showData = data[0].value;
+
                             if (showData && showData !== null) {
                                 showData = Math.round(showData * 100) / 100;
                                 let str = showData.toLocaleString();
@@ -57,7 +58,7 @@
                                 }
                                 return '<div><p>' + data[0].name + ' </p><p>' + data[0].seriesName + ': ' + str + ' </p></div>';
                             } else if (showData === 0) {
-                                return '';
+                                return '此期间无数据';
                             }
                         }
                     },

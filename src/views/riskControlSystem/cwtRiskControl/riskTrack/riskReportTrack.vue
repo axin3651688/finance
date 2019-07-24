@@ -363,7 +363,6 @@
              * @author cwt
              */
             reportPageDataFormat(data) {
-                debugger;
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
