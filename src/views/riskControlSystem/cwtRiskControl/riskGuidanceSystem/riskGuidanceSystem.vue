@@ -1,13 +1,13 @@
 <template>
 <!--
     name: sjz
-    说明：风险指引制度的组件
+    说明：风险指引制度的组件@contextmenu.prevent="contentRightClick"
 -->
     <div id="riskGuidanceSystem">
         <!-- 头部 -->
         <el-header class="guidance_header">
-            <el-button class="header_btn" type="warning" plain @click="modifyClick"><i class="el-icon-edit-outline tubiao"></i>修 改</el-button>
-            <el-button class="header_btn" type="primary" plain @click="importClick"><i class="iconfont icon-daochu tubiao"></i>导 出</el-button>
+            <el-button class="header_btn" type="warning" plain size="mini" @click="modifyClick"><i class="el-icon-edit-outline tubiao"></i>修 改</el-button>
+            <el-button class="header_btn" type="primary" plain size="mini" @click="importClick"><i class="iconfont icon-daochu tubiao"></i>导 出</el-button>
         </el-header>
         <!-- 内容部分 -->
         <el-container class="guidance_container">
@@ -22,7 +22,7 @@
                         :index="item.index" 
                         @click.native="directoryClick(item)"
                         >
-                            <div class="el-menu-vertical_title asideA_item col_A" @contextmenu.prevent="contentRightClick">
+                            <div class="el-menu-vertical_title asideA_item col_A">
                                 <a slot="title" >{{ item.sname }}</a>
                             </div>
                         </el-menu-item>
@@ -41,8 +41,9 @@
                                 <viewer :images="content_A">
                                     <div class="col_class" :class="{'first': index == first}" 
                                     @click="contentClick(item,index)" 
+                                    
                                     v-html="item.html">
-                                        <!-- {{ item.scontent }} @contextmenu.prevent="contentRightClick"-->
+                                        <!-- {{ item.scontent }}@contextmenu.prevent="contentRightClick(item, index)"-->
                                         <!-- <img :src="item.chartpath" width="50"> -->
                                     </div>
                                 </viewer>
@@ -63,7 +64,7 @@
                         </div>
                     </el-col>
                     <!-- 第三级 -->
-                    <el-col :span="8" class="col_A">
+                    <el-col :span="8" class="col_A col_AA">
                         <div class="grid-content bg-purple col_main">
                             <div class="aside_title_message" v-if="content_C.length == 0">暂无数据显示！</div>
                             <div v-else v-for="(item, index) in content_C" :key="item.id">
@@ -105,7 +106,8 @@ import {
     // 目录查询接口
     selectAll
 } from './riskInterface.js' ;
-
+// 导出文档js
+import riskGuidance from './import_riskGuidance_world.js'
 // 引用 * 目录修改 * 弹出框组件
 import directoryDialog from './directoryDialog.vue' ;
 import { debounce } from '../../../../utils/index.js';
@@ -161,19 +163,19 @@ export default {
             };
         },
         /**
-         * 
+         * 右键点击功能
          */
-        contentRightClick(MouseEvent, object){
+        contentRightClick(item, index){
             debugger
-            this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
-            this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
-            var menu = document.querySelector('#menu')
-            let aaa = document.getElementsByClassName('col_main')[0] ;
-            menu.style.left = MouseEvent.clientX -150 + 'px'
-            // menu.style.left = "234px" ;
-            // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
-            document.addEventListener('click', this.foo) 
-            menu.style.top = MouseEvent.clientY - 10 + 'px'
+            // this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
+            // this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
+            // var menu = document.querySelector('#menu')
+            // let aaa = document.getElementsByClassName('col_main')[0] ;
+            // menu.style.left = MouseEvent.clientX -150 + 'px'
+            // // menu.style.left = "234px" ;
+            // // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
+            // document.addEventListener('click', this.foo) 
+            // menu.style.top = MouseEvent.clientY - 10 + 'px'
         },
         /**
          * @description 取消鼠标监听事件 菜单栏
@@ -235,7 +237,7 @@ export default {
         /**
          * 内容的处理
          */
-        contentsProcessing(cc){ debugger
+        contentsProcessing(cc){ //debugger
             let me = this ;
             let aa, bb, $index ;
             me.content_A = [] ;
@@ -311,7 +313,8 @@ export default {
          * 导出按钮
          */
         importClick(){
-            this.$message('暂无此功能！') ;
+            // this.$message('暂无此功能！') ;
+            riskGuidance.importRiskGuidanceWorld(this) ;
         }
     }
 }
@@ -348,9 +351,22 @@ export default {
         cursor: pointer;
         padding: 0 10px 0 10px ;
     }
+    .col_class {
+        transition: All 0.4s ease-in-out;
+        -webkit-transition: All 0.4s ease-in-out;
+        -moz-transition: All 0.4s ease-in-out;
+        -o-transition: All 0.4s ease-in-out;
+    }
     .col_class:hover {
         color: teal ;
-        background-color:antiquewhite;
+        /* background-color:antiquewhite; */
+        /* transform: scale(1.2);
+        transform: translate(0, -10px);
+        -webkit-transform: translate(0, -10px);
+        -moz-transform: translate(0, -10px);
+        -o-transform: translate(0, -10px);
+        -ms-transform: translate(0, -10px); */
+        background-color: rgb(186, 218, 247);
     }
     .first {
         color: teal;

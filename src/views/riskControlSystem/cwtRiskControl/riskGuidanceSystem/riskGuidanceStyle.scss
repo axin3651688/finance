@@ -42,13 +42,14 @@
  */
 /* 头部 */
 .guidance_header {                  /* 头部顶栏的样式 */
-    background-color: #B3C0D1;
+    // background-color: #B3C0D1;
+    background-color: #F0F2F5;
     text-align: right ;
     line-height: 60px ;
     color: #606266 ;
 }
 .header_btn {                       /* 按钮样式 */
-    height: 40px ;
+    height: 30px ;
 }
 .tubiao {                           /* 图标 */
     font-size: 14px;
@@ -64,7 +65,7 @@
 }
 /* 腰部 */
 .guidance_container {
-    border: 2px solid #dcdfe6 ;
+    // border: 2px solid #dcdfe6 ;
 }
 /*
  * ------------------------------------------------------------
@@ -72,12 +73,13 @@
  */
 .guidance_aside {                   /* 目录部分 */                 
     width: 300px ;
-    border-right: 2px solid #dcdfe6 ;
+    border: 2px solid #dcdfe6 ;
     overflow: auto;   
     color: #606266;   
 }
 .guidance_aside .asideA {
     background-color: #F0F2F5 ;
+    border: 0 ;
 }
 .guidance_aside .asideA .asideA_item {
     font-size: 18px;
@@ -106,6 +108,9 @@
     margin-right: 0px !important;
     height: 100%;
 } 
+.guidance_main .col_AA {
+    padding-right: 20px !important; 
+}
 // div块高度的设置
 .guidance_main .el-col {
     height: 100%;
@@ -118,8 +123,9 @@
 .col_main {
     height: 100% ;
     overflow: auto;
-    border-left: 2px solid #dcdfe6 ;
-    border-right: 2px solid #dcdfe6 ;
+    border: 2px solid #dcdfe6;
+    // border-left: 2px solid #dcdfe6 ;
+    // border-right: 2px solid #dcdfe6 ;
 }
 // 最右侧的div块右内边距设置
 .guidance_main .col_C {
@@ -158,8 +164,8 @@
 .directoryDialog_A_1 {
     padding: 10px;
     font-size: 18px;
-    background-color: #409EFF ;
-    // background-color: #B3C0D1;
+    // background-color: #409EFF ;
+    background-color: #B3C0D1;
     color: #fff;
     border-bottom: 1px solid #dcdfe6 ;
 }
@@ -249,7 +255,8 @@
 .directoryDialog_A_5-1, .directoryDialog_A_6-1, .directoryDialog_A_7-1 {
     height: 39px ;
     text-align: right ;
-    background-color: #409EFF ;
+    // background-color: #409EFF ;
+    background-color: #B3C0D1;
     border-bottom: 1px solid #dcdfe6 ;
 }
 /* 头部按钮的样式 */
@@ -380,7 +387,19 @@
     float: left;
     padding: 0 10px 0 10px;
 }
-
+/* 一级、二级、三级输入框的样式 */
+.divcontenteditable {
+    background:#fff; 
+    color: #606266; 
+    width:100%;
+    height:96px;
+    overflow: auto; 
+    border: 1px solid #dcdfe6;
+    font-size: 14px;
+    border-radius: 4px;
+    font-family: '宋体';
+    margin: 10px 0 10px 0;
+}
 /**
 
 654654646416464654654655555555555555555555555555555555555555555555
