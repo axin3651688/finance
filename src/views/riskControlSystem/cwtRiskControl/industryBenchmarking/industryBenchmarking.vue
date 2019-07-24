@@ -40,7 +40,7 @@
         </template>
         <template>
             <div class="hasnodatatip">
-                此期间无数据
+                当前维度，当前指标暂无数据
             </div>
         </template>
 
