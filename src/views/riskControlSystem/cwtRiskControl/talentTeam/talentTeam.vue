@@ -146,7 +146,7 @@
                 selectedColumns: [],
                 selectedTableType: {
                     type: 'noCurrentPage',
-                    height: 550
+                    height: 580
                 },
 
                 allTableData: [],
@@ -346,7 +346,7 @@
 
     .center-table {
         /*max-height: 550px;*/
-        height: 550px;
+        height: 580px;
     }
 
     .talent-team-bottom {
