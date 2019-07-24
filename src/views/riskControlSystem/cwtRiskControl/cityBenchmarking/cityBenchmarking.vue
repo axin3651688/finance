@@ -21,13 +21,20 @@
             </div>
         </div>
 
-        <bar-echart
-                :barData="barData"
-                :dataFresh="dataFresh"
-                :selectedName="selectedName"
-                :barChartType="barChartType"
-        >
-        </bar-echart>
+        <template v-if="numCount!==0">
+            <bar-echart
+                    :barData="barData"
+                    :dataFresh="dataFresh"
+                    :selectedName="selectedName"
+                    :barChartType="barChartType"
+            >
+            </bar-echart>
+        </template>
+        <template>
+            <div class="hasnodatatip">
+                此期间无数据
+            </div>
+        </template>
     </div>
 </template>
 
@@ -71,7 +78,8 @@
                 dataFresh: false,
                 selectedscode: '',
                 selectedName: '',
-                barChartType:'city'
+                barChartType: 'city',
+                numCount: 0
             }
         },
         created() {
@@ -98,7 +106,7 @@
                 let _selectedOption = this.options.filter((item) => {
                     return item.scode === _scode;
                 });
-                if(_selectedOption[0]){
+                if (_selectedOption[0]) {
                     this.selectedName = _selectedOption[0].sname;
                 }
 
@@ -142,6 +150,11 @@
                             emptyArray.push(emptyData);
                         });
 
+                        emptyArray.forEach((item) => {
+                            if (item.fact_a || item.fact_a === 0) {
+                                _this.numCount++;
+                            }
+                        });
                         _this.barData = emptyArray;
 
                         _this.dataFresh = !this.dataFresh;
@@ -180,12 +193,19 @@
     .content-select {
         margin-left: 50px;
     }
+
     .sigle_top {
         /* width: 20%;
          */
         width: 300px;
     }
+
     .sigle_select {
         width: 100%;
+    }
+    .hasnodatatip{
+        width: 100%;
+        text-align: center;
+        margin-top: 100px;
     }
 </style>
