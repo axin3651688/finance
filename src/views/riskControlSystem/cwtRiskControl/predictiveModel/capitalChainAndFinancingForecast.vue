@@ -782,8 +782,15 @@
                     }
 
                     let _index = 'clu' + _flag;
-                    _conclusionData[k1].color = _cCapitalChainAndFinancingForecast[k1][_index].color;
-                    _conclusionData[k1].content = _cCapitalChainAndFinancingForecast[k1][_index].content;
+                    if (_flag === 0) {
+                        _conclusionData[k1].color = 'black';
+                        _conclusionData[k1].content = '此期间无数据';
+                    } else {
+                        _conclusionData[k1].color = _cCapitalChainAndFinancingForecast[k1][_index].color;
+                        _conclusionData[k1].content = _cCapitalChainAndFinancingForecast[k1][_index].content;
+                    }
+
+
                     if (k1 === 'f1') {
                         if (_conclusionData[k1].content.indexOf('round') !== -1) {
                             let _n = _this.setNumberToStander(_needData.yyzb);
@@ -940,6 +947,8 @@
         position: absolute;
         padding: 6px;
         width: 170px;
+        font-size: 14px;
+        line-height: 20px;
         height: 70px;
         border-radius: 10px;
     }
@@ -949,6 +958,7 @@
         position: absolute;
         padding: 6px;
         width: 200px;
+        font-size: 14px;
         height: 100px;
         border-radius: 10px;
     }

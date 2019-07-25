@@ -29,7 +29,7 @@
                     title: {
                         show: true,                                                //显示策略，默认值true,可选为：true（显示） | false（隐藏）
                         text: '我是echart标题',                                                  //主标题文本，'\n'指定换行
-                        x: '200',                                               //水平安放位置，默认为'left'，可选为：'center' | 'left' | 'right' | {number}（x坐标，单位px）
+                        x: 'center',                                               //水平安放位置，默认为'left'，可选为：'center' | 'left' | 'right' | {number}（x坐标，单位px）
                         y: 'top',                                                  //垂直安放位置，默认为top，可选为：'top' | 'bottom' | 'center' | {number}（y坐标，单位px）
                         backgroundColor: 'rgba(0,0,0,0)',                          //标题背景颜色，默认'rgba(0,0,0,0)'透明
                         borderColor: '#ccc',                                       //标题边框颜色,默认'#ccc'
@@ -64,7 +64,7 @@
                     },
                     grid: {
                         left: '6%',
-                        right: '25%',
+                        right: '15%',
                         bottom: '2%',
                         containLabel: true
                     },

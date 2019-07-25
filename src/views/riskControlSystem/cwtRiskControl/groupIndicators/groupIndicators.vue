@@ -190,10 +190,12 @@
 <style scoped>
     .all-echarts-content {
         padding-right: 20px;
+        margin-top: 30px;
     }
 
     .echarts-content {
         height: 300px;
         margin-bottom: 20px;
+        min-width: 532px;
     }
 </style>

@@ -1208,8 +1208,13 @@
                         }
 
                         let _index = 'clu' + _flag;
-                        _conclusionData[k1][k2].color = _cForecastOfSolvency[k1][k2][_index].color;
-                        _conclusionData[k1][k2].content = _cForecastOfSolvency[k1][k2][_index].content;
+                        if(_flag === 0){
+                            _conclusionData[k1][k2].color = 'black';
+                            _conclusionData[k1][k2].content = '此期间无数据'
+                        }else{
+                            _conclusionData[k1][k2].color = _cForecastOfSolvency[k1][k2][_index].color;
+                            _conclusionData[k1][k2].content = _cForecastOfSolvency[k1][k2][_index].content;
+                        }
 
                         //"&ROUNDDOWN(利息保障倍数,1)&"
 
@@ -1445,8 +1450,8 @@
     .content-text_2 {
         position: absolute;
         width: 300px;
-        height: 70px;
-        top: 44px;
+        height: 100px;
+        top: 14px;
         left: 600px;
         border: 1px solid #303133;
         border-radius: 10px;
@@ -1455,6 +1460,8 @@
 
     .content-text_2 p {
         text-indent: 36px;
+        line-height: 24px;
+        margin-top: 6px;
     }
 
     .content-text_2_1 {
@@ -1462,7 +1469,7 @@
     }
 
     .content-text_3 {
-        top: 180px;
+        top: 150px;
     }
 
     .content-text_4 {
