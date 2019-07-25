@@ -642,8 +642,14 @@
                 }
 
                 let _index = 'clu' + flag;
-                _this.conclusionData.color = _this.aAssetStructurePrediction[_index].color;
-                _this.conclusionData.content = _this.aAssetStructurePrediction[_index].content;
+                if(flag === 0){
+                    _this.conclusionData.color = 'black';
+                    _this.conclusionData.content = '此期间无数据';
+                }else{
+                    _this.conclusionData.color = _this.aAssetStructurePrediction[_index].color;
+                    _this.conclusionData.content = _this.aAssetStructurePrediction[_index].content;
+                }
+
 
             }
         }
@@ -706,7 +712,7 @@
 
     .content-chart .pie {
         position: absolute;
-        width: 300px;
+        width: 400px;
         height: 300px;
         top: 300px;
         left: 1000px;
@@ -731,7 +737,7 @@
     .content-text {
         position: absolute;
         width: 300px;
-        height: 230px;
+        height: 240px;
         top: 300px;
         left: 600px;
         border: 2px solid #303133;

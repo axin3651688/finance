@@ -50,7 +50,7 @@
                                     @click="clickItemNameHandler(scope,scope.$index)"
                             >
                                 <el-tooltip placement="top">
-                                    <div slot="content">暂无指标计算说明</div>
+                                    <div slot="content">{{ scope.row.exp }}</div>
                                     <span>
                                         {{ scope.row[scope.column.property] }}
                                     </span>
