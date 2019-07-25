@@ -312,7 +312,7 @@ export default {
         axiosJson(){
             // debugger
             let me = this;
-            me.axios.get("cnbi/json/risk/riskDis.json").then(res => { 
+            me.axios.get("/cnbi/json/risk/riskDis.json").then(res => { 
                 let obj = res.data;
                 // 把json字符串转换成对象
                 obj = eval("(" + obj + ")");
