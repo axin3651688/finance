@@ -117,7 +117,7 @@
                     <el-button type="primary" v-show="isBtn" @click="saveClick('add')">新 增</el-button>
                     <el-button type="primary" v-show="isBtn" @click="saveClick('save')">保 存</el-button>
                     <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')">提 交</el-button>
-                    <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button>
+                    <!-- <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button> -->
                     <el-button @click="resetClick('sub2','sub3','sub4','sub5','sub6')">取 消</el-button>
                 </el-col>
             </el-row>

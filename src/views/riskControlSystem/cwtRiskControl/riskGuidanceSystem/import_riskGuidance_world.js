@@ -65,9 +65,9 @@ export default {
                     })
                 }
             })
-            jsonBean.children.forEach(res => { debugger
+            jsonBean.children.forEach(res => { 
                 if(res.children.length > 0) {
-                    res.children.forEach(element => { debugger
+                    res.children.forEach(element => { 
                         if(element.children.length > 0) {
                             element.children.forEach(element2 => {
                                 let gg = me.content.filter(item => { return item.nlevel === 3 && element2.id === item.pid }) ;

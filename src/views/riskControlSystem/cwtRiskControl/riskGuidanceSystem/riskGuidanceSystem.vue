@@ -200,6 +200,9 @@ export default {
             }
             selectAll(params).then(res => { 
                 if(res.data.code === 200) {
+                    me.first = 0 ;
+                    me.second= 0 ;
+                    me.third = 0 ;
                     data = res.data.data ;
                     data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
                     me.directory = data.filter(item => { return item.pid === 0 }) ;
@@ -254,6 +257,7 @@ export default {
             // 第三层次内容
             bb = cc.filter(item4 => { return item4.nlevel === 3 }) ;
             me.content_B = aa.filter(item33 => { return me.content_A[0].id == item33.pid }) ;
+            if(me.content_B.length === 0)return false ;
             me.content_C = bb.filter(item44 => { return me.content_B[0].id == item44.pid }) ;
         },
         /**
@@ -314,7 +318,15 @@ export default {
          */
         importClick(){
             // this.$message('暂无此功能！') ;
-            riskGuidance.importRiskGuidanceWorld(this) ;
+            this.$confirm('是否下载该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                riskGuidance.importRiskGuidanceWorld(this) ;
+            }).catch(() => {
+                this.$message({ type: 'info', message: '已取消下载' });          
+            });
         }
     }
 }

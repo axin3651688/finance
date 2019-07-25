@@ -38,7 +38,7 @@
             >
             </bar-echart>
         </template>
-        <template>
+        <template v-else>
             <div class="hasnodatatip">
                 当前维度，当前指标暂无数据
             </div>

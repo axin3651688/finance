@@ -188,14 +188,22 @@ export default {
             valueTitle : "" , defaultExpandedKey: [], accordion: true,isFocus:true
         }
     },
-    created(){
+    created(){ debugger
         this.getFormInformation() ;
         // 填报部门
             this.form.departmentname = this.$store.getters.user.dept[0].sname ;
         // 风险发生概率下拉框数据
-            this.optionl = this.fsgl.rows ;
+            this.fsgl.rows.reverse() ;
         // 风险影响程度下拉框数据
-            this.optiond = this.yxcd.rows ;
+            this.optiond = this.yxcd.rows.reverse() ;
+            if(this.fsgl.rows && this.fsgl.rows.length > 0){
+                let arr = this.deepClone(this.fsgl.rows);
+                arr.reverse();
+                this.optionl = arr;
+            }else {
+                this.optionl = this.fsgl.rows ;
+            }
+
         // 风险发生概率 + 风险影响程度 的分值赋值（初始化）
             let d1 = this.form.nprobability ;
             let d2 = this.form.ninfluence ;
@@ -228,6 +236,19 @@ export default {
         descInput_sriskdescription(){},
         descInput_smeasures(){},
         descInput_sproposal(){},
+        deepClone(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'object') {
+                        result[key] = this.deepClone(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
         // 切换选项[风险类型]
         handleNodeClick(node){
             // debugger
