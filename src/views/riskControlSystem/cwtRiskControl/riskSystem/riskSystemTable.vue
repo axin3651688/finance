@@ -33,7 +33,15 @@
                             </template>
 
                             <template v-else-if="item.id === 'suggest'">
-                                <a style="color: #2d8cf0" @click="suggestClicled(scope)">建议内容</a>
+
+                                <template v-if="scope.row.count > 0">
+                                    <a style="color: #2d8cf0" @click="suggestClicled(scope)">建议内容</a>
+                                </template>
+                                <template v-else>
+                                    <span style="color: #bbb">暂无建议</span>
+                                </template>
+
+
                             </template>
 
                             <template v-else-if="item.id === 'operation'">
