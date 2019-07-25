@@ -23,6 +23,7 @@
           <div class="left">
             <el-button @click="saveData" class="button" v-show="showSaveButton">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
+            <el-button @click="editData" class="button" v-if="showEditButton">{{ editBtnContent }}</el-button>
           </div>
           <div class="right">
             <el-button v-if="bulkButton" @click="bulkReporting">
@@ -138,6 +139,8 @@ export default {
   },
   data() {
     return {
+      editBtnContent:"修改",
+      editFlag:false,
       renderFlag:true,
       bulkButton:true,
       convert:"元",//报表的单位问题。
@@ -154,6 +157,7 @@ export default {
       dialogVisible: false,
       showAddButton: false,//新增按钮的显示与否
       showSaveButton: false,//保存按钮的显示与否
+      showEditButton:false,
       values: null, //填报的数据
       datas: null, //存储查询要传递的数据
       columns: [], //存储请求返回回来的列
@@ -287,7 +291,6 @@ export default {
       }
     },
     company(val,oldVal) {
-      debugger;
       //批量批示1001公司不显示。
       if(this.$store.getters.treeInfo.nisleaf == '0'){
         this.bulkButton = false;
@@ -600,6 +603,15 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    editData (){
+      let me = this;
+      if(me.editFlag){
+        me.editBtnContent = "修改";
+      }else {
+        me.editBtnContent = "锁定";
+      }
+      me.editFlag = !me.editFlag;
+    },
     /**
      * 上报、审阅的按钮的操作。
      * @author szc 2019年4月29日15:54:06
@@ -1610,7 +1622,9 @@ export default {
         }
       }else if (this.templateId == 10) {
         //集团年度目标考核建议值。
-        if(columns != 2 && columns != 1){
+        if(!this.editFlag){
+          cellMeta.readOnly = true;
+        }else if(columns != 2 && columns != 1){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -2505,11 +2519,13 @@ export default {
     hideMonthByTableId () {
       let me = this,showDims = me.showDims;
       if(me.templateId == "10"){
+          me.showEditButton = true;
           showDims.company = true,
           showDims.year = true,
           showDims.month = false,
           showDims.conversion = false;
       }else {
+        me.showEditButton = false;
         showDims.company = true,
         showDims.year = true,
         showDims.month = true,

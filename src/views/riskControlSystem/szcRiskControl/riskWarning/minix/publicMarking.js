@@ -86,6 +86,13 @@ export default {
                 });
                 me.retainDecimalOfTwo(datas, "qyfz");
             } else {
+                //某些指标不能钻取。
+                let arr = ['fznl', 'ylnl', 'yyzl', 'zwfx'];
+                datas.forEach(item => {
+                    if (arr.indexOf(item.scode) != -1) {
+                        item.drillNo = true;
+                    }
+                });
                 //保留一位小数。arr = [a,b,c,d,e]
                 me.retainDecimalOfOne(datas, ['a', 'b', 'c', 'd', 'e']);
                 //企业分值保留两位小数。

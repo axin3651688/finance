@@ -143,6 +143,7 @@
                         period:me.getPeriod(),
                         indicator:"'52','122','31','123','124','131'",
                         fact:'B',
+                        type:'yyzl',
                         year:year,
                         month:month,
                         sqlKey:"RiskWarning.fzhpj"
