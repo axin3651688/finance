@@ -314,7 +314,15 @@ export default {
          */
         importClick(){
             // this.$message('暂无此功能！') ;
-            riskGuidance.importRiskGuidanceWorld(this) ;
+            this.$confirm('是否下载该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                riskGuidance.importRiskGuidanceWorld(this) ;
+            }).catch(() => {
+                this.$message({ type: 'info', message: '已取消下载' });          
+            });
         }
     }
 }
