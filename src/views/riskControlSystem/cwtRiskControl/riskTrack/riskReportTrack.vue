@@ -469,7 +469,7 @@
 
 
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = '1、风险发生概率：'+item.risk_pg.split(',')[1]+ '<br>2、风险影响程度：'+item.risk_pg.split(',')[0];
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;

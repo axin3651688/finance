@@ -117,8 +117,8 @@
                                             <div>
                                                 {{ item.title }}
                                             </div>
-                                            <p>
-                                                {{item.content}}
+                                            <p v-html="item.content">
+                                                <!--{{item.content }}-->
                                             </p>
                                         </div>
                                     </div>
@@ -481,6 +481,7 @@
         font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-size: 16px;
+        line-height: 24px;
         color: #333;
         padding: 5px;
     }
