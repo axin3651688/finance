@@ -141,7 +141,11 @@
               :options="sindcodee"
               :disabled="disabled2"
               placeholder="请选择所属部门"              
-            ></treeselect>
+            >
+              <label slot="option-label" slot-scope="{ node }" >
+                <span style="font-weight:normal"> {{ node.label }} </span>
+              </label>
+            </treeselect>
             <el-alert
               class="elform"
               type="warning"

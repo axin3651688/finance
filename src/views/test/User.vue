@@ -228,14 +228,19 @@
             </el-form-item>
 
             <el-form-item label="所属公司" prop="company">
-              <treeselect
+              <treeselect    
                 class="companyRight"
                 v-model="addUserForm.company"
                 :options="comtree"
                 placeholder="请选择所属公司"
-                style="width:300px"
                 @select="companyRight"
-              />
+                style="width:300px;"
+              >
+              
+               <label slot="option-label" slot-scope="{ node }" >
+                  <span style="font-weight:normal"> {{ node.label }} </span>
+                </label>
+              </treeselect>
               <!-- <pre class="result">{{ value }}</pre> -->
             </el-form-item>
             <el-form-item label="所属部门" prop="department">
@@ -245,7 +250,11 @@
                 :options="comtree2"
                 placeholder="请选择所属部门"
                 style="width:300px"
-              />
+              >
+              <label slot="option-label" slot-scope="{ node }" >
+                  <span style="font-weight:normal"> {{ node.label }} </span>
+                </label>
+               </treeselect>  
               <!-- <pre class="result">{{ value }}</pre> -->
             </el-form-item>
             <el-form-item label="联系电话" prop="sphone">
@@ -2029,6 +2038,7 @@ export default {
 }
 </style>
 <style>
+
 .userM_main .el-aside {
   /* border: 1px solid aquamarine; */
   /* width: 500px; */
