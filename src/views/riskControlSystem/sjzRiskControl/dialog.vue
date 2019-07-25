@@ -547,7 +547,7 @@ export default {
         /**
          * @event (1)保存按钮/提交按钮
          */
-        saveClick(value, value2,value3,value4,value5){ 
+        saveClick(value, value2,value3,value4,value5){ debugger
             let me = this ;
             //新增按钮的质控处理。
             if(value == "add"){
