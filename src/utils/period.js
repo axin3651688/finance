@@ -15,7 +15,7 @@ let yearCount = urlParams.year_count||6;
 /**
  * 获取月份集合
  */
-export function getMonthList(){
+export function getMonthList(monthCount){
   let months = [];
   for (let i = 1; i <= monthCount; i++) {
     if (monthCount == 4) {
@@ -33,7 +33,7 @@ export function getMonthList(){
 /**
  * 获取年份集合
  */
-export function getYearList(){
+export function getYearList(yearCount){
     let years = [],year = new Date().getFullYear();
     for (let i = year; i > year -  yearCount; i--) {
         years.push(i + yearText);

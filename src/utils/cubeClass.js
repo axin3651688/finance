@@ -895,10 +895,11 @@ class DataHandler {
       if(datas  && datas)return datas;
       if(dimCode === "year"){
         return getYearList()
-      }
-      if(dimCode === "month"){
-        return getMonthList();
-      }
+    }
+    if(dimCode === "month"){
+      return getMonthList();
+    }
+      return 
 
     }
     /**

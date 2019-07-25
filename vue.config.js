@@ -20,33 +20,33 @@ function resolve(dir) {
 }
 
 let proxyObj = { // 配置跨域
-    '/api': {
-         target: 'http://192.168.2.224:8005',
-        // target: 'http://192.168.1.118:8005',
-        //  target: 'http://192.168.1.139:8005',
-        // target: 'http://192.168.1.139:8005',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/api': '/'
-        }
-    },
-    '/file': {
-        target: 'http://192.168.1.224:8002/api',
-        ws: true,
-        changOrigin: true,
-        pathRewrite: {
-            '^/file': '/'
-        }
-    },
-    '/cnbi': {
-        target: 'http://192.168.1.118:8081', //gjx
+  '/api': {
+    target: 'http://192.168.2.224:8005',
+    // target: 'http://192.168.1.118:8005',
+    //  target: 'http://192.168.1.139:8005',
+    // target: 'http://192.168.1.139:8005',
+    ws: true,
+    changOrigin: true,
+    pathRewrite: {
+      '^/api': '/'
+    }
+  },
+  '/file': {
+    target: 'http://192.168.1.224:8002/api',
+    ws: true,
+    changOrigin: true,
+    pathRewrite: {
+      '^/file': '/'
+    }
+  },
+  '/cnbi': {
+    target: 'http://192.168.1.118:8081', //gjx
 
-        // target: 'http://192.168.1.118:8081', //gjx
-        //  target: 'http://192.168.2.34:8081',
+    // target: 'http://192.168.1.118:8081', //gjx
+    //  target: 'http://192.168.2.34:8081',
 
-        // target: 'http://192.168.1.138:8000',
-        // target: 'http://192.168.1.149:8000',
+    // target: 'http://192.168.1.138:8000',
+    // target: 'http://192.168.1.149:8000',
 
     ws: true,
     changOrigin: true,
@@ -75,7 +75,7 @@ let proxyObj = { // 配置跨域
 };
 module.exports = {
   // baseUrl: debug ? '/' : '/production-sub-path/',
-  baseUrl: debug ? '/' : '/finance',//attendance.. client
+  baseUrl: debug ? '/' : '/jsnk', //attendance.. client
   outputDir: 'dist', // 构建输出目录
   assetsDir: 'assets', // 静态资源目录 (js, css, img, fonts)
   lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'
@@ -98,8 +98,8 @@ module.exports = {
   pages: {
     index: {
       // 页面的入口文件
-     // entry: 'src/views/message_page/main.js',
-       entry: 'src/views/layout/main.js',
+      // entry: 'src/views/message_page/main.js',
+      entry: 'src/views/layout/main.js',
       // 页面的模板文件
       template: 'public/index.html',
       // build 生成的文件名称  例： dist/index.html
@@ -118,8 +118,7 @@ module.exports = {
       config.devtool = 'cheap-module-eval-source-map'
       // 生产环境配置
       proxy: proxyObj; // string | Object
-    } else {
-    }
+    } else {}
     config.resolve = {
       extensions: ['.js', '.vue', '.json', ".css"],
       alias: {
@@ -167,8 +166,8 @@ module.exports = {
     // 自定义加载数据
     before: app => {
       app.get('/api/qwe', (req, res) => {
-        res.json(configView)
-      }),
+          res.json(configView)
+        }),
         app.get('/apis/PrefaceData', (req, res) => {
           res.json(PrefaceData)
         }),

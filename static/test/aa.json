@@ -1,0 +1,153 @@
+{
+  "id": 296,
+  "text": "三项费用测试",
+  "dataType": "defined",
+  "config": {
+    "type": 1,
+    "hidden": true,
+    "dimName": "itemperiod",
+    "useDbName": true,
+    "calculabled": true,
+    "sort": {
+      "field": "itemperiod",
+      "direction": "asc"
+    },
+    "colSum": {
+      "id": "200",
+      "text": "列合计",
+      "type": "sum"
+    }
+  },
+  "columns": [{
+    "id": "itemperiod",
+    "text": "项目"
+  }, {
+    "id": "ogtType1",
+    "text": "二级企业",
+    "children": [{
+      "id": 201905,
+      "text": "本期",
+      "children": [{
+        "index": 3,
+        "pid": "period",
+        "id": "A",
+        "text": "户数"
+      }, {
+        "index": 3,
+        "pid": "period",
+        "id": "B",
+        "text": "占比"
+      }, {
+        "index": 3,
+        "pid": "period",
+        "id": "C",
+        "text": "金额"
+      }]
+    }, {
+      "id": 201805,
+      "text": "上年同期"
+    }]
+  }, {
+    "id": "ogtType2",
+    "text": "三级企业",
+    "children": [{
+      "id": 201905,
+      "text": "本期"
+    }, {
+      "id": 201805,
+      "text": "上年同期"
+    }]
+  }],
+  "rows": [],
+  "datas": [],
+  "cube": {
+    "dims": [{
+      "id": "itemperiod",
+      "text": "项目"
+    }],
+    "facts": [{
+        "id": "ogtType",
+        "index": 1
+      },
+      {
+        "id": "period",
+        "index": 2,
+        "pid": "ogtType"
+      }, {
+        "index": 3,
+        "pid": "period",
+        "id": "A",
+        "text": "户数"
+      }, {
+        "index": 3,
+        "pid": "period",
+        "id": "B",
+        "text": "占比"
+      }, {
+        "index": 3,
+        "pid": "period",
+        "id": "C",
+        "text": "金额"
+      }
+    ]
+  },
+  "needDims": {
+    "year": {
+      "id": "2019",
+      "text": "年份",
+      "datas": [{
+        "id": "2019",
+        "text": "2019年"
+      }]
+    },
+    "month": {
+      "id": 5,
+      "text": "月份",
+      "datas": [{
+        "id": "5",
+        "text": "5月份"
+      }]
+    },
+    "period": {
+      "text": "期间",
+      "datas": [{
+        "id": 201905,
+        "text": "本期"
+      }, {
+        "id": 201805,
+        "text": "上年同期"
+      }]
+    },
+    "orgType": {
+      "text": "企业类型",
+      "datas": [{
+        "id": 1,
+        "text": "二级企业"
+      }, {
+        "id": 2,
+        "text": "三级企业"
+      }]
+    },
+    "itemperiod": {
+      "text": "项目",
+      "datas": [{
+        "id": "1",
+        "text": "<500万"
+      }, {
+        "id": "2",
+        "text": "500万-5000万"
+      }, {
+        "id": "3",
+        "text": "5000万-1亿"
+      }, {
+        "id": "4",
+        "text": "10亿"
+      }]
+    }
+  },
+  "generater00": {
+    "needDims": ["itemperiod", "company"],
+    "varName": "rows"
+
+  }
+}

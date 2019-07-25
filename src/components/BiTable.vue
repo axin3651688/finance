@@ -8,33 +8,33 @@
         @click="btnClick(btn)"
       >{{btn.text}}</el-button>
     </el-button-group>-->
-    <el-table
-      :data.sync="tableDatas"
-      border
-      :stripe="true"
-      :height="item.height || heights-90"
-      :cell-style="cellStyle"
-      @cell-click="onCellClick"
-      :span-method="rowSpanAndColSpanHandler"
-      :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
-      style="widht:100%;"
-    >
-      <el-tag v-for="cc in item.config.columns" v-bind:key="cc.id">
-        <bi-table-column-tree :col="cc" :tableData.sync="item" ref="tchild" v-if="!cc.hidden"/>
+    <el-table :data.sync="tableDatas"
+              border
+              :stripe="true"
+              :height="item.height || heights-90"
+              :cell-style="cellStyle"
+              @cell-click="onCellClick"
+              :span-method="rowSpanAndColSpanHandler"
+              :header-cell-style="{'background':item.class_bg ? item.class_bg:'#F0F8FF'}"
+              style="widht:100%;">
+      <el-tag v-for="cc in item.config.columns"
+              v-bind:key="cc.id">
+        <bi-table-column-tree :col="cc"
+                              :tableData.sync="item"
+                              ref="tchild"
+                              v-if="!cc.hidden" />
       </el-tag>
     </el-table>
 
     <!-- sjz 分页功能 -->
-    <el-pagination
-      v-if="item.pagination"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[1, 2, 5, 10]"
-      :page-size="pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="item.datas.length"
-    ></el-pagination>
+    <el-pagination v-if="item.pagination"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="currentPage"
+                   :page-sizes="[1, 2, 5, 10]"
+                   :page-size="pagesize"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="item.datas.length"></el-pagination>
   </div>
 </template>
 <script>
@@ -47,7 +47,7 @@ export default {
     BiTableColumnTree
   },
   props: ["item"],
-  data() {
+  data () {
     return {
       heights: document.body.clientHeight,
       flag: true,
@@ -70,14 +70,14 @@ export default {
     };
   },
   watch: {
-    heights(newval) {
+    heights (newval) {
       debugger;
       console.log(newval);
 
       this.heights = newval;
     }
   },
-  mounted() {
+  mounted () {
     debugger;
     this.upData(this.item);
     console.log(this.item);
@@ -100,7 +100,7 @@ export default {
      * @author  : mj
      * @data    : 2019-02-15
      */
-    setTableDatas(item) {
+    setTableDatas (item) {
       let rows = item.config.rows.concat();
       // console.log(rows);
       let tempDatas = item.datas;
@@ -123,11 +123,11 @@ export default {
       // console.log(rows);
       // console.log(tempDatas);
     },
-    upData(item) {
+    upData (item) {
       debugger;
       this.setTableDatas(item);
     },
-    rowClass({ row, rowIndex }) {
+    rowClass ({ row, rowIndex }) {
       // 头部颜色和居中配置,马军2018.12.24
       // return "background:#F0F8FF;text-align: center";
     },
@@ -137,7 +137,7 @@ export default {
     /**
      * 单元格样式处理，自己可以在自己的item里配制默认实现
      */
-    cellStyle(row) {
+    cellStyle (row) {
       if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
         return this.item.cellStyle(row, this);
       }
@@ -168,7 +168,7 @@ export default {
     /**
      * 单元格单击默认事件
      */
-    onCellClickDefault(row, column, cell, event) {
+    onCellClickDefault (row, column, cell, event) {
       debugger;
       // console.log(this)
       let listener = row._drill || row.drill;
@@ -194,14 +194,14 @@ export default {
     /**
      * 单元格单击事件
      */
-    onCellClick(row, column, cell, event) {
+    onCellClick (row, column, cell, event) {
       // debugger
       if (this.item.onCellClick && typeof this.item.onCellClick == "function") {
         return this.item.onCellClick(row, column, cell, event, this);
       }
       this.onCellClickDefault(row, column, cell, event);
     },
-    getSummaries(param) {
+    getSummaries (param) {
       debugger;
       const { columns, data } = param;
       const sums = {};
@@ -220,13 +220,13 @@ export default {
     /**
      * 获取rowspan
      */
-    getCellRowSpan(datas, row, config) {
+    getCellRowSpan (datas, row, config) {
       return datas.filter(
         record => record[config.idProperty] === row[config.idProperty]
       ).length;
     },
 
-    rowSpanAndColSpanHandler({ row, column, rowIndex, columnIndex }) {
+    rowSpanAndColSpanHandler ({ row, column, rowIndex, columnIndex }) {
       if (
         this.item &&
         this.item.rowSpanAndColSpanHandler &&
