@@ -73,8 +73,8 @@
             <div class="directoryDialog_A_5" id="C">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_5-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
@@ -125,6 +125,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_5-1-btn" round size="mini" @click="levelClick" :disabled="disabled2" type="primary" plain>
+                        <!-- <i class="iconfont icon-tianjia"></i>添 加 -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" round size="mini" @click="deleteClick" :disabled="disabled2" type="danger" plain>
+                        <!-- <i class="iconfont icon-shanchu2"></i>删 除 -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')" :disabled="disabled2">关 闭</el-button>
                 </div>
             </div>
@@ -137,8 +145,8 @@
             <div class="directoryDialog_A_6" id="D">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_6-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -191,6 +199,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain round size="mini">
+                        <!-- <i class="iconfont icon-tianjia"></i> -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="danger" plain round size="mini">
+                        <!-- <i class="iconfont icon-shanchu2"></i> -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeB')" :disabled="disabled3">关 闭</el-button>
                 </div>
             </div>
@@ -203,8 +219,8 @@
             <div class="directoryDialog_A_7" id="E">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_7-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -256,6 +272,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini">
+                        <!-- <i class="iconfont icon-tianjia"></i> -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini">
+                        <!-- <i class="iconfont icon-shanchu2"></i> -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')">关 闭</el-button>
                 </div>
             </div>

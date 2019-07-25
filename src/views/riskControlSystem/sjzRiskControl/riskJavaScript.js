@@ -130,7 +130,7 @@ export default {
      * @param {*} me 
      * @param {*} val
      */
-    isSriskName(me, val){ 
+    isSriskName(me, val){ //debugger
         let isName, data ;
         let name = me.form.sriskname ;
         let id = me.form.id ;
