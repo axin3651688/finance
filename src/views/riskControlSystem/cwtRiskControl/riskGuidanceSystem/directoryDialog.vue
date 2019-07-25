@@ -84,7 +84,7 @@
                     </div>
                     <div class="directoryDialog_A_5-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableA"
                         :data="tableData2" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -161,7 +161,7 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableB"
                         :data="tableData3" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -238,7 +238,7 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableC"
                         :data="tableData4" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -546,7 +546,7 @@ export default {
             me.dialogFormVisible3_A = !me.dialogFormVisible3_A ;
             me.disabled = true ;
             me.title = scope.row.sname ;
-            me.number2 = 1 ;
+            me.number2 = 1 ; 
             me.directoryRequest() ;  
                    
         },
@@ -562,7 +562,7 @@ export default {
             me.title2 = scope.row.scontent ;
             me.number2 = 2 ;
             me.dialogFormVisible3_B = !me.dialogFormVisible3_B ;
-            me.$refs.multipleTable.clearSelection();
+            me.$refs.multipleTableA.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -577,7 +577,7 @@ export default {
             me.title3 = scope.row.scontent ;
             me.number2 = 3 ;
             me.dialogFormVisible3_C = !me.dialogFormVisible3_C ;
-            me.$refs.multipleTable.clearSelection();
+            me.$refs.multipleTableB.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -625,13 +625,14 @@ export default {
         /**
          * ()复选框点击事件-当选择项发生变化时会触发该事件
          */
-        handleSelectionChange(selection) {  
+        handleSelectionChange(selection) {  //debugger
+            let me = this ;
             if (selection.length === 0) { // 判断selection是否有值存在
                 return false ;
             } else {
                 let selected ;
                 let len = selection.length - 1 ;
-                this.selectionA = [] ;
+                me.selectionA = [] ;
                 // selection = selection.filter((res, index) => { return index == len }) ;
                 selection.forEach((row, index) => {
                     if(index === len){
@@ -639,9 +640,14 @@ export default {
                     }else {
                         selected = false ;
                     }
-                    this.$refs.multipleTable.toggleRowSelection(row, selected);
+                    // 第一级
+                    if(me.number2 == 1)me.$refs.multipleTableA.toggleRowSelection(row, selected);
+                    // 第二级
+                    if(me.number2 == 2)me.$refs.multipleTableB.toggleRowSelection(row, selected);
+                    // 第三级
+                    if(me.number2 == 2)me.$refs.multipleTableC.toggleRowSelection(row, selected);
                 })
-                this.selectionA = selection.filter((res, index) => { return index == len }) ; ;
+                me.selectionA = selection.filter((res, index) => { return index == len }) ; ;
             }
         },
         /**

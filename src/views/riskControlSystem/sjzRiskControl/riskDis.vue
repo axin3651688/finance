@@ -589,7 +589,7 @@ export default {
          * @function 1.Checkbox选中时，如果row未提交则可以进行删除；如果row已提交则不能删除
          */
         deleteRow(){ //submitdeletetype
-            debugger
+            // debugger
             let me = this ;
             let data = [] ;
             let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;    // 过滤出来提交的风险
