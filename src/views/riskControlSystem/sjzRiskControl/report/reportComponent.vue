@@ -339,7 +339,7 @@ export default {
         // 获取【参照按钮-发生概率】的json信息
         table1Request(){
             let me = this ;
-            me.axios.get("cnbi/json/risk/tableDemo1.json").then(res => {
+            me.axios.get("/cnbi/json/risk/tableDemo1.json").then(res => {
                 let data = res.data ;
                 data = eval("(" + data + ")");
                 riskprobability().then(res => {
@@ -351,7 +351,7 @@ export default {
         // 获取【参照按钮-影响程度】的json信息
         table2Request(){
             let me = this ;
-            me.axios.get("cnbi/json/risk/tableDemo2.json").then(res => {
+            me.axios.get("/cnbi/json/risk/tableDemo2.json").then(res => {
                 let data = res.data ;
                 data = eval("(" + data + ")");
                 risk_influence_degree().then(res => {
