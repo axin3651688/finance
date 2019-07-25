@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <el-tabs v-model="activeName" @tab-click="tabClick" @tab-remove="removeTab" :before-leave="beforeLeave">
+            <el-tabs v-model="activeName" @tab-click="tabClick" @tab-remove="removeTab">
                 <el-tab-pane label="内部对标" name="first">
                     <div>
                         <el-row>
@@ -343,6 +343,17 @@
              */
             drillItemSname(scope){
                 let me = this,editableTabs = me.editableTabs;
+                //不能重复下钻一样的。
+                if(me.editableTabs && me.editableTabs.length > 0){
+                    let editableTabs = me.editableTabs;
+                    for(let i =0; i< editableTabs.length;i ++){
+                        let item = editableTabs[i];
+                        if(item.name == scope.row.scode){
+                            me.activeName = item.name;
+                            return;
+                        }
+                    }
+                }
                 let obj = {
                     title: scope.row.sname,
                     name: scope.row.scode,
@@ -379,6 +390,17 @@
              */
             drillHandler (params) {
                 let me = this,editableTabs = me.editableTabs;
+                //不能重复下钻一样的。
+                if(me.editableTabs && me.editableTabs.length > 0){
+                    let editableTabs = me.editableTabs;
+                    for(let i =0; i< editableTabs.length;i ++){
+                        let item = editableTabs[i];
+                        if(item.name == params.row[params.field]){
+                            me.activeName = item.name;
+                            return;
+                        }
+                    }
+                }
                 let obj = {
                     title: params.row[params.tabSname],
                     name: params.row[params.field],

@@ -3,19 +3,24 @@
         <div>
             <el-row class="div_form">
                 <el-col :span="10">
-                    <!-- <div>
+                    <div>
                         <label for="">公司选择：</label>
-                        <el-select v-model="value" placeholder="请选择" class="select_all">
+                        <el-select v-model="valueSname" placeholder="请选择" class="select_all" ref="company_select">
                             <el-option
-                            :key="121212"
-                            :label="'1212'"
-                            :value="'item.scode'">
-                            <el-tree :data="treeData" :props="defaultProps">
-
-                            </el-tree>
+                                class="tree_select_option"
+                                :value="'1111'"
+                                :label="''"
+                            >
+                                <el-tree 
+                                    :data="comtree2" 
+                                    :props="defaultProps"
+                                    :expand-on-click-node="false"
+                                    @node-click="nodeClick"
+                                >
+                                </el-tree>
                             </el-option>
                         </el-select>
-                    </div> -->
+                    </div>
                     <!-- <div>
                         <label for="">公司选择：</label>
                         <el-select v-model="value" placeholder="请选择" class="select_all">
@@ -27,16 +32,17 @@
                             </el-option>
                         </el-select>
                     </div> -->
-                    <div class="tree_spcompany">
+                    <!-- <div class="tree_spcompany">
                         <label for="" class="tree_company_label">公司选择：</label>
                         <div class="tree_company">
                             <treeselect
                                 v-model="value"
                                 :options="comtree2"
                                 placeholder="请选择所属公司"
+                                class="tree_select"
                             />
                         </div>
-                    </div>
+                    </div> -->
                 </el-col>
                 <el-col :span="14">
                     <div>
@@ -127,6 +133,8 @@
         },
         data() {
             return {
+                //选中公司名称。
+                valueSname:'',
                 treeData: [{
                     label: '一级 1',
                     children: [{
@@ -137,8 +145,8 @@
                     }]
                 }],
                 defaultProps: {
-                children: 'children',
-                label: 'label'
+                    children: 'children',
+                    label: 'label'
                 },
                 comtree2:[],
                 options: [{
@@ -300,6 +308,14 @@
         mounted() {},
         methods: {
             ...mapActions(["ShowDims"]),
+            /**
+             * 公司树节点点击事件。
+             */
+            nodeClick (data,node,treeObj) {
+                this.valueSname = data.sname;
+                this.value = data.scode;
+                this.$refs["company_select"].blur();
+            },
             hideNavInfo () {
                 let me = this;
                 me.ShowDims({
@@ -378,7 +394,7 @@
                     data[0].open = true;
                     // me.expandKeys.push(data[0].scode);
                     me.comtree2 = tools.transformToeTreeNodes(setting, data);
-                    me.value = me.comtree2[0].id ;
+                    // me.value = me.comtree2[0].id ;
                 }   
             },
             /**
@@ -491,6 +507,16 @@
     }
 </style>
 <style lang="scss" scoped>
+    //公司树表的样式。
+    .tree_select_option {
+        height:100%;
+        max-height:300px;
+        padding: 0;
+    }
+    // .tree_select {
+    //     font-weight: normal !important;
+    //     color: red;
+    // }
     .tree_spcompany {
         display: flex;
     }
