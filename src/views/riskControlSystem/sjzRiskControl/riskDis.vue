@@ -589,7 +589,7 @@ export default {
          * @function 1.Checkbox选中时，如果row未提交则可以进行删除；如果row已提交则不能删除
          */
         deleteRow(){ //submitdeletetype
-            // debugger
+            debugger
             let me = this ;
             let data = [] ;
             let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;    // 过滤出来提交的风险
@@ -602,6 +602,22 @@ export default {
             }else{
                 me.selection.forEach(item => { data.push(item.id) ; }) ;
             }
+            // 不论在何种状态下。未提交的风险都可以进行删除
+            if(selection_no.length > 0){
+                data = [] ;
+                selection_no.forEach(item => { data.push(item.id) ; }) ;
+                me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // 删除请求接口
+                    me.deleteRiskdistinguish(data,selection_no) ;
+                }).catch(() => {
+                    me.$message({ type: 'info', message: '已取消删除' });          
+                });
+                return false ;
+            }
             // submitdeletetype:0 => 已提交的风险不可以删除
             if(selection_no && selection_no.length > 0 && me.submitdeletetype == 0){
                 me.$confirm('此操作将永久删除该风险, 是否继续?', '提示', {
@@ -611,20 +627,6 @@ export default {
                 }).then(() => {
                     // 删除请求接口
                     me.deleteRiskdistinguish(data,selection_no) ;
-                    // deleteRiskdistinguish(data).then(res => { 
-                    //     if(res.data.code === 200){
-                    //         data.forEach(ris => {
-                    //             me.tableData = me.tableData.filter(rds => {
-                    //                 return ris != rds.id ;
-                    //             });
-                    //         })
-                    //         selection_no = [] ;
-                    //         me.selection = me.selection.filter((item, index) => { return item.id != data[index] ; }) ;
-                    //         me.$message({ type: 'success', message: '删除成功!' });
-                    //     }else{
-                    //         me.$message.error('删除失败!');
-                    //     }
-                    // }) 
                 }).catch(() => {
                     me.$message({ type: 'info', message: '已取消删除' });          
                 });

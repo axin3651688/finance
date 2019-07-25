@@ -138,11 +138,11 @@ export default {
         if(val === "add") {
             // 当name === ‘’时，则可以随意添加（要求，只要风险名称不一样就行了），反之则继续
             if(name === "")return false ;
-            isName = me.newThis.tableData.some(res => { return res.sriskname === name ; }) ;
+            isName = me.newThis.tableData.some(res => { return res.sriskname == name ; }) ;
         } else {
             // 首先先过滤掉自己，防止自己也变成重复的风险名称而被限制，不能保存 + 提交
             data = me.newThis.tableData.filter(sjk => { return sjk.id !== id ; }) ;
-            isName = data.some(item => { return item.sriskname === name ; }) ;
+            isName = data.some(item => { return item.sriskname == name ; }) ;
         }
         return isName ;
     },
