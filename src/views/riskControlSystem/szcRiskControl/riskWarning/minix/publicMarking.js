@@ -76,7 +76,6 @@ export default {
          * 数据赋值之前。
          */
         queryBackstageDataAfterBefore(datas, judgeParams) {
-            debugger;
             let me = this;
             if (judgeParams.id == "comprehensiveRating") {
                 datas.forEach(item => {
@@ -102,7 +101,6 @@ export default {
             // me.retainDecimalOfTwo(datas);
         },
         retainDecimalOfOne(datas, inItems) {
-            debugger;
             datas.forEach(item => {
                 inItems.forEach(it => {
                     item[it] = item[it] ? tools.currency(item[it], "", 1) : 0.0;
