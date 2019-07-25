@@ -31,7 +31,9 @@
                     <!-- <el-input class="data_input" placeholder="输入数值" :readonly="readonly" v-model="scope.row.val">
                         <template slot="append"><i class="el-icon-edit-outline"></i></template>
                     </el-input> -->
-                    <el-input class="data_input" size="small" @change="handleClick(scope)" v-model="scope.row.val" :placeholder="placeholder" :readonly="readonly"></el-input>
+                    <el-input class="data_input" size="small" @change="handleClick(scope)" v-model="scope.row.val" :placeholder="placeholder" :readonly="readonly">
+                        <!-- {{scope.row.val|}} -->
+                    </el-input>
                 </template>
             </el-table-column>
         </el-table>
@@ -149,7 +151,7 @@ export default {
                 let rus = option.substring(1, option.length - 1); // 得到小括号内的内容 / 截取（）取出内容                               
                 scope.row.val = scope.row.val.replace(/\.{2,}/g,"."); // 只保留第一个. 清除多余的  
                 scope.row.val = scope.row.val.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
-                scope.row.val = Math.decimalToLocalString(scope.row.val) ; // 已处理好的千分位，两位小数
+                // scope.row.val = Math.decimalToLocalString(scope.row.val) ; // 已处理好的千分位，两位小数
                 scope.row.val = scope.row.val.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');// 只能输入两个小数  
                 if(scope.row.val.indexOf(".")< 0 && scope.row.val !=""){ // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
                     scope.row.val= parseFloat(scope.row.val); 
@@ -159,8 +161,9 @@ export default {
                     // 输入数字(string => number)
                     scope.row.fact_a = t.replace(/^0/, "") - 0 ;
                 } else {
-                    scope.row.fact_a = scope.row.val.replace(/^0/, "") - 0 ;
+                    scope.row.fact_a = t.replace(/^0/, "") - 0 ;
                 }
+                scope.row.val = Math.decimalToLocalString(scope.row.val) ;
                 // 修改的省份
                 scope.row.isEdit = false ;               
                 // 改变字体颜色
