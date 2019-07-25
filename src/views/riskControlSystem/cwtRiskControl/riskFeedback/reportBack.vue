@@ -281,6 +281,9 @@
                         let _operations = [];
                         datas.forEach((data) => {
                             if (data.operation) {
+
+                                //0:反馈，1:查看，2:退回，3:提醒
+
                                 if (data.scode !== userCompany) {
                                     if (data.status === '未反馈') {
                                         data.operation = '3-提醒';
@@ -295,6 +298,12 @@
                                         data.operation = '3-提醒';
                                     } else {
                                         data.operation = '1-查看';
+                                    }
+                                }else{
+                                    if (data.status === '未反馈') {
+                                        data.operation = '0-反馈';
+                                    } else {
+                                        data.operation = '1-查看,2-退回';
                                     }
                                 }
 
@@ -328,6 +337,7 @@
              * @param scope
              */
             reportPageOpen(scope) {
+                debugger;
                 this.reportBackDetail = true;
                 let isFeeded = scope.row.status;
                 this.isPageReadOnly = isFeeded === '已反馈';
@@ -498,7 +508,7 @@
                             riskModel_riskdetaildata['riskcode'] = key;
 
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = item.risk_pg;
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = '1、风险发生概率：'+item.risk_pg.split(',')[1]+ '<br>2、风险影响程度：'+item.risk_pg.split(',')[0];
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
