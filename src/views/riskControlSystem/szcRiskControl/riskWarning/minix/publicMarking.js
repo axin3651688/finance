@@ -540,7 +540,7 @@ export default {
                     },
                     detail: {
                         formatter: function(a, b, c) {
-                            return Math.decimalToLocalString(a) + (itemCnt.unit ? itemCnt.unit : "%");
+                            return Math.decimalToLocalString(a) + (itemCnt.unit ? itemCnt.unit : itemCnt.sunit || "%");
                         },
                     },
                     data: [{ value: itemCnt[item.gaugeField] || 0 }]
@@ -667,6 +667,12 @@ export default {
             if (datas && datas.length > 0) {
                 for (let j = 0; j < datas.length; j++) {
                     let item = datas[j];
+                    //月份的数据格式化。
+                    for (let key in item) {
+                        if (key.indexOf('m') != -1) {
+                            item[key] = Math.decimalToLocalString(item[key]);
+                        }
+                    }
                     if (year == item.cyear) {
                         item.wd = "本期";
                     } else if (item.cyear == (year - 1)) {

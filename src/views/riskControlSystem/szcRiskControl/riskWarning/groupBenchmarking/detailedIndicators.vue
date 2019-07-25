@@ -47,55 +47,68 @@
                 columns:[
                     {
                         id:"wd",
-                        text:"维度"
+                        text:"维度",
+                        align:'center'
                     },
                     {
                         id:"m1",
-                        text:"一月"
+                        text:"一月",
+                        align:'right'
                     },
                     {
                         id:"m2",
-                        text:"二月"
+                        text:"二月",
+                        align:'right'
                     },
                     {
                         id:"m3",
-                        text:"三月"
+                        text:"三月",
+                        align:'right'
                     },
                     {
                         id:"m4",
-                        text:"四月"
+                        text:"四月",
+                        align:'right'
                     },
                     {
                         id:"m5",
-                        text:"五月"
+                        text:"五月",
+                        align:'right'
                     },
                     {
                         id:"m6",
-                        text:"六月"
+                        text:"六月",
+                        align:'right'
                     },
                     {
                         id:"m7",
-                        text:"七月"
+                        text:"七月",
+                        align:'right'
                     },
                     {
                         id:"m8",
-                        text:"八月"
+                        text:"八月",
+                        align:'right'
                     },
                     {
                         id:"m9",
-                        text:"九月"
+                        text:"九月",
+                        align:'right'
                     },
                     {
                         id:"m10",
-                        text:"十月"
+                        text:"十月",
+                        align:'right'
                     },
                     {
                         id:"m11",
-                        text:"十一月"
+                        text:"十一月",
+                        align:'right'
                     },
                     {
                         id:"m12",
-                        text:"十二月"
+                        text:"十二月",
+                        align:'right'
                     }
                 ],
                 gaugeChartData:{},
