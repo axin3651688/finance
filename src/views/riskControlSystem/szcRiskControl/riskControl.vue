@@ -385,7 +385,8 @@ export default {
                                         resData = me.setOperationBtns(resData);
                                         me.tableData = resData;
                                     }else if (judgeParams.id == "lookInstruc"){
-                                        // res.data.data = res.data.data.sort();
+                                        debugger;
+                                        me.sortByPropty(res.data.data,"riskspcode");
                                         me.lookInstructionRes(res.data.data,judgeParams);
                                     }else if (judgeParams.queryAfter) {
                                         me[judgeParams.queryAfter](res.data.data,judgeParams);
