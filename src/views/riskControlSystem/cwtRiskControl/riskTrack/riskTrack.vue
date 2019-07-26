@@ -40,13 +40,14 @@
             }
         },
         created() {
-            let _this = this;
-            getGlobleControlState().then((res) => {
-                if (res.data.code === 200) {
-                    _this.isReportType = res.data.data[0].reporttype === 0;
-                    _this.isPeriodNow = res.data.data[0].periodtype === 1;
-                }
-            })
+            // let _this = this;
+            // getGlobleControlState().then((res) => {
+            //     debugger;
+            //     if (res.data.code === 200) {
+            //         _this.isReportType = res.data.data[0].reporttype === 0;
+            //         _this.isPeriodNow = res.data.data[0].periodtype === 1;
+            //     }
+            // })
         },
         mounted() {
             this.doNotShowDim(true);
