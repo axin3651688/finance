@@ -64,7 +64,7 @@ export default {
             groupQuery(params).then(res => {
                 if (res.data.code == 200) {
                     let copyDatas = me.deepCopy(res.data.data);
-                    me.queryBackstageDataAfterBefore(res.data.data, judgeParams);
+                    me.queryBackstageDataAfterBefore(copyDatas, judgeParams);
                     me.tableData = copyDatas;
                     me.queryBackstageDataAfter(res.data.data, judgeParams);
                 } else if (res.data.code == 1001) {
@@ -503,7 +503,6 @@ export default {
          * options 仪表盘
          */
         createOptions(itemCnt, item) {
-            debugger;
             let options = {
                 title: {
                     // 	padding:[410,0,0,0],    //标题相对于容器边距
@@ -753,33 +752,33 @@ export default {
                         name: '本期数',
                         type: 'line',
                         data: arrItem.bq || [11, 11, 15, 13, 12, 13, 10, 11, 11, 15, 13, 12],
-                        markPoint: {
-                            data: [
-                                { type: 'max', name: '最大值' },
-                                { type: 'min', name: '最小值' }
-                            ]
-                        },
-                        markLine: {
-                            data: [
-                                { type: 'average', name: '平均值' }
-                            ]
-                        }
+                        // markPoint: {
+                        //     data: [
+                        //         { type: 'max', name: '最大值' },
+                        //         { type: 'min', name: '最小值' }
+                        //     ]
+                        // },
+                        // markLine: {
+                        //     data: [
+                        //         { type: 'average', name: '平均值' }
+                        //     ]
+                        // }
                     },
                     {
                         name: '上年同期',
                         type: 'line',
                         data: arrItem.sntq || [1, -2, 2, 5, 3, 2, 0, 11, 11, 15, 13, 12],
-                        markPoint: {
-                            data: [
-                                { type: 'max', name: '最大值' },
-                                { type: 'min', name: '最小值' }
-                            ]
-                        },
-                        markLine: {
-                            data: [
-                                { type: 'average', name: '平均值' }
-                            ]
-                        }
+                        // markPoint: {
+                        //     data: [
+                        //         { type: 'max', name: '最大值' },
+                        //         { type: 'min', name: '最小值' }
+                        //     ]
+                        // },
+                        // markLine: {
+                        //     data: [
+                        //         { type: 'average', name: '平均值' }
+                        //     ]
+                        // }
                     }
                 ]
             }
