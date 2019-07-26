@@ -188,10 +188,10 @@ export default {
             valueTitle : "" , defaultExpandedKey: [], accordion: true,isFocus:true
         }
     },
-    created(){ debugger
+    created(){ //debugger
         this.getFormInformation() ;
         // 填报部门
-            this.form.departmentname = this.$store.getters.user.dept[0].sname ;
+            // this.form.departmentname = this.$store.getters.user.dept[0].sname ;
         // 风险发生概率下拉框数据
             this.fsgl.rows.reverse() ;
         // 风险影响程度下拉框数据
