@@ -73,8 +73,8 @@
             <div class="directoryDialog_A_5" id="C">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_5-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_5-1-btn" @click="levelClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" @click="deleteClick" :disabled="disabled2" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_5-2">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="directoryDialog_A_5-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableA"
                         :data="tableData2" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -125,6 +125,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_5-1-btn" round size="mini" @click="levelClick" :disabled="disabled2" type="primary" plain>
+                        <!-- <i class="iconfont icon-tianjia"></i>添 加 -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_5-1-btn" round size="mini" @click="deleteClick" :disabled="disabled2" type="danger" plain>
+                        <!-- <i class="iconfont icon-shanchu2"></i>删 除 -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeA')" :disabled="disabled2">关 闭</el-button>
                 </div>
             </div>
@@ -137,8 +145,8 @@
             <div class="directoryDialog_A_6" id="D">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_6-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -153,7 +161,7 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableB"
                         :data="tableData3" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -191,6 +199,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_6-1-btn" @click="levelClick" :disabled="disabled3" type="primary" plain round size="mini">
+                        <!-- <i class="iconfont icon-tianjia"></i> -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_6-1-btn" @click="deleteClick" :disabled="disabled3" type="danger" plain round size="mini">
+                        <!-- <i class="iconfont icon-shanchu2"></i> -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeB')" :disabled="disabled3">关 闭</el-button>
                 </div>
             </div>
@@ -203,8 +219,8 @@
             <div class="directoryDialog_A_7" id="E">
                 <!-- 头部 -->
                 <div class="directoryDialog_A_7-1" @mousedown="dragA">
-                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
-                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button>
+                    <!-- <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain><i class="iconfont icon-tianjia"></i></el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="primary" plain><i class="iconfont icon-shanchu2"></i></el-button> -->
                 </div>
                 <!-- 腰部 -->
                 <div class="directoryDialog_A_6-2">
@@ -222,7 +238,7 @@
                     <!-- 输入框 -->
                     <div class="directoryDialog_A_6-2-2">
                         <el-table
-                        ref="multipleTable"
+                        ref="multipleTableC"
                         :data="tableData4" style="width: 100%" :show-header="false" 
                         height="100%" class="tableA table-el"
                         @selection-change="handleSelectionChange"
@@ -256,6 +272,14 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini">
+                        <!-- <i class="iconfont icon-tianjia"></i> -->
+                        <i class="el-icon-circle-plus-outline"></i>添 加
+                    </el-button>
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini">
+                        <!-- <i class="iconfont icon-shanchu2"></i> -->
+                        <i class="el-icon-delete"></i>删 除
+                    </el-button>
                     <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')">关 闭</el-button>
                 </div>
             </div>
@@ -522,7 +546,7 @@ export default {
             me.dialogFormVisible3_A = !me.dialogFormVisible3_A ;
             me.disabled = true ;
             me.title = scope.row.sname ;
-            me.number2 = 1 ;
+            me.number2 = 1 ; 
             me.directoryRequest() ;  
                    
         },
@@ -538,7 +562,7 @@ export default {
             me.title2 = scope.row.scontent ;
             me.number2 = 2 ;
             me.dialogFormVisible3_B = !me.dialogFormVisible3_B ;
-            me.$refs.multipleTable.clearSelection();
+            me.$refs.multipleTableA.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -553,7 +577,7 @@ export default {
             me.title3 = scope.row.scontent ;
             me.number2 = 3 ;
             me.dialogFormVisible3_C = !me.dialogFormVisible3_C ;
-            me.$refs.multipleTable.clearSelection();
+            me.$refs.multipleTableB.clearSelection();
             me.directoryRequest() ; 
         },
         /**
@@ -601,13 +625,14 @@ export default {
         /**
          * ()复选框点击事件-当选择项发生变化时会触发该事件
          */
-        handleSelectionChange(selection) {  
+        handleSelectionChange(selection) {  //debugger
+            let me = this ;
             if (selection.length === 0) { // 判断selection是否有值存在
                 return false ;
             } else {
                 let selected ;
                 let len = selection.length - 1 ;
-                this.selectionA = [] ;
+                me.selectionA = [] ;
                 // selection = selection.filter((res, index) => { return index == len }) ;
                 selection.forEach((row, index) => {
                     if(index === len){
@@ -615,9 +640,14 @@ export default {
                     }else {
                         selected = false ;
                     }
-                    this.$refs.multipleTable.toggleRowSelection(row, selected);
+                    // 第一级
+                    if(me.number2 == 1)me.$refs.multipleTableA.toggleRowSelection(row, selected);
+                    // 第二级
+                    if(me.number2 == 2)me.$refs.multipleTableB.toggleRowSelection(row, selected);
+                    // 第三级
+                    if(me.number2 == 2)me.$refs.multipleTableC.toggleRowSelection(row, selected);
                 })
-                this.selectionA = selection.filter((res, index) => { return index == len }) ; ;
+                me.selectionA = selection.filter((res, index) => { return index == len }) ; ;
             }
         },
         /**

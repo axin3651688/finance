@@ -227,7 +227,7 @@ export default {
                 sissubmit: "Y"
             }
             const me = this ;
-            riskreportstate_query_riskreport(sparam).then(her => { 
+            riskreportstate_query_riskreport(sparam).then(her => { debugger
                 // 报告页面显示
                 me.isShow = true ;
                 // stype：状态；等于 1 即上报状态；等于 0 即查看状态 。
