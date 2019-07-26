@@ -28,24 +28,29 @@
             <el-table-column prop="sname" label="地区名称" width="360" align="left"></el-table-column>
             <el-table-column prop="val" label="数值" width="260" align="right">
                 <template slot-scope="scope">
+                    <vue-numeric id="inputId" :class="getClassColor(scope)" separator="," v-model="scope.row.fact_a" :minus="true" :precision="2"
+                        :read-only="readonly"></vue-numeric>
+
                     <!-- <el-input class="data_input" placeholder="输入数值" :readonly="readonly" v-model="scope.row.val"> -->
                         <!-- <template slot="append"><i class="el-icon-edit-outline"></i></template> -->
                     <!-- </el-input> -->
-                    <el-input class="data_input" size="small" @change="handleClick(scope)" v-model="scope.row.val" :placeholder="placeholder" :readonly="readonly"></el-input>
+                    <!-- <el-input class="data_input" size="small" @change="handleClick(scope)" v-model="scope.row.val" :placeholder="placeholder" :readonly="readonly"></el-input> -->
                 </template>
             </el-table-column>
         </el-table>
     </div>
 </template>
 <script>
-import tools from 'utils/tools.js';
+import tools from 'utils/tools';
+import VueNumeric from 'vue-numeric'
 import {
     // 表格展现接口（查询）
     fcattarget_query_by_fcattarget,
     // 保存接口
     fcattarget_add
-} from '~api/cube.js'
+} from '~api/cube'
 export default {
+    components:{VueNumeric},
     props: {
         height: Number
     },
@@ -58,7 +63,6 @@ export default {
             value: "",
             placeholder: "" ,
             sunit: "",
-            isEdit: true ,
         }
     },
     created(){
@@ -74,6 +78,13 @@ export default {
         }
     },
     methods: {
+        getClassColor(scope){
+            if(scope.$index % 2 == 0){
+                return "inputId_first" ;
+            } else {
+                return "inputId_second" ;
+            }
+        },
         /**
          * @description 表格展现查询
          */
@@ -86,83 +97,60 @@ export default {
                 stype: "HY",
                 target: me.value
             }
-            // if(me.value == ""){
-            //     me.$message({ message: "请选择指标", type: "warning" }) ;
-            //     return false ;
-            // }
             fcattarget_query_by_fcattarget(params).then(res => { 
                 if(res.data.code === 200) {
-                    let data = res.data.data ;
+                    let data = res.data.data ;                   
                     data.forEach((res,index) => {
-                        if(res.fact_a == 0){
-                            res.fact_a = null ;
-                        }else{
-                            res.val = tools.currency(res.fact_a, '' , 2) ;
+                        if(!res.fact_a){
+                            res.fact_a = 0 ;
                         }
                         res.scode = res.cs ;
                         res.sname = res.csmc ;
-                        res.isEdit = true ;
+                        res.isEdit = false ;
+                        res.isEdit2= 0 ;
                     });
                     me.tableData2 = data ;
-                    if(me.value == ""){
+                    let arr = me.deepClone(data);
+                    me.tableData3 = arr ;
+                    if(me.value === "") {
                         me.readonly = true ;
-                        me.placeholder = "请选择指标" ;
-                    }else{
-                        me.readonly = false ;
-                        me.placeholder = "请输入数值" ;
+                    }else {
+                        me.readonly = false;
                     }
                 } else {
                     me.$message.error("数据维护查询失败！") ;
                 }
             });
         },
+        deepClone(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'object') {
+                        result[key] = this.deepClone(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
         /**
          * @description 选中值发生变化时触发
          */
         selectChange(val){ 
-            // 单位
-            let opt = this.options.filter((res, index) => { return res.scode == val }) ;
-            if(opt[0].sunit == "unit") {
-                this.sunit = "万元" ;
+            if(!val){
+                this.sunit = "" ;
             } else {
-                this.sunit = opt[0].sunit ;
+                // 单位
+                let opt = this.options.filter((res, index) => { return res.scode == val }) ;
+                if(opt[0].sunit == "unit") {
+                    this.sunit = "万元" ;
+                } else {
+                    this.sunit = opt[0].sunit ;
+                }
             }
             this.gettableData_request() ;
-        },
-        /**
-         * @description 输入数值改变时触发
-         */
-        handleClick(scope){
-            // debugger
-            let me = this ;
-            let regex = /\((.+?)\)/g ;
-            let t = scope.row.val ; // 负数用到，先把输入的值赋值
-            // let options = scope.row.sname.match(regex) ; // 得到小括号内的内容 
-            scope.row.val = scope.row.val.replace(/[^\d.]/g,"");  // 清除“数字”和“.”以外的字符            
-            if(scope.row.val != "" && scope.row.val != 0){
-                // let option = options[0] ; // 得到字符串                
-                // let rus = option.substring(1, option.length - 1); // 得到小括号内的内容 / 截取（）取出内容                               
-                scope.row.val = scope.row.val.replace(/\.{2,}/g,"."); // 只保留第一个. 清除多余的  
-                scope.row.val = scope.row.val.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
-                scope.row.val = Math.decimalToLocalString(scope.row.val) ; // 已处理好的千分位，两位小数
-                scope.row.val = scope.row.val.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');// 只能输入两个小数  
-                if(scope.row.val.indexOf(".")< 0 && scope.row.val !=""){ // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
-                    scope.row.val= parseFloat(scope.row.val); 
-                }
-                if(t.charAt(0) == "-"){ // 是不是'-'开头，如果是，则拼接上，否则不是负数不予理会。
-                    scope.row.val  = '-' + scope.row.val ;
-                }
-                // 修改的省份
-                scope.row.isEdit = false ;
-                // 输入数字(string => number)
-                scope.row.fact_a = t.replace(/^0/, "") - 0 ;
-                // 改变字体颜色
-                me.getStyleColor("modify", scope) ;
-            }else{
-                scope.row.val = "" ;
-                scope.row.fact_a = null ;
-                scope.row.isEdit = false ;
-            }
         },
         /**
          * @description 日期处理
@@ -198,20 +186,33 @@ export default {
          * @description 重置按钮
          */
         resetClick(){ 
-            let isTrue = this.tableData2.some((res, index) => { return !res.isEdit }) ;
+            let isTrue = false ;
+            let me = this ;
+            me.tableData2.forEach(item => {
+                me.tableData3.forEach(item2 => {
+                    if(item.sname == item2.sname){
+                        if(item.fact_a == item2.fact_a){
+
+                        }else{
+                            isTrue = true ;
+                        }
+                    }
+                })
+            })
             if(!isTrue){
-                this.$message({ type: 'warning', message: '暂无更改!' }) ;
+                me.$message({ message: "暂无修改!", type: "warning" }) ;
             }else{           
-                this.$confirm('重置该文件, 是否继续?', '提示', {
+                me.$confirm('重置该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.gettableData_request() ;
-                    this.getStyleColor("reset") ;
-                    this.$message({ type: 'success', message: '重置成功!' });
+                    me.$message({ type: 'success', message: '重置成功!' });
+                    me.gettableData_request() ;
+                    // this.getStyleColor("reset") ;
+                    
                 }).catch(() => {
-                    this.$message({ type: 'info', message: '已取消重置' });          
+                    me.$message({ type: 'info', message: '已取消重置' });          
                 });
             }
         },
@@ -221,42 +222,52 @@ export default {
         saveClick(){
             // debugger
             let me = this ;
-            let isEdit = [] ;
             let params = [] ;
+            let isTrue = false ;
             let $params = me.$store.state.prame.command;
-            let isTrue = me.tableData2.some((res, index) => { return !res.isEdit }) ;
-            if(!isTrue){
-                me.$message({ message: "暂无修改！" , type: "warning" }) ;
-            }else{
-                isEdit = me.tableData2.filter((res, index) => { return !res.isEdit }) ;
-                isEdit.forEach((res, index) => {
-                    params.push({
-                        id: res.id || 0,
-                        company: res.scode,
-                        period: me.getPeriod($params),
-                        target: me.value,
-                        stype: "HY",
-                        fact_a: res.fact_a || 0
-                    });
-                });
-                me.$confirm('保存该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    fcattarget_add(params).then(res => {
-                        if(res.data.code === 200){
-                            me.gettableData_request() ;
-                            me.getStyleColor("reset") ;
-                            me.$message({ type: 'success', message: '保存成功!' });
+            me.tableData2.forEach(item => {
+                me.tableData3.forEach(item2 => {
+                    if(item.sname == item2.sname){
+                        if(item.fact_a == item2.fact_a){
+
                         }else{
-                            me.$message.error('保存失败！') ;
+                            isTrue = true ;
                         }
-                    });
-                }).catch(() => {
-                    me.$message({ type: 'info', message: '已取消保存' });          
-                });
+                    }
+                })
+            })
+            if(!isTrue){
+                me.$message({ message: "暂无修改!", type: "warning" }) ;
+                return false ;
             }
+            me.tableData2.forEach((res, index) => { 
+                params.push({
+                    id: res.id || 0,
+                    company: res.scode,
+                    period: me.getPeriod($params),
+                    target: me.value,
+                    stype: "HY",
+                    fact_a: res.fact_a || 0
+                });
+            });            
+            me.$confirm('保存该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                fcattarget_add(params).then(res => {
+                    if(res.data.code === 200){
+                        me.$message({ type: 'success', message: '保存成功!' });
+                        // me.readonly = true ;
+                        me.gettableData_request() ;
+                        // me.getStyleColor("reset") ;
+                    }else{
+                        me.$message.error('保存失败！') ;
+                    }
+                });
+            }).catch(() => {
+                me.$message({ type: 'info', message: '已取消保存' });          
+            });
         }
     }
 }
@@ -279,14 +290,24 @@ export default {
 </style>
 <style>
 /** 数值框输入框 */
-.data_input .el-input__inner {
-    border-top: 1px solid #fff ;
-    border-left:1px solid #fff ;
-    border-right: 1px solid #fff ;
-    border-bottom: 1px solid blue ;
-    padding: 0 15px -10px 15px;
+/* .el-input__inner */
+#inputId  {
+    border: 0px;
     border-radius: 0 ;
+    width: 100%;
     text-align: right;
+    height: 32px;
+    color: #606266;
+    font-size: 14px;
+}
+#inputId:hover {
+    background-color: #f5f7fa;
+}
+.inputId_first {
+    background-color: #fff;
+}
+.inputId_second {
+    background-color: #FAFAFA;
 }
 /** 图标手型 */
 .data_input .el-input-group__append {
