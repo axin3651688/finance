@@ -156,7 +156,7 @@
 
                     </div>
 
-                    <div class="container-right-foot" v-if="this.dialogState !== 'ck'" >
+                    <div class="container-right-foot" v-if="this.dialogState !== 'ck'">
                         <!--<el-checkbox
                                 label="指定反馈人员"
                                 name="type"
@@ -432,6 +432,14 @@
              */
             riskFeedSend(params) {
                 let _this = this;
+                if (!params.riskReportStateDtos[0].sfeedbackscontent) {
+                    _this.$message({
+                        message: "请填写反馈内容！。",
+                        type: "error"
+                    });
+                    return;
+                }
+
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
@@ -458,7 +466,7 @@
             handleCheckedChange() {
                 this.personnelListShow = !this.personnelListShow;
             },
-            publicHandler(){
+            publicHandler() {
                 this.personnelListShow = false;
             }
 
