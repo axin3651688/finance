@@ -337,7 +337,6 @@
              * @param scope
              */
             reportPageOpen(scope) {
-                debugger;
                 this.reportBackDetail = true;
                 let isFeeded = scope.row.status;
                 this.isPageReadOnly = isFeeded === '已反馈';

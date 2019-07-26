@@ -157,7 +157,7 @@
                     </div>
 
                     <div class="container-right-foot" v-if="this.dialogState !== 'ck'">
-                        <el-checkbox
+                        <!--<el-checkbox
                                 label="指定反馈人员"
                                 name="type"
                                 ref="checkBox"
@@ -165,9 +165,10 @@
                                 id="form-foot-right-check"
                                 :disabled="reportState !== 'fk'"
                                 @change="handleCheckedChange"
-                        ></el-checkbox>
+                        ></el-checkbox>-->
                         <el-button
                                 type="primary"
+                                v-if="reportState === 'fk'"
                                 @click="showPersonnelListClicked"
                         >
                             反馈上报
@@ -371,9 +372,10 @@
                     });
                     return;
                 }
+                this.personnelListShow = !this.personnelListShow;
                 // this.personnelListShow = !this.personnelListShow;
-                let _stoUser = this.reportData['stouser'];
-                this.personSureBtnClicked(null, _stoUser);
+                // let _stoUser = this.reportData['stouser'];
+                // this.personSureBtnClicked(null, _stoUser);
             },
 
 
@@ -430,6 +432,14 @@
              */
             riskFeedSend(params) {
                 let _this = this;
+                if (!params.riskReportStateDtos[0].sfeedbackscontent) {
+                    _this.$message({
+                        message: "请填写反馈内容！。",
+                        type: "error"
+                    });
+                    return;
+                }
+
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
@@ -456,7 +466,7 @@
             handleCheckedChange() {
                 this.personnelListShow = !this.personnelListShow;
             },
-            publicHandler(){
+            publicHandler() {
                 this.personnelListShow = false;
             }
 

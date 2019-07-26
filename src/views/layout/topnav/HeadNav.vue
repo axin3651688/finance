@@ -178,11 +178,11 @@
       width="30%">
       <div class="about_class">
         <span>产品信息：</span>
-        <span>智能风控防范预警系统</span>
+        <span>财务风险预警与防范系统</span>
       </div>
       <div class="about_class">
         <span>主版本号：</span>
-        <span>V2.0</span>
+        <span>V3.0</span>
       </div>
       <div class="about_class">
         <div>
@@ -194,7 +194,7 @@
         </div>
         <div>
           <span>更新版本：</span>
-          <span>V2.3.4.1</span>
+          <span>V3.3.4.1</span>
         </div>
         <div>
           <p>更新内容：</p>

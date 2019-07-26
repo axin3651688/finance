@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center;color:#606266;">目&nbsp&nbsp录</h1>
                     <div v-if="leftNode && leftNode.length > 0">
                         <el-menu :default-active="leftNode[0].id" class="el-menu-vertical-demo">
                             <el-menu-item class="el-menu-vertical_title" v-for="(item,key) in leftNode" :key="key" :index="item.id">
@@ -196,6 +196,7 @@
              * 指定的人员的下达。只有一个批示，ly说的。2019年6月12日15:36:37
              */
             personSureBtnClicked (nodes) {
+                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,allData = me.reportData.allData;
                 if(!instructionsRpt){
                     me.$message({
@@ -203,6 +204,17 @@
                         type:"warning"
                     });
                     return
+                }
+                //判断字数不能超出1000
+                if(instructionsRpt && instructionsRpt.length > 0){
+                    let instruction = instructionsRpt[0].instruction;
+                    if(instruction && instruction.length > 1000){
+                        me.$message({
+                            message:"批示内容不能超出一千字！",
+                            type:"warning"
+                        });
+                        return;
+                    }
                 }
                 me.saveInstructionsRpt(instructionsRpt,nodes,allData);
             },
@@ -416,7 +428,8 @@
                         _text = report.text;
                     let obj = {
                         id:_id,
-                        text:numCh[index + 1] + _text
+                        // text:numCh[index + 1] + _text
+                        text:_text
                     };
                     this.leftNode.push(obj);
                     // this.leftNode[_id] = _text;

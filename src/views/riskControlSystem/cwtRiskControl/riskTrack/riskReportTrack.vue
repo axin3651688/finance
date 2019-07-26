@@ -38,6 +38,7 @@
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
     import {riskReportExport} from '~api/cwtRiskControl/riskControlRequest'
+    import {getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
     import Qs from 'qs'
 
     export default {
@@ -69,10 +70,13 @@
             }
         },
         props: {
-            isPeriodNow: Boolean
+
         },
         data() {
             return {
+
+                isPeriodNow: true,
+
                 reportBackDetail: false,
                 treeData: [],
                 columns: [],
@@ -179,7 +183,18 @@
                     me.columns = res.data.columns
                 }
             });
-            this.getReportData();
+            let _this = this;
+            getGlobleControlState().then((res) => {
+                if (res.data.code === 200) {
+                    _this.isReportType = res.data.data[0].reporttype === 0;
+                    _this.isPeriodNow = res.data.data[0].periodtype === 1;
+                }
+                this.getReportData();
+            });
+
+
+
+
         },
         mounted() {
         },

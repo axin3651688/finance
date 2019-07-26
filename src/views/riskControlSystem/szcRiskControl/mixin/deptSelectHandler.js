@@ -409,6 +409,15 @@ export default {
             if (judgeParams && judgeParams.scope) {
                 company = judgeParams.scope.row.sname;
             }
+            let numCh = {
+                1: '一、',
+                2: '二、',
+                3: '三、',
+                4: '四、',
+                5: '五、',
+                6: '六、',
+                7: '七、'
+            };
             for (let i = 0; i < objItems.length; i++) {
                 //导出用到的格式。
                 let jsonItem = {
@@ -422,7 +431,7 @@ export default {
                     id: item.riskspcode,
                     show: true,
                     riskCount: 0,
-                    text: item.riskspname,
+                    text: numCh[i + 1] + item.riskspname,
                     contentUp: {
                         content: []
                     }
@@ -579,7 +588,7 @@ export default {
                     }]
                 };
             if (objItem.instructionid == 1) {
-                let cstrategy = objItem.cstrategy,
+                let cstrategy = objItem.cstrategy + "",
                     arr = cstrategy.split(",");
                 let cstrategySelect = "";
                 for (let i = 0; i < arr.length; i++) {

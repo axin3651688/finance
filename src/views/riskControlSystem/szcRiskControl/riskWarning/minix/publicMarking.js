@@ -63,14 +63,32 @@ export default {
             let params = judgeParams.params;
             groupQuery(params).then(res => {
                 if (res.data.code == 200) {
-                    me.queryBackstageDataAfterBefore(res.data.data, judgeParams);
-                    me.tableData = res.data.data;
+                    let copyDatas = me.deepCopy(res.data.data);
+                    me.queryBackstageDataAfterBefore(copyDatas, judgeParams);
+                    me.tableData = copyDatas;
                     me.queryBackstageDataAfter(res.data.data, judgeParams);
                 } else if (res.data.code == 1001) {
                     me.tableData = [];
                     me.queryBackstageDataAfter([], judgeParams);
                 }
             });
+        },
+        /**
+         * 深拷贝
+         * @param {深拷贝} obj 
+         */
+        deepCopy(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] === 'object') {
+                        result[key] = this.deepCopy(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
         },
         /**
          * 数据赋值之前。
@@ -669,7 +687,7 @@ export default {
                     let item = datas[j];
                     //月份的数据格式化。
                     for (let key in item) {
-                        if (key.indexOf('m') != -1) {
+                        if (key.indexOf('m') != -1 && typeof(item[key]) == 'number') {
                             item[key] = Math.decimalToLocalString(item[key]);
                         }
                     }
@@ -734,33 +752,33 @@ export default {
                         name: '本期数',
                         type: 'line',
                         data: arrItem.bq || [11, 11, 15, 13, 12, 13, 10, 11, 11, 15, 13, 12],
-                        markPoint: {
-                            data: [
-                                { type: 'max', name: '最大值' },
-                                { type: 'min', name: '最小值' }
-                            ]
-                        },
-                        markLine: {
-                            data: [
-                                { type: 'average', name: '平均值' }
-                            ]
-                        }
+                        // markPoint: {
+                        //     data: [
+                        //         { type: 'max', name: '最大值' },
+                        //         { type: 'min', name: '最小值' }
+                        //     ]
+                        // },
+                        // markLine: {
+                        //     data: [
+                        //         { type: 'average', name: '平均值' }
+                        //     ]
+                        // }
                     },
                     {
                         name: '上年同期',
                         type: 'line',
                         data: arrItem.sntq || [1, -2, 2, 5, 3, 2, 0, 11, 11, 15, 13, 12],
-                        markPoint: {
-                            data: [
-                                { type: 'max', name: '最大值' },
-                                { type: 'min', name: '最小值' }
-                            ]
-                        },
-                        markLine: {
-                            data: [
-                                { type: 'average', name: '平均值' }
-                            ]
-                        }
+                        // markPoint: {
+                        //     data: [
+                        //         { type: 'max', name: '最大值' },
+                        //         { type: 'min', name: '最小值' }
+                        //     ]
+                        // },
+                        // markLine: {
+                        //     data: [
+                        //         { type: 'average', name: '平均值' }
+                        //     ]
+                        // }
                     }
                 ]
             }
