@@ -82,9 +82,33 @@ export default {
             
         },
         /**
+         * 找到父节点。这个是想遍历找到的。但是有点耗性能，就废弃了。2019年7月26日10:03:35
+         */
+        findNodeOfParent_old (datas,rootItem,demoItem) {
+            let filterData = [];
+            for(let i = 0;i < datas.length;i++){
+
+            }
+        },
+        /**
+         * 这个只是针对于公司来的。
+         */
+        findNodeOfParent (datas,rootItem) {
+            let me = this,company = me.$store.getters.company,length = datas.length;
+            for(let i = 0;i < length;i ++){
+                let item = datas[i];
+                if(item.gsbm == company){
+                    rootItem = item;
+                    break;
+                }
+            }
+            return rootItem;
+        },
+        /**
          * @event 2.1树表的类型处理
          */
         array(datas){
+            debugger;
             let data = datas;
             let arr = [];
             let index = 0;
@@ -92,21 +116,25 @@ export default {
             //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
             let root, rootItem, demoItem;
             let rootArr = [];
-            if (data && data.length > 0) {
-                demoItem = data[0];
-                if (demoItem.pid) {
-                    for (let i = 1; i < data.length - 1; i++) {
-                        let eveItem = data[i];
-                        //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
-                        if (eveItem.gsbm == demoItem.pid) {
-                            demoItem = eveItem;
-                        }
-                    }
-                    rootItem = demoItem;
-                } else {
-                    rootItem = demoItem;
-                }
-            }
+            
+            //这个方法是以前老的。
+            // if (data && data.length > 0) {
+            //     demoItem = data[0];
+            //     if (demoItem.pid) {
+            //         for (let i = 1; i < data.length - 1; i++) {
+            //             let eveItem = data[i];
+            //             //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
+            //             if (eveItem.gsbm == demoItem.pid) {
+            //                 demoItem = eveItem;
+            //             }
+            //         }
+            //         rootItem = demoItem;
+            //     } else {
+            //         rootItem = demoItem;
+            //     }
+            // }
+            //新的寻找方法。
+            rootItem =  this.findNodeOfParent(datas,rootItem);
             //找到多个父节点
             for (let i = 0; i < data.length; i++) {
                 // if(i == data.length)return rows ;
