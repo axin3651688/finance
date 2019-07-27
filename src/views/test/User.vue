@@ -37,7 +37,7 @@
         </el-form>
       </div>
       <!-- 显示表格 -->
-      <el-table :data="userdata" style="width: 100%" :height="heights" border stripe id="publicTable">
+      <el-table :data="userdata" style="width: 100%" :height="heights" border stripe ref="tableData" id="publicTable">
         <el-table-column prop="R" type="index" width="50" label="序列" header-align="center" align="center"></el-table-column>
         <el-table-column
         v-for="item in tableColumn"
@@ -908,6 +908,13 @@ export default {
       this.getCompanyRight(vax) ;       // 部门数据请求
       this.getData("company", newV);
     },
+    // "searchForm.search": {
+    //   handler(nowVal, oldV){ debugger
+    //     // this.$refs.tableData.filter(nowVal);
+
+    //   },
+    //   deep: true
+    // },
     //监听修改表单变化
     "form.suser": {
       handler(nowVal, oldV) {
@@ -1746,8 +1753,8 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
-
-    handleSearchhandleSearch(search) {
+    
+    handleSearchhandleSearch(search) { //debugger
       //this.fetchRemoteData(currentPage, pageSize);
       this.blurrySelect(this.currentPage, this.pagesize, search);
     },
