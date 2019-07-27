@@ -908,13 +908,13 @@ export default {
       this.getCompanyRight(vax) ;       // 部门数据请求
       this.getData("company", newV);
     },
-    "searchForm.search": {
-      handler(nowVal, oldV){ debugger
-        // this.$refs.tableData.filter(nowVal);
+    // "searchForm.search": {
+    //   handler(nowVal, oldV){ debugger
+    //     // this.$refs.tableData.filter(nowVal);
 
-      },
-      deep: true
-    },
+    //   },
+    //   deep: true
+    // },
     //监听修改表单变化
     "form.suser": {
       handler(nowVal, oldV) {
@@ -1753,8 +1753,8 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
-
-    handleSearchhandleSearch(search) {
+    
+    handleSearchhandleSearch(search) { //debugger
       //this.fetchRemoteData(currentPage, pageSize);
       this.blurrySelect(this.currentPage, this.pagesize, search);
     },
