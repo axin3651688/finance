@@ -111,21 +111,21 @@
         {
           "text": "货币金额",
           "type":"decimal",
-          "width":"160",
+          "width":"175",
           "align":"right",
           "id": "hbzj"
         },
         {
           "text": "其中：银行存款",
           "type":"decimal",
-          "width":"160",
+          "width":"175",
           "align":"right",
           "id": "yhck"
         },
         {
           "text": "集中金额",
           "type":"decimal",
-          "width":"160",
+          "width":"174",
           "align":"right",
           "id": "jzje"
         },
@@ -178,7 +178,7 @@
     }
   ],
       "onRowClick":function(row,e,col,$vue){
-          debugger
+          // debugger
           let id = row.scode, text = row.sname ;
           if(this.drillProperties.indexOf(e.property) != -1){
             if(row.jzhs && row.jzhs>0){  
