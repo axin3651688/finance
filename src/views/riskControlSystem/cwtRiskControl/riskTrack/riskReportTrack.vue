@@ -37,8 +37,7 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
-    import {riskReportExport} from '~api/cwtRiskControl/riskControlRequest'
-    import {getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
+    import {riskReportExport, getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
     import Qs from 'qs'
 
     export default {
