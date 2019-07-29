@@ -135,6 +135,7 @@
         "type": "string",
         "width": "160",
         "align": "left",
+        "showOverflowTooltip": true,
         "id": "yy"
       }
       
