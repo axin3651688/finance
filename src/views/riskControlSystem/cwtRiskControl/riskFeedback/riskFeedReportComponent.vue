@@ -479,7 +479,6 @@
         display: flex;
         flex-direction: row;
         flex: 1;
-        /*margin-top: 20px;*/
         flex-basis: auto;
         box-sizing: border-box;
         min-width: 0;
@@ -487,9 +486,6 @@
     }
 
     .container-left-inner {
-        /*position: absolute;*/
-        /*top: 138px;*/
-
         margin-top: 50px;
         text-align: center;
         color: rgb(96, 98, 102);
@@ -501,18 +497,10 @@
 
     .container-left {
         display: flex;
-        /*flex-direction: column;*/
         justify-content: center;
-        /*align-items: center;*/
-        /*padding-top: 20px;*/
-        /*!*margin-top: 20px;*!*/
-        /*padding-bottom: 50px;*/
-        /*flex-grow: 0;*/
-        /*flex-shrink: 0;*/
         width: 300px;
         min-width: 300px;
         border: 0;
-        /*!*border-right: 1px solid;*!*/
     }
 
     .container-left .risk-items {
