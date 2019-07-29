@@ -3,7 +3,8 @@
     width: 100%;
     height: 100%;
     border: 1px solid #ccc;
-    color:#606266;
+    // color:#606266;
+    color: #303133;
 }
 /*里层的*/
 .reportComponent_div{
@@ -68,7 +69,8 @@
     letter-spacing: 10px;
     text-align: center;
     margin-top: 50px;
-    color:#606266;
+    // color:#606266;
+    color: #303133;
 }
 /*
  * 正文部分（标题）的样式
@@ -127,7 +129,7 @@
     font-weight: 550 ;
     font-size: 18px;
     color: #303133;
-    font-family: '黑体';
+    font-family: '微软雅黑';
 }
 .textTitle {
     margin-left: 20px;
@@ -136,7 +138,7 @@
  * 正文部分（社会责任风险一行）的有颜色样式
  */  
 .container_main_risk_color_one {
-    font-family: '宋体';
+    font-family: '微软雅黑';
     color: #fff;
     font-size: 14px;
     padding: 5px 30px 5px 30px;
@@ -146,7 +148,7 @@
     cursor: pointer;
 }
 .container_main_risk_color_two {
-    font-family: '宋体';
+    font-family: '微软雅黑';
     color: #fff;
     font-size: 14px;
     padding: 5px 30px 5px 30px;

@@ -19,6 +19,7 @@
                 node-key="id"
                 check-strictly
                 :filter-node-method="filterNode"
+                @check-change="checkChange"
                 ref="tree2">
                 </el-tree>
             <div class="btn-sure">
@@ -66,6 +67,15 @@ export default {
          */
         resetChecked(){
             this.$refs.tree2.setCheckedKeys([]);
+        },
+        /**
+         * @event 节点选中状态发生变化时的回调
+         */
+        checkChange(data, checked, obj){
+            if(checked == true){
+                this.checkedId = data.id;
+                this.$refs.tree2.setCheckedNodes([data]);
+            }
         },
         /**
          * @event 确定按钮
