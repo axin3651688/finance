@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center;color:#606266;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center;color: #303133;">目&nbsp&nbsp录</h1>
                     <div v-if="leftNode && leftNode.length > 0">
                         <el-menu :default-active="leftNode[0].id" class="el-menu-vertical-demo">
                             <el-menu-item class="el-menu-vertical_title" v-for="(item,key) in leftNode" :key="key" :index="item.id">

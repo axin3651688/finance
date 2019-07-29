@@ -150,7 +150,7 @@
         padding: 10px 0 10px 0;
         font-size: 20px;
         font-weight: 200;
-        color: #606266 ;
+        color: #303133;
     }
 
     .container-top {
@@ -178,7 +178,7 @@
         font-weight: 550;
         font-size: 18px;
         color: #303133;
-        font-family: '黑体';
+        font-family: '微软雅黑';
     }
 
     .left_2 {
@@ -188,7 +188,7 @@
         font-family: 'Arial Normal', 'Arial';
         border-radius: 10px;
         color: white; */
-        font-family: '宋体';
+        font-family: '微软雅黑';
         color: #fff;
         font-size: 14px;
         padding: 5px 30px 5px 30px;
@@ -211,7 +211,7 @@
         font-weight: 550;
         font-size: 18px;
         color: #303133;
-        font-family: '黑体'
+        font-family: '微软雅黑'
     }
 
     .container-center p {
@@ -221,7 +221,7 @@
         color: #333;
         padding: 5px;
         line-height: 30px; */
-        color: #606266;
+        color: #303133;
         margin-bottom: 20px;
         text-indent: 2em;
         line-height: 25px;

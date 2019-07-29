@@ -86,7 +86,7 @@
 </script>
 <style scoped>
     .reportHeader {
-        color: #606266 ;
+        color: #303133;
     }
     .report-title {
         /* padding: 20px;
