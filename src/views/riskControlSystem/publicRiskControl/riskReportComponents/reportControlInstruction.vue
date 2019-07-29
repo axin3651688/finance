@@ -2,8 +2,8 @@
     <div>
         <div class="top-form-contents" style="margin-top: 30px">
             <span class="top_span">领导批示</span>
-            <div class="top-form-contents" style="margin-bottom: 0;width:80%;">
-                <p style="min-width: 98px;width: 100px;margin-left: 30px">风险策略为：</p>
+            <div class="top-form-contents" style="margin-bottom: 0;width:94%;">
+                <p style="min-width: 98px;width: 100px;margin-left: 25px">风险策略为：</p>
                 <template v-for="(itemCnt,index) in contentDown.content">
                     <el-select class="select_instruc" v-model="instructionValues" multiple placeholder="请选择" :key="index" :disabled="selectDisabled" @change="changeOption(instructionValues,itemCnt,contentDown)">
                         <el-option
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="top-form-contents">
-            <span style="min-width: 194px;width: 194px"></span>
+            <span style="min-width: 193px;width: 193px"></span>
             <el-input type="textarea" class="textarea_input" :rows="3" v-model="instruction" :disabled="instructionCnt"></el-input>
         </div>
     </div>
@@ -103,7 +103,7 @@ export default {
     }
     .select_instruc {
         // min-width: 300px;
-        width: 60%;
+        width: 100%;
     }
     .textarea_input {
         margin-left: 8px;
@@ -113,6 +113,7 @@ export default {
         font-size: 18px;
         color: #303133;
         font-family: '黑体';
+        width: 80px;
     }
     // .top-form-contents span {
     //     font-size: 16px;
