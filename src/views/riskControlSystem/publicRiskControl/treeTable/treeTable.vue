@@ -235,3 +235,23 @@
         height: 32px;
     }
 </style>
+<style>
+    /* 表头居中显示 */
+    .el-table th {
+        text-align: center !important;
+    }
+    /* 表头背景颜色的设定 */
+    .has-gutter tr th {
+        background-color: rgb(240, 248, 255) !important;
+        color: #606266;
+    }
+    /** 这是对表行的行高设置*/
+    .el-table__body tr, .el-table__body td {
+        padding: 0;
+        height: 32px;
+    }
+    /* 小尾巴背景化 */
+    .has-gutter tr .gutter {
+        background-color : #F0F2F5 !important;
+    }
+</style>
