@@ -314,3 +314,17 @@ export function getAllDepartment(params) {
     })
 }
 
+
+/**
+ * 获取第三方数据
+ */
+export function findThirdPartData1(params) {
+    params.cubeId = 4;
+    return request({
+        method: "post",
+        url: params.url || "/zjb/zjb/find_cube_map/",
+        responseType:'blob',
+        params: params
+    })
+}
+
