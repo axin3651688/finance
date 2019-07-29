@@ -34,9 +34,9 @@
         class="tree_table"
         id="publicTable"
         >
-            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed">
-                <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align">
-                    <el-table-column v-for="tool in too.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align">
+            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed" :show-overflow-tooltip="items.showOverflowTooltip">
+                <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align" :show-overflow-tooltip="too.showOverflowTooltip">
+                    <el-table-column v-for="tool in too.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align" :show-overflow-tooltip="tool.showOverflowTooltip">
                         <template slot-scope="scope">
                             <el-tooltip :content="getCellValues(scope,tool)" placement="right" effect="light">
                                 <span>{{ getCellValues(scope,tool) }}</span>
@@ -56,9 +56,10 @@
                         <i v-if="scope.row._expanded" class="iconfont icon-minus-square" aria-hidden="true"></i>
                     </span>
                     <span v-else-if="index===0" class="ms-tree-space"></span>
-                    <el-tooltip :content="getCellValues(scope,items)" placement="right" effect="light">
+                    <el-tooltip v-if="!items.showOverflowTooltip" :content="getCellValues(scope,items)" placement="right" effect="light">
                         <span>{{ getCellValues(scope,items) }}</span>
                     </el-tooltip>
+                    <span v-else>{{ getCellValues(scope,items) }}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -183,7 +184,7 @@ export default {
             record._expanded = !record._expanded
         },
         // 数据处理（千分位、两位小数）
-        getCellValues(value,vax){
+        getCellValues(value,vax){ 
             let num ;
             if(vax.type != "decimal" )num = value.row[vax.id] ;
             if(vax.type == "decimal" ){

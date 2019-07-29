@@ -88,7 +88,7 @@
             {
                 "text": "公司名称",
                 "type": "string",
-                "width": "300",
+                "width": "360",
                 "fixed": true,
                 "id": "sname"
             },
@@ -126,6 +126,14 @@
                 "align": "right",
                 "conversion": "%",
                 "id": "jzd"
+            },
+            {
+                "text": "原因",
+                "type": "string",
+                "width": "160",
+                "align": "left",
+                "showOverflowTooltip": true,
+                "id": "yy"
             }
         ],
         "levelProperties":{scode:"_level"} //加缩进 可选 table
