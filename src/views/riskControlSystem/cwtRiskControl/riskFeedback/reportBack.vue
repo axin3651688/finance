@@ -286,7 +286,6 @@
                          */
                         let datas = res.data.data;
                         let _operations = [];
-                        debugger;
                         datas.forEach((data) => {
                             if (data.operation) {
 
@@ -593,7 +592,6 @@
              * 报告反馈退回事件
              */
             reportFeedBackEvent() {
-                debugger;
                 let _this = this;
                 let params = this.getTUTXParams();
                 params.sisfeedback = '2';
