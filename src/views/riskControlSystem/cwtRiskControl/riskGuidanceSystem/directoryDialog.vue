@@ -795,6 +795,7 @@ export default {
             })
             riskguidecontentDelete(params).then(res => {
                 if(res.data.code === 200) {
+                    me.selectionA = [] ;
                     me.$message({ message: res.data.msg, type: "success" }) ;
                     me.newThis.directoryRequest() ;
                     me.directoryRequest() ;
