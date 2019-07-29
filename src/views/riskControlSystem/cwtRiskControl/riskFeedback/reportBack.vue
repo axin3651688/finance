@@ -4,6 +4,7 @@
                 border
                 :data.sync="treeData"
                 :columns.sync="columns"
+                :tableHeight="tableHeight"
                 v-if="!reportBackDetail"
                 @buttonHandler="buttonHandler"
         >
@@ -81,6 +82,7 @@
         },
         data() {
             return {
+                tableHeight:500,
                 reportBackDetail: false,
                 treeData: [],
                 columns: [],
@@ -974,6 +976,7 @@
     .container_header {
         width: 100%;
         height: 60px;
+        margin-top: 20px;
         line-height: 60px;
         text-align: right;
         background-color: #D3DCE6;

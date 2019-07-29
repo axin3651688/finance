@@ -7,7 +7,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 26px;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom:50px;">目&nbsp&nbsp录</h1>
                     <div
                             v-for="(value, key, index) in leftNode"
                             :key="key"
@@ -31,52 +31,52 @@
                         </div>
                         <span class="zs">总述</span>
                         <p class="describe">
-                            截止2019年3月份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
+                            截止{{this.period}}份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
                             <template v-if="riskCount.allRiskCount > 0">
                                 从风险类型来看，其中
                             </template>
 
                             <template v-if="riskCount.riskStypeCountArray.cwfx > 0">
-                                财务风险 {{riskCount.riskStypeCountArray.cwfx}} 条，
+                                财务风险 {{riskCount.riskStypeCountArray.cwfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.flfx > 0">
-                                法律风险 {{riskCount.riskStypeCountArray.flfx}} 条，
+                                法律风险 {{riskCount.riskStypeCountArray.flfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.ljfx > 0">
-                                廉洁风险 {{riskCount.riskStypeCountArray.ljfx}} 条，
+                                廉洁风险 {{riskCount.riskStypeCountArray.ljfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.scfx > 0">
-                                市场风险 {{riskCount.riskStypeCountArray.scfx}} 条，
+                                市场风险 {{riskCount.riskStypeCountArray.scfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.syfx > 0">
-                                声誉风险 {{riskCount.riskStypeCountArray.syfx}} 条，
+                                声誉风险 {{riskCount.riskStypeCountArray.syfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.yyfx > 0">
-                                运营风险 {{riskCount.riskStypeCountArray.yyfx}} 条，
+                                运营风险 {{riskCount.riskStypeCountArray.yyfx}} 条；
                             </template>
                             <template v-if="riskCount.riskStypeCountArray.zlfx > 0">
-                                战略风险 {{riskCount.riskStypeCountArray.zlfx}} 条，
+                                战略风险 {{riskCount.riskStypeCountArray.zlfx}} 条；
                             </template>
 
 
                             <template v-if="riskCount.allRiskCount > 0">
-                                其中
+                                从风险等级来看，
                             </template>
 
                             <template v-if="riskCount.riskLevelCountArray.level_1 > 0">
-                                可接受风险 {{riskCount.riskLevelCountArray.level_1}} 条，
+                                可接受风险 {{riskCount.riskLevelCountArray.level_1}} 条；
                             </template>
                             <template v-if="riskCount.riskLevelCountArray.level_2 > 0">
-                                一般风险 {{riskCount.riskLevelCountArray.level_2}} 条，
+                                一般风险 {{riskCount.riskLevelCountArray.level_2}} 条；
                             </template>
                             <template v-if="riskCount.riskLevelCountArray.level_3 > 0">
-                                中等风险 {{riskCount.riskLevelCountArray.level_3}} 条，
+                                中等风险 {{riskCount.riskLevelCountArray.level_3}} 条；
                             </template>
                             <template v-if="riskCount.riskLevelCountArray.level_4 > 0">
-                                重大风险 {{riskCount.riskLevelCountArray.level_4}} 条，
+                                重大风险 {{riskCount.riskLevelCountArray.level_4}} 条；
                             </template>
                             <template v-if="riskCount.riskLevelCountArray.level_5 > 0">
-                                巨大风险 {{riskCount.riskLevelCountArray.level_5}} 条，
+                                巨大风险 {{riskCount.riskLevelCountArray.level_5}} 条；
                             </template>
                         </p>
                     </div>
@@ -84,10 +84,10 @@
                     <div class="container-right-center">
 
 
-                        <template v-for="(riskfeed, key) in riskFeedDataList">
+                        <template v-for="(riskfeed, key, index) in riskFeedDataList">
 
                             <div class="container-right-loop-title" :id="key">
-                                {{riskfeed.risksptype}}
+                                {{numberToChineseString(index+1)}}、{{riskfeed.risksptype}}
                             </div>
 
                             <div class="container-right-loop">
@@ -482,25 +482,25 @@
         flex-basis: auto;
         box-sizing: border-box;
         min-width: 0;
-        border: 1px solid;
+        border: 2px solid #CCCCCC;
     }
 
     .container-left-inner {
-        position: absolute;
-        top: 138px;
+        margin-top: 50px;
+        text-align: center;
+        color: rgb(96, 98, 102);
+    }
+
+    .container-left-inner a {
+        color: rgb(96, 98, 102);
     }
 
     .container-left {
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        /*padding-top: 50px;*/
-        padding-bottom: 50px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: 250px;
-        /*border-right: 1px solid;*/
+        width: 300px;
+        min-width: 300px;
+        border: 0;
     }
 
     .container-left .risk-items {
@@ -513,7 +513,7 @@
     .container-right {
         width: 100%;
         padding: 20px;
-        border-left: 1px solid;
+        border: 1px solid #CCCCCC;
     }
 
     .report-title {
@@ -522,7 +522,8 @@
         font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-style: normal;
-        font-size: 20px;
+        font-size: 24px;
+        color: #303133;
     }
 
     .zs {
@@ -531,12 +532,13 @@
         font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-style: normal;
-        color: #000000;
+        color: #303133;
     }
 
     .describe {
         margin-top: 10px;
-        line-height: 50px;
+        line-height: 40px;
+        text-indent: 32px;
         font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-style: normal;

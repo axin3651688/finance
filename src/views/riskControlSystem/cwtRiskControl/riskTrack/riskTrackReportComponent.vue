@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 26px;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 50px;">目&nbsp&nbsp录</h1>
                     <div
                             v-for="(value, key, index) in leftNode"
                             :key="key"
@@ -84,11 +84,11 @@
                     <div class="container-right-center">
 
 
-                        <template v-for="(riskfeed, key) in riskFeedDataList">
+                        <template v-for="(riskfeed, key, index) in riskFeedDataList">
 
 
                             <div class="container-right-loop-title" :id="key">
-                                {{riskfeed.risksptype}}
+                                {{numberToChineseString(index+1)}}、{{riskfeed.risksptype}}
                             </div>
 
                             <div class="container-right-loop">
@@ -361,25 +361,21 @@
         flex-basis: auto;
         box-sizing: border-box;
         min-width: 0;
-        border: 1px solid;
+        border: 2px solid #CCCCCC;
     }
 
     .container-left-inner {
-        position: absolute;
-        top: 138px;
+        margin-top: 50px;
+        text-align: center;
+        color: rgb(96, 98, 102);
     }
 
     .container-left {
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        /*padding-top: 50px;*/
-        padding-bottom: 50px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: 250px;
-        /*border-right: 1px solid;*/
+        width: 300px;
+        min-width: 300px;
+        border: 0;
     }
 
     .container-left .risk-items {
@@ -392,7 +388,7 @@
     .container-right {
         width: 100%;
         padding: 20px;
-        border-left: 1px solid;
+        border: 1px solid #CCCCCC;
     }
 
     .report-title {
@@ -401,7 +397,8 @@
         font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-style: normal;
-        font-size: 20px;
+        font-size: 24px;
+        color: #303133;
     }
 
     .zs {
@@ -410,12 +407,13 @@
         font-family: 'Arial Negreta', 'Arial';
         font-weight: 700;
         font-style: normal;
-        color: #000000;
+        color: #303133;
     }
 
     .describe {
         margin-top: 10px;
-        line-height: 50px;
+        line-height: 40px;
+        text-indent: 32px;
         font-family: '微软雅黑 Regular', '微软雅黑';
         font-weight: 400;
         font-style: normal;
