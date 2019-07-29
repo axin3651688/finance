@@ -2,6 +2,13 @@
     <div>
         <div id="echart-content"></div>
     </div>
+
+    <!--<div class="echart-content" >-->
+        <!--<chart-->
+                <!--class="chart"-->
+                <!--:options.sync="option"/>-->
+    <!--</div>-->
+
 </template>
 
 <script>
@@ -22,7 +29,41 @@
             }
         },
         data() {
-            return {}
+            return {
+                option:{
+                    /*title : {
+                        text: '某站点用户访问来源',
+                        subtext: '纯属虚构',
+                        x:'center'
+                    },*/
+                    // height_s: '500px',
+                    tooltip: {
+                        trigger: 'item',
+                        // formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    /*legend: {
+                        orient: 'vertical',
+                        bottom: 'bottom',
+                        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                    },*/
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: '70%',
+                            center: ['50%', '70%'],
+                            data: echartData,
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
         },
         created() {
         },
@@ -59,6 +100,7 @@
                         subtext: '纯属虚构',
                         x:'center'
                     },*/
+                    // height_s: '500px',
                     tooltip: {
                         trigger: 'item',
                         // formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -72,8 +114,8 @@
                         {
                             name: '访问来源',
                             type: 'pie',
-                            radius: '55%',
-                            center: ['50%', '50%'],
+                            radius: '60%',
+                            center: ['65%', '60%'],
                             data: echartData,
                             itemStyle: {
                                 emphasis: {
@@ -93,7 +135,7 @@
 
 <style scoped>
     #echart-content {
-        width: 400px;
-        height: 400px;
+        width: 500px;
+        height: 500px;
     }
 </style>

@@ -8,7 +8,7 @@
                         v-model="assortSelectedValue.sname"
                         placeholder="请选择"
                         @change="assortSelect"
-                >
+                 value="">
                     <el-option
                             v-for="item in assortOptions"
                             :key="item.scode"
@@ -24,7 +24,7 @@
                         v-model="departmentSelectedValue.sname"
                         placeholder="请选择"
                         @change="departmentSelect"
-                >
+                 value="">
                     <el-option
                             v-for="item in departmentOptions"
                             :key="item.scode"
@@ -339,7 +339,7 @@
 
     .center-echart {
         /*border: 1px solid red;*/
-        width: 400px;
+        width: 700px;
         margin-right: 10px;
 
     }
