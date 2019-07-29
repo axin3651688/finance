@@ -157,7 +157,7 @@ export default {
             isAlertShow: false, // 用来显示警告的（上报状态隐藏/ 查看状态显示）
             directory: [] ,     // 存放目录数据的
             gradeData: [] ,     // 存放等级用的
-            numArray: ["一、","二、","三、","四、","五、","六、","七、"] ,
+            numArray: ["一、","二、","三、","四、","五、","六、","七、","八、","九、","十、","十一、","十二、"] ,
             textBody: "",
             textBody2: "",
             html2: "",          // 没有数据的提示文字
@@ -276,9 +276,9 @@ export default {
             // 获取从父组件传递过来的表格信息数据
             let rowData = this.dataSource.row.row ;
             // 生成文字（正文标题）
-            this.textTitle = rowData.company ;
-            this.textBody = rowData.company + '' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ;
-            this.textBody2= rowData.company + '' + '<br>' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ; // 导出专用
+            this.textTitle = rowData.label ;
+            this.textBody = rowData.label + '' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ;
+            this.textBody2= rowData.label + '' + '<br>' + this.dataSource.year + '年' + this.dataSource.month + '月风险报告' ; // 导出专用
             // 根据风险类型查出风险几条 ；
             let directory_text = mini.getReportOverviewText(this.directory) ; 
             // 根据风险等级查出风险几条 ；

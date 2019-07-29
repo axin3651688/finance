@@ -625,7 +625,7 @@ export default {
         /**
          * ()复选框点击事件-当选择项发生变化时会触发该事件
          */
-        handleSelectionChange(selection) {  //debugger
+        handleSelectionChange(selection) { debugger
             let me = this ;
             if (selection.length === 0) { // 判断selection是否有值存在
                 return false ;
@@ -645,7 +645,7 @@ export default {
                     // 第二级
                     if(me.number2 == 2)me.$refs.multipleTableB.toggleRowSelection(row, selected);
                     // 第三级
-                    if(me.number2 == 2)me.$refs.multipleTableC.toggleRowSelection(row, selected);
+                    if(me.number2 == 3)me.$refs.multipleTableC.toggleRowSelection(row, selected);
                 })
                 me.selectionA = selection.filter((res, index) => { return index == len }) ; ;
             }
@@ -661,26 +661,27 @@ export default {
         /**
          * ()删除按钮
          */
-        deleteClick() { //debugger
-            let cc = this.newThis.content ;
-            let dd = cc.some(res => { return res.pid === this.selectionA[0].id }) ;
+        deleteClick() { debugger
+            let me = this ;
+            let cc = me.newThis.content ;
+            let dd = cc.some(res => { return res.pid === me.selectionA[0].id }) ;
             if(dd){
-                this.$message('存在下级，无法删除！') ;
+                me.$message('存在下级，无法删除！') ;
                 return false ;
             }
-            if(this.selectionA.length > 0) {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            if(me.selectionA.length > 0) {
+                me.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     // 一级内容删除接口
-                    this.riskguidecontentDelete_request() ;
+                    me.riskguidecontentDelete_request() ;
                 }).catch(() => {
-                    this.$message({ type: 'info', message: '已取消删除' });          
+                    me.$message({ type: 'info', message: '已取消删除' });          
                 });
             } else {
-                this.$message({ message: "请选择要删除的内容！", type: "warning" }) ;
+                me.$message({ message: "请选择要删除的内容！", type: "warning" }) ;
             }
         },
         /**
