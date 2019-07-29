@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <el-form
                 ref="form"
                 :model="formData"
@@ -62,7 +63,13 @@
             </el-row>
 
             <div class="foot-button">
-                <el-button @click="onSubmit" type="primary">确定</el-button>
+                <el-button
+                        @click="onSubmit"
+                        type="primary"
+                        v-loading.fullscreen.lock="fullscreenLoading"
+                >
+                    确定
+                </el-button>
                 <el-button @click="pageClose">取消</el-button>
             </div>
 
@@ -112,7 +119,9 @@
 
                 autoUpload: false,
 
-                dataAddSuccess: false
+                dataAddSuccess: false,
+
+                fullscreenLoading: false
             }
         },
         created() {
@@ -160,6 +169,7 @@
                     return;
                 }
                 _this.$refs.upload.submit();
+                _this.fullscreenLoading = true;
 
             },
 
@@ -193,21 +203,22 @@
              * 上传成功的回调
              */
             onSuccess(ee) {
+                let _this = this;
                 if (ee.code === '0') {
-                    this.$message({
+                    _this.$message({
                         message: '添加失败',
                         type: 'error'
                     });
                 } else {
-                    this.$message({
+                    _this.$message({
                         message: '添加成功',
                         type: 'success'
                     });
-                    this.$emit("addSuccess", 'systemAdd');
-                    this.$emit("pageClose", 'systemAdd');
+                    _this.$emit("addSuccess", 'systemAdd');
+                    _this.$emit("pageClose", 'systemAdd');
                 }
 
-
+                _this.fullscreenLoading = false;
             },
 
             /**
