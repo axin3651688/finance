@@ -229,4 +229,9 @@
             overflow-y: auto !important;
         }
     }
+    /** 这是对表行的行高设置*/
+    .el-table__body tr, .el-table__body td {
+        padding: 0;
+        height: 32px;
+    }
 </style>
