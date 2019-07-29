@@ -17,6 +17,7 @@
                     :filter-node-method="filterNode"
                     :check-strictly="true"
                     :default-checked-keys="this.defalutCheckedKey"
+                    @check="nodeClick"
                     ref="tree"
                     :props="defaultProps">
             </el-tree>
@@ -159,7 +160,11 @@
              * @author szc 2019年5月22日14:30:25
              */
             parseTreeData(dptUserConfig, data) {
-                let me = this, objRes = {};
+                let me = this, objRes = {},userName = me.$store.getters.user.user.userName;
+                //过滤掉自己，因为自己不能批示给自己。
+                data = data.filter(item => {
+                    return item.struename != userName;
+                });
                 if (data && data.length > 0) {
                     data.forEach(item => {
                         if (!objRes[item.scode]) {
@@ -215,6 +220,17 @@
                         _defaultChecked.push(key);
                     })
                 }
+            },
+            /**
+             * 节点点击。
+             */
+            nodeClick (data,node) {
+                let me = this;
+                let list = me.$refs["tree"].getCheckedKeys();
+                list = list.filter(item => {
+                    return item == data.id;
+                });
+                me.$refs["tree"].setCheckedKeys(list);
             },
             /**
              * 关闭人员选择框。

@@ -127,6 +127,14 @@ import {
                     period = year + "0" + month;
                 }
                 return period;
+            },
+            /**
+             * 节点点击。
+             */
+            nodeClick () {
+                debugger;
+                let me = this;
+                me.$refs["tree"].setCheckedNodes([]);
             }
         }
     }
