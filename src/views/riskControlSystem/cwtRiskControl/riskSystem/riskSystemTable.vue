@@ -13,7 +13,8 @@
             >
                 <el-table-column
                         type="selection"
-                        width="55">
+                        :align="right"
+                        width="50">
                 </el-table-column>
                 <template v-for="(item,index) in columns">
                     <el-table-column
@@ -50,7 +51,7 @@
                                         size="mini"
                                         @click="suggestAddClicked(scope)"
                                 >
-                                    添加
+                                    添加建议
                                 </el-button>
                             </template>
 
