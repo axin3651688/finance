@@ -27,6 +27,7 @@
                 :key="column.value" 
                 :label="column.text"
                 :width="column.width"
+                :show-overflow-tooltip="true"
                 header-align="center"
                 :align="column.align || 'center'">
                 <template slot-scope="scope">

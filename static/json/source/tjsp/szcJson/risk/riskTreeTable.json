@@ -14,17 +14,16 @@
         },
         {
             "text": "上报人",
-            "value": "sreportuser",
-            "width": 200
+            "value": "sreportuser"
         },
         {
             "text": "上报时间",
-            "value": "sreporttime",
-            "width": 200
+            "value": "sreporttime"
         },
         {
             "text": "操作",
-            "value": "operation"
+            "value": "operation",
+            "width": 200
         }
     ],
     "rows": [{

@@ -217,6 +217,14 @@
                 }
             },
             /**
+             * 节点点击。
+             */
+            nodeClick () {
+                debugger;
+                let me = this;
+                me.$refs["tree"].setCheckedNodes([]);
+            },
+            /**
              * 关闭人员选择框。
              */
             closeHandler() {
