@@ -25,7 +25,17 @@
         </el-form>
         <el-form :inline="true" :model="searchForm" class="user-form-inline" style="float: right">
           <el-form-item>
-            <el-input v-model="searchForm.search" placeholder="用户名/真实姓名模糊搜索"></el-input>
+            <!-- 
+              1、如果表单里有一个type=”submit”的按钮，回车键生效。 
+              2、如果表单里只有一个type=”text”的input，不管按钮是什么type，回车键生效。 
+              3、如果按钮不是用input，而是用button，并且没有加type，IE下默认为type=button，FX默认为type=submit。 
+              4、其他表单元素如textarea、select不影响，radio checkbox不影响触发规则，但本身在FX下会响应回车键，在IE下不响应。 
+              5、type=”image”的input，效果等同于type=”submit”，不知道为什么会设计这样一种type，不推荐使用，应该用CSS添加背景图合适些。 
+                 实际应用的时候，要让表单响应回车键很容易，保证表单里有个type=”submit”的按钮就行。而当只有一个文本框又不希望响应回车键怎么办呢？
+                 我的方法有点别扭，就是再写一个无意义的文本框，隐藏起来。根据第3条规则，我们在用button的时候，尽量显式声明type以使浏览器表现一致。 
+             -->
+            <el-input v-show="false"></el-input>
+            <el-input v-model="searchForm.search" placeholder="用户名/真实姓名模糊搜索" @keyup.enter.native="handleSearchhandleSearch(searchForm.search)"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" plain icon="el-icon-search" @click="handleSearchhandleSearch(searchForm.search)" ></el-button>
@@ -1005,6 +1015,9 @@ export default {
     }
   },
   methods: {
+    doFilter(scope) {
+      debugger
+    },
     // sjz\
     getDisabled(scope){
       // debugger
