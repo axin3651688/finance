@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="risk-feed-back-top">
-            <el-tabs type="border-card">
+            <!--<el-tabs type="border-card">
                 <el-tab-pane label="风险反馈" v-if="!this.isReportType">
                     <risk-back
                             :isPeriodNow="isPeriodNow"
@@ -12,7 +12,23 @@
                             :isPeriodNow="isPeriodNow"
                     ></report-back>
                 </el-tab-pane>
-            </el-tabs>
+            </el-tabs>-->
+
+
+            <!--<el-tabs type="border-card">-->
+                <div  v-if="!this.isReportType">
+                    <risk-back
+                            :isPeriodNow="isPeriodNow"
+                    ></risk-back>
+                </div>
+                <div  v-if="this.isReportType">
+                    <report-back
+                            :isPeriodNow="isPeriodNow"
+                    ></report-back>
+                </div>
+            <!--</el-tabs>-->
+
+
         </div>
     </div>
 </template>
