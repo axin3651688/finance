@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-flex-chart [chartType]="'Scatter'" [itemFormatter]="customFormatter">
+        <wj-flex-chart-axis wjProperty="axisY" [axisLine]="true">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-axis wjProperty="axisX" [axisLine]="true">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series [name]="'Series'" [itemsSource]="data" [bindingX]="'x'" [binding]="'y'">
+        </wj-flex-chart-series>
+    </wj-flex-chart>
+</div>

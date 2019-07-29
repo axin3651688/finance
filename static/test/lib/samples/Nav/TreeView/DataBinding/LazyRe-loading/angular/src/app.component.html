@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-tree-view #tvLazyLoadOData [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"
+        [isContentHtml]=true [allowDragging]=true [expandOnClick]=false [autoCollapse]=false
+        [lazyLoadFunction]="lazyLoadFunction" (isCollapsedChanging)="onIsCollapsedChanging($event)">
+    </wj-tree-view>
+</div>

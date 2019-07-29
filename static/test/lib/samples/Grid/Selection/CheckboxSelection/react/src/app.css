@@ -1,0 +1,27 @@
+/* fixed grid height */
+.wj-flexgrid {
+    height: 350px;
+}
+
+/* some extra cell padding */
+.wj-flexgrid .wj-cell {
+    padding: 12px;
+}
+
+/* replace selection highlight with a dotted border */
+.wj-flexgrid .wj-cells .wj-cell.wj-state-selected {
+    background: inherit;
+    color: inherit;
+}
+
+.wj-flexgrid.wj-state-focused .wj-cells .wj-cell.wj-state-selected {
+    border: 2px solid #7099de;
+    padding: 10px;
+}
+
+/* selected rows */
+.wj-flexgrid:not(.wj-state-focused) .wj-cells .wj-row[aria-selected=true] .wj-cell,
+.wj-flexgrid .wj-cells .wj-row[aria-selected=true] .wj-cell:not(.wj-state-selected) {
+    background: rgba(0, 0, 200, .5);
+    color: white;
+}

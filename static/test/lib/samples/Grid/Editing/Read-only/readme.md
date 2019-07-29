@@ -1,0 +1,4 @@
+Read-Only, Required Columns
+===========================
+
+You can disable editing at the grid, column, or row levels using the **isReadOnly** property of the grid, column, or row objects. You can also disable editing for specific cells using the **cellEditStarting** event. You can use the column's **isRequired** property to determine whether empty/null values should be allowed for that column. The grid below allows prevents users from entering empty values for the 'Country' column, and allows them to delete the content of the numeric columns. The grid also uses the **beginningEdit** event to prevent users from editing items that are overdue.

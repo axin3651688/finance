@@ -1,0 +1,25 @@
+.wj-flexchart {
+    height: 600px;
+    width: 600px;
+    margin: 10px 0;
+}
+
+body {
+    margin-bottom: 24pt;
+}
+
+#plotSelection {
+    background-color:rgba(85, 85, 85, 0.05);
+    border:2px dashed #808080;
+    position:absolute;
+    display:block;
+    left:0;
+    top:0;
+    pointer-events:none;
+    visibility: hidden;
+}
+
+.wj-flexchart .wj-state-selected {
+    stroke-width: 20px;
+    stroke-dasharray: none;
+}

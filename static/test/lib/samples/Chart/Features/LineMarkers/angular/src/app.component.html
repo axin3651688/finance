@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="lines">Lines: </label>
+        <wj-combo-box [(text)]="lines" [itemsSource]="linesData"></wj-combo-box><br>
+        <label for="interaction">Interaction: </label>
+        <wj-combo-box [(text)]="interaction" [itemsSource]="interactionData"></wj-combo-box>
+
+        <wj-flex-chart #theChart chartType="Line" bindingX="date" tooltipContent="" [itemsSource]="data">
+            <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+            <wj-flex-chart-series binding="value" name="Value"></wj-flex-chart-series>
+            <wj-flex-chart-axis wjProperty="axisY" [majorGrid]="false"></wj-flex-chart-axis>
+            <wj-flex-line-marker [lines]="lines" [interaction]="interaction" [isVisible]="lmVisible" [content]="markerContent"></wj-flex-line-marker>
+        </wj-flex-chart>
+    </div>
+</div>

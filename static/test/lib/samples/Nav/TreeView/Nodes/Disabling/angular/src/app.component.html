@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <button id="btnDisableNode" class="btn btn-default" (click)="onDisableNodeClick()">
+        Disable Selected Node
+    </button>
+    <button id="btnEnableAllNodes" class="btn btn-default" (click)="onEnableAllNodes()">
+        Enable All Nodes
+    </button>
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"></wj-tree-view>
+</div>

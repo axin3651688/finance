@@ -1,0 +1,16 @@
+.wj-flexchart {
+    height: 300px;
+}
+
+.chart-tip td {
+    text-align: right;
+}
+
+.chart-tip td:first-child {
+    font-weight: bold;
+    padding-right: 12px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <label for="search">Search: </label>
+    <wj-auto-complete #searchAutoComplete [itemsSource]="autoCompleteData" [selectedIndex]=-1 [displayMemberPath]="'path'"
+        [searchMemberPath]="keywords" (selectedIndexChanged)="onSelectedIndexChanged(searchAutoComplete)"></wj-auto-complete>
+    <wj-tree-view #theTree [displayMemberPath]="'header'" [childItemsPath]="'items'"></wj-tree-view>
+</div>

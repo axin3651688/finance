@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <wj-flex-chart #chart [itemsSource]="data" [header]="'CPU Utilization'" [bindingX]="'x'" [chartType]="'Line'">
+        <wj-flex-chart-legend [position]="'None'"></wj-flex-chart-legend>
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [position]="'None'"></wj-flex-chart-axis>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'Utilization(%)'" [min]="0" [max]="100">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'y'"></wj-flex-chart-series>
+    </wj-flex-chart>
+</div>

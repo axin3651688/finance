@@ -1,0 +1,28 @@
+/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+////////////////////////////////////////////////////////////////
+// vars theme (testing CSS variables)
+//
+
+body {
+    --mdl-primary: red;
+    --mdl-primary-light: pink;
+    --mdl-accent: green;
+}
+
+$mdl-primary: var(--mdl-primary);
+$mdl-primary-light: var(--mdl-primary-light);
+$mdl-accent: var(--mdl-accent);
+
+@import "wijmo.theme.material.scss";

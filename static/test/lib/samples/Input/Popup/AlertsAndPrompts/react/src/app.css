@@ -1,0 +1,13 @@
+label {
+    width: 90px;
+    text-align: right;
+    margin-right: 6px;
+}
+
+.wj-combobox {
+    width: 140px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

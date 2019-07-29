@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo MultiRow Order Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="orderManagement"></div>
+        <div class="pull-right btn-group">
+            <button class="btn btn-default" id="first">
+                <span class="glyphicon glyphicon-fast-backward"></span>
+            </button>
+            <button class="btn btn-default" id="previous">
+                <span class="glyphicon glyphicon-backward"></span>
+            </button>
+            <button id="current" type="button" class="btn" disabled style="width:100px">
+            </button>
+            <button class="btn btn-default" id="next">
+                <span class="glyphicon glyphicon-forward"></span>
+            </button>
+            <button class="btn btn-default" id="last">
+                <span class="glyphicon glyphicon-fast-forward"></span>
+            </button>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-default" id="exportXlsx">
+                Export to Excel
+            </button>
+            <button class="btn btn-default" id="exportPdf">
+                Export to PDF
+            </button>
+        </div>
+    </div>
+</body>
+</html>

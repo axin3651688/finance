@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <button class="btn btn-default" (click)="printDoc()">
+        Print with PrintDocument
+    </button>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="menuFile">
+            File
+            <div>
+                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;&nbsp;
+                <b>New</b>
+                <br>
+                <small><i>create a new file</i></small></div>
+            <div>
+                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;
+                <b>Open</b>
+                <br>
+                <small><i>open an existing file or folder</i></small></div>
+            <div>
+                <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;
+                <b>Save</b>
+                <br>
+                <small><i>save the current file</i></small></div>
+            <div class="wj-separator"></div>
+            <div>
+                <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;
+                <b>Exit</b>
+                <br>
+                <small><i>exit the application</i></small></div>
+        </div>
+        <div id="menuEdit">
+            Edit
+            <div>
+                <span class="glyphicon glyphicon-scissors"></span>&nbsp;&nbsp;
+                <b>Cut</b>
+                <br>
+                <small><i>move the current selection to the clipboard</i></small>
+            </div>
+            <div>
+                <span class="glyphicon glyphicon-copy"></span>&nbsp;&nbsp;
+                <b>Copy</b>
+                <br>
+                <small><i>copy the current selection to the clipboard</i></small>
+            </div>
+            <div>
+                <span class="glyphicon glyphicon-paste"></span>&nbsp;&nbsp;
+                <b>Paste</b>
+                <br>
+                <small><i>insert clipboard content at the cursor position</i></small>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <wj-flex-chart [header]="'Climate of New York'" [bindingX]="'month'" [itemsSource]="data" [tooltipContent]="tooltip"
+        [palette]="['rgba(136,189,230,1)', 'rgba(251,178,88,1)', 'rgba(144,205,151,1)', 'rgba(246,170,201,1)', 'rgba(191,165,84,1)', 'rgba(188,153,199,1)', 'rgba(237,221,70,1)', 'rgba(240,126,110,1)', 'rgba(140,140,140,1)']">
+        <wj-flex-chart-legend [position]="'None'">
+        </wj-flex-chart-legend>
+
+        <wj-flex-chart-series [name]="'Temperature'" [binding]="'low,high'">
+        </wj-flex-chart-series>
+
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'Temperature °C'">
+        </wj-flex-chart-axis>
+
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

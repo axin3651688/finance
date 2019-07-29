@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row report-names">
+        <label for="reports">Selected FlexReport Report:</label>
+        <select id="reports" class="combobox" [(ngModel)]="reportInfo">
+            <ng-template ngFor let-cat [ngForOf]="categories">
+                <optgroup *ngIf="cat.reports" label="{{cat.text}}">
+                    <option *ngFor="let rep of cat.reports"
+                        [value]="cat.name + '/' + rep.fileName + '*' + rep.reportName">
+                        {{rep.reportTitle}}
+                    </option>
+                </optgroup>
+            </ng-template>
+        </select>
+    </div>
+
+    <wj-report-viewer [serviceUrl]="'https://demos.componentone.com/ASPNET/c1webapi/4.0.20172.105/api/report'"
+        [filePath]="'ReportsRoot/' + filePath" [reportName]="reportName" [paginated]="true">
+    </wj-report-viewer>
+</div>

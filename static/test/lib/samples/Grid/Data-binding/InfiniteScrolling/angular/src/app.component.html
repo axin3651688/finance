@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data" 
+        (initialized)="flexInitialized(flex)">
+    </wj-flex-grid>
+    <p>
+        The grid now has {{rowCount}} rows and
+        {{cellCount}} cell elements.
+    </p>
+</div>

@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet name="Number" [rowCount]="20" [columnCount]="8"></wj-sheet>
+        <wj-sheet name="Date" [rowCount]="20" [columnCount]="8"></wj-sheet>
+    </wj-flex-sheet>
+    <wj-color-picker #colorPicker style="display:none;position:fixed;z-index:100" (initialized)="colorPickerInit(colorPicker)"></wj-color-picker>
+    <div class="well well-lg">
+        <div>
+            Format:
+            <wj-menu header="Format" [(value)]="format">
+                <wj-menu-item value="0">Decimal Format</wj-menu-item>
+                <wj-menu-item value="n2">Number Format</wj-menu-item>
+                <wj-menu-item value="p">Percentage Format</wj-menu-item>
+                <wj-menu-item value="c2">Currency Format</wj-menu-item>
+                <wj-menu-separator></wj-menu-separator>
+                <wj-menu-item value="d">Short Date</wj-menu-item>
+                <wj-menu-item value="D">Long Date</wj-menu-item>
+                <wj-menu-item value="f">Full Date/TIme (short time)</wj-menu-item>
+                <wj-menu-item value="F">Full Date/TIme (long time)</wj-menu-item>
+            </wj-menu>
+        </div>
+        <div>
+            Font:
+            <wj-combo-box #cboFontName
+                          style="width:120px"
+                          [itemsSource]="fonts"
+                          [selectedIndex]="10"
+                          [displayMemberPath]="'name'"
+                          [selectedValuePath]="'value'"
+                          [isEditable]="false"
+                          (initialized)="cboFontNameInit(cboFontName)">
+            </wj-combo-box>
+            <wj-combo-box #cboFontSize
+                          style="width:80px"
+                          [itemsSource]="fontSizeList"
+                          [selectedIndex]="5"
+                          [displayMemberPath]="'name'"
+                          [selectedValuePath]="'value'"
+                          [isEditable]="false"
+                          (initialized)="cboFontSizeInit(cboFontSize)">
+            </wj-combo-box>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default {{selectionFormatState.isBold ? 'active' : ''}}" (click)="applyBoldStyle()">Bold</button>
+                <button type="button" class="btn btn-default {{selectionFormatState.isItalic ? 'active' : ''}}" (click)="applyItalicStyle()">Italic</button>
+                <button type="button" class="btn btn-default {{selectionFormatState.isUnderline ? 'active' : ''}}" (click)="applyUnderlineStyle()">Underline</button>
+            </div>
+        </div>
+        <div>
+            Color:
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" (click)="showColorPicker($event, false)">Fore Color</button>
+                <button type="button" class="btn btn-default" (click)="showColorPicker($event, true)">Fill Color</button>
+            </div>
+            Alignment:
+            <div class="btn-group">
+                <button type="button" class="btn btn-default {{selectionFormatState.textAlign === 'left' ? 'active' : ''}}" (click)="applyCellTextAlign('left')">Left</button>
+                <button type="button" class="btn btn-default {{selectionFormatState.textAlign === 'center' ? 'active' : ''}}" (click)="applyCellTextAlign('center')">Center</button>
+                <button type="button" class="btn btn-default {{selectionFormatState.textAlign === 'right' ? 'active' : ''}}" (click)="applyCellTextAlign('right')">Right</button>
+            </div>
+        </div>
+    </div>
+</div>

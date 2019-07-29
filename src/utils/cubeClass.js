@@ -1,7 +1,7 @@
 import { MessageBox } from 'element-ui';
 import Vue from 'vue';
 import ld from 'lodash'; //https://lodash.com/docs/
-import { generatePeriod } from './period';
+import { generatePeriod,getYearList,getMonthList} from './period';
 import { getClientParams } from './index';
 import { createRandomDatas } from './random';
 import { http } from './http';
@@ -101,6 +101,9 @@ class CnbiCube {
         let cube = res.data.code == 200 ? res.data.data : null;
         if(null  == cube){
           cube = res.data;
+          if(typeof cube === "string"){
+             cube = eval("("+cube+")");
+          }
         }
         if (cube) {
             if (cube.rows && cube.rows.length > 0) {
@@ -127,30 +130,108 @@ class CnbiCube {
      */
     setParams() {}
 
+    generateDims(needDims,dims){
+      let rows = [],size = 1;
+      for(let key in needDims){
+           let bean = needDims[key];
+           size = size*bean.datas.length;
+           let tempArr = [];
+           bean.datas.forEach(data=>{
+            let record = {};
+            record[key] = data.text;
+               tempArr.push(record);
+           });
+           rows.push(tempArr);
+      }
+       rows = rows.sort(function(a,b){
+          return b.length-a.length;
+       });
+
+       let dims1 = rows[0];
+       let dims2 = rows[1];
+       let results = [];
+       dims1.forEach(data1=>{
+         let record = {};
+         Cnbi.apply(record,data1);
+         dims2.forEach(data2=>{
+             Cnbi.apply(record,data2);
+         });
+         results.push(record);
+       });
+       alert(JSON.stringify(results))
+     
+      console.log(size,rows)
+      return rows;
+    }
+
     /**
      * 生成变量,行，列，单表头，多表头，行列转置逻辑
      */
     generateProperties() {
         let nds = this.needDims,
             ge = this.generater;
-        if (ge && ge.varName) {
+        if (ge) {
             let ds = null;
-            if (nds.year && nds.month) {
+            if (ge.period  && nds.year && nds.month) {
                 //年与月二维组成的合并维度 year+month = period,改变任一year或month都会调到这儿来的
-                ds = generatePeriod(ge.periodCount, ge.compareType, nds.year, nds.month, nds.reverse, urlParams); //count,fomular,year,month,reverse
-            } else if (nds.company) {
-                //
+                let period = ge.period;
+                ds = generatePeriod(period.periodCount, period.compareType, nds.year, nds.month, nds.reverse, urlParams); //count,fomular,year,month,reverse
+            } else if (ge.needDims) {
+              ds = this.generateDims(nds,ge.needDims);
             } else {
 
             }
-            //   alert(JSON.stringify(ds))
-            // debugger;
             if (ge.reverse) {
-                ds = ds.reverse();
-            }
-            //  alert(JSON.stringify(ds))
+              ds = ds.reverse();
+             }
             this[ge.varName] = ds;
         }
+    }
+
+     //进行格式化操作
+    colFormatter(value,col){
+      let formatter = col.formatter;
+      value = value || 0.00 ; 
+      if(formatter && formatter[col.type]){
+          let fors = formatter[col.type];
+          if(fors.millesimal){ //如果配制了千分位  保留两位小数
+              value =  Math.get_thousand_num(value.toFixed(fors.digit||2));
+          }
+          if(fors.prefix){//如果有前缀
+              value = fors.prefix+value;
+          }
+          if(fors.subfix){//如果有后缀
+              value = value+fors.subfix;
+          }
+            
+      }
+      return value;
+    }
+
+    getValue(value,col){
+       if(col.render){
+          let val = col.render(value);
+          return val || value;
+       }
+       return this.colFormatter(value,col);
+
+    }
+
+    getColumnById(colId){
+      return this.columns.filter(col=>{
+         if(col.id == colId){
+           return col;
+         }
+      })[0];
+    }
+
+    /**
+     * 根据col.renderFormatter动态生成render函数，这个函数在执行格式化之后
+     */
+    generateRender(col){
+      let filters = col.renderFormatter;
+      let exp = CnbiCube.getFormatterFilterConditions(filters,"value");
+      col.render = eval('(' + exp + ')');
     }
 
     /**
@@ -164,10 +245,11 @@ class CnbiCube {
             if (Array.isArray(col)) {
                 this.setCloumnType(col);
                 deli = true;
-            } else {
-
+            } else if(col.renderFormatter){
+                this.generateRender(col);
             }
         });
+        console.info(columns)
         if (!deli) scope.grantType = true;
     }
 
@@ -275,7 +357,7 @@ class CnbiCube {
                 scope.datas = await this.findData(params, scope.needDims, scope.rows, scope.columns);
                 break;
             case 'defined':
-                debugger;
+                scope.datas = scope.datas;
                 break;
             case 'calculate':
                 Cnbi.Msg.info(scope.id + '表配制了跨表计算的');
@@ -355,11 +437,115 @@ class CnbiCube {
         await this.excuteFunctions(prefixExcuteFunctionNames, scope);
         await this.getModelDatas(scope);
         await this.excuteFunctions(subfixExcuteFunctionNames, scope);
+        //TODO parseCube();
         return this.datas;
     }
 
-    static getFunTemplate(exp) {
-        return 'function (data){if(' + exp + '){ return data ; }}(data)';
+    static getFunTemplate(exp,content,params,execute) {
+        let sb = '('+params+')';
+        let fun =  'function '+sb+'{if(' + exp + '){   '+content+' ; }}';
+        if(execute){//是否执行
+          fun = fun+sb;
+        }
+        return fun;
+    }
+    /**
+     * 获取列函数
+     */
+    static getFunReturn(filter){
+      let type = filter.type;
+      let bean = {};
+      if(type && type.icon){
+        bean.icon =  type.icon;
+      }
+      if(type && type.css){
+        bean.css =  type.css;
+      }
+      return bean;
+
+    }
+    /**
+     * 表达式语法转义
+     */
+    static logic = {
+      "and":" && ",
+       "or":" || "
+    }
+    
+    /**
+     * 获取前端逻辑关系：没有默认为 && 
+     */
+    static getFrontLogicSymbol(filter){
+      if(!filter.logicSymbol){
+        return  CnbiCube.logic.and;
+      }
+      return CnbiCube.logic[filter.logicSymbol];
+    }
+     
+   /**
+    * 获取多条件合并的表达式
+    * type && type == 1 ==> (ss> 0 && bb < 0 )
+    */
+    static getChildrenFilterTemplate(filters,params,type){
+      let exp = '';
+      filters.forEach((filter, index) => {
+        if (index > 0) {
+          exp += CnbiCube.getFrontLogicSymbol(filter);
+        }
+        let pp = params;
+        if(type){
+          pp = pp+filter.field
+        }
+        exp+= CnbiCube.getTempFun(filter,pp);
+      });
+      return exp;
+    }
+
+    /**
+     * 获取 bb = 334 的表达式
+     */
+    static getTempFun(filter,params){
+      let val = isNaN(filter.value) ? '\'' + filter.value + '\'' : filter.value;
+      return  params +  filter.calcSymbol + ' ' + val;
+    }
+
+    /**
+     * 动态生成格式化函数 formatter
+     */
+    static getFormatterFilterConditions(filters,params){
+      if (!filters || filters.length == 0) return;
+      let tempArr = [];
+      filters.forEach((filter, index) => {
+          let children = filter.children,temp = "";
+          if(children && children.length > 0 ){
+            temp = CnbiCube.getChildrenFilterTemplate(children,params);  //if(ss> 0 && bb < 0 ){}
+          }else{
+            temp = CnbiCube.getTempFun(filter,params);
+          }
+          tempArr.push('if(' + temp + '){     return '+JSON.stringify(CnbiCube.getFunReturn(filter))+' ; }');
+      });
+      let exp = tempArr.join(";");
+      return  "function("+params+"){"+exp+"}";
+    }
+    /**
+     * 获取cube.filters的条件 
+     */
+    static getFilterConditions(filters,params){
+      if (!filters || filters.length == 0) return;
+        let exp = '';
+        filters.forEach((filter, index) => {
+            if (index > 0) {
+                exp+= CnbiCube.getFrontLogicSymbol(filter);
+            }
+            let children = filter.children;
+            if(children && children.length > 0 ){//ss> 0 && bb < 0 )
+              exp+= "("+CnbiCube.getChildrenFilterTemplate(children,params,1)+")";  //if(ss> 0 && bb < 0 ){} 
+            }else{
+              exp+= CnbiCube.getTempFun(filter,params+filter.field);
+            }
+            
+        });
+        return exp;
     }
 
     /**
@@ -367,20 +553,16 @@ class CnbiCube {
      * var Fn = Function;  //一个变量指向Function，防止有些前端编译工具报错
      *  return new Fn('return ' + fn)();
      */
-    filter(filters) {
-        filters = filters || this.filters;
-        if (!filters || filters.length == 0) return;
-        let exp = '';
-        filters.forEach((filter, index) => {
-            let val = isNaN(filter.value) ? '\'' + filter.value + '\'' : filter.value;
-            if (index > 0) {
-                exp += ' && ';
-            }
-            exp += 'data.' + filter.field + ' ' + filter.calcSymbol + ' ' + val;
-        });
-        exp = CnbiCube.getFunTemplate(exp);
+    filter(filters,datas) {
+        let valueVarName = "data";
+        let exp = CnbiCube.getFilterConditions(filters || this.filters,valueVarName+".");
+        if(!exp){
+          return null;
+        }
+        exp = CnbiCube.getFunTemplate(exp," return "+valueVarName,valueVarName,1);
         console.log(exp, typeof exp);
-        return this.datas.filter(data => {
+        datas = datas || this.datas;//马军要加的
+        return datas.filter(data => {
             // 如果过滤异常，直接返回原数据
             if (eval('(' + exp + ')')) {
                 return data;
@@ -404,6 +586,12 @@ class CnbiCube {
         return this.init();
     }
 
+    setScopeToWindow(){
+      let key = CnbiCube.getCubePropertyById(this.id); //置入全局统一对象管理中，一个数据集，只创建一次，其它都只做update操作
+      Cnbi[key] = this;
+      console.log('初始化了:' + key, Cnbi[key]);
+    }
+
     /**
      * 初始化
      */
@@ -413,25 +601,16 @@ class CnbiCube {
         }
         let cubes = this.config.cubes;
         if (cubes && Array.isArray(cubes)) {
-            // await cubes.forEach(cc=>{
-            //   CnbiCube.getCubeById(cc,true);
-            //  })
-
             for (let i = 0, len = cubes.length; i < len; i++) {
-                let cubeData = await CnbiCube.getCubeById(cubes[i], true);
-                debugger
-                // by:jhb 这里 cubeData 用来干嘛？
+                 await CnbiCube.getCubeById(cubes[i], true);            
             }
-
         }
         await this.setParams(); // 设置参数
         await this.generateProperties(); // 生成变量,行，列，单表头，多表头，行列转置逻辑
         await this.setCloumnType(this); // 设置列属性
-        let datas = await this.setModelDatas(this); // 统一取数数据
-        let key = CnbiCube.getCubePropertyById(this.id); //置入全局统一对象管理中，一个数据集，只创建一次，其它都只做update操作
-        Cnbi[key] = this;
-        console.log('初始化了:' + key, Cnbi[key]);
-        return datas;
+        await this.setModelDatas(this); // 统一取数数据
+        this.setScopeToWindow();
+      
     }
 }
 
@@ -442,6 +621,32 @@ class CnbiCube {
 class DataHandler {
     constructor(cube) {
         // this.cube = cube; // jhb注释，出现循环引用
+    }
+    /**
+    * @desc    : 对数据进行排序处理
+    * @author  : ht
+    * @creatdate : 2019-05-14
+    */
+    sortColumn (sort, preDatas) {
+     //  debugger;
+      // console.log(sort.type, '我在做排序');
+      let val = sort.direction;
+      let ids = sort.field;
+      if (sort.type === ('number' || 'decimal')) {
+        if (val === 'asc') {
+          preDatas.sort((a, b) => (a[ids] - b[ids]));
+        } else if (val === 'desc') {
+          preDatas.sort((a, b) => (b[ids] - a[ids]));
+        }
+      } else { // 如果是文本类型排序就在这里做
+        if (val === 'asc') {
+          preDatas.sort((a, b) => (a[ids].localeCompare(b[ids])));
+        } else if (val === 'desc') {
+          preDatas.sort((a, b) => (b[ids].localeCompare(a[ids])));
+        }
+      }
+
+      // console.log(preDatas, '排序');
     }
 
     /**
@@ -478,7 +683,6 @@ class DataHandler {
             cube.datas = tempRows;
             return;
         }
-        debugger;
         cube.datas.forEach(data => {
             if (data.id) {
                 let configRow = configRows.filter(row => row.id === data.id)[0];
@@ -529,7 +733,7 @@ class DataHandler {
     }
 
     /**
-     * 列配制项处理
+     * 列配制项处理  value,record,cube
      */
     colRenderHandler(table) {
         try {
@@ -562,6 +766,24 @@ class DataHandler {
         return this.dataCalculator;
     }
 
+
+    /**
+     * 列计算功能
+     * (A-asntq)*100/A
+     */
+    calcColData(cube){
+      this.dataCalculator = this.getDataCalculator(cube);
+      let  columns = cube.columns;
+      cube.datas.forEach(record => {
+        columns.forEach(col => {
+          if (col.type === 'decimal' && col.fomular) {
+            //datas,fomular,record,rows
+              let val =  this.dataCalculator.colFomularParser(col.fomular,record,cube.datas,cube.rows);
+              record[col.id] = val;
+          }
+        });  
+      });
+    }
     /**
      * 功能描述：
      *    (1):表内行与行之间的计算
@@ -581,15 +803,14 @@ class DataHandler {
             datas = cube.datas,
             columns = cube.columns,
             dbDatas = cube.dbDatas;
-        //   debugger;
         datas.forEach(data => {
             if (data.id) {
                 let configRow = this.dataCalculator.getRecordById(rows, data.id); //看下配制行中是不是有配制的公式,为了简化配制而设定的,不建议这么配制，但为了兼容以前的项目，还是加上解析吧！
                 columns.forEach(col => {
-                    if (col.type === 'decimal') {
+                    if (col.type === 'decimal' && !col.fomular) {
                         let val = data[col.id];
-                        if (isNaN(val)) {
-                            if (configRow && configRow.fomular) {
+                        if (isNaN(val) ||  configRow.fomular) {
+                            if (configRow.fomular) {
                                 //如果是在行上配制的公式[3501+3502]，在这里动态给其组装成完整的公式
                                 val = this.dataCalculator.rowFomularParser(datas, configRow.fomular, rows, col.id);
                             } else { //如果是配制单元格公式的这么办很OK
@@ -649,10 +870,69 @@ class DataHandler {
         if (cube.config.cellCalculabled) { //配制了单元格计算的
             //this.calcRowData(cube);
         }
-        this.colRenderHandler(cube); //表内列计算
+        //this.colRenderHandler(cube);
+        this.calcColData(cube); //表内列计算
 
+        let sort = cube.config.sort;
+       if(sort){
+         this.sortColumn(sort,cube.datas);
+       }
+      
+    }
+ 
+    /**
+     * @param  dimCode维度编码  可不传
+     * @param  dim对象
+     * 通过接口拿维度数据
+     */
+    getDimDatas(dimCode,dim){
+      if(dim && dim.datas){
+        if(dim.datas && Array.isArray(dim.datas)){
+            return datas;
+        }
+      }
+      let datas = null;//通过接口拿;
+      if(datas  && datas)return datas;
+      if(dimCode === "year"){
+        return getYearList()
+    }
+    if(dimCode === "month"){
+      return getMonthList();
+    }
+      return 
 
     }
+    /**
+     * 获取维度默认值
+     * @param  dimCode维度编码
+     * @param  dim对象
+     * "year": {
+            "id": "2019",
+            "text": "年份",
+             "select":{
+
+             },
+            "datas": [{
+                "id": "2019",
+                "text": "2019年"
+            }]
+        }
+     * id or index法
+     * 返回维度数据对象{}
+     */
+    getDefaultDimValue(dimCode,dim){
+       let record = {};
+       let datas = this.getDimDatas(dimCode,dim);
+        if(dim.id){
+          return datas.filter(bb=>bb.id == id)[0];
+        }else if(dim.index){
+          return datas[dim.index];
+        }
+        console.error("通过dim["+dim.text+"]["+id+"]未能拿到值对象,默认为第0个了！"); 
+        return  datas[0];
+    }
+
+  
 
     /**
      * 行合计
@@ -670,9 +950,20 @@ class DataHandler {
                 }, 0);
             } else {
                 let ba = table.needDims[col.id];
-                if (ba) {
-                    total[col.id] = ba.text;
+                if(ba){
+                  let _record = null;
+                  if(ba.id){
+                      _record = ba.datas.filter(bb=>bb.id == ba.id)[0];
+                  }else if(ba.index){
+                      _record = ba.datas[ba.index];
+                  }else if(!total[col.id]){
+                      total[col.id] = ba.text;
+                  }
+                  if (_record) {
+                      total[col.id] = _record.text;
+                  }
                 }
+               
             }
         });
         table.datas.push(total);
@@ -733,16 +1024,38 @@ class DataCalculator {
         let setObj = new Set(fomular.match(reg, ''));
         return Array.from(setObj).sort((a, b) => {
             return b.length - a.length;
-        });
+        }); //match(/[a-zA-Z_]+[\w]*/g,"")
     }
 
     /**
      * 配制行公式来的
      * "[1101+1102]".match(/(\d+)/g, "")
-     */
+     *
+     **/
     rowFomularParser(datas, fomular, rows, colId) {
         let params = this.getFomularParams(fomular, (/(\d+)/g));
         return this.fomularHandler(params, fomular, datas, colId, rows);
+    }
+    /**
+     * 配制列公式来的
+     * (A-asntq)/asntq*100
+     * 变形成单元格函数
+     * Math.avg("A,B,C")
+     *  /^((?!Math\.avg).)+$/.test('Math.avg(A,B,C")');
+     */
+    colFomularParser(fomular,record,datas,rows){
+      let params = this.getFomularParams(fomular,/[a-zA-Z_]+[\w]*/g);
+      params.forEach(item => {
+        //fomular = fomular.replaceAll(item,item+"$"+record.id);
+        if(item == "Math" || item  == "avg"){
+
+        }else{
+          fomular = fomular.replaceAll(item,"record."+item);
+        }
+      });
+      //再次按单元格公式获取数据
+      //return this.fomularParser(datas,fomular,rows);
+      return eval("("+fomular+")");
     }
 
     /**
@@ -766,9 +1079,9 @@ class DataCalculator {
         } else {
             //console.info(colId+"$"+rowId+"==>"+fomular+"=="+val);
         }
-        fomular = fomular.replace(param, val);
-        fomular = fomular.replace(param, val);
-        return fomular.replace(param, val);
+        val =  fomular.replace(param, val);
+      //  alert(val)
+        return val;
     }
 
     /**
@@ -802,7 +1115,9 @@ class DataCalculator {
                     return 0.00;
                 }
             });
-            return eval(fomular);
+            let val =  eval(fomular);
+            console.info(fomular+"===="+val);
+            return val;
         } catch (error) {
             console.error(fomular + '解析出错了！');
             console.trace();

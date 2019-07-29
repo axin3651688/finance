@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity CollectionView Currency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <table class="table table-condensed">
+            <tr>
+                <td>Country</td>
+                <td>
+                    <div id="cmbCountry">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Downloads</td>
+                <td id="downloads"></td>
+            </tr>
+            <tr>
+                <td>Sales</td>
+                <td id="sales"></td>
+            </tr>
+            <tr>
+                <td>Expenses</td>
+                <td id="expenses"></td>
+            </tr>
+        </table>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <p>
+                    This fiddle uses pure JavaScript.
+                    If we were using a framework such as Angular, React, or Vue,
+                    we would use expressions such as 'view.currentItem.sales'
+                    directly in the markup, and most of the JS code would go away.</p>
+                <p>
+                    Follow this link to see an <a href="https://jsfiddle.net/Wijmo5/4gcu56sk/" target="_blank">
+                        Angular version of this fiddle
+                    </a>.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

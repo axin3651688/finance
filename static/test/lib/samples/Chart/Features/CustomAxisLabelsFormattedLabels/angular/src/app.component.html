@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart header="Country GDP" bindingX="country" [itemsSource]="data" [palette]="palette">
+            <wj-flex-chart-axis wjProperty="axisY" [itemFormatter]="itemFormatter"></wj-flex-chart-axis>
+            <wj-flex-chart-series name="2014" binding="2014"></wj-flex-chart-series>
+            <wj-flex-chart-series name="2015" binding="2015"></wj-flex-chart-series>
+            <wj-flex-chart-series name="2016" binding="2016"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

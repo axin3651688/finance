@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <wj-flex-grid #firstGrid
+        (initialized)="firstGridInitial(firstGrid)"
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+    <p>
+        And this grid has no fixed columns and a custom set of 
+        scrollable columns:</p> 
+    <wj-flex-grid #secondGrid
+        (initialized)="secondGridInitial(secondGrid)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [header]="'Country'" [binding]="'country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Sales'" [binding]="'sales'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Expenses'" [binding]="'expenses'"></wj-flex-grid-column>
+    </wj-flex-grid> 
+</div>

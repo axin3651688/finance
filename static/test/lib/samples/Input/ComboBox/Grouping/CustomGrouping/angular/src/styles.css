@@ -1,0 +1,23 @@
+.wj-listbox {
+    height: 200px;
+    display: block;
+}
+
+.wj-listbox .wj-listbox-item {
+    line-height: 2em;
+}
+
+.wj-listbox .wj-listbox-item.wj-header {
+    opacity: 1;
+    position: sticky;
+    top: 0;
+    font-size: 125%;
+}
+
+label {
+    margin: 0 24px;
+}
+
+body {
+    margin-bottom: 40pt;
+}

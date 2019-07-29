@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Context Menus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="owners">
+            <div id="first" class="has-ctx-menu" style="background:#f0a0a0">
+                I have a Context Menu.
+            </div>
+            <div id="second" class="has-ctx-menu" style="background:#a0f0a0">
+                I have the same Context Menu.
+            </div>
+        </div>
+
+        <h4>
+            The same approach works with all Wijmo controls:
+        </h4>
+
+        <p>
+            FlexChart with ContextMenu
+        </p>
+        <div id="theChart" class="has-ctx-menu"></div>
+
+        <p>
+            FlexGrid with ContextMenu
+        </p>
+        <div id="theGrid" class="has-ctx-menu"></div>
+    </div>
+</body>
+
+</html>

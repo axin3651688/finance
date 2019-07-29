@@ -1,0 +1,12 @@
+.wj-autocomplete-match {
+    border: 1px solid green;
+    background: #e0ffe0;
+}
+
+body {
+    margin-bottom: 24px;
+}
+
+label {
+    margin-right: 3px;
+}

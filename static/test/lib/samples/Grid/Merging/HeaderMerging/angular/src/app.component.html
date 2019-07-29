@@ -1,0 +1,10 @@
+<div class="container-fluid">
+
+    <wj-flex-grid #grid [itemsSource]="data" [allowMerging]="'ColumnHeaders'" [alternatingRowStep]="0"
+        [autoGenerateColumns]="false" (initialized)="onInitialized(grid)">
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'" [allowMerging]=true></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'active'" [header]="'Active'" [allowMerging]=true></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

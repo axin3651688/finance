@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Master-Detail Separate Grids</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <p>
+        For example, the ComboBox below is used as a master 
+        control. Select a country from the combo and the
+        grid below will show the items in that country:</p>
+        
+      <label>
+        Select a country: 
+        <div id="theCombo"></div>
+      </label>    
+      <div id="theGridDetail"></div>
+    
+      <p>
+        In the next example, The FlexGrid is used as the master  
+        control. Select an item on the grid and see the details
+        in the controls below:</p>
+        
+      <h3>
+        Master</h3>    
+      <div id="theGridMaster"></div>
+      
+      <h3>
+        Detail</h3>    
+      <table class="tbl-spaced">
+        <tr>
+          <td>Country:</td>
+          <td id="theCountry" class="bnd-ctl"></td>
+        </tr>
+        <tr>
+          <td>Product:</td>
+          <td id="theProduct" class="bnd-ctl"></td>
+        </tr>
+        <tr>
+          <td>Date:</td>
+          <td id="theDate" class="bnd-ctl"></td>
+        </tr>
+        <tr>
+          <td>Sales:</td>
+          <td id="theSales" class="bnd-ctl"></td>
+        </tr>
+        <tr>
+          <td>Expenses:</td>
+          <td id="theExpenses" class="bnd-ctl"></td>
+        </tr>
+      </table>
+      
+      <p></p>
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          This example requires a fair amount of code
+          because we are not using any frameworks. With Angular, 
+          React, or Vue, no code would be required to update
+          the child controls.
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

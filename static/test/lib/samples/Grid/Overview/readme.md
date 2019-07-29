@@ -1,0 +1,4 @@
+Introduction
+============
+
+This view shows the [FlexGrid](http://wijmo.com/5/docs/topic/wijmo.grid.FlexGrid.Class.html) control's basic features. It binds the grid to a data source and has menus below that allow you to select the number of data items, the [selection mode](http://wijmo.com/5/docs/topic/wijmo.grid.SelectionMode.Enum.html), and the [culture](http://wijmo.com/5/docs/static/globalization.html), and whether to use [data mapping](http://wijmo.com/5/docs/topic/wijmo.grid.DataMap.Class.html) and formatting. Notice how the grid remains fast and fluid even with large numbers of data items. FlexGrid achieves this level of performance by automatically virtualizing rows and columns.

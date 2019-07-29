@@ -1,0 +1,4 @@
+ODataCollectionView
+===================
+
+Wijmo includes an **ODataCollectionView** class that extends **CollectionView** to provide support for **OData** sources. [OData](https://www.odata.org/) is an [OASIS standard](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=odata) that defines a set of best practices for building and consuming RESTful APIs.  To use the **ODataCollectionView** class, create a new instance passing the URL of the data service, the name of the table you want to access, any optional parameters such as the fields you want to retrieve and whether you want filtering, sorting, and paging to be performed on the server or on the client.

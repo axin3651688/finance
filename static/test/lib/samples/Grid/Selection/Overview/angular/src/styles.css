@@ -1,0 +1,10 @@
+.wj-flexgrid {
+  max-height: 250px; 
+  margin:6px 0;
+ }
+ #currSel {
+   font-weight: bold
+ }
+ body {
+   margin-bottom: 12px;
+ }

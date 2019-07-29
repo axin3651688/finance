@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.wj-tabpane {
+    white-space: nowrap; /* keep groups on a single line */
+}
+
+.wj-group {
+    display: inline-block;
+    border-right: 1px solid #eee;
+    padding: 3px 6px 0 3px;
+}
+
+.wj-group >.wj-header {
+    text-align: center;
+    background: transparent;
+    font-weight: normal;
+    font-size: 80%;
+    margin-top: 6px;
+}
+
+.wj-group >.wj-content {
+    border: none;
+    height: 5.5em;
+    overflow: visible;
+}
+
+.wj-group .wj-column {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.wj-group .wj-row {
+    margin-bottom: 2px;
+}
+.wj-control .wj-group .wj-content .wj-btn {
+    font-weight: normal;
+    padding: 5px 12px;
+}
+
+.wj-group .wj-content .wj-btn.wj-btn-large {
+    padding: 2em 1.5em;
+}
+
+.wj-group .material-icons {
+    font-size: 110%;
+    padding-top: 2px;
+    pointer-events: none;
+}
+
+.wj-group .wj-dropdown {
+    width: 10em;
+    border: none;
+    background: #eee;
+}
+
+/* hide ribbon content */
+.wj-tabpanel.hide-content .wj-tabpanes {
+    height: 0;
+    transition: height linear 400ms;
+}
+
+.wj-btn,
+.wj-combobox
+{
+    margin-right: 3px;
+}
+
+#editor {
+    height: 300px;
+    overflow: auto;
+    padding: 12px;
+    background: #ffe;
+    border: 1px solid #ccc;
+}
+
+body {
+    margin-bottom: 36pt;
+}

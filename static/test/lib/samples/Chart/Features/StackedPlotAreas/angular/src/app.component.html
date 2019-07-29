@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <!-- chart1 -->
+    <wj-flex-chart style="height:150px;" #chart1
+                   plotMargin="NaN 30 2 110"
+                   [palette]="palette"
+                   [itemsSource]="data"
+                   chartType="Line"
+                   [tooltipContent]="null">
+        <wj-flex-chart-axis wjProperty="axisX" 
+                            position="Top"
+                            format="MMM-dd"
+                            [labelAngle]="90">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series bindingX="Date" binding="MeanTemp" name="MeanTemp">
+        </wj-flex-chart-series>
+        <wj-flex-chart-series bindingX="Date" binding="MinTemp" name="MinTemp">
+        </wj-flex-chart-series>
+        <wj-flex-chart-series bindingX="Date" binding="MaxTemp" name="MaxTemp">
+        </wj-flex-chart-series>
+        <wj-flex-chart-legend position="Left"></wj-flex-chart-legend>
+        <wj-flex-line-marker #marker1 lines="Both"
+                             interaction="Move"
+                             [content]="markerContent"
+                             (positionChanged)="markerPositionChanged(chart1,marker1,$event)">
+        </wj-flex-line-marker>
+    </wj-flex-chart>
+    <!-- chart2 -->
+    <wj-flex-chart id="chart2" style="height:120px;" #chart2
+                   plotMargin="0 30 0 110"
+                   [itemsSource]="data"
+                   chartType="Area"
+                   [tooltipContent]="null">
+        <wj-flex-chart-axis wjProperty="axisX"
+                            [labels]="false"
+                            [axisLine]="false"
+                            format="MMM-dd"
+                            [labelAngle]="90">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-axis wjProperty="axisY"
+                            title="MeanPressure">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series bindingX="Date" binding="MeanPressure" name="MeanPressure">
+        </wj-flex-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-line-marker #marker2 lines="Both"
+                             interaction="Move"
+                             [content]="markerContent"
+                             (positionChanged)="markerPositionChanged(chart2,marker2,$event)">
+        </wj-flex-line-marker>
+    </wj-flex-chart>
+    <!-- chart3 -->
+    <wj-flex-chart id="chart3" style="height:120px;" #chart3
+                   plotMargin="0 30 NaN 110"
+                   [itemsSource]="data"
+                   chartType="Column"
+                   [tooltipContent]="null">
+        <wj-flex-chart-axis wjProperty="axisX"
+                            [labels]="false"
+                            [axisLine]="false"
+                            format="MMM-dd"
+                            [labelAngle]="90">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-axis wjProperty="axisY"
+                            title="Precipitation">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series bindingX="Date" binding="Precipitation" name="Precipitation">
+        </wj-flex-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-line-marker #marker3 lines="Both"
+                             interaction="Move"
+                             [content]="markerContent"
+                             (positionChanged)="markerPositionChanged(chart3,marker3,$event)">
+        </wj-flex-line-marker>
+    </wj-flex-chart>
+    <!-- range selector chart -->
+    <wj-flex-chart style="height:100px;" #chart
+                   plotMargin="0 30 NaN 110"
+                   [itemsSource]="data"
+                   [tooltipContent]="null"
+                   chartType="Line">
+        <wj-flex-chart-axis wjProperty="axisX"
+                            format="MMM-dd"
+                            [labelAngle]="45">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-axis wjProperty="axisY"
+                            [labels]="false"
+                            [majorGrid]="false">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-series bindingX="Date" binding="MeanTemp" name="MeanTemp">
+        </wj-flex-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-chart-range-selector #selector
+                                        [seamless]="true"
+                                        (rangeChanged)="rangeChanged()">
+        </wj-flex-chart-range-selector>
+    </wj-flex-chart>
+</div>

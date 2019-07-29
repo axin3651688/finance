@@ -1,0 +1,15 @@
+.wj-flexgrid {
+  max-height: 250px;
+  margin: 10px 0;
+}
+.wj-cell.high-value {
+  font-weight: bold;
+  color: green;
+}
+.wj-cell.low-value {
+  font-style: italic;
+  color: red;
+}
+body {
+  margin-bottom: 20px;
+}

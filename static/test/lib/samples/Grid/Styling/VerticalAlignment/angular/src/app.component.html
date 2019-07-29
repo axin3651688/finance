@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <p>
+    This example shows how you can use a <b>flex</b>
+    layout within the cells to center the content vertically:
+  </p>
+  <wj-flex-grid #theGrid [itemsSource]="data" [autoGenerateColumns]=false
+    (formatItem)="onFormatItem(theGridFormatItem, $event)">
+    <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="50"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'product'" [header]="'Product'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [format]="'c0'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [format]="'c0'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'active'" [header]="'Active'"></wj-flex-grid-column>
+
+  </wj-flex-grid>
+</div>

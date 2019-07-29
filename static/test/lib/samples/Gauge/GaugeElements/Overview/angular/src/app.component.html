@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-radial-gauge #radial [isReadOnly]="false" [hasShadow]="false" [showText]="'All'" [startAngle]="-30" [sweepAngle]="240"
+        [value]="50" [showRanges]="true" [showTicks]="true" [tickSpacing]="10" [thumbSize]="20" (initialized)="setTooltips(radial)">
+        <wj-range [wjProperty]="'pointer'" [thickness]="0.15"></wj-range>
+        <wj-range [min]="0" [max]="30" [color]="'red'" [thickness]="0.5"></wj-range>
+        <wj-range [min]="30" [max]="50" [color]="'orange'" [thickness]="0.5"></wj-range>
+        <wj-range [min]="50" [max]="70" [color]="'gold'" [thickness]="0.5"></wj-range>
+        <wj-range [min]="70" [max]="100" [color]="'green'" [thickness]="0.5"></wj-range>
+    </wj-radial-gauge>
+</div>

@@ -1,0 +1,20 @@
+.wj-flexchart {
+    height: 300px;
+}
+
+.high-value {
+    fill: darkgreen;
+    font-weight: bold;
+}
+
+.low-value {
+    fill: darkred;
+}
+
+.wj-control {
+    margin-bottom: 6px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

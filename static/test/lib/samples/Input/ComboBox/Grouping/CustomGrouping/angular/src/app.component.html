@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <label>
+        Show Groups
+        <input id="showGroups" type="checkbox" [(ngModel)]="showGroups">
+    </label>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>
+                ComboBox
+            </h4>
+            <wj-combo-box [showGroups]="showGroups" [itemsSource]="data">
+            </wj-combo-box>
+        </div>
+        <div class="col-xs-6">
+            <h4>
+                ListBox
+            </h4>
+            <wj-list-box [showGroups]="showGroups" [itemsSource]="data">
+            </wj-list-box>
+        </div>
+    </div>
+</div>

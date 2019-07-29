@@ -1,0 +1,27 @@
+.wj-flexgrid {
+    max-height: 250px;
+    margin: 10px 0;
+  }
+  .cell-country {
+    font-weight: bold
+  }
+  .cell-country:not(.wj-state-selected):not(.wj-state-multi-selected) {
+    background-color: #bbff00 !important;
+  }
+  .cell-product {
+    font-weight: bold;
+  }
+  .cell-product:not(.wj-state-selected):not(.wj-state-multi-selected) {
+    background-color: #ffbb00 !important;
+  }
+  .high-value {
+    font-weight: bold;
+    color: green;
+  }
+  .low-value {
+    font-style: italic;
+    color: red;
+  }
+  body {
+    margin-bottom: 20px;
+  }

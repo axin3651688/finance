@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [deferResizing]="true"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [header]="'ID'" [binding]="'id'" [width]="60" [allowResizing]="false"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Country'" [binding]="'country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Sales'" [binding]="'sales'"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Expenses'" [binding]="'expenses'"></wj-flex-grid-column>
+    </wj-flex-grid>
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            The grid also allows you to resize multiple columns
+            at once. Select a range of columns and press the 'control'
+            key while resizing them with the mouse, and all selected
+            columns will be resized at once.
+        </div>
+    </div>
+        
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            Wijmo uses the HTML5 drag/drop API for column resizing.
+            Unfortunately, most mobile devices do not support this API.
+            If you want to support column resizing on mobile devices,
+            we suggest you use the 
+            <a href="https://github.com/Bernardo-Castilho/dragdroptouch" target="_blank">
+                DragDropTouch polyfill
+            </a>.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <!-- Export button -->
+    <button class="btn btn-default" (click)="export()">Export</button>
+
+    <!-- FlexGrid -->
+    <wj-flex-grid class="grid" #flexGrid [autoGenerateColumns]="false" selectionMode="ListBox" headersVisibility="All"
+        [itemsSource]="data">
+        <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Discount" binding="discount" format="p1"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Active" binding="active"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

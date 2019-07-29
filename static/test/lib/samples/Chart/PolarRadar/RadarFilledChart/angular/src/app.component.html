@@ -1,0 +1,7 @@
+<div class="container-fluid">
+  <wj-flex-radar #chart [itemsSource]="data" [bindingX]="'country'" [chartType]="'Area'">
+    <wj-flex-radar-axis [wjProperty]="'axisY'" [min]="0" [max]="100"></wj-flex-radar-axis>
+    <wj-flex-radar-series [binding]="'sales'" [name]="'Sales'"></wj-flex-radar-series>
+    <wj-flex-radar-series [binding]="'downloads'" [name]="'Downloads'"></wj-flex-radar-series>
+  </wj-flex-radar>
+</div>

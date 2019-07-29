@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <wj-multi-row #adMultirow [itemsSource]="newOrders" [layoutDefinition]="threeLines" [showGroups]=false
+        [allowAddNew]=true [allowDelete]=true></wj-multi-row>
+    <label>
+        <input id="ckbAllNew" type="checkbox" checked (click)="onAllNewClick($event)">
+        Allow Add New
+    </label>
+    <br />
+    <label>
+        <input id="ckbAllDelete" type="checkbox" checked (click)="onAllDeleteClick($event)">
+        Allow Delete
+    </label>
+</div>

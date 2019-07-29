@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <!-- Settings -->
+    <div class="panel-group" id="settings">
+        <div class="panel panel-default">
+            <div id="settingsBody" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <ul class="list-inline">
+                        <li>
+                            <label>Box Size</label>
+                            <wj-input-number #inputNumber [(value)]="options.renko.boxSize" [min]="0" [step]="1" format="'n0'"
+                                (valueChanged)="boxSizeChanged(inputNumber)">
+                            </wj-input-number>
+                        </li>
+                        <li>
+                            <wj-menu #menuMode header="Range Mode" [(value)]="options.renko.rangeMode" (itemClicked)="rangeModeChanged(menuMode)">
+                                <wj-menu-item value="Fixed">Fixed</wj-menu-item>
+                                <wj-menu-item value="ATR">Average True Range</wj-menu-item>
+                            </wj-menu>
+                        </li>
+                        <li>
+                            <wj-menu header="Data Fields" [(value)]="options.renko.fields" (itemClicked)="optionChanged()">
+                                <wj-menu-item value="High">High</wj-menu-item>
+                                <wj-menu-item value="Low">Low</wj-menu-item>
+                                <wj-menu-item value="Open">Open</wj-menu-item>
+                                <wj-menu-item value="Close">Close</wj-menu-item>
+                                <wj-menu-item value="HL2">HL Avg.</wj-menu-item>
+                                <wj-menu-item value="HLC3">HLC Avg.</wj-menu-item>
+                                <wj-menu-item value="HLOC4">HLOC Avg.</wj-menu-item>
+                            </wj-menu>
+                        </li>
+                    </ul>
+                    <ul class="list-inline">
+                        <li>
+                            <label>Stroke</label>
+                            <wj-input-color [(value)]="style.stroke" (valueChanged)="optionChanged()">
+                            </wj-input-color>
+                        </li>
+                        <li>
+                            <label>Alt. Stroke</label>
+                            <wj-input-color [(value)]="altStyle.stroke" (valueChanged)="optionChanged()">
+                            </wj-input-color>
+                        </li>
+                    </ul>
+                    <ul class="list-inline">
+                        <li>
+                            <label>Fill</label>
+                            <wj-input-color [(value)]="style.fill" (valueChanged)="optionChanged()">
+                            </wj-input-color>
+                        </li>
+                        <li>
+                            <label>Alt. Fill</label>
+                            <wj-input-color [(value)]="altStyle.fill" (valueChanged)="optionChanged()">
+                            </wj-input-color>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FinancialChart -->
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" chartType="Renko" [(options)]="options" [tooltipContent]="tooltip">
+        <wj-financial-chart-series binding="high,low,open,close" name="Facebook" [style]="style" [altStyle]="altStyle">
+        </wj-financial-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+    </wj-financial-chart>
+</div>

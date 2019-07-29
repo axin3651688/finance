@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [alternatingRowStep]="0"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+    </wj-flex-grid>
+    <button (click)="listSelectedCells()" class="btn btn-primary">
+        List Selected Cells
+    </button>
+</div>

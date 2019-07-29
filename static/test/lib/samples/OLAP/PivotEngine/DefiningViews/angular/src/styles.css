@@ -1,0 +1,12 @@
+.buttons {
+	display: flex;
+	margin-bottom: 12px;
+}
+.buttons .btn {
+	margin: 6px;
+	white-space: normal;
+}
+
+body {
+  margin-bottom: 36pt;
+}

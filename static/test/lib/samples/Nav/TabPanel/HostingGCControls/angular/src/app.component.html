@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <wj-tab-panel>
+        <wj-tab>
+            <a>FlexGrid</a>
+            <div>
+                <wj-flex-grid [itemsSource]="data">
+                </wj-flex-grid>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>FlexChart</a>
+            <div>
+                <wj-flex-chart [itemsSource]="data" [bindingX]="'country'">
+                    <wj-flex-chart-series [name]="'Sales'" [binding]="'sales'"></wj-flex-chart-series>
+                    <wj-flex-chart-series [name]="'Expenses'" [binding]="'expenses'"></wj-flex-chart-series>
+                    <wj-flex-chart-series [name]="'Downloads'" [binding]="'downloads'"></wj-flex-chart-series>
+                </wj-flex-chart>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Gauges</a>
+            <div style="overflow:hidden">
+                <wj-radial-gauge style="display:block" [value]="75" [min]="0" [isReadOnly]="false" [max]="100">
+                </wj-radial-gauge>
+                <wj-linear-gauge style="display:block" [value]="75" [min]="0" [isReadOnly]="false" [max]="100">
+                </wj-linear-gauge>
+            </div>
+        </wj-tab>
+    </wj-tab-panel>
+</div>

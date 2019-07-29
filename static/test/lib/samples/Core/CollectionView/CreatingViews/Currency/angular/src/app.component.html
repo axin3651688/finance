@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <table class="table table-condensed">
+        <tr>
+            <td>Country</td>
+            <td>
+                <wj-combo-box [(itemsSource)]="view" [displayMemberPath]="'country'">
+                </wj-combo-box>
+            </td>
+        </tr>
+        <tr>
+            <td>Downloads</td>
+            <td>{{ view.currentItem.downloads | number:0 }}</td>
+        </tr>
+        <tr>
+            <td>Sales</td>
+            <td>{{ view.currentItem.sales | currency }}</td>
+        </tr>
+        <tr>
+            <td>Expenses</td>
+            <td>{{ view.currentItem.expenses | currency }}</td>
+        </tr>
+    </table>
+</div>

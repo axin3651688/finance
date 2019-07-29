@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-input-number [min]="0" [max]="4" [step]="1" format='n0' [(value)]="maxDepth"></wj-input-number>
+        <wj-tree-map binding="sales" bindingName="type" childItemsPath="items" 
+            labelContent="{name}" [itemsSource]="data" [palette]="palette" [maxDepth]="maxDepth">
+        </wj-tree-map>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+          <p>
+            Drag and drop fields to build views:
+          </p>
+          <wj-pivot-panel [itemsSource]="ngCube"></wj-pivot-panel>
+        </div>
+        <div class="col-xs-6">
+          <p>
+            Summary for the current view definition:
+          </p>
+          <wj-pivot-grid [itemsSource]="ngCube"></wj-pivot-grid>
+        </div>
+      </div>
+</div>

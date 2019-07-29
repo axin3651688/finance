@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" [tooltipContent]="''" [bindingX]="'year'" [palette]="palette"
+        [chartType]="'LineSymbols'" [stacking]="'Stacked'" (mouseenter)="lineMarker.isVisible = true"
+        (mouseleave)="lineMarker.isVisible = false">
+        <wj-flex-chart-legend [position]="'Bottom'"></wj-flex-chart-legend>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'Populations(in millions)'"></wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'africa'" [name]="'Africa'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'asia'" [name]="'Asia'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'europe'" [name]="'Europe'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'southAmerica'" [name]="'South America'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'northAmerica'" [name]="'North America'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'oceania'" [name]="'Oceania'"></wj-flex-chart-series>
+
+        <wj-flex-line-marker #lineMarker [isVisible]="false" [lines]="'Both'" [interaction]="'Move'"
+            [content]="getMarkerContent">
+        </wj-flex-line-marker>
+
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

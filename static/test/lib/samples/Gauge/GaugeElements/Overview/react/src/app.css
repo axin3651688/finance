@@ -1,0 +1,34 @@
+.container-fluid .wj-gauge {
+    width: 50%;
+    height: 150px;
+    margin: 20px auto;
+    padding: 12px;
+    background: rgba(0, 0, 0, .02);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.container-fluid .wj-gauge .wj-pointer {
+    fill: black;
+}
+
+.container-fluid .wj-gauge .wj-face,
+.container-fluid .wj-gauge .wj-pointer,
+.container-fluid .wj-gauge .wj-thumb,
+.container-fluid .wj-gauge .wj-ranges,
+.container-fluid .wj-gauge .wj-ticks,
+.container-fluid .wj-gauge .wj-value,
+.container-fluid .wj-gauge .wj-min,
+.container-fluid .wj-gauge .wj-max {
+    opacity: .25;
+}
+
+.container-fluid .wj-gauge .wj-face:hover,
+.container-fluid .wj-gauge .wj-pointer:hover,
+.container-fluid .wj-gauge .wj-thumb:hover,
+.container-fluid .wj-gauge .wj-ranges:hover,
+.container-fluid .wj-gauge .wj-ticks:hover,
+.container-fluid .wj-gauge .wj-value:hover,
+.container-fluid .wj-gauge .wj-min:hover,
+.container-fluid .wj-gauge .wj-max:hover {
+    opacity: 1;
+}

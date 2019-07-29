@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <!-- Settings -->
+    <div class="panel-group" id="settingsShort">
+        <div class="panel panel-default">
+            <div id="settingsBody" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <!-- Overlay Selector -->
+                    <ul class="list-inline">
+                        <li>
+                            <label>Overlay</label>
+                            <wj-combo-box [itemsSource]="overlays"
+                                            selectedValuePath="abbreviation"
+                                            displayMemberPath="name"
+                                            [(selectedValue)]="selectedOverlay">
+                            </wj-combo-box>
+                        </li>
+                    </ul>
+
+                    <!-- Bollinger Bands Properties -->
+                    <ul class="list-inline" *ngIf="selectedOverlay === 'bollinger'">
+                        <li>
+                            <label>Period</label>
+                            <wj-input-number #iptBP (valueChanged)="bpChanged(iptBP)"
+                                                [value]="20"
+                                                [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.bollingerPeriod"
+                                                [step]="1" format="n0">
+                            </wj-input-number>
+                        </li>
+                        <li>
+                            <label>Multiplier</label>
+                            <wj-input-number #iptBM (valueChanged)="bmChanged(iptBM)"
+                                                [value]="2"
+                                                [min]="1" [max]="100"
+                                                [step]="1" format="n0">
+                            </wj-input-number>
+                        </li>
+                    </ul>
+
+                    <!-- Envelope Properties -->
+                    <ul class="list-inline" *ngIf="selectedOverlay === 'envelopes'">
+                        <li>
+                            <label>Period</label>
+                            <wj-input-number #iptEP (valueChanged)="epChanged(iptEP)"
+                                                [value]="20"
+                                                [min]="2" [max]="data.length > 0 ? data.length - 1 : properties.envelopePeriod"
+                                                [step]="1" format="n0">
+                            </wj-input-number>
+                        </li>
+                        <li>
+                            <label>Size</label>
+                            <wj-input-number #iptES (valueChanged)="esChanged(iptES)"
+                                                [value]="0.03"
+                                                [min]="0" [max]="1"
+                                                [step]="0.01" format="p0">
+                            </wj-input-number>
+                        </li>
+                        <li>
+                            <wj-menu header="Type"
+                                        [(value)]="properties.envelopeType">
+                                <wj-menu-item value="Simple">Simple</wj-menu-item>
+                                <wj-menu-item value="Exponential">Exponential</wj-menu-item>
+                            </wj-menu>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- overlays Chart -->
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" [tooltipContent]="tooltip" chartType="Candlestick" [palette]="palette">
+        <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+        <wj-financial-chart-series binding="high,low,open,close" name="Box Inc">
+        </wj-financial-chart-series>
+        <wj-flex-chart-bollinger-bands binding="close" name="Bollinger Bands"
+                                       [period]="properties.bollingerPeriod"
+                                       [multiplier]="properties.bollingerMultiplier"
+                                       [visibility]="selectedOverlay === 'bollinger' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-bollinger-bands>
+        <wj-flex-chart-envelopes binding="close" name="Envelopes"
+                                 [period]="properties.envelopePeriod"
+                                 [type]="properties.envelopeType"
+                                 [size]="properties.envelopeSize"
+                                 [visibility]="selectedOverlay === 'envelopes' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-envelopes>
+    </wj-financial-chart>
+</div>

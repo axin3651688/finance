@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div>
+            <!-- search box -->
+            <div class="row">
+                <div class="col-md-6 col-xs-4">
+                    <input id="filter" type="text" class="form-control app-pad" placeholder="Filter" />
+                </div>
+                <div class="col-md-6 col-xs-8">
+                    <div class="pull-right wj-control wj-content wj-pager">
+                        <div class="wj-input-group">
+                            <span class="wj-input-group-btn">
+                                <button id="first" class="wj-btn wj-btn-default" type="button">
+                                    <span class="wj-glyph-left" style="margin-right:-4px"></span>
+                                    <span class="wj-glyph-left"></span> 
+                                </button>
+                            </span>
+                            <span class="wj-input-group-btn"> 
+                                <button id="previous" class="wj-btn wj-btn-default" type="button">
+                                    <span class="wj-glyph-left"></span> 
+                                </button>
+                            </span>
+                            <input id="inputCurrent" type="text" class="wj-form-control" disabled>
+                            <span class="wj-input-group-btn">
+                                <button id="next" class="wj-btn wj-btn-default" type="button">
+                                    <span class="wj-glyph-right"></span>
+                                </button>
+                            </span>
+                            <span class="wj-input-group-btn">
+                                <button id="last" class="wj-btn wj-btn-default" type="button">
+                                    <span class="wj-glyph-right"></span>
+                                    <span class="wj-glyph-right" style="margin-left:-4px"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- the grid -->
+            <div id="theGrid">
+            </div>
+        </div>
+    
+        <!-- commands -->
+        <div class="well">
+            <div class="grid-sort-group">
+                <!-- current selection -->
+                <p>Selection: <b><span id="cellRange"></span></b></p>
+
+                <!-- data size -->
+                <div id="itemCountMenu"></div>
+
+                <!-- allow add new -->
+                <div id="allowAddNewMenu"></div>
+
+                <!-- selection mode -->
+                <div id="selectionModeMenu"></div>
+
+                <!-- headers visibility -->
+                <div id="headersVisibilityMenu"></div>
+
+                <!-- highlight headers -->
+                <div id="showSelectedHeadersMenu"></div>
+
+                <!-- show marquee -->
+                <div id="showMarqueeMenu"></div>
+
+                <!-- data maps -->
+                <div id="dataMapsMenu"></div>
+
+                <!-- formatting -->
+                <div id="formattingMenu"></div>
+
+                <!-- culture -->
+                <!-- <div id="cultureMenu"></div> -->
+                <br />
+                <br />
+    
+                <!-- testing the object model -->
+                <button id="toggleColumnVisibility" class="btn btn-default">
+                    Show/Hide Column
+                </button>
+                <button id="changeColumnSize" class="btn btn-default">
+                    Resize Column
+                </button>
+                <button id="toggleRowVisibility" class="btn btn-default">
+                    Show/Hide Row
+                </button>
+                <button id="changeRowSize" class="btn btn-default">
+                    Resize Row
+                </button>
+                <button id="changeDefaultRowSize" class="btn btn-default">
+                    Default Row Size
+                </button>
+                <button id="changeScrollPosition" class="btn btn-default">
+                    Scroll Position
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

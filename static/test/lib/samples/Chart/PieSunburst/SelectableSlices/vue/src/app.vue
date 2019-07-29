@@ -1,0 +1,29 @@
+<template>
+    <div class="container-fluid">
+        <wj-flex-pie header="Best-selling Mobile Phones Brands of 2017" bindingName="brand" binding="sales" tooltipContent="" labelContent="{value}M"
+            selectionMode="Point" selectedItemPosition="Top" :selectedItemOffset="0.2" :isAnimated="true" :itemsSource="data"
+            :palette="['rgba(156,136,217,1)', 'rgba(163,215,103,1)', 'rgba(142,195,192,1)', 'rgba(233,195,169,1)', 'rgba(145,171,54,1)', 'rgba(212,204,192,1)', 'rgba(97,187,216,1)', 'rgba(226,215,111,1)', 'rgba(128,113,90,1)']">
+        </wj-flex-pie>
+    </div>
+</template>
+
+<script>
+    import '@grapecity/wijmo.styles/wijmo.css';
+    import 'bootstrap.css';
+    import Vue from 'vue';
+    import '@grapecity/wijmo.vue2.chart';
+    import { getData } from './data';
+    //
+    new Vue({
+        el: '#app',
+        data: {
+            data: getData()
+        }
+    });
+</script>
+
+<style>
+    body {
+        margin-bottom: 24px;
+    }
+</style>

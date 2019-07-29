@@ -1,0 +1,11 @@
+.wj-flexgrid {
+  max-height: 220px; 
+  margin: 10px;
+}
+.tbl-spaced td {
+  vertical-align: middle;
+  margin: 3px;    
+}
+body {
+   margin-bottom: 24pt;
+}

@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"></wj-tree-view>
+        </div>
+        <div class="col-xs-7">
+          <p>
+            New Node Content: 
+            <input class="form-control" id="theInput" value="My New Node">
+          </p>
+          <p>
+            Add Node: 
+            <button id="btnFirst" class="btn btn-default" (click)="onFirstClick()">First Child</button>
+            <button id="btnLast" class="btn btn-default" (click)="onLastClick()">Last Child</button>
+          </p>
+          <p>
+            <button id="btnNoSel" class="btn btn-default" (click)="onNoSelClick()">Remove Selection</button>
+          </p>
+        </div>
+      </div>
+</div>

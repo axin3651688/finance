@@ -1,0 +1,15 @@
+.container > label {
+  width: 120px;
+  text-align: right;
+}
+.container > .wj-control {
+  margin-bottom: 6px;  
+}
+.wj-flexgrid {
+  height: 200px;
+}
+
+
+body {
+  margin-bottom: 24pt;
+}

@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+var WjGroupPanel_1,__decorate=this&&this.__decorate||function(e,o,r,t){var a,n=arguments.length,i=n<3?o:null===t?t=Object.getOwnPropertyDescriptor(o,r):t;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,o,r,t);else for(var p=e.length-1;p>=0;p--)(a=e[p])&&(i=(n<3?a(i):n>3?a(o,r,i):a(o,r))||i);return n>3&&i&&Object.defineProperty(o,r,i),i},__param=this&&this.__param||function(e,o){return function(r,t){o(r,t,e)}};import{Component,NgModule,ElementRef,Injector,Optional,forwardRef,Inject,SkipSelf}from"@angular/core";import{CommonModule}from"@angular/common";import{NG_VALUE_ACCESSOR}from"@angular/forms";import{WjDirectiveBehavior,WjDirectiveBaseModule,WjValueAccessorFactory}from"wijmo/wijmo.angular2.directiveBase";import*as wjcGridGrouppanel from"wijmo/wijmo.grid.grouppanel";export var wjGroupPanelMeta={selector:"wj-group-panel",template:"",inputs:["wjModelProperty","isDisabled","hideGroupedColumns","showDragGlyphs","maxGroups","placeholder","filter","grid"],outputs:["initialized","gotFocusNg: gotFocus","lostFocusNg: lostFocus"],providers:[{provide:NG_VALUE_ACCESSOR,useFactory:WjValueAccessorFactory,multi:!0,deps:["WjComponent"]}]};let WjGroupPanel=WjGroupPanel_1=class extends wjcGridGrouppanel.GroupPanel{constructor(e,o,r){super(WjDirectiveBehavior.getHostElement(e,o)),this.isInitialized=!1;this._wjBehaviour=WjDirectiveBehavior.attach(this,e,o,r);this.created()}created(){}ngOnInit(){this._wjBehaviour.ngOnInit()}ngAfterViewInit(){this._wjBehaviour.ngAfterViewInit()}ngOnDestroy(){this._wjBehaviour.ngOnDestroy()}addEventListener(e,o,r,t=!1){let a=WjDirectiveBehavior,n=a.ngZone;n&&a.outsideZoneEvents[o]?n.runOutsideAngular(()=>{super.addEventListener(e,o,r,t)}):super.addEventListener(e,o,r,t)}};WjGroupPanel.meta={outputs:wjGroupPanelMeta.outputs},WjGroupPanel=WjGroupPanel_1=__decorate([Component({selector:wjGroupPanelMeta.selector,template:wjGroupPanelMeta.template,inputs:wjGroupPanelMeta.inputs,outputs:wjGroupPanelMeta.outputs,providers:[{provide:"WjComponent",useExisting:forwardRef(()=>WjGroupPanel_1)},...wjGroupPanelMeta.providers]}),__param(0,Inject(ElementRef)),__param(1,Inject(Injector)),__param(2,Inject("WjComponent")),__param(2,SkipSelf()),__param(2,Optional())],WjGroupPanel);export{WjGroupPanel};let moduleExports=[WjGroupPanel],WjGridGrouppanelModule=class{};WjGridGrouppanelModule=__decorate([NgModule({imports:[WjDirectiveBaseModule,CommonModule],declarations:[...moduleExports],exports:[...moduleExports]})],WjGridGrouppanelModule);export{WjGridGrouppanelModule};

@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <label>
+        Show Groups
+        <input id="showGroups" type="checkbox" [(ngModel)]="showGroups">
+    </label>
+    <label>
+        Format Group Headers
+        <input id="formatItem" type="checkbox" [(ngModel)]="formatGroupHeaders">
+    </label>
+    <label>
+        Show Checkboxes
+        <input id="checkBoxes" type="checkbox" [(ngModel)]="showCheckboxes">
+    </label>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>
+                ComboBox
+            </h4>
+            <wj-combo-box [showGroups]="showGroups" [displayMemberPath]="'city'" [itemsSource]="data"
+                (formatItem)="formatGroupHeader($event)">
+            </wj-combo-box>
+        </div>
+        <div class="col-xs-6">
+            <h4>
+                ListBox
+            </h4>
+            <wj-list-box #theListBox [showGroups]="showGroups" [displayMemberPath]="'city'" [itemsSource]="data"
+                (formatItem)="formatGroupHeader($event)"></wj-list-box>
+        </div>
+    </div>
+</div>

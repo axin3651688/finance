@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <h3>HTML in Row Details</h3>
+    <p>
+        This grid shows product categories on each row. Expanding
+        the rows shows an HTML element with information about 
+        the products in that category:</p>
+    <wj-flex-grid #htmlDetail
+        [isReadOnly]="true"
+        [(itemsSource)]="categories">
+        <wj-flex-grid-column [binding]="'CategoryName'" [header]="'Category Name'"  [width]="'*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'Description'" [header]="'Description'"  [width]="'2*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+
+    <h3>Grids in Row Details</h3>
+    <p>
+        You can add anything you want to the detail rows, 
+        including other grids. This example shows the same
+        categories, but the detail row uses another grid
+        to show the products:</p>
+    <wj-flex-grid #gridDetail
+        [isReadOnly]="true"
+        [(itemsSource)]="categories">
+        <wj-flex-grid-column [binding]="'CategoryName'" [header]="'Category Name'"  [width]="'*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'Description'" [header]="'Description'"  [width]="'2*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

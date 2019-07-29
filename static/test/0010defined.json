@@ -1,0 +1,404 @@
+{
+  "id": 296,
+  "text": "三项费用测试",
+  "dataType": "defined",
+  "config": {
+    "type": 1,
+    "hidden": true,
+    "dimName": "itemperiod",
+    "useDbName": true,
+    "calculabled": true,
+    "sort": {
+      "field": "itemperiod",
+      "direction": "asc"
+    },
+    "colSum": {
+      "id": "200",
+      "text": "列合计",
+      "type": "sum"
+    }
+  },
+  "columns": [{
+      "id": "index",
+      "text": "编码",
+      "type": "index",
+      "fixed": true,
+      "hidden": true
+    }, {
+      "id": "id",
+      "text": "项目编码",
+      "type": "string",
+      "fixed": true,
+      "hidden": true,
+      "width": 100
+    }, {
+      "id": "itemperiod",
+      "type": "string",
+      "fixed": false,
+      "text": "项目",
+      "align": "center",
+      "drill": {}
+    }, {
+      "id": "company",
+      "type": "string",
+      "text": "公司",
+      "renderFormatter": [{
+        "calcSymbol": "==",
+        "field": "company",
+        "id": 2,
+        "width": 100,
+        "type": {
+          "css": "font-weight:bold;color:red;"
+        },
+        "value": "小计"
+      }]
+    },
+    {
+      "id": "year",
+      "type": "string",
+      "text": "年",
+      "width": 80
+    },
+    {
+      "id": "month",
+      "type": "string",
+      "text": "月份",
+      "width": 60
+    },
+
+    {
+      "id": "A",
+      "text": "本期",
+      "sort": "asc",
+      "align": "left",
+      "formatter": {
+        "decimal": {
+          "digit": 2,
+          "subfix": "元",
+          "millesimal": true
+        }
+      },
+      "type": "decimal"
+    },
+    {
+      "id": "asntq",
+      "type": "decimal",
+      "text": "本期上年同期",
+      "formatter": {
+        "decimal": {
+          "digit": 2,
+          "subfix": "元",
+          "millesimal": false
+        }
+      },
+      "hidden": false
+    },
+    {
+      "id": "azje",
+      "text": "增减额",
+      "fomular": "(A-asntq)",
+      "formatter": {
+        "decimal": {
+          "digit": 2,
+          "subfix": "元",
+          "millesimal": true
+        },
+        "divit": {
+          "digit": 2
+        }
+      },
+      "type": "decimal"
+    },
+    {
+      "id": "zjv",
+      "text": "增减率(%)",
+      "fomular": "(A-asntq)*100/A",
+      "formatter": {
+        "decimal": {
+          "digit": 2,
+          "subfix": "%",
+          "millesimal": true
+        }
+      },
+      "renderFormatter": [{
+        "field": "zjv",
+        "id": 1,
+        "type": {
+          "css": "color:blue;font-size:20px;"
+        },
+        "children": [{
+          "calcSymbol": ">",
+          "field": "zjv",
+          "id": 2,
+          "value": 0
+        }, {
+          "calcSymbol": "<=",
+          "field": "zjv",
+          "logicSymbol": "and",
+          "id": 2,
+          "value": 50
+        }]
+      }, {
+        "calcSymbol": ">",
+        "field": "zjv",
+        "id": 2,
+        "type": {
+          "icon": "el-icon-time"
+        },
+        "value": 51
+      }, {
+        "calcSymbol": "<",
+        "field": "zjv",
+        "id": 2,
+        "width": 100,
+        "type": {
+          "css": "color:red;font-size:15px;"
+        },
+        "value": 0
+      }],
+      "type": "decimal"
+    }
+  ],
+  "rows": [{
+      "id": "1100110",
+      "itemperiod": "销售费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "江苏农垦"
+    },
+    {
+      "id": "1100111",
+      "itemperiod": "管理费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "江苏农垦"
+    },
+    {
+      "id": "1100112",
+      "itemperiod": "财务费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "江苏农垦"
+    },
+
+    {
+      "id": "11001101",
+      "itemperiod": "销售费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "云台农场"
+    },
+    {
+      "id": "11001112",
+      "itemperiod": "管理费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "云台农场"
+    },
+    {
+      "id": "11001123",
+      "itemperiod": "财务费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "云台农场"
+    },
+
+    {
+      "id": "11001102",
+      "itemperiod": "销售费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "小计",
+      "fomular": "1100110+11001101"
+    },
+    {
+      "id": "11001113",
+      "itemperiod": "管理费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "小计",
+      "fomular": "1100111+11001112"
+    },
+    {
+      "id": "11001121",
+      "itemperiod": "财务费用",
+      "year": "2019年",
+      "month": "5月份",
+      "company": "小计",
+      "fomular": "1100112+11001123"
+    }
+
+  ],
+  "datas": [{
+      "index": 3,
+      "id": "1100112",
+      "itemperiod": "财务费用",
+      "company": "江苏农垦",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 428153.64,
+      "asntq": 392339.88,
+      "azje": 35813.760,
+      "zjv": 8.36
+    },
+    {
+      "index": 6,
+      "id": "11001123",
+      "itemperiod": "财务费用",
+      "company": "云台农场",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 660005.84,
+      "asntq": 837895.65,
+      "azje": -177889.86,
+      "zjv": -26.95
+    },
+    {
+      "index": 9,
+      "id": "11001121",
+      "itemperiod": "财务费用",
+      "company": "小计",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 1088159.48,
+      "asntq": 1230235.53,
+      "azje": -142076.05,
+      "zjv": -13.0
+    },
+    {
+      "index": 2,
+      "id": "1100111",
+      "itemperiod": "管理费用",
+      "company": "江苏农垦",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 913782.11,
+      "asntq": 612274.63,
+      "azje": 301507.48,
+      "zjv": 32.99
+    },
+    {
+      "index": 5,
+      "id": "11001112",
+      "itemperiod": "管理费用",
+      "company": "云台农场",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 26500.44,
+      "asntq": 214046.84,
+      "azje": -187546.84,
+      "zjv": -707.71
+    },
+    {
+      "index": 8,
+      "id": "11001113",
+      "itemperiod": "管理费用",
+      "company": "小计",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 940282.54,
+      "asntq": 826321.47,
+      "azje": 113961.07,
+      "zjv": 12.11
+    },
+    {
+      "index": 1,
+      "id": "1100110",
+      "itemperiod": "销售费用",
+      "company": "江苏农垦",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 426595.62,
+      "asntq": 305795.23,
+      "azje": 120800.31,
+      "zjv": 28.31
+    },
+    {
+      "index": 4,
+      "id": "11001101",
+      "itemperiod": "销售费用",
+      "company": "云台农场",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 664145.05,
+      "asntq": 633240.79,
+      "azje": 30904.12,
+      "zjv": 4.65
+    },
+    {
+      "index": 7,
+      "id": "11001102",
+      "itemperiod": "销售费用",
+      "company": "小计",
+      "year": "2019年",
+      "month": "5月份",
+      "A": 1090740.67,
+      "asntq": 939036.13,
+      "azje": 151704.53,
+      "zjv": 13.90
+    }
+  ],
+  "cube": {
+    "dims": [{
+      "id": "period",
+      "text": "期间"
+    }],
+    "facts": [{
+        "id": "ogtType",
+        "index": 1,
+        "items": []
+      },
+      {
+        "id": "period",
+        "index": 2,
+        "items": []
+      }
+    ]
+  },
+  "needDims": {
+    "year": {
+      "id": "2019",
+      "text": "年份",
+      "datas": [{
+        "id": "2019",
+        "text": "2019年"
+      }]
+    },
+    "month": {
+      "id": 5,
+      "text": "月份",
+      "datas": [{
+        "id": "5",
+        "text": "5月份"
+      }]
+    },
+    "company": {
+      "text": "公司",
+      "datas": [{
+        "id": "1",
+        "text": "江苏农垦"
+      }, {
+        "id": "2",
+        "text": "云台农场"
+      }]
+    },
+    "itemperiod": {
+      "text": "项目",
+      "datas": [{
+        "id": "1100110",
+        "text": "销售费用"
+      }, {
+        "id": "1100111",
+        "text": "管理费用"
+      }, {
+        "id": "1100112",
+        "text": "财务费用"
+      }]
+    }
+  },
+  "generater00": {
+    "needDims": ["itemperiod", "company"],
+    "varName": "rows"
+
+  }
+}

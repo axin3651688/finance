@@ -1,0 +1,20 @@
+.custom-dd {
+    padding: 12px;
+    font-size: 75% !important;
+    font-style: italic !important;
+    background: #FFF6D6 !important;
+}
+
+.wj-dropdown {
+    margin-bottom: 6px;
+}
+
+label {
+    width: 200px;
+    text-align: right;
+    margin-right: 3px;
+}
+
+body {
+    margin-bottom: 36pt;
+}

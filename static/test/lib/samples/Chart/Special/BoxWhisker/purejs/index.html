@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart BoxWhisker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="innerPoints">Show Inner Points:</label>
+            <input id="innerPoints" type="checkbox">
+
+            <label for="outliers">Show Outliers:</label>
+            <input id="outliers" type="checkbox">
+        </div>
+        <div class="form-group">
+            <label for="meanline">Show Mean Line:</label>
+            <input id="meanline" type="checkbox">
+
+            <label for="meanmarker">Show Mean Marker:</label>
+            <input id="meanmarker" type="checkbox">
+        </div>
+        <div class="form-group">
+            <label for="rotated">Rotated:</label>
+            <input id="rotated" type="checkbox">
+            
+            <label for="btnRandomize">Randomize Data</label>
+            <button id="btnRandomize" class="btn btn-default">
+                Go
+            </button>
+        </div>
+
+        <div id="theChart"></div>
+    </div>
+</body>
+
+</html>

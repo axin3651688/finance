@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <!-- Symbol -->
+    <label>Symbol</label>
+    <wj-combo-box [itemsSource]="symbols" displayMemberPath="name" selectedValuePath="symbol"
+                    [(selectedValue)]="selectedSymbol"
+                    (selectedIndexChanged)="selectedSymbolChanged()">
+    </wj-combo-box>
+    
+    <!-- FinancialChart -->
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" chartType="HeikinAshi" [tooltipContent]="tooltip" [palette]="palette">
+        <wj-financial-chart-series binding="high,low,open,close" [name]="selectedSymbol | uppercase">
+        </wj-financial-chart-series>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+    </wj-financial-chart>
+
+    <!-- Range Selector -->
+    <wj-financial-chart #selectorChart [itemsSource]="data" bindingX="date" chartType="HeikinAshi" style="height: 200px"
+                tooltipContent="" (rendered)="selectorChartRendered()">
+        <wj-flex-chart-axis wjProperty="axisY" [labels]="false"></wj-flex-chart-axis>
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-financial-chart-series binding="high,low,open,close"></wj-financial-chart-series>
+        <wj-flex-chart-range-selector #selector [seamless]="true" (rangeChanged)="rangeChanged()">
+        </wj-flex-chart-range-selector>
+    </wj-financial-chart>
+</div>

@@ -1,0 +1,4 @@
+<div class="container-fluid">
+    <div id="msg" class="msg" [innerHtml]="msg">Ready</div>
+    <wj-tree-view #theTree [itemsSource]='data' [displayMemberPath]="'header'" [childItemsPath]="'items'" (itemClicked)="onItemClicked(theTree)"></wj-tree-view>
+</div>

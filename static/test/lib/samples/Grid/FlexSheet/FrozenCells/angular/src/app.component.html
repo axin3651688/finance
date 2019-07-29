@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'unbound'" [rowCount]="30" [columnCount]="12"></wj-sheet>
+    </wj-flex-sheet>
+    <button type="button" class="btn btn-default" (click)="freezeCells()">{{isFrozen ? 'UnFreeze' : 'Freeze'}}</button>
+</div>

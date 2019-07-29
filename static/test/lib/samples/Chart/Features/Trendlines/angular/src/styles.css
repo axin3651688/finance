@@ -1,0 +1,28 @@
+.wj-flexchart {
+    height: 250px;
+    margin: 10px 0;
+}
+
+.wj-control {
+    margin-bottom: 3px;
+}
+
+label {
+    width: 120px;
+    text-align: right;
+}
+
+.equation {
+    display: inline-block;
+    font-style: italic;
+    font-size: 80%;
+}
+
+.wj-combobox, .wj-inputnumber {
+    width: 120px;
+    margin-right: 12px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

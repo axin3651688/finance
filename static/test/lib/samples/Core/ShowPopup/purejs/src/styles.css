@@ -1,0 +1,27 @@
+.wj-flexgrid {
+    max-height: 300px;
+    margin: 10px 0;
+}
+
+.column-picker {
+    columns: 3;
+    padding: 12px;
+    margin-left: 12px;
+    margin-top: 26px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* #372131 (Chrome) */
+.column-picker .wj-listbox-item {
+    break-inside: avoid;
+}
+
+.column-picker-icon {
+    cursor: pointer;
+    color: #FF8754;
+    margin: 3px;
+}
+
+body {
+    margin-bottom: 20px;
+}

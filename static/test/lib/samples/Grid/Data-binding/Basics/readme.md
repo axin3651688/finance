@@ -1,0 +1,4 @@
+Arrays and CollectionViews
+==========================
+
+When you set the grid's **itemsSource** property to a regular JavaScript array, it automatically creates an internal **CollectionView** and uses that as a data source so it can provide sorting and editing features without forcing you to create a **CollectionView** yourself. This internal view is exposed by the grid's **collectionView** property, and you can use it to in case you need the extra functionality yourself. For example, the grid below is bound to a regular array, and the grid's **collectionView** property is used to show the currently selected item.

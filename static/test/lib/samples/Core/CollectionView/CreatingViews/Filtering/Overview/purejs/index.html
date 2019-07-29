@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity CollectionView Filtering Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <label>
+            <input type="radio" name="filter" value="" checked="true" />
+            No Filter
+        </label>
+        <label>
+            <input type="radio" name="filter" value="country" />
+            US only
+        </label>
+        <label>
+            <input type="radio" name="filter" value="sales" />
+            Sales > 9,000
+        </label>
+        <label>
+            <input type="radio" name="filter" value="downloads" />
+            Downloads > 19,000
+        </label>
+
+        <p>
+            Result (<span id="cnt"></span> items):
+        </p>
+        <div id="theGrid">
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+.wj-flexchart {
+    height: 300px;
+    margin: 10px 0;
+}
+
+.wj-flexchart g.wj-series-group ellipse {
+    fill: gold;
+    stroke: orange;
+    opacity: .5
+}
+
+.wj-flexchart g.wj-series-group ellipse:hover {
+    fill: orange;
+    opacity: 1;
+}
+
+body {
+    margin-bottom: 24pt;
+}

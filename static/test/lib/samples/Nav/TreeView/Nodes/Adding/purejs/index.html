@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo TreeView Adding Nodes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+    
+      <div class="row">
+        <div class="col-xs-5">
+          <div id="theTree">
+          </div>
+        </div>
+        <div class="col-xs-7">
+          <p>
+            New Node Content: 
+            <input class="form-control" id="theInput" value="My New Node">
+          </p>
+          <p>
+            Add Node: 
+            <button id="btnFirst" class="btn btn-default">First Child</button>
+            <button id="btnLast" class="btn btn-default">Last Child</button>
+          </p>
+          <p>
+            <button id="btnNoSel" class="btn btn-default">Remove Selection</button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

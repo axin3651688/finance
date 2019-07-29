@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Text Values</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="showText">Show Text:</label>
+                    <div id="showText"></div>
+                </div>
+                <div class="form-group">
+                    <label for="format">Format:</label>
+                    <div id="format"></div>
+                </div>
+                <div class="form-check">
+                    <label for="getText" class="form-check-label">Custom Text:</label>
+                    <input id="getText" type="checkbox" class="form-check-input">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div id="theGauge"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+.wj-flexgrid {
+  max-height: 250px;
+  margin: 10px 0;
+}
+.wj-cell.wj-frozen-row {
+    border-bottom: none;
+}
+.negative {
+  color: red;
+}
+body {
+  margin-bottom: 20px;
+}

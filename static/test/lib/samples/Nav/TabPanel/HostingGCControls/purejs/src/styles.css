@@ -1,0 +1,7 @@
+.wj-tabpane {
+  padding: 12px;
+}
+.wj-tabpanel .wj-gauge {
+    width: 300px;
+    margin: auto auto;
+}

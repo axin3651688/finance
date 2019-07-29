@@ -1,0 +1,9 @@
+body {
+    margin-bottom: 24px;
+}
+
+label {
+    width: 180px;
+    text-align: right;
+    margin-right: 3px;
+}

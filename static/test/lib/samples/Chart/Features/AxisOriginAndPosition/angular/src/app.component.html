@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart chartType="Scatter" tooltipContent="" bindingX="x" [itemsSource]="data" [palette]="palette">
+            <wj-flex-chart-axis wjProperty="axisY" [axisLine]="true" [majorGrid]="false" [origin]="0" 
+                [majorUnit]="1" [max]="1" [min]="-1" [labels]="false"></wj-flex-chart-axis>
+            <wj-flex-chart-axis wjProperty="axisX" [origin]="0" [axisLine]="true"
+                [majorUnit]="1" [max]="1" [min]="-1" [labels]="false"></wj-flex-chart-axis>
+            <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+            <wj-flex-chart-series name="data1" binding="y1"></wj-flex-chart-series>
+            <wj-flex-chart-series name="data2" binding="y2"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

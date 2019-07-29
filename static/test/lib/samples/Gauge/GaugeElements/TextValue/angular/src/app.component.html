@@ -1,0 +1,29 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label for="showText">Show Text:</label>
+                <wj-combo-box id="showText" [itemsSource]="['None', 'Value', 'MinMax', 'All']" [(text)]="showText">
+                </wj-combo-box>
+            </div>
+
+            <div class="form-group">
+                <label for="format">Format:</label>
+                <wj-combo-box id="format" [itemsSource]="['n0', 'n2', 'c0', 'c2']" [(text)]="theGauge.format">
+                </wj-combo-box>
+            </div>
+            <div class="form-check">
+                <label for="customText" class="form-check-label">Custom Text:</label>
+                <input id="customText" type="checkbox" class="form-check-input" [(ngModel)]="customText">
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-radial-gauge #theGauge [isReadOnly]="false" [hasShadow]="false" [showText]="showText" [startAngle]="-30"
+                [sweepAngle]="240" [value]="80" [showRanges]="false" [format]="'n0'">
+                <wj-range [min]="0" [max]="25" [color]="'red'"></wj-range>
+                <wj-range [min]="25" [max]="50" [color]="'orange'"></wj-range>
+                <wj-range [min]="50" [max]="100" [color]="'green'"></wj-range>
+            </wj-radial-gauge>
+        </div>
+    </div>
+</div>

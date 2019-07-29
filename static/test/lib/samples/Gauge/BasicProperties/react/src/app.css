@@ -1,0 +1,22 @@
+
+label {
+    width: 150px;
+    text-align: right;
+}
+
+.container-fluid .wj-inputnumber,
+.container-fluid .wj-combobox {
+    width: 140px;
+}
+
+.container-fluid .wj-gauge {
+    margin: 20px auto;
+}
+
+.container-fluid .wj-radialgauge {
+    height: 100px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

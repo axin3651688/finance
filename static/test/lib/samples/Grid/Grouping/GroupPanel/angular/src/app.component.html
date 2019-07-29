@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-group-panel style="display: block;"
+        [grid]="flex"
+        [placeholder]="'Drag columns here to create groups'">
+    </wj-group-panel>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+</div>

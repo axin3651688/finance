@@ -1,0 +1,11 @@
+.modal-body {
+    min-width: 300px;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+body {
+    margin-bottom: 24pt;
+}

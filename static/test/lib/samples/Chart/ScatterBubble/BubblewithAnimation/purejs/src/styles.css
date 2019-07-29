@@ -1,0 +1,53 @@
+body {
+    margin-bottom: 24px;
+}
+
+.yearpicker {
+    font-size: 24pt;
+    text-align: right;
+    margin-bottom: 12pt;
+    color: #00916f;
+}
+
+.wj-lineargauge {
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 50%;
+}
+
+.wj-lineargauge .wj-pointer {
+    fill: #00916f;
+}
+
+.wj-flexchart {
+    height: 550px;
+    border: none;
+    position: relative;
+}
+
+.wj-flexchart .watermark {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 300px;
+    color: #00916f;
+    opacity: .1;
+    pointer-events: none;
+}
+
+.wj-flexchart g.wj-series-group ellipse {
+    opacity: 0.5;
+    stroke: none;
+}
+
+.wj-flexchart.tracking-country g.wj-series-group ellipse {
+    opacity: 0.2;
+    stroke: none;
+}
+
+.wj-flexchart g.wj-series-group ellipse.wj-state-selected {
+    opacity: 1;
+    stroke: #b6ff00;
+    stroke-width: 6px;
+    stroke-dasharray: none;
+}

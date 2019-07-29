@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="secondaryAxis">Secondary Y Axis</label>
+        <input #sa id="secondaryAxis" type="checkbox" checked="checked" (change)="saChange(sa)">
+        <wj-flex-chart bindingX="country" [itemsSource]="data" [palette]="palette">
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="expenses" name="Expenses"></wj-flex-chart-series>
+            <wj-flex-chart-series #ser binding="downloads" name="Downloads" chartType="LineSymbols">
+                <wj-flex-chart-axis #axisY wjProperty="axisY" position="Right" title="Downloads (k)" format="n0," [min]="0" [axisLine]="true"></wj-flex-chart-axis>
+            </wj-flex-chart-series>
+            <wj-flex-chart-axis wjProperty="axisY" format="n0," title="Sales/Expenses (US$ k)" [axisLine]="true"></wj-flex-chart-axis>
+        </wj-flex-chart>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <label>
+    alternatingRowStep
+    <input type="checkbox" (click)="onAlternatingRowStepClick($event)">
+  </label>
+  <wj-flex-grid #theGrid [itemsSource]="data" [alternatingRowStep]="0" [autoGenerateColumns]="false"
+  (loadedRows)="onloadedRows(theGrid)">
+    <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="50"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'product'" [header]="'Product'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [format]="'c0'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [format]="'c0'">
+    </wj-flex-grid-column>
+  </wj-flex-grid>
+</div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Pie Animation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <div id="pieAnimationMode"></div>
+                <div id="pieEasing"></div>
+                <label for="pieDuration">Duration:</label>
+                <input id="pieDuration" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <label for="pieInnerRadius">innerRadius:</label>
+                <input id="pieInnerRadius" />
+                <button id="pieResetData" type="button" class="btn btn-default">reset data</button>
+                <button id="pieAddSlice" type="button" class="btn btn-default">add slice</button>
+                <button id="pieRemoveSlice" type="button" class="btn btn-default">remove slice</button>
+            </div>
+        </div>
+        <div id="chart"></div>
+    </div>
+</body>
+
+</html>

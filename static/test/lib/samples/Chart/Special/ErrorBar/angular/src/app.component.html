@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="chartType">Chart Type:</label>
+        <wj-combo-box #chartType id="chartType"
+            [itemsSource]="['Column', 'Bar', 'Scatter', 'Line', 'LineSymbols', 'Area', 'Spline', 'SplineSymbols', 'SplineArea']">
+        </wj-combo-box>
+    </div>
+    <div class="form-group">
+        <label for="error">Error:</label>
+        <wj-combo-box #error id="error" displayMemberPath="hdr" [itemsSource]="comboData">
+        </wj-combo-box>
+    </div>
+    <div class="form-group">
+        <label for="btnRandomize">Randomize Data</label>
+        <button id="btnRandomize" class="btn btn-default" (click)="randomizeData()">
+            Go
+        </button>
+    </div>
+
+    <wj-flex-chart [itemsSource]="data" bindingX="date" [chartType]="chartType.selectedValue" [palette]="palette">
+        <wj-flex-chart-error-bar [binding]="error.selectedValue.value ? 'amount' : 'amount,errorPlus,errorMinus'"
+            [errorBarStyle]="{ stroke: 'darkred', strokeWidth: 3 }" [value]="error.selectedValue.value"
+            [errorAmount]="error.selectedValue.mode">
+        </wj-flex-chart-error-bar>
+    </wj-flex-chart>
+</div>

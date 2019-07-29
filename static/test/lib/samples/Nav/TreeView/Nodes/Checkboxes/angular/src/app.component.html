@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'"
+        [showCheckboxes]=true (checkedItemsChanged)="onCheckedItemsChanged()"></wj-tree-view>
+
+    <button id="btnCheckAll" class="btn btn-default" (click)="onCheckAllClick()">
+        Check All
+    </button>
+    <button id="btnUncheckAll" class="btn btn-default" (click)="onUncheckAllClick()">
+        Uncheck All
+    </button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button id="btnSaveState" class="btn btn-default" (click)="onSaveStateClick()">
+        Save State
+    </button>
+    <button id="btnRestoreState" class="btn btn-default" (click)="onRestoreStateClick()">
+        Restore State
+    </button>
+    <div id="tvChkStatus" [innerHtml]="tvChkStatus"></div>
+</div>

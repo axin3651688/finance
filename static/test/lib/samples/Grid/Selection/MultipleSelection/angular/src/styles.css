@@ -1,0 +1,10 @@
+.wj-flexgrid {
+  max-height: 300px;
+}
+.extended-selection.wj-cell:not(.wj-header):not(.wj-group):not(.wj-state-selected):not(.wj-state-multi-selected) {
+  color: white;
+  background: #a47aff;
+}
+body {
+ margin-bottom: 20px;
+}

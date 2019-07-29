@@ -1,0 +1,39 @@
+{
+    "name": "wijmo",
+    "version": "5.20191.603-rc",
+    "description": "UI library for pure JS, Angular, React, Vue and more...",
+    "author": "GrapeCity, Inc",
+    "license": "Commercial",
+    "homepage": "https://www.grapecity.com/en/wijmo",
+    "bugs": {
+        "url": "https://www.grapecity.com/en/forums/wijmo"
+    },
+    "keywords": [
+        "control",
+        "component",
+        "ui",
+        "control library",
+        "component library",
+        "ui library",
+        "control-library",
+        "component-library",
+        "ui-library",
+        "grid",
+        "data grid",
+        "data-grid",
+        "datagrid",
+        "angular grid",
+        "react grid",
+        "vue grid",
+        "angular-grid",
+        "react-grid",
+        "vue-grid"
+    ],
+    "typesVersions": {
+        ">=3.1.1": {
+            "*": [
+                "ts3.1.1/*"
+            ]
+        }
+    }
+}

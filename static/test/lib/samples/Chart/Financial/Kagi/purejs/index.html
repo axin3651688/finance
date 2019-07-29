@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Kagi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="theChart"></div>
+        <!-- Settings -->
+        <div class="panel-group" id="settings">
+            <div class="panel panel-default">
+                <div class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul class="list-inline">
+                            <li>
+                                <label>Reversal Amount</label>
+                                <input id="inputRevAmount" />
+                            </li>
+                            <li>
+                                <select id="selRangeMode">
+                                    <option value="Fixed">Fixed</option>
+                                    <option value="ATR">Average True Range</option>
+                                    <option value="Percentage">Percentage</option>
+                                </select>
+                            </li>
+                            <li>
+                                <select id="selDataFields">
+                                    <option value="High">High</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Close">Close</option>
+                                    <option value="HighLow">High/Low</option>
+                                    <option value="HL2">HL Avg.</option>
+                                    <option value="HLC3">HLC Avg.</option>
+                                    <option value="HLOC4">HLOC Avg.</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li>
+                                <label>Stroke</label>
+                                <input id="inputStroke" />
+                            </li>
+                            <li>
+                                <label>Alt. Stroke</label>
+                                <input id="inputAltStroke" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

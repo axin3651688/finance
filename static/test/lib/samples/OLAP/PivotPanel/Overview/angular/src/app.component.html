@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <p>
+                Drag and drop fields to build views:
+            </p>
+            <wj-pivot-panel [itemsSource]="ngPanel"></wj-pivot-panel>
+            <p>
+                For example, drag the "Buyer" field from the "Rows" list
+                to the "Columns" list.
+            </p>
+        </div>
+        <div class="col-xs-7">
+            <p>
+                Summary for the current view definition:
+            </p>
+            <wj-pivot-grid [itemsSource]="ngPanel"></wj-pivot-grid>
+            <wj-pivot-chart [itemsSource]="ngPanel" [showTitle]=false [showLegend]="'Auto'"></wj-pivot-chart>
+        </div>
+    </div>
+    <p>
+        View definitions can be saved and restored using the
+        PivotEngine's <b>viewDefinition</b> property:
+    </p>
+    <button id="saveView" class="btn btn-default" (click)="onSaveViewClick()">
+        Save View
+    </button>
+    <button id="restoreView" class="btn btn-default" (click)="onRestoreViewClick()">
+        Restore View
+    </button>
+</div>

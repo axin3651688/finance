@@ -1,0 +1,6 @@
+.wj-flexgrid {
+  max-height: 250px;
+}
+.no-scrollbars.wj-flexgrid [wj-part=root] {
+  overflow: hidden !important;
+}

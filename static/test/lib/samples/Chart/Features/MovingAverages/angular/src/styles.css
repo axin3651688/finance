@@ -1,0 +1,13 @@
+.wj-flexchart {
+    height: 250px;
+    margin: 10px 0;
+}
+
+.wj-combobox, .wj-inputnumber {
+    width: 120px;
+    margin-right: 12px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

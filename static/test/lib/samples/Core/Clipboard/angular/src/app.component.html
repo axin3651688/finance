@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-check">
+        <label for="includeHeaders" class="form-check-label">Include Headers</label>
+        <input id="includeHeaders" type="checkbox" class="form-check-input" [(ngModel)]="includeHeaders">
+    </div>
+
+    <wj-flex-grid #flexGrid [itemsSource]="data" (copying)="copying(flexGrid, $event)"
+        (pasting)="pasting(flexGrid, $event)">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,189 @@
+{
+    "id": 24,
+    "text": "三项费用",
+    "dataType": "random",
+    "config": {
+        "type": 1,
+        "hidden": true,
+        "dimName": "itemperiod",
+        "useDbName": true,
+        "sum": {
+            "id": "100",
+            "text": "三项费用合计"
+        },
+        "colSum": {
+            "id": "200",
+            "text": "列合计",
+            "type": "sum"
+        }
+    },
+    "columns": [{
+            "id": "index",
+            "text": "编码",
+            "type": "index",
+            "fixed": true,
+            "hidden": false
+        }, {
+            "id": "id",
+            "text": "项目编码",
+            "type": "string",
+            "fixed": true,
+            "width": 100
+        }, {
+            "id": "text",
+            "type": "string",
+            "fixed": true,
+            "text": "项目",
+            "drill": {}
+        }, {
+            "id": "company",
+            "type": "string",
+            "text": "公司"
+        },
+        {
+            "id": "year",
+            "type": "string",
+            "text": "年",
+            "width": 80
+        },
+        {
+            "id": "month",
+            "type": "string",
+            "text": "月份",
+            "width": 60
+        },
+
+        {
+            "id": "A",
+            "text": "本期",
+            "sort": "asc",
+            "align": "left",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": true
+                }
+            },
+            "type": "decimal"
+        },
+        {
+            "id": "asntq",
+            "type": "decimal",
+            "text": "本期上年同期",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": false
+                }
+            },
+            "hidden": false
+        },
+        {
+            "id": "azje",
+            "text": "增减额",
+            "fomular": "(A-asntq)",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "元",
+                    "millesimal": true
+                },
+                "divit": {
+                    "digit": 2
+                }
+            },
+            "type": "decimal"
+        },
+        {
+            "id": "zjv",
+            "text": "增减率(%)",
+            "fomular": "(A-asntq)*100/A",
+            "formatter": {
+                "decimal": {
+                    "digit": 2,
+                    "subfix": "%",
+                    "millesimal": true
+                }
+            },
+            "renderFormatter": [{
+                "field": "zjv",
+                "id": 1,
+                "type": {
+                    "css": "color:blue;font-size:20px;"
+                },
+                "children": [{
+                    "calcSymbol": ">",
+                    "field": "zjv",
+                    "id": 2,
+                    "value": 0
+                }, {
+                    "calcSymbol": "<=",
+                    "field": "zjv",
+                    "logicSymbol": "and",
+                    "id": 2,
+                    "value": 50
+                }]
+            }, {
+                "calcSymbol": ">",
+                "field": "zjv",
+                "id": 2,
+                "type": {
+                    "icon": "el-icon-time"
+                },
+                "value": 51
+            }, {
+                "calcSymbol": "<",
+                "field": "zjv",
+                "id": 2,
+                "type": {
+                    "css": "color:red;font-size:15px;"
+                },
+                "value": 0
+            }],
+            "type": "decimal"
+        }
+    ],
+    "rows": [{
+        "id": "1100110",
+        "text": "销售费用"
+    }, {
+        "id": "1100111",
+        "text": "管理费用"
+    }, {
+        "id": "1100112",
+        "text": "财务费用"
+    }],
+    "datas": [],
+    "cube": {},
+    "needDims": {
+        "year": {
+            "id": "2019",
+            "text": "年份",
+            "datas": [{
+                "id": "2019",
+                "text": "2019年"
+            }]
+        },
+        "month": {
+            "id": 5,
+            "text": "月份",
+            "datas": [{
+                "id": "5",
+                "text": "5月份"
+            }]
+        },
+        "company": {
+            "id": 1,
+            "text": "公司",
+            "datas": [{
+                "id": "1",
+                "text": "江苏农垦"
+            }, {
+                "id": "2",
+                "text": "云台农场"
+            }]
+        }
+    }
+}

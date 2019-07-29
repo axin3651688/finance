@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-combo-box [itemsSource]="data" [displayMemberPath]="'header'" [selectedIndex]="1"
+        (formatItem)="formatItem($event)"></wj-combo-box>
+    <p>
+        The same technique applies to the <b>AutoComplete</b>
+        control:
+    </p>
+    <wj-auto-complete [itemsSource]="data" [displayMemberPath]="'header'" [selectedIndex]="1"
+        (formatItem)="formatItem($event)"></wj-auto-complete>
+</div>

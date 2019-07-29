@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart #theChart tooltipContent="" [itemsSource]="data" bindingX="country" chartType="LineSymbols"
+                header="Header" footer="Footer" [palette]="palette">
+            <wj-flex-chart-data-label content="{value:n0}" position="Top" [offset]="5"></wj-flex-chart-data-label>
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="expenses" name="Expenses"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

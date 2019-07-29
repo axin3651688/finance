@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <wj-flex-grid #flex
+        [keyActionTab]="'CycleOut'"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="40" [isReadOnly]="true"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'date'" [header]="'Date'" [format]="'d'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'time'" [header]="'Time'" [format]="'t'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'product'" [header]="'Product'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'amount'" [header]="'Amount'" [format]="'n2'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

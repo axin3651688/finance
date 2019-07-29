@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo TabPanel Ribbon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div id="ribbon">
+            <!-- Format tab -->
+            <div>
+                <div>Format</div>
+                <div>
+                    <div class="wj-group">
+                        <div class="wj-content">
+                            <div class="wj-column">
+                                <button id="save" class="wj-btn wj-btn-large">
+                                    <i class="material-icons">save</i>
+                                    <br />
+                                    Save
+                                </button>
+                            </div>
+                            <div class="wj-column">
+                                <div class="wj-row">
+                                    <button id="undo" class="wj-btn" aria-label="Undo">
+                                        <i class="material-icons">undo</i>
+                                    </button>
+                                    <button id="redo" class="wj-btn" aria-label="Redo">
+                                        <i class="material-icons">redo</i>
+                                    </button>
+                                    <button id="preview" class="wj-btn" aria-label="Preview">
+                                        <i class="material-icons">pageview</i>
+                                    </button>
+                                    <button id="removeFormat" class="wj-btn" aria-label="Remove Format">
+                                        <i class="material-icons">format_clear</i>
+                                    </button>
+                                </div>
+                                <div class="wj-row">
+                                    <button id="cut" class="wj-btn" aria-label="Cut">
+                                        <i class="material-icons">&#x2702;</i>
+                                    </button>
+                                    <button id="copy" class="wj-btn" aria-label="Copy">
+                                        <i class="material-icons">&#xE14D;</i>
+                                    </button>
+                                    <button id="paste" class="wj-btn" aria-label="Paste">
+                                        <i class="material-icons">&#xE85D;</i>
+                                    </button>
+                                    <button id="selectAll" class="wj-btn" aria-label="Select All">
+                                        <i class="material-icons">select_all</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wj-header">Actions</div>
+                    </div>
+                    <div class="wj-group">
+                        <div class="wj-content">
+                            <div class="wj-row">
+                                <div id="font-face" aria-label="Font Face"></div>
+                                <div id="font-size" aria-label="Font Size"></div>
+                                <button id="background" class="wj-btn" aria-label="Background Color">
+                                    <i class="material-icons">format_color_fill</i>
+                                </button>
+                                <button id="color" class="wj-btn" aria-label="Text Color">
+                                    <i class="material-icons">format_color_text</i>
+                                </button>
+                            </div>
+                            <div class="wj-row">
+                                <button id="bold" class="wj-btn" aria-label="Bold">
+                                    <i class="material-icons">format_bold</i>
+                                </button>
+                                <button id="italic" class="wj-btn" aria-label="Italic">
+                                    <i class="material-icons">format_italic</i>
+                                </button>
+                                <button id="underline" class="wj-btn" aria-label="Underline">
+                                    <i class="material-icons">format_underline</i>
+                                </button>
+                                <button id="strikethrough" class="wj-btn" aria-label="Strikethrough">
+                                    <i class="material-icons">format_strikethrough</i>
+                                </button>
+                                <button id="subscript" class="wj-btn" aria-label="Subscript">
+                                    <i class="material-icons">vertical_align_bottom</i>
+                                </button>
+                                <button id="superscript" class="wj-btn" aria-label="Superscript">
+                                    <i class="material-icons">vertical_align_top</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="wj-header">Font</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Tab -->
+            <div>
+                <div>Custom Tab</div>
+                <div>
+                    <div class="wj-group">
+                        <div class="wj-content">
+                            <div class="wj-column">
+                                <button id="click-me" class="wj-btn wj-btn-large">
+                                    Click Me
+                                </button>
+                            </div>
+                        </div>
+                        <div class="wj-header">Custom Group</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="editor" contenteditable="true">
+            <b>Lorem Ipsum</b> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book.
+        </div>
+    </div>
+</body>
+
+</html>

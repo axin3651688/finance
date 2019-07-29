@@ -1,0 +1,6 @@
+<div class="container-fluid">
+    <wj-menu #menu [displayMemberPath]="'header'" [selectedValuePath]="'value'"
+        [header]="menu.selectedItem ? 'Tax: <b>' + menu.selectedItem.header + '</b>' : menu.header" [itemsSource]="data"
+        [selectedValue]="0.085">
+    </wj-menu>
+</div>

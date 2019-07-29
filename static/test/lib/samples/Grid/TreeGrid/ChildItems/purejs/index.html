@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Tree Grids</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">  
+      <label for="asTree">Show as Tree </label>
+      <input id="asTree" type="checkbox" checked="checked">
+      <div id="familyGrid"></div>
+      <p>
+        There are also 'heterogeneous' hierarchies, where
+        items at different levels have different types and
+        different child item properties.</p>
+      <p>
+        For example, the grid below is bound to a collection
+        of 'worker' objects which receive 'checks' which list
+        'earnings':</p>
+      <div id="workersGrid"></div>
+    </div>
+</body>
+</html>

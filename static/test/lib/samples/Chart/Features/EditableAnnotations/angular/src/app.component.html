@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+        <label id="labelIsEditable" for="checkboxIsEditable">Is Editable:</label>
+        <input type="checkbox" id="checkboxIsEditable" [(ngModel)]="isEditable" (change)="editableChange()" />
+        <wj-flex-chart #theChart bindingX="x" chartType="Scatter" [itemsSource]="data" tooltipContent="" (rendered)="chartRendered()">
+            <wj-flex-chart-series name="Data" binding="y"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

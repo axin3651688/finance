@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="theCombo">Select an item:</label>
+        <wj-combo-box #theCombo id="theCombo" [displayMemberPath]="'country'" [selectedValuePath]="'sales'" [itemsSource]="data"></wj-combo-box>
+    </div>
+    <p>
+        The current text is: <b>{{ theCombo.text }}</b>.
+    </p>
+    <p>
+        The selectedIndex is: <b>{{ theCombo.selectedIndex }}</b>.
+    </p>
+    <p>
+        The selectedValue is: <b>{{ theCombo.selectedValue | currency }}</b>.
+    </p>
+</div>

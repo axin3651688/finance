@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-calendar #theCalendar (formatItem)="formatItem($event)" [itemValidator]="validator">
+    </wj-calendar>
+    <div>
+        The current date is <b>{{ theCalendar.value | date:'fullDate'}}</b>.
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div id="thePanel" [style.background]='color.toString()'></div>
+
+    <wj-linear-gauge #red [(value)]="color.r" (initialized)="initGauge(red, 'red')">
+    </wj-linear-gauge>
+
+    <wj-linear-gauge #green [(value)]="color.g" (initialized)="initGauge(green, 'green')">
+    </wj-linear-gauge>
+
+    <wj-linear-gauge #blue [(value)]="color.b" (initialized)="initGauge(blue, 'blue')">
+    </wj-linear-gauge>
+</div>

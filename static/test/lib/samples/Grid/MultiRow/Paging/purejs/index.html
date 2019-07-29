@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo MultiRow Paging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="pageMultirow"></div>
+        <div class="btn-group">
+            <button type="button" class="btn" id="firstBtn">
+                <span class="glyphicon glyphicon-fast-backward"></span>
+            </button>
+            <button type="button" class="btn" id="previousBtn">
+                <span class="glyphicon glyphicon-step-backward"></span>
+            </button>
+            <button type="button" class="btn" id="numBtn" disabled style="width:100px"></button>
+            <button type="button" class="btn" id="nextBtn">
+                <span class="glyphicon glyphicon-step-forward"></span>
+            </button>
+            <button type="button" class="btn" id="lastBtn">
+                <span class="glyphicon glyphicon-fast-forward"></span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Popup CSS Transitions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <button id="btnLogin" class="btn btn-primary">
+            Log In
+        </button>
+
+        <!-- Log In form -->
+        <form id="frmLogin" class="custom-animation">
+            <h4 class="modal-header">
+                Log in
+                <button type="button" tabindex="-1" class="close wj-hide">&times;</button>
+            </h4>
+            <div class="modal-body">
+                <label>
+                    Email:
+                    <input class="form-control" required type="email" />
+                </label>
+                <br />
+                <label>
+                    Password:
+                    <input class="form-control" type="password" required pattern=".{4,}"
+                        title="Please enter 4 characters or more." />
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">
+                    Log in
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

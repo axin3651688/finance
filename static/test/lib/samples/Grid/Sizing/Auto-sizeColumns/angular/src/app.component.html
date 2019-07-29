@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-flex-grid #flexGrid [itemsSource]="data" [autoGenerateColumns]=false [allowResizing]="'None'"
+        (loadedRows)="onLoadedRows(flexGrid)" (cellEditEnded)="onCellEditEnded(flexGrid,$event)"
+        (rowEditEnded)="onRowEditEnded(flexGrid)">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [minWidth]=60 [isReadOnly]=true></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'countries'" [header]="'Countries'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [minWidth]=80></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [minWidth]=80></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

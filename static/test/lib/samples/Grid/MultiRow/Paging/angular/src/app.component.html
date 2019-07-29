@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <wj-multi-row [itemsSource]="pagedOrders" [layoutDefinition]="layoutDefinition"></wj-multi-row>
+    <div class="btn-group">
+        <button type="button" class="btn" (click)="onGotoPageClick('first')" >
+            <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button type="button" class="btn" (click)="onGotoPageClick('previous')" >
+            <span class="glyphicon glyphicon-step-backward"></span>
+        </button>
+        <button type="button" class="btn" [innerHTML]="pageText" disabled style="width:100px"></button>
+        <button type="button" class="btn" (click)="onGotoPageClick('next')" >
+            <span class="glyphicon glyphicon-step-forward"></span>
+        </button>
+        <button type="button" class="btn"  (click)="onGotoPageClick('last')" >
+            <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+    </div>
+</div>

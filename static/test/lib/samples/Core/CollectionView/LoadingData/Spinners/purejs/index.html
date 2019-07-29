@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity FlexGrid Spinners</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h3>
+            GIF Spinners</h3>
+        <p>
+            This example shows an animated GIF while the grid is loading:</p>
+        <button id="btn-load-gif" class="btn btn-primary">
+            Load Grid Using GIF Spinner
+        </button>
+        <div id="theGridGif"></div>
+        <div style="display:none">
+            <div id="theSpinnerGif" class="spinner">
+                <img src="resources/Rounded%20blocks.gif">
+            </div>
+        </div>
+
+        <h3>
+            Gauge Spinners
+        </h3>
+        <p>
+            This example shows an animated RadialGauge while the grid is loading:</p>
+        <button id="btn-load-gauge" class="btn btn-primary">
+            Load Grid Using Gauge Spinner
+        </button>
+        <div id="theGridGauge"></div>
+        <div style="display:none">
+            <div id="theSpinnerGauge" class="spinner"></div>
+        </div>
+    </div>
+</body>
+
+</html>

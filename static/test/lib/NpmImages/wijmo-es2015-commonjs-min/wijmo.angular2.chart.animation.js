@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+"use strict";var WjFlexChartAnimation_1,__decorate=this&&this.__decorate||function(e,t,i,o){var r,a=arguments.length,n=a<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(e,t,i,o);else for(var s=e.length-1;s>=0;s--)(r=e[s])&&(n=(a<3?r(n):a>3?r(t,i,n):r(t,i))||n);return a>3&&n&&Object.defineProperty(t,i,n),n},__param=this&&this.__param||function(e,t){return function(i,o){t(i,o,e)}};Object.defineProperty(exports,"__esModule",{value:!0});const core_1=require("@angular/core"),common_1=require("@angular/common"),wijmo_angular2_directiveBase_1=require("wijmo/wijmo.angular2.directiveBase"),wjcChartAnimation=require("wijmo/wijmo.chart.animation");exports.wjFlexChartAnimationMeta={selector:"wj-flex-chart-animation",template:"",inputs:["wjProperty","animationMode","easing","duration","axisAnimation"],outputs:["initialized"],providers:[]};let WjFlexChartAnimation=WjFlexChartAnimation_1=class extends wjcChartAnimation.ChartAnimation{constructor(e,t,i){super(i),this.isInitialized=!1;this._wjBehaviour=wijmo_angular2_directiveBase_1.WjDirectiveBehavior.attach(this,e,t,i);this.created()}created(){}ngOnInit(){this._wjBehaviour.ngOnInit()}ngAfterViewInit(){this._wjBehaviour.ngAfterViewInit()}ngOnDestroy(){this._wjBehaviour.ngOnDestroy()}};WjFlexChartAnimation.meta={outputs:exports.wjFlexChartAnimationMeta.outputs},WjFlexChartAnimation=WjFlexChartAnimation_1=__decorate([core_1.Component({selector:exports.wjFlexChartAnimationMeta.selector,template:exports.wjFlexChartAnimationMeta.template,inputs:exports.wjFlexChartAnimationMeta.inputs,outputs:exports.wjFlexChartAnimationMeta.outputs,providers:[{provide:"WjComponent",useExisting:core_1.forwardRef(()=>WjFlexChartAnimation_1)},...exports.wjFlexChartAnimationMeta.providers]}),__param(0,core_1.Inject(core_1.ElementRef)),__param(1,core_1.Inject(core_1.Injector)),__param(2,core_1.Inject("WjComponent")),__param(2,core_1.SkipSelf()),__param(2,core_1.Optional())],WjFlexChartAnimation),exports.WjFlexChartAnimation=WjFlexChartAnimation;let moduleExports=[WjFlexChartAnimation],WjChartAnimationModule=class{};WjChartAnimationModule=__decorate([core_1.NgModule({imports:[wijmo_angular2_directiveBase_1.WjDirectiveBaseModule,common_1.CommonModule],declarations:[...moduleExports],exports:[...moduleExports]})],WjChartAnimationModule),exports.WjChartAnimationModule=WjChartAnimationModule;

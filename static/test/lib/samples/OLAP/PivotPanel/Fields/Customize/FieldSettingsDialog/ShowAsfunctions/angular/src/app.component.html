@@ -1,0 +1,14 @@
+<div class="container-fluid">
+   <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+      <p>
+        Change the value of the field's <b>showAs</b> property:
+      </p>
+     <wj-combo-box  #combo [itemsSource]="showAsOptions" [text]="showAsText" (textChanged)="onTextChanged(combo)"></wj-combo-box>
+      <p>
+        <label>
+          Show Period in columns
+          <input id="periodInColumns" type="checkbox" (click)="onPeriodInColumns($event)">
+        </label>
+        
+      </p>
+</div>

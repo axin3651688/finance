@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <ul>
+        <ng-template ngFor let-item [ngForOf]="view.items">
+            <li>
+                <b>{{ item.country }}</b> sales: {{ item.sales | number:'1.2-2' }} (id: {{ item.id }})
+            </li>
+        </ng-template>
+    </ul>
+</div>

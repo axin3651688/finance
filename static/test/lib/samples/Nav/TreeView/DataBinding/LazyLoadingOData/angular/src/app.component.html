@@ -1,0 +1,5 @@
+<div class="container-fluid">
+    <wj-tree-view #tvLazyLoadOData [itemsSource]="lazyLoadODataItems" [displayMemberPath]="['FullName', 'ShipName', 'Summary' ]"
+        [childItemsPath]="['Orders', 'Order_Details']" [lazyLoadFunction]="lazyLoadODataFunction">
+    </wj-tree-view>
+</div>

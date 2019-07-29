@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity InputDate Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            For example, here is an InputDate with default settings:
+        </p>
+        <div class="form-group">
+            <label for="theDate">InputDate</label>
+            <input id="theDate">
+        </div>
+        <div>
+            The current date is <b><span id="theDateOutput"></span></b>.
+        </div>
+
+        <hr />
+        
+        <p>
+            By default, InputDate values are required, so you can't delete the entire content of the control. If you
+            want to enter dates that are optional, set the <b>isRequired</b> property to false:
+        </p>
+        <div class="form-group">
+            <label for="theDateNotRequired">Not Required</label>
+            <input id="theDateNotRequired">
+        </div>
+    </div>
+</body>
+
+</html>

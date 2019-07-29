@@ -1,0 +1,22 @@
+body {
+    margin-bottom: 24px;
+}
+
+label {
+    margin-right: 3px;
+}
+
+.wj-viewer {
+    width: 100%;
+    display: block;
+}
+
+.report-names {
+    margin: 10px;
+}
+
+@media print {
+    .report-names {
+        display: none;
+    }
+}

@@ -1,0 +1,16 @@
+.state-invalid {
+    color: red;
+}
+
+label {
+    width: 180px;
+    text-align: right;
+}
+
+.wj-inputmask {
+    margin-right: 3px;
+}
+
+body {
+    margin-bottom: 24px;
+}

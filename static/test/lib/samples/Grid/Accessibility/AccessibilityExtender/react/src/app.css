@@ -1,0 +1,9 @@
+.wj-flexgrid {
+    height: 300px;
+    margin: 6px 0;
+}
+.wj-cell {
+    border-right: none;
+    padding: 8px 3px;
+}
+

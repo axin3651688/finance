@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <p>
+        Drag rows from the grid by the row header:</p>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data">
+    </wj-flex-grid>
+    <p>
+        And drop them here:</p>
+    <div id="theTarget" style="height:100px;background-color:#e0e0e0;padding:6px;border-radius:2px;">
+        Drop rows here...
+    </div>
+</div>

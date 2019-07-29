@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Client-side Paging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <div id="theGrid">
+      </div>
+      <div id="pager" class="wj-control wj-content wj-pager">
+        <div class="wj-input-group">
+          <span class="wj-input-group-btn">
+            <button id="btnFirst" class="wj-btn wj-btn-default" type="button">
+              <span class="wj-glyph-left" style="margin-right: -4px;"></span>
+              <span class="wj-glyph-left"></span>
+            </button>
+          </span>
+          <span class="wj-input-group-btn">
+            <button id="btnPrev" class="wj-btn wj-btn-default" type="button">
+              <span class="wj-glyph-left"></span>
+            </button>
+          </span>
+          <input id="spanCurrent" class="wj-form-control" disabled type="text">
+          <span class="wj-input-group-btn">
+            <button id="btnNext" class="wj-btn wj-btn-default" type="button">
+              <span class="wj-glyph-right"></span>
+            </button>
+          </span>
+          <span class="wj-input-group-btn">
+            <button id="btnLast" class="wj-btn wj-btn-default" type="button">
+              <span class="wj-glyph-right"></span>
+              <span class="wj-glyph-right" style="margin-left: -4px;"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

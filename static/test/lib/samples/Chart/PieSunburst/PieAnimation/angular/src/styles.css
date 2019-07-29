@@ -1,0 +1,23 @@
+body {
+    margin-bottom: 24px;
+}
+
+.row {
+    margin: 10px -15px;
+}
+
+.wj-menu, .wj-inputnumber, .btn, label {
+    margin-right: 5px;
+}
+
+#pieAnimationMode {
+    width: 220px;
+}
+
+#pieEasing {
+    width: 250px;
+}
+
+#pieDuration, #pieInnerRadius {
+    width: 180px;
+}

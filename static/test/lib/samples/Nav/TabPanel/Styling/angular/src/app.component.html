@@ -1,0 +1,90 @@
+<div class="container-fluid">
+    <wj-tab-panel #tabCss class="custom-tab" [(isAnimated)]="isAnimated">
+        <wj-tab>
+            <a>Africa</a>
+            <div>
+                <ul>
+                    <li>Algeria</li>
+                    <li>Angola</li>
+                    <li>Benin</li>
+                    <li>Botswana</li>
+                </ul>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>America</a>
+            <div>
+                <ul>
+                    <li>Canada</li>
+                    <li>Chile</li>
+                    <li>Mexico</li>
+                    <li>United States</li>
+                </ul>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Asia</a>
+            <div>
+                <ul>
+                    <li>China</li>
+                    <li>Korea</li>
+                    <li>India</li>
+                    <li>Japan</li>
+                </ul>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Europe</a>
+            <div>
+                <ul>
+                    <li>Austria</li>
+                    <li>England</li>
+                    <li>France</li>
+                    <li>Germany</li>
+                    <li>Netherlands</li>
+                    <li>Switzerland</li>
+                </ul>
+            </div>
+        </wj-tab>
+        <wj-tab>
+            <a>Oceania</a>
+            <div>
+                <ul>
+                    <li>Australia</li>
+                    <li>Fiji</li>
+                    <li>New Zealand</li>
+                    <li>Samoa</li>
+                </ul>
+            </div>
+        </wj-tab>
+    </wj-tab-panel>
+    <h4>
+        Options
+    </h4>
+    <div>
+        <label for="tabPosition">
+            Tab Position
+        </label>
+        <wj-combo-box #cmbTabPosition [itemsSource]="tabPositions" [selectedIndex]="2" (selectedIndexChanged)="tabPositionChanged(cmbTabPosition, tabCss)">
+        </wj-combo-box>
+    </div>
+    <div>
+        <label for="tabAlign">
+            Tab Alignment
+        </label>
+        <wj-combo-box #cmbTabAlign [itemsSource]="tabAligns" (selectedIndexChanged)="tabAlignChanged(cmbTabAlign, tabCss)">
+        </wj-combo-box>
+    </div>
+    <div>
+        <label for="isAnimated">
+            isAnimated
+        </label>
+        <input id="isAnimated" type="checkbox" checked="checked" [(ngModel)]="isAnimated" />
+    </div>
+    <div>
+        <label for="customHeaders">
+            Custom Headers
+        </label>
+        <input id="customHeaders" type="checkbox" (click)="customHeaders($event, tabCss)" />
+    </div>
+</div>

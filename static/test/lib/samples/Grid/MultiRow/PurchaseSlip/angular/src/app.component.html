@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <wj-multi-row #purchaseSlip [itemsSource]="data" [layoutDefinition]="layoutDefinition"></wj-multi-row>
+    <div class="btn-group">
+        <button class="btn btn-default" (click)="onExportXlsxClick()">
+            Export to Excel
+        </button>
+        <button class="btn btn-default" (click)="onExportPdfClick()">
+            Export to PDF
+        </button>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [headersVisibility]="'Column'"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+        <wj-flex-grid-column [header]="'Company'" [visible]="false" [width]="'*'" [isReadOnly]="true" [allowDragging]="false"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'CompanyName'" [header]="'Company Name'" [width]="'20*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'ContactName'" [header]="'Contact Name'" [width]="'15*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'ContactTitle'" [header]="'Contact Title'" [width]="'20*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'Address'" [header]="'Address'" [width]="'20*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'City'" [header]="'City'" [width]="'10*'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'Country'" [header]="'Country'" [width]="'15*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

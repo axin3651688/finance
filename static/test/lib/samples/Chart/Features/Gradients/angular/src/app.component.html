@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart chartType="Area" stacking="Stacked" bindingX="country" [itemsSource]="data">
+            <wj-flex-chart-series binding="expenses" name="Expenses" 
+                [style]="{fill: 'l(0, 0, 0, 1)#ff0000-#ff0000:1:0.5',stroke: 'darkred', strokeWidth: 1}"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="sales" name="Sales"
+            [style]="{fill: 'l(0, 0, 0, 1)#00b050-#00b050:1:0.5',stroke: 'darkgreen', strokeWidth: 1}"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

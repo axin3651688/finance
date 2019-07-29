@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <button class="btn" (click)="sort(true)">Sort Ascending</button>
+    <button class="btn" (click)="sort(false)">Sort Descending</button>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>
+                JavaScript array.sort:
+            </h4>
+            <ol>
+                <ng-template ngFor let-item [ngForOf]="array">
+                    <li>{{ item }}</li>
+                </ng-template>
+            </ol>
+        </div>
+        <div class="col-xs-6">
+            <h4>
+                CollectionView.sort:
+            </h4>
+            <ol>
+                <ng-template ngFor let-item [ngForOf]="view.items">
+                    <li>{{ item }}</li>
+                </ng-template>
+            </ol>
+        </div>
+    </div>
+</div>

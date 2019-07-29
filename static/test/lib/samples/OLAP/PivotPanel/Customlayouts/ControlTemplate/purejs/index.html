@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Grapecity Wijmo OLAP Pivot Panel Control Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6">
+          <p>
+            Here is the PivotPanel:
+          </p>
+          <div id="pivotPanel"></div>
+        </div>
+        <div class="col-xs-6">
+          <p>
+            And here is the output view:
+          </p>
+          <div id="pivotPanelGrid"></div>
+        </div>
+      </div>
+      
+      <div class="panel panel-warning">
+        <div class="panel-heading">
+          IE11 support for CSS Grid layouts is outdated and will
+          not be updated, but you can use 
+          <a href="https://autoprefixer.github.io/">AutoPrefixer</a>
+          to add the IE11 support to your CSS automatically.
+        </div>
+      </div>
+      
+    </div>
+
+</body>
+</html>

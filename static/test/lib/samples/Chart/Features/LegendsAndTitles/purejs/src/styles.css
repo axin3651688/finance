@@ -1,0 +1,52 @@
+.wj-flexchart {
+    height: 300px;
+}
+
+label {
+    width: 150px;
+    text-align: right;
+}
+
+.wj-control {
+    margin-bottom: 3px;
+}
+
+/* custom color for all titles */
+.custom-titles.wj-flexchart .wj-title {
+    fill: #42357C;
+}
+
+/* custom size/weight for header */
+.custom-titles.wj-flexchart .wj-header .wj-title {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+/* custom size/weight for footer */
+.custom-titles.wj-flexchart .wj-footer .wj-title {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+/* custom style for axis-x/y titles */
+.custom-titles.wj-flexchart .wj-axis-x .wj-title,
+.custom-titles.wj-flexchart .wj-axis-y .wj-title{
+    font-size: 75%;
+    font-style: normal;
+    opacity: .5;
+}
+
+.wj-flexchart .wj-legend .wj-label {
+    opacity: .9;
+    font-size: 80%;
+}
+/* custom color for legend box */
+.custom-legend.wj-flexchart .wj-legend > rect {
+    fill: #003000;
+}
+
+/* custom color for legend labels */
+.custom-legend.wj-flexchart .wj-legend .wj-label {
+    fill: white;
+    font-style: italic;
+}

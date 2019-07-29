@@ -16,13 +16,14 @@
     :prop="col.id"
     :label="col.text"
     :width="col.width||80"
-    :tableData="tableData"
+    :cube="cube"
   />
   <!-- 渲染了表格的数据   做了判断  渲染对应的数据类型  string类型的数据   :fixed="left"-->
   <el-table-column
     v-else-if="col.type === 'string'"
     :prop="col.id"
     :label="col.text"
+    sortable
     :align="col.align|| 'left'"
     :min-width="col.width||150"
     :fixed="col.fixed|| false"
@@ -76,6 +77,7 @@
     v-else-if="col.type === 'decimal'"
     :prop="col.id"
     :label="col.text"
+    sortable
     :align="col.align|| 'right'"
     :min-width="col.width||140"
     @cell-style="cellStyle"
@@ -84,13 +86,11 @@
       <el-tooltip
         class="item"
         effect="light"
-        :content="getCellValues(tableData.datas,col,scope,tableData.rows)"
+        :content="getCellValues(col,scope)"
         placement="right"
       >
-        <span
-          v-if="tableData.datas"
-          @click="columnClick(col,scope)"
-        >{{ getCellValues(tableData.datas,col,scope,tableData.rows)}}</span>
+       <i v-if="hasRenderIcon(scope.row[col.id],col)"  v-bind:class="hasRenderIcon(scope.row[col.id],col)?col.render(scope.row[col.id],col).icon:'haha'"></i>
+       <span v-else>{{ getCellValues(col,scope)}}</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -103,7 +103,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="right">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="cube.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -115,7 +115,7 @@
   >
     <template slot-scope="scope">
       <el-tooltip class="item" effect="light" :content="scope.row[col.id]" placement="top-start">
-        <span v-if="tableData.datas">--</span>
+        <span v-if="cube.datas">--</span>
       </el-tooltip>
     </template>
   </el-table-column>
@@ -123,10 +123,10 @@
 <script>
 import EventMixins from "../mixins/EventMixins";
 import TreeItem from "./TreeItem";
-import { mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "BiTableColumn",
-  props: ["col", "tableData"],
+  props: ["col", "cube"],
   components: {
     TreeItem
   },
@@ -147,10 +147,24 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === "mobile"
       };
-    }
+    },
+    classObject: function () {
+     let bean = {};
+     let col = this.col;
+     let val = -6;
+     if(col.render){
+         let css = col.render(val,col);
+         if(css.icon){
+            bean[css.icon] = true;
+            return bean;
+         }
+        
+       }
+    return bean;
+  }
   },
   methods: {
-    ...mapMutations(['mutationSetCompanyId']),
+    ...mapMutations(["mutationSetCompanyId"]),
     isShow() {
       // debugger;
       if (this.classObj.mobile) {
@@ -158,6 +172,32 @@ export default {
       }
       return true;
     },
+    hasRenderIcon(val,col){
+       if(col.render){
+         let css = col.render(val,col);
+         if(css && css.icon){
+            return true;
+         }
+        
+       }
+       return false;
+    },
+    /**
+     * 表格渲染
+     */
+    getCellValues(col, scope) {
+      let colId = col.id,row = scope.row,rowId = row.id;
+      let value = row[colId];
+      // if(!value && col.fomular){
+      //    debugger;
+      //    value = this.cube.dataCube.dataCalculator.colFomularParser(col.fomular,row);
+      // }
+      value = this.cube.colFormatter(value,col);
+      return  value;
+    },
+    
+
+
     columnDropDownClick(items) {
       let menuId = items[0];
       debugger;
@@ -168,84 +208,28 @@ export default {
     },
 
     columnClick(column, scope) {
-
       if (column.listeners || column.menu.list[0].listeners[0]) {
         // console.log(column.menu.list[0]);
         // console.log(column.menu.list[0].listeners[0]);
         this.commonHandler(column.listeners[0], column, scope);
         let companyId = scope.row.id;
-        if(!companyId){
+        if (!companyId) {
           companyId = 1;
         }
-        this.mutationSetCompanyId(companyId)
+        this.mutationSetCompanyId(companyId);
       }
     },
 
     optionColumnClick(row) {
       this.clickRow = row;
       if (
-        this.tableData.optionColumnClick &&
-        typeof this.tableData.optionColumnClick == "function"
+        this.cube.optionColumnClick &&
+        typeof this.cube.optionColumnClick == "function"
       ) {
-        this.clickRowParams = this.tableData.optionColumnClick(
-          row,
-          event,
-          this
-        );
+        this.clickRowParams = this.cube.optionColumnClick(row, event, this);
       }
     },
-    /**
-     * 获取单元格数据
-     */
-    getCellValues(datas, col, scope, rows) {
-      let colId = col.id,
-        row = scope.row;
-      let rowId = row.id || row.nid;
-      let union = false;
-      if (rowId && isNaN(rowId)) {
-        if (!row.hasOwnProperty(colId)) {
-          return "";
-        }
-        return "--";
-      }
-      if (col.subfix || col.subfix === 0) {
-        rowId = row["id" + col.subfix]; //并列行的后缀
-        colId = colId.replace(col.subfix, "");
-        union = true;
-        //  debugger
-      }
-      //debugger
-      if (!row[colId] && !union) {
-        let temp = datas.filter(tempRow => {
-          return tempRow.id == rowId;
-        });
-        if (temp.length > 0 && temp[0][colId]) {
-          row = temp[0];
-        } else {
-          return "--";
-        }
-      }
-      let value = 0;
-      if (Array.isArray(datas) && datas.length == 0) {
-        return "--";
-      }
-      if (rowId) {
-        value = Math.getCellValue(datas, colId, rowId, rows);
-      } else if (datas.length >= scope.$index) {
-        value = datas[scope.$index][colId];
-      } else {
-        console.error("人才搞的配制：" + JSON.stringify(row));
-      }
-      if (!value) {
-        return "--";
-      }
-      // value = ((value - 0) / 10000).toLocaleString();
-      // 千分位  保留两位小数
-      value = Math.decimalToLocalString(value); //((value - 0) / 10000).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-      return value;
-    },
-    cellStyle () {
-      debugger;
+    cellStyle(scope) {
       let me = this;
     }
   }

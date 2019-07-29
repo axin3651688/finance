@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <label>
+        Allow Quick-Editing
+        <input [(ngModel)]="quickEdit" type="checkbox" checked="true">
+    </label>
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo TabPanel Hosting GC Controls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+    
+      <div id="theTabPanel">
+        <div>
+          <a>FlexGrid</a>
+          <div>
+            <div id="theGrid"></div>
+          </div>
+        </div>
+        <div>
+          <a>FlexChart</a>
+          <div>
+            <div id="theChart"></div>
+          </div>
+        </div>
+        <div>
+          <a>Gauges</a>
+          <div>
+            <div id="theRadialGauge"></div>
+            <div id="theLinearGauge"></div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+</body>
+</html>

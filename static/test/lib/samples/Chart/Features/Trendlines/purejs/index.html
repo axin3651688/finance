@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Trendlines</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <label for="fitType">Trendline Type: </label>
+        <div id="fitType"></div><br />
+        <label for="order">Order: </label>
+        <div id="order"></div><br />
+        <label>Equation: </label>
+        <div id="equation" class="equation"></div><br />
+        <label for="btnRandomize">Randomize Data</label>
+        <button id="btnRandomize" class="btn btn-default">
+            Go
+        </button>
+
+        <div id="theChart"></div>
+    </div>
+</body>
+
+</html>

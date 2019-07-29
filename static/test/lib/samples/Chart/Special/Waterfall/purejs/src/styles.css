@@ -1,0 +1,12 @@
+.wj-flexchart {
+    height: 300px;
+}
+
+label {
+    width: 200px;
+    text-align: right;
+}
+
+body {
+    margin-bottom: 24pt;
+}

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" [header]="'Temperature of New York'"
+        [tooltipContent]="''" [bindingX]="'month'" [chartType]="'SplineSymbols'" [palette]="palette">
+        <wj-flex-chart-legend [position]="'Right'"></wj-flex-chart-legend>
+        <wj-flex-chart-data-label [content]="'{y}'"></wj-flex-chart-data-label>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'Temperature(°C)'"></wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'low'" [name]="'Average Low'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'high'" [name]="'Average High'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'mean'" [name]="'Daily Mean'"></wj-flex-chart-series>
+        <wj-flex-chart-animation [animationMode]="'Series'"></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

@@ -1,0 +1,11 @@
+.wj-flexgrid {
+    height: 250px;
+}
+
+.wj-gauge {
+    max-width: 250px;
+}
+
+body {
+    margin-bottom: 20pt;
+}

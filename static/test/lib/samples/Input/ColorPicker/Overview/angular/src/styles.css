@@ -1,0 +1,20 @@
+.wj-colorpicker {
+    margin-bottom: 18px;
+}
+
+#output {
+    float: right;
+    font-size: 12px;
+    border: 1px solid grey;
+    padding: 12px;
+}
+
+label {
+    width: 200px;
+    text-align: right;
+    margin-right: 3px;
+}
+
+body {
+    margin-bottom: 24pt;
+}

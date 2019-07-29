@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart header="Country GDP" [itemsSource]="data" bindingX="country">
+            <wj-flex-chart-series binding="2014" name="2014" [style]="{fill:'green',stroke:'darkgreen',strokeWidth:1}"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2015" name="2015" [style]="{fill:'red',stroke:'darkred',strokeWidth:1}"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="2016" name="2016" chartType="LineSymbols" 
+                [style]="{stroke:'orange',strokeWidth:5}" [symbolStyle]="{fill:'gold',stroke:'gold'}"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

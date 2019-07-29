@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'unbound'" [rowCount]="20" [columnCount]="10"></wj-sheet>
+    </wj-flex-sheet>
+</div>

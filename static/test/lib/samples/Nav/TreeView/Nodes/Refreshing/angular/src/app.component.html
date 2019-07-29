@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'">
+            </wj-tree-view>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-default" (click)="onItemDataClick()">
+                Refresh with given item data
+            </button><br />
+            <button class="btn btn-default" (click)="onItemSourceClick()">
+                Refresh with changed itemsSource
+            </button><br />
+            <button class="btn btn-default" (click)="onReloadClick()">
+                Re-load the TreeView
+            </button>
+        </div>
+    </div>
+</div>

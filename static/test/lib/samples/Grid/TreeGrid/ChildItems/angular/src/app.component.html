@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <label for="asTree">Show as Tree: </label>
+  <input id="asTree" type="checkbox" checked="checked" (click)="onAsTreeClick($event)">
+  <wj-flex-grid #familyGrid [itemsSource]="family" [headersVisibility]="'None'" [childItemsPath]="'children'">
+  </wj-flex-grid>
+  <p>
+    There are also 'heterogeneous' hierarchies, where
+    items at different levels have different types and
+    different child item properties.</p>
+  <p>
+    For example, the grid below is bound to a collection
+    of 'worker' objects which receive 'checks' which list
+    'earnings':</p>
+  <wj-flex-grid #workersGrid [itemsSource]="workers" [headersVisibility]="'Column'"
+    [childItemsPath]="['checks','earnings']" [autoGenerateColumns]=false>
+    <wj-flex-grid-column [binding]="'name'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'hours'" [dataType]="'Number'"></wj-flex-grid-column>
+    <wj-flex-grid-column [binding]="'rate'" [dataType]="'Number'"></wj-flex-grid-column>
+  </wj-flex-grid>
+</div>

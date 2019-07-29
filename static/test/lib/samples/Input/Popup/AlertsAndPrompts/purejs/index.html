@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Popup Alerts and Prompts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="btnShow">Show</label>
+            <button id="btnShow" class="btn btn-primary">Show Popup</button>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <!-- important options -->
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <div id="type"></div>
+                </div>
+                <div class="form-group">
+                    <label for="header">Header</label>
+                    <input id="header">
+                </div>
+                <div class="form-group">
+                    <label for="body">Body</label>
+                    <input id="body">
+                </div>
+                <div class="form-group">
+                    <label for="small">Small</label>
+                    <input id="small" type="checkbox">
+                </div>
+                <div class="form-group">
+                    <label for="ok">OK Text</label>
+                    <input id="ok">
+                </div>
+                <div class="form-group">
+                    <label for="cancel">Cancel Text</label>
+                    <input id="cancel">
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <!-- details -->
+                <div class="form-group">
+                    <label for="clsDialog">Dialog Class</label>
+                    <input id="clsDialog">
+                </div>
+                <div class="form-group">
+                    <label for="clsHeader">Header Class</label>
+                    <input id="clsHeader">
+                </div>
+                <div class="form-group">
+                    <label for="clsBody">Body Class</label>
+                    <input id="clsBody">
+                </div>
+                <div class="form-group">
+                    <label for="clsInput">Input Class</label>
+                    <input id="clsInput">
+                </div>
+                <div class="form-group">
+                    <label for="clsFooter">Footer Class</label>
+                    <input id="clsFooter">
+                </div>
+                <div class="form-group">
+                    <label for="clsOK">OK Class</label>
+                    <input id="clsOK">
+                </div>
+                <div class="form-group">
+                    <label for="clsCancel">Cancel Class</label>
+                    <input id="clsCancel">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

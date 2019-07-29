@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="header">Header: </label>
+        <wj-combo-box [(text)]="header"></wj-combo-box><br>
+        <label for="footer">Footer: </label>
+        <wj-combo-box [(text)]="footer"></wj-combo-box><br>
+        <label for="xTitle">X-Axis Title: </label>
+        <wj-combo-box [(text)]="xTitle"></wj-combo-box><br>
+        <label for="yTitle">Y-Axis Title: </label>
+        <wj-combo-box [(text)]="yTitle"></wj-combo-box><br>
+        <label for="customTitles">Custom Titles: </label>
+        <input id="customTitles" type="checkbox" [(ngModel)]="customTitles"><br>
+        <label for="customLegend">Custom Legend: </label>
+        <input id="customLegend" type="checkbox" [(ngModel)]="customLegend"><br>
+        <label for="legendPosition">Legend Position: </label>
+        <wj-combo-box [(text)]="legendPosition" [itemsSource]="positionData"></wj-combo-box><br>
+        <wj-flex-chart [ngClass]="customClass()" bindingX="country" [header]="header" [footer]="footer" [itemsSource]="data" [palette]="palette">
+            <wj-flex-chart-legend [position]="legendPosition"></wj-flex-chart-legend>
+            <wj-flex-chart-axis wjProperty="axisX" [title]="xTitle"></wj-flex-chart-axis>
+            <wj-flex-chart-axis wjProperty="axisY" [title]="yTitle"></wj-flex-chart-axis>
+            <wj-flex-chart-series binding="sales" name="Sales"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="expenses" name="Expenses"></wj-flex-chart-series>
+            <wj-flex-chart-series binding="downloads" name="Downloads"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

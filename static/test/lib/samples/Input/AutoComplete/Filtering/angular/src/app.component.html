@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-auto-complete #theAutoComplete [displayMemberPath]="'country'" [itemsSource]="view.items">
+        </wj-auto-complete>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label" for="filter">Apply Filter</label>
+        <input id="filter" type="checkbox" [(ngModel)]="filter">
+    </div>
+    <div>Source list contains <b>{{view.items.length | number:'1.0-0'}}</b> countries.</div>
+</div>

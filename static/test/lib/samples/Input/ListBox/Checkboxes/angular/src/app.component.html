@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <wj-list-box #theListBox [displayMemberPath]="'country'" [checkedMemberPath]="'selected'"
+                [itemsSource]="data"></wj-list-box>
+        </div>
+        <div class="col-xs-7">
+            <p>
+                <b>Checked Items:</b>
+            </p>
+            <ul>
+                <li *ngFor="let item of theListBox.checkedItems">
+                    {{ item.country }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

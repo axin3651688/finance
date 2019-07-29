@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Sizing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+      <p>
+        This grid has a max-height set to 150 pixels:</p>
+      <div id="theGridFixed"></div>
+        
+      <p>
+        And this grid is as tall as necessary to show all its
+        content without vertical scrollbars:</p>
+      <div id="theGridAuto"></div>
+      
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <wj-sunburst #periodicSunburst [innerRadius]="0.3" [selectionMode]="'Point'" [palette]="SuperheroPalette"
+        [binding]="'value'" [bindingName]="['name', 'name', 'symbol']" [childItemsPath]="['groups', 'items']"
+        [itemsSource]="data.groups">
+        <wj-flex-chart-legend [position]="'None'">
+        </wj-flex-chart-legend>
+        <wj-flex-pie-data-label [position]="'Radial'" [content]="'{name}'"></wj-flex-pie-data-label>
+
+        <div id="properties-tile"></div>
+    </wj-sunburst>
+</div>

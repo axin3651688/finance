@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-check">
+                <label for="showRanges" class="form-check-label">Show Ranges:</label>
+                <input id="showRanges" type="checkbox" class="form-check-input" [(ngModel)]="theGauge.showRanges">
+            </div>
+
+            <div class="form-group">
+                <label for="ranges">Ranges:</label>
+                <wj-combo-box #ranges id="ranges" [itemsSource]="[0, 3, 4, 20, 50]" [selectedItem]="3"
+                    (selectedIndexChanged)="createRanges(theGauge, ranges.selectedItem)">
+                </wj-combo-box>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-radial-gauge #theGauge [isReadOnly]="false" [hasShadow]="false" [showText]="'All'" [startAngle]="-30"
+                [sweepAngle]="240" [value]="50" [showRanges]="true" [thumbSize]="20">
+                <wj-range [wjProperty]="'pointer'" [thickness]="0.25">
+                </wj-range>
+            </wj-radial-gauge>
+        </div>
+    </div>
+</div>

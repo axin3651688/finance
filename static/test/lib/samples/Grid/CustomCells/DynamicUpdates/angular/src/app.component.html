@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <label>
+        Custom Cells
+        <input [(ngModel)]="customCells" (click)="invalidateGrid()" type="checkbox" />
+    </label>
+    <label>
+        Auto Update
+        <input [(ngModel)]="autoUpdate" type="checkbox" />
+    </label>
+    <label>
+        Update Interval (ms)
+        <wj-combo-box
+            [itemsSource]="intervalItems"
+            [(selectedValue)]="interval"></wj-combo-box>
+    </label>
+    <label>
+        Batch Size (# items)
+        <wj-combo-box
+            [itemsSource]="batchSizeItems"
+            [(selectedValue)]="batchSize"></wj-combo-box>
+    </label>
+    <wj-flex-grid #flex
+        [isReadOnly]="true"
+        [selectionMode]="'Row'"
+        (initialized)="initializeGrid(flex)"
+        [(itemsSource)]="data">
+        <wj-flex-grid-filter></wj-flex-grid-filter>
+        <wj-flex-grid-column [binding]="'name'" [header]="'Name'" [width]="200"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'bid'" [header]="'Bid'" [width]="200" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'ask'" [header]="'Ask'" [width]="200" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'lastSale'" [header]="'Last Sale'" [width]="200" [format]="'n2'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'bidSize'" [header]="'Bid Size'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'askSize'" [header]="'Ask Size'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'lastSize'" [header]="'Last Size'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'volume'" [header]="'Volume'" [format]="'n0'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'quoteTime'" [header]="'Quote Time'" [format]="'hh:mm:ss'" [align]="'center'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'tradeTime'" [header]="'Trade Time'" [format]="'hh:mm:ss'" [align]="'center'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

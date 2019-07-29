@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div class="menubar">
+        <wj-menu #fileMenu [header]="'File'" [displayMemberPath]="'header'" [subItemsPath]="'items'"
+            [openOnHover]="openOnHover" [isAnimated]="isAnimated" [itemsSource]="menuTree.fileMenu">
+        </wj-menu>
+
+        <wj-menu #editMenu [header]="'Edit'" [displayMemberPath]="'header'" [subItemsPath]="'items'"
+            [openOnHover]="openOnHover" [isAnimated]="isAnimated" [itemsSource]="menuTree.editMenu">
+        </wj-menu>
+
+        <wj-menu #formatMenu [header]="'Format'" [displayMemberPath]="'header'" [subItemsPath]="'items'"
+            [openOnHover]="openOnHover" [isAnimated]="isAnimated" [itemsSource]="menuTree.formatMenu">
+        </wj-menu>
+    </div>
+
+    <p #menuTarget id="menuTarget">
+        Wijmo Menus are great!
+    </p>
+
+    <label>
+        openOnHover
+        <input type="checkbox" [(ngModel)]="openOnHover">
+    </label>
+    <label>
+        isAnimated
+        <input type="checkbox" [(ngModel)]="isAnimated">
+    </label>
+    <label>
+        Right-to-Left
+        <input type="checkbox" [(ngModel)]="rtl">
+    </label>
+</div>

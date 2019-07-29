@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexSheet Sorting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div id="sortSheet"></div>
+        <table id="sortTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Column</th>
+                    <th class="text-center">Order</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div class="btn-group">
+            <button id="addLevel" type="button" class="btn btn-default">
+                Add Level
+            </button>
+            <button id="delLevel" type="button" class="btn btn-default">
+                Delete Level
+            </button>
+            <button id="copyLevel" type="button" class="btn btn-default">
+                Copy Level
+            </button>
+        </div>
+        <div class="btn-group">
+            <button id="moveup" type="button"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-up"></span>
+            </button>
+            <button id="movedown" type="button"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-down"></span>
+            </button>
+        </div>
+        <div class="btn-group">
+            <button id="commitSort" type="button" class="btn btn-default">OK</button>
+            <button id="cancelSort" type="button" class="btn btn-default">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>

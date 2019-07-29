@@ -10,11 +10,41 @@ let yearText = '年';
 let periodText = {m: '月', q: '季度', h: '半' + yearText, nd: yearText + '度'};
 let halfPeriod = [{id: 'H1', text: '上半' + yearText}, {id: 'H2', text: '下半' + yearText}];
 let chineseTextArr = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+let monthCount = urlParams.month_count||12;
+let yearCount = urlParams.year_count||6;
+/**
+ * 获取月份集合
+ */
+export function getMonthList(monthCount){
+  let months = [];
+  for (let i = 1; i <= monthCount; i++) {
+    if (monthCount == 4) {
+      months.push(i + periodText.q);
+    } else if (monthCount >= 12) {
+      if (i <= 13) {
+        months.push(i + periodText.m);
+      } else if (i < 17) {
+        months.push(monthCount + 1 - i + periodText.q);
+      }
+    }
+  }
+}
 
+/**
+ * 获取年份集合
+ */
+export function getYearList(yearCount){
+    let years = [],year = new Date().getFullYear();
+    for (let i = year; i > year -  yearCount; i--) {
+        years.push(i + yearText);
+    }
+    return years;
+}
+
+/**
+ * 获取月份名称
+ */
 export function getMonthName(months) {
-  //  因为这样获取不到，所以注释掉了，直接赋值。
-  //  var periodText = periodText;
-  // var periodText = {m:"月",q:"季度",h:"半年",nd:"年度"};
   if (months.length == 6) {
     months = months.substring(4, 6);
   }

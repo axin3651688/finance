@@ -1,0 +1,5 @@
+<div class="container-fluid">
+    <label for="deferResizing">Defer Resizing 
+    <input id="deferResizing" type="checkbox" checked="checked" (click)="onDeferResizingClick($event)"></label>
+    <wj-flex-grid #theGrid [itemsSource]="data" ></wj-flex-grid>
+</div>

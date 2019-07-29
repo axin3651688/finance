@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div id="buttons" class="buttons" (click)="onButtonClick($event)">
+        <button id="who" class="btn">
+            How much was spent by each person?
+        </button>
+        <button id="what" class="btn">
+            How much was spent on each expense type?
+        </button>
+        <button id="who-what" class="btn">
+            What did each person spend money on?
+        </button>
+        <button id="when" class="btn">
+            When were these expenses made?
+        </button>
+    </div>
+
+    <p>
+        Use these buttons to save and load views:
+    </p>
+    <div class="buttons">
+        <button id="save" class="btn btn-primary" (click)="onSaveClick()">
+            Save View
+        </button>
+        <button id="load" class="btn btn-primary" (click)="onLoadClick()">
+            Load View
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <p>
+                Use the <b>PivotPanel</b> control to edit the view:
+            </p>
+            <wj-pivot-panel [itemsSource]="ng"></wj-pivot-panel>
+        </div>
+        <div class="col-xs-6">
+            <p>
+                Use the <b>PivotGrid</b> control to see the results:
+            </p>
+            <wj-pivot-grid [itemsSource]="ng"></wj-pivot-grid>
+        </div>
+    </div>
+</div>

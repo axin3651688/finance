@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexGrid Column Picker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+  <div id="theGrid"></div>
+  <div style="display:none">
+    <div id="theColumnPicker" class="column-picker"></div>
+  </div>
+
+  <p>
+    You can use the grid's <b>columnLayout</b> property to allow users
+    to save and restore column layouts. Click the buttons below
+    to see how this works:</p>
+  <button id="btnSave" class="btn btn-default">
+    Save Layout
+  </button>
+  <button id="btnRestore" class="btn btn-default">
+    Restore Layout
+  </button>
+</div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Current Item</h4>
+            <dl class="dl-horizontal">
+                <dt>ID</dt>
+                <dd>
+                    <input type="text" class="form-control" [ngModel]="cv.currentItem?.id"
+                        (ngModelChange)="cv.currentItem.id=$event" [disabled]="!isEditing()" />
+                </dd>
+                <dt>Country</dt>
+                <dd>
+                    <input type="text" class="form-control" [ngModel]="cv.currentItem?.country"
+                        (ngModelChange)="cv.currentItem.country=$event" [disabled]="!isEditing()" />
+                </dd>
+                <dt>Color</dt>
+                <dd>
+                    <input type="text" class="form-control" [ngModel]="cv.currentItem?.color"
+                        (ngModelChange)="cv.currentItem.color=$event" [disabled]="!isEditing()" />
+                </dd>
+                <dt>Amount</dt>
+                <dd>
+                    <input type="number" class="form-control" [ngModel]="cv.currentItem?.amount"
+                        (ngModelChange)="cv.currentItem.amount=$event" [disabled]="!isEditing()" />
+                </dd>
+                <dt></dt>
+                <dd>
+                    <div class="btn-group data-btn-group">
+                        <button (click)="edit()" [ngStyle]="{display: !isEditing() ? '' : 'none'}"
+                            class="btn btn-default btn-sm">Edit</button>
+                        <button (click)="add()" [ngStyle]="{display: !isEditing() ? '' : 'none'}"
+                            class="btn btn-default btn-sm">Add</button>
+                        <button (click)="delete()" [ngStyle]="{display: !isEditing() ? '' : 'none'}"
+                            class="btn btn-default btn-sm">Delete</button>
+                        <button (click)="commit()" [ngStyle]="{display: isEditing() ? '' : 'none'}"
+                            class="btn btn-default btn-sm">Commit</button>
+                        <button (click)="cancel()" [ngStyle]="{display: isEditing() ? '' : 'none'}"
+                            class="btn btn-default btn-sm">Cancel</button>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <h4>Navigation</h4>
+            <dl>
+                <dt>items</dt>
+                <dd>
+                    <wj-collection-view-navigator [cv]="cv"></wj-collection-view-navigator>
+                </dd>
+                <dt>pages</dt>
+                <dd>
+                    <wj-collection-view-pager [cv]="cv"></wj-collection-view-pager>
+                </dd>
+            </dl>
+            <wj-menu [(value)]="cv.pageSize" [header]="'Page Size'">
+                <wj-menu-item [value]="0">No Paging</wj-menu-item>
+                <wj-menu-item [value]="10">10</wj-menu-item>
+                <wj-menu-item [value]="15">15</wj-menu-item>
+                <wj-menu-item [value]="30">30</wj-menu-item>
+                <wj-menu-item [value]="50">50</wj-menu-item>
+            </wj-menu>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-bordered">
+        <thead>
+            <tr class="active">
+                <th class="text-center">
+                    <div class="btn-group">
+                        <wj-menu [(value)]="filter.id" [header]="'ID'" (itemClicked)="doFilter()" style="display:block">
+                            <wj-menu-item [value]="''">(All)</wj-menu-item>
+                            <wj-menu-item [value]="'odd'">Odd</wj-menu-item>
+                            <wj-menu-item [value]="'even'">Even</wj-menu-item>
+                        </wj-menu>
+                        <button class="btn btn-default" (click)="toggleSort('id')">{{getSort('id')}}</button>
+                    </div>
+                </th>
+                <th class="text-center">
+                    <div class="btn-group">
+                        <wj-menu [(value)]="filter.country" [header]="'Country'" (itemClicked)="doFilter()"
+                            style="display:block">
+                            <wj-menu-item [value]="''">(All)</wj-menu-item>
+                            <wj-menu-item [value]="'US'">US</wj-menu-item>
+                            <wj-menu-item [value]="'Germany'">Germany</wj-menu-item>
+                            <wj-menu-item [value]="'UK'">UK</wj-menu-item>
+                            <wj-menu-item [value]="'Japan'">Japan</wj-menu-item>
+                            <wj-menu-item [value]="'Italy'">Italy</wj-menu-item>
+                            <wj-menu-item [value]="'Greece'">Greece</wj-menu-item>
+                            <wj-menu-item [value]="'France'">France</wj-menu-item>
+                        </wj-menu>
+                        <button class="btn btn-default" (click)="toggleSort('country')">{{getSort('country')}}</button>
+                        <button class="btn btn-default"
+                            (click)="toggleGroup('country')">{{getGroup('country')}}</button>
+                    </div>
+                </th>
+                <th class="text-center">
+                    <div class="btn-group">
+                        <wj-menu [(value)]="filter.color" [header]="'Color'" (itemClicked)="doFilter()"
+                            style="display:block">
+                            <wj-menu-item [value]="''">(All)</wj-menu-item>
+                            <wj-menu-item [value]="'Black'">Black</wj-menu-item>
+                            <wj-menu-item [value]="'White'">White</wj-menu-item>
+                            <wj-menu-item [value]="'Red'">Red</wj-menu-item>
+                            <wj-menu-item [value]="'Green'">Green</wj-menu-item>
+                            <wj-menu-item [value]="'Blue'">Blue</wj-menu-item>
+                            <wj-menu-item [value]="'Yellow'">Yellow</wj-menu-item>
+                            <wj-menu-item [value]="'Brown'">Brown</wj-menu-item>
+                            <wj-menu-item [value]="'Orange'">Orange</wj-menu-item>
+                        </wj-menu>
+                        <button class="btn btn-default" (click)="toggleSort('color')">{{getSort('color')}}</button>
+                        <button class="btn btn-default" (click)="toggleGroup('color')">{{getGroup('color')}}</button>
+                    </div>
+                </th>
+                <th class="text-center">
+                    <div class="btn-group">
+                        <wj-menu [(value)]="filter.minAmount" [header]="'Amount'" (itemClicked)="doFilter()"
+                            style="display:block">
+                            <wj-menu-item [value]="''">(All)</wj-menu-item>
+                            <wj-menu-item [value]="0">&gt; 0</wj-menu-item>
+                            <wj-menu-item [value]="500">&gt; 500</wj-menu-item>
+                            <wj-menu-item [value]="1000">&gt; 1,000</wj-menu-item>
+                        </wj-menu>
+                        <button class="btn btn-default" (click)="toggleSort('amount')">{{getSort('amount')}}</button>
+                        <button class="btn btn-default" (click)="toggleGroup('amount')">{{getGroup('amount')}}</button>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of groupedList" [ngClass]="{success: item == cv.currentItem}"
+                (click)="moveCurrentTo(item)">
+
+                <!-- group row -->
+                <td [ngStyle]="{display:isGroup(item)?'':'none'}" colspan="4" class="active">
+                    <span [ngStyle]="{display:'inline-block', width: (item.level * 25) + 'px'}"></span>
+                    <b>{{item.name}}</b> ({{item.items?.length}} items)
+                </td>
+
+                <!-- data row -->
+                <td [ngStyle]="{display:isGroup(item)?'none':''}" class="text-center">{{item.id}}</td>
+                <td [ngStyle]="{display:isGroup(item)?'none':''}" class="text-center">{{item.country}}</td>
+                <td [ngStyle]="{display:isGroup(item)?'none':''}" class="text-center">{{item.color}}</td>
+                <td [ngStyle]="{display:isGroup(item)?'none':''}" class="text-center">{{item.amount | number:'1.2-2'}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

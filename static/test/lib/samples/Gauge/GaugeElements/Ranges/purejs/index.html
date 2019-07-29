@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ranges</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-check">
+                    <label for="showRanges" class="form-check-label">Show Ranges:</label>
+                    <input id="showRanges" type="checkbox" checked="checked" class="form-check-input">
+                </div>
+                <div class="form-group">
+                    <label for="ranges">Ranges:</label>
+                    <div id="ranges"></div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div id="theGauge"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

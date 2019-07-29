@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity ComboBox with Numbers and Dates</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            You can use ComboBoxes to select from lists of numbers:
+        </p>
+        <div class="form-group">
+            <label>
+                Select a number:
+                <div id="theComboNumber"></div>
+            </label>
+        </div>
+        <p>
+            You have selected this number: <b id="theNumber"></b>.
+        </p>
+
+        <hr />
+        
+        <p>
+            You can use ComboBoxes to select from lists of dates. In this case, we use the <b>formatItem</b> event to
+            format the date objects using Wijmo's <b>Globalize</b> class:
+        </p>
+        <div class="form-group">
+            <label>
+                Select a date:
+                <div id="theComboDate"></div>
+            </label>
+        </div>
+        <p>
+            You have selected this date: <b id="theDate"></b>.
+        </p>
+    </div>
+</body>
+
+</html>

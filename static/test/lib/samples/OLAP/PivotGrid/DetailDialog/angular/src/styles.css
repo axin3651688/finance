@@ -1,0 +1,13 @@
+.wj-pivotgrid {
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+.wj-flexgrid .large-value {
+  color: green;
+}
+.wj-flexgrid .small-value {
+  color: red;
+}
+
+body {
+  margin-bottom: 24pt;
+}

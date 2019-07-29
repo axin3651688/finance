@@ -1,0 +1,27 @@
+.wj-pivotgrid {
+    max-height: 400px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.wj-pivotgrid .wj-cell.spark {
+    padding: 8px;
+    overflow: visible;
+}
+
+.wj-pivotgrid .wj-cell.spark svg {
+    overflow: visible;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+.wj-pivotgrid .wj-cell.spark.spark-up svg {
+    color: #009000; /* green for up */
+}
+
+.wj-pivotgrid .wj-cell.spark.spark-down svg {
+    color: #d00000; /* red for down */
+}
+
+body {
+    margin-bottom: 48pt;
+}

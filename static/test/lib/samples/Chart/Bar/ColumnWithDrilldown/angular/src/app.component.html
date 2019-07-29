@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <h4 #header>IMF estimates GDP(nominal) GDP</h4>
+
+    <wj-flex-chart #flexChart [bindingX]="'name'" [selectionMode]="'Point'" [itemsSource]="groupedView" [tooltipContent]="''"
+        (selectionChanged)="selectionChanged(flexChart)"
+        [palette]="['rgba(45,159,199,1)', 'rgba(236,153,60,1)', 'rgba(137,194,53,1)', 'rgba(227,119,164,1)', 'rgba(166,137,49,1)', 'rgba(166,114,166,1)', 'rgba(208,192,65,1)', 'rgba(227,88,85,1)', 'rgba(104,112,106,1)']">
+
+        <wj-flex-chart-legend [position]="'None'">
+        </wj-flex-chart-legend>
+
+        <wj-flex-chart-series [name]="'GDP'" [binding]="'gdp'">
+        </wj-flex-chart-series>
+
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [title]="'Year'">
+        </wj-flex-chart-axis>
+
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'GDP (US$ in billions)'">
+        </wj-flex-chart-axis>
+
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

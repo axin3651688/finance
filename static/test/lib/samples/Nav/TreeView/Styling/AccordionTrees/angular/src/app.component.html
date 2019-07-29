@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <label>
+        Use Custom CSS
+        <input id="customCss" type="checkbox" checked="checked" (click)="onCustomCssClick($event)">
+    </label>
+    <div id="msg" class="msg" [innerHtml]="msg">Ready</div>
+    <wj-tree-view #theTree [itemsSource]="data" [displayMemberPath]="'header'" [childItemsPath]="'items'" [isContentHtml]=true
+        class="accordion"></wj-tree-view>
+</div>

@@ -1,0 +1,11 @@
+body {
+    margin-bottom: 24px;
+}
+
+.grid {
+    height: 300px;
+}
+
+.col-xs-6 {
+    margin: 6px 0 0 0;
+}

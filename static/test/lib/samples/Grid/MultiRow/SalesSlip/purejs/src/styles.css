@@ -1,0 +1,9 @@
+.wj-multirow {
+  max-height: 400px;
+  margin: 6px 0;
+}
+
+.profit-cell{
+  background-color: #FFFFC0 !important;
+  color: red;
+}

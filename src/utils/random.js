@@ -32,7 +32,7 @@ function createRandomRecordDatas(rows, cols, range,needDims) {
         let data = getRandomRowDatas(rows[i], cols, range, i + 1,needDims);
         datas.push(data);
     }
-    debugger;
+   // debugger;
     let ids = cols.filter(item => item.id === "id");
     if (!ids || ids.length == 0) {
         //加入编码，默认隐藏 
@@ -67,27 +67,40 @@ function createRandomCellData(rows, cols, range) {
  * 是否去生成数据的判断
  */
 function isGetData(col, row) {
-    return (!col.render && !row.hasOwnProperty(col.id)) || row[col.id] === 0;
+    return (!col.fomular && !row.hasOwnProperty(col.id)) || row[col.id] === 0;
 }
 /**
  * 获取表格行数据
  */
 function getRandomRowDatas(row, cols, range, rowIndex,needDims) {
     let record = {};
+   // debugger;
     cols.forEach(col => {
         let value = row[col.id];
-        if (col.type === "number") {
+        if (col.type === "number" || col.type === "index" ) {
             value = rowIndex;
         } else if (col.type === "string") {
             value = row[col.id];
             if(value == ""){
                  value = "--";//以往项目的套路
              }
-            let ba = needDims[col.id];
+             if(!value){
+                let ba = needDims[col.id];
             if(ba){
-                value = ba.text;
+                let _record = null;
+                if(ba.id){
+                    _record = ba.datas.filter(bb=>bb.id == ba.id)[0];
+                }else if(ba.index){
+                    _record = ba.datas[ba.index];
+                }
+                if(_record){
+                    value = _record.text;
+                }
+               
             }
-        } else if (isGetData(col, row)) {
+             }
+            
+        }else if (isGetData(col, row)) {
             value = getRandomValue(col, range);
         }
         record[col.id] = value || 0;

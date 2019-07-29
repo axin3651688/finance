@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Grapecity Wijmo OLAP Pivot Engine Overview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SystemJS -->
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>
+    System.import('./src/app');
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-5">
+        <p>Raw data:</p>
+        <div id="rawData"></div>
+      </div>
+      <div class="col-xs-7">
+        <p>
+          Amount spent by each buyer on each expense type.
+        </p>
+        <div id="pivotGrid"></div>
+      </div>
+    </div>
+    <p>
+      The view is live. If you edit the raw data, the summary
+      view is automatically updated.
+    </p>
+    <p>
+      The pivot grid shows how much each person spent on each
+      type of expense. If you double-click any cell, you will
+      see a detail dialog showing the items that make up the
+      total.
+    </p>
+  </div>
+
+</body>
+
+</html>

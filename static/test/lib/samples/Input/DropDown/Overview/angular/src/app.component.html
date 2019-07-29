@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-check">
+                <label for="isAnimated" class="form-check-label">isAnimated:</label>
+                <input id="isAnimated" type="checkbox" [(ngModel)]="isAnimated">
+            </div>
+            <div class="form-check">
+                <label for="isDroppedDown" class="form-check-label">isDroppedDown:</label>
+                <input id="isDroppedDown" type="checkbox" [(ngModel)]="isDroppedDown">
+            </div>
+            <div class="form-check">
+                <label for="dropDownCssClass" class="form-check-label">dropDownCssClass:</label>
+                <input id="dropDownCssClass" type="checkbox" [(ngModel)]="dropDownCssClass">
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <wj-combo-box [itemsSource]="data" [isAnimated]="isAnimated" [isDroppedDown]="isDroppedDown"
+                [dropDownCssClass]="dropDownCssClass ? 'custom-dd' : ''"></wj-combo-box>
+            <br />
+            <wj-input-date [isAnimated]="isAnimated" [dropDownCssClass]="dropDownCssClass ? 'custom-dd' : ''">
+            </wj-input-date>
+        </div>
+    </div>
+</div>

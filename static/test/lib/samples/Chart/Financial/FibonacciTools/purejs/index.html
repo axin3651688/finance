@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Fibonacci Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Settings -->
+        <div class="panel-group" id="settingsShort">
+            <div class="panel panel-default">
+                <div id="settingsBody" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <!-- Type Selector -->
+                        <ul class="list-inline ul-type">
+                            <li>
+                                <select id="type">
+                                    <option value="retracements" selected="selected">Retracements</option>
+                                    <option value="arcs">Arcs</option>
+                                    <option value="fans">Fans</option>
+                                    <option value="timeZones">Time Zones</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <!-- Retracements Properties-->
+                        <ul class="list-inline ul-properties ul-retracements">
+                            <li>
+                                <select id="uptrend">
+                                    <option value="false">False</option>
+                                    <option value="true" selected="selected">True</option>
+                                </select>
+                            </li>
+                            <li>
+                                <select id="retracementsLabelPosition">
+                                    <option value="Left" selected="selected">Left</option>
+                                    <option value="Center">Center</option>
+                                    <option value="Right">Right</option>
+                                </select>
+                            </li>
+                        </ul>
+        
+                        <!-- Arcs Properties -->
+                        <ul class="list-inline ul-properties ul-arcs">
+                            <li>
+                                <select id="arcsLabelPosition">
+                                    <option value="None">None</option>
+                                    <option value="Top" selected="selected">Top</option>
+                                    <option value="Center">Center</option>
+                                    <option value="Bottom">Bottom</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <ul class="list-inline ul-properties ul-arcs">
+                            <li>
+                                <label>Start X</label>
+                                <input id="arcsStartX" />
+                            </li>
+                            <li>
+                                <label>Start Y</label>
+                                <input id="arcsStartY" />
+                            </li>
+                        </ul>
+                        <ul class="list-inline ul-properties ul-arcs">
+                            <li>
+                                <label>End X</label>
+                                <input id="arcsEndX" />
+                            </li>
+                            <li>
+                                <label>End Y</label>
+                                <input id="arcsEndY" />
+                            </li>
+                        </ul>
+                        <!-- Fans Properties -->
+                        <ul class="list-inline ul-properties ul-fans">
+                            <li>
+                                <select id="fansLabelPosition">
+                                    <option value="None">None</option>
+                                    <option value="Top" selected="selected">Top</option>
+                                    <option value="Center">Center</option>
+                                    <option value="Bottom">Bottom</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <ul class="list-inline ul-properties ul-fans">
+                            <li>
+                                <label>Start X</label>
+                                <input id="fansStartX" />
+                            </li>
+                            <li>
+                                <label>Start Y</label>
+                                <input id="fansStartY" />
+                            </li>
+                        </ul>
+                        <ul class="list-inline ul-properties ul-fans">
+                            <li>
+                                <label>End X</label>
+                                <input id="fansEndX" />
+                            </li>
+                            <li>
+                                <label>End Y</label>
+                                <input id="fansEndY" />
+                            </li>
+                        </ul>
+                        <!-- Time zones Properties -->
+                        <ul class="list-inline ul-properties ul-timezones">
+                            <li>
+                                <select id="timeZonesLabelPosition">
+                                    <option value="None">None</option>
+                                    <option value="Left">Left</option>
+                                    <option value="Center">Center</option>
+                                    <option value="Right" selected="selected">Right</option>
+                                </select>
+                            </li>
+                        </ul>
+                        <ul class="list-inline ul-properties ul-timezones">
+                            <li>
+                                <label>Start X</label>
+                                <input id="timezonesStartX" />
+                            </li>
+                            <li>
+                                <label>End X</label>
+                                <input id="timezonesEndX" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="theChart"></div>
+    </div>
+</body>
+
+</html>

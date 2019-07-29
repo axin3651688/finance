@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <!-- the flexsheet -->
+    <wj-flex-sheet #flex
+        (initialized)="initializeFlexSheet(flex)">
+        <wj-sheet [name]="'Basic Operators'" [rowCount]="35" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Math'" [rowCount]="90" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Logical'" [rowCount]="30" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Text'" [rowCount]="80" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Aggregate'" [rowCount]="170" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Date'" [rowCount]="60" [columnCount]="9"></wj-sheet>
+        <wj-sheet [name]="'Lookup & Reference'" [rowCount]="55" [columnCount]="10"></wj-sheet>
+        <wj-sheet [name]="'Financial'" [rowCount]="20" [columnCount]="8"></wj-sheet>
+        <wj-sheet [name]="'Summary'" [rowCount]="20" [columnCount]="8"></wj-sheet>
+    </wj-flex-sheet>
+    <p><b>Cell Content: </b>{{currentCellData}}</p>
+</div>

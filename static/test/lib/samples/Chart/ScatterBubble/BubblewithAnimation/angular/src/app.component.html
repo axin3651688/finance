@@ -1,0 +1,34 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6 yearpicker">
+            <wj-linear-gauge #lineGauge [(value)]="year" [min]="yrMin" [max]="yrMax" [isReadOnly]="false"
+                [isAnimated]="false" [thumbSize]="30" (mousedown)="stopAnimation()">
+                <wj-range [wjProperty]="'pointer'" [thickness]="0.08"></wj-range>
+            </wj-linear-gauge>
+            <button class="btn btn-success" (click)="toggleAnimation()">
+                <span [ngClass]="{'glyphicon-play': !animating, 'glyphicon-stop': animating }" class="glyphicon"></span>
+            </button>
+        </div>
+    </div>
+
+    <wj-flex-chart [itemsSource]="data" [chartType]="'Bubble'" [itemFormatter]="chartItemFormatter"
+        [options]="{ bubble: { minSize: 5, maxSize: 100 } }" [bindingX]="'yearIncome'"
+        [tooltipContent]="'<b>{item.name}</b><br/>{yearPopulation:g1,,} million people'" [selectionMode]="'Point'"
+        (mousedown)="stopAnimation()" [ngClass]="{ 'tracking-country': data.currentItem }">
+        <div class="watermark">
+            {{ year }}
+        </div>
+        <wj-flex-chart-series [binding]="'yearLifeExpectancy,yearPopulation'">
+        </wj-flex-chart-series>
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [title]="'income per capita (inflation-adjusted US dollars)'"
+            [majorGrid]="false" [axisLine]="true" [min]="300" [max]="100000" [logBase]="10">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'life expectancy (years)'" [majorGrid]="false"
+            [axisLine]="true" [min]="20" [max]="85" [majorUnit]="10">
+        </wj-flex-chart-axis>
+        <wj-flex-chart-legend [position]="'None'">
+        </wj-flex-chart-legend>
+    </wj-flex-chart>
+</div>

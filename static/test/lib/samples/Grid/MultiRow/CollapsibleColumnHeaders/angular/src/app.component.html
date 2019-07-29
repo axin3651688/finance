@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <wj-multi-row #chMultirow [itemsSource]="orders" [layoutDefinition]="threeLines" [collapsedHeaders]=true
+        [showHeaderCollapseButton]=true (collapsedHeadersChanged)="collapsedHeadersChanged()"></wj-multi-row>
+    <div>
+        <label for="cbCollapsedHeaders">
+            Collapsed Headers 
+            <wj-combo-box #cbCollapsedHeaders [displayMemberPath]="'name'" [selectedValuePath]="'value'"
+                [itemsSource]="cbCollapsedHeadersSource" [(selectedValue)]="chMultirow.collapsedHeaders" (selectedIndexChanged)="selectedIndexChanged()">
+            </wj-combo-box>
+        </label> 
+        <label for="cbshowHeaderCollapseButton">
+            Show Header Collapse Button 
+            <input type="checkbox" checked (click)="onShowHeaderCollapseButton($event)">
+        </label>
+    </div>
+</div>

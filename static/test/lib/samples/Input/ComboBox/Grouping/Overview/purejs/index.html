@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity ListBox/ComboBox Grouping</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <label>
+            Show Groups
+            <input id="showGroups" type="checkbox" checked>
+        </label>
+        <label>
+            Format Group Headers
+            <input id="formatGroupHeaders" type="checkbox" checked>
+        </label>
+        <label>
+            Show Checkboxes
+            <input id="showCheckboxes" type="checkbox">
+        </label>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <h4>
+                    ComboBox
+                </h4>
+                <div id="theComboBox"></div>
+            </div>
+            <div class="col-xs-6">
+                <h4>
+                    ListBox
+                </h4>
+                <div id="theListBox"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

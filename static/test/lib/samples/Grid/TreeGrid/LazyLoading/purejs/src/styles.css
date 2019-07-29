@@ -1,0 +1,16 @@
+.wj-flexgrid {
+  max-height: 300px;
+  margin: 12px;
+}
+  .wj-flexgrid .wj-cell {
+    padding: 8px;
+  }
+  .wj-flexgrid .wj-group:not(.wj-state-selected):not(.wj-state-multi-selected) {
+    background-color: white;
+  }
+.id-column {
+  font-style: italic;
+}
+document {
+  margin-bottom: 48pt;
+}

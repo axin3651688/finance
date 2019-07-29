@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <wj-flex-chart #chart [itemsSource]="data" chartType="Bar" bindingX="name" [tooltipContent]="getTooltipContent"
+        [itemFormatter]="ganttItemFormatter" (rendered)="ganttChartRendered(chart, $event)" [palette]="palette">
+        <wj-flex-chart-series binding="start,end"></wj-flex-chart-series>
+        <wj-flex-chart-axis wjProperty="axisY" [majorGrid]="false" [minorGrid]="true" [reversed]="true">
+        </wj-flex-chart-axis>
+    </wj-flex-chart>
+</div>

@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <wj-flex-chart #theChart tooltipContent="" [itemsSource]="data" chartType="Line" bindingX="date" plotMargin="NaN NaN NaN 80">
+            <wj-flex-chart-axis wjProperty="axisX" [axisLine]="false"></wj-flex-chart-axis>
+            <wj-flex-chart-series name="Data" binding="yval"></wj-flex-chart-series>
+        </wj-flex-chart>
+    </div>
+</div>

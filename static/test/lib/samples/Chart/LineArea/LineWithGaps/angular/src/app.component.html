@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="form-check">
+        <label for="interpolateNulls" class="form-check-label">interpolateNulls:</label>
+        <input id="interpolateNulls" type="checkbox" class="form-check-input" [(ngModel)]="chart.interpolateNulls">
+    </div>
+
+    <wj-flex-chart #chart [itemsSource]="data" header="24 Hours CPU Utilization and Temperature" bindingX="time"
+            chartType="Line" [interpolateNulls]="interpolateNulls" [palette]="palette">
+        <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        <wj-flex-chart-series binding="utilization" name="Utilization(%)"></wj-flex-chart-series>
+        <wj-flex-chart-series binding="temperature" name="Temperature(°C)"></wj-flex-chart-series>
+        <wj-flex-chart-animation animationMode="Point"></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

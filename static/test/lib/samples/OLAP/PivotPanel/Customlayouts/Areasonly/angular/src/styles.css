@@ -1,0 +1,86 @@
+/*
+  IE11 support added with AutoPrevixer
+  https://autoprefixer.github.io/
+*/
+.wj-pivotpanel {
+  min-height: 0;
+  max-width: 600px;
+  margin: 12px auto;
+  display: block;
+	background: #eee;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+.wj-pivotpanel .wj-flexgrid {
+  min-height: 4em;
+	background: inherit;
+}
+
+.wj-pivotpanel .root {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 100%;
+      grid-template-columns: 100%;
+}
+
+.wj-pivotpanel .field-list-label {
+  display: none;
+}
+.wj-pivotpanel .field-list {
+  display: none;
+}
+.wj-pivotpanel .drag-areas-label {
+  display: none;
+}
+.wj-pivotpanel .filter-list {
+  -ms-grid-row: 1;
+  grid-row: 1;  
+}
+.wj-pivotpanel .row-list {
+  -ms-grid-row: 2;
+  grid-row: 2;  
+}
+.wj-pivotpanel .column-list {
+  -ms-grid-row: 3;
+  grid-row: 3;  
+}
+.wj-pivotpanel .values-list {
+  -ms-grid-row: 4;
+  grid-row: 4;  
+}
+
+.wj-pivotpanel .progress-bar {
+  -ms-grid-row: 5;
+  grid-row: 5;
+  width: 0px;
+  height: 3px;
+}
+
+.wj-pivotpanel .control-area {
+  -ms-grid-column: 1;
+  grid-column: 1;
+  -ms-grid-row: 5;
+  grid-row: 5;
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  -ms-grid-columns: 1fr auto;
+      grid-template-columns: 1fr auto;
+}
+.wj-pivotpanel .control-area button {
+  -ms-grid-column: 2;
+  grid-column: 2;
+  -ms-flex-item-align: end;
+      -ms-grid-row-align: end;
+      align-self: end;
+}
+
+
+.wj-pivotpanel .pad {
+  padding: 6px;
+}
+
+body {
+  margin-bottom: 24pt;
+}

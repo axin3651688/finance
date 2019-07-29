@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <wj-flex-chart>
+        <wj-flex-chart-y-function-series name="y = f(x)" [min]="-10" [max]="10" [sampleCount]="300" [func]="yFunc">
+        </wj-flex-chart-y-function-series>
+        <wj-flex-chart-parametric-function-series name="x = f(t); y = g(t)" [min]="0" [max]="max" [sampleCount]="1000"
+            [xFunc]="paramXFunc" [yFunc]="paramYFunc">
+        </wj-flex-chart-parametric-function-series>
+    </wj-flex-chart>
+</div>

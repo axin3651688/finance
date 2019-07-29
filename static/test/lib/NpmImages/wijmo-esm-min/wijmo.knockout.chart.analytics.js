@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+var __extends=this&&this.__extends||function(){var t=function(n,r){return(t=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(t,n){t.__proto__=n}||function(t,n){for(var r in n)n.hasOwnProperty(r)&&(t[r]=n[r])})(n,r)};return function(n,r){function e(){this.constructor=n}t(n,r),n.prototype=null===r?Object.create(r):(e.prototype=r.prototype,new e)}}();import{MetaFactory}from"wijmo/wijmo.knockout.base";import{WjSeriesBase}from"wijmo/wijmo.knockout.chart";import*as mKo from"knockout";import*as wjcChartAnal from"wijmo/wijmo.chart.analytics";var wjKo=mKo,WjTrendLineBase=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.TrendLineBase},n}(WjSeriesBase);export{WjTrendLineBase};var wjFlexChartTrendLine=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.TrendLine},n}(WjTrendLineBase);export{wjFlexChartTrendLine};var wjFlexChartMovingAverage=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.MovingAverage},n}(WjTrendLineBase);export{wjFlexChartMovingAverage};var wjFlexChartYFunctionSeries=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.YFunctionSeries},n}(WjTrendLineBase);export{wjFlexChartYFunctionSeries};var wjFlexChartParametricFunctionSeries=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.ParametricFunctionSeries},n.prototype._initialize=function(){t.prototype._initialize.call(this),MetaFactory.findProp("func",this._metaData.props).updateControl=function(t,n,r,e,o){return null!=o&&(r.xFunc=o),!0}},n}(WjTrendLineBase);export{wjFlexChartParametricFunctionSeries};var wjFlexChartWaterfall=function(t){function n(){return null!==t&&t.apply(this,arguments)||this}return __extends(n,t),n.prototype._getControlConstructor=function(){return wjcChartAnal.Waterfall},n}(WjSeriesBase);export{wjFlexChartWaterfall};wjKo.bindingHandlers.wjFlexChartTrendLine=new wjFlexChartTrendLine,wjKo.bindingHandlers.wjFlexChartMovingAverage=new wjFlexChartMovingAverage,wjKo.bindingHandlers.wjFlexChartYFunctionSeries=new wjFlexChartYFunctionSeries,wjKo.bindingHandlers.wjFlexChartParametricFunctionSeries=new wjFlexChartParametricFunctionSeries,wjKo.bindingHandlers.wjFlexChartWaterfall=new wjFlexChartWaterfall;

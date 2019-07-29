@@ -1,0 +1,9 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <button id="btnReset" class="btn btn-default" (click)="reset()">Reset Zoom</button>
+        <wj-flex-chart #theChart [itemsSource]="data" bindingX="date" chartType="Candlestick">
+            <wj-flex-chart-series binding="high,low,open,close" name="Alphabet Inc"></wj-flex-chart-series>
+            <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+        </wj-flex-chart>
+    </div>
+</div>

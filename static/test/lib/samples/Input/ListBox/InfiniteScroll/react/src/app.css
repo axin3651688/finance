@@ -1,0 +1,13 @@
+.wj-listbox {
+    height: 200px;
+    width: 200px;
+    margin-left: 2em;
+}
+
+.wj-listbox-item {
+    line-height: 2.5em;
+}
+
+body {
+    margin-bottom: 24pt;
+}

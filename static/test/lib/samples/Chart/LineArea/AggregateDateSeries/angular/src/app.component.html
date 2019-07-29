@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div id="options">
+        <wj-menu #aggMenu [header]="'Aggregate'" [(value)]="groupAggregate" (itemClicked)="onMenuItemClick(aggMenu)">
+            <wj-menu-item [value]="'None'">None</wj-menu-item>
+            <wj-menu-item [value]="'Sum'">Sum</wj-menu-item>
+            <wj-menu-item [value]="'Cnt'">Count</wj-menu-item>
+            <wj-menu-item [value]="'Avg'">Average</wj-menu-item>
+            <wj-menu-item [value]="'Max'">Max</wj-menu-item>
+            <wj-menu-item [value]="'Min'">Min</wj-menu-item>
+            <wj-menu-item [value]="'Rng'">Range</wj-menu-item>
+            <wj-menu-item [value]="'Std'">Std</wj-menu-item>
+            <wj-menu-item [value]="'StdPop'">StdPop</wj-menu-item>
+            <wj-menu-item [value]="'Var'">Var</wj-menu-item>
+            <wj-menu-item [value]="'VarPop'">VarPop</wj-menu-item>
+        </wj-menu>
+    </div>
+
+    <wj-flex-chart #chart [itemsSource]="data" [bindingX]="'date'" [chartType]="'LineSymbols'"
+        [plotMargin]="'NaN 60 NaN 60'" [tooltipContent]="getTooltipContent" [palette]="palette">
+        <wj-flex-chart-legend [position]="'None'"></wj-flex-chart-legend>
+    </wj-flex-chart>
+
+    <wj-flex-chart class="chart-selector" [itemsSource]="data" [bindingX]="'date'" [chartType]="'Area'"
+        [tooltipContent]="''" [palette]="palette">
+        <wj-flex-chart-legend [position]="'None'"></wj-flex-chart-legend>
+        <wj-flex-chart-axis [wjProperty]="'axisX'" [position]="'None'"></wj-flex-chart-axis>
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [position]="'None'"></wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'close'"></wj-flex-chart-series>
+        <wj-flex-chart-range-selector #rangeSelector [seamless]="true" (rangeChanged)="rangeChanged(rangeSelector, chart)">
+        </wj-flex-chart-range-selector>
+    </wj-flex-chart>
+</div>

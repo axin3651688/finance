@@ -1,0 +1,11 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [deferResizing]="true"
+        [alternatingRowStep]="0"
+        [headersVisibility]="'Column'"
+        [selectionMode]="'Cell'"
+        [(itemsSource)]="data"
+        (initialized)="initializeGrid(flex)">
+    </wj-flex-grid>
+</div>

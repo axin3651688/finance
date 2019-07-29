@@ -1,0 +1,40 @@
+body {
+    font-family: 'Segoe UI';
+    font-size: 14px;
+}
+.item p {
+    margin: 0;
+}
+.item h1 {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 200;
+}
+.wj-treeview {
+    margin: 12px;
+    padding: 0 12px 12px 12px;
+    background: #fafafa;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* customize TreeView content */
+.wj-treeview h1 {
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: 200;
+}
+
+/* hide collapse/expand icons */
+.wj-treeview .wj-nodelist .wj-node:before {
+    display: none;
+}
+
+/* remove selected style */
+.wj-treeview .wj-node.wj-state-selected {
+    color: inherit;
+    background: transparent;
+}
+
+

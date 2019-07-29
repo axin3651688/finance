@@ -1,0 +1,82 @@
+<div class="container-fluid">
+    <p>
+        This sample demonstrates the "Simple single grid export" scenario and shows how to export FlexGrid in
+        a background thread.
+    </p>
+    <button class="btn btn-default" [disabled]="ctx1.preparing" (click)="export1(ctx1)">{{ctx1.exporting ? 'Cancel' :
+        'Export'}}</button>&nbsp;
+    <span>{{ ctx1.progress | percent:'1.1-1' }}</span>
+    <wj-flex-grid class="grid" #flexGrid [autoGenerateColumns]="false" headersVisibility="Column" allowMerging="All"
+        [itemsSource]="data" [isDisabled]="ctx1.preparing">
+        <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Start Date" binding="start" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="End Date" binding="end" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Amount" binding="amount" format="c"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Color" binding="color"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Pending" binding="amount2" format="c2"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Discount" binding="discount" format="p1"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Active" binding="active"></wj-flex-grid-column>
+    </wj-flex-grid>
+
+    <hr />
+
+    <p>
+        This sample demonstrates the "Custom document generation" scenario and shows how to export FlexPie
+        (as a SVG image), FlexGrid and PNG image to a PDF in a background thread.
+    </p>
+    <p>
+        The <a href="https://www.npmjs.com/package/xmldom">xmldom</a> library is used here to bring DOM
+        support to the server to be able to draw SVG.
+    </p>
+    <button class="btn btn-default" [disabled]="ctx2.preparing" (click)="export2(ctx2)">{{ctx2.exporting ? 'Cancel' :
+        'Export'}}</button>&nbsp;
+    <span>{{ ctx2.progress | percent:'1.1-1' }}</span>
+    <p></p>
+    <div class="row">
+        <div class="col-md-6">
+            <wj-flex-pie #flexPie [itemsSource]="totals" binding="value" bindingName="name" [innerRadius]="0.75">
+                <wj-flex-pie-data-label content="{value:c1}" position="Inside"></wj-flex-pie-data-label>
+            </wj-flex-pie>
+        </div>
+        <div class="col-md-6">
+            <wj-flex-grid class="grid" #flexGrid2 [autoGenerateColumns]="false" headersVisibility="Column" allowMerging="All"
+                [itemsSource]="data" [isDisabled]="ctx2.preparing">
+                <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Start Date" binding="start" format="d"></wj-flex-grid-column>
+                <wj-flex-grid-column header="End Date" binding="end" format="d"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Amount" binding="amount" format="c"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Color" binding="color"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Pending" binding="amount2" format="c2"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Discount" binding="discount" format="p1"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Active" binding="active"></wj-flex-grid-column>
+            </wj-flex-grid>
+        </div>
+    </div>
+
+    <hr />
+
+    <p>
+        This sample demonstrates the "Low-level usage of Web Workers API" scenario and shows how to export
+        FlexGrid to a PDF in a background thread a background thread using Web Workers API.
+    </p>
+    <button class="btn btn-default" [disabled]="ctx3.preparing" (click)="export3(ctx3)">{{ctx3.exporting ? 'Cancel' :
+        'Export'}}</button>&nbsp;
+    <span>{{ ctx3.progress | percent:'1.1-1' }}</span>
+    <wj-flex-grid class="grid" #flexGrid3 [autoGenerateColumns]="false" headersVisibility="Column" allowMerging="All"
+        [itemsSource]="data" [isDisabled]="ctx3.preparing">
+        <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Start Date" binding="start" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="End Date" binding="end" format="d"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Country" binding="country"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Amount" binding="amount" format="c"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Color" binding="color"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Pending" binding="amount2" format="c2"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Discount" binding="discount" format="p1"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Active" binding="active"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

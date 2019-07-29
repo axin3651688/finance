@@ -1,0 +1,11 @@
+.highlightActive .wj-cells .wj-cell:focus {
+  background: rgba(255,150,30,.75) !important;  
+}
+.customMarquee .wj-marquee {
+  border: 8px solid rgba(255,150,30,.75);
+  border-radius: 8px;
+}
+
+body {
+  margin-bottom: 12px;
+}

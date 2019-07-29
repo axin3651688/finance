@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <div class="row">
+            <wj-flex-chart #theChart header="2018 Annual Sales" bindingX="month" selectionMode="Point" 
+                    [itemsSource]="chartData" (selectionChanged)="chartSelectionChanged(theChart)">
+                <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+                <wj-flex-chart-series binding="actual" name="Sales"></wj-flex-chart-series>
+            </wj-flex-chart>
+        </div>
+        <div class="row">
+            <div class="col">
+                <wj-flex-pie #thePie [header]="pieHeader" bindingName="category" binding="actual" [itemsSource]="pieData" 
+                        [labelContent]="pieLabel">
+                    <wj-flex-chart-legend position="None"></wj-flex-chart-legend>
+                </wj-flex-pie>
+            </div>
+            <div class="col">
+                <ul class="bullets">
+                    <li *ngFor="let item of bulletsData">
+                        <label>{{item.category}}</label>
+                        <wj-bullet-graph showText="Value" [target]="item.target" [max]="item.max" [good]="item.good" [bad]="item.bad" [value]="item.actual">
+                        </wj-bullet-graph>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

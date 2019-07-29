@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Menu Commands</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="currentTax">Current Tax</label>
+            <div id="currentTax"></div>
+        </div>
+        <div class="form-group">
+            <label for="changeTax">Change Tax</label>
+            <div id="changeTax">
+                Tax Commands
+                <div cmd-param=".50">Increment by 50%</div>
+                <div cmd-param=".25">Increment by 25%</div>
+                <div cmd-param=".05">Increment by 5%</div>
+                <div class="wj-separator"></div>
+                <div cmd-param="-.05">Decrement by 5%</div>
+                <div cmd-param="-.25">Decrement by 25%</div>
+                <div cmd-param="-.50">Decrement by 50%</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

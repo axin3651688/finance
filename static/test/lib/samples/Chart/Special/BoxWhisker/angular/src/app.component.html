@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="innerPoints">Show Inner Points:</label>
+        <input id="innerPoints" type="checkbox" [(ngModel)]="showInnerPoints" />
+
+        <label for="outliers">Show Outliers:</label>
+        <input id="outliers" type="checkbox" [(ngModel)]="showOutliers" />
+    </div>
+    <div class="form-group">
+        <label for="meanline">Show Mean Line:</label>
+        <input id="meanline" type="checkbox" [(ngModel)]="showMeanLine" />
+
+        <label for="meanmarker">Show Mean Marker:</label>
+        <input id="meanmarker" type="checkbox" [(ngModel)]="showMeanMarker" />
+    </div>
+    <div class="form-group">
+        <label for="rotated">Rotated:</label>
+        <input id="rotated" type="checkbox" [(ngModel)]="rotated" />
+        
+        <label for="btnRandomize">Randomize Data</label>
+        <button id="btnRandomize" class="btn btn-default" (click)="randomizeData()">
+            Go
+        </button>
+    </div>
+
+    <wj-flex-chart bindingX="country" [tooltipContent]="'{seriesName}: <b>{x}</b>'" [itemsSource]="data"
+        [palette]="palette" [rotated]="rotated">
+        <wj-flex-chart-box-whisker binding="sales" name="Sales" [groupWidth]="0.7" [gapWidth]="0.2"
+            [showMeanLine]="showMeanLine" [showMeanMarker]="showMeanMarker" [showInnerPoints]="showInnerPoints"
+            [showOutliers]="showOutliers">
+        </wj-flex-chart-box-whisker>
+        <wj-flex-chart-box-whisker binding="expenses" name="Expenses" [groupWidth]="0.7" [gapWidth]="0.2"
+            [showMeanLine]="showMeanLine" [showMeanMarker]="showMeanMarker" [showInnerPoints]="showInnerPoints"
+            [showOutliers]="showOutliers">
+        </wj-flex-chart-box-whisker>
+    </wj-flex-chart>
+</div>

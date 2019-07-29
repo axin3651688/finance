@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <!-- Export button -->
+    <button class="btn btn-default" (click)="export()">Export</button>
+
+    <!-- FlexGrid -->
+    <wj-flex-grid class="grid" #flexGrid [autoGenerateColumns]="false" selectionMode="ListBox" headersVisibility="All"
+        [itemsSource]="data">
+        <wj-flex-grid-column header="ID" binding="id"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Country" binding="country" isReadOnly="true">
+            <ng-template wjFlexGridCellTemplate [cellType]="'Cell'" let-item="item">
+                <img src="resources/{{item.country}}.png" />
+                {{item.country}}
+            </ng-template>
+        </wj-flex-grid-column>
+        <wj-flex-grid-column header="Product" binding="product"></wj-flex-grid-column>
+        <wj-flex-grid-column header="Color" binding="color"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

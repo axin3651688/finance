@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>GrapeCity Wijmo TreeView Context Menus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SystemJS -->
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+  <script src="systemjs.config.js"></script>
+  <script>
+    System.import('./src/app');
+  </script>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- this is the tree -->
+    <div id="theTree"></div>
+
+    <!-- this is the context menu -->
+    <select id="theMenu" style="display:none">
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+      <option></option>
+      <option value="option3">Option 3</option>
+      <option value="option4">Option 4</option>
+    </select>
+  </div>
+
+</body>
+
+</html>

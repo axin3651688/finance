@@ -1,0 +1,7 @@
+<div class="container-fluid">
+    <wj-flex-grid *ngIf="data" [isReadOnly]="true" [itemsSource]="data">
+        <wj-flex-grid-column [binding]="'CategoryID'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'CategoryName'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'Description'" [width]="'*'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <p>
+        For example, here is an InputNumber with default settings:
+    </p>
+    <div class="form-group">
+        <label for="theNumber">InputNumber</label>
+        <wj-input-number #theNumber id="theNumber"></wj-input-number>
+    </div>
+    <div>
+        The current value is <b>{{ theNumber.value }}</b>.
+    </div>
+
+    <hr />
+
+    <p>
+        By default, InputNumber values are required, so you can't delete the entire content of the control. If you
+        want to enter a number that is optional, set the <b>isRequired</b> property to false:
+    </p>
+    <div class="form-group">
+        <label for="theNumberNotRequired">Not Required</label>
+        <wj-input-number id="theNumberNotRequired" [isRequired]="false" [value]="null" [min]="0" [max]="100"
+            [placeholder]="'Your age (optional)'"></wj-input-number>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <!-- the grid -->
+    <wj-flex-grid #flex
+        [frozenRows]="1"
+        [(itemsSource)]="data">
+        <wj-flex-grid-column [binding]="'id'" [header]="'ID'" [width]="60" [isReadOnly]="true"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'country'" [header]="'Country'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'product'" [header]="'Product'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'sales'" [header]="'Sales'" [aggregate]="'Sum'"></wj-flex-grid-column>
+        <wj-flex-grid-column [binding]="'expenses'" [header]="'Expenses'" [aggregate]="'Sum'"></wj-flex-grid-column>
+    </wj-flex-grid>
+</div>

@@ -1,0 +1,4 @@
+Editing
+=======
+
+The FlexGrid has built-in support for Excel-like, efficient, in-cell editing. There is no need to add extra columns with 'Edit' buttons that switch between display and edit modes. Users can start editing simply by typing into any cell. This is called 'quick-edit' mode. In this mode, the cursor keys finish the editing and the grid moves the selection. Users may also start editing by pressing F2 or by clicking a cell twice. This is called 'full-edit' mode. In this mode, the cursor keys move the caret within the editor and the user must press the Enter, Tab, or Escape keys to finish editing. The grid automatically parses the input and coerces it into the proper data type for the column. If the coercion fails, the original value is restored.

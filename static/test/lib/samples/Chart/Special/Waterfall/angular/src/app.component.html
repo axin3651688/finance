@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="iptConnectorLines">Show Connector Lines: </label>
+        <input id="iptConnectorLines" type="checkbox" [(ngModel)]="connectorLines" />
+    </div>
+
+    <div class="form-group">
+        <label for="iptShowTotal">Show Total Bar: </label>
+        <input id="iptShowTotal" type="checkbox" [(ngModel)]="showTotal" />
+    </div>
+
+    <div class="form-group">
+        <label for="btnRandomize">Randomize Data</label>
+        <button id="btnRandomize" class="btn btn-default" (click)="randomizeData()">
+            Go
+        </button>
+    </div>
+
+    <wj-flex-chart [itemsSource]="data" bindingX="date">
+        <wj-flex-chart-waterfall name="Increase,Decrease,Total" binding="sales" [styles]="styles" [connectorLines]="connectorLines"
+            [showTotal]="showTotal">
+        </wj-flex-chart-waterfall>
+    </wj-flex-chart>
+</div>

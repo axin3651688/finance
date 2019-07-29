@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <!-- Settings -->
+    <div class="panel-group" id="settings">
+        <div class="panel panel-default">
+            <div id="settingsBody" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <!-- General-->
+                    <ul class="list-inline">
+                        <li>
+                            <wj-menu #type header="Type" [(value)]="selectedFib">
+                                <wj-menu-item value="arcs">Arcs</wj-menu-item>
+                                <wj-menu-item value="fans">Fans</wj-menu-item>
+                                <wj-menu-item value="retracements">Retracements</wj-menu-item>
+                                <wj-menu-item value="timeZones">Time Zones</wj-menu-item>
+                            </wj-menu>
+                        </li>
+                    </ul>
+
+                    <!-- Retracements -->
+                    <ul class="list-inline" *ngIf="selectedFib === 'retracements'">
+                        <li>
+                            <wj-menu header="Uptrend" [(value)]="properties.retracements.uptrend">
+                                <wj-menu-item [value]="true">True</wj-menu-item>
+                                <wj-menu-item [value]="false">False</wj-menu-item>
+                            </wj-menu>
+                        </li>
+
+                        <li>
+                            <wj-menu header="Label position" [(value)]="properties.retracements.labelPosition">
+                                <wj-menu-item value="Left">Left</wj-menu-item>
+                                <wj-menu-item value="Center">Center</wj-menu-item>
+                                <wj-menu-item value="Right">Right</wj-menu-item>
+                            </wj-menu>
+                        </li>
+                    </ul>
+
+                    <!-- Arcs -->
+                    <ul class="list-inline" *ngIf="selectedFib === 'arcs'">
+                        <wj-menu header="Label position" [(value)]="properties.arcs.labelPosition">
+                            <wj-menu-item value="None">None</wj-menu-item>
+                            <wj-menu-item value="Top">Top</wj-menu-item>
+                            <wj-menu-item value="Center">Center</wj-menu-item>
+                            <wj-menu-item value="Bottom">Bottom</wj-menu-item>
+                        </wj-menu>
+                    </ul>
+                    <ul class="list-inline" *ngIf="selectedFib === 'arcs'">
+                        <li>
+                            <label>Start X</label>
+                            <wj-input-number [(value)]="properties.arcs.start.x" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                        <li>
+                            <label>Start Y</label>
+                            <wj-input-number [(value)]="properties.arcs.start.y" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                    </ul>
+                    <ul class="list-inline" *ngIf="selectedFib === 'arcs'">
+                        <li>
+                            <label>End X</label>
+                            <wj-input-number [(value)]="properties.arcs.end.x" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                        <li>
+                            <label>End Y</label>
+                            <wj-input-number [(value)]="properties.arcs.end.y" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                    </ul>
+
+                    <!-- Fans -->
+                    <ul class="list-inline" *ngIf="selectedFib === 'fans'">
+                        <wj-menu header="Label position" [(value)]="properties.fans.labelPosition">
+                            <wj-menu-item value="None">None</wj-menu-item>
+                            <wj-menu-item value="Top">Top</wj-menu-item>
+                            <wj-menu-item value="Center">Center</wj-menu-item>
+                            <wj-menu-item value="Bottom">Bottom</wj-menu-item>
+                        </wj-menu>
+                    </ul>
+                    <ul class="list-inline" *ngIf="selectedFib === 'fans'">
+                        <li>
+                            <label>Start X</label>
+                            <wj-input-number [(value)]="properties.fans.start.x" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                        <li>
+                            <label>Start Y</label>
+                            <wj-input-number [(value)]="properties.fans.start.y" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                    </ul>
+                    <ul class="list-inline" *ngIf="selectedFib === 'fans'">
+                        <li>
+                            <label>End X</label>
+                            <wj-input-number [(value)]="properties.fans.end.x" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                        <li>
+                            <label>End Y</label>
+                            <wj-input-number [(value)]="properties.fans.end.y" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                    </ul>
+
+                    <!-- Time Zones -->
+                    <ul class="list-inline" *ngIf="selectedFib === 'timeZones'">
+                        <wj-menu header="Label position" [(value)]="properties.timeZones.labelPosition">
+                            <wj-menu-item value="None">None</wj-menu-item>
+                            <wj-menu-item value="Left">Left</wj-menu-item>
+                            <wj-menu-item value="Center">Center</wj-menu-item>
+                            <wj-menu-item value="Right">Right</wj-menu-item>
+                        </wj-menu>
+                    </ul>
+                    <ul class="list-inline" *ngIf="selectedFib === 'timeZones'">
+                        <li>
+                            <label>Start X</label>
+                            <wj-input-number [(value)]="properties.timeZones.start" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                        <li>
+                            <label>End X</label>
+                            <wj-input-number [(value)]="properties.timeZones.end" [step]="1" (valueChanged)="valueChanged()"></wj-input-number>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <wj-financial-chart #theChart [itemsSource]="data" bindingX="date" [symbolSize]="6" [tooltipContent]="tooltip" chartType="Candlestick" [palette]="palette">
+        <wj-financial-chart-series binding="high,low,open,close" name="Box Inc">
+        </wj-financial-chart-series>
+        <wj-flex-chart-fibonacci binding="close" [symbolSize]="1" name="Retracements"
+                    [style]="{ fill: 'red', stroke: 'red', strokeWidth:0.5, fontSize:10 }"
+                    [labelPosition]="properties.retracements.labelPosition"
+                    [uptrend]="properties.retracements.uptrend"
+                    [visibility]="selectedFib === 'retracements' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-fibonacci>
+        <wj-flex-chart-fibonacci-arcs binding="close" name="Arcs"
+                        [start]="properties.arcs.start"
+                        [end]="properties.arcs.end"
+                        [labelPosition]="properties.arcs.labelPosition"
+                        [visibility]="selectedFib === 'arcs' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-fibonacci-arcs>
+        <wj-flex-chart-fibonacci-fans binding="close" name="Fans"
+                        [start]="properties.fans.start"
+                        [end]="properties.fans.end"
+                        [labelPosition]="properties.fans.labelPosition"
+                        [visibility]="selectedFib === 'fans' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-fibonacci-fans>
+        <wj-flex-chart-fibonacci-time-zones binding="close" name="TimeZones"
+                                [startX]="properties.timeZones.start"
+                                [endX]="properties.timeZones.end"
+                                [labelPosition]="properties.timeZones.labelPosition"
+                                [visibility]="selectedFib === 'timeZones' ? 'Visible' : 'Hidden'">
+        </wj-flex-chart-fibonacci-time-zones>
+    </wj-financial-chart>
+</div>

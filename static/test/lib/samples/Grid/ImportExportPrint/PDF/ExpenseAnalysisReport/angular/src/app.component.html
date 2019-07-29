@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <!-- Export button -->
+    <button class="btn btn-default" (click)="export()">Export</button>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <wj-flex-grid class="grid" #flexGrid [autoGenerateColumns]="false" headersVisibility="Column" allowMerging="All"
+                [itemsSource]="employee.expenses.items">
+                <wj-flex-grid-column header="Date" binding="date" format="d" [minWidth]="80"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Hotel" binding="hotel" format="c"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Transport" binding="transport" format="c" [minWidth]="80"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Meal" binding="meal" format="c"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Fuel" binding="fuel" format="c"></wj-flex-grid-column>
+                <wj-flex-grid-column header="Misc" binding="misc" format="c"></wj-flex-grid-column>
+            </wj-flex-grid>
+        </div>
+        <div class="col-xs-6">
+            <wj-flex-pie #flexPie [itemsSource]="totals" binding="value" bindingName="name" [innerRadius]="0.75">
+                <wj-flex-pie-data-label content="{value:c1}" position="Inside"></wj-flex-pie-data-label>
+            </wj-flex-pie>
+        </div>
+    </div>
+</div>

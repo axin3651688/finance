@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row show-grid">
+        <div class="col-md-1 grid-title">Date</div>
+        <div class="col-md-2">
+            <wj-input-date [format]="'d'" [value]="data.date" [min]="minDate"
+                [max]="maxDate"></wj-input-date>
+        </div>
+        <div class="col-md-2 grid-title">Slip No
+        </div>
+        <div class="col-md-2">
+            <input (value)="slipNo" type="text" class="form-control" />
+        </div>
+        <div class="col-md-2 grid-title">Settlement</div>
+        <div class="col-md-2">
+            <input (value)="settlement" type="text" class="form-control" />
+        </div>
+    </div>
+    <wj-multi-row #transferSlip [itemsSource]="items" [layoutDefinition]="layoutDefinition"></wj-multi-row>
+    <div class="row show-grid">
+        <div style="width:125px;" class="summary-cell">Debtor Sum</div>
+        <div style="width:125px;" class="summary-cell"><span [innerHTML]="debtorSum"></span></div>
+        <div style="width:125px;" class="summary-cell">Creditor Sum</div>
+        <div style="width:125px;" class="summary-cell"><span [innerHTML]="creditorSum"></span></div>
+        <div style="width:110px;" class="summary-cell">Balance</div>
+        <div style="width:100px;" class="summary-cell"><span [innerHTML]="balance"></span></div>
+    </div>
+    <div class="pull-right btn-group">
+        <button class="btn btn-default" (click)="onGotoPageClick('first')" id="first">
+            <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('previous')" id="previous">
+            <span class="glyphicon glyphicon-backward"></span>
+        </button>
+        <button id="current" type="button" class="btn" disabled style="width:100px" [innerHTML]="currentDescription">
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('next')" id="next">
+            <span class="glyphicon glyphicon-forward"></span>
+        </button>
+        <button class="btn btn-default" (click)="onGotoPageClick('last')" id="last">
+            <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default" (click)="onExportXlsxClick()">
+            Export to Excel
+        </button>
+        <button class="btn btn-default" (click)="onExportPdfClick()">
+            Export to PDF
+        </button>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-5">
+      <wj-pivot-panel [itemsSource]="ng"></wj-pivot-panel>
+    </div>
+    <div class="col-xs-7">
+      <wj-pivot-grid #grid [itemsSource]="ng"></wj-pivot-grid>
+    </div>
+  </div>
+  <p>
+    You can configure the <b>PivotEngine</b> to show the subtotals
+    before or after the data using the <b>totalsBeforeData</b>
+    property:
+  </p>
+  <label>
+    totalsBeforeData:
+    <input id="totalsBeforeData" type="checkbox" (click)="onTotalsBeforeDataClick($event)">
+  </label>
+  <p>
+    You can configure the <b>PivotGrid</b> to make row and column
+    groups collapsible using the <b>collapsibleSubtotals</b>
+    property:
+  </p>
+  <label>
+    collapsibleSubtotals:
+    <input id="collapsibleSubtotals" type="checkbox" checked (click)="onCollapsibleSubtotalsClick($event)">
+  </label>
+</div>

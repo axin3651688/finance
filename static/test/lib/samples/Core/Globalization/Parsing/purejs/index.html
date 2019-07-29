@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Globalization/Parsing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="theCulture">Culture:</label>
+            <div id="theCulture">
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Dates</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="dtFmt">Input format:</label>
+                    <input id="dtFmt" value="d">
+                </div>
+
+                <div class="form-group">
+                    <label for="dtIn">Input string:</label>
+                    <input id="dtIn" value="12/31/2016">
+                </div>
+
+                <button id="dtBtn" class="btn btn-default">
+                    Parse Date
+                </button>
+
+                <span id="dtOutput">
+                </span>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Numbers</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="numFmt">Input format:</label>
+                    <input id="numFmt" value="n2">
+                </div>
+
+                <div class="form-group">
+                    <label for="numIn">Input string:</label>
+                    <input id="numIn" value="123.456">
+                </div>
+
+                <button id="numBtn" class="btn btn-default">
+                    Parse Number
+                </button>
+                
+                <span id="numOutput">
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

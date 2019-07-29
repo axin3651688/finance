@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <wj-flex-chart [chartType]="'Scatter'" [bindingX]="'x'" [itemsSource]="data">
+        <wj-flex-chart-series [name]="'Raw Data'" [binding]="'y'">
+        </wj-flex-chart-series>
+        <wj-flex-chart-trend-line [name]="'TrendLine'" [binding]="'y'" [fitType]="'Polynomial'" [order]="2"
+            [style]="{ stroke: 'darkred', strokeWidth: 3 }"></wj-flex-chart-trend-line>
+        <wj-flex-chart-moving-average [name]="'MovingAverage'" [binding]="'y'" [period]="6"
+            [style]="{ stroke: 'orange', strokeWidth: 3 }"></wj-flex-chart-moving-average>
+    </wj-flex-chart>
+</div>

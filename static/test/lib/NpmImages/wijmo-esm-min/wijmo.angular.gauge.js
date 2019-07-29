@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+var __extends=this&&this.__extends||function(){var e=function(t,r){return(e=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(e,t){e.__proto__=t}||function(e,t){for(var r in t)t.hasOwnProperty(r)&&(e[r]=t[r])})(t,r)};return function(t,r){function n(){this.constructor=t}e(t,r),t.prototype=null===r?Object.create(r):(n.prototype=r.prototype,new n)}}();import{WjDirective,_registerNgModule,softRefGauge}from"wijmo/wijmo.angular.base";import*as mNg from"angular";import*as wjcGauge from"wijmo/wijmo.gauge";var wjNg=mNg,wijmoGaugeName="wj.gauge";export var ngModuleName=wijmoGaugeName;var wijmoGauge=_registerNgModule(wijmoGaugeName);softRefGauge()&&softRefGauge().LinearGauge&&(wijmoGauge.directive("wjLinearGauge",[function(){return new WjLinearGauge}]),wijmoGauge.directive("wjBulletGraph",[function(){return new WjBulletGraph}]),wijmoGauge.directive("wjRadialGauge",[function(){return new WjRadialGauge}]),wijmoGauge.directive("wjRange",[function(){return new WjRange}]));var WjGauge=function(e){function t(){var t=e.call(this)||this;return t.template="<div ng-transclude />",t.transclude=!0,t}return __extends(t,e),Object.defineProperty(t.prototype,"_controlConstructor",{get:function(){return wjcGauge.Gauge},enumerable:!0,configurable:!0}),t}(WjDirective);export{WjGauge};var WjLinearGauge=function(e){function t(){return e.call(this)||this}return __extends(t,e),Object.defineProperty(t.prototype,"_controlConstructor",{get:function(){return wjcGauge.LinearGauge},enumerable:!0,configurable:!0}),t}(WjGauge);export{WjLinearGauge};var WjBulletGraph=function(e){function t(){return e.call(this)||this}return __extends(t,e),Object.defineProperty(t.prototype,"_controlConstructor",{get:function(){return wjcGauge.BulletGraph},enumerable:!0,configurable:!0}),t}(WjLinearGauge);export{WjBulletGraph};var WjRadialGauge=function(e){function t(){return e.call(this)||this}return __extends(t,e),Object.defineProperty(t.prototype,"_controlConstructor",{get:function(){return wjcGauge.RadialGauge},enumerable:!0,configurable:!0}),t}(WjGauge);export{WjRadialGauge};var WjRange=function(e){function t(){var t=e.call(this)||this;return t.require=["?^wjLinearGauge","?^wjRadialGauge","?^wjBulletGraph"],t.template="<div ng-transclude />",t.transclude=!0,t._property="ranges",t._isPropertyArray=!0,t}return __extends(t,e),Object.defineProperty(t.prototype,"_controlConstructor",{get:function(){return wjcGauge.Range},enumerable:!0,configurable:!0}),t.prototype._initControl=function(e){return new wjcGauge.Range},t}(WjDirective);export{WjRange};

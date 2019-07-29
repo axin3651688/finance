@@ -1,0 +1,14 @@
+﻿/*!
+    *
+    * Wijmo Library 5.20191.603
+    * http://wijmo.com/
+    *
+    * Copyright(c) GrapeCity, Inc.  All rights reserved.
+    *
+    * Licensed under the GrapeCity Commercial License.
+    * sales@wijmo.com
+    * wijmo.com/products/wijmo-5/license/
+    *
+    */
+
+import{WjBinding,WjContext,MetaFactory}from"wijmo/wijmo.knockout.base";import*as mKo from"knockout";import*as wjcChart from"wijmo/wijmo.chart";var wjKo=mKo;export class WjFlexChartBaseBinding extends WjBinding{_getControlConstructor(){return wjcChart.FlexChartBase}_initialize(){super._initialize(),MetaFactory.findProp("tooltipContent",this._metaData.props).updateControl=function(t,e,r,n,a){return null!=a&&(r.tooltip.content=a),!0}}};export class wjFlexChart extends WjFlexChartBaseBinding{_getControlConstructor(){return wjcChart.FlexChart}_initialize(){super._initialize(),MetaFactory.findProp("labelContent",this._metaData.props).updateControl=function(t,e,r,n,a){return null!=a&&(r.dataLabel.content=a),!0}}};export class wjFlexPie extends WjFlexChartBaseBinding{_getControlConstructor(){return wjcChart.FlexPie}_initialize(){super._initialize(),MetaFactory.findProp("labelContent",this._metaData.props).updateControl=function(t,e,r,n,a){return null!=a&&(r.dataLabel.content=a),!0}}};export class wjFlexChartAxis extends WjBinding{_getControlConstructor(){return wjcChart.Axis}};export class wjFlexChartLegend extends WjBinding{_getControlConstructor(){return wjcChart.Legend}};export class WjSeriesBase extends WjBinding{_getControlConstructor(){return wjcChart.SeriesBase}_createControl(t){return super._createControl(null)}};export class wjFlexChartSeries extends WjSeriesBase{_getControlConstructor(){return wjcChart.Series}_createWijmoContext(){return new WjFlexChartSeriesContext(this)}};export class WjFlexChartSeriesContext extends WjContext{_initControl(){super._initControl();var t=this.parentWjContext.control;t instanceof wjcChart.FlexChart&&t.seriesVisibilityChanged.addHandler((t,e)=>{this._updateSource()})}};export class wjFlexChartLineMarker extends WjBinding{_getControlConstructor(){return wjcChart.LineMarker}};export class wjFlexChartPlotArea extends WjBinding{_getControlConstructor(){return wjcChart.PlotArea}};export class wjFlexChartDataPoint extends WjBinding{_getControlConstructor(){return wjcChart.DataPoint}};wjKo.bindingHandlers.wjFlexChart=new wjFlexChart,wjKo.bindingHandlers.wjFlexPie=new wjFlexPie,wjKo.bindingHandlers.wjFlexChartAxis=new wjFlexChartAxis,wjKo.bindingHandlers.wjFlexChartLegend=new wjFlexChartLegend,wjKo.bindingHandlers.wjFlexChartSeries=new wjFlexChartSeries,wjKo.bindingHandlers.wjFlexChartLineMarker=new wjFlexChartLineMarker,wjKo.bindingHandlers.wjFlexChartPlotArea=new wjFlexChartPlotArea,wjKo.bindingHandlers.wjFlexChartDataPoint=new wjFlexChartDataPoint;

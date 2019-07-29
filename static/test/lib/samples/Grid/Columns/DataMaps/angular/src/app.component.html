@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <wj-flex-grid #mainGrid [(itemsSource)]="data">
+        <wj-flex-grid-column [header]="'Customer'" [binding]="'customer'" width="1.5*" [dataMap]="customerMap"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Country'" [binding]="'country'" width="*" [dataMap]="countries"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Downloads'" [binding]="'downloads'" width="*" format="n0"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Sales'" [binding]="'sales'" width="*" format="n0"></wj-flex-grid-column>
+        <wj-flex-grid-column [header]="'Expenses'" [binding]="'expenses'" width="*" format="n0"></wj-flex-grid-column>
+    </wj-flex-grid>
+    <p>
+        And here is another grid showing all the customers.
+        If you edit their names, you will see the change in the
+        top grid:</p>
+    <wj-flex-grid #dataMapGrid [(itemsSource)]="customers" (initialized)="dataMapGridInitialized(dataMapGrid)"></wj-flex-grid>      
+</div>

@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="form-check">
+        <label for="stackRanges" class="form-check-label">stackRanges:</label>
+        <input id="stackRanges" type="checkbox" class="form-check-input" [(ngModel)]="stackRanges">
+    </div>
+
+    <div class="gauges">
+        <wj-radial-gauge #theRadialGauge [value]="0" [stackRanges]="stackRanges">
+            <wj-range [max]="25" [color]="'red'"></wj-range>
+            <wj-range [max]="50" [color]="'purple'"></wj-range>
+            <wj-range [max]="75" [color]="'orange'"></wj-range>
+        </wj-radial-gauge>
+
+        <wj-linear-gauge #theLinearGauge [value]="0" [stackRanges]="stackRanges">
+            <wj-range [max]="25" [color]="'red'"></wj-range>
+            <wj-range [max]="50" [color]="'purple'"></wj-range>
+            <wj-range [max]="75" [color]="'orange'"></wj-range>
+        </wj-linear-gauge>
+
+        <wj-linear-gauge #theVerticalGauge class="vertical" [value]="0" [stackRanges]="stackRanges" [direction]="'Up'">
+            <wj-range [max]="25" [color]="'red'"></wj-range>
+            <wj-range [max]="50" [color]="'purple'"></wj-range>
+            <wj-range [max]="75" [color]="'orange'"></wj-range>
+        </wj-linear-gauge>
+    </div>
+</div>

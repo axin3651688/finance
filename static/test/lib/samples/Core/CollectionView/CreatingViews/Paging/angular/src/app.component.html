@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <h4>
+        Client-Side Paging:
+    </h4>
+    <wj-flex-grid [itemsSource]="view" [alternatingRowStep]="0" [headersVisibility]="'Column'">
+    </wj-flex-grid>
+    <div (click)="updateViewPager($event)">
+        <button id="btnFirst" class="btn"><span class="wj-glyph-step-backward"></span></button>
+        <button id="btnPrev" class="btn"><span class="wj-glyph-left"></span></button>
+        &nbsp;&nbsp;&nbsp;Page {{ view.pageIndex + 1 | number:0 }} of {{ view.pageCount | number:0 }}&nbsp;&nbsp;&nbsp;
+        <button id="btnNext" class="btn"><span class="wj-glyph-right"></span></button>
+        <button id="btnLast" class="btn"><span class="wj-glyph-step-forward"></span></button>
+    </div>
+    <br />
+    <h4>
+        Server-Side Paging:
+    </h4>
+    <wj-flex-grid [itemsSource]="odataView" [alternatingRowStep]="0" [headersVisibility]="'Column'" [isReadOnly]="true">
+    </wj-flex-grid>
+    <div (click)="updateOdataViewPager($event)">
+        <button id="btnFirstOd" class="btn"><span class="wj-glyph-step-backward"></span></button>
+        <button id="btnPrevOd" class="btn"><span class="wj-glyph-left"></span></button>
+        &nbsp;&nbsp;&nbsp;Page {{ odataView.pageIndex + 1 | number:0 }} of {{ odataView.pageCount | number:0 }}&nbsp;&nbsp;&nbsp;
+        <button id="btnNextOd" class="btn"><span class="wj-glyph-right"></span></button>
+        <button id="btnLastOd" class="btn"><span class="wj-glyph-step-forward"></span></button>
+    </div>
+</div>

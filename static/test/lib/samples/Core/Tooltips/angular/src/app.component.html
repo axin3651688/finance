@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <p>
+        This paragraph has a <b [wjTooltip]="'This is the <b>first</b> span.'">span with a tooltip</b>.
+    </p>
+    <p>
+        This paragraph has a <b [wjTooltip]="'#spanTooltip'">span with a tooltip</b>
+        whose content is taken from another element.
+    </p>
+    <p>
+        The button below also have tooltip:
+    </p>
+    <button class="btn btn-default" [wjTooltip]="'Click to add 1,000 items using the <b>addNew</b> method.'">
+        addNew
+    </button>
+
+    <div id="spanTooltip" style="display:none">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Title
+            </div>
+            <div class="panel-body">
+                This is the second span.
+            </div>
+        </div>
+    </div>
+</div>

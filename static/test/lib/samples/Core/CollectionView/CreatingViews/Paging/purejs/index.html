@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity CollectionView Paging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h4>
+            Client-Side Paging:
+        </h4>
+        <div id="theGrid">
+        </div>
+        <div id="pager">
+            <button id="btnFirst" class="btn"><span class="wj-glyph-step-backward"></span></button>
+            <button id="btnPrev" class="btn"><span class="wj-glyph-left"></span></button>
+            &nbsp;&nbsp;&nbsp;<span id="spanCurrent"></span>&nbsp;&nbsp;&nbsp;
+            <button id="btnNext" class="btn"><span class="wj-glyph-right"></span></button>
+            <button id="btnLast" class="btn"><span class="wj-glyph-step-forward"></span></button>
+        </div>
+        <br />
+        <h4>
+            Server-Side Paging:
+        </h4>
+        <div id="theGridOd">
+        </div>
+        <div id="pagerOd">
+            <button id="btnFirstOd" class="btn"><span class="wj-glyph-step-backward"></span></button>
+            <button id="btnPrevOd" class="btn"><span class="wj-glyph-left"></span></button>
+            &nbsp;&nbsp;&nbsp;<span id="spanCurrentOd"></span>&nbsp;&nbsp;&nbsp;
+            <button id="btnNextOd" class="btn"><span class="wj-glyph-right"></span></button>
+            <button id="btnLastOd" class="btn"><span class="wj-glyph-step-forward"></span></button>
+        </div>
+    </div>
+</body>
+
+</html>

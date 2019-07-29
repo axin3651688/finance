@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Wijmo FlexChart Stock Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">Portfolio</div>
+            <div class="table-responsive" style="overflow-y:visible">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr style="cursor:pointer">
+                            <th class="text-left" style="width:23px;"><span>Name</span></th>
+                            <th class="text-left"><span>Symbol</span></th>
+                            <th class="text-center"><span>Chart</span></th>
+                            <th class="text-right"><span>Last Price</span></th>
+                            <th class="text-right"><span>Change</span></th>
+                            <th class="text-right"><span>Shares</span></th>
+                            <th class="text-right"><span>Price</span></th>
+                            <th class="text-right"><span>Cost Basis</span></th>
+                            <th class="text-right"><span>Market Value</span></th>
+                            <th class="text-right"><span>Gain</span></th>
+                            <th class="text-center">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot>
+                        <tr class="panel-footer">
+                            <td class="text-right">
+                                <b>Add to portfolio:</b>
+                            </td>
+                            <td colspan="4">
+                                <div class="input-group">
+                                    <input id="searchCompany" />
+                                    <span>
+                                        <button disabled="disabled" id="searchBtn" type="button" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-right" colspan="2">
+                                <b>Total:</b>
+                            </td>
+                            <td class="text-right" id="tdCost">
+                            </td>
+                            <td class="text-right" id="tdValue">
+                            </td>
+                            <td class="text-right" id="tdGain">
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Chart
+                <div class="btn-group btn-group-xs pull-right">
+                    <button type="button" style="visibility: hidden" class="btn btn-default">YTD</button>
+                    <button type="button" style="visibility: hidden" class="btn btn-default">6m</button>
+                    <button type="button" class="btn btn-default">12m</button>
+                    <button type="button" class="btn btn-default">24m</button>
+                    <button type="button" class="btn btn-default">36m</button>
+                    <button type="button" class="btn btn-default">All</button>
+                </div>
+            </div>
+            <div id="theChart" style="height:300px;margin:14px;border:none"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+body {
+    margin-bottom: 24px;
+}
+
+label {
+    margin-right: 3px;
+}
+
+.alarm-zone {
+    fill: red;
+    opacity: .15;
+    stroke-width: 0;
+}
+
+.warning-zone {
+    fill: orange;
+    opacity: .15;
+    stroke-width: 0;
+}
+
+.safe-zone {
+    fill: green;
+    opacity: .15;
+    stroke-width: 0;
+}

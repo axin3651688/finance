@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Multi-Column Combos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <p>
+            By default, the ComboBox displays one item per line in its drop-down list:
+        </p>
+        <div class="form-group">
+            <label for="theCombo">Default:</label>
+            <div id="theCombo"></div>
+        </div>
+
+        <p>
+            If you have many short items, it may be interesting to use multiple columns in the drop-down. You can
+            accomplish this with a little CSS and the <b>dropDownCssClass</b> property:
+        </p>
+        <div class="form-group">
+            <label for="theComboCSS">Three Columns:</label>
+            <div id="theComboCSS"></div>
+        </div>
+
+        <p>
+            If the items are complex objects, you may want to render a single item per line, but with additional detail,
+            as in a table or grid. You can accomplish this with the <b>formatItem</b> event and <b>headerPath</b>
+            property:
+        </p>
+        <div class="form-group">
+            <label for="theComboTable">Table-Style:</label>
+            <div id="theComboTable"></div>
+        </div>
+    </div>
+</body>
+
+</html>

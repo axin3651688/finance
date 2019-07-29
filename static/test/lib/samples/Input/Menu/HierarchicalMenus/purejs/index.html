@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GrapeCity Hierarchical Menus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="menubar">
+            <div id="menu-file"></div>
+            <div id="menu-edit"></div>
+            <div id="menu-format"></div>
+        </div>
+
+        <p id="menuTarget">
+            Wijmo Menus are great!
+        </p>
+
+        <label>
+            openOnHover
+            <input id="openOnHover" type="checkbox" checked="checked">
+        </label>
+        <label>
+            isAnimated
+            <input id="isAnimated" type="checkbox" checked="checked">
+        </label>
+        <label>
+            Right-to-Left
+            <input id="rtl" type="checkbox">
+        </label>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="form-check">
+        <label for="clearIncomplete" class="form-check-label">Clear Incomplete:</label>
+        <input id="clearIncomplete" class="form-check-input" type="checkbox" [(ngModel)]="clearIncomplete">
+    </div>
+
+    <wj-input-mask #theSSN [mask]="'000-00-0000'" [placeholder]="'SSN'" [isRequired]="false" [value]="''"
+        (valueChanged)="validateMask(theSSN)" (lostFocus)="lostFocus(theSSN)"></wj-input-mask>
+
+    <wj-input-mask #theZip [mask]="'00000'" [placeholder]="'Zip Code'" [isRequired]="false" [value]="''"
+        (valueChanged)="validateMask(theZip)" (lostFocus)="lostFocus(theZip)"></wj-input-mask>
+
+    <wj-input-mask #theZip4 [mask]="'00000-0000'" [placeholder]="'Zip Code + 4'" [isRequired]="false" [value]="''"
+        (valueChanged)="validateMask(theZip4)" (lostFocus)="lostFocus(theZip4)"></wj-input-mask>
+
+    <wj-input-mask #thePhone [mask]="'(999) 000-0000'" [placeholder]="'Phone Number'" [isRequired]="false" [value]="''"
+        (valueChanged)="validateMask(thePhone)" (lostFocus)="lostFocus(thePhone)"></wj-input-mask>
+</div>

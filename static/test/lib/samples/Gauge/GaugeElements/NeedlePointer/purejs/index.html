@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Radial Gauges with Needle Pointers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SystemJS -->
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('./src/app');
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4">
+                <div id="theGauge1"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGauge2"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGauge3"></div>
+            </div>
+        </div>
+
+        <p>
+            If you prefer a more traditional needle-style pointer,
+            you can add an extra SVG shape to the control and apply
+            a transform to move the needle.
+            Here is an example that adds a drop-shaped needle pointer:
+        </p>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <div id="theGaugeR1"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGaugeR2"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGaugeR3"></div>
+            </div>
+        </div>
+
+        <p>
+            Because the pointer is just an SVG path, you can customize
+            it very easily by changing the path parameters and/or the
+            CSS associated with the needle element:
+        </p>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <div id="theGaugeP1"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGaugeP2"></div>
+            </div>
+            <div class="col-xs-4">
+                <div id="theGaugeP3"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

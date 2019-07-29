@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <wj-flex-chart [itemsSource]="data" [bindingX]="'year'" [chartType]="'Area'" [stacking]="'Stacked100pc'" [palette]="palette">
+        <wj-flex-chart-axis [wjProperty]="'axisY'" [title]="'Populations'"></wj-flex-chart-axis>
+        <wj-flex-chart-series [binding]="'africa'" [name]="'Africa'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'oceania'" [name]="'Oceania'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'asia'" [name]="'Asia'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'europe'" [name]="'Europe'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'southAmerica'" [name]="'South America'"></wj-flex-chart-series>
+        <wj-flex-chart-series [binding]="'northAmerica'" [name]="'North America'"></wj-flex-chart-series>
+        <wj-flex-chart-animation></wj-flex-chart-animation>
+    </wj-flex-chart>
+</div>

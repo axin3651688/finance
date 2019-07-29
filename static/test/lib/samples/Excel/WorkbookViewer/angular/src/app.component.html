@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <input type="file" class="form-control" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"
+            style="width:300px" />
+    </div>
+
+    <!-- Sheet tabs -->
+    <ul *ngIf="workbook" class="nav nav-tabs" style="margin-top:40px">
+        <li role="presentation" *ngFor="let sheet of workbook.sheets; let i = index" [ngClass]="{ active: i == sheetIndex }">
+            <a href="#" (click)="drawSheet(i)">{{sheet.name}}</a>
+        </li>
+    </ul>
+
+    <!-- Current sheet view -->
+    <div id="tableHost"></div>
+</div>

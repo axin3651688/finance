@@ -1,0 +1,14 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label>MovingAverage Type: </label>
+        <wj-combo-box [(text)]="type" [itemsSource]="typeData"></wj-combo-box>
+        <label>Period: </label>
+        <wj-input-number [(value)]="period" [step]="1" [min]="2" [max]="20"></wj-input-number>
+        <wj-flex-chart [itemsSource]="data" bindingX="date" chartType="Line">
+            <wj-flex-chart-axis wjProperty="axisY" [min]="0"></wj-flex-chart-axis>
+            <wj-flex-chart-series name="Sales" binding="sales"></wj-flex-chart-series>
+            <wj-flex-chart-moving-average name="Moving Average" [itemsSource]="data" binding="sales" [period]="period"
+                [style]="{stroke:'darkred', strokeWidth: 3}" [type]="type"></wj-flex-chart-moving-average>
+        </wj-flex-chart>
+    </div>
+</div>
