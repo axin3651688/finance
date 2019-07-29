@@ -85,6 +85,7 @@
                 type: [Array, Object],
                 required: true
             },
+            // tableHeight: Number,
             columns: {
                 type: Array,
                 default: () => []
@@ -102,8 +103,8 @@
              */
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 selectHeight = 0,//select框高度 加上中间的margin-bottom的值
-                tabHeight = 39,//tab标签高度
-                gapHeight = 32,//间隙的高度
+                tabHeight = 0,//tab标签高度
+                gapHeight = 0,//间隙的高度
                 pageHeaderHeight = 64;//导航栏高度
             this.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
         },

@@ -2,18 +2,18 @@
     <div>
         <div>
             <div class="risk-feed-back-top">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="风险追踪" v-if="!this.isReportType">
+                <!--<el-tabs type="border-card">-->
+                    <div v-if="!this.isReportType">
                         <risk-single-track
                                 :isPeriodNow="isPeriodNow"
                         ></risk-single-track>
-                    </el-tab-pane>
-                    <el-tab-pane label="风险报告追踪" v-if="this.isReportType">
+                    </div>
+                    <div v-if="this.isReportType">
                         <risk-report-track
                                 :isPeriodNow="isPeriodNow"
                         ></risk-report-track>
-                    </el-tab-pane>
-                </el-tabs>
+                    </div>
+                <!--</el-tabs>-->
             </div>
         </div>
     </div>

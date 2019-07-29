@@ -4,6 +4,7 @@
                 border
                 :data.sync="treeData"
                 :columns.sync="columns"
+                :tableHeight="tableHeight"
                 v-if="!reportBackDetail"
                 @buttonHandler="buttonHandler"
         >
@@ -45,13 +46,12 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
-    import {riskBackAndNotice, riskReportExport} from '~api/cwtRiskControl/riskControlRequest'
+    import {riskBackAndNotice, riskReportExport, getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
 
     export default {
         mixins: [cwtPublicJS],
         name: 'reportBack',
         props: {
-            isPeriodNow: Boolean
         },
         components: {
             treeTable,
@@ -82,6 +82,7 @@
         },
         data() {
             return {
+                tableHeight:500,
                 reportBackDetail: false,
                 treeData: [],
                 columns: [],
@@ -155,6 +156,7 @@
                 dataFresh: false,
                 pageDataFresh: true,
                 dialogState: '',
+                isPeriodNow: true,
 
 
             }
@@ -167,7 +169,14 @@
                     me.columns = res.data.columns
                 }
             });
-            this.getReportData();
+            let _this = this;
+            getGlobleControlState().then((res) => {
+                if (res.data.code === 200) {
+                    _this.isReportType = res.data.data[0].reporttype === 0;
+                    _this.isPeriodNow = res.data.data[0].periodtype === 1;
+                }
+                this.getReportData();
+            });
         },
         methods: {
             /**
@@ -967,6 +976,7 @@
     .container_header {
         width: 100%;
         height: 60px;
+        margin-top: 20px;
         line-height: 60px;
         text-align: right;
         background-color: #D3DCE6;

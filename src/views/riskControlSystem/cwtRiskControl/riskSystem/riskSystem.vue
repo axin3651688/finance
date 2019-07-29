@@ -237,9 +237,17 @@
              * 制度修改
              */
             systemChange() {
+                debugger;
                 if (this.deleteSyatemList.length === 0) {
                     this.$message({
                         message: '请选择要修改的制度',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if(this.deleteSyatemList.length > 1){
+                    this.$message({
+                        message: '请针对单条制度进行修改',
                         type: 'warning'
                     });
                     return;

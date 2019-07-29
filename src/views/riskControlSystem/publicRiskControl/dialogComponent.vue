@@ -272,7 +272,7 @@
 
     .top-form-contents span {
         font-size: 14px;
-        color: #606266;
+        color: #303133;
         font-weight: 700;
     }
 

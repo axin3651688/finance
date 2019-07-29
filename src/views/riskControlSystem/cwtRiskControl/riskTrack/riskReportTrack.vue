@@ -37,8 +37,7 @@
     import cwtPublicJS from "../mixin/cwtPublicJS"
     import {findThirdPartData} from "~api/interface"
     import {mapGetters} from "vuex"
-    import {riskReportExport} from '~api/cwtRiskControl/riskControlRequest'
-    import {getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
+    import {riskReportExport, getGlobleControlState} from '~api/cwtRiskControl/riskControlRequest'
     import Qs from 'qs'
 
     export default {
@@ -482,7 +481,6 @@
                             riskModel_riskdetaildata['companyid'] = item['dim_company'];
                             riskModel_riskdetaildata['riskcode'] = key;
 
-
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = '1、风险发生概率：'+item.risk_pg.split(',')[1]+ '<br>2、风险影响程度：'+item.risk_pg.split(',')[0];
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
@@ -496,12 +494,12 @@
                             riskModel_riskdetaildata_scheduleList.risk_ps.state = item['risk_ps_state'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.user_name = item['risk_ps_user_name'];
                             riskModel_riskdetaildata_scheduleList.risk_ps.time = item['risk_ps_time'];
-                            riskModel_riskdetaildata_scheduleList.risk_ps.content = item['risk_ps_content'];
+                            riskModel_riskdetaildata_scheduleList.risk_ps.content = item['risk_ps_content'] || "无批示内容";
 
                             riskModel_riskdetaildata_scheduleList.risk_fk.state = item['risk_fk_state'];
                             riskModel_riskdetaildata_scheduleList.risk_fk.user_name = item['risk_fk_user_name'];
                             riskModel_riskdetaildata_scheduleList.risk_fk.time = item['risk_fk_time'];
-                            riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'];
+                            riskModel_riskdetaildata_scheduleList.risk_fk.content = item['risk_fk_content'] || "无反馈内容";
 
 
                             emptyData['risksptype'] = riskModel.risksptype;
@@ -903,6 +901,7 @@
     .container_header {
         width: 100%;
         height: 60px;
+        margin-top: 20px;
         line-height: 60px;
         text-align: right;
         background-color: #D3DCE6;

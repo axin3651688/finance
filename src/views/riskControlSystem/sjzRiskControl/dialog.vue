@@ -114,9 +114,9 @@
         <div slot="footer" class="dialog-footer">
             <el-row type="flex" justify="end">
                 <el-col :span="0.1">
-                    <el-button type="primary" v-show="isBtn" @click="saveClick('add')">新 增</el-button>
-                    <el-button type="primary" v-show="isBtn" @click="saveClick('save')">保 存</el-button>
-                    <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')">提 交</el-button>
+                    <el-button type="primary" v-show="isBtn4" @click="saveClick('add')" :disabled="saveAndsubmit2">新 增</el-button>
+                    <el-button type="primary" v-show="isBtn" @click="saveClick('save')" :disabled="saveAndsubmit">保 存</el-button>
+                    <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')" :disabled="saveAndsubmit">提 交</el-button>
                     <!-- <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button> -->
                     <el-button @click="resetClick('sub2','sub3','sub4','sub5','sub6')">取 消</el-button>
                 </el-col>
@@ -178,6 +178,9 @@ export default {
             isBtn: true,            // 保存 按钮的显示与隐藏
             isBtn2: true,           // 提交 按钮的显示与隐藏
             isBtn3: true,           // 风险关闭 按钮的显示与隐藏
+            isBtn4: true,           // 新增按钮的显示与隐藏
+            saveAndsubmit: false,    // 保存按钮与提交按钮的禁用与否
+            saveAndsubmit2:false,    // 新增按钮的禁用与否
             title: "",
             heights: "300px",
             type: null,
@@ -320,11 +323,13 @@ export default {
                 this.isBtn = false ;        // 保存 按钮的隐藏
                 this.isBtn2 = false ;       // 提交 按钮的隐藏
                 this.isBtn3 = true ;       // 风险关闭 按钮的隐藏
+                this.isBtn4 = false ;
             }else if(modifyBtn){
                 this.readonly = false ;     // 可填写/可选择
                 this.isBtn = true ;        // 保存 按钮的显示
                 this.isBtn2 = true ;       // 提交 按钮的显示
                 this.isBtn3 = true ;       // 风险关闭 按钮的显示
+                this.isBtn4 = false;       // 新增按钮 的显示与隐藏
                 // this.sreporttypeRequest() ;
                 if(this.newThis.view_row.sissubmit == "已提交"){    // 已提交的可以风险关闭/ 未提交的不允许风险关闭
                     this.isBtn3 = true ;
@@ -353,6 +358,9 @@ export default {
                 this.isAddParse = 0 ;
                 this.riskbulkOrderser = false ;
                 this.checkbox = false ;
+                this.isBtn4 = true ;
+                this.saveAndsubmit = false;
+                this.saveAndsubmit2= false;
                 this.addDialog() ;
                 this.sreporttypeRequest() ;
             }
@@ -547,7 +555,7 @@ export default {
         /**
          * @event (1)保存按钮/提交按钮
          */
-        saveClick(value, value2,value3,value4,value5){ debugger
+        saveClick(value, value2,value3,value4,value5){ 
             let me = this ;
             //新增按钮的质控处理。
             if(value == "add"){
@@ -565,6 +573,7 @@ export default {
                     gradename: "",              // 风险等级（只读）
                     sreporttype: "bglx01"       // 报告类型
                 }
+                me.saveAndsubmit = false ;
                 return;
             }
             let viewTrue = false ;
@@ -697,12 +706,15 @@ export default {
         riskReleaseVo(){
             let me = this ;
             // debugger
-            if(this.checkbox){
+            if(me.checkbox){
                 // this.$message('下达') ;
-                this.riskbulkOrderser = true ;
+                me.riskbulkOrderser = true ;
+                // 禁用 弹出框下达按钮触发时，不允许操作保存与提交
+                me.saveAndsubmit = true ;
                 mini.getCompanyTree(me) ;
             }else{
-                this.riskbulkOrderser = false ;
+                me.saveAndsubmit = false ;
+                me.riskbulkOrderser = false ;
             }
         },
         /**
@@ -717,6 +729,7 @@ export default {
                         me.readonly2 = false ;
                         me.isBtn3 = true ;
                     }
+                    me.saveAndsubmit = true ;
                     me.$message({message: res.data.msg, type: "success"}) ;
                 }else{
                     me.$message.error(res.data.msg) ;
@@ -780,6 +793,7 @@ export default {
             this.newThis.viewReadonly = false ;
             this.newThis.dialogFormVisible = false ;
             this.checkbox = false ;
+            this.riskbulkOrderser = false ;
             this.params_cloning = {} ;
         }
     }
