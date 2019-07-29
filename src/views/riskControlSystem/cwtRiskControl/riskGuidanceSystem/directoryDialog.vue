@@ -93,7 +93,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelone(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -170,7 +170,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" @click="Leveltwo(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -247,7 +247,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelthree(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -272,15 +272,15 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
-                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini" :disabled="disabled4">
                         <!-- <i class="iconfont icon-tianjia"></i> -->
                         <i class="el-icon-circle-plus-outline"></i>添 加
                     </el-button>
-                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini" :disabled="disabled4">
                         <!-- <i class="iconfont icon-shanchu2"></i> -->
                         <i class="el-icon-delete"></i>删 除
                     </el-button>
-                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')">关 闭</el-button>
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')" :disabled="disabled4">关 闭</el-button>
                 </div>
             </div>
         </div>
@@ -326,6 +326,7 @@ export default {
             disabled: false ,               // 是否禁用 
             disabled2: false,               // 一级  是否禁用
             disabled3: false,               // 二级  是否禁用
+            disabled4: false,               // 三级  是否禁用
             disabledSelection: false,       // 一级复选框是否禁用
             disabledSelection2:false,       // 二级复选框是否禁用
             labelPosition: "right" ,        // form表单右对齐
@@ -432,6 +433,27 @@ export default {
         }
     },
     methods: {
+        /**
+         * 一级
+         */
+        Levelone(scope){
+            // 按钮禁用
+            this.disabled2 = true ;
+        },
+        /**
+         * 二级
+         */
+        Leveltwo(scope){
+            // 按钮禁用
+            this.disabled3 = true ;
+        },
+        /**
+         * 三级
+         */
+        Levelthree(scope){
+            // 按钮禁用
+            this.disabled4 = true ;
+        },
         /**
          * 添加按钮 | 修改按钮
          */
@@ -595,6 +617,9 @@ export default {
         saveChange(scope) { 
             let id, params ;
             let idContent = document.getElementById(scope.row.id) ;
+            this.disabled2 = false ;    // 一级按钮启用
+            this.disabled3 = false ;    // 二级按钮启用
+            this,disabled4 = false ;    // 三级按钮启用
             if(this.enterJudgment(scope, idContent)){
                 // this.$message('NO');
                 return false ;
@@ -603,6 +628,7 @@ export default {
             if(this.number2 == 2)id = this.scopeData2.row.id;
             if(this.number2 == 3)id = this.scopeData3.row.id;
             if(scope.row.id === 0 || !scope.row.id) {
+                if(!scope.row.scontent && !idContent.innerHTML)return false ;
                 params = [{
                     catalog_id: this.scopeData.row.id,
                     chartpath: "",
