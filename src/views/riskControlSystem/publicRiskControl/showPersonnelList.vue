@@ -163,7 +163,7 @@
                 let me = this, objRes = {},userName = me.$store.getters.user.user.userName;
                 //过滤掉自己，因为自己不能批示给自己。
                 data = data.filter(item => {
-                    return item.struename != userName;
+                    return item.suser != userName;
                 });
                 if (data && data.length > 0) {
                     data.forEach(item => {

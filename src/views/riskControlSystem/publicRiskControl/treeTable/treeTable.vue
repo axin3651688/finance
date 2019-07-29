@@ -37,8 +37,8 @@
                         :key="space">
                     </span>
                     <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
-                        <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-                        <i v-else class="el-icon-minus"></i>
+                        <i v-if="!scope.row._expanded" class="iconfont icon-plus-square"></i>
+                        <i v-else class="iconfont icon-minus-square"></i>
                     </span>
                     <span
                         v-if="column.optType === 'click' && scope.row[column.fieldValue] && scope.row[column.fieldValue] > 0"
