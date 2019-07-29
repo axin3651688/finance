@@ -432,13 +432,13 @@
              */
             riskFeedSend(params) {
                 let _this = this;
-                if (!params.riskReportStateDtos[0].sfeedbackscontent) {
-                    _this.$message({
-                        message: "请填写反馈内容！。",
-                        type: "error"
-                    });
-                    return;
-                }
+                // if (!params.riskReportStateDtos[0].sfeedbackscontent) {
+                //     _this.$message({
+                //         message: "请填写反馈内容！。",
+                //         type: "error"
+                //     });
+                //     return;
+                // }
 
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
