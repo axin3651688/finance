@@ -512,9 +512,12 @@ export default {
          * 关闭 | 取消 按钮
          */
         closeClick(val) {
-            if(val === "close")this.newThis.dialogFormVisible_A = false ;
-            if(val === "cancel"){
+            if(val === "close"){
+                this.newThis.dialogFormVisible_A = false ;
+            }
+            if(val === "cancel"){                                       // 添加|修改弹出框的取消按钮
                 this.disabled = false ;
+                this.formLabelAlign.modifyname = "" ;
                 this.dialogFormVisible2_A = false ;
             }
             if(val === "closeA"){                                       // 一级关闭
@@ -625,7 +628,7 @@ export default {
         /**
          * ()复选框点击事件-当选择项发生变化时会触发该事件
          */
-        handleSelectionChange(selection) { debugger
+        handleSelectionChange(selection) { 
             let me = this ;
             if (selection.length === 0) { // 判断selection是否有值存在
                 return false ;
@@ -661,7 +664,7 @@ export default {
         /**
          * ()删除按钮
          */
-        deleteClick() { debugger
+        deleteClick() { 
             let me = this ;
             let cc = me.newThis.content ;
             let dd = cc.some(res => { return res.pid === me.selectionA[0].id }) ;
@@ -804,6 +807,7 @@ export default {
                     me.dialogFormVisible2_A = false ;
                     me.disabled = false ;
                     me.$message({ message: res.data.msg, type: "success" }) ;
+                    me.formLabelAlign.modifyname = "" ;
                     me.newThis.directoryRequest() ;
                 } else {
                     me.$message.error(res.data.msg) ;
