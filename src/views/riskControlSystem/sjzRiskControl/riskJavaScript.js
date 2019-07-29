@@ -396,8 +396,13 @@ export default {
      * @event 上报页面的上报按钮的弹出框
      * @name 【风险报告页面引用】
      * @param {*} data 
+     * @param {*} me  
      */
-    reportDataTree(data) {
+    reportDataTree(data, me) { 
+        // 由于不能上报给自己，所以过滤掉自己
+        let $params = me.$store.state.user.user.user ;
+        data = data.filter(res => { return res.suser !== $params.userName })
+        // -----
         let objRes = {};
         if (data && data.length > 0) {
             data.forEach(item => {

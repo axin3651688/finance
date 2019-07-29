@@ -13,7 +13,7 @@
             <!-- <div class="borders_tree"> -->
                 <el-tree
                 class="filter-tree"
-                :data="data"
+                :data="treeData"
                 :props="defaultProps"
                 default-expand-all
                 highlight-current
@@ -37,6 +37,7 @@
 import { riskreportstate_add } from "~api/cube.js"
 // 引用外置 js 文件
 import mini from "@v/riskControlSystem/sjzRiskControl/riskJavaScript.js"
+import { debounce } from '../../../../utils';
 export default {
     props: {
         data: Array,
@@ -57,6 +58,17 @@ export default {
          */
         filterText(val) {
             this.$refs.tree2.filter(val);
+        }        
+    },
+    computed: {
+        treeData() { 
+            let tmp ;
+            if(!Array.isArray(this.data)){
+                tmp = [this.data]
+            } else {
+                tmp = this.data ;
+            }
+            return tmp ;
         }
     },
     methods: {
