@@ -21,7 +21,7 @@
                         :tableData="table1data"
                         :columns="table1columns"
                         :tabletitle="tableTitle1"
-                        :tableheight="460"
+                        :tableheight="480"
                 >
                 </warning-report-table>
             </div>
@@ -39,7 +39,6 @@
 
         </div>
 
-
         <div class="content-down">
             <div class="content-up-title">
                 二、国内对标
@@ -52,7 +51,7 @@
                 <warning-report-table
                         :tableData="table2data"
                         :columns="table2columns"
-                        :tableheight="700"
+                        :tableheight="600"
                         :tabletitle="tableTitle2"
                         @companyClicked="companyClicked"
                 >
