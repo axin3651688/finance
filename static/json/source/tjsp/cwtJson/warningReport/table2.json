@@ -14,7 +14,7 @@
       "id": "num",
       "type": "string",
       "text": "公司数量",
-      "align": "right",
+      "align": "center",
       "width":200
     },
     {
