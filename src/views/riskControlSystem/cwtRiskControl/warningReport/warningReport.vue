@@ -21,7 +21,7 @@
                         :tableData="table1data"
                         :columns="table1columns"
                         :tabletitle="tableTitle1"
-                        :tableheight="530"
+                        :tableheight="460"
                 >
                 </warning-report-table>
             </div>
@@ -32,13 +32,7 @@
                         {{numberToChineseString(index + 1)}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
-                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比
-                        <template v-if="item.yzgzxc>=0">多出</template>
-                        <template v-if="item.yzgzxc<0">相差</template>
-                        {{setNumberToStanderABS(item.yzgzxc)}}，与平均值相比
-                        <template v-if="item.ypjzxc>=0">多出</template>
-                        <template v-if="item.ypjzxc<0">相差</template>
-                        {{setNumberToStanderABS(item.ypjzxc)}}
+                        {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比<template v-if="item.yzgzxc>=0">多出</template><template v-if="item.yzgzxc<0">相差</template>{{setNumberToStanderABS(item.yzgzxc)}}，与平均值相比<template v-if="item.ypjzxc>=0">多出</template><template v-if="item.ypjzxc<0">相差</template>{{setNumberToStanderABS(item.ypjzxc)}}
                     </p>
                 </template>
             </div>
@@ -51,14 +45,14 @@
                 二、国内对标
             </div>
             <div class="content-des">
-                天津食品集团行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
+                天津食品集团有限公司（合并）行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
             </div>
 
             <div class="content-down-table">
                 <warning-report-table
                         :tableData="table2data"
                         :columns="table2columns"
-                        :tableheight="680"
+                        :tableheight="700"
                         :tabletitle="tableTitle2"
                         @companyClicked="companyClicked"
                 >
@@ -79,16 +73,11 @@
 
 
                         <template v-if="item.val === 0 && item.val_1 === 0 && item.cz === 0 && item.grade === '不予评级'">
-                            <p>此期间无数据</p>
+                            <p class="loop-content">此期间无数据</p>
                         </template>
 
                         <template v-else>
-                            <p class="loop-content">
-                                {{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值
-                                {{setNumberToStander(item.val_1)}}相比
-                                <template v-if="item.cz>=0">多出</template>
-                                <template v-if="item.cz<0">相差</template>
-                                {{setNumberToStanderABS(item.cz)}}。
+                            <p class="loop-content">{{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值 {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>{{setNumberToStanderABS(item.cz)}}。
                             </p>
                         </template>
 
@@ -102,6 +91,45 @@
 
             </div>
 
+        </div>
+
+        <div class="dialog-components">
+            <el-dialog
+                    :title="dialogTitle"
+                    width="30%"
+                    custom-class="dialog-class"
+                    top="50px"
+                    :close-on-click-modal="dialogCloseByClockOther"
+                    :visible.sync="dialogVisible"
+            >
+
+                <div>
+                    <el-table
+                            :data="companyData"
+                            stripe
+                            border
+                            height="550"
+                            style="width: 100%">
+                        <el-table-column
+                                prop="companycode"
+                                label="公司编码"
+                                width="150px"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="companyname"
+                                label="公司名称"
+                        >
+                            <template slot-scope="scope">
+                                <a @click="tableCompanyClock(scope.row)" style="color: #409eff;">{{ scope.row.companyname }}</a>
+                            </template>
+
+                        </el-table-column>
+
+                    </el-table>
+                </div>
+
+            </el-dialog>
         </div>
 
     </div>
@@ -145,9 +173,9 @@
             return {
                 showperiod: this.$store.getters.year + '年' + this.$store.getters.month + '月',
                 showyear: this.$store.getters.year + '年',
-                compareYear: parseInt(this.$store.getters.year) - 5 + '年',
-                companyname: '天津食品集团有限公司',
-                companyDownName: '天津食品集团有限公司',
+                compareYear: parseInt(this.$store.getters.year) - 4 + '年',
+                companyname: '天津食品集团有限公司（合并）',
+                companyDownName: '天津食品集团有限公司（合并）',
 
                 table1data: [],
                 table1columns: [],
@@ -159,6 +187,12 @@
                 table2data: [],
                 table2columns: [],
                 tableTitle2: this.$store.getters.year + '年' + '国内对标指标情况表',
+
+                dialogTitle: '公司明细',
+                dialogCloseByClockOther: false,
+                dialogVisible: false,
+                companyData:[]
+
             }
         },
         created() {
@@ -176,10 +210,17 @@
                     _this.table2columns = res.data.columns
                 }
             });
+            // this.showDataFresh();
             this.getAllData();
         },
         mounted() {
-            this.doNotShowDim(true);
+            // this.doNotShowDim(true);
+            let _this = this;
+            _this.ShowDims({
+                company: false,
+                year: true,
+                month: true,
+            });
         },
         methods: {
             monthParams() {
@@ -189,23 +230,21 @@
             },
             /**
              * 表格内公司点击事件触发函数
-             * @param scope
+             * @param companys
              */
-            companyClicked(scope) {
-                let com = scope.split('-')[1];
-
+            companyClicked(companys) {
                 let _this = this;
-                _this.companyDownName = scope.split('-')[0];
-                let params = {
-                    year: this.getYear(),
-                    month: this.getMonth(),
-                    company: com
-                };
-                getwarningReportBottomData(params).then((res) => {
-                    if (res.data.code === 200) {
-                        _this.loopData2 = res.data.data;
-                    }
-                })
+
+                let companyList = companys.split(',');
+                companyList.forEach((c)=>{
+
+                    let emptyC = {
+                        companycode:c.split('-')[1],
+                        companyname:c.split('-')[0]
+                    };
+                    _this.companyData.push(emptyC);
+                });
+                _this.dialogVisible = true;
             },
 
             /**
@@ -233,10 +272,28 @@
              * @param table
              */
             getTableData(table) {
+
+
+                let _this = this,
+                    _getter = _this.$store.getters,
+                    company = _getter.company,
+                    year = _getter.year,
+                    month = _getter.month,
+                    period = "";
+                if (month > 9) {
+                    period = year + "" + month;
+                } else {
+                    period = year + "0" + month;
+                }
+                // return {
+                //     company: company,
+                //     period: period,
+                // };
+
                 return {
                     year: this.getYear(),
                     month: this.getMonth(),
-                    company: this.$store.getters.company
+                    company: company
                 }
             },
 
@@ -246,7 +303,32 @@
             showDataFresh() {
                 this.showperiod = this.$store.getters.year + '年' + this.$store.getters.month + '月';
                 this.showyear = this.$store.getters.year + '年';
-                this.compareYear = parseInt(this.$store.getters.year) - 5 + '年';
+                this.compareYear = parseInt(this.$store.getters.year) - 4 + '年';
+                // this.companyname = this.$store.getters.company;
+                // this.companyDownName = this.$store.getters.company;
+            },
+
+            /**
+             * 弹出层公司名称点击
+             * @param p
+             */
+            tableCompanyClock(p){
+
+                let com = p.companycode;
+
+                let _this = this;
+                _this.companyDownName = p.companyname;
+                let params = {
+                    year: this.getYear(),
+                    month: this.getMonth(),
+                    company: com
+                };
+                getwarningReportBottomData(params).then((res) => {
+                    if (res.data.code === 200) {
+                        _this.loopData2 = res.data.data;
+                    }
+                });
+                _this.dialogVisible = false;
             }
 
         }
@@ -294,4 +376,10 @@
         font-weight: 600;
         margin-bottom: 20px;
     }
+    /*.dialog-components{*/
+        /*height: 300px;*/
+    /*}*/
+    /*.dialog-class{*/
+        /*height: 300px;*/
+    /*}*/
 </style>
