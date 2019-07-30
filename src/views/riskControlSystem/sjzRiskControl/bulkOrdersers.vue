@@ -133,13 +133,13 @@ export default {
                     ids:  rowId ,
                     period: $params.year + mini.getPeriod($params) 
                 }
-                riskdistinguish_risk_release(params).then(res => {
+                riskdistinguish_risk_release(params).then(res => { debugger
                     if(res.data.code === 200){
                         me.deat = [] ;
                         me.$message({ message: "下达成功!", type: "success" }) ;
                         me.onCancel() ;
                     }else{
-                        me.$message.error("下达失败!");
+                        me.$message.error(res.data.msg);
                         
                     }
                 }) ;
