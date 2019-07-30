@@ -174,7 +174,11 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" @click="Leveltwo(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable2" :id="scope.row.id" 
+                                    @blur="saveChange(scope)" 
+                                    @click="Leveltwo(scope)" 
+                                    @keydown.ctrl.83="CtrlS"
+                                    class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -251,7 +255,11 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelthree(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div contenteditable="true" :id="scope.row.id" 
+                                    @blur="saveChange(scope)" 
+                                    @click="Levelthree(scope)" 
+                                    @keydown.ctrl.83="CtrlS"
+                                    class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -637,7 +645,7 @@ export default {
         /**
          * (一级)输入框保存
          */
-        saveChange(scope) { debugger
+        saveChange(scope) { 
             let id, params ;
             let idContent = document.getElementById(scope.row.id) ;
             this.disabled2 = false ;    // 一级按钮启用
@@ -657,7 +665,7 @@ export default {
                     catalog_id: this.scopeData.row.id,
                     chartpath: "",
                     pid: id,
-                    scontent: scope.row.scontent || idContent.innerHTML
+                    scontent: idContent.innerHTML || scope.row.scontent
                 }]
                 // 添加请求方法
                 this.riskguidecontentAdd_request(params) ;
@@ -665,7 +673,7 @@ export default {
                 params = [{
                     id: scope.row.id,
                     chartpath: "",
-                    scontent: scope.row.scontent || idContent.innerHTML
+                    scontent: idContent.innerHTML || scope.row.scontent
                 }]
                 // 修改内容接口
                 this.riskguidecontentUpdate_request(params) ;
