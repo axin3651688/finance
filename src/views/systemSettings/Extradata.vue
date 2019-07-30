@@ -362,7 +362,7 @@ export default {
     /**
      *@description  右键菜单
      */
-    handleContextMenu(event, node, nodeTarget, el) {debugger
+    handleContextMenu(event, node, nodeTarget, el) {
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
       if (node.stype === "1") {

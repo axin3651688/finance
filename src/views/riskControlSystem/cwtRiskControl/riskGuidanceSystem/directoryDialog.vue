@@ -93,7 +93,11 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelone(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable" :id="scope.row.id" 
+                                    @blur="saveChange(scope)" 
+                                    @click="Levelone(scope)" 
+                                    @keydown.ctrl.83="CtrlS"
+                                    class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -336,6 +340,7 @@ export default {
             scopeData: {} ,             // 点击(1级)下级按钮时的参数
             scopeData2: {} ,            // 点击(2级)下级按钮时的参数
             scopeData3: {} ,            // 点击(3级)下级按钮时的参数
+            scopeClo: {} ,              // 克隆内容数据
             contenteditable: true,      // 一级输入框是否禁用 true|能输入  false|不能输入
             contenteditable2:true,      // 二级输入框是否禁用 true|能输入  false|不能输入
             tableData2: [
@@ -438,6 +443,8 @@ export default {
          */
         Levelone(scope){
             // 按钮禁用
+            this.scopeClo = {} ;
+            this.scopeClo = scope ;
             this.disabled2 = true ;
         },
         /**
@@ -445,6 +452,8 @@ export default {
          */
         Leveltwo(scope){
             // 按钮禁用
+            this.scopeClo = {} ;
+            this.scopeClo = scope ;
             this.disabled3 = true ;
         },
         /**
@@ -452,6 +461,8 @@ export default {
          */
         Levelthree(scope){
             // 按钮禁用
+            this.scopeClo = {} ;
+            this.scopeClo = scope ;
             this.disabled4 = true ;
         },
         /**
@@ -612,9 +623,21 @@ export default {
             me.directoryRequest() ; 
         },
         /**
+         * ctrl + s 保存组合键 
+         */
+        CtrlS(e) {
+            if(e.ctrlKey == true){                
+                this.saveChange(this.scopeClo);
+                e.preventDefault();
+                e.returnValue = false;
+                console.log("键盘触发");
+                return false;
+            }
+        },
+        /**
          * (一级)输入框保存
          */
-        saveChange(scope) { 
+        saveChange(scope) { debugger
             let id, params ;
             let idContent = document.getElementById(scope.row.id) ;
             this.disabled2 = false ;    // 一级按钮启用
@@ -623,7 +646,8 @@ export default {
             if(this.enterJudgment(scope, idContent)){
                 // this.$message('NO');
                 return false ;
-            }           
+            }  
+            // return false ;         
             if(this.number2 == 1)id = this.scopeData.row.pid;
             if(this.number2 == 2)id = this.scopeData2.row.id;
             if(this.number2 == 3)id = this.scopeData3.row.id;
