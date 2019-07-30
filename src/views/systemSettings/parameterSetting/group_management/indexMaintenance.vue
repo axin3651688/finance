@@ -103,7 +103,7 @@ export default {
         dimIndex_query_by_stypeA(){
             let me = this ;
             let params = { stype: "JT" } ;
-            dimIndex_query_by_stype(params).then(res => {
+            dimIndex_query_by_stype(params).then(res => {debugger
                 if(res.data.code === 200){
                     me.tableData = res.data.data ;
                     if(me.tableData.length >= 9){
@@ -111,8 +111,11 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
+                } else if(res.data.code === 1001){
+                    me.tableData = [] ;
+                    me.$message(res.data.msg) ;
                 } else {
-                    me.$message.error(res.data.msg) ;
+                    // me.$message.error(res.data.msg) ;
                 }
             });
         },

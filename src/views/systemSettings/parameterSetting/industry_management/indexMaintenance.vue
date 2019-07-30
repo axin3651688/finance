@@ -113,9 +113,11 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
-                } else {
+                } else if(res.data.code === 1001) {
                     me.tableData = [] ;
-                    me.$message.error(res.data.msg + '请添加数据') ;
+                    me.$message(res.data.msg) ;
+                } else {
+                    me.$message.error(res.data.msg) ;
                 }
             });
         },

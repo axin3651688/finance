@@ -330,7 +330,7 @@ function s2ab(s) {
     return buf;
 }
 
-export function export_table_to_excel(id, name, columns) { debugger
+export function export_table_to_excel(id, name, columns) { 
     // var theTable = document.getElementById(id);
     // 导出table
     var theTable = document.getElementById(id).getElementsByTagName("table");
