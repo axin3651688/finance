@@ -1,4 +1,7 @@
 <template>
+  <!--
+    说明：数据抽取页面
+  -->
   <div class="extradata">
     <el-row :gutter="24">
       <!--公司树-->
@@ -359,23 +362,34 @@ export default {
     /**
      *@description  右键菜单
      */
-    handleContextMenu(event, node, nodeTarget, el) {
+    handleContextMenu(event, node, nodeTarget, el) {debugger
       // 此处阻止冒泡是因为节点层级过深, 必须阻止
       event.stopPropagation();
       if (node.stype === "1") {
         return false;
       }
-      this.contextMenuVisible = true;
+      this.contextMenuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
+      this.contextMenuVisible = true; // 显示模态窗口，跳出自定义菜单栏
       //
       var x = event.clientX + document.body.scrollLeft;
       var y = event.clientY + document.body.scrollTop;
 
       let leftmenu = document.querySelector(".sidebar-container");
       let contextmenu = document.querySelector("#rMenu");
-      contextmenu.style.top = y + "px";
+
+      let wH = document.documentElement.clientHeight;
+      let len = event.clientY ;
+      let cha = wH - event.clientY - 42*2;
+      if(wH - event.clientY - 42*2 < 0){
+          len = event.clientY + cha ;
+      }
+      contextmenu.style.top = len - 10 + 'px'
+
+      // contextmenu.style.top = y + "px";
       contextmenu.style.left = x - leftmenu.offsetWidth + "px";
       // contextmenu.style.left = x - 0 + "px";
       this.contextMenuActive = nodeTarget;
+      document.addEventListener('click', this.foo) // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
       //其它地方绑定事件隐藏 右键菜单
       // document.onmousedown = _event => {
       //   var _event = _event || window.event;
@@ -386,7 +400,13 @@ export default {
       //   }
       // };
     },
-
+    /**
+     * @description 取消鼠标监听事件 菜单栏
+     */
+    foo() { 
+        this.contextMenuVisible = false
+        document.removeEventListener('click', this.foo) // 要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
+    },
     //获取当前公司树选择的节点
     currentNode() {
       return this.$refs.comtree.getCurrentNode();

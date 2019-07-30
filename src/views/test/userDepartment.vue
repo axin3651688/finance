@@ -173,7 +173,8 @@ export default {
             // menu.style.left = MouseEvent.clientX -150 + 'px'
             menu.style.left = "234px" ;
             document.addEventListener('click', this.foo) // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
-            let wH = window.offsetHeight;
+            // let wH = window.offsetHeight;
+            let wH = document.documentElement.clientHeight ;
             len = MouseEvent.clientY ;
             let cha = wH - MouseEvent.clientY - 42*4;
             if(wH - MouseEvent.clientY - 42*4 < 0){
