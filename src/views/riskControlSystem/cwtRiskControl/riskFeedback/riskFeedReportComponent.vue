@@ -126,24 +126,25 @@
                         <div class="container-right-loop-foot">
                             <div class="top-form-contents" style="margin-top: 30px">
                                 <span>领导批示</span>
-                                <div class="top-form-contents" style="margin-bottom: 0">
+                                <div class="top-form-contents top-form-contents-ps-content" style="margin-bottom: 0">
                                     <p style="min-width: 98px;width: 150px;margin-left: 30px">风险策略为：</p>
-                                    <el-input v-model="writeData.risk_ps.risk_ps_cl" disabled></el-input>
+                                    <el-input  v-model="writeData.risk_ps.risk_ps_cl" disabled></el-input>
                                 </div>
                             </div>
-                            <div class="top-form-contents">
+                            <div class="top-form-contents top-form-contents-ps-content">
                                 <span style="min-width: 194px;width: 194px"></span>
-                                <el-input type="textarea" :rows="3" v-model="writeData.risk_ps.risk_ps_content"
+                                <el-input  type="textarea" :rows="3" v-model="writeData.risk_ps.risk_ps_content"
                                           disabled></el-input>
                             </div>
 
-                            <div class="top-form-contents">
+                            <div class="top-form-contents top-form-contents-ps-content">
                                 <span style="min-width: 194px;width: 194px">风险反馈</span>
                                 <el-input
                                         type="textarea"
                                         :rows="4"
                                         v-model="writeData.risk_feed_content"
                                         placeholder="请填写反馈内容。。。"
+
                                         :disabled="reportState !== 'fk'"
                                 ></el-input>
                             </div>
@@ -413,7 +414,7 @@
                             period: _this.getPeriod(),
                             sisfeedback: "1",
                             sfeedbacksuser: user.userName,
-                            sfeedbackscontent: _this.writeData.risk_feed_content,
+                            sfeedbackscontent: _this.writeData.risk_feed_content || '',
                             nrelateid: item.riskid,
                         };
                         params.riskReportStateDtos.push(emptyData);
@@ -439,7 +440,7 @@
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: "反馈成功。",
+                            message: res.data.msg,
                             type: "success"
                         });
                         _this.reportState = '';
@@ -453,7 +454,7 @@
                         });
                     } else {
                         _this.$message({
-                            message: "反馈失败！请联系开发人员"
+                            message: res.data.msg
                         })
                     }
                 });
@@ -470,7 +471,7 @@
     }
 </script>
 
-<style scoped>
+<style >
     .container-all {
         display: flex;
         flex-direction: row;
@@ -637,5 +638,10 @@
 
     .form-foot-right-check {
         margin-right: 20px;
+    }
+    .top-form-contents-ps-content .el-input.is-disabled .el-input__inner{
+        font-size: 16px;
+        color: #333333;
+        font-weight: 700;
     }
 </style>

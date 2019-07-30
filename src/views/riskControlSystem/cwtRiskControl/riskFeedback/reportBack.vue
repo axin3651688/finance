@@ -601,14 +601,14 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: "退回成功",
+                            message: res.data.msg,
                             type: "success"
                         });
                         this.getReportData();
 
                     } else {
                         _this.$message({
-                            message: "退回失败！请联系开发人员"
+                            message: res.data.msg
                         })
                     }
                 });
@@ -625,7 +625,7 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: "提醒成功",
+                            message: res.data.msg,
                             type: "success"
                         });
                     } else {

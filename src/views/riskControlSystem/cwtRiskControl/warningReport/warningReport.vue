@@ -374,6 +374,7 @@
         font-size: 20px;
         font-weight: 600;
         margin-bottom: 20px;
+        margin-top: 20px;
     }
     /*.dialog-components{*/
         /*height: 300px;*/
