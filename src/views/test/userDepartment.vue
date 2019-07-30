@@ -69,7 +69,7 @@ import {department_add, department_delete, department_update} from "~api/cube.js
 export default {
     props: {
         text: String,       // 公司文字
-        data: Object,       // 树表数据
+        data: Array,       // 树表数据
         newThis: Object     // 父组件的this对象
     },
     data(){
@@ -164,6 +164,7 @@ export default {
         */
         handleContextMenu(MouseEvent, node, nodeTarget, el) {
             // debugger
+            let len ;
             if(node!=undefined)this.stype = 100;
             this.nodeValue = node ;
             this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
@@ -172,7 +173,13 @@ export default {
             // menu.style.left = MouseEvent.clientX -150 + 'px'
             menu.style.left = "234px" ;
             document.addEventListener('click', this.foo) // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
-            menu.style.top = MouseEvent.clientY - 10 + 'px'
+            let wH = window.offsetHeight;
+            len = MouseEvent.clientY ;
+            let cha = wH - MouseEvent.clientY - 42*4;
+            if(wH - MouseEvent.clientY - 42*4 < 0){
+                len = MouseEvent.clientY + cha ;
+            }
+            menu.style.top = len - 10 + 'px'
         },
         /**
          * @description 取消鼠标监听事件 菜单栏
