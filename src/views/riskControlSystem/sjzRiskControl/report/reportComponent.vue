@@ -239,7 +239,7 @@ export default {
         // 1. 上报（修改）按钮触发 
         // 0. 查看（不能修改）按钮触发
         setReportBack(number){
-            debugger
+            // debugger
             if(number==null)return false ;
             // number=1，为上报状态；number=0，为查看状态。
             if(number){

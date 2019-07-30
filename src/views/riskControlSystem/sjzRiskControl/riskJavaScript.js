@@ -339,7 +339,7 @@ export default {
      * @param {*} sparam    请求参数={ cubeId：4，sql：sql }
      */
     getSql_quertData_all($this, sparam) {
-        eva_city_Request(sparam).then(rec => {
+        eva_city_Request(sparam).then(rec => { 
             if (rec.data.code === 200) {
                 let data = rec.data.data;
                 return $this.setSql_quertData_all(data);
