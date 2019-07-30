@@ -101,7 +101,7 @@
         data() {
             return {
 
-                align:'right',
+                align:'center',
 
                 // 默认显示第几页
                 currentPage: 1,

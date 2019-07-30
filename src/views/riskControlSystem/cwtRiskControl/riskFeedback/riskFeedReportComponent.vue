@@ -24,12 +24,8 @@
 
                     <div class="container-right-top">
 
-                        <div class="report-title">
-                            {{this.companyname}}
-                            {{this.period}}
-                            风险预警报告
-                        </div>
-                        <span class="zs">总述</span>
+                        <div class="report-title">{{this.companyname}}{{this.period}}风险预警报告</div>
+                        <div class="zs_div"><span class="zs">总述</span></div>
                         <p class="describe">
                             截止{{this.period}}份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
                             <template v-if="riskCount.allRiskCount > 0">
@@ -488,11 +484,11 @@
     .container-left-inner {
         margin-top: 50px;
         text-align: center;
-        color: rgb(96, 98, 102);
+        color: rgb(48, 49, 51);
     }
 
     .container-left-inner a {
-        color: rgb(96, 98, 102);
+        color: rgb(48, 49, 51);
     }
 
     .container-left {
@@ -519,18 +515,28 @@
     .report-title {
         padding: 20px;
         text-align: center;
-        font-family: 'Arial Negreta', 'Arial';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-style: normal;
         font-size: 24px;
         color: #303133;
     }
 
+    .zs_div{
+        width: 100%;
+        background: #ddd;
+        height: 42px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+
     .zs {
-        font-size: 24px;
-        text-align: left;
-        font-family: 'Arial Negreta', 'Arial';
-        font-weight: 700;
+        font-size: 22px;
+        /*text-align: left;*/
+        font-family: '微软雅黑';
+
+        /*font-weight: 700;*/
         font-style: normal;
         color: #303133;
     }
@@ -539,7 +545,7 @@
         margin-top: 10px;
         line-height: 40px;
         text-indent: 32px;
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 16px;
@@ -548,7 +554,7 @@
     }
 
     .container-right-loop-title {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 20px;
@@ -577,31 +583,31 @@
     }
 
     .left_1 {
-        font-family: 'Arial Negreta', 'Arial';
-        font-weight: 700;
-        font-size: 16px;
-        color: #333333;
+        font-family: '微软雅黑';
+        font-weight: 550;
+        font-size: 18px;
+        color: #303133;
     }
 
     .left_2 {
         margin-left: 20px;
         font-size: 14px;
         padding: 2px 10px;
-        font-family: 'Arial Normal', 'Arial';
+        font-family: '微软雅黑';
         border-radius: 10px;
         color: white;
     }
 
     .container-right-loop-center div {
-        font-size: 16px;
-        font-family: '微软雅黑 Bold', '微软雅黑';
-        font-weight: 700;
+        font-size: 18px;
+        font-family: '微软雅黑';
+        font-weight: 550;
         margin-bottom: 20px;
         margin-top: 20px;
     }
 
     .container-right-loop-center p {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;

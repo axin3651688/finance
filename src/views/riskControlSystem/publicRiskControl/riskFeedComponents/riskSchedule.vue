@@ -144,7 +144,7 @@
     }
 
     .risk-num, .title-left {
-        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-size: 14px;
     }

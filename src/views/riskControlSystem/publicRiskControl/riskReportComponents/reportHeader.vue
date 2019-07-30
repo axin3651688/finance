@@ -93,12 +93,20 @@
         text-align: center;
         font-family: 'Arial Negreta', 'Arial';
         /* font-weight: 700; */
+        /*font-style: normal;*/
+        /*text-align:center;*/
+        /*font-size:24px;*/
+        /*font-weight: 700;*/
+        /*margin-bottom: 20px;*/
+
+        padding: 20px;
+        text-align: center;
+        font-family: '微软雅黑';
+        font-weight: 700;
         font-style: normal;
-        font-size: 20px; 
-        text-align:center;
-        font-size:25px;
-        font-weight: 200;
-        margin-bottom: 20px;
+        font-size: 24px;
+        color: #303133;
+
     }
     /*总述 样式*/
     .zs {

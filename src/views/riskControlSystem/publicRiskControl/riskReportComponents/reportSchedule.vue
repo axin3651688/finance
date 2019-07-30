@@ -72,7 +72,7 @@
 
 <style scoped>
     .schedule-title, .risk-num, .title-left {
-        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-size: 16px;
     }
