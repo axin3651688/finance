@@ -5,12 +5,13 @@
                 <el-button @click="systemAdd">添加</el-button>
                 <el-button @click="systemChange">修改</el-button>
                 <el-button @click="systemDelete">删除</el-button>
+                <el-button @click="systemRefresh">刷新</el-button>
             </div>
 
             <div class="up-right">
                 <el-form :inline="true" class="demo-form-inline">
                     <el-form-item label="信息搜索">
-                        <el-input placeholder="信息" v-model="searchData.searchMessage"></el-input>
+                        <el-input placeholder="标题 / 发布人 / 发布部门" v-model="searchData.searchMessage"></el-input>
                     </el-form-item>
                     <el-form-item label="时间搜索">
                         <el-col :span="11">
@@ -245,7 +246,7 @@
                     });
                     return;
                 }
-                if(this.deleteSyatemList.length > 1){
+                if (this.deleteSyatemList.length > 1) {
                     this.$message({
                         message: '请针对单条制度进行修改',
                         type: 'warning'
@@ -345,15 +346,15 @@
                 riskSystemDelete(sendParams).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message:'删除成功',
-                            type:'success'
+                            message: '删除成功',
+                            type: 'success'
                         });
 
                         this.getTableData();
-                    }else{
+                    } else {
                         _this.$message({
-                            message:'删除失败',
-                            type:'error'
+                            message: '删除失败',
+                            type: 'error'
                         });
                     }
                 })
@@ -444,7 +445,7 @@
                 params.filed = _searchData.searchMessage;
                 params.startDate = this.getDateNowYMD(_searchData.searchDate1);
                 params.endDate = this.getDateNowYMD(_searchData.searchDate2);
-                params.startDate =  _searchData.searchDate1 === null ? '' : params.startDate;
+                params.startDate = _searchData.searchDate1 === null ? '' : params.startDate;
                 params.endDate = _searchData.searchDate2 === null ? '' : params.endDate;
                 return params;
             },
@@ -480,6 +481,19 @@
 
                 this.riskSystemSingleDataFresh = !this.riskSystemSingleDataFresh;
                 this.systemAdd(null, 'change');
+            },
+
+            /**
+             * 界面刷新按钮
+             */
+            systemRefresh() {
+                let _this = this;
+                _this.searchData = {
+                    searchMessage: '',
+                    searchDate1: '',
+                    searchDate2: ''
+                };
+                _this.getTableData();
             }
 
         }
