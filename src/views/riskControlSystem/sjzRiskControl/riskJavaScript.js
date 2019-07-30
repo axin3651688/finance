@@ -277,7 +277,7 @@ export default {
             }
         })
     },
-    elementUI_tree(data, me, vax) {
+    elementUI_tree(data, me, vax) { 
         //封装树对象数据
         const setting = {
             data: {
@@ -297,8 +297,8 @@ export default {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
                 item.id = item.scode;
-                // item.label = "(" + item.scode + ") " + item.sname;
-                item.label = item.sname;
+                item.label = "(" + item.scode + ") " + item.sname;
+                // item.label = item.sname;
                 return item;
             });
             if (vax === null) {
