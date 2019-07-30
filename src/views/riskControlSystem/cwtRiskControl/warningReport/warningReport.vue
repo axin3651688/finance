@@ -45,7 +45,7 @@
                 二、国内对标
             </div>
             <div class="content-des">
-                天津食品集团行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
+                天津食品集团有限公司（合并）行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
             </div>
 
             <div class="content-down-table">
@@ -173,9 +173,9 @@
             return {
                 showperiod: this.$store.getters.year + '年' + this.$store.getters.month + '月',
                 showyear: this.$store.getters.year + '年',
-                compareYear: parseInt(this.$store.getters.year) - 5 + '年',
-                companyname: '天津食品集团有限公司',
-                companyDownName: '天津食品集团有限公司',
+                compareYear: parseInt(this.$store.getters.year) - 4 + '年',
+                companyname: '天津食品集团有限公司（合并）',
+                companyDownName: '天津食品集团有限公司（合并）',
 
                 table1data: [],
                 table1columns: [],
@@ -303,7 +303,7 @@
             showDataFresh() {
                 this.showperiod = this.$store.getters.year + '年' + this.$store.getters.month + '月';
                 this.showyear = this.$store.getters.year + '年';
-                this.compareYear = parseInt(this.$store.getters.year) - 5 + '年';
+                this.compareYear = parseInt(this.$store.getters.year) - 4 + '年';
                 // this.companyname = this.$store.getters.company;
                 // this.companyDownName = this.$store.getters.company;
             },
