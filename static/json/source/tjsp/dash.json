@@ -1507,7 +1507,7 @@
                                     // }else {
                                     // 	return params.name + "：" + params.percent + "%";
                                     // }
-                                },
+                                }
                             },
                             "itemStyle": {
                                 "emphasis": {

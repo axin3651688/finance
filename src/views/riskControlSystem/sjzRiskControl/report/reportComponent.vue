@@ -309,7 +309,7 @@ export default {
         },
         // 请求返回的数据
         setSql_quertData_all(data){
-            this.comtree2 = mini.reportDataTree(data) ;
+            this.comtree2 = mini.reportDataTree(data, this) ;
         },
         // 修改按钮
         modifyBtn(tool){

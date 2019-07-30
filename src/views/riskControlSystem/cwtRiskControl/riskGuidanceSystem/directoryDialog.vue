@@ -93,7 +93,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelone(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -170,7 +170,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div :contenteditable="contenteditable2" :id="scope.row.id" @blur="saveChange(scope)" @click="Leveltwo(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -247,7 +247,7 @@
                             <el-table-column label="内容" prop="scontent">
                                 <template slot-scope="scope">
                                     <!-- <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" @change="saveChange(scope)" v-model="scope.row.scontent"></el-input> -->
-                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
+                                    <div contenteditable="true" :id="scope.row.id" @blur="saveChange(scope)" @click="Levelthree(scope)" class="divcontenteditable" v-html="scope.row.scontent"></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" width="80" align="center">
@@ -272,15 +272,15 @@
                 </div>
                 <!-- 按钮部分 -->
                 <div class="directoryDialog_A_5-3">
-                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="levelClick" type="primary" plain round size="mini" :disabled="disabled4">
                         <!-- <i class="iconfont icon-tianjia"></i> -->
                         <i class="el-icon-circle-plus-outline"></i>添 加
                     </el-button>
-                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini">
+                    <el-button class="directoryDialog_A_7-1-btn" @click="deleteClick" type="danger" plain round size="mini" :disabled="disabled4">
                         <!-- <i class="iconfont icon-shanchu2"></i> -->
                         <i class="el-icon-delete"></i>删 除
                     </el-button>
-                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')">关 闭</el-button>
+                    <el-button class="directoryDialog_A_3-1" round size="mini" @click="closeClick('closeC')" :disabled="disabled4">关 闭</el-button>
                 </div>
             </div>
         </div>
@@ -326,6 +326,7 @@ export default {
             disabled: false ,               // 是否禁用 
             disabled2: false,               // 一级  是否禁用
             disabled3: false,               // 二级  是否禁用
+            disabled4: false,               // 三级  是否禁用
             disabledSelection: false,       // 一级复选框是否禁用
             disabledSelection2:false,       // 二级复选框是否禁用
             labelPosition: "right" ,        // form表单右对齐
@@ -433,6 +434,27 @@ export default {
     },
     methods: {
         /**
+         * 一级
+         */
+        Levelone(scope){
+            // 按钮禁用
+            this.disabled2 = true ;
+        },
+        /**
+         * 二级
+         */
+        Leveltwo(scope){
+            // 按钮禁用
+            this.disabled3 = true ;
+        },
+        /**
+         * 三级
+         */
+        Levelthree(scope){
+            // 按钮禁用
+            this.disabled4 = true ;
+        },
+        /**
          * 添加按钮 | 修改按钮
          */
         addClick(val, scope) { 
@@ -479,6 +501,12 @@ export default {
         removeClick(scope) {
             const me = this ;
             let params = [scope.row.id] ;
+            // 判断是否有内容存在，如果存在则不能删除
+            let aa = me.tableData2.filter(res => { return !res.id }) ;
+            if(aa.length > 0){
+                me.$message({ type: 'info', message: '存在内容，无法删除！' }); 
+                return false ;     
+            }
             me.$confirm('此操作将删除该目录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -543,7 +571,7 @@ export default {
         /**
          * 下级按钮(一级)
          */
-        lowerLevelClick(scope) { //debugger
+        lowerLevelClick(scope) { 
             let me = this ;
             me.scopeData = scope ;
             me.dialogFormVisible3_A = !me.dialogFormVisible3_A ;
@@ -586,9 +614,12 @@ export default {
         /**
          * (一级)输入框保存
          */
-        saveChange(scope) { //debugger
+        saveChange(scope) { 
             let id, params ;
             let idContent = document.getElementById(scope.row.id) ;
+            this.disabled2 = false ;    // 一级按钮启用
+            this.disabled3 = false ;    // 二级按钮启用
+            this,disabled4 = false ;    // 三级按钮启用
             if(this.enterJudgment(scope, idContent)){
                 // this.$message('NO');
                 return false ;
@@ -596,12 +627,13 @@ export default {
             if(this.number2 == 1)id = this.scopeData.row.pid;
             if(this.number2 == 2)id = this.scopeData2.row.id;
             if(this.number2 == 3)id = this.scopeData3.row.id;
-            if(scope.row.id === 0) {
+            if(scope.row.id === 0 || !scope.row.id) {
+                if(!scope.row.scontent && !idContent.innerHTML)return false ;
                 params = [{
                     catalog_id: this.scopeData.row.id,
                     chartpath: "",
                     pid: id,
-                    scontent: idContent.innerHTML || scope.row.scontent 
+                    scontent: scope.row.scontent || idContent.innerHTML
                 }]
                 // 添加请求方法
                 this.riskguidecontentAdd_request(params) ;
@@ -609,7 +641,7 @@ export default {
                 params = [{
                     id: scope.row.id,
                     chartpath: "",
-                    scontent: idContent.innerHTML || scope.row.scontent
+                    scontent: scope.row.scontent || idContent.innerHTML
                 }]
                 // 修改内容接口
                 this.riskguidecontentUpdate_request(params) ;
@@ -664,9 +696,32 @@ export default {
         /**
          * ()删除按钮
          */
-        deleteClick() { 
+        deleteClick() { //debugger
             let me = this ;
+            let aa ;
             let cc = me.newThis.content ;
+            // 说明没有选择要删除的内容
+            if(me.selectionA.length === 0){
+                me.$message({ message: "无法删除，请选择要删除的内容！", type: "warning" }) ;
+                return false ;
+            }
+            // 如果id=0 || 不存在 时，则删除不需要请求，可直接删除
+            if(!me.selectionA[0].id){
+                if(me.number2 == 1){ 
+                    me.tableData2.forEach((res,index) => { if(!res.id)aa = index ; });
+                    me.tableData2.splice(aa, 1) ;                    
+                } ;
+                if(me.number2 == 2){ 
+                    me.tableData3.forEach((res,index) => { if(!res.id)aa = index ; })
+                    me.tableData3.splice(aa, 1) ; 
+                } ;
+                if(me.number2 == 3){ 
+                    me.tableData4.forEach((res,index) => { if(!res.id)aa = index ; })
+                    me.tableData4.splice(aa, 1) ; 
+                } ;
+                me.selectionA = [] ;
+                return false ;               
+            }
             let dd = cc.some(res => { return res.pid === me.selectionA[0].id }) ;
             if(dd){
                 me.$message('存在下级，无法删除！') ;
@@ -766,6 +821,7 @@ export default {
             })
             riskguidecontentDelete(params).then(res => {
                 if(res.data.code === 200) {
+                    me.selectionA = [] ;
                     me.$message({ message: res.data.msg, type: "success" }) ;
                     me.newThis.directoryRequest() ;
                     me.directoryRequest() ;
@@ -863,6 +919,7 @@ export default {
                     data = res.data.data ;
                     data.forEach(yuu => { yuu.index = yuu.id + "" ; }) ;
                     arr = data.filter(item => { return item.pid === 0 }) ;
+                    arr = arr.filter(item2 => { return item2.id === me.scopeData.row.id }) ;
                     me.contentRequest(arr) ; // 内容查询方法
                 } else {
                     me.$message.error(res.data.msg) ;
@@ -884,16 +941,26 @@ export default {
                 if(res.data.code === 200) {
                     me.contentData = res.data.data ;
                     // dd.forEach(res2 => { res2.html = res2.scontent }) ;
-                    let cc = res.data.data.filter(item => { 
-                        return item.catalogname == arr[index].sname ;
-                    });
-                    if(me.number2 == 1)me.tableData2 = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+                    let cc = res.data.data.filter((item, index) => { 
+                        return item.catalogname == arr[0].sname ;
+                    });                   
+                    if(me.number2 == 1){
+                        me.tableData2 = [] ;
+                        let d1 = cc.filter(item2 => { return item2.nlevel === 1 }) ;
+                        if(d1.length == 1 && !d1[0].id){
+                            me.tableData2 = [] ;
+                        }else{
+                            me.tableData2 = d1 ;
+                        }
+                    }
                     if(me.number2 == 2){
+                        me.tableData3 = [] ;
                         aa = me.scopeData2.row ;
                         bb = cc.filter(item3 => { return item3.nlevel === 2 }) ;
                         me.tableData3 = bb.filter(item33 => { return aa.id === item33.pid }) ;
                     }
                     if(me.number2 == 3){
+                        me.tableData4 = [] ;
                         aa = me.scopeData3.row ;
                         bb = cc.filter(item4 => { return item4.nlevel === 3 }) ;
                         me.tableData4 = bb.filter(item44 => { return aa.id === item44.pid }) ;
