@@ -34,7 +34,7 @@
             :close-on-click-modal="false">
             <el-form ref="form" :rules="rules" :model="form" label-width="100px">
                 <el-form-item label="指标名称：" prop="scode">
-                    <el-select class="dialog_select" v-model="form.scode" placeholder="请选择指标" @change="changeClick">
+                    <el-select class="dialog_select" v-model="form.scode" filterable placeholder="请选择指标" @change="changeClick">
                         <el-option v-for="item in options" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
                     </el-select>
                     <div class="el-form-item__error">{{ text }}</div>
