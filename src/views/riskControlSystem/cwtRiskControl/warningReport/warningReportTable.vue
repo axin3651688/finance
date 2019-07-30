@@ -7,6 +7,8 @@
                     border
                     :height="tableheight"
                     :header-cell-style="headerRowStyle"
+                    :row-style="{height:'40px'}"
+                    :cell-style="{padding:'0px'}"
                     style="width: 100%"
             >
                 <el-table-column
@@ -28,6 +30,7 @@
                                 :key="index"
                                 :show-overflow-tooltip="true"
                                 :prop="item.id"
+
                                 header-align="center"
                                 :label="item.text"
                                 :width="item.width"
@@ -110,6 +113,14 @@
                 } else {
                     return "";
                 }
+            },
+            /**
+             * 行高设置
+             * @return {string}
+             */
+            RowStyle(row){
+                debugger;
+                return 'height: 20px';
             },
 
             /**
