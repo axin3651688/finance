@@ -138,7 +138,8 @@
                     company = storeParams.company;
                 if (item) {
                     let params = {
-                        company: company
+                        company: company,
+                        user: storeParams.user.user.userName
                     };
                     me.axios.get("/cnbi/json/source/tjsp/riskSql/riskControl/sql.json").then(res => {
                         if (res.data.code == 200) {
