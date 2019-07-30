@@ -125,7 +125,7 @@ export default {
             }
             riskreportstate_add(params).then(red => { 
                 if(red.data.code === 200){
-                    me.$message({ message: res.data.msg, type: "success" }) ;
+                    me.$message({ message: red.data.msg, type: "success" }) ;
                     me.newThis.isShow = false ;
                     me.newThis.newThis.setTreeTableRequest() ;
                 }else{
