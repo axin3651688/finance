@@ -463,10 +463,11 @@ export default {
     color: #409EFF;
 }
 #tree-option .is-current > .el-tree-node__content{
-    /* font-weight: 100px; */
+    font-weight: 200;
 }
 #tree-option .el-tree-node__label{
     font-size: 15px;
-    font-family: "宋体";
+    font-family: "微软雅黑";
+    font-weight: 200;
 }
 </style>

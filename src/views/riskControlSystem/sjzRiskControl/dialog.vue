@@ -842,6 +842,6 @@ export default {
 }
 #tree-option .el-tree-node__label{
     font-size: 15px;
-    font-family: "宋体";
+    font-family: "微软雅黑";
 }
 </style>

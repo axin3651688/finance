@@ -51,16 +51,18 @@
 }
 .el-menu-vertical_title{
     font-size: 20px;
-    margin-left: 65px;
+    padding-left: 85px !important;
     color: rgb(48, 49, 51);
+    // background: red;
+    // color: #1790ff; 
 }
 /*
  * 目录部分（暂无数据提示！）的样式
  */
-.aside_title_message {
-    text-align:center;
-    margin-top:20px;
-}
+// .aside_title_message {
+//     text-align:center;
+//     margin-top:20px;
+// }
 /*
  * 目录字体设置
  */

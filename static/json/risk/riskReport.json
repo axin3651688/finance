@@ -22,15 +22,15 @@
             "id": "srepotstate",
             "text": "报告状态",
             "type": "string",
-            "align": "center"
-            // "width": "160"
+            "align": "center",
+            "width": "319px"
         },
         {
             "id": "sreportuser",
             "text": "上报人",
             "type": "string",
-            "align": "center"
-            // "width": "180"
+            "align": "center",
+            "width": "319px"
         }
         ,
         {
