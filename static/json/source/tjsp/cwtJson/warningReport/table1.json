@@ -8,7 +8,7 @@
       "type": "string",
       "text": "指标名称",
       "align": "left",
-      "width":400
+      "width":250
     },
     {
       "id": "sjz",
@@ -44,7 +44,8 @@
       "id": "zdznf",
       "type": "string",
       "text": "最低值年份",
-      "align": "center"
+      "align": "center",
+      "width":400
     }
   ],
   "rows": [

@@ -20,7 +20,7 @@
             <table-component
                     :tableData="tableData"
                     :columns="tableColumns"
-                    :tableheight="380"
+                    :tableheight="480"
                     :tabletitle="tableTitle"
                     :dataChange="dataChange"
             >
