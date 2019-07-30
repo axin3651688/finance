@@ -106,9 +106,17 @@
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
             },
+
+            /**
+             * 重置
+             */
             resetChecked() {
                 this.$refs.tree.setCheckedKeys([]);
             },
+
+            /**
+             * 确定事件
+             */
             checkedSure() {
                 let nodes = this.$refs.tree.getCheckedNodes();
                 if (nodes && nodes.length > 0) {
@@ -120,6 +128,7 @@
                     });
                 }
             },
+
             /**
              * checkBox改变的回调。
              * @author szc 2019年5月22日11:45:56
@@ -142,11 +151,6 @@
                         }
                     });
 
-                    // me.dptUserConfig = {
-                    //     id:"dptUser",
-                    //     show:true,
-                    //     userDatas:[]
-                    // };
                 } else {
                     me.dptUserConfig = {
                         id: "dptUser",
@@ -227,6 +231,7 @@
             nodeClick (data,node) {
                 let me = this;
                 let list = me.$refs["tree"].getCheckedKeys();
+                me.resetChecked();
                 list = list.filter(item => {
                     return item == data.id;
                 });
@@ -240,7 +245,14 @@
                     id:"close"
                 };
                 this.$emit("publicHandler",params);
-            }
+            },
+
+            /**
+             * 设置不能选择
+             */
+            // setDisabled(){
+            //
+            // }
         }
     }
 </script>
