@@ -110,6 +110,9 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
+                } else if(res.data.code === 1001) {
+                    me.tableData = [] ;
+                    me.$message(res.data.msg) ;
                 } else {
                     me.$message.error(res.data.msg) ;
                 }

@@ -53,7 +53,7 @@
                     <el-input v-model="form.sname"></el-input>
                 </el-form-item>
                 <el-form-item label="部门职责">
-                    <el-input type="textarea" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示"></el-input>
+                    <el-input type="textarea" maxlength="1000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -173,7 +173,8 @@ export default {
             // menu.style.left = MouseEvent.clientX -150 + 'px'
             menu.style.left = "234px" ;
             document.addEventListener('click', this.foo) // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
-            let wH = window.offsetHeight;
+            // let wH = window.offsetHeight;
+            let wH = document.documentElement.clientHeight ;
             len = MouseEvent.clientY ;
             let cha = wH - MouseEvent.clientY - 42*4;
             if(wH - MouseEvent.clientY - 42*4 < 0){

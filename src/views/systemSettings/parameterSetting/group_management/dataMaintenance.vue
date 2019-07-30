@@ -48,7 +48,7 @@ export default {
     },
     mounted(){
         // 表格展现查询
-        this.gettableData_request() ;
+        // this.gettableData_request() ;
     },
     computed: {
         heightes(){
@@ -71,8 +71,10 @@ export default {
             dimIndex_queryfact_bystype(params).then(res => {
                 if(res.data.code === 200) {
                     me.tableData2 = res.data.data ;
-                } else {
-                    me.$message.error("查询失败！") ;
+                } else if(res.data.code === 1001){
+                    me.$message(res.data.msg) ;
+                }else {
+                    me.$message.error(res.data.msg) ;
                 }
             });
         },
