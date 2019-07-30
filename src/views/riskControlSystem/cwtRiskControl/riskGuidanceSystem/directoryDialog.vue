@@ -619,7 +619,7 @@ export default {
             let idContent = document.getElementById(scope.row.id) ;
             this.disabled2 = false ;    // 一级按钮启用
             this.disabled3 = false ;    // 二级按钮启用
-            this,disabled4 = false ;    // 三级按钮启用
+            this.disabled4 = false ;    // 三级按钮启用
             if(this.enterJudgment(scope, idContent)){
                 // this.$message('NO');
                 return false ;
