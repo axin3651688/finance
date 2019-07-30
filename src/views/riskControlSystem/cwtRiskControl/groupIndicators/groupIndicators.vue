@@ -197,5 +197,6 @@
         height: 300px;
         margin-bottom: 20px;
         min-width: 532px;
+        width: 532px;
     }
 </style>
