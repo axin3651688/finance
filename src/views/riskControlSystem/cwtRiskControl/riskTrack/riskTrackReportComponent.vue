@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 50px;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 50px;color: rgb(48, 49, 51);">目&nbsp&nbsp录</h1>
                     <div
                             v-for="(value, key, index) in leftNode"
                             :key="key"
