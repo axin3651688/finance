@@ -112,7 +112,7 @@ export default {
         font-weight: 550;
         font-size: 18px;
         color: #303133;
-        font-family: '黑体';
+        font-family: '微软雅黑';
         width: 80px;
     }
     // .top-form-contents span {

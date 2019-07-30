@@ -18,7 +18,7 @@
                 <el-container style="height: 100%">
                     <!-- 目录部分 -->
                     <el-aside class="container_aside">
-                        <div class="aside_title"><p>目录</p></div>
+                        <div class="aside_title"><p>目&nbsp&nbsp录</p></div>
                         <div v-if="directory.length > 0">
                             <el-menu :default-active="directory[0].scode" class="el-menu-vertical-demo">
                                 <el-menu-item class="el-menu-vertical_title" v-for="(item, index) in directory" :key="item.scode" :index="item.scode">
