@@ -236,7 +236,7 @@ export default {
     height: 45px !important;
     width: 150px !important;
     float: left;
-    margin: 12px 0px 12px 20px;
+    margin: 12px 0px 12px 37px;
   }
   .public_style {
     color: #909090 !important;
