@@ -111,7 +111,7 @@
                                      * */
                                     formatter(data){
                                         let _index = data.dataIndex;
-                                        return '第 '+ (_index + 1) + '名';
+                                        return _index + 1;
                                     }
                                 },
                                 color: function (params){
