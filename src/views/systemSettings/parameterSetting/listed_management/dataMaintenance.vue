@@ -31,9 +31,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="数据类型：">
-                <el-select class="listedSetting_select" v-model="form.type" placeholder="请选择数据类型">
+                <!-- <el-select class="listedSetting_select" v-model="form.type" placeholder="请选择数据类型">
                     <el-option v-for="(item,index) in itemd" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
-                </el-select>
+                </el-select> -->
+                <el-input type="text" class="listedSetting_select" readonly v-model="text"></el-input>
             </el-form-item>
             <el-form-item label="报表类型：">
                 <el-select class="listedSetting_select" v-model="form.tableType" placeholder="请选择报表类型">
@@ -53,12 +54,13 @@ export default {
     data(){
         return {
             input: "",      // 文件加载的名字
+            text: "实际数",
             autoUpload: false, // 是否在选取文件后立即进行上传 默认为 true
             is_show: true,      // 显示与隐藏
             stype: 1,       // 状态
             form: {
                 company: "",
-                type: "",
+                type: "sj",
                 tableType: "",
                 period: ""
             },

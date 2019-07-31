@@ -474,6 +474,7 @@ export default {
   margin: 3px 0 5px 0;
 }
 .el-table {
+  /* background-color: transparent !important; */
   background-color: #fff !important;
 }
 .el-table td,
