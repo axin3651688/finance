@@ -14,7 +14,7 @@
         },
         {
             "text": "批示人",
-            "value": "suser"
+            "value": "sreportuser"
         },
         {
             "text": "批示时间",
