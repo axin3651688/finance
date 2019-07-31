@@ -280,8 +280,8 @@
             pageScrollSet() {
                 let offsetHeight = document.body.offsetHeight,//页面整体高度
                     buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
-                    tabHeight = 39,//tab标签高度
-                    gapHeight = 54,//间隙的高度
+                    tabHeight = 0,//tab标签高度
+                    gapHeight = 42,//间隙的高度
                     pageHeaderHeight = 64;//导航栏高度
                 let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
                 this.$refs.containerAll.$el.style.height = tableHeight + 'px';
