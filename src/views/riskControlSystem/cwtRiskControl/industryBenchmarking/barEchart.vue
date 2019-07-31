@@ -42,7 +42,8 @@
                             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                         },
                         formatter:function(a,b,c){
-                            return a[0].name + "<br>" + a[0].seriesName + "：" + Math.decimalToLocalString(a[0].value);
+                            // return a[0].name + "<br>" + a[0].seriesName + "：" + Math.decimalToLocalString(a[0].value);
+                            return a[0].name + "<br>" + a[0].seriesName + "：" + a[0].value;
                         }
                     },
                     grid: {
@@ -110,7 +111,7 @@
                                      * */
                                     formatter(data){
                                         let _index = data.dataIndex;
-                                        return _index + 1;
+                                        return '第 '+ (_index + 1) + '名';
                                     }
                                 },
                                 color: function (params){
