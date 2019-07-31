@@ -53,7 +53,6 @@ export default {
     };
   },
   created() {
-    debugger;
 
     console.log(this.item);
 
@@ -69,7 +68,6 @@ export default {
       this.$router.push("/list");
     },
     getdDataSource(item) {
-      debugger;
       let title = this.item.options.getData.columns;
       this.nameData = title.map(function(name) {
         return name.id;
@@ -96,7 +94,6 @@ export default {
     },
 
     upData(item) {
-      debugger;
       let data = this.getdDataSource(item);
       this.options.series[0].data = data;
     }

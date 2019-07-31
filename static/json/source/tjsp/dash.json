@@ -280,6 +280,10 @@
                     "watchConfig": {
                         "itemNames": ["bnlj", "sntq"]
                     },
+                    //样式的配置。
+                    "styleConfig": {
+                        "color": "#42E0FC"
+                    },
                     "extendConfig": "p", //继承父元素的config，查询出来的内容，这个是在切换上面的导航栏的内容用到的。
                     "weight": 6,
                     "listeners": [{
@@ -334,6 +338,10 @@
                     "weight": 6,
                     "watchConfig": {
                         "itemNames": ["bnlj", "sntq"]
+                    },
+                    //样式的配置。
+                    "styleConfig": {
+                        "color": "#FB745B"
                     },
                     "listeners": [{
                         "type": "click",
@@ -538,14 +546,14 @@
                                     "id": "zjl",
                                     "name": "与年初相比增减率",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%"
                                 },
                                 {
                                     "id": "safe",
                                     "name": "安全值",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%",
                                     "show": "leaf" //子公司不显示
                                 },
@@ -553,7 +561,7 @@
                                     "id": "prompt",
                                     "name": "预警值",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%",
                                     "show": "leaf" //子公司不显示
                                 },
@@ -567,7 +575,7 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']   zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "color": ['#9823FE', '#42E0FC', '#FF8F00', '#7ED321'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
                         "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
                             "type": "before",
                             "handlerBefore": function($vue, option) {
@@ -754,14 +762,14 @@
                                     "id": "zjl",
                                     "name": "与年初相比增减率",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%"
                                 },
                                 {
                                     "id": "safe",
                                     "name": "安全值",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%",
                                     "show": "leaf" //子公司不显示
                                 },
@@ -769,7 +777,7 @@
                                     "id": "prompt",
                                     "name": "预警值",
                                     "type": "line",
-                                    "smooth": false,
+                                    "smooth": true,
                                     "unit": "%",
                                     "show": "leaf" //子公司不显示
                                 },
@@ -783,7 +791,7 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "color": ['#FB745B', '#42E0FC', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
                         "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
                             "type": "before",
                             "handlerBefore": function($vue, option) {
@@ -1002,7 +1010,7 @@
                             ]
                         },
                         //    "color":['#1FE5BD','#A5AEFF','#26BAEE','#FE5578']			zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
-                        "color": ['#9a7fd1', '#07a2a4', '#FE5578', '#2ec7c9'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
+                        "color": ['#42E0FC', '#5182E4', '#FFCC41', '#3B7CFF'], //紫色变化率，绿色安全，红色预警，淡蓝柱图
                         "optionListeners": { //生成图形的回调，可以之前或者是之后，处理option，要显示的指定内容。
                             "type": "before",
                             "handlerBefore": function($vue, option) {
@@ -1192,7 +1200,7 @@
 
                         },
                         // "color":['#26BAEE','#FE5578','#1BCDE1','#08B788']
-                        "color": ['#9a7fd1', '#2ec7c9', '#1CD1A1', '#1875F0'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
+                        "color": ['#42E0FC', '#B8E986', '#FFCC41', '#FB745B'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义
                     }
                 },
                 {
@@ -1325,7 +1333,7 @@
                             ]
 
                         },
-                        "color": ['#2ec7c9'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义 '#9a7fd1', '#2ec7c9'
+                        "color": ['#77EFB7'] //zdk 2019-1-8 14:09:00  ly 和 boss说不要红色橙色，这有特殊意义 '#9a7fd1', '#2ec7c9'
                     }
                 },
 
@@ -1336,7 +1344,7 @@
                     "watchState": true,
                     "weight": 6,
                     "config": {
-                        "sql": "WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE) GROUP BY ROOT_SCODE) , TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE ( CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ) , TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ) , TMP4 AS ( SELECT :company AS DIM_COMPANY, SUM(FACT_A) AS FACT_A, SUM(( CASE WHEN DIM_ACCOUNTBANKS='SH' THEN 0 ELSE FACT_B END )) AS FACT_B, SUM(FACT_C) AS FACT_C FROM DW_FACTCAPITALDETAIL WHERE DIM_COMPANY IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE AND CISDEL='N' ) AND DIM_PERIOD=:period ) , FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE WHEN SCODE = '1001' THEN NVL(FACT_A-fact_c, 0) ELSE NVL(FACT_A, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN TMP4 A ON T1.SCODE = A.DIM_COMPANY ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
+                        "sql": "WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE) GROUP BY ROOT_SCODE) , TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE ( CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ) , TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ) , TMP4 AS ( SELECT :company AS DIM_COMPANY, SUM(FACT_A) AS FACT_A, SUM(( CASE WHEN DIM_ACCOUNTBANKS='SH' THEN 0 ELSE FACT_B END )) AS FACT_B, SUM(FACT_C) AS FACT_C FROM DW_FACTCAPITALDETAIL WHERE DIM_COMPANY IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE AND CISDEL='N' ) AND DIM_PERIOD=:period ) , FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE WHEN SCODE = '1001' THEN NVL(FACT_A-fact_c, 0) ELSE NVL(FACT_A, 0) END AS FJZJE, (case when (facT_a+fact_c)=0 then 0 else round(facT_c*100/(facT_a+fact_c),4 ) end) as bl FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN TMP4 A ON T1.SCODE = A.DIM_COMPANY ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B, bl FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS, 100-bl FROM FACT",
                         "_sql": "WITH TMP1 AS( SELECT ROOT_SCODE, COUNT(*) AS HS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE) GROUP BY ROOT_SCODE) , TMP2 AS ( SELECT SCODE, SNAME FROM DW_DIMCOMPANY WHERE ( CISDEL = 'N' AND STYPE <> 'R' AND SCODE = :company) ) , TMP3 AS ( SELECT ROOT_SCODE, COUNT(*) AS JZHS FROM ( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE FROM DW_DIMCOMPANY WHERE STYPE = '1' AND CISDEL = 'N' CONNECT BY PRIOR SCODE = SPCODE ) A1 INNER JOIN ( SELECT DISTINCT DIM_COMPANY FROM DW_FACTCAPITALDETAIL WHERE DIM_PERIOD = :period ) A2 ON A1.SCODE = A2.DIM_COMPANY GROUP BY ROOT_SCODE ) , TMP4 AS ( SELECT :company AS DIM_COMPANY, SUM(FACT_A) AS FACT_A, SUM((case when DIM_ACCOUNTBANKS='SH' then 0 else FACT_B end )) AS FACT_B, SUM(FACT_C) AS FACT_C FROM DW_FACTCAPITALDETAIL WHERE DIM_COMPANY IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE STYPE='1' START WITH SCODE=:company CONNECT BY PRIOR SCODE=SPCODE and CISDEL='N' ) AND DIM_PERIOD=:period ) , FACT AS ( SELECT SCODE, '集中度' AS JZD, JZHS, '非集中度' AS FJZD , NVL(HS - JZHS, 0) AS FJZHS , '管控面' AS GKM, FACT_C AS JZJE, '非管控面' AS FGKM , CASE WHEN SCODE = '1001' THEN NVL(FACT_A, 0) ELSE NVL(FACT_A, 0) END AS FJZJE FROM TMP2 T1 LEFT JOIN TMP1 T2 ON T1.SCODE = T2.ROOT_SCODE LEFT JOIN TMP3 T3 ON T1.SCODE = T3.ROOT_SCODE LEFT JOIN TMP4 A ON T1.SCODE = A.DIM_COMPANY ORDER BY SCODE ) SELECT 1 AS ID, JZD AS TEXT, JZJE AS A, GKM AS TEXT1, JZHS AS B FROM FACT UNION ALL SELECT 2 AS ID, FJZD, FJZJE, FGKM, FJZHS FROM FACT",
                         "_cubes": {
                             "subject": "0002",
@@ -1426,7 +1434,6 @@
                     "chartListeners": {
                         "way": "transChartOption",
                         "transChartOption": function(option, that) {
-
                             let me = this,
                                 numFlag = 0;
                             let data = option.series[0].data,
@@ -1449,6 +1456,16 @@
                                     option.series[0].data = dataRes;
                                 };
                             };
+                            //集中度特殊处理，2019年7月30日14:44:27 
+                            option.series[0].data = [{
+                                    "value": 1,
+                                    "name": "集中度"
+                                },
+                                {
+                                    "value": 1,
+                                    "name": "非集中度"
+                                }
+                            ];
                             return option;
                         }
                     },
@@ -1490,18 +1507,23 @@
                             "trigger": "item",
                             "formatter": "{b} : {c} ({d}%)"
                         },
-                        "color": ['#1875F0', '#1CD1A1'],
+                        "color": ['#87F7CF', '#42E0FC'],
                         "series": [{
                             "name": "",
                             "type": "pie",
                             "radius": "55%",
                             "center": ["50%", "50%"],
                             "data": "this.item.options.datas",
+                            // "data": [
+                            //     { "value": 1, "name": "集中度" },
+                            //     { "value": 1, "name": "非集中度" }
+                            // ],
                             "label": {
                                 "position": "inside",
                                 "formatter": function(params) {
                                     // 
-                                    return params.name + "：" + params.percent + "%";
+                                    // return params.name + "：" + params.percent + "%";
+                                    return params.name;
                                     // if(params.value == 0){
                                     // 	return "";
                                     // }else {
@@ -1524,7 +1546,8 @@
                             //    "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"	//zdk 注释  2019-1-8 09:25:05  boss 和 ly 说图例要放在下方
                             "bottom": 10,
                             "left": "center",
-                            "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                            // "data": "this.item.chartOptions.series[0].data.map(item=>{return item.name; })"
+                            "data": ["集中度", "非集中度"]
                         }
                     }
                 },
@@ -1714,7 +1737,7 @@
                             "trigger": "item",
                             "formatter": "{b} : {c} ({d}%)"
                         },
-                        "color": ['#1875F0', '#1CD1A1'],
+                        "color": ['#9823FE', '#7ED321'],
                         "series": [{
                             "name": "",
                             "type": "pie",

@@ -66,6 +66,8 @@ export default {
           }
         }
       }
+      //把对象拷贝一份放到this上。
+      this.cloneChartOption = this.deepCopy(chartOptions);
       return chartOptions;
     },
     /**
@@ -73,10 +75,11 @@ export default {
      * zdk   2019-1-8 16:36:03
      */
      getToolTip(options){
+       let me = this;
       return {
           trigger: "item",
           formatter:function(a,b,c,d){
-            // debugger;
+            let allDatas = me.item.datas,gg = options;
             let aa = options,unitObj = options.unitObj || {};
             if(unitObj && unitObj.mult && !isNaN(unitObj.mult) && unitObj.unitName ){
                 if( ["户","个"].indexOf(unitObj.unitName) != -1 ){
@@ -86,7 +89,12 @@ export default {
                   // return a.name + ":" + Math.numberToLocalString(a.value/unitObj.mult,null,null,0) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";  //龚总方法没加
                   return a.name + ":" + value + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
                 }
-                  return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
+                //判断是哪一个，集中度还是非集中度。
+                let itemData = allDatas.filter(item => {
+                  return item.text == a.name;
+                });
+                return a.name + ":"+ Math.decimalToLocalString(itemData[0].A/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(itemData[0].bl) +"%)";
+                  // return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
               }
                 return a.name + ":" + Math.decimalToLocalString(a.value) + "("+ Math.decimalToLocalString(a.percent) +"%)";
           }
@@ -199,6 +207,22 @@ export default {
         default:
           break;
       }
+    },
+    /**
+     * 深拷贝。
+     */
+    deepCopy(obj) { //深拷贝
+      var result = Array.isArray(obj) ? [] : {};
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === 'object') {
+            result[key] = this.deepCopy(obj[key]); //递归复制
+          } else {
+            result[key] = obj[key];
+          }
+        }
+      }
+      return result;
     }
   }
 };

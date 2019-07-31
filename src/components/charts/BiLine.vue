@@ -116,13 +116,13 @@ export default {
           {
             name: "好",
             type: "line",
-            smooth: false,
+            smooth: true,
             data: []
           },
           {
             name: "坏",
             type: "line",
-            smooth: false,
+            smooth: true,
             data: []
           }
         ]
@@ -143,7 +143,7 @@ export default {
     // }
   },
   methods: {
-    upData(item) {    
+    upData(item) {  
       if (item) {
         this.item = item;
       }
