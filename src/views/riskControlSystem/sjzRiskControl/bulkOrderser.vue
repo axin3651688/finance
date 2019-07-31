@@ -203,6 +203,6 @@ export default {
 /*按钮*/
     .borders_btn{
         margin-top: 12px; 
-        margin-left: 253px;
+        margin-left: 352px;
     }    
 </style>
