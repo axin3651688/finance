@@ -2,8 +2,12 @@
   <div>
     <div class="logo-contener">
       <!-- <img :src="user.company.avatar"> -->
-      <img src="http://jiaxin365.cn/images/tjsp.svg">
+      <!-- <img src="http://jiaxin365.cn/images/tjsp.svg"> -->
       <!-- <img src="@a/logo.png"> -->
+      <!-- 新加的 2019年7月30日17:27:12 -->
+      <div>
+          <img class="leftTop" src="@a/newImgs/leftTop.svg" alt="">
+      </div>
     </div>
     <el-scrollbar style="flex:1;">
       <el-menu
@@ -20,8 +24,8 @@
       <div class="username" v-if="true">
           <!-- <img :src="user.user.avatar" alt/> -->
           <img :src="user.user.avatar" alt/>
-          <h3>{{user.user.trueName}}</h3>
-          <p>{{user.user.phone}}</p>
+          <h3 class="public_style">{{user.user.trueName}}</h3>
+          <p class="public_style">{{user.user.phone}}</p>
         </div>
         <nav-menu :navMenus="leftMenus" :state="isCollapse" v-if="flagSide"/>
         <!-- 模拟链接 -->
@@ -190,6 +194,10 @@ export default {
     fetchData(userId, code) {
       findSideBar(userId, code[0]).then(response => {
         let data = response.data.data;
+        //排序 这个本是sql来处理的，但是没有，所以在此加一个自己的排序。 2019年7月30日09:19:54
+        if(data && data.length > 0 && data[1].sort){
+          this.sortBySsort(data,"sort");
+        }
         data.forEach(ele => {
           if (ele.leaf == 0) {
             this.handleOpen(null, [ele.code]);
@@ -223,3 +231,15 @@ export default {
   //   }
   // }
 </style>
+<style lang="scss" scoped>
+  .leftTop {
+    height: 45px !important;
+    width: 150px !important;
+    float: left;
+    margin: 12px 0px 12px 20px;
+  }
+  .public_style {
+    color: #909090 !important;
+  }
+</style>
+

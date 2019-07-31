@@ -70,38 +70,33 @@ export default {
             max: 200, //设置最大刻度
             splitNumber:8,
             //设置仪表盘的园的程度，这里设置的是半圆
-            startAngle: 225,
-            endAngle: -45,
+            startAngle: 170,
+            endAngle: 10,
             axisLine: {
               show: true,
               lineStyle: {
                 // 属性lineStyle控制线条样式
                 color: [
-                  [0.42, "#FB745B"],
-                  [2/3, "#FFCC41"],
-                  [1, "#7ED321"]
+                  [0.25, "#F24764"],
+                  [0.5, "#FBCE14"],
+                  [0.75, "#11C3C2"],
+                  [1, "#2FC35B"]
                 ],
-                width: 25 //表盘宽度
+                width: 20 //表盘宽度
               }
             },
             axisLabel: {
               textStyle: {
                 // 属性lineStyle控制线条样式
                 fontSize: 9 //改变仪表盘内刻度数字的大小
-              },
-              //格式化大刻度的数据。
-              formatter:function(value,aa){
-                debugger;
-                value = parseInt(value);
-                return value;
               }
             },
-            center: ["50%", "60%"], //整体的位置设置
-            radius: "80%", //仪表盘大小
+            center: ["50%", "70%"], //整体的位置设置
+            radius: "85%", //仪表盘大小
             //设置指针样式
             pointer: {
               show: true,
-              length: "60%",
+              length: "65%",
               width: 5
             },
             detail: {
@@ -169,9 +164,9 @@ export default {
       } else {
         let fixedFirst = 0;
         this.receive.series[0].max = 200;
-        fixedFirst = 1/3;
+        fixedFirst = 50/200;
         this.receive.series[0].axisLine.lineStyle.color[0][0] = fixedFirst;
-        this.receive.series[0].splitNumber = 3;
+        this.receive.series[0].splitNumber = 8;
       }
       this.receive.series[0].data[0].value = item.options.datas; //.toLocaleString();
       //最小刻度是负数的时候,设置开始的刻度是最小值。

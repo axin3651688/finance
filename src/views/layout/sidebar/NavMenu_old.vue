@@ -14,15 +14,9 @@
         >
           <!--图标-->
           <!-- <router-link :to="navMenu.url"> -->
-          <!-- <img
+          <img
             :src="navMenu.avatar"
             v-if="navMenu.level===2 && state"
-            class="avatarleft fa-margin iconfont"
-          > -->
-          <!-- 加图标的 -->
-          <img 
-            :src="require(`@a/newImgs/${navMenu.avatar}.png`)"
-            v-if="navMenu.level===2"
             class="avatarleft fa-margin iconfont"
           >
           <!--标题-->
@@ -33,17 +27,11 @@
       <!--有多级菜单-->
       <el-submenu v-if="navMenu.leaf==0" :key="navMenu.code" :data="navMenu" :index="navMenu.code">
         <template slot="title">
-          <!-- <img
+          <img
             :src="navMenu.avatar"
             v-if="navMenu.level===2 && state"
             class="avatarleft fa-margin iconfont"
-          > -->
-          <!-- 加图标 -->
-          <img
-            :src="require(`@a/newImgs/${navMenu.avatar}.png`)"
-            v-if="navMenu.level===2"
-            class="avatarleft fa-margin iconfont"
-          > 
+          >
           <span>{{navMenu.text}}</span>
         </template>
         <!--递归组件，把遍历的值传回子组件，完成递归调用-->

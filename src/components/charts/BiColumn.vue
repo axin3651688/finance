@@ -128,6 +128,7 @@ export default {
       let datas = this.item.options.datas;
       this.options.xAxis.data = datas[0];
       this.options.series[0].data = datas[1];
+      this.options.series[0].itemStyle.normal.color = this.item.styleConfig.color;
     }
   }
 };
