@@ -601,7 +601,8 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: res.data.msg,
+                            // message: res.data.msg,
+                            message: '退回成功',
                             type: "success"
                         });
                         this.getReportData();
@@ -609,6 +610,7 @@
                     } else {
                         _this.$message({
                             message: res.data.msg
+                            // message: '退回失败',
                         })
                     }
                 });
@@ -625,7 +627,7 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: res.data.msg,
+                            message: '提醒成功',
                             type: "success"
                         });
                     } else {
