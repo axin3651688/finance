@@ -357,9 +357,9 @@ export default {
 }
     /* 内容的样式设置 */
     .col_class, .col_classA {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         line-height: 24px;
-        font-family: '宋体';
+        font-family: '微软雅黑';
         cursor: pointer;
         padding: 0 10px 0 10px ;
     }
@@ -389,24 +389,24 @@ export default {
 
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-/* .col_A ::-webkit-scrollbar {
-    width: 0px;
+::-webkit-scrollbar {
+    width: 1px;
     height: 0px;
     background-color: #f5f5f5;
-} */
+}
 
 /*定义滚动条轨道 内阴影+圆角*/
-/* .col_A ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
     border-radius: 1px;
     background-color: #f5f5f5;
-} */
+}
 
 /*定义滑块 内阴影+圆角*/
-/* .col_A ::-webkit-scrollbar-thumb { */
+::-webkit-scrollbar-thumb {
     /* border-radius: 0px; */
     /* -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3); */
-    /* background-color: #9fd467; */
+    background-color: #9fd467;
     /* background-color: #dcdfe6; */
-/* } */
+}
 </style>

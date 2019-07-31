@@ -294,7 +294,8 @@ export default {
     }
     /* 表格背景 */
     .cityMaintenance_table {
-        background-color: #F0F2F5;
+        /* background-color: #F0F2F5; */
+        background-color: #fff ;
     }
 </style>
 <style>

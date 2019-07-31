@@ -66,6 +66,7 @@
 /* 腰部 */
 .guidance_container {
     // border: 2px solid #dcdfe6 ;
+    background: #F0F2F5 ;
 }
 /*
  * ------------------------------------------------------------
@@ -78,7 +79,8 @@
     color: #606266;   
 }
 .guidance_aside .asideA {
-    background-color: #F0F2F5 ;
+    // background-color: #F0F2F5 ;
+    background: transparent ;
     border: 0 ;
 }
 .guidance_aside .asideA .asideA_item {
