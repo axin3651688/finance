@@ -118,8 +118,10 @@ export default {
                     }else {
                         me.readonly = false;
                     }
+                } else if (res.data.code === 1001) {
+                    me.$message(res.data.msg) ;
                 } else {
-                    me.$message.error("数据维护查询失败！") ;
+                    me.$message.error(res.data.msg) ;
                 }
             });
         },
