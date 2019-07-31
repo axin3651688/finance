@@ -236,6 +236,8 @@ export default {
             });
             let rootItemData = rootItem[0];
             if (rootItemData.sstate) {
+                // rootItemData.sreportuser = "";
+                // rootItemData.sreporttime = "";
                 me.setOperations(rootItemData);
             }
             me.recursionData(data, rootItemData);
@@ -253,6 +255,8 @@ export default {
                 let item = data[i];
                 if (rootItem.scode == item.spcode) {
                     if (item.sstate) {
+                        item.sreportuser = "";
+                        item.sreporttime = "";
                         me.setOperations(item);
                     }
                     rootItem.children.push(item);
@@ -317,6 +321,8 @@ export default {
             if (item.sstate == "已批示") {
                 item.operation = ops01;
             } else if (item.sstate == "未批示") {
+                item.sreportuser = "";
+                item.sreporttime = "";
                 item.operation = ops02;
             }
 
