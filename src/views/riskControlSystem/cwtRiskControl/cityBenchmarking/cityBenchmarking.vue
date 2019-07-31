@@ -134,7 +134,7 @@
                 let _this = this;
                 getHYZBData(params).then((res) => {
                     if (res.data.code === 200) {
-
+                        _this.numCount = 0;
                         let _data = res.data.data;
                         let emptyArray = [];
                         _data.forEach((item) => {
@@ -203,7 +203,8 @@
     .sigle_select {
         width: 100%;
     }
-    .hasnodatatip{
+
+    .hasnodatatip {
         width: 100%;
         text-align: center;
         margin-top: 100px;

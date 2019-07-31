@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="logo-contener">
-      <img :src="user.company.avatar">
+      <!-- <img :src="user.company.avatar"> -->
+      <img src="http://jiaxin365.cn/images/tjsp.svg">
+      <!-- <img src="@a/logo.png"> -->
     </div>
     <el-scrollbar style="flex:1;">
       <el-menu
@@ -12,13 +14,16 @@
         :default-active="active"
         class="leftmemu"
         unique-opened
+        ref="leftMenu"
       >
-        <div class="username" v-if="user.company.id === 121">
+      <!-- v-if="user.company.id === 121" -->
+      <div class="username" v-if="true">
+          <!-- <img :src="user.user.avatar" alt/> -->
           <img :src="user.user.avatar" alt/>
           <h3>{{user.user.trueName}}</h3>
           <p>{{user.user.phone}}</p>
         </div>
-        <nav-menu :navMenus="leftMenus" v-if="this.leftMenus.length>0"/>
+        <nav-menu :navMenus="leftMenus" :state="isCollapse" v-if="flagSide"/>
         <!-- 模拟链接 -->
         <!--
         <el-submenu index="123">
@@ -40,32 +45,35 @@
 import { mapGetters } from "vuex";
 import { findSideBar } from "~api/interface.js";
 import NavMenu from "./NavMenu.vue";
-
+//
 export default {
   name: "Leftmenu",
   created() {
-    // debugger;
-    console.log(this.$refs.submenu);
-
-    findSideBar(this.userId).then(response => {
-      // console.log(response.data);
+    // let num = 247;
+    //头像图片的地址。
+    let userCng = this.$store.getters.user.user;
+    this.avarUrl = userCng.avarUrl? userCng.avarUrl:userCng.avatar;
+    let num = this.$store.getters.user.user.roleId;
+    findSideBar(num).then(response => {
       let data = response.data.data;
-      // console.log("侧边栏",data)
+      //排序 这个本是sql来处理的，但是没有，所以在此加一个自己的排序。
+      if(data && data.length > 0 && data[1].sort){
+        this.sortBySsort(data,"sort");
+      }
       this.leftMenus = data;
-      let mapArry = data.map(function(data) {
-        console.log(data)
-        return data.code;
-      });
-      // console.log(mapArry);
-      // debugger;
-      let me = this;
-      // 设个定时器把定时任务做上去,让二级目录数据自动加载
-      setTimeout(function() {
-        mapArry.forEach(element => {
-          me.handleOpen(this.openPid, [element + ""]);
-        });
-      }, 600);
+      this.auotoAdd(data);
     });
+  },
+  mounted() {
+    //缓存中的侧边栏的内容。
+    let siderState = JSON.parse(localStorage.siderState);
+    if(siderState){
+      document.title = siderState.text || document.title;
+      this.openeds = [siderState.pid + ""];
+      this.active = siderState.code;
+      // this.$refs.leftMenu.open(siderState.pid);
+      // this.handleOpen(siderState.code,[siderState.pid + ""])
+    }
   },
   components: {
     NavMenu
@@ -73,9 +81,12 @@ export default {
 
   data() {
     return {
+      //头像的地址
+      avarUrl:"",
       openeds: [],
       active: "",
-      userId: this.$store.getters.user.user.id,
+      // userId: this.$store.getters.user.user.id,
+      userId: this.$store.getters.user.user.roleId,
       leftMenus: [],
       nodes: [],
       clickNodeId: "",
@@ -90,31 +101,52 @@ export default {
     ...mapGetters(["sidebar", "user", "openPid", "activeId"]),
     isCollapse() {
       return !this.sidebar.opened;
+    },
+    flagSide() {
+      return !Cnbi.isEmpty(this.leftMenus);
     }
   },
   watch: {
-    openPid(newid) {
-      debugger;
-      // console.log(newid);
-      this.handleOpen(this.openPid, [newid + ""]);
-      this.openeds = [newid + ""];
-    },
+    // openPid(newid) {
+    //   debugger;
+    // //   
+    // //   console.log(newid);
+    //   this.handleOpen(this.openPid, [newid + ""]);
+    //   // this.openeds = [newid + ""];
+    // },
     activeId(newid) {
-      // debugger;
-      // console.log(newid);
       this.active = newid + "";
     }
   },
   methods: {
+    /**
+     * 递归设置节点的孩子
+     * @param  nodes   所有节点
+     * @param  nodeId   节点编码
+     * @param  children  节点的孩子
+     */
+    setTreeNodeChildren(nodes, nodeId, children) {
+      if (!children) return;
+      if (!nodes) nodes = this.leftMenus;
+      nodes.forEach(node => {
+        if (node.code == nodeId) {
+          node.children = children;
+        } else if (node.leaf == 0) {
+          this.setTreeNodeChildren(node.children, nodeId, children);
+        }
+      });
+    },
+    sortBySsort(array, key) {
+      return array.sort((a, b) => {
+        var x = a[key];
+        var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      })
+    },
     handleOpen(key, code) {
       let userId = this.userId;
       var clickNodeId = "";
-      if (code.length === 1) {
-        clickNodeId = userId + "_" + code[0];
-      } else {
-        clickNodeId = userId + "_" + code[1];
-      }
-
+      clickNodeId = userId + "_" + code[0];
       var flag = false;
       // 只要侧边栏被点开请求过一次,那么下次就不再发送请求
       // 如果在数组中,找到相同的clickNodeId,那么标记改为真
@@ -126,55 +158,72 @@ export default {
       }
       this.nodes.push(clickNodeId);
       if (!flag) {
-        if (code.length === 1) {
-          this.fetchData(userId, code[0]);
-        }else {
-          this.fetchData2(userId, code);
-        }
+        // console.log(code);
+        this.fetchData(userId, code, this.leftMenus);
+        // console.log(this.leftMenus);
+      }else {
+        // this.openNodeOfBefore();
+      }
+
+    },
+    /**
+     * 菜单节点收起的回调。
+     */
+    handleClose (index,indexPath) {
+      let me = this;
+    },
+    /**
+     * 展开之前的菜单节点 2019年3月28日11:01:14 szc
+     */
+    openNodeOfBefore () {
+      let siderState = JSON.parse(localStorage.siderState);
+      if(siderState){
+        this.openeds = [siderState.pid + ""];
+        this.active = siderState.code;
       }
     },
+    /**
+     * 加载数据
+     * @param  userId   用户id
+     * @param  code     编码
+     */
     fetchData(userId, code) {
-      findSideBar(userId, code).then(response => {
-        // console.log(response.data);
-        // console.log(code);
-
-        for (let index = 0; index < this.leftMenus.length; index++) {
-          // 匹配哪个children值加进去
-          if (this.leftMenus[index].code === code) {
-            this.$set(this.leftMenus[index], "children", response.data.data);
-          }
+      findSideBar(userId, code[0]).then(response => {
+        let data = response.data.data;
+        //排序 这个本是sql来处理的，但是没有，所以在此加一个自己的排序。 2019年7月30日09:19:54
+        if(data && data.length > 0 && data[1].sort){
+          this.sortBySsort(data,"sort");
         }
-        // console.log(this.leftMenus);
+        data.forEach(ele => {
+          if (ele.leaf == 0) {
+            this.handleOpen(null, [ele.code]);
+          }
+        });
+        this.setTreeNodeChildren(null, code[0], data);
       });
     },
-    fetchData2(userId, code) {
-        debugger;
-      findSideBar(userId, code[1]).then(response => {
-        let data = response.data.data;
-        console.log(data);
-        // console.log(code);
-        for (let index = 0; index < this.leftMenus.length; index++) {
-          // 匹配哪个children值加进去
-          let flag = false;
-          if (this.leftMenus[index].code === code[0]) {
-            let qoose = this.leftMenus[index].children;
-            for (let i = 0; i < qoose.length; i++) {
-              if (qoose[i].code === code[1]) {
-                debugger;
-                console.log(qoose[i].text);
-                this.$set(this.leftMenus[index].children[i], "children", data);
-                flag = true;
-                break;
-              }
-            }
-          }
-          if (flag) {
-            break;
-          }
-        }
-        // console.log(this.leftMenus);
+    auotoAdd(data) {
+      let mapArry = data.map(function(data) {
+        return data.code;
       });
+      let me = this;
+      // 设个定时器把定时任务做上去, 让二级目录数据自动加载;
+      setTimeout(function() {
+        mapArry.forEach(element => {
+          me.handleOpen(me.openPid, [element + ""]);
+        });
+      }, 600);
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+// 暂时加上自己的logo，没有什么大用，可以去除。
+  // .logo-contener{
+  //   img {
+  //     height: 100%;
+  //     width: 100%;
+  //     padding: 15px 20px;
+  //   }
+  // }
+</style>

@@ -143,6 +143,7 @@
                 getHYZBData(params).then((res) => {
                     if (res.data.code === 200) {
 
+                        _this.numCount = 0;
                         let _data = res.data.data;
                         let emptyArray = [];
                         _data.forEach((item) => {
