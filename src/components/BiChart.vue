@@ -158,10 +158,14 @@ export default {
   box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 .bgwight {
+  background:rgba(255,255,255,1);
+  box-shadow:0px 2px 4px rgba(242,242,242,1);
+  opacity:1;
+  border-radius:5px;
   margin-bottom: 24px;
-  background: #fff;
+  // background: #fff;
   //圆角 阴影
   // border-radius: 20px;
-  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
+  // box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.1);
 }
 </style>
