@@ -79,13 +79,19 @@
                     "align": "center",
                     "width": "90",
                     "children": [{
-                            "id": "E2",
+                            "id": "E3",
                             "type": "string",
                             "text": "较差值",
                             "align": "center"
                         },
                         {
                             "id": "E1",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "E2",
                             "type": "string",
                             "text": "较差值",
                             "align": "center"
@@ -196,7 +202,8 @@
             "D1": "Y4<X<Y3",
             "D2": "X=Y4",
             "E1": "Y5<X<Y4",
-            "E2": "X<=Y5"
+            "E2": "X=Y5",
+            "E3": "X<Y5"
         },
         {
             "xm": "分数",
@@ -209,7 +216,8 @@
             "D1": "4",
             "D2": "3",
             "E1": "2",
-            "E2": "1"
+            "E2": "1",
+            "E3": "0"
         }
     ]
 }
