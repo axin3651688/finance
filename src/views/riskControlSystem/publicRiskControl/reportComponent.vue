@@ -298,7 +298,7 @@
                 updateInstruction(params.data).then(res => {
                     if (res.data.code == 200) {
                         me.$message({
-                            message: params.success ? params.success : "操作成功！",
+                            message: res.data.msg? res.data.msg:(params.success ? params.success : "操作成功！"),
                             type: "success",
                         });
                         if(params.afterHandler){
