@@ -169,7 +169,7 @@ export default {
 <style scoped>
 /*最外层的div框*/
     .borders{
-        width: 450px;
+        width: 550px;
         height: 500px;
         /* border: 1px solid #ccc ; */
         position: absolute;
@@ -179,7 +179,7 @@ export default {
     }
 /*里层的div框*/    
     .borders_nei{
-        width: 432px;
+        width: 532px;
         height: 432px;
         /* border: 1px solid #ccc; */
         background: #fff;
