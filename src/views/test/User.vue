@@ -1479,7 +1479,6 @@ export default {
      * zb
      */
     watchField(field, nowVal) {
-      debugger;
       this.editActiveForm? this.editActiveForm[field] = nowVal:this.editActiveForm = {},this.editActiveForm[field] = nowVal;
     },
     /**
@@ -1758,6 +1757,7 @@ export default {
       }).then(result => {
         if (result.status == 200) {
           if (_.isArray(result.data.data)) {
+            debugger; 
             _this.rolesData = result.data.data;
           }
         }
@@ -1838,7 +1838,9 @@ export default {
         url: "/zjb/sys/role/findAll",
         method: "get"
       }).then(result => {
-        let data = result.data.data;
+        let data = result.data.data.filter(item => {
+          return item.roleid != 1;
+        });
         _this.rolesData = data;
       });
     },
