@@ -1,4 +1,5 @@
 import { eva_city_Request } from "~api/cube.js";
+import request from "utils/http";
 // 引用的tools.js文件
 import tools from "utils/tools";
 export default {
@@ -248,15 +249,29 @@ export default {
      */
     getCompanyTree(me) {
         // debugger
-        let $params = me.$store.state.prame.command;
-        let _sql = ` select scode, sname, spcode, connect_by_isleaf as cisleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode order by level `;
-        _sql = _sql.replace(/:company/g, "'" + $params.company + "'");
-        let params = {
-            cubeId: 4,
-            sql: encodeURI(_sql)
-        }
-        const _this = this;
-        _this.getCompanyTree_request(_this, me, params);
+        // let $params = me.$store.state.prame.command;
+        let suser = me.$store.getters.user.user.userName ;
+        // let _sql = ` select scode, sname, spcode, connect_by_isleaf as cisleaf, level as nlevel from dw_dimcompany start with scode = :company connect by prior scode = spcode order by level `;
+        // _sql = _sql.replace(/:company/g, "'" + $params.company + "'");
+        // let params = {
+        //     cubeId: 4,
+        //     sql: encodeURI(_sql)
+        // }
+        //请求数据
+        const _this = this ;
+        request({
+            url: "/zjb/sys/dimcompany/query_user",
+            method: "get",
+            params: {
+                suser: suser 
+            }
+        }).then(result => { debugger
+            if (result.status == 200 && result.data.code == 200) {
+                _this.elementUI_tree(result.data.data, me, null);
+            } else {
+                me.$message(result.data.msg) ;
+            }
+        })
     },
     /**
      * @author sjz
@@ -266,17 +281,17 @@ export default {
      * @param {*} me 
      * @param {*} params 
      */
-    getCompanyTree_request(_this, me, params) {
-        eva_city_Request(params).then(red => {
-            if (red.data.code === 200) {
-                _this.elementUI_tree(red.data.data, me, null);
-            } else {
-                me.$message.error(red.data.msg);
-                // return me.getCompanyTree_set(me.comtree2);
-                return me.comtree2
-            }
-        })
-    },
+    // getCompanyTree_request(_this, me, params) {
+    //     eva_city_Request(params).then(red => {
+    //         if (red.data.code === 200) {
+    //             _this.elementUI_tree(red.data.data, me, null);
+    //         } else {
+    //             me.$message.error(red.data.msg);
+    //             // return me.getCompanyTree_set(me.comtree2);
+    //             return me.comtree2
+    //         }
+    //     })
+    // },
     elementUI_tree(data, me, vax) { 
         //封装树对象数据
         const setting = {
