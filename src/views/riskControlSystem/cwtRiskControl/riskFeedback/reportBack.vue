@@ -601,8 +601,8 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            // message: res.data.msg,
-                            message: '退回成功',
+                            message: res.data.msg,
+                            // message: '退回成功',
                             type: "success"
                         });
                         this.getReportData();
